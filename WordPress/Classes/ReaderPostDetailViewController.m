@@ -19,6 +19,7 @@
 #import "WPTableViewController.h"
 #import "InlineComposeView.h"
 #import "ReaderCommentPublisher.h"
+#import "ReaderPostService.h"
 
 static NSInteger const ReaderCommentsToSync = 100;
 static NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
@@ -175,7 +176,7 @@ typedef enum {
         return;
 	
     NSDate *lastSynced = [self lastSyncDate];
-    if ((lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > ReaderPostDetailViewControllerRefreshTimeout) && [[_post isWPCom] boolValue]) {
+    if ((lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > ReaderPostDetailViewControllerRefreshTimeout) && _post.isWPCom) {
 		[self syncWithUserInteraction:NO];
     }
     
@@ -232,7 +233,7 @@ typedef enum {
     CGRect postFrame = CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, postHeight);
 	self.postView = [[ReaderPostView alloc] initWithFrame:postFrame showFullContent:YES];
     self.postView.delegate = self;
-    [self.postView configurePost:self.post withWidth:self.view.frame.size.width];
+    [self.postView configurePost:self.post];
     self.postView.backgroundColor = [UIColor whiteColor];
     
     if (self.avatarImage) {
@@ -305,13 +306,13 @@ typedef enum {
         return;
 	
 	UIButton *btn = (UIButton *)_likeButton.customView;
-	[btn setSelected:[self.post.isLiked boolValue]];
+	[btn setSelected:self.post.isLiked];
 	NSString *str = ([self.post.likeCount integerValue] > 0) ? [self.post.likeCount stringValue] : nil;
 	[btn setTitle:str forState:UIControlStateNormal];
 	_likeButton.customView = btn;
 	
 	btn = (UIButton *)_reblogButton.customView;
-	[btn setSelected:[self.post.isReblogged boolValue]];
+	[btn setSelected:self.post.isReblogged];
 	btn.userInteractionEnabled = !btn.selected;
 	_reblogButton.customView = btn;
 	
@@ -321,7 +322,7 @@ typedef enum {
 		[items addObjectsFromArray:@[_commentButton, placeholder]];
 	}
 	
-	if ([[self.post isWPCom] boolValue]) {
+	if (self.post.isWPCom) {
 		[items addObjectsFromArray:@[_likeButton, placeholder, _reblogButton]];
 	}
 	
@@ -362,7 +363,7 @@ typedef enum {
 #pragma mark - Comments
 
 - (BOOL)canComment {
-	return [self.post.commentsOpen boolValue];
+	return self.post.commentsOpen;
 }
 
 - (void)prepareComments {
@@ -410,13 +411,13 @@ typedef enum {
         return;
 	
 	UIButton *btn = (UIButton *)_likeButton.customView;
-	[btn setSelected:[self.post.isLiked boolValue]];
+	[btn setSelected:self.post.isLiked];
 	NSString *str = ([self.post.likeCount integerValue] > 0) ? [self.post.likeCount stringValue] : nil;
 	[btn setTitle:str forState:UIControlStateNormal];
 	_likeButton.customView = btn;
 	
 	btn = (UIButton *)_reblogButton.customView;
-	[btn setSelected:[self.post.isReblogged boolValue]];
+	[btn setSelected:self.post.isReblogged];
 	btn.userInteractionEnabled = !btn.selected;
 	_reblogButton.customView = btn;
 	
@@ -426,7 +427,7 @@ typedef enum {
 		[items addObjectsFromArray:@[_commentButton, placeholder]];
 	}
 	
-	if ([[self.post isWPCom] boolValue]) {
+	if (self.post.isWPCom) {
 		[items addObjectsFromArray:@[_likeButton, placeholder, _reblogButton]];
 	}
 	
@@ -623,15 +624,17 @@ typedef enum {
 
 - (void)postView:(ReaderPostView *)postView didReceiveLikeAction:(id)sender {
     ReaderPost *post = postView.post;
-	[post toggleLikedWithSuccess:^{
-        if ([post.isLiked boolValue]) {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    [service toggleLikedForPost:post success:^{
+        if (post.isLiked) {
             [WPAnalytics track:WPAnalyticsStatReaderLikedArticle];
         }
-	} failure:^(NSError *error) {
+    } failure:^(NSError *error) {
 		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
 		[postView updateActionButtons];
-	}];
-	
+    }];
+
 	[postView updateActionButtons];
 }
 
@@ -642,16 +645,20 @@ typedef enum {
     if (![post isFollowable])
         return;
     
-    if (![post.isFollowing boolValue]) {
+    if (!post.isFollowing) {
         [WPAnalytics track:WPAnalyticsStatReaderFollowedSite];
     }
-    
-    followButton.selected = ![post.isFollowing boolValue]; // Set it optimistically
-	[post toggleFollowingWithSuccess:^{
-	} failure:^(NSError *error) {
+
+    followButton.selected = !post.isFollowing; // Set it optimistically
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    [service toggleFollowingForPost:post success:^{
+        //noop
+    } failure:^(NSError *error) {
 		DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
-		[followButton setSelected:[post.isFollowing boolValue]];
-	}];
+		[followButton setSelected:post.isFollowing];
+    }];
 }
 
 - (void)postView:(ReaderPostView *)postView didReceiveCommentAction:(id)sender {
@@ -729,20 +736,6 @@ typedef enum {
 		navController.title = (videoView.title != nil) ? videoView.title : @"Video";
         [self.navigationController presentViewController:navController animated:YES completion:nil];
 	}
-}
-
-- (void)postView:(ReaderPostView *)postView didReceiveTagAction:(id)sender {
-    ReaderPost *post = postView.post;
-    
-    NSString *endpoint = [NSString stringWithFormat:@"read/tags/%@/posts", post.primaryTagSlug];
-    NSDictionary *dict = @{@"endpoint" : endpoint,
-                           @"title" : post.primaryTagName};
-    
-	[[NSUserDefaults standardUserDefaults] setObject:dict forKey:ReaderCurrentTopicKey];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-    
-    [self.navigationController popViewControllerAnimated:YES];
-    [[NSNotificationCenter defaultCenter] postNotificationName:ReaderTopicDidChangeNotification object:self];
 }
 
 - (void)postView:(ReaderPostView *)postView didReceiveFeaturedImageAction:(id)sender {

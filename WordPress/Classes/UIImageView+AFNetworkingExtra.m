@@ -1,4 +1,5 @@
 #import "UIImageView+AFNetworkingExtra.h"
+#import <AFNetworking/UIKit+AFNetworking.h>
 
 @implementation UIImageView (AFNetworkingExtra)
 
