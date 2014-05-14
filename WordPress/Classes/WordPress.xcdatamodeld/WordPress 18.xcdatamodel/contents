@@ -258,15 +258,15 @@
         <attribute name="simperiumKey" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Note" representedClassName="Note" syncable="YES">
-        <attribute name="body" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="body" optional="YES" attributeType="Transformable" elementID="BodyWithSimperium" syncable="YES"/>
         <attribute name="ghostData" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="meta" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" elementID="IdWithSimperium" syncable="YES"/>
+        <attribute name="meta" optional="YES" attributeType="Transformable" elementID="MetaWithSimperium" syncable="YES"/>
         <attribute name="simperiumKey" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="subject" optional="YES" attributeType="Transformable" elementID="subjectMigration" syncable="YES"/>
-        <attribute name="timestamp" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="type" attributeType="String" syncable="YES"/>
-        <attribute name="unread" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="subject" optional="YES" attributeType="Transformable" elementID="SubjectWithSimperium" syncable="YES"/>
+        <attribute name="timestamp" attributeType="Integer 32" defaultValueString="0" elementID="TimestampWithSimperium" syncable="YES"/>
+        <attribute name="type" attributeType="String" elementID="TypeWithSimperium" syncable="YES"/>
+        <attribute name="unread" optional="YES" attributeType="Integer 16" defaultValueString="0" elementID="UnreadWithSimperium" syncable="YES"/>
     </entity>
     <entity name="Page" representedClassName="Page" parentEntity="AbstractPost">
         <attribute name="parentID" optional="YES" attributeType="Integer 32" defaultValueString="0">
@@ -370,7 +370,7 @@
         <element name="Comment" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="345"/>
         <element name="Meta" positionX="9" positionY="153" width="128" height="103"/>
-        <element name="Note" positionX="0" positionY="0" width="128" height="28"/>
+        <element name="Note" positionX="0" positionY="0" width="128" height="180"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="150"/>
         <element name="ReaderComment" positionX="0" positionY="0" width="128" height="120"/>
