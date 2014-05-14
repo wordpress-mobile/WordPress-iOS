@@ -3482,7 +3482,7 @@
 				5DE8A03C1912C59600B2FF59 /* RemoteReaderTopic.h */,
 				5DE8A03D1912C59600B2FF59 /* RemoteReaderTopic.m */,
 			);
-			name = Services;
+			path = Services;
 			sourceTree = "<group>";
 		};
 		A2F140A415E464C900132A5E /* Rich Text */ = {
