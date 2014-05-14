@@ -2506,6 +2506,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				8584FDB31923EF4F0019C02E /* ViewRelated */,
 				850BD4531922F95C0032F3AD /* Networking */,
 				C59D3D480E6410BC00AA591D /* Categories */,
 				AC34397A0E11435A00E5D79B /* Controllers */,
@@ -2513,7 +2514,6 @@
 				2F706A870DFB229B00B43086 /* Models */,
 				93FA59DA18D88BDB001446BC /* Services */,
 				85A1B6721742E7DB00BA5E35 /* Analytics */,
-				031662E60FFB14C60045D052 /* Views */,
 				2F970F970DF929B8006BD934 /* Constants.h */,
 				C545E0A01811B9880020844C /* ContextManager.h */,
 				C545E0A11811B9880020844C /* ContextManager.m */,
@@ -3303,6 +3303,26 @@
 			name = Keyboard;
 			sourceTree = "<group>";
 		};
+		8584FDB31923EF4F0019C02E /* ViewRelated */ = {
+			isa = PBXGroup;
+			children = (
+				850D22B21729EE8600EC6A16 /* NUX */,
+				CC1D800D1656D8B2002A542F /* Notifications */,
+				AC34397B0E11443300E5D79B /* Blog */,
+				C533CF320E6D3AB3000C3DE8 /* Comments */,
+				5DA5BF4A18E32DE2005F11F9 /* Media */,
+				EC4696A80EA74DAC0040EE8E /* Pages */,
+				CCB3A03814C8DD5100D43C3F /* Reader */,
+				3792259E12F6DBCC00F2176A /* Stats */,
+				5D87E10D15F512380012C595 /* Settings */,
+				5DA5BF4918E32DDB005F11F9 /* Themes */,
+				8320B5CF11FCA3EA00607422 /* Cells */,
+				031662E60FFB14C60045D052 /* Views */,
+				AC3439790E11434600E5D79B /* Post */,
+			);
+			path = ViewRelated;
+			sourceTree = "<group>";
+		};
 		858DE3FF172F9991000AC628 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -3524,19 +3544,7 @@
 		AC34397A0E11435A00E5D79B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				850D22B21729EE8600EC6A16 /* NUX */,
-				CC1D800D1656D8B2002A542F /* Notifications */,
-				AC34397B0E11443300E5D79B /* Blog */,
-				C533CF320E6D3AB3000C3DE8 /* Comments */,
-				5DA5BF4A18E32DE2005F11F9 /* Media */,
-				EC4696A80EA74DAC0040EE8E /* Pages */,
-				AC3439790E11434600E5D79B /* Post */,
-				CCB3A03814C8DD5100D43C3F /* Reader */,
-				3792259E12F6DBCC00F2176A /* Stats */,
-				5D87E10D15F512380012C595 /* Settings */,
-				5DA5BF4918E32DDB005F11F9 /* Themes */,
 				AC512F800E20D28500B7DA32 /* Utils */,
-				8320B5CF11FCA3EA00607422 /* Cells */,
 				A25EBD85156E330600530E3D /* WPTableViewController.h */,
 				A25EBD86156E330600530E3D /* WPTableViewController.m */,
 				E1A38C921581879D00439E55 /* WPTableViewControllerSubclass.h */,
