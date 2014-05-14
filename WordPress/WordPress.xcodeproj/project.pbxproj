@@ -2943,7 +2943,7 @@
 				93027BB61758332300483FFD /* SupportViewController.h */,
 				93027BB71758332300483FFD /* SupportViewController.m */,
 			);
-			name = Settings;
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		5DA5BF4918E32DDB005F11F9 /* Themes */ = {
