@@ -81,10 +81,7 @@ CGFloat const ReblogViewTextBottomInset = 30;
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self layoutViews];
-    });
-
+    [self layoutViews];
 }
 
 
@@ -259,6 +256,12 @@ CGFloat const ReblogViewTextBottomInset = 30;
     CGFloat w = CGRectGetWidth(frame) + horizontalMargin * 2.0f;
     CGFloat h = CGRectGetHeight(frame) + verticleMargin * 2.0f;
     self.postViewBackingLayer.frame = CGRectMake(x, y, w, h);
+
+    // Refresh the contentSize to account for changes to textContainerInset
+    // by calling sizeToFit and then resetting the frame.
+    // A little hackish but prevents layout issues due to orientation change.
+    [self.textView sizeToFit];
+    self.textView.frame = self.view.bounds;
 }
 
 - (void)resizeTextView:(NSNotification *)notification {
