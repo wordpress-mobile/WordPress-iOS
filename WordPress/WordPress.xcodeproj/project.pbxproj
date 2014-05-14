@@ -2674,7 +2674,7 @@
 				E105E9CE1726955600C0D9E7 /* WPAccount.m */,
 				46F84612185A8B7E009D0DA5 /* WPContentViewProvider.h */,
 			);
-			name = Models;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		30AF6CFE13C230CC00A29C00 /* About */ = {
@@ -3970,12 +3970,12 @@
 				CC1D80301658354C002A542F /* Note.m */,
 				B545186118E9E06500AC3A54 /* NoteAction.h */,
 				B545186218E9E06500AC3A54 /* NoteAction.m */,
-				B545186418E9E07900AC3A54 /* NoteBodyItem.h */,
 				B545186518E9E07900AC3A54 /* NoteBodyItem.m */,
+				B545186418E9E07900AC3A54 /* NoteBodyItem.h */,
 				B545186818E9E10C00AC3A54 /* XMLParserCollecter.h */,
 				B545186918E9E10C00AC3A54 /* XMLParserCollecter.m */,
 			);
-			name = Notifications;
+			path = Notifications;
 			sourceTree = "<group>";
 		};
 		C50E78130E71648100991509 /* Comments */ = {
@@ -4023,7 +4023,7 @@
 				DDDAF055187F38810094973D /* StatsViewsVisitors.h */,
 				DDDAF056187F38810094973D /* StatsViewsVisitors.m */,
 			);
-			name = Stats;
+			path = Stats;
 			sourceTree = "<group>";
 		};
 		C533CF320E6D3AB3000C3DE8 /* Comments */ = {
