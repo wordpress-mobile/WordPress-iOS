@@ -405,7 +405,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         [WPAnalytics track:WPAnalyticsStatReaderFollowedSite];
     }
 
-    followButton.selected = !post.isFollowing; // Set it optimistically
+    [followButton setSelected:!post.isFollowing]; // Set it optimistically
 	[cell setNeedsLayout];
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
