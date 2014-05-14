@@ -2514,6 +2514,7 @@
 				2F706A870DFB229B00B43086 /* Models */,
 				93FA59DA18D88BDB001446BC /* Services */,
 				85A1B6721742E7DB00BA5E35 /* Analytics */,
+				8584FDB4192437160019C02E /* Utility */,
 				2F970F970DF929B8006BD934 /* Constants.h */,
 				C545E0A01811B9880020844C /* ContextManager.h */,
 				C545E0A11811B9880020844C /* ContextManager.m */,
@@ -3323,6 +3324,44 @@
 			path = ViewRelated;
 			sourceTree = "<group>";
 		};
+		8584FDB4192437160019C02E /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				E1523EB216D3B2EE002C5A36 /* Sharing */,
+				30AF6CFE13C230CC00A29C00 /* About */,
+				292CECFE1027259000BD407D /* SFHFKeychainUtils.h */,
+				292CECFF1027259000BD407D /* SFHFKeychainUtils.m */,
+				FD9A948A12FAEA2300438F94 /* DateUtils.h */,
+				FD9A948B12FAEA2300438F94 /* DateUtils.m */,
+				E1B62A7913AA61A100A6FCA4 /* WPWebViewController.h */,
+				E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */,
+				5DEB61B6156FCD5200242C35 /* WPChromelessWebViewController.h */,
+				5DEB61B7156FCD5200242C35 /* WPChromelessWebViewController.m */,
+				E114D798153D85A800984182 /* WPError.h */,
+				E114D799153D85A800984182 /* WPError.m */,
+				5D2B043515E83800007E3422 /* SettingsViewControllerDelegate.h */,
+				5D3E334C15EEBB6B005FC6F2 /* ReachabilityUtils.h */,
+				5D3E334D15EEBB6B005FC6F2 /* ReachabilityUtils.m */,
+				8516972A169D42F4006C5DED /* WPToast.h */,
+				8516972B169D42F4006C5DED /* WPToast.m */,
+				85253989171761D9003F6B32 /* WPComLanguages.h */,
+				8525398A171761D9003F6B32 /* WPComLanguages.m */,
+				8514973F171E13DF00B87F3F /* WPAsyncBlockOperation.h */,
+				85149740171E13DF00B87F3F /* WPAsyncBlockOperation.m */,
+				E183BD7217621D85000B0822 /* WPCookie.h */,
+				E183BD7317621D86000B0822 /* WPCookie.m */,
+				E1F5A1BA1771C90A00E0495F /* WPTableImageSource.h */,
+				E1F5A1BB1771C90A00E0495F /* WPTableImageSource.m */,
+				E1921F5817733C3E000F4079 /* WPImageSource.h */,
+				E1921F5917733C3E000F4079 /* WPImageSource.m */,
+				E1E4CE091773C59B00430844 /* WPAvatarSource.h */,
+				E1E4CE0A1773C59B00430844 /* WPAvatarSource.m */,
+				5DB4683918A2E718004A89A9 /* LocationService.h */,
+				5DB4683A18A2E718004A89A9 /* LocationService.m */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
 		858DE3FF172F9991000AC628 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -3544,7 +3583,6 @@
 		AC34397A0E11435A00E5D79B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				AC512F800E20D28500B7DA32 /* Utils */,
 				A25EBD85156E330600530E3D /* WPTableViewController.h */,
 				A25EBD86156E330600530E3D /* WPTableViewController.m */,
 				E1A38C921581879D00439E55 /* WPTableViewControllerSubclass.h */,
@@ -3906,44 +3944,6 @@
 				7F3E102413497EB2008CF73D /* inner-shadow.png */,
 			);
 			name = Images;
-			sourceTree = "<group>";
-		};
-		AC512F800E20D28500B7DA32 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				E1523EB216D3B2EE002C5A36 /* Sharing */,
-				30AF6CFE13C230CC00A29C00 /* About */,
-				292CECFE1027259000BD407D /* SFHFKeychainUtils.h */,
-				292CECFF1027259000BD407D /* SFHFKeychainUtils.m */,
-				FD9A948A12FAEA2300438F94 /* DateUtils.h */,
-				FD9A948B12FAEA2300438F94 /* DateUtils.m */,
-				E1B62A7913AA61A100A6FCA4 /* WPWebViewController.h */,
-				E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */,
-				5DEB61B6156FCD5200242C35 /* WPChromelessWebViewController.h */,
-				5DEB61B7156FCD5200242C35 /* WPChromelessWebViewController.m */,
-				E114D798153D85A800984182 /* WPError.h */,
-				E114D799153D85A800984182 /* WPError.m */,
-				5D2B043515E83800007E3422 /* SettingsViewControllerDelegate.h */,
-				5D3E334C15EEBB6B005FC6F2 /* ReachabilityUtils.h */,
-				5D3E334D15EEBB6B005FC6F2 /* ReachabilityUtils.m */,
-				8516972A169D42F4006C5DED /* WPToast.h */,
-				8516972B169D42F4006C5DED /* WPToast.m */,
-				85253989171761D9003F6B32 /* WPComLanguages.h */,
-				8525398A171761D9003F6B32 /* WPComLanguages.m */,
-				8514973F171E13DF00B87F3F /* WPAsyncBlockOperation.h */,
-				85149740171E13DF00B87F3F /* WPAsyncBlockOperation.m */,
-				E183BD7217621D85000B0822 /* WPCookie.h */,
-				E183BD7317621D86000B0822 /* WPCookie.m */,
-				E1F5A1BA1771C90A00E0495F /* WPTableImageSource.h */,
-				E1F5A1BB1771C90A00E0495F /* WPTableImageSource.m */,
-				E1921F5817733C3E000F4079 /* WPImageSource.h */,
-				E1921F5917733C3E000F4079 /* WPImageSource.m */,
-				E1E4CE091773C59B00430844 /* WPAvatarSource.h */,
-				E1E4CE0A1773C59B00430844 /* WPAvatarSource.m */,
-				5DB4683918A2E718004A89A9 /* LocationService.h */,
-				5DB4683A18A2E718004A89A9 /* LocationService.m */,
-			);
-			name = Utils;
 			sourceTree = "<group>";
 		};
 		AC600C100E20B81100D663AA /* Post Icons */ = {
