@@ -67,7 +67,7 @@
           success:(void (^)(RemoteReaderPost *post))success
           failure:(void (^)(NSError *error))failure {
 
-    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/?meta=site", siteID, postID];
+    NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/?meta=site", siteID, postID];
     [self.api getPath:path
            parameters:nil
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -99,7 +99,7 @@
 }
 
 - (void)unlikePost:(NSUInteger)postID forSite:(NSUInteger)siteID success:(void (^)())success failure:(void (^)(NSError *error))failure {
-    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/likes/mine/delete", siteID, postID];
+    NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/likes/mine/delete", siteID, postID];
     [self.api postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             success();
