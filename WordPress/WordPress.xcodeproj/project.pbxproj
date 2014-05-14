@@ -2979,7 +2979,7 @@
 				859CFD44190E3198005FB217 /* WPMediaUploader.h */,
 				859CFD45190E3198005FB217 /* WPMediaUploader.m */,
 			);
-			name = Media;
+			path = Media;
 			sourceTree = "<group>";
 		};
 		5DC02A3318E4C5A3009A1765 /* Themes */ = {
