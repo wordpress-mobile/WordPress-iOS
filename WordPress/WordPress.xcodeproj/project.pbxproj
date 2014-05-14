@@ -2506,6 +2506,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				850BD4531922F95C0032F3AD /* Networking */,
 				C59D3D480E6410BC00AA591D /* Categories */,
 				AC34397A0E11435A00E5D79B /* Controllers */,
 				E159D1011309AAF200F498E2 /* Migrations */,
@@ -3140,6 +3141,25 @@
 			name = Blogs;
 			sourceTree = "<group>";
 		};
+		850BD4531922F95C0032F3AD /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				93C1148018EDA42500DAC95C /* AccountServiceRemote.h */,
+				93C1148118EDA42500DAC95C /* AccountServiceRemote.m */,
+				93C1148618EF157500DAC95C /* BlogRemoteService.h */,
+				93C1148718EF157500DAC95C /* BlogRemoteService.m */,
+				93FA59DE18D8986D001446BC /* CategoryServiceRemote.h */,
+				93FA59DF18D8986D001446BC /* CategoryServiceRemote.m */,
+				930284B718EB078800CB0BF4 /* NoteServiceRemote.h */,
+				930284B818EB078900CB0BF4 /* NoteServiceRemote.m */,
+				5DBCD9D618F3617500B32229 /* ReaderTopicServiceRemote.h */,
+				5DBCD9D718F3617500B32229 /* ReaderTopicServiceRemote.m */,
+				5D3D559818F88C5E00782892 /* ReaderPostServiceRemote.h */,
+				5D3D559918F88C5E00782892 /* ReaderPostServiceRemote.m */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
 		850D22B21729EE8600EC6A16 /* NUX */ = {
 			isa = PBXGroup;
 			children = (
@@ -3446,29 +3466,17 @@
 			children = (
 				93C1147D18EC5DD500DAC95C /* AccountService.h */,
 				93C1147E18EC5DD500DAC95C /* AccountService.m */,
-				93C1148018EDA42500DAC95C /* AccountServiceRemote.h */,
-				93C1148118EDA42500DAC95C /* AccountServiceRemote.m */,
-				93C1148618EF157500DAC95C /* BlogRemoteService.h */,
-				93C1148718EF157500DAC95C /* BlogRemoteService.m */,
 				93C1148318EDF6E100DAC95C /* BlogService.h */,
 				93C1148418EDF6E100DAC95C /* BlogService.m */,
 				93FA59DB18D88C1C001446BC /* CategoryService.h */,
 				93FA59DC18D88C1C001446BC /* CategoryService.m */,
-				93FA59DE18D8986D001446BC /* CategoryServiceRemote.h */,
-				93FA59DF18D8986D001446BC /* CategoryServiceRemote.m */,
 				930284B618EAF7B600CB0BF4 /* LocalService.h */,
 				930284B318EAF79500CB0BF4 /* NoteService.h */,
 				930284B418EAF79500CB0BF4 /* NoteService.m */,
-				930284B718EB078800CB0BF4 /* NoteServiceRemote.h */,
-				930284B818EB078900CB0BF4 /* NoteServiceRemote.m */,
 				5DBCD9D318F35D7500B32229 /* ReaderTopicService.h */,
 				5DBCD9D418F35D7500B32229 /* ReaderTopicService.m */,
-				5DBCD9D618F3617500B32229 /* ReaderTopicServiceRemote.h */,
-				5DBCD9D718F3617500B32229 /* ReaderTopicServiceRemote.m */,
 				5D3D559518F88C3500782892 /* ReaderPostService.h */,
 				5D3D559618F88C3500782892 /* ReaderPostService.m */,
-				5D3D559818F88C5E00782892 /* ReaderPostServiceRemote.h */,
-				5D3D559918F88C5E00782892 /* ReaderPostServiceRemote.m */,
 				5DE8A0391912C58800B2FF59 /* RemoteReaderPost.h */,
 				5DE8A03A1912C58800B2FF59 /* RemoteReaderPost.m */,
 				5DE8A03C1912C59600B2FF59 /* RemoteReaderTopic.h */,
