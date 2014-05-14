@@ -318,7 +318,7 @@
         <attribute name="dateCommentsSynced" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="dateSynced" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
         <attribute name="featuredImage" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="globalID" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="globalID" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="isBlogPrivate" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isFollowing" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isLiked" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -374,7 +374,7 @@
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="150"/>
         <element name="ReaderComment" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="433"/>
+        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="435"/>
         <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="178"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
     </elements>
