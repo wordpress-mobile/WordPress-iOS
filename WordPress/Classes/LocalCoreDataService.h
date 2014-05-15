@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@protocol LocalService <NSObject>
+@protocol LocalCoreDataService <NSObject>
 
 @required
 
