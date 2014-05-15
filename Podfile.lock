@@ -1,5 +1,23 @@
 PODS:
-  - AFNetworking (1.2.0)
+  - AFNetworking (2.2.3):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+    - AFNetworking/UIKit
+  - AFNetworking/NSURLConnection (2.2.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.2.3):
+    - AFNetworking/NSURLConnection
+  - AFNetworking/Reachability (2.2.3)
+  - AFNetworking/Security (2.2.3)
+  - AFNetworking/Serialization (2.2.3)
+  - AFNetworking/UIKit (2.2.3):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
   - CocoaLumberjack (1.8.1):
     - CocoaLumberjack/Extensions
   - CocoaLumberjack/Core (1.8.1)
@@ -29,18 +47,19 @@ PODS:
     - NSLogger
   - NSObject-SafeExpectations (0.0.1)
   - NSURL+IDN (0.1)
+  - OCMock (2.2.4)
   - OHHTTPStubs (1.1.1)
   - Reachability (3.1.1)
   - SVProgressHUD (1.0)
   - Taplytics (1.2.46)
   - UIDeviceIdentifier (0.4)
   - WordPressApi (0.0.1):
-    - AFNetworking (>= 1.0)
+    - AFNetworking (= 2.2.3)
     - wpxmlrpc (~> 0.1)
   - wpxmlrpc (0.4.1)
 
 DEPENDENCIES:
-  - AFNetworking (= 1.2.0)
+  - AFNetworking (= 2.2.3)
   - CocoaLumberjack (~> 1.8.1)
   - CrashlyticsLumberjack (~> 1.0.0)
   - CTAssetsPickerController (~> 2.2.0)
@@ -54,12 +73,13 @@ DEPENDENCIES:
   - NSLogger-CocoaLumberjack-connector (~> 1.3)
   - NSObject-SafeExpectations (from `https://raw.github.com/koke/NSObject-SafeExpectations/master/NSObject-SafeExpectations.podspec`)
   - NSURL+IDN (from `https://raw.github.com/koke/NSURL-IDN/master/Podfile`)
+  - OCMock
   - OHHTTPStubs (= 1.1.1)
   - Reachability (= 3.1.1)
   - SVProgressHUD (~> 1.0)
   - Taplytics (= 1.2.46)
   - UIDeviceIdentifier (~> 0.1)
-  - WordPressApi (from `https://github.com/koke/WordPressApi.git`)
+  - WordPressApi (from `https://github.com/koke/WordPressApi.git`, branch `afnetworking2`)
   - wpxmlrpc (~> 0.4.1)
 
 EXTERNAL SOURCES:
@@ -72,10 +92,11 @@ EXTERNAL SOURCES:
   NSURL+IDN:
     :podspec: https://raw.github.com/koke/NSURL-IDN/master/Podfile
   WordPressApi:
+    :branch: afnetworking2
     :git: https://github.com/koke/WordPressApi.git
 
 SPEC CHECKSUMS:
-  AFNetworking: 3cbae45f61a9f995cdbd56bd571223910d7f4e44
+  AFNetworking: ae513199cca79e9d7af2708ccabe2ed075550c42
   CocoaLumberjack: 020378ec400d658923bf5887178394f65f052c90
   CrashlyticsLumberjack: 8ee2adbd0f815d8b111e5f72cd82d39b08430ebc
   CTAssetsPickerController: 85cc8be0ce86a3b13626379d16d3996c9d4c559b
@@ -91,12 +112,13 @@ SPEC CHECKSUMS:
   NSLogger-CocoaLumberjack-connector: b03392e94a0ba0aef65b05666d7e73aac2d9a471
   NSObject-SafeExpectations: 241ab1289cbc33a00307cd025d22883646f2e1f0
   NSURL+IDN: 22633c0149b86d6391f32f23776bc0e6ecc532e2
+  OCMock: 5008fae4b4789b8fc3e48cd7660f2eb5ef8ce89e
   OHHTTPStubs: 41c382f87edb51e7c7c2553aee06da5a6d318a12
   Reachability: be4883bb93f31e38266ae3365e5600a317aae735
   SVProgressHUD: 5e10939a296debf5fe5a5895eda9539b8b2114f1
   Taplytics: b5a58fefa10340e700a9766bd5c133fd3356e0f2
   UIDeviceIdentifier: eb3d34699982f02350acf544516a4b8f9a9fcaad
-  WordPressApi: 6c7ab5320344fbec850f0baba4b0ec2bfd03587d
+  WordPressApi: 8c5fb633aeb7c89d72ed0c753c135bdfd7887896
   wpxmlrpc: 63b5b10d5925fb030f8266215bc955366354a2b8
 
 COCOAPODS: 0.32.1
