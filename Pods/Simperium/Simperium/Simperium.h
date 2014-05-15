@@ -69,6 +69,13 @@ typedef NS_ENUM(NSInteger, SPSimperiumErrors) {
 			context:(NSManagedObjectContext *)context
 		coordinator:(NSPersistentStoreCoordinator *)coordinator;
 
+// Initializes Simperium: This constructor allows you to specify custom mappings between local and remote buckets.
+- (id)initWithModel:(NSManagedObjectModel *)model
+			context:(NSManagedObjectContext *)context
+		coordinator:(NSPersistentStoreCoordinator *)coordinator
+			  label:(NSString *)label
+    bucketOverrides:(NSDictionary *)bucketOverrides;
+
 #if TARGET_OS_IPHONE
 // Starts Simperium and displays the auth interface, if needed.
 - (void)authenticateWithAppID:(NSString *)identifier APIKey:(NSString *)key rootViewController:(UIViewController *)controller;
@@ -166,7 +173,7 @@ typedef void (^SimperiumSignoutCompletion)(void);
 @property (nonatomic, readonly, copy) NSString *clientID;
 
 // Remote Bucket Name Overrides!
-@property (nonatomic, copy) NSDictionary *bucketOverrides;
+@property (nonatomic, readonly, copy) NSDictionary *bucketOverrides;
 
 // You can implement your own subclass of SPAuthenticationViewController (iOS) or
 // SPAuthenticationWindowController (OSX) to customize authentication.

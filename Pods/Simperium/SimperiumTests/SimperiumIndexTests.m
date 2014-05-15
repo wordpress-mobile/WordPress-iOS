@@ -70,7 +70,7 @@
     Farm *leader    = [self createFarm:@"leader"];
     Farm *follower  = [self createFarm:@"follower"];
     
-    self.farms      = @[ leader, follower ];
+    self.farms      = [NSMutableArray arrayWithObjects:leader, follower, nil];
     
     [leader start];
     [leader connect];

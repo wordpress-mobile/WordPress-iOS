@@ -32,7 +32,8 @@
 		self.simperium = [[Simperium alloc] initWithModel:self.managedObjectModel
 												  context:self.managedObjectContext
 											  coordinator:self.persistentStoreCoordinator
-													label:label];
+													label:label
+                                          bucketOverrides:nil];
 		      
         self.simperium.verboseLoggingEnabled = YES;
         self.token = aToken;
