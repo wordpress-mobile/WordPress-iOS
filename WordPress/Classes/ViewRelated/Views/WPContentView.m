@@ -334,7 +334,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     [button.titleLabel setFont:[WPStyleGuide labelFontNormal]];
     [button setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
     button.titleEdgeInsets = UIEdgeInsetsMake(0.0f, 6.0f, 0.0f, -6.0f);
-    button.drawsTitleBubble = YES;
+    button.drawLabelBubble = YES;
     [self.bottomView addSubview:button];
     [self.actionButtons addObject:button];
 

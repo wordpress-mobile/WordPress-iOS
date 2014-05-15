@@ -103,11 +103,11 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
     NSNumber *oldCount = [readerPost.likeCount copy];
 
     // Optimistically update
-    readerPost.isLiked = [NSNumber numberWithBool:like];
+    readerPost.isLiked = like;
     if (like) {
-        readerPost.likeCount = [NSNumber numberWithInteger:([readerPost.likeCount integerValue] + 1)];
+        readerPost.likeCount = @([readerPost.likeCount integerValue] + 1);
     } else {
-        readerPost.likeCount = [NSNumber numberWithInteger:([readerPost.likeCount integerValue] - 1)];
+        readerPost.likeCount = @([readerPost.likeCount integerValue] - 1);
     }
     [self.managedObjectContext performBlockAndWait:^{
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -123,7 +123,7 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
     // Define failure block
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
         // Revert changes on failure
-        readerPost.isLiked = [NSNumber numberWithBool:oldValue];
+        readerPost.isLiked = oldValue;
         readerPost.likeCount = oldCount;
         [self.managedObjectContext performBlockAndWait:^{
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -138,7 +138,7 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
     if (like) {
         [remoteService likePost:[readerPost.postID integerValue] forSite:[readerPost.siteID integerValue] success:successBlock failure:failureBlock];
     } else {
-        [remoteService unlikePost:[post.postID integerValue] forSite:[post.siteID integerValue] success:successBlock failure:failureBlock];
+        [remoteService unlikePost:[readerPost.postID integerValue] forSite:[readerPost.siteID integerValue] success:successBlock failure:failureBlock];
     }
 }
 
