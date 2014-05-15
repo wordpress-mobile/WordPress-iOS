@@ -4388,8 +4388,7 @@
 				E1B4A9DF12FC8B1000EB3F67 /* EGORefreshTableHeaderView.h */,
 				E1B4A9E012FC8B1000EB3F67 /* EGORefreshTableHeaderView.m */,
 			);
-			name = EGOTableViewPullRefresh;
-			path = ../Classes/EGOTableViewPullRefresh;
+			path = EGOTableViewPullRefresh;
 			sourceTree = "<group>";
 		};
 		E1D0D81E16D3D19200E33F4C /* PocketAPI */ = {
