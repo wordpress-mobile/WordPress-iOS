@@ -2513,7 +2513,6 @@
 				E159D1011309AAF200F498E2 /* Migrations */,
 				2F706A870DFB229B00B43086 /* Models */,
 				93FA59DA18D88BDB001446BC /* Services */,
-				85A1B6721742E7DB00BA5E35 /* Analytics */,
 				8584FDB4192437160019C02E /* Utility */,
 				2F970F970DF929B8006BD934 /* Constants.h */,
 				C545E0A01811B9880020844C /* ContextManager.h */,
@@ -3321,6 +3320,7 @@
 		8584FDB4192437160019C02E /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				85A1B6721742E7DB00BA5E35 /* Analytics */,
 				E1523EB216D3B2EE002C5A36 /* Sharing */,
 				292CECFE1027259000BD407D /* SFHFKeychainUtils.h */,
 				292CECFF1027259000BD407D /* SFHFKeychainUtils.m */,
@@ -3393,7 +3393,7 @@
 				85DA8C4218F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.h */,
 				85DA8C4318F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.m */,
 			);
-			name = Analytics;
+			path = Analytics;
 			sourceTree = "<group>";
 		};
 		85AD6AB2173CA756002CB896 /* Buttons */ = {
