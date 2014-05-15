@@ -2,6 +2,9 @@
 
 @class ReaderPostView;
 
+extern NSString * const ReaderPostViewDidFinishLayoutNotification;
+
+
 @protocol ReaderPostViewDelegate <WPContentViewDelegate>
 - (void)postView:(ReaderPostView *)postView didReceiveLikeAction:(id)sender;
 - (void)postView:(ReaderPostView *)postView didReceiveReblogAction:(id)sender;
