@@ -793,7 +793,6 @@
 		B51F9F2919250A1000911056 /* XMLParserCollecter.m in Sources */ = {isa = PBXBuildFile; fileRef = B51F9F2819250A1000911056 /* XMLParserCollecter.m */; };
 		B545186018E99AF500AC3A54 /* WPTableHeaderViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B545185F18E99AF500AC3A54 /* WPTableHeaderViewCell.m */; };
 		B5832044191ABD4700158FA8 /* NSScanner+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B5832043191ABD4700158FA8 /* NSScanner+Helpers.m */; };
-		B5832048191BEEC100158FA8 /* NSRegularExpression+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B5832047191BEEC100158FA8 /* NSRegularExpression+Helpers.m */; };
 		B5D88C571925048B00B50AC0 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D88C561925048B00B50AC0 /* Constants.m */; };
 		B5D88C5E192504B900B50AC0 /* Note.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D88C59192504B900B50AC0 /* Note.m */; };
 		B5D88C5F192504B900B50AC0 /* NoteAction.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D88C5B192504B900B50AC0 /* NoteAction.m */; };
@@ -2035,8 +2034,6 @@
 		B545185F18E99AF500AC3A54 /* WPTableHeaderViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableHeaderViewCell.m; sourceTree = "<group>"; };
 		B5832042191ABD4700158FA8 /* NSScanner+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScanner+Helpers.h"; sourceTree = "<group>"; };
 		B5832043191ABD4700158FA8 /* NSScanner+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScanner+Helpers.m"; sourceTree = "<group>"; };
-		B5832046191BEEC100158FA8 /* NSRegularExpression+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSRegularExpression+Helpers.h"; sourceTree = "<group>"; };
-		B5832047191BEEC100158FA8 /* NSRegularExpression+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSRegularExpression+Helpers.m"; sourceTree = "<group>"; };
 		B5D88C561925048B00B50AC0 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		B5D88C58192504B900B50AC0 /* Note.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Note.h; path = Notifications/Note.h; sourceTree = "<group>"; };
 		B5D88C59192504B900B50AC0 /* Note.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Note.m; path = Notifications/Note.m; sourceTree = "<group>"; };
@@ -4135,8 +4132,6 @@
 				E2AA87A418523E5300886693 /* UIView+Subviews.m */,
 				B5832042191ABD4700158FA8 /* NSScanner+Helpers.h */,
 				B5832043191ABD4700158FA8 /* NSScanner+Helpers.m */,
-				B5832046191BEEC100158FA8 /* NSRegularExpression+Helpers.h */,
-				B5832047191BEEC100158FA8 /* NSRegularExpression+Helpers.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -5516,7 +5511,6 @@
 				E1A0FAE7162F11CF0063B098 /* UIDevice+WordPressIdentifier.m in Sources */,
 				5DA5BF4318E32DCF005F11F9 /* MediaSearchFilterHeaderView.m in Sources */,
 				CC1D80141656D938002A542F /* NotificationsViewController.m in Sources */,
-				B5832048191BEEC100158FA8 /* NSRegularExpression+Helpers.m in Sources */,
 				CC0199E9165C17020073A966 /* NotificationsCommentDetailViewController.m in Sources */,
 				372AD15516682BA100F21BC1 /* NotificationsFollowDetailViewController.m in Sources */,
 				379DA051166E938E001A43CC /* NotificationsFollowTableViewCell.m in Sources */,
