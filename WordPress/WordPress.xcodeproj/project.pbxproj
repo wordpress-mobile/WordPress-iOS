@@ -1140,8 +1140,8 @@
 		307B241D15ABE24C00F09A35 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = background.png; path = Resources/Images/background.png; sourceTree = "<group>"; };
 		307B241E15ABE24C00F09A35 /* background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "background@2x.png"; path = "Resources/Images/background@2x.png"; sourceTree = "<group>"; };
 		30AF6CF413C2289600A29C00 /* AboutViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AboutViewController.xib; path = Resources/AboutViewController.xib; sourceTree = "<group>"; };
-		30AF6CFB13C230C600A29C00 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
-		30AF6CFC13C230C600A29C00 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
+		30AF6CFB13C230C600A29C00 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AboutViewController.h; path = ../System/AboutViewController.h; sourceTree = "<group>"; };
+		30AF6CFC13C230C600A29C00 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AboutViewController.m; path = ../System/AboutViewController.m; sourceTree = "<group>"; };
 		30B5532B15AFBB7000077318 /* toolbar_actions.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toolbar_actions.png; path = Resources/Images/toolbar_actions.png; sourceTree = "<group>"; };
 		30B5532C15AFBB7000077318 /* toolbar_actions@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar_actions@2x.png"; path = "Resources/Images/toolbar_actions@2x.png"; sourceTree = "<group>"; };
 		30BC6CAE15C191B300A1F4D1 /* welcome_button_bg_full_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = welcome_button_bg_full_highlighted.png; path = Resources/Images/welcome_button_bg_full_highlighted.png; sourceTree = "<group>"; };
@@ -2679,15 +2679,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		30AF6CFE13C230CC00A29C00 /* About */ = {
-			isa = PBXGroup;
-			children = (
-				30AF6CFB13C230C600A29C00 /* AboutViewController.h */,
-				30AF6CFC13C230C600A29C00 /* AboutViewController.m */,
-			);
-			name = About;
-			sourceTree = "<group>";
-		};
 		37195B7F166A5DDC005F2292 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
@@ -2943,6 +2934,8 @@
 				E1AB07AC1578D34300D6AD64 /* SettingsViewController.m */,
 				93027BB61758332300483FFD /* SupportViewController.h */,
 				93027BB71758332300483FFD /* SupportViewController.m */,
+				30AF6CFB13C230C600A29C00 /* AboutViewController.h */,
+				30AF6CFC13C230C600A29C00 /* AboutViewController.m */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -3329,7 +3322,6 @@
 			isa = PBXGroup;
 			children = (
 				E1523EB216D3B2EE002C5A36 /* Sharing */,
-				30AF6CFE13C230CC00A29C00 /* About */,
 				292CECFE1027259000BD407D /* SFHFKeychainUtils.h */,
 				292CECFF1027259000BD407D /* SFHFKeychainUtils.m */,
 				FD9A948A12FAEA2300438F94 /* DateUtils.h */,
