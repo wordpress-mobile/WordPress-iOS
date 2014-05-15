@@ -1,4 +1,3 @@
-//
 //   Copyright 2012 Square Inc.
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,14 +13,22 @@
 //   limitations under the License.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+
+#ifndef SocketRocket_base64_h
+#define SocketRocket_base64_h
+
+#include <sys/types.h>
+
+extern int
+b64_ntop(u_char const *src,
+         size_t srclength,
+         char *target,
+         size_t targsize);
+
+extern int
+b64_pton(char const *src,
+         u_char *target, 
+         size_t targsize);
 
 
-typedef BOOL (^PXPredicateBlock)();
-
-
-@interface SenTestCase (PXAdditions)
-
-- (void)runCurrentRunLoopUntilTestPasses:(PXPredicateBlock)predicate timeout:(NSTimeInterval)timeout;
-
-@end
+#endif

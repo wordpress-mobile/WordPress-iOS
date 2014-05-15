@@ -41,6 +41,7 @@
 
 - (void)start;
 {
+    NSLog(@"Starting %@", _url);
     dispatch_async(dispatch_get_main_queue(), ^{
         _webSocket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:_url]];
         _webSocket.delegate = self;
@@ -59,11 +60,6 @@
     [self didChangeValueForKey:@"isFinished"];
     _webSocket.delegate = nil;
     _webSocket = nil;
-}
-
-- (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message;
-{
-    NSAssert(NO, @"Not implemented");
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error;

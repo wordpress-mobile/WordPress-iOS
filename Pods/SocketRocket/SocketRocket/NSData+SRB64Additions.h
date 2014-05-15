@@ -14,14 +14,10 @@
 //   limitations under the License.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <Foundation/Foundation.h>
 
+@interface NSData (SRB64Additions)
 
-typedef BOOL (^PXPredicateBlock)();
-
-
-@interface SenTestCase (PXAdditions)
-
-- (void)runCurrentRunLoopUntilTestPasses:(PXPredicateBlock)predicate timeout:(NSTimeInterval)timeout;
+- (NSString *)SR_stringByBase64Encoding;
 
 @end
