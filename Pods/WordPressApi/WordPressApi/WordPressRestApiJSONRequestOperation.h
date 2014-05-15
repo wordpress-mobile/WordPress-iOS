@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Automattic. All rights reserved.
 //
 
-#import "AFJSONRequestOperation.h"
+#import "AFHTTPRequestOperation.h"
 
-@interface WordPressRestApiJSONRequestOperation : AFJSONRequestOperation
+@interface WordPressRestApiJSONRequestOperation : AFHTTPRequestOperation
 
 @end
