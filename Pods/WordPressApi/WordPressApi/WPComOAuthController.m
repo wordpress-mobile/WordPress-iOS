@@ -126,7 +126,7 @@ NSString *const WPComOAuthErrorDomain = @"WPComOAuthError";
                                   [self stringByUrlEncodingString:queryUrl]];
         [request setURL:[NSURL URLWithString:WPComOAuthLoginUrl]];
         [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
-        [request setValue:[NSString stringWithFormat:@"%d", [request_body length]] forHTTPHeaderField:@"Content-Length"];
+        [request setValue:[NSString stringWithFormat:@"%tu", [request_body length]] forHTTPHeaderField:@"Content-Length"];
         [request addValue:@"*/*" forHTTPHeaderField:@"Accept"];
         [request setHTTPMethod:@"POST"];
     }
@@ -239,7 +239,8 @@ NSString *const WPComOAuthErrorDomain = @"WPComOAuthError";
                               code];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
-    AFJSONRequestOperation *operation = [[AFJSONRequestOperation alloc] initWithRequest:request];
+	AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] init];
+	operation.responseSerializer = [[AFJSONResponseSerializer alloc] init];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *response = (NSDictionary *)responseObject;
         NSString *token = [response objectForKey:@"access_token"];
