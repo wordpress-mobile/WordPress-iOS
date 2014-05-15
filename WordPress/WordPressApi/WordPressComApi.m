@@ -46,22 +46,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 	return self;
 }
 
-- (NSError *)error {
-    if (self.response.statusCode >= 400) {
-        NSString *errorMessage = [self.responseObject objectForKey:@"message"];
-        NSUInteger errorCode = WordPressComApiErrorJSON;
-        if ([self.responseObject objectForKey:@"error"] && errorMessage) {
-            NSString *error = [self.responseObject objectForKey:@"error"];
-            if ([error isEqualToString:@"invalid_token"]) {
-                errorCode = WordPressComApiErrorInvalidToken;
-            } else if ([error isEqualToString:@"authorization_required"]) {
-                errorCode = WordPressComApiErrorAuthorizationRequired;
-            }
-            return [NSError errorWithDomain:WordPressComApiErrorDomain code:errorCode userInfo:@{NSLocalizedDescriptionKey: errorMessage, WordPressComApiErrorCodeKey: error}];
-        }
-    }
-    return [super error];
-}
 @end
 
 @interface WordPressComApi ()
@@ -108,7 +92,27 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     operation.credential = self.credential;
     operation.securityPolicy = self.securityPolicy;
 	
-    [operation setCompletionBlockWithSuccess:success failure:failure];
+    [operation setCompletionBlockWithSuccess:success failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSError *newError = error;
+        if (operation.response.statusCode >= 400) {
+            NSString *errorMessage = [operation.responseObject objectForKey:@"message"];
+            NSUInteger errorCode = WordPressComApiErrorJSON;
+            if ([operation.responseObject objectForKey:@"error"] && errorMessage) {
+                NSString *errorString = [operation.responseObject objectForKey:@"error"];
+                if ([errorString isEqualToString:@"invalid_token"]) {
+                    errorCode = WordPressComApiErrorInvalidToken;
+                } else if ([errorString isEqualToString:@"authorization_required"]) {
+                    errorCode = WordPressComApiErrorAuthorizationRequired;
+                }
+                newError = [NSError errorWithDomain:WordPressComApiErrorDomain code:errorCode userInfo:@{NSLocalizedDescriptionKey: errorMessage, WordPressComApiErrorCodeKey: error}];
+            }
+        }
+        
+        if (failure) {
+            failure(operation, newError);
+        }
+        
+    }];
 	
     return operation;
 }
