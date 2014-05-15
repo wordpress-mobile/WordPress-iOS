@@ -324,6 +324,9 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 
     if (self.contentMode == ReaderPostContentModeSimpleSummary) {
         self.followButton.hidden = YES;
+        CGRect byframe = self.bylineLabel.frame;
+        byframe.origin.y = (CGRectGetHeight(self.byView.frame) - CGRectGetHeight(byframe)) / 2;
+        self.bylineLabel.frame = byframe;
     } else if ([self.post isFollowable] && defaultAccount != nil) {
         self.followButton.hidden = NO;
         CGFloat followX = bylineX - 4; // Fudge factor for image alignment
