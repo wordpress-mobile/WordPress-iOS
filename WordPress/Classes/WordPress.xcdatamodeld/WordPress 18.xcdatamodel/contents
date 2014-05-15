@@ -257,13 +257,13 @@
         <attribute name="latest_note_time" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="simperiumKey" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="Note" representedClassName="Note" syncable="YES">
+    <entity name="NoteSimperium" representedClassName="Note" syncable="YES">
         <attribute name="body" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="ghostData" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="meta" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="simperiumKey" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="subject" optional="YES" attributeType="Transformable" elementID="SubjectWithSimperium" syncable="YES"/>
+        <attribute name="subject" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="timestamp" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="type" attributeType="String" syncable="YES"/>
         <attribute name="unread" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -359,7 +359,7 @@
         <attribute name="version" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="themes" inverseEntity="Blog" syncable="YES"/>
     </entity>
-    <fetchRequest name="UnreadNotes" entity="Note" predicateString="unread == 1"/>
+    <fetchRequest name="UnreadNotes" entity="NoteSimperium" predicateString="unread == 1"/>
     <elements>
         <element name="AbstractComment" positionX="0" positionY="0" width="128" height="240"/>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="120"/>
@@ -370,7 +370,7 @@
         <element name="Comment" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="345"/>
         <element name="Meta" positionX="9" positionY="153" width="128" height="103"/>
-        <element name="Note" positionX="0" positionY="0" width="128" height="180"/>
+        <element name="NoteSimperium" positionX="0" positionY="0" width="128" height="178"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="150"/>
         <element name="ReaderComment" positionX="0" positionY="0" width="128" height="120"/>

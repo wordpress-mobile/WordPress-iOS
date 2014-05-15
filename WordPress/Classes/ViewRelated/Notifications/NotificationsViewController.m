@@ -294,7 +294,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 
 - (NSString *)entityName
 {
-    return NSStringFromClass([Note class]);
+    return @"NoteSimperium";
 }
 
 - (NSDate *)lastSyncDate

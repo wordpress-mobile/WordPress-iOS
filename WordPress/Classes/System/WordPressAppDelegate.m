@@ -89,9 +89,7 @@ static NSInteger const IndexForMeTab = 2;
     
 	// Simperium Setup
 	[self setupSimperium];
-    [self nukeLegacyNotificationsIfNeeded:^() {
-        [self loginSimperium];
-    }];
+    [self loginSimperium];
 
     // Debugging
     [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
@@ -859,12 +857,16 @@ static NSInteger const IndexForMeTab = 2;
 
 - (void)setupSimperium
 {
-	ContextManager* manager = [ContextManager sharedInstance];
+    NSDictionary *bucketOverrides   = @{ @"NoteSimperium" : @"Note" };
+	ContextManager* manager         = [ContextManager sharedInstance];
+    
 	self.simperium = [[Simperium alloc] initWithModel:manager.managedObjectModel
 											  context:manager.mainContext
-										  coordinator:manager.persistentStoreCoordinator];
+										  coordinator:manager.persistentStoreCoordinator
+                                                label:nil
+                                      bucketOverrides:bucketOverrides];
 	
-	self.simperium.verboseLoggingEnabled = NO;
+	self.simperium.verboseLoggingEnabled = YES;
 }
 
 - (void)loginSimperium
@@ -888,41 +890,6 @@ static NSInteger const IndexForMeTab = 2;
 	[self.simperium signOutAndRemoveLocalData:YES completion:nil];
 }
 
-- (void)nukeLegacyNotificationsIfNeeded:(void (^)(void))completion
-{
-    // First, check if we haven't already completed this step
-    NSString *WPLegacyNotificationsNukedKey = @"WPLegacyNotificationsNukedKey";
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
-    if ([defaults boolForKey:WPLegacyNotificationsNukedKey]) {
-        completion();
-        return;
-    }
-    
-    // Let's nuke all of the legacy notifications
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
-    
-    [context performBlock:^{
-        NSString *entityName    = NSStringFromClass([Note class]);
-        NSFetchRequest *request = [[NSFetchRequest alloc] init];
-        request.entity			= [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
-        request.predicate       = [NSPredicate predicateWithFormat:@"simperiumKey == nil"];
-        
-        NSArray *legacyNotes    = [context executeFetchRequest:request error:nil];
-        for (Note *legacyNote in legacyNotes) {
-            [context deleteObject:legacyNote];
-        }
-        
-        [[ContextManager sharedInstance] saveDerivedContext:context withCompletionBlock:^(){
-            // No need to do this, ever again
-            [defaults setBool:YES forKey:WPLegacyNotificationsNukedKey];
-            [defaults synchronize];
-            
-            // Ready!
-            completion();
-        }];
-    }];
-}
 
 #pragma mark - Keychain
 
