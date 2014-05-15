@@ -4,7 +4,6 @@
 #import "JetpackSettingsViewController.h"
 #import "StatsWebViewController.h"
 #import "WPAccount.h"
-#import "StatsApiHelper.h"
 #import "ContextManager.h"
 #import "StatsButtonCell.h"
 #import "StatsCounterCell.h"
@@ -18,6 +17,7 @@
 #import "WPTableViewSectionHeaderView.h"
 #import "StatsGroup.h"
 #import "WPNoResultsView.h"
+#import "WPStatsService.h"
 
 static NSString *const VisitorsUnitButtonCellReuseIdentifier = @"VisitorsUnitButtonCellReuseIdentifier";
 static NSString *const TodayYesterdayButtonCellReuseIdentifier = @"TodayYesterdayButtonCellReuseIdentifier";
@@ -57,7 +57,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 
 @interface StatsViewController () <UITableViewDataSource, UITableViewDelegate, StatsTodayYesterdayButtonCellDelegate, UIViewControllerRestoration, StatsButtonCellDelegate>
 
-@property (nonatomic, strong) StatsApiHelper *statsApiHelper;
+@property (nonatomic, strong) WPStatsService *statsService;
 @property (nonatomic, strong) NSMutableDictionary *statModels;
 @property (nonatomic, strong) NSMutableDictionary *showingToday;
 @property (nonatomic, assign) StatsViewsVisitorsUnit currentViewsVisitorsGraphUnit;
@@ -167,7 +167,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 
 - (void)initStats {
     if (self.blog.isWPcom) {
-        self.statsApiHelper = [[StatsApiHelper alloc] initWithSiteID:self.blog.blogID andAccount:self.blog.account];
+        self.statsService = [[WPStatsService alloc] initWithSiteId:self.blog.blogID andAccount:self.blog.account];
         [self loadStats];
         return;
     }
@@ -175,7 +175,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     // Jetpack
     BOOL needsJetpackLogin = ![self.blog.jetpackAccount.restApi hasCredentials];
     if (!needsJetpackLogin && self.blog.jetpackBlogID && self.blog.jetpackAccount) {
-        self.statsApiHelper = [[StatsApiHelper alloc] initWithSiteID:self.blog.jetpackBlogID andAccount:self.blog.jetpackAccount];
+        self.statsService = [[WPStatsService alloc] initWithSiteId:self.blog.jetpackBlogID andAccount:self.blog.jetpackAccount];
         [self loadStats];
     } else {
         [self promptForJetpackCredentials];
@@ -214,56 +214,29 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 }
 
 - (void)loadStats {
-    void (^saveStatsForSection)(id stats, StatsSection section) = ^(id stats, StatsSection section) {
-        [_statModels setObject:stats forKey:@(section)];
-        if (_resultsAvailable) {
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationNone];
-            [self.refreshControl endRefreshing];
-        }
-    };
     void (^failure)(NSError *error) = ^(NSError *error) {
         if (!_resultsAvailable) {
             [self showNoResultsWithTitle:NSLocalizedString(@"Error displaying stats", nil) message:NSLocalizedString(@"Please try again later", nil)];
         } else {
             [self.refreshControl endRefreshing];
         }
-        DDLogWarn(@"Stats: Error fetching stats %@", error);
+        DDLogError(@"Stats: Error fetching stats %@", error);
     };
-    
-    // Show no results until at least the summary has returned
-    [self.statsApiHelper fetchSummaryWithSuccess:^(StatsSummary *summary) {
-        saveStatsForSection(summary, StatsSectionVisitors);
-        _resultsAvailable = YES;
+
+    [self.statsService retrieveStatsWithCompletionHandler:^(StatsSummary *summary, NSDictionary *topPosts, NSDictionary *clicks, NSDictionary *countryViews, NSDictionary *referrers, NSDictionary *searchTerms, StatsViewsVisitors *viewsVisitors) {
+        self.statModels[@(StatsSectionVisitors)] = summary;
+        self.statModels[@(StatsSectionVisitorsGraph)] = viewsVisitors;
+        self.statModels[@(StatsSectionTopPosts)] = topPosts;
+        self.statModels[@(StatsSectionClicks)] = clicks;
+        self.statModels[@(StatsSectionViewsByCountry)] = countryViews;
+        self.statModels[@(StatsSectionReferrers)] = referrers;
+        self.statModels[@(StatsSectionSearchTerms)] = searchTerms;
+
+        self.resultsAvailable = YES;
         [self hideNoResultsView];
         [self.tableView reloadData];
-        
-        [self.statsApiHelper fetchViewsVisitorsWithSuccess:^(StatsViewsVisitors *viewsVisitors) {
-            _statModels[@(StatsSectionVisitorsGraph)] = viewsVisitors;
-            if (_resultsAvailable) {
-                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:StatsSectionVisitors] withRowAnimation:UITableViewRowAnimationNone];
-            }
-        } failure:failure];
-        
-        [self.statsApiHelper fetchTopPostsWithSuccess:^(NSDictionary *todayAndYesterdayTopPosts) {
-            saveStatsForSection(todayAndYesterdayTopPosts, StatsSectionTopPosts);
-        } failure:failure];
-        
-        [self.statsApiHelper fetchClicksWithSuccess:^(NSDictionary *clicks) {
-            saveStatsForSection(clicks, StatsSectionClicks);
-        } failure:failure];
-        
-        [self.statsApiHelper fetchCountryViewsWithSuccess:^(NSDictionary *views) {
-            saveStatsForSection(views, StatsSectionViewsByCountry);
-        } failure:failure];
-        
-        [self.statsApiHelper fetchReferrerWithSuccess:^(NSDictionary *referrers) {
-            saveStatsForSection(referrers, StatsSectionReferrers);
-        } failure:failure];
-        
-        [self.statsApiHelper fetchSearchTermsWithSuccess:^(NSDictionary *terms) {
-            saveStatsForSection(terms, StatsSectionSearchTerms);
-        } failure:failure];
-    } failure:failure];
+        [self.refreshControl endRefreshing];
+    } failureHandler:failure];
 }
 
 - (void)refreshControlTriggered {
