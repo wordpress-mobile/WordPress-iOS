@@ -1,10 +1,10 @@
 #import <Foundation/Foundation.h>
-#import "LocalService.h"
+#import "LocalCoreDataService.h"
 
 @class ReaderPost;
 @class ReaderTopic;
 
-@interface ReaderPostService : NSObject<LocalService>
+@interface ReaderPostService : NSObject<LocalCoreDataService>
 
 /**
  Fetches the posts for the specified topic

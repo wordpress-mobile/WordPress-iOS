@@ -1,9 +1,9 @@
 #import <Foundation/Foundation.h>
-#import "LocalService.h"
+#import "LocalCoreDataService.h"
 
 @class Blog, WPAccount;
 
-@interface BlogService : NSObject <LocalService>
+@interface BlogService : NSObject <LocalCoreDataService>
 
 - (Blog *)blogByBlogId:(NSNumber *)blogID;
 
