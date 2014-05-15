@@ -19,6 +19,7 @@
 #import "InlineComposeView.h"
 #import "ReaderCommentPublisher.h"
 #import "RebloggingViewController.h"
+#import "WPAvatarSource.h"
 #import "ReaderPostService.h"
 
 static NSInteger const ReaderCommentsToSync = 100;
@@ -129,6 +130,8 @@ typedef enum {
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
     [self.inlineComposeView setButtonTitle:NSLocalizedString(@"Post", nil)];
+
+
 
     _tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                      action:@selector(dismissKeyboard:)];
@@ -815,8 +818,33 @@ typedef enum {
 	
 	ReaderComment *comment = [_comments objectAtIndex:indexPath.row];
 	[cell configureCell:comment];
+    [self setAvatarForComment:comment forCell:cell indexPath:indexPath];
 
-	return cell;	
+	return cell;
+}
+
+- (void)setAvatarForComment:(ReaderComment *)comment forCell:(ReaderCommentTableViewCell *)cell indexPath:(NSIndexPath *)indexPath {
+    WPAvatarSource *source = [WPAvatarSource sharedSource];
+
+    NSString *hash;
+    CGSize size = CGSizeMake(32.0, 32.0);
+    NSURL *url = [comment avatarURLForDisplay];
+    WPAvatarSourceType type = [source parseURL:url forAvatarHash:&hash];
+
+    UIImage *image = [source cachedImageForAvatarHash:hash ofType:type withSize:size];
+    if (image) {
+        [cell setAvatar:image];
+        return;
+    }
+
+    [cell setAvatar:[UIImage imageNamed:@"default-identicon"]];
+    if (hash) {
+        [source fetchImageForAvatarHash:hash ofType:type withSize:size success:^(UIImage *image) {
+            if (cell == [self.tableView cellForRowAtIndexPath:indexPath]) {
+                [cell setAvatar:image];
+            }
+        }];
+    }
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -4,20 +4,24 @@
 #import <DTCoreText/DTCoreText.h>
 #import "UIImageView+Gravatar.h"
 #import "WordPressAppDelegate.h"
+#import "WPContentViewSubclass.h"
 #import "WPWebViewController.h"
 #import "NSDate+StringFormatting.h"
 #import "NSString+Helpers.h"
 
-#define RCTVCVerticalPadding 5.0f
-#define RCTVCIndentationWidth 15.0f
-#define RCTVCAuthorLabelHeight 20.0f
+#define RCTVCVerticalPadding 10.0f
+#define RCTVCIndentationWidth 40.0f
+#define RCTVCCommentTextTopMargin 25.0f
+#define RCTVCLeftMargin 40.0f
+#define RCTVCMaxIndentationLevel 3
 
 @interface ReaderCommentTableViewCell()<DTAttributedTextContentViewDelegate>
 
 @property (nonatomic, strong) ReaderComment *comment;
 @property (nonatomic, strong) DTAttributedTextContentView *textContentView;
-@property (nonatomic, strong) UILabel *authorLabel;
-@property (nonatomic, strong) UILabel *dateLabel;
+@property (nonatomic, strong) UIImageView *avatarImageView;
+@property (nonatomic, strong) UIButton *bylineButton;
+@property (nonatomic, strong) UIButton *timeButton;
 
 - (void)handleLinkTapped:(id)sender;
 
@@ -26,25 +30,25 @@
 @implementation ReaderCommentTableViewCell
 
 + (CGFloat)heightForComment:(ReaderComment *)comment width:(CGFloat)width tableStyle:(UITableViewStyle)tableStyle accessoryType:(UITableViewCellAccessoryType *)accessoryType {
-	
 	static DTAttributedTextContentView *textContentView;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-		textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 100.0f, 44.0f)]; // arbitrary
+		textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 100.0f, 44.0f)]; // arbitrary starting frame
 		textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f);
+		textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, RPVHorizontalInnerPadding + RCTVCLeftMargin, 0.0f, RPVHorizontalInnerPadding);
 		textContentView.shouldDrawImages = NO;
 		textContentView.shouldLayoutCustomSubviews = YES;
 	});
-	
+
 	textContentView.attributedString = [self convertHTMLToAttributedString:comment.content withOptions:nil];
 
-	CGFloat desiredHeight = RCTVCAuthorLabelHeight + 15.0f; // author + cell top padding, bottom padding and padding after the author label
-	
-	// Do the math. We can't trust the cell's contentView's frame because
+    // Everything but the height of the comment content.
+    CGFloat desiredHeight = (RCTVCVerticalPadding * 2) + RCTVCCommentTextTopMargin;
+
+    // Do the math. We can't trust the cell's contentView's frame because
 	// its not updated at a useful time during rotation.
 	CGFloat contentWidth = width;
-	
+
 	// reduce width for accessories
 	switch ((NSInteger)accessoryType) {
 		case UITableViewCellAccessoryDisclosureIndicator:
@@ -57,18 +61,18 @@
 		case UITableViewCellAccessoryNone:
 			break;
 	}
-	
+
 	// reduce width for grouped table views
 	if (tableStyle == UITableViewStyleGrouped) {
 		contentWidth -= 19;
 	}
-	
+
 	// Cell indentation
-	CGFloat indentationLevel = [comment.depth integerValue];
+	CGFloat indentationLevel = MIN(RCTVCMaxIndentationLevel, [comment.depth integerValue]);
 	contentWidth -= (indentationLevel * RCTVCIndentationWidth);
-	
+
 	desiredHeight += [textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
-	
+
 	return desiredHeight;
 }
 
@@ -77,6 +81,7 @@
     NSAssert(html != nil, @"Can't convert nil to AttributedString");
 	
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[WPStyleGuide defaultDTCoreTextOptions]];
+    [dict setObject:[WPStyleGuide whisperGrey] forKey:DTDefaultTextColor];
     html = [html stringByReplacingHTMLEmoticonsWithEmoji];
 
 	if (options) {
@@ -89,58 +94,63 @@
 
 #pragma mark - Lifecycle Methods
 
+- (void)dealloc {
+    self.delegate = nil;
+}
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-		CGFloat width = self.frame.size.width;
         self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-		
-		[self.cellImageView setFrame:CGRectMake(10.0f, 10.0f, 20.0f, 20.0f)];
-		self.cellImageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-		
-		self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.frame.size.width, 44.0f)];
-		_textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		_textContentView.backgroundColor = [UIColor clearColor];
-		_textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f);
-		_textContentView.delegate = self;
-		_textContentView.shouldDrawImages = NO;
-		_textContentView.shouldLayoutCustomSubviews = YES;
-		[self.contentView addSubview:_textContentView];
-		
-		self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(width - (10.0f + 40.0f), 10.0f, 40.0f, 20.0f)];
-		[_dateLabel setFont:[WPStyleGuide subtitleFont]];
-		_dateLabel.textColor = [WPStyleGuide littleEddieGrey];
-		_dateLabel.textAlignment = NSTextAlignmentRight;
-		_dateLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-		_dateLabel.backgroundColor = [UIColor clearColor];
-		[self.contentView addSubview:_dateLabel];
-		
-		self.authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 10.0f, (_dateLabel.frame.origin.x - 50.0f), 20.0f)];
-		[_authorLabel setFont:[WPStyleGuide subtitleFont]];
-		_authorLabel.textColor = [WPStyleGuide littleEddieGrey];
-		_authorLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		_authorLabel.backgroundColor = [UIColor clearColor];
-		[self.contentView addSubview:_authorLabel];
-		
-		UIImageView *separatorImageView = [[UIImageView alloc] initWithFrame:CGRectMake(self.indentationWidth, 0.0f, width - self.indentationWidth, 1.0f)];
-		separatorImageView.backgroundColor = [UIColor colorWithHexString:@"e5e5e5"];
+
+        UIView *view = [[UIView alloc] initWithFrame:self.frame];
+		view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		view.backgroundColor = [WPStyleGuide readGrey];
+		[self setSelectedBackgroundView:view];
+
+        CGFloat width = CGRectGetWidth(self.contentView.frame);
+        UIImageView *separatorImageView = [[UIImageView alloc] initWithFrame:CGRectMake(self.indentationWidth, 0.0f, width - (self.indentationWidth + RPVHorizontalInnerPadding), 1.0f)];
+		separatorImageView.backgroundColor = [WPStyleGuide readGrey];
 		separatorImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		[self.contentView addSubview:separatorImageView];
-		
-		self.textContentView.frame = CGRectMake(0.0f, _authorLabel.frame.size.height + 10.0f, width, 44.0f);
-		
-		UIView *view = [[UIView alloc] initWithFrame:self.frame];
-		view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		view.backgroundColor = DTColorCreateWithHexString(@"e5e5e5");
 
-		[self setSelectedBackgroundView:view];
+        self.avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(RPVHorizontalInnerPadding, RCTVCVerticalPadding, RPVAvatarSize, RPVAvatarSize)];
+        [self.contentView addSubview:self.avatarImageView];
+
+        self.timeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.timeButton.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+        self.timeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+        self.timeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+        self.timeButton.titleLabel.font = [WPStyleGuide subtitleFont];
+        [self.timeButton setTitleEdgeInsets: UIEdgeInsetsMake(0, 2, 0, -2)];
+        [self.timeButton setImage:[UIImage imageNamed:@"reader-postaction-time"] forState:UIControlStateDisabled];
+        [self.timeButton setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateDisabled];
+        [self.timeButton setEnabled:NO];
+        [self.contentView addSubview:self.timeButton];
+
+        self.bylineButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.bylineButton.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+        self.bylineButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        self.bylineButton.titleLabel.font = [WPStyleGuide subtitleFont];
+        [self.bylineButton addTarget:self action:@selector(handleAuthorBlogTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [self.bylineButton setTitleColor:[WPStyleGuide buttonActionColor] forState:UIControlStateNormal];
+        [self.bylineButton setTitleColor:[WPStyleGuide whisperGrey] forState:UIControlStateDisabled];
+        [self.contentView addSubview:self.bylineButton];
+
+		self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 44.0f)];
+        self.textContentView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+		self.textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		self.textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, RPVHorizontalInnerPadding + RCTVCLeftMargin, 0.0f, RPVHorizontalInnerPadding);
+		self.textContentView.delegate = self;
+		self.textContentView.shouldDrawImages = NO;
+		self.textContentView.shouldLayoutCustomSubviews = YES;
+		[self.contentView addSubview:self.textContentView];
+
+        // Make sure the text view doesn't overlap any of the other views.
+        [self.contentView sendSubviewToBack:self.textContentView];
     }
 	
     return self;
-}
-
-- (void)dealloc {
-    _delegate = nil;
 }
 
 - (void)layoutSubviews {
@@ -152,23 +162,43 @@
 	frame.origin.x += indent;
 	frame.size.width -= indent;
 	self.contentView.frame = frame;
-	
-	[self.cellImageView setFrame:CGRectMake(10.0f, 10.0f, 20.0f, 20.0f)];
-	
-	CGFloat width = self.contentView.frame.size.width;
-	CGFloat height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:width].height;
 
-	self.textContentView.frame = CGRectMake(0.0f, _authorLabel.frame.size.height + 10.0f, width, height);
+    CGFloat width = CGRectGetWidth(self.contentView.frame);
+
+    // Avatar
+	self.avatarImageView.frame = CGRectMake(RPVHorizontalInnerPadding, RCTVCVerticalPadding + 1.0f, RPVAvatarSize, RPVAvatarSize);
+
+    // Date button
+    frame = self.timeButton.frame;
+    frame.origin.x = width - (CGRectGetWidth(frame) + RPVHorizontalInnerPadding + 1.0); // +1 pixel correction
+    frame.origin.y = RCTVCVerticalPadding - 2.0f;
+    self.timeButton.frame = frame;
+
+    // Byline Label
+    frame = self.bylineButton.frame;
+    frame.size.width = CGRectGetMinX(self.timeButton.frame) - (CGRectGetMaxX(self.avatarImageView.frame) + RPVAuthorPadding);
+    frame.origin.x = CGRectGetMaxX(self.avatarImageView.frame) + RPVAuthorPadding;
+    frame.origin.y = RCTVCVerticalPadding - 2.0f;
+    frame.size.height = RPVAvatarSize / 2.0;
+    self.bylineButton.frame = frame;
+
+    // Comment text view
+    CGFloat height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:width].height;
+    frame = self.textContentView.frame;
+    frame.size.height = height;
+    frame.origin.y = RCTVCCommentTextTopMargin;
+    self.textContentView.frame = frame;
 	[self.textContentView setNeedsLayout];
 }
-
 
 - (void)prepareForReuse {
 	[super prepareForReuse];
 	
-	_textContentView.attributedString = nil;
-	_authorLabel.text = @"";
-	_dateLabel.text = @"";
+	self.textContentView.attributedString = nil;
+    [self.bylineButton setTitle:@"" forState:UIControlStateNormal];
+    [self.bylineButton setTitle:@"" forState:UIControlStateSelected];
+    [self.timeButton setTitle:@"" forState:UIControlStateNormal];
+    [self.timeButton setTitle:@"" forState:UIControlStateSelected];
 }
 
 
@@ -178,26 +208,42 @@
 	self.comment = comment;
 	
 	self.indentationWidth = RCTVCIndentationWidth;
-	self.indentationLevel = [comment.depth integerValue];
-	
-	[self.contentView addSubview:self.cellImageView];
-	
-	_dateLabel.text = [comment.dateCreated shortString];
-	_authorLabel.text = comment.author;
-	[self.cellImageView setImageWithURL:[NSURL URLWithString:comment.authorAvatarURL] placeholderImage:[UIImage imageNamed:@"blavatar-wpcom.png"]];
+	self.indentationLevel = MIN(RCTVCMaxIndentationLevel, [comment.depth integerValue]);
+
+    [self.timeButton setTitle:[comment.dateCreated shortString] forState:UIControlStateNormal];
+    [self.timeButton sizeToFit];
+
+	[self.bylineButton setTitle:[comment authorForDisplay] forState:UIControlStateNormal];
+    NSString *authorUrl = comment.author_url;
+    self.bylineButton.enabled = ([authorUrl length] > 0);
 
 	if (!comment.attributedContent) {
 		comment.attributedContent = [[self class] convertHTMLToAttributedString:comment.content withOptions:nil];
 	}
+
 	self.textContentView.attributedString = comment.attributedContent;
 }
-
 
 - (void)handleLinkTapped:(id)sender {
     NSURL *url = ((DTLinkButton *)sender).URL;
     [self.delegate readerCommentTableViewCell:self didTapURL:url];
 }
 
+- (void)handleReplyTapped:(id)sender {
+    [self.delegate readerCommentTableViewCellDidTapReply:self];
+}
+
+- (void)handleAuthorBlogTapped:(id)sender {
+    NSURL *url = [NSURL URLWithString:self.comment.author_url];
+    if (!url) {
+        return;
+    }
+    [self.delegate readerCommentTableViewCell:self didTapURL:url];
+}
+
+- (void)setAvatar:(UIImage *)image {
+    self.avatarImageView.image = image;
+}
 
 #pragma mark - DTAttributedTextContentView Delegate Methods
 
@@ -214,7 +260,7 @@
 	
 	DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
 	button.URL = URL;
-	button.minimumHitSize = CGSizeMake(25, 25); // adjusts it's bounds so that button is always large enough
+	button.minimumHitSize = CGSizeMake(25.0, 25.0); // adjusts it's bounds so that button is always large enough
 	button.GUID = identifier;
 	
 	// get image with normal link text
@@ -230,6 +276,5 @@
 	
 	return button;
 }
-
 
 @end
