@@ -32,12 +32,15 @@
 }
 
 - (void)fetchSummaryWithSuccess:(void (^)(StatsSummary *))success failure:(void (^)(NSError *))failure {
-    [self.account.restApi getPath:_statsPathPrefix parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        StatsSummary *summary = [[StatsSummary alloc] initWithData:responseObject];
-        success(summary);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        failure(error);
-    }];
+	[self.account.restApi GET:_statsPathPrefix
+				   parameters:nil
+					  success:^(AFHTTPRequestOperation *operation, id responseObject)
+	{
+		StatsSummary *summary = [[StatsSummary alloc] initWithData:responseObject];
+		success(summary);
+	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+		failure(error);
+	}];
 }
 
 - (void)fetchClicksWithSuccess:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
@@ -85,7 +88,7 @@
 }
 
 - (void)fetchStatsForPath:(NSString *)path success:(void (^)(NSDictionary *))success failure:(void (^)(NSError *))failure {
-    [self.account.restApi getPath:[_statsPathPrefix stringByAppendingPathComponent:path] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.account.restApi GET:[_statsPathPrefix stringByAppendingPathComponent:path] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         success(responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         failure(error);

@@ -1,4 +1,6 @@
 #import "WPContentCell.h"
+
+#import <AFNetworking/UIKit+AFNetworking.h>
 #import "WPComLanguages.h"
 #import "UIImageView+Gravatar.h"
 #import "NSDate+StringFormatting.h"

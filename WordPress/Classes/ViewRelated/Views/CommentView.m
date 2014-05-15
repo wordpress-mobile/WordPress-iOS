@@ -1,4 +1,6 @@
 #import "CommentView.h"
+
+#import <AFNetworking/UIKit+AFNetworking.h>
 #import "WPContentViewSubclass.h"
 #import "UIImageView+Gravatar.h"
 #import "NSAttributedString+HTML.h"
