@@ -2,7 +2,6 @@
 #import "EditSiteViewController.h"
 #import "NSURL+IDN.h"
 #import "WordPressComApi.h"
-#import "AFHTTPClient.h"
 #import "SupportViewController.h"
 #import "WPWebViewController.h"
 #import "JetpackSettingsViewController.h"

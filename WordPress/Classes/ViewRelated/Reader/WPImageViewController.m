@@ -1,4 +1,6 @@
 #import "WPImageViewController.h"
+
+#import <AFNetworking/UIKit+AFNetworking.h>
 #import "WordPressAppDelegate.h"
 
 @interface WPImageViewController ()<UIScrollViewDelegate>

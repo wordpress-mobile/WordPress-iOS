@@ -156,9 +156,9 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     if ([defaultAccount restApi].authToken) {
-        [[defaultAccount restApi] getPath:path parameters:params success:success failure:failure];
+        [[defaultAccount restApi] GET:path parameters:params success:success failure:failure];
     } else {
-        [[WordPressComApi anonymousApi] getPath:path parameters:params success:success failure:failure];
+        [[WordPressComApi anonymousApi] GET:path parameters:params success:success failure:failure];
     }
 }
 
