@@ -4296,7 +4296,7 @@
 				E1D95EB617A28F5E00A3E9F3 /* WPActivityDefaults.h */,
 				E1D95EB717A28F5E00A3E9F3 /* WPActivityDefaults.m */,
 			);
-			name = Sharing;
+			path = Sharing;
 			sourceTree = "<group>";
 		};
 		E159D1011309AAF200F498E2 /* Migrations */ = {
