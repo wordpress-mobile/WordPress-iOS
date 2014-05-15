@@ -3307,6 +3307,7 @@
 		8584FDB31923EF4F0019C02E /* ViewRelated */ = {
 			isa = PBXGroup;
 			children = (
+				8584FDB619243AC40019C02E /* System */,
 				850D22B21729EE8600EC6A16 /* NUX */,
 				CC1D800D1656D8B2002A542F /* Notifications */,
 				AC34397B0E11443300E5D79B /* Blog */,
@@ -3360,6 +3361,18 @@
 				5DB4683A18A2E718004A89A9 /* LocationService.m */,
 			);
 			path = Utility;
+			sourceTree = "<group>";
+		};
+		8584FDB619243AC40019C02E /* System */ = {
+			isa = PBXGroup;
+			children = (
+				5D4AD40D185FE64C00CDEE17 /* WPMainTabBarController.h */,
+				5D4AD40E185FE64C00CDEE17 /* WPMainTabBarController.m */,
+				A25EBD85156E330600530E3D /* WPTableViewController.h */,
+				A25EBD86156E330600530E3D /* WPTableViewController.m */,
+				E1A38C921581879D00439E55 /* WPTableViewControllerSubclass.h */,
+			);
+			path = System;
 			sourceTree = "<group>";
 		};
 		858DE3FF172F9991000AC628 /* Fonts */ = {
@@ -3583,11 +3596,6 @@
 		AC34397A0E11435A00E5D79B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				A25EBD85156E330600530E3D /* WPTableViewController.h */,
-				A25EBD86156E330600530E3D /* WPTableViewController.m */,
-				E1A38C921581879D00439E55 /* WPTableViewControllerSubclass.h */,
-				5D4AD40D185FE64C00CDEE17 /* WPMainTabBarController.h */,
-				5D4AD40E185FE64C00CDEE17 /* WPMainTabBarController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
