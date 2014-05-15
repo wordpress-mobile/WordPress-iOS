@@ -27,7 +27,7 @@
                                 [def setObject:usernameField.text forKey:@"wp_username"];
                                 [def setObject:passwordField.text forKey:@"wp_password"];
                                 [def synchronize];
-                                [self dismissModalViewControllerAnimated:YES];
+                                [self dismissViewControllerAnimated:YES completion:nil];
                             } failure:^(NSError *error) {
                                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Login error" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                                 [alert show];
@@ -39,7 +39,7 @@
             [def setObject:siteId forKey:@"wp_site_id"];
             [def setObject:authToken forKey:@"wp_token"];
             [def synchronize];
-            [self dismissModalViewControllerAnimated:YES];
+            [self dismissViewControllerAnimated:YES completion:nil];
         } failure:^(NSError *error) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Login error" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alert show];

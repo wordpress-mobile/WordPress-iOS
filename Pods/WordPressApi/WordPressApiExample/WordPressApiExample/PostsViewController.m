@@ -129,7 +129,7 @@
 - (IBAction)refreshPosts:(id)sender {
     [self.api getPosts:10 success:^(NSArray *posts) {
         self.posts = posts;
-        NSLog(@"We have %d posts", [self.posts count]);
+        NSLog(@"We have %lu posts", (unsigned long)[self.posts count]);
         [self.tableView reloadData];
     } failure:^(NSError *error) {
         NSLog(@"Error fetching posts: %@", [error localizedDescription]);
