@@ -8,21 +8,16 @@ CGFloat const BackingLayerHorizontalPadding = 4.0f;
 
 @interface ContentActionButton()
 
-@property (nonatomic, strong) CALayer *textLabelBackingLayer;
+@property (nonatomic, strong) UIView *labelBubble;
 
 @end
 
 @implementation ContentActionButton
 
-- (void)setHighlighted:(BOOL)highlighted
+- (CGSize)sizeThatFits:(CGSize)size
 {
-    [super setHighlighted:highlighted];
-    self.alpha = highlighted ? .5f : 1.f;
-}
-
-- (CGSize)sizeThatFits:(CGSize)size {
     CGSize newSize = [super sizeThatFits:size];
-    if (self.textLabelBackingLayer && CGRectGetWidth(self.textLabelBackingLayer.frame) > 0) {
+    if (self.labelBubble && CGRectGetWidth(self.labelBubble.frame) > 0) {
         CGFloat width = newSize.width;
         newSize.width = width + (BackingLayerHorizontalPadding * 2);
     }
@@ -32,67 +27,76 @@ CGFloat const BackingLayerHorizontalPadding = 4.0f;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    if (!self.drawsTitleBubble) {
-        return;
+    if (self.labelBubble) {
+        self.labelBubble.frame = [self frameForLabelBubble];
     }
-
-    [self layoutBackingLabel];
 }
 
-- (void)layoutBackingLabel
-{
-    NSString *str = [self titleForState:UIControlStateNormal];
-    if ([str length] == 0) {
-        self.textLabelBackingLayer.frame = CGRectZero;
-        return;
+- (void)setTitle:(NSString *)title forState:(UIControlState)state {
+    [super setTitle:title forState:state];
+    if ([title length] > 0) {
+        if (self.labelBubble) {
+            self.labelBubble.frame = [self frameForLabelBubble];
+        }
     }
-
-    CGRect frame = self.titleLabel.frame;
-    CGFloat x = CGRectGetMinX(frame) - BackingLayerHorizontalPadding;
-    CGFloat y = CGRectGetMinY(frame) - BackingLayerVerticalPadding;
-    CGFloat w = CGRectGetWidth(frame) + BackingLayerHorizontalPadding * 2.0f;
-    CGFloat h = CGRectGetHeight(frame) + BackingLayerVerticalPadding * 2.0f;
-    self.textLabelBackingLayer.frame = CGRectMake(x, y, w, h);
 }
 
-- (void)setDrawsTitleBubble:(BOOL)drawsTitleBubble
+- (void)setDrawLabelBubble:(BOOL)drawLabelBubble
 {
-    if (_drawsTitleBubble == drawsTitleBubble) {
+    if (_drawLabelBubble == drawLabelBubble) {
         return;
     }
 
-    _drawsTitleBubble = drawsTitleBubble;
+    _drawLabelBubble = drawLabelBubble;
 
-    if (!_drawsTitleBubble) {
-        self.textLabelBackingLayer = nil;
+    if (!_drawLabelBubble) {
+        self.labelBubble = nil;
     } else {
-        CALayer *layer = [[CALayer alloc] init];
-        layer.zPosition = -1;
-        layer.cornerRadius = BackingLayerCornerRadius;
-        layer.backgroundColor = [[WPStyleGuide itsEverywhereGrey] CGColor];
-        self.textLabelBackingLayer = layer;
+        UIView *view = [[UIView alloc] initWithFrame:[self frameForLabelBubble]];
+        view.layer.cornerRadius = BackingLayerCornerRadius;
+        view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+        self.labelBubble = view;
     }
 }
 
-- (void)setTextLabelBackingLayer:(CALayer *)textLabelBackingLayer
+- (void)setLabelBubble:(UIView *)labelBubble
 {
-    if (_textLabelBackingLayer == textLabelBackingLayer) {
+    if (_labelBubble == labelBubble) {
         return;
     }
 
-    if (_textLabelBackingLayer) {
-        [_textLabelBackingLayer removeFromSuperlayer];
+    if (_labelBubble) {
+        [_labelBubble removeFromSuperview];
     }
 
-    if (textLabelBackingLayer) {
+    if (labelBubble) {
         self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        _textLabelBackingLayer = textLabelBackingLayer;
-        [self.layer addSublayer:_textLabelBackingLayer];
+        _labelBubble = labelBubble;
+        _labelBubble.userInteractionEnabled = NO;
+        [self addSubview:_labelBubble];
+        [self sendSubviewToBack:_labelBubble];
         [self setNeedsLayout];
     } else {
         self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-        _textLabelBackingLayer = nil;
+        _labelBubble = nil;
     }
+}
+
+- (CGRect)frameForLabelBubble {
+    NSString *str = [self titleForState:UIControlStateNormal];
+    CGRect frame = self.titleLabel.frame;
+
+    CGFloat x = CGRectGetMinX(frame) - BackingLayerHorizontalPadding;
+    CGFloat y = CGRectGetMinY(frame) - BackingLayerVerticalPadding;
+
+    if ([str length] == 0) {
+        return CGRectMake(x, y, 0.0f, 0.0f);
+    }
+
+    CGFloat w = CGRectGetWidth(frame) + BackingLayerHorizontalPadding * 2.0f;
+    CGFloat h = CGRectGetHeight(frame) + BackingLayerVerticalPadding * 2.0f;
+
+    return CGRectMake(x, y, w, h);
 }
 
 @end
