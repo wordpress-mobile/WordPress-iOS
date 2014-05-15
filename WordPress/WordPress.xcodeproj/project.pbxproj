@@ -2509,7 +2509,6 @@
 				8584FDB31923EF4F0019C02E /* ViewRelated */,
 				850BD4531922F95C0032F3AD /* Networking */,
 				C59D3D480E6410BC00AA591D /* Categories */,
-				AC34397A0E11435A00E5D79B /* Controllers */,
 				E159D1011309AAF200F498E2 /* Migrations */,
 				2F706A870DFB229B00B43086 /* Models */,
 				93FA59DA18D88BDB001446BC /* Services */,
@@ -3583,13 +3582,6 @@
 				85435BE9190F837500E868D0 /* WPUploadStatusView.m */,
 			);
 			path = Post;
-			sourceTree = "<group>";
-		};
-		AC34397A0E11435A00E5D79B /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Controllers;
 			sourceTree = "<group>";
 		};
 		AC34397B0E11443300E5D79B /* Blog */ = {
