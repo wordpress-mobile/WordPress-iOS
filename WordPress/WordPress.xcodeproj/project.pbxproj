@@ -2509,7 +2509,6 @@
 				8584FDB31923EF4F0019C02E /* ViewRelated */,
 				850BD4531922F95C0032F3AD /* Networking */,
 				C59D3D480E6410BC00AA591D /* Categories */,
-				E159D1011309AAF200F498E2 /* Migrations */,
 				2F706A870DFB229B00B43086 /* Models */,
 				93FA59DA18D88BDB001446BC /* Services */,
 				8584FDB4192437160019C02E /* Utility */,
@@ -3313,6 +3312,7 @@
 		8584FDB4192437160019C02E /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				E159D1011309AAF200F498E2 /* Migrations */,
 				85A1B6721742E7DB00BA5E35 /* Analytics */,
 				FD9A948A12FAEA2300438F94 /* DateUtils.h */,
 				FD9A948B12FAEA2300438F94 /* DateUtils.m */,
@@ -4297,7 +4297,7 @@
 				E1A03EDF17422DBC0085D192 /* 10-11 */,
 				E100C6BA1741472F00AE48D8 /* WordPress-11-12.xcmappingmodel */,
 			);
-			name = Migrations;
+			path = Migrations;
 			sourceTree = "<group>";
 		};
 		E16AB92F14D978240047A2E5 /* WordPressTest */ = {
@@ -4371,7 +4371,7 @@
 				E1A03F46174283DF0085D192 /* BlogToJetpackAccount.h */,
 				E1A03F47174283E00085D192 /* BlogToJetpackAccount.m */,
 			);
-			name = "10-11";
+			path = "10-11";
 			sourceTree = "<group>";
 		};
 		E1B4A9DE12FC8B1000EB3F67 /* EGOTableViewPullRefresh */ = {
