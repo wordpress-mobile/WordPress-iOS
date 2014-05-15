@@ -8,7 +8,6 @@
 @protocol ReaderCommentTableViewCellDelegate <NSObject>
 
 - (void)readerCommentTableViewCell:(ReaderCommentTableViewCell *)cell didTapURL:(NSURL *)url;
-- (void)readerCommentTableViewCellDidTapReply:(ReaderCommentTableViewCell *)cell;
 
 @end
 
