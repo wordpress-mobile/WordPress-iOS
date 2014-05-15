@@ -29,4 +29,5 @@ pod 'Simperium', :podspec => 'https://raw.github.com/Simperium/simperium-ios/dev
 
 target :WordPressTest, :exclusive => true do
   pod 'OHHTTPStubs', '1.1.1'
+  pod 'OCMock'
 end
