@@ -120,7 +120,7 @@
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-	[[defaultAccount restApi] postPath:[self pathForContext] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[[defaultAccount restApi] POST:[self pathForContext] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
         [self.composeView clearText];
         self.composeView.enabled = YES;

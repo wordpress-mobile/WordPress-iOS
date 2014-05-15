@@ -1,3 +1,4 @@
+#import <AFNetworking/AFNetworking.h>
 #import <DTCoreText/DTCoreText.h>
 #import "DTCoreTextFontDescriptor.h"
 #import "WPTableViewControllerSubclass.h"
@@ -59,8 +60,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	// (at least for the first time). We'll have DTCoreText prime its font cache here so things are ready
 	// for the detail view, and avoid a perceived lag. 
 	[DTCoreTextFontDescriptor fontDescriptorWithFontAttributes:nil];
-    
-    [AFImageRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"image/jpg"]];
 }
 
 
@@ -897,7 +896,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
                 AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
                 WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-                [[defaultAccount restApi] getPath:@"me"
+                [[defaultAccount restApi] GET:@"me"
                                        parameters:nil
                                           success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                               if ([usersBlogs count] < 1)
@@ -951,10 +950,16 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     
     // Don't do anything if the cell is out of view or out of range
     // (this is a safety check in case the Reader doesn't properly kill image requests when changing topics)
-    if (cell == nil)
+    if (cell == nil) {
         return;
+    }
 
     [cell.postView setFeaturedImage:image];
+    
+    // Failsafe: If the topic has changed, fetchedObject count might be zero
+    if (self.resultsController.fetchedObjects.count == 0) {
+        return;
+    }
     
     // Update the detail view if it's open and applicable
     ReaderPost *post = [self.resultsController objectAtIndexPath:indexPath];

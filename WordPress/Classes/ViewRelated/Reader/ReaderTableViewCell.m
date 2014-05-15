@@ -1,4 +1,6 @@
 #import "ReaderTableViewCell.h"
+
+#import <AFNetworking/UIKit+AFNetworking.h>
 #import "WPWebViewController.h"
 
 @implementation ReaderTableViewCell
