@@ -229,10 +229,6 @@
     [self.delegate readerCommentTableViewCell:self didTapURL:url];
 }
 
-- (void)handleReplyTapped:(id)sender {
-    [self.delegate readerCommentTableViewCellDidTapReply:self];
-}
-
 - (void)handleAuthorBlogTapped:(id)sender {
     NSURL *url = [NSURL URLWithString:self.comment.author_url];
     if (!url) {
