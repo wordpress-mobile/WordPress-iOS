@@ -103,11 +103,11 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
     NSNumber *oldCount = [readerPost.likeCount copy];
 
     // Optimistically update
-    readerPost.isLiked = [NSNumber numberWithBool:like];
+    readerPost.isLiked = like;
     if (like) {
-        readerPost.likeCount = [NSNumber numberWithInteger:([readerPost.likeCount integerValue] + 1)];
+        readerPost.likeCount = @([readerPost.likeCount integerValue] + 1);
     } else {
-        readerPost.likeCount = [NSNumber numberWithInteger:([readerPost.likeCount integerValue] - 1)];
+        readerPost.likeCount = @([readerPost.likeCount integerValue] - 1);
     }
     [self.managedObjectContext performBlockAndWait:^{
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -123,7 +123,7 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
     // Define failure block
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
         // Revert changes on failure
-        readerPost.isLiked = [NSNumber numberWithBool:oldValue];
+        readerPost.isLiked = oldValue;
         readerPost.likeCount = oldCount;
         [self.managedObjectContext performBlockAndWait:^{
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -138,7 +138,7 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
     if (like) {
         [remoteService likePost:[readerPost.postID integerValue] forSite:[readerPost.siteID integerValue] success:successBlock failure:failureBlock];
     } else {
-        [remoteService unlikePost:[post.postID integerValue] forSite:[post.siteID integerValue] success:successBlock failure:failureBlock];
+        [remoteService unlikePost:[readerPost.postID integerValue] forSite:[readerPost.siteID integerValue] success:successBlock failure:failureBlock];
     }
 }
 
@@ -158,7 +158,7 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
     BOOL follow = !oldValue;
 
     // Optimistically update
-    readerPost.isFollowing = [NSNumber numberWithBool:follow];
+    readerPost.isFollowing = follow;
     [self.managedObjectContext performBlockAndWait:^{
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
@@ -173,7 +173,7 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
     // Define failure block
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
         // Revert changes on failure
-        readerPost.isFollowing = [NSNumber numberWithBool:oldValue];
+        readerPost.isFollowing = oldValue;
         [self.managedObjectContext performBlockAndWait:^{
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }];
@@ -183,10 +183,18 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
     };
 
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
-    if (follow) {
-        [remoteService followSite:[post.siteID integerValue] success:successBlock failure:failureBlock];
+    if (post.isWPCom) {
+        if (follow) {
+            [remoteService followSite:[post.siteID integerValue] success:successBlock failure:failureBlock];
+        } else {
+            [remoteService unfollowSite:[post.siteID integerValue] success:successBlock failure:failureBlock];
+        }
     } else {
-        [remoteService unfollowSite:[post.siteID integerValue] success:successBlock failure:failureBlock];
+        if (follow) {
+            [remoteService followSiteAtURL:post.blogURL success:successBlock failure:failureBlock];
+        } else {
+            [remoteService unfollowSiteAtURL:post.blogURL success:successBlock failure:failureBlock];
+        }
     }
 }
 

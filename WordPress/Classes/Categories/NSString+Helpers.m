@@ -105,12 +105,19 @@ static NSString *const Ellipsis =  @"\u2026";
     return [self stringByReplacingOccurrencesOfString:@"<[^>]+>" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, self.length)];
 }
 
-
 - (NSString *)stringByRemovingScriptsAndStrippingHTML {
+    // Let's Cache the RegEx
+    static NSRegularExpression *regex;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSString *pattern = @"<script[^>]*>[\\w\\W]*</script>";
+        regex = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:nil];
+    });
+    
+    // Cleanup
+    NSRange range = NSMakeRange(0, [self length]);
     NSMutableString *mString = [self mutableCopy];
-    NSError *error;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<script[^>]*>[\\w\\W]*</script>" options:NSRegularExpressionCaseInsensitive error:&error];
-    NSArray *matches = [regex matchesInString:mString options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mString length])];
+    NSArray *matches = [regex matchesInString:mString options:NSRegularExpressionCaseInsensitive range:range];
     for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
         [mString replaceCharactersInRange:match.range withString:@""];
     }
