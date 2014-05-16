@@ -1,11 +1,3 @@
-//
-//  WPAnimatedImageResponseSerializer.m
-//  WordPress
-//
-//  Created by Diego E. Rey Mendez on 5/9/14.
-//  Copyright (c) 2014 WordPress. All rights reserved.
-//
-
 #import "WPAnimatedImageResponseSerializer.h"
 
 
