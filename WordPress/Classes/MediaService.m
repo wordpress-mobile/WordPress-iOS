@@ -4,6 +4,7 @@
 #import "WPImageOptimizer.h"
 #import "ContextManager.h"
 #import "MediaServiceRemoteXMLRPC.h"
+#import "MediaServiceRemoteREST.h"
 
 #import <MobileCoreServices/MobileCoreServices.h>
 
@@ -148,7 +149,13 @@
 }
 
 - (id<MediaServiceRemote>)remoteForBlog:(Blog *)blog {
-    WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:blog.xmlrpc]];
-    return [[MediaServiceRemoteXMLRPC alloc] initWithApi:client];
+    id <MediaServiceRemote> remote;
+    if (blog.restApi) {
+        remote = [[MediaServiceRemoteREST alloc] initWithApi:blog.restApi];
+    } else {
+        WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:blog.xmlrpc]];
+        remote = [[MediaServiceRemoteXMLRPC alloc] initWithApi:client];
+    }
+    return remote;
 }
 @end
