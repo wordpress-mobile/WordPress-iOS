@@ -652,7 +652,7 @@ typedef enum {
         [WPAnalytics track:WPAnalyticsStatReaderFollowedSite];
     }
 
-    followButton.selected = !post.isFollowing; // Set it optimistically
+    [followButton setSelected:!post.isFollowing]; // Set it optimistically
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
