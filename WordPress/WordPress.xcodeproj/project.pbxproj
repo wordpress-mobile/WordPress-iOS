@@ -973,6 +973,7 @@
 		E1F0258913AF588C00E3A76A /* keyboardClose~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E1F0258813AF588C00E3A76A /* keyboardClose~ipad.png */; };
 		E1F5A1BC1771C90A00E0495F /* WPTableImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F5A1BB1771C90A00E0495F /* WPTableImageSource.m */; };
 		E1F6B14A192232340037D555 /* MediaServiceRemoteXMLRPC.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F6B149192232340037D555 /* MediaServiceRemoteXMLRPC.m */; };
+		E1F6B14D19262D210037D555 /* MediaServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F6B14C19262D210037D555 /* MediaServiceRemoteREST.m */; };
 		E1F77435178C282000E70764 /* NNGPlusActivity@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E1F77431178C282000E70764 /* NNGPlusActivity@2x~ipad.png */; };
 		E1F77436178C282000E70764 /* NNGPlusActivity@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = E1F77432178C282000E70764 /* NNGPlusActivity@2x~iphone.png */; };
 		E1F77437178C282000E70764 /* NNGPlusActivity~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E1F77433178C282000E70764 /* NNGPlusActivity~ipad.png */; };
@@ -2297,6 +2298,8 @@
 		E1F6B14519221BBE0037D555 /* MediaServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaServiceRemote.h; sourceTree = "<group>"; };
 		E1F6B148192232340037D555 /* MediaServiceRemoteXMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaServiceRemoteXMLRPC.h; sourceTree = "<group>"; };
 		E1F6B149192232340037D555 /* MediaServiceRemoteXMLRPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaServiceRemoteXMLRPC.m; sourceTree = "<group>"; };
+		E1F6B14B19262D210037D555 /* MediaServiceRemoteREST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaServiceRemoteREST.h; sourceTree = "<group>"; };
+		E1F6B14C19262D210037D555 /* MediaServiceRemoteREST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaServiceRemoteREST.m; sourceTree = "<group>"; };
 		E1F77431178C282000E70764 /* NNGPlusActivity@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NNGPlusActivity@2x~ipad.png"; path = "Resources/Images/NNGPlusActivity@2x~ipad.png"; sourceTree = "<group>"; };
 		E1F77432178C282000E70764 /* NNGPlusActivity@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NNGPlusActivity@2x~iphone.png"; path = "Resources/Images/NNGPlusActivity@2x~iphone.png"; sourceTree = "<group>"; };
 		E1F77433178C282000E70764 /* NNGPlusActivity~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NNGPlusActivity~ipad.png"; path = "Resources/Images/NNGPlusActivity~ipad.png"; sourceTree = "<group>"; };
@@ -3481,6 +3484,8 @@
 				E1F7B98D191A3C8300230371 /* MediaService.h */,
 				E1F7B98E191A3C8300230371 /* MediaService.m */,
 				E1F6B14519221BBE0037D555 /* MediaServiceRemote.h */,
+				E1F6B14B19262D210037D555 /* MediaServiceRemoteREST.h */,
+				E1F6B14C19262D210037D555 /* MediaServiceRemoteREST.m */,
 				E1F6B148192232340037D555 /* MediaServiceRemoteXMLRPC.h */,
 				E1F6B149192232340037D555 /* MediaServiceRemoteXMLRPC.m */,
 				5DBCD9D318F35D7500B32229 /* ReaderTopicService.h */,
@@ -5494,6 +5499,7 @@
 				857F961517D950AB0071D9D1 /* WPTableViewSectionHeaderView.m in Sources */,
 				CC669B3A167AA82A009E16F8 /* NoteComment.m in Sources */,
 				85468F3D17C484AB008AB9C1 /* WPStyleGuide.m in Sources */,
+				E1F6B14D19262D210037D555 /* MediaServiceRemoteREST.m in Sources */,
 				E1756E651694A99400D9EC00 /* WordPressComApiCredentials.m in Sources */,
 				5D4DE6F4167177560030518D /* WPNoResultsView.m in Sources */,
 				5D3D559718F88C3500782892 /* ReaderPostService.m in Sources */,
