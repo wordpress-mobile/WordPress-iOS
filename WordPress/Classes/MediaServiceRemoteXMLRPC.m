@@ -19,12 +19,12 @@
     return self;
 }
 
-- (AFHTTPRequestOperation *)uploadFile:(NSString *)path
-                                ofType:(NSString *)type
-                          withFilename:(NSString *)filename
-                                toBlog:(Blog *)blog
-                               success:(void (^)(NSNumber *mediaID, NSString *url))success
-                               failure:(void (^)(NSError *))failure {
+- (AFHTTPRequestOperation *)operationToUploadFile:(NSString *)path
+                                           ofType:(NSString *)type
+                                     withFilename:(NSString *)filename
+                                           toBlog:(Blog *)blog
+                                          success:(void (^)(NSNumber *mediaID, NSString *url))success
+                                          failure:(void (^)(NSError *))failure {
     NSDictionary *data = @{
                            @"name": filename,
                            @"type": type,
@@ -55,7 +55,6 @@
                                                                                   failure(error);
                                                                               }
                                                                           }];
-    [self.api enqueueHTTPRequestOperation:operation];
     return operation;
 }
 
