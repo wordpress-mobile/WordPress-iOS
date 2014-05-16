@@ -137,6 +137,34 @@
     }];
 }
 
+- (void)followSiteAtURL:(NSString *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure {
+    NSString *path = @"read/following/mine/new";
+    NSDictionary *params = @{@"url": siteURL};
+    [self.api POST:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (success) {
+            success();
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+- (void)unfollowSiteAtURL:(NSString *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure {
+    NSString *path = @"read/following/mine/delete";
+    NSDictionary *params = @{@"url": siteURL};
+    [self.api POST:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (success) {
+            success();
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
 - (void)reblogPost:(NSUInteger)postID fromSite:(NSUInteger)siteID toSite:(NSUInteger)targetSiteID note:(NSString *)note success:(void (^)(BOOL isReblogged))success failure:(void (^)(NSError *error))failure {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:@(targetSiteID) forKey:@"destination_site_id"];
 
