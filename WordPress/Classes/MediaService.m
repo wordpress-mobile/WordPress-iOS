@@ -1,7 +1,11 @@
 #import "MediaService.h"
 #import "Media.h"
+#import "WPAccount.h"
 #import "WPImageOptimizer.h"
 #import "ContextManager.h"
+#import "MediaServiceRemoteXMLRPC.h"
+
+#import <MobileCoreServices/MobileCoreServices.h>
 
 @interface MediaService ()
 
@@ -45,6 +49,28 @@
         }
     }];
 }
+
+- (AFHTTPRequestOperation *)uploadMedia:(Media *)media withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    media.remoteStatus = MediaRemoteStatusPushing;
+    id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
+    return [remote uploadFile:media.localURL
+                       ofType:[self mimeTypeForFilename:media.filename]
+                 withFilename:media.filename
+                       toBlog:media.blog
+                      success:^(NSNumber *mediaID, NSString *url) {
+                          [self.managedObjectContext performBlock:^{
+                              media.remoteStatus = MediaRemoteStatusSync;
+                          }];
+                      } failure:^(NSError *error) {
+                          [self.managedObjectContext performBlock:^{
+                              media.remoteStatus = MediaRemoteStatusFailed;
+                          }];
+                      }];
+}
+
+#pragma mark - Private
+
+#pragma mark - Media Creation
 
 - (Media *)newMedia {
     Media *media = [NSEntityDescription insertNewObjectForEntityForName:@"Media" inManagedObjectContext:self.managedObjectContext];
@@ -98,4 +124,22 @@
     return thumbnailJPEGData;
 }
 
+- (NSString *)mimeTypeForFilename:(NSString *)filename {
+    // Get the UTI from the file's extension:
+    CFStringRef pathExtension = (__bridge_retained CFStringRef)[filename pathExtension];
+    CFStringRef type = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension, NULL);
+    CFRelease(pathExtension);
+
+    // The UTI can be converted to a mime type:
+    NSString *mimeType = (__bridge_transfer NSString *)UTTypeCopyPreferredTagWithClass(type, kUTTagClassMIMEType);
+    if (type != NULL)
+        CFRelease(type);
+
+    return mimeType;
+}
+
+- (id<MediaServiceRemote>)remoteForBlog:(Blog *)blog {
+    WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:blog.xmlrpc]];
+    return [[MediaServiceRemoteXMLRPC alloc] initWithApi:client];
+}
 @end
