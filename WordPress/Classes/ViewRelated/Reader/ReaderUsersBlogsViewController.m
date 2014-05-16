@@ -35,6 +35,7 @@
 }
 
 - (void)viewDidLoad {
+    [super viewDidLoad];
     self.title = NSLocalizedString(@"My Sites", @"Title of the list of the user's blogs as shown in the reader.");
 
 	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ui-texture"]];
