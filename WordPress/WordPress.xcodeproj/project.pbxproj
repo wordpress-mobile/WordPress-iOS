@@ -972,6 +972,7 @@
 		E1EE23EA12E628F6000B2BE6 /* attachment@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1EE23E812E628F6000B2BE6 /* attachment@2x.png */; };
 		E1F0258913AF588C00E3A76A /* keyboardClose~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E1F0258813AF588C00E3A76A /* keyboardClose~ipad.png */; };
 		E1F5A1BC1771C90A00E0495F /* WPTableImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F5A1BB1771C90A00E0495F /* WPTableImageSource.m */; };
+		E1F6B14A192232340037D555 /* MediaServiceRemoteXMLRPC.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F6B149192232340037D555 /* MediaServiceRemoteXMLRPC.m */; };
 		E1F77435178C282000E70764 /* NNGPlusActivity@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E1F77431178C282000E70764 /* NNGPlusActivity@2x~ipad.png */; };
 		E1F77436178C282000E70764 /* NNGPlusActivity@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = E1F77432178C282000E70764 /* NNGPlusActivity@2x~iphone.png */; };
 		E1F77437178C282000E70764 /* NNGPlusActivity~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E1F77433178C282000E70764 /* NNGPlusActivity~ipad.png */; };
@@ -2293,6 +2294,9 @@
 		E1F0258813AF588C00E3A76A /* keyboardClose~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "keyboardClose~ipad.png"; path = "Resources/Images/keyboardClose~ipad.png"; sourceTree = "<group>"; };
 		E1F5A1BA1771C90A00E0495F /* WPTableImageSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableImageSource.h; sourceTree = "<group>"; };
 		E1F5A1BB1771C90A00E0495F /* WPTableImageSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableImageSource.m; sourceTree = "<group>"; };
+		E1F6B14519221BBE0037D555 /* MediaServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaServiceRemote.h; sourceTree = "<group>"; };
+		E1F6B148192232340037D555 /* MediaServiceRemoteXMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaServiceRemoteXMLRPC.h; sourceTree = "<group>"; };
+		E1F6B149192232340037D555 /* MediaServiceRemoteXMLRPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaServiceRemoteXMLRPC.m; sourceTree = "<group>"; };
 		E1F77431178C282000E70764 /* NNGPlusActivity@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NNGPlusActivity@2x~ipad.png"; path = "Resources/Images/NNGPlusActivity@2x~ipad.png"; sourceTree = "<group>"; };
 		E1F77432178C282000E70764 /* NNGPlusActivity@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NNGPlusActivity@2x~iphone.png"; path = "Resources/Images/NNGPlusActivity@2x~iphone.png"; sourceTree = "<group>"; };
 		E1F77433178C282000E70764 /* NNGPlusActivity~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NNGPlusActivity~ipad.png"; path = "Resources/Images/NNGPlusActivity~ipad.png"; sourceTree = "<group>"; };
@@ -3476,6 +3480,9 @@
 				930284B818EB078900CB0BF4 /* NoteServiceRemote.m */,
 				E1F7B98D191A3C8300230371 /* MediaService.h */,
 				E1F7B98E191A3C8300230371 /* MediaService.m */,
+				E1F6B14519221BBE0037D555 /* MediaServiceRemote.h */,
+				E1F6B148192232340037D555 /* MediaServiceRemoteXMLRPC.h */,
+				E1F6B149192232340037D555 /* MediaServiceRemoteXMLRPC.m */,
 				5DBCD9D318F35D7500B32229 /* ReaderTopicService.h */,
 				5DBCD9D418F35D7500B32229 /* ReaderTopicService.m */,
 				5DBCD9D618F3617500B32229 /* ReaderTopicServiceRemote.h */,
@@ -5386,6 +5393,7 @@
 				C56636E91868D0CE00226AAB /* StatsViewController.m in Sources */,
 				A0E293F10E21027E00C6919C /* WPAddCategoryViewController.m in Sources */,
 				C59D3D4B0E6410D300AA591D /* NSString+XMLExtensions.m in Sources */,
+				E1F6B14A192232340037D555 /* MediaServiceRemoteXMLRPC.m in Sources */,
 				C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */,
 				CC701659185A7513007B37DB /* InlineComposeView.m in Sources */,
 				5D3D559A18F88C5E00782892 /* ReaderPostServiceRemote.m in Sources */,
