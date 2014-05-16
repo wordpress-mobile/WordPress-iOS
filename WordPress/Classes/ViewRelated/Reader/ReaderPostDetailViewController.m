@@ -514,7 +514,7 @@ typedef enum {
 
 - (void)postView:(ReaderPostView *)postView didReceiveLikeAction:(id)sender {
     ReaderPost *post = postView.post;
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [service toggleLikedForPost:post success:^{
         if (post.isLiked) {
@@ -524,7 +524,6 @@ typedef enum {
 		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
 		[postView updateActionButtons];
     }];
-
 	[postView updateActionButtons];
 }
 
@@ -539,7 +538,7 @@ typedef enum {
         [WPAnalytics track:WPAnalyticsStatReaderFollowedSite];
     }
 
-    followButton.selected = !post.isFollowing; // Set it optimistically
+    [followButton setSelected:!post.isFollowing]; // Set it optimistically
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];

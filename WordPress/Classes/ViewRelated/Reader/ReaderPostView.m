@@ -268,25 +268,6 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
         self.commentButton.hidden = YES;
 	}
 
-    if ([self.post.likeCount integerValue] > 0) {
-        [self.likeButton setTitle:[self.post.likeCount stringValue] forState:UIControlStateNormal];
-        [self.likeButton setTitle:[self.post.likeCount stringValue] forState:UIControlStateSelected];
-    } else {
-        [self.likeButton setTitle:@"" forState:UIControlStateNormal];
-        [self.likeButton setTitle:@"" forState:UIControlStateSelected];
-    }
-
-    if ([self.post.commentCount integerValue] > 0) {
-        [self.commentButton setTitle:[self.post.commentCount stringValue] forState:UIControlStateNormal];
-        [self.commentButton setTitle:[self.post.commentCount stringValue] forState:UIControlStateSelected];
-    } else {
-        [self.commentButton setTitle:@"" forState:UIControlStateNormal];
-        [self.commentButton setTitle:@"" forState:UIControlStateSelected];
-    }
-
-    [self.followButton setSelected:self.post.isFollowing];
-	self.reblogButton.userInteractionEnabled = !post.isReblogged;
-
 	[self updateActionButtons];
 
     if (self.contentMode == ReaderPostContentModeSimpleSummary) {
@@ -394,9 +375,29 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 
 - (void)updateActionButtons {
     [super updateActionButtons];
+
+    if ([self.post.likeCount integerValue] > 0) {
+        [self.likeButton setTitle:[self.post.likeCount stringValue] forState:UIControlStateNormal];
+        [self.likeButton setTitle:[self.post.likeCount stringValue] forState:UIControlStateSelected];
+    } else {
+        [self.likeButton setTitle:@"" forState:UIControlStateNormal];
+        [self.likeButton setTitle:@"" forState:UIControlStateSelected];
+    }
+
+    if ([self.post.commentCount integerValue] > 0) {
+        [self.commentButton setTitle:[self.post.commentCount stringValue] forState:UIControlStateNormal];
+        [self.commentButton setTitle:[self.post.commentCount stringValue] forState:UIControlStateSelected];
+    } else {
+        [self.commentButton setTitle:@"" forState:UIControlStateNormal];
+        [self.commentButton setTitle:@"" forState:UIControlStateSelected];
+    }
+
     [self.likeButton setSelected:self.post.isLiked];
     [self.reblogButton setSelected:self.post.isReblogged];
-	self.reblogButton.userInteractionEnabled = !self.reblogButton.selected;
+    [self.followButton setSelected:self.post.isFollowing];
+	self.reblogButton.userInteractionEnabled = !self.post.isReblogged;
+
+    [self setNeedsLayout];
 }
 
 - (void)setAvatar:(UIImage *)avatar {
