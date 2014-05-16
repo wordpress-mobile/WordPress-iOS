@@ -210,6 +210,7 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 }
 
 - (BOOL)resignFirstResponder {
+    [super resignFirstResponder];
     return [self.proxyTextView resignFirstResponder];
 }
 
