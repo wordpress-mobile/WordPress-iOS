@@ -26,4 +26,5 @@ pod 'CTAssetsPickerController', '~> 2.2.0'
 
 target :WordPressTest, :exclusive => true do
   pod 'OHHTTPStubs', '1.1.1'
+  pod 'OCMock'
 end
