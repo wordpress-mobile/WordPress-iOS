@@ -50,22 +50,31 @@
     }];
 }
 
-- (AFHTTPRequestOperation *)uploadMedia:(Media *)media withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (AFHTTPRequestOperation *)operationToUploadMedia:(Media *)media withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     media.remoteStatus = MediaRemoteStatusPushing;
     id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
-    return [remote uploadFile:media.localURL
-                       ofType:[self mimeTypeForFilename:media.filename]
-                 withFilename:media.filename
-                       toBlog:media.blog
-                      success:^(NSNumber *mediaID, NSString *url) {
-                          [self.managedObjectContext performBlock:^{
-                              media.remoteStatus = MediaRemoteStatusSync;
-                          }];
-                      } failure:^(NSError *error) {
-                          [self.managedObjectContext performBlock:^{
-                              media.remoteStatus = MediaRemoteStatusFailed;
-                          }];
-                      }];
+    return [remote operationToUploadFile:media.localURL
+                                  ofType:[self mimeTypeForFilename:media.filename]
+                            withFilename:media.filename
+                                  toBlog:media.blog
+                                 success:^(NSNumber *mediaID, NSString *url) {
+                                     [self.managedObjectContext performBlock:^{
+                                         media.remoteStatus = MediaRemoteStatusSync;
+                                         media.mediaID = mediaID;
+                                         media.remoteURL = url;
+                                         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                                         if (success) {
+                                             success();
+                                         }
+                                     }];
+                                 } failure:^(NSError *error) {
+                                     [self.managedObjectContext performBlock:^{
+                                         media.remoteStatus = MediaRemoteStatusFailed;
+                                         if (failure) {
+                                             failure(error);
+                                         }
+                                     }];
+                                 }];
 }
 
 #pragma mark - Private

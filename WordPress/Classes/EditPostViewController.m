@@ -27,7 +27,7 @@ CGFloat const EPVCTextViewBottomPadding = 50.0f;
 CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 @interface EditPostViewController ()<UIPopoverControllerDelegate> {
-    WPMediaUploader *_mediaUploader;
+    NSOperationQueue *_mediaUploadQueue;
 }
 
 @property (nonatomic, strong) UIButton *titleBarButton;
@@ -77,6 +77,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 - (void)dealloc {
     _failedMediaAlertView.delegate = nil;
+    [_mediaUploadQueue removeObserver:self forKeyPath:@"operationCount"];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -119,8 +120,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
         _post = post;
-        [self configureMediaUploader];
-        
+        [self configureMediaUploadQueue];
+
         if (_post.remoteStatus == AbstractPostRemoteStatusLocal) {
             _editMode = EditPostViewControllerModeNewPost;
         } else {
@@ -130,13 +131,10 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     return self;
 }
 
-- (void)configureMediaUploader
-{
-    __weak EditPostViewController *weakSelf = self;
-    _mediaUploader = [[WPMediaUploader alloc] init];
-    _mediaUploader.uploadsCompletedBlock = ^{
-        [weakSelf setupNavbar];
-    };
+- (void)configureMediaUploadQueue {
+    _mediaUploadQueue = [NSOperationQueue new];
+    _mediaUploadQueue.maxConcurrentOperationCount = 4;
+    [_mediaUploadQueue addObserver:self forKeyPath:@"operationCount" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)viewDidLoad {
@@ -239,7 +237,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     NSInteger blogCount = [blogService blogCountForAllAccounts];
     
-    if (_mediaUploader.isUploadingMedia) {
+    if (_mediaUploadQueue.operationCount > 0) {
         self.navigationItem.titleView = self.uploadStatusView;
     } else if(blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
         self.navigationItem.title = [self editorTitle];
@@ -559,8 +557,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 - (void)cancelMediaUploads
 {
-    [_mediaUploader cancelAllUploads];
-    [self setupNavbar];
+    [_mediaUploadQueue cancelAllOperations];
 }
 
 - (void)showSettings {
@@ -1121,8 +1118,11 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 #pragma mark Media Formatting
 
 - (void)insertMediaBelow:(NSNotification *)notification {
-    
 	Media *media = (Media *)[notification object];
+    [self insertMedia:media];
+}
+
+- (void)insertMedia:(Media *)media {
 	NSString *prefix = @"<br /><br />";
     
 	if(self.post.content == nil || [self.post.content isEqualToString:@""]) {
@@ -1376,11 +1376,31 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
             MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
             [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
-                [_mediaUploader uploadMediaObjects:@[media]];
+                AFHTTPRequestOperation *operation = [mediaService operationToUploadMedia:media withSuccess:^{
+                    [self insertMedia:media];
+                } failure:^(NSError *error) {
+                    if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
+                        DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
+                        return;
+                    }
+
+                    [WPError showAlertWithTitle:NSLocalizedString(@"Upload failed", nil) message:error.localizedDescription];
+                }];
+                [_mediaUploadQueue addOperation:operation];
             }];
         }
     }
     [self setupNavbar];
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([object isEqual:_mediaUploadQueue]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self setupNavbar];
+        });
+    }
 }
 
 #pragma mark - Positioning & Rotation
