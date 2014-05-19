@@ -1,11 +1,3 @@
-//
-//  WordPressComApi.h
-//  WordPress
-//
-//  Created by Jorge Bernal on 6/4/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import <AFHTTPClient.h>
 #import <Availability.h>
 
@@ -143,6 +135,22 @@ extern NSString *const WordPressComApiPushAppId;
 - (void)replyToComment:(NSUInteger)blogID forCommentID:(NSUInteger)commentID withReply:(NSString *)reply
                success:(WordPressComApiRestSuccessResponseBlock)success
                failure:(WordPressComApiRestSuccessFailureBlock)failure;
+
+///------------------
+/// @name Blog Themes
+///------------------
+
+- (void)fetchThemesForBlogId:(NSString*)blogId
+                     success:(WordPressComApiRestSuccessResponseBlock)success
+                     failure:(WordPressComApiRestSuccessFailureBlock)failure;
+
+- (void)fetchCurrentThemeForBlogId:(NSString*)blogId
+                           success:(WordPressComApiRestSuccessResponseBlock)success
+                           failure:(WordPressComApiRestSuccessFailureBlock)failure;
+
+- (void)activateThemeForBlogId:(NSString*)blogId themeId:(NSString*)themeId
+                       success:(WordPressComApiRestSuccessResponseBlock)success
+                       failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
 ///-----------------
 /// @name OAuth info

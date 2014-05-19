@@ -1,12 +1,3 @@
-/*
- * PostSettingsViewController.m
- *
- * Copyright (c) 2013 WordPress. All rights reserved.
- *
- * Licensed under GNU General Public License 2.0.
- * Some rights reserved. See license.txt
- */
-
 #import "PostSettingsViewController.h"
 #import "PostSettingsViewController_Internal.h"
 
@@ -25,13 +16,18 @@
 #import "UITableViewTextFieldCell.h"
 #import "WordPressAppDelegate.h"
 #import "WPAlertView.h"
+#import "MediaBrowserViewController.h"
 #import "WPTableViewController.h"
 #import "WPTableViewActivityCell.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "WPTableImageSource.h"
+#import "WPMediaMetadataExtractor.h"
+#import "WPMediaSizing.h"
+#import "WPMediaUploader.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 typedef enum {
-    PostSettingsRowCategories = 1,
+    PostSettingsRowCategories = 0,
     PostSettingsRowTags,
     PostSettingsRowPublishDate,
     PostSettingsRowStatus,
@@ -49,7 +45,10 @@ static NSInteger RowIndexForDatePicker = 0;
 
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
 
-@interface PostSettingsViewController () <UITextFieldDelegate, WPTableImageSourceDelegate, WPPickerViewDelegate>
+@interface PostSettingsViewController () <UITextFieldDelegate, WPTableImageSourceDelegate, WPPickerViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
+    WPMediaUploader *_mediaUploader;
+    UIPopoverController *_popover;
+}
 
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) UITextField *passwordTextField;
@@ -75,16 +74,9 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     self = [super init];
     if (self) {
         self.apost = aPost;
+        _mediaUploader = [[WPMediaUploader alloc] init];
     }
     return self;
-}
-
-- (NSString *)statsPrefix {
-    if (_statsPrefix == nil) {
-        return @"Post Detail";
-    } else {
-        return _statsPrefix;
-    }
 }
 
 - (void)viewDidLoad {
@@ -107,6 +99,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissTagsKeyboardIfAppropriate:)];
     gestureRecognizer.cancelsTouchesInView = NO;
     gestureRecognizer.numberOfTapsRequired = 1;
+
     [self.tableView addGestureRecognizer:gestureRecognizer];
 
     [self.tableView registerNib:[UINib nibWithNibName:@"WPTableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
@@ -207,10 +200,16 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 - (void)datePickerChanged:(NSDate *)date {
     self.apost.dateCreated = date;
 
-    if ([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending && [self.apost.status isEqualToString:@"draft"]) {
+    // Try to match behavior in wp-admin.
+    // A nil value for date means "publish immediately", so also change status to publish.
+    // If a draft post is given a future date, change its status to publish.
+    // This approximates the behavior of wp-admin with only a single button to save vs a button
+    // to save as a draft, and a button to update/schedule/publish
+    if ((date == nil) ||
+        ([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending && [self.apost.status isEqualToString:@"draft"])) {
         self.apost.status = @"publish";
     }
-    
+
     [self hideDatePicker];
 }
 
@@ -320,11 +319,13 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.frame);
-    if (indexPath.section == PostSettingsSectionGeolocation && [self post].geolocation) {
+    NSInteger sectionId = [[self.sections objectAtIndex:indexPath.section] integerValue];
+    
+    if (sectionId == PostSettingsSectionGeolocation && [self post].geolocation) {
         return ceilf(width * 0.75f);
     }
     
-    if (indexPath.section == PostSettingsSectionFeaturedImage) {
+    if (sectionId == PostSettingsSectionFeaturedImage) {
         if (self.featuredImage) {
             CGFloat cellMargins = (2 * PostFeaturedImageCellMargin);
             CGFloat imageWidth = self.featuredImage.size.width;
@@ -335,7 +336,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         }
     }
     
-    if (indexPath.section == PostSettingsSectionMeta) {
+    if (sectionId == PostSettingsSectionMeta) {
         if (indexPath.row == RowIndexForDatePicker && self.datePicker) {
             return CGRectGetHeight(self.datePicker.frame);
         }
@@ -380,7 +381,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         // noop
         
     } else if (cell.tag == PostSettingsRowPublishDate && !self.datePicker) {
-        [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedScheduleFor forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         [self configureAndShowDatePicker];
         
     } else if (cell.tag ==  PostSettingsRowStatus) {
@@ -399,7 +399,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         [self showFeaturedImageSelector];
         
     } else if (cell.tag == PostSettingsRowFeaturedImageAdd) {
-        [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsPropertyPostDetailSettingsClickedSetFeaturedImage]];
         [self showFeaturedImageSelector];
         
     } else if (cell.tag == PostSettingsRowGeolocationAdd || cell.tag == PostSettingsRowGeolocationMap) {
@@ -409,14 +408,15 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 - (UITableViewCell *)configureTaxonomyCellForIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell;
-    if (indexPath.row == 0) {
+    
+    if (indexPath.row == PostSettingsRowCategories) {
         // Categories
         cell = [self getWPTableViewCell];
         cell.textLabel.text = NSLocalizedString(@"Categories", @"Label for the categories field. Should be the same as WP core.");
         cell.detailTextLabel.text = [NSString decodeXMLCharactersIn:[self.post categoriesText]];
         cell.tag = PostSettingsRowCategories;
         
-    } else {
+    } else if (indexPath.row == PostSettingsRowTags) {
         // Tags
         UITableViewTextFieldCell *textCell = [self getTextFieldCell];
         textCell.textLabel.text = NSLocalizedString(@"Tags", @"Label for the tags field. Should be the same as WP core.");
@@ -517,7 +517,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 - (UITableViewCell *)configureFeaturedImageCellForIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell;
     
-    if (!self.post.post_thumbnail) {
+    if (!self.post.post_thumbnail && !_mediaUploader.isUploadingMedia) {
         WPTableViewActivityCell *activityCell = [self getWPActivityTableViewCell];
         activityCell.textLabel.text = NSLocalizedString(@"Set Featured Image", @"");
         activityCell.tag = PostSettingsRowFeaturedImageAdd;
@@ -571,10 +571,9 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         }
         
         Coordinate *coordinate = self.post.geolocation;
-        CLLocation *lastLocation = [LocationService sharedService].lastGeocodedLocation;
         CLLocation *postLocation = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
         NSString *address;
-        if(lastLocation && [lastLocation distanceFromLocation:postLocation] == 0) {
+        if([[LocationService sharedService] hasAddressForLocation:postLocation]) {
             address = [LocationService sharedService].lastGeocodedAddress;
         } else {
             address = NSLocalizedString(@"Looking up address...", @"Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post.");
@@ -587,6 +586,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         [geoCell setCoordinate:self.post.geolocation andAddress:address];
         cell = geoCell;
         cell.tag = PostSettingsRowGeolocationMap;
+
     }
     return cell;
 }
@@ -670,7 +670,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     }
     self.datePicker.frame = frame;
     
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:RowIndexForDatePicker inSection:PostSettingsSectionMeta];
+    NSUInteger sec = [self.sections indexOfObject:[NSNumber numberWithInteger:PostSettingsSectionMeta]];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:RowIndexForDatePicker inSection:sec];
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
@@ -678,8 +679,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     if ([self.apost.status isEqualToString:@"private"]) {
         return;
     }
-    
-    [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedStatus forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     
     NSMutableArray *titles = [NSMutableArray arrayWithArray:[self.apost availableStatuses]];
     [titles removeObject:NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")];
@@ -702,8 +701,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 }
 
 - (void)showPostVisibilitySelector {
-    [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedVisibility forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-    
     NSArray *titles = @[
                         NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
                         NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP."),
@@ -754,8 +751,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         return;
     }
     
-    [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedPostFormat forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-    
     NSArray *titles = self.post.blog.sortedPostFormatNames;
     NSDictionary *postFormatsDict = @{
                                       @"DefaultValue": titles[0],
@@ -781,44 +776,63 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 }
 
 - (void)showFeaturedImageSelector {
-    FeaturedImageViewController *controller = [[FeaturedImageViewController alloc] initWithPost:self.post];
-    [self.navigationController pushViewController:controller animated:YES];
+    if (self.post.post_thumbnail) {
+        // Check if the featured image is set, otherwise we don't want to do anything while it's still loading.
+        if (self.featuredImage) {
+            FeaturedImageViewController *featuredImageVC = [[FeaturedImageViewController alloc] initWithPost:self.post];
+            [self.navigationController pushViewController:featuredImageVC animated:YES];
+        }
+    } else {
+        [self showPhotoPicker];
+    }
+}
+
+- (void)showPhotoPicker
+{
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+	picker.delegate = self;
+	picker.allowsEditing = NO;
+    picker.navigationBar.translucent = NO;
+    picker.modalPresentationStyle = UIModalPresentationCurrentContext;
+    picker.navigationBar.barStyle = UIBarStyleBlack;
+    
+    if (IS_IPAD) {
+        _popover = [[UIPopoverController alloc] initWithContentViewController:picker];
+        CGRect frame = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]];
+        [_popover presentPopoverFromRect:frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    } else {
+        [self.navigationController presentViewController:picker animated:YES completion:nil];
+    }
 }
 
 - (void)showCategoriesSelection {
-    [WPMobileStats flagProperty:StatsPropertyPostDetailClickedShowCategories forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     CategoriesViewController *controller = [[CategoriesViewController alloc] initWithPost:[self post] selectionMode:CategoriesSelectionModePost];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (NSString *)formattedStatEventString:(NSString *)event {
-    return [NSString stringWithFormat:@"%@ - %@", self.statsPrefix, event];
+- (void)showMediaLibrary {
+    self.navigationItem.title = NSLocalizedString(@"Back", nil);
+    MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:self.post];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)loadFeaturedImage:(NSIndexPath *)indexPath {
-    if (self.post.featuredImageURL) {
-        if (!self.featuredImage) {
-            CGFloat width = CGRectGetWidth(self.view.frame);
-            if (IS_IPAD) {
-                width = WPTableViewFixedWidth;
-            }
-            width = width - (PostFeaturedImageCellMargin * 2); // left and right cell margins
-            NSURL *url = [NSURL URLWithString:self.post.featuredImageURL];
-            CGFloat height = ceilf(width * 0.66);
-            CGSize imageSize = CGSizeMake(width, height);
-
-            [self.imageSource fetchImageForURL:url
-                                      withSize:imageSize
-                                     indexPath:indexPath
-                                     isPrivate:self.post.blog.isPrivate];
+    NSURL *url = [NSURL URLWithString:self.post.featuredImage.remoteURL];
+    if (url) {
+        CGFloat width = CGRectGetWidth(self.view.frame);
+        if (IS_IPAD) {
+            width = WPTableViewFixedWidth;
         }
+        width = width - (PostFeaturedImageCellMargin * 2); // left and right cell margins
+        CGFloat height = ceilf(width * 0.66);
+        CGSize imageSize = CGSizeMake(width, height);
+
+        [self.imageSource fetchImageForURL:url
+                                  withSize:imageSize
+                                 indexPath:indexPath
+                                 isPrivate:self.post.blog.isPrivate];
         
-    } else {
-        [self.post getFeaturedImageURLWithSuccess:^{
-            [self loadFeaturedImage:indexPath];
-        } failure:^(NSError *error) {
-            DDLogError(@"Error fetching featured image URL: @%", error);
-        }];
     }
 }
 
@@ -873,8 +887,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 - (void)pickerView:(WPPickerView *)pickerView didFinishWithValue:(id)value {
     if (value == nil) {
         // Publish Immediately
-        self.apost.dateCreated = nil;
-        [self hideDatePicker];
+        [self datePickerChanged:nil];
         return;
     }
     
@@ -889,6 +902,40 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     }
     
     [self datePickerChanged:selectedDate];
+}
+
+#pragma mark - UIImagePickerControllerDelegate methods
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    // On iOS7 the image picker seems to override our preferred setting so we force the status bar color back.
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    UIImage *image = [info valueForKey:@"UIImagePickerControllerOriginalImage"];
+    NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
+    ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc] init];
+    [assetsLibrary assetForURL:assetURL resultBlock:^(ALAsset *asset){
+        UIImage *resizedImage = [WPMediaSizing correctlySizedImage:image forBlogDimensions:[self.post.blog getImageResizeDimensions]];
+        NSDictionary *assetMetadata = [WPMediaMetadataExtractor metadataForAsset:asset enableGeolocation:self.post.blog.geolocationEnabled];
+        Media *imageMedia = [Media newMediaForPost:self.post withImage:resizedImage andMetadata:assetMetadata];
+        imageMedia.mediaType = MediaTypeFeatured;
+        __weak PostSettingsViewController *weakSelf = self;
+        _mediaUploader = [[WPMediaUploader alloc] init];
+        _mediaUploader.uploadsCompletedBlock = ^{
+            Post *post = (Post *)weakSelf.apost;
+            post.featuredImage = imageMedia;
+            [weakSelf.tableView reloadData];
+        };
+        [_mediaUploader uploadMediaObjects:@[imageMedia]];
+        if (IS_IPAD) {
+            [_popover dismissPopoverAnimated:YES];
+        } else {
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        }
+        // Reload the featured image row so that way the activity indicator will be displayed.
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]] withRowAnimation:UITableViewRowAnimationFade];
+    } failureBlock:^(NSError *error){
+        DDLogError(@"can't get asset %@: %@", assetURL, [error localizedDescription]);
+    }];
 }
 
 @end

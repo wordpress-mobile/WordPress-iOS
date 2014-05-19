@@ -1,11 +1,3 @@
-//
-//  WPKeyboardToolbar.m
-//  WordPress
-//
-//  Created by Jorge Bernal on 8/11/11.
-//  Copyright 2011 WordPress. All rights reserved.
-//
-
 #import "WPKeyboardToolbarBase.h"
 
 #pragma mark Sizes
@@ -165,6 +157,7 @@
 }
 
 - (void)setupView {
+    [self setupBackground];
     [self setupFormatView];
     [self setupDoneButton];
 }
@@ -223,6 +216,17 @@
     }
     return self;
 }
+
+- (id)initDoneWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self setupBackground];
+        [self setupDoneButton];
+    }
+    return self;
+}
+
+- (void)setupBackground {}
 
 #pragma mark - UIInputViewAudioFeedback
 

@@ -7,6 +7,7 @@ PODS:
     - CocoaLumberjack/Core
   - CrashlyticsLumberjack (1.0.1):
     - CocoaLumberjack/Core
+  - CTAssetsPickerController (2.2.0)
   - DTCoreText (1.6.9):
     - DTFoundation/Core (~> 1.6.0)
     - DTFoundation/DTHTMLParser (~> 1.6.0)
@@ -17,7 +18,8 @@ PODS:
   - DTFoundation/UIKit (1.6.2):
     - DTFoundation/Core
   - EmailChecker (0.1)
-  - google-plus-ios-sdk (1.5.0)
+  - google-plus-ios-sdk (1.5.1)
+  - Helpshift (4.3.1)
   - HockeySDK (3.5.4)
   - MGImageUtilities (0.0.1)
   - Mixpanel (2.3.1)
@@ -30,7 +32,8 @@ PODS:
   - OHHTTPStubs (1.1.1)
   - Reachability (3.1.1)
   - SVProgressHUD (1.0)
-  - UIDeviceIdentifier (0.1)
+  - Taplytics (1.2.48)
+  - UIDeviceIdentifier (0.4)
   - WordPressApi (0.0.1):
     - AFNetworking (>= 1.0)
     - wpxmlrpc (~> 0.1)
@@ -40,9 +43,11 @@ DEPENDENCIES:
   - AFNetworking (= 1.2.0)
   - CocoaLumberjack (~> 1.8.1)
   - CrashlyticsLumberjack (~> 1.0.0)
+  - CTAssetsPickerController (~> 2.2.0)
   - DTCoreText (= 1.6.9)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec`)
-  - google-plus-ios-sdk (= 1.5.0)
+  - google-plus-ios-sdk (~> 1.5)
+  - Helpshift (= 4.3.1)
   - HockeySDK (~> 3.5.0)
   - MGImageUtilities (from `git://github.com/wordpress-mobile/MGImageUtilities.git`)
   - Mixpanel (= 2.3.1)
@@ -52,6 +57,7 @@ DEPENDENCIES:
   - OHHTTPStubs (= 1.1.1)
   - Reachability (= 3.1.1)
   - SVProgressHUD (~> 1.0)
+  - Taplytics (= 1.2.48)
   - UIDeviceIdentifier (~> 0.1)
   - WordPressApi (from `https://github.com/koke/WordPressApi.git`)
   - wpxmlrpc (~> 0.4.1)
@@ -72,22 +78,25 @@ SPEC CHECKSUMS:
   AFNetworking: 3cbae45f61a9f995cdbd56bd571223910d7f4e44
   CocoaLumberjack: 020378ec400d658923bf5887178394f65f052c90
   CrashlyticsLumberjack: 8ee2adbd0f815d8b111e5f72cd82d39b08430ebc
+  CTAssetsPickerController: 85cc8be0ce86a3b13626379d16d3996c9d4c559b
   DTCoreText: e48c1526945272133b8c935c40da3f3e79836f1b
   DTFoundation: 7c69990fa3cb7655cafa95ab59c3fcea014460f0
   EmailChecker: e909e6d113fac7ad5e3c304fabce30fc4a79c80e
-  google-plus-ios-sdk: 36ba69c66a9ec3d9722094755743a6d88b82d9a2
+  google-plus-ios-sdk: e02124b8a12631e76f78f5e3eb2a02a44b82c871
+  Helpshift: b4a99c03fd56860e0efb52e84cc5049a735e3d97
   HockeySDK: aa28abb106de7804d31acf515f2c9aa4e6481fd0
   MGImageUtilities: ab3580f2161b10f8a41331baea87aaafbd688950
   Mixpanel: 8d189c58bcaac429de9cb4f18a54621df99b7e38
   NSLogger: 9607fdeafd0b09922c69615f99f127de45971b8f
-  NSLogger-CocoaLumberjack-connector: da77800fec7415c1d378dfd93465031a58c5a9a8
+  NSLogger-CocoaLumberjack-connector: b03392e94a0ba0aef65b05666d7e73aac2d9a471
   NSObject-SafeExpectations: 241ab1289cbc33a00307cd025d22883646f2e1f0
   NSURL+IDN: 22633c0149b86d6391f32f23776bc0e6ecc532e2
-  OHHTTPStubs: cb1cef742f2fba18b192fb92ede52a69cf3a04d5
+  OHHTTPStubs: 41c382f87edb51e7c7c2553aee06da5a6d318a12
   Reachability: be4883bb93f31e38266ae3365e5600a317aae735
   SVProgressHUD: 5e10939a296debf5fe5a5895eda9539b8b2114f1
-  UIDeviceIdentifier: 38f7035dd0040fc4979d1548d9a63a1ccd339b0d
+  Taplytics: 544e3b6b5a7acdd643089b5fcea943ef2e90b1fc
+  UIDeviceIdentifier: eb3d34699982f02350acf544516a4b8f9a9fcaad
   WordPressApi: 6c7ab5320344fbec850f0baba4b0ec2bfd03587d
   wpxmlrpc: 63b5b10d5925fb030f8266215bc955366354a2b8
 
-COCOAPODS: 0.29.0
+COCOAPODS: 0.32.1

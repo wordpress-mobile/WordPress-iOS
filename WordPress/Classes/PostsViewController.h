@@ -10,6 +10,5 @@
 
 - (void)showAddPostView;
 - (BOOL)refreshRequired;
-- (NSString *)statsPropertyForViewOpening;
 
 @end

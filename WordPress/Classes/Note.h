@@ -1,15 +1,13 @@
-//
-//  Note.h
-//  WordPress
-//
-//  Created by Beau Collins on 11/18/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
 #import "WPAccount.h"
 #import "WPContentViewProvider.h"
+
+typedef NS_ENUM(NSInteger, WPNoteTemplateType) {
+    WPNoteTemplateUnknown,
+    WPNoteTemplateSingleLineList,
+    WPNoteTemplateMultiLineList,
+    WPNoteTemplateBigBadge,
+};
 
 @interface Note : NSManagedObject<WPContentViewProvider>
 
@@ -20,42 +18,29 @@
 @property (nonatomic, retain) NSNumber *unread;
 @property (nonatomic, retain) NSString *icon;
 @property (nonatomic, retain) NSString *noteID;
-@property (nonatomic, strong, readonly) NSString *commentText;
-@property (nonatomic, strong, readonly) NSDictionary *noteData;
 @property (nonatomic, retain) WPAccount *account;
+@property (nonatomic, strong, readonly) NSString *commentText;
+@property (nonatomic, strong, readonly) NSString *commentHtml;
+@property (nonatomic, strong, readonly) NSDictionary *noteData;
+@property (nonatomic, strong, readonly) NSDictionary *meta;
+@property (nonatomic, strong, readonly) NSNumber *metaPostID;
+@property (nonatomic, strong, readonly) NSNumber *metaSiteID;
+@property (nonatomic, strong, readonly) NSArray *bodyItems;		// Array of NoteBodyItem Objects
+@property (nonatomic, strong, readonly) NSString *bodyHeaderText;
+@property (nonatomic, strong, readonly) NSString *bodyHeaderLink;
+@property (nonatomic, strong, readonly) NSString *bodyFooterText;
+@property (nonatomic, strong, readonly) NSString *bodyFooterLink;
+@property (nonatomic, strong, readonly) NSString *bodyHtml;
+@property (nonatomic, readonly) WPNoteTemplateType templateType;
 
+- (BOOL)isMatcher;
 - (BOOL)isComment;
 - (BOOL)isLike;
 - (BOOL)isFollow;
 - (BOOL)isRead;
 - (BOOL)isUnread;
-
-// Attempt to get the right blog for the note's stats event
-- (Blog *)blogForStatsEvent;
 - (BOOL)statsEvent;
 
 - (void)syncAttributes:(NSDictionary *)data;
-
-+ (void)mergeNewNotes:(NSArray *)notesData;
-
-/**
- Remove old notes from Core Data storage
-
- It will keep at least the 40 latest notes
- @param timestamp if not nil, it well keep all notes newer this timestamp.
- @param context The context which contains the notes to delete.
- */
-+ (void)pruneOldNotesBefore:(NSNumber *)timestamp withContext:(NSManagedObjectContext *)context;
-
-@end
-
-@interface Note (WordPressComApi)
-
-+ (void)fetchNewNotificationsWithSuccess:(void (^)(BOOL hasNewNotes))success failure:(void (^)(NSError *error))failure;
-+ (void)refreshUnreadNotesWithContext:(NSManagedObjectContext *)context;
-+ (void)fetchNotificationsSince:(NSNumber *)timestamp success:(void (^)())success failure:(void (^)(NSError *error))failure;
-+ (void)fetchNotificationsBefore:(NSNumber *)timestamp success:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)refreshNoteDataWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)markAsReadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 @end

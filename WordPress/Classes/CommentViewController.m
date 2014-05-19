@@ -1,11 +1,3 @@
-//
-//  CommentViewController.h
-//  WordPress
-//
-//  Created by Sendhil Panchadsaram on 8/22/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "CommentViewController.h"
 #import "UIImageView+Gravatar.h"
 #import "NSString+XMLExtensions.h"
@@ -18,6 +10,7 @@
 #import "ContextManager.h"
 #import "WPFixedWidthScrollView.h"
 #import "WPTableViewCell.h"
+#import "DTLinkButton.h"
 
 CGFloat const CommentViewDeletePromptActionSheetTag = 501;
 CGFloat const CommentViewReplyToCommentViewControllerHasChangesActionSheetTag = 401;
@@ -189,7 +182,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 #pragma mark - Comment moderation
 
 - (void)deleteComment {
-    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailDelete];
     [self.comment remove];
     
     // Note: the parent class of CommentsViewController will pop this as a result of NSFetchedResultsChangeDelete
@@ -216,10 +208,8 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)approveOrUnapproveAction:(id)sender {
     UIBarButtonItem *barButton = sender;
     if (barButton.tag == CommentViewApproveButtonTag) {
-        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailApprove];
         [self.comment approve];
     } else {
-        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailUnapprove];
         [self.comment unapprove];
     }
     [self updateApproveButton];
@@ -245,12 +235,10 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 - (void)spamAction:(id)sender {
-    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailFlagAsSpam];
     [self.comment spam];
 }
 
 - (void)editAction:(id)sender {
-    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailEditComment];
 	[self showEditCommentViewWithAnimation:YES];
 }
 
@@ -258,7 +246,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 	if (self.commentsViewController.blog.isSyncingComments) {
 		[self showSyncInProgressAlert];
 	} else {
-        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailClickedReplyToComment];
         self.reply = [self.comment restoreReply];
         self.transientReply = YES;
         self.inlineComposeView.text = self.reply.content;
@@ -364,6 +351,10 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)contentView:(WPContentView *)contentView didReceiveAuthorLinkAction:(id)sender {
     NSURL *url = [NSURL URLWithString:self.comment.author_url];
     [self openInAppWebView:url];
+}
+
+- (void)contentView:(WPContentView *)contentView didReceiveLinkAction:(id)sender {
+    [self openInAppWebView:((DTLinkButton *)sender).URL];
 }
 
 @end

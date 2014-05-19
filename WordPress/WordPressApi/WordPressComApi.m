@@ -1,11 +1,3 @@
-//
-//  WordPressComApi.m
-//  WordPress
-//
-//  Created by Jorge Bernal on 6/4/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "WordPressComApi.h"
 #import "WordPressComApiCredentials.h"
 #import "NSString+Helpers.h"
@@ -17,7 +9,7 @@
 
 static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1/";
 static NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";
-NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subject,timestamp";
+NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subject,timestamp,meta";
 static NSString *const WordPressComApiLoginUrl = @"https://wordpress.com/wp-login.php";
 NSString *const WordPressComApiErrorDomain = @"com.wordpress.api";
 NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
@@ -531,6 +523,32 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
         parameters:@{ @"content" : reply }
            success:success
            failure:failure];
+}
+
+#pragma mark - Blog Themes
+
+- (void)fetchThemesForBlogId:(NSString *)blogId
+                     success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/themes", blogId];
+    [self getPath:path parameters:nil
+          success:success failure:failure];
+}
+
+- (void)fetchCurrentThemeForBlogId:(NSString *)blogId
+                           success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/themes/mine", blogId];
+    [self getPath:path parameters:nil
+          success:success failure:failure];
+}
+
+- (void)activateThemeForBlogId:(NSString *)blogId themeId:(NSString *)themeId
+                       success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/themes/mine", blogId];
+    [self postPath:path parameters:@{@"theme": themeId}
+           success:success failure:failure];
 }
 
 - (void)setAuthorizationHeaderWithToken:(NSString *)token {

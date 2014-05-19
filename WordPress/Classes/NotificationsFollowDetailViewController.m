@@ -1,11 +1,3 @@
-//
-//  NotificationsLikesDetailViewController.m
-//  WordPress
-//
-//  Created by Dan Roundhill on 11/29/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "NotificationsFollowDetailViewController.h"
 #import "ContextManager.h"
 #import "UIImageView+AFNetworking.h"
@@ -14,38 +6,58 @@
 #import "NSString+Helpers.h"
 #import "NSURL+Util.h"
 #import "NotificationsFollowTableViewCell.h"
+#import "WPTableHeaderViewCell.h"
 #import "WPWebViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "WPAccount.h"
 #import "WPToast.h"
+#import "NoteService.h"
 #import "Note.h"
+#import "AccountService.h"
+#import "NoteBodyItem.h"
+#import "NoteAction.h"
 
 NSString *const WPNotificationFollowRestorationKey = @"WPNotificationFollowRestorationKey";
+NSString *const WPNotificationHeaderCellIdentifier = @"WPNotificationHeaderCellIdentifier";
+NSString *const WPNotificationFollowCellIdentifier = @"WPNotificationFollowCellIdentifier";
+NSString *const WPNotificationFooterCellIdentifier = @"WPNotificationFooterCellIdentifier";
+
+typedef NS_ENUM(NSInteger, WPNotificationSections) {
+	WPNotificationSectionsHeader	= 0,
+	WPNotificationSectionsFollow	= 1,
+	WPNotificationSectionsFooter	= 2,
+	WPNotificationSectionsCount		= 3
+};
+
+CGFloat const WPNotificationsFollowPersonCellHeight = 80.0f;
+CGFloat const WPNotificationsFollowBottomCellHeight = 60.0f;
+
 
 @interface NotificationsFollowDetailViewController () <UITableViewDelegate, UITableViewDataSource, UIViewControllerRestoration>
 
-@property NSMutableArray *noteData;
-@property BOOL hasFooter;
-@property (nonatomic, strong) Note *note;
-@property (nonatomic, weak) IBOutlet UITableView *tableView;
-@property (nonatomic, weak) IBOutlet UIView *postTitleView;
-@property (nonatomic, weak) IBOutlet UIImageView *postBlavatar;
-@property (nonatomic, weak) IBOutlet UILabel *postTitleLabel;
-@property (nonatomic, weak) IBOutlet UIButton *postTitleButton;
+@property (nonatomic, weak) IBOutlet UITableView	*tableView;
+@property (nonatomic, strong) Note					*note;
+@property (nonatomic, strong) NSArray				*filteredBodyItems;
+
+typedef void (^NoteToggleFollowBlock)(BOOL success);
+- (void)toggleFollowBlog:(NoteBodyItem *)item block:(NoteToggleFollowBlock)block;
 
 @end
 
 @implementation NotificationsFollowDetailViewController
 
-+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
     NSString *noteID = [coder decodeObjectForKey:WPNotificationFollowRestorationKey];
-    if (!noteID)
+    if (!noteID) {
         return nil;
+	}
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:noteID]];
-    if (!objectID)
+    if (!objectID) {
         return nil;
+	}
     
     NSError *error = nil;
     Note *restoredNote = (Note *)[context existingObjectWithID:objectID error:&error];
@@ -56,83 +68,63 @@ NSString *const WPNotificationFollowRestorationKey = @"WPNotificationFollowResto
     return [[self alloc] initWithNote:restoredNote];
 }
 
-- (id)initWithNote:(Note *)note
+- (instancetype)initWithNote:(Note *)note
 {
-    self = [super init];
+	NSAssert([note isKindOfClass:[Note class]], @"Invalid Note!");
+
+	self = [super init];
     if (self) {
-        _note = note;
-        self.title = _note.subject;
+		_note = note;
+
+		// Filter the first element in the body items: it's the same as the Subject Field!
+		NSMutableArray *filtered = [_note.bodyItems mutableCopy];
+		if (filtered.count) {
+			NoteBodyItem *firstItem = filtered.firstObject;
+			if (!firstItem.iconURL) {
+				[filtered removeObjectAtIndex:0];
+			}
+		}
+		self.filteredBodyItems = filtered;
+						
+		// Restoration Mechanism
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
     }
+	
     return self;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.title = NSLocalizedString(@"Details", @"NotificationFollow's ViewController Title");
+	
+	NSAssert(self.tableView, @"Null Outlet!");
+	
+	[self.tableView registerClass:[WPTableHeaderViewCell class] forCellReuseIdentifier:WPNotificationHeaderCellIdentifier];
+	[self.tableView registerClass:[NotificationsFollowTableViewCell class] forCellReuseIdentifier:WPNotificationFollowCellIdentifier];
+	[self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:WPNotificationFooterCellIdentifier];
+    self.tableView.separatorInset = UIEdgeInsetsZero;
+    [self.tableView setDelegate:self];
 
-    if (_note) {
-        _noteData = [[[_note noteData] objectForKey:@"body"] objectForKey:@"items"];
-    }
-    
-    _postTitleView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    _postTitleView.layer.borderWidth = 1.0 / [[UIScreen mainScreen] scale];
-    
-    NSString *headerText = [[[_note noteData] objectForKey:@"body"] objectForKey:@"header_text"];
-    if (headerText) {
-        UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 40.0f)];
-        [headerLabel setBackgroundColor:[WPStyleGuide itsEverywhereGrey]];
-        [headerLabel setTextAlignment:NSTextAlignmentCenter];
-        [headerLabel setTextColor:[WPStyleGuide whisperGrey]];
-        [headerLabel setFont:[WPStyleGuide subtitleFont]];
-        [headerLabel setText: [headerText stringByDecodingXMLCharacters]];
-        [self.tableView setTableHeaderView:headerLabel];
-        [self.view bringSubviewToFront:_postTitleView];
-        
-        NSString *headerLink = [[[_note noteData] objectForKey:@"body"] objectForKey:@"header_link"];
-        if (headerLink && [headerLink isKindOfClass:[NSString class]]) {
-            NSURL *postURL = [NSURL URLWithString:headerLink];
-            if (postURL) {
-                NSString *blavatarURL = [NSString stringWithFormat:@"http://gravatar.com/blavatar/%@?s=72&d=404", [[postURL host] md5]];
-                [_postBlavatar setImageWithURL:[NSURL URLWithString:blavatarURL] placeholderImage:[UIImage imageNamed:@"blavatar-wpcom"]];
-            }
-        }
-    }
-    
-    if (_note.subject) {
-        // Silly way to get the post title until we get it from the API directly
-        NSArray *quotedText = [_note.subject componentsSeparatedByString: @"\""];
-        if ([quotedText count] >= 3) {
-            NSString *postTitle = [[quotedText objectAtIndex:[quotedText count] - 2] stringByDecodingXMLCharacters];
-            [_postTitleLabel setText:postTitle];
-        }
-    }
-    
-    
-    NSString *footerText = [[[_note noteData] objectForKey:@"body"] objectForKey:@"footer_text"];
-    if (footerText && ![footerText isEqualToString:@""]) {
-        _hasFooter = YES;
-    }
-    
-    [_tableView setDelegate:self];
-    
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
-}
-
-- (void)didReceiveMemoryWarning
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [super viewWillAppear:animated];
+	
+	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+	if (selectedIndexPath) {
+		[self.tableView deselectRowAtIndexPath:selectedIndexPath animated:animated];
+	}
 }
 
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
-    [coder encodeObject:[[self.note.objectID URIRepresentation] absoluteString] forKey:WPNotificationFollowRestorationKey];
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
+{
+	NSString *noteURL = [[self.note.objectID URIRepresentation] absoluteString];
+    [coder encodeObject:noteURL forKey:WPNotificationFollowRestorationKey];
     [super encodeRestorableStateWithCoder:coder];
 }
 
@@ -140,219 +132,203 @@ NSString *const WPNotificationFollowRestorationKey = @"WPNotificationFollowResto
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
-    if (_hasFooter)
-        return 2;
-    else
-        return 1;
+	// Hide the footer section if needed
+	if (_note.bodyFooterText.length == 0) {
+		return WPNotificationSectionsCount - 1;
+	}
+	
+	return WPNotificationSectionsCount;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    if (section == 0)
-        return [_noteData count];
-    else
+    if (section == WPNotificationSectionsFollow) {
+        return self.filteredBodyItems.count;
+    } else {
         return 1;
+	}
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0)
-        return 100.0f;
-    else
-        return 60.0f;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == WPNotificationSectionsHeader) {
+		NSString *subject = [NSString decodeXMLCharactersIn:_note.subject];
+		return [WPTableHeaderViewCell cellHeightForText:subject];
+    } else if (indexPath.section == WPNotificationSectionsFollow) {
+        return WPNotificationsFollowPersonCellHeight;
+    } else {
+        return WPNotificationsFollowBottomCellHeight;
+	}
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
-        static NSString *CellIdentifier = @"FollowCell";
-        NotificationsFollowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [[NotificationsFollowTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-            [cell.actionButton addTarget:self action:@selector(followBlog:) forControlEvents:UIControlEventTouchUpInside];
-        }
+    if (indexPath.section == WPNotificationSectionsHeader) {
+
+        UITableViewCell *cell			= [tableView dequeueReusableCellWithIdentifier:WPNotificationHeaderCellIdentifier];
         
-        cell.textLabel.text = @"";
-        cell.detailTextLabel.text = @"";
-        [cell.actionButton setHidden:NO];
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.textLabel.text				= [NSString decodeXMLCharactersIn:_note.subject];
+        cell.textLabel.numberOfLines	= 0;
+        cell.textLabel.textAlignment	= NSTextAlignmentCenter;
+        cell.accessoryType				= UITableViewCellAccessoryDisclosureIndicator;
         
-        NSDictionary *selectedNote = [_noteData objectAtIndex:indexPath.row];
-        NSDictionary *noteAction = [selectedNote objectForKey:@"action"];
-        NSDictionary *noteActionDetails;
-        if ([noteAction isKindOfClass:[NSDictionary class]])
-            noteActionDetails = [noteAction objectForKey:@"params"];
-        if (noteActionDetails) {
-            if ([[noteAction objectForKey:@"type"] isEqualToString:@"follow"]) {
-                 if (![[noteActionDetails objectForKey:@"blog_title"] isEqualToString:@""]) {
-                     [cell.actionButton setTitle:[NSString decodeXMLCharactersIn: [noteActionDetails objectForKey:@"blog_title"]] forState:UIControlStateNormal];
-                     if ([[noteActionDetails objectForKey:@"is_following"] intValue] == 1) {
-                         [cell setFollowing: YES];
-                     } else {
-                         [cell setFollowing: NO];
-                     }
-                } else {
-                     NSString *blogTitle = [selectedNote objectForKey:@"header_text"];
-                     if ([blogTitle length] == 0)
-                         blogTitle = NSLocalizedString(@"(No Title)", @"Blog with no title");
-                     [cell.actionButton setTitle:blogTitle forState:UIControlStateNormal];
-                }
-                [cell.actionButton setTag:indexPath.row];
-                if ([noteActionDetails objectForKey:@"blog_url"]) {
-                    cell.detailTextLabel.text = [[NSString decodeXMLCharactersIn:[noteActionDetails objectForKey:@"blog_url"]] stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-                    cell.detailTextLabel.textColor = [WPStyleGuide newKidOnTheBlockBlue];
-                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                }
-            } else {
-                [cell.actionButton setHidden:YES];
-            }
-        } else {
-            // No action available for this user
-            [cell.actionButton setHidden:YES];
-            cell.textLabel.text = [selectedNote objectForKey:@"header_text"];
-        }
-        if ([selectedNote objectForKey:@"icon"]) {
-            NSString *imageURL = [[selectedNote objectForKey:@"icon"] stringByReplacingOccurrencesOfString:@"s=256" withString:@"s=160"];
-            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageURL]];
-            [request setHTTPShouldHandleCookies:NO];
+        // Note that we're using this cell as a section header. Since 'didPressCellAtIndex:' method isn't gonna get called,
+        // let's use a GestureRecognizer!
+        cell.gestureRecognizers			= @[ [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewPostTitle:)] ];
+        
+        return cell;
+        
+    } else if (indexPath.section == WPNotificationSectionsFollow) {
+        
+        NotificationsFollowTableViewCell *cell	= [tableView dequeueReusableCellWithIdentifier:WPNotificationFollowCellIdentifier];
+        NoteBodyItem *noteItem					= self.filteredBodyItems[indexPath.row];
+		__weak __typeof(self) weakSelf			= self;
+		
+        cell.textLabel.text			= @"";
+        cell.detailTextLabel.text	= @"";
+		cell.accessoryType			= UITableViewCellAccessoryNone;
+		cell.onClick				= ^(NotificationsFollowTableViewCell* sender) {
+			sender.following = !noteItem.action.following;
+			[weakSelf toggleFollowBlog:noteItem block:^(BOOL success) {
+				// On error: fallback to the previous state
+				if (!success) {
+					sender.following = noteItem.action.following;
+				}
+			}];
+		};
+		
+		// Follow action: anyone?
+		if ([noteItem.action.type isEqualToString:@"follow"]) {
+			cell.actionButton.hidden	= NO;
+			cell.following				= noteItem.action.following;
+			
+			if (noteItem.action.blogURL) {
+				cell.detailTextLabel.text		= [noteItem.action.blogURL.host stringByReplacingOccurrencesOfString:@"http://" withString:@""];
+				cell.detailTextLabel.textColor	= [WPStyleGuide newKidOnTheBlockBlue];
+				cell.accessoryType				= UITableViewCellAccessoryDisclosureIndicator;
+			}
+		// No action available
+		} else {
+			cell.actionButton.hidden	= YES;
+		}
+        
+        cell.textLabel.text = noteItem.headerText;
+
+		// Handle the Icon
+		NSURL *iconURL = noteItem.iconURL;
+        if (iconURL) {
+			UIImage *placeholderImage		= [UIImage imageNamed:@"gravatar"];
+			
+            NSMutableURLRequest *request	= [NSMutableURLRequest requestWithURL:iconURL];
+			request.HTTPShouldHandleCookies = NO;
             [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
             
-            UIImageView *gravatarImageView = cell.imageView;
-            [cell.imageView setImageWithURLRequest:request
-                                  placeholderImage:[UIImage imageNamed:@"gravatar"]
-                                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                               gravatarImageView.image = image;
-                                           }
-                                           failure:nil];
+            [cell.imageView setImageWithURLRequest:request placeholderImage:placeholderImage success:nil failure:nil];
         }
+		
         return cell;
     } else {
-        static NSString *CellIdentifier = @"FooterCell";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-            cell.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.textLabel.backgroundColor = [UIColor clearColor];
-            cell.textLabel.textColor = [WPStyleGuide newKidOnTheBlockBlue];
-            cell.textLabel.font = [WPStyleGuide regularTextFont];
-        }
-        NSString *footerText = [[[_note noteData] objectForKey:@"body"] objectForKey:@"footer_text"];
-        cell.textLabel.text = footerText;
+        UITableViewCell *cell			= [tableView dequeueReusableCellWithIdentifier:WPNotificationFooterCellIdentifier];
+
+		cell.accessoryType				= UITableViewCellAccessoryDisclosureIndicator;
+        cell.backgroundColor			= [WPStyleGuide itsEverywhereGrey];
+		cell.textLabel.backgroundColor	= [UIColor clearColor];
+		cell.textLabel.textColor		= [WPStyleGuide newKidOnTheBlockBlue];
+		cell.textLabel.font				= [WPStyleGuide regularTextFont];
+		cell.textLabel.text				= _note.bodyFooterText;
+		
         return cell;
     }
-    
-    return nil;
 }
 
-- (void)followBlog:(id)sender {
-    UIButton *button = (UIButton *)sender;
-    NSInteger row = button.tag;
+- (void)toggleFollowBlog:(NoteBodyItem *)item block:(NoteToggleFollowBlock)block
+{
+	NSNumber *blogID = item.action.siteID;
+    if (!blogID) {
+		return;
+	}
+	
+    BOOL isFollowing = item.action.following;
+	   
+    [WPAnalytics track:WPAnalyticsStatNotificationPerformedAction];
     
-    NSMutableDictionary *selectedNote = [_noteData objectAtIndex:row];
-    NSMutableDictionary *noteAction = [selectedNote objectForKey:@"action"];
-    NSMutableDictionary *noteDetails;
-    if ([noteAction isKindOfClass:[NSDictionary class]])
-        noteDetails = [noteAction objectForKey:@"params"];
+	// Hit the Backend
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    BOOL isFollowing = [[noteDetails objectForKey:@"is_following"] boolValue];
+	WordPressComApi *restApi = [defaultAccount restApi];
     
-    if (isFollowing) {
-        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUnfollowBlog];
-    } else {
-        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailFollowBlog];
-    }
-    
-    NotificationsFollowTableViewCell *cell = (NotificationsFollowTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
-    
-    [cell setFollowing: !isFollowing];
+    // Instant-gratification toast message
+    NSString *message	= isFollowing ? NSLocalizedString(@"Unfollowed", @"User unfollowed a blog") : NSLocalizedString(@"Followed", @"User followed a blog");
+    NSString *imageName = [NSString stringWithFormat:@"action_icon_%@", (isFollowing) ? @"unfollowed" : @"followed"];
+    [WPToast showToastWithMessage:message andImage:[UIImage imageNamed:imageName]];
 
-    
-    NSUInteger blogID = [[noteDetails objectForKey:@"site_id"] intValue];
-    if (blogID) {
-        [[[WPAccount defaultWordPressComAccount] restApi] followBlog:blogID isFollowing:isFollowing success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSDictionary *followResponse = (NSDictionary *)responseObject;
-            if (followResponse && [[followResponse objectForKey:@"success"] intValue] == 1) {
-                if ([[followResponse objectForKey:@"is_following"] intValue] == 1) {
-                    [cell setFollowing: YES];
-                    [noteDetails setValue:[NSNumber numberWithInt:1] forKey:@"is_following"];
-                }
-                else {
-                    [cell setFollowing: NO];
-                    [noteDetails setValue:[NSNumber numberWithInt:0] forKey:@"is_following"];
-                }
-            } else {
-                [cell setFollowing:isFollowing];
-            }
-            
-            NSString *message = isFollowing ? NSLocalizedString(@"Unfollowed", @"User unfollowed a blog") : NSLocalizedString(@"Followed", @"User followed a blog");
-            NSString *imageName = [NSString stringWithFormat:@"action_icon_%@", (isFollowing) ? @"unfollowed" : @"followed"];
-            [WPToast showToastWithMessage:message andImage:[UIImage imageNamed:imageName]];
-            
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            [cell setFollowing: isFollowing];
-            DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
-        }];
-    }   
+	[restApi followBlog:blogID.integerValue isFollowing:isFollowing success:^(AFHTTPRequestOperation *operation, id responseObject) {
+		
+		NSDictionary *followResponse = (NSDictionary *)responseObject;
+		BOOL success = ([followResponse[@"success"] intValue] == 1);
+		if (success) {
+			BOOL isFollowingNow = ([followResponse[@"is_following"] intValue] == 1);
+			item.action.following = isFollowingNow;
+			
+			// Let's refresh the note: is_following change isn't permanent!
+            NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:_note.managedObjectContext];
+            [noteService refreshNote:_note success:nil failure:^(NSError *error) {
+				DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
+            }];
+		}
+		
+		block(success);
+	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        item.action.following = !isFollowing;
+		DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
+		block(false);
+	}];
 }
 
-- (IBAction)viewPostTitle:(id)sender {
-    [self loadWebViewWithURL:[[[_note noteData] objectForKey:@"body"] objectForKey:@"header_link"]];
+- (IBAction)viewPostTitle:(id)sender
+{
+    [self loadWebViewWithURL:_note.bodyHeaderLink];
 }
 
-- (void)loadWebViewWithURL: (NSString*)url {
-    if (!url)
+- (void)loadWebViewWithURL:(NSString*)url
+{
+    if (!url) {
         return;
+	}
     
-    NSURL *webViewURL = [NSURL URLWithString:url];
-    if (webViewURL) {
-        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-        [webViewController setUrl:webViewURL];
-        [self.navigationController pushViewController:webViewController animated:YES];
-    }
-    
-}
-
-- (IBAction)highlightButton:(id)sender {
-    [_postTitleButton setBackgroundColor:[UIColor UIColorFromHex:0xE3E3E3]];
-}
-
-- (IBAction)resetButton:(id)sender {
-    [_postTitleButton setBackgroundColor:[UIColor clearColor]];
+	WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+	webViewController.url = [NSURL URLWithString:url];
+	[self.navigationController pushViewController:webViewController animated:YES];
 }
 
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
-        NSDictionary *noteAction = [[_noteData objectAtIndex:indexPath.row] objectForKey:@"action"];
-        NSDictionary *likeDetails;
-        if ([noteAction isKindOfClass:[NSDictionary class]])
-            likeDetails = [noteAction objectForKey:@"params"];
-        if (likeDetails) {
-            NSString *blogURLString = [likeDetails objectForKey:@"blog_url"];
-            NSURL *blogURL = [NSURL URLWithString:blogURLString];
-
-            if (!blogURL) {
-                return;
-            }
-            
+    if (indexPath.section == WPNotificationSectionsFollow) {
+		NoteBodyItem *item = self.filteredBodyItems[indexPath.row];
+		NSURL *blogURL = item.action.blogURL;
+        if (blogURL) {
             WPWebViewController *webViewController = [[WPWebViewController alloc] init];
             if ([blogURL isWordPressDotComUrl]) {
-                [webViewController setUsername:[[WPAccount defaultWordPressComAccount] username]];
-                [webViewController setPassword:[[WPAccount defaultWordPressComAccount] password]];
+                NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+                AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+                WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+                [webViewController setUsername:[defaultAccount username]];
+                [webViewController setPassword:[defaultAccount password]];
                 [webViewController setUrl:[blogURL ensureSecureURL]];
             } else {
-                [webViewController setUrl:blogURL];
+				webViewController.url = blogURL;
             }
             [self.navigationController pushViewController:webViewController animated:YES];
         } else {
             [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
         }
     } else {
-        [self loadWebViewWithURL:[[[_note noteData] objectForKey:@"body"] objectForKey:@"footer_link"]];
+        [self loadWebViewWithURL:_note.bodyFooterLink];
     }
 }
 

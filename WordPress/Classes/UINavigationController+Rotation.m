@@ -1,11 +1,3 @@
-//
-//  UINavigationController+Rotation.m
-//  WordPress
-//
-//  Created by Eric J on 9/19/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "UINavigationController+Rotation.h"
 #import <objc/runtime.h>
 
@@ -31,9 +23,20 @@
     return (mask & orientation) ? YES : NO;
 }
 
+- (BOOL)myShouldAutoRotate {
+    if ([self respondsToSelector:@selector(topViewController)] && self.topViewController && [self.topViewController respondsToSelector:@selector(shouldAutorotate)]) {
+        return [self.topViewController shouldAutorotate];
+    }
+    return YES;
+}
+
 + (void)load {    
     Method origMethod = class_getInstanceMethod(self, @selector(supportedInterfaceOrientations));
     Method newMethod = class_getInstanceMethod(self, @selector(mySupportedInterfaceOrientations));
+    method_exchangeImplementations(origMethod, newMethod);
+    
+    origMethod = class_getInstanceMethod(self, @selector(shouldAutorotate));
+    newMethod = class_getInstanceMethod(self, @selector(myShouldAutoRotate));
     method_exchangeImplementations(origMethod, newMethod);
 
     origMethod = class_getInstanceMethod(self, @selector(shouldAutorotateToInterfaceOrientation:));
