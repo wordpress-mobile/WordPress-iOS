@@ -21,7 +21,7 @@ pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailCh
 pod 'CrashlyticsLumberjack', '~>1.0.0'
 pod 'HockeySDK', '~>3.5.0'
 pod 'Helpshift', '4.3.1'
-pod 'Taplytics', '1.2.46'
+pod 'Taplytics', '~>1.2.50'
 pod 'CTAssetsPickerController', '~> 2.2.0'
 pod 'SocketRocket', :git => 'https://github.com/jleandroperez/SocketRocket.git'
 pod 'Google-Diff-Match-Patch'

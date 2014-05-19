@@ -42,8 +42,8 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic globalID;
 
 - (BOOL)isFollowable {
-    // TODO: We can improve this check. Make sure that this includes jetpack blogs but not feedbag blogs
-    return self.isWPCom;
+    // For now, anything in the reader is something that can be followed.
+    return YES;
 }
 
 - (BOOL)isPrivate {

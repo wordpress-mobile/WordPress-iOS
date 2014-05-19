@@ -202,7 +202,7 @@
 #define COCOAPODS_POD_AVAILABLE_Taplytics
 #define COCOAPODS_VERSION_MAJOR_Taplytics 1
 #define COCOAPODS_VERSION_MINOR_Taplytics 2
-#define COCOAPODS_VERSION_PATCH_Taplytics 46
+#define COCOAPODS_VERSION_PATCH_Taplytics 50
 
 // UIDeviceIdentifier
 #define COCOAPODS_POD_AVAILABLE_UIDeviceIdentifier

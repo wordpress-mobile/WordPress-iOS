@@ -615,7 +615,6 @@
 		8524551817DE4DBE00D22F98 /* icon-chevron@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8524551617DE4DBE00D22F98 /* icon-chevron@2x.png */; };
 		8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */ = {isa = PBXBuildFile; fileRef = 8525398A171761D9003F6B32 /* WPComLanguages.m */; };
 		852CD8AD190E0BC4006C9AED /* WPMediaSizing.m in Sources */ = {isa = PBXBuildFile; fileRef = 852CD8AC190E0BC4006C9AED /* WPMediaSizing.m */; };
-		852CD8B1190E0D36006C9AED /* WPMediaSizingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 852CD8B0190E0D36006C9AED /* WPMediaSizingTest.m */; };
 		852F4E8C17BED193005ED539 /* PostSettingsSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 852F4E8B17BED193005ED539 /* PostSettingsSelectionViewController.m */; };
 		85325A2517BB0DF8008E87D1 /* icon-menu-viewsite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 853259FD17BB0DF8008E87D1 /* icon-menu-viewsite@2x.png */; };
 		85325A2617BB0DF8008E87D1 /* icon-menu-viewsite.png in Resources */ = {isa = PBXBuildFile; fileRef = 853259FE17BB0DF8008E87D1 /* icon-menu-viewsite.png */; };
@@ -5637,7 +5636,6 @@
 				C5CFDC2A184F962B00097B05 /* CoreDataConcurrencyTest.m in Sources */,
 				5DE8A0411912D95B00B2FF59 /* ReaderServiceTest.m in Sources */,
 				E150520F16CAC75A00D3DDDC /* CoreDataTestHelper.m in Sources */,
-				852CD8B1190E0D36006C9AED /* WPMediaSizingTest.m in Sources */,
 				E10675C8183F82E900E5CE5C /* SettingsViewControllerTest.m in Sources */,
 				F1564E5B18946087009F8F97 /* NSStringHelpersTest.m in Sources */,
 				E131CB5E16CAD659004B0314 /* AsyncTestHelper.m in Sources */,
