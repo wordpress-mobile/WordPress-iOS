@@ -1,12 +1,3 @@
-/*
- * ContextManager.m
- *
- * Copyright (c) 2013 WordPress. All rights reserved.
- *
- * Licensed under GNU General Public License 2.0.
- * Some rights reserved. See license.txt
- */
-
 #import "ContextManager.h"
 #import "WordPressComApi.h"
 
@@ -17,7 +8,7 @@ static ContextManager *instance;
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, strong) NSManagedObjectContext *mainContext;
-@property (nonatomic, strong) NSManagedObjectContext *backgroundContext;
+@property (nonatomic, strong) NSManagedObjectContext *rootContext;
 
 @end
 
@@ -41,6 +32,7 @@ static ContextManager *instance;
     NSManagedObjectContext *derived = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     derived.parentContext = self.mainContext;
     derived.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+
     return derived;
 }
 
@@ -49,38 +41,31 @@ static ContextManager *instance;
         return _mainContext;
     }
     _mainContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-    _mainContext.persistentStoreCoordinator = [self persistentStoreCoordinator];
+    _mainContext.parentContext = self.rootContext;
     _mainContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeChangesIntoBackgroundContext:) name:NSManagedObjectContextDidSaveNotification object:_mainContext];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveChangesInRootContext:) name:NSManagedObjectContextDidSaveNotification object:_mainContext];
     return _mainContext;
 }
 
-- (NSManagedObjectContext *const)backgroundContext {
-    if (_backgroundContext) {
-        return _backgroundContext;
+- (NSManagedObjectContext *const)rootContext {
+    if (_rootContext) {
+        return _rootContext;
     }
-    _backgroundContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    _backgroundContext.persistentStoreCoordinator = [self persistentStoreCoordinator];
-    _backgroundContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+    _rootContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    _rootContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
+    _rootContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeChangesIntoMainContext:)
-                                                 name:NSManagedObjectContextDidSaveNotification object:_backgroundContext];
-    return _backgroundContext;
+    return _rootContext;
 }
 
-- (void)mergeChangesIntoMainContext:(NSNotification *)notification {
-    [self.mainContext performBlock:^{
-        DDLogVerbose(@"Merging changes into main context");
-        [self.mainContext mergeChangesFromContextDidSaveNotification:notification];
-    }];
-}
-
-- (void)mergeChangesIntoBackgroundContext:(NSNotification *)notification {
-    [self.backgroundContext performBlock:^{
-        DDLogVerbose(@"Merging changes into background context");
-        [self.backgroundContext mergeChangesFromContextDidSaveNotification:notification];
+- (void)saveChangesInRootContext:(NSNotification *)notification {
+    [self.rootContext performBlock:^{
+        DDLogVerbose(@"Saving changes in root context");
+        [self.rootContext processPendingChanges];
+        
+        // Changes are not saved out to the persistent store coordinator until the root context is saved
+        [self saveContext:self.rootContext];
     }];
 }
 
@@ -96,6 +81,7 @@ static ContextManager *instance;
         if (![context obtainPermanentIDsForObjects:context.insertedObjects.allObjects error:&error]) {
             DDLogError(@"Error obtaining permanent object IDs for %@, %@", context.insertedObjects.allObjects, error);
         }
+        
         if (![context save:&error]) {
             @throw [NSException exceptionWithName:@"Unresolved Core Data save error"
                                            reason:@"Unresolved Core Data save error - derived context"
@@ -106,11 +92,22 @@ static ContextManager *instance;
             dispatch_async(dispatch_get_main_queue(), completionBlock);
         }
         
+        // While this is needed because we don't observe change notifications for the derived context, it
+        // breaks concurrency rules for Core Data.  Provide a mechanism to destroy a derived context that
+        // unregisters it from the save notification instead and rely upon that for merging.
         [self saveContext:self.mainContext];
     }];
 }
 
 - (void)saveContext:(NSManagedObjectContext *)context {
+    // Save derived contexts a little differently
+    // TODO - When the service refactor is complete, remove this - calling methods to Services should know what kind of context
+    //        it is and call the saveDerivedContext at the end of the work
+    if (context.parentContext == self.mainContext) {
+        [self saveDerivedContext:context];
+        return;
+    }
+    
     [context performBlock:^{
         NSError *error;
         if (![context obtainPermanentIDsForObjects:context.insertedObjects.allObjects error:&error]) {

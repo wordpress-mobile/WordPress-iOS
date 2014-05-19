@@ -1,11 +1,3 @@
-//
-//  EditCommentViewController.m
-//  WordPress
-//
-//  Created by John Bickerstaff on 1/24/10.
-//  
-//
-
 #import "EditCommentViewController.h"
 #import "CommentViewController.h"
 #import "IOS7CorrectedTextView.h"

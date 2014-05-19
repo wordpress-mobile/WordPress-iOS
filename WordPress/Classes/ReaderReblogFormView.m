@@ -1,11 +1,3 @@
-//
-//  ReaderReblogFormView.m
-//  WordPress
-//
-//  Created by Eric J on 6/6/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "ReaderReblogFormView.h"
 #import "WordPressComApi.h"
 #import "WPToast.h"
@@ -195,8 +187,7 @@
 			[self.delegate readerTextFormDidSend:self];
 		}
         
-        [WPMobileStats trackEventForWPCom:StatsEventReaderReblogged];
-		
+        [WPAnalytics track:WPAnalyticsStatReaderRebloggedArticle];
 	} failure:^(NSError *error) {
 		DDLogError(@"Error Reblogging Post : %@", [error localizedDescription]);
 		[self enableForm:YES];

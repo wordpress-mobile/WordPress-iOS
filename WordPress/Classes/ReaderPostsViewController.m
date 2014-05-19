@@ -1,11 +1,3 @@
-//
-//  ReaderPostsViewController.m
-//  WordPress
-//
-//  Created by Eric J on 3/21/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import <DTCoreText/DTCoreText.h>
 #import "DTCoreTextFontDescriptor.h"
 #import "WPTableViewControllerSubclass.h"
@@ -29,6 +21,7 @@
 #import "InlineComposeView.h"
 #import "ReaderCommentPublisher.h"
 #import "ContextManager.h"
+#import "AccountService.h"
 
 static CGFloat const RPVCHeaderHeightPhone = 10.f;
 static CGFloat const RPVCMaxImageHeightPercentage = 0.58f;
@@ -180,8 +173,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     if (!_viewHasAppeared) {
-	    [WPMobileStats trackEventForWPCom:StatsEventReaderOpened properties:[self categoryPropertyForStats]];
-	    [WPMobileStats pingWPComStatsEndpoint:@"home_page"];
+        [WPAnalytics track:WPAnalyticsStatReaderAccessed withProperties:[self tagPropertyForStats]];
         _viewHasAppeared = YES;
     }
 
@@ -218,7 +210,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self resizeTableViewForImagePreloading];
     [self configureNoResultsView];
 }
-
 
 #pragma mark - Instance Methods
 
@@ -377,9 +368,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     ReaderPost *post = postView.post;
 	[post toggleLikedWithSuccess:^{
         if ([post.isLiked boolValue]) {
-            [WPMobileStats trackEventForWPCom:StatsEventReaderLikedPost];
-        } else {
-            [WPMobileStats trackEventForWPCom:StatsEventReaderUnlikedPost];
+            [WPAnalytics track:WPAnalyticsStatReaderLikedArticle];
         }
 	} failure:^(NSError *error) {
 		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
@@ -474,6 +463,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 #pragma mark - ReaderCommentPublisherDelegate Methods
 
 - (void)commentPublisherDidPublishComment:(ReaderCommentPublisher *)publisher {
+    [WPAnalytics track:WPAnalyticsStatReaderCommentedOnArticle];
     publisher.post.dateCommentsSynced = nil;
     [self.inlineComposeView dismissComposer];
 }
@@ -542,7 +532,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (NSString *)noResultsTitleText {
 	NSString *prompt = NSLocalizedString(@"Sorry. No posts yet.", @"");
-    if ([WPAccount defaultWordPressComAccount] == nil) {
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    if (defaultAccount == nil) {
         return prompt; // un-authed endpoints do not include likes or follows
     }
     
@@ -689,15 +684,19 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
     DDLogMethod();
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
     // if needs auth.
-    if ([WPCookie hasCookieForURL:[NSURL URLWithString:@"https://wordpress.com"] andUsername:[[WPAccount defaultWordPressComAccount] username]]) {
+    if ([WPCookie hasCookieForURL:[NSURL URLWithString:@"https://wordpress.com"] andUsername:[defaultAccount username]]) {
        [self syncReaderItemsWithSuccess:success failure:failure];
         return;
     }
 
     [[WordPressAppDelegate sharedWordPressApplicationDelegate] useDefaultUserAgent];
-    NSString *username = [[WPAccount defaultWordPressComAccount] username];
-    NSString *password = [[WPAccount defaultWordPressComAccount] password];
+    NSString *username = [defaultAccount username];
+    NSString *password = [defaultAccount password];
     NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
     NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=https://wordpress.com",
                              [username stringByUrlEncoding],
@@ -741,8 +740,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 									 failure(error);
 								 }
 							 }];
-    [WPMobileStats trackEventForWPCom:StatsEventReaderHomePageRefresh];
-    [WPMobileStats pingWPComStatsEndpoint:@"home_page_refresh"];
 }
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
@@ -777,7 +774,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 								 }
 							 }];
     
-    [WPMobileStats trackEventForWPCom:StatsEventReaderInfiniteScroll properties:[self categoryPropertyForStats]];
+    [WPAnalytics track:WPAnalyticsStatReaderInfiniteScroll withProperties:[self tagPropertyForStats]];
 }
 
 - (UITableViewRowAnimation)tableViewRowAnimation {
@@ -861,8 +858,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     
     [self.navigationController pushViewController:self.detailController animated:YES];
     
-    [WPMobileStats trackEventForWPCom:StatsEventReaderOpenedArticleDetails];
-    [WPMobileStats pingWPComStatsEndpoint:@"details_page"];
+    [WPAnalytics track:WPAnalyticsStatReaderOpenedArticle];
 }
 
 
@@ -909,12 +905,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
 		[NSUserDefaults resetStandardUserDefaults];
     }
-
-    if ([self isCurrentCategoryFreshlyPressed]) {
-        [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedFreshlyPressedTopic];
-        [WPMobileStats pingWPComStatsEndpoint:@"freshly"];
-    } else {
-        [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedCategory properties:[self categoryPropertyForStats]];
+    
+    [WPAnalytics track:WPAnalyticsStatReaderLoadedTag withProperties:[self tagPropertyForStats]];
+    if ([self isCurrentTagFreshlyPressed]) {
+        [WPAnalytics track:WPAnalyticsStatReaderLoadedFreshlyPressed];
     }
 }
 
@@ -927,7 +921,11 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self.tableView reloadData];
     [self.navigationController popToViewController:self animated:NO];
     
-    if ([WPAccount defaultWordPressComAccount] && [self isViewLoaded]) {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    if (defaultAccount && [self isViewLoaded]) {
         [self syncItems];
     }
 }
@@ -935,39 +933,65 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 #pragma mark - Utility
 
-- (BOOL)isCurrentCategoryFreshlyPressed {
-    return [[self currentCategory] isEqualToString:@"freshly-pressed"];
+- (BOOL)isCurrentTagFreshlyPressed {
+    return [[self currentTag] rangeOfString:@"freshly-pressed"].location != NSNotFound;
 }
 
-- (NSString *)currentCategory {
-    NSDictionary *categoryDetails = [[NSUserDefaults standardUserDefaults] objectForKey:ReaderCurrentTopicKey];
-    NSString *category = [categoryDetails stringForKey:@"endpoint"];
-    if (category == nil) {
-        if ([WPAccount defaultWordPressComAccount] != nil) {
+- (NSString *)currentTag {
+    NSDictionary *tagDetails = [[NSUserDefaults standardUserDefaults] objectForKey:ReaderCurrentTopicKey];
+    NSString *tag = [tagDetails stringForKey:@"endpoint"];
+    if (tag == nil) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+        
+        if (defaultAccount != nil) {
             return @"read/following";
         } else {
             return @"freshly-pressed";
         }
     }
-    return category;
+    return tag;
 }
 
-- (NSDictionary *)categoryPropertyForStats {
-    return @{@"category": [self currentCategory]};
+- (NSString *)currentTagTitle
+{
+    NSDictionary *tagDetails = [[NSUserDefaults standardUserDefaults] objectForKey:ReaderCurrentTopicKey];
+    NSString *tagTitle = [tagDetails stringForKey:@"title"];
+    if (tagTitle == nil) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+        
+        if (defaultAccount != nil) {
+            return @"Blogs I Follow";
+        } else {
+            return @"Freshly Pressed";
+        }
+    } else {
+        return tagTitle;
+    }
+}
+
+- (NSDictionary *)tagPropertyForStats {
+    return @{@"tag": [self currentTagTitle]};
 }
 
 - (void)fetchBlogsAndPrimaryBlog {
 	NSURL *xmlrpc;
     NSString *username, *password, *authToken;
-    WPAccount *account = [WPAccount defaultWordPressComAccount];
-    if (!account) {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    if (!defaultAccount) {
         return;
     }
 	
 	xmlrpc = [NSURL URLWithString:@"https://wordpress.com/xmlrpc.php"];
-	username = account.username;
-	password = account.password;
-    authToken = account.authToken;
+	username = defaultAccount.username;
+	password = defaultAccount.password;
+    authToken = defaultAccount.authToken;
     
     WPXMLRPCClient *api = [WPXMLRPCClient clientWithXMLRPCEndpoint:xmlrpc];
     [api setAuthorizationHeaderWithToken:authToken];
@@ -986,33 +1010,37 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 				
 				[[NSUserDefaults standardUserDefaults] setObject:usersBlogs forKey:@"wpcom_users_blogs"];
 				
-                [[[WPAccount defaultWordPressComAccount] restApi] getPath:@"me"
-                                          parameters:nil
-                                             success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                                 if ([usersBlogs count] < 1)
-                                                     return;
-                                                 
-                                                 NSDictionary *dict = (NSDictionary *)responseObject;
-                                                 __block NSNumber *preferredBlogId;
-                                                 NSNumber *primaryBlog = [dict objectForKey:@"primary_blog"];
-                                                 [usersBlogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                                                     if ([primaryBlog isEqualToNumber:[obj numberForKey:@"blogid"]]) {
-                                                         preferredBlogId = [obj numberForKey:@"blogid"];
-                                                         *stop = YES;
-                                                     }
-                                                 }];
-                                                 
-                                                 if (!preferredBlogId) {
-                                                     NSDictionary *dict = [usersBlogs objectAtIndex:0];
-                                                     preferredBlogId = [dict numberForKey:@"blogid"];
-                                                 }
-                                                 
-                                                 [[NSUserDefaults standardUserDefaults] setObject:preferredBlogId forKey:@"wpcom_users_prefered_blog_id"];
-                                                 [NSUserDefaults resetStandardUserDefaults];
-                                                 
-                                             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                                 // TODO: Handle Failure. Retry maybe?
-                                             }];
+                NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+                AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+                WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+                [[defaultAccount restApi] getPath:@"me"
+                                       parameters:nil
+                                          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                              if ([usersBlogs count] < 1)
+                                                  return;
+                                              
+                                              NSDictionary *dict = (NSDictionary *)responseObject;
+                                              __block NSNumber *preferredBlogId;
+                                              NSNumber *primaryBlog = [dict objectForKey:@"primary_blog"];
+                                              [usersBlogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                                                  if ([primaryBlog isEqualToNumber:[obj numberForKey:@"blogid"]]) {
+                                                      preferredBlogId = [obj numberForKey:@"blogid"];
+                                                      *stop = YES;
+                                                  }
+                                              }];
+                                              
+                                              if (!preferredBlogId) {
+                                                  NSDictionary *dict = [usersBlogs objectAtIndex:0];
+                                                  preferredBlogId = [dict numberForKey:@"blogid"];
+                                              }
+                                              
+                                              [[NSUserDefaults standardUserDefaults] setObject:preferredBlogId forKey:@"wpcom_users_prefered_blog_id"];
+                                              [NSUserDefaults resetStandardUserDefaults];
+                                              
+                                          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                              // TODO: Handle Failure. Retry maybe?
+                                          }];
                 
                 if ([usersBlogs count] == 0) {
                     return;

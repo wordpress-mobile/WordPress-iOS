@@ -1,19 +1,9 @@
-/*
- * CategoryService.h
- *
- * Copyright (c) 2014 WordPress. All rights reserved.
- *
- * Licensed under GNU General Public License 2.0.
- * Some rights reserved. See license.txt
- */
-
 #import <Foundation/Foundation.h>
+#import "LocalService.h"
 
 @class Category;
 
-@interface CategoryService : NSObject
-
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context;
+@interface CategoryService : NSObject <LocalService>
 
 - (BOOL)existsName:(NSString *)name forBlogObjectID:(NSManagedObjectID *)blogObjectID withParentId:(NSNumber *)parentId;
 

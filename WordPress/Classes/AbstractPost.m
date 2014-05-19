@@ -1,11 +1,3 @@
-//
-//  AbstractPost
-//  WordPress
-//
-//  Created by Jorge Bernal on 12/27/10.
-//  Copyright 2010 WordPress. All rights reserved.
-//
-
 #import "AbstractPost.h"
 #import "Media.h"
 #import "ContextManager.h"
@@ -75,7 +67,7 @@
 }
 
 + (void)mergeNewPosts:(NSArray *)newObjects forBlog:(Blog *)blog {
-    NSManagedObjectContext *backgroundContext = [[ContextManager sharedInstance] backgroundContext];
+    NSManagedObjectContext *backgroundContext = [[ContextManager sharedInstance] newDerivedContext];
     [backgroundContext performBlock:^{
         NSMutableArray *objectsToKeep = [NSMutableArray array];
         Blog *contextBlog = (Blog *)[backgroundContext existingObjectWithID:blog.objectID error:nil];
@@ -123,7 +115,7 @@
             }
         }
         
-        [[ContextManager sharedInstance] saveContext:backgroundContext];
+        [[ContextManager sharedInstance] saveDerivedContext:backgroundContext];
     }];
 }
 
@@ -283,12 +275,62 @@
     return NO;
 }
 
+- (BOOL)hasPhoto
+{
+    if ([self.media count] == 0)
+        return false;
+    
+    if (self.featuredImage != nil)
+        return true;
+    
+    for (Media *media in self.media) {
+        if (media.mediaType == MediaTypeImage || media.mediaType == MediaTypeFeatured) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+- (BOOL)hasVideo
+{
+    if ([self.media count] == 0)
+        return false;
+    
+    for (Media *media in self.media) {
+        if (media.mediaType ==  MediaTypeVideo) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+- (BOOL)hasCategories
+{
+    return NO;
+}
+
+- (BOOL)hasTags
+{
+    return NO;
+}
+
 - (void)findComments {
     NSSet *comments = [self.blog.comments filteredSetUsingPredicate:
                        [NSPredicate predicateWithFormat:@"(postID == %@) AND (post == NULL)", self.postID]];
     if (comments && [comments count] > 0) {
         [self.comments unionSet:comments];
     }
+}
+
+- (void)setFeaturedImage:(Media *)featuredImage {
+    // Implement in subclasses.
+}
+
+- (Media *)featuredImage {
+    // Imlplement in subclasses
+    return nil;
 }
 
 

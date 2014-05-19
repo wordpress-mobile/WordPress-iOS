@@ -1,11 +1,3 @@
-//
-//  CoreDataTestHelper.h
-//  WordPress
-//
-//  Created by Jorge Bernal on 2/12/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
@@ -19,8 +11,8 @@
 - (BOOL)migrateToModelName:(NSString *)modelName;
 
 - (NSManagedObject *)insertEntityIntoMainContextWithName:(NSString *)entityName;
-- (NSManagedObject *)insertEntityIntoBackgroundContextWithName:(NSString *)entityName;
+- (NSManagedObject *)insertEntityWithName:(NSString *)entityName intoContext:(NSManagedObjectContext*)context;
 - (NSArray *)allObjectsInMainContextForEntityName:(NSString *)entityName;
-- (NSArray *)allObjectsInBackgroundContextForEntityName:(NSString *)entityName;
+- (NSArray *)allObjectsInContext:(NSManagedObjectContext *)context forEntityName:(NSString *)entityName;
 
 @end

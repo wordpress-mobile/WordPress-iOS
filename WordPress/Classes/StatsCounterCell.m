@@ -1,12 +1,3 @@
-/*
- * StatsCounterCell.m
- *
- * Copyright (c) 2014 WordPress. All rights reserved.
- *
- * Licensed under GNU General Public License 2.0.
- * Some rights reserved. See license.txt
- */
-
 #import "StatsCounterCell.h"
 
 @interface StatsCounterCell ()
@@ -104,9 +95,9 @@ static CGFloat const StatCounterCellHeight = 100.0f;
 - (void)setTitle:(NSString *)title {
     UIView *separator = [[UIView alloc] init];
     if (title.length > 0) {
-        self.titleLabel.text = [title uppercaseString];
+        self.titleLabel.text = [title uppercaseStringWithLocale:[NSLocale currentLocale]];
         self.titleLabel.textAlignment = NSTextAlignmentLeft;
-        self.titleLabel.textColor = [WPStyleGuide newKidOnTheBlockBlue];
+        self.titleLabel.textColor = [WPStyleGuide whisperGrey];
     }
     [self.separatorLines addObject:separator];
     [self addSubview:separator];

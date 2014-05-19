@@ -1,11 +1,3 @@
-//
-//  ReaderCommentTableViewCell.m
-//  WordPress
-//
-//  Created by Eric J on 5/7/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "ReaderCommentTableViewCell.h"
 #import <DTCoreText/DTCoreText.h>
 #import "UIImageView+Gravatar.h"

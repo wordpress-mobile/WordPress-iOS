@@ -1,11 +1,3 @@
-//
-//  NotificationsViewController.m
-//  WordPress
-//
-//  Created by Beau Collins on 11/05/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "NotificationsViewController.h"
 #import "NotificationsCommentDetailViewController.h"
 #import "NotificationsFollowDetailViewController.h"
@@ -20,30 +12,41 @@
 #import "Note.h"
 #import "NotificationsManager.h"
 #import "NotificationSettingsViewController.h"
+#import "NotificationsBigBadgeViewController.h"
+#import "NoteService.h"
+#import "AccountService.h"
+#import "ContextManager.h"
+#import "StatsViewController.h"
 
-NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
+#import "ReaderPost.h"
+#import "ReaderPostDetailViewController.h"
+#import "ContextManager.h"
+
 NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/";
 
-@interface NotificationsViewController () {
-    BOOL _retrievingNotifications;
-    BOOL _viewHasAppeared;
-}
+@interface NotificationsViewController ()
 
-@property (nonatomic, strong) id authListener;
-@property (nonatomic, assign) BOOL isPushingViewController;
+@property (nonatomic, strong) id    authListener;
+@property (nonatomic, assign) BOOL  isPushingViewController;
+@property (nonatomic, assign) BOOL  viewHasAppeared;
+@property (nonatomic, assign) BOOL  retrievingNotifications;
+
+typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
+- (void)loadPostWithId:(NSNumber *)postID fromSite:(NSNumber *)siteID block:(NotificationsLoadPostBlock)block;
 
 @end
 
 
 @implementation NotificationsViewController
 
-+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
     // We need to override the implementation in our superclass or else restoration fails - no blog!
-    UIViewController *controller = [[self alloc] init];
-    return controller;
+    return [[self alloc] init];
 }
 
-- (id)init {
+- (instancetype)init
+{
     self = [super init];
     if (self) {
         self.title = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
@@ -59,6 +62,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
         return NSLocalizedString(@"No notifications yet", @"Displayed when the user pulls up the notifications view and they have no items");
     }
 }
+
 - (NSString *)noResultsMessageText
 {
     if ([self showJetpackConnectMessage]) {
@@ -67,6 +71,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
         return nil;
     }
 }
+
 - (NSString *)noResultsButtonText
 {
     if ([self showJetpackConnectMessage]) {
@@ -75,6 +80,7 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
         return nil;
     }
 }
+
 - (UIView *)noResultsAccessoryView
 {
     if ([self showJetpackConnectMessage]) {
@@ -87,16 +93,23 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
 {
     // Show Jetpack information screen
+    [WPAnalytics track:WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen withProperties:@{@"source": @"notifications"}];
     WPWebViewController *webViewController = [[WPWebViewController alloc] init];
     [webViewController setUrl:[NSURL URLWithString:NotificationsJetpackInformationURL]];
     [self.navigationController pushViewController:webViewController animated:YES];
 }
 
-- (BOOL)showJetpackConnectMessage {
-    return [WPAccount defaultWordPressComAccount] == nil;
+- (BOOL)showJetpackConnectMessage
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    return defaultAccount == nil;
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[UIApplication sharedApplication] removeObserver:self forKeyPath:@"applicationIconBadgeNumber"];
 }
@@ -128,17 +141,19 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     [self updateTabBarBadgeNumber];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     DDLogMethod();
     [super viewWillAppear:animated];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated
+{
     [super viewDidAppear:animated];
 
     if (!_viewHasAppeared) {
         _viewHasAppeared = YES;
-        [WPMobileStats incrementProperty:StatsPropertyNotificationsOpened forEvent:StatsEventAppClosed];
+        [WPAnalytics track:WPAnalyticsStatNotificationsAccessed];
     }
     
     _isPushingViewController = NO;
@@ -149,18 +164,18 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     }
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
+- (void)viewDidDisappear:(BOOL)animated
+{
     [super viewDidDisappear:animated];
-    if (!_isPushingViewController)
+    if (!_isPushingViewController) {
         [self pruneOldNotes];
+    }
 }
 
 #pragma mark - NSObject(NSKeyValueObserving) methods
 
-- (void)observeValueForKeyPath:(NSString *)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary *)change
-                       context:(void *)context {
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
     if ([keyPath isEqualToString:@"applicationIconBadgeNumber"]) {
         [self updateTabBarBadgeNumber];
     }
@@ -168,7 +183,8 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 #pragma mark - Custom methods
 
-- (void)updateTabBarBadgeNumber {
+- (void)updateTabBarBadgeNumber
+{
     UIApplication *application = [UIApplication sharedApplication];
     NSInteger count = application.applicationIconBadgeNumber;
     
@@ -176,24 +192,26 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     self.navigationController.tabBarItem.badgeValue = countString;
 }
 
-- (void)refreshUnreadNotes {
-    [Note refreshUnreadNotesWithContext:self.resultsController.managedObjectContext];
+- (void)refreshUnreadNotes
+{
+    NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.resultsController.managedObjectContext];
+    [noteService refreshUnreadNotes];
 }
 
-- (void)updateSyncDate {
+- (void)updateLastSeenTime
+{
     // get the most recent note
-    NSArray *notes = self.resultsController.fetchedObjects;
-    if ([notes count] > 0) {
-        Note *note = [notes objectAtIndex:0];
-        [[[WPAccount defaultWordPressComAccount] restApi] updateNoteLastSeenTime:note.timestamp success:nil failure:nil];
+    Note *note = [self.resultsController.fetchedObjects firstObject];
+    if (note) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+        [[defaultAccount restApi] updateNoteLastSeenTime:note.timestamp success:nil failure:nil];
     }
-
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:[NSDate date] forKey:NotificationsLastSyncDateKey];
-    [defaults synchronize];
 }
 
-- (void)pruneOldNotes {
+- (void)pruneOldNotes
+{
     NSNumber *pruneBefore;
     Note *lastVisibleNote = [[[self.tableView visibleCells] lastObject] contentProvider];
     if (lastVisibleNote) {
@@ -211,12 +229,12 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
             }
         }
     }
-    [Note pruneOldNotesBefore:pruneBefore withContext:self.resultsController.managedObjectContext];
+
+    NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.resultsController.managedObjectContext];
+    [noteService pruneOldNotesBefore:pruneBefore];
 }
 
 - (void)showNotificationSettings {
-    [WPMobileStats trackEventForWPCom:StatsEventNotificationsClickedManageNotifications];
-    
     NotificationSettingsViewController *notificationSettingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:notificationSettingsViewController];
     navigationController.navigationBar.translucent = NO;
@@ -228,13 +246,15 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
-- (void)closeNotificationSettings {
+- (void)closeNotificationSettings
+{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Public methods
 
-- (void)clearNotificationsBadgeAndSyncItems {
+- (void)clearNotificationsBadgeAndSyncItems
+{
     if (![self isSyncing]) {
         [self syncItems];
     }
@@ -243,47 +263,61 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 #pragma mark - UITableViewDelegate
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     Note *note = [self.resultsController objectAtIndexPath:indexPath];
     return [NewNotificationsTableViewCell rowHeightForContentProvider:note andWidth:WPTableViewFixedWidth];
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     Note *note = [self.resultsController objectAtIndexPath:indexPath];
     
-    BOOL hasDetailsView = [self noteHasDetailView:note];
-    if (hasDetailsView) {
-        [WPMobileStats incrementProperty:StatsPropertyNotificationsOpenedDetails forEvent:StatsEventAppClosed];
+    BOOL hasDetailView = [self noteHasDetailView:note];
+    if (hasDetailView) {
+        [WPAnalytics track:WPAnalyticsStatNotificationsOpenedNotificationDetails];
 
         _isPushingViewController = YES;
+        
         if ([note isComment]) {
-            NotificationsCommentDetailViewController *detailViewController = [[NotificationsCommentDetailViewController alloc] initWithNote:note];
-            [self.navigationController pushViewController:detailViewController animated:YES];
-        } else {
+            NotificationsCommentDetailViewController *commentDetailViewController = [[NotificationsCommentDetailViewController alloc] initWithNote:note];
+            [self.navigationController pushViewController:commentDetailViewController animated:YES];
+        } else if ([note isMatcher] && [note metaPostID] && [note metaSiteID]) {
+            [self loadPostWithId:[note metaPostID] fromSite:[note metaSiteID] block:^(BOOL success, ReaderPost *post) {
+                if (!success) {
+                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                    return;
+                }
+                
+                ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post avatarImageURL:note.avatarURLForDisplay];
+                [self.navigationController pushViewController:controller animated:YES];
+            }];
+        } else if ([note templateType] == WPNoteTemplateMultiLineList || [note templateType] == WPNoteTemplateSingleLineList) {
             NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNote:note];
             [self.navigationController pushViewController:detailViewController animated:YES];
-        }
-    } else if ([note statsEvent]) {
-        Blog *blog = [note blogForStatsEvent];
-        if (blog) {
-            [[WordPressAppDelegate sharedWordPressApplicationDelegate] showStatsForBlog:blog];
-        } else {
-            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+        } else if ([note templateType] == WPNoteTemplateBigBadge) {
+            NotificationsBigBadgeViewController *bigBadgeViewController = [[NotificationsBigBadgeViewController alloc] initWithNote: note];
+            [self.navigationController pushViewController:bigBadgeViewController animated:YES];
         }
     } else {
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
+    
     if(note.isUnread) {
-        note.unread = [NSNumber numberWithInt:0];
-        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        note.unread = @(0);
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
-        if(hasDetailsView) {
+        if (hasDetailView) {
             [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
         
-        [note markAsReadWithSuccess:nil failure:^(NSError *error){
-            note.unread = [NSNumber numberWithInt:1];
-        }];
+        NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:note.managedObjectContext];
+        [noteService markNoteAsRead:note
+                            success:nil
+                            failure:^(NSError *error) {
+                                note.unread = @(1);
+                            }
+         ];
     }
 }
 
@@ -291,92 +325,116 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     if ([note isComment])
         return YES;
     
-    NSDictionary *noteBody = [[note noteData] objectForKey:@"body"];
-    if (noteBody) {
-        NSString *noteTemplate = [noteBody objectForKey:@"template"];
-        if ([noteTemplate isEqualToString:@"single-line-list"] || [noteTemplate isEqualToString:@"multi-line-list"])
-            return YES;
-    }
+    if ([note templateType] != WPNoteTemplateUnknown)
+        return YES;
     
     return NO;
 }
 
+- (void)loadPostWithId:(NSNumber *)postID fromSite:(NSNumber *)siteID block:(NotificationsLoadPostBlock)block
+{
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/posts/%@/?meta=site", siteID, postID];
+    
+    WordPressComApiRestSuccessResponseBlock success = ^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        [ReaderPost createOrUpdateWithDictionary:responseObject forEndpoint:endpoint withContext:context];
+        ReaderPost *post = [[ReaderPost fetchPostsForEndpoint:endpoint withContext:context] firstObject];
+        block(YES, post);
+    };
+    
+    WordPressComApiRestSuccessFailureBlock failure = ^(AFHTTPRequestOperation *operation, NSError *error) {
+        DDLogError(@"[RestAPI] %@", error);
+        block(NO, nil);
+    };
+    
+    [ReaderPost getPostsFromEndpoint:endpoint withParameters:nil loadingMore:NO success:success failure:failure];
+}
+
 #pragma mark - WPTableViewController subclass methods
 
-- (NSString *)entityName {
+- (NSString *)entityName
+{
     return @"Note";
 }
 
-- (NSDate *)lastSyncDate {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsLastSyncDateKey];
+- (NSDate *)lastSyncDate
+{
+    // Force sync everytime: this app becomes visible + becomes active!
+    return [NSDate distantPast];
 }
 
-- (NSFetchRequest *)fetchRequest {
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
-    NSSortDescriptor *dateSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO];
-    fetchRequest.sortDescriptors = @[dateSortDescriptor];
-    fetchRequest.fetchBatchSize = 10;
+- (NSFetchRequest *)fetchRequest
+{
+    NSFetchRequest *fetchRequest    = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
+    fetchRequest.sortDescriptors    = @[ [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO] ];
+    fetchRequest.fetchBatchSize     = 10;
     return fetchRequest;
 }
 
-- (Class)cellClass {
+- (Class)cellClass
+{
     return [NewNotificationsTableViewCell class];
 }
 
-- (void)configureCell:(NewNotificationsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+- (void)configureCell:(NewNotificationsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
     cell.contentProvider = [self.resultsController objectAtIndexPath:indexPath];
     
     Note *note = [self.resultsController objectAtIndexPath:indexPath];
     BOOL hasDetailsView = [self noteHasDetailView:note];
-    BOOL isStatsNote = [note statsEvent];
     
-    if (!hasDetailsView && !isStatsNote) {
+    if (!hasDetailsView) {
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
 }
 
-- (BOOL)userCanRefresh {
-    return [WPAccount defaultWordPressComAccount] != nil;
+- (BOOL)userCanRefresh
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    return defaultAccount != nil;
 }
 
-- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     if (userInteraction) {
         [self pruneOldNotes];
     }
     
-    NSNumber *timestamp;
-    NSArray *notes = [self.resultsController fetchedObjects];
-    if (userInteraction == NO && [notes count] > 0) {
-        Note *note = [notes objectAtIndex:0];
-        timestamp = note.timestamp;
-    } else {
-        timestamp = nil;
-    }
+    Note *note = [[self.resultsController fetchedObjects] firstObject];
+    NSNumber *timestamp = note.timestamp ?: nil;
     
-    [Note fetchNotificationsSince:timestamp success:^{
+    NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.resultsController.managedObjectContext];
+    [noteService fetchNotificationsSince:timestamp success:^{
         [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 
-        [self updateSyncDate];
+        [self updateLastSeenTime];
         if (success) {
             success();
         }
     } failure:failure];
 }
 
-- (BOOL)hasMoreContent {
+- (BOOL)hasMoreContent
+{
     return YES;
 }
 
-- (BOOL)isSyncing {
+- (BOOL)isSyncing
+{
     return _retrievingNotifications;
 }
 
-- (void)setSyncing:(BOOL)value {
+- (void)setSyncing:(BOOL)value
+{
     _retrievingNotifications = value;
 }
 
-- (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure
+{
     Note *lastNote = [self.resultsController.fetchedObjects lastObject];
     if (lastNote == nil) {
         return;
@@ -384,7 +442,8 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
     
     _retrievingNotifications = YES;
     
-    [Note fetchNotificationsBefore:lastNote.timestamp success:^{
+    NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.resultsController.managedObjectContext];
+    [noteService fetchNotificationsBefore:lastNote.timestamp success:^{
         _retrievingNotifications = NO;
         if (success) {
             success();
@@ -399,7 +458,8 @@ NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/
 
 #pragma mark - DetailViewDelegate
 
-- (void)resetView {
+- (void)resetView
+{
     NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
     if (selectedIndexPath) {
         [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:NO];

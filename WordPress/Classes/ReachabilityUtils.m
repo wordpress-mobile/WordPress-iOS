@@ -1,11 +1,3 @@
-//
-//  ReachabilityUtils.m
-//  WordPress
-//
-//  Created by Eric on 8/29/12.
-//  Copyright (c) 2012 WordPress. All rights reserved.
-//
-
 #import "ReachabilityUtils.h"
 #import "WordPressAppDelegate.h"
 

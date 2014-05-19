@@ -1,11 +1,3 @@
-//
-//  CreateAccountAndBlogViewController.m
-//  WordPress
-//
-//  Created by Sendhil Panchadsaram on 5/7/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "CreateAccountAndBlogViewController.h"
 #import <EmailChecker/EmailChecker.h>
 #import <QuartzCore/QuartzCore.h>
@@ -25,6 +17,9 @@
 #import "WPAccount.h"
 #import "Blog.h"
 #import "WordPressComOAuthClient.h"
+#import "AccountService.h"
+#import "BlogService.h"
+#import "ContextManager.h"
 
 @interface CreateAccountAndBlogViewController ()<
     UITextFieldDelegate,
@@ -86,8 +81,6 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 {
     [super viewDidLoad];
     
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountOpened];
-
     self.view.backgroundColor = [WPNUXUtility backgroundColor];
         
     [self initializeView];
@@ -437,7 +430,6 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 
 - (void)helpButtonAction
 {
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedHelp];
     SupportViewController *supportViewController = [[SupportViewController alloc] init];
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:supportViewController];
     nc.navigationBar.translucent = NO;
@@ -447,7 +439,6 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 
 - (void)cancelButtonAction
 {
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedCancel];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -458,19 +449,12 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 
 - (void)createAccountButtonAction
 {
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedAccountPageNext];
-    
     [self.view endEditing:YES];
     
     if (![self fieldsValid]) {
         [self showAllErrors];
         return;
     } else {
-        // Check if user changed default URL and if so track the stat for it.
-        if (![_siteAddressField.text isEqualToString:_defaultSiteUrl]) {
-            [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountChangedDefaultURL];
-        }
-        
         [self createUserAndSite];
     }
 }
@@ -689,10 +673,13 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 
     }];
     WPAsyncBlockOperation *userSignIn = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
-        void (^signInSuccess)(NSString *authToken) = ^(NSString *authToken){
-            _account = [WPAccount createOrUpdateWordPressComAccountWithUsername:_usernameField.text password:_passwordField.text authToken:authToken];
-            if (![WPAccount defaultWordPressComAccount]) {
-                [WPAccount setDefaultWordPressComAccount:_account];
+        void (^signInSuccess)(NSString *authToken) = ^(NSString *authToken) {
+            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+
+            _account = [accountService createOrUpdateWordPressComAccountWithUsername:_usernameField.text password:_passwordField.text authToken:authToken];
+            if (![accountService defaultWordPressComAccount]) {
+                [accountService setDefaultWordPressComAccount:_account];
             }
             [operation didSucceed];
         };
@@ -715,7 +702,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 
     WPAsyncBlockOperation *blogCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
         void (^createBlogSuccess)(id) = ^(id responseObject){
-            [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountCreatedAccount];
+            [WPAnalytics track:WPAnalyticsStatCreatedAccount];
             [operation didSucceed];
 
             NSMutableDictionary *blogOptions = [[responseObject dictionaryForKey:@"blog_details"] mutableCopy];
@@ -723,9 +710,15 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
                 [blogOptions setObject:[blogOptions objectForKey:@"blogname"] forKey:@"blogName"];
                 [blogOptions removeObjectForKey:@"blogname"];
             }
-            Blog *blog = [_account findOrCreateBlogFromDictionary:blogOptions withContext:_account.managedObjectContext];
-            [blog dataSave];
-            [blog syncBlogWithSuccess:nil failure:nil];
+
+            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+            BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+            WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+            Blog *blog = [accountService findOrCreateBlogFromDictionary:blogOptions withAccount:defaultAccount];
+
+            [blogService syncBlog:blog success:nil failure:nil];
             [self setAuthenticating:NO];
             [self dismissViewControllerAnimated:YES completion:nil];
         };

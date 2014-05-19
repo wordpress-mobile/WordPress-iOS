@@ -1,11 +1,3 @@
-//
-//  StatsLinkToWebviewCell.m
-//  WordPress
-//
-//  Created by Sendhil Panchadsaram on 2/27/14.
-//  Copyright (c) 2014 WordPress. All rights reserved.
-//
-
 #import "StatsLinkToWebviewCell.h"
 
 static CGFloat const CellPadding = 15.0f;
@@ -27,7 +19,7 @@ static CGFloat const LabelVerticalOffset = 2.0f;
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.selectionStyle = UITableViewCellSelectionStyleDefault;
         self.contentView.userInteractionEnabled = YES;
     }
     return self;

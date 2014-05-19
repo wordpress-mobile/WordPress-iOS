@@ -1,11 +1,3 @@
-//
-//  Blog+Jetpack.h
-//  WordPress
-//
-//  Created by Jorge Bernal on 2/12/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "Blog.h"
 
 /**
@@ -43,6 +35,13 @@ typedef NS_ENUM(NSInteger, BlogJetpackErrorCode) {
  @return YES if the receiver blog has Jetpack installed or NO if it does not.
 */
 - (BOOL)hasJetpack;
+
+/**
+ Returns a Boolean value indicating whether the blog has Jetpack installed AND is connected to WordPress.com. An account is defined as connected to WordPress.com if the site has jetpack installed, enabled and has linked their Jetpack plugin with a WordPress.com account.
+ 
+ @return YES if the receiver blog has Jetpack installed and is connected to WordPress.com
+*/
+- (BOOL)hasJetpackAndIsConnectedToWPCom;
 
 /**
  Returns the jetpack version installed in the blog

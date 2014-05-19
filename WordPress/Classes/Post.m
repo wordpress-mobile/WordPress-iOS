@@ -1,10 +1,3 @@
-// 
-//  Post.m
-//  WordPress
-//
-//  Created by Chris Boyd on 8/9/10.
-//
-
 #import "Post.h"
 #import "NSMutableDictionary+Helpers.h"
 #import "ContextManager.h"
@@ -41,7 +34,7 @@
 
 @dynamic geolocation, tags, postFormat;
 @dynamic categories;
-@synthesize specialType, featuredImageURL;
+@synthesize specialType;
 
 #pragma mark - NSManagedObject subclass methods
 
@@ -49,7 +42,6 @@
     [super didTurnIntoFault];
     
     self.specialType = nil;
-    self.featuredImageURL = nil;
 }
 
 #pragma mark -
@@ -236,6 +228,22 @@
     return NO;
 }
 
+- (BOOL)hasCategories
+{
+    if ([self.categories count] > 0)
+        return true;
+    else
+        return false;
+}
+
+- (BOOL)hasTags
+{
+    if ([[self.tags trim] length] > 0)
+        return true;
+    else
+        return false;
+}
+
 
 #pragma mark - QuickPhoto
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification {
@@ -272,20 +280,33 @@
     }
 }
 
-- (void)getFeaturedImageURLWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    DDLogMethod();
-    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.blog.username, self.blog.password, self.post_thumbnail, nil];
-    [self.blog.api callMethod:@"wp.getMediaItem"
-                   parameters:parameters
-                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                          NSDictionary *mediaItem = (NSDictionary *)responseObject;
-                          self.featuredImageURL = [mediaItem stringForKey:@"link"];
-                          if (success) success();
-                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                          if (failure) {
-                              failure(error);
-                          }
-                      }];
+- (Media *)featuredImage {
+    if (!self.post_thumbnail) {
+        return nil;
+    }
+
+    NSArray *arr = [self.blog.media allObjects];
+    if ([arr count] == 0) {
+        return nil;
+    }
+
+    NSUInteger index = [arr indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+        if ([((Media *)obj).mediaID isEqualToNumber:self.post_thumbnail] ){
+            stop = YES;
+            return YES;
+        }
+        return NO;
+    }];
+
+    if (index == NSNotFound) {
+        return nil;
+    }
+
+    return [arr objectAtIndex:index];
+}
+
+- (void)setFeaturedImage:(Media *)featuredImage {
+    self.post_thumbnail = featuredImage.mediaID;
 }
 
 @end
@@ -297,6 +318,12 @@
     
     [postParams setValueIfNotNil:self.postFormat forKey:@"wp_post_format"];
     [postParams setValueIfNotNil:self.tags forKey:@"mt_keywords"];
+
+    if ([self hasRemote] && self.dateCreated == nil) {
+        // Change the date of an already published post to the current date/time. (publish immediately)
+        // Pass the current date so the post is updated correctly
+        [postParams setValue:[NSDate date] forKeyPath:@"date_created_gmt"];
+    }
 
     if ([self valueForKey:@"categories"] != nil) {
         NSMutableSet *categories = [self mutableSetValueForKey:@"categories"];
@@ -461,7 +488,6 @@
 }
 
 - (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    DDLogMethod();
     BOOL remote = [self hasRemote];
     if (remote) {
         NSArray *parameters = [NSArray arrayWithObjects:@"unused", self.postID, self.blog.username, self.blog.password, nil];

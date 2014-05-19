@@ -1,11 +1,3 @@
-//
-//  PageSettingsViewController.m
-//  WordPress
-//
-//  Created by Eric Johnson on 2/11/14.
-//  Copyright (c) 2014 WordPress. All rights reserved.
-//
-
 #import "PageSettingsViewController.h"
 #import "PostSettingsViewController_Internal.h"
 
@@ -14,14 +6,6 @@
 @end
 
 @implementation PageSettingsViewController
-
-- (id)initWithPost:(AbstractPost *)aPost {
-    self = [super initWithPost:aPost];
-    if (self) {
-        self.statsPrefix = @"Page Detail";
-    }
-    return self;
-}
 
 - (void)addPostPropertiesObserver {
     // noop

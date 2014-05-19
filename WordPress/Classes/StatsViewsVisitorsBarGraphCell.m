@@ -1,12 +1,3 @@
-/*
- * StatsBarGraphCell.m
- *
- * Copyright (c) 2014 WordPress. All rights reserved.
- *
- * Licensed under GNU General Public License 2.0.
- * Some rights reserved. See license.txt
- */
-
 #import "StatsViewsVisitorsBarGraphCell.h"
 
 static CGFloat const AxisPadding = 18.0f;
@@ -215,6 +206,28 @@ CGFloat heightFromRangeToRange(NSUInteger height, CGFloat maxOldRange, CGFloat m
     label.backgroundColor = [UIColor whiteColor];
     [label sizeToFit];
     return label;
+}
+
+#pragma mark - UIAccessibility methods
+
+- (BOOL)isAccessibilityElement
+{
+    return YES;
+}
+
+- (NSString *)accessibilityLabel
+{
+    return NSLocalizedString(@"Visitors and Views Graph", @"Accessibility label for visitors and views graph view");
+}
+
+- (UIAccessibilityTraits)accessibilityTraits
+{
+    return UIAccessibilityTraitImage | UIAccessibilityTraitSummaryElement;
+}
+
+- (NSString *)accessibilityHint
+{
+    return [super accessibilityHint];
 }
 
 @end

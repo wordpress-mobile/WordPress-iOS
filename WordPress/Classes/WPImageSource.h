@@ -1,11 +1,3 @@
-//
-//  WPImageSource.h
-//  WordPress
-//
-//  Created by Jorge Bernal on 6/20/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 
 /**
@@ -47,5 +39,21 @@ extern NSString * const WPImageSourceErrorDomain;
 - (void)downloadImageForURL:(NSURL *)url
                 withSuccess:(void (^)(UIImage *image))success
                     failure:(void (^)(NSError *error))failure;
+
+/**
+ Schedules an authenticated download for the given URL, if there isn't one in progress.
+ 
+ Assumes HTTPS should be used for the protocol.
+ 
+ @param url the URL to download
+ @param authToken the authentication token (Bearer) to use (generally assumes this is used for WP.com)
+ @param success the block to execute if the download was successful
+ @param failure the block to execute if the download failed
+ */
+
+- (void)downloadImageForURL:(NSURL *)url
+                  authToken:(NSString *)authToken
+                withSuccess:(void (^)(UIImage *))success
+                    failure:(void (^)(NSError *))failure;
 
 @end
