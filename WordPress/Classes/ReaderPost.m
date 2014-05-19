@@ -1,11 +1,3 @@
-//
-//  ReaderPost.m
-//  WordPress
-//
-//  Created by Eric J on 3/25/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "ReaderPost.h"
 #import "WordPressComApi.h"
 #import "NSString+Helpers.h"
@@ -16,6 +8,7 @@
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
 #import "WPAccount.h"
+#import "AccountService.h"
 
 NSInteger const ReaderTopicEndpointIndex = 3;
 NSInteger const ReaderPostSummaryLength = 150;
@@ -68,7 +61,11 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     NSDictionary *likes = @{@"title": NSLocalizedString(@"Posts I Like", @""), @"endpoint":@"read/liked", @"default":@YES};
     NSDictionary *topic = @{@"title": NSLocalizedString(@"Topics", @""), @"endpoint":@"read/tags/%@", @"default":@NO};
     
-    if ([WPAccount defaultWordPressComAccount]) {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    if (defaultAccount) {
         return @[follows, fpDict, likes, topic];
     } else {
         return @[fpDict, topic];
@@ -121,7 +118,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
         return;
     }
     
-    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] backgroundContext];
+    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] newDerivedContext];
     [backgroundMOC performBlock:^{
         for (NSDictionary *postData in arr) {
             if (![postData isKindOfClass:[NSDictionary class]]) {
@@ -130,7 +127,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
             [self createOrUpdateWithDictionary:postData forEndpoint:endpoint withContext:backgroundMOC];
         }
         
-        [[ContextManager sharedInstance] saveContext:backgroundMOC];
+        [[ContextManager sharedInstance] saveDerivedContext:backgroundMOC];
         if (success) {
             dispatch_async(dispatch_get_main_queue(), success);
         }
@@ -140,7 +137,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 + (void)deletePostsSyncedEarlierThan:(NSDate *)syncedDate {
     DDLogMethod();
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] backgroundContext];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     [context performBlock:^{
         NSFetchRequest *request = [[NSFetchRequest alloc] init];
         [request setEntity:[NSEntityDescription entityForName:@"ReaderPost" inManagedObjectContext:context]];
@@ -157,7 +154,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
                 [context deleteObject:post];
             }
         }
-        [[ContextManager sharedInstance] saveContext:context];
+        [[ContextManager sharedInstance] saveDerivedContext:context];
     }];
 }
 
@@ -233,8 +230,11 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     }
     
     // Set account on the post, but only if signed in
-    if ([WPAccount defaultWordPressComAccount] != nil) {
-        post.account = (WPAccount *)[context objectWithID:[WPAccount defaultWordPressComAccount].objectID];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    if (defaultAccount != nil) {
+        post.account = defaultAccount;
     }
     
     @autoreleasepool {
@@ -541,7 +541,10 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
         path = [NSString stringWithFormat:@"sites/%@/posts/%@/likes/mine/delete", self.siteID, self.postID];
     }
 
-    [[[WPAccount defaultWordPressComAccount] restApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    [[defaultAccount restApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self save];
         
         if(success) {
@@ -572,7 +575,10 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
         path = [NSString stringWithFormat:@"sites/%@/follows/mine/delete", self.siteID];
     }
     
-    [[[WPAccount defaultWordPressComAccount] restApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    [[defaultAccount restApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self save];
         
         if(success) {
@@ -597,7 +603,10 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     }
 
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/reblogs/new", self.siteID, self.postID];
-    [[[WPAccount defaultWordPressComAccount] restApi] postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    [[defaultAccount restApi] postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *dict = (NSDictionary *)responseObject;
         self.isReblogged = [dict numberForKey:@"is_reblogged"];
 
@@ -767,8 +776,11 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
                          failure:(WordPressComApiRestSuccessFailureBlock)failure {
     
     NSString *path = @"read/menu";
-    WPAccount *account = [WPAccount defaultWordPressComAccount];
-    WordPressComApi *api = [account restApi];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    WordPressComApi *api = [defaultAccount restApi];
     
     // There should probably be a better check here
     if ([api hasCredentials]) {
@@ -787,8 +799,12 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%i/replies", siteID, postID];
     
-    if ([[WPAccount defaultWordPressComAccount] restApi].authToken) {
-        [[WPAccount defaultWordPressComAccount].restApi getPath:path parameters:params success:success failure:failure];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    if ([defaultAccount restApi].authToken) {
+        [[defaultAccount restApi] getPath:path parameters:params success:success failure:failure];
     } else {
         [[WordPressComApi anonymousApi] getPath:path parameters:params success:success failure:failure];
     }
@@ -803,8 +819,12 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     DDLogMethod();
     
     WordPressComApi *api;
-    if ([[WPAccount defaultWordPressComAccount] restApi].authToken) {
-        api = [[WPAccount defaultWordPressComAccount] restApi];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    if ([defaultAccount restApi].authToken) {
+        api = [defaultAccount restApi];
     } else {
         api = [WordPressComApi anonymousApi];
     }

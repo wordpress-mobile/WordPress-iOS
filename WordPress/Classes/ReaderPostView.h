@@ -1,11 +1,3 @@
-//
-//  ReaderPostView.h
-//  WordPress
-//
-//  Created by Michael Johnston on 11/19/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "WPContentView.h"
 
 @class ReaderPostView;
@@ -28,5 +20,6 @@
 - (id)initWithFrame:(CGRect)frame showFullContent:(BOOL)showFullContent;
 - (void)configurePost:(ReaderPost *)post withWidth:(CGFloat)width;
 - (void)setAvatar:(UIImage *)avatar;
+- (void)setAvatarWithURL:(NSURL *)avatarURL;
 
 @end

@@ -1,10 +1,3 @@
-//
-//  Post.h
-//  WordPress
-//
-//  Created by Chris Boyd on 8/9/10.
-//
-
 #import <CoreData/CoreData.h>
 #import "WordPressAppDelegate.h"
 #import "Category.h"
@@ -23,7 +16,6 @@
 @property (nonatomic, strong) NSString * postFormat;
 @property (nonatomic, strong) NSString * postFormatText;
 @property (nonatomic, strong) NSMutableSet * categories;
-@property (nonatomic, strong) NSString *featuredImageURL;
 
 /**
  A tag for specific post workflows. Only QuickPhoto for now.
@@ -46,8 +38,5 @@
  @param categoryNames a `NSArray` with the names of the categories for this post. If a given category name doesn't exist it's ignored.
  */
 - (void)setCategoriesFromNames:(NSArray *)categoryNames;
-
-
-- (void)getFeaturedImageURLWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 @end

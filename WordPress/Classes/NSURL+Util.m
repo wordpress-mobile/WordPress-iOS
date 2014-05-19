@@ -1,11 +1,3 @@
-//
-//  NSURL+Util.m
-//  WordPress
-//
-//  Created by Sendhil Panchadsaram on 7/18/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "NSURL+Util.h"
 #import "NSString+Util.h"
 

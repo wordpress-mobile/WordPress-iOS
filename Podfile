@@ -15,11 +15,14 @@ pod 'NSObject-SafeExpectations', :podspec => 'https://raw.github.com/koke/NSObje
 pod 'Mixpanel', '2.3.1'
 pod 'CocoaLumberjack', '~>1.8.1'
 pod 'NSLogger-CocoaLumberjack-connector', '~>1.3'
-pod 'google-plus-ios-sdk', '1.5.0'
+pod 'google-plus-ios-sdk', '~>1.5'
 pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilities.git'
 pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec'
 pod 'CrashlyticsLumberjack', '~>1.0.0'
 pod 'HockeySDK', '~>3.5.0'
+pod 'Helpshift', '4.3.1'
+pod 'Taplytics', '~>1.2.50'
+pod 'CTAssetsPickerController', '~> 2.2.0'
 
 target :WordPressTest, :exclusive => true do
   pod 'OHHTTPStubs', '1.1.1'

@@ -1,11 +1,3 @@
-//
-//  WPActivityDefaults.m
-//  WordPress
-//
-//  Created by Jorge Bernal on 7/26/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "WPActivityDefaults.h"
 
 #import "SafariActivity.h"
@@ -25,34 +17,33 @@
     return @[safariActivity, instapaperActivity, pocketActivity, googlePlusActivity];
 }
 
-+ (void)trackActivityType:(NSString *)activityType withPrefix:(NSString *)prefix
++ (void)trackActivityType:(NSString *)activityType
 {
-    NSString *event;
+    WPAnalyticsStat stat;
     if ([activityType isEqualToString:UIActivityTypeMail]) {
-        event = StatsEventWebviewSharedArticleViaEmail;
+        stat = WPAnalyticsStatSharedItemViaEmail;
     } else if ([activityType isEqualToString:UIActivityTypeMessage]) {
-        event = StatsEventWebviewSharedArticleViaSMS;
+        stat = WPAnalyticsStatSharedItemViaSMS;
     } else if ([activityType isEqualToString:UIActivityTypePostToTwitter]) {
-        event = StatsEventWebviewSharedArticleViaTwitter;
+        stat = WPAnalyticsStatSharedItemViaTwitter;
     } else if ([activityType isEqualToString:UIActivityTypePostToFacebook]) {
-        event = StatsEventWebviewSharedArticleViaFacebook;
-    } else if ([activityType isEqualToString:UIActivityTypeCopyToPasteboard]) {
-        event = StatsEventWebviewCopiedArticleDetails;
+        stat = WPAnalyticsStatSharedItemViaFacebook;
     } else if ([activityType isEqualToString:UIActivityTypePostToWeibo]) {
-        event = StatsEventWebviewSharedArticleViaWeibo;
-    } else if ([activityType isEqualToString:NSStringFromClass([SafariActivity class])]) {
-        event = StatsEventWebviewOpenedArticleInSafari;
+        stat = WPAnalyticsStatSharedItemViaWeibo;
     } else if ([activityType isEqualToString:NSStringFromClass([InstapaperActivity class])]) {
-        event = StatsEventWebviewSentArticleToInstapaper;
+        stat = WPAnalyticsStatSentItemToInstapaper;
     } else if ([activityType isEqualToString:NSStringFromClass([PocketActivity class])]) {
-        event = StatsEventWebviewSentArticleToPocket;
+        stat = WPAnalyticsStatSentItemToPocket;
     } else if ([activityType isEqualToString:NSStringFromClass([GooglePlusActivity class])]) {
-        event = StatsEventWebviewSentArticleToGooglePlus;
+        stat = WPAnalyticsStatSentItemToGooglePlus;
+    } else {
+        [WPAnalytics track:WPAnalyticsStatSharedItem];
+        return;
     }
-
-    if (event != nil) {
-        event = [NSString stringWithFormat:@"%@ - %@", prefix, event];
-        [WPMobileStats trackEventForWPCom:event];
+    
+    if (stat != WPAnalyticsStatNoStat) {
+        [WPAnalytics track:WPAnalyticsStatSharedItem];
+        [WPAnalytics track:stat];
     }
 }
 

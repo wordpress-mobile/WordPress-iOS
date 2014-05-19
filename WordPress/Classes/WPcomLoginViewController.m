@@ -1,10 +1,3 @@
-//
-//  WPcomLoginViewController.m
-//  WordPress
-//
-//  Created by Chris Boyd on 7/19/10.
-//
-
 #import "WPcomLoginViewController.h"
 
 #import <WordPressApi/WordPressApi.h>
@@ -15,6 +8,8 @@
 #import "WordPressComOAuthClient.h"
 #import "ReachabilityUtils.h"
 #import "WPTableViewSectionFooterView.h"
+#import "ContextManager.h"
+#import "AccountService.h"
 
 @interface WPcomLoginViewController () <UITextFieldDelegate> {
     UITableViewTextFieldCell *loginCell, *passwordCell;
@@ -171,7 +166,12 @@
             if (loginCell == nil) {
                 loginCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault 
                                                             reuseIdentifier:@"TextCell"];
-                loginCell.textField.text = [[WPAccount defaultWordPressComAccount] username];
+                
+                NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+                AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+                WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+                loginCell.textField.text = [defaultAccount username];
             }
             loginCell.textLabel.text = NSLocalizedString(@"Username", @"");
             loginCell.textField.placeholder = NSLocalizedString(@"WordPress.com username", @"");
@@ -340,8 +340,11 @@
         WordPressComOAuthClient *client = [WordPressComOAuthClient client];
         [client authenticateWithUsername:username
                                 password:password success:^(NSString *authToken) {
-                                    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken];
-                                    [WPAccount setDefaultWordPressComAccount:account];
+                                    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+                                    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+
+                                    WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken];
+                                    
                                     [loginController.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
                                     if (loginController.delegate) {
                                         [loginController.delegate loginController:loginController didAuthenticateWithAccount:account];

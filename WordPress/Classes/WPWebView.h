@@ -1,9 +1,3 @@
-//
-//  WPWebView.h
-//
-//  Created by Eric Johnson on 5/23/12.
-//
-
 #import <UIKit/UIKit.h>
 #import "EGORefreshTableHeaderView.h"
 

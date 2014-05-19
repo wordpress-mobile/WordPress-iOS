@@ -1,24 +1,18 @@
-//
-//  AbstractPost.h
-//  WordPress
-//
-//  Created by Jorge Bernal on 12/27/10.
-//  Copyright 2010 WordPress. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "BasePost.h"
 
+@class Media;
 
 @interface AbstractPost : BasePost
 
 // Relationships
-@property (nonatomic, strong) Blog * blog;
-@property (nonatomic, strong) NSMutableSet * media;
+@property (nonatomic, strong) Blog *blog;
+@property (nonatomic, strong) NSMutableSet *media;
 @property (weak, readonly) AbstractPost *original;
 @property (weak, readonly) AbstractPost *revision;
-@property (nonatomic, strong) NSMutableSet * comments;
+@property (nonatomic, strong) NSMutableSet *comments;
+@property (nonatomic, strong) Media *featuredImage;
 
 // Revision management
 - (AbstractPost *)createRevision;
@@ -29,6 +23,10 @@
 - (BOOL)isOriginal;
 - (void)cloneFrom:(AbstractPost *)source;
 - (BOOL)hasSiteSpecificChanges;
+- (BOOL)hasPhoto;
+- (BOOL)hasVideo;
+- (BOOL)hasCategories;
+- (BOOL)hasTags;
 
 + (AbstractPost *)newDraftForBlog:(Blog *)blog;
 + (NSString *const)remoteUniqueIdentifier;

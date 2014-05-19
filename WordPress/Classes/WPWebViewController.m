@@ -1,12 +1,3 @@
-/*
- * WPWebViewController.m
- *
- * Copyright (c) 2013 WordPress. All rights reserved.
- *
- * Licensed under GNU General Public License 2.0.
- * Some rights reserved. See license.txt
- */
-
 #import "WPWebViewController.h"
 #import "WordPressAppDelegate.h"
 #import "ReachabilityUtils.h"
@@ -36,14 +27,6 @@
 
 - (BOOL)hidesBottomBarWhenPushed {
     return YES;
-}
-
-- (NSString *)statsPrefixForShareActions {
-    if (_statsPrefixForShareActions == nil) {
-        return @"Webview";
-    } else {
-        return _statsPrefixForShareActions;
-    }
 }
 
 - (void)viewDidLoad {
@@ -419,7 +402,6 @@
 }
 
 - (void)showLinkOptions{
-    [WPMobileStats trackEventForWPCom:[NSString stringWithFormat:@"%@ - %@", self.statsPrefixForShareActions, StatsEventWebviewClickedShowLinkOptions]];
     NSString* permaLink = [self getDocumentPermalink];
 
     NSString *title = [self getDocumentTitle];
@@ -436,7 +418,7 @@
     activityViewController.completionHandler = ^(NSString *activityType, BOOL completed) {
         if (!completed)
             return;
-        [WPActivityDefaults trackActivityType:activityType withPrefix:self.statsPrefixForShareActions];
+        [WPActivityDefaults trackActivityType:activityType];
     };
     [self presentViewController:activityViewController animated:YES completion:nil];
 }

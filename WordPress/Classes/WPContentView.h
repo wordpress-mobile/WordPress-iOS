@@ -1,12 +1,3 @@
-//
-//  WPContentView.h
-//  WordPress
-//
-//  Created by Michael Johnston on 11/19/13.
-//  Moved from ReaderPostView by Eric J.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 #import "ReaderPost.h"
 #import "DTAttributedTextContentView.h"
@@ -43,6 +34,7 @@
 - (void)removeActionButton:(UIButton *)button;
 - (void)updateActionButtons;
 - (void)refreshMediaLayout;
+- (CGFloat)topMarginHeight;
 - (void)reset;
 
 @end

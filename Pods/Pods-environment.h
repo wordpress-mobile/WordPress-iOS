@@ -12,6 +12,12 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking 2
 #define COCOAPODS_VERSION_PATCH_AFNetworking 0
 
+// CTAssetsPickerController
+#define COCOAPODS_POD_AVAILABLE_CTAssetsPickerController
+#define COCOAPODS_VERSION_MAJOR_CTAssetsPickerController 2
+#define COCOAPODS_VERSION_MINOR_CTAssetsPickerController 2
+#define COCOAPODS_VERSION_PATCH_CTAssetsPickerController 0
+
 // CocoaLumberjack
 #define COCOAPODS_POD_AVAILABLE_CocoaLumberjack
 #define COCOAPODS_VERSION_MAJOR_CocoaLumberjack 1
@@ -65,6 +71,12 @@
 #define COCOAPODS_VERSION_MAJOR_EmailChecker 0
 #define COCOAPODS_VERSION_MINOR_EmailChecker 1
 #define COCOAPODS_VERSION_PATCH_EmailChecker 0
+
+// Helpshift
+#define COCOAPODS_POD_AVAILABLE_Helpshift
+#define COCOAPODS_VERSION_MAJOR_Helpshift 4
+#define COCOAPODS_VERSION_MINOR_Helpshift 3
+#define COCOAPODS_VERSION_PATCH_Helpshift 1
 
 // HockeySDK
 #define COCOAPODS_POD_AVAILABLE_HockeySDK
@@ -120,10 +132,16 @@
 #define COCOAPODS_VERSION_MINOR_SVProgressHUD 0
 #define COCOAPODS_VERSION_PATCH_SVProgressHUD 0
 
+// Taplytics
+#define COCOAPODS_POD_AVAILABLE_Taplytics
+#define COCOAPODS_VERSION_MAJOR_Taplytics 1
+#define COCOAPODS_VERSION_MINOR_Taplytics 2
+#define COCOAPODS_VERSION_PATCH_Taplytics 48
+
 // UIDeviceIdentifier
 #define COCOAPODS_POD_AVAILABLE_UIDeviceIdentifier
 #define COCOAPODS_VERSION_MAJOR_UIDeviceIdentifier 0
-#define COCOAPODS_VERSION_MINOR_UIDeviceIdentifier 1
+#define COCOAPODS_VERSION_MINOR_UIDeviceIdentifier 4
 #define COCOAPODS_VERSION_PATCH_UIDeviceIdentifier 0
 
 // WordPressApi
@@ -136,7 +154,7 @@
 #define COCOAPODS_POD_AVAILABLE_google_plus_ios_sdk
 #define COCOAPODS_VERSION_MAJOR_google_plus_ios_sdk 1
 #define COCOAPODS_VERSION_MINOR_google_plus_ios_sdk 5
-#define COCOAPODS_VERSION_PATCH_google_plus_ios_sdk 0
+#define COCOAPODS_VERSION_PATCH_google_plus_ios_sdk 1
 
 // wpxmlrpc
 #define COCOAPODS_POD_AVAILABLE_wpxmlrpc

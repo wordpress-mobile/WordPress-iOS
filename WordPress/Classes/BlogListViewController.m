@@ -1,11 +1,3 @@
-//
-//  BlogListViewController.m
-//  WordPress
-//
-//  Created by Michael Johnston on 11/8/13.
-//  Copyright (c) 2013 WordPress. All rights reserved.
-//
-
 #import "BlogListViewController.h"
 #import "WordPressAppDelegate.h"
 #import "UIImageView+Gravatar.h"
@@ -19,6 +11,8 @@
 #import "Blog.h"
 #import "WPAccount.h"
 #import "WPTableViewSectionHeaderView.h"
+#import "AccountService.h"
+#import "BlogService.h"
 
 static NSString *const AddSiteCellIdentifier = @"AddSiteCell";
 static NSString *const BlogCellIdentifier = @"BlogCell";
@@ -104,7 +98,11 @@ CGFloat const blavatarImageSize = 50.f;
 
     // Trigger the blog sync when loading the view, which should more or less be once when the app launches
     // We could do this on the app delegate, but the blogs list feels like a better place for it.
-    [[WPAccount defaultWordPressComAccount] syncBlogsWithSuccess:nil failure:nil];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    [accountService syncBlogsForAccount:defaultAccount success:nil failure:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -162,7 +160,7 @@ CGFloat const blavatarImageSize = 50.f;
 #pragma mark - Actions
 
 - (void)showSettings:(id)sender {
-    [WPMobileStats incrementProperty:StatsPropertySidebarClickedSettings forEvent:StatsEventAppClosed];
+    [WPAnalytics track:WPAnalyticsStatOpenedSettings];
     
     SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
@@ -244,8 +242,6 @@ CGFloat const blavatarImageSize = 50.f;
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [WPMobileStats trackEventForWPCom:StatsEventSettingsRemovedBlog];
-        
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
         if (blog.isWPcom) {
             DDLogWarn(@"Tried to remove a WordPress.com blog. This shouldn't happen but just in case, let's hide it");
@@ -263,7 +259,11 @@ CGFloat const blavatarImageSize = 50.f;
                 [self setEditing:NO animated:NO];
 
                 // No blogs and  signed out, show NUX
-                if (![WPAccount defaultWordPressComAccount]) {
+                NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+                AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+                WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+                
+                if (!defaultAccount) {
                     [[WordPressAppDelegate sharedWordPressApplicationDelegate] showWelcomeScreenIfNeededAnimated:YES];
                 }
             });
@@ -366,9 +366,13 @@ CGFloat const blavatarImageSize = 50.f;
     
     if ([indexPath isEqual:[self indexPathForAddSite]]) {
         [self setEditing:NO animated:NO];
-        [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedAddBlog];
         LoginViewController *loginViewController = [[LoginViewController alloc] init];
-        if (![WPAccount defaultWordPressComAccount]) {
+        
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+        if (!defaultAccount) {
             loginViewController.prefersSelfHosted = YES;
         }
         loginViewController.dismissBlock = ^{
@@ -379,10 +383,11 @@ CGFloat const blavatarImageSize = 50.f;
     } else if (self.tableView.isEditing) {
         return;
     }else {
-        [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedEditBlog];
-        
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
-        [blog flagAsLastUsed];
+        [blogService flagBlogAsLastUsed:blog];
+        
         BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
         blogDetailsViewController.blog = blog;
         [self.navigationController pushViewController:blogDetailsViewController animated:YES];
@@ -478,7 +483,11 @@ CGFloat const blavatarImageSize = 50.f;
 
 - (NSString *)controller:(NSFetchedResultsController *)controller sectionIndexTitleForSectionName:(NSString *)sectionName {
     if ([sectionName isEqualToString:@"1"]) {
-        return [NSString stringWithFormat:NSLocalizedString(@"%@'s sites", @"Section header for WordPress.com blogs"), [[WPAccount defaultWordPressComAccount] username]];
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+        return [NSString stringWithFormat:NSLocalizedString(@"%@'s sites", @"Section header for WordPress.com blogs"), [defaultAccount username]];
     }
     return NSLocalizedString(@"Self Hosted", @"Section header for self hosted blogs");
 }

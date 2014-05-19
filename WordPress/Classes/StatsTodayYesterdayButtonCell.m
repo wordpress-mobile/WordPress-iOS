@@ -1,16 +1,10 @@
-//
-//  StatsTodayYesterdayButtonCell.m
-//  WordPress
-//
-//  Created by DX074-XL on 2014-01-07.
-//  Copyright (c) 2014 WordPress. All rights reserved.
-//
-
 #import "StatsTodayYesterdayButtonCell.h"
 
 @interface StatsTodayYesterdayButtonCell ()
 
+// This overrides the StatsButtonDelegate from the parent class
 @property (nonatomic, weak) id<StatsTodayYesterdayButtonCellDelegate> delegate;
+@property (nonatomic, assign) StatsSection currentSection;
 
 @end
 
@@ -19,22 +13,21 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        [self addButtonWithTitle:NSLocalizedString(@"Today", @"Select today's data for a stats section") target:self action:@selector(daySelected:) section:0];
-        [self addButtonWithTitle:NSLocalizedString(@"Yesterday", @"Select yesterday's data for a stats section") target:self action:@selector(daySelected:) section:0];
+        [self addSegmentWithTitle:NSLocalizedString(@"Today", @"Select today's data for a stats section")];
+        [self addSegmentWithTitle:NSLocalizedString(@"Yesterday", @"Select yesterday's data for a stats section")];
     }
     return self;
 }
 
 - (void)setupForSection:(StatsSection)section delegate:(id<StatsTodayYesterdayButtonCellDelegate>)delegate todayActive:(BOOL)todayActive {
+    self.currentSection = section;
     self.delegate = delegate;
-    [self.buttons[0] setTag:section];
-    [self.buttons[1] setTag:section];
-    self.currentActiveButton = todayActive ? 0 : 1;
+    self.segmentedControl.selectedSegmentIndex = todayActive ? 0 : 1;
 }
 
-- (void)daySelected:(UIButton *)sender {
-    BOOL todaySelected = (self.buttons[0] == sender);
-    [self.delegate statsDayChangedForSection:sender.tag todaySelected:todaySelected];
+- (void)segmentChanged:(UISegmentedControl *)sender {
+    BOOL todaySelected = (sender.selectedSegmentIndex == 0);
+    [self.delegate statsDayChangedForSection:self.currentSection todaySelected:todaySelected];
 }
 
 - (void)prepareForReuse {
