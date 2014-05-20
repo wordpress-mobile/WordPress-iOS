@@ -671,7 +671,31 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         return;
     }
 
-    [self syncReaderItemsWithSuccess:success failure:failure];
+    if (userInteraction) {
+        [self syncReaderItemsWithSuccess:success failure:failure];
+    } else {
+        [self backfillReaderItemsWithSuccess:success failure:failure];
+    }
+}
+
+- (void)backfillReaderItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+    DDLogMethod();
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    [service backfillPostsForTopic:self.currentTopic success:^(BOOL hasMore) {
+        if (success) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success();
+            });
+        }
+    } failure:^(NSError *error) {
+        if (failure) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(error);
+            });
+        }
+    }];
 }
 
 - (void)syncReaderItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
@@ -679,13 +703,17 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service fetchPostsForTopic:self.currentTopic earlierThan:[NSDate date] keepExisting:_loadingMore success:^(NSUInteger count) {
+    [service fetchPostsForTopic:self.currentTopic earlierThan:[NSDate date] success:^(BOOL hasMore) {
         if (success) {
-            success();
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success();
+            });
         }
     } failure:^(NSError *error) {
         if(failure) {
-            failure(error);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(error);
+            });
         }
     }];
 }
@@ -704,14 +732,18 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
 
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service fetchPostsForTopic:self.currentTopic earlierThan:post.sortDate keepExisting:YES success:^(NSUInteger count){
+    [service fetchPostsForTopic:self.currentTopic earlierThan:post.sortDate success:^(BOOL hasMore){
         if (success) {
-            success();
+            dispatch_async(dispatch_get_main_queue(), ^{
+                success();
+            });
         }
-        [self onSyncSuccess:count];
+        [self onSyncSuccess:hasMore];
     } failure:^(NSError *error) {
         if (failure) {
-            failure(error);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(error);
+            });
         }
     }];
     
@@ -722,12 +754,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	return UITableViewRowAnimationNone;
 }
 
-- (void)onSyncSuccess:(NSUInteger)count {
+- (void)onSyncSuccess:(BOOL)hasMore {
     DDLogMethod();
     _loadingMore = NO;
-    if (count == 0) {
-        _hasMoreContent = NO;
-    }
+    _hasMoreContent = hasMore;
 }
 
 
