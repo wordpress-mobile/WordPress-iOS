@@ -1,7 +1,6 @@
 #import "WordPressComApi.h"
 #import "WordPressComApiCredentials.h"
 #import "NSString+Helpers.h"
-#import <AFNetworking/AFNetworking.h>
 #import <UIDeviceHardware.h>
 #import "UIDevice+WordPressIdentifier.h"
 #import "WordPressAppDelegate.h"

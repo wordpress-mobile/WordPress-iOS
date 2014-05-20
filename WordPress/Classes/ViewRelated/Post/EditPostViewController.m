@@ -156,6 +156,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [self setupOptionsView];
     
     [self createRevisionOfPost];
+    [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:MediaShouldInsertBelowNotification object:nil];
@@ -553,7 +554,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 - (void)showCancelMediaUploadPrompt
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cancel Media Uploads", nil) message:NSLocalizedString(@"This will stop the current media uploads in progress, are you sure you want to proceed?", @"This is displayed if the user taps the uploading text in the post editor") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:NSLocalizedString(@"Ok", nil), nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cancel Media Uploads", nil) message:NSLocalizedString(@"This will stop the current media uploads in progress. Are you sure you want to proceed?", @"This is displayed if the user taps the uploading text in the post editor") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:NSLocalizedString(@"Ok", nil), nil];
     alertView.tag = EditPostViewControllerAlertCancelMediaUpload;
     [alertView show];
 }
@@ -810,6 +811,25 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         [self refreshUIForCurrentPost];
     }];
 }
+
+// This will remove any media objects that are in the uploading status. The reason we do this is because if the editor crashes during an image upload the app
+// will have an image stuck in the uploading state and the user will be unable to quit out of the app unless they remove the image by hand. In the absence of a media
+// browser to see a users attached images we should remove this image from the post.
+// NOTE: This is a temporary fix, long term we should explore other options such as automatically retrying after a crash
+- (void)removeIncompletelyUploadedMediaFilesAsAResultOfACrash
+{
+    [self.post.managedObjectContext performBlock:^{
+        NSMutableArray *mediaToRemove = [[NSMutableArray alloc] init];
+        for (Media *media in self.post.media) {
+            if (media.remoteStatus == MediaRemoteStatusPushing) {
+                [mediaToRemove addObject:media];
+            }
+        }
+        [mediaToRemove makeObjectsPerformSelector:@selector(remove)];
+    }];
+}
+
+
 
 - (void)discardChangesAndDismiss {
     [self.post.original deleteRevision];
@@ -1379,8 +1399,9 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
             // Could handle videos here
         } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
-            UIImage *fullResolutionImage = [UIImage imageWithCGImage:representation.fullResolutionImage
-                                                               scale:1.0f
+            CGImageRef image = [self imageFromAssetRepresentation:asset.defaultRepresentation];
+            UIImage *fullResolutionImage = [UIImage imageWithCGImage:image
+                                                               scale:representation.scale
                                                          orientation:(UIImageOrientation)representation.orientation];
             UIImage *resizedImage = [WPMediaSizing correctlySizedImage:fullResolutionImage forBlogDimensions:[self.post.blog getImageResizeDimensions]];
             NSDictionary *assetMetadata = [WPMediaMetadataExtractor metadataForAsset:asset enableGeolocation:gelocationEnabled];
@@ -1391,6 +1412,41 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [_mediaUploader uploadMediaObjects:mediaToUpload];
     [self setupNavbar];
 }
+
+/*
+ This method doesn't really belong here but it's all being refactored in
+ https://github.com/wordpress-mobile/WordPress-iOS/issues/1685
+ 
+ Adding it here as a quick fix for 4.0.3
+ */
+- (CGImageRef)imageFromAssetRepresentation:(ALAssetRepresentation *)representation {
+    CGImageRef fullResolutionImage = CGImageRetain(representation.fullResolutionImage);
+    NSString *adjustmentXMP = [representation.metadata objectForKey:@"AdjustmentXMP"];
+
+    NSData *adjustmentXMPData = [adjustmentXMP dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *__autoreleasing error = nil;
+    CGRect extend = CGRectZero;
+    extend.size = representation.dimensions;
+    NSArray *filters = nil;
+    if (adjustmentXMPData) {
+        filters = [CIFilter filterArrayFromSerializedXMP:adjustmentXMPData inputImageExtent:extend error:&error];
+    }
+    if (filters)
+    {
+        CIImage *image = [CIImage imageWithCGImage:fullResolutionImage];
+        CIContext *context = [CIContext contextWithOptions:nil];
+        for (CIFilter *filter in filters)
+        {
+            [filter setValue:image forKey:kCIInputImageKey];
+            image = [filter outputImage];
+        }
+
+        CGImageRelease(fullResolutionImage);
+        fullResolutionImage = [context createCGImage:image fromRect:image.extent];
+    }
+    return fullResolutionImage;
+}
+
 
 #pragma mark - Positioning & Rotation
 
