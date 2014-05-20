@@ -443,8 +443,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	} else {
         if (imageView.image) {
             CGFloat ratio = imageSize.width / imageSize.height;
-            CGFloat width = _textContentView.frame.size.width;
-            CGFloat availableWidth = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
+            CGFloat width = self.frame.size.width;
+            CGFloat availableWidth = width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
             
             imageSize.width = availableWidth;
             imageSize.height = roundf(width / ratio) + imageView.edgeInsets.top;
