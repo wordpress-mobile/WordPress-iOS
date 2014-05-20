@@ -141,7 +141,10 @@ static NSString *const GravatarBaseUrl = @"http://gravatar.com";
 
 #pragma mark - Private methods
 
-- (void)processImage:(UIImage *)image forHash:(NSString *)hash type:(WPAvatarSourceType)type size:(CGSize)size success:(void (^)(UIImage *image))success
+- (void)processImage:(UIImage *)image
+			 forHash:(NSString *)hash
+				type:(WPAvatarSourceType)type
+				size:(CGSize)size success:(void (^)(UIImage *image))success
 {
     dispatch_async(_processingQueue, ^{
         // This method might be called many consecutive times for the same size
