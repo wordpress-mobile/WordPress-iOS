@@ -58,7 +58,29 @@
 
 
 - (void)setImage:(UIImage *)image {
-	_imageView.image = image;
+	
+	BOOL imageIsAnimated = (image.images != nil);
+	
+	if (imageIsAnimated)
+	{
+		_imageView.image = image.images[0];
+		_imageView.animationImages = image.images;
+		_imageView.animationDuration = image.duration;
+		
+		// DRM: a delay before starting the animations is necessary.  For some reason calling
+		// startAnimating right away seems to cause animations not to start at all.
+		//
+		double delayInSeconds = 0.5;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [_imageView startAnimating];
+        });
+	}
+	else
+	{
+		_imageView.image = image;
+	}
+	
 	self.isShowingPlaceholder = NO;
 }
 
