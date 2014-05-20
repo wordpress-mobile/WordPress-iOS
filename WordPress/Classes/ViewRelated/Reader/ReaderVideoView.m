@@ -112,8 +112,12 @@
 	[[ReaderVideoView sharedYoutubeClient] GET:path
 										parameters:nil
 										   success:^(AFHTTPRequestOperation *operation, id responseObject) {
-											   
-											   NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:0 error:nil];
+                                               NSDictionary *dict;
+                                               if ([responseObject isKindOfClass:[NSDictionary class]]) {
+                                                   dict = (NSDictionary *)responseObject;
+                                               } else {
+                                                   dict = [NSJSONSerialization JSONObjectWithData:responseObject options:0 error:nil];
+                                               }
 											   NSDictionary *mediaGroup = [[dict objectForKey:@"entry"] objectForKey:@"media$group"];
 											   
 											   selfRef.title = [[mediaGroup objectForKey:@"media$title"] objectForKey:@"$t"];
@@ -158,8 +162,12 @@
 	[[ReaderVideoView sharedVimeoClient] GET:path
 									  parameters:nil
 										 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-											 
-											 NSArray *arr = [NSJSONSerialization JSONObjectWithData:responseObject options:0 error:nil];
+                                             NSArray *arr;
+                                             if ([responseObject isKindOfClass:[NSArray class]]) {
+                                                 arr = (NSArray *)responseObject;
+                                             } else {
+                                                 arr = [NSJSONSerialization JSONObjectWithData:responseObject options:0 error:nil];
+                                             }
 											 NSDictionary *dict = [arr objectAtIndex:0];
 											 selfRef.title = [dict objectForKey:@"title"];
 											 NSString *url = [dict objectForKey:@"thumbnail_large"];
@@ -185,8 +193,12 @@
 	[[ReaderVideoView sharedDailyMotionClient] GET:path
 											parameters:nil
 											   success:^(AFHTTPRequestOperation *operation, id responseObject) {
-												   
-												   NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:0 error:nil];
+                                                   NSDictionary *dict;
+                                                   if ([responseObject isKindOfClass:[NSDictionary class]]) {
+                                                       dict = (NSDictionary *)responseObject;
+                                                   } else {
+                                                       dict = [NSJSONSerialization JSONObjectWithData:responseObject options:0 error:nil];
+                                                   }
 												   NSString *url = [dict objectForKey:@"thumbnail_large_url"];
 												   [selfRef setImageWithURL:[NSURL URLWithString:url]
 														   placeholderImage:nil 

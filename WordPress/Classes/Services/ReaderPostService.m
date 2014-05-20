@@ -15,10 +15,15 @@ NSUInteger const ReaderPostServiceNumberToSync = 20;
 NSUInteger const ReaderPostServiceSummaryLength = 150;
 NSUInteger const ReaderPostServiceTitleLength = 30;
 NSUInteger const ReaderPostServiceMaxPosts = 200;
+NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
 
 @interface ReaderPostService()
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+
+@property (nonatomic) NSUInteger backfillBatchNumber;
+@property (nonatomic, strong) NSMutableArray *backfilledRemotePosts;
+@property (nonatomic, strong) NSDate *backfillDate;
 
 @end
 
@@ -33,29 +38,17 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
     return self;
 }
 
-- (void)fetchPostsForTopic:(ReaderTopic *)topic earlierThan:(NSDate *)date keepExisting:(BOOL)keepExisting success:(void (^)(NSUInteger count))success failure:(void (^)(NSError *error))failure {
-    NSManagedObjectID *topicObjectID = topic.objectID;
+#pragma mark - Fetch Methods
 
+- (void)fetchPostsForTopic:(ReaderTopic *)topic earlierThan:(NSDate *)date success:(void (^)(BOOL hasMore))success failure:(void (^)(NSError *error))failure {
+    NSManagedObjectID *topicObjectID = topic.objectID;
 
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
     [remoteService fetchPostsFromEndpoint:[NSURL URLWithString:topic.path]
                                     count:ReaderPostServiceNumberToSync
                                    before:date
                                   success:^(NSArray *posts) {
-                                      // Use a performBlock here so the work to merge does not block the main thread.
-                                      [self.managedObjectContext performBlock:^{
-
-                                          [self mergePosts:posts keepExisting:keepExisting forTopic:topicObjectID];
-
-                                          // performBlockAndWait here so we know our objects are saved before we call success.
-                                          [self.managedObjectContext performBlockAndWait:^{
-                                              [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                                          }];
-
-                                          if (success) {
-                                              success([posts count]);
-                                          }
-                                      }];
+                                      [self mergePosts:posts forTopic:topicObjectID callingSuccess:success];
                                   } failure:^(NSError *error) {
                                       if (failure) {
                                           failure(error);
@@ -63,13 +56,11 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
                                   }];
 }
 
-- (void)fetchPostsForTopic:(ReaderTopic *)topic success:(void (^)(NSUInteger count))success failure:(void (^)(NSError *error))failure {
-    [self fetchPostsForTopic:topic earlierThan:[NSDate date] keepExisting:NO success:success failure:failure];
+- (void)fetchPostsForTopic:(ReaderTopic *)topic success:(void (^)(BOOL hasMore))success failure:(void (^)(NSError *error))failure {
+    [self fetchPostsForTopic:topic earlierThan:[NSDate date] success:success failure:failure];
 }
 
 - (void)fetchPost:(NSUInteger)postID forSite:(NSUInteger)siteID success:(void (^)(ReaderPost *post))success failure:(void (^)(NSError *error))failure {
-
-    //TODO: Make sure we can do this without a topic
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
     [remoteService fetchPost:postID fromSite:siteID success:^(RemoteReaderPost *remotePost) {
         if (!success) {
@@ -85,6 +76,21 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
         }
     }];
 }
+
+- (void)backfillPostsForTopic:(ReaderTopic *)topic success:(void (^)(BOOL hasMore))success failure:(void (^)(NSError *error))failure {
+    ReaderPost *post = [self newestPostForTopic:topic];
+    if (post) {
+        self.backfillDate = post.sortDate;
+    } else {
+        self.backfillDate = [NSDate date];
+    }
+    self.backfillBatchNumber = 0;
+    self.backfilledRemotePosts = [NSMutableArray array];
+
+    [self fetchPostsToBackfillTopic:topic date:[NSDate date] success:success failure:failure];
+}
+
+#pragma mark - Update Methods
 
 - (void)toggleLikedForPost:(ReaderPost *)post success:(void (^)())success failure:(void (^)(NSError *error))failure {
     // Get a the post in our own context
@@ -103,11 +109,11 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
     NSNumber *oldCount = [readerPost.likeCount copy];
 
     // Optimistically update
-    readerPost.isLiked = [NSNumber numberWithBool:like];
+    readerPost.isLiked = like;
     if (like) {
-        readerPost.likeCount = [NSNumber numberWithInteger:([readerPost.likeCount integerValue] + 1)];
+        readerPost.likeCount = @([readerPost.likeCount integerValue] + 1);
     } else {
-        readerPost.likeCount = [NSNumber numberWithInteger:([readerPost.likeCount integerValue] - 1)];
+        readerPost.likeCount = @([readerPost.likeCount integerValue] - 1);
     }
     [self.managedObjectContext performBlockAndWait:^{
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -123,7 +129,7 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
     // Define failure block
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
         // Revert changes on failure
-        readerPost.isLiked = [NSNumber numberWithBool:oldValue];
+        readerPost.isLiked = oldValue;
         readerPost.likeCount = oldCount;
         [self.managedObjectContext performBlockAndWait:^{
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -138,7 +144,7 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
     if (like) {
         [remoteService likePost:[readerPost.postID integerValue] forSite:[readerPost.siteID integerValue] success:successBlock failure:failureBlock];
     } else {
-        [remoteService unlikePost:[post.postID integerValue] forSite:[post.siteID integerValue] success:successBlock failure:failureBlock];
+        [remoteService unlikePost:[readerPost.postID integerValue] forSite:[readerPost.siteID integerValue] success:successBlock failure:failureBlock];
     }
 }
 
@@ -158,7 +164,7 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
     BOOL follow = !oldValue;
 
     // Optimistically update
-    readerPost.isFollowing = [NSNumber numberWithBool:follow];
+    readerPost.isFollowing = follow;
     [self.managedObjectContext performBlockAndWait:^{
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
@@ -173,7 +179,7 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
     // Define failure block
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
         // Revert changes on failure
-        readerPost.isFollowing = [NSNumber numberWithBool:oldValue];
+        readerPost.isFollowing = oldValue;
         [self.managedObjectContext performBlockAndWait:^{
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }];
@@ -183,10 +189,18 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
     };
 
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
-    if (follow) {
-        [remoteService followSite:[post.siteID integerValue] success:successBlock failure:failureBlock];
+    if (post.isWPCom) {
+        if (follow) {
+            [remoteService followSite:[post.siteID integerValue] success:successBlock failure:failureBlock];
+        } else {
+            [remoteService unfollowSite:[post.siteID integerValue] success:successBlock failure:failureBlock];
+        }
     } else {
-        [remoteService unfollowSite:[post.siteID integerValue] success:successBlock failure:failureBlock];
+        if (follow) {
+            [remoteService followSiteAtURL:post.blogURL success:successBlock failure:failureBlock];
+        } else {
+            [remoteService unfollowSiteAtURL:post.blogURL success:successBlock failure:failureBlock];
+        }
     }
 }
 
@@ -247,53 +261,139 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
     return api;
 }
 
-/**
- Merge a freshly fetched batch of posts into the existing set of posts for the specified topic and either discard or retain existing posts.
- Saves the managed object context. 
+- (NSUInteger)numberOfPostsForTopic:(ReaderTopic *)topic {
+    NSError *error;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
 
- @param posts An array of RemoteReaderPost objects
- @param keepExisting Set to YES if the topic's existing posts should be kept. 
- @param topicObjectID The ObjectID of the ReaderTopic to assign to the newly created posts.
- */
-- (void)mergePosts:(NSArray *)posts keepExisting:(BOOL)keepExisting forTopic:(NSManagedObjectID *)topicObjectID {
-    ReaderTopic *readerTopic = (ReaderTopic *)[self.managedObjectContext objectWithID:topicObjectID];
-    NSMutableArray *newPosts = [self makeNewPostsFromRemotePosts:posts forTopic:readerTopic];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = %@", topic];
+    [fetchRequest setPredicate:pred];
 
-    if (keepExisting) {
-        [self deletePostsForTopic:readerTopic missingFromBatch:newPosts];
-        [self deletePostsInExcessOfMaxAllowedForTopic:readerTopic];
-    } else {
-        [self deleteExistingPostsForTopic:readerTopic keepingOnlyNewPosts:newPosts];
-    }
-
-    readerTopic.lastSynced = [NSDate date];
+    NSUInteger count = [self.managedObjectContext countForFetchRequest:fetchRequest error:&error];
+    return count;
 }
 
+#pragma mark - Backfill Processing Methods
+
 /**
- Delete all posts for the specified topic that are not included in the passed array of posts.
- The managed object context is not saved.
+ Retrieve the newest post for the specified topic
  
- @param newPosts The array of ReaderPosts objects to keep.
+ @param topic The ReaderTopic for the post
+ @return The newest post in Core Data for the topic, or nil.
  */
-- (void)deleteExistingPostsForTopic:(ReaderTopic *)topic keepingOnlyNewPosts:(NSArray *)newPosts {
-    // Don't trust the relationships on the topic to be current or correct.
+- (ReaderPost *)newestPostForTopic:(ReaderTopic *)topic {
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@", topic];
     [fetchRequest setPredicate:pred];
+    fetchRequest.fetchLimit = 1;
 
-    NSArray *currentPosts = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortDate" ascending:NO];
+    [fetchRequest setSortDescriptors:@[sortDescriptor]];
+
+    ReaderPost *post = (ReaderPost *)[self.managedObjectContext executeFetchRequest:fetchRequest error:&error].firstObject;
     if (error) {
-        DDLogError(@"%@, error fetching posts: %@", NSStringFromSelector(_cmd), error);
-        return;
+        DDLogError(@"%@, error fetching newest post for topic: %@", NSStringFromSelector(_cmd), error);
+        return nil;
+    }
+    return post;
+}
+
+/**
+ Private fetch method that is part of the backfill process. This is basically a 
+ passthrough call to `fetchPostsFromEndpoint:count:before:success:failure:` that
+ passes the results to `processBackfillPostsForTopic:posts:success:failure:`.
+ This should only be called once the backfill date, array and batch count have
+ been initialized as in `fetchPostsToBackfillTopic:success:failure:`.
+ 
+ @param topic The Topic for which to request posts.
+ @param date The date to get posts earlier than.
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)fetchPostsToBackfillTopic:(ReaderTopic *)topic date:(NSDate *)date success:(void (^)(BOOL hasMore))success failure:(void (^)(NSError *error))failure {
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
+    [remoteService fetchPostsFromEndpoint:[NSURL URLWithString:topic.path]
+                                    count:ReaderPostServiceNumberToSync
+                                   before:date
+                                  success:^(NSArray *posts) {
+                                      [self processBackfillPostsForTopic:topic posts:posts success:success failure:failure];
+                                  } failure:^(NSError *error) {
+                                      if (failure) {
+                                          failure(error);
+                                      }
+                                  }];
+}
+
+/**
+ Processes a batch of backfilled posts. 
+ When backfilling, the goal is to request up to three batches of post, or until 
+ a fetched batch includes the newest posts currently in Core Data.
+ 
+ @param topic The Topic for which to request posts.
+ @param posts An array of fetched posts.
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)processBackfillPostsForTopic:(ReaderTopic *)topic posts:(NSArray *)posts success:(void (^)(BOOL hasMore))success failure:(void (^)(NSError *error))failure {
+    self.backfillBatchNumber++;
+    [self.backfilledRemotePosts addObjectsFromArray:posts];
+
+    NSDate *oldestDate = [NSDate date];
+    if ([self.backfilledRemotePosts count] > 0) {
+        RemoteReaderPost *remotePost = [self.backfilledRemotePosts lastObject];
+        oldestDate = [DateUtils dateFromISOString:remotePost.sortDate];
     }
 
-    for (ReaderPost *post in currentPosts) {
-        if (![newPosts containsObject:post]) {
-            DDLogInfo(@"Deleting ReaderPost: %@", post);
-            [self.managedObjectContext deleteObject:post];
-        }
+    if (self.backfillBatchNumber > ReaderPostServiceMaxBatchesToBackfill || (oldestDate && (oldestDate == [oldestDate earlierDate:self.backfillDate]))) {
+        // our work is done
+        [self mergePosts:self.backfilledRemotePosts forTopic:topic.objectID callingSuccess:success];
+
+    } else {
+        [self fetchPostsToBackfillTopic:topic date:oldestDate success:success failure:failure];
     }
+}
+
+#pragma mark - Merging and Deletion
+
+/**
+ Merges a batch of fetched posts and calls the specified success block.
+
+ @param posts An array of RemoteReaderPost objects
+ @param topicObjectID The ObjectID of the ReaderTopic to assign to the newly created posts.
+ @param success block called on a successful fetch which should be performed after merging
+ */
+- (void)mergePosts:(NSArray *)posts forTopic:(NSManagedObjectID *)topicObjectID callingSuccess:(void (^)(BOOL hasMore))success {
+    // Use a performBlock here so the work to merge does not block the main thread.
+    [self.managedObjectContext performBlock:^{
+        ReaderTopic *readerTopic = (ReaderTopic *)[self.managedObjectContext objectWithID:topicObjectID];
+        [self mergePosts:posts forTopic:readerTopic];
+
+        // performBlockAndWait here so we know our objects are saved before we call success.
+        [self.managedObjectContext performBlockAndWait:^{
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        }];
+
+        if (success) {
+            BOOL hasMore = ([self numberOfPostsForTopic:readerTopic] < ReaderPostServiceMaxPosts);
+            success(hasMore);
+        }
+    }];
+}
+
+/**
+ Merge a freshly fetched batch of posts into the existing set of posts for the specified topic.
+ Saves the managed object context. 
+
+ @param posts An array of RemoteReaderPost objects
+ @param readerTopic The topic to assign to the newly created posts.
+ */
+- (void)mergePosts:(NSArray *)posts forTopic:(ReaderTopic *)readerTopic {
+    NSMutableArray *newPosts = [self makeNewPostsFromRemotePosts:posts forTopic:readerTopic];
+
+    [self deletePostsForTopic:readerTopic missingFromBatch:newPosts];
+    [self deletePostsInExcessOfMaxAllowedForTopic:readerTopic];
+
+    readerTopic.lastSynced = [NSDate date];
 }
 
 /**
@@ -370,10 +470,6 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
 
     for (NSUInteger i = ReaderPostServiceMaxPosts; i < count; i++) {
         ReaderPost *post = [posts objectAtIndex:i];
-        [self.managedObjectContext deleteObject:post];
-    }
-
-    for (ReaderPost *post in posts) {
         DDLogInfo(@"Deleting ReaderPost: %@", post.postTitle);
         [self.managedObjectContext deleteObject:post];
     }
@@ -468,6 +564,8 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
 
     return post;
 }
+
+#pragma mark - Content Formatting and Sanitization
 
 /**
  Formats the post content.  
