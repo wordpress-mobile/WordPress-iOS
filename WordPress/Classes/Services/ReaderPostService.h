@@ -9,25 +9,25 @@
 /**
  Fetches the posts for the specified topic
 
+ @param topic The Topic for which to request posts.
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 - (void)fetchPostsForTopic:(ReaderTopic *)topic
-                   success:(void (^)(NSUInteger count))success
+                   success:(void (^)(BOOL hasMore))success
                    failure:(void (^)(NSError *error))failure;
 
 /**
  Fetches the posts for the specified topic
 
+ @param topic The Topic for which to request posts.
  @param date The date to get posts earlier than.
- @param keepExisting YES if existing posts should kept, otherwise they are deleted in favor of the newest content.
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 - (void)fetchPostsForTopic:(ReaderTopic *)topic
                earlierThan:(NSDate *)date
-              keepExisting:(BOOL)keepExisting
-                   success:(void (^)(NSUInteger count))success
+                   success:(void (^)(BOOL hasMore))success
                    failure:(void (^)(NSError *error))failure;
 
 /**
@@ -43,10 +43,21 @@
           success:(void (^)(ReaderPost *post))success
           failure:(void (^)(NSError *error))failure;
 
+/**
+ Backfills posts for the specified topic.
+
+ @param topic The Topic for which to request posts.
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)backfillPostsForTopic:(ReaderTopic *)topic
+                      success:(void (^)(BOOL hasMore))success
+                      failure:(void (^)(NSError *error))failure;
 
 /**
  Toggle the liked status of the specified post.
 
+ @param post The reader post to like/unlike.
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
