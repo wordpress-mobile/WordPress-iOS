@@ -202,14 +202,42 @@ typedef enum {
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 
+    CGRect frame = self.postView.frame;
+    if (IS_IPAD) {
+        frame.size.width = WPTableViewFixedWidth;
+    } else {
+        frame.size.width = CGRectGetWidth(self.tableView.bounds);
+    }
+    self.postView.frame = [self frameForPostView];
     [self.postView refreshMediaLayout]; // Resize media in the post detail to match the width of the new orientation.
-    [self.postView setNeedsLayout];
 
 	// Make sure a selected comment is visible after rotating.
 	if ([self.tableView indexPathForSelectedRow] != nil && self.inlineComposeView.isDisplayed) {
 		[self.tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionNone animated:NO];
 	}
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self refreshPostViewCell];
+    });
 }
+
+- (void)refreshPostViewCell {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    [self.tableView beginUpdates];
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView endUpdates];
+}
+
+- (CGRect)frameForPostView {
+    CGRect frame = self.postView.frame;
+    if (IS_IPAD) {
+        frame.size.width = WPTableViewFixedWidth;
+    } else {
+        frame.size.width = CGRectGetWidth(self.tableView.bounds);
+    }
+    return frame;
+}
+
 
 #pragma mark - Actions
 
@@ -238,7 +266,8 @@ typedef enum {
     self.postView.delegate = self;
     [self.postView configurePost:self.post];
     self.postView.backgroundColor = [UIColor whiteColor];
-    
+    self.postView.autoresizingMask = UIViewAutoresizingNone;
+
     if (self.avatarImage) {
         [self.postView setAvatar:self.avatarImage];
     } else if (self.avatarImageURL) {
@@ -899,16 +928,10 @@ typedef enum {
     if (indexPath.section == ReaderDetailContentSection) {
         UITableViewCell *postCell = [self.tableView dequeueReusableCellWithIdentifier:@"PostCell"];
         postCell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+        self.postView.frame = [self frameForPostView];
         [postCell.contentView addSubview:self.postView];
-        
-        // Make the postView matches the width of its cell.
-        // When the postView is first created it matches the width of the tableView
-        // which may or may not be the same width as the cells when we get to this point.
-        // On the iPhone, when viewing in landscape orientation, there can be a 20px difference.
-        CGRect frame = self.postView.frame;
-        frame.size.width = postCell.frame.size.width;
-        self.postView.frame = frame;
-        
+
         return postCell;
     }
     
