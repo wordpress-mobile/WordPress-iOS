@@ -147,8 +147,6 @@
 			
 			[self setCachedImage:resizedImage forURL:url withSize:size];
 		}
-		NSAssert(resizedImage.size.width == size.width,
-				 @"The resizedImage width should be exactly the requested width here.");
 
         if (self.delegate && [self.delegate respondsToSelector:@selector(tableImageSource:imageReady:forIndexPath:)]) {
             dispatch_sync(dispatch_get_main_queue(), ^{
