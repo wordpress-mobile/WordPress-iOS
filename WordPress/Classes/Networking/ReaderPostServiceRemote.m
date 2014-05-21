@@ -173,7 +173,7 @@
     }
 
     NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/reblogs/new", siteID, postID];
-    [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.api POST:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             NSDictionary *dict = (NSDictionary *)responseObject;
             BOOL isReblogged = [[dict numberForKey:@"is_reblogged"] boolValue];
