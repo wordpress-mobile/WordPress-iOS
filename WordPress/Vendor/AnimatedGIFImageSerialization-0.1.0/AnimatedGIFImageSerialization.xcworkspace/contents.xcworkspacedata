@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "group:AnimatedGIFImageSerialization"
+      name = "AnimatedGIFImageSerialization">
+      <FileRef
+         location = "group:AnimatedGIFImageSerialization.h">
+      </FileRef>
+      <FileRef
+         location = "group:AnimatedGIFImageSerialization.m">
+      </FileRef>
+   </Group>
+   <FileRef
+      location = "group:Example/Animated GIF Example.xcodeproj">
+   </FileRef>
+</Workspace>
