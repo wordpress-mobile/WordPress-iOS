@@ -32,6 +32,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 @property (nonatomic, strong) EditCommentViewController *editCommentViewController;
 @property (nonatomic, assign) BOOL isShowingActionSheet;
 @property (nonatomic, assign) BOOL transientReply;
+@property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
 
 @end
 
@@ -58,6 +59,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
         scrollView.contentInset = UIEdgeInsetsMake(WPTableViewTopMargin, 0, WPTableViewTopMargin, 0);
         scrollView.contentWidth = WPTableViewFixedWidth;
     };
+    scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     self.view = scrollView;
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -90,15 +92,22 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     if (self.comment) {
         [self showComment:self.comment];
    }
+    
+    // For tapping to dismiss the keyboard
+    self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+
     // Get rid of any transient reply if popping the view
     // (ideally transient replies should be handled more cleanly)
     if ([self isMovingFromParentViewController] && self.transientReply) {
@@ -246,13 +255,40 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 	if (self.commentsViewController.blog.isSyncingComments) {
 		[self showSyncInProgressAlert];
 	} else {
-        self.reply = [self.comment restoreReply];
-        self.transientReply = YES;
-        self.inlineComposeView.text = self.reply.content;
-        [self.inlineComposeView displayComposer];
+        if(self.inlineComposeView.isDisplayed) {
+            [self.inlineComposeView dismissComposer];
+        } else {
+            self.reply = [self.comment restoreReply];
+            self.transientReply = YES;
+            self.inlineComposeView.text = self.reply.content;
+            [self.inlineComposeView displayComposer];
+        }
 	}
 }
 
+#pragma mark - Gesture Actions
+
+- (void)handleTap:(UITapGestureRecognizer *)gesture
+{
+    if(self.inlineComposeView.isDisplayed) {
+        [self.inlineComposeView dismissComposer];
+    }
+}
+
+#pragma mark - Notification Handlers
+
+- (void)handleKeyboardDidShow:(NSNotification *)notification {
+    CGRect keyboardRect = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    UIScrollView *scrollView = (UIScrollView *)self.view;
+    scrollView.contentInset = UIEdgeInsetsMake(0.f, 0.f, CGRectGetHeight(keyboardRect), 0.f);
+    [self.view addGestureRecognizer:self.tapGesture];
+}
+
+- (void)handleKeyboardWillHide:(NSNotification *)notification {
+    UIScrollView *scrollView = (UIScrollView *)self.view;
+    scrollView.contentInset = UIEdgeInsetsMake(0.f, 0.f, 0.f, 0.f);
+    [self.view removeGestureRecognizer:self.tapGesture];
+}
 
 #pragma mark - UIActionSheet delegate methods
 
