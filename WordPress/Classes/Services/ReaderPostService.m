@@ -221,11 +221,6 @@ NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
 
-    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInteger:siteID] forKey:@"destination_site_id"];
-    if ([note length] > 0) {
-        [params setObject:note forKey:@"note"];
-    }
-
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
     [remoteService reblogPost:[readerPost.postID integerValue]
                      fromSite:[readerPost.siteID integerValue]
