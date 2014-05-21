@@ -85,7 +85,9 @@ static NSInteger const IndexForMeTab = 2;
     [self removeCredentialsForDebug];
     
     // Stats and feedback
-    [Taplytics startTaplyticsAPIKey:[WordPressComApiCredentials taplyticsAPIKey]];
+    [Taplytics startTaplyticsAPIKey:[WordPressComApiCredentials taplyticsAPIKey]
+                            options:@{@"shakeMenu":@NO}];
+
     [WPAnalytics registerTracker:[[WPAnalyticsTrackerMixpanel alloc] init]];
     [WPAnalytics registerTracker:[[WPAnalyticsTrackerWPCom alloc] init]];
     [WPAnalytics beginSession];
@@ -396,11 +398,11 @@ static NSInteger const IndexForMeTab = 2;
      If title is used, the title will be visible. See #1158
      If accessibilityLabel/Value are used, the "New Post" text is not read by VoiceOver
 
-     The only apparent solution is to have an actual title, and then hide it for
+     The only apparent solution is to have an actual title, and then move it out of view
      non-VoiceOver users.
      */
     postsViewController.title = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
-    [postsViewController.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor clearColor]} forState:UIControlStateNormal];
+    postsViewController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, 20.0);
 
     _tabBarController.viewControllers = @[readerNavigationController, notificationsNavigationController, blogListNavigationController, postsViewController];
 
@@ -528,7 +530,10 @@ static NSInteger const IndexForMeTab = 2;
             if ([navController topViewController] == [[navController viewControllers] firstObject] &&
                 [[[navController topViewController] view] isKindOfClass:[UITableView class]]) {
                 UITableView *tableView = (UITableView *)[[navController topViewController] view];
-                [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                
+                if ([tableView numberOfSections] > 0 && [tableView numberOfRowsInSection:0] > 0) {
+                    [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                }
             }
         }
     }

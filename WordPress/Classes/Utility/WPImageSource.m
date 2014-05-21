@@ -1,5 +1,7 @@
 #import "WPImageSource.h"
 
+#import "WPAnimatedImageResponseSerializer.h"
+
 NSString * const WPImageSourceErrorDomain = @"WPImageSourceErrorDomain";
 
 @implementation WPImageSource {
@@ -71,7 +73,7 @@ NSString * const WPImageSourceErrorDomain = @"WPImageSourceErrorDomain";
 
 		AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
 		
-		operation.responseSerializer = [[AFImageResponseSerializer alloc] init];
+		operation.responseSerializer = [[WPAnimatedImageResponseSerializer alloc] init];
 		operation.responseSerializer.acceptableContentTypes
 			= [operation.responseSerializer.acceptableContentTypes setByAddingObject:@"image/jpg"];
 		
