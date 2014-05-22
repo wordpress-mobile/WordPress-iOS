@@ -445,7 +445,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)topicsAction:(id)sender {
 	ReaderTopicsViewController *controller = [[ReaderTopicsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     if (IS_IPAD) {
-        if (_popover) {
+        if (_popover && [_popover isPopoverVisible]) {
             [self dismissPopover];
             return;
         }
