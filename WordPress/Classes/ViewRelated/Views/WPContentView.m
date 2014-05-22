@@ -507,7 +507,6 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     
     for (ReaderMediaView *mediaView in mediaArray) {
         if ([self updateMediaLayout:mediaView]) {
-            NSLog(@"Frame Changed");
             frameChanged = YES;
         }
 

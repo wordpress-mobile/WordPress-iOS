@@ -63,6 +63,17 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     return blog;
 }
 
+- (Blog *)lastUsedOrFirstWPcomBlog
+{
+    Blog *blog = [self lastUsedBlog];
+
+    if (![blog isWPcom]) {
+        blog = [self firstWPComBlog];
+    }
+
+    return blog;
+}
+
 - (Blog *)lastUsedBlog
 {
     // Try to get the last used blog, if there is one.
@@ -119,6 +130,23 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         return nil;
     }
     
+    return [results firstObject];
+}
+
+- (Blog *)firstWPComBlog
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.isWpcom = YES AND visible = YES"];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    [fetchRequest setPredicate:predicate];
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
+    NSError *error = nil;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+
+    if (error) {
+        DDLogError(@"Couldn't fetch blogs: %@", error);
+        return nil;
+    }
+
     return [results firstObject];
 }
 
