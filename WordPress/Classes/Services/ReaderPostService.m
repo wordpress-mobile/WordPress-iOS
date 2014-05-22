@@ -216,19 +216,14 @@ NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
     }
 
     // Optimisitically save
-    readerPost.isReblogged = @1;
+    readerPost.isReblogged = YES;
     [self.managedObjectContext performBlockAndWait:^{
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
 
-    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInteger:siteID] forKey:@"destination_site_id"];
-    if ([note length] > 0) {
-        [params setObject:note forKey:@"note"];
-    }
-
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
-    [remoteService reblogPost:[NSNumber numberWithInteger:readerPost.postID]
-                     fromSite:[NSNumber numberWithInteger:readerPost.siteID]
+    [remoteService reblogPost:[readerPost.postID integerValue]
+                     fromSite:[readerPost.siteID integerValue]
                        toSite:siteID
                          note:note
                       success:^(BOOL isReblogged) {
@@ -236,7 +231,7 @@ NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
                               success();
                           }
                       } failure:^(NSError *error) {
-                          readerPost.isReblogged = @0;
+                          readerPost.isReblogged = NO;
                           [self.managedObjectContext performBlockAndWait:^{
                               [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
                           }];
