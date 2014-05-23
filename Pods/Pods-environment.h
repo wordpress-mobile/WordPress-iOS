@@ -118,7 +118,7 @@
 #define COCOAPODS_POD_AVAILABLE_HockeySDK
 #define COCOAPODS_VERSION_MAJOR_HockeySDK 3
 #define COCOAPODS_VERSION_MINOR_HockeySDK 5
-#define COCOAPODS_VERSION_PATCH_HockeySDK 4
+#define COCOAPODS_VERSION_PATCH_HockeySDK 5
 
 // MGImageUtilities
 #define COCOAPODS_POD_AVAILABLE_MGImageUtilities
@@ -178,7 +178,7 @@
 #define COCOAPODS_POD_AVAILABLE_UIDeviceIdentifier
 #define COCOAPODS_VERSION_MAJOR_UIDeviceIdentifier 0
 #define COCOAPODS_VERSION_MINOR_UIDeviceIdentifier 4
-#define COCOAPODS_VERSION_PATCH_UIDeviceIdentifier 0
+#define COCOAPODS_VERSION_PATCH_UIDeviceIdentifier 2
 
 // WordPress-iOS-Shared
 #define COCOAPODS_POD_AVAILABLE_WordPress_iOS_Shared

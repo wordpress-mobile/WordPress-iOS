@@ -1,1 +1,1 @@
-../../../../WordPress-iOS-Shared/WordPress-iOS-Shared/WPStyleGuide.h
+../../WordPress-iOS-Shared/WordPress-iOS-Shared/WPStyleGuide.h

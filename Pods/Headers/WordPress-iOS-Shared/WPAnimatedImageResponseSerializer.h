@@ -1,1 +1,1 @@
-../../../../WordPress-iOS-Shared/WordPress-iOS-Shared/WPAnimatedImageResponseSerializer.h
+../../WordPress-iOS-Shared/WordPress-iOS-Shared/WPAnimatedImageResponseSerializer.h
