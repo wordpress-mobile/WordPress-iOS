@@ -1,1 +1,1 @@
-../../../../WordPress-iOS-Shared/WordPress-iOS-Shared/UITableViewTextFieldCell.h
+../../WordPress-iOS-Shared/WordPress-iOS-Shared/UITableViewTextFieldCell.h

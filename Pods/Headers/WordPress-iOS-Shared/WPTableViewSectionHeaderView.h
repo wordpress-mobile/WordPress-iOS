@@ -1,1 +1,1 @@
-../../../../WordPress-iOS-Shared/WordPress-iOS-Shared/WPTableViewSectionHeaderView.h
+../../WordPress-iOS-Shared/WordPress-iOS-Shared/WPTableViewSectionHeaderView.h
