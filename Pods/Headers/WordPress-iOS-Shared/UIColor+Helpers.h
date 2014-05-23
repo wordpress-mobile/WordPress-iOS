@@ -1,1 +1,1 @@
-../../../../WordPress-iOS-Shared/WordPress-iOS-Shared/UIColor+Helpers.h
+../../WordPress-iOS-Shared/WordPress-iOS-Shared/UIColor+Helpers.h
