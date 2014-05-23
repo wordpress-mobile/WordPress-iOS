@@ -23,6 +23,7 @@ pod 'HockeySDK', '~>3.5.0'
 pod 'Helpshift', '4.3.1'
 pod 'Taplytics', '~>1.2.50'
 pod 'CTAssetsPickerController', '~> 2.2.0'
+pod 'WordPress-iOS-Shared', :path => '../WordPress-iOS-Shared'
 
 target :WordPressTest, :exclusive => true do
   pod 'OHHTTPStubs', '1.1.1'
