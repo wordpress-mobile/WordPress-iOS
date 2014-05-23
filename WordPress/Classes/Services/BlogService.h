@@ -30,6 +30,13 @@
 - (Blog *)lastUsedOrFirstBlog;
 
 /**
+ Returns the wpcom blog currently flagged as the one last used, or the first wpcom
+ blog in an alphanumerically sorted list, if no wpcom blog is currently flagged as 
+ last used.
+ */
+- (Blog *)lastUsedOrFirstWPcomBlog;
+
+/**
  Returns the blog currently flaged as the one last used.
  */
 - (Blog *)lastUsedBlog;
@@ -38,6 +45,11 @@
  Returns the first blog in an alphanumerically sorted list.
  */
 - (Blog *)firstBlog;
+
+/**
+ Returns the first WPCom blog in an alphanumerically sorted list.
+ */
+- (Blog *)firstWPComBlog;
 
 /*! Sync only blog posts, categories, options and post formats.
  *  Used for instances where comments and pages aren't necessarily needed to be updated.
