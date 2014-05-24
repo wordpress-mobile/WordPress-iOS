@@ -114,13 +114,12 @@
 	}
 
     self.composeView.enabled = NO;
-	NSDictionary *params = @{@"content":str};
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-	[[defaultAccount restApi] POST:[self pathForContext] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[[defaultAccount restApi] publishComment:str toPath:[self pathForContext] success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
         [self.composeView clearText];
         self.composeView.enabled = YES;
