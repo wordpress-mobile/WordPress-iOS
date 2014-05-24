@@ -1,4 +1,5 @@
 #import <Availability.h>
+#import <AFNetworking/AFNetworking.h>
 
 typedef void (^WordPressComApiRestSuccessResponseBlock)(AFHTTPRequestOperation *operation, id responseObject);
 typedef void (^WordPressComApiRestSuccessFailureBlock)(AFHTTPRequestOperation *operation, NSError *error);

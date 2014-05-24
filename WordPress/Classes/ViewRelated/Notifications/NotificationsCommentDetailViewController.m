@@ -48,6 +48,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 
+@property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
 @end
 
 @implementation NotificationsCommentDetailViewController
@@ -114,6 +115,9 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         scrollView.contentInset = UIEdgeInsetsMake(WPTableViewTopMargin, 0, WPTableViewTopMargin, 0);
         scrollView.contentWidth = WPTableViewFixedWidth;
     };
+
+    scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+
     self.view = scrollView;
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -146,6 +150,8 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
     self.inlineComposeView.delegate = self;
     [self.view addSubview:self.inlineComposeView];
+    
+    self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onShowKeyboard:)
@@ -332,7 +338,11 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 }
 
 - (void)replyAction:(id)sender {
-    [self.inlineComposeView becomeFirstResponder];
+    if(self.inlineComposeView.isDisplayed) {
+        [self.inlineComposeView dismissComposer];
+    } else {
+        [self.inlineComposeView becomeFirstResponder];
+    }
 }
 
 - (void)performCommentAction:(NSDictionary *)commentAction {    
@@ -417,6 +427,14 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     [_postBanner setBackgroundColor:[UIColor UIColorFromHex:0xF2F2F2]];
 }
 
+#pragma mark - Gesture Actions
+
+- (void)handleTap:(UITapGestureRecognizer *)gesture
+{
+    if(self.inlineComposeView.isDisplayed) {
+        [self.inlineComposeView dismissComposer];
+    }
+}
 
 #pragma mark - REST API
 
@@ -493,11 +511,13 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     CGRect keyboardRect = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     UIScrollView *scrollView = (UIScrollView *)self.view;
     scrollView.contentInset = UIEdgeInsetsMake(0.f, 0.f, CGRectGetHeight(keyboardRect), 0.f);
+    [self.view addGestureRecognizer:self.tapGesture];
 }
 
 - (void)onHideKeyboard:(NSNotification *)notification {
     UIScrollView *scrollView = (UIScrollView *)self.view;
     scrollView.contentInset = UIEdgeInsetsMake(0.f, 0.f, 0.f, 0.f);
+    [self.view removeGestureRecognizer:self.tapGesture];
 }
 
 

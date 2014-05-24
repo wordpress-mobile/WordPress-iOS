@@ -1,7 +1,6 @@
 #import "WordPressComApi.h"
 #import "WordPressComApiCredentials.h"
 #import "NSString+Helpers.h"
-#import <AFNetworking/AFNetworking.h>
 #import <UIDeviceHardware.h>
 #import "UIDevice+WordPressIdentifier.h"
 #import "WordPressAppDelegate.h"
@@ -449,7 +448,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     }
     
     NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/reblogs/new", siteID, postID];
-    [self.httpManager POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.httpManager POST:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             success(operation, responseObject);
         }
