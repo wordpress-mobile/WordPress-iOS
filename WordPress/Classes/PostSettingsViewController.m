@@ -21,8 +21,8 @@
 #import "WPTableViewActivityCell.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "WPTableImageSource.h"
-#import "WPMediaMetadataExtractor.h"
-#import "WPMediaSizing.h"
+#import "ContextManager.h"
+#import "MediaService.h"
 #import "WPMediaUploader.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
@@ -913,22 +913,22 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 {
     // On iOS7 the image picker seems to override our preferred setting so we force the status bar color back.
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    UIImage *image = [info valueForKey:@"UIImagePickerControllerOriginalImage"];
     NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
     ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc] init];
     [assetsLibrary assetForURL:assetURL resultBlock:^(ALAsset *asset){
-        UIImage *resizedImage = [WPMediaSizing correctlySizedImage:image forBlogDimensions:[self.post.blog getImageResizeDimensions]];
-        NSDictionary *assetMetadata = [WPMediaMetadataExtractor metadataForAsset:asset enableGeolocation:self.post.blog.geolocationEnabled];
-        Media *imageMedia = [Media newMediaForPost:self.post withImage:resizedImage andMetadata:assetMetadata];
-        imageMedia.mediaType = MediaTypeFeatured;
-        __weak PostSettingsViewController *weakSelf = self;
-        _mediaUploader = [[WPMediaUploader alloc] init];
-        _mediaUploader.uploadsCompletedBlock = ^{
-            Post *post = (Post *)weakSelf.apost;
-            post.featuredImage = imageMedia;
-            [weakSelf.tableView reloadData];
-        };
-        [_mediaUploader uploadMediaObjects:@[imageMedia]];
+        MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+        [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
+            media.mediaType = MediaTypeFeatured;
+            __weak PostSettingsViewController *weakSelf = self;
+            _mediaUploader = [[WPMediaUploader alloc] init];
+            _mediaUploader.uploadsCompletedBlock = ^{
+                Post *post = (Post *)weakSelf.apost;
+                post.featuredImage = media;
+                [weakSelf.tableView reloadData];
+            };
+            [_mediaUploader uploadMediaObjects:@[media]];
+        }];
+
         if (IS_IPAD) {
             [_popover dismissPopoverAnimated:YES];
         } else {
