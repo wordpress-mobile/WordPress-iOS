@@ -13,6 +13,7 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatReaderInfiniteScroll,
     WPAnalyticsStatReaderFollowedReaderTag,
     WPAnalyticsStatReaderUnfollowedReaderTag,
+    WPAnalyticsStatReaderFollowedSite,
     WPAnalyticsStatReaderLoadedTag,
     WPAnalyticsStatReaderLoadedFreshlyPressed,
     WPAnalyticsStatReaderCommentedOnArticle,
