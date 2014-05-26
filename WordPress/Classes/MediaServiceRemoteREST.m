@@ -30,8 +30,9 @@
     AFHTTPRequestOperation *operation = [self.api HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             NSDictionary *response = (NSDictionary *)responseObject;
-            NSNumber *mediaID = [response numberForKey:@"id"];
-            NSString *url = [response stringForKey:@"link"];
+            NSDictionary *media = [[response arrayForKey:@"media"] firstObject];
+            NSNumber *mediaID = [media numberForKey:@"id"];
+            NSString *url = [media stringForKey:@"link"];
             success(mediaID, url);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
