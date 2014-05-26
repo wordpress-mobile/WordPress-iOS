@@ -10,7 +10,10 @@
 #import "UIImage+Util.h"
 #import "LocationService.h"
 #import "BlogService.h"
-#import "WPMediaProcessor.h"
+#import "WPMediaSizing.h"
+#import "WPMediaMetadataExtractor.h"
+#import "WPMediaUploader.h"
+#import "WPUploadStatusView.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
@@ -24,9 +27,12 @@ CGFloat const EPVCTextViewOffset = 10.0;
 CGFloat const EPVCTextViewBottomPadding = 50.0f;
 CGFloat const EPVCTextViewTopPadding = 7.0f;
 
-@interface EditPostViewController ()<UIPopoverControllerDelegate>
+@interface EditPostViewController ()<UIPopoverControllerDelegate> {
+    WPMediaUploader *_mediaUploader;
+}
 
 @property (nonatomic, strong) UIButton *titleBarButton;
+@property (nonatomic, strong) UIView *uploadStatusView;
 @property (nonatomic, strong) WPAlertView *linkHelperAlertView;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
@@ -114,6 +120,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
         _post = post;
+        [self configureMediaUploader];
         
         if (_post.remoteStatus == AbstractPostRemoteStatusLocal) {
             _editMode = EditPostViewControllerModeNewPost;
@@ -122,6 +129,15 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         }
     }
     return self;
+}
+
+- (void)configureMediaUploader
+{
+    __weak EditPostViewController *weakSelf = self;
+    _mediaUploader = [[WPMediaUploader alloc] init];
+    _mediaUploader.uploadsCompletedBlock = ^{
+        [weakSelf setupNavbar];
+    };
 }
 
 - (void)viewDidLoad {
@@ -224,10 +240,13 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     NSInteger blogCount = [blogService blogCountForAllAccounts];
     
-    if (blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
+    if (_mediaUploader.isUploadingMedia) {
+        self.navigationItem.titleView = self.uploadStatusView;
+    } else if(blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
         self.navigationItem.title = [self editorTitle];
     } else {
         UIButton *titleButton = self.titleBarButton;
+        self.navigationItem.titleView = titleButton;
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", [self editorTitle]]
                                                                                       attributes:@{ NSFontAttributeName : [UIFont fontWithName:@"OpenSans-Bold" size:14.0] }];
 
@@ -532,6 +551,19 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     return [PostSettingsViewController class];
 }
 
+- (void)showCancelMediaUploadPrompt
+{
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cancel Media Uploads", nil) message:NSLocalizedString(@"This will stop the current media uploads in progress, are you sure you want to proceed?", @"This is displayed if the user taps the uploading text in the post editor") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:NSLocalizedString(@"Ok", nil), nil];
+    alertView.tag = EditPostViewControllerAlertCancelMediaUpload;
+    [alertView show];
+}
+
+- (void)cancelMediaUploads
+{
+    [_mediaUploader cancelAllUploads];
+    [self setupNavbar];
+}
+
 - (void)showSettings {
     Post *post = (Post *)self.post;
     PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post];
@@ -748,9 +780,20 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [titleButton setAccessibilityHint:NSLocalizedString(@"Tap to select which blog to post to", nil)];
 
     _titleBarButton = titleButton;
-    self.navigationItem.titleView = titleButton;
     
     return _titleBarButton;
+}
+
+- (UIView *)uploadStatusView {
+    if (_uploadStatusView) {
+        return _uploadStatusView;
+    }
+    WPUploadStatusView *uploadStatusView = [[WPUploadStatusView alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, 33.0)];
+    uploadStatusView.tappedView = ^{
+        [self showCancelMediaUploadPrompt];
+    };
+    _uploadStatusView = uploadStatusView;
+    return _uploadStatusView;
 }
 
 # pragma mark - Model State Methods
@@ -1238,6 +1281,10 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         if (buttonIndex == 1) {
             [self showBlogSelector];
         }
+    } else if (alertView.tag == EditPostViewControllerAlertCancelMediaUpload) {
+        if (buttonIndex == 1) {
+            [self cancelMediaUploads];
+        }
     }
     return;
 }
@@ -1324,11 +1371,9 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 - (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets {
     [self dismissViewControllerAnimated:YES completion:nil];
     
-    WPMediaProcessor *mediaProcessor = [[WPMediaProcessor alloc] init];
     BOOL gelocationEnabled = self.post.blog.geolocationEnabled;
-    
+    NSMutableArray *mediaToUpload = [[NSMutableArray alloc] initWithCapacity:[assets count]];
     for (ALAsset *asset in assets) {
-        Media *imageMedia = [Media newMediaForPost:self.post];
         ALAssetRepresentation *representation = asset.defaultRepresentation;
         
         if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
@@ -1337,15 +1382,14 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
             UIImage *fullResolutionImage = [UIImage imageWithCGImage:representation.fullResolutionImage
                                                                scale:1.0f
                                                          orientation:(UIImageOrientation)representation.orientation];
-            
-            MediaResize *resize = [mediaProcessor mediaResizePreference];
-            NSDictionary *dimensions = [self.post.blog getImageResizeDimensions];
-            CGSize newSize = [mediaProcessor sizeForImage:fullResolutionImage mediaResize:resize blogResizeDimensions:dimensions];
-            UIImage *resizedImage = [mediaProcessor resizeImage:fullResolutionImage toSize:newSize];
-            NSDictionary *assetMetadata = [mediaProcessor metadataForAsset:asset enableGeolocation:gelocationEnabled];
-            [mediaProcessor processImage:resizedImage media:imageMedia metadata:assetMetadata];
+            UIImage *resizedImage = [WPMediaSizing correctlySizedImage:fullResolutionImage forBlogDimensions:[self.post.blog getImageResizeDimensions]];
+            NSDictionary *assetMetadata = [WPMediaMetadataExtractor metadataForAsset:asset enableGeolocation:gelocationEnabled];
+            Media *imageMedia = [Media newMediaForPost:self.post withImage:resizedImage andMetadata:assetMetadata];
+            [mediaToUpload addObject:imageMedia];
         }
     }
+    [_mediaUploader uploadMediaObjects:mediaToUpload];
+    [self setupNavbar];
 }
 
 #pragma mark - Positioning & Rotation

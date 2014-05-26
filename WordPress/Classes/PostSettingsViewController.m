@@ -21,6 +21,10 @@
 #import "WPTableViewActivityCell.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "WPTableImageSource.h"
+#import "WPMediaMetadataExtractor.h"
+#import "WPMediaSizing.h"
+#import "WPMediaUploader.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 typedef enum {
     PostSettingsRowCategories = 0,
@@ -41,7 +45,10 @@ static NSInteger RowIndexForDatePicker = 0;
 
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
 
-@interface PostSettingsViewController () <UITextFieldDelegate, WPTableImageSourceDelegate, WPPickerViewDelegate>
+@interface PostSettingsViewController () <UITextFieldDelegate, WPTableImageSourceDelegate, WPPickerViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
+    WPMediaUploader *_mediaUploader;
+    UIPopoverController *_popover;
+}
 
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) UITextField *passwordTextField;
@@ -67,6 +74,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     self = [super init];
     if (self) {
         self.apost = aPost;
+        _mediaUploader = [[WPMediaUploader alloc] init];
     }
     return self;
 }
@@ -509,7 +517,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 - (UITableViewCell *)configureFeaturedImageCellForIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell;
     
-    if (!self.post.post_thumbnail) {
+    if (!self.post.post_thumbnail && !_mediaUploader.isUploadingMedia) {
         WPTableViewActivityCell *activityCell = [self getWPActivityTableViewCell];
         activityCell.textLabel.text = NSLocalizedString(@"Set Featured Image", @"");
         activityCell.tag = PostSettingsRowFeaturedImageAdd;
@@ -739,26 +747,29 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 }
 
 - (void)showPostFormatSelector {
-    if( [self.formatsList count] == 0 ) {
+    Post *post      = self.post;
+    NSArray *titles = post.blog.sortedPostFormatNames;
+    
+    if (post == nil || titles.count == 0 || post.postFormatText == nil || self.formatsList.count == 0) {
         return;
     }
     
-    NSArray *titles = self.post.blog.sortedPostFormatNames;
     NSDictionary *postFormatsDict = @{
-                                      @"DefaultValue": titles[0],
-                                      @"Title" : NSLocalizedString(@"Post Format", nil),
-                                      @"Titles" : titles,
-                                      @"Values" : titles,
-                                      @"CurrentValue" : self.post.postFormatText
-                                      };
+        @"DefaultValue"   : [titles firstObject],
+        @"Title"          : NSLocalizedString(@"Post Format", nil),
+        @"Titles"         : titles,
+        @"Values"         : titles,
+        @"CurrentValue"   : post.postFormatText
+    };
     
     PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:postFormatsDict];
     __weak PostSettingsSelectionViewController *weakVc = vc;
     vc.onItemSelected = ^(NSString *status) {
-        self.post.postFormatText = status;
+        post.postFormatText = status;
         [weakVc dismiss];
         [self.tableView reloadData];
     };
+    
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -768,13 +779,34 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 }
 
 - (void)showFeaturedImageSelector {
-    UIViewController *controller;
     if (self.post.post_thumbnail) {
-        controller = [[FeaturedImageViewController alloc] initWithPost:self.post];
+        // Check if the featured image is set, otherwise we don't want to do anything while it's still loading.
+        if (self.featuredImage) {
+            FeaturedImageViewController *featuredImageVC = [[FeaturedImageViewController alloc] initWithPost:self.post];
+            [self.navigationController pushViewController:featuredImageVC animated:YES];
+        }
     } else {
-        controller = [[MediaBrowserViewController alloc] initWithPost:self.post selectingFeaturedImage:YES];
+        [self showPhotoPicker];
     }
-    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)showPhotoPicker
+{
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+	picker.delegate = self;
+	picker.allowsEditing = NO;
+    picker.navigationBar.translucent = NO;
+    picker.modalPresentationStyle = UIModalPresentationCurrentContext;
+    picker.navigationBar.barStyle = UIBarStyleBlack;
+    
+    if (IS_IPAD) {
+        _popover = [[UIPopoverController alloc] initWithContentViewController:picker];
+        CGRect frame = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]];
+        [_popover presentPopoverFromRect:frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    } else {
+        [self.navigationController presentViewController:picker animated:YES completion:nil];
+    }
 }
 
 - (void)showCategoriesSelection {
@@ -873,6 +905,40 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     }
     
     [self datePickerChanged:selectedDate];
+}
+
+#pragma mark - UIImagePickerControllerDelegate methods
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    // On iOS7 the image picker seems to override our preferred setting so we force the status bar color back.
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    UIImage *image = [info valueForKey:@"UIImagePickerControllerOriginalImage"];
+    NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
+    ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc] init];
+    [assetsLibrary assetForURL:assetURL resultBlock:^(ALAsset *asset){
+        UIImage *resizedImage = [WPMediaSizing correctlySizedImage:image forBlogDimensions:[self.post.blog getImageResizeDimensions]];
+        NSDictionary *assetMetadata = [WPMediaMetadataExtractor metadataForAsset:asset enableGeolocation:self.post.blog.geolocationEnabled];
+        Media *imageMedia = [Media newMediaForPost:self.post withImage:resizedImage andMetadata:assetMetadata];
+        imageMedia.mediaType = MediaTypeFeatured;
+        __weak PostSettingsViewController *weakSelf = self;
+        _mediaUploader = [[WPMediaUploader alloc] init];
+        _mediaUploader.uploadsCompletedBlock = ^{
+            Post *post = (Post *)weakSelf.apost;
+            post.featuredImage = imageMedia;
+            [weakSelf.tableView reloadData];
+        };
+        [_mediaUploader uploadMediaObjects:@[imageMedia]];
+        if (IS_IPAD) {
+            [_popover dismissPopoverAnimated:YES];
+        } else {
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        }
+        // Reload the featured image row so that way the activity indicator will be displayed.
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]] withRowAnimation:UITableViewRowAnimationFade];
+    } failureBlock:^(NSError *error){
+        DDLogError(@"can't get asset %@: %@", assetURL, [error localizedDescription]);
+    }];
 }
 
 @end
