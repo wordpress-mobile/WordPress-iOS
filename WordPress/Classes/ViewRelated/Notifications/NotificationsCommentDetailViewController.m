@@ -186,7 +186,9 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     NSNumber * postID = action[@"params.post_id"];
     // if we don't have post information fetch it from the api
     if (self.post == nil) {
-        [[defaultAccount restApi] fetchPost:[postID unsignedIntegerValue] fromSite:[self.siteID unsignedIntegerValue] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[defaultAccount restApi] fetchPost:[postID unsignedIntegerValue]
+                                   fromSite:[self.siteID unsignedIntegerValue]
+                                    success:^( id responseObject) {
             self.post = responseObject;
             NSString *postTitle = [[self.post valueForKeyPath:@"title"] stringByDecodingXMLCharacters];
             if (!postTitle || [postTitle isEqualToString:@""])
@@ -204,7 +206,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
             
             self.postBanner.userInteractionEnabled = YES;
             
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        } failure:^(NSError *error) {
             DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
         }];
     }
@@ -351,7 +353,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     [[defaultAccount restApi] performCommentAction:commentAction
-                                           success:^(AFHTTPRequestOperation *operation, id responseObject)
+                                           success:^(id responseObject)
     {
         NSDictionary *response = (NSDictionary *)responseObject;
         if (response) {
@@ -363,7 +365,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
                 [self displayNote];
             }];
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
     }];
 
@@ -381,7 +383,8 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
         NSString *approvePath = [NSString stringWithFormat:@"/rest/v1%@", [action valueForKeyPath:@"params.rest_path"]];
         if ([[action valueForKeyPath:@"params.approve_parent"] isEqualToNumber:@1]) {
-            [[defaultAccount restApi] approveCommentAction:action success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [[defaultAccount restApi] approveCommentAction:action
+                                                   success:^(id responseObject) {
                 [self displayNote];
             } failure:nil];
         }
@@ -401,12 +404,12 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
         [[defaultAccount restApi] replyToCommentInPath:approvePath
                                              withReply:replyText
-                                               success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                               success:^(id responseObject) {
             DDLogVerbose(@"Response: %@", responseObject);
             [WPAnalytics track:WPAnalyticsStatNotificationRepliedTo];
             [WPAnalytics track:WPAnalyticsStatNotificationPerformedAction];
             success();
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        } failure:^(NSError *error) {
             DDLogError(@"Failure %@", error);
             if ([error.userInfo[WordPressComApiErrorCodeKey] isEqual:@"comment_duplicate"]) {
                 // If it's a duplicate comment, fake success since an identical comment is published
@@ -450,7 +453,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
         [[defaultAccount restApi] getComment:comment.commentID fromSite:[self.siteID stringValue]
-                                     success:^(AFHTTPRequestOperation *operation, id responseObject)
+                                     success:^(id responseObject)
         {
             comment.commentData = responseObject;
             comment.loading = NO;
@@ -462,14 +465,14 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
             NSString *authorLink = [comment.commentData valueForKeyPath:@"author.URL"];
             [self.commentView setAuthorDisplayName:author authorLink:authorLink];
 
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+        } failure:^(NSError *error){
             DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
         }];
         
     }
 }
 
-- (void)performNoteAction:(NSDictionary *)action success:(WordPressComApiRestSuccessFailureBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+- (void)performNoteAction:(NSDictionary *)action success:(WordPressComApiRestFailureBlock)success failure:(WordPressComApiRestFailureBlock)failure {
     NSDictionary *params = action[@"params"];
     
     NSUInteger commentID= [params[@"comment_id"] unsignedIntegerValue];

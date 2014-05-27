@@ -56,7 +56,7 @@
             [self urlForViewsVisitorsForUnit:@"month"],
     ];
 
-    [self.api fetchStatsForUrls:urls withCompletionHandler:^void (AFHTTPRequestOperation *operation, id responseObject)
+    [self.api fetchStatsForUrls:urls withCompletionHandler:^void (id responseObject)
      {
          if (![responseObject isKindOfClass:[NSDictionary class]]) {
              if (failureHandler) {
@@ -162,7 +162,7 @@
              
          }
      }
-     failureHandler:^void (AFHTTPRequestOperation *operation, NSError *error)
+     failureHandler:^void (NSError *error)
      {
          NSLog(@"Error: %@", error);
          

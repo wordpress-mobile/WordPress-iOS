@@ -25,7 +25,7 @@
         if (success) {
             success(notes);
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         if (failure) {
             failure(error);
         }
@@ -38,7 +38,7 @@
         if (success) {
             success(notes);
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         if (failure) {
             failure(error);
         }
@@ -54,7 +54,7 @@
                                    success(updatedNotes);
                                }
                            }
-                           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                           failure:^(NSError *error) {
                                if (failure) {
                                    failure(error);
                                }
@@ -65,12 +65,12 @@
 - (void)markNoteIdAsRead:(NSString *)noteId success:(void (^)())success failure:(void (^)(NSError *))failure
 {
     [self.api markNoteAsRead:noteId
-                     success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     success:^(id responseObject) {
                          if (success) {
                              success();
                          }
                      }
-                     failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     failure:^(NSError *error) {
                          if (failure) {
                              failure(error);
                          }
@@ -82,7 +82,7 @@
     [self.api refreshNotifications:noteIds
                             fields:@"id,unread"
                            success:success
-                           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                           failure:^(NSError *error) {
                                if (failure) {
                                    failure(error);
                                }

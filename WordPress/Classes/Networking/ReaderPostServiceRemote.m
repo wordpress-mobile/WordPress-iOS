@@ -68,7 +68,7 @@
           failure:(void (^)(NSError *error))failure {
 
     [self.api fetchSiteMetaPost:postID fromSite:siteID
-              success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              success:^(id responseObject) {
                   if (!success) {
                       return;
                   }
@@ -76,7 +76,7 @@
                   RemoteReaderPost *post = [self formatPostDictionary:(NSDictionary *)responseObject];
                   success(post);
 
-              } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              } failure:^(NSError *error) {
                   if (failure) {
                       failure(error);
                   }
@@ -86,11 +86,11 @@
 - (void)likePost:(NSUInteger)postID forSite:(NSUInteger)siteID success:(void (^)())success failure:(void (^)(NSError *error))failure {
     [self.api likePost:postID
                forSite:siteID
-               success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               success:^(id responseObject) {
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         if (failure) {
             failure(error);
         }
@@ -101,11 +101,11 @@
 {
     [self.api unlikePost:postID
                  forSite:siteID
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 success:^(id responseObject) {
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         if (failure) {
             failure(error);
         }
@@ -114,11 +114,11 @@
 
 - (void)followSite:(NSUInteger)siteID success:(void (^)())success failure:(void(^)(NSError *error))failure {
     [self.api followSite:siteID
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 success:^(id responseObject) {
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         if (failure) {
             failure(error);
         }
@@ -126,11 +126,11 @@
 }
 
 - (void)unfollowSite:(NSUInteger)siteID success:(void (^)())success failure:(void(^)(NSError *error))failure {
-    [self.api unfollowSite:siteID success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.api unfollowSite:siteID success:^(id responseObject) {
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         if (failure) {
             failure(error);
         }
@@ -138,11 +138,11 @@
 }
 
 - (void)followSiteAtURL:(NSString *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure {
-    [self.api followSiteAtURL:siteURL success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.api followSiteAtURL:siteURL success:^(id responseObject) {
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         if (failure) {
             failure(error);
         }
@@ -150,12 +150,12 @@
 }
 
 - (void)unfollowSiteAtURL:(NSString *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure {
-    [self.api unfollowSiteAtURL:siteURL success:^(AFHTTPRequestOperation *operation, id responseObject)
+    [self.api unfollowSiteAtURL:siteURL success:^(id responseObject)
 {
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         if (failure) {
             failure(error);
         }
@@ -165,13 +165,13 @@
 - (void)reblogPost:(NSUInteger)postID fromSite:(NSUInteger)siteID toSite:(NSUInteger)targetSiteID note:(NSString *)note success:(void (^)(BOOL isReblogged))success failure:(void (^)(NSError *error))failure
 {
     [self.api reblogPost:postID fromSite:siteID toSite:targetSiteID note:note
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 success:^(id responseObject) {
         if (success) {
             NSDictionary *dict = (NSDictionary *)responseObject;
             BOOL isReblogged = [[dict numberForKey:@"is_reblogged"] boolValue];
             success(isReblogged);
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         if (failure) {
             failure(error);
         }
@@ -195,7 +195,7 @@
 
     [self.api fetchPostsFromEndpoint:endpoint
                       withParameters:params
-                             success:^(AFHTTPRequestOperation *operation, id responseObject)
+                             success:^(id responseObject)
     {
         if (!success) {
           return;
@@ -207,7 +207,7 @@
           [posts addObject:[self formatPostDictionary:dict]];
         }
         success(posts);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         if (failure) {
           failure(error);
         }

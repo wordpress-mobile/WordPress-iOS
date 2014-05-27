@@ -827,7 +827,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
                 AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
                 WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-                [[defaultAccount restApi] fetchMeWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
+                [[defaultAccount restApi] fetchMeWithSuccess:^(id responseObject)
                 {
                       if ([usersBlogs count] < 1)
                           return;
@@ -850,7 +850,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
                       [[NSUserDefaults standardUserDefaults] setObject:preferredBlogId forKey:@"wpcom_users_prefered_blog_id"];
                       [NSUserDefaults resetStandardUserDefaults];
                       
-                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                } failure:^(NSError *error) {
                       // TODO: Handle Failure. Retry maybe?
                 }];
                 

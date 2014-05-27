@@ -307,8 +307,8 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 
 - (void)fetchPost:(NSUInteger)postID
          fromSite:(NSUInteger)siteID
-          success:(WordPressComApiRestSuccessResponseBlock)success
-          failure:(WordPressComApiRestSuccessFailureBlock)failure
+          success:(WordPressComApiRestSuccessBlock)success
+          failure:(WordPressComApiRestFailureBlock)failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d", siteID, postID];
     [self.httpManager POST:path
@@ -317,120 +317,147 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                if (!success) {
                    return;
                }
-               success(operation, responseObject);
+               success(responseObject);
                
            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                if (failure) {
-                   failure(operation, error);
+                   failure(error);
                }
            }];
 }
 
 - (void)fetchSiteMetaPost:(NSUInteger)postID
                  fromSite:(NSUInteger)siteID
-                  success:(WordPressComApiRestSuccessResponseBlock)success
-                  failure:(WordPressComApiRestSuccessFailureBlock)failure
+                  success:(WordPressComApiRestSuccessBlock)success
+                  failure:(WordPressComApiRestFailureBlock)failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/?meta=site", siteID, postID];
     [self.httpManager POST:path
                 parameters:nil
-                   success:success
-                   failure:failure];
+                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                       if (success){
+                           success(responseObject);
+                       }
+                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                       if (failure){
+                           failure(error);
+                       }
+                   }
+     ];
 }
 
 
 - (void)likePost:(NSUInteger)postID
          forSite:(NSUInteger)siteID
-         success:(WordPressComApiRestSuccessResponseBlock)success
-         failure:(WordPressComApiRestSuccessFailureBlock)failure
+         success:(WordPressComApiRestSuccessBlock)success
+         failure:(WordPressComApiRestFailureBlock)failure
 {
     
     NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/likes/new", siteID, postID];
-    [self.httpManager POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) {
-            success(operation, responseObject);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(operation, error);
-        }
-    }];
+    [self.httpManager POST:path
+                parameters:nil
+                   success:^(AFHTTPRequestOperation *operation, id responseObject)
+                   {
+                       if (success){
+                           success(responseObject);
+                       }
+                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                       if (failure){
+                           failure(error);
+                       }
+                   }
+     ];
+
 }
 
 - (void)unlikePost:(NSUInteger)postID
            forSite:(NSUInteger)siteID
-           success:(WordPressComApiRestSuccessResponseBlock)success
-           failure:(WordPressComApiRestSuccessFailureBlock)failure {
+           success:(WordPressComApiRestSuccessBlock)success
+           failure:(WordPressComApiRestFailureBlock)failure
+{
     NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/likes/mine/delete", siteID, postID];
-    [self.httpManager POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) {
-            success(operation, responseObject);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(operation, error);
-        }
-    }];
+    [self.httpManager POST:path parameters:nil
+                   success:^(AFHTTPRequestOperation *operation, id responseObject)
+                   {
+                       if (success){
+                             success(responseObject);
+                       }
+                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                       if (failure){
+                         failure(error);
+                       }
+                  }
+     ];
 }
 
 - (void)followSite:(NSUInteger)siteID
-           success:(WordPressComApiRestSuccessResponseBlock)success
-           failure:(WordPressComApiRestSuccessFailureBlock)failure {
+           success:(WordPressComApiRestSuccessBlock)success
+           failure:(WordPressComApiRestFailureBlock)failure
+{
     NSString *path = [NSString stringWithFormat:@"sites/%d/follows/new", siteID];
-    [self.httpManager POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) {
-            success(operation, responseObject);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(operation, error);
-        }
-    }];
+    [self.httpManager POST:path parameters:nil
+                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                       if (success){
+                           success(responseObject);
+                       }
+                   }
+                   failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                       if (failure){
+                           failure(error);
+                       }
+                   }
+     ];
 }
 
 - (void)unfollowSite:(NSUInteger)siteID
-             success:(WordPressComApiRestSuccessResponseBlock)success
-             failure:(WordPressComApiRestSuccessFailureBlock)failure {
+             success:(WordPressComApiRestSuccessBlock)success
+             failure:(WordPressComApiRestFailureBlock)failure
+{
     NSString *path = [NSString stringWithFormat:@"sites/%d/follows/mine/delete", siteID];
     [self.httpManager POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
-            success(operation, responseObject);
+            success(responseObject);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
-            failure(operation, error);
+            failure(error);
         }
     }];
 }
 
 - (void)followSiteAtURL:(NSString *)siteURL
-                success:(WordPressComApiRestSuccessResponseBlock)success
-                failure:(WordPressComApiRestSuccessFailureBlock)failure {
+                success:(WordPressComApiRestSuccessBlock)success
+                failure:(WordPressComApiRestFailureBlock)failure
+{
     NSString *path = @"read/following/mine/new";
     NSDictionary *params = @{@"url": siteURL};
-    [self.httpManager POST:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) {
-            success(operation, responseObject);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(operation, error);
-        }
-    }];
+    [self.httpManager POST:path
+                parameters:params
+                   success:^(AFHTTPRequestOperation *operation, id responseObject){
+                       if (success){
+                         success(responseObject);
+                       }
+                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                       if (failure){
+                           failure(error);
+                       }
+                   }
+     ];
 }
 
 - (void)unfollowSiteAtURL:(NSString *)siteURL
-                  success:(WordPressComApiRestSuccessResponseBlock)success
-                  failure:(WordPressComApiRestSuccessFailureBlock)failure {
+                  success:(WordPressComApiRestSuccessBlock)success
+                  failure:(WordPressComApiRestFailureBlock)failure
+{
     NSString *path = @"read/following/mine/delete";
     NSDictionary *params = @{@"url": siteURL};
     [self.httpManager POST:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
-            success(operation, responseObject);
+            success(responseObject);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
-            failure(operation, error);
+            failure(error);
         }
     }];
 }
@@ -439,8 +466,8 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
           fromSite:(NSUInteger)siteID
             toSite:(NSUInteger)targetSiteID
               note:(NSString *)note
-           success:(WordPressComApiRestSuccessResponseBlock)success
-           failure:(WordPressComApiRestSuccessFailureBlock)failure {
+           success:(WordPressComApiRestSuccessBlock)success
+           failure:(WordPressComApiRestFailureBlock)failure {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:@(targetSiteID) forKey:@"destination_site_id"];
     
     if ([note length] > 0) {
@@ -450,11 +477,11 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/reblogs/new", siteID, postID];
     [self.httpManager POST:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
-            success(operation, responseObject);
+            success(responseObject);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
-            failure(operation, error);
+            failure(error);
         }
     }];
 }
@@ -468,8 +495,8 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
  */
 - (void)fetchPostsFromEndpoint:(NSURL *)endpoint
                 withParameters:(NSDictionary *)params
-                       success:(WordPressComApiRestSuccessResponseBlock)success
-                       failure:(WordPressComApiRestSuccessFailureBlock)failure
+                       success:(WordPressComApiRestSuccessBlock)success
+                       failure:(WordPressComApiRestFailureBlock)failure
 {
     
     [self.httpManager GET:[endpoint absoluteString]
@@ -479,11 +506,11 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                   return;
               }
               
-              success(operation, responseObject);
+              success(responseObject);
               
           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               if (failure) {
-                  failure(operation, error);
+                  failure(error);
               }
           }];
 }
@@ -491,20 +518,20 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 #pragma mark - Stats
 
 - (void)fetchStatsForUrls:(NSArray *) urls
-    withCompletionHandler:(WordPressComApiRestSuccessResponseBlock)completionHandler
-           failureHandler:(WordPressComApiRestSuccessFailureBlock)failureHandler
+    withCompletionHandler:(WordPressComApiRestSuccessBlock)completionHandler
+           failureHandler:(WordPressComApiRestFailureBlock)failureHandler
 {
     
     [self.httpManager GET:@"batch"
                parameters:@{ @"urls" : urls}
                   success:^void (AFHTTPRequestOperation *operation, id responseObject){
                       if (completionHandler){
-                          completionHandler(operation, responseObject);
+                          completionHandler(responseObject);
                       }
                   }
                   failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                       if (failureHandler){
-                          failureHandler(operation , error);
+                          failureHandler(error);
                       }
                   }
     ];
@@ -512,8 +539,8 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 
 #pragma  mark - Menu
 
-- (void)fetchReaderMenuWithSuccess:(WordPressComApiRestSuccessResponseBlock)success
-                           failure:(WordPressComApiRestSuccessFailureBlock)failure
+- (void)fetchReaderMenuWithSuccess:(WordPressComApiRestSuccessBlock)success
+                           failure:(WordPressComApiRestFailureBlock)failure
 {
     NSString *path = @"read/menu";
     
@@ -522,11 +549,11 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
         if (!success) {
             return;
         }
-        success(operation, responseObject);
+        success(responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
-            failure(operation, error);
+            failure(error);
         }
     }];
     
@@ -690,13 +717,13 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     }];
 }
 
-- (void)fetchRecentNotificationsWithSuccess:(void (^)(NSArray *))success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+- (void)fetchRecentNotificationsWithSuccess:(void (^)(NSArray *))success failure:(WordPressComApiRestFailureBlock)failure {
     [self fetchNotificationsWithParameters:nil success:success failure:failure];
 }
 
 - (void)fetchNotificationsSince:(NSNumber *)timestamp
                         success:(void (^)(NSArray *notes))success
-                        failure:(WordPressComApiRestSuccessFailureBlock)failure {
+                        failure:(WordPressComApiRestFailureBlock)failure {
     NSDictionary *parameters = nil;
     if (timestamp != nil) {
         parameters = @{@"since": timestamp};
@@ -706,7 +733,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 
 - (void)fetchNotificationsBefore:(NSNumber *)timestamp
                          success:(void (^)(NSArray *notes))success
-                         failure:(WordPressComApiRestSuccessFailureBlock)failure {
+                         failure:(WordPressComApiRestFailureBlock)failure {
     NSDictionary *parameters = nil;
     if (timestamp != nil) {
         parameters = @{@"before": timestamp};
@@ -714,11 +741,13 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     [self fetchNotificationsWithParameters:parameters success:success failure:failure];
 }
 
-- (void)fetchNotificationsWithParameters:(NSDictionary *)parameters success:(void (^)(NSArray *notes))success failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    NSMutableDictionary *requestParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
-    [requestParameters setObject:WordPressComApiNotificationFields forKey:@"fields"];
-    [requestParameters setObject:[NSNumber numberWithInt:20] forKey:@"number"];
-    [requestParameters setObject:[NSNumber numberWithInt:20] forKey:@"num_note_items"];
+- (void)fetchNotificationsWithParameters:(NSDictionary *)parameters
+                                 success:(void (^)(NSArray *notes))success
+                                 failure:(WordPressComApiRestFailureBlock)failure
+{
+    NSDictionary *requestParameters = @{@"fields":WordPressComApiNotificationFields,
+                                        @"number":@(20),
+                                        @"num_note_items":@(20)};
     
     [self.httpManager GET:@"notifications/" parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject){
         if (success) {
@@ -726,12 +755,16 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
-            failure(operation, error);
+            failure(error);
         }
     }];
 }
 
-- (void)refreshNotifications:(NSArray *)noteIDs fields:(NSString *)fields success:(void (^)(NSArray *notes))success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+- (void)refreshNotifications:(NSArray *)noteIDs
+                      fields:(NSString *)fields
+                     success:(void (^)(NSArray *notes))success
+                     failure:(WordPressComApiRestFailureBlock)failure
+{
     if ([noteIDs count] == 0) {
         return;
     }
@@ -748,32 +781,61 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
         if (success) {
             success(response[@"notes"]);
         }
-    } failure:failure];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure ) {
+            failure(error);
+        }
+    }];
 }
 
-- (void)markNoteAsRead:(NSString *)noteID success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+- (void)markNoteAsRead:(NSString *)noteID success:(WordPressComApiRestSuccessBlock)success failure:(WordPressComApiRestFailureBlock)failure {
     NSDictionary *params = @{ @"counts" : @{ noteID : @"1" } };
     [self.httpManager POST:@"notifications/read"
-                   parameters:params
-                      success:success
-                      failure:failure];
+                   parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                       if (success){
+                           success(responseObject);
+                       }
+                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                       if ( failure ) {
+                           failure(error);
+                       }
+                   }];
 }
 
-- (void)updateNoteLastSeenTime:(NSNumber *)timestamp success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    [self.httpManager POST:@"notifications/seen" parameters:@{ @"time" : timestamp } success:success failure:failure];
+- (void)updateNoteLastSeenTime:(NSNumber *)timestamp success:(WordPressComApiRestSuccessBlock)success failure:(WordPressComApiRestFailureBlock)failure {
+    [self.httpManager POST:@"notifications/seen"
+                parameters:@{ @"time" : timestamp }
+                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                       if (success){
+                           success(responseObject);
+                       }
+                   }
+                   failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                       if (failure){
+                           failure(error);
+                       }
+                   }
+     ];
 }
 
-- (void)followBlog:(NSUInteger)blogID isFollowing:(BOOL)following success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+- (void)followBlog:(NSUInteger)blogID isFollowing:(BOOL)following success:(WordPressComApiRestSuccessBlock)success failure:(WordPressComApiRestFailureBlock)failure {
     NSString *followPath = [NSString stringWithFormat: @"sites/%d/follows/new", blogID];
     if (following) {
         followPath = [followPath stringByReplacingOccurrencesOfString:@"new" withString:@"mine/delete"];
     }
     [self.httpManager POST:followPath
-        parameters:nil
-           success:^(AFHTTPRequestOperation *operation, id responseObject){
-               if (success != nil) success(operation, responseObject);
-           }
-           failure:failure];
+                parameters:nil
+                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                       if (success){
+                           success(responseObject);
+                       }
+                   }
+                   failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                       if (failure){
+                           failure(error);
+                       }
+                   }
+     ];
 }
 
 #pragma mark - Comments
@@ -781,31 +843,43 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 - (void)getCommentsForPost:(NSUInteger)postID
                   fromSite:(NSString *)siteID
             withParameters:(NSDictionary*)params
-                   success:(WordPressComApiRestSuccessResponseBlock)success
-                   failure:(WordPressComApiRestSuccessFailureBlock)failure
+                   success:(WordPressComApiRestSuccessBlock)success
+                   failure:(WordPressComApiRestFailureBlock)failure
 {
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%i/replies", siteID, postID];
     
-    [self.httpManager GET:path parameters:params success:success failure:failure];
+    [self.httpManager GET:path
+               parameters:params
+                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                      if (success){
+                          success(responseObject);
+                      }
+                  }
+                  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                      if (failure){
+                          failure(error);
+                      }
+                  }
+     ];
     
 }
 
 - (void)getComment:(NSUInteger)commentID
           fromSite:(NSString *)siteID
-           success:(WordPressComApiRestSuccessResponseBlock)success
-           failure:(WordPressComApiRestSuccessFailureBlock)failure
+           success:(WordPressComApiRestSuccessBlock)success
+           failure:(WordPressComApiRestFailureBlock)failure
 {
     NSString *commentPath = [NSString stringWithFormat:@"sites/%@/comments/%@", siteID, commentID];
 
     [self.httpManager GET:commentPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success){
-            success(operation, responseObject);
+            success(responseObject);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error){
         DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
         if (failure){
-            failure(operation, error);
+            failure(error);
         }
     }];
 }
@@ -813,21 +887,33 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 - (void)postNoteToComment:(NSUInteger)commentID
              toSite:(NSString *)siteID
              params:(NSDictionary *) params
-            success:(WordPressComApiRestSuccessResponseBlock)success
-            failure:(WordPressComApiRestSuccessFailureBlock)failure
+            success:(WordPressComApiRestSuccessBlock)success
+            failure:(WordPressComApiRestFailureBlock)failure
 {
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", commentID, siteID];
     
-    [self.httpManager POST:path parameters:params success:success failure:failure];
+    [self.httpManager POST:path
+                parameters:params
+                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                       if (success){
+                           success(responseObject);
+                       }
+                   }
+                   failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                       if (failure){
+                           failure(error);
+                       }
+                   }
+     ];
     
 }
 
 // Attempt to publish the comment using the REST API
 - (void)publishComment:(NSString *)commentText
                 toPath:(NSString *) path
-               success:(WordPressComApiRestSuccessResponseBlock)success
-               failure:(WordPressComApiRestSuccessFailureBlock)failure
+               success:(WordPressComApiRestSuccessBlock)success
+               failure:(WordPressComApiRestFailureBlock)failure
 {
     NSString *str = [commentText trim];
 	if ([str length] == 0) {
@@ -838,101 +924,188 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     
 	[self.httpManager POST:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
-            success(operation, responseObject);
+            success(responseObject);
         }
         
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure){
-            failure(operation, error);
+            failure(error);
         }
 	}];
     
 }
-- (void)moderateComment:(NSUInteger)blogID forCommentID:(NSUInteger)commentID withStatus:(NSString *)commentStatus success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+- (void)moderateComment:(NSUInteger)blogID forCommentID:(NSUInteger)commentID withStatus:(NSString *)commentStatus success:(WordPressComApiRestSuccessBlock)success failure:(WordPressComApiRestFailureBlock)failure {
     NSString *commentPath = [NSString stringWithFormat: @"sites/%d/comments/%d", blogID, commentID];
     [self.httpManager POST:commentPath
         parameters:@{ @"status" : commentStatus }
-           success:success
-           failure:failure];
+                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                       if (success){
+                           success(responseObject);
+                       }
+                   }
+                   failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                       if (failure){
+                           failure(error);
+                       }
+                   }
+     ];
 }
 
 - (void)replyToComment:(NSUInteger)blogID forCommentID:(NSUInteger)commentID withReply:(NSString *)reply
-               success:(WordPressComApiRestSuccessResponseBlock)success
-               failure:(WordPressComApiRestSuccessFailureBlock)failure
+               success:(WordPressComApiRestSuccessBlock)success
+               failure:(WordPressComApiRestFailureBlock)failure
 {
     NSString *replyPath = [NSString stringWithFormat: @"sites/%d/comments/%d/replies/new", blogID, commentID];
     [self.httpManager POST:replyPath
-        parameters:@{ @"content" : reply }
-           success:success
-           failure:failure];
+                parameters:@{ @"content" : reply }
+                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                       if (success){
+                           success(responseObject);
+                       }
+                   }
+                   failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                       if (failure){
+                           failure(error);
+                       }
+                   }
+     ];
 }
 
 - (void)replyToCommentInPath:(NSString *) path
                    withReply:(NSString *) reply
-                     success:(WordPressComApiRestSuccessResponseBlock)success
-                     failure:(WordPressComApiRestSuccessFailureBlock)failure
+                     success:(WordPressComApiRestSuccessBlock)success
+                     failure:(WordPressComApiRestFailureBlock)failure
 {
     NSString *replyPath = [NSString stringWithFormat:@"%@/replies/new", path];
     NSDictionary *params = @{@"content" : reply };
-    [self.httpManager POST:replyPath parameters:params success:success failure:failure];
+    [self.httpManager POST:replyPath
+                parameters:params
+                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                       if (success){
+                           success(responseObject);
+                       }
+                   }
+                   failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                       if (failure){
+                           failure(error);
+                       }
+                   }
+     ];
 }
 
 - (void)performCommentAction:(NSDictionary *)commentAction
-                     success:(WordPressComApiRestSuccessResponseBlock)success
-                     failure:(WordPressComApiRestSuccessFailureBlock)failure
+                     success:(WordPressComApiRestSuccessBlock)success
+                     failure:(WordPressComApiRestFailureBlock)failure
 {
     NSString *path = [NSString stringWithFormat:@"/rest/v1%@", commentAction[@"params.rest_path"]];
     
     [self.httpManager POST:path parameters:commentAction[@"params.rest_body"]
-                   success:success
-                   failure:failure];
+                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                       if (success){
+                           success(responseObject);
+                       }
+                   }
+                   failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                       if (failure){
+                           failure(error);
+                       }
+                   }
+     ];
     
 }
 
 - (void)approveCommentAction:(NSDictionary *)commentAction
-                     success:(WordPressComApiRestSuccessResponseBlock)success
-                     failure:(WordPressComApiRestSuccessFailureBlock)failure
+                     success:(WordPressComApiRestSuccessBlock)success
+                     failure:(WordPressComApiRestFailureBlock)failure
 {
     
     NSString *approvePath = [NSString stringWithFormat:@"/rest/v1%@", commentAction[@"params.rest_path"]];
 
     [self.httpManager POST:approvePath
                 parameters:@{@"status" : @"approved"}
-                   success:success
-                   failure:failure];
+                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                       if (success){
+                           success(responseObject);
+                       }
+                   }
+                   failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                       if (failure){
+                           failure(error);
+                       }
+                   }
+     ];
 }
 #pragma mark - Blog Themes
 
 - (void)fetchThemesForBlogId:(NSString *)blogId
-                     success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure
+                     success:(WordPressComApiRestSuccessBlock)success failure:(WordPressComApiRestFailureBlock)failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/themes", blogId];
     [self.httpManager GET:path parameters:nil
-          success:success failure:failure];
+                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                      if (success){
+                          success(responseObject);
+                      }
+                  }
+                  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                      if (failure){
+                          failure(error);
+                      }
+                  }
+     ];
 }
 
 - (void)fetchCurrentThemeForBlogId:(NSString *)blogId
-                           success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure
+                           success:(WordPressComApiRestSuccessBlock)success failure:(WordPressComApiRestFailureBlock)failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/themes/mine", blogId];
     [self.httpManager GET:path parameters:nil
-          success:success failure:failure];
+                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                      if (success){
+                          success(responseObject);
+                      }
+                  }
+                  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                      if (failure){
+                          failure(error);
+                      }
+                  }
+     ];
 }
 
 - (void)activateThemeForBlogId:(NSString *)blogId themeId:(NSString *)themeId
-                       success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure
+                       success:(WordPressComApiRestSuccessBlock)success failure:(WordPressComApiRestFailureBlock)failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/themes/mine", blogId];
     [self.httpManager POST:path parameters:@{@"theme": themeId}
-           success:success failure:failure];
+                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                       if (success){
+                           success(responseObject);
+                       }
+                   }
+                   failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                       if (failure){
+                           failure(error);
+                       }
+                   }
+     ];
 }
 
-- (void)fetchMeWithSuccess:(WordPressComApiRestSuccessResponseBlock)success
-                   failure:(WordPressComApiRestSuccessFailureBlock)failure{
+- (void)fetchMeWithSuccess:(WordPressComApiRestSuccessBlock)success
+                   failure:(WordPressComApiRestFailureBlock)failure{
     [self.httpManager GET:@"me"
                parameters:nil
-                  success:success
-                  failure:failure];    
+                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                      if (success){
+                          success(responseObject);
+                      }
+                  }
+                  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                      if (failure){
+                          failure(error);
+                      }
+                  }
+     ];
 }
 
 #pragma mark - OAuth info
