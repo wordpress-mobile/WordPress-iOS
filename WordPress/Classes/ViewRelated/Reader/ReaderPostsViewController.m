@@ -769,6 +769,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)didChangeAccount:(NSNotification *)notification {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    [[[ReaderTopicService alloc] initWithManagedObjectContext:context] deleteAllTopics];
+
     self.currentTopic = nil;
     [self resetResultsController];
     [self.tableView reloadData];
