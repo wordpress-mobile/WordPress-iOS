@@ -64,7 +64,7 @@
 - (void)setSuperPropertyAndPeoplePropertyToIncrement:(NSString *)property
 {
     NSParameterAssert(property != nil);
-    [self addSuperPropertyToFlag:property];
+    self.superPropertyToIncrement = property;
     self.peoplePropertyToIncrement = property;
 }
 

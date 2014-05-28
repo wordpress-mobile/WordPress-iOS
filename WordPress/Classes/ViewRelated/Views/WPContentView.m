@@ -334,7 +334,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     [button.titleLabel setFont:[WPStyleGuide labelFontNormal]];
     [button setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
     button.titleEdgeInsets = UIEdgeInsetsMake(0.0f, 6.0f, 0.0f, -6.0f);
-    button.drawsTitleBubble = YES;
+    button.drawLabelBubble = YES;
     [self.bottomView addSubview:button];
     [self.actionButtons addObject:button];
 
@@ -443,8 +443,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	} else {
         if (imageView.image) {
             CGFloat ratio = imageSize.width / imageSize.height;
-            CGFloat width = _textContentView.frame.size.width;
-            CGFloat availableWidth = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
+            CGFloat width = self.frame.size.width;
+            CGFloat availableWidth = width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
             
             imageSize.width = availableWidth;
             imageSize.height = roundf(width / ratio) + imageView.edgeInsets.top;
@@ -507,7 +507,6 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     
     for (ReaderMediaView *mediaView in mediaArray) {
         if ([self updateMediaLayout:mediaView]) {
-            NSLog(@"Frame Changed");
             frameChanged = YES;
         }
 

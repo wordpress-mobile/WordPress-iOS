@@ -20,18 +20,18 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 @property (nonatomic, strong) UIButton *likeButton;
 @property (nonatomic, strong) UIButton *reblogButton;
 @property (nonatomic, strong) UIButton *commentButton;
-@property (assign) BOOL showFullContent;
+@property (nonatomic) ReaderPostContentMode contentMode;
 
 @end
 
 @implementation ReaderPostView
 
-+ (CGFloat)heightForPost:(ReaderPost *)post withWidth:(CGFloat)width showFullContent:(BOOL)showFullContent {
++ (CGFloat)heightForPost:(ReaderPost *)post withWidth:(CGFloat)width forContentMode:(ReaderPostContentMode)contentMode {
 	CGFloat desiredHeight = 0.0f;
     
     // Margins
     CGFloat contentWidth = width;
-    if (IS_IPAD) {
+    if (IS_IPAD && contentWidth > WPTableViewFixedWidth) {
         contentWidth = WPTableViewFixedWidth;
     }
     
@@ -50,29 +50,31 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     
     // Title
     desiredHeight += RPVVerticalPadding;
-    NSAttributedString *postTitle = [self titleAttributedStringForPost:post showFullContent:showFullContent withWidth:contentWidth];
+    NSAttributedString *postTitle = [self titleAttributedStringForPost:post contentMode:contentMode withWidth:contentWidth];
     desiredHeight += ceil([postTitle boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height);
     desiredHeight += RPVTitlePaddingBottom;
     
     // Post summary
-    if (!showFullContent) {
-        NSAttributedString *postSummary = [self summaryAttributedStringForPost:post];
+    if ((contentMode != ReaderPostContentModeFullContent)) {
+        NSAttributedString *postSummary = [self summaryAttributedStringForPost:post contentMode:contentMode];
         if([postSummary length] > 0) {
             desiredHeight += [postSummary boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size.height;
         }
     }
     desiredHeight += RPVVerticalPadding;
-    
-    // Padding below the line
-	desiredHeight += RPVVerticalPadding;
-    
-	// Size of the meta view
-    desiredHeight += RPVMetaViewHeight;
-    
+
+    if (contentMode != ReaderPostContentModeSimpleSummary) {
+        // Padding below the line
+        desiredHeight += RPVVerticalPadding;
+        
+        // Size of the meta view
+        desiredHeight += RPVMetaViewHeight;
+    }
+
 	return ceil(desiredHeight);
 }
 
-+ (NSAttributedString *)titleAttributedStringForPost:(ReaderPost *)post showFullContent:(BOOL)showFullContent withWidth:(CGFloat) width {
++ (NSAttributedString *)titleAttributedStringForPost:(ReaderPost *)post contentMode:(ReaderPostContentMode)contentMode withWidth:(CGFloat) width {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     [style setLineHeightMultiple:RPVLineHeightMultiple];
     NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
@@ -84,7 +86,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     
     NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:postTitle
                                                                                     attributes:attributes];
-    if(!showFullContent) //Ellipsizing long titles
+    if(contentMode != ReaderPostContentModeFullContent) //Ellipsizing long titles
     {
         if([postTitle length] > 0)
         {
@@ -127,7 +129,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     
 }
 
-+ (NSAttributedString *)summaryAttributedStringForPost:(ReaderPost *)post {
++ (NSAttributedString *)summaryAttributedStringForPost:(ReaderPost *)post contentMode:(ReaderPostContentMode)contentMode {
     NSString *summary = [post.summary trim];
     if (summary == nil) {
         summary = @"";
@@ -145,7 +147,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
                                  NSFontAttributeName : [self summaryFont]};
     NSMutableAttributedString *attributedSummary = [[NSMutableAttributedString alloc] initWithString:summary
                                                                                           attributes:attributes];
-    if ([summary length] > 0) {
+    if ([summary length] > 0 && contentMode == ReaderPostContentModeSummary) {
         NSDictionary *moreContentAttributes = @{NSParagraphStyleAttributeName: style,
                                                 NSFontAttributeName: [self moreContentFont],
                                                 NSForegroundColorAttributeName: [WPStyleGuide baseLighterBlue]};
@@ -157,21 +159,21 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 }
 
 - (id)initWithFrame:(CGRect)frame {
-    self = [self initWithFrame:frame showFullContent:NO];
-    
+    self = [self initWithFrame:frame contentMode:ReaderPostContentModeSummary];
     return self;
 }
 
-- (id)initWithFrame:(CGRect)frame showFullContent:(BOOL)showFullContent {
+- (id)initWithFrame:(CGRect)frame contentMode:(ReaderPostContentMode)contentMode {
     self = [super initWithFrame:frame];
     
     if (self) {
-        _showFullContent = showFullContent;
-        UIView *contentView = _showFullContent ? [self viewForFullContent] : [self viewForContentPreview];
+        self.contentMode = contentMode;
+
+        UIView *contentView = (contentMode == ReaderPostContentModeFullContent) ? [self viewForFullContent] : [self viewForContentPreview];
         [self addSubview:contentView];
 
         // For the full view, allow the featured image to be tapped
-        if (self.showFullContent) {
+        if (contentMode == ReaderPostContentModeFullContent) {
             UITapGestureRecognizer *imageTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(featuredImageAction:)];
             super.cellImageView.userInteractionEnabled = YES;
             [super.cellImageView addGestureRecognizer:imageTap];
@@ -211,7 +213,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
    
     // Margins
     CGFloat contentWidth = self.frame.size.width;
-    if (IS_IPAD) {
+    if (IS_IPAD && contentWidth > WPTableViewFixedWidth) {
         contentWidth = WPTableViewFixedWidth;
     }
     
@@ -226,17 +228,17 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     [self setAvatar:nil];
     
 	self.titleLabel.attributedText = [[self class] titleAttributedStringForPost:post
-                                                                showFullContent:self.showFullContent
+                                                                    contentMode:self.contentMode
                                                                       withWidth:contentWidth];
     
-    if (self.showFullContent) {
+    if (self.contentMode == ReaderPostContentModeFullContent) {
         NSData *data = [self.post.content dataUsingEncoding:NSUTF8StringEncoding];
 		self.textContentView.attributedString = [[NSAttributedString alloc] initWithHTMLData:data
                                                                                  options:[WPStyleGuide defaultDTCoreTextOptions]
                                                                       documentAttributes:nil];
         [self.textContentView relayoutText];
     } else {
-        self.snippetLabel.attributedText = [[self class] summaryAttributedStringForPost:post];
+        self.snippetLabel.attributedText = [[self class] summaryAttributedStringForPost:post contentMode:self.contentMode];
     }
     
     self.bylineLabel.text = [post authorString];
@@ -247,7 +249,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     
     // If ReaderPostView has a featured image, show it unless you're showing full detail & featured image is in the post already
 	if (post.featuredImageURL &&
-        (self.showFullContent == NO || [self.post.content rangeOfString:[post.featuredImageURL absoluteString]].length == 0)) {
+        (self.contentMode != ReaderPostContentModeFullContent || [self.post.content rangeOfString:[post.featuredImageURL absoluteString]].length == 0)) {
 		self.showImage = YES;
 		self.cellImageView.hidden = NO;
 	}
@@ -266,26 +268,13 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
         self.commentButton.hidden = YES;
 	}
 
-    if ([self.post.likeCount integerValue] > 0) {
-        [self.likeButton setTitle:[self.post.likeCount stringValue] forState:UIControlStateNormal];
-        [self.likeButton setTitle:[self.post.likeCount stringValue] forState:UIControlStateSelected];
-    } else {
-        [self.likeButton setTitle:@"" forState:UIControlStateNormal];
-        [self.likeButton setTitle:@"" forState:UIControlStateSelected];
-    }
-
-    if ([self.post.commentCount integerValue] > 0) {
-        [self.commentButton setTitle:[self.post.commentCount stringValue] forState:UIControlStateNormal];
-        [self.commentButton setTitle:[self.post.commentCount stringValue] forState:UIControlStateSelected];
-    } else {
-        [self.commentButton setTitle:@"" forState:UIControlStateNormal];
-        [self.commentButton setTitle:@"" forState:UIControlStateSelected];
-    }
-
-    [self.followButton setSelected:self.post.isFollowing];
-	self.reblogButton.userInteractionEnabled = !post.isReblogged;
-	
 	[self updateActionButtons];
+
+    if (self.contentMode == ReaderPostContentModeSimpleSummary) {
+        self.followButton.hidden = YES;
+        self.bottomView.hidden = YES;
+        self.bottomBorder.hidden = YES;
+    }
 }
 
 - (void)layoutSubviews {
@@ -314,11 +303,16 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    if ([self.post isFollowable] && defaultAccount != nil) {
+    if (self.contentMode == ReaderPostContentModeSimpleSummary) {
+        self.followButton.hidden = YES;
+        CGRect byframe = self.bylineLabel.frame;
+        byframe.origin.y = (CGRectGetHeight(self.byView.frame) - CGRectGetHeight(byframe)) / 2;
+        self.bylineLabel.frame = byframe;
+    } else if ([self.post isFollowable] && defaultAccount != nil) {
         self.followButton.hidden = NO;
         CGFloat followX = bylineX - 4; // Fudge factor for image alignment
         CGFloat followY = RPVAuthorPadding + self.bylineLabel.frame.size.height - 2;
-        height = ceil([self.followButton.titleLabel suggestedSizeForWidth:innerContentWidth].height);
+        height = ceil([self.followButton.titleLabel suggestSizeForString:[self.followButton titleForState:UIControlStateNormal] width:innerContentWidth].height);
         self.followButton.frame = CGRectMake(followX, followY, RPVFollowButtonWidth, height);
     } else {
         self.followButton.hidden = YES;
@@ -341,11 +335,11 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
     nextY += RPVVerticalPadding;
 	height = ceil([self.titleLabel suggestedSizeForWidth:innerContentWidth].height);
 	self.titleLabel.frame = CGRectMake(RPVHorizontalInnerPadding, nextY, innerContentWidth, height);
-	nextY += height + RPVTitlePaddingBottom * (self.showFullContent ? 2.0 : 1.0);
+	nextY += height + RPVTitlePaddingBottom * (self.contentMode == ReaderPostContentModeFullContent ? 2.0 : 1.0);
     
 	// Position the snippet / content
     height = 0;
-    if (self.showFullContent) {
+    if (self.contentMode == ReaderPostContentModeFullContent) {
         [self.textContentView relayoutText];
         height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
         CGRect textContainerFrame = self.textContentView.frame;
@@ -365,8 +359,11 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 
     // Update own frame
     CGRect ownFrame = self.frame;
-    
-    ownFrame.size.height = nextY + RPVMetaViewHeight - 1;
+    if (self.contentMode != ReaderPostContentModeSimpleSummary) {
+        ownFrame.size.height = nextY + RPVMetaViewHeight - 1;
+    } else {
+        ownFrame.size.height = nextY;
+    }
     self.frame = ownFrame;
 }
 
@@ -378,9 +375,29 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 
 - (void)updateActionButtons {
     [super updateActionButtons];
-    self.likeButton.selected = self.post.isLiked;
-    self.reblogButton.selected = self.post.isReblogged;
-	self.reblogButton.userInteractionEnabled = !self.reblogButton.selected;
+
+    if ([self.post.likeCount integerValue] > 0) {
+        [self.likeButton setTitle:[self.post.likeCount stringValue] forState:UIControlStateNormal];
+        [self.likeButton setTitle:[self.post.likeCount stringValue] forState:UIControlStateSelected];
+    } else {
+        [self.likeButton setTitle:@"" forState:UIControlStateNormal];
+        [self.likeButton setTitle:@"" forState:UIControlStateSelected];
+    }
+
+    if ([self.post.commentCount integerValue] > 0) {
+        [self.commentButton setTitle:[self.post.commentCount stringValue] forState:UIControlStateNormal];
+        [self.commentButton setTitle:[self.post.commentCount stringValue] forState:UIControlStateSelected];
+    } else {
+        [self.commentButton setTitle:@"" forState:UIControlStateNormal];
+        [self.commentButton setTitle:@"" forState:UIControlStateSelected];
+    }
+
+    [self.likeButton setSelected:self.post.isLiked];
+    [self.reblogButton setSelected:self.post.isReblogged];
+    [self.followButton setSelected:self.post.isFollowing];
+	self.reblogButton.userInteractionEnabled = !self.post.isReblogged;
+
+    [self setNeedsLayout];
 }
 
 - (void)setAvatar:(UIImage *)avatar {

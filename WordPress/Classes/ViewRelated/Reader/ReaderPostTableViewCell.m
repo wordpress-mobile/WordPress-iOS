@@ -19,7 +19,7 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
         width = width - 2 * RPTVCHorizontalOuterPadding;
     }
     
-	CGFloat desiredHeight = [ReaderPostView heightForPost:post withWidth:width showFullContent:NO];
+	CGFloat desiredHeight = [ReaderPostView heightForPost:post withWidth:width forContentMode:ReaderPostContentModeSummary];
 
 	return ceil(desiredHeight);
 }
@@ -52,7 +52,7 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
 		self.sideBorderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [self.contentView addSubview:self.sideBorderView];
 
-        self.postView = [[ReaderPostView alloc] initWithFrame:self.frame showFullContent:NO];
+        self.postView = [[ReaderPostView alloc] initWithFrame:self.frame contentMode:ReaderPostContentModeSummary];
         self.postView.backgroundColor = [UIColor whiteColor];
         self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 

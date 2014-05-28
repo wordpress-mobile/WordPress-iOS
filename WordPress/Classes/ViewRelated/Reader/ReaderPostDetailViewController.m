@@ -8,7 +8,6 @@
 #import "WordPressAppDelegate.h"
 #import "ReaderComment.h"
 #import "ReaderCommentTableViewCell.h"
-#import "ReaderReblogFormView.h"
 #import "IOS7CorrectedTextView.h"
 #import "ReaderImageView.h"
 #import "ReaderVideoView.h"
@@ -19,6 +18,7 @@
 #import "WPTableViewController.h"
 #import "InlineComposeView.h"
 #import "ReaderCommentPublisher.h"
+#import "RebloggingViewController.h"
 #import "WPAvatarSource.h"
 #import "ReaderPostService.h"
 
@@ -33,13 +33,12 @@ typedef enum {
 } ReaderDetailSection;
 
 
-@interface ReaderPostDetailViewController ()<UIActionSheetDelegate, MFMailComposeViewControllerDelegate, ReaderTextFormDelegate, UIPopoverControllerDelegate, ReaderCommentPublisherDelegate> {
+@interface ReaderPostDetailViewController ()<UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UIPopoverControllerDelegate, ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate> {
     UIPopoverController *_popover;
     UIGestureRecognizer *_tapOffKeyboardGesture;
 }
 
 @property (nonatomic, strong) ReaderPostView *postView;
-@property (nonatomic, strong) ReaderReblogFormView *readerReblogFormView;
 @property (nonatomic, strong) UIImage *featuredImage;
 @property (nonatomic, strong) UIImage *avatarImage;
 @property (nonatomic, strong) NSURL *avatarImageURL;
@@ -51,7 +50,6 @@ typedef enum {
 @property (nonatomic, strong) UIBarButtonItem *shareButton;
 @property (nonatomic, strong) NSMutableArray *comments;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
-@property (nonatomic) BOOL isShowingReblogForm;
 @property (nonatomic) BOOL hasMoreContent;
 @property (nonatomic) BOOL loadingMore;
 @property (nonatomic) CGPoint savedScrollOffset;
@@ -73,7 +71,6 @@ typedef enum {
     
     self.activityFooter = nil;
 	self.postView = nil;
-	self.readerReblogFormView = nil;
 	self.commentButton = nil;
 	self.likeButton = nil;
 	self.reblogButton = nil;
@@ -124,7 +121,6 @@ typedef enum {
 
 	[self buildHeader];
 	[WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.shareButton forNavigationItem:self.navigationItem];
-	[self buildForms];
     
     if (!self.showInlineActionBar) {
         [self buildActionBar];
@@ -159,8 +155,7 @@ typedef enum {
     } else {
         [self.tableView scrollRectToVisible:CGRectMake(0.0f, contentSize.height, 0.0f, 0.0f) animated:NO];
     }
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
+
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 
 	UIToolbar *toolbar = self.navigationController.toolbar;
@@ -202,14 +197,42 @@ typedef enum {
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 
+    CGRect frame = self.postView.frame;
+    if (IS_IPAD) {
+        frame.size.width = WPTableViewFixedWidth;
+    } else {
+        frame.size.width = CGRectGetWidth(self.tableView.bounds);
+    }
+    self.postView.frame = [self frameForPostView];
     [self.postView refreshMediaLayout]; // Resize media in the post detail to match the width of the new orientation.
-    [self.postView setNeedsLayout];
 
 	// Make sure a selected comment is visible after rotating.
 	if ([self.tableView indexPathForSelectedRow] != nil && self.inlineComposeView.isDisplayed) {
 		[self.tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionNone animated:NO];
 	}
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self refreshPostViewCell];
+    });
 }
+
+- (void)refreshPostViewCell {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    [self.tableView beginUpdates];
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView endUpdates];
+}
+
+- (CGRect)frameForPostView {
+    CGRect frame = self.postView.frame;
+    if (IS_IPAD) {
+        frame.size.width = WPTableViewFixedWidth;
+    } else {
+        frame.size.width = CGRectGetWidth(self.tableView.bounds);
+    }
+    return frame;
+}
+
 
 #pragma mark - Actions
 
@@ -232,13 +255,14 @@ typedef enum {
 
 - (void)buildHeader {
     // The text view in postView needs an initial frame
-    CGFloat postHeight = [ReaderPostView heightForPost:self.post withWidth:self.view.frame.size.width showFullContent:YES];
+    CGFloat postHeight = [ReaderPostView heightForPost:self.post withWidth:self.view.frame.size.width forContentMode:ReaderPostContentModeFullContent];
     CGRect postFrame = CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, postHeight);
-	self.postView = [[ReaderPostView alloc] initWithFrame:postFrame showFullContent:YES];
+	self.postView = [[ReaderPostView alloc] initWithFrame:postFrame contentMode:ReaderPostContentModeFullContent];
     self.postView.delegate = self;
     [self.postView configurePost:self.post];
     self.postView.backgroundColor = [UIColor whiteColor];
-    
+    self.postView.autoresizingMask = UIViewAutoresizingNone;
+
     if (self.avatarImage) {
         [self.postView setAvatar:self.avatarImage];
     } else if (self.avatarImageURL) {
@@ -248,10 +272,6 @@ typedef enum {
     if (self.featuredImage) {
         [self.postView setFeaturedImage: self.featuredImage];
     }
-
-	UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDismissForm:)];
-	tgr.cancelsTouchesInView = NO;
-	[self.postView addGestureRecognizer:tgr];
 }
 
 - (UIBarButtonItem *)shareButton {
@@ -332,20 +352,6 @@ typedef enum {
 	[items addObject:placeholder];
 	[self setToolbarItems:items animated:YES];
 	self.navigationController.toolbarHidden = NO;
-}
-
-- (void)buildForms {
-
-	CGRect frame = CGRectMake(0.0f, self.view.bounds.size.height, self.view.bounds.size.width, [ReaderReblogFormView desiredHeight]);
-	self.readerReblogFormView = [[ReaderReblogFormView alloc] initWithFrame:frame];
-	_readerReblogFormView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-	_readerReblogFormView.navigationItem = self.navigationItem;
-	_readerReblogFormView.post = self.post;
-	_readerReblogFormView.delegate = self;
-	
-	if (_isShowingReblogForm) {
-		[self showReblogForm];
-	}
 }
 
 - (UIActivityIndicatorView *)activityFooter {
@@ -472,44 +478,8 @@ typedef enum {
     }
 }
 
-- (void)handleDismissForm:(id)sender {
-    [self hideReblogForm];
-}
-
 - (BOOL)isReplying {
 	return ([self.tableView indexPathForSelectedRow] != nil) ? YES : NO;
-}
-
-- (void)showReblogForm {
-
-	if (_readerReblogFormView.superview != nil)
-		return;
-	
-	CGFloat reblogHeight = [ReaderReblogFormView desiredHeight];
-	CGRect tableFrame = self.tableView.frame;
-	tableFrame.size.height = self.tableView.frame.size.height - reblogHeight;
-	self.tableView.frame = tableFrame;
-	
-	CGFloat y = tableFrame.origin.y + tableFrame.size.height;
-	_readerReblogFormView.frame = CGRectMake(0.0f, y, self.view.bounds.size.width, reblogHeight);
-	[self.view.superview addSubview:_readerReblogFormView];
-	self.isShowingReblogForm = YES;
-	[_readerReblogFormView.textView becomeFirstResponder];
-}
-
-- (void)hideReblogForm {
-	if (_readerReblogFormView.superview == nil)
-		return;
-	
-	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:NO];
-	
-	CGRect tableFrame = self.tableView.frame;
-	tableFrame.size.height = self.tableView.frame.size.height + _readerReblogFormView.frame.size.height;
-	
-	self.tableView.frame = tableFrame;
-	[_readerReblogFormView removeFromSuperview];
-	[self.view endEditing:YES];
-	self.isShowingReblogForm = NO;
 }
 
 - (CGSize)tabBarSize {
@@ -532,47 +502,6 @@ typedef enum {
     _popover = nil;
 }
 
-- (void)handleKeyboardDidShow:(NSNotification *)notification {
-
-    // only for handling reblog form now
-    if (!_isShowingReblogForm) {
-        return;
-    }
-
-    UIView *view = self.view.superview;
-	CGRect frame = view.frame;
-	CGRect startFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
-	CGRect endFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-	
-	// Figure out the difference between the bottom of this view, and the top of the keyboard.
-	// This should account for any toolbars.
-	CGPoint point = [view.window convertPoint:startFrame.origin toView:view];
-	self.keyboardOffset = point.y - (frame.origin.y + frame.size.height);
-	
-	// if we're upside down, we need to adjust the origin.
-	if (endFrame.origin.x == 0 && endFrame.origin.y == 0) {
-		endFrame.origin.y = endFrame.origin.x += MIN(endFrame.size.height, endFrame.size.width);
-	}
-	
-	point = [view.window convertPoint:endFrame.origin toView:view];
-    CGSize tabBarSize = [self tabBarSize];
-	frame.size.height = point.y + tabBarSize.height;
-	
-	[UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-		view.frame = frame;
-	} completion:^(BOOL finished) {
-		// BUG: When dismissing a modal view, and the keyboard is showing again, the animation can get clobbered in some cases.
-		// When this happens the view is set to the dimensions of its wrapper view, hiding content that should be visible
-		// above the keyboard.
-		// For now use a fallback animation.
-		if (!CGRectEqualToRect(view.frame, frame)) {
-			[UIView animateWithDuration:0.3 animations:^{
-				view.frame = frame;
-			}];
-		}
-	}];
-}
-
 - (void)handleKeyboardWillHide:(NSNotification *)notification {
 
     //deselect the selected comment if there is one
@@ -580,19 +509,6 @@ typedef enum {
     if ([selection count] > 0) {
         [self.tableView deselectRowAtIndexPath:[selection objectAtIndex:0] animated:YES];
     }
-
-    // only modify view when displaying the reblog form
-    if (!_isShowingReblogForm) {
-        return;
-    }
-
-    UIView *view = self.view.superview;
-	CGRect frame = view.frame;
-	CGRect keyFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-	
-	CGPoint point = [view.window convertPoint:keyFrame.origin toView:view];
-	frame.size.height = point.y - (frame.origin.y + self.keyboardOffset);
-	view.frame = frame;
 }
 
 - (void)moviePlaybackDidFinish:(NSNotification *)notification {
@@ -617,17 +533,17 @@ typedef enum {
 #pragma mark - ReaderPostView delegate methods
 
 - (void)postView:(ReaderPostView *)postView didReceiveReblogAction:(id)sender {
-	if (_isShowingReblogForm) {
-		[self hideReblogForm];
-		return;
-	}
-	
-	[self showReblogForm];
+    RebloggingViewController *controller = [[RebloggingViewController alloc] initWithPost:self.post featuredImage:self.featuredImage avatarImage:self.avatarImage];
+    controller.delegate = self;
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)postView:(ReaderPostView *)postView didReceiveLikeAction:(id)sender {
     ReaderPost *post = postView.post;
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [service toggleLikedForPost:post success:^{
         if (post.isLiked) {
@@ -637,7 +553,6 @@ typedef enum {
 		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
 		[postView updateActionButtons];
     }];
-
 	[postView updateActionButtons];
 }
 
@@ -652,7 +567,7 @@ typedef enum {
         [WPAnalytics track:WPAnalyticsStatReaderFollowedSite];
     }
 
-    followButton.selected = !post.isFollowing; // Set it optimistically
+    [followButton setSelected:!post.isFollowing]; // Set it optimistically
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
@@ -754,6 +669,14 @@ typedef enum {
 - (void)contentViewDidLoadAllMedia:(WPContentView *)contentView {
     [self.postView layoutIfNeeded];
     [self.tableView reloadData];
+}
+
+
+#pragma mark - RebloggingViewController Delegate Methods
+
+- (void)postWasReblogged:(ReaderPost *)post {
+    [self.postView configurePost:self.post];
+    [self.postView setAvatar:self.avatarImage];
 }
 
 
@@ -900,16 +823,10 @@ typedef enum {
     if (indexPath.section == ReaderDetailContentSection) {
         UITableViewCell *postCell = [self.tableView dequeueReusableCellWithIdentifier:@"PostCell"];
         postCell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+        self.postView.frame = [self frameForPostView];
         [postCell.contentView addSubview:self.postView];
-        
-        // Make the postView matches the width of its cell.
-        // When the postView is first created it matches the width of the tableView
-        // which may or may not be the same width as the cells when we get to this point.
-        // On the iPhone, when viewing in landscape orientation, there can be a 20px difference.
-        CGRect frame = self.postView.frame;
-        frame.size.width = postCell.frame.size.width;
-        self.postView.frame = frame;
-        
+
         return postCell;
     }
     
@@ -965,11 +882,6 @@ typedef enum {
     }
 
     self.commentPublisher.comment = comment;
-
-	if (_readerReblogFormView.window != nil) {
-		[self hideReblogForm];
-		return nil;
-	}
 
 	if ([self canComment]) {
         [self.view addGestureRecognizer:_tapOffKeyboardGesture];
@@ -1049,11 +961,6 @@ typedef enum {
     if (self.inlineComposeView.isDisplayed) {
         [self.inlineComposeView dismissComposer];
     }
-
-	if (_readerReblogFormView.window) {
-		[self hideReblogForm];
-		return;
-	}
 }
 
 #pragma mark - ReaderCommentPublisherDelegate methods
@@ -1070,16 +977,6 @@ typedef enum {
     WPWebViewController *controller = [[WPWebViewController alloc] init];
 	[controller setUrl:url];
 	[self.navigationController pushViewController:controller animated:YES];
-}
-
-#pragma mark - ReaderTextForm Delegate Methods
-
-- (void)readerTextFormDidCancel:(ReaderTextFormView *)readerTextForm {
-    [self hideReblogForm];
-}
-
-- (void)readerTextFormDidSend:(ReaderTextFormView *)readerTextForm {
-    [self hideReblogForm];
 }
 
 #pragma mark - Fetched results controller

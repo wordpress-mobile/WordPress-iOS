@@ -44,6 +44,7 @@ typedef void(^TLExperimentBlock)(NSDictionary *variables);
                 will get shown a variation on the first launch of your app.
             - @{@"liveUpdate":@NO} Taplytics will auto-detect an app store build or a development build. But to force production mode use @NO,
                 or @YES to force live update mode for testing.
+            - @{@"shakeMenu":@NO} To disable the Taplytics development mode shake menu set @NO, only use if you have your own development shake menu.
  */
 + (void)startTaplyticsAPIKey:(NSString*)apiKey options:(NSDictionary*)options;
 
