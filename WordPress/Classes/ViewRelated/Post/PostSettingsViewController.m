@@ -209,8 +209,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         ([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending && [self.apost.status isEqualToString:@"draft"])) {
         self.apost.status = @"publish";
     }
-
-    [self hideDatePicker];
 }
 
 #pragma mark - TextField Delegate Methods
@@ -887,24 +885,32 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 #pragma mark - WPPickerView Delegate
 
-- (void)pickerView:(WPPickerView *)pickerView didFinishWithValue:(id)value {
+- (void)pickerView:(WPPickerView *)pickerView didChangeValue:(id)value
+{
+    [self handleDateChange:value];
+}
+
+- (void)pickerView:(WPPickerView *)pickerView didFinishWithValue:(id)value
+{
+    [self handleDateChange:value];
+    [self hideDatePicker];
+}
+
+- (void)handleDateChange:(id)value
+{
     if (value == nil) {
         // Publish Immediately
         [self datePickerChanged:nil];
-        return;
+    } else {
+        // Compare via timeIntervalSinceDate to let us ignore subsecond variation.
+        NSDate *startingDate = (NSDate *)self.datePicker.startingValue;
+        NSDate *selectedDate = (NSDate *)value;
+        NSTimeInterval interval = [startingDate timeIntervalSinceDate:selectedDate];
+        if (fabs(interval) < 1.0) {
+            return;
+        }
+        [self datePickerChanged:selectedDate];
     }
-    
-    // Compare via timeIntervalSinceDate to let us ignore subsecond variation.
-    NSDate *startingDate = (NSDate *)self.datePicker.startingValue;
-    NSDate *selectedDate = (NSDate *)value;
-    NSTimeInterval interval = [startingDate timeIntervalSinceDate:selectedDate];
-    if (fabs(interval) < 1.0) {
-        // Nothing changed.
-        [self hideDatePicker];
-        return;
-    }
-    
-    [self datePickerChanged:selectedDate];
 }
 
 #pragma mark - UIImagePickerControllerDelegate methods
