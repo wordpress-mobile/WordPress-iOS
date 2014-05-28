@@ -254,6 +254,9 @@
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
+    //Re-sync media, in case new media was added server-side
+    [blogService syncMediaLibraryForBlog:self.blog success:nil failure:nil];
+
     if (userInteraction) {
         // If triggered by a pull to refresh, sync posts and metadata
         [blogService syncPostsAndMetadataForBlog:self.blog success:success failure:failure];
