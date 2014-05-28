@@ -22,12 +22,17 @@
 /**
  Returns a scaled down image.
  */
-- (CGImageRef)resizedImageWithImage:(CGImageRef)image;
+- (CGImageRef)resizedImageWithImage:(CGImageRef)image scale:(CGFloat)scale orientation:(UIImageOrientation)orientation;
 
 /**
  Returns a scaled down size that fits the limits.
  */
 - (CGSize)sizeWithinLimitsForSize:(CGSize)originalSize;
+
+/**
+ Returns the image metadata removing Orientation and XMP tags
+ */
+- (NSDictionary *)metadataFromRepresentation:(ALAssetRepresentation *)representation;
 
 /**
  Returns data combining the provided image and metadata.
