@@ -849,6 +849,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
             _blog.blogName = blogName;
         }
     }
+    _blog.xmlrpc = xmlrpc;
     _blog.options = options;
     [_blog dataSave];
     [blogService syncBlog:_blog success:nil failure:nil];

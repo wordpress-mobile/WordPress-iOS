@@ -23,10 +23,10 @@
                                           success:(void (^)(NSNumber *mediaID, NSString *url))success
                                           failure:(void (^)(NSError *))failure {
     NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/new", blog.dotComID];
-    NSURLRequest *request = [self.api multipartFormRequestWithMethod:@"POST" path:apiPath parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+    NSMutableURLRequest *request = [self.api.requestSerializer multipartFormRequestWithMethod:@"POST" URLString:[[NSURL URLWithString:apiPath relativeToURL:self.api.baseURL] absoluteString] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         NSURL *url = [[NSURL alloc] initFileURLWithPath:path];
         [formData appendPartWithFileURL:url name:@"media[]" fileName:filename mimeType:type error:nil];
-    }];
+    } error:nil];
     AFHTTPRequestOperation *operation = [self.api HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             NSDictionary *response = (NSDictionary *)responseObject;
@@ -40,6 +40,7 @@
             failure(error);
         }
     }];
+
     return operation;
 }
 
