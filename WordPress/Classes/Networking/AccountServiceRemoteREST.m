@@ -19,17 +19,17 @@
 
 - (void)getBlogsWithSuccess:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
 {
-    [self.api getPath:@"me/sites"
-           parameters:nil
-              success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                  if (success) {
-                      success([self remoteBlogsFromJSONArray:responseObject[@"sites"]]);
-                  }
-              } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                  if (failure) {
-                      failure(error);
-                  }
-              }];
+    [self.api GET:@"me/sites"
+       parameters:nil
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              if (success) {
+                  success([self remoteBlogsFromJSONArray:responseObject[@"sites"]]);
+              }
+          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              if (failure) {
+                  failure(error);
+              }
+          }];
 }
 
 #pragma mark - Private Methods
