@@ -137,14 +137,16 @@
         }
 
         UIImage *resizedImage = [self cachedImageForURL:url withSize:size];
-        if (!resizedImage) {
-            resizedImage = image;
-        }
-        if (!CGSizeEqualToSize(resizedImage.size, size)) {
-            resizedImage = [self resizeImage:image toSize:size];
-        }
 
-        [self setCachedImage:resizedImage forURL:url withSize:size];
+		if (!resizedImage) {
+            resizedImage = image;
+
+			if (!CGSizeEqualToSize(resizedImage.size, size)) {
+				resizedImage = [self resizeImage:image toSize:size];
+			}
+			
+			[self setCachedImage:resizedImage forURL:url withSize:size];
+		}
 
         if (self.delegate && [self.delegate respondsToSelector:@selector(tableImageSource:imageReady:forIndexPath:)]) {
             dispatch_sync(dispatch_get_main_queue(), ^{
