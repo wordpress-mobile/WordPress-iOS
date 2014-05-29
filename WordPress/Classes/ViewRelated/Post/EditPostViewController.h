@@ -5,7 +5,15 @@
 
 extern NSString *const WPEditorNavigationRestorationID;
 
+@protocol EditPostViewControllerDelegate <NSObject>
+
+-(void)editPostViewDismissed;
+
+@end
+
 @interface EditPostViewController : UIViewController <UINavigationControllerDelegate, CTAssetsPickerControllerDelegate>
+
+@property (nonatomic, weak) id <EditPostViewControllerDelegate> delegate;
 
 /*
  Initialize the editor with the specified post.
