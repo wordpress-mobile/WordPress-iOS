@@ -938,7 +938,7 @@
 		E183ECB116B2179B00C2EB11 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296890770FE971DC00770264 /* Security.framework */; };
 		E183ECB216B2179B00C2EB11 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC24E5F21577DFF400A6D5B5 /* Twitter.framework */; };
 		E18EE94B19349EAE00B0A40C /* AccountServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = E18EE94A19349EAE00B0A40C /* AccountServiceRemote.m */; };
-		E18EE94E19349EBA00B0A40C /* BlogRemoteService.m in Sources */ = {isa = PBXBuildFile; fileRef = E18EE94D19349EBA00B0A40C /* BlogRemoteService.m */; };
+		E18EE94E19349EBA00B0A40C /* BlogServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = E18EE94D19349EBA00B0A40C /* BlogServiceRemote.m */; };
 		E18EE95119349EC300B0A40C /* ReaderTopicServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = E18EE95019349EC300B0A40C /* ReaderTopicServiceRemote.m */; };
 		E1921F5A17733C3E000F4079 /* WPImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E1921F5917733C3E000F4079 /* WPImageSource.m */; };
 		E19DF741141F7BDD000002F3 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E19DF740141F7BDD000002F3 /* libz.dylib */; };
@@ -2254,8 +2254,8 @@
 		E18D8AE41397C54E00000861 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E18EE94919349EAE00B0A40C /* AccountServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountServiceRemote.h; sourceTree = "<group>"; };
 		E18EE94A19349EAE00B0A40C /* AccountServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountServiceRemote.m; sourceTree = "<group>"; };
-		E18EE94C19349EBA00B0A40C /* BlogRemoteService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogRemoteService.h; sourceTree = "<group>"; };
-		E18EE94D19349EBA00B0A40C /* BlogRemoteService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogRemoteService.m; sourceTree = "<group>"; };
+		E18EE94C19349EBA00B0A40C /* BlogServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogServiceRemote.h; sourceTree = "<group>"; };
+		E18EE94D19349EBA00B0A40C /* BlogServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogServiceRemote.m; sourceTree = "<group>"; };
 		E18EE94F19349EC300B0A40C /* ReaderTopicServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderTopicServiceRemote.h; sourceTree = "<group>"; };
 		E18EE95019349EC300B0A40C /* ReaderTopicServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderTopicServiceRemote.m; sourceTree = "<group>"; };
 		E1921F5817733C3E000F4079 /* WPImageSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPImageSource.h; sourceTree = "<group>"; };
@@ -3199,8 +3199,8 @@
 				E149D64619349E69006A843D /* AccountServiceRemoteREST.m */,
 				E149D64719349E69006A843D /* AccountServiceRemoteXMLRPC.h */,
 				E149D64819349E69006A843D /* AccountServiceRemoteXMLRPC.m */,
-				E18EE94C19349EBA00B0A40C /* BlogRemoteService.h */,
-				E18EE94D19349EBA00B0A40C /* BlogRemoteService.m */,
+				E18EE94C19349EBA00B0A40C /* BlogServiceRemote.h */,
+				E18EE94D19349EBA00B0A40C /* BlogServiceRemote.m */,
 				93D6D6461924FDAD00A4F44A /* CategoryServiceRemote.h */,
 				93D6D6471924FDAD00A4F44A /* CategoryServiceRemote.m */,
 				E149D64919349E69006A843D /* MediaServiceRemote.h */,
@@ -3627,8 +3627,6 @@
 				5DA3EE151925090A00294E0B /* MediaService.m */,
 				930284B318EAF79500CB0BF4 /* NoteService.h */,
 				930284B418EAF79500CB0BF4 /* NoteService.m */,
-				E1F7B98D191A3C8300230371 /* MediaService.h */,
-				E1F7B98E191A3C8300230371 /* MediaService.m */,
 				5D3D559518F88C3500782892 /* ReaderPostService.h */,
 				5D3D559618F88C3500782892 /* ReaderPostService.m */,
 				5DBCD9D318F35D7500B32229 /* ReaderTopicService.h */,
@@ -5547,7 +5545,6 @@
 				8514DDA7190E2AB3009B6421 /* WPMediaMetadataExtractor.m in Sources */,
 				E13F23C314FE84600081D9CC /* NSMutableDictionary+Helpers.m in Sources */,
 				E114D79A153D85A800984182 /* WPError.m in Sources */,
-				852CD8AD190E0BC4006C9AED /* WPMediaSizing.m in Sources */,
 				C52C783418771F7100FB1D2D /* StatsTwoColumnCell.m in Sources */,
 				46F84611185A6E98009D0DA5 /* WPContentView.m in Sources */,
 				A25EBD87156E330600530E3D /* WPTableViewController.m in Sources */,
@@ -5599,7 +5596,6 @@
 				E1523EB516D3B305002C5A36 /* InstapaperActivity.m in Sources */,
 				B545186018E99AF500AC3A54 /* WPTableHeaderViewCell.m in Sources */,
 				E18EE94B19349EAE00B0A40C /* AccountServiceRemote.m in Sources */,
-				E1F7B987191932C500230371 /* WPImageOptimizer.m in Sources */,
 				E1D0D81616D3B86800E33F4C /* SafariActivity.m in Sources */,
 				85495F4817C6D9A500871A7A /* CommentViewController.m in Sources */,
 				E1D0D82916D3D19200E33F4C /* PocketAPI.m in Sources */,
@@ -5654,7 +5650,7 @@
 				E149D64F19349E69006A843D /* AccountServiceRemoteXMLRPC.m in Sources */,
 				46F8D7FB183C293200E10A38 /* ReaderPostView.m in Sources */,
 				5D42A3FB175E75EE005CFF05 /* ReaderPostDetailViewController.m in Sources */,
-				E18EE94E19349EBA00B0A40C /* BlogRemoteService.m in Sources */,
+				E18EE94E19349EBA00B0A40C /* BlogServiceRemote.m in Sources */,
 				5D42A3FC175E75EE005CFF05 /* ReaderPostsViewController.m in Sources */,
 				C52C785A187B460100FB1D2D /* StatsViewByCountry.m in Sources */,
 				C56636FB18761C8600226AAB /* StatsButtonCell.m in Sources */,
@@ -5665,7 +5661,6 @@
 				5DB3BA0518D0E7B600F3F3E9 /* WPPickerView.m in Sources */,
 				5D42A400175E75EE005CFF05 /* ReaderVideoView.m in Sources */,
 				5D42A405175E76A7005CFF05 /* WPImageViewController.m in Sources */,
-				93C1148818EF157500DAC95C /* BlogRemoteService.m in Sources */,
 				5DA3EE161925090A00294E0B /* MediaService.m in Sources */,
 				5D42A406175E76A7005CFF05 /* WPWebVideoViewController.m in Sources */,
 				5D839AA8187F0D6B00811F4A /* PostFeaturedImageCell.m in Sources */,

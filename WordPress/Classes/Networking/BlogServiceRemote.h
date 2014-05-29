@@ -10,7 +10,7 @@ typedef void (^PostsHandler)(NSArray *posts);
 typedef void (^PagesHandler)(NSArray *pages);
 typedef void (^MediaHandler)(NSArray *media);
 
-@interface BlogRemoteService : NSObject
+@interface BlogServiceRemote : NSObject
 
 - (id)initWithRemoteApi:(WPXMLRPCClient *)api;
 
