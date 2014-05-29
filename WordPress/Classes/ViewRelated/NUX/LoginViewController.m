@@ -839,14 +839,17 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     if (!url) {
         url = [options stringForKeyPath:@"blog_url.value"];
     }
-    NSMutableDictionary *blogDetails = [NSMutableDictionary dictionaryWithObject:xmlrpc forKey:@"xmlrpc"];
-    if (blogName) {
-        [blogDetails setObject:blogName forKey:@"blogName"];
+    _blog = [accountService findBlogWithXmlrpc:xmlrpc inAccount:account];
+    if (!_blog) {
+        _blog = [accountService createBlogWithAccount:account];
+        if (url) {
+            _blog.url = url;
+        }
+        if (blogName) {
+            _blog.blogName = blogName;
+        }
     }
-    if (url) {
-        [blogDetails setObject:url forKey:@"url"];
-    }
-    _blog = [accountService findOrCreateBlogFromDictionary:blogDetails withAccount:account];
+    _blog.xmlrpc = xmlrpc;
     _blog.options = options;
     [_blog dataSave];
     [blogService syncBlog:_blog success:nil failure:nil];

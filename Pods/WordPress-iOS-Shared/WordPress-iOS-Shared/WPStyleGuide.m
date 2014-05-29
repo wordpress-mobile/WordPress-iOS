@@ -1,5 +1,6 @@
 #import "WPStyleGuide.h"
 #import "UITableViewTextFieldCell.h"
+#import "UIColor+Helpers.h"
 #import <DTCoreText/DTCoreText.h>
 
 @implementation WPStyleGuide
