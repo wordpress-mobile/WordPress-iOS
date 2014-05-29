@@ -3016,10 +3016,6 @@
 				5DA5BF3218E32DCF005F11F9 /* MediaSearchFilterHeaderView.m */,
 				859CFD44190E3198005FB217 /* WPMediaUploader.h */,
 				859CFD45190E3198005FB217 /* WPMediaUploader.m */,
-				E1F7B985191932C500230371 /* WPImageOptimizer.h */,
-				E1F7B986191932C500230371 /* WPImageOptimizer.m */,
-				E1F7B98A191A2DC900230371 /* WPImageOptimizer+Private.h */,
-				E1F7B98B191A2DC900230371 /* WPImageOptimizer+Private.m */,
 			);
 			path = Media;
 			sourceTree = "<group>";
@@ -3405,6 +3401,10 @@
 				E183BD7317621D86000B0822 /* WPCookie.m */,
 				E114D798153D85A800984182 /* WPError.h */,
 				E114D799153D85A800984182 /* WPError.m */,
+				E1F7B985191932C500230371 /* WPImageOptimizer.h */,
+				E1F7B986191932C500230371 /* WPImageOptimizer.m */,
+				E1F7B98A191A2DC900230371 /* WPImageOptimizer+Private.h */,
+				E1F7B98B191A2DC900230371 /* WPImageOptimizer+Private.m */,
 				E1921F5817733C3E000F4079 /* WPImageSource.h */,
 				E1921F5917733C3E000F4079 /* WPImageSource.m */,
 				85468F3B17C484AB008AB9C1 /* WPStyleGuide.h */,
