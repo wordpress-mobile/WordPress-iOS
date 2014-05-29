@@ -838,7 +838,11 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 }
 
 - (void)dismissEditView {
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    if (self.delegate) {
+        [self.delegate editPostViewDismissed];
+    } else{
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    }
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
