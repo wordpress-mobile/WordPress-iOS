@@ -18,8 +18,8 @@ static const CGFloat CompressionQuality = 0.7;
 
 - (NSData *)optimizedDataFromAssetRepresentation:(ALAssetRepresentation *)representation {
     CGImageRef sourceImage = [self imageFromAssetRepresentation:representation];
-    CGImageRef resizedImage = [self resizedImageWithImage:sourceImage];
-    NSDictionary *metadata = representation.metadata;
+    CGImageRef resizedImage = [self resizedImageWithImage:sourceImage scale:representation.scale orientation:representation.orientation];
+    NSDictionary *metadata = [self metadataFromRepresentation:representation];
     NSString *type = representation.UTI;
     NSData *optimizedData = [self dataWithImage:resizedImage compressionQuality:CompressionQuality type:type andMetadata:metadata];
     return optimizedData;
@@ -53,9 +53,9 @@ static const CGFloat CompressionQuality = 0.7;
     return fullResolutionImage;
 }
 
-- (CGImageRef)resizedImageWithImage:(CGImageRef)image {
-    UIImage *originalImage = [UIImage imageWithCGImage:image];
-    CGSize originalSize = CGSizeMake(CGImageGetWidth(image), CGImageGetHeight(image));
+- (CGImageRef)resizedImageWithImage:(CGImageRef)image scale:(CGFloat)scale orientation:(UIImageOrientation)orientation {
+    UIImage *originalImage = [UIImage imageWithCGImage:image scale:scale orientation:orientation];
+    CGSize originalSize = originalImage.size;
     CGSize newSize = [self sizeWithinLimitsForSize:originalSize];
     UIImage *resizedImage = [originalImage resizedImageWithContentMode:UIViewContentModeScaleAspectFit
                                                                 bounds:newSize
@@ -68,6 +68,28 @@ static const CGFloat CompressionQuality = 0.7;
     CGFloat heightRatio = MIN(SizeLimit.height, originalSize.height) / originalSize.height;
     CGFloat ratio = MIN(widthRatio, heightRatio);
     return CGSizeMake(round(ratio * originalSize.width), round(ratio * originalSize.height));
+}
+
+- (NSDictionary *)metadataFromRepresentation:(ALAssetRepresentation *)representation {
+    NSString * const orientationKey = @"Orientation";
+    NSString * const xmpKey = @"AdjustmentXMP";
+    NSString * const tiffKey = @"{TIFF}";
+
+    NSMutableDictionary *metadata = [representation.metadata mutableCopy];
+
+    // Remove XMP data since filters have already been applied to the image
+    [metadata removeObjectForKey:xmpKey];
+
+    // Remove rotation data, since the image is already rotated
+    [metadata removeObjectForKey:orientationKey];
+
+    if ([metadata objectForKey:tiffKey]) {
+        NSMutableDictionary *tiffMetadata = [metadata[tiffKey] mutableCopy];
+        [tiffMetadata setObject:@1 forKey:orientationKey];
+        [metadata setObject:[NSDictionary dictionaryWithDictionary:tiffMetadata] forKey:tiffKey];
+    }
+
+    return [NSDictionary dictionaryWithDictionary:metadata];
 }
 
 - (NSData *)dataWithImage:(CGImageRef)image compressionQuality:(CGFloat)quality type:(NSString *)type andMetadata:(NSDictionary *)metadata {
