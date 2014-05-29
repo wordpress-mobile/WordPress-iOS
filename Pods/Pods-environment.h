@@ -148,7 +148,7 @@
 #define COCOAPODS_POD_AVAILABLE_NSObject_SafeExpectations
 #define COCOAPODS_VERSION_MAJOR_NSObject_SafeExpectations 0
 #define COCOAPODS_VERSION_MINOR_NSObject_SafeExpectations 0
-#define COCOAPODS_VERSION_PATCH_NSObject_SafeExpectations 1
+#define COCOAPODS_VERSION_PATCH_NSObject_SafeExpectations 2
 
 // NSURL+IDN
 #define COCOAPODS_POD_AVAILABLE_NSURL_IDN
