@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@class Blog, WPXMLRPCClient;
+@class Blog;
 
 typedef void (^OptionsHandler)(NSDictionary *options);
 typedef void (^PostFormatsHandler)(NSDictionary *postFormats);
@@ -10,9 +10,7 @@ typedef void (^PostsHandler)(NSArray *posts);
 typedef void (^PagesHandler)(NSArray *pages);
 typedef void (^MediaHandler)(NSArray *media);
 
-@interface BlogServiceRemote : NSObject
-
-- (id)initWithRemoteApi:(WPXMLRPCClient *)api;
+@protocol BlogServiceRemote <NSObject>
 
 - (void)syncPostsAndMetadataForBlog:(Blog *)blog
                   categoriesSuccess:(CategoriesHandler)categoriesSuccess
