@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @class UITableViewTextFieldCell;
 @interface WPStyleGuide : NSObject

@@ -5,7 +5,7 @@
 
 
 typedef struct {
-	NSString *escapeSequence;
+	__unsafe_unretained NSString *escapeSequence;
 	unichar uchar;
 } HTMLEscapeMap;
 
