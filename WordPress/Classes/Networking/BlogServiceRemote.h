@@ -12,6 +12,9 @@ typedef void (^MediaHandler)(NSArray *media);
 
 @protocol BlogServiceRemote <NSObject>
 
+// As methods are implemented for both REST and XML-RPC they should stop being optional
+@optional
+
 - (void)syncPostsAndMetadataForBlog:(Blog *)blog
                   categoriesSuccess:(CategoriesHandler)categoriesSuccess
                      optionsSuccess:(OptionsHandler)optionsSuccess
