@@ -2500,13 +2500,13 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				8584FDB31923EF4F0019C02E /* ViewRelated */,
-				850BD4531922F95C0032F3AD /* Networking */,
 				C59D3D480E6410BC00AA591D /* Categories */,
 				2F706A870DFB229B00B43086 /* Models */,
+				850BD4531922F95C0032F3AD /* Networking */,
 				93FA59DA18D88BDB001446BC /* Services */,
 				8584FDB719243E550019C02E /* System */,
 				8584FDB4192437160019C02E /* Utility */,
+				8584FDB31923EF4F0019C02E /* ViewRelated */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -2838,14 +2838,6 @@
 			path = "AnimatedGIFImageSerialization-0.1.0/AnimatedGIFImageSerialization";
 			sourceTree = "<group>";
 		};
-		59CABD0B191D18230013637C /* AFNetworkingAdditions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = AFNetworkingAdditions;
-			path = ..;
-			sourceTree = "<group>";
-		};
 		5D1EBF56187C9B95003393F8 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
@@ -3142,7 +3134,6 @@
 		850BD4531922F95C0032F3AD /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				59CABD0B191D18230013637C /* AFNetworkingAdditions */,
 				E18EE94919349EAE00B0A40C /* AccountServiceRemote.h */,
 				E18EE94A19349EAE00B0A40C /* AccountServiceRemote.m */,
 				E149D64519349E69006A843D /* AccountServiceRemoteREST.h */,
@@ -3571,8 +3562,6 @@
 				5DA3EE151925090A00294E0B /* MediaService.m */,
 				930284B318EAF79500CB0BF4 /* NoteService.h */,
 				930284B418EAF79500CB0BF4 /* NoteService.m */,
-				E1F7B98D191A3C8300230371 /* MediaService.h */,
-				E1F7B98E191A3C8300230371 /* MediaService.m */,
 				5D3D559518F88C3500782892 /* ReaderPostService.h */,
 				5D3D559618F88C3500782892 /* ReaderPostService.m */,
 				5DBCD9D318F35D7500B32229 /* ReaderTopicService.h */,
@@ -5480,7 +5469,6 @@
 				8514DDA7190E2AB3009B6421 /* WPMediaMetadataExtractor.m in Sources */,
 				E13F23C314FE84600081D9CC /* NSMutableDictionary+Helpers.m in Sources */,
 				E114D79A153D85A800984182 /* WPError.m in Sources */,
-				852CD8AD190E0BC4006C9AED /* WPMediaSizing.m in Sources */,
 				C52C783418771F7100FB1D2D /* StatsTwoColumnCell.m in Sources */,
 				46F84611185A6E98009D0DA5 /* WPContentView.m in Sources */,
 				A25EBD87156E330600530E3D /* WPTableViewController.m in Sources */,
@@ -5527,7 +5515,6 @@
 				E1523EB516D3B305002C5A36 /* InstapaperActivity.m in Sources */,
 				B545186018E99AF500AC3A54 /* WPTableHeaderViewCell.m in Sources */,
 				E18EE94B19349EAE00B0A40C /* AccountServiceRemote.m in Sources */,
-				E1F7B987191932C500230371 /* WPImageOptimizer.m in Sources */,
 				E1D0D81616D3B86800E33F4C /* SafariActivity.m in Sources */,
 				85495F4817C6D9A500871A7A /* CommentViewController.m in Sources */,
 				E1D0D82916D3D19200E33F4C /* PocketAPI.m in Sources */,
@@ -5592,7 +5579,6 @@
 				5DB3BA0518D0E7B600F3F3E9 /* WPPickerView.m in Sources */,
 				5D42A400175E75EE005CFF05 /* ReaderVideoView.m in Sources */,
 				5D42A405175E76A7005CFF05 /* WPImageViewController.m in Sources */,
-				93C1148818EF157500DAC95C /* BlogRemoteService.m in Sources */,
 				5DA3EE161925090A00294E0B /* MediaService.m in Sources */,
 				5D42A406175E76A7005CFF05 /* WPWebVideoViewController.m in Sources */,
 				5D839AA8187F0D6B00811F4A /* PostFeaturedImageCell.m in Sources */,
