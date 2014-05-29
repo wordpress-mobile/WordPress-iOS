@@ -20,6 +20,7 @@
 #import "AccountService.h"
 #import "BlogService.h"
 #import "ContextManager.h"
+#import "NSString+XMLExtensions.h"
 
 @interface CreateAccountAndBlogViewController ()<
     UITextFieldDelegate,
@@ -715,7 +716,16 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
             BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
             WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-            Blog *blog = [accountService findOrCreateBlogFromDictionary:blogOptions withAccount:defaultAccount];
+            Blog *blog = [accountService findBlogWithXmlrpc:blogOptions[@"xmlrpc"] inAccount:defaultAccount];
+            if (!blog) {
+                blog = [accountService createBlogWithAccount:defaultAccount];
+                blog.xmlrpc = blogOptions[@"xmlrpc"];
+            }
+            blog.blogID = blogOptions[@"blogid"];
+            blog.blogName = [blogOptions[@"blogname"] stringByDecodingXMLCharacters];
+            blog.url = blogOptions[@"url"];
+
+            [[ContextManager sharedInstance] saveContext:context];
 
             [blogService syncBlog:blog success:nil failure:nil];
             [self setAuthenticating:NO];
