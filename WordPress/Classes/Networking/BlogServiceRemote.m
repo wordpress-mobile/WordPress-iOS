@@ -6,17 +6,17 @@
 //  Copyright (c) 2014 WordPress. All rights reserved.
 //
 
-#import "BlogRemoteService.h"
+#import "BlogServiceRemote.h"
 #import <WordPressApi.h>
 #import "Blog.h"
 
-@interface BlogRemoteService ()
+@interface BlogServiceRemote ()
 
 @property (nonatomic, strong) WPXMLRPCClient *api;
 
 @end
 
-@implementation BlogRemoteService
+@implementation BlogServiceRemote
 
 - (id)initWithRemoteApi:(WPXMLRPCClient *)api
 {
