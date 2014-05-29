@@ -6,6 +6,7 @@
 #import "Page.h"
 #import "CategoryService.h"
 #import "BlogServiceRemote.h"
+#import "BlogServiceRemoteXMLRPC.h"
 
 @interface BlogService ()
 
@@ -152,7 +153,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 - (void)syncPostsAndMetadataForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    BlogServiceRemote *remote = [[BlogServiceRemote alloc] initWithRemoteApi:blog.api];
+    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncPostsAndMetadataForBlog:blog
                       categoriesSuccess:[self categoriesHandlerWithBlog:blog completionHandler:nil]
                          optionsSuccess:[self optionsHandlerWithBlog:blog completionHandler:nil]
@@ -197,7 +198,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         }
     }
     
-    BlogServiceRemote *remote = [[BlogServiceRemote alloc] initWithRemoteApi:blog.api];
+    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncPostsForBlog:blog
                    batchSize:postsToRequest
                     loadMore:more
@@ -230,7 +231,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         }
     }
     
-    BlogServiceRemote *remote = [[BlogServiceRemote alloc] initWithRemoteApi:blog.api];
+    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncPagesForBlog:blog
                    batchSize:pagesToRequest
                     loadMore:more
@@ -246,13 +247,13 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 - (void)syncCategoriesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    BlogServiceRemote *remote = [[BlogServiceRemote alloc] initWithRemoteApi:blog.api];
+    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncCategoriesForBlog:blog success:[self categoriesHandlerWithBlog:blog completionHandler:success] failure:failure];
 }
 
 - (void)syncOptionsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    BlogServiceRemote *remote = [[BlogServiceRemote alloc] initWithRemoteApi:blog.api];
+    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncOptionsForBlog:blog success:[self optionsHandlerWithBlog:blog completionHandler:success] failure:failure];
 }
 
@@ -264,7 +265,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     }
     blog.isSyncingComments = YES;
     
-    BlogServiceRemote *remote = [[BlogServiceRemote alloc] initWithRemoteApi:blog.api];
+    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncCommentsForBlog:blog
                         success:[self commentsHandlerWithBlog:blog completionHandler:success]
                         failure:^(NSError *error) {
@@ -284,7 +285,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     }
     blog.isSyncingMedia = YES;
     
-    BlogServiceRemote *remote = [[BlogServiceRemote alloc] initWithRemoteApi:blog.api];
+    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncMediaLibraryForBlog:blog
                             success:[self mediaHandlerWithBlog:blog completionHandler:success]
                             failure:^(NSError *error) {
@@ -298,13 +299,13 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 - (void)syncPostFormatsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    BlogServiceRemote *remote = [[BlogServiceRemote alloc] initWithRemoteApi:blog.api];
+    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncPostFormatsForBlog:blog success:[self postFormatsHandlerWithBlog:blog completionHandler:success] failure:failure];
 }
 
 - (void)syncBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    BlogServiceRemote *remote = [[BlogServiceRemote alloc] initWithRemoteApi:blog.api];
+    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncBlogContentAndMetadata:blog
                      categoriesSuccess:[self categoriesHandlerWithBlog:blog completionHandler:nil]
                        commentsSuccess:[self commentsHandlerWithBlog:blog completionHandler:nil]
@@ -400,6 +401,11 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 }
 
 #pragma mark - Private methods
+
+- (id<BlogServiceRemote>)remoteForBlog:(Blog *)blog {
+    id<BlogServiceRemote> remote = [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.api];
+    return remote;
+}
 
 - (NSInteger)blogCountWithPredicate:(NSPredicate *)predicate
 {

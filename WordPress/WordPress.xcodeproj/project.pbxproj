@@ -962,6 +962,7 @@
 		E1B62A8713AA8D7700A6FCA4 /* link~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B62A8113AA8D7700A6FCA4 /* link~ipad.png */; };
 		E1CAAE3A13F4142E0000C58D /* WPKeyboardToolbarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E1CAAE3913F4142E0000C58D /* WPKeyboardToolbarButtonItem.m */; };
 		E1CCFB33175D62500016BD8A /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1CCFB32175D624F0016BD8A /* Crashlytics.framework */; };
+		E1D04D7E19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D04D7D19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.m */; };
 		E1D062D4177C685C00644185 /* ContentActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D062D3177C685700644185 /* ContentActionButton.m */; };
 		E1D0D81616D3B86800E33F4C /* SafariActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D0D81516D3B86800E33F4C /* SafariActivity.m */; };
 		E1D0D82916D3D19200E33F4C /* PocketAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D0D82116D3D19200E33F4C /* PocketAPI.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -2293,6 +2294,8 @@
 		E1CAAE3813F4142E0000C58D /* WPKeyboardToolbarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPKeyboardToolbarButtonItem.h; sourceTree = "<group>"; };
 		E1CAAE3913F4142E0000C58D /* WPKeyboardToolbarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPKeyboardToolbarButtonItem.m; sourceTree = "<group>"; };
 		E1CCFB32175D624F0016BD8A /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		E1D04D7C19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogServiceRemoteXMLRPC.h; sourceTree = "<group>"; };
+		E1D04D7D19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogServiceRemoteXMLRPC.m; sourceTree = "<group>"; };
 		E1D062D2177C685700644185 /* ContentActionButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContentActionButton.h; sourceTree = "<group>"; };
 		E1D062D3177C685700644185 /* ContentActionButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContentActionButton.m; sourceTree = "<group>"; };
 		E1D0D81416D3B86800E33F4C /* SafariActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SafariActivity.h; sourceTree = "<group>"; };
@@ -3201,6 +3204,8 @@
 				E149D64819349E69006A843D /* AccountServiceRemoteXMLRPC.m */,
 				E18EE94C19349EBA00B0A40C /* BlogServiceRemote.h */,
 				E18EE94D19349EBA00B0A40C /* BlogServiceRemote.m */,
+				E1D04D7C19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.h */,
+				E1D04D7D19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.m */,
 				93D6D6461924FDAD00A4F44A /* CategoryServiceRemote.h */,
 				93D6D6471924FDAD00A4F44A /* CategoryServiceRemote.m */,
 				E149D64919349E69006A843D /* MediaServiceRemote.h */,
@@ -5576,6 +5581,7 @@
 				379DA051166E938E001A43CC /* NotificationsFollowTableViewCell.m in Sources */,
 				5DB4683B18A2E718004A89A9 /* LocationService.m in Sources */,
 				93740DCB17D8F86700C41B2F /* WPAlertView.m in Sources */,
+				E1D04D7E19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.m in Sources */,
 				E240859C183D82AE002EB0EF /* WPAnimatedBox.m in Sources */,
 				CC669B261672C335009E16F8 /* NoteCommentPostBanner.m in Sources */,
 				37B7924D16768FCC0021B3A4 /* NotificationSettingsViewController.m in Sources */,
