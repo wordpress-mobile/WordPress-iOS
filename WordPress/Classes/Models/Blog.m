@@ -359,6 +359,10 @@ static NSInteger const ImageSizeLargeHeight = 480;
     return NO;
 }
 
+- (NSNumber *)dotComID {
+    return self.blogID;
+}
+
 #pragma mark - api accessor
 
 - (WPXMLRPCClient *)api {
@@ -371,6 +375,15 @@ static NSInteger const ImageSizeLargeHeight = 480;
         }
     }
     return _api;
+}
+
+- (WordPressComApi *)restApi {
+    if ([self isWPcom]) {
+        return self.account.restApi;
+    } else if (self.jetpackAccount) {
+        return self.jetpackAccount.restApi;
+    }
+    return nil;
 }
 
 #pragma mark - Private Methods
