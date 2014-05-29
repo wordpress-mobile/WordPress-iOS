@@ -7,6 +7,8 @@
 #import "CategoryService.h"
 #import "BlogServiceRemote.h"
 #import "BlogServiceRemoteXMLRPC.h"
+#import "BlogServiceRemoteREST.h"
+#import "BlogServiceRemoteProxy.h"
 
 @interface BlogService ()
 
@@ -403,7 +405,13 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 #pragma mark - Private methods
 
 - (id<BlogServiceRemote>)remoteForBlog:(Blog *)blog {
-    id<BlogServiceRemote> remote = [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.api];
+    BlogServiceRemoteXMLRPC *xmlrpcRemote = [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.api];
+    BlogServiceRemoteREST *restRemote = nil;
+    if (blog.restApi) {
+        restRemote = [[BlogServiceRemoteREST alloc] initWithApi:blog.restApi];
+    }
+    id<BlogServiceRemote> remote = [[BlogServiceRemoteProxy alloc] initWithXMLRPCRemote:xmlrpcRemote RESTRemote:restRemote];
+
     return remote;
 }
 
