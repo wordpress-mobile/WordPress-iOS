@@ -215,7 +215,7 @@
 		B5E8D32E1831237500AE2C5A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 264CD909135DFD7A00C51BAD /* UIKit.framework */; };
 		B5E8D32F1831237500AE2C5A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 264CD8FE135DFD7A00C51BAD /* Foundation.framework */; };
 		B5E8D3301831237500AE2C5A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 264CD90C135DFD7A00C51BAD /* CoreGraphics.framework */; };
-		B5EB869A1822E34F007450FF /* SPLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = B5EB86981822E34F007450FF /* SPLogger.h */; };
+		B5EB869A1822E34F007450FF /* SPLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = B5EB86981822E34F007450FF /* SPLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B5EB869B1822E34F007450FF /* SPLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = B5EB86991822E34F007450FF /* SPLogger.m */; };
 		B5EC2C2518858E3E0067E3B8 /* SPPersistentMutableSet.h in Headers */ = {isa = PBXBuildFile; fileRef = B5EC2C2318858E3E0067E3B8 /* SPPersistentMutableSet.h */; };
 		B5EC2C2618858E3E0067E3B8 /* SPPersistentMutableSet.m in Sources */ = {isa = PBXBuildFile; fileRef = B5EC2C2418858E3E0067E3B8 /* SPPersistentMutableSet.m */; };
@@ -941,6 +941,7 @@
 				264CD99B135DFE7E00C51BAD /* NSMutableDictionary+DMPExtensions.h in Headers */,
 				264CD99D135DFE7E00C51BAD /* NSString+JavaSubstring.h in Headers */,
 				264CD99F135DFE7E00C51BAD /* NSString+UnicharUtilities.h in Headers */,
+				B5EB869A1822E34F007450FF /* SPLogger.h in Headers */,
 				264CD9A1135DFE7E00C51BAD /* NSString+UriCompatibility.h in Headers */,
 				26E83C2613985DBE00195758 /* SPCoreDataExporter.h in Headers */,
 				26E83D9913999C0F00195758 /* SPUser.h in Headers */,
@@ -991,7 +992,6 @@
 				E265DBD017CD3E0A00070550 /* SPTOSViewController.h in Headers */,
 				26653CFB15FE5DEA00461A28 /* SPReachability.h in Headers */,
 				46A16A8117289FE2003AED55 /* NSString+Simperium.h in Headers */,
-				B5EB869A1822E34F007450FF /* SPLogger.h in Headers */,
 				B5A19D5918806BBC0059AA36 /* SPWebSocket.h in Headers */,
 				1854D50F1799F6D2006C4211 /* NSArray+Simperium.h in Headers */,
 				B5AC545E1857917800608CAC /* SPBucket+Internals.h in Headers */,

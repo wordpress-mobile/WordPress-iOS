@@ -178,11 +178,11 @@ static int const SPChangeProcessorMaxPendingChanges	= 200;
     return YES;
 }
 
-- (BOOL)processRemoteDeleteWithKey:(NSString*)simperiumKey bucket:(SPBucket *)bucket acknowledged:(BOOL)acknowledged {
+- (BOOL)processRemoteDeleteWithKey:(NSString*)simperiumKey bucket:(SPBucket *)bucket objectWasFound:(BOOL)objectWasFound {
 	
 	// REMOVE operation
-	// If this wasn't just an ack, perform the deletion
-	if (!acknowledged) {
+	// If the object still exists in our local storage (no matter if this is an ACK, or remote deletion), proceed nuking it
+	if (objectWasFound) {
 		SPLogVerbose(@"Simperium non-local REMOVE ENTITY received");
 		
 		id<SPStorageProvider> threadSafeStorage = [bucket.storage threadSafeStorage];
@@ -380,6 +380,7 @@ static int const SPChangeProcessorMaxPendingChanges	= 200;
     SPLogVerbose(@"Simperium client %@ received change (%@) %@: %@", self.clientID, bucket.name, changeClientID, change);
 	
 	// Process
+    BOOL objectWasFound         = (object != nil);
     BOOL clientMatches			= [changeClientID compare:self.clientID] == NSOrderedSame;
     BOOL remove					= operation && [operation compare: CH_REMOVE] == NSOrderedSame;
     BOOL acknowledged			= [self awaitingAcknowledgementForKey:key] && clientMatches;
@@ -397,10 +398,8 @@ static int const SPChangeProcessorMaxPendingChanges	= 200;
     SPLogVerbose(@"Simperium performing change operation: %@", operation);
 	[threadSafeStorage finishSafeSection];
 		
-    if (remove) {
-        if (object || acknowledged) {
-            return [self processRemoteDeleteWithKey:key bucket:bucket acknowledged:acknowledged];
-		}
+    if (remove && (objectWasFound || acknowledged)) {
+        return [self processRemoteDeleteWithKey:key bucket:bucket objectWasFound:objectWasFound];
     } else if (operation && [operation compare: CH_MODIFY] == NSOrderedSame) {
         return [self processRemoteModifyWithKey:key bucket:bucket change:change acknowledged:acknowledged clientMatches:clientMatches];
     }

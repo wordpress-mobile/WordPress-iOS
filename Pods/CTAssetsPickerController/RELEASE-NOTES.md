@@ -1,3 +1,9 @@
+### v2.2.2
+* Fix issue of removing notifications from the same thread
+
+### v2.2.1
+* [#33](https://github.com/chiunam/CTAssetsPickerController/issues/33) Rectify the delegate method name `shouldEnableAsset` in the sample app and README.md
+
 ### v2.2.0
 * [#30](https://github.com/chiunam/CTAssetsPickerController/issues/30) Refactor into separate files
 

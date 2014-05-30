@@ -137,7 +137,7 @@
 		B504EF50182818BE002FA5A1 /* SPHttpRequest+Internals.h in Headers */ = {isa = PBXBuildFile; fileRef = B504EF49182818BE002FA5A1 /* SPHttpRequest+Internals.h */; };
 		B504EF51182818BE002FA5A1 /* SPHttpRequestQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = B504EF4A182818BE002FA5A1 /* SPHttpRequestQueue.h */; };
 		B504EF52182818BE002FA5A1 /* SPHttpRequestQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = B504EF4B182818BE002FA5A1 /* SPHttpRequestQueue.m */; };
-		B51CB9F618AD8E55009FF0DE /* SPLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = B51CB9F418AD8E55009FF0DE /* SPLogger.h */; };
+		B51CB9F618AD8E55009FF0DE /* SPLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = B51CB9F418AD8E55009FF0DE /* SPLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B51CB9F718AD8E55009FF0DE /* SPLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = B51CB9F518AD8E55009FF0DE /* SPLogger.m */; };
 		B525F1F218842757003E4AA0 /* SPWebSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = B525F1F018842757003E4AA0 /* SPWebSocket.h */; };
 		B525F1F318842757003E4AA0 /* SPWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = B525F1F118842757003E4AA0 /* SPWebSocket.m */; };
@@ -766,6 +766,7 @@
 				268EDF40155F08A2006B566F /* SPCoreDataExporter.h in Headers */,
 				B58EC3161885B6C400ED37E5 /* SPPersistentMutableDictionary.h in Headers */,
 				268EDF42155F08A2006B566F /* SPCoreDataStorage.h in Headers */,
+				B51CB9F618AD8E55009FF0DE /* SPLogger.h in Headers */,
 				268EDF46155F08A2006B566F /* SPEnvironment.h in Headers */,
 				268EDF48155F08A2006B566F /* SPGhost.h in Headers */,
 				268EDF4C155F08A2006B566F /* SPIndexProcessor.h in Headers */,
@@ -825,7 +826,6 @@
 				B525F1F218842757003E4AA0 /* SPWebSocket.h in Headers */,
 				46DD162317A1B8490093678C /* SPAuthenticationTextField.h in Headers */,
 				46DD162517A1B8490093678C /* SPAuthenticationView.h in Headers */,
-				B51CB9F618AD8E55009FF0DE /* SPLogger.h in Headers */,
 				46DD162717A1B8490093678C /* SPAuthenticationWindow.h in Headers */,
 				46DD162917A1B8490093678C /* SPAuthenticationWindowController.h in Headers */,
 				46263BB117A7778E00131791 /* SPAuthenticationConfiguration.h in Headers */,

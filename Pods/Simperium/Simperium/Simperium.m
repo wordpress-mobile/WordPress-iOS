@@ -177,7 +177,10 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 								 relationshipResolver:self.relationshipResolver label:self.label remoteName:remoteName clientID:self.clientID];
 
 			[self.buckets setObject:bucket forKey:name];
-            [self.network start:bucket];
+            
+            if (self.networkManagersStarted) {
+                [self.network start:bucket];
+            }
         }
     }
     
@@ -367,7 +370,7 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 	
 	// Manually initialize the user
 	self.user = [[SPUser alloc] initWithEmail:@"" token:token];
-    [self startNetworkManagers];
+    [self startNetworking];
 }
 
 - (void)shutdown {

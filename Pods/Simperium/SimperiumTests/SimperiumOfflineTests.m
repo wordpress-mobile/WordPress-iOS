@@ -181,14 +181,6 @@
     [leader connect];
     [self waitFor:4];
 
-    //leader.expectedAcknowledgments = 1;
-    //STAssertTrue([self waitForCompletion: 4.0 farmArray:farmArray], @"timed out (adding)");
-//    [self resetExpectations: farmArray];
-//    [self ensureFarmsEqual:farmArray entityName:@"Config"];
-    
-    //STAssertTrue([self waitForCompletion:4.0 farmArray:farmArray], @"timed out (changing)");
-    
-    
     NSString *refString = @"123456 09876";
     XCTAssertTrue([refString isEqualToString: leader.config.captainsLog],
                  @"leader %@ != ref %@", leader.config.captainsLog, refString);
@@ -201,5 +193,93 @@
     NSLog(@"%@ end", self.name);
 }
 
+- (void)testOfflineDeletionOfObjectWithSharedKeyBeforeInitialSync
+{
+    NSString *sharedKey = @"31337";
+    
+    // Leader: Online, please!
+    Farm *leader = [self createFarm:@"Leader"];
+
+    [leader start];
+    [leader connect];
+    
+    [self waitFor:2.0];
+
+    // Leader: Insert a Config Object
+    SPBucket *leaderBucket      = [leader.simperium bucketForName:[Config entityName]];
+    Config *leadConfig          = [leaderBucket insertNewObject];
+    leadConfig.simperiumKey     = sharedKey;
+    
+    leader.expectedAcknowledgments = 1;
+    [leader.simperium save];
+    XCTAssertTrue([self waitForCompletion:4.0 farmArray:@[ leader ]], @"timed out (adding)");
+    
+    // Follower: While offline, Insert + Delete a Config Object, with the same key as the one used above!
+    Farm *follower = [self createFarm:@"Follower"];
+    [follower start];
+    
+    SPBucket *followerBucket    = [follower.simperium bucketForName:[Config entityName]];
+    Config *followerConfig      = [followerBucket insertNewObject];
+    
+    followerConfig.simperiumKey = sharedKey;
+    [follower.simperium save];
+    
+    [followerBucket deleteObject:followerConfig];
+    [follower.simperium save];
+    
+    follower.expectedAcknowledgments = 1;
+    [follower connect];
+    XCTAssertTrue([self waitForCompletion:4.0 farmArray:@[ follower ]], @"timed out (adding)");
+    
+    XCTAssertNil([leaderBucket objectForKey:sharedKey], @"Zombie in Leader detected!");
+    XCTAssertNil([followerBucket objectForKey:sharedKey], @"Zombie in Follower detected!");
+}
+
+- (void)testOfflineDeletionOfObjectWithSharedKeyAfterInitialSync
+{
+    NSString *sharedKey = @"31337";
+    
+    // Bring online both, Leader and Follower
+    Farm *leader = [self createFarm:@"Leader"];
+    Farm *follower = [self createFarm:@"Follower"];
+    
+    [leader start];
+    [follower start];
+    
+    [leader connect];
+    [follower connect];
+    
+    [self waitFor:2.0];
+    
+    // Disconnect the follower
+    [follower disconnect];
+    
+    // Leader: Insert a Config Object
+    SPBucket *leaderBucket          = [leader.simperium bucketForName:[Config entityName]];
+    Config *leadConfig              = [leaderBucket insertNewObject];
+    leadConfig.simperiumKey         = sharedKey;
+    
+    leader.expectedAcknowledgments  = 1;
+    [leader.simperium save];
+    XCTAssertTrue([self waitForCompletion:4.0 farmArray:@[ leader ]], @"timed out (adding)");
+    
+    // Follower: Add + Nuke the object, while offline
+    SPBucket *followerBucket    = [follower.simperium bucketForName:[Config entityName]];
+    Config *followerConfig      = [followerBucket insertNewObject];
+    
+    followerConfig.simperiumKey = sharedKey;
+    [follower.simperium save];
+    
+    [followerBucket deleteObject:followerConfig];
+    [follower.simperium save];
+    
+    follower.expectedAdditions  = 1;
+    follower.expectedDeletions  = 1;
+    [follower connect];
+    XCTAssertTrue([self waitForCompletion:4.0 farmArray:@[ follower ]], @"timed out (adding)");
+    
+    XCTAssertNil([leaderBucket objectForKey:sharedKey], @"Zombie in Leader detected!");
+    XCTAssertNil([followerBucket objectForKey:sharedKey], @"Zombie in Follower detected!");
+}
 
 @end

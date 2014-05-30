@@ -163,7 +163,7 @@ UIPopoverControllerDelegate>
     [self.tableView reloadData];
 }
 
-- (BOOL)assetsPickerController:(CTAssetsPickerController *)picker shouldEnableAssetForSelection:(ALAsset *)asset
+- (BOOL)assetsPickerController:(CTAssetsPickerController *)picker shouldEnableAsset:(ALAsset *)asset
 {
     // Enable video clips if they are at least 5s
     if ([[asset valueForProperty:ALAssetPropertyType] isEqual:ALAssetTypeVideo])

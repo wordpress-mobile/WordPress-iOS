@@ -209,9 +209,14 @@ typedef NS_ENUM(NSInteger, SPMessageIndex) {
     
     // Mark it closed so it doesn't reopen
     self.open               = NO;
+    
+    // Cleanup
     [self.webSocket close];
 	self.webSocket.delegate = nil;
     self.webSocket          = nil;
+    
+	// Prevent any pending retries
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
     
     // TODO: Consider ensuring threads are done their work and sending a notification
 }

@@ -273,8 +273,11 @@ static SPLogLevels logLevel					= SPLogLevelsError;
         return _managedObjectContext;
     }
 	
-    _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-	_managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
+    @synchronized(self) {
+        _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+        _managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
+    }
+    
     return _managedObjectContext;
 }
 
