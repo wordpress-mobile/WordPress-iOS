@@ -129,6 +129,13 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     _helpshiftEnabled = [defaults boolForKey:UserDefaultsHelpshiftEnabled];
 }
 
+- (NSUInteger)supportedInterfaceOrientations {
+    if (IS_IPHONE)
+        return UIInterfaceOrientationMaskPortrait;
+    
+    return UIInterfaceOrientationMaskAll;
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
