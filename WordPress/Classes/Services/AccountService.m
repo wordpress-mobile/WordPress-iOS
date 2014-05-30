@@ -4,6 +4,8 @@
 #import "ContextManager.h"
 #import "Blog.h"
 #import "AccountServiceRemote.h"
+#import "AccountServiceRemoteREST.h"
+#import "AccountServiceRemoteXMLRPC.h"
 
 #import "NSString+XMLExtensions.h"
 
@@ -191,21 +193,13 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 /// @name Blog creation
 ///--------------------
 
-/**
- Creates a `Blog` object for this account with the given XML-RPC dictionary
- 
- If a there is an existing blog with the same `url`, it is returned as-is.
- 
- @param blogInfo a dictionary containing `url`, `blogName`, `xmlrpc`, and `blogid`; as returned by `wp.getUsersBlogs`
- @return the newly created blog
- */
-- (Blog *)findOrCreateBlogFromDictionary:(NSDictionary *)blogInfo withAccount:(WPAccount *)account
+- (Blog *)findBlogWithXmlrpc:(NSString *)xmlrpc inAccount:(WPAccount *)account
 {
-    NSSet *foundBlogs = [account.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc like %@", [blogInfo stringForKey:@"xmlrpc"]]];
+    NSSet *foundBlogs = [account.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc like %@", xmlrpc]];
     if ([foundBlogs count] == 1) {
         return [foundBlogs anyObject];
     }
-    
+
     // If more than one blog matches, return the first and delete the rest
     if ([foundBlogs count] > 1) {
         Blog *blogToReturn = [foundBlogs anyObject];
@@ -216,27 +210,22 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
                 break;
             }
         }
-        
+
         for (Blog *b in foundBlogs) {
             if (!([b isEqual:blogToReturn])) {
                 [self.managedObjectContext deleteObject:b];
             }
         }
-        
+
         return blogToReturn;
     }
-    
+    return nil;
+}
+
+- (Blog *)createBlogWithAccount:(WPAccount *)account
+{
     Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Blog class]) inManagedObjectContext:self.managedObjectContext];
     blog.account = account;
-    blog.url = [blogInfo stringForKey:@"url"];
-    blog.blogID = [NSNumber numberWithInt:[[blogInfo objectForKey:@"blogid"] intValue]];
-    blog.blogName = [[blogInfo objectForKey:@"blogName"] stringByDecodingXMLCharacters];
-    blog.xmlrpc = [blogInfo objectForKey:@"xmlrpc"];
-    
-    DDLogInfo(@"Created blog: %@", blog);
-    
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    
     return blog;
 }
 
@@ -244,9 +233,9 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 {
     DDLogMethod();
     
-    AccountServiceRemote *remote = [[AccountServiceRemote alloc] initWithRemoteApi:account.xmlrpcApi];
+    id<AccountServiceRemote> remote = [self remoteForAccount:account];
     [remote getBlogsWithSuccess:^(NSArray *blogs) {
-        [self.managedObjectContext performBlockAndWait:^{
+        [self.managedObjectContext performBlock:^{
             [self mergeBlogs:blogs withAccount:account completion:success];
         }];
     } failure:^(NSError *error) {
@@ -276,14 +265,30 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     
     // Go through each remote incoming blog and make sure we're up to date with titles, etc.
     // Also adds any blogs we don't have
-    for (NSDictionary *blog in blogs) {
-        [self findOrCreateBlogFromDictionary:blog withAccount:account];
+    for (RemoteBlog *remoteBlog in blogs) {
+        Blog *blog = [self findBlogWithXmlrpc:remoteBlog.xmlrpc inAccount:account];
+        if (!blog) {
+            blog = [self createBlogWithAccount:account];
+            blog.xmlrpc = remoteBlog.xmlrpc;
+        }
+        blog.url = remoteBlog.url;
+        blog.blogName = [remoteBlog.title stringByDecodingXMLCharacters];
+        blog.blogID = remoteBlog.ID;
     }
     
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     
     if (completion != nil) {
         dispatch_async(dispatch_get_main_queue(), completion);
+    }
+}
+
+- (id<AccountServiceRemote>)remoteForAccount:(WPAccount *)account
+{
+    if (account.restApi) {
+        return [[AccountServiceRemoteREST alloc] initWithApi:account.restApi];
+    } else {
+        return [[AccountServiceRemoteXMLRPC alloc] initWithApi:account.xmlrpcApi];
     }
 }
 
