@@ -1,5 +1,6 @@
 #import "SupportViewController.h"
 #import "WPWebViewController.h"
+#import "SettingsViewController.h"
 #import "ActivityLogViewController.h"
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import "WordPressAppDelegate.h"
@@ -130,8 +131,14 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
-    if (IS_IPHONE)
-        return UIInterfaceOrientationMaskPortrait;
+    if (IS_IPHONE){
+		for (UIViewController * viewController in self.navigationController.viewControllers) {
+			if (IS_IPHONE && [viewController isKindOfClass:[SettingsViewController class]]) {
+				return UIInterfaceOrientationMaskAllButUpsideDown;
+			}
+		}
+		return UIInterfaceOrientationMaskPortrait;
+	}
     
     return UIInterfaceOrientationMaskAll;
 }
