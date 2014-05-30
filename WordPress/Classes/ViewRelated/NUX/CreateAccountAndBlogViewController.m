@@ -27,7 +27,7 @@
     UIGestureRecognizerDelegate> {
     
     // Page 1
-    WPNUXBackButton *_cancelButton;
+    WPNUXBackButton *_backButton;
     UIButton *_helpButton;
     UILabel *_titleLabel;
     UILabel *_TOSLabel;
@@ -225,13 +225,13 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     }
     
     // Add Cancel Button
-    if (_cancelButton == nil) {
-        _cancelButton = [[WPNUXBackButton alloc] init];
-        [_cancelButton setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
-        [_cancelButton addTarget:self action:@selector(cancelButtonAction) forControlEvents:UIControlEventTouchUpInside];
-        [_cancelButton sizeToFit];
-        _cancelButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-        [self.view addSubview:_cancelButton];
+    if (_backButton == nil) {
+        _backButton = [[WPNUXBackButton alloc] init];
+        [_backButton setTitle:NSLocalizedString(@"Back", nil) forState:UIControlStateNormal];
+        [_backButton addTarget:self action:@selector(backButtonAction) forControlEvents:UIControlEventTouchUpInside];
+        [_backButton sizeToFit];
+        _backButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+        [self.view addSubview:_backButton];
     }
     
     // Add Title
@@ -365,7 +365,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     // Layout Cancel Button
     x = 0;
     y = 0.5 * CreateAccountAndBlogStandardOffset + CreateAccountAndBlogiOS7StatusBarOffset;
-    _cancelButton.frame = CGRectMake(x, y, CGRectGetWidth(_cancelButton.frame), CreateAccountAndBlogButtonHeight);
+    _backButton.frame = CGRectMake(x, y, CGRectGetWidth(_backButton.frame), CreateAccountAndBlogButtonHeight);
         
     // Layout the controls starting out from y of 0, then offset them once the height of the controls
     // is accurately calculated we can determine the vertical center and adjust everything accordingly.
@@ -438,7 +438,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     [self.navigationController presentViewController:nc animated:YES completion:nil];
 }
 
-- (void)cancelButtonAction
+- (void)backButtonAction
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -535,7 +535,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 
 - (NSArray *)controlsToShowOrHideDuringKeyboardTransition
 {
-    return @[_titleLabel, _helpButton, _cancelButton, _TOSLabel];
+    return @[_titleLabel, _helpButton, _backButton, _TOSLabel];
 }
 
 - (void)displayRemoteError:(NSError *)error
