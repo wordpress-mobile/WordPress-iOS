@@ -51,7 +51,7 @@ CGFloat const WPNUXBackButtonExtraHorizontalWidthForSpace = 30;
     [self setImageEdgeInsets:UIEdgeInsetsMake(0, -18, 0, 0)];
     [self setImage:[UIImage imageNamed:@"btn-back-chevron"] forState:UIControlStateNormal];
     [self setImage:[UIImage imageNamed:@"btn-back-chevron-tapped"] forState:UIControlStateHighlighted];
-    [self setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
+    [self setTitle:NSLocalizedString(@"Back", nil) forState:UIControlStateNormal];
 }
 
 @end
