@@ -160,6 +160,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     }
     
     [self updateLastSeenTime];
+    [self resetApplicationBadge];
 }
 
 
@@ -173,6 +174,11 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 }
 
 #pragma mark - Custom methods
+
+- (void)resetApplicationBadge
+{
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+}
 
 - (void)updateTabBarBadgeNumber
 {
