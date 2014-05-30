@@ -3,14 +3,14 @@
 
 @interface WordPressActivity () <EditPostViewControllerDelegate>
 
+@property (nonatomic, strong) NSURL *URL;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *summary;
+@property (nonatomic, strong) NSString *tags;
+
 @end
 
-@implementation WordPressActivity {
-    NSURL *_URL;
-    NSString *_title;
-    NSString *_summary;
-    NSString *_tags;
-}
+@implementation WordPressActivity
 
 - (UIImage *)activityImage {
 	return [UIImage imageNamed:@"sidebar-logo"];
@@ -37,18 +37,18 @@
 - (void)prepareWithActivityItems:(NSArray *)activityItems {
 	for (id activityItem in activityItems) {
 		if ([activityItem isKindOfClass:[NSURL class]]) {
-			_URL = activityItem;
+			self.URL = activityItem;
 		}
         if ([activityItem isKindOfClass:[NSDictionary class]]) {
-			_title = activityItem[@"title"];
-            _summary = activityItem[@"summary"];
-            _tags = activityItem[@"tags"];
+			self.title = activityItem[@"title"];
+            self.summary = activityItem[@"summary"];
+			self.tags = activityItem[@"tags"];
 		}
 	}
 }
 
 -(UIViewController *)activityViewController{
-    NSString * content = [_summary stringByAppendingString:[NSString stringWithFormat:@"\n\n <a href=\"%@\">%@</a>", _URL, _URL]];
+    NSString * content = [self.summary stringByAppendingString:[NSString stringWithFormat:@"\n\n <a href=\"%@\">%@</a>", self.URL, self.URL]];
     
     EditPostViewController * editPostViewController = [[EditPostViewController alloc] initWithTitle:_title andContent:content andTags:_tags andImage:nil];
     editPostViewController.delegate = self;
