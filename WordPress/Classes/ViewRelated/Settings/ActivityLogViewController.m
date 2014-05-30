@@ -47,6 +47,13 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:ActivityLogCellIdentifier];
 }
 
+- (NSUInteger)supportedInterfaceOrientations {
+    if (IS_IPHONE)
+        return UIInterfaceOrientationMaskPortrait;
+    
+    return UIInterfaceOrientationMaskAll;
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
