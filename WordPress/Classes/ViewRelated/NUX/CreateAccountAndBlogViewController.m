@@ -227,7 +227,6 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     // Add Cancel Button
     if (_backButton == nil) {
         _backButton = [[WPNUXBackButton alloc] init];
-        [_backButton setTitle:NSLocalizedString(@"Back", nil) forState:UIControlStateNormal];
         [_backButton addTarget:self action:@selector(backButtonAction) forControlEvents:UIControlEventTouchUpInside];
         [_backButton sizeToFit];
         _backButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
