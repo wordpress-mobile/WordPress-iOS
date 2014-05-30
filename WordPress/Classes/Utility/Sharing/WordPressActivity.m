@@ -30,7 +30,7 @@
 			return YES;
 		}
 	}
-    
+	
 	return NO;
 }
 
@@ -39,31 +39,31 @@
 		if ([activityItem isKindOfClass:[NSURL class]]) {
 			self.URL = activityItem;
 		}
-        if ([activityItem isKindOfClass:[NSDictionary class]]) {
+		if ([activityItem isKindOfClass:[NSDictionary class]]) {
 			self.title = activityItem[@"title"];
-            self.summary = activityItem[@"summary"];
+			self.summary = activityItem[@"summary"];
 			self.tags = activityItem[@"tags"];
 		}
 	}
 }
 
 -(UIViewController *)activityViewController{
-    NSString * content = [self.summary stringByAppendingString:[NSString stringWithFormat:@"\n\n <a href=\"%@\">%@</a>", self.URL, self.URL]];
+	NSString * content = [self.summary stringByAppendingString:[NSString stringWithFormat:@"\n\n <a href=\"%@\">%@</a>", self.URL, self.URL]];
+
+	EditPostViewController * editPostViewController = [[EditPostViewController alloc] initWithTitle:_title andContent:content andTags:_tags andImage:nil];
+	editPostViewController.delegate = self;
     
-    EditPostViewController * editPostViewController = [[EditPostViewController alloc] initWithTitle:_title andContent:content andTags:_tags andImage:nil];
-    editPostViewController.delegate = self;
-    
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-    navController.navigationBar.translucent = NO;
-    navController.restorationIdentifier = WPEditorNavigationRestorationID;
-    navController.restorationClass = [EditPostViewController class];
-    
-    return navController;
+	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+	navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+	navController.navigationBar.translucent = NO;
+	navController.restorationIdentifier = WPEditorNavigationRestorationID;
+	navController.restorationClass = [EditPostViewController class];
+
+	return navController;
 }
 
 - (void)editPostViewDismissed {
-    [self activityDidFinish:YES];
+	[self activityDidFinish:YES];
 }
 
 @end
