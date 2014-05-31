@@ -311,7 +311,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
           failure:(WordPressComApiRestFailureBlock)failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d", siteID, postID];
-    [self.httpManager POST:path
+    [self.httpManager GET:path
         parameters:nil
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                if (!success) {
