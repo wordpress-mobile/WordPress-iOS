@@ -21,9 +21,7 @@
 
 - (void)fetchReaderMenuWithSuccess:(void (^)(NSArray *topics))success failure:(void (^)(NSError *error))failure {
     
-    NSString *path = @"read/menu";
-    
-    [self.api GET:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.api fetchReaderMenuWithSuccess:^(id responseObject) {
 
         if (!success) {
             return;
@@ -74,7 +72,7 @@
         
         success(topics);
         
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         if (failure) {
             failure(error);
         }

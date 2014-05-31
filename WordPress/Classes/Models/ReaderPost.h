@@ -71,7 +71,7 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 + (void)getCommentsForPost:(NSUInteger)postID
 				  fromSite:(NSString *)siteID
 			withParameters:(NSDictionary*)params
-				   success:(WordPressComApiRestSuccessResponseBlock)success
-				   failure:(WordPressComApiRestSuccessFailureBlock)failure;
+				   success:(WordPressComApiRestSuccessBlock)success
+				   failure:(WordPressComApiRestFailureBlock)failure;
 
 @end

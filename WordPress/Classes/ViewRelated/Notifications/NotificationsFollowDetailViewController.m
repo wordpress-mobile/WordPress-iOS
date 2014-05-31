@@ -264,8 +264,9 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
     NSString *imageName = [NSString stringWithFormat:@"action_icon_%@", (isFollowing) ? @"unfollowed" : @"followed"];
     [WPToast showToastWithMessage:message andImage:[UIImage imageNamed:imageName]];
 
-	[restApi followBlog:blogID.integerValue isFollowing:isFollowing success:^(AFHTTPRequestOperation *operation, id responseObject) {
-		
+	[restApi followBlog:blogID.integerValue isFollowing:isFollowing
+                success:^( id responseObject)
+    {
 		NSDictionary *followResponse = (NSDictionary *)responseObject;
 		BOOL success = ([followResponse[@"success"] intValue] == 1);
 		if (success) {
@@ -280,7 +281,7 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 		}
 		
 		block(success);
-	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+	} failure:^(NSError *error) {
         item.action.following = !isFollowing;
 		DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
 		block(false);

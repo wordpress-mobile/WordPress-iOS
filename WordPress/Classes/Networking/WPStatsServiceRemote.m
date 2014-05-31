@@ -56,9 +56,7 @@
             [self urlForViewsVisitorsForUnit:@"month"],
     ];
 
-    [self.api GET:@"batch"
-       parameters:@{ @"urls" : urls}
-          success:^void (AFHTTPRequestOperation *operation, id responseObject)
+    [self.api fetchStatsForUrls:urls withCompletionHandler:^void (id responseObject)
      {
          if (![responseObject isKindOfClass:[NSDictionary class]]) {
              if (failureHandler) {
@@ -164,7 +162,7 @@
              
          }
      }
-          failure:^void (AFHTTPRequestOperation *operation, NSError *error)
+     failureHandler:^void (NSError *error)
      {
          NSLog(@"Error: %@", error);
          

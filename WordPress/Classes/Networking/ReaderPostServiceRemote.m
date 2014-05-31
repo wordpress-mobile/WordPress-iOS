@@ -67,10 +67,8 @@
           success:(void (^)(RemoteReaderPost *post))success
           failure:(void (^)(NSError *error))failure {
 
-    NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/?meta=site", siteID, postID];
-    [self.api POST:path
-           parameters:nil
-              success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.api fetchSiteMetaPost:postID fromSite:siteID
+              success:^(id responseObject) {
                   if (!success) {
                       return;
                   }
@@ -78,7 +76,7 @@
                   RemoteReaderPost *post = [self formatPostDictionary:(NSDictionary *)responseObject];
                   success(post);
 
-              } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              } failure:^(NSError *error) {
                   if (failure) {
                       failure(error);
                   }
@@ -86,25 +84,28 @@
 }
 
 - (void)likePost:(NSUInteger)postID forSite:(NSUInteger)siteID success:(void (^)())success failure:(void (^)(NSError *error))failure {
-    NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/likes/new", siteID, postID];
-    [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.api likePost:postID
+               forSite:siteID
+               success:^(id responseObject) {
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         if (failure) {
             failure(error);
         }
     }];
 }
 
-- (void)unlikePost:(NSUInteger)postID forSite:(NSUInteger)siteID success:(void (^)())success failure:(void (^)(NSError *error))failure {
-    NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/likes/mine/delete", siteID, postID];
-    [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+- (void)unlikePost:(NSUInteger)postID forSite:(NSUInteger)siteID success:(void (^)())success failure:(void (^)(NSError *error))failure
+{
+    [self.api unlikePost:postID
+                 forSite:siteID
+                 success:^(id responseObject) {
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         if (failure) {
             failure(error);
         }
@@ -112,12 +113,12 @@
 }
 
 - (void)followSite:(NSUInteger)siteID success:(void (^)())success failure:(void(^)(NSError *error))failure {
-    NSString *path = [NSString stringWithFormat:@"sites/%d/follows/new", siteID];
-    [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.api followSite:siteID
+                 success:^(id responseObject) {
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         if (failure) {
             failure(error);
         }
@@ -125,12 +126,11 @@
 }
 
 - (void)unfollowSite:(NSUInteger)siteID success:(void (^)())success failure:(void(^)(NSError *error))failure {
-    NSString *path = [NSString stringWithFormat:@"sites/%d/follows/mine/delete", siteID];
-    [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.api unfollowSite:siteID success:^(id responseObject) {
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         if (failure) {
             failure(error);
         }
@@ -138,13 +138,11 @@
 }
 
 - (void)followSiteAtURL:(NSString *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure {
-    NSString *path = @"read/following/mine/new";
-    NSDictionary *params = @{@"url": siteURL};
-    [self.api POST:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.api followSiteAtURL:siteURL success:^(id responseObject) {
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         if (failure) {
             failure(error);
         }
@@ -152,34 +150,28 @@
 }
 
 - (void)unfollowSiteAtURL:(NSString *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure {
-    NSString *path = @"read/following/mine/delete";
-    NSDictionary *params = @{@"url": siteURL};
-    [self.api POST:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.api unfollowSiteAtURL:siteURL success:^(id responseObject)
+{
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         if (failure) {
             failure(error);
         }
     }];
 }
 
-- (void)reblogPost:(NSUInteger)postID fromSite:(NSUInteger)siteID toSite:(NSUInteger)targetSiteID note:(NSString *)note success:(void (^)(BOOL isReblogged))success failure:(void (^)(NSError *error))failure {
-    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:@(targetSiteID) forKey:@"destination_site_id"];
-
-    if ([note length] > 0) {
-        [params setObject:note forKey:@"note"];
-    }
-
-    NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/reblogs/new", siteID, postID];
-    [self.api POST:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+- (void)reblogPost:(NSUInteger)postID fromSite:(NSUInteger)siteID toSite:(NSUInteger)targetSiteID note:(NSString *)note success:(void (^)(BOOL isReblogged))success failure:(void (^)(NSError *error))failure
+{
+    [self.api reblogPost:postID fromSite:siteID toSite:targetSiteID note:note
+                 success:^(id responseObject) {
         if (success) {
             NSDictionary *dict = (NSDictionary *)responseObject;
             BOOL isReblogged = [[dict numberForKey:@"is_reblogged"] boolValue];
             success(isReblogged);
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         if (failure) {
             failure(error);
         }
@@ -196,29 +188,30 @@
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 - (void)fetchPostsFromEndpoint:(NSURL *)endpoint
-                    withParameters:(NSDictionary *)params
-                           success:(void (^)(NSArray *posts))success
-                           failure:(void (^)(NSError *))failure {
+                withParameters:(NSDictionary *)params
+                       success:(void (^)(NSArray *posts))success
+                       failure:(void (^)(NSError *))failure
+{
 
-    [self.api GET:[endpoint absoluteString]
-           parameters:params
-              success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                  if (!success) {
-                      return;
-                  }
+    [self.api fetchPostsFromEndpoint:endpoint
+                      withParameters:params
+                             success:^(id responseObject)
+    {
+        if (!success) {
+          return;
+        }
 
-                  NSArray *arr = [responseObject arrayForKey:@"posts"];
-                  NSMutableArray *posts = [NSMutableArray array];
-                  for (NSDictionary *dict in arr) {
-                      [posts addObject:[self formatPostDictionary:dict]];
-                  }
-                  success(posts);
-
-              } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                  if (failure) {
-                      failure(error);
-                  }
-              }];
+        NSArray *arr = [responseObject arrayForKey:@"posts"];
+        NSMutableArray *posts = [NSMutableArray array];
+        for (NSDictionary *dict in arr) {
+          [posts addObject:[self formatPostDictionary:dict]];
+        }
+        success(posts);
+    } failure:^(NSError *error) {
+        if (failure) {
+          failure(error);
+        }
+    }];
 }
 
 /**

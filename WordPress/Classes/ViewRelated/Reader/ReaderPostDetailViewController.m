@@ -697,9 +697,9 @@ typedef enum {
 	[ReaderPost getCommentsForPost:[self.post.postID integerValue]
 						  fromSite:[self.post.siteID stringValue]
 					withParameters:params
-						   success:^(AFHTTPRequestOperation *operation, id responseObject) {
-							   [self onSyncSuccess:operation response:responseObject];
-						   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+						   success:^(id responseObject) {
+							   [self onSyncSuccessResponse:responseObject];
+						   } failure:^(NSError *error) {
 						   }];
 }
 
@@ -716,13 +716,13 @@ typedef enum {
 	[ReaderPost getCommentsForPost:[self.post.postID integerValue]
 						  fromSite:[self.post.siteID stringValue]
 					withParameters:params
-						   success:^(AFHTTPRequestOperation *operation, id responseObject) {
-							   [self onSyncSuccess:operation response:responseObject];
-						   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+						   success:^(id responseObject) {
+							   [self onSyncSuccessResponse:responseObject];
+						   } failure:^(NSError *error) {
 						   }];
 }
 
-- (void)onSyncSuccess:(AFHTTPRequestOperation *)operation response:(id)responseObject {
+- (void)onSyncSuccessResponse:(id)responseObject {
 	self.post.dateCommentsSynced = [NSDate date];
 	_loadingMore = NO;
 	_isSyncing = NO;

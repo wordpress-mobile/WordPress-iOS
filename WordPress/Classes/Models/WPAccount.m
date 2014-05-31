@@ -22,7 +22,6 @@
         return;
     }
     
-	[[[self restApi] operationQueue] cancelAllOperations];
     [[self restApi] reset];
 
     // Clear keychain entries

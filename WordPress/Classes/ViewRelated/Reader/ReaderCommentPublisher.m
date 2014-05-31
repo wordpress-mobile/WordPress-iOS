@@ -114,13 +114,14 @@
 	}
 
     self.composeView.enabled = NO;
-	NSDictionary *params = @{@"content":str};
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-	[[defaultAccount restApi] POST:[self pathForContext] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[[defaultAccount restApi] publishComment:str toPath:[self pathForContext]
+                                     success:^(id responseObject)
+    {
 
         [self.composeView clearText];
         self.composeView.enabled = YES;
@@ -129,7 +130,7 @@
         // clear the draft comment for this post if there is one
         self.post.storedComment = nil;
 
-	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+	} failure:^(NSError *error) {
 
 		DDLogError(@"Error Commenting from Reader : %@", [error localizedDescription]);
 

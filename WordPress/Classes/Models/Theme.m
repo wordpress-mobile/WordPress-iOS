@@ -71,7 +71,7 @@ static NSDateFormatter *dateFormatter;
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    [[defaultAccount restApi] fetchThemesForBlogId:blog.blogID.stringValue success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[defaultAccount restApi] fetchThemesForBlogId:blog.blogID.stringValue success:^(id responseObject) {
         NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] newDerivedContext];
         [backgroundMOC performBlock:^{
             NSMutableArray *themesToKeep = [NSMutableArray array];
@@ -96,19 +96,22 @@ static NSDateFormatter *dateFormatter;
             }
             
         }];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         if (failure) {
             failure(error);
         }
     }];
 }
 
-+ (void)fetchCurrentThemeForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure {
++ (void)fetchCurrentThemeForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    [[defaultAccount restApi] fetchCurrentThemeForBlogId:blog.blogID.stringValue success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[defaultAccount restApi] fetchCurrentThemeForBlogId:blog.blogID.stringValue
+                                                 success:^( id responseObject)
+    {
         [blog.managedObjectContext performBlock:^{
             blog.currentThemeId = responseObject[@"id"];
             [[ContextManager sharedInstance] saveContext:blog.managedObjectContext];
@@ -116,7 +119,7 @@ static NSDateFormatter *dateFormatter;
                 dispatch_async(dispatch_get_main_queue(), success);
             }
         }];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         if (failure) {
             failure(error);
         }
@@ -127,7 +130,10 @@ static NSDateFormatter *dateFormatter;
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    [[defaultAccount restApi] activateThemeForBlogId:self.blog.blogID.stringValue themeId:self.themeId success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[defaultAccount restApi] activateThemeForBlogId:self.blog.blogID.stringValue
+                                             themeId:self.themeId
+                                             success:^(id responseObject)
+    {
         [self.blog.managedObjectContext performBlock:^{
             self.blog.currentThemeId = self.themeId;
             [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
@@ -135,7 +141,7 @@ static NSDateFormatter *dateFormatter;
                 dispatch_async(dispatch_get_main_queue(), success);
             }
         }];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         if (failure) {
             failure(error);
         }

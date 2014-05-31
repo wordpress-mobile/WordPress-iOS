@@ -827,33 +827,32 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
                 AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
                 WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-                [[defaultAccount restApi] GET:@"me"
-                                       parameters:nil
-                                          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                              if ([usersBlogs count] < 1)
-                                                  return;
-                                              
-                                              NSDictionary *dict = (NSDictionary *)responseObject;
-                                              __block NSNumber *preferredBlogId;
-                                              NSNumber *primaryBlog = [dict objectForKey:@"primary_blog"];
-                                              [usersBlogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                                                  if ([primaryBlog isEqualToNumber:[obj numberForKey:@"blogid"]]) {
-                                                      preferredBlogId = [obj numberForKey:@"blogid"];
-                                                      *stop = YES;
-                                                  }
-                                              }];
-                                              
-                                              if (!preferredBlogId) {
-                                                  NSDictionary *dict = [usersBlogs objectAtIndex:0];
-                                                  preferredBlogId = [dict numberForKey:@"blogid"];
-                                              }
-                                              
-                                              [[NSUserDefaults standardUserDefaults] setObject:preferredBlogId forKey:@"wpcom_users_prefered_blog_id"];
-                                              [NSUserDefaults resetStandardUserDefaults];
-                                              
-                                          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                              // TODO: Handle Failure. Retry maybe?
-                                          }];
+                [[defaultAccount restApi] fetchMeWithSuccess:^(id responseObject)
+                {
+                      if ([usersBlogs count] < 1)
+                          return;
+                      
+                      NSDictionary *dict = (NSDictionary *)responseObject;
+                      __block NSNumber *preferredBlogId;
+                      NSNumber *primaryBlog = [dict objectForKey:@"primary_blog"];
+                      [usersBlogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                          if ([primaryBlog isEqualToNumber:[obj numberForKey:@"blogid"]]) {
+                              preferredBlogId = [obj numberForKey:@"blogid"];
+                              *stop = YES;
+                          }
+                      }];
+                      
+                      if (!preferredBlogId) {
+                          NSDictionary *dict = [usersBlogs objectAtIndex:0];
+                          preferredBlogId = [dict numberForKey:@"blogid"];
+                      }
+                      
+                      [[NSUserDefaults standardUserDefaults] setObject:preferredBlogId forKey:@"wpcom_users_prefered_blog_id"];
+                      [NSUserDefaults resetStandardUserDefaults];
+                      
+                } failure:^(NSError *error) {
+                      // TODO: Handle Failure. Retry maybe?
+                }];
                 
                 if ([usersBlogs count] == 0) {
                     return;

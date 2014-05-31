@@ -177,17 +177,18 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
     // get the note's actions
     NSArray *actions = [self.note.noteData valueForKeyPath:@"body.actions"];
-    NSDictionary *action = [actions objectAtIndex:0];
-    self.siteID = [action valueForKeyPath:@"params.site_id"];
+    NSDictionary *action = actions[0];
+    self.siteID = action[@"params.site_id"];
     
-    NoteComment *comment = [[NoteComment alloc] initWithCommentID:[action valueForKeyPath:@"params.comment_id"]];
+    NoteComment *comment = [[NoteComment alloc] initWithCommentID:action[@"params.comment_id"]];
     [self.commentThread addObject:comment];
     
-    NSString *postPath = [NSString stringWithFormat:@"sites/%@/posts/%@", [action valueForKeyPath:@"params.site_id"], [action valueForKeyPath:@"params.post_id"]];
-    
+    NSNumber * postID = action[@"params.post_id"];
     // if we don't have post information fetch it from the api
     if (self.post == nil) {
-        [[defaultAccount restApi] GET:postPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[defaultAccount restApi] fetchPost:[postID unsignedIntegerValue]
+                                   fromSite:[self.siteID unsignedIntegerValue]
+                                    success:^( id responseObject) {
             self.post = responseObject;
             NSString *postTitle = [[self.post valueForKeyPath:@"title"] stringByDecodingXMLCharacters];
             if (!postTitle || [postTitle isEqualToString:@""])
@@ -205,7 +206,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
             
             self.postBanner.userInteractionEnabled = YES;
             
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        } failure:^(NSError *error) {
             DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
         }];
     }
@@ -346,14 +347,14 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     }
 }
 
-- (void)performCommentAction:(NSDictionary *)commentAction {
-    NSString *path = [NSString stringWithFormat:@"/rest/v1%@", [commentAction valueForKeyPath:@"params.rest_path"]];
-    
+- (void)performCommentAction:(NSDictionary *)commentAction {    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    [[defaultAccount restApi] POST:path parameters:[commentAction valueForKeyPath:@"params.rest_body"] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[defaultAccount restApi] performCommentAction:commentAction
+                                           success:^(id responseObject)
+    {
         NSDictionary *response = (NSDictionary *)responseObject;
         if (response) {
             NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.note.managedObjectContext];
@@ -364,13 +365,14 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
                 [self displayNote];
             }];
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
     }];
 
 }
 
-- (void)publishReply:(NSString *)replyText {
+- (void)publishReply:(NSString *)replyText
+{
     NSDictionary *action = [self.commentActions objectForKey:@"replyto-comment"];
     
     if (action) {
@@ -380,10 +382,9 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
         NSString *approvePath = [NSString stringWithFormat:@"/rest/v1%@", [action valueForKeyPath:@"params.rest_path"]];
-        NSString *replyPath = [NSString stringWithFormat:@"%@/replies/new", approvePath];
-        NSDictionary *params = @{@"content" : replyText };
         if ([[action valueForKeyPath:@"params.approve_parent"] isEqualToNumber:@1]) {
-            [[defaultAccount restApi] POST:approvePath parameters:@{@"status" : @"approved"} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [[defaultAccount restApi] approveCommentAction:action
+                                                   success:^(id responseObject) {
                 [self displayNote];
             } failure:nil];
         }
@@ -401,12 +402,14 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
             [self.inlineComposeView displayComposer];
         };
 
-        [[defaultAccount restApi] POST:replyPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[defaultAccount restApi] replyToCommentInPath:approvePath
+                                             withReply:replyText
+                                               success:^(id responseObject) {
             DDLogVerbose(@"Response: %@", responseObject);
             [WPAnalytics track:WPAnalyticsStatNotificationRepliedTo];
             [WPAnalytics track:WPAnalyticsStatNotificationPerformedAction];
             success();
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        } failure:^(NSError *error) {
             DDLogError(@"Failure %@", error);
             if ([error.userInfo[WordPressComApiErrorCodeKey] isEqual:@"comment_duplicate"]) {
                 // If it's a duplicate comment, fake success since an identical comment is published
@@ -443,14 +446,15 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     NoteComment *comment = [self.commentThread objectAtIndex:0];
     // did we fetch the comment off the API yet?
     if (comment.needsData) {
-        NSString *commentPath = [NSString stringWithFormat:@"sites/%@/comments/%@", self.siteID, comment.commentID];
         comment.loading = YES;
         
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
         WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-        [[defaultAccount restApi] GET:commentPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[defaultAccount restApi] getComment:comment.commentID fromSite:[self.siteID stringValue]
+                                     success:^(id responseObject)
+        {
             comment.commentData = responseObject;
             comment.loading = NO;
 
@@ -461,21 +465,26 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
             NSString *authorLink = [comment.commentData valueForKeyPath:@"author.URL"];
             [self.commentView setAuthorDisplayName:author authorLink:authorLink];
 
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+        } failure:^(NSError *error){
             DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
         }];
         
     }
 }
 
-- (void)performNoteAction:(NSDictionary *)action success:(WordPressComApiRestSuccessFailureBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    NSDictionary *params = [action objectForKey:@"params"];
-    NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", [params objectForKey:@"site_id"], [params objectForKey:@"comment_id"]];
+- (void)performNoteAction:(NSDictionary *)action success:(WordPressComApiRestFailureBlock)success failure:(WordPressComApiRestFailureBlock)failure {
+    NSDictionary *params = action[@"params"];
     
+    NSUInteger commentID= [params[@"comment_id"] unsignedIntegerValue];
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    [[defaultAccount restApi] POST:path parameters:[params objectForKey:@"rest_body"] success:success failure:failure];
+    [[defaultAccount restApi] postNoteToComment:commentID
+                                         toSite:params[@"site_id"]
+                                         params:params[@"rest_body"]
+                                        success:success
+                                        failure:failure];
+    
 }
 
 
