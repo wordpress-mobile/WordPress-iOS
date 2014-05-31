@@ -43,19 +43,37 @@ extern NSString *const WordPressComApiPushAppId;
  */
 - (void)reset;
 
+///-----------------
+/// @name OAuth info
+///-----------------
+
++ (NSString *)WordPressAppId;
++ (NSString *)WordPressAppSecret;
+
 ///-------------------------
 /// @name Account management
 ///-------------------------
-
 
 - (BOOL)hasCredentials;
 
 // Wipe the OAuth2 token
 - (void)invalidateOAuth2Token;
+
 - (void)validateWPComAccountWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure;
+
 - (void)createWPComAccountWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure;
+
 - (void)validateWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle andLanguageId:(NSNumber *)languageId success:(void (^)(id))success failure:(void (^)(NSError *))failure;
+
 - (void)createWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle andLanguageId:(NSNumber *)languageId andBlogVisibility:(WordPressComApiBlogVisibility)visibility success:(void (^)(id))success failure:(void (^)(NSError *))failure;
+
+#pragma mark - User
+
+- (void)fetchMeWithSuccess:(WordPressComApiRestSuccessBlock)success
+                   failure:(WordPressComApiRestFailureBlock)failure;
+#pragma mark - Sites
+
+#pragma mark - Posts
 
 ///--------------------
 /// @name Posts
@@ -108,6 +126,59 @@ extern NSString *const WordPressComApiPushAppId;
                 withParameters:(NSDictionary *)params
                        success:(WordPressComApiRestSuccessBlock)success
                        failure:(WordPressComApiRestFailureBlock)failure;
+
+#pragma mark - Comments
+///---------------
+/// @name Comments
+///---------------
+
+- (void)getCommentsForPost:(NSUInteger)postID
+                  fromSite:(NSString *)siteID
+            withParameters:(NSDictionary*)params
+                   success:(WordPressComApiRestSuccessBlock)success
+                   failure:(WordPressComApiRestFailureBlock)failure;
+
+- (void)getComment:(NSUInteger)commentID
+          fromSite:(NSString *)siteID
+           success:(WordPressComApiRestSuccessBlock)success
+           failure:(WordPressComApiRestFailureBlock)failure;
+
+- (void)postNoteToComment:(NSUInteger)commentID
+                   toSite:(NSString *)siteID
+                   params:(NSDictionary *) params
+                  success:(WordPressComApiRestSuccessBlock)success
+                  failure:(WordPressComApiRestFailureBlock)failure;
+
+- (void)publishComment:(NSString *)commentText
+                toPath:(NSString *) path
+               success:(WordPressComApiRestSuccessBlock)success
+               failure:(WordPressComApiRestFailureBlock)failure;
+
+- (void)moderateComment:(NSUInteger)blogID
+           forCommentID:(NSUInteger)commentID
+             withStatus:(NSString *)commentStatus
+                success:(WordPressComApiRestSuccessBlock)success
+                failure:(WordPressComApiRestFailureBlock)failure;
+
+- (void)replyToComment:(NSUInteger)blogID
+          forCommentID:(NSUInteger)commentID
+             withReply:(NSString *)reply
+               success:(WordPressComApiRestSuccessBlock)success
+               failure:(WordPressComApiRestFailureBlock)failure;
+
+- (void)replyToCommentInPath:(NSString *) path
+                   withReply:(NSString *) reply
+                     success:(WordPressComApiRestSuccessBlock)success
+                     failure:(WordPressComApiRestFailureBlock)failure;
+
+- (void)performCommentAction:(NSDictionary *)commentAction
+                     success:(WordPressComApiRestSuccessBlock)success
+                     failure:(WordPressComApiRestFailureBlock)failure;
+
+- (void)approveCommentAction:(NSDictionary *)commentAction
+                     success:(WordPressComApiRestSuccessBlock)success
+                     failure:(WordPressComApiRestFailureBlock)failure;
+
 ///--------------------
 /// @name Notifications
 ///--------------------
@@ -172,59 +243,6 @@ extern NSString *const WordPressComApiPushAppId;
            success:(WordPressComApiRestSuccessBlock)success
            failure:(WordPressComApiRestFailureBlock)failure;
 
-
-///---------------
-/// @name Comments
-///---------------
-
-- (void)getCommentsForPost:(NSUInteger)postID
-                  fromSite:(NSString *)siteID
-            withParameters:(NSDictionary*)params
-                   success:(WordPressComApiRestSuccessBlock)success
-                   failure:(WordPressComApiRestFailureBlock)failure;
-
-- (void)getComment:(NSUInteger)commentID
-          fromSite:(NSString *)siteID
-           success:(WordPressComApiRestSuccessBlock)success
-           failure:(WordPressComApiRestFailureBlock)failure;
-
-- (void)postNoteToComment:(NSUInteger)commentID
-                   toSite:(NSString *)siteID
-                   params:(NSDictionary *) params
-                  success:(WordPressComApiRestSuccessBlock)success
-                  failure:(WordPressComApiRestFailureBlock)failure;
-
-- (void)publishComment:(NSString *)commentText
-                toPath:(NSString *) path
-               success:(WordPressComApiRestSuccessBlock)success
-               failure:(WordPressComApiRestFailureBlock)failure;
-
-- (void)moderateComment:(NSUInteger)blogID
-           forCommentID:(NSUInteger)commentID
-             withStatus:(NSString *)commentStatus
-                success:(WordPressComApiRestSuccessBlock)success
-                failure:(WordPressComApiRestFailureBlock)failure;
-
-- (void)replyToComment:(NSUInteger)blogID
-          forCommentID:(NSUInteger)commentID
-             withReply:(NSString *)reply
-               success:(WordPressComApiRestSuccessBlock)success
-               failure:(WordPressComApiRestFailureBlock)failure;
-
-- (void)replyToCommentInPath:(NSString *) path
-                   withReply:(NSString *) reply
-                     success:(WordPressComApiRestSuccessBlock)success
-                     failure:(WordPressComApiRestFailureBlock)failure;
-
-- (void)performCommentAction:(NSDictionary *)commentAction
-                     success:(WordPressComApiRestSuccessBlock)success
-                     failure:(WordPressComApiRestFailureBlock)failure;
-
-- (void)approveCommentAction:(NSDictionary *)commentAction
-                     success:(WordPressComApiRestSuccessBlock)success
-                     failure:(WordPressComApiRestFailureBlock)failure;
-
-
 ///------------------
 /// @name Blog Themes
 ///------------------
@@ -242,13 +260,6 @@ extern NSString *const WordPressComApiPushAppId;
                        failure:(WordPressComApiRestFailureBlock)failure;
 
 ///-----------------
-/// @name OAuth info
-///-----------------
-
-+ (NSString *)WordPressAppId;
-+ (NSString *)WordPressAppSecret;
-
-///-----------------
 /// @name Stats
 ///-----------------
 
@@ -264,6 +275,4 @@ extern NSString *const WordPressComApiPushAppId;
                            failure:(WordPressComApiRestFailureBlock)failure;
 
 
-- (void)fetchMeWithSuccess:(WordPressComApiRestSuccessBlock)success
-                   failure:(WordPressComApiRestFailureBlock)failure;
 @end
