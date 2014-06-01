@@ -1491,6 +1491,7 @@
 		5D62BAD618AA88210044E5F7 /* PageSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageSettingsViewController.m; sourceTree = "<group>"; };
 		5D62BAD818AAAE9B0044E5F7 /* PostSettingsViewController_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PostSettingsViewController_Internal.h; sourceTree = "<group>"; };
 		5D69DBC3165428CA00A2D1F7 /* n.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = n.caf; path = Resources/Sounds/n.caf; sourceTree = "<group>"; };
+		5D6CF8B4193BD96E0041D28F /* WordPress 18.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 18.xcdatamodel"; sourceTree = "<group>"; };
 		5D725B08191EACFB00CA71ED /* default-identicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "default-identicon.png"; path = "Resources/Images/default-identicon.png"; sourceTree = "<group>"; };
 		5D725B09191EACFB00CA71ED /* default-identicon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "default-identicon@2x.png"; path = "Resources/Images/default-identicon@2x.png"; sourceTree = "<group>"; };
 		5D7BEA0217749F8C00423E7F /* sidebar_icon_add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sidebar_icon_add.png; path = Resources/Images/sidebar_icon_add.png; sourceTree = "<group>"; };
@@ -6107,6 +6108,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				5D6CF8B4193BD96E0041D28F /* WordPress 18.xcdatamodel */,
 				5DB6D8F618F5DA6300956529 /* WordPress 17.xcdatamodel */,
 				5DA5BF4B18E331D8005F11F9 /* WordPress 16.xcdatamodel */,
 				A284044518BFE7F300D982B6 /* WordPress 15.xcdatamodel */,
@@ -6125,7 +6127,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = 5DB6D8F618F5DA6300956529 /* WordPress 17.xcdatamodel */;
+			currentVersion = 5D6CF8B4193BD96E0041D28F /* WordPress 18.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";
