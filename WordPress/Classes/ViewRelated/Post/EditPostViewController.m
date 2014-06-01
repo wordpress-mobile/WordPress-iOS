@@ -581,7 +581,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 	picker.delegate = self;
     
     // Only show photos for now (not videos)
-    picker.assetsFilter = [ALAssetsFilter allPhotos];
+    picker.assetsFilter = [ALAssetsFilter allAssets];
     
     [self presentViewController:picker animated:YES completion:nil];
     picker.navigationBar.translucent = NO;
@@ -1144,7 +1144,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 - (void)insertMedia:(Media *)media {
 	NSString *prefix = @"<br /><br />";
-    
 	if(self.post.content == nil || [self.post.content isEqualToString:@""]) {
 		self.post.content = @"";
 		prefix = @"";
@@ -1392,7 +1391,20 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     
     for (ALAsset *asset in assets) {
         if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
-            // Could handle videos here
+            MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+            [mediaService createVideoMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
+                AFHTTPRequestOperation *operation = [mediaService operationToUploadMedia:media withSuccess:^{
+                    [self insertMedia:media];
+                } failure:^(NSError *error) {
+                    if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
+                        DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
+                        return;
+                    }
+                    
+                    [WPError showAlertWithTitle:NSLocalizedString(@"Upload failed", nil) message:error.localizedDescription];
+                }];
+                [_mediaUploadQueue addOperation:operation];
+            }];
         } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
             MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
             [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {

@@ -23,7 +23,7 @@
                                            ofType:(NSString *)type
                                      withFilename:(NSString *)filename
                                            toBlog:(Blog *)blog
-                                          success:(void (^)(NSNumber *mediaID, NSString *url))success
+                                          success:(void (^)(NSNumber *mediaID, NSString *url, NSString * shortCode))success
                                           failure:(void (^)(NSError *))failure {
     NSDictionary *data = @{
                            @"name": filename,
@@ -46,9 +46,9 @@
 
                                                                               NSNumber *ID = [response numberForKey:@"id"];
                                                                               NSString *url = [response stringForKey:@"url"];
-
+                                                                              NSString * shortCode = [response stringForKey:@"videopress_shortcode"];
                                                                               if (success) {
-                                                                                  success(ID, url);
+                                                                                  success(ID, url, shortCode);
                                                                               }
                                                                           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                                                               if (failure) {

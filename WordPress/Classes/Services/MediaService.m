@@ -5,8 +5,10 @@
 #import "ContextManager.h"
 #import "MediaServiceRemoteXMLRPC.h"
 #import "MediaServiceRemoteREST.h"
+#import "WPVideoOptimizer.h"
 
 #import <MobileCoreServices/MobileCoreServices.h>
+
 
 @interface MediaService ()
 
@@ -26,11 +28,12 @@
 }
 
 - (void)createMediaWithAsset:(ALAsset *)asset forPostObjectID:(NSManagedObjectID *)postObjectID completion:(void (^)(Media *media))completion {
+
     WPImageOptimizer *optimizer = [WPImageOptimizer new];
-    NSData *optimizedImageData = [optimizer optimizedDataFromAsset:asset];
+    NSData * optimizedData = [optimizer optimizedDataFromAsset:asset];
     NSData *thumbnailData = [self thumbnailDataFromAsset:asset];
     NSString *imagePath = [self pathForAsset:asset];
-    if (![self writeData:optimizedImageData toPath:imagePath]) {
+    if (![self writeData:optimizedData toPath:imagePath]) {
         DDLogError(@"Error writing media to %@", imagePath);
     }
     [self.managedObjectContext performBlock:^{
@@ -41,7 +44,7 @@
         media.thumbnail = thumbnailData;
         // This is kind of lame, but we've been storing file size as KB so far
         // We should store size in bytes or rename the property to avoid confusion
-        media.filesize = @(optimizedImageData.length / 1024);
+        media.filesize = @(optimizedData.length / 1024);
         media.width = @(asset.defaultRepresentation.dimensions.width);
         media.height = @(asset.defaultRepresentation.dimensions.height);
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -51,18 +54,52 @@
     }];
 }
 
+- (void)createVideoMediaWithAsset:(ALAsset *)asset forPostObjectID:(NSManagedObjectID *)postObjectID completion:(void (^)(Media *media))completion {
+    NSString *videoPath = [self pathForAsset:asset];
+    NSData *thumbnailData = [self thumbnailDataFromAsset:asset];
+    
+    WPVideoOptimizer *optimizer = [[WPVideoOptimizer alloc] init];
+    [optimizer optimizeAsset:asset toPath:videoPath withHandler:^(NSError *error) {
+        if (error){
+            DDLogError(@"Error writing media to %@", videoPath);
+            return;
+        }
+        [self.managedObjectContext performBlock:^{
+            AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
+            Media *media = [self newMediaForPost:post];
+            media.filename = [videoPath lastPathComponent];
+            media.localURL = videoPath;
+            media.thumbnail = thumbnailData;
+            media.mediaType = MediaTypeVideo;
+            // This is kind of lame, but we've been storing file size as KB so far
+            // We should store size in bytes or rename the property to avoid confusion
+            NSDictionary * fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:videoPath error:nil];
+            media.filesize = @([fileAttributes fileSize] / 1024);
+            media.width = @(asset.defaultRepresentation.dimensions.width);
+            media.height = @(asset.defaultRepresentation.dimensions.height);
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            if (completion) {
+                completion(media);
+            }
+        }];
+    }];
+}
+
 - (AFHTTPRequestOperation *)operationToUploadMedia:(Media *)media withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     media.remoteStatus = MediaRemoteStatusPushing;
-    id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
+    NSString * mediaType = [self mimeTypeForFilename:media.filename];
+    BOOL isVideo = [self isFileVideo:media.filename];
+    id<MediaServiceRemote> remote = [self remoteForBlog:media.blog forceRPC:isVideo];
     return [remote operationToUploadFile:media.localURL
-                                  ofType:[self mimeTypeForFilename:media.filename]
+                                  ofType:mediaType
                             withFilename:media.filename
                                   toBlog:media.blog
-                                 success:^(NSNumber *mediaID, NSString *url) {
+                                 success:^(NSNumber *mediaID, NSString *url, NSString * shortCode) {
                                      [self.managedObjectContext performBlock:^{
                                          media.remoteStatus = MediaRemoteStatusSync;
                                          media.mediaID = mediaID;
                                          media.remoteURL = url;
+                                         media.shortcode = shortCode;
                                          [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
                                          if (success) {
                                              success();
@@ -148,9 +185,16 @@
     return mimeType;
 }
 
-- (id<MediaServiceRemote>)remoteForBlog:(Blog *)blog {
+- (BOOL) isFileVideo:(NSString *) filename{
+    CFStringRef pathExtension = (__bridge_retained CFStringRef)[filename pathExtension];
+    CFStringRef type = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension, NULL);
+
+    return UTTypeConformsTo(type, kUTTypeMovie) ? YES:NO;
+}
+
+- (id<MediaServiceRemote>)remoteForBlog:(Blog *)blog forceRPC:(BOOL) forceRPC{
     id <MediaServiceRemote> remote;
-    if (blog.restApi) {
+    if (blog.restApi && !forceRPC) {
         remote = [[MediaServiceRemoteREST alloc] initWithApi:blog.restApi];
     } else {
         WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:blog.xmlrpc]];

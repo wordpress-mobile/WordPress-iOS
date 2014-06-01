@@ -6,5 +6,8 @@
 
 @interface MediaService : NSObject <LocalCoreDataService>
 - (void)createMediaWithAsset:(ALAsset *)asset forPostObjectID:(NSManagedObjectID *)postObjectID completion:(void (^)(Media *media))completion;
+
+- (void)createVideoMediaWithAsset:(ALAsset *)asset forPostObjectID:(NSManagedObjectID *) postObjectID completion:(void (^)(Media *media))completion;
+
 - (AFHTTPRequestOperation *)operationToUploadMedia:(Media *)media withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 @end
