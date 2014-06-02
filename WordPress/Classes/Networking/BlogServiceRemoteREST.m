@@ -53,6 +53,7 @@
                                 @"login_url",
                                 @"image_default_link_type",
                                 @"software_version",
+                                @"videopress_enabled",
                                 ];
     for (NSString *key in optionsDirectMapKeys) {
         NSString *sourceKeyPath = [NSString stringWithFormat:@"options.%@", key];
