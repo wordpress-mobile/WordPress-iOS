@@ -41,7 +41,6 @@
 - (NSDictionary *)mapOptionsFromResponse:(NSDictionary *)response {
     NSMutableDictionary *options = [NSMutableDictionary dictionary];
     options[@"home_url"] = response[@"URL"];
-    options[@"software_version"] = [response valueForKeyPath:@"options.software_version"];
     options[@"post_thumbnail"] = [response valueForKeyPath:@"options.featured_images_enabled"];
     // We'd be better off saving this as a BOOL property on Blog, but let's do what XML-RPC does for now
     options[@"blog_public"] = [[response numberForKey:@"is_private"] boolValue] ? @"-1" : @"0";
@@ -53,6 +52,7 @@
                                 @"admin_url",
                                 @"login_url",
                                 @"image_default_link_type",
+                                @"software_version",
                                 ];
     for (NSString *key in optionsDirectMapKeys) {
         NSString *sourceKeyPath = [NSString stringWithFormat:@"options.%@", key];
