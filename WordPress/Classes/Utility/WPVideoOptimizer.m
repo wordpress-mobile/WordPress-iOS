@@ -9,24 +9,51 @@
 #import "WPVideoOptimizer.h"
 #import <AVFoundation/AVFoundation.h>
 
+static NSString * const DisableVideoOptimizationDefaultsKey = @"WPDisableVideoOptimization";
+static long long VideoMaxSize = 1024 * 1024 * 20;
 
 @implementation WPVideoOptimizer
 
++ (BOOL)shouldOptimizeVideos
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    return ![defaults boolForKey:DisableVideoOptimizationDefaultsKey];
+}
+
++ (void)setShouldOptimizeVideos:(BOOL)optimize
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:!optimize forKey:DisableVideoOptimizationDefaultsKey];
+    [defaults synchronize];
+}
+
+
++ (BOOL)isAssetTooLarge:(ALAsset*)asset
+{
+    return [asset.defaultRepresentation size] > VideoMaxSize;
+}
+
 -(void)optimizeAsset:(ALAsset*)asset toPath:(NSString *)videoPath withHandler:(void (^)(NSError* error))handler
 {
-    AVAssetExportSession* session=nil;
+    NSString * presetName = AVAssetExportPresetPassthrough;
     ALAssetRepresentation* representation=asset.defaultRepresentation;
-    session=[AVAssetExportSession exportSessionWithAsset:[AVURLAsset URLAssetWithURL:representation.url options:nil] presetName:AVAssetExportPresetPassthrough];
-    //session.outputFileType=AVFileTypeQuickTimeMovie;
+    if ([[self class] shouldOptimizeVideos] && [[self class] isAssetTooLarge:asset]){
+        presetName = AVAssetExportPresetMediumQuality;
+    }
+    AVAssetExportSession* session=[AVAssetExportSession exportSessionWithAsset:[AVURLAsset URLAssetWithURL:representation.url options:nil] presetName:presetName];
     session.outputFileType = representation.UTI;
     session.outputURL=[NSURL fileURLWithPath:videoPath];
     [session exportAsynchronouslyWithCompletionHandler:^{
         if (session.status!=AVAssetExportSessionStatusCompleted){
             NSError* error=session.error;
-            handler(error);
+            if (handler){
+                handler(error);
+            }
             return;
         }
-        handler(nil);
+        if (handler){
+            handler(nil);
+        }
     }];
 }
 
