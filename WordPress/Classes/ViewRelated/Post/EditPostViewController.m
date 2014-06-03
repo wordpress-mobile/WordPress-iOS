@@ -36,6 +36,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
+@property (nonatomic) BOOL videoPressEnabled;
 
 @end
 
@@ -160,6 +161,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];
     
     [self geotagNewPost];
+    [self checkVideoPressEnabled];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -580,8 +582,11 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     CTAssetsPickerController *picker = [[CTAssetsPickerController alloc] init];
 	picker.delegate = self;
     
-    // Only show photos for now (not videos)
-    picker.assetsFilter = [ALAssetsFilter allAssets];
+    if (self.videoPressEnabled){
+        picker.assetsFilter = [ALAssetsFilter allAssets];
+    } else {
+        picker.assetsFilter = [ALAssetsFilter allPhotos];
+    }
     
     [self presentViewController:picker animated:YES completion:nil];
     picker.navigationBar.translucent = NO;
@@ -1390,7 +1395,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [self dismissViewControllerAnimated:YES completion:nil];
     
     for (ALAsset *asset in assets) {
-        if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
+        if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {            
             MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
             [mediaService createVideoMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
                 AFHTTPRequestOperation *operation = [mediaService operationToUploadMedia:media withSuccess:^{
@@ -1514,6 +1519,28 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [self.navigationController setToolbarHidden:NO animated:NO];
     
     [self positionTextView:notification];
+}
+
+#pragma mark - Video Press checking
+
+- (void)checkVideoPressEnabled {
+    self.videoPressEnabled = self.post.blog.videoPressEnabled;
+    
+    // Check IFF the blog doesn't already have it enabled
+    // The blog's transient property will last only for an in-memory session
+    if (!self.post.blog.videoPressEnabled) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+        
+        [blogService checkVideoPressEnabledForBlog:self.post.blog success:^(BOOL enabled) {
+            self.videoPressEnabled = enabled;
+            self.post.blog.videoPressEnabled = enabled;
+        } failure:^(NSError *error) {
+            DDLogWarn(@"checkVideoPressEnabled failed: %@", [error localizedDescription]);
+            self.videoPressEnabled = NO;
+            self.post.blog.videoPressEnabled = NO;
+        }];
+    }
 }
 
 @end
