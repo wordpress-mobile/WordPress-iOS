@@ -1,5 +1,5 @@
-#import <AFHTTPClient.h>
 #import <Availability.h>
+#import <AFNetworking/AFNetworking.h>
 
 typedef void (^WordPressComApiRestSuccessResponseBlock)(AFHTTPRequestOperation *operation, id responseObject);
 typedef void (^WordPressComApiRestSuccessFailureBlock)(AFHTTPRequestOperation *operation, NSError *error);
@@ -23,7 +23,7 @@ extern NSString *const WordPressComApiErrorCodeKey;
 extern NSString *const WordPressComApiErrorMessageKey;
 extern NSString *const WordPressComApiPushAppId;
 
-@interface WordPressComApi : AFHTTPClient
+@interface WordPressComApi : AFHTTPRequestOperationManager
 @property (nonatomic, readonly, strong) NSString *username;
 @property (nonatomic, readonly, strong) NSString *password;
 @property (nonatomic, readonly, strong) NSString *authToken;
@@ -39,8 +39,7 @@ extern NSString *const WordPressComApiPushAppId;
 /**
  Reset the API instance
  
- @discussion Clears authorization headers, cookies, 
-             and sets `authToken`, `username`, and `password` to nil.
+ @discussion Clears cookies, and sets `authToken`, `username`, and `password` to nil.
  */
 - (void)reset;
 
