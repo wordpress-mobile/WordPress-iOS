@@ -405,14 +405,13 @@ NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
  */
 - (void)deletePostsForTopic:(ReaderTopic *)topic missingFromBatch:(NSArray *)posts {
 
+    if (posts.count == 0){
+        return;
+    }
+    
     NSDate *newestDate = ((ReaderPost *)[posts firstObject]).sortDate;
     NSDate *oldestDate = ((ReaderPost *)[posts lastObject]).sortDate;
-    if (!newestDate){
-        newestDate = [NSDate date];
-    }
-    if (!oldestDate){
-        oldestDate = [NSDate distantPast];
-    }
+    
     // Don't trust the relationships on the topic to be current or correct.
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
