@@ -112,6 +112,17 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
     return count;
 }
 
+- (void)deleteAllTopics {
+    NSArray *currentTopics = [self allTopics];
+    for (ReaderTopic *topic in currentTopics) {
+        [self.managedObjectContext deleteObject:topic];
+    }
+    NSError *error;
+    [self.managedObjectContext save:&error];
+    if (error) {
+        DDLogError(@"%@ error counting topics: %@", NSStringFromSelector(_cmd), error);
+    }
+}
 
 #pragma mark - Private Methods
 

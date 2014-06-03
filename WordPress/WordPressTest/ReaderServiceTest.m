@@ -1,5 +1,3 @@
-#import "ReaderServiceTest.h"
-
 #import "CoreDataTestHelper.h"
 #import "ContextManager.h"
 #import "WPAccount.h"
@@ -11,6 +9,10 @@
 #import "ReaderPostService.h"
 #import "ReaderPostServiceRemote.h"
 #import "RemoteReaderPost.h"
+#import <XCTest/XCTest.h>
+
+@interface ReaderServiceTest : XCTestCase
+@end
 
 @interface ReaderTopicServiceRemote()
 
