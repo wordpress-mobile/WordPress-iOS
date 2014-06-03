@@ -46,7 +46,7 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 @property (nonatomic, strong) NSNumber * filesize;
 @property (nonatomic, strong) NSNumber * width;
 @property (nonatomic, strong) NSNumber * height;
-@property (nonatomic, strong) NSString * orientation;
+@property (nonatomic, strong) NSString * orientation DEPRECATED_ATTRIBUTE;
 @property (nonatomic, strong) NSDate * creationDate;
 @property (weak, nonatomic, readonly) NSString * html;
 @property (nonatomic, strong) NSNumber * remoteStatusNumber;
@@ -61,7 +61,6 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 
 + (Media *)newMediaForPost:(AbstractPost *)post;
 + (Media *)newMediaForBlog:(Blog *)blog;
-+ (Media *)newMediaForPost:(AbstractPost *)post withImage:(UIImage *)image andMetadata:(NSDictionary *)metadata;
 + (NSString *)mediaTypeForFeaturedImage;
 
 + (Media *)createOrReplaceMediaFromJSON:(NSDictionary*)json forBlog:(Blog *)blog;
@@ -73,7 +72,6 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 - (void)remove;
 - (void)save;
 - (void)remoteUpdateWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)setImage:(UIImage *)image withSize:(MediaResize)size;
 
 @end
 
