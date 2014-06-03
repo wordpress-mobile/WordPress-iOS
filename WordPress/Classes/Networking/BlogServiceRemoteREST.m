@@ -20,6 +20,8 @@
 
 - (void)syncOptionsForBlog:(Blog *)blog success:(OptionsHandler)success failure:(void (^)(NSError *))failure
 {
+    NSParameterAssert(blog != nil);
+    NSParameterAssert(blog.dotComID != nil);
     NSString *path = [NSString stringWithFormat:@"sites/%@", blog.dotComID];
     [self.api GET:path
        parameters:nil
