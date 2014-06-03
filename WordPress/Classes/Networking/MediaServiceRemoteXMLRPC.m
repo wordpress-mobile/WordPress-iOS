@@ -31,7 +31,7 @@
                            @"bits": [NSInputStream inputStreamWithFileAtPath:path],
                            };
     NSArray *parameters = [blog getXMLRPCArgsWithExtra:data];
-    NSURLRequest *request = [self.api requestWithMethod:@"wp.uploadFile" parameters:parameters];
+    NSURLRequest *request = [self.api streamingRequestWithMethod:@"wp.uploadFile" parameters:parameters];
     AFHTTPRequestOperation *operation = [self.api HTTPRequestOperationWithRequest:request
                                                                           success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                                                               NSDictionary *response = (NSDictionary *)responseObject;
