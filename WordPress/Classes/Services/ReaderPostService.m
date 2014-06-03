@@ -361,10 +361,18 @@ NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
 - (void)mergePosts:(NSArray *)posts earlierThan:(NSDate *)date forTopic:(NSManagedObjectID *)topicObjectID callingSuccess:(void (^)(BOOL hasMore))success {
     // Use a performBlock here so the work to merge does not block the main thread.
     [self.managedObjectContext performBlock:^{
+
+        NSError *error;
+        ReaderTopic *readerTopic = (ReaderTopic *)[self.managedObjectContext existingObjectWithID:topicObjectID error:&error];
+        if (error || !readerTopic) {
+            // if there was an error or the topic was deleted just bail.
+            if (success) {
+                success(NO);
+            }
+            return;
+        }
+
         NSUInteger postsCount = [posts count];
-
-        ReaderTopic *readerTopic = (ReaderTopic *)[self.managedObjectContext objectWithID:topicObjectID];
-
         if (postsCount == 0) {
             [self deletePostsEarlierThan:date forTopic:readerTopic];
         } else {
