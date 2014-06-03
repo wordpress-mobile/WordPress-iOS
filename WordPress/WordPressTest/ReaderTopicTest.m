@@ -35,12 +35,12 @@
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderTopic *topic1 = [NSEntityDescription insertNewObjectForEntityForName:@"ReaderTopic" inManagedObjectContext:context];
     topic1.path = @"topic1";
-    topic1.title = @"Topic1";
+    topic1.title = @"topic1";
     topic1.type = ReaderTopicTypeList;
 
     ReaderTopic *topic2 = [NSEntityDescription insertNewObjectForEntityForName:@"ReaderTopic" inManagedObjectContext:context];
     topic2.path = @"topic2";
-    topic2.title = @"Topic2";
+    topic2.title = @"topic2";
     topic2.type = ReaderTopicTypeTag;
 
     ReaderTopic *topic3 = [NSEntityDescription insertNewObjectForEntityForName:@"ReaderTopic" inManagedObjectContext:context];
@@ -63,19 +63,19 @@
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderPost *post1 = [NSEntityDescription insertNewObjectForEntityForName:@"ReaderPost" inManagedObjectContext:context];
     post1.postID = @1;
-    post1.postTitle = @"Post1";
+    post1.postTitle = @"post1";
     post1.content = @"post1";
     post1.topic = topic;
 
     ReaderPost *post2 = [NSEntityDescription insertNewObjectForEntityForName:@"ReaderPost" inManagedObjectContext:context];
     post2.postID = @2;
-    post2.postTitle = @"Post2";
+    post2.postTitle = @"post2";
     post2.content = @"post2";
     post2.topic = topic;
 
     ReaderPost *post3 = [NSEntityDescription insertNewObjectForEntityForName:@"ReaderPost" inManagedObjectContext:context];
     post3.postID = @3;
-    post3.postTitle = @"Post3";
+    post3.postTitle = @"post3";
     post3.content = @"post3";
     post3.topic = topic;
 
@@ -107,7 +107,7 @@
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderTopic *topic1 = [NSEntityDescription insertNewObjectForEntityForName:@"ReaderTopic" inManagedObjectContext:context];
     topic1.path = @"topic1";
-    topic1.title = @"Topic1";
+    topic1.title = @"topic1";
     topic1.type = ReaderTopicTypeList;
 
     [self seedPostsForTopic:topic1];
@@ -118,9 +118,13 @@
     [context save:&error];
     XCTAssertNil(error, @"There was an error saving the context after deleting a topic.");
 
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"ReaderPost"];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
     NSUInteger count = [context countForFetchRequest:fetchRequest error:&error];
-    XCTAssertTrue(count == 0, @"Topc was deleged along with its posts.");
+    XCTAssertTrue(count == 0, @"Topic was not deleted successfully");
+
+    fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"ReaderPost"];
+    count = [context countForFetchRequest:fetchRequest error:&error];
+    XCTAssertTrue(count == 0, @"Topic posts were not successfully deleted.");
 }
 
 
