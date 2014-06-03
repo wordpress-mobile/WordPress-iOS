@@ -1,30 +1,22 @@
-//
-//  BlogRemoteService.m
-//  WordPress
-//
-//  Created by Aaron Douglas on 4/4/14.
-//  Copyright (c) 2014 WordPress. All rights reserved.
-//
-
-#import "BlogRemoteService.h"
+#import "BlogServiceRemoteXMLRPC.h"
 #import <WordPressApi.h>
 #import "Blog.h"
 
-@interface BlogRemoteService ()
+@interface BlogServiceRemoteXMLRPC ()
 
 @property (nonatomic, strong) WPXMLRPCClient *api;
 
 @end
 
-@implementation BlogRemoteService
+@implementation BlogServiceRemoteXMLRPC
 
-- (id)initWithRemoteApi:(WPXMLRPCClient *)api
+- (id)initWithApi:(WPXMLRPCClient *)api
 {
     self = [super init];
     if (self) {
         _api = api;
     }
-    
+
     return self;
 }
 
@@ -45,19 +37,19 @@
     [operations addObject:operation];
     operation = [self operationForCategoriesWithBlog:blog success:categoriesSuccess failure:nil];
     [operations addObject:operation];
-    
+
     // TODO :: Replace this if with a check for nil postsSuccess & do the conditional in the layer up from remote
     if (!blog.isSyncingPosts) {
         operation = [self operationForPostsWithBlog:blog batchSize:40 loadMore:NO success:postsSuccess failure:nil];
         [operations addObject:operation];
         blog.isSyncingPosts = YES;
     }
-    
+
     AFHTTPRequestOperation *combinedOperation = [blog.api combinedHTTPRequestOperationWithOperations:operations success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (overallSuccess) {
             overallSuccess();
         }
-        
+
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
             failure(error);
@@ -131,7 +123,7 @@
                     overallSuccess:(void (^)(void))overallSuccess
                            failure:(void (^)(NSError *error))failure
 {
-    
+
     WPXMLRPCRequestOperation *operation;
     NSMutableArray *operations = [NSMutableArray arrayWithCapacity:6];
     operation = [self operationForOptionsWithBlog:blog success:optionsSuccess failure:nil];
@@ -140,32 +132,32 @@
     [operations addObject:operation];
     operation = [self operationForCategoriesWithBlog:blog success:categoriesSuccess failure:nil];
     [operations addObject:operation];
-    
+
     if (!blog.isSyncingComments) {
         operation = [self operationForCommentsWithBlog:blog success:commentsSuccess failure:nil];
         [operations addObject:operation];
         blog.isSyncingComments = YES;
     }
-    
+
     if (!blog.isSyncingPosts) {
         operation = [self operationForPostsWithBlog:blog batchSize:40 loadMore:NO success:postsSuccess failure:nil];
         [operations addObject:operation];
         blog.isSyncingPosts = YES;
     }
-    
+
     if (!blog.isSyncingPages) {
         // TODO :: Make batch size a parameter
         operation = [self operationForPagesWithBlog:blog batchSize:40 loadMore:NO success:pagesSuccess failure:nil];
         [operations addObject:operation];
         blog.isSyncingPages = YES;
     }
-    
+
     if (!blog.isSyncingMedia) {
         operation = [self operationForMediaLibraryWithBlog:blog success:mediaSuccess failure:nil];
         [operations addObject:operation];
         blog.isSyncingMedia = YES;
     }
-    
+
     AFHTTPRequestOperation *combinedOperation = [blog.api combinedHTTPRequestOperationWithOperations:operations success:^(AFHTTPRequestOperation *operation, id responseObject) {
         DDLogVerbose(@"syncBlogWithSuccess:failure: completed successfully.");
         if (overallSuccess) {
@@ -173,15 +165,15 @@
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         DDLogError(@"syncBlogWithSuccess:failure: encountered an error: %@", error);
-        
+
         if (failure) {
             failure(error);
         }
     }];
-    
+
     [blog.api enqueueHTTPRequestOperation:combinedOperation];
 
-    
+
 }
 
 - (WPXMLRPCRequestOperation *)operationForOptionsWithBlog:(Blog *)blog success:(OptionsHandler)success failure:(void (^)(NSError *error))failure {
@@ -189,35 +181,35 @@
     WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getOptions" parameters:parameters];
     WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary.");
-        
+
         if (success) {
             success(responseObject);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         DDLogError(@"Error syncing options: %@", error);
-        
+
         if (failure) {
             failure(error);
         }
     }];
-    
+
     return operation;
 }
 
 - (WPXMLRPCRequestOperation *)operationForPostFormatsWithBlog:(Blog *)blog success:(PostFormatsHandler)success failure:(void (^)(NSError *error))failure {
     NSDictionary *dict = [NSDictionary dictionaryWithObject:@"1" forKey:@"show-supported"];
     NSArray *parameters = [blog getXMLRPCArgsWithExtra:dict];
-    
+
     WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPostFormats" parameters:parameters];
     WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary.");
-        
+
         if (success) {
             success(responseObject);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         DDLogError(@"Error syncing post formats (%@): %@", operation.request.URL, error);
-        
+
         if (failure) {
             failure(error);
         }
@@ -233,13 +225,13 @@
     WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getComments" parameters:parameters];
     WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
-        
+
         if (success) {
             success(responseObject);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         DDLogError(@"Error syncing comments (%@): %@", operation.request.URL, error);
-        
+
         if (failure) {
             failure(error);
         }
@@ -253,13 +245,13 @@
     WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getCategories" parameters:parameters];
     WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
-        
+
         if (success) {
             success(responseObject);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         DDLogError(@"Error syncing categories (%@): %@", operation.request.URL, error);
-        
+
         if (failure) {
             failure(error);
         }
@@ -274,7 +266,7 @@
     //
     // Blogs with long history can get really slow really fast,
     // with no chance to go back
-    
+
     NSArray *parameters = [blog getXMLRPCArgsWithExtra:[NSNumber numberWithUnsignedInteger:batchSize]];
     WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"metaWeblog.getRecentPosts" parameters:parameters];
     WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -285,7 +277,7 @@
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         DDLogError(@"Error syncing posts (%@): %@", operation.request.URL, error);
-        
+
         if (failure) {
             failure(error);
         }
@@ -300,7 +292,7 @@
     //
     // Blogs with long history can get really slow really fast,
     // with no chance to go back
-    
+
     NSArray *parameters = [blog getXMLRPCArgsWithExtra:[NSNumber numberWithUnsignedInteger:batchSize]];
     WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPages" parameters:parameters];
     WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -311,7 +303,7 @@
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         DDLogError(@"Error syncing pages (%@): %@", operation.request.URL, error);
-        
+
         if (failure) {
             failure(error);
         }
@@ -325,14 +317,14 @@
     WPXMLRPCRequest *mediaLibraryRequest = [self.api XMLRPCRequestWithMethod:@"wp.getMediaLibrary" parameters:[blog getXMLRPCArgsWithExtra:nil]];
     WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:mediaLibraryRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
-        
+
         if (success) {
             success(responseObject);
         }
-        
+
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         DDLogError(@"Error syncing media library: %@", [error localizedDescription]);
-        
+
         if (failure) {
             failure(error);
         }
