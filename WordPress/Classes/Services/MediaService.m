@@ -54,7 +54,8 @@
     }];
 }
 
-- (void)createVideoMediaWithAsset:(ALAsset *)asset forPostObjectID:(NSManagedObjectID *)postObjectID completion:(void (^)(Media *media))completion {
+- (void)createVideoMediaWithAsset:(ALAsset *)asset forPostObjectID:(NSManagedObjectID *)postObjectID completion:(void (^)(Media *media))completion
+{
     NSString *videoPath = [self pathForAsset:asset];
     NSData *thumbnailData = [self thumbnailDataFromAsset:asset];
     
