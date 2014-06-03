@@ -87,48 +87,45 @@
 		destRect = CGRectMake(0, 0, scaledWidth, scaledHeight);
 	}
 	
-	// Create appropriately modified image.
-	UIImage *image = nil;
-	
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_4_0
-	CGImageRef sourceImg = nil;
-	if ([UIScreen instancesRespondToSelector:@selector(scale)]) {
-		UIGraphicsBeginImageContextWithOptions(destRect.size, opaque, 0.f); // 0.f for scale means "scale for device's main screen".
-		sourceImg = CGImageCreateWithImageInRect([self CGImage], sourceRect); // cropping happens here.
-		image = [UIImage imageWithCGImage:sourceImg scale:0.0 orientation:self.imageOrientation]; // create cropped UIImage.
+	UIImage* (^privateModifyImageWithRect)(UIImage* image, CGRect srcRect, CGRect dstRect)
+	= ^UIImage* (UIImage* image,
+				 CGRect srcRect,
+				 CGRect dstRect)
+	{
+		NSParameterAssert([image isKindOfClass:[UIImage class]]);
 		
+		UIImage* modifiedImage = [image cropWithRect:sourceRect];
+		modifiedImage = [modifiedImage resizeToRect:destRect];
+		
+		return modifiedImage;
+	};
+	
+	UIImage* finalImage = nil;
+	BOOL isAnimatedImage = (self.images != nil);
+	
+	static const CGFloat kScaleForDevicesMainScreen = 0.f;
+	UIGraphicsBeginImageContextWithOptions(destRect.size, opaque, kScaleForDevicesMainScreen);
+	
+	if (!isAnimatedImage) {
+		finalImage = privateModifyImageWithRect(self, sourceRect, destRect);
 	} else {
-		UIGraphicsBeginImageContext(destRect.size);
-		sourceImg = CGImageCreateWithImageInRect([self CGImage], sourceRect); // cropping happens here.
-		image = [UIImage imageWithCGImage:sourceImg]; // create cropped UIImage.
+		NSMutableArray* modifiedImages = [NSMutableArray arrayWithCapacity:[self.images count]];
+		
+		for (UIImage* image in self.images)
+		{
+			image = privateModifyImageWithRect(image, sourceRect, destRect);
+			
+			[modifiedImages addObject:image];
+		}
+		
+		finalImage = [UIImage animatedImageWithImages:modifiedImages
+											 duration:self.duration];
 	}
 	
-	CGImageRelease(sourceImg);
-	[image drawInRect:destRect]; // the actual scaling happens here, and orientation is taken care of automatically.
-	image = UIGraphicsGetImageFromCurrentImageContext();
 	UIGraphicsEndImageContext();
-#endif
 	
-	if (!image) {
-		// Try older method.
-		CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-        CGBitmapInfo bitmapInfo = kCGImageAlphaPremultipliedLast;
-        if (opaque) {
-            bitmapInfo = kCGImageAlphaNoneSkipLast;
-        }
-		CGContextRef context = CGBitmapContextCreate(NULL, scaledWidth, scaledHeight, 8, (scaledWidth * 4), 
-													 colorSpace, bitmapInfo);
-		CGImageRef sourceImg = CGImageCreateWithImageInRect([self CGImage], sourceRect);
-		CGContextDrawImage(context, destRect, sourceImg);
-		CGImageRelease(sourceImg);
-		CGImageRef finalImage = CGBitmapContextCreateImage(context);	
-		CGContextRelease(context);
-		CGColorSpaceRelease(colorSpace);
-		image = [UIImage imageWithCGImage:finalImage];
-		CGImageRelease(finalImage);
-	}
-	
-	return image;
+	return finalImage;
+
 }
 
 - (UIImage *)imageToFitSize:(CGSize)size method:(MGImageResizingMethod)resizeMethod
@@ -156,5 +153,45 @@
     return [self imageScaledToFitSize:fitSize ignoreAlpha:NO];
 }
 
+
+#pragma mark - ImageContext operations
+
+/**
+ *	@brief		Crops the image to the specified rect.
+ *
+ *	@param		rect	The rect to crop this image to.
+ *
+ *	@returns	The cropped image.
+ */
+- (UIImage*)cropWithRect:(CGRect)rect
+{
+	CGImageRef cgImage = CGImageCreateWithImageInRect([self CGImage], rect);
+	UIImage* image = [UIImage imageWithCGImage:cgImage
+										 scale:0.0
+								   orientation:self.imageOrientation];
+	CGImageRelease(cgImage);
+	
+	return image;
+}
+
+/**
+ *	@brief		Resizes the image to the specified rect.
+ *	@details	This method must be called after UIGraphicsBeginImageContext() and before
+ *				UIGraphicsEndImageContext();
+ *
+ *	@param		rect	The rect to resize this image to.
+ *
+ *	@returns	The resized image.
+ */
+- (UIImage*)resizeToRect:(CGRect)rect
+{
+	NSAssert(UIGraphicsGetCurrentContext() != NULL,
+			 @"A context should be created before calling this method.");
+	
+	[self drawInRect:rect];
+	UIImage* image = UIGraphicsGetImageFromCurrentImageContext();
+	
+	return image;
+}
 
 @end
