@@ -1,4 +1,6 @@
 #import "WPTableViewSectionFooterView.h"
+#import "WPStyleGuide.h"
+#import "NSString+Util.h"
 
 @interface WPTableViewSectionFooterView() {
     UILabel *_titleLabel;
