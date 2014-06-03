@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@class Blog, WPXMLRPCClient;
+@class Blog;
 
 typedef void (^OptionsHandler)(NSDictionary *options);
 typedef void (^PostFormatsHandler)(NSDictionary *postFormats);
@@ -10,9 +10,10 @@ typedef void (^PostsHandler)(NSArray *posts);
 typedef void (^PagesHandler)(NSArray *pages);
 typedef void (^MediaHandler)(NSArray *media);
 
-@interface BlogRemoteService : NSObject
+@protocol BlogServiceRemote <NSObject>
 
-- (id)initWithRemoteApi:(WPXMLRPCClient *)api;
+// As methods are implemented for both REST and XML-RPC they should stop being optional
+@optional
 
 - (void)syncPostsAndMetadataForBlog:(Blog *)blog
                   categoriesSuccess:(CategoriesHandler)categoriesSuccess
