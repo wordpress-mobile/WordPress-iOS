@@ -159,4 +159,27 @@ NSInteger const SupportButtonIndex = 0;
     _alertShowing = NO;
 }
 
++ (void)showAlertWithTitle:(NSString *)title
+                   message:(NSString *)message
+       withLearnMoreButton:(BOOL)showLearnMore
+     learnMorePressedBlock:(void (^)(UIAlertView *))learnMoreBlock
+{
+
+    if ([WPError internalInstance].alertShowing) {
+        return;
+    }
+    [WPError internalInstance].alertShowing = YES;
+    
+    DDLogInfo(@"Showing alert with title: %@ and message %@", title, message);
+    NSString *learnMoreText = showLearnMore ? NSLocalizedString(@"Learn More", nil) : nil;
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:message
+                                                   delegate:[WPError internalInstance]
+                                          cancelButtonTitle:NSLocalizedString(@"OK", nil)
+                                          otherButtonTitles:learnMoreText, nil];
+    [alert show];
+    [WPError internalInstance].okPressedBlock = learnMoreBlock;
+}
+
 @end

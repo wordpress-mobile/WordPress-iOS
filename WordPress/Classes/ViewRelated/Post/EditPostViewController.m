@@ -26,6 +26,8 @@ CGFloat const EPVCTextViewOffset = 10.0;
 CGFloat const EPVCTextViewBottomPadding = 50.0f;
 CGFloat const EPVCTextViewTopPadding = 7.0f;
 
+NSInteger const MaxNumberOfVideosSelected = 1;
+
 @interface EditPostViewController ()<UIPopoverControllerDelegate> {
     NSOperationQueue *_mediaUploadQueue;
 }
@@ -37,6 +39,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
 @property (nonatomic) BOOL videoPressEnabled;
+@property (nonatomic, assign) int numberOfVideosSelected;
 
 @end
 
@@ -582,12 +585,8 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     CTAssetsPickerController *picker = [[CTAssetsPickerController alloc] init];
 	picker.delegate = self;
     
-    if (self.videoPressEnabled){
-        picker.assetsFilter = [ALAssetsFilter allAssets];
-    } else {
-        picker.assetsFilter = [ALAssetsFilter allPhotos];
-    }
-    
+    picker.assetsFilter = [ALAssetsFilter allAssets];
+    self.numberOfVideosSelected = 0;
     [self presentViewController:picker animated:YES completion:nil];
     picker.navigationBar.translucent = NO;
 }
@@ -1428,6 +1427,48 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         }
     }
     [self setupNavbar];
+}
+
+- (BOOL)assetsPickerController:(CTAssetsPickerController *)picker shouldSelectAsset:(ALAsset *)asset {
+    if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto){
+        return YES;
+    }
+    if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypeVideo){
+        if (!self.videoPressEnabled && self.post.blog.isWPcom){
+            [WPError showAlertWithTitle:NSLocalizedString(@"VideoPress unavailable", nil)
+                                message:NSLocalizedString(@"Get the VideoPress upgrade to upload video!", nil)
+                      withLearnMoreButton:YES
+                  learnMorePressedBlock:^(UIAlertView *alertView) {
+                                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://videopress.com"]];
+                                }];
+            return NO;
+        }
+        
+        if (self.numberOfVideosSelected < MaxNumberOfVideosSelected){
+            return YES;
+        } else {
+           [WPError showAlertWithTitle:NSLocalizedString(@"Only one video at a time please", nil)  message:NSLocalizedString(@"Only one video upload at a time please, please deselect previous video selection", nil) withSupportButton:NO];
+            return NO;
+        }
+    }
+    
+    if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypeUnknown){
+        return NO;
+    }
+    
+    return NO;
+}
+
+- (void)assetsPickerController:(CTAssetsPickerController *)picker didSelectAsset:(ALAsset *)asset {
+    if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypeVideo){
+        self.numberOfVideosSelected++;
+    }
+}
+
+- (void)assetsPickerController:(CTAssetsPickerController *)picker didDeselectAsset:(ALAsset *)asset {
+    if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypeVideo){
+        self.numberOfVideosSelected--;
+    }
 }
 
 #pragma mark - KVO

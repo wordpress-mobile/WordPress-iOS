@@ -74,5 +74,22 @@
 + (void)showAlertWithTitle:(NSString *)title message:(NSString *)message
          withSupportButton:(BOOL)showSupport okPressedBlock:(void (^)(UIAlertView *alertView))okBlock;
 
+/**
+ Show a general alert with a custom title and message.
+ Supply a block to execute custom logic when the learn more button is pressed
+ 
+ @discussion The buttons provided are localized: "OK" and optionally "Learn More"
+ "Learn More?" executes the learnMoreBlock;
+ "OK" simply dismisses the alert.
+ 
+ @param title for the alert
+ @param message for the alert
+ @param showSupport YES shows the Need Help button and NO does not.
+ @param learMoreBlock a block to execute if the Lear More button is pressed
+ */
++ (void)showAlertWithTitle:(NSString *)title
+                   message:(NSString *)message
+       withLearnMoreButton:(BOOL)showLearnMore
+     learnMorePressedBlock:(void (^)(UIAlertView *))learnMoreBlock;
 
 @end
