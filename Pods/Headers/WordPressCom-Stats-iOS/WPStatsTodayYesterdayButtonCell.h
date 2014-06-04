@@ -1,1 +1,1 @@
-../../../../WordPressCom-Stats-iOS/WordPressCom-Stats-iOS/WPStatsTodayYesterdayButtonCell.h
+../../WordPressCom-Stats-iOS/WordPressCom-Stats-iOS/WPStatsTodayYesterdayButtonCell.h
