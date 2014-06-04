@@ -63,6 +63,7 @@ PODS:
   - WordPressCom-Stats-iOS (0.0.1):
     - AFNetworking (= 2.2.3)
     - CocoaLumberjack (~> 1.8.1)
+    - NSObject-SafeExpectations (= 0.0.2)
     - WordPress-iOS-Shared (= 0.0.1)
   - wpxmlrpc (0.4.1)
 
@@ -87,9 +88,9 @@ DEPENDENCIES:
   - SVProgressHUD (~> 1.0)
   - Taplytics (~> 1.2.50)
   - UIDeviceIdentifier (~> 0.1)
-  - WordPress-iOS-Shared (from `git://github.com/wordpress-mobile/WordPress-iOS-Shared`)
+  - WordPress-iOS-Shared (= 0.0.1)
   - WordPressApi (from `https://github.com/koke/WordPressApi.git`, branch `afnetworking2`)
-  - WordPressCom-Stats-iOS (from `../WordPressCom-Stats-iOS`)
+  - WordPressCom-Stats-iOS (= 0.0.1)
   - wpxmlrpc (~> 0.4.1)
 
 EXTERNAL SOURCES:
@@ -100,13 +101,9 @@ EXTERNAL SOURCES:
     :git: git://github.com/wordpress-mobile/MGImageUtilities.git
   NSURL+IDN:
     :podspec: https://raw.github.com/koke/NSURL-IDN/master/Podfile
-  WordPress-iOS-Shared:
-    :git: git://github.com/wordpress-mobile/WordPress-iOS-Shared
   WordPressApi:
     :branch: afnetworking2
     :git: https://github.com/koke/WordPressApi.git
-  WordPressCom-Stats-iOS:
-    :path: ../WordPressCom-Stats-iOS
 
 SPEC CHECKSUMS:
   AFNetworking: 47947303319594706f48a55185ea95a95159ab94
@@ -131,9 +128,9 @@ SPEC CHECKSUMS:
   SVProgressHUD: 5034c6e22b8c2ca3e09402e48d41ed0340aa1c50
   Taplytics: 292c7c0a7814914f6a1a3e34fdf96b7233c2425d
   UIDeviceIdentifier: 1944dd25ee46fbc592740148ab47d543f80f0bba
-  WordPress-iOS-Shared: 66397174f3de4be90990b38f4efb93578375b02b
+  WordPress-iOS-Shared: 63c2ca7093326d383ce35285dcd8a3c411126ace
   WordPressApi: 8c5fb633aeb7c89d72ed0c753c135bdfd7887896
-  WordPressCom-Stats-iOS: 829648bfe1e2e0bf0db08757702a046603b0ea7a
+  WordPressCom-Stats-iOS: d9442316bffb5056a184bb2fed7db7776c3e32a7
   wpxmlrpc: a56b534ad0eb7db28a580eabb68a4a3d3426f6d7
 
 COCOAPODS: 0.33.1

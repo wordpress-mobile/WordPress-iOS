@@ -1,1 +1,1 @@
-../../../../WordPressCom-Stats-iOS/WordPressCom-Stats-iOS/WPStatsServiceRemote.h
+../../WordPressCom-Stats-iOS/WordPressCom-Stats-iOS/WPStatsServiceRemote.h

@@ -1,1 +1,1 @@
-../../../../WordPressCom-Stats-iOS/WordPressCom-Stats-iOS/WPStatsSummary.h
+../../WordPressCom-Stats-iOS/WordPressCom-Stats-iOS/WPStatsSummary.h
