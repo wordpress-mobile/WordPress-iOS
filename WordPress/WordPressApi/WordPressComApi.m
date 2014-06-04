@@ -103,7 +103,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                 } else if ([errorString isEqualToString:@"authorization_required"]) {
                     errorCode = WordPressComApiErrorAuthorizationRequired;
                 }
-                newError = [NSError errorWithDomain:WordPressComApiErrorDomain code:errorCode userInfo:@{NSLocalizedDescriptionKey: errorMessage, WordPressComApiErrorCodeKey: error}];
+                newError = [NSError errorWithDomain:WordPressComApiErrorDomain code:errorCode userInfo:@{NSLocalizedDescriptionKey: errorMessage, WordPressComApiErrorCodeKey: errorString}];
             }
         }
         
@@ -603,8 +603,8 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 
 - (NSString *)errorMessageForError:(NSError *)error
 {
-    NSString *errorCode = [error.userInfo objectForKey:WordPressComApiErrorCodeKey];
-    NSString *errorMessage = [[error.userInfo objectForKey:NSLocalizedDescriptionKey] stringByStrippingHTML];
+    NSString *errorCode = [error.userInfo stringForKey:WordPressComApiErrorCodeKey];
+    NSString *errorMessage = [[error.userInfo stringForKey:NSLocalizedDescriptionKey] stringByStrippingHTML];
     
     if ([errorCode isEqualToString:@"username_only_lowercase_letters_and_numbers"]) {
         return NSLocalizedString(@"Sorry, usernames can only contain lowercase letters (a-z) and numbers.", nil);
