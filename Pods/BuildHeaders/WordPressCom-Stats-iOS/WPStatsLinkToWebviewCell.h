@@ -1,1 +1,1 @@
-../../../../WordPressCom-Stats-iOS/WordPressCom-Stats-iOS/WPStatsLinkToWebviewCell.h
+../../WordPressCom-Stats-iOS/WordPressCom-Stats-iOS/WPStatsLinkToWebviewCell.h

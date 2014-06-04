@@ -1,1 +1,1 @@
-../../../../WordPressCom-Stats-iOS/WordPressCom-Stats-iOS/WPStatsViewController.h
+../../WordPressCom-Stats-iOS/WordPressCom-Stats-iOS/WPStatsViewController.h

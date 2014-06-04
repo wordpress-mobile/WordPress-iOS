@@ -1,1 +1,1 @@
-../../../../WordPressCom-Stats-iOS/WordPressCom-Stats-iOS/WPStatsTwoColumnCell.h
+../../WordPressCom-Stats-iOS/WordPressCom-Stats-iOS/WPStatsTwoColumnCell.h
