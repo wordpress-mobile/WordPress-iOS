@@ -12,6 +12,8 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
     NSUInteger _numberOfImagesProcessed;
 }
 
+@property BOOL isCurrentlyUploading;
+
 @end
 
 @implementation WPMediaUploader
@@ -30,12 +32,21 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
     if ([mediaObjects count] == 0)
         return;
     
-    self.isUploadingMedia = YES;
-    
     _numberOfImagesToUpload += [mediaObjects count];
-    for (Media *media in mediaObjects) {
-        [self uploadMedia:media];
-    }
+    
+    // wait for a media upload to finish so that images appear in order of selection
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        for (Media *media in mediaObjects) {
+            
+            [self uploadMedia:media];
+            self.isUploadingMedia = YES;
+            
+            while (self.isUploadingMedia) {
+                [NSThread sleepForTimeInterval:0.5];
+            }
+        }
+    });
 }
 
 - (void)uploadMedia:(Media *)media
@@ -96,6 +107,7 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
                 [self updateUploadProgress];
                 if (failure) {
                     failure(error);
+                    self.isUploadingMedia = NO;
                 }
             };
             AFHTTPRequestOperation *operation = [media.blog.api HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -125,6 +137,8 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
                 [self updateUploadProgress];
                 if (success) {
                     success();
+                    self.isUploadingMedia = NO;
+                    
                 }
             } failure:failureBlock];
             [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
