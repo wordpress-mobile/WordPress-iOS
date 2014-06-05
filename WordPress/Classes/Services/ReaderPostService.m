@@ -42,13 +42,12 @@ NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
 
 - (void)fetchPostsForTopic:(ReaderTopic *)topic earlierThan:(NSDate *)date success:(void (^)(BOOL hasMore))success failure:(void (^)(NSError *error))failure {
     NSManagedObjectID *topicObjectID = topic.objectID;
-
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
     [remoteService fetchPostsFromEndpoint:[NSURL URLWithString:topic.path]
                                     count:ReaderPostServiceNumberToSync
                                    before:date
                                   success:^(NSArray *posts) {
-                                      [self mergePosts:posts forTopic:topicObjectID callingSuccess:success];
+                                      [self mergePosts:posts earlierThan:date forTopic:topicObjectID callingSuccess:success];
                                   } failure:^(NSError *error) {
                                       if (failure) {
                                           failure(error);
@@ -87,7 +86,7 @@ NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
     self.backfillBatchNumber = 0;
     self.backfilledRemotePosts = [NSMutableArray array];
 
-    [self fetchPostsToBackfillTopic:topic date:[NSDate date] success:success failure:failure];
+    [self fetchPostsToBackfillTopic:topic earlierThan:[NSDate date] success:success failure:failure];
 }
 
 #pragma mark - Update Methods
@@ -305,7 +304,7 @@ NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)fetchPostsToBackfillTopic:(ReaderTopic *)topic date:(NSDate *)date success:(void (^)(BOOL hasMore))success failure:(void (^)(NSError *error))failure {
+- (void)fetchPostsToBackfillTopic:(ReaderTopic *)topic earlierThan:(NSDate *)date success:(void (^)(BOOL hasMore))success failure:(void (^)(NSError *error))failure {
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
     [remoteService fetchPostsFromEndpoint:[NSURL URLWithString:topic.path]
                                     count:ReaderPostServiceNumberToSync
@@ -341,27 +340,47 @@ NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
 
     if (self.backfillBatchNumber > ReaderPostServiceMaxBatchesToBackfill || (oldestDate && (oldestDate == [oldestDate earlierDate:self.backfillDate]))) {
         // our work is done
-        [self mergePosts:self.backfilledRemotePosts forTopic:topic.objectID callingSuccess:success];
+        [self mergePosts:self.backfilledRemotePosts earlierThan:[NSDate date] forTopic:topic.objectID callingSuccess:success];
 
     } else {
-        [self fetchPostsToBackfillTopic:topic date:oldestDate success:success failure:failure];
+        [self fetchPostsToBackfillTopic:topic earlierThan:oldestDate success:success failure:failure];
     }
 }
 
 #pragma mark - Merging and Deletion
 
 /**
- Merges a batch of fetched posts and calls the specified success block.
+ Merge a freshly fetched batch of posts into the existing set of posts for the specified topic.
+ Saves the managed object context.
 
  @param posts An array of RemoteReaderPost objects
+ @param date The `before` date posts were requested.
  @param topicObjectID The ObjectID of the ReaderTopic to assign to the newly created posts.
  @param success block called on a successful fetch which should be performed after merging
  */
-- (void)mergePosts:(NSArray *)posts forTopic:(NSManagedObjectID *)topicObjectID callingSuccess:(void (^)(BOOL hasMore))success {
+- (void)mergePosts:(NSArray *)posts earlierThan:(NSDate *)date forTopic:(NSManagedObjectID *)topicObjectID callingSuccess:(void (^)(BOOL hasMore))success {
     // Use a performBlock here so the work to merge does not block the main thread.
     [self.managedObjectContext performBlock:^{
-        ReaderTopic *readerTopic = (ReaderTopic *)[self.managedObjectContext objectWithID:topicObjectID];
-        [self mergePosts:posts forTopic:readerTopic];
+
+        NSError *error;
+        ReaderTopic *readerTopic = (ReaderTopic *)[self.managedObjectContext existingObjectWithID:topicObjectID error:&error];
+        if (error || !readerTopic) {
+            // if there was an error or the topic was deleted just bail.
+            if (success) {
+                success(NO);
+            }
+            return;
+        }
+
+        NSUInteger postsCount = [posts count];
+        if (postsCount == 0) {
+            [self deletePostsEarlierThan:date forTopic:readerTopic];
+        } else {
+            NSMutableArray *newPosts = [self makeNewPostsFromRemotePosts:posts forTopic:readerTopic];
+            [self deletePostsForTopic:readerTopic missingFromBatch:newPosts];
+        }
+        [self deletePostsInExcessOfMaxAllowedForTopic:readerTopic];
+        readerTopic.lastSynced = [NSDate date];
 
         // performBlockAndWait here so we know our objects are saved before we call success.
         [self.managedObjectContext performBlockAndWait:^{
@@ -369,50 +388,66 @@ NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
         }];
 
         if (success) {
-            BOOL hasMore = ([self numberOfPostsForTopic:readerTopic] < ReaderPostServiceMaxPosts);
+            BOOL hasMore = ((postsCount > 0 ) && ([self numberOfPostsForTopic:readerTopic] < ReaderPostServiceMaxPosts));
             success(hasMore);
         }
     }];
 }
 
 /**
- Merge a freshly fetched batch of posts into the existing set of posts for the specified topic.
- Saves the managed object context. 
+ Deletes any existing post whose sortDate is earlier than the passed date. This
+ is to handle situations where posts have been synced but were subsequently removed
+ from the result set (deleted, unliked, etc.) rendering the result set empty.
 
- @param posts An array of RemoteReaderPost objects
- @param readerTopic The topic to assign to the newly created posts.
+ @param date The date to delete posts earlier than.
+ @param topic The ReaderTopic to delete posts from.
  */
-- (void)mergePosts:(NSArray *)posts forTopic:(ReaderTopic *)readerTopic {
-    NSMutableArray *newPosts = [self makeNewPostsFromRemotePosts:posts forTopic:readerTopic];
+- (void)deletePostsEarlierThan:(NSDate *)date forTopic:(ReaderTopic *)topic {
+    // Don't trust the relationships on the topic to be current or correct.
+    NSError *error;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
 
-    [self deletePostsForTopic:readerTopic missingFromBatch:newPosts];
-    [self deletePostsInExcessOfMaxAllowedForTopic:readerTopic];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@ AND sortDate <= %@", topic, date];
 
-    readerTopic.lastSynced = [NSDate date];
+    [fetchRequest setPredicate:pred];
+
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortDate" ascending:NO];
+    [fetchRequest setSortDescriptors:@[sortDescriptor]];
+
+    NSArray *currentPosts = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        DDLogError(@"%@ error fetching posts: %@", NSStringFromSelector(_cmd), error);
+        return;
+    }
+
+    for (ReaderPost *post in currentPosts) {
+        DDLogInfo(@"Deleting ReaderPost: %@", post);
+        [self.managedObjectContext deleteObject:post];
+    }
 }
 
 /**
  Using an array of post as a filter, deletes any existing post whose sortDate falls
  within the range of the filter posts, but is not included in the filter posts.
 
- This let's us remove unliked posts from /read/liked, posts from blogs that are 
+ This let's us remove unliked posts from /read/liked, posts from blogs that are
  unfollowed from /read/following, or posts that were otherwise removed.
- 
+
  The managed object context is not saved.
- 
+
  @param topic The ReaderTopic to delete posts from.
  @param posts The batch of posts to use as a filter.
  */
 - (void)deletePostsForTopic:(ReaderTopic *)topic missingFromBatch:(NSArray *)posts {
 
-    NSDate *newestDate = ((ReaderPost *)[posts firstObject]).sortDate;
-    NSDate *oldestDate = ((ReaderPost *)[posts lastObject]).sortDate;
-
     // Don't trust the relationships on the topic to be current or correct.
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
 
+    NSDate *newestDate = ((ReaderPost *)[posts firstObject]).sortDate;
+    NSDate *oldestDate = ((ReaderPost *)[posts lastObject]).sortDate;
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@ AND sortDate >= %@ AND sortDate <= %@", topic, oldestDate, newestDate];
+
     [fetchRequest setPredicate:pred];
 
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortDate" ascending:NO];
