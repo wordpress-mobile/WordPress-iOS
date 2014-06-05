@@ -888,6 +888,7 @@
 		E151045E14E27F9300CE282B /* list.png in Resources */ = {isa = PBXBuildFile; fileRef = E151045C14E27F9300CE282B /* list.png */; };
 		E151045F14E27F9300CE282B /* list@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E151045D14E27F9300CE282B /* list@2x.png */; };
 		E1523EB516D3B305002C5A36 /* InstapaperActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = E1523EB416D3B305002C5A36 /* InstapaperActivity.m */; };
+		E1556CF2193F6FE900FC52EA /* CommentService.m in Sources */ = {isa = PBXBuildFile; fileRef = E1556CF1193F6FE900FC52EA /* CommentService.m */; };
 		E15618FD16DB8677006532C4 /* UIKitTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E15618FC16DB8677006532C4 /* UIKitTestHelper.m */; };
 		E15618FF16DBA983006532C4 /* xmlrpc-response-newpost.xml in Resources */ = {isa = PBXBuildFile; fileRef = E15618FE16DBA983006532C4 /* xmlrpc-response-newpost.xml */; };
 		E156190116DBABDE006532C4 /* xmlrpc-response-getpost.xml in Resources */ = {isa = PBXBuildFile; fileRef = E156190016DBABDE006532C4 /* xmlrpc-response-getpost.xml */; };
@@ -2182,6 +2183,8 @@
 		E151045D14E27F9300CE282B /* list@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "list@2x.png"; path = "Resources/Images/list@2x.png"; sourceTree = "<group>"; };
 		E1523EB316D3B305002C5A36 /* InstapaperActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstapaperActivity.h; sourceTree = "<group>"; };
 		E1523EB416D3B305002C5A36 /* InstapaperActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstapaperActivity.m; sourceTree = "<group>"; };
+		E1556CF0193F6FE900FC52EA /* CommentService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentService.h; sourceTree = "<group>"; };
+		E1556CF1193F6FE900FC52EA /* CommentService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentService.m; sourceTree = "<group>"; };
 		E15618FB16DB8677006532C4 /* UIKitTestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIKitTestHelper.h; sourceTree = "<group>"; };
 		E15618FC16DB8677006532C4 /* UIKitTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIKitTestHelper.m; sourceTree = "<group>"; };
 		E15618FE16DBA983006532C4 /* xmlrpc-response-newpost.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-response-newpost.xml"; sourceTree = "<group>"; };
@@ -3585,6 +3588,8 @@
 				5DE8A03D1912C59600B2FF59 /* RemoteReaderTopic.m */,
 				584B9F2A98ED9BC155585AAD /* WPStatsService.h */,
 				584B95B953CD3A456302736D /* WPStatsService.m */,
+				E1556CF0193F6FE900FC52EA /* CommentService.h */,
+				E1556CF1193F6FE900FC52EA /* CommentService.m */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -5587,6 +5592,7 @@
 				E18EE94E19349EBA00B0A40C /* BlogServiceRemote.m in Sources */,
 				5D42A3FC175E75EE005CFF05 /* ReaderPostsViewController.m in Sources */,
 				C52C785A187B460100FB1D2D /* StatsViewByCountry.m in Sources */,
+				E1556CF2193F6FE900FC52EA /* CommentService.m in Sources */,
 				C56636FB18761C8600226AAB /* StatsButtonCell.m in Sources */,
 				857F55B517CEA01A00E154E1 /* WPKeyboardToolbarBase.m in Sources */,
 				5D42A3FD175E75EE005CFF05 /* ReaderPostTableViewCell.m in Sources */,

@@ -85,46 +85,6 @@ NSString * const CommentStatusDraft = @"draft";
     }];
 }
 
-- (Comment *)newReply {
-    Comment *reply = [Comment newCommentForBlog:self.blog];
-    reply.postID = self.postID;
-    reply.post = self.post;
-    reply.parentID = self.commentID;
-    reply.status = CommentStatusApproved;
-    
-    return reply;
-}
-
-// find a comment who's parent is this comment
-- (Comment *)restoreReply {
-    NSFetchRequest *existingReply = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([self class])];
-    existingReply.predicate = [NSPredicate predicateWithFormat:@"status == %@ AND parentID == %@", CommentStatusDraft, self.commentID];
-    existingReply.fetchLimit = 1;
-
-    __block Comment *reply = nil;
-    NSManagedObjectContext *context = self.managedObjectContext;
-    [context performBlockAndWait:^{
-        NSError *error;
-        NSArray *replies = [context executeFetchRequest:existingReply error:&error];
-        if (error) {
-            DDLogError(@"Failed to fetch reply: %@", error);
-        }
-        if ([replies count] > 0) {
-            reply = [replies objectAtIndex:0];
-        }
-
-    }];
-
-    if (!reply) {
-        reply = [self newReply];
-    }
-
-    reply.status = CommentStatusDraft;
-
-    return reply;
-
-}
-
 #pragma mark - Helper methods
 
 + (NSString *)titleForStatus:(NSString *)status {
