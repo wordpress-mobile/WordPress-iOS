@@ -3,6 +3,7 @@
 #import "NSString+XMLExtensions.h"
 #import "CommentsViewController.h"
 #import "Comment.h"
+#import "CommentService.h"
 #import "EditCommentViewController.h"
 #import "WPWebViewController.h"
 #import "CommentView.h"
@@ -258,7 +259,8 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
         if(self.inlineComposeView.isDisplayed) {
             [self.inlineComposeView dismissComposer];
         } else {
-            self.reply = [self.comment restoreReply];
+            CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+            self.reply = [commentService restoreReplyForComment:self.comment];
             self.transientReply = YES;
             self.inlineComposeView.text = self.reply.content;
             [self.inlineComposeView displayComposer];
