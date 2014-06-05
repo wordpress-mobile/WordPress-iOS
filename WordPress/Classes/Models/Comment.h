@@ -26,10 +26,6 @@ extern NSString * const CommentStatusDraft;
 /// @name Creating and finding comment objects
 ///-------------------------------------------
 
-- (Comment *)newReply;
-
-// Finds an existing drafted reply, or builds a new one if no draft exists
-- (Comment *)restoreReply;
 + (void)mergeNewComments:(NSArray *)newComments forBlog:(Blog *)blog;
 
 ///---------------------
