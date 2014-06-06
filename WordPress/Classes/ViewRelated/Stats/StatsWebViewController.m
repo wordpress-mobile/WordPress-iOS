@@ -136,7 +136,7 @@ static NSString *_lastAuthedName = nil;
 #pragma mark Instance Methods
 
 - (void)clearCookies {
-    NSArray *arr = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"https://wordpress.com"]];
+    NSArray *arr = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"http://wordpress.com"]];
     for(NSHTTPCookie *cookie in arr){
         [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
     }
@@ -325,7 +325,7 @@ static NSString *_lastAuthedName = nil;
         
         // wordpress.com/wp-login.php currently returns http200 even when auth fails.
         // Sanity check the cookies to make sure we're actually logged in.
-        NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"https://wordpress.com"]];
+        NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"http://wordpress.com"]];
         
         for (NSHTTPCookie *cookie in cookies) {
             if([cookie.name isEqualToString:@"wordpress_logged_in"]){
