@@ -136,7 +136,7 @@ static NSString *_lastAuthedName = nil;
 #pragma mark Instance Methods
 
 - (void)clearCookies {
-    NSArray *arr = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"http://wordpress.com"]];
+    NSArray *arr = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"https://wordpress.com"]];
     for(NSHTTPCookie *cookie in arr){
         [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
     }
@@ -302,7 +302,7 @@ static NSString *_lastAuthedName = nil;
     }
 
     NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
-    NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=http://wordpress.com",
+    NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=https://wordpress.com",
                              [username stringByUrlEncoding],
                              [password stringByUrlEncoding]];
 
@@ -325,7 +325,7 @@ static NSString *_lastAuthedName = nil;
         
         // wordpress.com/wp-login.php currently returns http200 even when auth fails.
         // Sanity check the cookies to make sure we're actually logged in.
-        NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"http://wordpress.com"]];
+        NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"https://wordpress.com"]];
         
         for (NSHTTPCookie *cookie in cookies) {
             if([cookie.name isEqualToString:@"wordpress_logged_in"]){
@@ -382,7 +382,7 @@ static NSString *_lastAuthedName = nil;
 		blogID = [blog jetpackBlogID];
 	}
 	
-    NSString *pathStr = [NSString stringWithFormat:@"http://wordpress.com/?no-chrome#!/my-stats/?blog=%@&unit=1", blogID];
+    NSString *pathStr = [NSString stringWithFormat:@"https://wordpress.com/?no-chrome#!/my-stats/?blog=%@&unit=1", blogID];
     NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
     [mRequest setURL:[NSURL URLWithString:pathStr]];
     [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
