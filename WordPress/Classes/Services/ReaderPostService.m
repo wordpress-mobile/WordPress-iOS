@@ -67,7 +67,7 @@ NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
         }
 
         ReaderPost *post = [self createOrReplaceFromRemotePost:remotePost forTopic:nil];
-        [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         success(post);
 
     } failure:^(NSError *error) {
