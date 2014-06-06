@@ -21,7 +21,7 @@
 }
 
 - (void)buttonAction:(WPKeyboardToolbarButtonItem *)sender {
-    DDLogMethod();
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     if (![sender.actionTag isEqualToString:@"done"]) {
         [[UIDevice currentDevice] playInputClick];
     }
