@@ -52,7 +52,7 @@
 #define COCOAPODS_POD_AVAILABLE_CTAssetsPickerController
 #define COCOAPODS_VERSION_MAJOR_CTAssetsPickerController 2
 #define COCOAPODS_VERSION_MINOR_CTAssetsPickerController 2
-#define COCOAPODS_VERSION_PATCH_CTAssetsPickerController 0
+#define COCOAPODS_VERSION_PATCH_CTAssetsPickerController 2
 
 // CocoaLumberjack
 #define COCOAPODS_POD_AVAILABLE_CocoaLumberjack
@@ -179,6 +179,12 @@
 #define COCOAPODS_VERSION_MAJOR_UIDeviceIdentifier 0
 #define COCOAPODS_VERSION_MINOR_UIDeviceIdentifier 4
 #define COCOAPODS_VERSION_PATCH_UIDeviceIdentifier 2
+
+// WordPress-iOS-Editor
+#define COCOAPODS_POD_AVAILABLE_WordPress_iOS_Editor
+#define COCOAPODS_VERSION_MAJOR_WordPress_iOS_Editor 0
+#define COCOAPODS_VERSION_MINOR_WordPress_iOS_Editor 1
+#define COCOAPODS_VERSION_PATCH_WordPress_iOS_Editor 0
 
 // WordPress-iOS-Shared
 #define COCOAPODS_POD_AVAILABLE_WordPress_iOS_Shared
