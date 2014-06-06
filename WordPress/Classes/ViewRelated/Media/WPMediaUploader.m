@@ -12,8 +12,6 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
     NSUInteger _numberOfImagesProcessed;
 }
 
-@property BOOL isCurrentlyUploading;
-
 @end
 
 @implementation WPMediaUploader
