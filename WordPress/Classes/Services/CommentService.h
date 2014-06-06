@@ -14,4 +14,9 @@
 // Restore draft reply
 - (Comment *)restoreReplyForComment:(Comment *)comment;
 
+// Sync comments
+- (void)syncCommentsForBlog:(Blog *)blog
+                    success:(void (^)())success
+                    failure:(void (^)(NSError *error))failure;
+
 @end

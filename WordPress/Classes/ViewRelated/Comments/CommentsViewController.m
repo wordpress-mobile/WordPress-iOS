@@ -8,7 +8,7 @@
 #import "WPTableViewSectionHeaderView.h"
 #import "Comment.h"
 #import "ContextManager.h"
-#import "BlogService.h"
+#import "CommentService.h"
 
 @interface CommentsViewController ()
 
@@ -188,10 +188,25 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 }
 
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    
-    [blogService syncCommentsForBlog:self.blog success:success failure:failure];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+    NSManagedObjectID *blogObjectID = self.blog.objectID;
+    [context performBlock:^{
+        Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
+        if (blogInContext) {
+            [commentService syncCommentsForBlog:blogInContext success:^{
+                if (success) {
+                    dispatch_async(dispatch_get_main_queue(), success);
+                }
+            } failure:^(NSError *error) {
+                if (failure) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        failure(error);
+                    });
+                }
+            }];
+        }
+    }];
 }
 
 - (BOOL)isSyncing {
