@@ -459,7 +459,6 @@
 		5D87E10C15F5120C0012C595 /* SettingsPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D87E10A15F5120C0012C595 /* SettingsPageViewController.m */; };
 		5D8D53F119250412003C8859 /* BlogSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D8D53EE19250412003C8859 /* BlogSelectorViewController.m */; };
 		5D8D53F219250412003C8859 /* WPComBlogSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D8D53F019250412003C8859 /* WPComBlogSelectorViewController.m */; };
-		5D93BA50185A5A4F00CD423A /* WPKeyboardToolbarDone.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D93BA4F185A5A4F00CD423A /* WPKeyboardToolbarDone.m */; };
 		5D97C2F315CAF8D8009B44DD /* UINavigationController+KeyboardFix.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D97C2F215CAF8D8009B44DD /* UINavigationController+KeyboardFix.m */; };
 		5D9832EC15A77F0700A5E783 /* toolbar_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D9832EA15A77ED900A5E783 /* toolbar_bg.png */; };
 		5D9832ED15A77F0700A5E783 /* toolbar_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D9832EB15A77EEF00A5E783 /* toolbar_bg@2x.png */; };
@@ -682,7 +681,6 @@
 		85495F6817C6FACF00871A7A /* icon-comments-edit-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85495F5817C6FACF00871A7A /* icon-comments-edit-active@2x.png */; };
 		85495F6917C6FACF00871A7A /* icon-comments-edit-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 85495F5917C6FACF00871A7A /* icon-comments-edit-active.png */; };
 		857610D618C0377300EDF406 /* StatsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 857610D518C0377300EDF406 /* StatsWebViewController.m */; };
-		857F55B517CEA01A00E154E1 /* WPKeyboardToolbarBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 857F55B417CEA01A00E154E1 /* WPKeyboardToolbarBase.m */; };
 		857F55CB17CEC5E100E154E1 /* toggleButtonMain-ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 857F55C317CEC5E100E154E1 /* toggleButtonMain-ios7@2x.png */; };
 		857F55CC17CEC5E100E154E1 /* toggleButtonExtended-ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 857F55C417CEC5E100E154E1 /* toggleButtonExtended-ios7@2x.png */; };
 		857F55CD17CEC5E100E154E1 /* keyboardButtoniPadHighlighted-ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 857F55C517CEC5E100E154E1 /* keyboardButtoniPadHighlighted-ios7@2x.png */; };
@@ -949,7 +947,6 @@
 		E1B62A8513AA8D7700A6FCA4 /* link.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B62A7F13AA8D7700A6FCA4 /* link.png */; };
 		E1B62A8613AA8D7700A6FCA4 /* link@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B62A8013AA8D7700A6FCA4 /* link@2x.png */; };
 		E1B62A8713AA8D7700A6FCA4 /* link~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B62A8113AA8D7700A6FCA4 /* link~ipad.png */; };
-		E1CAAE3A13F4142E0000C58D /* WPKeyboardToolbarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E1CAAE3913F4142E0000C58D /* WPKeyboardToolbarButtonItem.m */; };
 		E1CCFB33175D62500016BD8A /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1CCFB32175D624F0016BD8A /* Crashlytics.framework */; };
 		E1D04D7E19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D04D7D19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.m */; };
 		E1D04D8119374EAF002FADD7 /* BlogServiceRemoteProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D04D8019374EAF002FADD7 /* BlogServiceRemoteProxy.m */; };
@@ -1571,8 +1568,6 @@
 		5D8D53EE19250412003C8859 /* BlogSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogSelectorViewController.m; sourceTree = "<group>"; };
 		5D8D53EF19250412003C8859 /* WPComBlogSelectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPComBlogSelectorViewController.h; sourceTree = "<group>"; };
 		5D8D53F019250412003C8859 /* WPComBlogSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPComBlogSelectorViewController.m; sourceTree = "<group>"; };
-		5D93BA4E185A5A4F00CD423A /* WPKeyboardToolbarDone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPKeyboardToolbarDone.h; sourceTree = "<group>"; };
-		5D93BA4F185A5A4F00CD423A /* WPKeyboardToolbarDone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPKeyboardToolbarDone.m; sourceTree = "<group>"; };
 		5D97C2F115CAF8D8009B44DD /* UINavigationController+KeyboardFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+KeyboardFix.h"; sourceTree = "<group>"; };
 		5D97C2F215CAF8D8009B44DD /* UINavigationController+KeyboardFix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+KeyboardFix.m"; sourceTree = "<group>"; };
 		5D9832EA15A77ED900A5E783 /* toolbar_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toolbar_bg.png; path = Resources/Images/toolbar_bg.png; sourceTree = "<group>"; };
@@ -1857,8 +1852,6 @@
 		85495F5917C6FACF00871A7A /* icon-comments-edit-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-comments-edit-active.png"; sourceTree = "<group>"; };
 		857610D418C0377300EDF406 /* StatsWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsWebViewController.h; sourceTree = "<group>"; };
 		857610D518C0377300EDF406 /* StatsWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsWebViewController.m; sourceTree = "<group>"; };
-		857F55B317CEA01900E154E1 /* WPKeyboardToolbarBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPKeyboardToolbarBase.h; sourceTree = "<group>"; };
-		857F55B417CEA01A00E154E1 /* WPKeyboardToolbarBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPKeyboardToolbarBase.m; sourceTree = "<group>"; };
 		857F55C317CEC5E100E154E1 /* toggleButtonMain-ios7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toggleButtonMain-ios7@2x.png"; sourceTree = "<group>"; };
 		857F55C417CEC5E100E154E1 /* toggleButtonExtended-ios7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toggleButtonExtended-ios7@2x.png"; sourceTree = "<group>"; };
 		857F55C517CEC5E100E154E1 /* keyboardButtoniPadHighlighted-ios7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboardButtoniPadHighlighted-ios7@2x.png"; sourceTree = "<group>"; };
@@ -2257,8 +2250,6 @@
 		E1B62A8813AAA5FE00A6FCA4 /* keyboardButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = keyboardButton.png; path = Resources/Images/keyboardButton.png; sourceTree = "<group>"; };
 		E1B62A8A13AAA96F00A6FCA4 /* keyboardButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "keyboardButton@2x.png"; path = "Resources/Images/keyboardButton@2x.png"; sourceTree = "<group>"; };
 		E1C807471696F72E00E545A6 /* WordPress 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 9.xcdatamodel"; sourceTree = "<group>"; };
-		E1CAAE3813F4142E0000C58D /* WPKeyboardToolbarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPKeyboardToolbarButtonItem.h; sourceTree = "<group>"; };
-		E1CAAE3913F4142E0000C58D /* WPKeyboardToolbarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPKeyboardToolbarButtonItem.m; sourceTree = "<group>"; };
 		E1CCFB32175D624F0016BD8A /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		E1D04D7C19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogServiceRemoteXMLRPC.h; sourceTree = "<group>"; };
 		E1D04D7D19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogServiceRemoteXMLRPC.m; sourceTree = "<group>"; };
@@ -2491,12 +2482,6 @@
 				46F84613185AEB38009D0DA5 /* WPContentViewSubclass.h */,
 				E2DA78041864B11D007BA447 /* WPFixedWidthScrollView.h */,
 				E2DA78051864B11E007BA447 /* WPFixedWidthScrollView.m */,
-				857F55B317CEA01900E154E1 /* WPKeyboardToolbarBase.h */,
-				857F55B417CEA01A00E154E1 /* WPKeyboardToolbarBase.m */,
-				E1CAAE3813F4142E0000C58D /* WPKeyboardToolbarButtonItem.h */,
-				E1CAAE3913F4142E0000C58D /* WPKeyboardToolbarButtonItem.m */,
-				5D93BA4E185A5A4F00CD423A /* WPKeyboardToolbarDone.h */,
-				5D93BA4F185A5A4F00CD423A /* WPKeyboardToolbarDone.m */,
 				03958060100D6CFC00850742 /* WPLabel.h */,
 				03958061100D6CFC00850742 /* WPLabel.m */,
 				5DEB61B2156FCD3400242C35 /* WPWebView.h */,
@@ -5409,7 +5394,6 @@
 				93C486511810445D00A24725 /* ActivityLogViewController.m in Sources */,
 				ACC156CC0E10E67600D6E1A0 /* EditPostViewController.m in Sources */,
 				93C1148518EDF6E100DAC95C /* BlogService.m in Sources */,
-				5D93BA50185A5A4F00CD423A /* WPKeyboardToolbarDone.m in Sources */,
 				ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */,
 				ACBAB6860E1247F700F38795 /* PostPreviewViewController.m in Sources */,
 				C58349C51806F95100B64089 /* IOS7CorrectedTextView.m in Sources */,
@@ -5471,7 +5455,6 @@
 				93D6D64B1924FDAD00A4F44A /* NoteServiceRemote.m in Sources */,
 				E1B62A7B13AA61A100A6FCA4 /* WPWebViewController.m in Sources */,
 				30AF6CFD13C230C600A29C00 /* AboutViewController.m in Sources */,
-				E1CAAE3A13F4142E0000C58D /* WPKeyboardToolbarButtonItem.m in Sources */,
 				E1F80825146420B000726BC7 /* UIImageView+Gravatar.m in Sources */,
 				CCEF153114C9EA050001176D /* WPWebAppViewController.m in Sources */,
 				462F4E0A18369F0B0028D2F8 /* BlogDetailsViewController.m in Sources */,
@@ -5588,7 +5571,6 @@
 				5D42A3FC175E75EE005CFF05 /* ReaderPostsViewController.m in Sources */,
 				C52C785A187B460100FB1D2D /* StatsViewByCountry.m in Sources */,
 				C56636FB18761C8600226AAB /* StatsButtonCell.m in Sources */,
-				857F55B517CEA01A00E154E1 /* WPKeyboardToolbarBase.m in Sources */,
 				5D42A3FD175E75EE005CFF05 /* ReaderPostTableViewCell.m in Sources */,
 				5D42A3FE175E75EE005CFF05 /* ReaderTableViewCell.m in Sources */,
 				5D42A3FF175E75EE005CFF05 /* ReaderTopicsViewController.m in Sources */,
