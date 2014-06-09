@@ -25,11 +25,12 @@ CGFloat const EPVCStandardOffset = 15.0;
 CGFloat const EPVCTextViewOffset = 10.0;
 CGFloat const EPVCTextViewBottomPadding = 50.0f;
 CGFloat const EPVCTextViewTopPadding = 7.0f;
+static void * EditPostViewControllerContext = &EditPostViewControllerContext;
 
 NSInteger const MaxNumberOfVideosSelected = 1;
 
 @interface EditPostViewController ()<UIPopoverControllerDelegate> {
-    NSOperationQueue *_mediaUploadQueue;
+    
 }
 
 @property (nonatomic, strong) UIButton *titleBarButton;
@@ -40,6 +41,7 @@ NSInteger const MaxNumberOfVideosSelected = 1;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
 @property (nonatomic) BOOL videoPressEnabled;
 @property (nonatomic, assign) int numberOfVideosSelected;
+@property (nonatomic, strong) NSOperationQueue *mediaUploadQueue;
 
 @end
 
@@ -136,9 +138,9 @@ NSInteger const MaxNumberOfVideosSelected = 1;
 }
 
 - (void)configureMediaUploadQueue {
-    _mediaUploadQueue = [NSOperationQueue new];
+    _mediaUploadQueue = [[NSOperationQueue alloc] init];
     _mediaUploadQueue.maxConcurrentOperationCount = 4;
-    [_mediaUploadQueue addObserver:self forKeyPath:@"operationCount" options:NSKeyValueObservingOptionNew context:nil];
+    [_mediaUploadQueue addObserver:self forKeyPath:@"operationCount" options:NSKeyValueObservingOptionNew context:EditPostViewControllerContext];
 }
 
 - (void)viewDidLoad {
@@ -1474,10 +1476,12 @@ NSInteger const MaxNumberOfVideosSelected = 1;
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([object isEqual:_mediaUploadQueue]) {
+    if (context == EditPostViewControllerContext && object ==_mediaUploadQueue && [keyPath isEqualToString:@"operationCount"]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self setupNavbar];
         });
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
 
