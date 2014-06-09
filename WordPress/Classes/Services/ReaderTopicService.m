@@ -28,7 +28,6 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
 }
 
 - (void)fetchReaderMenuWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
     WordPressComApi *api = [defaultAccount restApi];
@@ -56,12 +55,17 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
 
 - (ReaderTopic *)currentTopic {
     ReaderTopic *topic;
+    NSError *error;
     NSString *topicURIString = [[NSUserDefaults standardUserDefaults] stringForKey:ReaderTopicCurrentTopicURIKey];
     if (topicURIString) {
         NSURL *topicURI = [NSURL URLWithString:topicURIString];
         NSManagedObjectID *objectID = [self.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:topicURI];
         if (objectID) {
-            topic = (ReaderTopic *)[self.managedObjectContext objectRegisteredForID:objectID];
+            topic = (ReaderTopic *)[self.managedObjectContext existingObjectWithID:objectID error:nil];
+            if (error) {
+                DDLogError(@"%@ error fetching topic: %@", NSStringFromSelector(_cmd), error);
+                return nil;
+            }
         }
     }
 
@@ -72,7 +76,6 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
         request.predicate = [NSPredicate predicateWithFormat:@"type == %@", ReaderTopicTypeList];
         NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
         request.sortDescriptors = @[sortDescriptor];
-        NSError *error;
         NSArray *topics = [self.managedObjectContext executeFetchRequest:request error:&error];
         if (error) {
             DDLogError(@"%@ error fetching topic: %@", NSStringFromSelector(_cmd), error);
