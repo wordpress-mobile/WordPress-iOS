@@ -241,6 +241,27 @@ NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
                       }];
 }
 
+- (void)deletePostsWithNoTopic {
+    NSError *error;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
+
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = NULL"];
+    [fetchRequest setPredicate:pred];
+
+    NSArray *arr = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        DDLogError(@"%@, error fetching posts belonging to no topic: %@", NSStringFromSelector(_cmd), error);
+        return;
+    }
+
+    for (ReaderPost *post in arr) {
+        DDLogInfo(@"%@, deleting topicless post: %@", NSStringFromSelector(_cmd), post);
+        [self.managedObjectContext deleteObject:post];
+    }
+
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+}
+
 #pragma mark - Private Methods
 
 /**
@@ -440,7 +461,6 @@ NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
  @param posts The batch of posts to use as a filter.
  */
 - (void)deletePostsForTopic:(ReaderTopic *)topic missingFromBatch:(NSArray *)posts {
-
     // Don't trust the relationships on the topic to be current or correct.
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];

@@ -435,9 +435,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)openPost:(NSUInteger *)postId onBlog:(NSUInteger)blogId {
-
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    [service deletePostsWithNoTopic];
     [service fetchPost:postId forSite:blogId success:^(ReaderPost *post) {
         ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post
                                                                                             featuredImage:nil
@@ -445,7 +445,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
         [self.navigationController pushViewController:controller animated:YES];
     } failure:^(NSError *error) {
-        // noop
+        DDLogError(@"%@, error fetching post for site", _cmd, error);
     }];
 }
 
@@ -771,6 +771,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)didChangeAccount:(NSNotification *)notification {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     [[[ReaderTopicService alloc] initWithManagedObjectContext:context] deleteAllTopics];
+    [[[ReaderPostService alloc] initWithManagedObjectContext:context] deletePostsWithNoTopic];
 
     self.currentTopic = nil;
     [self resetResultsController];
