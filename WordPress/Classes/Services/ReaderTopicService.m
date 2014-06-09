@@ -61,10 +61,14 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
         NSURL *topicURI = [NSURL URLWithString:topicURIString];
         NSManagedObjectID *objectID = [self.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:topicURI];
         if (objectID) {
-            topic = (ReaderTopic *)[self.managedObjectContext existingObjectWithID:objectID error:nil];
+            topic = (ReaderTopic *)[self.managedObjectContext existingObjectWithID:objectID error:&error];
             if (error) {
                 DDLogError(@"%@ error fetching topic: %@", NSStringFromSelector(_cmd), error);
                 return nil;
+            }
+
+            if (topic.type == ReaderTopicTypeTag && topic.isSubscribed == NO) {
+                topic = nil;
             }
         }
     }
