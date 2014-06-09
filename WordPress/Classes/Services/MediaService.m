@@ -58,16 +58,28 @@
 {
     NSString *videoPath = [self pathForAsset:asset];
     NSData *thumbnailData = [self thumbnailDataFromAsset:asset];
+    __block Media *media = nil;
+    [self.managedObjectContext performBlockAndWait:^{
+        AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
+        media = [self newMediaForPost:post];
+        media.filename = [videoPath lastPathComponent];
+        media.localURL = videoPath;
+        media.thumbnail = thumbnailData;
+        media.mediaType = MediaTypeVideo;
+        media.remoteStatus = MediaRemoteStatusProcessing;
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
     
     WPVideoOptimizer *optimizer = [[WPVideoOptimizer alloc] init];
     [optimizer optimizeAsset:asset toPath:videoPath withHandler:^(NSError *error) {
         if (error){
             DDLogError(@"Error writing media to %@", videoPath);
+            [media remove];            
             return;
         }
         [self.managedObjectContext performBlock:^{
-            AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
-            Media *media = [self newMediaForPost:post];
+            //AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
+            //Media *media = [self newMediaForPost:post];
             media.filename = [videoPath lastPathComponent];
             media.localURL = videoPath;
             media.thumbnail = thumbnailData;

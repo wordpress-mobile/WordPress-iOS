@@ -245,7 +245,7 @@ NSInteger const MaxNumberOfVideosSelected = 1;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     NSInteger blogCount = [blogService blogCountForAllAccounts];
     
-    if (_mediaUploadQueue.operationCount > 0) {
+    if ([self isMediaInUploading] ) {
         self.navigationItem.titleView = self.uploadStatusView;
     } else if(blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
         self.navigationItem.title = [self editorTitle];
@@ -823,7 +823,7 @@ NSInteger const MaxNumberOfVideosSelected = 1;
     [self.post.managedObjectContext performBlock:^{
         NSMutableArray *mediaToRemove = [[NSMutableArray alloc] init];
         for (Media *media in self.post.media) {
-            if (media.remoteStatus == MediaRemoteStatusPushing) {
+            if (media.remoteStatus == MediaRemoteStatusPushing || media.remoteStatus == MediaRemoteStatusProcessing) {
                 [mediaToRemove addObject:media];
             }
         }
@@ -984,10 +984,13 @@ NSInteger const MaxNumberOfVideosSelected = 1;
 //check if there are media in uploading status
 - (BOOL)isMediaInUploading {
 	BOOL isMediaInUploading = NO;
-	
+	if (_mediaUploadQueue.operationCount > 0){
+        return YES;
+    }
+    
 	NSSet *mediaFiles = self.post.media;
 	for (Media *media in mediaFiles) {
-		if(media.remoteStatus == MediaRemoteStatusPushing) {
+		if(media.remoteStatus == MediaRemoteStatusPushing || media.remoteStatus == MediaRemoteStatusProcessing) {
 			isMediaInUploading = YES;
 			break;
 		}
@@ -1410,7 +1413,7 @@ NSInteger const MaxNumberOfVideosSelected = 1;
                     [WPError showAlertWithTitle:NSLocalizedString(@"Upload failed", nil) message:error.localizedDescription];
                 }];
                 [_mediaUploadQueue addOperation:operation];
-            }];
+            }];            
         } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
             MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
             [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
@@ -1428,7 +1431,11 @@ NSInteger const MaxNumberOfVideosSelected = 1;
             }];
         }
     }
-    [self setupNavbar];
+    [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self setupNavbar];
+    });
+    
 }
 
 - (BOOL)assetsPickerController:(CTAssetsPickerController *)picker shouldSelectAsset:(ALAsset *)asset {
