@@ -83,5 +83,12 @@
     [self.tableView addSubview:controller.view];
 }
 
+- (void)statsViewController:(WPStatsViewController *)statsViewController didSelectViewWebStatsForSiteID:(NSNumber *)siteID
+{
+    StatsWebViewController *vc = [[StatsWebViewController alloc] init];
+    vc.blog = self.blog;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 
 @end
