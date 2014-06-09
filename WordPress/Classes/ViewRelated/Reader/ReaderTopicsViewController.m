@@ -159,20 +159,21 @@ NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotifi
     [service fetchReaderMenuWithSuccess:^{
         self.dateLastSynced = [NSDate date];
         success();
+
         // Its possible the user deleted the current topic via the web so make sure the selection is accurate
-        [self updateSelectedTopicIfNecessary];
+        ReaderTopic *topic = [self currentTopic];
+        if ([self.currentTopicPath isEqualToString:topic.path]) {
+            self.currentTopicPath = topic.path;
+            [self updateSelectedTopic];
+        }
+
     } failure:^(NSError *error) {
         failure(error);
     }];
 }
 
-- (void)updateSelectedTopicIfNecessary {
+- (void)updateSelectedTopic {
     ReaderTopic *topic = [self currentTopic];
-    if ([self.currentTopicPath isEqualToString:topic.path]) {
-        return;
-    }
-
-    self.currentTopicPath = topic.path;
     NSIndexPath *indexPath = [self.resultsController indexPathForObject:topic];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
