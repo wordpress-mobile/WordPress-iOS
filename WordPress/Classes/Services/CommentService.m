@@ -89,7 +89,7 @@
     for (RemoteComment *remoteComment in comments) {
         Comment *comment = [self findCommentWithID:remoteComment.commentID inBlog:blog];
         if (!comment) {
-            [self createCommentForBlog:blog];
+            comment = [self createCommentForBlog:blog];
         }
         [self updateComment:comment withRemoteComment:remoteComment];
         [commentsToKeep addObject:comment];
