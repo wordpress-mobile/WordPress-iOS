@@ -495,6 +495,7 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 
 - (void)refreshUIForCurrentPost
 {
+    [self setupNavbar];
     self.titleText = self.post.postTitle;
     
     if(self.post.content == nil || [self.post.content isEmpty]) {
