@@ -14,7 +14,6 @@ NSString * const CommentStatusDraft = @"draft";
 @interface Comment (WordPressApi)
 - (NSDictionary *)XMLRPCDictionary;
 - (void)updateFromDictionary:(NSDictionary *)commentInfo;
-- (void)postCommentWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)getCommentWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)editCommentWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)deleteCommentWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
@@ -141,43 +140,6 @@ NSString * const CommentStatusDraft = @"draft";
 
 #pragma mark - Remote management
 
-//this is used on reply and edit only
-- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    void (^uploadSuccessful)() = ^{
-        [self getCommentWithSuccess:nil failure:nil];
-        if (success) success();
-    };
-
-    __block BOOL editing = !!self.commentID;
-
-    void (^uploadFailure)(NSError *error) = ^(NSError *error){
-        // post the notification
-        NSString *message;
-        if (editing) {
-            message = NSLocalizedString(@"Sorry, something went wrong editing the comment. Please try again.", @"");
-        } else {
-            message = NSLocalizedString(@"Sorry, something went wrong posting the comment reply. Please try again.", @"");
-        }
-
-        if (error.code == 405) {
-            // XML-RPC is disabled.
-            message = error.localizedDescription;
-        }
-
-        [[NSNotificationCenter defaultCenter]
-         postNotificationName:CommentUploadFailedNotification
-         object:message];
-
-        if(failure) failure(error);
-    };
-
-    if (editing) {
-        [self editCommentWithSuccess:uploadSuccessful failure:uploadFailure];
-    } else {
-        [self postCommentWithSuccess:uploadSuccessful failure:uploadFailure];
-	}
-}
-
 - (void)approve {
 	NSString *prevStatus = self.status;
 	if([prevStatus isEqualToString:@"approve"])
@@ -292,28 +254,6 @@ NSString * const CommentStatusDraft = @"draft";
     self.postTitle       = [commentInfo objectForKey:@"post_title"];
     self.status          = [commentInfo objectForKey:@"status"];
     self.type            = [commentInfo objectForKey:@"type"];    
-}
-
-- (void)postCommentWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    NSArray *parameters = [self.blog getXMLRPCArgsWithExtra:[NSArray arrayWithObjects:self.postID, [self XMLRPCDictionary], nil]];
-    [self.blog.api callMethod:@"wp.newComment"
-                   parameters:parameters
-                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                          // wp.newComment should return an integer with the new comment ID
-                          if ([responseObject respondsToSelector:@selector(numericValue)]) {
-                              self.commentID = [responseObject numericValue];
-                              [self save];
-                              if (success) success();
-                          } else if (failure) {
-                              NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"Invalid value returned for new comment: %@", responseObject] forKey:NSLocalizedDescriptionKey];
-                              NSError *error = [NSError errorWithDomain:@"org.wordpress.iphone" code:0 userInfo:userInfo];
-                              failure(error);
-                          }
-                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                          if (failure) {
-                              failure(error);
-                          }
-                      }];
 }
 
 - (void)getCommentWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
