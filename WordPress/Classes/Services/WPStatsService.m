@@ -10,6 +10,7 @@
 
 @property (nonatomic, strong) NSNumber *siteId;
 @property (nonatomic, strong) WPAccount *account;
+@property (nonatomic, strong) NSDictionary *options;
 
 @end
 
@@ -18,11 +19,12 @@
 
 }
 
-- (instancetype)initWithSiteId:(NSNumber *)siteId andAccount:(WPAccount *)account {
+- (instancetype)initWithSiteId:(NSNumber *)siteId andAccount:(WPAccount *)account andBlogOptions:(NSDictionary *)options {
     self = [super init];
     if (self) {
         _siteId = siteId;
         _account = account;
+        _options = options;
     }
 
     return self;
@@ -37,6 +39,9 @@
             failureHandler(error);
         }
     };
+    
+    NSNumber *blogTZOffset = (NSNumber *)[_options valueForKeyPath:@"time_zone.value"];
+    NSTimeZone *blogTimeZone = [NSTimeZone timeZoneForSecondsFromGMT:(60*60*[blogTZOffset integerValue])];
 
     NSDate *today = [NSDate date];
     NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
@@ -46,6 +51,7 @@
 
     [self.remote fetchStatsForTodayDate:today
                        andYesterdayDate:yesterday
+                            andTimeZone:blogTimeZone
                   withCompletionHandler:completion
                          failureHandler:failure];
 }
