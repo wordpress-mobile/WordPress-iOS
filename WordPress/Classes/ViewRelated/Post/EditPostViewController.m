@@ -340,10 +340,7 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 {
     if(_currentActionSheet) return;
     
-    //TODO: Resign textview in pod
-    //[_textView resignFirstResponder];
-    //[_titleTextField resignFirstResponder];
-	
+    [self stopEditing];
     [self.postSettingsViewController endEditingAction:nil];
     
 	if ([self isMediaInUploading]) {
@@ -714,8 +711,6 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
     }
     
     [self.post save];
-    //TODO: Scrolling?
-    //[_textView scrollRangeToVisible:[_textView selectedRange]];
 }
 
 #pragma mark - Media State Methods

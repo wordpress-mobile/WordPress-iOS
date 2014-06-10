@@ -25,4 +25,6 @@
 @property (nonatomic) BOOL isShowingKeyboard;
 @property (nonatomic) BOOL isExternalKeyboard;
 
+- (void)stopEditing;
+
 @end

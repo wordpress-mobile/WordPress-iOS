@@ -105,8 +105,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     
-	[_titleTextField resignFirstResponder];
-	[_textView resignFirstResponder];
+	[self stopEditing];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -364,6 +363,16 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 #pragma mark - Editor and Misc Methods
 
+- (void)stopEditing
+{
+    // With the titleTextField as a subview of textField, we need to resign and
+    // end editing to prevent the textField from becomeing first responder.
+    if ([self.titleTextField isFirstResponder]) {
+        [self.titleTextField resignFirstResponder];
+    }
+    [self.view endEditing:YES];
+}
+
 - (void)refreshUI
 {
     if(self.titleText != nil || self.titleText != 0) {
@@ -580,12 +589,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     if ([buttonItem.actionTag isEqualToString:@"link"]) {
         [self showLinkView];
     } else if ([buttonItem.actionTag isEqualToString:@"done"]) {
-        // With the titleTextField as a subview of textField, we need to resign and
-        // end editing to prevent the textField from becomeing first responder.
-        if ([self.titleTextField isFirstResponder]) {
-            [self.titleTextField resignFirstResponder];
-        }
-        [self.view endEditing:YES];
+        [self stopEditing];
     } else {
         NSString *oldText = _textView.text;
         NSRange oldRange = _textView.selectedRange;
@@ -651,7 +655,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     [_textView becomeFirstResponder];
     return NO;
 }
-
 
 #pragma mark - Positioning & Rotation
 
