@@ -139,6 +139,25 @@
                  }];
 }
 
+- (void)trashComment:(RemoteComment *)comment
+             forBlog:(Blog *)blog
+             success:(void (^)())success
+             failure:(void (^)(NSError *))failure {
+    NSParameterAssert(comment.commentID != nil);
+    NSArray *parameters = [blog getXMLRPCArgsWithExtra:comment.commentID];
+    [self.api callMethod:@"wp.deleteComment"
+              parameters:parameters
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     if (success) {
+                         success();
+                     }
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
+}
+
 #pragma mark - Private methods
 
 - (NSArray *)remoteCommentsFromXMLRPCArray:(NSArray *)xmlrpcArray {
