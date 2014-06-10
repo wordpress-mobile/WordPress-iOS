@@ -19,4 +19,9 @@
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure;
 
+// Upload comment
+- (void)uploadComment:(Comment *)comment
+              success:(void (^)())success
+              failure:(void (^)(NSError *error))failure;
+
 @end

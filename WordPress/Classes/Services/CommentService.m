@@ -82,6 +82,40 @@
                        }];
 }
 
+// Upload comment
+- (void)uploadComment:(Comment *)comment
+              success:(void (^)())success
+              failure:(void (^)(NSError *error))failure {
+    id<CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
+    RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
+
+    NSManagedObjectID *commentObjectID = comment.objectID;
+    void (^successBlock)(RemoteComment *comment) = ^(RemoteComment *comment) {
+        [self.managedObjectContext performBlock:^{
+            Comment *commentInContext = (Comment *)[self.managedObjectContext existingObjectWithID:commentObjectID error:nil];
+            if (commentInContext) {
+                [self updateComment:commentInContext withRemoteComment:remoteComment];
+            }
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            if (success) {
+                success();
+            }
+        }];
+    };
+
+    if (comment.commentID) {
+        [remote updateComment:remoteComment
+                      forBlog:comment.blog
+                      success:successBlock
+                      failure:failure];
+    } else {
+        [remote createComment:remoteComment
+                      forBlog:comment.blog
+                      success:successBlock
+                      failure:failure];
+    }
+}
+
 #pragma mark - Private methods
 
 - (void)mergeComments:(NSArray *)comments forBlog:(Blog *)blog completionHandler:(void (^)(void))completion {
@@ -131,6 +165,23 @@
     comment.postTitle = remoteComment.postTitle;
     comment.status = remoteComment.status;
     comment.type = remoteComment.type;
+}
+
+- (RemoteComment *)remoteCommentWithComment:(Comment *)comment {
+    RemoteComment *remoteComment = [RemoteComment new];
+    remoteComment.commentID = comment.commentID;
+    remoteComment.author = comment.author;
+    remoteComment.authorEmail = comment.author_email;
+    remoteComment.authorUrl = comment.author_url;
+    remoteComment.content = comment.content;
+    remoteComment.date = comment.dateCreated;
+    remoteComment.link = comment.link;
+    remoteComment.parentID = comment.parentID;
+    remoteComment.postID = comment.postID;
+    remoteComment.postTitle = comment.postTitle;
+    remoteComment.status = comment.status;
+    remoteComment.type = comment.type;
+    return remoteComment;
 }
 
 - (id<CommentServiceRemote>)remoteForBlog:(Blog *)blog {

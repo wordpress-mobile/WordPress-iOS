@@ -365,8 +365,8 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     self.reply.status = CommentStatusApproved;
     self.transientReply = NO;
 
-    // upload with success saves the reply with the published status when successfull
-    [self.reply uploadWithSuccess:^{
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:self.reply.managedObjectContext];
+    [commentService uploadComment:self.reply success:^{
         // the current modal experience shows success by dismissising the editor
         // ideally we switch to an optimistic experience
     } failure:^(NSError *error) {

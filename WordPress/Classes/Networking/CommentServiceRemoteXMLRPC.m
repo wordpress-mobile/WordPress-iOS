@@ -40,6 +40,105 @@
                  }];
 }
 
+- (void)getCommentWithID:(NSNumber *)commentID
+                 forBlog:(Blog *)blog
+                 success:(void (^)(RemoteComment *comment))success
+                 failure:(void (^)(NSError *))failure {
+    NSArray *parameters = [blog getXMLRPCArgsWithExtra:commentID];
+    [self.api callMethod:@"wp.getComment"
+              parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                  if (success) {
+                      // TODO: validate response
+                      RemoteComment *comment = [self remoteCommentFromXMLRPCDictionary:responseObject];
+                      success(comment);
+                  }
+              } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                  failure(error);
+              }];
+}
+
+- (void)createComment:(RemoteComment *)comment
+              forBlog:(Blog *)blog
+              success:(void (^)(RemoteComment *comment))success
+              failure:(void (^)(NSError *error))failure {
+    NSParameterAssert(comment.postID != nil);
+    NSDictionary *commentDictionary = @{
+                                        @"content": comment.content,
+                                        @"comment_parent": comment.parentID,
+                                        };
+    NSArray *extraParameters = @[
+                                 comment.postID,
+                                 commentDictionary,
+                                 ];
+    NSArray *parameters = [blog getXMLRPCArgsWithExtra:extraParameters];
+    [self.api callMethod:@"wp.newComment"
+              parameters:parameters
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     NSNumber *commentID = responseObject;
+                     // TODO: validate response
+                     [self getCommentWithID:commentID
+                                    forBlog:blog
+                                    success:success
+                                    failure:failure];
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
+}
+
+- (void)updateComment:(RemoteComment *)comment
+              forBlog:(Blog *)blog
+              success:(void (^)(RemoteComment *comment))success
+              failure:(void (^)(NSError *error))failure {
+    NSParameterAssert(comment.commentID != nil);
+    NSArray *extraParameters = @[
+                                 comment.commentID,
+                                 @{@"content": comment.content},
+                                 ];
+    NSArray *parameters = [blog getXMLRPCArgsWithExtra:extraParameters];
+    [self.api callMethod:@"wp.editComment"
+              parameters:parameters
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     NSNumber *commentID = responseObject;
+                     // TODO: validate response
+                     [self getCommentWithID:commentID
+                                    forBlog:blog
+                                    success:success
+                                    failure:failure];
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
+}
+
+- (void)moderateComment:(RemoteComment *)comment
+                forBlog:(Blog *)blog
+                success:(void (^)(RemoteComment *))success
+                failure:(void (^)(NSError *))failure {
+    NSParameterAssert(comment.commentID != nil);
+    NSArray *extraParameters = @[
+                                 comment.commentID,
+                                 @{@"status": comment.status},
+                                 ];
+    NSArray *parameters = [blog getXMLRPCArgsWithExtra:extraParameters];
+    [self.api callMethod:@"wp.editComment"
+              parameters:parameters
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     NSNumber *commentID = responseObject;
+                     // TODO: validate response
+                     [self getCommentWithID:commentID
+                                    forBlog:blog
+                                    success:success
+                                    failure:failure];
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
+}
+
 #pragma mark - Private methods
 
 - (NSArray *)remoteCommentsFromXMLRPCArray:(NSArray *)xmlrpcArray {
