@@ -17,13 +17,25 @@ NSUInteger const ReaderPostServiceTitleLength = 30;
 NSUInteger const ReaderPostServiceMaxPosts = 200;
 NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
 
-@interface ReaderPostService()
 
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+/**
+ ReaderPostServiceBackfillState A simple state object used to keep track of backfilling posts.
+ */
+@interface ReaderPostServiceBackfillState : NSObject
 
 @property (nonatomic) NSUInteger backfillBatchNumber;
 @property (nonatomic, strong) NSMutableArray *backfilledRemotePosts;
 @property (nonatomic, strong) NSDate *backfillDate;
+
+@end
+
+@implementation ReaderPostServiceBackfillState
+@end
+
+
+@interface ReaderPostService()
+
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 
 @end
 
@@ -79,15 +91,20 @@ NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
 
 - (void)backfillPostsForTopic:(ReaderTopic *)topic success:(void (^)(BOOL hasMore))success failure:(void (^)(NSError *error))failure {
     ReaderPost *post = [self newestPostForTopic:topic];
+    ReaderPostServiceBackfillState *state = [[ReaderPostServiceBackfillState alloc] init];
     if (post) {
-        self.backfillDate = post.sortDate;
+        state.backfillDate = post.sortDate;
     } else {
-        self.backfillDate = [NSDate date];
+        state.backfillDate = [NSDate date];
     }
-    self.backfillBatchNumber = 0;
-    self.backfilledRemotePosts = [NSMutableArray array];
+    state.backfillBatchNumber = 0;
+    state.backfilledRemotePosts = [NSMutableArray array];
 
-    [self fetchPostsToBackfillTopic:topic earlierThan:[NSDate date] success:success failure:failure];
+    [self fetchPostsToBackfillTopic:topic
+                        earlierThan:[NSDate date]
+                      backfillState:(ReaderPostServiceBackfillState *)state
+                            success:success
+                            failure:failure];
 }
 
 #pragma mark - Update Methods
@@ -323,16 +340,22 @@ NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
  
  @param topic The Topic for which to request posts.
  @param date The date to get posts earlier than.
+ @param state The current `ReaderPostServiceBackfillState`
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)fetchPostsToBackfillTopic:(ReaderTopic *)topic earlierThan:(NSDate *)date success:(void (^)(BOOL hasMore))success failure:(void (^)(NSError *error))failure {
+- (void)fetchPostsToBackfillTopic:(ReaderTopic *)topic
+                      earlierThan:(NSDate *)date
+                    backfillState:(ReaderPostServiceBackfillState *)state
+                          success:(void (^)(BOOL hasMore))success
+                          failure:(void (^)(NSError *error))failure
+{
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
     [remoteService fetchPostsFromEndpoint:[NSURL URLWithString:topic.path]
                                     count:ReaderPostServiceNumberToSync
                                    before:date
                                   success:^(NSArray *posts) {
-                                      [self processBackfillPostsForTopic:topic posts:posts success:success failure:failure];
+                                      [self processBackfillPostsForTopic:topic posts:posts backfillState:state success:success failure:failure];
                                   } failure:^(NSError *error) {
                                       if (failure) {
                                           failure(error);
@@ -347,25 +370,30 @@ NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
  
  @param topic The Topic for which to request posts.
  @param posts An array of fetched posts.
+ @param state The current `ReaderPostServiceBackfillState`
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)processBackfillPostsForTopic:(ReaderTopic *)topic posts:(NSArray *)posts success:(void (^)(BOOL hasMore))success failure:(void (^)(NSError *error))failure {
-    self.backfillBatchNumber++;
-    [self.backfilledRemotePosts addObjectsFromArray:posts];
+- (void)processBackfillPostsForTopic:(ReaderTopic *)topic
+                               posts:(NSArray *)posts
+                       backfillState:(ReaderPostServiceBackfillState *)state
+                             success:(void (^)(BOOL hasMore))success
+                             failure:(void (^)(NSError *error))failure
+{
+    state.backfillBatchNumber++;
+    [state.backfilledRemotePosts addObjectsFromArray:posts];
 
     NSDate *oldestDate = [NSDate date];
-    if ([self.backfilledRemotePosts count] > 0) {
-        RemoteReaderPost *remotePost = [self.backfilledRemotePosts lastObject];
+    if ([state.backfilledRemotePosts count] > 0) {
+        RemoteReaderPost *remotePost = [state.backfilledRemotePosts lastObject];
         oldestDate = [DateUtils dateFromISOString:remotePost.sortDate];
     }
 
-    if (self.backfillBatchNumber > ReaderPostServiceMaxBatchesToBackfill || (oldestDate && (oldestDate == [oldestDate earlierDate:self.backfillDate]))) {
+    if (state.backfillBatchNumber > ReaderPostServiceMaxBatchesToBackfill || (oldestDate && (oldestDate == [oldestDate earlierDate:state.backfillDate]))) {
         // our work is done
-        [self mergePosts:self.backfilledRemotePosts earlierThan:[NSDate date] forTopic:topic.objectID callingSuccess:success];
-
+        [self mergePosts:state.backfilledRemotePosts earlierThan:[NSDate date] forTopic:topic.objectID callingSuccess:success];
     } else {
-        [self fetchPostsToBackfillTopic:topic earlierThan:oldestDate success:success failure:failure];
+        [self fetchPostsToBackfillTopic:topic earlierThan:oldestDate backfillState:state success:success failure:failure];
     }
 }
 
