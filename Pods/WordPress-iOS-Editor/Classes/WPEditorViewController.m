@@ -3,6 +3,7 @@
 #import "WPKeyboardToolbarDone.h"
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
 #import <WordPress-iOS-Shared/WPTableViewCell.h>
+#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
 
 CGFloat const EPVCTextfieldHeight = 44.0f;
 CGFloat const EPVCOptionsHeight = 44.0f;
@@ -392,9 +393,13 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     NSString *insertButtonTitle = NSLocalizedString(@"Insert", @"Insert content (link, media) button");
     NSString *cancelButtonTitle = NSLocalizedString(@"Cancel", @"Cancel button");
     
-    _alertView = [[UIAlertView alloc] initWithTitle:alertViewTitle message:nil delegate:self cancelButtonTitle:cancelButtonTitle otherButtonTitles:insertButtonTitle, nil];
+    _alertView = [[UIAlertView alloc] initWithTitle:alertViewTitle
+                                            message:nil
+                                           delegate:nil
+                                  cancelButtonTitle:cancelButtonTitle
+                                  otherButtonTitles:insertButtonTitle, nil];
     _alertView.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
-    _alertView.tag = 1;
+    _alertView.tag = 99;
     
     UITextField *alt = [self.alertView textFieldAtIndex:1];
     alt.secureTextEntry = NO;
@@ -412,6 +417,59 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     linkURL.keyboardAppearance = UIKeyboardAppearanceAlert;
     linkURL.keyboardType = UIKeyboardTypeURL;
     linkURL.autocorrectionType = UITextAutocorrectionTypeNo;
+    
+    _alertView.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
+        if (alertView.tag == 99) {
+            if (buttonIndex == 1) {
+                // Insert link
+                UITextField *urlField = [alertView textFieldAtIndex:0];
+                UITextField *infoText = [alertView textFieldAtIndex:1];
+                
+                if ((urlField.text == nil) || ([urlField.text isEqualToString:@""])) {
+                    return;
+                }
+                
+                if ((infoText.text == nil) || ([infoText.text isEqualToString:@""])) {
+                    infoText.text = urlField.text;
+                }
+                
+                NSString *urlString = [self validateNewLinkInfo:[urlField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+                NSString *aTagText = [NSString stringWithFormat:@"<a href=\"%@\">%@</a>", urlString, infoText.text];
+                NSRange range = _textView.selectedRange;
+                NSString *oldText = _textView.text;
+                NSRange oldRange = _textView.selectedRange;
+                _textView.scrollEnabled = NO;
+                _textView.text = [_textView.text stringByReplacingCharactersInRange:range withString:aTagText];
+                _textView.scrollEnabled = YES;
+                
+                //reset selection back to nothing
+                range.length = 0;
+                range.location += [aTagText length]; // Place selection after the tag
+                _textView.selectedRange = range;
+                
+                [[_textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
+                [_textView.undoManager setActionName:@"link"];
+                [self textViewDidChange:_textView];
+                [self refreshTextView];
+                
+            }
+            
+            // Don't dismiss the keyboard
+            if([_textView resignFirstResponder]){
+                [_textView becomeFirstResponder];
+            }
+        }
+    };
+    
+    _alertView.shouldEnableFirstOtherButtonBlock = ^BOOL(UIAlertView *alertView) {
+        if (alertView.tag == 99) {
+            UITextField *textField = [alertView textFieldAtIndex:0];
+            if ([textField.text length] == 0) {
+                return NO;
+            }
+        }
+        return YES;
+    };
 
     [_alertView show];
 }
@@ -534,60 +592,6 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
         [self wrapSelectionWithTag:buttonItem.actionTag];
         [[_textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
         [_textView.undoManager setActionName:buttonItem.actionName];
-    }
-}
-
-#pragma mark - AlertView Delegate
-
-- (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView
-{
-    if (alertView.tag == 1) {
-        UITextField *textField = [alertView textFieldAtIndex:0];
-        if ([textField.text length] == 0) {
-            return NO;
-        }
-    }
-    
-    return YES;
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (alertView.tag == 1) {
-        if (buttonIndex == 1) {
-            // Insert link
-            UITextField *urlField = [alertView textFieldAtIndex:0];
-            UITextField *infoText = [alertView textFieldAtIndex:1];
-            
-            if ((urlField.text == nil) || ([urlField.text isEqualToString:@""])) {
-                return;
-            }
-            
-            if ((infoText.text == nil) || ([infoText.text isEqualToString:@""])) {
-                infoText.text = urlField.text;
-            }
-            
-            NSString *urlString = [self validateNewLinkInfo:[urlField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
-            NSString *aTagText = [NSString stringWithFormat:@"<a href=\"%@\">%@</a>", urlString, infoText.text];
-            NSRange range = _textView.selectedRange;
-            NSString *oldText = _textView.text;
-            NSRange oldRange = _textView.selectedRange;
-            _textView.scrollEnabled = NO;
-            _textView.text = [_textView.text stringByReplacingCharactersInRange:range withString:aTagText];
-            _textView.scrollEnabled = YES;
-            
-            //reset selection back to nothing
-            range.length = 0;
-            range.location += [aTagText length]; // Place selection after the tag
-            _textView.selectedRange = range;
-            
-            [[_textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
-            [_textView.undoManager setActionName:@"link"];
-            [_textView becomeFirstResponder];
-            [self textViewDidChange:_textView];
-            [self refreshTextView];
-
-        }
     }
 }
 

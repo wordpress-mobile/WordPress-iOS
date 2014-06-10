@@ -19,5 +19,6 @@ Pod::Spec.new do |s|
   s.exclude_files = 'Classes/exclude'
   s.requires_arc = true
   s.dependency 'CocoaLumberjack', '~>1.8.1'  
+  s.dependency 'UIAlertView+Blocks'
   s.dependency 'WordPress-iOS-Shared', '0.0.1'
 end
