@@ -24,4 +24,24 @@
               success:(void (^)())success
               failure:(void (^)(NSError *error))failure;
 
+// Approve
+- (void)approveComment:(Comment *)comment
+               success:(void (^)())success
+               failure:(void (^)(NSError *error))failure;
+
+// Unapprove
+- (void)unapproveComment:(Comment *)comment
+                 success:(void (^)())success
+                 failure:(void (^)(NSError *error))failure;
+
+// Spam
+- (void)spamComment:(Comment *)comment
+            success:(void (^)())success
+            failure:(void (^)(NSError *error))failure;
+
+// Trash comment
+- (void)deleteComment:(Comment *)comment
+              success:(void (^)())success
+              failure:(void (^)(NSError *error))failure;
+
 @end

@@ -12,11 +12,7 @@ NSString * const CommentStatusSpam = @"spam";
 NSString * const CommentStatusDraft = @"draft";
 
 @interface Comment (WordPressApi)
-- (NSDictionary *)XMLRPCDictionary;
 - (void)updateFromDictionary:(NSDictionary *)commentInfo;
-- (void)getCommentWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)editCommentWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)deleteCommentWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 @end
 
 
@@ -138,58 +134,6 @@ NSString * const CommentStatusDraft = @"draft";
     return date;
 }
 
-#pragma mark - Remote management
-
-- (void)approve {
-	NSString *prevStatus = self.status;
-	if([prevStatus isEqualToString:@"approve"])
-		return;
-	self.status = @"approve";
-    [self editCommentWithSuccess:^(){
-        [self save];
-    } failure:^(NSError *error) {
-        self.status = prevStatus;
-        [self save];
-    }];
-}
-
-- (void)unapprove {
-	NSString *prevStatus = self.status;
-	if([prevStatus isEqualToString:@"hold"])
-    	return;
-	self.status = @"hold";
-    [self editCommentWithSuccess:^(){
-        [self save];
-    } failure:^(NSError *error) {
-        self.status = prevStatus;
-        [self save];
-    }];
-}
-
-- (void)spam {
-	NSString *prevStatus = self.status;
-	if([prevStatus isEqualToString:@"spam"])
-    	return;
-    self.status = @"spam";
-    [self editCommentWithSuccess:^(){
-        [[self managedObjectContext] deleteObject:self];
-        [self save];
-    } failure:^(NSError *error) {
-        self.status = prevStatus;
-        [self save];
-    }];
-}
-
-- (void)remove {
-    if (self.commentID) {
-        [self deleteCommentWithSuccess:nil failure:nil];
-    }
-    [self.managedObjectContext performBlockAndWait:^{
-        [self.managedObjectContext deleteObject:self];
-        [self save];
-    }];
-}
-
 #pragma mark - Private Methods
 
 + (Comment *)newCommentForBlog:(Blog *)blog {
@@ -225,22 +169,6 @@ NSString * const CommentStatusDraft = @"draft";
 
 @implementation Comment (WordPressApi)
 
-- (NSDictionary *)XMLRPCDictionary {
-    NSMutableDictionary *commentParams = [NSMutableDictionary dictionary];
-
-	if(self.content != nil)
-		[commentParams setObject:self.content forKey:@"content"];
-	else 
-		[commentParams setObject:@"" forKey:@"content"];
-
-    //keep attention. getComment, getComments are returning a different key "parent" that is a string.
-    [commentParams setObject:self.parentID forKey:@"comment_parent"];
-    [commentParams setObject:self.postID forKey:@"post_id"];
-    [commentParams setObject:self.status forKey:@"status"];
-
-    return commentParams;
-}
-
 - (void)updateFromDictionary:(NSDictionary *)commentInfo {
     self.author          = [commentInfo objectForKey:@"author"];
     self.author_email    = [commentInfo objectForKey:@"author_email"];
@@ -255,65 +183,6 @@ NSString * const CommentStatusDraft = @"draft";
     self.status          = [commentInfo objectForKey:@"status"];
     self.type            = [commentInfo objectForKey:@"type"];    
 }
-
-- (void)getCommentWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    NSArray *parameters = [self.blog getXMLRPCArgsWithExtra:self.commentID];
-    [self.blog.api callMethod:@"wp.getComment"
-                   parameters:parameters
-                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                          [self updateFromDictionary:responseObject];
-                          if (success) success();
-                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                          if (failure) {
-                              failure(error);
-                          }
-                      }];
-}
-
-- (void)editCommentWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    if (self.commentID == nil) {
-        if (failure) {
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Can't edit a comment if it's not in the server" forKey:NSLocalizedDescriptionKey];
-            NSError *error = [NSError errorWithDomain:@"org.wordpress.iphone" code:0 userInfo:userInfo];
-            failure(error);
-        }
-        return;
-    }
-
-    NSArray *parameters = [self.blog getXMLRPCArgsWithExtra:[NSArray arrayWithObjects:self.commentID, [self XMLRPCDictionary], nil]];
-    [self.blog.api callMethod:@"wp.editComment"
-                   parameters:parameters
-                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                          // wp.editComment should return true if the edit was successful
-                          if (success) success();
-                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                          if (failure) {
-                              failure(error);
-                          }
-                      }];
-}
-
-- (void)deleteCommentWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    if (self.commentID == nil) {
-        if (failure) {
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Can't delete a comment if it's not in the server" forKey:NSLocalizedDescriptionKey];
-            NSError *error = [NSError errorWithDomain:@"org.wordpress.iphone" code:0 userInfo:userInfo];
-            failure(error);
-        }
-        return;
-    }
-    NSArray *parameters = [self.blog getXMLRPCArgsWithExtra:self.commentID];
-    [self.blog.api callMethod:@"wp.deleteComment"
-                   parameters:parameters
-                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                          // wp.deleteComment should return true if the edit was successful
-                          [[self managedObjectContext] deleteObject:self];
-                          if (success) success();
-                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                          if (failure) failure(error);
-                      }];
-}
-
 
 #pragma mark - WPContentViewProvider protocol
 

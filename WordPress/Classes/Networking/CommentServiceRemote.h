@@ -32,4 +32,13 @@
                 success:(void (^)(RemoteComment *comment))success
                 failure:(void (^)(NSError *error))failure;
 
+/**
+ Trashes a comment
+ */
+- (void)trashComment:(RemoteComment *)comment
+             forBlog:(Blog *)blog
+             success:(void (^)())success
+             failure:(void (^)(NSError *error))failure;
+
+
 @end

@@ -112,8 +112,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     // Get rid of any transient reply if popping the view
     // (ideally transient replies should be handled more cleanly)
     if ([self isMovingFromParentViewController] && self.transientReply) {
-        [self.reply remove];
-        self.reply = nil;
+        [self deleteComment];
     }
 }
 
@@ -192,8 +191,9 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 #pragma mark - Comment moderation
 
 - (void)deleteComment {
-    [self.comment remove];
-    
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    [commentService deleteComment:self.comment success:nil failure:nil];
+
     // Note: the parent class of CommentsViewController will pop this as a result of NSFetchedResultsChangeDelete
 }
 
@@ -217,10 +217,11 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)approveOrUnapproveAction:(id)sender {
     UIBarButtonItem *barButton = sender;
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     if (barButton.tag == CommentViewApproveButtonTag) {
-        [self.comment approve];
+        [commentService approveComment:self.comment success:nil failure:nil];
     } else {
-        [self.comment unapprove];
+        [commentService unapproveComment:self.comment success:nil failure:nil];
     }
     [self updateApproveButton];
 }
@@ -245,7 +246,8 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 - (void)spamAction:(id)sender {
-    [self.comment spam];
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    [commentService spamComment:self.comment success:nil failure:nil];
 }
 
 - (void)editAction:(id)sender {
