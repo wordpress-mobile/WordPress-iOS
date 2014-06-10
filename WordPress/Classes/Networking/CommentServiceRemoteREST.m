@@ -39,6 +39,80 @@
           }];
 }
 
+- (void)createComment:(RemoteComment *)comment
+              forBlog:(Blog *)blog
+              success:(void (^)(RemoteComment *comment))success
+              failure:(void (^)(NSError *))failure {
+    NSString *path;
+    if (comment.parentID) {
+        path = [NSString stringWithFormat:@"sites/%@/comments/%@/replies/new", blog.dotComID, comment.parentID];
+    } else {
+        path = [NSString stringWithFormat:@"sites/%@/posts/%@/replies/new", blog.dotComID, comment.postID];
+    }
+    NSDictionary *parameters = @{
+                                 @"content": comment.content,
+                                 };
+    [self.api POST:path
+        parameters:parameters
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               // TODO: validate response
+               RemoteComment *comment = [self remoteCommentFromJSONDictionary:responseObject];
+               if (success) {
+                   success(comment);
+               }
+           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
+}
+
+- (void)updateComment:(RemoteComment *)comment
+              forBlog:(Blog *)blog
+              success:(void (^)(RemoteComment *comment))success
+              failure:(void (^)(NSError *))failure {
+    NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", blog.dotComID, comment.commentID];
+    NSDictionary *parameters = @{
+                                 @"content": comment.content,
+                                 };
+    [self.api POST:path
+        parameters:parameters
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               // TODO: validate response
+               RemoteComment *comment = [self remoteCommentFromJSONDictionary:responseObject];
+               if (success) {
+                   success(comment);
+               }
+           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
+}
+
+- (void)moderateComment:(RemoteComment *)comment
+                forBlog:(Blog *)blog
+                success:(void (^)(RemoteComment *))success
+                failure:(void (^)(NSError *))failure {
+    NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", blog.dotComID, comment.commentID];
+    NSDictionary *parameters = @{
+                                 @"status": [self remoteStatusWithStatus:comment.status],
+                                 };
+    [self.api POST:path
+        parameters:parameters
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               // TODO: validate response
+               RemoteComment *comment = [self remoteCommentFromJSONDictionary:responseObject];
+               if (success) {
+                   success(comment);
+               }
+           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
+}
+
 #pragma mark - Private methods
 
 - (NSArray *)remoteCommentsFromJSONArray:(NSArray *)jsonComments {
@@ -76,6 +150,14 @@
         status = @"hold";
     }
     return status;
+}
+
+- (NSString *)remoteStatusWithStatus:(NSString *)status {
+    NSString *remoteStatus = status;
+    if ([remoteStatus isEqualToString:@"hold"]) {
+        remoteStatus = @"unapproved";
+    }
+    return remoteStatus;
 }
 
 @end

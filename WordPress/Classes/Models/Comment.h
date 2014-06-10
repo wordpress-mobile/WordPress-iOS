@@ -39,11 +39,6 @@ extern NSString * const CommentStatusDraft;
 ///
 /// The following methods will change the comment on the WordPress site
 
-/**
- Uploads a new reply or changes to an edited comment
- */
-- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-
 /// Moderation
 - (void)approve;
 - (void)unapprove;
