@@ -64,9 +64,7 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
             topic = (ReaderTopic *)[self.managedObjectContext existingObjectWithID:objectID error:&error];
             if (error) {
                 DDLogError(@"%@ error fetching topic: %@", NSStringFromSelector(_cmd), error);
-                return nil;
             }
-
             if (topic.type == ReaderTopicTypeTag && topic.isSubscribed == NO) {
                 topic = nil;
             }
@@ -95,16 +93,20 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
 }
 
 - (void)setCurrentTopic:(ReaderTopic *)topic {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if (!topic) {
-        [defaults removeObjectForKey:ReaderTopicCurrentTopicURIKey];
-        [defaults synchronize];
-        return;
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderTopicCurrentTopicURIKey];
+    } else {
+        if ([topic.objectID isTemporaryID]) {
+            NSError *error;
+            if (![self.managedObjectContext obtainPermanentIDsForObjects:@[topic] error:&error]) {
+                DDLogError(@"Error obtaining permanent object ID for topic %@, %@", topic, error);
+            }
+        }
+        NSURL *topicURI = topic.objectID.URIRepresentation;
+        [[NSUserDefaults standardUserDefaults] setObject:[topicURI absoluteString] forKey:ReaderTopicCurrentTopicURIKey];
     }
-
-    NSURL *topicURI = topic.objectID.URIRepresentation;
-    [[NSUserDefaults standardUserDefaults] setObject:[topicURI absoluteString] forKey:ReaderTopicCurrentTopicURIKey];
     [NSUserDefaults resetStandardUserDefaults];
+
 }
 
 - (NSUInteger)numberOfSubscribedTopics {
@@ -120,15 +122,14 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
 }
 
 - (void)deleteAllTopics {
+    [self setCurrentTopic:nil];
     NSArray *currentTopics = [self allTopics];
     for (ReaderTopic *topic in currentTopics) {
         [self.managedObjectContext deleteObject:topic];
     }
-    NSError *error;
-    [self.managedObjectContext save:&error];
-    if (error) {
-        DDLogError(@"%@ error counting topics: %@", NSStringFromSelector(_cmd), error);
-    }
+    [self.managedObjectContext performBlockAndWait:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
 }
 
 #pragma mark - Private Methods
