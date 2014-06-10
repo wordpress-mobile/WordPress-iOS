@@ -162,7 +162,7 @@ NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotifi
 
         // Its possible the user deleted the current topic via the web so make sure the selection is accurate
         ReaderTopic *topic = [self currentTopic];
-        if ([self.currentTopicPath isEqualToString:topic.path]) {
+        if (![self.currentTopicPath isEqualToString:topic.path]) {
             self.currentTopicPath = topic.path;
             [self updateSelectedTopic];
         }
