@@ -97,10 +97,7 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderTopicCurrentTopicURIKey];
     } else {
         if ([topic.objectID isTemporaryID]) {
-            NSError *error;
-            if (![self.managedObjectContext obtainPermanentIDsForObjects:@[topic] error:&error]) {
-                DDLogError(@"Error obtaining permanent object ID for topic %@, %@", topic, error);
-            }
+            [[ContextManager sharedInstance] obtainPermanentIDForObject:topic];
         }
         NSURL *topicURI = topic.objectID.URIRepresentation;
         [[NSUserDefaults standardUserDefaults] setObject:[topicURI absoluteString] forKey:ReaderTopicCurrentTopicURIKey];
