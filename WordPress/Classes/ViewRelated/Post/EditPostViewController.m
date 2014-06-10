@@ -898,7 +898,6 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 
 #pragma mark - WPEditorViewControllerDelegate delegate
 
-//TODO: This protocol method may need to be separated out for both title and body
 - (BOOL)editorShouldBeginEditing:(WPEditorViewController *)editorController
 {
     self.post.postTitle = self.titleText;
