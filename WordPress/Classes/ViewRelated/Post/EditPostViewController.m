@@ -1,7 +1,6 @@
 #import "EditPostViewController.h"
 #import "EditPostViewController_Internal.h"
 #import "ContextManager.h"
-#import "NSString+XMLExtensions.h"
 #import "Post.h"
 #import "WPTableViewCell.h"
 #import "BlogSelectorViewController.h"
@@ -30,7 +29,8 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 
 @implementation EditPostViewController
 
-+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
     
     if ([[identifierComponents lastObject] isEqualToString:WPEditorNavigationRestorationID]) {
         UINavigationController *navController = [[UINavigationController alloc] init];
@@ -58,13 +58,15 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
     return [[self alloc] initWithPost:restoredPost];
 }
 
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
+{
     [coder encodeObject:[[self.post.objectID URIRepresentation] absoluteString] forKey:WPAbstractPostRestorationKey];
     [super encodeRestorableStateWithCoder:coder];
 }
 
 
-- (void)dealloc {
+- (void)dealloc
+{
     _failedMediaAlertView.delegate = nil;
     [_mediaUploadQueue removeObserver:self forKeyPath:@"operationCount"];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -143,6 +145,11 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
     
     [self geotagNewPost];
     self.delegate = self;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self refreshButtons];
 }
 
 #pragma mark - View Setup
@@ -932,14 +939,6 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 {
     [self showPreview];
 }
-
-#pragma mark - TextField delegate
-
-//TODO: Add this to the pod
-//- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-//    [_textView becomeFirstResponder];
-//    return NO;
-//}
 
 #pragma mark - CTAssetsPickerController delegate
 
