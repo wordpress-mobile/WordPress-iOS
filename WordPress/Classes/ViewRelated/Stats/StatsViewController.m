@@ -167,7 +167,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 
 - (void)initStats {
     if (self.blog.isWPcom) {
-        self.statsService = [[WPStatsService alloc] initWithSiteId:self.blog.blogID andAccount:self.blog.account];
+        self.statsService = [[WPStatsService alloc] initWithSiteId:self.blog.blogID andAccount:self.blog.account andBlogOptions:self.blog.options];
         [self loadStats];
         return;
     }
@@ -175,7 +175,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     // Jetpack
     BOOL needsJetpackLogin = ![self.blog.jetpackAccount.restApi hasCredentials];
     if (!needsJetpackLogin && self.blog.jetpackBlogID && self.blog.jetpackAccount) {
-        self.statsService = [[WPStatsService alloc] initWithSiteId:self.blog.jetpackBlogID andAccount:self.blog.jetpackAccount];
+        self.statsService = [[WPStatsService alloc] initWithSiteId:self.blog.jetpackBlogID andAccount:self.blog.jetpackAccount andBlogOptions:self.blog.options];
         [self loadStats];
     } else {
         [self promptForJetpackCredentials];

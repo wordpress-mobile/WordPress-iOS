@@ -10,7 +10,8 @@ typedef void (^StatsCompletion)(StatsSummary *summary, NSDictionary *topPosts, N
 
 @property (nonatomic, strong) WPStatsServiceRemote *remote;
 
-- (instancetype)initWithSiteId:(NSNumber *)siteId andAccount:(WPAccount *)account;
+- (instancetype)initWithSiteId:(NSNumber *)siteId andAccount:(WPAccount *)account
+                andBlogOptions:(NSDictionary *)options;
 
 - (void)retrieveStatsWithCompletionHandler:(StatsCompletion)completion failureHandler:(void (^)(NSError *error))failureHandler;
 
