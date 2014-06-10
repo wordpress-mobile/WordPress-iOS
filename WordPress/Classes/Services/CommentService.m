@@ -116,7 +116,91 @@
     }
 }
 
+// Approve
+- (void)approveComment:(Comment *)comment
+               success:(void (^)())success
+               failure:(void (^)(NSError *error))failure {
+    [self moderateComment:comment
+               withStatus:@"approve"
+                  success:success
+                  failure:failure];
+}
+
+// Unapprove
+- (void)unapproveComment:(Comment *)comment
+                 success:(void (^)())success
+                 failure:(void (^)(NSError *error))failure {
+    [self moderateComment:comment
+               withStatus:@"hold"
+                  success:success
+                  failure:failure];
+}
+
+// Spam
+- (void)spamComment:(Comment *)comment
+            success:(void (^)())success
+            failure:(void (^)(NSError *error))failure {
+    [self moderateComment:comment
+               withStatus:@"spam"
+                  success:^{
+                      [self.managedObjectContext deleteObject:comment];
+                      [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                      if (success) {
+                          success();
+                      }
+                  } failure:failure];
+}
+
+// Delete comment
+- (void)deleteComment:(Comment *)comment
+              success:(void (^)())success
+              failure:(void (^)(NSError *error))failure {
+    NSNumber *commentID = comment.commentID;
+    if (commentID) {
+        RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
+        id<CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
+        [remote trashComment:remoteComment forBlog:comment.blog success:success failure:failure];
+    }
+    [self.managedObjectContext deleteObject:comment];
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+}
+
 #pragma mark - Private methods
+
+// Generic moderation
+- (void)moderateComment:(Comment *)comment
+             withStatus:(NSString *)status
+                success:(void (^)())success
+                failure:(void (^)(NSError *error))failure {
+	NSString *prevStatus = comment.status;
+	if ([prevStatus isEqualToString:status]) {
+        if (success) {
+            success();
+        }
+        return;
+    }
+
+	comment.status = status;
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    id <CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
+    RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
+    [remote moderateComment:remoteComment
+                    forBlog:comment.blog success:^(RemoteComment *comment) {
+                        if (success) {
+                            success();
+                        }
+                    } failure:^(NSError *error) {
+                        [self.managedObjectContext performBlock:^{
+                            comment.status = prevStatus;
+                            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                            if (failure) {
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                    failure(error);
+                                });
+                            }
+                        }];
+                    }];
+}
 
 - (void)mergeComments:(NSArray *)comments forBlog:(Blog *)blog completionHandler:(void (^)(void))completion {
     NSMutableArray *commentsToKeep = [NSMutableArray array];

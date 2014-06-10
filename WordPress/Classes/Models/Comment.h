@@ -33,16 +33,4 @@ extern NSString * const CommentStatusDraft;
 ///---------------------
 + (NSString *)titleForStatus:(NSString *)status;
 
-///------------------------
-/// @name Remote management
-///------------------------
-///
-/// The following methods will change the comment on the WordPress site
-
-/// Moderation
-- (void)approve;
-- (void)unapprove;
-- (void)spam;
-- (void)remove;
-
 @end
