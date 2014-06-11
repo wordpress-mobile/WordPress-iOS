@@ -11,23 +11,7 @@
 #import "RemoteReaderPost.h"
 #import <XCTest/XCTest.h>
 
-@interface ReaderServiceTest : XCTestCase
-@end
-
-@interface ReaderTopicServiceRemote()
-
-- (RemoteReaderTopic *)normalizeTopicDictionary:(NSDictionary *)topicDict subscribed:(BOOL)subscribed recommended:(BOOL)recommended;
-
-@end
-
-@interface ReaderTopicService()
-
-- (void)mergeTopics:(NSArray *)topics forAccount:(WPAccount *)account;
-
-@end
-
 @interface ReaderPostServiceRemote ()
-
 - (RemoteReaderPost *)formatPostDictionary:(NSDictionary *)dict;
 - (BOOL)siteIsPrivateFromPostDictionary:(NSDictionary *)dict;
 - (NSString *)siteURLFromPostDictionary:(NSDictionary *)dict;
@@ -37,183 +21,19 @@
 - (BOOL)isWPComFromPostDictionary:(NSDictionary *)dict;
 - (NSString *)authorEmailFromAuthorDictionary:(NSDictionary *)dict;
 - (NSString *)sanitizeFeaturedImageString:(NSString *)img;
-
 @end
 
 @interface ReaderPostService()
-
 - (ReaderPost *)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderTopic *)topic;
 - (NSString *)removeInlineStyles:(NSString *)string;
-
 @end
 
+@interface ReaderPostServiceTest : XCTestCase
+@end
 
-@implementation ReaderServiceTest
+@implementation ReaderPostServiceTest
 
-- (void)setUp
-{
-    [super setUp];
-}
-
-- (void)tearDown
-{
-    [super tearDown];
-    [[CoreDataTestHelper sharedHelper] reset];
-}
-
-
-#pragma mark - ReaderTopicServiceRemote tests
-
-/**
- Ensure dictionaries via a reset response are correctly formatted and saved to a RemoteReaderTopic object
- */
-- (void)testNormalizingTopicDictionary {
-    NSDictionary *topicDictionaryWithID = @{
-                                            @"ID": @"16166",
-                                            @"title": @"Coffee",
-                                            @"URL": @"https://public-api.wordpress.com/rest/v1/read/tags/coffee/posts"
-                                            };
-    NSDictionary *topicDictionaryWithoutID = @{
-                                            @"title": @"Coffee",
-                                            @"URL": @"https://public-api.wordpress.com/rest/v1/read/tags/coffee/posts"
-                                            };
-
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithRemoteApi:nil];
-    RemoteReaderTopic *remoteTopic = [remoteService normalizeTopicDictionary:topicDictionaryWithID subscribed:YES recommended:YES];
-    XCTAssertTrue(remoteTopic.isRecommended, @"Remote topic should be recommended but wasn't.");
-    XCTAssertTrue(remoteTopic.isSubscribed, @"Remote topic should be subscribed but wasn't.");
-    XCTAssertEqual(remoteTopic.path, topicDictionaryWithID[@"URL"], @"Remote topic path did not match.");
-    XCTAssertEqual(remoteTopic.title, topicDictionaryWithID[@"title"], @"Remote topic title did not match.");
-    XCTAssertEqual([remoteTopic.topicID integerValue], [topicDictionaryWithID[@"ID"] integerValue], @"Remote topic ID did not match.");
-
-    remoteTopic = [remoteService normalizeTopicDictionary:topicDictionaryWithoutID subscribed:NO recommended:NO];
-    XCTAssertFalse(remoteTopic.isRecommended, @"Remote topic should not be recommended but was.");
-    XCTAssertFalse(remoteTopic.isSubscribed, @"Remote topic should not be subscribed but was.");
-    XCTAssertEqual(remoteTopic.path, topicDictionaryWithID[@"URL"], @"Remote topic path did not match.");
-    XCTAssertEqual(remoteTopic.title, topicDictionaryWithID[@"title"], @"Remote topic title did not match.");
-    XCTAssertEqual(remoteTopic.topicID, @0, @"Remote topic ID was not 0.");
-}
-
-
-#pragma mark - ReaderTopicService tests
-
-/**
- @return an array of RemoteReaderTopic objects for use in tests.
- */
-- (NSArray *)remoteTopicsForTests {
-    RemoteReaderTopic *foo = [[RemoteReaderTopic alloc] init];
-    foo.topicID = @1;
-    foo.title = @"foo";
-    foo.path = @"http://foo.com";
-
-    RemoteReaderTopic *bar = [[RemoteReaderTopic alloc] init];
-    bar.title = @"bar";
-    bar.path = @"http://bar.com";
-
-    RemoteReaderTopic *baz = [[RemoteReaderTopic alloc] init];
-    baz.title = @"baz";
-    baz.path = @"http://baz.com";
-
-    return @[foo, bar, baz];
-}
-
-/**
- Ensure that topics a user unsubscribes from are removed from core data when merging 
- results from the REST API.
- */
-- (void)testUnsubscribedTopicIsRemovedDuringSync {
-    NSArray *remoteTopics = [self remoteTopicsForTests];
-
-    // Setup
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
-    [service mergeTopics:remoteTopics forAccount:nil];
-
-    // Topics exist in the context
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
-    NSError *error;
-    NSUInteger count = [context countForFetchRequest:request error:&error];
-    XCTAssertEqual(count, [remoteTopics count], @"Number of topics in context did not match expected.");
-
-    // Merg new set of topics.
-    RemoteReaderTopic *foo = remoteTopics.firstObject;
-    [service mergeTopics:@[foo] forAccount:nil];
-
-    // Make sure the missing topics were removed when merged
-    count = [context countForFetchRequest:request error:&error];
-    XCTAssertEqual(count, 1, @"The number of topics in the context did not match what was expected.");
-
-    NSArray *results = [context executeFetchRequest:request error:&error];
-    ReaderTopic *topic = (ReaderTopic *)[results firstObject];
-    XCTAssertEqual(topic.topicID, foo.topicID, @"The ReaderTopic returned was not the one expected.");
-}
-
-/**
- Ensure that topics a user subscribes to are added to core data when merging 
- results from the REST API.
- */
-- (void)testNewlySubscribedTopicIsAddedDuringSync {
-    NSArray *remoteTopics = [self remoteTopicsForTests];
-
-    RemoteReaderTopic *foo = remoteTopics[0];
-    NSArray *startingTopics = @[remoteTopics[1], remoteTopics[2]];
-
-    // Setup
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
-    [service mergeTopics:startingTopics forAccount:nil];
-
-    // Topics exist in the context
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
-    request.sortDescriptors = @[sortDescriptor];
-    NSError *error;
-    NSUInteger count = [context countForFetchRequest:request error:&error];
-    XCTAssertEqual(count, [startingTopics count], @"Number of topics in context did not match expected.");
-
-    // Merg new set of topics.
-    [service mergeTopics:remoteTopics forAccount:nil];
-
-    // Make sure the missing topics were added when merged
-    count = [context countForFetchRequest:request error:&error];
-    XCTAssertEqual(count, [remoteTopics count], @"The number of topics in the context did not match what was expected.");
-
-    NSArray *results = [context executeFetchRequest:request error:&error];
-    ReaderTopic *topic = (ReaderTopic *)[results lastObject];
-    XCTAssertEqual(topic.topicID, foo.topicID, @"The ReaderTopic returned was not the one expected.");
-
-}
-
-/**
- Ensure that a default topic can be set and retrieved.
- */
-- (void)testGettingSettingCurrentTopic {
-    NSArray *remoteTopics = [self remoteTopicsForTests];
-
-    // Setup
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
-    service.currentTopic = nil;
-
-    // Current topic is not nil after a sync
-    [service mergeTopics:remoteTopics forAccount:nil];
-    XCTAssertNotNil(service.currentTopic, @"The current topic was nil.");
-
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
-    request.sortDescriptors = @[sortDescriptor];
-    NSError *error;
-    NSArray *results = [context executeFetchRequest:request error:&error];
-
-    ReaderTopic *topic = [results lastObject];
-    XCTAssertNotEqual(service.currentTopic.path, topic.path, @"The current topic mached the topic fetched.");
-
-    service.currentTopic = topic;
-    XCTAssertEqual(service.currentTopic.path, topic.path, @"The current topic did not match the topic we assiged to it.");
-}
-
-
-#pragma mark - ReaderPostServiceRemote tests
+#pragma mark - Configuration
 
 - (NSDictionary *)metaDictionaryWithKey:(NSString *)key value:(id)value {
     NSDictionary *site = [NSDictionary dictionaryWithObject:value forKey:key];
@@ -230,9 +50,7 @@
     return @{@"editorial":editorial};
 }
 
-- (void)testNormalizingPostDictionary {
-
-}
+#pragma mark - ReaderPostServiceRemote tests
 
 - (void)testSiteIsPrivate {
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:nil];
@@ -387,9 +205,11 @@
 #pragma mark - ReaderPostService tests
 
 - (RemoteReaderPost *)remoteReaderPostForTests {
+    NSString *str = @"<h1>Sample <b>text</b> &amp; sample text</h1>";
     RemoteReaderPost *remotePost = [[RemoteReaderPost alloc] init];
     remotePost.content = @"";
-    remotePost.postTitle = @"<h1>Sample <b>text</b> &amp; sample text</h1>";
+    remotePost.postTitle = str;
+    remotePost.summary = str;
 
     return remotePost;
 }
@@ -432,11 +252,11 @@
     RemoteReaderPost *remotePost = [self remoteReaderPostForTests];
     ReaderPost *post = [service createOrReplaceFromRemotePost:remotePost forTopic:nil];
     [[ContextManager sharedInstance] saveContext:context];
-
+    
     [service deletePostsWithNoTopic];
     XCTAssertTrue(post.isDeleted, @"The post should have been deleted.");
-
-
+    
+    
 }
 
 @end
