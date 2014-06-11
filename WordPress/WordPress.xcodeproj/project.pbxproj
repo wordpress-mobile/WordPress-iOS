@@ -534,6 +534,7 @@
 		5DC3F86B1948D6E3008469B0 /* NewPostTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC3F8681948D6E3008469B0 /* NewPostTableViewCell.m */; };
 		5DC3F86E1948D764008469B0 /* WPAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DC3F86C1948D764008469B0 /* WPAlertView.xib */; };
 		5DC3F86F1948D764008469B0 /* WPAlertViewSideBySide.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DC3F86D1948D764008469B0 /* WPAlertViewSideBySide.xib */; };
+		5DC3F8731948D894008469B0 /* PostSettingsSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC3F8721948D894008469B0 /* PostSettingsSelectionViewController.m */; };
 		5DD59FCC193E0AD600CE1D1D /* ReaderTopicTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DD59FCB193E0AD600CE1D1D /* ReaderTopicTest.m */; };
 		5DD8A6E415A5ECDC00A673A4 /* sync_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DD8A6E015A5ECD700A673A4 /* sync_dark.png */; };
 		5DD8A6E515A5ECDC00A673A4 /* sync_dark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DD8A6E115A5ECD900A673A4 /* sync_dark@2x.png */; };
@@ -619,7 +620,6 @@
 		8524551717DE4DBE00D22F98 /* icon-chevron.png in Resources */ = {isa = PBXBuildFile; fileRef = 8524551517DE4DBE00D22F98 /* icon-chevron.png */; };
 		8524551817DE4DBE00D22F98 /* icon-chevron@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8524551617DE4DBE00D22F98 /* icon-chevron@2x.png */; };
 		8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */ = {isa = PBXBuildFile; fileRef = 8525398A171761D9003F6B32 /* WPComLanguages.m */; };
-		852F4E8C17BED193005ED539 /* PostSettingsSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 852F4E8B17BED193005ED539 /* PostSettingsSelectionViewController.m */; };
 		85325A2517BB0DF8008E87D1 /* icon-menu-viewsite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 853259FD17BB0DF8008E87D1 /* icon-menu-viewsite@2x.png */; };
 		85325A2617BB0DF8008E87D1 /* icon-menu-viewsite.png in Resources */ = {isa = PBXBuildFile; fileRef = 853259FE17BB0DF8008E87D1 /* icon-menu-viewsite.png */; };
 		85325A2717BB0DF8008E87D1 /* icon-menu-viewsite-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 853259FF17BB0DF8008E87D1 /* icon-menu-viewsite-active@2x.png */; };
@@ -1655,6 +1655,8 @@
 		5DC3F86C1948D764008469B0 /* WPAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WPAlertView.xib; path = Resources/WPAlertView.xib; sourceTree = "<group>"; };
 		5DC3F86D1948D764008469B0 /* WPAlertViewSideBySide.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WPAlertViewSideBySide.xib; path = Resources/WPAlertViewSideBySide.xib; sourceTree = "<group>"; };
 		5DC3F8701948D7E8008469B0 /* CommentsTableViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsTableViewDelegate.h; sourceTree = "<group>"; };
+		5DC3F8711948D894008469B0 /* PostSettingsSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostSettingsSelectionViewController.h; sourceTree = "<group>"; };
+		5DC3F8721948D894008469B0 /* PostSettingsSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostSettingsSelectionViewController.m; sourceTree = "<group>"; };
 		5DD59FCB193E0AD600CE1D1D /* ReaderTopicTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderTopicTest.m; sourceTree = "<group>"; };
 		5DD8A6E015A5ECD700A673A4 /* sync_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sync_dark.png; path = Resources/Images/sync_dark.png; sourceTree = "<group>"; };
 		5DD8A6E115A5ECD900A673A4 /* sync_dark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "sync_dark@2x.png"; path = "Resources/Images/sync_dark@2x.png"; sourceTree = "<group>"; };
@@ -1771,8 +1773,6 @@
 		8527B15717CE98C5001CBA2E /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		852CD8AB190E0BC4006C9AED /* WPMediaSizing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPMediaSizing.h; sourceTree = "<group>"; };
 		852CD8AC190E0BC4006C9AED /* WPMediaSizing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPMediaSizing.m; sourceTree = "<group>"; };
-		852F4E8A17BED193005ED539 /* PostSettingsSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostSettingsSelectionViewController.h; sourceTree = "<group>"; };
-		852F4E8B17BED193005ED539 /* PostSettingsSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostSettingsSelectionViewController.m; sourceTree = "<group>"; };
 		853259FD17BB0DF8008E87D1 /* icon-menu-viewsite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-menu-viewsite@2x.png"; sourceTree = "<group>"; };
 		853259FE17BB0DF8008E87D1 /* icon-menu-viewsite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-menu-viewsite.png"; sourceTree = "<group>"; };
 		853259FF17BB0DF8008E87D1 /* icon-menu-viewsite-active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-menu-viewsite-active@2x.png"; sourceTree = "<group>"; };
@@ -2406,8 +2406,6 @@
 				C58349C41806F95100B64089 /* IOS7CorrectedTextView.m */,
 				CC669B241672C335009E16F8 /* NoteCommentPostBanner.h */,
 				CC669B251672C335009E16F8 /* NoteCommentPostBanner.m */,
-				852F4E8A17BED193005ED539 /* PostSettingsSelectionViewController.h */,
-				852F4E8B17BED193005ED539 /* PostSettingsSelectionViewController.m */,
 				93740DC817D8F85600C41B2F /* WPAlertView.h */,
 				93740DCA17D8F86700C41B2F /* WPAlertView.m */,
 				E240859A183D82AE002EB0EF /* WPAnimatedBox.h */,
@@ -3513,6 +3511,8 @@
 				ACBAB6850E1247F700F38795 /* PostPreviewViewController.m */,
 				ACBAB5FC0E121C7300F38795 /* PostSettingsViewController.h */,
 				ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */,
+				5DC3F8711948D894008469B0 /* PostSettingsSelectionViewController.h */,
+				5DC3F8721948D894008469B0 /* PostSettingsSelectionViewController.m */,
 				5D62BAD818AAAE9B0044E5F7 /* PostSettingsViewController_Internal.h */,
 				2F970F720DF92274006BD934 /* PostsViewController.h */,
 				2F970F730DF92274006BD934 /* PostsViewController.m */,
@@ -5319,6 +5319,7 @@
 				30AF6CFD13C230C600A29C00 /* AboutViewController.m in Sources */,
 				E1CAAE3A13F4142E0000C58D /* WPKeyboardToolbarButtonItem.m in Sources */,
 				E1F80825146420B000726BC7 /* UIImageView+Gravatar.m in Sources */,
+				5DC3F8731948D894008469B0 /* PostSettingsSelectionViewController.m in Sources */,
 				CCEF153114C9EA050001176D /* WPWebAppViewController.m in Sources */,
 				462F4E0A18369F0B0028D2F8 /* BlogDetailsViewController.m in Sources */,
 				85DA8C4418F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.m in Sources */,
@@ -5337,7 +5338,6 @@
 				E13EB7A5157D230000885780 /* WordPressComApi.m in Sources */,
 				5D5D0027187DA9D30027CEF6 /* CategoriesViewController.m in Sources */,
 				E1E4CE0B1773C59B00430844 /* WPAvatarSource.m in Sources */,
-				852F4E8C17BED193005ED539 /* PostSettingsSelectionViewController.m in Sources */,
 				FD75DDAD15B021C80043F12C /* UIViewController+Rotation.m in Sources */,
 				CC0E20AE15B87DA100D3468B /* WPWebBridge.m in Sources */,
 				5D97C2F315CAF8D8009B44DD /* UINavigationController+KeyboardFix.m in Sources */,
