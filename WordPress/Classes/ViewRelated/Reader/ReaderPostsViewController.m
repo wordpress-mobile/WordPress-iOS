@@ -79,7 +79,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         self.incrementalLoadingSupported = YES;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readerTopicDidChange:) name:ReaderTopicDidChangeNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchBlogsAndPrimaryBlog) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 	}
 	return self;
 }
@@ -88,8 +87,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	[super viewDidLoad];
 
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
-
-    [self fetchBlogsAndPrimaryBlog];
 
     CGFloat maxWidth;
     if (IS_IPHONE) {
@@ -790,81 +787,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (NSDictionary *)tagPropertyForStats {
     return @{@"tag": self.currentTopic.title};
-}
-
-- (void)fetchBlogsAndPrimaryBlog {
-	NSURL *xmlrpc;
-    NSString *username, *password, *authToken;
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    if (!defaultAccount) {
-        return;
-    }
-	
-	xmlrpc = [NSURL URLWithString:@"https://wordpress.com/xmlrpc.php"];
-	username = defaultAccount.username;
-	password = defaultAccount.password;
-    authToken = defaultAccount.authToken;
-    
-    WPXMLRPCClient *api = [WPXMLRPCClient clientWithXMLRPCEndpoint:xmlrpc];
-    [api setAuthorizationHeaderWithToken:authToken];
-    [api callMethod:@"wp.getUsersBlogs"
-         parameters:[NSArray arrayWithObjects:username, password, nil]
-            success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                NSArray *usersBlogs = responseObject;
-				
-                if ([usersBlogs count] > 0) {
-                    [usersBlogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                        NSString *title = [obj valueForKey:@"blogName"];
-                        title = [title stringByDecodingXMLCharacters];
-                        [obj setValue:title forKey:@"blogName"];
-                    }];
-                }
-				
-				[[NSUserDefaults standardUserDefaults] setObject:usersBlogs forKey:@"wpcom_users_blogs"];
-				
-                NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-                AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-                WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-                [[defaultAccount restApi] GET:@"me"
-                                       parameters:nil
-                                          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                              if ([usersBlogs count] < 1)
-                                                  return;
-                                              
-                                              NSDictionary *dict = (NSDictionary *)responseObject;
-                                              __block NSNumber *preferredBlogId;
-                                              NSNumber *primaryBlog = [dict objectForKey:@"primary_blog"];
-                                              [usersBlogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                                                  if ([primaryBlog isEqualToNumber:[obj numberForKey:@"blogid"]]) {
-                                                      preferredBlogId = [obj numberForKey:@"blogid"];
-                                                      *stop = YES;
-                                                  }
-                                              }];
-                                              
-                                              if (!preferredBlogId) {
-                                                  NSDictionary *dict = [usersBlogs objectAtIndex:0];
-                                                  preferredBlogId = [dict numberForKey:@"blogid"];
-                                              }
-                                              
-                                              [[NSUserDefaults standardUserDefaults] setObject:preferredBlogId forKey:@"wpcom_users_prefered_blog_id"];
-                                              [NSUserDefaults resetStandardUserDefaults];
-                                              
-                                          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                              // TODO: Handle Failure. Retry maybe?
-                                          }];
-                
-                if ([usersBlogs count] == 0) {
-                    return;
-                }
-
-			} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-				// Fail silently.
-                DDLogError(@"Failed retrieving user blogs in ReaderPostsViewController: %@", error);
-            }];
 }
 
 - (CGSize)tabBarSize {
