@@ -282,7 +282,6 @@
 		46F871531839528C00BC149B /* reader-postaction-time@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46F871511839528C00BC149B /* reader-postaction-time@2x.png */; };
 		46F8D7FB183C293200E10A38 /* ReaderPostView.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F8D7FA183C293200E10A38 /* ReaderPostView.m */; };
 		46FE8276184FD8A200535844 /* WordPressComOAuthClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E1634518183B733B005E967F /* WordPressComOAuthClient.m */; };
-		584B96484129A29604E94958 /* WPStatsServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 584B9A59C3A0F6817D94D523 /* WPStatsServiceTest.m */; };
 		59379AA4191904C200B49251 /* AnimatedGIFImageSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 59379AA3191904C200B49251 /* AnimatedGIFImageSerialization.m */; };
 		5D0077A7182AE9DF00F865DB /* ReaderMediaQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D0077A6182AE9DF00F865DB /* ReaderMediaQueue.m */; };
 		5D119DA3176FBE040073D83A /* UIImageView+AFNetworkingExtra.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D119DA2176FBE040073D83A /* UIImageView+AFNetworkingExtra.m */; };
@@ -748,7 +747,6 @@
 		85ED988817DFA00000090D0B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85ED988717DFA00000090D0B /* Images.xcassets */; };
 		930284B518EAF79500CB0BF4 /* NoteService.m in Sources */ = {isa = PBXBuildFile; fileRef = 930284B418EAF79500CB0BF4 /* NoteService.m */; };
 		931DF4D618D09A2F00540BDD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 931DF4D818D09A2F00540BDD /* InfoPlist.strings */; };
-		93594BD3191D28F10079E6B2 /* WPStatsServiceRemoteTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 93594BD2191D28F10079E6B2 /* WPStatsServiceRemoteTest.m */; };
 		93594BD5191D2F5A0079E6B2 /* stats-batch.json in Resources */ = {isa = PBXBuildFile; fileRef = 93594BD4191D2F5A0079E6B2 /* stats-batch.json */; };
 		93598885185C0CF900EB9651 /* icon-navbar-dropdown.png in Resources */ = {isa = PBXBuildFile; fileRef = 93598883185C0CF900EB9651 /* icon-navbar-dropdown.png */; };
 		93598886185C0CF900EB9651 /* icon-navbar-dropdown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 93598884185C0CF900EB9651 /* icon-navbar-dropdown@2x.png */; };
@@ -1339,7 +1337,6 @@
 		46F871511839528C00BC149B /* reader-postaction-time@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reader-postaction-time@2x.png"; path = "Resources/Images/reader-postaction-time@2x.png"; sourceTree = "<group>"; };
 		46F8D7F9183C293200E10A38 /* ReaderPostView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderPostView.h; sourceTree = "<group>"; };
 		46F8D7FA183C293200E10A38 /* ReaderPostView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPostView.m; sourceTree = "<group>"; };
-		584B9A59C3A0F6817D94D523 /* WPStatsServiceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPStatsServiceTest.m; sourceTree = "<group>"; };
 		59379AA2191904C200B49251 /* AnimatedGIFImageSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimatedGIFImageSerialization.h; sourceTree = "<group>"; };
 		59379AA3191904C200B49251 /* AnimatedGIFImageSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimatedGIFImageSerialization.m; sourceTree = "<group>"; };
 		5D0077A5182AE9DF00F865DB /* ReaderMediaQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderMediaQueue.h; sourceTree = "<group>"; };
@@ -1946,7 +1943,6 @@
 		931DF4DE18D09B2600540BDD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		931DF4DF18D09B3900540BDD /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		93460A36189D5091000E26CE /* WordPress 14.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 14.xcdatamodel"; sourceTree = "<group>"; };
-		93594BD2191D28F10079E6B2 /* WPStatsServiceRemoteTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPStatsServiceRemoteTest.m; sourceTree = "<group>"; };
 		93594BD4191D2F5A0079E6B2 /* stats-batch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "stats-batch.json"; sourceTree = "<group>"; };
 		93598883185C0CF900EB9651 /* icon-navbar-dropdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-navbar-dropdown.png"; sourceTree = "<group>"; };
 		93598884185C0CF900EB9651 /* icon-navbar-dropdown@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-navbar-dropdown@2x.png"; sourceTree = "<group>"; };
@@ -2778,15 +2774,6 @@
 				5D5177E218D8C1D300A9150D /* icon-tab-reader-filled@2x.png */,
 			);
 			name = Tabs;
-			sourceTree = "<group>";
-		};
-		584B935636F4324799CEA02F /* Stats */ = {
-			isa = PBXGroup;
-			children = (
-				584B9A59C3A0F6817D94D523 /* WPStatsServiceTest.m */,
-				93594BD2191D28F10079E6B2 /* WPStatsServiceRemoteTest.m */,
-			);
-			name = Stats;
 			sourceTree = "<group>";
 		};
 		59379AA1191904C200B49251 /* AnimatedGIFImageSerialization */ = {
@@ -4174,17 +4161,16 @@
 		E1239B7B176A2E0F00D37220 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				5DA3EE191925111700294E0B /* WPImageOptimizerTest.m */,
 				E150520A16CAC5C400D3DDDC /* BlogJetpackTest.h */,
 				E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */,
 				C5CFDC29184F962B00097B05 /* CoreDataConcurrencyTest.m */,
 				852CD8AE190E0D04006C9AED /* Media */,
 				F1564E5A18946087009F8F97 /* NSStringHelpersTest.m */,
-				E10675C7183F82E900E5CE5C /* SettingsViewControllerTest.m */,
-				584B935636F4324799CEA02F /* Stats */,
-				E1E4CE0C177439D100430844 /* WPAvatarSourceTest.m */,
 				5DE8A03F1912D95B00B2FF59 /* ReaderServiceTest.h */,
 				5DE8A0401912D95B00B2FF59 /* ReaderServiceTest.m */,
+				E10675C7183F82E900E5CE5C /* SettingsViewControllerTest.m */,
+				E1E4CE0C177439D100430844 /* WPAvatarSourceTest.m */,
+				5DA3EE191925111700294E0B /* WPImageOptimizerTest.m */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -5514,7 +5500,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5DA3EE1A1925111700294E0B /* WPImageOptimizerTest.m in Sources */,
-				93594BD3191D28F10079E6B2 /* WPStatsServiceRemoteTest.m in Sources */,
 				E150520C16CAC5C400D3DDDC /* BlogJetpackTest.m in Sources */,
 				C5CFDC2A184F962B00097B05 /* CoreDataConcurrencyTest.m in Sources */,
 				5DE8A0411912D95B00B2FF59 /* ReaderServiceTest.m in Sources */,
@@ -5524,7 +5509,6 @@
 				E131CB5E16CAD659004B0314 /* AsyncTestHelper.m in Sources */,
 				E15618FD16DB8677006532C4 /* UIKitTestHelper.m in Sources */,
 				E1E4CE0D177439D100430844 /* WPAvatarSourceTest.m in Sources */,
-				584B96484129A29604E94958 /* WPStatsServiceTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
