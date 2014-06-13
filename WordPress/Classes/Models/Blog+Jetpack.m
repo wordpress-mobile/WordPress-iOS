@@ -66,7 +66,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
         }
     }
 
-	AFHTTPRequestOperationManager* operationManager = [[AFHTTPRequestOperationManager alloc] init];
+	AFHTTPRequestOperationManager* operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:BlogJetpackApiBaseUrl]];
 
 	NSString* userAgent = [[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent];
 
@@ -195,10 +195,23 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
     [self removeWithoutJetpack];
 }
 
+- (NSNumber *)jetpackDotComID {
+    // For WordPress.com blogs, don't override the blog ID
+    if ([self isWPcom]) {
+        return [self jetpackDotComID];
+    }
+
+    // For self hosted, return the jetpackBlogID, which will be nil if there's no Jetpack
+    return [self jetpackBlogID];
+}
+
 + (void)load {
     Method originalRemove = class_getInstanceMethod(self, @selector(remove));
     Method customRemove = class_getInstanceMethod(self, @selector(removeWithoutJetpack));
     method_exchangeImplementations(originalRemove, customRemove);
+    Method originalDotcomId = class_getInstanceMethod(self, @selector(dotComID));
+    Method customDotcomId = class_getInstanceMethod(self, @selector(jetpackDotComID));
+    method_exchangeImplementations(originalDotcomId, customDotcomId);
 }
 
 @end
