@@ -296,7 +296,14 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         [self displayErrorMessages];
         return;
     }
-    
+
+    if ([self isUserNameReserved]) {
+        [self displayReservedNameErrorMessage];
+        [self toggleSignInFormAction:nil];
+        [_siteUrlText becomeFirstResponder];
+        return;
+    }
+
     [self signIn];
 }
 
@@ -724,9 +731,27 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     return siteURL != nil;
 }
 
+- (BOOL)isUserNameReserved
+{
+    if (!_userIsDotCom) {
+        return NO;
+    }
+    NSString *username = [[_usernameText.text trim] lowercaseString];
+    NSArray *reservedUserNames = @[@"admin",@"administrator",@"root"];
+    if ([reservedUserNames containsObject:username]) {
+        return YES;
+    }
+    return NO;
+}
+
 - (void)displayErrorMessages
 {
     [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Please fill out all the fields", nil) withSupportButton:NO];
+}
+
+- (void)displayReservedNameErrorMessage
+{
+    [WPError showAlertWithTitle:NSLocalizedString(@"Self-hosted site?", nil) message:NSLocalizedString(@"Please enter the URL of your self-hosted WordPress site.", nil) withSupportButton:NO];
 }
 
 - (void)setAuthenticating:(BOOL)authenticating withStatusMessage:(NSString *)status {
