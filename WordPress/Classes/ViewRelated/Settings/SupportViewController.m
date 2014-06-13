@@ -7,6 +7,7 @@
 #import "WPTableViewSectionFooterView.h"
 #import <Helpshift/Helpshift.h>
 #import <Taplytics/Taplytics.h>
+#import "WPAnalytics.h"
 
 static NSString *const UserDefaultsFeedbackEnabled = @"wp_feedback_enabled";
 static NSString *const UserDefaultsHelpshiftEnabled = @"wp_helpshift_enabled";
@@ -149,7 +150,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     }
     
     if (section == SettingsSectionActivityLog) {
-        return 3;
+        return 4;
     }
     
     if (section == SettingsSectionFeedback) {
@@ -162,18 +163,19 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = nil;
-    if (indexPath.section == SettingsSectionActivityLog && indexPath.row == 1) {
+    if (indexPath.section == SettingsSectionActivityLog && (indexPath.row == 1 || indexPath.row == 2)) {
         // Settings / Extra Debug
-        static NSString *CellIdentifierExtraDebug = @"SupportViewExtraDebugCell";
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierExtraDebug];
+        static NSString *CellIdentifierSwitchAccessory = @"SupportViewSwitchAccessoryCell";
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierSwitchAccessory];
         
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifierExtraDebug];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifierSwitchAccessory];
         }
         
-        UISwitch *extraDebugSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
-        [extraDebugSwitch addTarget:self action:@selector(handleExtraDebugChanged:) forControlEvents:UIControlEventValueChanged];
-        cell.accessoryView = extraDebugSwitch;
+        UISwitch *switchAccessory = [[UISwitch alloc] initWithFrame:CGRectZero];
+        switchAccessory.tag = indexPath.row;
+        [switchAccessory addTarget:self action:@selector(handleCellSwitchChanged:) forControlEvents:UIControlEventValueChanged];
+        cell.accessoryView = switchAccessory;
     } else {
         static NSString *CellIdentifier = @"SupportViewStandardCell";
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -222,6 +224,11 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
             UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
             aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
         } else if (indexPath.row == 2) {
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.textLabel.text = NSLocalizedString(@"Anonymous Usage Tracking", @"");
+            UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
+            aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"usage_tracking"];
+        } else if (indexPath.row == 3) {
             cell.textLabel.text = NSLocalizedString(@"Activity Logs", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
@@ -268,7 +275,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
         } else {
             [WPError showAlertWithTitle:NSLocalizedString(@"Feedback", nil) message:NSLocalizedString(@"Your device is not configured to send e-mail.", nil)];
         }
-    } else if (indexPath.section == SettingsSectionActivityLog && indexPath.row == 2) {
+    } else if (indexPath.section == SettingsSectionActivityLog && indexPath.row == 3) {
         ActivityLogViewController *activityLogViewController = [[ActivityLogViewController alloc] init];
         [self.navigationController pushViewController:activityLogViewController animated:YES];
     }
@@ -276,10 +283,23 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
 #pragma mark - SupportViewController methods
 
-- (void)handleExtraDebugChanged:(id)sender {
+- (void)handleCellSwitchChanged:(id)sender {
     UISwitch *aSwitch = (UISwitch *)sender;
-    [[NSUserDefaults standardUserDefaults] setBool:aSwitch.on forKey:@"extra_debug"];
+    
+    NSString *key = (aSwitch.tag == 1) ? @"extra_debug" : @"usage_tracking";
+    
+    [[NSUserDefaults standardUserDefaults] setBool:aSwitch.on forKey:key];
     [NSUserDefaults resetStandardUserDefaults];
+    
+    if ([key isEqualToString:@"usage_tracking"] && aSwitch.on) {
+        DDLogInfo(@"WPAnalytics session started");
+        
+        [WPAnalytics beginSession];
+    } else if ([key isEqualToString:@"usage_tracking"] && !aSwitch.on) {
+        DDLogInfo(@"WPAnalytics session stopped");
+
+        [WPAnalytics endSession];
+    }
 }
 
 - (MFMailComposeViewController *)feedbackMailViewController

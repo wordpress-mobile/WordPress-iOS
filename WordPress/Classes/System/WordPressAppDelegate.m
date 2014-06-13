@@ -87,12 +87,27 @@ static NSInteger const IndexForMeTab = 2;
     // Stats and feedback
     [Taplytics startTaplyticsAPIKey:[WordPressComApiCredentials taplyticsAPIKey]
                             options:@{@"shakeMenu":@NO}];
+    [SupportViewController checkIfFeedbackShouldBeEnabled];
 
+    NSNumber *usage_tracking = [[NSUserDefaults standardUserDefaults] valueForKey:@"usage_tracking"];
+    if (usage_tracking == nil) {
+        // check if usage_tracking bool is set
+        // default to YES
+        
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"usage_tracking"];
+        [NSUserDefaults resetStandardUserDefaults];
+    }
+    
     [WPAnalytics registerTracker:[[WPAnalyticsTrackerMixpanel alloc] init]];
     [WPAnalytics registerTracker:[[WPAnalyticsTrackerWPCom alloc] init]];
-    [WPAnalytics beginSession];
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"usage_tracking"]) {
+        DDLogInfo(@"WPAnalytics session started");
+
+        [WPAnalytics beginSession];
+    }
+    
     [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
-    [SupportViewController checkIfFeedbackShouldBeEnabled];
     
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
