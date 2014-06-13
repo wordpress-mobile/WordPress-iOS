@@ -751,7 +751,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (void)displayReservedNameErrorMessage
 {
-    [WPError showAlertWithTitle:NSLocalizedString(@"Self-hosted site?", nil) message:NSLocalizedString(@"Please enter the URL of your self-hosted WordPress site.", nil) withSupportButton:NO];
+    [WPError showAlertWithTitle:NSLocalizedString(@"Self-hosted site?", nil) message:NSLocalizedString(@"Please enter the URL of your WordPress site.", nil) withSupportButton:NO];
 }
 
 - (void)setAuthenticating:(BOOL)authenticating withStatusMessage:(NSString *)status {
