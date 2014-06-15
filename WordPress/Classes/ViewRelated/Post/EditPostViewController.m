@@ -1425,7 +1425,6 @@ NS_OPTIONS(NSInteger, ActionSheetTag){
     for (ALAsset *asset in assets) {
         if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
             NSNumber *optimize = self.videosToOptimize[[[asset defaultRepresentation] url].absoluteString];
-            NSLog(@"%@", [asset valueForProperty:ALAssetPropertyRepresentations]);
             MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
             [mediaService createVideoMediaWithAsset:asset optimize:[optimize boolValue]
                                     forPostObjectID:self.post.objectID
