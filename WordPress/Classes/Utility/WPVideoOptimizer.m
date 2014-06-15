@@ -9,7 +9,9 @@
 #import "WPVideoOptimizer.h"
 #import <AVFoundation/AVFoundation.h>
 
-static NSString * const DisableVideoOptimizationDefaultsKey = @"WPDisableVideoOptimization";
+static NSString * const EnableVideoOptimizationDefaultsKey = @"WPEnableVideoOptimization";
+static NSString * const PermanentVideoOptimizationDecisionTakenDefaultsKey = @"WPPermanentVideoOptimizationDecisionTaken";
+
 static long long VideoMaxSize = 1024 * 1024 * 20;
 
 @implementation WPVideoOptimizer
@@ -17,13 +19,26 @@ static long long VideoMaxSize = 1024 * 1024 * 20;
 + (BOOL)shouldOptimizeVideos
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    return ![defaults boolForKey:DisableVideoOptimizationDefaultsKey];
+    return [defaults boolForKey:EnableVideoOptimizationDefaultsKey];
 }
 
 + (void)setShouldOptimizeVideos:(BOOL)optimize
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setBool:!optimize forKey:DisableVideoOptimizationDefaultsKey];
+    [defaults setBool:optimize forKey:EnableVideoOptimizationDefaultsKey];
+    [defaults synchronize];
+}
+
++ (BOOL)isPermanentVideoOptimizationDecisionTaken
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    return [defaults boolForKey:PermanentVideoOptimizationDecisionTakenDefaultsKey];
+}
+
++ (void)setPermanentVideoOptimizationDecisionTaken:(BOOL)optimize
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:optimize forKey:PermanentVideoOptimizationDecisionTakenDefaultsKey];
     [defaults synchronize];
 }
 
@@ -33,16 +48,24 @@ static long long VideoMaxSize = 1024 * 1024 * 20;
     return [asset.defaultRepresentation size] > VideoMaxSize;
 }
 
--(void)optimizeAsset:(ALAsset*)asset toPath:(NSString *)videoPath withHandler:(void (^)(NSError* error))handler
+-(void)optimizeAsset:(ALAsset*)originalAsset resize:(BOOL) resize toPath:(NSString *)videoPath withHandler:(void (^)(NSError* error))handler
 {
+    ALAssetRepresentation* representation=originalAsset.defaultRepresentation;
+    AVAsset * asset = [AVURLAsset URLAssetWithURL:representation.url options:nil];
+    
     NSString * presetName = AVAssetExportPresetPassthrough;
-    ALAssetRepresentation* representation=asset.defaultRepresentation;
-    if ([[self class] shouldOptimizeVideos] && [[self class] isAssetTooLarge:asset]){
+
+    if ([[self class] shouldOptimizeVideos] || resize){
         presetName = AVAssetExportPresetMediumQuality;
     }
-    AVAssetExportSession* session=[AVAssetExportSession exportSessionWithAsset:[AVURLAsset URLAssetWithURL:representation.url options:nil] presetName:presetName];
+    
+    AVAssetExportSession* session=[AVAssetExportSession exportSessionWithAsset:asset presetName:presetName];
+
     session.outputFileType = representation.UTI;
+    session.shouldOptimizeForNetworkUse = YES;
+
     session.outputURL=[NSURL fileURLWithPath:videoPath];
+    
     [session exportAsynchronouslyWithCompletionHandler:^{
         if (session.status!=AVAssetExportSessionStatusCompleted){
             NSError* error=session.error;

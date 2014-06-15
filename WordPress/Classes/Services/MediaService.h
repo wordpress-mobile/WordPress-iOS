@@ -14,7 +14,10 @@
  @param postObjectID the post where the media will be associated
  @param completion a block to where Media object will be returned on success.
  */
-- (void)createVideoMediaWithAsset:(ALAsset *)asset forPostObjectID:(NSManagedObjectID *) postObjectID completion:(void (^)(Media *media))completion;
+- (void)createVideoMediaWithAsset:(ALAsset *)asset
+                         optimize:(BOOL) optimize
+                  forPostObjectID:(NSManagedObjectID *) postObjectID
+                       completion:(void (^)(Media *media))completion;
 
 - (AFHTTPRequestOperation *)operationToUploadMedia:(Media *)media withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 @end

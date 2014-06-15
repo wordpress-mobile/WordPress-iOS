@@ -49,9 +49,20 @@
  If shouldOptimizeVideos is NO, the video data is exported from the asset to the videoPath without changes in encoding.
  
  @param asset the ALAsset containing the image to optimize.
+ @para resize should resize video to save bandwidth
  @param videoPath the path to where the optimized video file will be created.
  @param handler a block function that is invoked when the optimization process is finished. If successfull the error argument will be nil otherwise it will return an error class with related information.
  */
--(void)optimizeAsset:(ALAsset*)asset toPath:(NSString *)videoPath withHandler:(void (^)(NSError* error))handler;
+-(void)optimizeAsset:(ALAsset*)asset resize:(BOOL) resize toPath:(NSString *)videoPath withHandler:(void (^)(NSError* error))handler;
+
+/**
+ Check if video size is too large and needs to be scaled down.
+ */
++ (BOOL)isAssetTooLarge:(ALAsset*)asset;
+
++ (BOOL)isPermanentVideoOptimizationDecisionTaken;
+
++ (void)setPermanentVideoOptimizationDecisionTaken:(BOOL)optimize;
+
 
 @end

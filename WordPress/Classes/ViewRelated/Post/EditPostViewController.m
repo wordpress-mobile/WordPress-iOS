@@ -13,6 +13,7 @@
 #import "MediaService.h"
 #import "WPMediaUploader.h"
 #import "WPUploadStatusView.h"
+#import "WPVideoOptimizer.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
@@ -29,6 +30,10 @@ static void * EditPostViewControllerContext = &EditPostViewControllerContext;
 
 NSInteger const MaxNumberOfVideosSelected = 1;
 
+NS_OPTIONS(NSInteger, ActionSheetTag){
+    ActionSheetTagDraftOptions = 201,
+};
+
 @interface EditPostViewController ()<UIPopoverControllerDelegate> {
     
 }
@@ -42,6 +47,8 @@ NSInteger const MaxNumberOfVideosSelected = 1;
 @property (nonatomic) BOOL videoPressEnabled;
 @property (nonatomic, assign) int numberOfVideosSelected;
 @property (nonatomic, strong) NSOperationQueue *mediaUploadQueue;
+@property (nonatomic, strong) NSMutableDictionary *videosToOptimize;
+@property (nonatomic, strong) NSString *videoToOptimize;
 
 @end
 
@@ -133,6 +140,7 @@ NSInteger const MaxNumberOfVideosSelected = 1;
         } else {
             _editMode = EditPostViewControllerModeEditPost;
         }
+        _videosToOptimize = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -634,7 +642,7 @@ NSInteger const MaxNumberOfVideosSelected = 1;
                                          otherButtonTitles:NSLocalizedString(@"Update Draft", @"Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post."), nil];
     }
     
-    actionSheet.tag = 201;
+    actionSheet.tag = ActionSheetTagDraftOptions;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
     if (IS_IPAD) {
         [actionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES];
@@ -1312,6 +1320,22 @@ NSInteger const MaxNumberOfVideosSelected = 1;
         if (buttonIndex == 1) {
             [self cancelMediaUploads];
         }
+    } else if (alertView.tag == EditPostViewControllerAlertTagVideoCompression) {
+        if (buttonIndex == 0) {
+            self.videosToOptimize[self.videoToOptimize] = @(NO);
+        }
+        if (buttonIndex == 1) {
+            [WPVideoOptimizer setPermanentVideoOptimizationDecisionTaken:YES];
+            [WPVideoOptimizer setShouldOptimizeVideos:NO];
+        }
+        if (buttonIndex == 2) {
+            self.videosToOptimize[self.videoToOptimize] = @(YES);
+        }
+        if (buttonIndex == 3) {
+            [WPVideoOptimizer setPermanentVideoOptimizationDecisionTaken:YES];
+            [WPVideoOptimizer setShouldOptimizeVideos:YES];
+        }
+        
     }
     return;
 }
@@ -1328,7 +1352,7 @@ NSInteger const MaxNumberOfVideosSelected = 1;
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if ([actionSheet tag] == 201) {
+    if ([actionSheet tag] == ActionSheetTagDraftOptions) {
         // Discard
         if (buttonIndex == 0) {
             [self discardChangesAndDismiss];
@@ -1399,9 +1423,13 @@ NSInteger const MaxNumberOfVideosSelected = 1;
     [self dismissViewControllerAnimated:YES completion:nil];
     
     for (ALAsset *asset in assets) {
-        if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {            
+        if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
+            NSNumber *optimize = self.videosToOptimize[[[asset defaultRepresentation] url].absoluteString];
+            NSLog(@"%@", [asset valueForProperty:ALAssetPropertyRepresentations]);
             MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-            [mediaService createVideoMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
+            [mediaService createVideoMediaWithAsset:asset optimize:[optimize boolValue]
+                                    forPostObjectID:self.post.objectID
+                                         completion:^(Media *media) {
                 AFHTTPRequestOperation *operation = [mediaService operationToUploadMedia:media withSuccess:^{
                     [self insertMedia:media];
                 } failure:^(NSError *error) {
@@ -1453,12 +1481,12 @@ NSInteger const MaxNumberOfVideosSelected = 1;
             return NO;
         }
         
-        if (self.numberOfVideosSelected < MaxNumberOfVideosSelected){
-            return YES;
-        } else {
+        if (self.numberOfVideosSelected >= MaxNumberOfVideosSelected){
            [WPError showAlertWithTitle:NSLocalizedString(@"Only one video at a time please", nil)  message:NSLocalizedString(@"Only one video upload at a time please, please deselect previous video selection", nil) withSupportButton:NO];
             return NO;
         }
+        
+        return YES;
     }
     
     if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypeUnknown){
@@ -1471,6 +1499,8 @@ NSInteger const MaxNumberOfVideosSelected = 1;
 - (void)assetsPickerController:(CTAssetsPickerController *)picker didSelectAsset:(ALAsset *)asset {
     if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypeVideo){
         self.numberOfVideosSelected++;
+        [self showVideoOptions];
+        self.videoToOptimize = [asset.defaultRepresentation.url absoluteString];
     }
 }
 
@@ -1593,6 +1623,19 @@ NSInteger const MaxNumberOfVideosSelected = 1;
             self.post.blog.videoPressEnabled = NO;
         }];
     }
+}
+
+- (void)showVideoOptions{
+    if ([WPVideoOptimizer isPermanentVideoOptimizationDecisionTaken]){
+        return;
+    }
+    UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Video upload options.", @"Title of message with options for video upload size. That shown when a user picks a video to add to a post and it's too big.")
+                                                         message:NSLocalizedString(@"Video files can spend a lot of bandwidth to upload for your blog, do you want to resize them to a lower resolution?.", @"Explanation for the user about videos size. That showns when a user picks a video to add to a post.")
+                                                        delegate:self
+                                               cancelButtonTitle:NSLocalizedString(@"Don't resize", @"User option if doesn't want to compress.")
+                                               otherButtonTitles:NSLocalizedString(@"Never resize", @"User option if he never wants to compress a video before sending it."), NSLocalizedString(@"Compress this time only", @"User option if he wants to compress the video this time only."), NSLocalizedString(@"Resize always", @"User option if he always wants to compress a video before sending it."),nil];
+    alertView.tag = EditPostViewControllerAlertTagVideoCompression;
+    [alertView show];
 }
 
 @end

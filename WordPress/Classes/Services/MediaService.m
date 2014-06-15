@@ -54,7 +54,10 @@
     }];
 }
 
-- (void)createVideoMediaWithAsset:(ALAsset *)asset forPostObjectID:(NSManagedObjectID *)postObjectID completion:(void (^)(Media *media))completion
+- (void)createVideoMediaWithAsset:(ALAsset *)asset
+                         optimize:(BOOL) optimize
+                  forPostObjectID:(NSManagedObjectID *)postObjectID
+                       completion:(void (^)(Media *media))completion
 {
     NSString *videoPath = [self pathForAsset:asset];
     NSData *thumbnailData = [self thumbnailDataFromAsset:asset];
@@ -71,7 +74,7 @@
     }];
     
     WPVideoOptimizer *optimizer = [[WPVideoOptimizer alloc] init];
-    [optimizer optimizeAsset:asset toPath:videoPath withHandler:^(NSError *error) {
+    [optimizer optimizeAsset:asset resize:optimize toPath:videoPath withHandler:^(NSError *error) {
         if (error){
             DDLogError(@"Error writing media to %@", videoPath);
             [media remove];            
@@ -169,7 +172,7 @@
         NSString *alternativeFilename = [NSString stringWithFormat:@"%@-%d.%@", basename, index, extension];
         path = [documentsDirectory stringByAppendingPathComponent:alternativeFilename];
         index++;
-    }
+    };
     return path;
 }
 
