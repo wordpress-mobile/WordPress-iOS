@@ -1458,6 +1458,7 @@ NS_OPTIONS(NSInteger, ActionSheetTag){
             }];
         }
     }
+    [self.videosToOptimize removeAllObjects];
     [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self setupNavbar];
