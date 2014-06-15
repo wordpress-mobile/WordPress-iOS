@@ -102,7 +102,7 @@
     media.remoteStatus = MediaRemoteStatusPushing;
     NSString * mediaType = [self mimeTypeForFilename:media.filename];
     BOOL isVideo = [self isFileVideo:media.filename];
-    id<MediaServiceRemote> remote = [self remoteForBlog:media.blog forceRPC:isVideo];
+    id<MediaServiceRemote> remote = [self remoteForBlog:media.blog forceRPC:(isVideo && media.blog.isWPcom)];
     return [remote operationToUploadFile:media.localURL
                                   ofType:mediaType
                             withFilename:media.filename
