@@ -488,7 +488,6 @@
 		5DB767411588F64D00EBE36C /* postPreview.html in Resources */ = {isa = PBXBuildFile; fileRef = 5DB767401588F64D00EBE36C /* postPreview.html */; };
 		5DBCD9D218F3569F00B32229 /* ReaderTopic.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DBCD9D118F3569F00B32229 /* ReaderTopic.m */; };
 		5DBCD9D518F35D7500B32229 /* ReaderTopicService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DBCD9D418F35D7500B32229 /* ReaderTopicService.m */; };
-		5DBE185A18B50D9F00605CF8 /* UIImage+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DBE185918B50D9F00605CF8 /* UIImage+Util.m */; };
 		5DC02A0F18E4C589009A1765 /* date_picker_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DC029EB18E4C588009A1765 /* date_picker_selected.png */; };
 		5DC02A1018E4C589009A1765 /* date_picker_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DC029EC18E4C588009A1765 /* date_picker_selected@2x.png */; };
 		5DC02A1118E4C589009A1765 /* date_picker_unselected.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DC029ED18E4C588009A1765 /* date_picker_unselected.png */; };
@@ -1608,8 +1607,6 @@
 		5DBCD9D118F3569F00B32229 /* ReaderTopic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderTopic.m; sourceTree = "<group>"; };
 		5DBCD9D318F35D7500B32229 /* ReaderTopicService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderTopicService.h; sourceTree = "<group>"; };
 		5DBCD9D418F35D7500B32229 /* ReaderTopicService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderTopicService.m; sourceTree = "<group>"; };
-		5DBE185818B50D9F00605CF8 /* UIImage+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Util.h"; sourceTree = "<group>"; };
-		5DBE185918B50D9F00605CF8 /* UIImage+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Util.m"; sourceTree = "<group>"; };
 		5DC029EB18E4C588009A1765 /* date_picker_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = date_picker_selected.png; path = Resources/Images/date_picker_selected.png; sourceTree = "<group>"; };
 		5DC029EC18E4C588009A1765 /* date_picker_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "date_picker_selected@2x.png"; path = "Resources/Images/date_picker_selected@2x.png"; sourceTree = "<group>"; };
 		5DC029ED18E4C588009A1765 /* date_picker_unselected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = date_picker_unselected.png; path = Resources/Images/date_picker_unselected.png; sourceTree = "<group>"; };
@@ -4004,8 +4001,6 @@
 		C59D3D480E6410BC00AA591D /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				5DBE185818B50D9F00605CF8 /* UIImage+Util.h */,
-				5DBE185918B50D9F00605CF8 /* UIImage+Util.m */,
 				E13F23C114FE84600081D9CC /* NSMutableDictionary+Helpers.h */,
 				E13F23C214FE84600081D9CC /* NSMutableDictionary+Helpers.m */,
 				296526FC105810E100597FA3 /* NSString+Helpers.h */,
@@ -5495,7 +5490,6 @@
 				5DA5BF4118E32DCF005F11F9 /* MediaBrowserViewController.m in Sources */,
 				E174F6E6172A73960004F23A /* WPAccount.m in Sources */,
 				E100C6BB1741473000AE48D8 /* WordPress-11-12.xcmappingmodel in Sources */,
-				5DBE185A18B50D9F00605CF8 /* UIImage+Util.m in Sources */,
 				E1A03EE217422DCF0085D192 /* BlogToAccount.m in Sources */,
 				5D37941B19216B1300E26CA4 /* RebloggingViewController.m in Sources */,
 				E1A03F48174283E10085D192 /* BlogToJetpackAccount.m in Sources */,
