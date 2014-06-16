@@ -11,6 +11,7 @@
 #import "WPMediaUploader.h"
 #import "WPUploadStatusView.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <WordPress-iOS-Shared/UIImage+Util.h>
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
