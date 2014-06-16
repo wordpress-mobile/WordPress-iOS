@@ -35,124 +35,124 @@
     CGFloat width = [self buttonWidth];
     CGFloat height = [self buttonHeight];
     UIColor *highlightColor = [UIColor whiteColor];
-    if (_boldButton == nil) {
+    if (self.boldButton == nil) {
         self.boldButton = [WPKeyboardToolbarButtonItem button];
-        [_boldButton setImageName:@"icon_format_bold" withColor:nil highlightColor:highlightColor];
-        _boldButton.frame = CGRectMake(x, 0, width, height);
-        x += _boldButton.frame.size.width;
-        _boldButton.actionTag = @"strong";
-        _boldButton.accessibilityIdentifier = @"strong";
-        _boldButton.actionName = NSLocalizedString(@"bold", @"Bold text formatting in the Post Editor. This string will be used in the Undo message if the last change was adding formatting.");
-        _boldButton.accessibilityLabel = NSLocalizedString(@"bold", nil);
-        _boldButton.exclusiveTouch = YES;
-        [_boldButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [self.boldButton setImageName:@"icon_format_bold" withColor:nil highlightColor:highlightColor];
+        self.boldButton.frame = CGRectMake(x, 0, width, height);
+        x += self.boldButton.frame.size.width;
+        self.boldButton.actionTag = @"strong";
+        self.boldButton.accessibilityIdentifier = @"strong";
+        self.boldButton.actionName = NSLocalizedString(@"bold", @"Bold text formatting in the Post Editor. This string will be used in the Undo message if the last change was adding formatting.");
+        self.boldButton.accessibilityLabel = NSLocalizedString(@"bold", nil);
+        self.boldButton.exclusiveTouch = YES;
+        [self.boldButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
-    if (_italicsButton == nil) {
+    if (self.italicsButton == nil) {
         self.italicsButton = [WPKeyboardToolbarButtonItem button];
-        [_italicsButton setImageName:@"icon_format_italic" withColor:nil highlightColor:highlightColor];
-        _italicsButton.frame = CGRectMake(x, 0, width, height);
-        x += _italicsButton.frame.size.width;
-        _italicsButton.actionTag = @"em";
-        _italicsButton.accessibilityIdentifier = @"em";
-        _italicsButton.actionName = NSLocalizedString(@"italic", @"Italic text formatting in the Post Editor. This string will be used in the Undo message if the last change was adding formatting.");
-        _italicsButton.accessibilityLabel = NSLocalizedString(@"italic", nil);
-        [_italicsButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
-        _italicsButton.exclusiveTouch = YES;
+        [self.italicsButton setImageName:@"icon_format_italic" withColor:nil highlightColor:highlightColor];
+        self.italicsButton.frame = CGRectMake(x, 0, width, height);
+        x += self.italicsButton.frame.size.width;
+        self.italicsButton.actionTag = @"em";
+        self.italicsButton.accessibilityIdentifier = @"em";
+        self.italicsButton.actionName = NSLocalizedString(@"italic", @"Italic text formatting in the Post Editor. This string will be used in the Undo message if the last change was adding formatting.");
+        self.italicsButton.accessibilityLabel = NSLocalizedString(@"italic", nil);
+        [self.italicsButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+        self.italicsButton.exclusiveTouch = YES;
     }
-    if (_underlineButton == nil) {
+    if (self.underlineButton == nil) {
         self.underlineButton = [WPKeyboardToolbarButtonItem button];
-        [_underlineButton setImageName:@"icon_format_underline" withColor:nil highlightColor:highlightColor];
-        _underlineButton.frame = CGRectMake(x, 0, width, height);
-        x += _underlineButton.frame.size.width;
-        _underlineButton.actionTag = @"u";
-        _underlineButton.accessibilityIdentifier = @"u";
-        _underlineButton.actionName = NSLocalizedString(@"underline", @"Underline text formatting in the Post Editor. This string will be used in the Undo message if the last change was adding formatting.");
-        _underlineButton.accessibilityLabel = NSLocalizedString(@"underline", nil);
-        [_underlineButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
-        _underlineButton.exclusiveTouch = YES;
+        [self.underlineButton setImageName:@"icon_format_underline" withColor:nil highlightColor:highlightColor];
+        self.underlineButton.frame = CGRectMake(x, 0, width, height);
+        x += self.underlineButton.frame.size.width;
+        self.underlineButton.actionTag = @"u";
+        self.underlineButton.accessibilityIdentifier = @"u";
+        self.underlineButton.actionName = NSLocalizedString(@"underline", @"Underline text formatting in the Post Editor. This string will be used in the Undo message if the last change was adding formatting.");
+        self.underlineButton.accessibilityLabel = NSLocalizedString(@"underline", nil);
+        [self.underlineButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+        self.underlineButton.exclusiveTouch = YES;
     }
-    if (_delButton == nil) {
+    if (self.delButton == nil) {
         self.delButton = [WPKeyboardToolbarButtonItem button];
-        [_delButton setImageName:@"icon_format_strikethrough" withColor:nil highlightColor:highlightColor];
-        _delButton.frame = CGRectMake(x, 0, width, height);
-        x += _delButton.frame.size.width;
-        _delButton.actionTag = @"del";
-        _delButton.accessibilityIdentifier = @"del";
-        _delButton.actionName = NSLocalizedString(@"del", @"<del> (deleted text) HTML formatting in the Post Editor. This string will be used in the Undo message if the last change was adding a <del> HTML element.");
-        _delButton.accessibilityLabel = NSLocalizedString(@"delete", nil);
-        _delButton.exclusiveTouch = YES;
-        [_delButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [self.delButton setImageName:@"icon_format_strikethrough" withColor:nil highlightColor:highlightColor];
+        self.delButton.frame = CGRectMake(x, 0, width, height);
+        x += self.delButton.frame.size.width;
+        self.delButton.actionTag = @"del";
+        self.delButton.accessibilityIdentifier = @"del";
+        self.delButton.actionName = NSLocalizedString(@"del", @"<del> (deleted text) HTML formatting in the Post Editor. This string will be used in the Undo message if the last change was adding a <del> HTML element.");
+        self.delButton.accessibilityLabel = NSLocalizedString(@"delete", nil);
+        self.delButton.exclusiveTouch = YES;
+        [self.delButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
-    if (_linkButton == nil) {
+    if (self.linkButton == nil) {
         self.linkButton = [WPKeyboardToolbarButtonItem button];
-        [_linkButton setImageName:@"icon_format_link" withColor:nil highlightColor:highlightColor];
-        _linkButton.frame = CGRectMake(x, 0, width, height);
-        x += _linkButton.frame.size.width;
-        _linkButton.actionTag = @"link";
-        _linkButton.accessibilityIdentifier = @"link";
-        _linkButton.actionName = NSLocalizedString(@"link", @"Link helper button in the Post Editor. This string will be used in the Undo message if the last change was adding a link.");
-        _linkButton.accessibilityLabel = NSLocalizedString(@"link", nil);
-        _linkButton.exclusiveTouch = YES;
-        [_linkButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [self.linkButton setImageName:@"icon_format_link" withColor:nil highlightColor:highlightColor];
+        self.linkButton.frame = CGRectMake(x, 0, width, height);
+        x += self.linkButton.frame.size.width;
+        self.linkButton.actionTag = @"link";
+        self.linkButton.accessibilityIdentifier = @"link";
+        self.linkButton.actionName = NSLocalizedString(@"link", @"Link helper button in the Post Editor. This string will be used in the Undo message if the last change was adding a link.");
+        self.linkButton.accessibilityLabel = NSLocalizedString(@"link", nil);
+        self.linkButton.exclusiveTouch = YES;
+        [self.linkButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
-    if (_quoteButton == nil) {
+    if (self.quoteButton == nil) {
         self.quoteButton = [WPKeyboardToolbarButtonItem button];
-        [_quoteButton setImageName:@"icon_format_quote" withColor:nil highlightColor:highlightColor];
-        _quoteButton.frame = CGRectMake(x, 0, width, height);
-		x += _quoteButton.frame.size.width;
-        _quoteButton.actionTag = @"blockquote";
-        _quoteButton.accessibilityIdentifier = @"blockquote";
-        _quoteButton.actionName = NSLocalizedString(@"quote", @"Blockquote HTML formatting in the Post Editor. This string will be used in the Undo message if the last change was adding a blockquote.");
-        _quoteButton.accessibilityLabel = NSLocalizedString(@"quote", nil);
-        _quoteButton.exclusiveTouch = YES;
-        [_quoteButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [self.quoteButton setImageName:@"icon_format_quote" withColor:nil highlightColor:highlightColor];
+        self.quoteButton.frame = CGRectMake(x, 0, width, height);
+		x += self.quoteButton.frame.size.width;
+        self.quoteButton.actionTag = @"blockquote";
+        self.quoteButton.accessibilityIdentifier = @"blockquote";
+        self.quoteButton.actionName = NSLocalizedString(@"quote", @"Blockquote HTML formatting in the Post Editor. This string will be used in the Undo message if the last change was adding a blockquote.");
+        self.quoteButton.accessibilityLabel = NSLocalizedString(@"quote", nil);
+        self.quoteButton.exclusiveTouch = YES;
+        [self.quoteButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
-    if (_moreButton == nil) {
+    if (self.moreButton == nil) {
         self.moreButton = [WPKeyboardToolbarButtonItem button];
-        [_moreButton setImageName:@"icon_format_more" withColor:nil highlightColor:highlightColor];
-        _moreButton.frame = CGRectMake(x, 0, width, height);
-        _moreButton.actionTag = @"more";
-        _moreButton.accessibilityIdentifier = @"more";
-        _moreButton.actionName = NSLocalizedString(@"more", @"Adding a More excerpt cut-off in the Post Editor. This string will be used in the Undo message if the last change was adding this formatting.");
-        _moreButton.accessibilityLabel = NSLocalizedString(@"more", nil);
-        _moreButton.exclusiveTouch = YES;
-        [_moreButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [self.moreButton setImageName:@"icon_format_more" withColor:nil highlightColor:highlightColor];
+        self.moreButton.frame = CGRectMake(x, 0, width, height);
+        self.moreButton.actionTag = @"more";
+        self.moreButton.accessibilityIdentifier = @"more";
+        self.moreButton.actionName = NSLocalizedString(@"more", @"Adding a More excerpt cut-off in the Post Editor. This string will be used in the Undo message if the last change was adding this formatting.");
+        self.moreButton.accessibilityLabel = NSLocalizedString(@"more", nil);
+        self.moreButton.exclusiveTouch = YES;
+        [self.moreButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
 }
 
 - (void)setupFormatView {
-    if (_formatView == nil) {
+    if (self.formatView == nil) {
         CGFloat height = [self buttonHeight];
         self.formatView = [[UIView alloc] init];
         [self buildFormatButtons];
-        CGFloat mainWidth = _moreButton.frame.origin.x + _moreButton.frame.size.width;
-        _formatView.frame = CGRectMake(0, 0, mainWidth, height);
-        _formatView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+        CGFloat mainWidth = self.moreButton.frame.origin.x + self.moreButton.frame.size.width;
+        self.formatView.frame = CGRectMake(0, 0, mainWidth, height);
+        self.formatView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
         
-        [_formatView addSubview:_boldButton];
-        [_formatView addSubview:_italicsButton];
-        [_formatView addSubview:_underlineButton];
-        [_formatView addSubview:_delButton];
-        [_formatView addSubview:_linkButton];
-        [_formatView addSubview:_quoteButton];
-        [_formatView addSubview:_moreButton];
+        [self.formatView addSubview:self.boldButton];
+        [self.formatView addSubview:self.italicsButton];
+        [self.formatView addSubview:self.underlineButton];
+        [self.formatView addSubview:self.delButton];
+        [self.formatView addSubview:self.linkButton];
+        [self.formatView addSubview:self.quoteButton];
+        [self.formatView addSubview:self.moreButton];
     }
 }
 
 - (void)setupDoneButton {
-    if (_doneButton == nil) {
+    if (self.doneButton == nil) {
         CGFloat width = [self buttonWidth];
         CGFloat height = [self buttonHeight];
         UIColor *highlightColor = [UIColor whiteColor];
         CGFloat x = self.frame.size.width - width;
         self.doneButton = [WPKeyboardToolbarButtonItem button];
-        [_doneButton setImageName:@"icon_format_keyboard" withColor:nil highlightColor:highlightColor];
-        _doneButton.frame = CGRectMake(x, 0, width, height);
-        _doneButton.actionTag = @"done";
-        _doneButton.accessibilityIdentifier = @"done";
-        _doneButton.exclusiveTouch = YES;
-        _doneButton.accessibilityLabel = NSLocalizedString(@"Hide keyboard", nil);
-        [_doneButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [self.doneButton setImageName:@"icon_format_keyboard" withColor:nil highlightColor:highlightColor];
+        self.doneButton.frame = CGRectMake(x, 0, width, height);
+        self.doneButton.actionTag = @"done";
+        self.doneButton.accessibilityIdentifier = @"done";
+        self.doneButton.exclusiveTouch = YES;
+        self.doneButton.accessibilityLabel = NSLocalizedString(@"Hide keyboard", nil);
+        [self.doneButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
 }
 
@@ -164,7 +164,7 @@
 
 - (void)layoutSubviews {
     
-    CGRect doneFrame = _doneButton.frame;
+    CGRect doneFrame = self.doneButton.frame;
     doneFrame.origin.x = self.frame.size.width - doneFrame.size.width;
     if (IS_IPHONE) {
         if (self.frame.size.height < WPKT_HEIGHT_IPHONE_PORTRAIT) {
@@ -173,22 +173,22 @@
             doneFrame.size.height = WPKT_BUTTON_HEIGHT_PORTRAIT;
         }
     }
-    _doneButton.frame = doneFrame;
-    if (_doneButton && _doneButton.superview == nil) {
-        [self addSubview:_doneButton];
+    self.doneButton.frame = doneFrame;
+    if (self.doneButton && self.doneButton.superview == nil) {
+        [self addSubview:self.doneButton];
     }
     
     if (IS_IPHONE) {
-        CGRect frame = _formatView.frame;
+        CGRect frame = self.formatView.frame;
         if (self.frame.size.height < WPKT_HEIGHT_IPHONE_PORTRAIT) {
             frame.size.height = WPKT_BUTTON_HEIGHT_LANDSCAPE;
         } else {
             frame.size.height = WPKT_BUTTON_HEIGHT_PORTRAIT;
         }
-        _formatView.frame = frame;
+        self.formatView.frame = frame;
     }
-    if (_formatView && _formatView.superview == nil) {
-        [self addSubview:_formatView];
+    if (self.formatView && self.formatView.superview == nil) {
+        [self addSubview:self.formatView];
     }
 }
 
