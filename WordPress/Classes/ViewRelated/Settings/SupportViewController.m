@@ -228,7 +228,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
             aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:kExtraDebugDefaultsKey];
         } else if (indexPath.row == 2) {
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.textLabel.text = NSLocalizedString(@"Anonymous Usage Tracking", @"");
+            cell.textLabel.text = NSLocalizedString(@"Anonymous Usage Tracking", @"Setting for enabling anonymous usage tracking");
             UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
             aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:kUsageTrackingDefaultsKey];
         } else if (indexPath.row == 3) {
