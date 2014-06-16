@@ -11,6 +11,9 @@
 
 static NSString *const UserDefaultsFeedbackEnabled = @"wp_feedback_enabled";
 static NSString *const UserDefaultsHelpshiftEnabled = @"wp_helpshift_enabled";
+static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
+static NSString * const kExtraDebugDefaultsKey = @"extra_debug";
+
 static NSString *const FeedbackCheckUrl = @"http://api.wordpress.org/iphoneapp/feedback-check/1.0/";
 
 @interface SupportViewController ()
@@ -222,12 +225,12 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.textLabel.text = NSLocalizedString(@"Extra Debug", @"");
             UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
-            aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
+            aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:kExtraDebugDefaultsKey];
         } else if (indexPath.row == 2) {
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.textLabel.text = NSLocalizedString(@"Anonymous Usage Tracking", @"");
             UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
-            aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"usage_tracking"];
+            aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:kUsageTrackingDefaultsKey];
         } else if (indexPath.row == 3) {
             cell.textLabel.text = NSLocalizedString(@"Activity Logs", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -285,17 +288,16 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
 - (void)handleCellSwitchChanged:(id)sender {
     UISwitch *aSwitch = (UISwitch *)sender;
-    
-    NSString *key = (aSwitch.tag == 1) ? @"extra_debug" : @"usage_tracking";
+    NSString *key = (aSwitch.tag == 1) ? kExtraDebugDefaultsKey : kUsageTrackingDefaultsKey;
     
     [[NSUserDefaults standardUserDefaults] setBool:aSwitch.on forKey:key];
     [NSUserDefaults resetStandardUserDefaults];
     
-    if ([key isEqualToString:@"usage_tracking"] && aSwitch.on) {
+    if ([key isEqualToString:kUsageTrackingDefaultsKey] && aSwitch.on) {
         DDLogInfo(@"WPAnalytics session started");
         
         [WPAnalytics beginSession];
-    } else if ([key isEqualToString:@"usage_tracking"] && !aSwitch.on) {
+    } else if ([key isEqualToString:kUsageTrackingDefaultsKey] && !aSwitch.on) {
         DDLogInfo(@"WPAnalytics session stopped");
 
         [WPAnalytics endSession];
