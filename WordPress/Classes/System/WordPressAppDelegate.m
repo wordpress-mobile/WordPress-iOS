@@ -50,6 +50,8 @@ static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigati
 static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
 static NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
 static NSInteger const IndexForMeTab = 2;
+static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
+
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
@@ -89,19 +91,19 @@ static NSInteger const IndexForMeTab = 2;
                             options:@{@"shakeMenu":@NO}];
     [SupportViewController checkIfFeedbackShouldBeEnabled];
 
-    NSNumber *usage_tracking = [[NSUserDefaults standardUserDefaults] valueForKey:@"usage_tracking"];
+    NSNumber *usage_tracking = [[NSUserDefaults standardUserDefaults] valueForKey:kUsageTrackingDefaultsKey];
     if (usage_tracking == nil) {
         // check if usage_tracking bool is set
         // default to YES
         
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"usage_tracking"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kUsageTrackingDefaultsKey];
         [NSUserDefaults resetStandardUserDefaults];
     }
     
     [WPAnalytics registerTracker:[[WPAnalyticsTrackerMixpanel alloc] init]];
     [WPAnalytics registerTracker:[[WPAnalyticsTrackerWPCom alloc] init]];
     
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"usage_tracking"]) {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kUsageTrackingDefaultsKey]) {
         DDLogInfo(@"WPAnalytics session started");
 
         [WPAnalytics beginSession];
