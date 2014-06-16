@@ -7,13 +7,13 @@
 #import "BlogSelectorViewController.h"
 #import "WPBlogSelectorButton.h"
 #import "WPAlertView.h"
-#import "UIImage+Util.h"
 #import "LocationService.h"
 #import "BlogService.h"
 #import "MediaService.h"
 #import "WPMediaUploader.h"
 #import "WPUploadStatusView.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <WordPress-iOS-Shared/UIImage+Util.h>
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
