@@ -1,5 +1,6 @@
 #import "WPKeyboardToolbarButtonItem.h"
 #import <QuartzCore/QuartzCore.h>
+#import <WordPress-iOS-Shared/WPStyleGuide.h>
 
 @implementation WPKeyboardToolbarButtonItem
 @synthesize actionTag, actionName;

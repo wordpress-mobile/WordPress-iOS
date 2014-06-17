@@ -52,7 +52,12 @@ PODS:
   - Reachability (3.1.1)
   - SVProgressHUD (1.0)
   - Taplytics (1.2.50)
+  - UIAlertView+Blocks (0.8.1)
   - UIDeviceIdentifier (0.4.2)
+  - WordPress-iOS-Editor (0.1.4):
+    - CocoaLumberjack (~> 1.8.1)
+    - UIAlertView+Blocks
+    - WordPress-iOS-Shared (~> 0.0.2)
   - WordPress-iOS-Shared (0.0.2):
     - AFNetworking (= 2.2.3)
     - CocoaLumberjack (~> 1.8.1)
@@ -88,6 +93,7 @@ DEPENDENCIES:
   - SVProgressHUD (~> 1.0)
   - Taplytics (~> 1.2.50)
   - UIDeviceIdentifier (~> 0.1)
+  - WordPress-iOS-Editor (= 0.1.4)
   - WordPress-iOS-Shared (= 0.0.2)
   - WordPressApi (from `https://github.com/koke/WordPressApi.git`, branch `afnetworking2`)
   - WordPressCom-Stats-iOS (= 0.0.2)
@@ -127,7 +133,9 @@ SPEC CHECKSUMS:
   Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
   SVProgressHUD: 5034c6e22b8c2ca3e09402e48d41ed0340aa1c50
   Taplytics: 292c7c0a7814914f6a1a3e34fdf96b7233c2425d
+  UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
   UIDeviceIdentifier: 1944dd25ee46fbc592740148ab47d543f80f0bba
+  WordPress-iOS-Editor: cfaf84cfa38ce3b229af126fceaa0d3dfd90932f
   WordPress-iOS-Shared: 4e205eee66d08f243e67adbc49f1eca6b7ca7f1c
   WordPressApi: 8c5fb633aeb7c89d72ed0c753c135bdfd7887896
   WordPressCom-Stats-iOS: a6d2338d6eee24e9d5eba0c0293acc3aa7414fb0
