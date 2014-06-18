@@ -224,6 +224,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
             helpshiftUnreadCountLabel.layer.cornerRadius = 15;
             helpshiftUnreadCountLabel.textAlignment = NSTextAlignmentCenter;
             helpshiftUnreadCountLabel.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
+            helpshiftUnreadCountLabel.textColor = [UIColor whiteColor];
 
             helpshiftUnreadCountLabel.text = [NSString stringWithFormat:@"%i", self.helpshiftUnreadCount];
             cell.accessoryView = helpshiftUnreadCountLabel;
