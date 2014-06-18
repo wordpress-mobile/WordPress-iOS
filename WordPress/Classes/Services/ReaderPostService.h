@@ -4,6 +4,8 @@
 @class ReaderPost;
 @class ReaderTopic;
 
+extern NSString * const ReaderPostServiceErrorDomain;
+
 @interface ReaderPostService : NSObject<LocalCoreDataService>
 
 /**

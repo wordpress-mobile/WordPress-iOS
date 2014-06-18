@@ -33,7 +33,7 @@ Xcode 5 and iOS 7.
 ````bash
 $ edit Podfile
 platform :ios, '7.0'
-pod 'CTAssetsPickerController',  '~> 2.1.0'
+pod 'CTAssetsPickerController',  '~> 2.2.0'
 $ pod install
 ````
 * Use the Xcode workspace instead of the project.
@@ -124,7 +124,7 @@ Limit the number of assets to be picked.
 
 Enable only certain assets to be selected.
 ```` objective-c
-- (BOOL)assetsPickerController:(CTAssetsPickerController *)picker shouldEnableAssetForSelection:(ALAsset *)asset
+- (BOOL)assetsPickerController:(CTAssetsPickerController *)picker shouldEnableAsset:(ALAsset *)asset
 {
     // Enable video clips if they are at least 5s
     if ([[asset valueForProperty:ALAssetPropertyType] isEqual:ALAssetTypeVideo])
