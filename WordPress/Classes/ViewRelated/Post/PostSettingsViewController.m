@@ -59,6 +59,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 @property (nonatomic, strong) WPTableImageSource *imageSource;
 @property (nonatomic, strong) UIImage *featuredImage;
 @property (nonatomic, strong) PublishDatePickerView *datePicker;
+@property (assign) BOOL *textFieldDidHaveFocusBeforeOrientationChange;
 
 @end
 
@@ -127,6 +128,13 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 - (void)didReceiveMemoryWarning {
     DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning];
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if ([self.passwordTextField isFirstResponder] || [self.tagsTextField isFirstResponder]) {
+        self.textFieldDidHaveFocusBeforeOrientationChange = YES;
+    }
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
@@ -212,6 +220,20 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 }
 
 #pragma mark - TextField Delegate Methods
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [self hideDatePicker];
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    if (self.textFieldDidHaveFocusBeforeOrientationChange) {
+        self.textFieldDidHaveFocusBeforeOrientationChange = NO;
+        return NO;
+    }
+    return YES;
+}
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     if (textField == self.passwordTextField) {
