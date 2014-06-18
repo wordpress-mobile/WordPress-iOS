@@ -24,9 +24,7 @@ NS_OPTIONS(NSInteger, ActionSheetTag){
     ActionSheetTagDraftOptions = 201,
 };
 
-@interface EditPostViewController ()<UIPopoverControllerDelegate> {
-    
-}
+@interface EditPostViewController ()<UIPopoverControllerDelegate>
 
 @property (nonatomic, strong) UIButton *titleBarButton;
 @property (nonatomic, strong) UIView *uploadStatusView;
