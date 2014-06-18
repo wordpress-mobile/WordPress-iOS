@@ -132,12 +132,15 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     if ([self.passwordTextField isFirstResponder] || [self.tagsTextField isFirstResponder]) {
         self.textFieldDidHaveFocusBeforeOrientationChange = YES;
     }
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     [self reloadData];
 }
 
