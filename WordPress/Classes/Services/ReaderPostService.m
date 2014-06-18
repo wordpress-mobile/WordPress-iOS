@@ -16,6 +16,7 @@ NSUInteger const ReaderPostServiceSummaryLength = 150;
 NSUInteger const ReaderPostServiceTitleLength = 30;
 NSUInteger const ReaderPostServiceMaxPosts = 200;
 NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
+NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
 
 /**
@@ -228,6 +229,15 @@ NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
     if (error) {
         if (failure) {
             failure(error);
+        }
+        return;
+    }
+
+    // Do not reblog a post on a private blog
+    if (readerPost.isBlogPrivate) {
+        if (failure) {
+            NSDictionary *userInfo = @{NSLocalizedDescriptionKey:NSLocalizedString(@"Posts belonging to private blogs may not be reblogged.", @"An error description explaining that posts from private blogs may not be reblogged.")};
+            failure([NSError errorWithDomain:ReaderPostServiceErrorDomain code:0 userInfo:userInfo]);
         }
         return;
     }
