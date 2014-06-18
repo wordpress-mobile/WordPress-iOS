@@ -68,7 +68,7 @@
           failure:(void (^)(NSError *error))failure {
 
     NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/?meta=site", siteID, postID];
-    [self.api GET:path
+    [self.api POST:path
            parameters:nil
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
                   if (!success) {

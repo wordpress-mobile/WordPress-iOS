@@ -46,7 +46,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @property (nonatomic, strong) UINavigationBar *navBar;
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 @property (nonatomic, strong) ReaderCommentPublisher *commentPublisher;
-@property (nonatomic, readonly) ReaderTopic *currentTopic;
+@property (nonatomic, strong) ReaderTopic *currentTopic;
 
 @end
 
@@ -80,6 +80,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readerTopicDidChange:) name:ReaderTopicDidChangeNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchBlogsAndPrimaryBlog) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        self.currentTopic = [[[ReaderTopicService alloc] initWithManagedObjectContext:context] currentTopic];
 	}
 	return self;
 }
@@ -199,11 +202,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 #pragma mark - Instance Methods
-
-- (ReaderTopic *)currentTopic {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    return [[[ReaderTopicService alloc] initWithManagedObjectContext:context] currentTopic];
-}
 
 - (void)updateTitle {
     if (self.currentTopic) {
@@ -437,9 +435,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)openPost:(NSUInteger *)postId onBlog:(NSUInteger)blogId {
+
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service deletePostsWithNoTopic];
     [service fetchPost:postId forSite:blogId success:^(ReaderPost *post) {
         ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post
                                                                                             featuredImage:nil
@@ -447,7 +445,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
         [self.navigationController pushViewController:controller animated:YES];
     } failure:^(NSError *error) {
-        DDLogError(@"%@, error fetching post for site", _cmd, error);
+        // noop
     }];
 }
 
@@ -580,6 +578,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     if(!self.currentTopic) {
         ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
         [topicService fetchReaderMenuWithSuccess:^{
+            self.currentTopic = [[[ReaderTopicService alloc] initWithManagedObjectContext:context] currentTopic];
             // Changing the topic means we need to also change the fetch request.
             [self resetResultsController];
             [self updateTitle];
@@ -749,6 +748,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         [self dismissPopover];
 	}
 
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    self.currentTopic = [[[ReaderTopicService alloc] initWithManagedObjectContext:context] currentTopic];
     [self updateTitle];
 
 	_loadingMore = NO;
@@ -768,10 +769,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)didChangeAccount:(NSNotification *)notification {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    [[[ReaderTopicService alloc] initWithManagedObjectContext:context] deleteAllTopics];
-    [[[ReaderPostService alloc] initWithManagedObjectContext:context] deletePostsWithNoTopic];
-
+    self.currentTopic = nil;
     [self resetResultsController];
     [self.tableView reloadData];
     [self.navigationController popToViewController:self animated:NO];

@@ -91,10 +91,4 @@
            success:(void (^)())success
            failure:(void (^)(NSError *error))failure;
 
-/**
- Deletes all posts that do not belong to a ReaderTopic
- Saves the NSManagedObjectContext.
- */
-- (void)deletePostsWithNoTopic;
-
 @end

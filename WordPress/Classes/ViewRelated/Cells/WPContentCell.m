@@ -215,7 +215,7 @@ CGFloat const WPContentCellDefaultOrigin                    = 15.0f;
 
 + (NSString *)statusTextForContentProvider:(id<WPContentViewProvider>)contentProvider
 {
-    return [[contentProvider statusForDisplay] uppercaseStringWithLocale:[NSLocale currentLocale]];
+    return [[contentProvider statusForDisplay] uppercaseString];
 }
 
 + (UIColor *)statusColorForContentProvider:(id<WPContentViewProvider>)contentProvider

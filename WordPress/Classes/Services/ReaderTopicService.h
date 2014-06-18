@@ -23,10 +23,4 @@
  */
 - (NSUInteger)numberOfSubscribedTopics;
 
-
-/**
- Deletes all topics from core data and saves the context. Call when switching accounts.
- */
-- (void)deleteAllTopics;
-
 @end

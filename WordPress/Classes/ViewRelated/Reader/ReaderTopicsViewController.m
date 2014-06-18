@@ -12,8 +12,7 @@ NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotifi
 
 @interface ReaderTopicsViewController ()<NSFetchedResultsControllerDelegate>
 
-@property (nonatomic, copy) NSString *currentTopicPath;
-@property (nonatomic, readonly) ReaderTopic *currentTopic;
+@property (nonatomic, strong) ReaderTopic *currentTopic;
 @property (nonatomic, strong) NSDate *dateLastSynced;
 
 @end
@@ -22,6 +21,18 @@ NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotifi
 
 
 #pragma mark - LifeCycle Methods
+
+- (id)initWithStyle:(UITableViewStyle)style {
+	self = [super initWithStyle:style];
+
+	if (self) {
+        ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+        self.currentTopic = service.currentTopic;
+    }
+	
+	return self;
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -45,11 +56,6 @@ NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotifi
 
 #pragma mark - Instance Methods
 
-- (ReaderTopic *)currentTopic {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    return [[[ReaderTopicService alloc] initWithManagedObjectContext:context] currentTopic];
-}
-
 - (void)handleCancelButtonTapped:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -60,9 +66,6 @@ NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotifi
     [controller loadURL:kMobileReaderFFURL];
 }
 
-- (void)dispatchTopicDidChangeNotification {
-    [[NSNotificationCenter defaultCenter] postNotificationName:ReaderTopicDidChangeNotification object:nil];
-}
 
 #pragma mark - TableView methods
 
@@ -97,9 +100,10 @@ NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotifi
     ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     service.currentTopic = topic;
 
-    [self dispatchTopicDidChangeNotification];
+    [[NSNotificationCenter defaultCenter] postNotificationName:ReaderTopicDidChangeNotification object:nil];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
 
 #pragma mark - WPTableViewController Subclass Methods
 
@@ -154,30 +158,13 @@ NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotifi
 }
 
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *error))failure {
-    self.currentTopicPath = self.currentTopic.path;
     ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [service fetchReaderMenuWithSuccess:^{
         self.dateLastSynced = [NSDate date];
         success();
-
-        // Its possible the user deleted the current topic via the web so make sure the selection is accurate
-        ReaderTopic *topic = [self currentTopic];
-        if (![self.currentTopicPath isEqualToString:topic.path]) {
-            self.currentTopicPath = topic.path;
-            [self updateSelectedTopic];
-        }
-
     } failure:^(NSError *error) {
         failure(error);
     }];
-}
-
-- (void)updateSelectedTopic {
-    ReaderTopic *topic = [self currentTopic];
-    NSIndexPath *indexPath = [self.resultsController indexPathForObject:topic];
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    [self dispatchTopicDidChangeNotification];
 }
 
 - (Class)cellClass {

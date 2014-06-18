@@ -334,11 +334,9 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 
 - (void)loadPostWithId:(NSNumber *)postID fromSite:(NSNumber *)siteID block:(NotificationsLoadPostBlock)block
 {
-    ContextManager *contextManager = [ContextManager sharedInstance];
-    NSManagedObjectContext *context = [contextManager newDerivedContext];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [service fetchPost:[postID integerValue] forSite:[siteID integerValue] success:^(ReaderPost *post) {
-        [contextManager saveDerivedContext:context];
         block(YES, post);
     } failure:^(NSError *error) {
         DDLogError(@"[RestAPI] %@", error);
