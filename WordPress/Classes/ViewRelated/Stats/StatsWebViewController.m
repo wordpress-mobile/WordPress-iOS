@@ -302,7 +302,7 @@ static NSString *_lastAuthedName = nil;
     }
 
     NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
-    NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=http://wordpress.com",
+    NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=https://wordpress.com",
                              [username stringByUrlEncoding],
                              [password stringByUrlEncoding]];
 
@@ -382,7 +382,7 @@ static NSString *_lastAuthedName = nil;
 		blogID = [blog jetpackBlogID];
 	}
 	
-    NSString *pathStr = [NSString stringWithFormat:@"http://wordpress.com/?no-chrome#!/my-stats/?blog=%@&unit=1", blogID];
+    NSString *pathStr = [NSString stringWithFormat:@"https://wordpress.com/my-stats/?no-chrome&blog=%@&unit=1", blogID];
     NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
     [mRequest setURL:[NSURL URLWithString:pathStr]];
     [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
