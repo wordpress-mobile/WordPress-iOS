@@ -66,7 +66,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
         }
     }
 
-	AFHTTPRequestOperationManager* operationManager = [[AFHTTPRequestOperationManager alloc] init];
+	AFHTTPRequestOperationManager* operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:BlogJetpackApiBaseUrl]];
 
 	NSString* userAgent = [[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent];
 
