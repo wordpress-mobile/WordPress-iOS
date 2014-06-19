@@ -89,8 +89,6 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _userIsDotCom = NO;
     }
 
-    [[Helpshift sharedInstance] setDelegate:self];
-
     [self addMainView];
     [self initializeViewWithDefaultWPComAccount:defaultAccount];
     
@@ -103,6 +101,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     
+    [[Helpshift sharedInstance] setDelegate:self];
     [[Helpshift sharedInstance] getNotificationCountFromRemote:YES];
     
     [self layoutControls];
