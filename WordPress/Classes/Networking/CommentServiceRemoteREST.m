@@ -25,6 +25,7 @@
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments", blog.dotComID];
     NSDictionary *parameters = @{
                                  @"status": @"all",
+                                 @"context": @"edit",
                                  };
     [self.api GET:path
        parameters:parameters
