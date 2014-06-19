@@ -8,7 +8,7 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
 
 @implementation WordPressComOAuthClient
 
-#pragma mark - Conveniece constructors
+#pragma mark - Convenience constructors
 
 + (WordPressComOAuthClient *)client {
     WordPressComOAuthClient *client = [[WordPressComOAuthClient alloc] initWithBaseURL:[NSURL URLWithString:WordPressComOAuthBaseUrl]];
