@@ -2,7 +2,7 @@
 #import "WordPressComApi.h"
 #import "Blog.h"
 #import "RemoteComment.h"
-#import "NSDate+JSON.h"
+#import "NSDate+WordPressJSON.h"
 #import <NSObject+SafeExpectations.h>
 
 @interface CommentServiceRemoteREST ()
