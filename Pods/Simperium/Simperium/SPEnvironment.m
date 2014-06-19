@@ -7,7 +7,6 @@
 NSString* const SPBaseURL			= @"https://api.simperium.com/1/";
 NSString* const SPAuthURL			= @"https://auth.simperium.com/1/";
 NSString* const SPWebsocketURL		= @"wss://api.simperium.com/sock/1";
-NSString* const SPReachabilityURL	= @"api.simperium.com";
 
 NSString* const SPAPIVersion		= @"1.1";
 

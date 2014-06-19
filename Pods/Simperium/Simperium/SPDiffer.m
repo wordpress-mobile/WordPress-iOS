@@ -109,9 +109,9 @@ static SPLogLevels logLevel = SPLogLevelsInfo;
 // Apply an incoming diff to this entity instance
 - (void)applyDiff:(NSDictionary *)diff to:(id<SPDiffable>)object {
 	// Process each change in the diff
-	for (NSString *key in [diff allKeys]) {
-		NSDictionary *change = [diff objectForKey:key];
-		NSString *operation = [change objectForKey:OP_OP];
+	for (NSString *key in diff.allKeys) {
+		NSDictionary *change    = diff[key];
+		NSString *operation     = [change[OP_OP] lowercaseString];
 		
 		// Make sure the member exists and is tracked by Simperium
 		SPMember *member = [self.schema memberForKey: key];
@@ -120,11 +120,11 @@ static SPLogLevels logLevel = SPLogLevelsInfo;
 			continue;
 		}
 		
-        if ([operation compare:OP_OBJECT_ADD] == NSOrderedSame) {
-            // Newly added member, so set it
+        if ([operation isEqualToString:OP_OBJECT_ADD] || [operation isEqualToString:OP_OBJECT_REPLACE]) {
+            // Newly added / replaced member: set the value
             id newValue = [member getValueFromDictionary:change key:OP_VALUE object:object];
             [object simperiumSetValue: newValue forKey: key];
-        } else if ([operation compare:OP_OBJECT_REMOVE] == NSOrderedSame) {
+        } else if ([operation isEqualToString:OP_OBJECT_REMOVE]) {
             // Set the value to nil for now
             [object simperiumSetValue: nil forKey: key];
             
@@ -132,12 +132,13 @@ static SPLogLevels logLevel = SPLogLevelsInfo;
             // that needs to be done
         } else {
             // Changed member
-            id thisValue = [object simperiumValueForKey: [member keyName]];
+            id thisValue  = [object simperiumValueForKey:member.keyName];
             id otherValue = [member getValueFromDictionary:change key:OP_VALUE object:object];
             
             // Support nil values by converting them to valid default values for the purposes of diffing
-            if (thisValue == nil)
+            if (thisValue == nil) {
                 thisValue = [member defaultValue];
+            }
             
             // Build a newValue from thisValue based on otherValue
             id newValue = [member applyDiff:thisValue otherValue:otherValue];
@@ -151,34 +152,35 @@ static SPLogLevels logLevel = SPLogLevelsInfo;
 // Note that no conversions are necessary here since all data is in JSON-compatible format already
 - (void)applyGhostDiff:(NSDictionary *)diff to:(id<SPDiffable>)object {
 	// Create a copy of the ghost's data and update any members that have changed
-	NSMutableDictionary *ghostMemberData = [[object ghost] memberData];
-	NSMutableDictionary *newMemberData = ghostMemberData ? [ghostMemberData mutableCopy] : [NSMutableDictionary dictionaryWithCapacity: [diff count]];
-	for (NSString *key in [diff allKeys]) {
-		NSDictionary *change = [diff objectForKey:key];
+	NSMutableDictionary *ghostMemberData = object.ghost.memberData;
+	NSMutableDictionary *newMemberData = ghostMemberData ? [ghostMemberData mutableCopy] : [NSMutableDictionary dictionaryWithCapacity:diff.count];
+	for (NSString *key in diff.allKeys) {
+		NSDictionary *change = diff[key];
         
         // This should never happen, but it can if a change somehow slips in from a PUT request
-        if (change == nil)
+        if (change == nil) {
             continue;
+        }
         
-		NSString *operation = [change objectForKey:OP_OP];
-        SPMember *member = [self.schema memberForKey: key];
+		NSString *operation = [change[OP_OP] lowercaseString];
+        SPMember *member    = [self.schema memberForKey:key];
 
         // Make sure the member exists and is tracked by Simperium
         if (!member) {
             SPLogWarn(@"Simperium warning: applyGhostDiff for a member that doesn't exist (%@): %@", key, [change description]);
             continue;
         }
-		
-        if ([operation compare: OP_OBJECT_ADD] == NSOrderedSame) {
-            // Newly added entity, just set the value
+
+        if ([operation isEqualToString:OP_OBJECT_ADD] || [operation isEqualToString:OP_REPLACE]) {
+            // Newly added / replaced member: set the value
             // (no need to convert it to JSON-compatible format because it already is)
             id otherValue = [change objectForKey:OP_VALUE];
             [newMemberData setObject:otherValue forKey:key];
-        } else if ([operation compare: OP_OBJECT_REMOVE] == NSOrderedSame) {
+        } else if ([operation isEqualToString:OP_OBJECT_REMOVE]) {
             [newMemberData removeObjectForKey:key];
         } else {
             // Changed value, need to do a diff (which expects converted values)
-            id thisValue = [member getValueFromDictionary:ghostMemberData key:key object:object];
+            id thisValue  = [member getValueFromDictionary:ghostMemberData key:key object:object];
             id otherValue = [member getValueFromDictionary:change key:OP_VALUE object:object];	
             
             if (thisValue == nil) {
@@ -196,7 +198,7 @@ static SPLogLevels logLevel = SPLogLevelsInfo;
             [member setValue:newValue forKey:key inDictionary: newMemberData];
         }
 	}
-	[object ghost].memberData = newMemberData;
+	object.ghost.memberData = newMemberData;
 }
 
 - (NSDictionary *)transform:(id<SPDiffable>)object diff:(NSDictionary *)diff oldDiff:(NSDictionary *)oldDiff oldGhost:(SPGhost *)oldGhost {

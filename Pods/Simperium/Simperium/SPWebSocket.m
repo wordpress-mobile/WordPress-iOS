@@ -28,6 +28,7 @@ NSTimeInterval const SPWebSocketTimeoutInterval = 60;
 @interface SPWebSocket () <SRWebSocketDelegate>
 @property (nonatomic, strong, readwrite) SRWebSocket	*webSocket;
 @property (nonatomic, strong, readwrite) NSTimer		*timeoutTimer;
+@property (nonatomic, strong, readwrite) NSDate         *lastSeenTimestamp;
 @end
 
 
@@ -61,6 +62,7 @@ NSTimeInterval const SPWebSocketTimeoutInterval = 60;
 }
 
 - (void)open {
+	[self resetTimeoutTimer];
 	[self.webSocket open];
 }
 
@@ -98,7 +100,16 @@ NSTimeInterval const SPWebSocketTimeoutInterval = 60;
 	
 	NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : @"Activity Timeout"};
 	NSError* error = [NSError errorWithDomain:SRWebSocketErrorDomain code:SPWebSocketErrorsActivityTimeout userInfo:userInfo];
-	[self.delegate webSocket:(SRWebSocket*)error didFailWithError:error];
+	[self.delegate webSocket:self didFailWithError:error];
+}
+
+
+#pragma mark ====================================================================================
+#pragma mark Timestamp Helpers
+#pragma mark ====================================================================================
+
+- (void)resetLastSeenTimestamp {
+    self.lastSeenTimestamp = [NSDate date];
 }
 
 
@@ -108,22 +119,24 @@ NSTimeInterval const SPWebSocketTimeoutInterval = 60;
 
 - (void)webSocketDidOpen:(SRWebSocket *)theWebSocket {
 	[self resetTimeoutTimer];
-	[self.delegate webSocketDidOpen:(SRWebSocket*)self];
+    [self resetLastSeenTimestamp];
+	[self.delegate webSocketDidOpen:self];
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message {
 	[self resetTimeoutTimer];
-	[self.delegate webSocket:(SRWebSocket*)self didReceiveMessage:message];
+    [self resetLastSeenTimestamp];
+	[self.delegate webSocket:self didReceiveMessage:message];
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error {
 	[self invalidateTimeoutTimer];
-	[self.delegate webSocket:(SRWebSocket*)self didFailWithError:error];
+	[self.delegate webSocket:self didFailWithError:error];
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
 	[self invalidateTimeoutTimer];
-	[self.delegate webSocket:(SRWebSocket*)self didCloseWithCode:code reason:reason wasClean:wasClean];
+	[self.delegate webSocket:self didCloseWithCode:code reason:reason wasClean:wasClean];
 }
 
 

@@ -157,6 +157,10 @@ relationshipResolver:(SPRelationshipResolver *)resolver label:(NSString *)label 
     return [self.storage numObjectsForBucketName:self.name predicate:predicate];
 }
 
+- (NSInteger)numChangesPending {
+    return self.changeProcessor.numChangesPending;
+}
+
 - (NSString *)lastChangeSignature {
     if (!_lastChangeSignature) {
         // Load it

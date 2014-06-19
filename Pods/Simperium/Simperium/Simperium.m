@@ -45,7 +45,7 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 @implementation Simperium
 
 - (void)dealloc {
-    [self stopNetworking];
+    [self stopNetworkManagers];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 	
@@ -79,6 +79,10 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 		self.authenticationEnabled			= YES;
         self.buckets						= [NSMutableDictionary dictionary];
         
+        SPReachability *reachability        = [SPReachability reachabilityForInternetConnection];
+        [reachability startNotifier];
+        self.reachability                   = reachability;
+        
 		SPWebSocketInterface *websocket		= [SPWebSocketInterface interfaceWithSimperium:self];
 		self.network						= websocket;
 		
@@ -99,7 +103,7 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 		
 		[self setupNotifications];
 		
-		[self setupCoreDataWithModelModel:model context:context coordinator:coordinator];
+		[self setupCoreDataWithModel:model context:context coordinator:coordinator];
     }
 
 	return self;
@@ -119,12 +123,12 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 	
 	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 	[nc addObserver:self selector:@selector(authenticationDidFail) name:SPAuthenticationDidFail object:nil];
-
+    [nc addObserver:self selector:@selector(handleNetworkChange:)  name:kSPReachabilityChangedNotification object:nil];
 }
 
-- (void)setupCoreDataWithModelModel:(NSManagedObjectModel *)model
-							context:(NSManagedObjectContext *)context
-						coordinator:(NSPersistentStoreCoordinator *)coordinator {
+- (void)setupCoreDataWithModel:(NSManagedObjectModel *)model
+                       context:(NSManagedObjectContext *)context
+                   coordinator:(NSPersistentStoreCoordinator *)coordinator {
 	
 	NSParameterAssert(model);
 	NSParameterAssert(context);
@@ -217,19 +221,8 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
     self.networkManagersStarted = NO;
 }
 
-- (void)startNetworking {
-    // Create a new one each time to make sure it fires (and causes networking to start)
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNetworkChange:) name:kReachabilityChangedNotification object:nil];
-    self.reachability = [SPReachability reachabilityWithHostName:SPReachabilityURL];
-    [self.reachability startNotifier];
-}
-
-- (void)stopNetworking {
-    [self stopNetworkManagers];
-}
-
 - (void)handleNetworkChange:(NSNotification *)notification {
-	if ([self.reachability currentReachabilityStatus] == NotReachable) {
+	if (self.reachability.currentReachabilityStatus == NotReachable) {
         [self stopNetworkManagers];
     } else if (self.user.authenticated) {
         [self startNetworkManagers];
@@ -245,7 +238,7 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
     if (enabled) {
         [self authenticateIfNecessary];
     } else {
-        [self stopNetworking];
+        [self stopNetworkManagers];
 	}
 }
 
@@ -370,7 +363,7 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 	
 	// Manually initialize the user
 	self.user = [[SPUser alloc] initWithEmail:@"" token:token];
-    [self startNetworking];
+    [self startNetworkManagers];
 }
 
 - (void)shutdown {
@@ -538,7 +531,7 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
     SPLogInfo(@"Simperium logging out...");
     
     // Reset Simperium: Don't start network managers again; expect app to handle that
-    [self stopNetworking];
+    [self stopNetworkManagers];
     
     // Reset the network manager and processors; any enqueued tasks will get skipped
 	dispatch_group_t group = dispatch_group_create();
@@ -639,6 +632,17 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
     return !self.skipContextProcessing;
 }
 
+- (BOOL)requiresConnection {
+    return (self.reachability.currentReachabilityStatus != NotReachable);
+}
+- (NSString *)networkStatus {
+    return self.network.status;
+}
+
+- (NSDate *)networkLastSeenTime {
+    return self.network.lastSeenTime;
+}
+
 
 #pragma mark ====================================================================================
 #pragma mark Authentication Helpers
@@ -647,7 +651,7 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 - (void)authenticationDidSucceedForUsername:(NSString *)username token:(NSString *)token {
     
     // It's now safe to start the network managers
-    [self startNetworking];
+    [self startNetworkManagers];
     
     [self closeAuthViewControllerAnimated:YES];
 	
@@ -657,7 +661,7 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 }
 
 - (void)authenticationDidCancel {
-    [self stopNetworking];
+    [self stopNetworkManagers];
     [self.authenticator reset];
     self.user.authToken = nil;
     [self closeAuthViewControllerAnimated:YES];
@@ -668,7 +672,7 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 }
 
 - (void)authenticationDidFail {
-    [self stopNetworking];
+    [self stopNetworkManagers];
     [self.authenticator reset];
     self.user.authToken = nil;
     
@@ -683,7 +687,7 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
         return NO;
 	}
     
-    [self stopNetworking];
+    [self stopNetworkManagers];
     
     return [self.authenticator authenticateIfNecessary];    
 }

@@ -94,4 +94,7 @@ typedef NS_ENUM(NSUInteger, SPBucketChangeType) {
 - (NSInteger)numObjects;
 - (NSInteger)numObjectsForPredicate:(NSPredicate *)predicate;
 
+// Returns the number of unsynced changes
+- (NSInteger)numChangesPending;
+
 @end

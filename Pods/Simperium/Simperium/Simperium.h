@@ -140,19 +140,19 @@ typedef void (^SimperiumSignoutCompletion)(void);
 - (BOOL)authenticateIfNecessary;
 
 // A SimperiumDelegate for system callbacks.
-@property (nonatomic, weak) id<SimperiumDelegate> delegate;
+@property (nonatomic, readwrite, weak) id<SimperiumDelegate> delegate;
 
 // Set this to true if you need to be able to cancel the authentication dialog.
-@property (nonatomic, assign) BOOL authenticationOptional;
+@property (nonatomic, readwrite, assign) BOOL authenticationOptional;
 
 // Toggle verbose logging.
-@property (nonatomic, assign) BOOL verboseLoggingEnabled;
+@property (nonatomic, readwrite, assign) BOOL verboseLoggingEnabled;
 
 // Toggle remote logging.
-@property (nonatomic, assign) BOOL remoteLoggingEnabled;
+@property (nonatomic, readwrite, assign) BOOL remoteLoggingEnabled;
 
 // Enables or disables the network.
-@property (nonatomic, assign) BOOL networkEnabled;
+@property (nonatomic, readwrite, assign) BOOL networkEnabled;
 
 // Returns the currently authenticated Simperium user.
 @property (nonatomic, readonly, strong) SPUser *user;
@@ -161,7 +161,7 @@ typedef void (^SimperiumSignoutCompletion)(void);
 @property (nonatomic, readonly, copy) NSString *appURL;
 
 // URL to a Simperium server (can be changed to point to a custom installation).
-@property (nonatomic, copy) NSString *rootURL;
+@property (nonatomic, readwrite, copy) NSString *rootURL;
 
 // A unique ID for this app (configured at simperium.com).
 @property (nonatomic, readonly, copy) NSString *appID;
@@ -175,21 +175,31 @@ typedef void (^SimperiumSignoutCompletion)(void);
 // Remote Bucket Name Overrides!
 @property (nonatomic, readonly, copy) NSDictionary *bucketOverrides;
 
+// Returns the current SPAuthenticator instance
+@property (nonatomic, readwrite, strong) SPAuthenticator *authenticator;
+
+// Returns a flag indicating if there is network access
+@property (nonatomic, readonly, assign) BOOL requiresConnection;
+
+// Returns a string describing the network status
+@property (nonatomic, readonly, strong) NSString *networkStatus;
+
+// Returns the timestamp of the last message received by the backend
+@property (nonatomic, readonly, strong) NSDate *networkLastSeenTime;
+
+
 // You can implement your own subclass of SPAuthenticationViewController (iOS) or
 // SPAuthenticationWindowController (OSX) to customize authentication.
 #if TARGET_OS_IPHONE
-@property (nonatomic, weak) Class authenticationViewControllerClass;
+@property (nonatomic, readwrite, weak) Class authenticationViewControllerClass;
 #else
-@property (nonatomic, weak) Class authenticationWindowControllerClass;
+@property (nonatomic, readwrite, weak) Class authenticationWindowControllerClass;
 #endif
 
-@property (nonatomic, strong) SPAuthenticator *authenticator;
-
-
 #if TARGET_OS_IPHONE
-@property (nonatomic, weak) UIViewController *rootViewController;
+@property (nonatomic, readwrite, weak) UIViewController *rootViewController;
 #else
-@property (nonatomic, weak) NSWindow *window;
+@property (nonatomic, readwrite, weak) NSWindow *window;
 #endif
 
 @end

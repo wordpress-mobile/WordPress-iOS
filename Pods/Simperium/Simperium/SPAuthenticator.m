@@ -18,7 +18,6 @@
 #import "SPHttpRequestQueue.h"
 #import "SPLogger.h"
 
-#define USERNAME_KEY @"SPUsername"
 
 #if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h> // for UIDevice
@@ -32,7 +31,8 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-static SPLogLevels logLevel = SPLogLevelsInfo;
+static SPLogLevels logLevel     = SPLogLevelsInfo;
+static NSString * SPUsername    = @"SPUsername";
 
 
 #pragma mark ====================================================================================
@@ -64,17 +64,29 @@ static SPLogLevels logLevel = SPLogLevelsInfo;
         self.delegate	= authDelegate;
         self.simperium	= s;
 		
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNetworkChange:) name:kReachabilityChangedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNetworkChange:) name:kSPReachabilityChangedNotification object:nil];
 		self.reachability = [SPReachability reachabilityForInternetConnection];
-        self.connected = [self.reachability currentReachabilityStatus] != NotReachable;
+        self.connected = self.reachability.currentReachabilityStatus != NotReachable;
         [self.reachability startNotifier];
     }
     return self;
 }
 
 - (void)handleNetworkChange:(NSNotification *)notification {
-    self.connected = ([self.reachability currentReachabilityStatus] != NotReachable);
+    self.connected = (self.reachability.currentReachabilityStatus != NotReachable);
 }
+
+- (BOOL)needsAuthentication {
+    NSString *username  = [[NSUserDefaults standardUserDefaults] objectForKey:SPUsername];
+    NSString *token     = nil;
+    
+    if (username) {
+        token = [STKeychain getPasswordForUsername:username andServiceName:self.simperium.appID error:nil];
+    }
+	
+    return (username.length == 0 || token.length == 0);
+}
+
 
 // Open a UI to handle authentication if necessary
 - (BOOL)authenticateIfNecessary {
@@ -83,7 +95,7 @@ static SPLogLevels logLevel = SPLogLevelsInfo;
 	NSAssert(self.simperium.appID, @"Simperium AppID must be initialized before attempting authentication");
 	
     // Look up a stored token (if it exists) and try authenticating
-    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:USERNAME_KEY];
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:SPUsername];
     NSString *token = nil;
 	
     if (username) {
@@ -179,7 +191,7 @@ static SPLogLevels logLevel = SPLogLevelsInfo;
     NSString *token			= userDict[@"access_token"];
     
     // Set the user's details
-    [[NSUserDefaults standardUserDefaults] setObject:username forKey:USERNAME_KEY];
+    [[NSUserDefaults standardUserDefaults] setObject:username forKey:SPUsername];
     [[NSUserDefaults standardUserDefaults] synchronize];
 	
 	NSError *error = nil;
@@ -247,12 +259,12 @@ static SPLogLevels logLevel = SPLogLevelsInfo;
 - (void)reset {
 	SPLogVerbose(@"Simperium Authenticator resetting credentials");
 	
-    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:USERNAME_KEY];
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:SPUsername];
     if (!username || username.length == 0) {
         username = self.simperium.user.email;
 	}
     
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:USERNAME_KEY];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:SPUsername];
     [[NSUserDefaults standardUserDefaults] synchronize];
 	
     if (username && username.length > 0) {

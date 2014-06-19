@@ -16,31 +16,12 @@ Features/Design
 - TLS (wss) support.  It uses CFStream so we get this for *free*
 - Uses NSStream/CFNetworking.  Earlier implementations used ``dispatch_io``,
   however, this proved to be make TLS nearly impossible.  Also I wanted this to
-  work in iOS 4.x. (SocketRocket only supports 5.0 and above now)
+  work in iOS 4.x.
 - Uses ARC.  It uses the 4.0 compatible subset (no weak refs).
 - Seems to perform quite well
 - Parallel architecture. Most of the work is done in background worker queues.
 - Delegate-based. Had older versions that could use blocks too, but I felt it
   didn't blend well with retain cycles and just objective C in general.
-
-Changes
--------
-
-v0.3.1-beta2 - 2013-01-12
-`````````````````````````
-
-- Stability fix for ``closeWithCode:reason:`` (Thanks @michaelpetrov!)
-- Actually clean up the NSStreams and remove them from their runloops
-- ``_SRRunLoopThread``'s ``main`` wasn't correctly wrapped with
-  ``@autoreleasepool``
-
-v0.3.1-beta1 - 2013-01-12
-`````````````````````````
-
-- Cleaned up GCD so OS_OBJECT_USE_OBJC_RETAIN_RELEASE is optional
-- Removed deprecated ``dispatch_get_current_queue`` in favor of ``dispatch_queue_set_specific`` and ``dispatch_get_specific``
-- Dropping support for iOS 4.0 (it may still work)
-
 
 Installing (iOS)
 ----------------
@@ -53,7 +34,6 @@ There's a few options. Choose one, or just figure it out
 
 - For OS X you will have to repackage make a .framework target.  I will take
   contributions. Message me if you are interested.
-
 
 Depending on how you configure your project you may need to ``#import`` either
 ``<SocketRocket/SRSocketRocket.h>`` or ``"SRSocketRocket.h"``
@@ -92,9 +72,7 @@ The Web Socket.
   closes, errors, or fails.  This is similar to how ``NSURLConnection`` behaves.
   (unlike ``NSURLConnection``, ``SRWebSocket`` won't retain the delegate)
 
-What you need to know
-
-.. code-block:: objective-c
+What you need to know:: 
 
   @interface SRWebSocket : NSObject
 
@@ -112,13 +90,12 @@ What you need to know
   // Send a UTF8 String or Data
   - (void)send:(id)data;
 
+
   @end
 
 ``SRWebSocketDelegate``
 ```````````````````````
-You implement this
-
-.. code-block:: objective-c
+You implement this ::
 
   @protocol SRWebSocketDelegate <NSObject>
 
@@ -169,9 +146,6 @@ To run from the app, choose the ``SocketRocket`` target and run the test action
 (``cmd+u``). It runs the same thing, but makes it easier to debug.  There is
 some serious pre/post hooks in the Test action.  You can edit it to customize
 behavior.
-
-.. note:: Xcode only up to version 4.4 is currently supported for the test
-  harness
 
 TestChat Demo Application
 -------------------------

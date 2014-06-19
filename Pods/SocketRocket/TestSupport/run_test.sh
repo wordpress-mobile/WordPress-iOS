@@ -1,7 +1,8 @@
+export MACOSX_DEPLOYMENT_TARGET="10.7"
+
 TEST_SCENARIOS=$1
 TEST_URL=$2
 CONFIGURATION=$3
-
 
 export SR_TEST_URL=$TEST_URL
 
@@ -16,13 +17,7 @@ sr-testharness -i '' -c "$TEST_SCENARIOS" &
 
 CHILD_PID=$!
 
-extra_opts="VALID_ARCHS=i386 ARCH=i386"
-
-SHARED_ARGS="-arch i386 -configuration $CONFIGURATION -sdk iphonesimulator"
-
-xcodebuild -scheme SocketRocketTests $SHARED_ARGS TEST_AFTER_BUILD=YES  clean build $extra_opts
-RESULT=$?
+xcodebuild -target SocketRocket -arch i386 -configuration $CONFIGURATION -sdk iphonesimulator clean
+xcodebuild -target SRWebSocketTests -arch i386 -configuration $CONFIGURATION -sdk iphonesimulator clean build TEST_AFTER_BUILD=YES
 
 kill $CHILD_PID
-
-exit $RESULT

@@ -23,6 +23,7 @@ NSString * const OP_LIST_INSERT		= @"+";
 NSString * const OP_LIST_DELETE		= @"-";
 NSString * const OP_OBJECT_ADD		= @"+";
 NSString * const OP_OBJECT_REMOVE	= @"-";
+NSString * const OP_OBJECT_REPLACE  = @"r";
 NSString * const OP_INTEGER			= @"I";
 NSString * const OP_LIST			= @"L";
 NSString * const OP_LIST_DMP		= @"dL";

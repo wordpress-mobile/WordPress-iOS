@@ -20,7 +20,7 @@
 typedef BOOL (^PXPredicateBlock)();
 
 
-@interface SenTest (PXAdditions)
+@interface SenTestCase (PXAdditions)
 
 - (void)runCurrentRunLoopUntilTestPasses:(PXPredicateBlock)predicate timeout:(NSTimeInterval)timeout;
 

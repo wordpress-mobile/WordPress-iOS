@@ -9,11 +9,17 @@
 #import <Foundation/Foundation.h>
 #import "SPDiffable.h"
 
+
 @class SPBucket;
 
 typedef void (^SPNetworkInterfaceResetCompletion)(void);
 
+
 @protocol SPNetworkInterface <NSObject>
+
+@property (nonatomic, readonly) NSString    *status;
+@property (nonatomic, readonly) NSDate      *lastSeenTime;
+
 - (void)start:(SPBucket *)bucket;
 - (void)stop:(SPBucket *)bucket;
 - (void)reset:(SPBucket *)bucket completion:(SPNetworkInterfaceResetCompletion)completion;
@@ -25,6 +31,7 @@ typedef void (^SPNetworkInterfaceResetCompletion)(void);
 - (void)removeAllBucketObjects:(SPBucket *)bucket;
 - (void)shareObject:(id<SPDiffable>)object withEmail:(NSString *)email;
 - (void)forceSyncBucket:(SPBucket *)bucket;
+
 @end
 
 extern NSString * const SPAuthenticationDidFail;
