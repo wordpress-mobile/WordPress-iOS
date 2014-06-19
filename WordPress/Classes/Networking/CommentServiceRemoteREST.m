@@ -167,6 +167,8 @@
     NSString *status = remoteStatus;
     if ([status isEqualToString:@"unapproved"]) {
         status = @"hold";
+    } else if ([status isEqualToString:@"approved"]) {
+        status = @"approve";
     }
     return status;
 }
@@ -175,6 +177,8 @@
     NSString *remoteStatus = status;
     if ([remoteStatus isEqualToString:@"hold"]) {
         remoteStatus = @"unapproved";
+    } else if ([remoteStatus isEqualToString:@"approve"]) {
+        remoteStatus = @"approved";
     }
     return remoteStatus;
 }
