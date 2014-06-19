@@ -108,6 +108,11 @@ static ContextManager *instance;
 }
 
 - (BOOL)obtainPermanentIDForObject:(NSManagedObject *)managedObject {
+    // Failsafe
+    if (!managedObject) {
+        return NO;
+    }
+    
     if (managedObject && ![managedObject.objectID isTemporaryID]) {
         // Object already has a permanent ID so just return success.
         return YES;
