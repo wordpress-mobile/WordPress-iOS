@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@interface NSDate (JSON)
+@interface NSDate (WordPressJSON)
 
 /**
  Parses a date string
