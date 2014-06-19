@@ -91,6 +91,9 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
                             options:@{@"shakeMenu":@NO}];
     [SupportViewController checkIfFeedbackShouldBeEnabled];
 
+    [Helpshift installForApiKey:[WordPressComApiCredentials helpshiftAPIKey] domainName:[WordPressComApiCredentials helpshiftDomainName] appID:[WordPressComApiCredentials helpshiftAppId]];
+    [SupportViewController checkIfHelpshiftShouldBeEnabled];
+    
     NSNumber *usage_tracking = [[NSUserDefaults standardUserDefaults] valueForKey:kUsageTrackingDefaultsKey];
     if (usage_tracking == nil) {
         // check if usage_tracking bool is set
@@ -149,9 +152,6 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     [self.window makeKeyAndVisible];
     
     [self showWelcomeScreenIfNeededAnimated:NO];
-    
-    [Helpshift installForApiKey:[WordPressComApiCredentials helpshiftAPIKey] domainName:[WordPressComApiCredentials helpshiftDomainName] appID:[WordPressComApiCredentials helpshiftAppId]];
-    [SupportViewController checkIfHelpshiftShouldBeEnabled];
     
     return YES;
 }
