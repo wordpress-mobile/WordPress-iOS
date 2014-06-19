@@ -33,6 +33,7 @@ static NSString *const GenerateApplicationSpecificPasswordUrl = @"http://en.supp
     WPNUXSecondaryButton *_toggleSignInForm;
     WPNUXSecondaryButton *_forgotPassword;
     UIButton *_helpButton;
+    UILabel *_helpBadge;
     UIImageView *_icon;
     WPWalkthroughTextField *_usernameText;
     WPWalkthroughTextField *_passwordText;
@@ -379,6 +380,23 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         [_mainView addSubview:_helpButton];
     }
     
+    // help badge
+    if (_helpBadge == nil) {
+        _helpBadge = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 12, 10)];
+        _helpBadge.layer.masksToBounds = YES;
+        _helpBadge.layer.cornerRadius = 6;
+        _helpBadge.textAlignment = NSTextAlignmentCenter;
+        _helpBadge.backgroundColor = [UIColor colorWithHexString:@"dd3d36"];
+        _helpBadge.textColor = [UIColor whiteColor];
+        
+        _helpBadge.font = [UIFont fontWithName:@"OpenSans" size:8.0];
+        _helpBadge.minimumScaleFactor = 10.0/15.0;
+        
+        _helpBadge.text = @"88";
+        
+        [_mainView addSubview:_helpBadge];
+    }
+    
     // Add Username
     if (_usernameText == nil) {
         _usernameText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-username-field"]];
@@ -524,6 +542,11 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     x = viewWidth - CGRectGetWidth(_helpButton.frame) - GeneralWalkthroughStandardOffset;
     y = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset;
     _helpButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_helpButton.frame), GeneralWalkthroughButtonHeight));
+    
+    // layout help badge
+    x = viewWidth - CGRectGetWidth(_helpBadge.frame) - GeneralWalkthroughStandardOffset + 4;
+    y = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset + CGRectGetHeight(_helpBadge.frame) - 4;
+    _helpBadge.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_helpBadge.frame), CGRectGetHeight(_helpBadge.frame)));
     
     // Layout Cancel Button
     x = 0;
@@ -999,7 +1022,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 }
 - (NSArray *)controlsToHideForTextEntry {
     
-    NSArray *controlsToHide = @[_helpButton];
+    NSArray *controlsToHide = @[_helpButton, _helpBadge];
     
     // Hide the
     BOOL isSmallScreen = !(CGRectGetHeight(self.view.bounds) > 480.0);
