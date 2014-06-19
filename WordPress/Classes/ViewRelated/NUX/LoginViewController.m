@@ -20,13 +20,13 @@
 #import "AccountService.h"
 #import "BlogService.h"
 #import "WPNUXHelpBadgeLabel.h"
+#import <Helpshift/Helpshift.h>
 
 static NSString *const ForgotPasswordDotComBaseUrl = @"https://wordpress.com";
 static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
 static NSString *const GenerateApplicationSpecificPasswordUrl = @"http://en.support.wordpress.com/security/two-step-authentication/#application-specific-passwords";
 
-@interface LoginViewController () <
-    UITextFieldDelegate> {
+@interface LoginViewController () <UITextFieldDelegate, HelpshiftDelegate> {
         
     // Views
     UIView *_mainView;
@@ -89,6 +89,8 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _userIsDotCom = NO;
     }
 
+    [[Helpshift sharedInstance] setDelegate:self];
+
     [self addMainView];
     [self initializeViewWithDefaultWPComAccount:defaultAccount];
     
@@ -100,6 +102,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
+    
+    [[Helpshift sharedInstance] getNotificationCountFromRemote:YES];
+    
     [self layoutControls];
 }
 
@@ -383,9 +388,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _helpBadge.backgroundColor = [UIColor colorWithHexString:@"dd3d36"];
         _helpBadge.textColor = [UIColor whiteColor];
         _helpBadge.font = [UIFont fontWithName:@"OpenSans" size:8.0];
-        
-        _helpBadge.text = @"1";
-
+        _helpBadge.hidden = YES;
         [_mainView addSubview:_helpBadge];
     }
     
@@ -1003,5 +1006,18 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     return controlsToHide;
 }
 
+#pragma mark - Helpshift Delegate
+
+- (void)didReceiveNotificationCount:(NSInteger)count {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (count > 0) {
+            _helpBadge.text = [NSString stringWithFormat:@"%d", count];
+            _helpBadge.hidden = NO;
+        } else {
+            _helpBadge.text = @"0";
+            _helpBadge.hidden = YES;
+        }
+    });
+}
 
 @end
