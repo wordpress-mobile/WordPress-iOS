@@ -1,6 +1,6 @@
-#import "NSDate+JSON.h"
+#import "NSDate+WordPressJSON.h"
 
-@implementation NSDate (JSON)
+@implementation NSDate (WordPressJSON)
 
 + (instancetype)dateWithWordPressComJSONString:(NSString *)string {
     static NSDateFormatter *rfc3339DateFormatter;
