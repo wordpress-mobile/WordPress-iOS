@@ -19,6 +19,7 @@
 #import "NoteService.h"
 #import "AccountService.h"
 #import "BlogService.h"
+#import "WPNUXHelpBadgeLabel.h"
 
 static NSString *const ForgotPasswordDotComBaseUrl = @"https://wordpress.com";
 static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
@@ -33,7 +34,7 @@ static NSString *const GenerateApplicationSpecificPasswordUrl = @"http://en.supp
     WPNUXSecondaryButton *_toggleSignInForm;
     WPNUXSecondaryButton *_forgotPassword;
     UIButton *_helpButton;
-    UILabel *_helpBadge;
+    WPNUXHelpBadgeLabel *_helpBadge;
     UIImageView *_icon;
     WPWalkthroughTextField *_usernameText;
     WPWalkthroughTextField *_passwordText;
@@ -382,18 +383,16 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     
     // help badge
     if (_helpBadge == nil) {
-        _helpBadge = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 12, 10)];
+        _helpBadge = [[WPNUXHelpBadgeLabel alloc] initWithFrame:CGRectMake(0, 0, 12, 10)];
         _helpBadge.layer.masksToBounds = YES;
         _helpBadge.layer.cornerRadius = 6;
         _helpBadge.textAlignment = NSTextAlignmentCenter;
         _helpBadge.backgroundColor = [UIColor colorWithHexString:@"dd3d36"];
         _helpBadge.textColor = [UIColor whiteColor];
-        
         _helpBadge.font = [UIFont fontWithName:@"OpenSans" size:8.0];
-        _helpBadge.minimumScaleFactor = 10.0/15.0;
         
-        _helpBadge.text = @"88";
-        
+        _helpBadge.text = @"1";
+
         [_mainView addSubview:_helpBadge];
     }
     
@@ -544,8 +543,8 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     _helpButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_helpButton.frame), GeneralWalkthroughButtonHeight));
     
     // layout help badge
-    x = viewWidth - CGRectGetWidth(_helpBadge.frame) - GeneralWalkthroughStandardOffset + 4;
-    y = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset + CGRectGetHeight(_helpBadge.frame) - 4;
+    x = viewWidth - CGRectGetWidth(_helpBadge.frame) - GeneralWalkthroughStandardOffset + 5;
+    y = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset + CGRectGetHeight(_helpBadge.frame) - 5;
     _helpBadge.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_helpBadge.frame), CGRectGetHeight(_helpBadge.frame)));
     
     // Layout Cancel Button
