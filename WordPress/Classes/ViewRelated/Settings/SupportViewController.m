@@ -121,7 +121,6 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     self.feedbackEnabled = [defaults boolForKey:UserDefaultsFeedbackEnabled];
     
-    [[Helpshift sharedInstance] setDelegate:self];
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
@@ -138,7 +137,9 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     _helpshiftEnabled = [defaults boolForKey:UserDefaultsHelpshiftEnabled];
 
+    [[Helpshift sharedInstance] setDelegate:self];
     _helpshiftUnreadCount = [[Helpshift sharedInstance] getNotificationCountFromRemote:NO];
+
     [self.tableView reloadData];
 }
 
@@ -393,10 +394,12 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 #pragma mark - Helpshift Delegate
 
 - (void)didReceiveNotificationCount:(NSInteger)count {
-    self.helpshiftUnreadCount = count;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.helpshiftUnreadCount = count;
     
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:SettingsSectionFAQForums];
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:SettingsSectionFAQForums];
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    });
 }
 
 @end
