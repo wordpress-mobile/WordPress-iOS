@@ -22,12 +22,6 @@ extern NSString * const CommentStatusDraft;
 @property (nonatomic, strong) AbstractPost * post;
 @property (nonatomic, assign) BOOL isNew;
 
-///-------------------------------------------
-/// @name Creating and finding comment objects
-///-------------------------------------------
-
-+ (void)mergeNewComments:(NSArray *)newComments forBlog:(Blog *)blog;
-
 ///---------------------
 /// @name Helper methods
 ///---------------------
