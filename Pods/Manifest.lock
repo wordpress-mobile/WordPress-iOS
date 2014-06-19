@@ -95,7 +95,7 @@ DEPENDENCIES:
   - google-plus-ios-sdk (~> 1.5)
   - Helpshift (= 4.3.1)
   - HockeySDK (~> 3.5.0)
-  - MGImageUtilities (from `git://github.com/wordpress-mobile/MGImageUtilities.git`, branch `gifsupport`)
+  - MGImageUtilities (from `git://github.com/jleandroperez/MGImageUtilities.git`, branch `gifsupport`)
   - Mixpanel (= 2.3.1)
   - NSLogger-CocoaLumberjack-connector (~> 1.3)
   - NSObject-SafeExpectations (= 0.0.2)
@@ -119,7 +119,7 @@ EXTERNAL SOURCES:
     :podspec: https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec
   MGImageUtilities:
     :branch: gifsupport
-    :git: git://github.com/wordpress-mobile/MGImageUtilities.git
+    :git: git://github.com/jleandroperez/MGImageUtilities.git
   NSURL+IDN:
     :podspec: https://raw.github.com/koke/NSURL-IDN/master/Podfile
   Simperium:
@@ -143,7 +143,7 @@ SPEC CHECKSUMS:
   Helpshift: 5e28958f3fb3b6643ab5b083f3e23b9ff4914091
   HockeySDK: f9af97c2f5df4eb6ca6d2a9c408f2ff498edd608
   JRSwizzle: 6242ff38485d870fc2636899048ee1ab883ae587
-  MGImageUtilities: ab3580f2161b10f8a41331baea87aaafbd688950
+  MGImageUtilities: 92d2aa6612a336b98106fbdac52996caf7714208
   Mixpanel: 9cc470a58346f60da8ce2982096bcc72b5a7372b
   NSLogger: c4df4b0208d724f244c05f1966b7402f14d7bf55
   NSLogger-CocoaLumberjack-connector: da77800fec7415c1d378dfd93465031a58c5a9a8
