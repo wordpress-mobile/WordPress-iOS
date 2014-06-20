@@ -3,6 +3,7 @@
 
 #import <DTCoreText/DTCoreText.h>
 #import <AFNetworking/UIImageView+AFNetworking.h>
+#import <WordPress-iOS-Shared/UIImage+Util.h>
 #import "UIImageView+Gravatar.h"
 #import "WordPressAppDelegate.h"
 #import "WPWebViewController.h"
@@ -11,7 +12,6 @@
 #import "ContentActionButton.h"
 #import "NSDate+StringFormatting.h"
 #import "UIColor+Helpers.h"
-#import "UIImage+Util.h"
 #import "WPTableViewCell.h"
 #import "DTTiledLayerWithoutFade.h"
 #import "ReaderMediaView.h"
