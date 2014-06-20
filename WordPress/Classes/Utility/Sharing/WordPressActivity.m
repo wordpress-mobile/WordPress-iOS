@@ -26,28 +26,28 @@
 
 - (BOOL)canPerformWithActivityItems:(NSArray *)activityItems {
 	for (id activityItem in activityItems) {
-	if ([activityItem isKindOfClass:[NSURL class]] && [[UIApplication sharedApplication] canOpenURL:activityItem]) {
+		if ([activityItem isKindOfClass:[NSURL class]] && [[UIApplication sharedApplication] canOpenURL:activityItem]) {
 			return YES;
 		}
 	}
-
+	
 	return NO;
 }
 
 - (void)prepareWithActivityItems:(NSArray *)activityItems {
 	for (id activityItem in activityItems) {
 		if ([activityItem isKindOfClass:[NSURL class]]) {
-				self.URL = activityItem;
-			}
+			self.URL = activityItem;
+		}
 		if ([activityItem isKindOfClass:[NSDictionary class]]) {
-				self.title = activityItem[@"title"];
-				self.summary = activityItem[@"summary"];
-				self.tags = activityItem[@"tags"];
+			self.title = activityItem[@"title"];
+			self.summary = activityItem[@"summary"];
+			self.tags = activityItem[@"tags"];
 		}
 	}
 }
 
-- (UIViewController *)activityViewController{
+-(UIViewController *)activityViewController{
 	NSString * content = [self.summary stringByAppendingString:[NSString stringWithFormat:@"\n\n <a href=\"%@\">%@</a>", self.URL, self.URL]];
 
 	EditPostViewController * editPostViewController = [[EditPostViewController alloc] initWithTitle:self.title andContent:content andTags:self.tags andImage:nil];
@@ -61,6 +61,7 @@
 
 	return navController;
 }
+
 - (void)editPostViewDismissed {
 	[self activityDidFinish:YES];
 }
