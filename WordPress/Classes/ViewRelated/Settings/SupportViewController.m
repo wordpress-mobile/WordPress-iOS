@@ -143,13 +143,6 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     [self.tableView reloadData];
 }
 
-- (NSUInteger)supportedInterfaceOrientations {
-    if (IS_IPHONE)
-        return UIInterfaceOrientationMaskPortrait;
-    
-    return UIInterfaceOrientationMaskAll;
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
