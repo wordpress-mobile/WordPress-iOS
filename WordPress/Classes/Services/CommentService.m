@@ -94,7 +94,7 @@
         [self.managedObjectContext performBlock:^{
             Comment *commentInContext = (Comment *)[self.managedObjectContext existingObjectWithID:commentObjectID error:nil];
             if (commentInContext) {
-                [self updateComment:commentInContext withRemoteComment:remoteComment];
+                [self updateComment:commentInContext withRemoteComment:comment];
             }
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             if (success) {
