@@ -52,6 +52,7 @@
     }
     NSDictionary *parameters = @{
                                  @"content": comment.content,
+                                 @"context": @"edit",
                                  };
     [self.api POST:path
         parameters:parameters
@@ -75,6 +76,7 @@
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", blog.dotComID, comment.commentID];
     NSDictionary *parameters = @{
                                  @"content": comment.content,
+                                 @"context": @"edit",
                                  };
     [self.api POST:path
         parameters:parameters
@@ -98,6 +100,7 @@
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", blog.dotComID, comment.commentID];
     NSDictionary *parameters = @{
                                  @"status": [self remoteStatusWithStatus:comment.status],
+                                 @"context": @"edit",
                                  };
     [self.api POST:path
         parameters:parameters
