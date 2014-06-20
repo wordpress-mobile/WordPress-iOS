@@ -22,8 +22,11 @@ pod 'CrashlyticsLumberjack', '~>1.0.0'
 pod 'HockeySDK', '~>3.5.0'
 pod 'Helpshift', '4.3.1'
 pod 'Taplytics', '~>1.2.50'
-pod 'CTAssetsPickerController', '~> 2.2.0'
-pod 'WordPress-iOS-Shared', :git => 'git://github.com/wordpress-mobile/WordPress-iOS-Shared'
+pod 'CTAssetsPickerController', '~> 2.2.2'
+pod 'WordPress-iOS-Shared', '0.0.2'
+pod 'WordPress-iOS-Editor', '0.1.4'
+pod 'WordPressCom-Stats-iOS', '0.0.2'
+pod 'NSObject-SafeExpectations', '0.0.2'
 
 target :WordPressTest, :exclusive => true do
   pod 'OHHTTPStubs', '1.1.1'
