@@ -455,13 +455,13 @@ typedef enum {
     NSMutableArray *activityItems = [NSMutableArray array];
     NSMutableDictionary *postDictionary = [NSMutableDictionary dictionary];
     if (title) {
-        [postDictionary setObject:title forKey:@"title"];
+        postDictionary[@"title"] = title;
     }
     if (summary) {
-        [postDictionary setObject:summary forKey:@"summary"];
+        postDictionary[@"summary"] = summary;
     }
     if (tags) {
-        [postDictionary setObject:tags forKey:@"tags"];
+        postDictionary[@"tags"] = tags;
     }
     [activityItems addObject:postDictionary];
     
