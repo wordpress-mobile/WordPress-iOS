@@ -50,7 +50,7 @@
 -(UIViewController *)activityViewController{
 	NSString * content = [self.summary stringByAppendingString:[NSString stringWithFormat:@"\n\n <a href=\"%@\">%@</a>", self.URL, self.URL]];
 
-	EditPostViewController * editPostViewController = [[EditPostViewController alloc] initWithTitle:_title andContent:content andTags:_tags andImage:nil];
+	EditPostViewController * editPostViewController = [[EditPostViewController alloc] initWithTitle:self.title andContent:content andTags:self.tags andImage:nil];
 	editPostViewController.delegate = self;
     
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
