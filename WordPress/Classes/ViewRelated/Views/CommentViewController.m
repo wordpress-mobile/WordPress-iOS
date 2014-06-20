@@ -112,7 +112,8 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     // Get rid of any transient reply if popping the view
     // (ideally transient replies should be handled more cleanly)
     if ([self isMovingFromParentViewController] && self.transientReply) {
-        [self deleteComment];
+        CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+        [commentService deleteComment:self.reply success:nil failure:nil];
     }
 }
 
