@@ -44,15 +44,14 @@ CGFloat const WPNUXBackButtonExtraHorizontalWidthForSpace = 30;
 
 - (void)configureButton
 {
-
-    self.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:14.0];
+    self.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:16.0];
     [self setTitleEdgeInsets:UIEdgeInsetsMake(0.0, 6.0, 0, 10.0)];
     [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.8] forState:UIControlStateNormal];
     [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.5] forState:UIControlStateHighlighted];
     [self setImageEdgeInsets:UIEdgeInsetsMake(0, -18, 0, 0)];
     [self setImage:[UIImage imageNamed:@"btn-back-chevron"] forState:UIControlStateNormal];
     [self setImage:[UIImage imageNamed:@"btn-back-chevron-tapped"] forState:UIControlStateHighlighted];
-    [self setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
+    [self setTitle:NSLocalizedString(@"Back", nil) forState:UIControlStateNormal];
 }
 
 @end
