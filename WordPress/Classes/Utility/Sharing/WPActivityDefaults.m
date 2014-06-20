@@ -14,9 +14,9 @@
     InstapaperActivity *instapaperActivity = [[InstapaperActivity alloc] init];
     PocketActivity *pocketActivity = [[PocketActivity alloc] init];
     GooglePlusActivity *googlePlusActivity = [[GooglePlusActivity alloc] init];
-	WordPressActivity *wordPressActivity = [[WordPressActivity alloc] init];
-	
-	return @[safariActivity, instapaperActivity, pocketActivity, googlePlusActivity, wordPressActivity];
+    WordPressActivity *wordPressActivity = [[WordPressActivity alloc] init];
+    
+    return @[safariActivity, instapaperActivity, pocketActivity, googlePlusActivity, wordPressActivity];
 }
 
 + (void)trackActivityType:(NSString *)activityType
@@ -38,8 +38,8 @@
         stat = WPAnalyticsStatSentItemToPocket;
     } else if ([activityType isEqualToString:NSStringFromClass([GooglePlusActivity class])]) {
         stat = WPAnalyticsStatSentItemToGooglePlus;
-	} else if ([activityType isEqualToString:NSStringFromClass([WordPressActivity class])]) {
-		stat = WPAnalyticsStatSentItemToWordPress;
+    } else if ([activityType isEqualToString:NSStringFromClass([WordPressActivity class])]) {
+        stat = WPAnalyticsStatSentItemToWordPress;
     } else {
         [WPAnalytics track:WPAnalyticsStatSharedItem];
         return;
