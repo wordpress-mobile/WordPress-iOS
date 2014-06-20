@@ -87,7 +87,7 @@
 		destRect = CGRectMake(0, 0, scaledWidth, scaledHeight);
 	}
 	
-	UIImage* finalImage = nil;
+	UIImage *finalImage = nil;
 	
 	static const CGFloat kScaleForDevicesMainScreen = 0.f;
 	UIGraphicsBeginImageContextWithOptions(destRect.size, opaque, kScaleForDevicesMainScreen);
@@ -141,7 +141,7 @@
 - (UIImage*)cropWithRect:(CGRect)rect
 {
 	CGImageRef cgImage = CGImageCreateWithImageInRect([self CGImage], rect);
-	UIImage* image = [UIImage imageWithCGImage:cgImage
+	UIImage *image = [UIImage imageWithCGImage:cgImage
 										 scale:0.0
 								   orientation:self.imageOrientation];
 	CGImageRelease(cgImage);
@@ -161,7 +161,7 @@
 - (UIImage*)cropToRect:(CGRect)cropRect
 		andResizeToRec:(CGRect)resizeRect
 {
-	UIImage* modifiedImage = nil;
+	UIImage *modifiedImage = nil;
 	
 	BOOL isAnimatedImage = (self.images != nil);
 	
@@ -170,9 +170,9 @@
 		modifiedImage = [self cropWithRect:cropRect];
 		modifiedImage = [modifiedImage resizeToRect:resizeRect];
 	} else {
-		NSMutableArray* modifiedImages = [NSMutableArray arrayWithCapacity:[self.images count]];
+		NSMutableArray *modifiedImages = [NSMutableArray arrayWithCapacity:[self.images count]];
 		
-		for (UIImage* image in self.images)
+		for (UIImage *image in self.images)
 		{
 			image = [image cropToRect:cropRect
 					   andResizeToRec:resizeRect];
@@ -204,7 +204,7 @@
 			 @"A context should be created before calling this method.");
 	
 	[self drawInRect:rect];
-	UIImage* image = UIGraphicsGetImageFromCurrentImageContext();
+	UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
 	
 	return image;
 }
