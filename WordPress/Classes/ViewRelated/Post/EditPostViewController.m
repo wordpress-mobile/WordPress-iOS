@@ -31,7 +31,6 @@ NS_OPTIONS(NSInteger, ActionSheetTag){
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
-@property (nonatomic) BOOL videoPressEnabled;
 @property (nonatomic, assign) int numberOfVideosSelected;
 @property (nonatomic, strong) NSOperationQueue *mediaUploadQueue;
 @property (nonatomic, strong) NSMutableDictionary *videosToOptimize;
@@ -1019,7 +1018,7 @@ NS_OPTIONS(NSInteger, ActionSheetTag){
         return YES;
     }
     if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypeVideo){
-        if (!self.videoPressEnabled && self.post.blog.isWPcom){
+        if (!self.post.blog.videoPressEnabled && self.post.blog.isWPcom){
             [WPError showAlertWithTitle:NSLocalizedString(@"VideoPress unavailable", nil)
                                 message:NSLocalizedString(@"Get the VideoPress upgrade to upload video!", nil)
                       withLearnMoreButton:YES
@@ -1073,8 +1072,6 @@ NS_OPTIONS(NSInteger, ActionSheetTag){
 #pragma mark - Video Press checking
 
 - (void)checkVideoPressEnabled {
-    self.videoPressEnabled = self.post.blog.videoPressEnabled;
-    
     // Check IFF the blog doesn't already have it enabled
     // The blog's transient property will last only for an in-memory session
     if (!self.post.blog.videoPressEnabled) {
@@ -1082,11 +1079,9 @@ NS_OPTIONS(NSInteger, ActionSheetTag){
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
         
         [blogService checkVideoPressEnabledForBlog:self.post.blog success:^(BOOL enabled) {
-            self.videoPressEnabled = enabled;
             self.post.blog.videoPressEnabled = enabled;
         } failure:^(NSError *error) {
             DDLogWarn(@"checkVideoPressEnabled failed: %@", [error localizedDescription]);
-            self.videoPressEnabled = NO;
             self.post.blog.videoPressEnabled = NO;
         }];
     }
