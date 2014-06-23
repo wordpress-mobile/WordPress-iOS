@@ -48,7 +48,7 @@ static long long VideoMaxSize = 1024 * 1024 * 20;
     return [asset.defaultRepresentation size] > VideoMaxSize;
 }
 
--(void)optimizeAsset:(ALAsset*)originalAsset resize:(BOOL) resize toPath:(NSString *)videoPath withHandler:(void (^)(NSError* error))handler
+-(void)optimizeAsset:(ALAsset*)originalAsset resize:(BOOL) resize toPath:(NSString *)videoPath withHandler:(void (^)(CGSize newDimensions, NSError* error))handler
 {
     ALAssetRepresentation* representation=originalAsset.defaultRepresentation;
     AVAsset * asset = [AVURLAsset URLAssetWithURL:representation.url options:nil];
@@ -70,14 +70,36 @@ static long long VideoMaxSize = 1024 * 1024 * 20;
         if (session.status!=AVAssetExportSessionStatusCompleted){
             NSError* error=session.error;
             if (handler){
-                handler(error);
+                handler([[self class] resolutionForVideo:videoPath], error);
             }
             return;
         }
         if (handler){
-            handler(nil);
+            handler(CGSizeZero, nil);
         }
     }];
+}
+
++ (CGSize) resolutionForVideo:(NSString *) videoPath {
+    AVAssetTrack *videoTrack = nil;
+    AVURLAsset *asset = [AVAsset assetWithURL:[NSURL fileURLWithPath:videoPath]];
+    NSArray *videoTracks = [asset tracksWithMediaType:AVMediaTypeVideo];
+    
+    CMFormatDescriptionRef formatDescription = NULL;
+    NSArray *formatDescriptions = [videoTrack formatDescriptions];
+    if ([formatDescriptions count] > 0){
+        formatDescription = (__bridge CMFormatDescriptionRef)[formatDescriptions objectAtIndex:0];
+    }
+    
+    if ([videoTracks count] > 0)
+        videoTrack = [videoTracks objectAtIndex:0];
+    
+    CGSize trackDimensions = {
+        .width = 0.0,
+        .height = 0.0,
+    };
+    trackDimensions = [videoTrack naturalSize];
+    return trackDimensions;
 }
 
 @end

@@ -74,25 +74,17 @@
     }];
     
     WPVideoOptimizer *optimizer = [[WPVideoOptimizer alloc] init];
-    [optimizer optimizeAsset:asset resize:optimize toPath:videoPath withHandler:^(NSError *error) {
+    [optimizer optimizeAsset:asset resize:optimize toPath:videoPath withHandler:^(CGSize dimensions, NSError *error) {
         if (error){
             DDLogError(@"Error writing media to %@", videoPath);
             [media remove];            
             return;
         }
         [self.managedObjectContext performBlock:^{
-            //AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
-            //Media *media = [self newMediaForPost:post];
-            media.filename = [videoPath lastPathComponent];
-            media.localURL = videoPath;
-            media.thumbnail = thumbnailData;
-            media.mediaType = MediaTypeVideo;
-            // This is kind of lame, but we've been storing file size as KB so far
-            // We should store size in bytes or rename the property to avoid confusion
             NSDictionary * fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:videoPath error:nil];
             media.filesize = @([fileAttributes fileSize] / 1024);
-            media.width = @(asset.defaultRepresentation.dimensions.width);
-            media.height = @(asset.defaultRepresentation.dimensions.height);
+            media.width = @(dimensions.width);
+            media.height = @(dimensions.height);
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             if (completion) {
                 completion(media);
