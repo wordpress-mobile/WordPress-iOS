@@ -2,7 +2,7 @@
 #import "ReaderPost.h"
 #import "WPTableViewCell.h"
 
-@class ReaderPostView;
+@class ReaderPostContentView;
 
 @interface ReaderPostTableViewCell : WPTableViewCell
 @property (nonatomic, strong) UIImageView *avatarImageView;
@@ -13,6 +13,6 @@
 - (void)configureCell:(ReaderPost *)post;
 
 @property (nonatomic, strong) ReaderPost *post;
-@property (nonatomic, strong) ReaderPostView *postView;
+@property (nonatomic, strong) ReaderPostContentView *postView;
 
 @end
