@@ -33,11 +33,13 @@
 
         self.authorSiteButton = [self buttonForAuthorSite];
         [self addSubview:self.authorSiteButton];
+
+        [self configureConstraints];
     }
     return self;
 }
 
-- (void)updateConstraints
+- (void)configureConstraints
 {
     NSDictionary *views = NSDictionaryOfVariableBindings(_avatarImageView, _authorNameLabel, _authorSiteButton);
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_avatarImageView(32.0)]"
@@ -60,7 +62,7 @@
                                                                  options:NSLayoutFormatAlignAllLeft
                                                                  metrics:nil
                                                                    views:views]];
-    [super updateConstraints];
+    [super setNeedsUpdateConstraints];
 }
 
 - (CGSize)intrinsicContentSize
@@ -90,8 +92,6 @@
     self.authorNameLabel.text = [self.contentProvider authorForDisplay];
     [self.authorSiteButton setTitle:[self.contentProvider blogNameForDisplay] forState:UIControlStateNormal];
     [self.authorSiteButton setTitle:[self.contentProvider blogNameForDisplay] forState:UIControlStateHighlighted];
-
-    [self setNeedsUpdateConstraints];
 }
 
 

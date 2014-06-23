@@ -22,7 +22,6 @@
 #import "ReaderPostService.h"
 
 static CGFloat const RPVCHeaderHeightPhone = 10.f;
-static CGFloat const RPVCMaxImageHeightPercentage = 0.58f;
 static CGFloat const RPVCExtraTableViewHeightPercentage = 2.0f;
 
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
@@ -92,7 +91,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         maxWidth = WPTableViewFixedWidth;
     }
 
-    CGFloat maxHeight = maxWidth * RPVCMaxImageHeightPercentage;
+    CGFloat maxHeight = maxWidth * WPContentViewMaxImageHeightPercentage;
     self.featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
     self.featuredImageSource.delegate = self;
 
@@ -248,7 +247,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)resizeTableViewForImagePreloading
 {
-    
     // Use a little trick to preload more images by making the table view longer
     CGRect rect = self.tableView.frame;
     CGFloat navigationHeight = self.navigationController.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - self.navigationController.navigationBar.frame.origin.y;
@@ -751,7 +749,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 350.0;
+    return 400.0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
