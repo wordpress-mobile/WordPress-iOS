@@ -57,7 +57,7 @@
 - (void)createVideoMediaWithAsset:(ALAsset *)asset
                          optimize:(BOOL) optimize
                   forPostObjectID:(NSManagedObjectID *)postObjectID
-                       completion:(void (^)(Media *media))completion
+                       completion:(void (^)(Media *media, NSError * error))completion
 {
     NSString *videoPath = [self pathForAsset:asset];
     NSData *thumbnailData = [self thumbnailDataFromAsset:asset];
@@ -77,7 +77,8 @@
     [optimizer optimizeAsset:asset resize:optimize toPath:videoPath withHandler:^(CGSize dimensions, NSError *error) {
         if (error){
             DDLogError(@"Error writing media to %@", videoPath);
-            [media remove];            
+            [media remove];
+            completion(nil, error);
             return;
         }
         [self.managedObjectContext performBlock:^{
@@ -87,7 +88,7 @@
             media.height = @(dimensions.height);
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             if (completion) {
-                completion(media);
+                completion(media, nil);
             }
         }];
     }];

@@ -975,7 +975,10 @@ NS_OPTIONS(NSInteger, ActionSheetTag){
             MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
             [mediaService createVideoMediaWithAsset:asset optimize:[optimize boolValue]
                                     forPostObjectID:self.post.objectID
-                                         completion:^(Media *media) {
+                                         completion:^(Media *media,  NSError * error) {
+                if(error){
+                    return;
+                }
                 AFHTTPRequestOperation *operation = [mediaService operationToUploadMedia:media withSuccess:^{
                     [self insertMedia:media];
                 } failure:^(NSError *error) {
