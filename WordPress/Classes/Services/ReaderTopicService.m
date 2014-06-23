@@ -65,9 +65,6 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
             if (error) {
                 DDLogError(@"%@ error fetching topic: %@", NSStringFromSelector(_cmd), error);
             }
-            if (topic.type == ReaderTopicTypeTag && topic.isSubscribed == NO) {
-                topic = nil;
-            }
         }
     }
 
