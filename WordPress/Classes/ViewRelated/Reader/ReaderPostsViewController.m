@@ -1,6 +1,4 @@
 #import <AFNetworking/AFNetworking.h>
-#import <DTCoreText/DTCoreText.h>
-#import "DTCoreTextFontDescriptor.h"
 #import "WPTableViewControllerSubclass.h"
 #import "ReaderPostsViewController.h"
 #import "ReaderPostTableViewCell.h"
@@ -14,7 +12,6 @@
 #import "WPTableImageSource.h"
 #import "WPNoResultsView.h"
 #import "NSString+Helpers.h"
-#import "IOS7CorrectedTextView.h"
 #import "WPAnimatedBox.h"
 #import "InlineComposeView.h"
 #import "ReaderCommentPublisher.h"
@@ -30,41 +27,34 @@ static CGFloat const RPVCExtraTableViewHeightPercentage = 2.0f;
 
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
-@interface ReaderPostsViewController ()<WPTableImageSourceDelegate, ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate> {
-	BOOL _hasMoreContent;
-	BOOL _loadingMore;
-    BOOL _viewHasAppeared;
-    WPTableImageSource *_featuredImageSource;
-	CGFloat keyboardOffset;
-    CGFloat _lastOffset;
-    UIPopoverController *_popover;
-    WPAnimatedBox *_animatedBox;
-    UIGestureRecognizer *_tapOffKeyboardGesture;
-}
+@interface ReaderPostsViewController ()<WPTableImageSourceDelegate, ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate>
+
+@property (nonatomic, assign) BOOL hasMoreContent;
+@property (nonatomic, assign) BOOL loadingMore;
+@property (nonatomic, assign) BOOL viewHasAppeared;
+@property (nonatomic, strong) WPTableImageSource *featuredImageSource;
+@property (nonatomic, assign) CGFloat keyboardOffset;
+@property (nonatomic, assign) CGFloat lastOffset;
+@property (nonatomic, strong) UIPopoverController *popover;
+@property (nonatomic, strong) WPAnimatedBox *animatedBox;
+@property (nonatomic, strong) UIGestureRecognizer *tapOffKeyboardGesture;
 
 @property (nonatomic, strong) ReaderPostDetailViewController *detailController;
-@property (nonatomic, strong) UINavigationBar *navBar;
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 @property (nonatomic, strong) ReaderCommentPublisher *commentPublisher;
 @property (nonatomic, readonly) ReaderTopic *currentTopic;
+
+@property (nonatomic, strong) ReaderPostTableViewCell *cellForLayout;
+@property (nonatomic, strong) NSLayoutConstraint *cellForLayoutWidthConstraint;
 
 @end
 
 @implementation ReaderPostsViewController
 
-+ (void)initialize {
-	// DTCoreText will cache font descriptors on a background thread. However, because the font cache
-	// updated synchronously, the detail view controller ends up waiting for the fonts to load anyway
-	// (at least for the first time). We'll have DTCoreText prime its font cache here so things are ready
-	// for the detail view, and avoid a perceived lag. 
-	[DTCoreTextFontDescriptor fontDescriptorWithFontAttributes:nil];
-}
-
-
 #pragma mark - Life Cycle methods
 
 - (void)dealloc {
-    _featuredImageSource.delegate = nil;
+    self.featuredImageSource.delegate = nil;
     self.inlineComposeView.delegate = nil;
     self.inlineComposeView = nil;
     self.commentPublisher = nil;
@@ -74,7 +64,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (id)init {
 	self = [super init];
 	if (self) {
-		_hasMoreContent = YES;
+		self.hasMoreContent = YES;
 		self.infiniteScrollEnabled = YES;
         self.incrementalLoadingSupported = YES;
         
@@ -87,18 +77,21 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	[super viewDidLoad];
 
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+
+    [self configureCellForLayout];
 
     CGFloat maxWidth;
     if (IS_IPHONE) {
-        maxWidth = MAX(self.tableView.bounds.size.width, self.tableView.bounds.size.height);
+        maxWidth = MAX(CGRectGetWidth(self.tableView.bounds), CGRectGetHeight(self.tableView.bounds));
     } else {
         maxWidth = WPTableViewFixedWidth;
     }
 
     CGFloat maxHeight = maxWidth * RPVCMaxImageHeightPercentage;
-    _featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
-    _featuredImageSource.delegate = self;
-	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
+    self.featuredImageSource.delegate = self;
+
     
 	// Topics button
 	UIBarButtonItem *button = nil;
@@ -115,8 +108,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [button setAccessibilityLabel:NSLocalizedString(@"Browse", @"")];
     self.navigationItem.rightBarButtonItem = button;
 
-    _tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                     action:@selector(dismissKeyboard:)];
+    self.tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                         action:@selector(dismissKeyboard:)];
 
     // Sync content as soon as login or creation occurs
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
@@ -195,7 +188,42 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self configureNoResultsView];
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    CGFloat width;
+    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+        width = CGRectGetWidth(self.tableView.window.frame);
+    } else {
+        width = CGRectGetHeight(self.tableView.window.frame);
+    }
+    [self updateCellForLayoutWidthConstraint:width];
+
+}
+
+
 #pragma mark - Instance Methods
+
+- (void)configureCellForLayout
+{
+    NSString *CellIdentifier = @"CellForLayoutIdentifier";
+    [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:CellIdentifier];
+    self.cellForLayout = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    [self updateCellForLayoutWidthConstraint:CGRectGetWidth(self.tableView.bounds)];
+}
+
+- (void)updateCellForLayoutWidthConstraint:(CGFloat)width
+{
+    UIView *contentView = self.cellForLayout.contentView;
+    if (self.cellForLayoutWidthConstraint) {
+        [contentView removeConstraint:self.cellForLayoutWidthConstraint];
+    }
+    NSDictionary *views = NSDictionaryOfVariableBindings(contentView);
+    NSDictionary *metrics = @{@"width":@(width)};
+    self.cellForLayoutWidthConstraint = [[NSLayoutConstraint constraintsWithVisualFormat:@"[contentView(width)]"
+                                                                             options:0
+                                                                             metrics:metrics
+                                                                               views:views] firstObject];
+    [contentView addConstraint:self.cellForLayoutWidthConstraint];
+}
 
 - (ReaderTopic *)currentTopic {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -259,7 +287,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	// Figure out the difference between the bottom of this view, and the top of the keyboard.
 	// This should account for any toolbars.
 	CGPoint point = [view.window convertPoint:startFrame.origin toView:view];
-	keyboardOffset = point.y - (frame.origin.y + frame.size.height);
+	self.keyboardOffset = point.y - (frame.origin.y + frame.size.height);
 	
 	// if we're upside down, we need to adjust the origin.
 	if (endFrame.origin.x == 0 && endFrame.origin.y == 0) {
@@ -296,7 +324,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	CGRect keyFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
 	
 	CGPoint point = [view.window convertPoint:keyFrame.origin toView:view];
-	frame.size.height = point.y - (frame.origin.y + keyboardOffset);
+	frame.size.height = point.y - (frame.origin.y + self.keyboardOffset);
 	view.frame = frame;
 }
 
@@ -531,14 +559,17 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (void)setAvatarForPost:(ReaderPost *)post forCell:(ReaderPostTableViewCell *)cell indexPath:(NSIndexPath *)indexPath {
-    CGSize imageSize = cell.postView.avatarImageView.bounds.size;
+//    CGSize imageSize = cell.postView.avatarImageView.bounds.size;
+    CGSize imageSize = CGSizeMake(32.0, 32.0);
     UIImage *image = [post cachedAvatarWithSize:imageSize];
     if (image) {
-        [cell.postView setAvatar:image];
+        [cell.postView setAvatarImage:image];
+//        [cell.postView setAvatar:image];
     } else {
         [post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
             if (cell == [self.tableView cellForRowAtIndexPath:indexPath]) {
-                [cell.postView setAvatar:image];
+//                [cell.postView setAvatar:image];
+                [cell.postView setAvatarImage:image];
             }
         }];
     }
@@ -681,11 +712,14 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 #pragma mark TableView Methods
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-     return [ReaderPostTableViewCell cellHeightForPost:[self.resultsController objectAtIndexPath:indexPath] withWidth:self.tableView.bounds.size.width];
+    return 350.0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [ReaderPostTableViewCell cellHeightForPost:[self.resultsController objectAtIndexPath:indexPath] withWidth:self.tableView.bounds.size.width];
+    [self configureCell:self.cellForLayout atIndexPath:indexPath];
+    [self.cellForLayout layoutSubviews];
+    CGSize size = [self.cellForLayout.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    return ceil(size.height + 1);
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -693,9 +727,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (IS_IPHONE)
+    if (IS_IPHONE) {
         return RPVCHeaderHeightPhone;
-    
+    }
     return [super tableView:tableView heightForHeaderInSection:section];
 }
 
@@ -707,10 +741,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     // Pass the image forward
 	ReaderPost *post = [self.resultsController.fetchedObjects objectAtIndex:indexPath.row];
     ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    CGSize imageSize = cell.postView.cellImageView.image.size;
-    UIImage *image = [_featuredImageSource imageForURL:post.featuredImageURL withSize:imageSize];
-    UIImage *avatarImage = cell.postView.avatarImageView.image;
+//    CGSize imageSize = cell.postView.cellImageView.image.size;
+    CGSize imageSize = cell.postView.featuredImageView.image.size;
 
+    UIImage *image = [_featuredImageSource imageForURL:post.featuredImageURL withSize:imageSize];
+//    UIImage *avatarImage = cell.postView.avatarImageView.image;
+    UIImage *avatarImage = [cell.post cachedAvatarWithSize:CGSizeMake(32.0, 32.0)];
+// TODO: the detail controller should just fetch the cached versions of these resources vs passing them around here. :P
 	self.detailController = [[ReaderPostDetailViewController alloc] initWithPost:post featuredImage:image avatarImage:avatarImage];
     
     [self.navigationController pushViewController:self.detailController animated:YES];

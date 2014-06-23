@@ -1,7 +1,7 @@
 #import "ReaderPostTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "ReaderPost.h"
-#import "ReaderPostView.h"
+#import "ReaderPostContentView.h"
 
 const CGFloat RPTVCHorizontalOuterPadding = 8.0f;
 const CGFloat RPTVCVerticalOuterPadding = 16.0f;
@@ -14,14 +14,15 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
 }
 
 + (CGFloat)cellHeightForPost:(ReaderPost *)post withWidth:(CGFloat)width {
-    // iPhone has extra padding around each cell
-    if (IS_IPHONE) {
-        width = width - 2 * RPTVCHorizontalOuterPadding;
-    }
-    
-	CGFloat desiredHeight = [ReaderPostView heightForPost:post withWidth:width forContentMode:ReaderPostContentModeSummary];
-
-	return ceil(desiredHeight);
+//    // iPhone has extra padding around each cell
+//    if (IS_IPHONE) {
+//        width = width - 2 * RPTVCHorizontalOuterPadding;
+//    }
+//    
+//	CGFloat desiredHeight = [ReaderPostView heightForPost:post withWidth:width forContentMode:ReaderPostContentModeSummary];
+//
+//	return ceil(desiredHeight);
+    return 350.0;
 }
 
 + (ReaderPostTableViewCell *)cellForSubview:(UIView *)subview {
@@ -46,17 +47,20 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {        
+    if (self) {
         self.sideBorderView = [[UIView alloc] init];
+        self.sideBorderView.translatesAutoresizingMaskIntoConstraints = NO;
         self.sideBorderView.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1.f];
 		self.sideBorderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [self.contentView addSubview:self.sideBorderView];
 
-        self.postView = [[ReaderPostView alloc] initWithFrame:self.frame contentMode:ReaderPostContentModeSummary];
+        self.postView = [[ReaderPostContentView alloc] init];
+//        self.postView = [[ReaderPostView alloc] initWithFrame:self.frame contentMode:ReaderPostContentModeSummary];
         self.postView.backgroundColor = [UIColor whiteColor];
         self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-
         [self.contentView addSubview:self.postView];
+
+        [self configureConstraints];
     }
 	
     return self;
@@ -84,13 +88,47 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
                      } completion:nil];
 }
 
-- (void)setPost:(ReaderPost *)post {
-	if ([post isEqual:_post])
-		return;
-    
-    self.postView.post = post;
-	_post = post;
+- (void)configureConstraints
+{
+    NSNumber *borderSidePadding = IS_IPHONE ? @(RPTVCHorizontalOuterPadding - 1) : @0; // Just to the left of the container
+    NSNumber *borderBottomPadding = @(RPTVCVerticalOuterPadding - 1);
+    NSNumber *bottomPadding = @(RPTVCVerticalOuterPadding);
+    NSNumber *sidePadding = IS_IPHONE ? @(RPTVCHorizontalOuterPadding) : @0;
+    NSDictionary *metrics =  @{@"borderSidePadding":borderSidePadding,
+                               @"borderBottomPadding":borderBottomPadding,
+                               @"sidePadding":sidePadding,
+                               @"bottomPadding":bottomPadding};
+
+    UIView *contentView = self.contentView;
+    NSDictionary *views = NSDictionaryOfVariableBindings(contentView, _sideBorderView, _postView);
+    // Border View
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(borderSidePadding)-[_sideBorderView]-(borderSidePadding)-|"
+                                                                             options:0
+                                                                             metrics:metrics
+                                                                               views:views]];
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_sideBorderView]-(borderBottomPadding)-|"
+                                                                             options:0
+                                                                             metrics:metrics
+                                                                               views:views]];
+
+    // Post View
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(sidePadding)-[_postView]-(sidePadding)-|"
+                                                                             options:0
+                                                                             metrics:metrics
+                                                                               views:views]];
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_postView]-(bottomPadding)-|"
+                                                                             options:0
+                                                                             metrics:metrics
+                                                                               views:views]];
 }
+
+//- (void)setPost:(ReaderPost *)post {
+//	if ([post isEqual:_post])
+//		return;
+//    
+//    self.postView.post = post;
+//	_post = post;
+//}
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
     BOOL previouslyHighlighted = self.highlighted;
@@ -126,19 +164,19 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
 
 #pragma mark - Instance Methods
 
-- (void)layoutSubviews {
-	[super layoutSubviews];
-    
-    CGFloat leftPadding = IS_IPHONE ? RPTVCHorizontalOuterPadding : 0;
-	CGFloat contentWidth = self.frame.size.width - leftPadding * 2;
-    
-    CGRect frame = CGRectMake(leftPadding, 0, contentWidth, self.frame.size.height);
-    self.postView.frame = frame;
-    
-    CGFloat sideBorderX = IS_IPHONE ? RPTVCHorizontalOuterPadding - 1 : 0; // Just to the left of the container
-    CGFloat sideBorderHeight = self.frame.size.height - RPTVCVerticalOuterPadding; // Just below it
-    self.sideBorderView.frame = CGRectMake(sideBorderX, 1, self.frame.size.width - sideBorderX * 2, sideBorderHeight);
-}
+//- (void)layoutSubviews {
+//	[super layoutSubviews];
+//    
+//    CGFloat leftPadding = IS_IPHONE ? RPTVCHorizontalOuterPadding : 0;
+//	CGFloat contentWidth = self.frame.size.width - leftPadding * 2;
+//    
+//    CGRect frame = CGRectMake(leftPadding, 0, contentWidth, self.frame.size.height);
+//    self.postView.frame = frame;
+//    
+//    CGFloat sideBorderX = IS_IPHONE ? RPTVCHorizontalOuterPadding - 1 : 0; // Just to the left of the container
+//    CGFloat sideBorderHeight = self.frame.size.height - RPTVCVerticalOuterPadding; // Just below it
+//    self.sideBorderView.frame = CGRectMake(sideBorderX, 1, self.frame.size.width - sideBorderX * 2, sideBorderHeight);
+//}
 
 - (void)configureCell:(ReaderPost *)post {
 	self.post = post;
