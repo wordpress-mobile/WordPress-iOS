@@ -22,6 +22,7 @@
 #import "WPAccount.h"
 #import "AccountService.h"
 #import "BlogService.h"
+#import "WPImageOptimizer.h"
 #import "ReaderPostService.h"
 #import "ReaderTopicService.h"
 
@@ -718,6 +719,16 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     }];
 }
 
+- (void)setupImageResizeSettings {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    NSString *oldKey = @"media_resize_preference";
+    // 4 was the value for "Original"
+    if ([defaults integerForKey:oldKey] == 4) {
+        [WPImageOptimizer setShouldOptimizeImages:NO];
+    }
+    [defaults removeObjectForKey:oldKey];
+}
 
 #pragma mark - Networking setup, User agents
 

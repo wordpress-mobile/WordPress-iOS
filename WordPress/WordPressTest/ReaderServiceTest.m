@@ -1,5 +1,4 @@
-#import "ReaderServiceTest.h"
-
+#import "AsyncTestHelper.h"
 #import "CoreDataTestHelper.h"
 #import "ContextManager.h"
 #import "WPAccount.h"
@@ -11,6 +10,10 @@
 #import "ReaderPostService.h"
 #import "ReaderPostServiceRemote.h"
 #import "RemoteReaderPost.h"
+#import <XCTest/XCTest.h>
+
+@interface ReaderServiceTest : XCTestCase
+@end
 
 @interface ReaderTopicServiceRemote()
 
@@ -384,16 +387,20 @@
 
 #pragma mark - ReaderPostService tests
 
+- (RemoteReaderPost *)remoteReaderPostForTests {
+    RemoteReaderPost *remotePost = [[RemoteReaderPost alloc] init];
+    remotePost.content = @"";
+    remotePost.postTitle = @"<h1>Sample <b>text</b> &amp; sample text</h1>";
+
+    return remotePost;
+}
+
 - (void)testTitleIsPlainText {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
 
     NSString *str = @"Sample text & sample text";
-
-    RemoteReaderPost *remotePost = [[RemoteReaderPost alloc] init];
-    remotePost.content = @"";
-    remotePost.postTitle = @"<h1>Sample <b>text</b> &amp; sample text</h1>";
-
+    RemoteReaderPost *remotePost = [self remoteReaderPostForTests];
     ReaderPost *post = [service createOrReplaceFromRemotePost:remotePost forTopic:nil];
     XCTAssertTrue([str isEqualToString:post.postTitle], @"The post title was not plain text.");
 }
@@ -403,11 +410,7 @@
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
 
     NSString *str = @"Sample text & sample text";
-
-    RemoteReaderPost *remotePost = [[RemoteReaderPost alloc] init];
-    remotePost.content = @"";
-    remotePost.summary = @"<h1>Sample <b>text</b> &amp; sample text</h1>";
-
+    RemoteReaderPost *remotePost = [self remoteReaderPostForTests];
     ReaderPost *post = [service createOrReplaceFromRemotePost:remotePost forTopic:nil];
     XCTAssertTrue([str isEqualToString:post.summary], @"The post summary was not plain text.");
 }
@@ -423,5 +426,37 @@
 
 }
 
+- (void)testDeletePostsWithoutATopic {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+
+    RemoteReaderPost *remotePost = [self remoteReaderPostForTests];
+    ReaderPost *post = [service createOrReplaceFromRemotePost:remotePost forTopic:nil];
+    [[ContextManager sharedInstance] saveContext:context];
+
+    [service deletePostsWithNoTopic];
+    XCTAssertTrue(post.isDeleted, @"The post should have been deleted.");
+
+
+}
+
+- (void)testPostFromPrivateBlogCannotBeReblogged {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+
+    RemoteReaderPost *remotePost = [self remoteReaderPostForTests];
+    remotePost.isBlogPrivate = YES;
+    ReaderPost *post = [service createOrReplaceFromRemotePost:remotePost forTopic:nil];
+
+    ATHStart();
+    [service reblogPost:post toSite:0 note:nil success:^{
+        XCTFail(@"Posts from private blogs should not be rebloggable.");
+        ATHNotify();
+    } failure:^(NSError *error) {
+        XCTAssertTrue([error.domain isEqualToString:ReaderPostServiceErrorDomain], @"Reblogging a private post failed but not for the expected reason.");
+        ATHNotify();
+    }];
+    ATHEnd();
+}
 
 @end
