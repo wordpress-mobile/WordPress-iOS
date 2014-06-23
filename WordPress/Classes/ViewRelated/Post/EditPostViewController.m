@@ -751,6 +751,10 @@ NS_OPTIONS(NSInteger, ActionSheetTag){
         return YES;
     }
     
+    if (self.videosToOptimize.count > 0){
+        return YES;
+    }
+    
 	NSSet *mediaFiles = self.post.media;
 	for (Media *media in mediaFiles) {
 		if(media.remoteStatus == MediaRemoteStatusPushing || media.remoteStatus == MediaRemoteStatusProcessing) {
@@ -1008,12 +1012,9 @@ NS_OPTIONS(NSInteger, ActionSheetTag){
             }];
         }
     }
-    [self.videosToOptimize removeAllObjects];
     [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self setupNavbar];
-    });
-    
+    [self setupNavbar];
+    [self.videosToOptimize removeAllObjects];
 }
 
 - (BOOL)assetsPickerController:(CTAssetsPickerController *)picker shouldSelectAsset:(ALAsset *)asset {
