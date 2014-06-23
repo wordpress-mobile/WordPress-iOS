@@ -260,7 +260,7 @@ static NSInteger const MaxNumberOfLinesForTitleForSummary = 3;
 
 	if (self.post.isWPCom && defaultAccount != nil) {
 		self.likeButton.hidden = NO;
-		self.reblogButton.hidden = NO;
+		self.reblogButton.hidden = self.post.isBlogPrivate;
         self.commentButton.hidden = NO;
 	} else {
         self.likeButton.hidden = YES;
