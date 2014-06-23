@@ -8,6 +8,7 @@
 #import <Helpshift/Helpshift.h>
 #import <Taplytics/Taplytics.h>
 #import "WPAnalytics.h"
+#import <WordPress-iOS-Shared/WPStyleGuide.h>
 
 static NSString *const UserDefaultsFeedbackEnabled = @"wp_feedback_enabled";
 static NSString *const UserDefaultsHelpshiftEnabled = @"wp_helpshift_enabled";

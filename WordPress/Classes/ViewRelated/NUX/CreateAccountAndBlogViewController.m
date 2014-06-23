@@ -20,13 +20,14 @@
 #import "AccountService.h"
 #import "BlogService.h"
 #import "ContextManager.h"
+#import "NSString+XMLExtensions.h"
 
 @interface CreateAccountAndBlogViewController ()<
     UITextFieldDelegate,
     UIGestureRecognizerDelegate> {
     
     // Page 1
-    WPNUXBackButton *_cancelButton;
+    WPNUXBackButton *_backButton;
     UIButton *_helpButton;
     UILabel *_titleLabel;
     UILabel *_TOSLabel;
@@ -224,13 +225,12 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     }
     
     // Add Cancel Button
-    if (_cancelButton == nil) {
-        _cancelButton = [[WPNUXBackButton alloc] init];
-        [_cancelButton setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
-        [_cancelButton addTarget:self action:@selector(cancelButtonAction) forControlEvents:UIControlEventTouchUpInside];
-        [_cancelButton sizeToFit];
-        _cancelButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-        [self.view addSubview:_cancelButton];
+    if (_backButton == nil) {
+        _backButton = [[WPNUXBackButton alloc] init];
+        [_backButton addTarget:self action:@selector(backButtonAction) forControlEvents:UIControlEventTouchUpInside];
+        [_backButton sizeToFit];
+        _backButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+        [self.view addSubview:_backButton];
     }
     
     // Add Title
@@ -364,7 +364,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     // Layout Cancel Button
     x = 0;
     y = 0.5 * CreateAccountAndBlogStandardOffset + CreateAccountAndBlogiOS7StatusBarOffset;
-    _cancelButton.frame = CGRectMake(x, y, CGRectGetWidth(_cancelButton.frame), CreateAccountAndBlogButtonHeight);
+    _backButton.frame = CGRectMake(x, y, CGRectGetWidth(_backButton.frame), CreateAccountAndBlogButtonHeight);
         
     // Layout the controls starting out from y of 0, then offset them once the height of the controls
     // is accurately calculated we can determine the vertical center and adjust everything accordingly.
@@ -437,7 +437,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     [self.navigationController presentViewController:nc animated:YES completion:nil];
 }
 
-- (void)cancelButtonAction
+- (void)backButtonAction
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -534,7 +534,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 
 - (NSArray *)controlsToShowOrHideDuringKeyboardTransition
 {
-    return @[_titleLabel, _helpButton, _cancelButton, _TOSLabel];
+    return @[_titleLabel, _helpButton, _backButton, _TOSLabel];
 }
 
 - (void)displayRemoteError:(NSError *)error
@@ -715,7 +715,16 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
             BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
             WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-            Blog *blog = [accountService findOrCreateBlogFromDictionary:blogOptions withAccount:defaultAccount];
+            Blog *blog = [accountService findBlogWithXmlrpc:blogOptions[@"xmlrpc"] inAccount:defaultAccount];
+            if (!blog) {
+                blog = [accountService createBlogWithAccount:defaultAccount];
+                blog.xmlrpc = blogOptions[@"xmlrpc"];
+            }
+            blog.blogID = blogOptions[@"blogid"];
+            blog.blogName = [blogOptions[@"blogname"] stringByDecodingXMLCharacters];
+            blog.url = blogOptions[@"url"];
+
+            [[ContextManager sharedInstance] saveContext:context];
 
             [blogService syncBlog:blog success:nil failure:nil];
             [self setAuthenticating:NO];

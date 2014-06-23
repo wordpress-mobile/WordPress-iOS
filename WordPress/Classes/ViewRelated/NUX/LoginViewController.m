@@ -302,7 +302,14 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         [self displayErrorMessages];
         return;
     }
-    
+
+    if ([self isUserNameReserved]) {
+        [self displayReservedNameErrorMessage];
+        [self toggleSignInFormAction:nil];
+        [_siteUrlText becomeFirstResponder];
+        return;
+    }
+
     [self signIn];
 }
 
@@ -748,9 +755,27 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     return siteURL != nil;
 }
 
+- (BOOL)isUserNameReserved
+{
+    if (!_userIsDotCom) {
+        return NO;
+    }
+    NSString *username = [[_usernameText.text trim] lowercaseString];
+    NSArray *reservedUserNames = @[@"admin",@"administrator",@"root"];
+    if ([reservedUserNames containsObject:username]) {
+        return YES;
+    }
+    return NO;
+}
+
 - (void)displayErrorMessages
 {
     [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Please fill out all the fields", nil) withSupportButton:NO];
+}
+
+- (void)displayReservedNameErrorMessage
+{
+    [WPError showAlertWithTitle:NSLocalizedString(@"Self-hosted site?", nil) message:NSLocalizedString(@"Please enter the URL of your WordPress site.", nil) withSupportButton:NO];
 }
 
 - (void)setAuthenticating:(BOOL)authenticating withStatusMessage:(NSString *)status {
@@ -863,14 +888,17 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     if (!url) {
         url = [options stringForKeyPath:@"blog_url.value"];
     }
-    NSMutableDictionary *blogDetails = [NSMutableDictionary dictionaryWithObject:xmlrpc forKey:@"xmlrpc"];
-    if (blogName) {
-        [blogDetails setObject:blogName forKey:@"blogName"];
+    _blog = [accountService findBlogWithXmlrpc:xmlrpc inAccount:account];
+    if (!_blog) {
+        _blog = [accountService createBlogWithAccount:account];
+        if (url) {
+            _blog.url = url;
+        }
+        if (blogName) {
+            _blog.blogName = blogName;
+        }
     }
-    if (url) {
-        [blogDetails setObject:url forKey:@"url"];
-    }
-    _blog = [accountService findOrCreateBlogFromDictionary:blogDetails withAccount:account];
+    _blog.xmlrpc = xmlrpc;
     _blog.options = options;
     [_blog dataSave];
     [blogService syncBlog:_blog success:nil failure:nil];
