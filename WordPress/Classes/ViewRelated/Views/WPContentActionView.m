@@ -100,7 +100,7 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
         if (previousButton) {
             views = NSDictionaryOfVariableBindings(button, previousButton);
 
-            [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"[button(buttonHeight)]-(buttonSpacing)-[previousButton]"
+            [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"[button]-(buttonSpacing)-[previousButton]"
                                                                                      options:NSLayoutFormatAlignAllBaseline
                                                                                      metrics:metrics
                                                                                        views:views]];
@@ -111,10 +111,9 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
                                                                                      metrics:nil
                                                                                        views:views]];
         }
-        UIView *me = self;
-        views = NSDictionaryOfVariableBindings(button, me);
-        [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"[me]-(<=1)-[button(buttonHeight)]"
-                                                                                 options:NSLayoutFormatAlignAllCenterY
+        views = NSDictionaryOfVariableBindings(button);
+        [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[button(buttonHeight)]|"
+                                                                                 options:0
                                                                                  metrics:metrics
                                                                                    views:views]];
         previousButton = button;
