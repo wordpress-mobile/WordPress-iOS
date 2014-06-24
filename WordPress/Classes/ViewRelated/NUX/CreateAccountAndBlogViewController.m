@@ -353,7 +353,14 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     CGFloat x,y;
     
     CGFloat viewWidth = CGRectGetWidth(self.view.bounds);
-    CGFloat viewHeight = CGRectGetHeight([UIScreen mainScreen].bounds);
+    //Checking Screen height because navigationBar animation might not be finished.
+    CGFloat viewHeight;
+    UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
+    if (UIDeviceOrientationIsLandscape(orientation)) {
+        viewHeight = CGRectGetWidth([UIScreen mainScreen].bounds);
+    }else{
+        viewHeight = CGRectGetHeight([UIScreen mainScreen].bounds);
+    }
     
     // Layout Help Button
     UIImage *helpButtonImage = [UIImage imageNamed:@"btn-help"];
