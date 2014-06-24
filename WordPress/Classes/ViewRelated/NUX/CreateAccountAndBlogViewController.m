@@ -353,10 +353,14 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     CGFloat x,y;
     
     CGFloat viewWidth = CGRectGetWidth(self.view.bounds);
-    //Checking Screen height because navigationBar animation might not be finished.
+    
+    //Checking Screen height or width (depending on screen orientation) because navigationBar animation might not be finished.  On the iPhone we only allow Portrait orientation, but the device orientation is not updated before we layout our controls.  I check supportedInterfaceOrientations because that is what the height is dependent on.
     CGFloat viewHeight;
     UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
-    if (UIDeviceOrientationIsLandscape(orientation)) {
+    if ([self supportedInterfaceOrientations] == UIInterfaceOrientationMaskPortrait) {
+        viewHeight = CGRectGetHeight([UIScreen mainScreen].bounds);
+    }
+    else if (UIDeviceOrientationIsLandscape(orientation)) {
         viewHeight = CGRectGetWidth([UIScreen mainScreen].bounds);
     }else{
         viewHeight = CGRectGetHeight([UIScreen mainScreen].bounds);
