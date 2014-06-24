@@ -55,9 +55,9 @@
 
 - (void)configureActionButtons
 {
-//    if (!self.shouldShowActions) {
-//        return;
-//    }
+    if (!self.shouldShowActions) {
+        return;
+    }
 
     [self.actionView removeAllActionButtons];
 
@@ -71,13 +71,15 @@
     }
 
     [self.actionView addActionButton:self.likeButton];
+
+    [self updateActionButtons];
 }
 
 - (void)updateActionButtons
 {
-//    if (!self.shouldShowActions) {
-//        return;
-//    }
+    if (!self.shouldShowActions) {
+        return;
+    }
 
     // Update/show counts for likes and comments
     NSString *title;
@@ -86,14 +88,16 @@
     } else {
         title = @"";
     }
-    [self.likeButton setTitle:title forState:UIControlStateNormal | UIControlStateSelected];
+    [self.likeButton setTitle:title forState:UIControlStateNormal];
+    [self.likeButton setTitle:title forState:UIControlStateSelected];
 
     if ([self.post.commentCount integerValue] > 0) {
         title = [self.post.commentCount stringValue];
     } else {
         title = @"";
     }
-    [self.commentButton setTitle:title forState:UIControlStateNormal | UIControlStateSelected];
+    [self.commentButton setTitle:title forState:UIControlStateNormal];
+    [self.commentButton setTitle:title forState:UIControlStateSelected];
 
     // Show highlights
     [self.likeButton setSelected:self.post.isLiked];
