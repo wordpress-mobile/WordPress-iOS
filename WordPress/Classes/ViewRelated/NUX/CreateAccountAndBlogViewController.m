@@ -353,7 +353,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     CGFloat x,y;
     
     CGFloat viewWidth = CGRectGetWidth(self.view.bounds);
-    CGFloat viewHeight = CGRectGetHeight(self.view.bounds);
+    CGFloat viewHeight = CGRectGetHeight([UIScreen mainScreen].bounds);
     
     // Layout Help Button
     UIImage *helpButtonImage = [UIImage imageNamed:@"btn-help"];
