@@ -10,22 +10,10 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
 @property (nonatomic, strong) UIView *sideBorderView;
 @end
 
-@implementation ReaderPostTableViewCell {
-}
+@implementation ReaderPostTableViewCell
 
-+ (CGFloat)cellHeightForPost:(ReaderPost *)post withWidth:(CGFloat)width {
-//    // iPhone has extra padding around each cell
-//    if (IS_IPHONE) {
-//        width = width - 2 * RPTVCHorizontalOuterPadding;
-//    }
-//    
-//	CGFloat desiredHeight = [ReaderPostView heightForPost:post withWidth:width forContentMode:ReaderPostContentModeSummary];
-//
-//	return ceil(desiredHeight);
-    return 350.0;
-}
-
-+ (ReaderPostTableViewCell *)cellForSubview:(UIView *)subview {
++ (ReaderPostTableViewCell *)cellForSubview:(UIView *)subview
+{
     UIView *view = subview;
 	while (![view isKindOfClass:self]) {
 		view = (UIView *)view.superview;
@@ -40,12 +28,13 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
 
 #pragma mark - Lifecycle Methods
 
-- (void)dealloc {
+- (void)dealloc
+{
 	self.post = nil;
 }
 
-
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.sideBorderView = [[UIView alloc] init];
@@ -55,7 +44,6 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
         [self.contentView addSubview:self.sideBorderView];
 
         self.postView = [[ReaderPostContentView alloc] init];
-//        self.postView = [[ReaderPostView alloc] initWithFrame:self.frame contentMode:ReaderPostContentModeSummary];
         self.postView.backgroundColor = [UIColor whiteColor];
         self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
         [self.contentView addSubview:self.postView];
@@ -66,7 +54,8 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
     return self;
 }
 
-- (void)setHighlightedEffect:(BOOL)highlighted animated:(BOOL)animated {
+- (void)setHighlightedEffect:(BOOL)highlighted animated:(BOOL)animated
+{
     [UIView animateWithDuration:animated ? .1f : 0.f
                           delay:0
                         options:UIViewAnimationCurveEaseInOut
@@ -122,15 +111,8 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
                                                                                views:views]];
 }
 
-//- (void)setPost:(ReaderPost *)post {
-//	if ([post isEqual:_post])
-//		return;
-//    
-//    self.postView.post = post;
-//	_post = post;
-//}
-
-- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
+{
     BOOL previouslyHighlighted = self.highlighted;
     [super setHighlighted:highlighted animated:animated];
 
@@ -148,13 +130,14 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
     }
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
     [super setSelected:selected animated:animated];
     [self setHighlightedEffect:selected animated:animated];
 }
 
-
-- (void)prepareForReuse {
+- (void)prepareForReuse
+{
 	[super prepareForReuse];
     
     [self.postView reset];
@@ -164,21 +147,8 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
 
 #pragma mark - Instance Methods
 
-//- (void)layoutSubviews {
-//	[super layoutSubviews];
-//    
-//    CGFloat leftPadding = IS_IPHONE ? RPTVCHorizontalOuterPadding : 0;
-//	CGFloat contentWidth = self.frame.size.width - leftPadding * 2;
-//    
-//    CGRect frame = CGRectMake(leftPadding, 0, contentWidth, self.frame.size.height);
-//    self.postView.frame = frame;
-//    
-//    CGFloat sideBorderX = IS_IPHONE ? RPTVCHorizontalOuterPadding - 1 : 0; // Just to the left of the container
-//    CGFloat sideBorderHeight = self.frame.size.height - RPTVCVerticalOuterPadding; // Just below it
-//    self.sideBorderView.frame = CGRectMake(sideBorderX, 1, self.frame.size.width - sideBorderX * 2, sideBorderHeight);
-//}
-
-- (void)configureCell:(ReaderPost *)post {
+- (void)configureCell:(ReaderPost *)post
+{
 	self.post = post;
     [self.postView configurePost:post];
 }
