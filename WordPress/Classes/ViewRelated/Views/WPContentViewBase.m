@@ -401,12 +401,12 @@ const CGFloat WPContentViewSmallButtonLeftPadding = 2; // Follow, tag
 - (UIButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage
 {
     ContentActionButton *button = [ContentActionButton buttonWithType:UIButtonTypeCustom];
-    button.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
     [button setImage:buttonImage forState:UIControlStateNormal];
     [button setImage:selectedButtonImage forState:UIControlStateSelected];
     [button.titleLabel setFont:[WPStyleGuide labelFontNormal]];
     [button setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
     button.titleEdgeInsets = UIEdgeInsetsMake(0.0, 6.0, 0.0, -6.0);
+    button.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 12.0);
     button.drawLabelBubble = YES;
 
     [self.actionView addActionButton:button];
