@@ -1,7 +1,6 @@
 #import "ReaderPostDetailViewController.h"
 #import "ReaderPostsViewController.h"
 #import <DTCoreText/DTCoreText.h>
-#import <QuartzCore/QuartzCore.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import <MessageUI/MFMailComposeViewController.h>
 #import "WPActivityDefaults.h"
@@ -15,12 +14,14 @@
 #import "WPWebVideoViewController.h"
 #import "WPWebViewController.h"
 #import "ContextManager.h"
-#import "WPTableViewController.h"
 #import "InlineComposeView.h"
 #import "ReaderCommentPublisher.h"
 #import "RebloggingViewController.h"
 #import "WPAvatarSource.h"
 #import "ReaderPostService.h"
+#import "ReaderPost.h"
+#import "ReaderPostView.h"
+#import "ReaderCommentTableViewCell.h"
 
 static NSInteger const ReaderCommentsToSync = 100;
 static NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
@@ -33,11 +34,17 @@ typedef enum {
 } ReaderDetailSection;
 
 
-@interface ReaderPostDetailViewController ()<UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UIPopoverControllerDelegate, ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate> {
-    UIPopoverController *_popover;
-    UIGestureRecognizer *_tapOffKeyboardGesture;
-}
+@interface ReaderPostDetailViewController ()<UIActionSheetDelegate,
+                                            MFMailComposeViewControllerDelegate,
+                                            UIPopoverControllerDelegate,
+                                            ReaderCommentPublisherDelegate,
+                                            RebloggingViewControllerDelegate,
+                                            ReaderPostViewDelegate,
+                                            ReaderCommentTableViewCellDelegate,
+                                            NSFetchedResultsControllerDelegate>
 
+@property (nonatomic, strong) UIPopoverController *popover;
+@property (nonatomic, strong) UIGestureRecognizer *tapOffKeyboardGesture;
 @property (nonatomic, strong) ReaderPostView *postView;
 @property (nonatomic, strong) UIImage *featuredImage;
 @property (nonatomic, strong) UIImage *avatarImage;
@@ -64,46 +71,40 @@ typedef enum {
 
 #pragma mark - LifeCycle Methods
 
-- (void)dealloc {
-	_resultsController.delegate = nil;
+- (void)dealloc
+{
+	self.resultsController.delegate = nil;
     self.tableView.delegate = nil;
     self.postView.delegate = nil;
-    
-    self.activityFooter = nil;
-	self.postView = nil;
-	self.commentButton = nil;
-	self.likeButton = nil;
-	self.reblogButton = nil;
-	self.shareButton = nil;
-
-    self.inlineComposeView = nil;
     self.commentPublisher.delegate = nil;
-    self.commentPublisher = nil;
-	
+
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image avatarImage:(UIImage *)avatarImage {
+- (id)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image avatarImage:(UIImage *)avatarImage
+{
 	self = [super init];
 	if (self) {
-		_post = post;
-		_comments = [NSMutableArray array];
-        _featuredImage = image;
-        _avatarImage = avatarImage;
-        _showInlineActionBar = YES;
+		self.post = post;
+		self.comments = [NSMutableArray array];
+        self.featuredImage = image;
+        self.avatarImage = avatarImage;
+        self.showInlineActionBar = YES;
 	}
 	return self;
 }
 
-- (id)initWithPost:(ReaderPost *)post avatarImageURL:(NSURL *)avatarImageURL {
+- (id)initWithPost:(ReaderPost *)post avatarImageURL:(NSURL *)avatarImageURL
+{
 	self = [self initWithPost:post featuredImage:nil avatarImage:nil];
 	if (self) {
-        _avatarImageURL =avatarImageURL;
+        self.avatarImageURL = avatarImageURL;
     }
 	return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
 	[super viewDidLoad];
 
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
@@ -133,20 +134,21 @@ typedef enum {
 
 
 
-    _tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                     action:@selector(dismissKeyboard:)];
-    
+    self.tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                         action:@selector(dismissKeyboard:)];
+
     // comment composer responds to the inline compose view to publish comments
     self.commentPublisher = [[ReaderCommentPublisher alloc]
                              initWithComposer:self.inlineComposeView
                              andPost:self.post];
 
     self.commentPublisher.delegate = self;
-    self.tableView.tableHeaderView = self.inlineComposeView;
-
+//    self.tableView.tableHeaderView = self.inlineComposeView;
+    [self.view addSubview:self.inlineComposeView];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
 	[super viewWillAppear:animated];
 	
 	CGSize contentSize = self.tableView.contentSize;

@@ -21,6 +21,8 @@
 #import "ReaderTopicService.h"
 #import "ReaderPostService.h"
 
+#import "ReaderPostView.h"
+
 static CGFloat const RPVCHeaderHeightPhone = 10.f;
 static CGFloat const RPVCExtraTableViewHeightPercentage = 2.0f;
 
@@ -573,6 +575,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self setAvatarForPost:post forCell:cell indexPath:indexPath];
     
     cell.postView.delegate = self;
+    cell.postView.shouldShowActions = post.isWPCom;
 
 }
 
