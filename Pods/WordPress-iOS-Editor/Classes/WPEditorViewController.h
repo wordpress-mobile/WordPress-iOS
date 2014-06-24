@@ -14,6 +14,7 @@
 - (void)editorDidPressSettings:(WPEditorViewController *)editorController;
 - (void)editorDidPressMedia:(WPEditorViewController *)editorController;
 - (void)editorDidPressPreview:(WPEditorViewController *)editorController;
+- (void)editPostViewDismissed;
 
 @end
 
