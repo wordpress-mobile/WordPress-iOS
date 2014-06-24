@@ -21,6 +21,7 @@
 #import "RebloggingViewController.h"
 #import "WPAvatarSource.h"
 #import "ReaderPostService.h"
+#import "CustomHighlightButton.h"
 
 static NSInteger const ReaderCommentsToSync = 100;
 static NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
@@ -280,7 +281,7 @@ typedef enum {
     
 	// Top Navigation bar and Sharing
     UIImage *image = [UIImage imageNamed:@"icon-posts-share"];
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+    CustomHighlightButton *button = [[CustomHighlightButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
     [button setImage:image forState:UIControlStateNormal];
     [button addTarget:self action:@selector(handleShareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     _shareButton = [[UIBarButtonItem alloc] initWithCustomView:button];
