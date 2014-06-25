@@ -315,6 +315,9 @@
         case WPAnalyticsStatSentItemToGooglePlus:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_sent_to_google_plus"];
             break;
+		case WPAnalyticsStatSentItemToWordPress:
+			instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_sent_to_wordpress"];
+			break;
         case WPAnalyticsStatSharedItem:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_shared"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_shared_article"];
