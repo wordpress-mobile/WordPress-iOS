@@ -36,14 +36,14 @@
     self.textContentView.delegate = nil;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame
+- (instancetype)init
 {
-    self = [super initWithFrame:frame];
+    self = [super init];
     if (self) {
-        self.translatesAutoresizingMaskIntoConstraints = NO;
         self.mediaArray = [NSMutableArray array];
         self.mediaQueue = [[ReaderMediaQueue alloc] initWithDelegate:self];
         self.textContentView = [self buildTextContentView];
+        self.clipsToBounds = YES;
         [self addSubview:self.textContentView];
     }
     return self;
@@ -65,7 +65,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-    return CGSizeMake(280.0, 44.0);
+    return CGSizeMake(200.0, 44.0);
 }
 
 - (DTAttributedTextContentView *)buildTextContentView
@@ -74,6 +74,7 @@
 
     // Needs an initial frame
     DTAttributedTextContentView *textContentView = [[DTAttributedTextContentView alloc] initWithFrame:self.bounds];
+    textContentView.translatesAutoresizingMaskIntoConstraints = NO;
     textContentView.delegate = self;
     textContentView.backgroundColor = [UIColor whiteColor];
     textContentView.shouldDrawImages = NO;

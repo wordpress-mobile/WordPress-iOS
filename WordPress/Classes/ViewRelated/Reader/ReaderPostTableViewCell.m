@@ -44,6 +44,7 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
         [self.contentView addSubview:self.sideBorderView];
 
         self.postView = [[ReaderPostContentView alloc] init];
+        self.postView.translatesAutoresizingMaskIntoConstraints = NO;
         self.postView.backgroundColor = [UIColor whiteColor];
         self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
         [self.contentView addSubview:self.postView];

@@ -115,7 +115,6 @@ const CGFloat WPContentViewSmallButtonLeftPadding = 2; // Follow, tag
 {
     self = [super init];
     if (self) {
-        self.translatesAutoresizingMaskIntoConstraints = NO;
         [self constructSubviews];
         [self configureConstraints];
     }
@@ -267,6 +266,7 @@ const CGFloat WPContentViewSmallButtonLeftPadding = 2; // Follow, tag
 - (WPContentAttributionView *)viewForAttributionView
 {
     WPContentAttributionView *attrView = [[WPContentAttributionView alloc] initWithFrame:CGRectZero];
+    attrView.translatesAutoresizingMaskIntoConstraints = NO;
     return attrView;
 }
 
@@ -321,6 +321,7 @@ const CGFloat WPContentViewSmallButtonLeftPadding = 2; // Follow, tag
 - (WPContentActionView *)viewForActionView
 {
     WPContentActionView *actionView = [[WPContentActionView alloc]initWithFrame:CGRectZero];
+    actionView.translatesAutoresizingMaskIntoConstraints = NO;
     return actionView;
 }
 
