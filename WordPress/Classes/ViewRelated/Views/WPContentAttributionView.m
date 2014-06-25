@@ -23,8 +23,6 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.translatesAutoresizingMaskIntoConstraints = NO;
-
         self.avatarImageView = [self imageViewForAvatar];
         [self addSubview:self.avatarImageView];
 

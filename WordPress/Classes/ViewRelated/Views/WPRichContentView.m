@@ -19,7 +19,8 @@
 
 - (UIView *)viewForContent
 {
-    WPRichTextView *richTextView = [[WPRichTextView alloc] initWithFrame:CGRectZero];
+    WPRichTextView *richTextView = [[WPRichTextView alloc] init];
+    richTextView.translatesAutoresizingMaskIntoConstraints = NO;
     richTextView.delegate = self;
     richTextView.edgeInsets = UIEdgeInsetsMake(0.0, WPContentViewHorizontalInnerPadding, 0.0, WPContentViewHorizontalInnerPadding);
 

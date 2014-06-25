@@ -18,16 +18,18 @@
 
 - (UIView *)viewForContent
 {
-    WPRichTextView *richTextView = [[WPRichTextView alloc] initWithFrame:CGRectZero];
+    WPRichTextView *richTextView = [[WPRichTextView alloc] init];
+    richTextView.translatesAutoresizingMaskIntoConstraints = NO;
     richTextView.delegate = self;
     richTextView.edgeInsets = UIEdgeInsetsMake(0.0, WPContentViewHorizontalInnerPadding, 0.0, WPContentViewHorizontalInnerPadding);
 
     return richTextView;
 }
 
-- (void)configureContent
+- (void)configureContentView
 {
-    NSData *data = [[self.contentProvider contentForDisplay] dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *content = [self.contentProvider contentForDisplay];
+    NSData *data = [content dataUsingEncoding:NSUTF8StringEncoding];
     self.richTextView.attributedString = [[NSAttributedString alloc] initWithHTMLData:data
                                                                               options:[WPStyleGuide defaultDTCoreTextOptions]
                                                                    documentAttributes:nil];
