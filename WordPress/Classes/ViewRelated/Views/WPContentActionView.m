@@ -30,7 +30,6 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.translatesAutoresizingMaskIntoConstraints = NO;
         self.actionButtons = [NSMutableArray array];
         self.buttonConstraints = [NSMutableArray array];
 
