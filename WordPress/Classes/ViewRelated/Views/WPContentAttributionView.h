@@ -5,7 +5,7 @@
 
 @protocol WPContentAttributionViewDelegate <NSObject>
 @optional
-- (void)attributionView:(WPContentAttributionView *)attributionView didReceiveAuthorLinkAction:(id)sender;
+- (void)attributionView:(WPContentAttributionView *)attributionView didReceiveAttributionLinkAction:(id)sender;
 @end
 
 @interface WPContentAttributionView : UIView
