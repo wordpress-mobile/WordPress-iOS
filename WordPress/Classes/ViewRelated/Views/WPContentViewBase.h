@@ -35,7 +35,7 @@ extern const CGFloat WPContentViewLineHeightMultiple;
 /**
 
  */
-- (void)contentView:(UIView *)contentView didReceiveAuthorLinkAction:(id)sender;
+- (void)contentView:(UIView *)contentView didReceiveAttributionLinkAction:(id)sender;
 
 @end
 
@@ -63,7 +63,7 @@ extern const CGFloat WPContentViewLineHeightMultiple;
 
 
 - (void)configureView;
-
+- (void)configureAttributionView;
 /**
 
  */

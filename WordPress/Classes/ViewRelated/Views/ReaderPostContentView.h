@@ -5,7 +5,6 @@
 
 @protocol ReaderPostContentViewDelegate <WPContentViewBaseDelegate>
 @optional
-- (void)postView:(ReaderPostContentView *)postView didReceiveFollowAction:(id)sender;
 - (void)postView:(ReaderPostContentView *)postView didReceiveLikeAction:(id)sender;
 - (void)postView:(ReaderPostContentView *)postView didReceiveReblogAction:(id)sender;
 - (void)postView:(ReaderPostContentView *)postView didReceiveCommentAction:(id)sender;
