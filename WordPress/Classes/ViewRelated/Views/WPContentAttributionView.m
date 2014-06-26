@@ -19,9 +19,9 @@
     self.contentProvider = nil;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame
+- (instancetype)init
 {
-    self = [super initWithFrame:frame];
+    self = [super init];
     if (self) {
         self.avatarImageView = [self imageViewForAvatar];
         [self addSubview:self.avatarImageView];
