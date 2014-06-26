@@ -45,11 +45,12 @@
         self.textContentView = [self buildTextContentView];
         self.clipsToBounds = YES;
         [self addSubview:self.textContentView];
+        [self configureConstraints];
     }
     return self;
 }
 
-- (void)updateConstraints
+- (void)configureConstraints
 {
     NSDictionary *views = NSDictionaryOfVariableBindings(_textContentView);
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_textContentView]|"
@@ -60,12 +61,14 @@
                                                                  options:NSLayoutFormatAlignAllLeft
                                                                  metrics:nil
                                                                    views:views]];
-    [super updateConstraints];
+    [self setNeedsUpdateConstraints];
 }
 
 - (CGSize)intrinsicContentSize
 {
-    return CGSizeMake(200.0, 44.0);
+    CGSize size = self.textContentView.intrinsicContentSize;
+NSLog(@"Size: %@", NSStringFromCGSize(size));
+    return size;
 }
 
 - (DTAttributedTextContentView *)buildTextContentView
@@ -102,28 +105,29 @@
 {
     self.textContentView.attributedString = attributedString;
     [self.textContentView relayoutText];
+    [self invalidateIntrinsicContentSize];
 }
 
 
 #pragma mark - Action Methods
 
-- (void)linkAction:(id)sender
+- (void)linkAction:(DTLinkButton *)sender
 {
-    if ([self.delegate respondsToSelector:@selector(contentView:didReceiveLinkAction:)]) {
+    if ([self.delegate respondsToSelector:@selector(richTextView:didReceiveLinkAction:)]) {
+        [self.delegate richTextView:self didReceiveLinkAction:sender.URL];
+    }
+}
+
+- (void)imageLinkAction:(ReaderImageView *)sender
+{
+    if ([self.delegate respondsToSelector:@selector(richTextView:didReceiveImageLinkAction:)]) {
         [self.delegate richTextView:self didReceiveImageLinkAction:sender];
     }
 }
 
-- (void)imageLinkAction:(id)sender
+- (void)videoLinkAction:(ReaderVideoView *)sender
 {
-    if ([self.delegate respondsToSelector:@selector(contentView:didReceiveImageLinkAction:)]) {
-        [self.delegate richTextView:self didReceiveImageLinkAction:sender];
-    }
-}
-
-- (void)videoLinkAction:(id)sender
-{
-    if ([self.delegate respondsToSelector:@selector(contentView:didReceiveVideoLinkAction:)]) {
+    if ([self.delegate respondsToSelector:@selector(richTextView:didReceiveVideoLinkAction:)]) {
         [self.delegate richTextView:self didReceiveVideoLinkAction:sender];
     }
 }
@@ -147,6 +151,7 @@
 
         // layout might have changed due to image sizes
         [self.textContentView relayoutText];
+        [self invalidateIntrinsicContentSize];
         [self setNeedsLayout];
     }
 }
@@ -207,8 +212,8 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self refreshMediaLayout];
 
-        if ([self.delegate respondsToSelector:@selector(contentViewDidLoadAllMedia:)]) {
-            [self.delegate contentViewDidLoadAllMedia:self]; // So the delegate can correct its size.
+        if ([self.delegate respondsToSelector:@selector(richTextViewDidLoadAllMedia:)]) {
+            [self.delegate richTextViewDidLoadAllMedia:self]; // So the delegate can correct its size.
         }
     });
 }
@@ -240,9 +245,8 @@
 
     // layout might have changed due to image sizes
     [self.textContentView relayoutText];
-    [self setNeedsLayout]; // TODO: Confirm this is needed still
-
     [self invalidateIntrinsicContentSize];
+    [self setNeedsLayout]; // TODO: Confirm this is needed still
 }
 
 
@@ -251,8 +255,8 @@
 - (void)readerMediaQueue:(ReaderMediaQueue *)mediaQueue didLoadBatch:(NSArray *)batch
 {
     [self refreshMediaLayoutInArray:batch];
-    if ([self.delegate respondsToSelector:@selector(contentViewDidLoadAllMedia:)]) {
-        [self.delegate contentViewDidLoadAllMedia:self];
+    if ([self.delegate respondsToSelector:@selector(richTextViewDidLoadAllMedia:)]) {
+        [self.delegate richTextViewDidLoadAllMedia:self];
     }
 }
 
