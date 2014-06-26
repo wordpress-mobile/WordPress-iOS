@@ -265,14 +265,14 @@ const CGFloat WPContentViewSmallButtonLeftPadding = 2; // Follow, tag
 
 - (WPContentAttributionView *)viewForAttributionView
 {
-    WPContentAttributionView *attrView = [[WPContentAttributionView alloc] initWithFrame:CGRectZero];
+    WPContentAttributionView *attrView = [[WPContentAttributionView alloc] init];
     attrView.translatesAutoresizingMaskIntoConstraints = NO;
     return attrView;
 }
 
 - (UIView *)viewForBorder
 {
-    UIView *borderView = [[UIView alloc] initWithFrame:CGRectZero];
+    UIView *borderView = [[UIView alloc] init];
     borderView.translatesAutoresizingMaskIntoConstraints = NO;
     borderView.backgroundColor = [UIColor colorWithRed:241.0/255.0 green:241.0/255.0 blue:241.0/255.0 alpha:1.0];
     return borderView;
@@ -285,6 +285,7 @@ const CGFloat WPContentViewSmallButtonLeftPadding = 2; // Follow, tag
     featuredImageView.backgroundColor = [WPStyleGuide readGrey];
     featuredImageView.contentMode = UIViewContentModeScaleAspectFill;
     featuredImageView.clipsToBounds = YES;
+    featuredImageView.hidden = YES;
 
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(featuredImageAction:)];
     featuredImageView.userInteractionEnabled = YES;
@@ -320,7 +321,7 @@ const CGFloat WPContentViewSmallButtonLeftPadding = 2; // Follow, tag
 
 - (WPContentActionView *)viewForActionView
 {
-    WPContentActionView *actionView = [[WPContentActionView alloc]initWithFrame:CGRectZero];
+    WPContentActionView *actionView = [[WPContentActionView alloc] init];
     actionView.translatesAutoresizingMaskIntoConstraints = NO;
     return actionView;
 }
