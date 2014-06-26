@@ -84,14 +84,16 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [WordPressAppDelegate fixKeychainAccess];
-		
+	
+	// Simperium: Wire CoreData Stack
+	[self configureSimperium];
+    
     // Crash reporting, logging
     [self configureLogging];
     [self configureHockeySDK];
     [self configureCrashlytics];
     
-	// Simperium Setup
-	[self setupSimperium];
+	// Start Simperium
     [self loginSimperium];
 
     // Debugging
@@ -888,7 +890,7 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 
 #pragma mark - Simperium
 
-- (void)setupSimperium
+- (void)configureSimperium
 {
     NSDictionary *bucketOverrides   = @{ @"NoteSimperium" : @"Note" };
 	ContextManager* manager         = [ContextManager sharedInstance];
@@ -899,7 +901,9 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
                                                 label:nil
                                       bucketOverrides:bucketOverrides];
 	
+#ifdef DEBUG
 	self.simperium.verboseLoggingEnabled = YES;
+#endif
 }
 
 - (void)loginSimperium
