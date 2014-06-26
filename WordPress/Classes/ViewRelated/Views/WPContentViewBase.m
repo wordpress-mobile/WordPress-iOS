@@ -433,7 +433,7 @@ const CGFloat WPContentViewSmallButtonLeftPadding = 2; // Follow, tag
 }
 
 
-#pragma mark - Actions
+#pragma mark - WPContentView Delegate Methods
 
 /**
 

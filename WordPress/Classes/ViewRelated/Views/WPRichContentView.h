@@ -1,17 +1,8 @@
 #import "WPContentViewBase.h"
-
-@class WPRichContentView;
-
-@protocol WPRichContentViewDelegate <WPContentViewBaseDelegate>
-@optional
-- (void)contentView:(UIView *)contentView didReceiveLinkAction:(id)sender;
-- (void)contentView:(UIView *)contentView didReceiveImageLinkAction:(id)sender;
-- (void)contentView:(UIView *)contentView didReceiveVideoLinkAction:(id)sender;
-- (void)contentViewDidLoadAllMedia:(UIView *)contentView;
-@end
+#import "WPRichTextView.h"
 
 @interface WPRichContentView : WPContentViewBase
 
-@property (nonatomic, weak) id<WPRichContentViewDelegate> delegate;
+@property (nonatomic, weak) id<WPContentViewBaseDelegate, WPRichTextViewDelegate>delegate;
 
 @end
