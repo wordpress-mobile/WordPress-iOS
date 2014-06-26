@@ -3,7 +3,7 @@
 #import "ContentActionButton.h"
 #import "ReaderPostAttributionView.h"
 
-@interface ReaderPostContentView()
+@interface ReaderPostContentView()<WPContentAttributionViewDelegate>
 
 @property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, strong) UIButton *commentButton;
