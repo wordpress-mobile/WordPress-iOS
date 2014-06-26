@@ -14,11 +14,9 @@
 
 @implementation ReaderPostContentView
 
-
-- (id)initWithFrame:(CGRect)frame
+- (id)init
 {
-    self = [super initWithFrame:frame];
-
+    self = [super init];
     if (self) {
 // TODO: How to wrangle this guy?
         self.followButton = [ContentActionButton buttonWithType:UIButtonTypeCustom];
@@ -36,10 +34,8 @@
         self.likeButton = [super addActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-like-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-like-active"]];
         [self.likeButton addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
     }
-
     return self;
 }
-
 
 - (void)configurePost:(ReaderPost *)post
 {
