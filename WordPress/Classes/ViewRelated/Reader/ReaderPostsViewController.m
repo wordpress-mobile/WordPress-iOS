@@ -21,10 +21,9 @@
 #import "ReaderTopicService.h"
 #import "ReaderPostService.h"
 
-#import "ReaderPostView.h"
-
-static CGFloat const RPVCHeaderHeightPhone = 10.f;
-static CGFloat const RPVCExtraTableViewHeightPercentage = 2.0f;
+static CGFloat const RPVCHeaderHeightPhone = 10.0;
+static CGFloat const RPVCExtraTableViewHeightPercentage = 2.0;
+static CGFloat const RPVCEstimatedRowHeight = 400.0;
 
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
@@ -341,15 +340,19 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	view.frame = frame;
 }
 
-#pragma mark - ReaderPostView delegate methods
 
-- (void)postView:(ReaderPostView *)postView didReceiveReblogAction:(id)sender
+#pragma mark - ReaderPostContentView delegate methods
+
+- (void)postView:(ReaderPostContentView *)postView didReceiveReblogAction:(id)sender
 {
     // Pass the image forward
-	ReaderPost *post = postView.post;
-    CGSize imageSize = postView.cellImageView.image.size;
+    ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
+
+    CGSize imageSize = postView.featuredImageView.image.size;
     UIImage *image = [self.featuredImageSource imageForURL:post.featuredImageURL withSize:imageSize];
-    UIImage *avatarImage = postView.avatarImageView.image;
+    UIImage *avatarImage = [post cachedAvatarWithSize:CGSizeMake(WPContentAttributionViewAvatarSize, WPContentAttributionViewAvatarSize)];
 
     RebloggingViewController *controller = [[RebloggingViewController alloc] initWithPost:post featuredImage:image avatarImage:avatarImage];
     controller.delegate = self;
@@ -359,9 +362,11 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self presentViewController:navController animated:YES completion:nil];
 }
 
-- (void)postView:(ReaderPostView *)postView didReceiveLikeAction:(id)sender
+- (void)postView:(ReaderPostContentView *)postView didReceiveLikeAction:(id)sender
 {
-    ReaderPost *post = postView.post;
+    ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
@@ -405,25 +410,26 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }];
 }
 
-- (void)postView:(ReaderPostView *)postView didReceiveCommentAction:(id)sender
+- (void)postView:(ReaderPostContentView *)postView didReceiveCommentAction:(id)sender
 {
     [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
-    
-    if (self.commentPublisher.post == postView.post) {
+
+    ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
+
+    if (self.commentPublisher.post == post) {
         [self.inlineComposeView toggleComposer];
         return;
     }
 
-    self.commentPublisher.post = postView.post;
+    self.commentPublisher.post = post;
     [self.inlineComposeView displayComposer];
 
     // scroll the item into view if possible
-    NSIndexPath *indexPath = [self.resultsController indexPathForObject:postView.post];
-
     [self.tableView scrollToRowAtIndexPath:indexPath
                           atScrollPosition:UITableViewScrollPositionTop
                                   animated:YES];
-
 }
 
 
@@ -753,7 +759,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 400.0;
+    return RPVCEstimatedRowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
