@@ -22,7 +22,7 @@ const CGFloat WPContentViewTitlePaddingBottom = 3.0f;
 const CGFloat WPContentViewSmallButtonLeftPadding = 2; // Follow, tag
 
 
-@interface WPContentViewBase()
+@interface WPContentViewBase()<WPContentAttributionViewDelegate>
 @property (nonatomic, strong) NSLayoutConstraint *featuredImageHeightConstraint;
 @end
 
@@ -267,6 +267,7 @@ const CGFloat WPContentViewSmallButtonLeftPadding = 2; // Follow, tag
 {
     WPContentAttributionView *attrView = [[WPContentAttributionView alloc] init];
     attrView.translatesAutoresizingMaskIntoConstraints = NO;
+    attrView.delegate = self;
     return attrView;
 }
 
@@ -445,13 +446,16 @@ const CGFloat WPContentViewSmallButtonLeftPadding = 2; // Follow, tag
     }
 }
 
+
+#pragma mark - authorLinkAction
+
 /**
 
  */
-- (void)authorLinkAction:(id)sender
+- (void)attributionView:(WPContentAttributionView *)attributionView didReceiveAttributionLinkAction:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(contentView:didReceiveAuthorLinkAction:)]) {
-        [self.delegate contentView:self didReceiveAuthorLinkAction:sender];
+    if ([self.delegate respondsToSelector:@selector(contentView:didReceiveAttributionLinkAction:)]) {
+        [self.delegate contentView:self didReceiveAttributionLinkAction:sender];
     }
 }
 

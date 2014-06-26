@@ -1,11 +1,11 @@
 #import "ReaderPostContentView.h"
 #import "ReaderPost.h"
 #import "ContentActionButton.h"
+#import "ReaderPostAttributionView.h"
 
 @interface ReaderPostContentView()
 
 @property (nonatomic, strong) ReaderPost *post;
-@property (nonatomic, strong) UIButton *followButton;
 @property (nonatomic, strong) UIButton *commentButton;
 @property (nonatomic, strong) UIButton *likeButton;
 @property (nonatomic, strong) UIButton *reblogButton;
@@ -18,12 +18,6 @@
 {
     self = [super init];
     if (self) {
-// TODO: How to wrangle this guy?
-        self.followButton = [ContentActionButton buttonWithType:UIButtonTypeCustom];
-        [WPStyleGuide configureFollowButton:self.followButton];
-        [self.followButton setTitleEdgeInsets: UIEdgeInsetsMake(0, 2, 0, 0)];
-        [self.followButton addTarget:self action:@selector(followAction:) forControlEvents:UIControlEventTouchUpInside];
-
         // Action buttons
         self.reblogButton = [super addActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-reblog-done"]];
         [self.reblogButton addTarget:self action:@selector(reblogAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -41,12 +35,6 @@
 {
     self.post = post;
     self.contentProvider = post;
-}
-
-- (void)reset
-{
-    [super reset];
-    [self.followButton setSelected:NO];
 }
 
 - (void)configureActionButtons
@@ -120,6 +108,19 @@
     return self.post.isPrivate;
 }
 
+- (WPContentAttributionView *)viewForAttributionView
+{
+    ReaderPostAttributionView *attrView = [[ReaderPostAttributionView alloc] init];
+    attrView.translatesAutoresizingMaskIntoConstraints = NO;
+    attrView.delegate = self;
+    return attrView;
+}
+
+- (void)configureAttributionView
+{
+    [super configureAttributionView];
+    [self.attributionView selectAttributionButton:self.post.isFollowing];
+}
 
 #pragma mark - Action Methods
 
@@ -141,13 +142,6 @@
 {
     if ([self.delegate respondsToSelector:@selector(postView:didReceiveLikeAction:)]) {
         [self.delegate postView:self didReceiveLikeAction:sender];
-    }
-}
-
-- (void)followAction:(id)sender
-{
-    if ([self.delegate respondsToSelector:@selector(contentView:didReceiveFollowAction:)]) {
-        [self.delegate postView:self didReceiveFollowAction:sender];
     }
 }
 

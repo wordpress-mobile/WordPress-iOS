@@ -377,11 +377,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	[postView updateActionButtons];
 }
 
-- (void)contentView:(ReaderPostView *)postView didReceiveFollowAction:(id)sender
+- (void)contentView:(UIView *)contentView didReceiveAttributionLinkAction:(id)sender
 {
     UIButton *followButton = (UIButton *)sender;
     ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
-    ReaderPost *post = postView.post;
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
     
     if (![post isFollowable])
         return;
@@ -391,7 +392,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     [followButton setSelected:!post.isFollowing]; // Set it optimistically
-	[cell setNeedsLayout];
+//	[cell setNeedsLayout];
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
@@ -400,7 +401,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     } failure:^(NSError *error) {
 		DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
 		[followButton setSelected:post.isFollowing];
-		[cell setNeedsLayout];
+//		[cell setNeedsLayout];
     }];
 }
 
