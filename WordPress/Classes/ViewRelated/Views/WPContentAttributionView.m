@@ -6,9 +6,8 @@ const CGFloat WPContentAttributionLabelHeight = 18.0;
 @interface WPContentAttributionView()
 
 @property (nonatomic, strong) UIImageView *avatarImageView;
-@property (nonatomic, strong) UILabel *attributionNameLabel;
-@property (nonatomic, strong) UIButton *attributionLinkButton;
 @property (nonatomic, strong) UIView *borderView;
+@property (nonatomic, strong) UIButton *attributionLinkButton;
 
 @end
 
@@ -93,6 +92,12 @@ const CGFloat WPContentAttributionLabelHeight = 18.0;
 - (void)configureView
 {
     self.attributionNameLabel.text = [self.contentProvider authorForDisplay];
+    [self configureAttributionButton];
+
+}
+
+- (void)configureAttributionButton
+{
     [self.attributionLinkButton setTitle:[self.contentProvider blogNameForDisplay] forState:UIControlStateNormal];
     [self.attributionLinkButton setTitle:[self.contentProvider blogNameForDisplay] forState:UIControlStateHighlighted];
 }
@@ -138,6 +143,16 @@ const CGFloat WPContentAttributionLabelHeight = 18.0;
     borderView.translatesAutoresizingMaskIntoConstraints = NO;
     borderView.backgroundColor = [UIColor colorWithRed:241.0/255.0 green:241.0/255.0 blue:241.0/255.0 alpha:1.0];
     return borderView;
+}
+
+- (void)hideAttributionButton:(BOOL)hide
+{
+    self.attributionLinkButton.hidden = hide;
+}
+
+- (void)selectAttributionButton:(BOOL)select
+{
+    [self.attributionLinkButton setSelected:select];
 }
 
 

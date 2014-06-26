@@ -302,6 +302,7 @@
 		5D27719115A3527200F4DCAA /* toolbar_write.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D27718F15A3527000F4DCAA /* toolbar_write.png */; };
 		5D27719215A3527200F4DCAA /* toolbar_write@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D27719015A3527100F4DCAA /* toolbar_write@2x.png */; };
 		5D358D6517723DB500739AA4 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D358D6417723DB500739AA4 /* OpenSans-Bold.ttf */; };
+		5D375C63195C758700E1DAED /* ReaderPostAttributionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D375C62195C758700E1DAED /* ReaderPostAttributionView.m */; };
 		5D37941B19216B1300E26CA4 /* RebloggingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D37941A19216B1300E26CA4 /* RebloggingViewController.m */; };
 		5D3D559718F88C3500782892 /* ReaderPostService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D3D559618F88C3500782892 /* ReaderPostService.m */; };
 		5D3D559A18F88C5E00782892 /* ReaderPostServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D3D559918F88C5E00782892 /* ReaderPostServiceRemote.m */; };
@@ -1328,6 +1329,8 @@
 		5D27719015A3527100F4DCAA /* toolbar_write@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar_write@2x.png"; path = "Resources/Images/toolbar_write@2x.png"; sourceTree = "<group>"; };
 		5D2B043515E83800007E3422 /* SettingsViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewControllerDelegate.h; sourceTree = "<group>"; };
 		5D358D6417723DB500739AA4 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
+		5D375C61195C758700E1DAED /* ReaderPostAttributionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderPostAttributionView.h; sourceTree = "<group>"; };
+		5D375C62195C758700E1DAED /* ReaderPostAttributionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPostAttributionView.m; sourceTree = "<group>"; };
 		5D37941919216B1300E26CA4 /* RebloggingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RebloggingViewController.h; sourceTree = "<group>"; };
 		5D37941A19216B1300E26CA4 /* RebloggingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RebloggingViewController.m; sourceTree = "<group>"; };
 		5D3D559518F88C3500782892 /* ReaderPostService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderPostService.h; sourceTree = "<group>"; };
@@ -2333,6 +2336,8 @@
 				5DC3F87B194904D1008469B0 /* WPRichContentView.m */,
 				5D1B9DA8194A0D770042CFA8 /* WPContentAttributionView.h */,
 				5D1B9DA9194A0D770042CFA8 /* WPContentAttributionView.m */,
+				5D375C61195C758700E1DAED /* ReaderPostAttributionView.h */,
+				5D375C62195C758700E1DAED /* ReaderPostAttributionView.m */,
 				5D1B9DAB194A0DC00042CFA8 /* WPContentActionView.h */,
 				5D1B9DAC194A0DC00042CFA8 /* WPContentActionView.m */,
 				5DC3F87D194907FF008469B0 /* ReaderPostContentView.h */,
@@ -5148,6 +5153,7 @@
 				E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */,
 				8350E49611D2C71E00A7B073 /* Media.m in Sources */,
 				83610AAA11F4AD2C00421116 /* WPcomLoginViewController.m in Sources */,
+				5D375C63195C758700E1DAED /* ReaderPostAttributionView.m in Sources */,
 				8370D10A11FA499A009D650F /* WPTableViewActivityCell.m in Sources */,
 				5DA5BF4518E32DCF005F11F9 /* ThemeBrowserCell.m in Sources */,
 				93C486501810442200A24725 /* SupportViewController.m in Sources */,
