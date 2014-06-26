@@ -450,11 +450,22 @@ typedef enum {
 - (void)handleShareButtonTapped:(id)sender {
     NSString *permaLink = self.post.permaLink;
     NSString *title = self.post.postTitle;
+    NSString *summary = self.post.summary;
+    NSString *tags = self.post.tags;
 
     NSMutableArray *activityItems = [NSMutableArray array];
+	NSMutableDictionary *postDictionary = [NSMutableDictionary dictionary];
+	
     if (title) {
-        [activityItems addObject:title];
+        postDictionary[@"title"] = title;
     }
+    if (summary) {
+        postDictionary[@"summary"] = summary;
+    }
+    if (tags) {
+        postDictionary[@"tags"] = tags;
+    }
+    [activityItems addObject:postDictionary];
     
     [activityItems addObject:[NSURL URLWithString:permaLink]];
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:[WPActivityDefaults defaultActivities]];
