@@ -1,6 +1,8 @@
 #import <UIKit/UIKit.h>
 #import "WPContentViewProvider.h"
 
+extern const CGFloat WPContentAttributionViewAvatarSize;
+
 @class WPContentAttributionView;
 
 @protocol WPContentAttributionViewDelegate <NSObject>
