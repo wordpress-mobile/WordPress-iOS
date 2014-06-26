@@ -3,6 +3,8 @@
 
 @interface ReaderPostRichContentView : ReaderPostContentView
 
-@property (nonatomic, weak) id<ReaderPostContentViewDelegate, WPRichContentViewDelegate> delegate;
+@property (nonatomic, weak) id<ReaderPostContentViewDelegate, WPRichTextViewDelegate> delegate;
+
+- (void)refreshMediaLayout;
 
 @end

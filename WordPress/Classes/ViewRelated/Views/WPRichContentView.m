@@ -43,24 +43,31 @@
 
 #pragma mark - Action Methods
 
-- (void)richTextView:(WPRichTextView *)richTextView didReceiveLinkAction:(id)sender
+- (void)richTextView:(WPRichTextView *)richTextView didReceiveLinkAction:(NSURL *)linkURL
 {
-    if ([self.delegate respondsToSelector:@selector(contentView:didReceiveLinkAction:)]) {
-        [self.delegate contentView:self didReceiveLinkAction:sender];
+    if ([self.delegate respondsToSelector:@selector(richTextView:didReceiveLinkAction:)]) {
+        [self.delegate richTextView:richTextView didReceiveLinkAction:linkURL];
     }
 }
 
-- (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(id)sender
+- (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(ReaderImageView *)readerImageView
 {
-    if ([self.delegate respondsToSelector:@selector(contentView:didReceiveImageLinkAction:)]) {
-        [self.delegate contentView:self didReceiveImageLinkAction:sender];
+    if ([self.delegate respondsToSelector:@selector(richTextView:didReceiveImageLinkAction:)]) {
+        [self.delegate richTextView:richTextView didReceiveImageLinkAction:readerImageView];
     }
 }
 
-- (void)richTextView:(WPRichTextView *)richTextView didReceiveVideoLinkAction:(id)sender
+- (void)richTextView:(WPRichTextView *)richTextView didReceiveVideoLinkAction:(ReaderVideoView *)readerVideoView
 {
-    if ([self.delegate respondsToSelector:@selector(contentView:didReceiveVideoLinkAction:)]) {
-        [self.delegate contentView:self didReceiveVideoLinkAction:sender];
+    if ([self.delegate respondsToSelector:@selector(richTextView:didReceiveVideoLinkAction:)]) {
+        [self.delegate richTextView:richTextView didReceiveVideoLinkAction:readerVideoView];
+    }
+}
+
+- (void)richTextViewDidLoadAllMedia:(WPRichTextView *)richTextView
+{
+    if ([self.delegate respondsToSelector:@selector(richTextViewDidLoadAllMedia:)]) {
+        [self.delegate richTextViewDidLoadAllMedia:richTextView];
     }
 }
 
