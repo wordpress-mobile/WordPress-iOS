@@ -1,10 +1,13 @@
 #import "WPContentAttributionView.h"
 
+const CGFloat WPContentAttributionViewAvatarSize = 32.0;
+const CGFloat WPContentAttributionLabelHeight = 18.0;
+
 @interface WPContentAttributionView()
 
 @property (nonatomic, strong) UIImageView *avatarImageView;
-@property (nonatomic, strong) UILabel *authorNameLabel;
-@property (nonatomic, strong) UIButton *authorSiteButton;
+@property (nonatomic, strong) UILabel *attributionNameLabel;
+@property (nonatomic, strong) UIButton *attributionLinkButton;
 @property (nonatomic, strong) UIView *borderView;
 
 @end
@@ -26,11 +29,11 @@
         self.avatarImageView = [self imageViewForAvatar];
         [self addSubview:self.avatarImageView];
 
-        self.authorNameLabel = [self labelForAuthorName];
-        [self addSubview:self.authorNameLabel];
+        self.attributionNameLabel = [self labelForAttributionName];
+        [self addSubview:self.attributionNameLabel];
 
-        self.authorSiteButton = [self buttonForAuthorSite];
-        [self addSubview:self.authorSiteButton];
+        self.attributionLinkButton = [self buttonForAttributionLink];
+        [self addSubview:self.attributionLinkButton];
 
         [self configureConstraints];
     }
@@ -39,26 +42,28 @@
 
 - (void)configureConstraints
 {
-    NSDictionary *views = NSDictionaryOfVariableBindings(_avatarImageView, _authorNameLabel, _authorSiteButton);
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_avatarImageView(32.0)]"
+    NSDictionary *views = NSDictionaryOfVariableBindings(_avatarImageView, _attributionNameLabel, _attributionLinkButton);
+    NSDictionary *metrics = @{@"avatarSize": @(WPContentAttributionViewAvatarSize),
+                              @"labelHeight":@(WPContentAttributionLabelHeight)};
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_avatarImageView(avatarSize)]"
                                                                  options:NSLayoutFormatAlignAllTop
-                                                                 metrics:nil
+                                                                 metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_avatarImageView(32.0)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_avatarImageView(avatarSize)]"
                                                                  options:NSLayoutFormatAlignAllLeft
-                                                                 metrics:nil
+                                                                 metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-40-[_authorNameLabel]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-40-[_attributionNameLabel]|"
                                                                  options:NSLayoutFormatAlignAllTop
-                                                                 metrics:nil
+                                                                 metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-40-[_authorSiteButton]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-40-[_attributionLinkButton]|"
                                                                  options:NSLayoutFormatAlignAllBottom
-                                                                 metrics:nil
+                                                                 metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(-2)-[_authorNameLabel(18.0)][_authorSiteButton(18.0)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(-2)-[_attributionNameLabel(labelHeight)][_attributionLinkButton(labelHeight)]"
                                                                  options:NSLayoutFormatAlignAllLeft
-                                                                 metrics:nil
+                                                                 metrics:metrics
                                                                    views:views]];
     [super setNeedsUpdateConstraints];
 }
@@ -87,21 +92,21 @@
 
 - (void)configureView
 {
-    self.authorNameLabel.text = [self.contentProvider authorForDisplay];
-    [self.authorSiteButton setTitle:[self.contentProvider blogNameForDisplay] forState:UIControlStateNormal];
-    [self.authorSiteButton setTitle:[self.contentProvider blogNameForDisplay] forState:UIControlStateHighlighted];
+    self.attributionNameLabel.text = [self.contentProvider authorForDisplay];
+    [self.attributionLinkButton setTitle:[self.contentProvider blogNameForDisplay] forState:UIControlStateNormal];
+    [self.attributionLinkButton setTitle:[self.contentProvider blogNameForDisplay] forState:UIControlStateHighlighted];
 }
 
 
 #pragma mark - Subview factories
 
-- (UILabel *)labelForAuthorName
+- (UILabel *)labelForAttributionName
 {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
     label.translatesAutoresizingMaskIntoConstraints = NO;
     label.numberOfLines = 1;
-    label.textColor = [UIColor colorWithHexString:@"333"];
-    label.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+    label.textColor = [WPStyleGuide littleEddieGrey];
+    label.font = [WPStyleGuide subtitleFont];
     label.adjustsFontSizeToFitWidth = NO;
 
     return label;
@@ -114,15 +119,15 @@
     return imageView;
 }
 
-- (UIButton *)buttonForAuthorSite
+- (UIButton *)buttonForAttributionLink
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    button.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+    button.titleLabel.font = [WPStyleGuide subtitleFont];
     [button setTitleColor:[WPStyleGuide buttonActionColor] forState:UIControlStateNormal];
 
-    [button addTarget:self action:@selector(authorLinkAction:) forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:self action:@selector(attributionButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 
     return button;
 }
@@ -138,10 +143,10 @@
 
 #pragma mark - Actions
 
-- (void)authorButtonAction:(id)sender
+- (void)attributionButtonAction:(id)sender
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(attributionView:didReceiveAuthorLinkAction:)]) {
-        [self.delegate attributionView:self didReceiveAuthorLinkAction:sender];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(attributionView:didReceiveAttributionLinkAction:)]) {
+        [self.delegate attributionView:self didReceiveAttributionLinkAction:sender];
     }
 }
 
