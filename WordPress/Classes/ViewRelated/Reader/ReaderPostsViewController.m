@@ -389,15 +389,15 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
     
-    if (![post isFollowable])
+    if (![post isFollowable]) {
         return;
-    
+    }
+
     if (!post.isFollowing) {
         [WPAnalytics track:WPAnalyticsStatReaderFollowedSite];
     }
 
     [followButton setSelected:!post.isFollowing]; // Set it optimistically
-//	[cell setNeedsLayout];
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
@@ -406,7 +406,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     } failure:^(NSError *error) {
 		DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
 		[followButton setSelected:post.isFollowing];
-//		[cell setNeedsLayout];
     }];
 }
 
@@ -635,11 +634,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         [self.featuredImageSource fetchImageForURL:imageURL withSize:imageSize indexPath:indexPath isPrivate:post.isPrivate];
     }
 }
-
-//- (BOOL)hasMoreContent
-//{
-//	return _hasMoreContent;
-//}
 
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure
 {
