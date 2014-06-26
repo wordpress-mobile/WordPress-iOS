@@ -743,6 +743,7 @@
 		ACBAB6860E1247F700F38795 /* PostPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBAB6850E1247F700F38795 /* PostPreviewViewController.m */; };
 		ACC156CC0E10E67600D6E1A0 /* EditPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC156CB0E10E67600D6E1A0 /* EditPostViewController.m */; };
 		AD36E4301937E1050029E077 /* WordPressActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = AD36E42F1937E1050029E077 /* WordPressActivity.m */; };
+		ADE20710195CA0CA00727115 /* CustomHighlightButton.m in Sources */ = {isa = PBXBuildFile; fileRef = ADE2070F195CA0CA00727115 /* CustomHighlightButton.m */; };
 		B545186018E99AF500AC3A54 /* WPTableHeaderViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B545185F18E99AF500AC3A54 /* WPTableHeaderViewCell.m */; };
 		B545186318E9E06500AC3A54 /* NoteAction.m in Sources */ = {isa = PBXBuildFile; fileRef = B545186218E9E06500AC3A54 /* NoteAction.m */; };
 		B545186618E9E07900AC3A54 /* NoteBodyItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B545186518E9E07900AC3A54 /* NoteBodyItem.m */; };
@@ -1914,6 +1915,8 @@
 		ACC156CB0E10E67600D6E1A0 /* EditPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditPostViewController.m; sourceTree = "<group>"; };
 		AD36E42E1937E1050029E077 /* WordPressActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressActivity.h; sourceTree = "<group>"; };
 		AD36E42F1937E1050029E077 /* WordPressActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressActivity.m; sourceTree = "<group>"; };
+		ADE2070E195CA0CA00727115 /* CustomHighlightButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomHighlightButton.h; sourceTree = "<group>"; };
+		ADE2070F195CA0CA00727115 /* CustomHighlightButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomHighlightButton.m; sourceTree = "<group>"; };
 		B545185E18E99AF500AC3A54 /* WPTableHeaderViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableHeaderViewCell.h; sourceTree = "<group>"; };
 		B545185F18E99AF500AC3A54 /* WPTableHeaderViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableHeaderViewCell.m; sourceTree = "<group>"; };
 		B545186118E9E06500AC3A54 /* NoteAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteAction.h; sourceTree = "<group>"; };
@@ -2332,6 +2335,8 @@
 				46E4792B185BD2B8007AA76F /* CommentView.m */,
 				85495F4517C6D9A500871A7A /* CommentViewController.h */,
 				85495F4617C6D9A500871A7A /* CommentViewController.m */,
+				ADE2070E195CA0CA00727115 /* CustomHighlightButton.h */,
+				ADE2070F195CA0CA00727115 /* CustomHighlightButton.m */,
 				CC701654185A7513007B37DB /* InlineComposeToolbarView.h */,
 				CC701655185A7513007B37DB /* InlineComposeToolbarView.m */,
 				CC701656185A7513007B37DB /* InlineComposeView.h */,
@@ -2369,8 +2374,6 @@
 				03958061100D6CFC00850742 /* WPLabel.m */,
 				5DEB61B2156FCD3400242C35 /* WPWebView.h */,
 				5DEB61B3156FCD3400242C35 /* WPWebView.m */,
-				ADF544C0195A0F620092213D /* CustomHighlightButton.h */,
-				ADF544C1195A0F620092213D /* CustomHighlightButton.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -5133,7 +5136,6 @@
 			files = (
 				C545E0A21811B9880020844C /* ContextManager.m in Sources */,
 				5D4AD40F185FE64C00CDEE17 /* WPMainTabBarController.m in Sources */,
-				AD99D3D71953C4D600C02D0C /* WordPressActivity.m in Sources */,
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				B545186318E9E06500AC3A54 /* NoteAction.m in Sources */,
 				5D577D33189127BE00B964C3 /* PostGeolocationViewController.m in Sources */,
@@ -5170,7 +5172,6 @@
 				46F8714F1838C41600BC149B /* NSDate+StringFormatting.m in Sources */,
 				296526FE105810E100597FA3 /* NSString+Helpers.m in Sources */,
 				5DA5BF4418E32DCF005F11F9 /* Theme.m in Sources */,
-				ADF544C2195A0F620092213D /* CustomHighlightButton.m in Sources */,
 				2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */,
 				5DA5BF4018E32DCF005F11F9 /* MediaBrowserCell.m in Sources */,
 				5DE8A03E1912C59600B2FF59 /* RemoteReaderTopic.m in Sources */,
@@ -5210,6 +5211,7 @@
 				CCEF153114C9EA050001176D /* WPWebAppViewController.m in Sources */,
 				462F4E0A18369F0B0028D2F8 /* BlogDetailsViewController.m in Sources */,
 				85DA8C4418F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.m in Sources */,
+				ADE20710195CA0CA00727115 /* CustomHighlightButton.m in Sources */,
 				93C1147F18EC5DD500DAC95C /* AccountService.m in Sources */,
 				85435BEA190F837500E868D0 /* WPUploadStatusView.m in Sources */,
 				8514DDA7190E2AB3009B6421 /* WPMediaMetadataExtractor.m in Sources */,
