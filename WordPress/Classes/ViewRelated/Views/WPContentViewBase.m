@@ -170,12 +170,19 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     return [self.contentView sizeThatFits:size];
 }
 
+- (CGFloat)horizontalMarginForContent
+{
+    return WPContentViewOuterMargin;
+}
+
 #pragma mark - Private Methods
 
 - (void)configureConstraints
 {
+    CGFloat contentViewOuterMargin = [self horizontalMarginForContent];
     NSDictionary *views = NSDictionaryOfVariableBindings(_attributionView, _attributionBorderView, _featuredImageView, _titleLabel, _contentView, _actionView);
     NSDictionary *metrics = @{@"outerMargin": @(WPContentViewOuterMargin),
+                              @"contentViewOuterMargin": @(contentViewOuterMargin),
                               @"verticalPadding": @(WPContentViewVerticalPadding),
                               @"attributionVerticalPadding": @(WPContentViewAttributionVerticalPadding),
                               @"titleContentPadding": @(WPContentViewTitleContentPadding),
@@ -193,7 +200,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
                                                                  metrics:metrics
                                                                    views:views]];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(outerMargin)-[_contentView]-(outerMargin)-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(contentViewOuterMargin)-[_contentView]-(contentViewOuterMargin)-|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
