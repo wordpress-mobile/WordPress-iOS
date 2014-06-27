@@ -321,10 +321,9 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 {
     UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     titleLabel.textColor = [WPStyleGuide littleEddieGrey];
-    titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    titleLabel.numberOfLines = 0;
+    titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    titleLabel.numberOfLines = 4;
 
     return titleLabel;
 }
@@ -333,11 +332,9 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 {
     UILabel *contentLabel = [[UILabel alloc] init];
     contentLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    contentLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    contentLabel.backgroundColor = [UIColor clearColor];
     contentLabel.textColor = [WPStyleGuide littleEddieGrey];
     contentLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-    contentLabel.numberOfLines = 0;
+    contentLabel.numberOfLines = 4;
 
     return contentLabel;
 }
