@@ -50,6 +50,12 @@
     return self.richTextView.intrinsicContentSize;
 }
 
+- (CGFloat)horizontalMarginForContent
+{
+    return 0;
+}
+
+
 #pragma mark - Action Methods
 
 - (void)richTextView:(WPRichTextView *)richTextView didReceiveLinkAction:(NSURL *)linkURL
