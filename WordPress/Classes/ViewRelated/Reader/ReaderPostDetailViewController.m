@@ -195,14 +195,6 @@ typedef enum {
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-
-//    CGRect frame = self.postView.frame;
-//    if (IS_IPAD) {
-//        frame.size.width = WPTableViewFixedWidth;
-//    } else {
-//        frame.size.width = CGRectGetWidth(self.tableView.bounds);
-//    }
-//    self.postView.frame = [self frameForPostView];
     [self.postView refreshMediaLayout]; // Resize media in the post detail to match the width of the new orientation.
 
 	// Make sure a selected comment is visible after rotating.
@@ -250,7 +242,7 @@ typedef enum {
     self.postView = [[ReaderPostRichContentView alloc] init];
     self.postView.translatesAutoresizingMaskIntoConstraints = NO;
     self.postView.delegate = self;
-    self.postView.shouldShowActions = self.post.isWPCom;    
+    self.postView.shouldShowActions = self.post.isWPCom;
     [self.postView configurePost:self.post];
     self.postView.backgroundColor = [UIColor whiteColor];
 
@@ -602,7 +594,6 @@ typedef enum {
 {
     [self.postView layoutIfNeeded];
     [self refreshPostViewCell];
-//    [self.tableView reloadData];
 }
 
 
