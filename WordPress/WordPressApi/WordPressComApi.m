@@ -52,8 +52,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 @property (readwrite, nonatomic, strong) NSString *password;
 @property (readwrite, nonatomic, strong) NSString *authToken;
 
-- (void)clearWpcomCookies;
-
 @end
 
 @implementation WordPressComApi
@@ -144,7 +142,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     self.username = nil;
     self.password = nil;
  
-    [self clearWpcomCookies];
     [self clearAuthorizationHeader];
 }
 
@@ -291,16 +288,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                              };
     
     [self POST:@"sites/new" parameters:params success:successBlock failure:failureBlock];
-}
-
-- (void)clearWpcomCookies {
-    NSArray *wpcomCookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-    for (NSHTTPCookie *cookie in wpcomCookies) {
-        if ([cookie.domain hasSuffix:@"wordpress.com"]) {
-            [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
-        }
-    }
-    [[NSURLCache sharedURLCache] removeAllCachedResponses];
 }
 
 #pragma mark - Notifications
