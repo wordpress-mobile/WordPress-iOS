@@ -37,7 +37,7 @@ PODS:
     - DTFoundation/Core
   - EmailChecker (0.1)
   - google-plus-ios-sdk (1.5.1)
-  - Helpshift (4.3.1)
+  - Helpshift (4.5.0)
   - HockeySDK (3.5.5)
   - MGImageUtilities (0.0.1)
   - Mixpanel (2.3.1)
@@ -80,7 +80,7 @@ DEPENDENCIES:
   - DTCoreText (= 1.6.9)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec`)
   - google-plus-ios-sdk (~> 1.5)
-  - Helpshift (= 4.3.1)
+  - Helpshift (~> 4.5.0)
   - HockeySDK (~> 3.5.0)
   - MGImageUtilities (from `git://github.com/wordpress-mobile/MGImageUtilities.git`, branch `gifsupport`)
   - Mixpanel (= 2.3.1)
@@ -120,7 +120,7 @@ SPEC CHECKSUMS:
   DTFoundation: d8a7f570a0f89c5a81661e6537289c578f4f97a8
   EmailChecker: e909e6d113fac7ad5e3c304fabce30fc4a79c80e
   google-plus-ios-sdk: 98d76ce1f1edbfe8730628aafe017301a734042c
-  Helpshift: 5e28958f3fb3b6643ab5b083f3e23b9ff4914091
+  Helpshift: 6c34462c4b94b8882e837a5bff7989c3118df15f
   HockeySDK: f9af97c2f5df4eb6ca6d2a9c408f2ff498edd608
   MGImageUtilities: ab3580f2161b10f8a41331baea87aaafbd688950
   Mixpanel: 9cc470a58346f60da8ce2982096bcc72b5a7372b
@@ -141,4 +141,4 @@ SPEC CHECKSUMS:
   WordPressCom-Stats-iOS: a6d2338d6eee24e9d5eba0c0293acc3aa7414fb0
   wpxmlrpc: a56b534ad0eb7db28a580eabb68a4a3d3426f6d7
 
-COCOAPODS: 0.33.1
+COCOAPODS: 0.32.1
