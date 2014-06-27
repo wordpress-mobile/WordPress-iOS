@@ -45,6 +45,11 @@
     return self.richTextView.intrinsicContentSize;
 }
 
+- (CGFloat)horizontalMarginForContent
+{
+    return 0;
+}
+
 
 #pragma mark - Action Methods
 
