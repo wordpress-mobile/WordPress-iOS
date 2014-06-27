@@ -136,16 +136,8 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refreshControlTriggered) forControlEvents:UIControlEventValueChanged];
 
-    [self showNoResultsWithTitle:NSLocalizedString(@"No stats to display", nil) message:nil];
+    [self showNoResultsWithTitle:NSLocalizedString(@"Fetching latest stats", @"Message to display while initially loading stats") message:nil];
     
-    // TODO Show a message when no connection is available (need a modular way to do this)
-    //    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    //    if (!appDelegate.connectionAvailable) {
-    //        [self showNoResultsWithTitle:NSLocalizedString(@"No Connection", @"") message:NSLocalizedString(@"An active internet connection is required to view stats", @"")];
-    //    } else {
-    //        [self initStats];
-    //    }
-
     // TODO This may not be the right place for this now that it's a component
     [self initStats];
 }
@@ -154,7 +146,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 {
     [super didReceiveMemoryWarning];
     
-    _statModels = nil;
+    self.statModels = nil;
 }
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder
