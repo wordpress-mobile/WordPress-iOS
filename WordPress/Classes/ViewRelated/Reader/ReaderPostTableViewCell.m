@@ -55,6 +55,17 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
     return self;
 }
 
+- (CGSize)sizeThatFits:(CGSize)size
+{
+    CGFloat padding = IS_IPHONE ? RPTVCHorizontalOuterPadding : 0;
+    CGFloat innerWidth = size.width - (padding * 2);
+    CGFloat innerHeight = size.height - RPTVCVerticalOuterPadding;
+    CGSize postViewSize = [self.postView sizeThatFits:CGSizeMake(innerWidth, innerHeight)];
+    CGFloat desiredHeight = postViewSize.height + RPTVCVerticalOuterPadding;
+
+    return CGSizeMake(size.width, desiredHeight);
+}
+
 - (void)setHighlightedEffect:(BOOL)highlighted animated:(BOOL)animated
 {
     [UIView animateWithDuration:animated ? .1f : 0.f

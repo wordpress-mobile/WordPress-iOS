@@ -52,7 +52,7 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
 
 - (CGSize)intrinsicContentSize
 {
-    return CGSizeMake(200.0, WPContentActionViewButtonHeight);
+    return CGSizeMake(UIViewNoIntrinsicMetric, WPContentActionViewButtonHeight);
 }
 
 - (void)configureConstraints

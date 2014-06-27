@@ -5,17 +5,15 @@
 #import "WPContentActionView.h"
 
 extern const CGFloat WPContentViewHorizontalInnerPadding;
+extern const CGFloat WPContentViewOuterMargin;
+extern const CGFloat WPContentViewAttributionVerticalPadding;
 extern const CGFloat WPContentViewVerticalPadding;
-extern const CGFloat WPContentViewAuthorPadding;
-extern const CGFloat WPContentViewAuthorViewHeight;
+extern const CGFloat WPContentViewTitleContentPadding;
+extern const CGFloat WPContentViewMaxImageHeightPercentage;
 extern const CGFloat WPContentViewAuthorAvatarSize;
+extern const CGFloat WPContentViewAuthorViewHeight;
 extern const CGFloat WPContentViewActionViewHeight;
 extern const CGFloat WPContentViewBorderHeight;
-extern const CGFloat WPContentViewMaxImageHeightPercentage;
-extern const CGFloat WPContentViewMaxSummaryHeight;
-extern const CGFloat WPContentViewFollowButtonWidth;
-extern const CGFloat WPContentViewTitlePaddingBottom;
-extern const CGFloat WPContentViewSmallButtonLeftPadding; // Follow, tag
 extern const CGFloat WPContentViewLineHeightMultiple;
 
 // Control buttons (Like, Reblog, ...)
@@ -64,6 +62,8 @@ extern const CGFloat WPContentViewLineHeightMultiple;
 
 - (void)configureView;
 - (void)configureAttributionView;
+- (CGSize)sizeThatFitsContent:(CGSize)size;
+
 /**
 
  */
