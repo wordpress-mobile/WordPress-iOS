@@ -250,6 +250,7 @@ typedef enum {
     self.postView = [[ReaderPostRichContentView alloc] init];
     self.postView.translatesAutoresizingMaskIntoConstraints = NO;
     self.postView.delegate = self;
+    self.postView.shouldShowActions = self.post.isWPCom;
     [self.postView configurePost:self.post];
     self.postView.backgroundColor = [UIColor whiteColor];
 
