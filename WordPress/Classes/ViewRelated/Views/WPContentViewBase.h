@@ -48,6 +48,7 @@ extern const CGFloat WPContentViewLineHeightMultiple;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) WPContentActionView *actionView;
+@property (nonatomic, assign) BOOL alwaysHidesFeaturedImage;
 
 /**
 
