@@ -60,13 +60,6 @@ extern const CGFloat WPContentViewLineHeightMultiple;
 @property (nonatomic, weak) id<WPContentViewProvider> contentProvider;
 
 
-- (void)configureView;
-- (void)configureAttributionView;
-- (void)configureActionView;
-- (CGSize)sizeThatFitsContent:(CGSize)size;
-- (CGFloat)horizontalMarginForContent;
-- (void)configureConstraints;
-
 /**
 
  */
@@ -97,5 +90,16 @@ extern const CGFloat WPContentViewLineHeightMultiple;
  
  */
 - (BOOL)privateContent;
+
+
+#pragma mark - Private Subclass Members and Methods
+
+- (void)configureView;
+- (void)configureAttributionView;
+- (void)configureActionView;
+- (CGSize)sizeThatFitsContent:(CGSize)size;
+- (CGFloat)horizontalMarginForContent;
+- (void)configureConstraints;
+- (UILabel *)viewForTitle;
 
 @end
