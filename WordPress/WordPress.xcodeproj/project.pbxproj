@@ -335,6 +335,8 @@
 		5D577D361891360900B964C3 /* PostGeolocationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D577D351891360900B964C3 /* PostGeolocationView.m */; };
 		5D5D0027187DA9D30027CEF6 /* CategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D5D0026187DA9D30027CEF6 /* CategoriesViewController.m */; };
 		5D62BAD718AA88210044E5F7 /* PageSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D62BAD618AA88210044E5F7 /* PageSettingsViewController.m */; };
+		5D67AE5D195DFBEC00138C12 /* ReaderPostSimpleContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D67AE5C195DFBEC00138C12 /* ReaderPostSimpleContentView.m */; };
+		5D67AE60195DFEF000138C12 /* WPSimpleContentAttributionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D67AE5F195DFEF000138C12 /* WPSimpleContentAttributionView.m */; };
 		5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5D69DBC3165428CA00A2D1F7 /* n.caf */; };
 		5D725B0A191EACFB00CA71ED /* default-identicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D725B08191EACFB00CA71ED /* default-identicon.png */; };
 		5D725B0B191EACFB00CA71ED /* default-identicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D725B09191EACFB00CA71ED /* default-identicon@2x.png */; };
@@ -1389,6 +1391,10 @@
 		5D62BAD518AA88210044E5F7 /* PageSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageSettingsViewController.h; sourceTree = "<group>"; };
 		5D62BAD618AA88210044E5F7 /* PageSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageSettingsViewController.m; sourceTree = "<group>"; };
 		5D62BAD818AAAE9B0044E5F7 /* PostSettingsViewController_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PostSettingsViewController_Internal.h; sourceTree = "<group>"; };
+		5D67AE5B195DFBEC00138C12 /* ReaderPostSimpleContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderPostSimpleContentView.h; sourceTree = "<group>"; };
+		5D67AE5C195DFBEC00138C12 /* ReaderPostSimpleContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPostSimpleContentView.m; sourceTree = "<group>"; };
+		5D67AE5E195DFEF000138C12 /* WPSimpleContentAttributionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPSimpleContentAttributionView.h; sourceTree = "<group>"; };
+		5D67AE5F195DFEF000138C12 /* WPSimpleContentAttributionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPSimpleContentAttributionView.m; sourceTree = "<group>"; };
 		5D69DBC3165428CA00A2D1F7 /* n.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = n.caf; path = Resources/Sounds/n.caf; sourceTree = "<group>"; };
 		5D6CF8B4193BD96E0041D28F /* WordPress 18.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 18.xcdatamodel"; sourceTree = "<group>"; };
 		5D725B08191EACFB00CA71ED /* default-identicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "default-identicon.png"; path = "Resources/Images/default-identicon.png"; sourceTree = "<group>"; };
@@ -2336,6 +2342,8 @@
 				5DC3F87B194904D1008469B0 /* WPRichContentView.m */,
 				5D1B9DA8194A0D770042CFA8 /* WPContentAttributionView.h */,
 				5D1B9DA9194A0D770042CFA8 /* WPContentAttributionView.m */,
+				5D67AE5E195DFEF000138C12 /* WPSimpleContentAttributionView.h */,
+				5D67AE5F195DFEF000138C12 /* WPSimpleContentAttributionView.m */,
 				5D375C61195C758700E1DAED /* ReaderPostAttributionView.h */,
 				5D375C62195C758700E1DAED /* ReaderPostAttributionView.m */,
 				5D1B9DAB194A0DC00042CFA8 /* WPContentActionView.h */,
@@ -2344,6 +2352,8 @@
 				5DC3F87E194907FF008469B0 /* ReaderPostContentView.m */,
 				5DC98E3B1950A14E00F40CC2 /* ReaderPostRichContentView.h */,
 				5DC98E3C1950A14E00F40CC2 /* ReaderPostRichContentView.m */,
+				5D67AE5B195DFBEC00138C12 /* ReaderPostSimpleContentView.h */,
+				5D67AE5C195DFBEC00138C12 /* ReaderPostSimpleContentView.m */,
 				46F8460F185A6E98009D0DA5 /* WPContentView.h */,
 				46F84610185A6E98009D0DA5 /* WPContentView.m */,
 				46F84613185AEB38009D0DA5 /* WPContentViewSubclass.h */,
@@ -5239,6 +5249,7 @@
 				E1523EB516D3B305002C5A36 /* InstapaperActivity.m in Sources */,
 				B545186018E99AF500AC3A54 /* WPTableHeaderViewCell.m in Sources */,
 				E18EE94B19349EAE00B0A40C /* AccountServiceRemote.m in Sources */,
+				5D67AE5D195DFBEC00138C12 /* ReaderPostSimpleContentView.m in Sources */,
 				E1D0D81616D3B86800E33F4C /* SafariActivity.m in Sources */,
 				E1D0D82916D3D19200E33F4C /* PocketAPI.m in Sources */,
 				E1D0D82A16D3D19200E33F4C /* PocketAPILogin.m in Sources */,
@@ -5295,6 +5306,7 @@
 				5D42A3FD175E75EE005CFF05 /* ReaderPostTableViewCell.m in Sources */,
 				5D42A3FF175E75EE005CFF05 /* ReaderTopicsViewController.m in Sources */,
 				5DB3BA0518D0E7B600F3F3E9 /* WPPickerView.m in Sources */,
+				5D67AE60195DFEF000138C12 /* WPSimpleContentAttributionView.m in Sources */,
 				5D42A400175E75EE005CFF05 /* ReaderVideoView.m in Sources */,
 				5D42A405175E76A7005CFF05 /* WPImageViewController.m in Sources */,
 				5DA3EE161925090A00294E0B /* MediaService.m in Sources */,
