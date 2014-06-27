@@ -45,6 +45,10 @@
     [self.richTextView refreshMediaLayout];
 }
 
+- (CGSize)sizeThatFitsContent:(CGSize)size
+{
+    return self.richTextView.intrinsicContentSize;
+}
 
 #pragma mark - Action Methods
 

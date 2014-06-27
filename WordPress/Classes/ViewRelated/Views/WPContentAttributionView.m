@@ -69,7 +69,7 @@ const CGFloat WPContentAttributionLabelHeight = 18.0;
 
 - (CGSize)intrinsicContentSize
 {
-    return CGSizeMake(200.0, 32.0);
+    return CGSizeMake(WPContentAttributionViewAvatarSize, WPContentAttributionViewAvatarSize);
 }
 
 - (void)setContentProvider:(id<WPContentViewProvider>)contentProvider

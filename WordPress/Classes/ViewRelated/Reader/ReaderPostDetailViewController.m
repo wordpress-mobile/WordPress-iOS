@@ -731,11 +731,7 @@ typedef enum {
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == ReaderDetailContentSection) {
-        [self.postView setNeedsUpdateConstraints];
-        [self.postView setNeedsLayout];
-        [self.postView layoutSubviews];
-NSLog(@"Get height for post cell");
-        CGSize size = [self.postView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+        CGSize size = [self.postView sizeThatFits:CGSizeMake(CGRectGetWidth(self.tableView.bounds), CGFLOAT_MAX)];
         return size.height + 1;
     }
     
@@ -782,9 +778,6 @@ NSLog(@"Get height for post cell");
                                                                                  options:0
                                                                                  metrics:nil
                                                                                    views:views]];
-
-//        self.postView.frame = [self frameForPostView];
-
         return postCell;
     }
     
