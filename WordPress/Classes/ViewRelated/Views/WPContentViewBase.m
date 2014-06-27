@@ -174,6 +174,15 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     return WPContentViewOuterMargin;
 }
 
+- (void)setAlwaysHidesFeaturedImage:(BOOL)alwaysHides
+{
+    if (_alwaysHidesFeaturedImage == alwaysHides) {
+        return;
+    }
+    _alwaysHidesFeaturedImage = alwaysHides;
+    [self configureFeaturedImageView];
+}
+
 #pragma mark - Private Methods
 
 - (void)configureConstraints
@@ -239,7 +248,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     }
 
     NSLayoutConstraint *constraint;
-    if ([self.contentProvider featuredImageURLForDisplay]) {
+    if (!self.featuredImageView.hidden) {
         constraint = [NSLayoutConstraint constraintWithItem:self.featuredImageView
                                                   attribute:NSLayoutAttributeHeight
                                                   relatedBy:NSLayoutRelationEqual
@@ -379,9 +388,9 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
  */
 - (void)configureFeaturedImageView
 {
-    [self configureFeaturedImageHeightConstraint];
     NSURL *featuredImageURL = [self.contentProvider featuredImageURLForDisplay];
-    self.featuredImageView.hidden = (featuredImageURL == nil);
+    self.featuredImageView.hidden = (featuredImageURL == nil) || self.alwaysHidesFeaturedImage;
+    [self configureFeaturedImageHeightConstraint];
 }
 
 /**
