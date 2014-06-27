@@ -37,12 +37,14 @@ CGFloat const ReblogViewTextBottomInset = 30;
 
 #pragma mark - Lifecycle Methods
 
-- (void)dealloc {
+- (void)dealloc
+{
     self.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id)initWithPost:(id)post featuredImage:(id)image avatarImage:(UIImage *)avatarImage {
+- (id)initWithPost:(id)post featuredImage:(id)image avatarImage:(UIImage *)avatarImage
+{
     self = [self init];
     if (self){
         self.post = post;
@@ -52,7 +54,8 @@ CGFloat const ReblogViewTextBottomInset = 30;
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     [self configureNavbar];
@@ -63,7 +66,8 @@ CGFloat const ReblogViewTextBottomInset = 30;
     [self.postView addGestureRecognizer:tgr];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
 
     [self layoutViews];
@@ -72,14 +76,16 @@ CGFloat const ReblogViewTextBottomInset = 30;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     [super viewWillDisappear:animated];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     [self layoutViews];
 }
@@ -87,7 +93,8 @@ CGFloat const ReblogViewTextBottomInset = 30;
 
 #pragma mark - Appearance and Layout
 
-- (void)configureNavbar {
+- (void)configureNavbar
+{
     if (!self.navigationItem.rightBarButtonItem) {
         self.publishBarItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Publish", @"")
                                                                                   style:UIBarButtonItemStylePlain
@@ -130,7 +137,8 @@ CGFloat const ReblogViewTextBottomInset = 30;
     }
 }
 
-- (UIButton *)titleBarButton {
+- (UIButton *)titleBarButton
+{
     if (_titleBarButton) {
         return _titleBarButton;
     }
@@ -151,8 +159,8 @@ CGFloat const ReblogViewTextBottomInset = 30;
     return _titleBarButton;
 }
 
-- (void)configureView {
-
+- (void)configureView
+{
     [self.view addSubview:self.textView];
     [self.textView addSubview:self.postViewWrapper];
     [self.postViewWrapper addSubview:self.postView];
@@ -161,7 +169,8 @@ CGFloat const ReblogViewTextBottomInset = 30;
     [self layoutViews];
 }
 
-- (UITextView *)textView {
+- (UITextView *)textView
+{
     if (_textView) {
         return _textView;
     }
@@ -176,7 +185,8 @@ CGFloat const ReblogViewTextBottomInset = 30;
     return _textView;
 }
 
-- (UIView *)postViewWrapper {
+- (UIView *)postViewWrapper
+{
     if (_postViewWrapper) {
         return _postViewWrapper;
     }
@@ -192,7 +202,8 @@ CGFloat const ReblogViewTextBottomInset = 30;
     return _postViewWrapper;
 }
 
-- (ReaderPostView *)postView {
+- (ReaderPostView *)postView
+{
     if (_postView) {
         return _postView;
     }
@@ -207,7 +218,8 @@ CGFloat const ReblogViewTextBottomInset = 30;
     return _postView;
 }
 
-- (UILabel *)textPromptLabel {
+- (UILabel *)textPromptLabel
+{
     if (_textPromptLabel) {
         return _textPromptLabel;
     }
@@ -227,7 +239,8 @@ CGFloat const ReblogViewTextBottomInset = 30;
     return _textPromptLabel;
 }
 
-- (void)layoutViews {
+- (void)layoutViews
+{
     CGFloat verticleMargin = ReblogViewPostMargin;
     CGFloat horizontalMargin = ReblogViewPostMargin;
     if (IS_IPAD) {
@@ -264,7 +277,8 @@ CGFloat const ReblogViewTextBottomInset = 30;
     self.textView.frame = self.view.bounds;
 }
 
-- (void)resizeTextView:(NSNotification *)notification {
+- (void)resizeTextView:(NSNotification *)notification
+{
     NSDictionary *keyboardInfo = [notification userInfo];
     CGRect originalKeyboardFrame = [[keyboardInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGRect keyboardFrame = [self.view convertRect:[self.view.window convertRect:originalKeyboardFrame fromWindow:nil] fromView:nil];
@@ -280,7 +294,8 @@ CGFloat const ReblogViewTextBottomInset = 30;
     self.textView.frame = frame;
 }
 
-- (void)moveCursorIntoView {
+- (void)moveCursorIntoView
+{
     // Hacky way to make sure the cursor is in view with iOS7.1's funky cursor positioning.
     dispatch_async(dispatch_get_main_queue(), ^{
         CGRect rect = [self.textView caretRectForPosition:self.textView.selectedTextRange.end];
@@ -289,18 +304,21 @@ CGFloat const ReblogViewTextBottomInset = 30;
     });
 }
 
-- (void)dismiss {
+- (void)dismiss
+{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
 #pragma mark Nabar Button actions
 
-- (void)handleCancelAction:(id)sender {
+- (void)handleCancelAction:(id)sender
+{
     [self dismiss];
 }
 
-- (void)handlePublishAction:(id)sender {
+- (void)handlePublishAction:(id)sender
+{
     [self.textView setEditable:NO];
     self.navigationItem.leftBarButtonItem.enabled = NO;
 
@@ -333,7 +351,8 @@ CGFloat const ReblogViewTextBottomInset = 30;
     }];
 }
 
-- (void)handleTitleButtonAction:(id)sender {
+- (void)handleTitleButtonAction:(id)sender
+{
     if (IS_IPAD && self.blogSelectorPopover.isPopoverVisible) {
         [self.blogSelectorPopover dismissPopoverAnimated:YES];
         self.blogSelectorPopover = nil;
@@ -387,20 +406,23 @@ CGFloat const ReblogViewTextBottomInset = 30;
 
 #pragma mark Gesture Regonizer
 
-- (void)handlePostViewTapped:(id)sender {
+- (void)handlePostViewTapped:(id)sender
+{
     [self.view endEditing:YES];
 }
 
 
 #pragma mark Keyboard Notifications
 
-- (void)keyboardDidShow:(NSNotification *)notification {
+- (void)keyboardDidShow:(NSNotification *)notification
+{
     self.isShowingKeyboard = YES;
     [self resizeTextView:notification];
     [self moveCursorIntoView];
 }
 
-- (void)keyboardWillHide:(NSNotification *)notification {
+- (void)keyboardWillHide:(NSNotification *)notification
+{
     self.isShowingKeyboard = NO;
     [self resizeTextView:notification];
 }
@@ -408,11 +430,13 @@ CGFloat const ReblogViewTextBottomInset = 30;
 
 #pragma mark UITextView Delegate Methods
 
-- (void)textViewDidBeginEditing:(UITextView *)textView {
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
     self.textPromptLabel.hidden = YES;
 }
 
-- (void)textViewDidEndEditing:(UITextView *)aTextView {
+- (void)textViewDidEndEditing:(UITextView *)aTextView
+{
     if ([_textView.text isEqualToString:@""]) {
         self.textPromptLabel.hidden = NO;
     }
