@@ -62,8 +62,10 @@ extern const CGFloat WPContentViewLineHeightMultiple;
 
 - (void)configureView;
 - (void)configureAttributionView;
+- (void)configureActionView;
 - (CGSize)sizeThatFitsContent:(CGSize)size;
 - (CGFloat)horizontalMarginForContent;
+- (void)configureConstraints;
 
 /**
 

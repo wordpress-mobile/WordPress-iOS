@@ -3,14 +3,6 @@
 const CGFloat WPContentAttributionViewAvatarSize = 32.0;
 const CGFloat WPContentAttributionLabelHeight = 18.0;
 
-@interface WPContentAttributionView()
-
-@property (nonatomic, strong) UIImageView *avatarImageView;
-@property (nonatomic, strong) UIView *borderView;
-@property (nonatomic, strong) UIButton *attributionLinkButton;
-
-@end
-
 @implementation WPContentAttributionView
 
 #pragma mark - Lifecycle Methods

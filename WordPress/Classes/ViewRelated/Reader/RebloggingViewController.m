@@ -2,7 +2,7 @@
 
 #import "RebloggingViewController.h"
 #import "ReaderPost.h"
-#import "WPContentViewBase.h"
+#import "ReaderPostSimpleContentView.h"
 #import "ReaderPostService.h"
 #import "BlogSelectorViewController.h"
 #import "WPBlogSelectorButton.h"
@@ -19,7 +19,7 @@ CGFloat const ReblogViewTextBottomInset = 30;
 @property (nonatomic, strong) UIButton *titleBarButton;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic, strong) Blog *blog;
-@property (nonatomic, strong) WPContentViewBase *postView;
+@property (nonatomic, strong) ReaderPostSimpleContentView *postView;
 @property (nonatomic, strong) UIView *postViewWrapper;
 @property (nonatomic, strong) CALayer *postViewBackingLayer;
 @property (nonatomic, strong) UITextView *textView;
@@ -202,13 +202,13 @@ CGFloat const ReblogViewTextBottomInset = 30;
     return _postViewWrapper;
 }
 
-- (WPContentViewBase *)postView
+- (ReaderPostSimpleContentView *)postView
 {
     if (_postView) {
         return _postView;
     }
 
-    self.postView = [[WPContentViewBase alloc] init];
+    self.postView = [[ReaderPostSimpleContentView alloc] init];
     _postView.contentProvider = self.post;
     _postView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _postView.backgroundColor = [UIColor whiteColor];

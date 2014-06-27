@@ -162,7 +162,6 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     height += (WPContentViewVerticalPadding * 2);
 
     return CGSizeMake(size.width, ceil(height));
-    return [super sizeThatFits:size];
 }
 
 - (CGSize)sizeThatFitsContent:(CGSize)size
