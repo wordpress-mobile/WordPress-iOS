@@ -40,6 +40,11 @@
     return (WPRichTextView *)self.contentView;
 }
 
+- (CGSize)sizeThatFitsContent:(CGSize)size
+{
+    return self.richTextView.intrinsicContentSize;
+}
+
 
 #pragma mark - Action Methods
 

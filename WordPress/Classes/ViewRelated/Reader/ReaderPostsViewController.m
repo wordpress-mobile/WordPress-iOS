@@ -759,8 +759,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self configureCell:self.cellForLayout atIndexPath:indexPath];
-    [self.cellForLayout layoutSubviews];
-    CGSize size = [self.cellForLayout.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+
+    CGSize size = [self.cellForLayout sizeThatFits:CGSizeMake(CGRectGetWidth(self.tableView.bounds), CGFLOAT_MAX)];
     return ceil(size.height + 1);
 }
 

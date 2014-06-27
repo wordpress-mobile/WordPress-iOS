@@ -17,10 +17,6 @@ const CGFloat WPContentViewActionViewHeight = 48.0;
 const CGFloat WPContentViewBorderHeight = 1.0;
 const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
-const CGFloat WPContentViewFollowButtonWidth = 100.0f;
-const CGFloat WPContentViewTitlePaddingBottom = 3.0f;
-const CGFloat WPContentViewSmallButtonLeftPadding = 2; // Follow, tag
-
 
 @interface WPContentViewBase()<WPContentAttributionViewDelegate>
 @property (nonatomic, strong) NSLayoutConstraint *featuredImageHeightConstraint;
@@ -87,12 +83,6 @@ const CGFloat WPContentViewSmallButtonLeftPadding = 2; // Follow, tag
         string = @"";
     }
 
-//    NSInteger newline = [string rangeOfString:@"\n"].location;
-//
-//    if (newline != NSNotFound) {
-//        string = [string substringToIndex:newline];
-//    }
-
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     [style setLineHeightMultiple:WPContentViewLineHeightMultiple];
     NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
@@ -153,6 +143,32 @@ const CGFloat WPContentViewSmallButtonLeftPadding = 2; // Follow, tag
     return NO;
 }
 
+- (CGSize)sizeThatFits:(CGSize)size
+{
+    CGFloat innerWidth = size.width - (WPContentViewOuterMargin * 2);
+    CGSize innerSize = CGSizeMake(innerWidth, CGFLOAT_MAX);
+    CGFloat height = 0;
+    height += self.attributionView.intrinsicContentSize.height;
+    height += self.actionView.intrinsicContentSize.height;
+    if (!self.featuredImageView.hidden) {
+        height += (size.width * WPContentViewMaxImageHeightPercentage);
+    }
+    height += [self.titleLabel sizeThatFits:innerSize].height;
+    height += [self sizeThatFitsContent:innerSize].height;
+
+    height += WPContentViewOuterMargin;
+    height += WPContentViewAttributionVerticalPadding;
+    height += WPContentViewTitleContentPadding;
+    height += (WPContentViewVerticalPadding * 2);
+
+    return CGSizeMake(size.width, ceil(height));
+    return [super sizeThatFits:size];
+}
+
+- (CGSize)sizeThatFitsContent:(CGSize)size
+{
+    return [self.contentView sizeThatFits:size];
+}
 
 #pragma mark - Private Methods
 
@@ -395,7 +411,7 @@ const CGFloat WPContentViewSmallButtonLeftPadding = 2; // Follow, tag
  */
 - (void)configureActionButtons
 {
-    AssertSubclassMethod();
+    // noop. Subclasses should override.
 }
 
 /**
