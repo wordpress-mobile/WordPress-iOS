@@ -111,8 +111,8 @@
 // Helpshift
 #define COCOAPODS_POD_AVAILABLE_Helpshift
 #define COCOAPODS_VERSION_MAJOR_Helpshift 4
-#define COCOAPODS_VERSION_MINOR_Helpshift 3
-#define COCOAPODS_VERSION_PATCH_Helpshift 1
+#define COCOAPODS_VERSION_MINOR_Helpshift 5
+#define COCOAPODS_VERSION_PATCH_Helpshift 0
 
 // HockeySDK
 #define COCOAPODS_POD_AVAILABLE_HockeySDK
