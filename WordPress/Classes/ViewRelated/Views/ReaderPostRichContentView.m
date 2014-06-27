@@ -16,6 +16,13 @@
     ((WPRichTextView *)self.contentView).delegate = nil;
 }
 
+- (UILabel *)viewForTitle
+{
+    UILabel *label = [super viewForTitle];
+    label.numberOfLines = 0;
+    return label;
+}
+
 - (UIView *)viewForContent
 {
     WPRichTextView *richTextView = [[WPRichTextView alloc] init];
