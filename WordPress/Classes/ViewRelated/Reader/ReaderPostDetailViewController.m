@@ -250,7 +250,7 @@ typedef enum {
     self.postView = [[ReaderPostRichContentView alloc] init];
     self.postView.translatesAutoresizingMaskIntoConstraints = NO;
     self.postView.delegate = self;
-    self.postView.shouldShowActions = self.post.isWPCom;
+    self.postView.shouldShowActions = self.post.isWPCom;    
     [self.postView configurePost:self.post];
     self.postView.backgroundColor = [UIColor whiteColor];
 
@@ -264,8 +264,18 @@ typedef enum {
         }];
     }
 
-    if (self.featuredImage) {
-        [self.postView setFeaturedImage:self.featuredImage];
+    // Only show featured image if one exists and its not already in the post content.
+    NSURL *featuredImageURL = [self.post featuredImageURLForDisplay];
+    if (featuredImageURL) {
+        // If ReaderPostView has a featured image, show it unless you're showing full detail & featured image is in the post already
+        NSString *content = [self.post contentForDisplay];
+        if ([content rangeOfString:[featuredImageURL absoluteString]].length > 0) {
+            self.postView.alwaysHidesFeaturedImage = YES;
+        } else {
+            if (self.featuredImage) {
+                [self.postView setFeaturedImage:self.featuredImage];
+            }
+        }
     }
 }
 
