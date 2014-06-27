@@ -2,7 +2,7 @@
 
 #import "RebloggingViewController.h"
 #import "ReaderPost.h"
-#import "ReaderPostView.h"
+#import "WPContentViewBase.h"
 #import "ReaderPostService.h"
 #import "BlogSelectorViewController.h"
 #import "WPBlogSelectorButton.h"
@@ -19,7 +19,7 @@ CGFloat const ReblogViewTextBottomInset = 30;
 @property (nonatomic, strong) UIButton *titleBarButton;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic, strong) Blog *blog;
-@property (nonatomic, strong) ReaderPostView *postView;
+@property (nonatomic, strong) WPContentViewBase *postView;
 @property (nonatomic, strong) UIView *postViewWrapper;
 @property (nonatomic, strong) CALayer *postViewBackingLayer;
 @property (nonatomic, strong) UITextView *textView;
@@ -202,18 +202,18 @@ CGFloat const ReblogViewTextBottomInset = 30;
     return _postViewWrapper;
 }
 
-- (ReaderPostView *)postView
+- (WPContentViewBase *)postView
 {
     if (_postView) {
         return _postView;
     }
 
-    self.postView = [[ReaderPostView alloc] initWithFrame:self.view.bounds contentMode:ReaderPostContentModeSimpleSummary];
+    self.postView = [[WPContentViewBase alloc] init];
+    _postView.contentProvider = self.post;
     _postView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _postView.backgroundColor = [UIColor whiteColor];
-    [_postView configurePost:self.post];
     [_postView setFeaturedImage:self.featuredImage];
-    [_postView setAvatar:self.avatarImage];
+    [_postView setAvatarImage:[self.post cachedAvatarWithSize:CGSizeMake(WPContentAttributionViewAvatarSize, WPContentAttributionViewAvatarSize)]];
 
     return _postView;
 }
@@ -248,7 +248,10 @@ CGFloat const ReblogViewTextBottomInset = 30;
     }
 
     CGFloat width = CGRectGetWidth(self.view.bounds) - (horizontalMargin * 2);
-    CGFloat height = [ReaderPostView heightForPost:self.post withWidth:width forContentMode:ReaderPostContentModeSimpleSummary];
+    CGSize size = [self.postView sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
+
+    CGFloat height = size.height;
+
     CGRect frame = CGRectMake(horizontalMargin, verticleMargin, width, height);
     CGFloat top = CGRectGetMaxY(frame) + (verticleMargin * 2);
     self.postViewWrapper.frame = frame;
