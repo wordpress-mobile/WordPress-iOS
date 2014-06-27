@@ -43,7 +43,6 @@
         self.mediaArray = [NSMutableArray array];
         self.mediaQueue = [[ReaderMediaQueue alloc] initWithDelegate:self];
         self.textContentView = [self buildTextContentView];
-        self.clipsToBounds = YES;
         [self addSubview:self.textContentView];
         [self configureConstraints];
     }
@@ -67,8 +66,14 @@
 - (CGSize)intrinsicContentSize
 {
     CGSize size = self.textContentView.intrinsicContentSize;
-NSLog(@"Size: %@", NSStringFromCGSize(size));
     return size;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    self.textContentView.layouter = nil;
+    [self.textContentView relayoutText];
 }
 
 - (DTAttributedTextContentView *)buildTextContentView
@@ -82,6 +87,7 @@ NSLog(@"Size: %@", NSStringFromCGSize(size));
     textContentView.backgroundColor = [UIColor whiteColor];
     textContentView.shouldDrawImages = NO;
     textContentView.shouldDrawLinks = NO;
+    textContentView.relayoutMask = DTAttributedTextContentViewRelayoutOnWidthChanged | DTAttributedTextContentViewRelayoutOnHeightChanged;
 
     return textContentView;
 }
@@ -105,7 +111,6 @@ NSLog(@"Size: %@", NSStringFromCGSize(size));
 {
     self.textContentView.attributedString = attributedString;
     [self.textContentView relayoutText];
-    [self invalidateIntrinsicContentSize];
 }
 
 
@@ -135,6 +140,13 @@ NSLog(@"Size: %@", NSStringFromCGSize(size));
 
 #pragma mark - DTAttributedTextContentView layout wrangling
 
+- (void)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView
+               didDrawLayoutFrame:(DTCoreTextLayoutFrame *)layoutFrame
+                        inContext:(CGContextRef)context
+{
+        [self invalidateIntrinsicContentSize];
+}
+
 - (BOOL)isEmoji:(NSURL *)url
 {
     return ([[url absoluteString] rangeOfString:@"wp.com/wp-includes/images/smilies"].location != NSNotFound);
@@ -142,7 +154,6 @@ NSLog(@"Size: %@", NSStringFromCGSize(size));
 
 - (void)handleMediaViewLoaded:(ReaderMediaView *)mediaView
 {
-
     BOOL frameChanged = [self updateMediaLayout:mediaView];
 
     if (frameChanged) {
@@ -152,7 +163,6 @@ NSLog(@"Size: %@", NSStringFromCGSize(size));
         // layout might have changed due to image sizes
         [self.textContentView relayoutText];
         [self invalidateIntrinsicContentSize];
-        [self setNeedsLayout];
     }
 }
 
@@ -246,11 +256,10 @@ NSLog(@"Size: %@", NSStringFromCGSize(size));
     // layout might have changed due to image sizes
     [self.textContentView relayoutText];
     [self invalidateIntrinsicContentSize];
-    [self setNeedsLayout]; // TODO: Confirm this is needed still
 }
 
 
-#pragma mark ReaderMediaQueueDelegate methods
+#pragma mark - ReaderMediaQueueDelegate methods
 
 - (void)readerMediaQueue:(ReaderMediaQueue *)mediaQueue didLoadBatch:(NSArray *)batch
 {
