@@ -210,7 +210,6 @@ CGFloat const ReblogViewTextBottomInset = 30;
 
     self.postView = [[ReaderPostSimpleContentView alloc] init];
     _postView.contentProvider = self.post;
-    _postView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _postView.backgroundColor = [UIColor whiteColor];
     [_postView setFeaturedImage:self.featuredImage];
     [_postView setAvatarImage:[self.post cachedAvatarWithSize:CGSizeMake(WPContentAttributionViewAvatarSize, WPContentAttributionViewAvatarSize)]];
