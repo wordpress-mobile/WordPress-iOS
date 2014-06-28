@@ -196,8 +196,7 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    button.backgroundColor = [UIColor clearColor];
-    button.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+    button.titleLabel.font = [WPStyleGuide subtitleFont];
     [button setTitleEdgeInsets: UIEdgeInsetsMake(0, 2, 0, -2)];
 
     // Disable it for now (could be used for permalinks in the future)
