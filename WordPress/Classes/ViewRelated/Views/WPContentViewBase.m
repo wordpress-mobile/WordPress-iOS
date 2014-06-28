@@ -32,7 +32,8 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     return (IS_IPAD ? [UIFont fontWithName:@"OpenSans" size:16.0f] : [UIFont fontWithName:@"OpenSans" size:14.0f]);
 }
 
-+ (NSAttributedString *)attributedStringForTitle:(NSString *)title {
+- (NSAttributedString *)attributedStringForTitle:(NSString *)title
+{
     title = [title trim];
     if (title == nil) {
         title = @"";
@@ -41,43 +42,15 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     [style setLineHeightMultiple:WPContentViewLineHeightMultiple];
     NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
-                                 NSFontAttributeName : [self titleFont]};
+                                 NSFontAttributeName : [[self class] titleFont]};
 
     NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:title
                                                                                     attributes:attributes];
-
-//    if([title length] > 0)
-//    {
-//        CGFloat currentHeightOfTitle = [titleString
-//                                        boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
-//                                        options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-//                                        context:nil].size.height;
-//
-//
-//        CGFloat heightOfSingleLine = [[titleString attributedSubstringFromRange:NSMakeRange(0,1)]
-//                                      boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
-//                                      options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-//                                      context:nil].size.height;
-//
-//        NSInteger numberOfLines = currentHeightOfTitle / heightOfSingleLine;
-//
-//        if(numberOfLines > maxLines)
-//        {
-//            NSInteger newLength = [ReaderPostView calculateTitleLengthWithSingleLineHeight:heightOfSingleLine
-//                                                                         currentLineHeight:currentHeightOfTitle
-//                                                                              currentTitle:titleString];
-//
-//
-//            titleString = [[NSMutableAttributedString alloc]initWithString:[postTitle stringByEllipsizingWithMaxLength:newLength preserveWords:YES]
-//                                                                attributes:attributes];
-//
-//        }
-//    }
-
     return titleString;
 }
 
-+ (NSAttributedString *)attributedStringForContent:(NSString *)string {
+- (NSAttributedString *)attributedStringForContent:(NSString *)string
+{
     string = [string trim];
     if (string == nil) {
         string = @"";
@@ -86,7 +59,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     [style setLineHeightMultiple:WPContentViewLineHeightMultiple];
     NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
-                                 NSFontAttributeName : [self contentFont]};
+                                 NSFontAttributeName : [[self class] contentFont]};
     NSMutableAttributedString *attributedSummary = [[NSMutableAttributedString alloc] initWithString:string
                                                                                           attributes:attributes];
     return attributedSummary;
@@ -397,7 +370,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
  */
 - (void)configureTitleView
 {
-    self.titleLabel.attributedText = [[self class] attributedStringForTitle:[self.contentProvider titleForDisplay]];
+    self.titleLabel.attributedText = [self attributedStringForTitle:[self.contentProvider titleForDisplay]];
     // Reassign line break mode after setting attributed text, else we never see an ellipsis.
     self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
 }
@@ -408,7 +381,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 - (void)configureContentView
 {
     UILabel *label = (UILabel *)self.contentView;
-    label.attributedText = [[self class] attributedStringForContent:[self.contentProvider contentPreviewForDisplay]];
+    label.attributedText = [self attributedStringForContent:[self.contentProvider contentPreviewForDisplay]];
     // Reassign line break mode after setting attributed text, else we never see an ellipsis.
     label.lineBreakMode = NSLineBreakByTruncatingTail;
 }
