@@ -310,11 +310,11 @@
     CGFloat availableWidth = width - (self.textContentView.edgeInsets.left + self.textContentView.edgeInsets.right);
 
 	// The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image itself to run out to the edges,
-	// so position it offset by the inverse of _textContentView's edgeInsets. Also add top padding so we don't bump into a line of text.
+	// so position it offset by the inverse of _textContentView's edgeInsets.
 	// Remeber to add an extra 10px to the frame to preserve aspect ratio.
 	UIEdgeInsets edgeInsets = self.textContentView.edgeInsets;
 	edgeInsets.left = 0.0 - edgeInsets.left;
-	edgeInsets.top = 15.0;
+	edgeInsets.top = 0.0;
 	edgeInsets.right = 0.0 - edgeInsets.right;
 	edgeInsets.bottom = 0.0;
 
