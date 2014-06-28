@@ -320,7 +320,6 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     featuredImageView.hidden = YES;
 
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(featuredImageAction:)];
-    featuredImageView.userInteractionEnabled = YES;
     [featuredImageView addGestureRecognizer:tgr];
 
     return featuredImageView;
