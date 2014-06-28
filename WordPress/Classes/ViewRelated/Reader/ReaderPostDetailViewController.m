@@ -201,10 +201,6 @@ typedef enum {
 	if ([self.tableView indexPathForSelectedRow] != nil && self.inlineComposeView.isDisplayed) {
 		[self.tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionNone animated:NO];
 	}
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self refreshPostViewCell];
-    });
 }
 
 - (void)refreshPostViewCell
@@ -273,9 +269,10 @@ typedef enum {
 
 - (UIBarButtonItem *)shareButton
 {
-    if (_shareButton)
+    if (_shareButton) {
         return _shareButton;
-    
+    }
+
 	// Top Navigation bar and Sharing
     UIImage *image = [UIImage imageNamed:@"icon-posts-share"];
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
@@ -289,9 +286,10 @@ typedef enum {
 
 - (UIActivityIndicatorView *)activityFooter
 {
-    if (_activityFooter)
+    if (_activityFooter) {
         return _activityFooter;
-
+    }
+    
     CGRect rect = CGRectMake(145.0f, 10.0f, 30.0f, 30.0f);
     _activityFooter = [[UIActivityIndicatorView alloc] initWithFrame:rect];
     _activityFooter.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
