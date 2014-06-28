@@ -97,20 +97,27 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
         NSDictionary *metrics = @{@"buttonHeight":@(WPContentActionViewButtonHeight),
                                   @"buttonSpacing":@(WPContentActionViewButtonSpacing)};
         if (previousButton) {
-            views = NSDictionaryOfVariableBindings(button, previousButton);
+            // Adjust button spacing to account for differences in image size.
+            CGFloat lastImageWidth = previousButton.imageView.image.size.width;
+            CGFloat width = button.imageView.image.size.width;
+            CGFloat diff = width - lastImageWidth;
+            CGFloat buttonSpacing = WPContentActionViewButtonSpacing + diff;
+            metrics = @{@"buttonSpacing":@(buttonSpacing)};
 
+            views = NSDictionaryOfVariableBindings(button, previousButton);
             [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"[button]-(buttonSpacing)-[previousButton]"
-                                                                                     options:NSLayoutFormatAlignAllBaseline
+                                                                                     options:0
                                                                                      metrics:metrics
                                                                                        views:views]];
         } else {
             views = NSDictionaryOfVariableBindings(button);
             [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"[button]|"
-                                                                                     options:NSLayoutFormatAlignAllBaseline
+                                                                                     options:0
                                                                                      metrics:nil
                                                                                        views:views]];
         }
         views = NSDictionaryOfVariableBindings(button);
+        metrics = @{@"buttonHeight":@(WPContentActionViewButtonHeight)};
         [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[button(buttonHeight)]|"
                                                                                  options:0
                                                                                  metrics:metrics
