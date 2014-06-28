@@ -1,10 +1,8 @@
 #import "WPContentViewBase.h"
-
 #import "ContentActionButton.h"
 #import "WPContentAttributionView.h"
 #import "WPContentActionView.h"
 
-// TODO: Delete any of these that end up not being used.
 const CGFloat WPContentViewHorizontalInnerPadding = 12.0;
 const CGFloat WPContentViewOuterMargin = 8.0;
 const CGFloat WPContentViewAttributionVerticalPadding = 8.0;
@@ -19,6 +17,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
 
 @interface WPContentViewBase()<WPContentAttributionViewDelegate>
+// Stores a reference to the image height constraint for easy adjustment.
 @property (nonatomic, strong) NSLayoutConstraint *featuredImageHeightConstraint;
 @end
 
@@ -30,39 +29,6 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
 + (UIFont *)contentFont {
     return (IS_IPAD ? [UIFont fontWithName:@"OpenSans" size:16.0f] : [UIFont fontWithName:@"OpenSans" size:14.0f]);
-}
-
-- (NSAttributedString *)attributedStringForTitle:(NSString *)title
-{
-    title = [title trim];
-    if (title == nil) {
-        title = @"";
-    }
-
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    [style setLineHeightMultiple:WPContentViewLineHeightMultiple];
-    NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
-                                 NSFontAttributeName : [[self class] titleFont]};
-
-    NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:title
-                                                                                    attributes:attributes];
-    return titleString;
-}
-
-- (NSAttributedString *)attributedStringForContent:(NSString *)string
-{
-    string = [string trim];
-    if (string == nil) {
-        string = @"";
-    }
-
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    [style setLineHeightMultiple:WPContentViewLineHeightMultiple];
-    NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
-                                 NSFontAttributeName : [[self class] contentFont]};
-    NSMutableAttributedString *attributedSummary = [[NSMutableAttributedString alloc] initWithString:string
-                                                                                          attributes:attributes];
-    return attributedSummary;
 }
 
 
@@ -330,9 +296,6 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
 #pragma mark - Configuration
 
-/**
-
- */
 - (void)configureView
 {
     [self configureAttributionView];
@@ -347,17 +310,11 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     [self setNeedsUpdateConstraints];
 }
 
-/**
-
- */
 - (void)configureAttributionView
 {
     self.attributionView.contentProvider = self.contentProvider;
 }
 
-/**
-
- */
 - (void)configureFeaturedImageView
 {
     NSURL *featuredImageURL = [self.contentProvider featuredImageURLForDisplay];
@@ -365,9 +322,6 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     [self configureFeaturedImageHeightConstraint];
 }
 
-/**
- 
- */
 - (void)configureTitleView
 {
     self.titleLabel.attributedText = [self attributedStringForTitle:[self.contentProvider titleForDisplay]];
@@ -375,9 +329,6 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
 }
 
-/**
- 
- */
 - (void)configureContentView
 {
     UILabel *label = (UILabel *)self.contentView;
@@ -386,25 +337,16 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     label.lineBreakMode = NSLineBreakByTruncatingTail;
 }
 
-/**
-
- */
 - (void)configureActionView
 {
     self.actionView.contentProvider = self.contentProvider;
 }
 
-/**
- 
- */
 - (void)configureActionButtons
 {
     // noop. Subclasses should override.
 }
 
-/**
-
- */
 - (UIButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage
 {
     ContentActionButton *button = [ContentActionButton buttonWithType:UIButtonTypeCustom];
@@ -421,27 +363,69 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     return button;
 }
 
-/**
-
- */
 - (void)removeAllActionButtons
 {
     [self.actionView removeAllActionButtons];
 }
 
-/**
-
- */
 - (void)updateActionButtons
 {
-    AssertSubclassMethod();
+    // Subclasses should override
+}
+
+/**
+ Returns an attributed string for the specified `title`, formatted for the title view.
+ 
+ @param title The string to convert to an attriubted string.
+ @return An attributed string formatted to display in the title view.
+ */
+- (NSAttributedString *)attributedStringForTitle:(NSString *)title
+{
+    title = [title trim];
+    if (title == nil) {
+        title = @"";
+    }
+
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    [style setLineHeightMultiple:WPContentViewLineHeightMultiple];
+    NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
+                                 NSFontAttributeName : [[self class] titleFont]};
+
+    NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:title
+                                                                                    attributes:attributes];
+    return titleString;
+}
+
+/**
+ Returns an attributed string for the specified `string`, formatted for the content view.
+
+ @param title The string to convert to an attriubted string.
+ @return An attributed string formatted to display in the title view.
+ */
+- (NSAttributedString *)attributedStringForContent:(NSString *)string
+{
+    string = [string trim];
+    if (string == nil) {
+        string = @"";
+    }
+
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    [style setLineHeightMultiple:WPContentViewLineHeightMultiple];
+    NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
+                                 NSFontAttributeName : [[self class] contentFont]};
+    NSMutableAttributedString *attributedSummary = [[NSMutableAttributedString alloc] initWithString:string
+                                                                                          attributes:attributes];
+    return attributedSummary;
 }
 
 
 #pragma mark - WPContentView Delegate Methods
 
 /**
-
+ Receives the notification that the user has tapped the featured image, and informs 
+ the delegate of the interaction.
+ 
+ @param sender A reference to the featured image.
  */
 - (void)featuredImageAction:(id)sender
 {
@@ -454,7 +438,8 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 #pragma mark - authorLinkAction
 
 /**
-
+ Receives the notification from the attribution view that its button was pressed and informs the 
+ delegate of the interaction.
  */
 - (void)attributionView:(WPContentAttributionView *)attributionView didReceiveAttributionLinkAction:(id)sender
 {

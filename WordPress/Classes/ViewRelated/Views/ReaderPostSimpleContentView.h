@@ -1,13 +1,8 @@
-//
-//  ReaderPostSimpleContentView.h
-//  WordPress
-//
-//  Created by aerych on 6/27/14.
-//  Copyright (c) 2014 WordPress. All rights reserved.
-//
-
 #import "WPContentViewBase.h"
 
+/**
+ A version of ReaderPostContentView modified to show the 
+ `WPSimpleContentAttributionView and to hide its `WPContentActionView`
+ */
 @interface ReaderPostSimpleContentView : WPContentViewBase
-
 @end

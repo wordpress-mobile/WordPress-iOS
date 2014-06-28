@@ -3,6 +3,19 @@
 
 @implementation ReaderPostSimpleContentView
 
+#pragma mark - Public Methods
+
+- (CGSize)sizeThatFits:(CGSize)size
+{
+    CGSize newSize = [super sizeThatFits:size];
+    newSize.height -= self.actionView.intrinsicContentSize.height;
+
+    return newSize;
+}
+
+
+#pragma mark - Private Methods
+
 - (void)configureConstraints
 {
     [super configureConstraints];
@@ -11,14 +24,6 @@
     NSDictionary *views = NSDictionaryOfVariableBindings(actionView);
 
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[actionView(0)]" options:0 metrics:nil views:views]];
-}
-
-- (CGSize)sizeThatFits:(CGSize)size
-{
-    CGSize newSize = [super sizeThatFits:size];
-    newSize.height -= self.actionView.intrinsicContentSize.height;
-
-    return newSize;
 }
 
 - (void)configureActionView
@@ -37,7 +42,6 @@
 {
     // noop
 }
-
 
 - (WPContentAttributionView *)viewForAttributionView
 {
