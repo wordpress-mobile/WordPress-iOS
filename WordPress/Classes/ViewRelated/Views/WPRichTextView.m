@@ -1,9 +1,7 @@
 #import "WPRichTextView.h"
-
 #import <DTCoreText/DTCoreText.h>
 #import "DTTiledLayerWithoutFade.h"
 #import "DTAttributedTextContentView.h"
-
 #import "ReaderMediaQueue.h"
 #import "ReaderMediaView.h"
 #import "ReaderImageView.h"
@@ -21,6 +19,8 @@
 @end
 
 @implementation WPRichTextView
+
+#pragma mark - LifeCycle Methods
 
 + (void)initialize {
 	// DTCoreText will cache font descriptors on a background thread. However, because the font cache
@@ -49,26 +49,6 @@
     return self;
 }
 
-- (void)configureConstraints
-{
-    NSDictionary *views = NSDictionaryOfVariableBindings(_textContentView);
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_textContentView]|"
-                                                                 options:NSLayoutFormatAlignAllLeft
-                                                                 metrics:nil
-                                                                   views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_textContentView]|"
-                                                                 options:NSLayoutFormatAlignAllLeft
-                                                                 metrics:nil
-                                                                   views:views]];
-    [self setNeedsUpdateConstraints];
-}
-
-- (CGSize)intrinsicContentSize
-{
-    CGSize size = self.textContentView.intrinsicContentSize;
-    return size;
-}
-
 - (void)layoutSubviews
 {
     [super layoutSubviews];
@@ -76,20 +56,13 @@
     [self.textContentView relayoutText];
 }
 
-- (DTAttributedTextContentView *)buildTextContentView
+
+#pragma mark - Public methods
+
+- (CGSize)intrinsicContentSize
 {
-    [DTAttributedTextContentView setLayerClass:[DTTiledLayerWithoutFade class]];
-
-    // Needs an initial frame
-    DTAttributedTextContentView *textContentView = [[DTAttributedTextContentView alloc] initWithFrame:self.bounds];
-    textContentView.translatesAutoresizingMaskIntoConstraints = NO;
-    textContentView.delegate = self;
-    textContentView.backgroundColor = [UIColor whiteColor];
-    textContentView.shouldDrawImages = NO;
-    textContentView.shouldDrawLinks = NO;
-    textContentView.relayoutMask = DTAttributedTextContentViewRelayoutOnWidthChanged | DTAttributedTextContentViewRelayoutOnHeightChanged;
-
-    return textContentView;
+    CGSize size = self.textContentView.intrinsicContentSize;
+    return size;
 }
 
 - (UIEdgeInsets)edgeInsets
@@ -114,7 +87,43 @@
 }
 
 
-#pragma mark - Action Methods
+#pragma mark - Private Methods
+
+/**
+ Sets up the autolayout constraints for subviews.
+ */
+- (void)configureConstraints
+{
+    NSDictionary *views = NSDictionaryOfVariableBindings(_textContentView);
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_textContentView]|"
+                                                                 options:NSLayoutFormatAlignAllLeft
+                                                                 metrics:nil
+                                                                   views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_textContentView]|"
+                                                                 options:NSLayoutFormatAlignAllLeft
+                                                                 metrics:nil
+                                                                   views:views]];
+    [self setNeedsUpdateConstraints];
+}
+
+- (DTAttributedTextContentView *)buildTextContentView
+{
+    [DTAttributedTextContentView setLayerClass:[DTTiledLayerWithoutFade class]];
+
+    // Needs an initial frame
+    DTAttributedTextContentView *textContentView = [[DTAttributedTextContentView alloc] initWithFrame:self.bounds];
+    textContentView.translatesAutoresizingMaskIntoConstraints = NO;
+    textContentView.delegate = self;
+    textContentView.backgroundColor = [UIColor whiteColor];
+    textContentView.shouldDrawImages = NO;
+    textContentView.shouldDrawLinks = NO;
+    textContentView.relayoutMask = DTAttributedTextContentViewRelayoutOnWidthChanged | DTAttributedTextContentViewRelayoutOnHeightChanged;
+
+    return textContentView;
+}
+
+
+#pragma mark - Event Handlers
 
 - (void)linkAction:(DTLinkButton *)sender
 {
@@ -138,7 +147,7 @@
 }
 
 
-#pragma mark - DTAttributedTextContentView layout wrangling
+#pragma mark - DTAttributedTextContentView Layout Wrangling
 
 - (void)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView
                didDrawLayoutFrame:(DTCoreTextLayoutFrame *)layoutFrame

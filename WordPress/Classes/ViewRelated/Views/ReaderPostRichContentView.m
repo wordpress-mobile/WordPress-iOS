@@ -11,10 +11,22 @@
 
 @implementation ReaderPostRichContentView
 
+#pragma mark - Life Cycle Methods
+
 - (void)dealloc
 {
     ((WPRichTextView *)self.contentView).delegate = nil;
 }
+
+#pragma mark - Public Methods
+
+- (void)refreshMediaLayout
+{
+    [self.richTextView refreshMediaLayout];
+}
+
+
+#pragma mark - Private Methods
 
 - (UILabel *)viewForTitle
 {
@@ -45,11 +57,6 @@
 - (WPRichTextView *)richTextView
 {
     return (WPRichTextView *)self.contentView;
-}
-
-- (void)refreshMediaLayout
-{
-    [self.richTextView refreshMediaLayout];
 }
 
 - (CGSize)sizeThatFitsContent:(CGSize)size
