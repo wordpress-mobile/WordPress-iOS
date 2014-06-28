@@ -399,6 +399,8 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 - (void)configureTitleView
 {
     self.titleLabel.attributedText = [[self class] attributedStringForTitle:[self.contentProvider titleForDisplay]];
+    // Reassign line break mode after setting attributed text, else we never see an ellipsis.
+    self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
 }
 
 /**
@@ -408,6 +410,8 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 {
     UILabel *label = (UILabel *)self.contentView;
     label.attributedText = [[self class] attributedStringForContent:[self.contentProvider contentPreviewForDisplay]];
+    // Reassign line break mode after setting attributed text, else we never see an ellipsis.
+    label.lineBreakMode = NSLineBreakByTruncatingTail;
 }
 
 /**
