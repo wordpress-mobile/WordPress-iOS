@@ -599,9 +599,7 @@ typedef enum {
 
 - (void)postWasReblogged:(ReaderPost *)post
 {
-    [self.postView configurePost:self.post];
-// TODO: Do we still need to reset the avatar?
-//    [self.postView setAvatar:self.avatarImage];
+    [self.postView updateActionButtons];
 }
 
 
