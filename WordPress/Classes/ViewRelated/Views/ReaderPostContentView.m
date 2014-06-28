@@ -99,6 +99,7 @@
     }
     [self.likeButton setTitle:title forState:UIControlStateNormal];
     [self.likeButton setTitle:title forState:UIControlStateSelected];
+    [self.likeButton setNeedsLayout];
 
     if ([self.post.commentCount integerValue] > 0) {
         title = [self.post.commentCount stringValue];
@@ -107,10 +108,12 @@
     }
     [self.commentButton setTitle:title forState:UIControlStateNormal];
     [self.commentButton setTitle:title forState:UIControlStateSelected];
+    [self.commentButton setNeedsLayout];
 
     // Show highlights
     [self.likeButton setSelected:self.post.isLiked];
     [self.reblogButton setSelected:self.post.isReblogged];
+    [self.reblogButton setNeedsLayout];
 
     // You can only reblog once.
     self.reblogButton.userInteractionEnabled = !self.post.isReblogged;
