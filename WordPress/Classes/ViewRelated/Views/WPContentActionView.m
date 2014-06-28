@@ -19,6 +19,7 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
 
 @implementation WPContentActionView
 
+#pragma mark - Life Cycle Methods
 - (void)dealloc
 {
     [self.dateRefreshTimer invalidate];
@@ -44,16 +45,56 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
     return self;
 }
 
-- (void)updateConstraints
-{
-    [self configureButtonConstraints];
-    [super updateConstraints];
-}
+
+#pragma mark - Public Methods
 
 - (CGSize)intrinsicContentSize
 {
     return CGSizeMake(UIViewNoIntrinsicMetric, WPContentActionViewButtonHeight);
 }
+
+- (void)addActionButton:(UIButton *)actionButton
+{
+    actionButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.actionButtons addObject:actionButton];
+    [self addSubview:actionButton];
+    [self resetButtonConstraints];
+}
+
+- (void)removeAllActionButtons
+{
+    for (UIButton *button in self.actionButtons) {
+        [button removeFromSuperview];
+    }
+    [self.actionButtons removeAllObjects];
+    [self resetButtonConstraints];
+}
+
+- (void)setContentProvider:(id<WPContentViewProvider>)contentProvider
+{
+    if (_contentProvider == contentProvider) {
+        return;
+    }
+
+    _contentProvider = contentProvider;
+
+    if (self.dateRefreshTimer) {
+        [self.dateRefreshTimer invalidate];
+        self.dateRefreshTimer = nil;
+    }
+
+    if (contentProvider) {
+        self.dateRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:60.0
+                                                                 target:self
+                                                               selector:@selector(refreshDate:)
+                                                               userInfo:nil
+                                                                repeats:YES];
+    }
+    [self refreshDate:nil];
+}
+
+
+#pragma mark - Private Methods
 
 - (void)configureConstraints
 {
@@ -79,6 +120,12 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
                                                                  metrics:metrics
                                                                    views:views]];
     [self setNeedsUpdateConstraints];
+}
+
+- (void)updateConstraints
+{
+    [self configureButtonConstraints];
+    [super updateConstraints];
 }
 
 // Existing button constraints must be deleted prior to this
@@ -137,50 +184,6 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
 }
 
 
-#pragma mark - Public Methods
-
-- (void)addActionButton:(UIButton *)actionButton
-{
-    actionButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.actionButtons addObject:actionButton];
-    [self addSubview:actionButton];
-    [self resetButtonConstraints];
-}
-
-- (void)removeAllActionButtons
-{
-    for (UIButton *button in self.actionButtons) {
-        [button removeFromSuperview];
-    }
-    [self.actionButtons removeAllObjects];
-    [self resetButtonConstraints];
-}
-
-- (void)setContentProvider:(id<WPContentViewProvider>)contentProvider
-{
-    if (_contentProvider == contentProvider) {
-        return;
-    }
-
-    _contentProvider = contentProvider;
-
-    if (self.dateRefreshTimer) {
-        [self.dateRefreshTimer invalidate];
-        self.dateRefreshTimer = nil;
-    }
-
-    if (contentProvider) {
-        self.dateRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:60.0
-                                                                 target:self
-                                                               selector:@selector(refreshDate:)
-                                                               userInfo:nil
-                                                                repeats:YES];
-    }
-    [self refreshDate:nil];
-}
-
-
-#pragma mark - Private Methods
 #pragma mark - Subview factories
 
 - (UIView *)viewForBorder

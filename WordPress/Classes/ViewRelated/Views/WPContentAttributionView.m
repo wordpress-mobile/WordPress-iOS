@@ -31,6 +31,41 @@ const CGFloat WPContentAttributionLabelHeight = 18.0;
     return self;
 }
 
+
+#pragma mark - Public Methods
+
+- (CGSize)intrinsicContentSize
+{
+    return CGSizeMake(WPContentAttributionViewAvatarSize, WPContentAttributionViewAvatarSize);
+}
+
+- (void)setContentProvider:(id<WPContentViewProvider>)contentProvider
+{
+    if (_contentProvider == contentProvider)
+        return;
+
+    _contentProvider = contentProvider;
+    [self configureView];
+}
+
+- (void)setAvatarImage:(UIImage *)image
+{
+    self.avatarImageView.image = image;
+}
+
+- (void)hideAttributionButton:(BOOL)hide
+{
+    self.attributionLinkButton.hidden = hide;
+}
+
+- (void)selectAttributionButton:(BOOL)select
+{
+    [self.attributionLinkButton setSelected:select];
+}
+
+
+#pragma mark - Private Methods
+
 - (void)configureConstraints
 {
     NSDictionary *views = NSDictionaryOfVariableBindings(_avatarImageView, _attributionNameLabel, _attributionLinkButton);
@@ -58,28 +93,6 @@ const CGFloat WPContentAttributionLabelHeight = 18.0;
                                                                    views:views]];
     [super setNeedsUpdateConstraints];
 }
-
-- (CGSize)intrinsicContentSize
-{
-    return CGSizeMake(WPContentAttributionViewAvatarSize, WPContentAttributionViewAvatarSize);
-}
-
-- (void)setContentProvider:(id<WPContentViewProvider>)contentProvider
-{
-    if (_contentProvider == contentProvider)
-        return;
-
-    _contentProvider = contentProvider;
-    [self configureView];
-}
-
-- (void)setAvatarImage:(UIImage *)image
-{
-    self.avatarImageView.image = image;
-}
-
-
-#pragma mark - Private Methods
 
 - (void)configureView
 {
@@ -135,16 +148,6 @@ const CGFloat WPContentAttributionLabelHeight = 18.0;
     borderView.translatesAutoresizingMaskIntoConstraints = NO;
     borderView.backgroundColor = [UIColor colorWithRed:241.0/255.0 green:241.0/255.0 blue:241.0/255.0 alpha:1.0];
     return borderView;
-}
-
-- (void)hideAttributionButton:(BOOL)hide
-{
-    self.attributionLinkButton.hidden = hide;
-}
-
-- (void)selectAttributionButton:(BOOL)select
-{
-    [self.attributionLinkButton setSelected:select];
 }
 
 

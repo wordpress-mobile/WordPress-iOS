@@ -14,6 +14,8 @@
 
 @implementation ReaderPostContentView
 
+#pragma mark - LifeCycle Methods
+
 - (id)init
 {
     self = [super init];
@@ -31,11 +33,34 @@
     return self;
 }
 
+
+#pragma mark - Public Methods
+
 - (void)configurePost:(ReaderPost *)post
 {
     self.post = post;
     self.contentProvider = post;
 }
+
+- (void)setAvatarImage:(UIImage *)image
+{
+    if (!image) {
+        if (self.post.isWPCom) {
+            image = [UIImage imageNamed:@"wpcom_blavatar"];
+        } else {
+            image = [UIImage imageNamed:@"gravatar-reader"];
+        }
+    }
+    [self.attributionView setAvatarImage:image];
+}
+
+- (BOOL)privateContent
+{
+    return self.post.isPrivate;
+}
+
+
+#pragma mark - Private Methods
 
 - (void)configureActionButtons
 {
@@ -91,21 +116,10 @@
     self.reblogButton.userInteractionEnabled = !self.post.isReblogged;
 }
 
-- (void)setAvatarImage:(UIImage *)image
+- (void)configureAttributionView
 {
-    if (!image) {
-        if (self.post.isWPCom) {
-            image = [UIImage imageNamed:@"wpcom_blavatar"];
-        } else {
-            image = [UIImage imageNamed:@"gravatar-reader"];
-        }
-    }
-    [self.attributionView setAvatarImage:image];
-}
-
-- (BOOL)privateContent
-{
-    return self.post.isPrivate;
+    [super configureAttributionView];
+    [self.attributionView selectAttributionButton:self.post.isFollowing];
 }
 
 - (WPContentAttributionView *)viewForAttributionView
@@ -114,12 +128,6 @@
     attrView.translatesAutoresizingMaskIntoConstraints = NO;
     attrView.delegate = self;
     return attrView;
-}
-
-- (void)configureAttributionView
-{
-    [super configureAttributionView];
-    [self.attributionView selectAttributionButton:self.post.isFollowing];
 }
 
 

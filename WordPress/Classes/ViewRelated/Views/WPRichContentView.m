@@ -3,7 +3,7 @@
 #import <DTCoreText/DTCoreText.h>
 
 @interface WPRichContentView()<WPRichTextViewDelegate>
-
+// Convenience getter.
 @property (nonatomic, readonly) WPRichTextView *richTextView;
 
 @end
@@ -16,6 +16,9 @@
 {
     ((WPRichTextView *)self.contentView).delegate = nil;
 }
+
+
+#pragma mark - Private Methods
 
 - (UIView *)viewForContent
 {
@@ -51,7 +54,7 @@
 }
 
 
-#pragma mark - Action Methods
+#pragma mark - WPRichText View Methods
 
 - (void)richTextView:(WPRichTextView *)richTextView didReceiveLinkAction:(NSURL *)linkURL
 {
