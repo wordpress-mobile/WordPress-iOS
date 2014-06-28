@@ -1,5 +1,5 @@
 #import "ReaderPostContentView.h"
-#import "WPRichContentView.h"
+#import "WPRichTextView.h"
 
 @interface ReaderPostRichContentView : ReaderPostContentView
 
