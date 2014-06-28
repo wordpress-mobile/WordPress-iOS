@@ -141,8 +141,7 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
     NSArray* reversedActionButtons = [[self.actionButtons reverseObjectEnumerator] allObjects];
     for (UIButton *button in reversedActionButtons) {
         NSDictionary *views;
-        NSDictionary *metrics = @{@"buttonHeight":@(WPContentActionViewButtonHeight),
-                                  @"buttonSpacing":@(WPContentActionViewButtonSpacing)};
+        NSDictionary *metrics;
         if (previousButton) {
             // Adjust button spacing to account for differences in image size.
             CGFloat lastImageWidth = previousButton.imageView.image.size.width;
