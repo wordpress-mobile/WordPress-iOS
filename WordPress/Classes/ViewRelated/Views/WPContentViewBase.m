@@ -50,6 +50,12 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     return self;
 }
 
+- (void)layoutSubviews
+{
+    CGFloat width = CGRectGetWidth(self.bounds) - (WPContentViewHorizontalInnerPadding * 2);
+    [self.titleLabel setPreferredMaxLayoutWidth:width];
+    [super layoutSubviews];
+}
 
 #pragma mark - Public Methods
 
@@ -271,6 +277,12 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     titleLabel.textColor = [WPStyleGuide littleEddieGrey];
     titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     titleLabel.numberOfLines = 4;
+
+    // Make sure the title label is always sized to match its content.
+    [titleLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+    [titleLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+    [titleLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+    [titleLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
 
     return titleLabel;
 }
