@@ -47,6 +47,7 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatSentItemToInstapaper,
     WPAnalyticsStatSentItemToPocket,
     WPAnalyticsStatSentItemToGooglePlus,
+    WPAnalyticsStatSentItemToWordPress,
     WPAnalyticsStatNotificationPerformedAction,
     WPAnalyticsStatNotificationRepliedTo,
     WPAnalyticsStatNotificationApproved,
