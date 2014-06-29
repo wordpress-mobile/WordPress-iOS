@@ -504,6 +504,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }];
 }
 
+
 #pragma mark - WPTableViewSublass methods
 
 - (NSString *)noResultsTitleText
