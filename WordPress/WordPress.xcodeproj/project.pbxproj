@@ -44,8 +44,6 @@
 		30E41F1B185AB3C8005996FE /* icon-tab-newpost@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E41F19185AB3C8005996FE /* icon-tab-newpost@2x.png */; };
 		30E41F1E185ABE93005996FE /* icon-tab-newpost~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E41F1C185ABE93005996FE /* icon-tab-newpost~ipad.png */; };
 		30E41F1F185ABE93005996FE /* icon-tab-newpost@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E41F1D185ABE93005996FE /* icon-tab-newpost@2x~ipad.png */; };
-		30E9683C15AE4EB10047DD84 /* sidebar-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E9683A15AE4EB10047DD84 /* sidebar-logo.png */; };
-		30E9683D15AE4EB10047DD84 /* sidebar-logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E9683B15AE4EB10047DD84 /* sidebar-logo@2x.png */; };
 		30EABE0918A5903400B73A9C /* WPBlogTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 30EABE0818A5903400B73A9C /* WPBlogTableViewCell.m */; };
 		30EB4CB21423F9D700A27B25 /* read.png in Resources */ = {isa = PBXBuildFile; fileRef = 30EB4CB01423F9D700A27B25 /* read.png */; };
 		30EB4CB31423F9D700A27B25 /* read@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30EB4CB11423F9D700A27B25 /* read@2x.png */; };
@@ -680,8 +678,6 @@
 		30E41F19185AB3C8005996FE /* icon-tab-newpost@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tab-newpost@2x.png"; sourceTree = "<group>"; };
 		30E41F1C185ABE93005996FE /* icon-tab-newpost~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tab-newpost~ipad.png"; sourceTree = "<group>"; };
 		30E41F1D185ABE93005996FE /* icon-tab-newpost@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tab-newpost@2x~ipad.png"; sourceTree = "<group>"; };
-		30E9683A15AE4EB10047DD84 /* sidebar-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "sidebar-logo.png"; path = "Resources/Images/sidebar-logo.png"; sourceTree = "<group>"; };
-		30E9683B15AE4EB10047DD84 /* sidebar-logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "sidebar-logo@2x.png"; path = "Resources/Images/sidebar-logo@2x.png"; sourceTree = "<group>"; };
 		30EABE0718A5903400B73A9C /* WPBlogTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPBlogTableViewCell.h; sourceTree = "<group>"; };
 		30EABE0818A5903400B73A9C /* WPBlogTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPBlogTableViewCell.m; sourceTree = "<group>"; };
 		30EB4CB01423F9D700A27B25 /* read.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = read.png; path = Resources/Images/read.png; sourceTree = "<group>"; };
@@ -1809,8 +1805,6 @@
 		374F188915A5895B00524ED0 /* Sidebar */ = {
 			isa = PBXGroup;
 			children = (
-				30E9683A15AE4EB10047DD84 /* sidebar-logo.png */,
-				30E9683B15AE4EB10047DD84 /* sidebar-logo@2x.png */,
 				374F188C15A5897500524ED0 /* sidebar_camera.png */,
 				374F188D15A5897500524ED0 /* sidebar_camera@2x.png */,
 				374F18AA15A5897500524ED0 /* SidebarToolbarButton.png */,
@@ -2496,6 +2490,14 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				E2408599183D828B002EB0EF /* Animated Box */,
+				5D27716D15A33A6200F4DCAA /* editing */,
+				83610B1311F4B42D00421116 /* logos */,
+				37F66E24167FB1D10043E8CA /* Notifications */,
+				85C720A317307B3600460645 /* NUX */,
+				AC600C100E20B81100D663AA /* Post Icons */,
+				E11C91CA135770DA0072A811 /* Rich Text Editor */,
+				374F188915A5895B00524ED0 /* Sidebar */,
 				5D725B08191EACFB00CA71ED /* default-identicon.png */,
 				5D725B09191EACFB00CA71ED /* default-identicon@2x.png */,
 				5DC029EB18E4C588009A1765 /* date_picker_selected.png */,
@@ -2524,7 +2526,6 @@
 				5DC02A0E18E4C588009A1765 /* uploading_spin_red@2x.png */,
 				3716E40416729B960035F8C4 /* action_icon_replied.png */,
 				3716E40516729B960035F8C4 /* action_icon_replied@2x.png */,
-				E2408599183D828B002EB0EF /* Animated Box */,
 				E1EE23E712E628F6000B2BE6 /* attachment.png */,
 				E1EE23E812E628F6000B2BE6 /* attachment@2x.png */,
 				83D3DCFA1215CF8400600B4B /* autosave.png */,
@@ -2543,7 +2544,6 @@
 				30FB8B48140D2B9C003BBEC5 /* doneButton@2x.png */,
 				2A7F722A0E71000000E48A1F /* down.png */,
 				6E61861E11C0C465001E755E /* down@2x.png */,
-				5D27716D15A33A6200F4DCAA /* editing */,
 				303E1A6618B78BB90005123F /* gravatar-reader.png */,
 				303E1A6718B78BB90005123F /* gravatar-reader@2x.png */,
 				E2981BF2186111C1008DB434 /* gravatar.png */,
@@ -2560,18 +2560,14 @@
 				E151045C14E27F9300CE282B /* list.png */,
 				E151045D14E27F9300CE282B /* list@2x.png */,
 				2A8FF7D80E8A32F7001A9A40 /* lock.png */,
-				83610B1311F4B42D00421116 /* logos */,
 				30410681144E17AE00E98F07 /* next.png */,
 				30410682144E17AE00E98F07 /* next@2x.png */,
 				E1F77431178C282000E70764 /* NNGPlusActivity@2x~ipad.png */,
 				E1F77433178C282000E70764 /* NNGPlusActivity~ipad.png */,
 				5D7BEA3C1774A06400423E7F /* NNInstapaperActivity@2x~ipad.png */,
 				5D7BEA3E1774A06400423E7F /* NNInstapaperActivity~ipad.png */,
-				37F66E24167FB1D10043E8CA /* Notifications */,
-				85C720A317307B3600460645 /* NUX */,
 				E240859E183FDDEC002EB0EF /* penandink.png */,
 				E240859F183FDDEC002EB0EF /* penandink@2x.png */,
-				AC600C100E20B81100D663AA /* Post Icons */,
 				30410683144E17AE00E98F07 /* previous.png */,
 				30410684144E17AE00E98F07 /* previous@2x.png */,
 				30EB4CB01423F9D700A27B25 /* read.png */,
@@ -2604,7 +2600,6 @@
 				46F8714A1838BB4E00BC149B /* reader-postaction-tag@2x.png */,
 				46F871501839528C00BC149B /* reader-postaction-time.png */,
 				46F871511839528C00BC149B /* reader-postaction-time@2x.png */,
-				E11C91CA135770DA0072A811 /* Rich Text Editor */,
 				E1472B9513EFF9FF00987A40 /* right.png */,
 				E1472B9613EFF9FF00987A40 /* right@2x.png */,
 				5D7BEA481774A06400423E7F /* Safari.png */,
@@ -2613,7 +2608,6 @@
 				5D7BEA4B1774A06400423E7F /* Safari~ipad.png */,
 				374CB15315B85CF300DD0EBC /* settings.png */,
 				374CB15415B85CF300DD0EBC /* settings@2x.png */,
-				374F188915A5895B00524ED0 /* Sidebar */,
 				376EEF5B12F70C9B005CE77A /* stats.png */,
 				376EEF5C12F70C9B005CE77A /* stats@2x.png */,
 				6E8BE56C11BF5782002A13DD /* sync.png */,
@@ -3358,9 +3352,7 @@
 				307B241F15ABE24C00F09A35 /* background.png in Resources */,
 				307B242015ABE24C00F09A35 /* background@2x.png in Resources */,
 				30E365B2185BEBEA00F8720D /* icon-toolbar-share@2x.png in Resources */,
-				30E9683C15AE4EB10047DD84 /* sidebar-logo.png in Resources */,
 				46F8714B1838BB4E00BC149B /* reader-postaction-tag.png in Resources */,
-				30E9683D15AE4EB10047DD84 /* sidebar-logo@2x.png in Resources */,
 				E2AA879D1850F91E00886693 /* icon-jetpack-gray.png in Resources */,
 				E232E603182EA16200792CA0 /* icon-password-field.png in Resources */,
 				E2AA879E1850F91E00886693 /* icon-jetpack-gray@2x.png in Resources */,
