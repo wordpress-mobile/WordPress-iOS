@@ -91,7 +91,7 @@
 	};
 }
 
-- (id)applyDiff:(id)thisValue otherValue:(id)otherValue {
+- (id)applyDiff:(id)thisValue otherValue:(id)otherValue error:(NSError **)error {
 	
 	// Dictionary: Handle +, -, r, O
 	if ([thisValue isKindOfClass:[NSDictionary class]] && [otherValue isKindOfClass:[NSDictionary class]]) {

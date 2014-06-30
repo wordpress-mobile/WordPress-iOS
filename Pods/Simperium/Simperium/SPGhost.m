@@ -10,25 +10,25 @@
 
 
 @implementation SPGhost
-@synthesize key, memberData, version;
-@synthesize needsSave;
 
 - (id)initFromDictionary:(NSDictionary *)dict {
-	self.key = [dict objectForKey:@"key"];
-	self.memberData = [dict objectForKey:@"obj"];
-    self.version = [dict objectForKey:@"version"];
-    
-    // Make sure it's not marked dirty when initializing in this way, since ghosts are loaded
-    // through this method on launch
-    needsSave = NO;
+    if ((self = [super init])) {
+        _key        = dict[@"key"];
+        _memberData = dict[@"obj"];
+        _version    = dict[@"version"];
+        
+        // Make sure it's not marked dirty when initializing in this way, since ghosts are loaded
+        // through this method on launch
+        _needsSave = NO;
+    }
     
 	return self;
 }
 
 - (id)initWithKey:(NSString *)k memberData:(NSMutableDictionary *)data {
 	if ((self = [super init])) {
-		self.key = k;
-		self.memberData = data;
+		_key        = k;
+		_memberData = data;
 	}
 	return self;
 }
@@ -52,29 +52,28 @@
 }
 
 - (void)setMemberData:(NSMutableDictionary *)newMemberData {
-    memberData = [newMemberData mutableCopy];
-    needsSave = YES;
+    _memberData = [newMemberData mutableCopy];
+    _needsSave = YES;
 }
 
 - (void)setKey:(NSString *)newKey {
-    key = [newKey copy];
-    needsSave = YES;
+    _key = [newKey copy];
+    _needsSave = YES;
 }
 
 - (void)setVersion:(NSString *)newVersion {
-    version = [newVersion copy];
-    needsSave = YES;
+    _version = [newVersion copy];
+    _needsSave = YES;
 }
 
 - (NSDictionary *)dictionary {
-	if (version == nil)
+	if (_version == nil) {
 		return [NSDictionary dictionaryWithObjectsAndKeys:
 				self.key, @"key", self.memberData, @"obj", nil];
-	else
+    } else {
 		return [NSDictionary dictionaryWithObjectsAndKeys:
-				self.key, @"key", self.version, @"version", self.memberData, @"obj", nil];		
+				self.key, @"key", self.version, @"version", self.memberData, @"obj", nil];
+    }
 }
-
-
 
 @end

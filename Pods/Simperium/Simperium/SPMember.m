@@ -90,12 +90,12 @@ NSString * const OP_STRING			= @"d";
 	return nil;
 }
 
-- (id)applyDiff:(id)thisValue otherValue:(id)otherValue {
+- (id)applyDiff:(id)thisValue otherValue:(id)otherValue error:(NSError **)error {
 	return otherValue;
 }
 
 
-- (NSDictionary *)transform:(id)thisValue otherValue:(id)otherValue oldValue:(id)oldValue {
+- (NSDictionary *)transform:(id)thisValue otherValue:(id)otherValue oldValue:(id)oldValue error:(NSError **)error {
 	// By default, don't perform any transformation
 	return nil;
 }

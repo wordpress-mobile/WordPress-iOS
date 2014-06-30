@@ -1,12 +1,24 @@
-//---------------------------------------------------------------------------------------
-//  $Id$
-//  Copyright (c) 2013 by Mulle Kybernetik. See License file for details.
-//---------------------------------------------------------------------------------------
+/*
+ *  Copyright (c) 2013-2014 Erik Doernenburg and contributors
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may
+ *  not use these files except in compliance with the License. You may obtain
+ *  a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ *  License for the specific language governing permissions and limitations
+ *  under the License.
+ */
 
+#import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
 #import "OCClassMockObject.h"
 #import "OCPartialMockObject.h"
-#import "OCMockObjectClassMethodMockingTests.h"
+#import "OCMFunctions.h"
 
 #pragma mark   Helper classes
 
@@ -45,6 +57,10 @@
 @end
 
 
+@interface OCMockObjectClassMethodMockingTests : XCTestCase
+
+@end
+
 
 @implementation OCMockObjectClassMethodMockingTests
 
@@ -55,8 +71,8 @@
     id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
 
     [[[[mock stub] classMethod] andReturn:@"mocked"] foo];
-    
-    STAssertEqualObjects(@"mocked", [TestClassWithClassMethods foo], @"Should have stubbed class method.");
+
+    XCTAssertEqualObjects(@"mocked", [TestClassWithClassMethods foo], @"Should have stubbed class method.");
 }
 
 - (void)testCanExpectTheSameClassMethodMoreThanOnce
@@ -65,8 +81,8 @@
     [[[[mock expect] classMethod] andReturn:@"mocked-foo"] foo];
     [[[[mock expect] classMethod] andReturn:@"mocked-foo2"] foo];
 
-    STAssertEqualObjects(@"mocked-foo", [TestClassWithClassMethods foo], @"Should have stubbed class method 'foo'.");
-    STAssertEqualObjects(@"mocked-foo2", [TestClassWithClassMethods foo], @"Should have stubbed class method 'foo2'.");
+    XCTAssertEqualObjects(@"mocked-foo", [TestClassWithClassMethods foo], @"Should have stubbed class method 'foo'.");
+    XCTAssertEqualObjects(@"mocked-foo2", [TestClassWithClassMethods foo], @"Should have stubbed class method 'foo2'.");
 }
 
 - (void)testClassReceivesMethodsAfterStopWasCalled
@@ -76,7 +92,7 @@
     [[[[mock stub] classMethod] andReturn:@"mocked"] foo];
     [mock stopMocking];
     
-    STAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should not have stubbed class method.");
+    XCTAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should not have stubbed class method.");
 }
 
 - (void)testClassReceivesMethodAgainWhenExpectedCallOccurred
@@ -85,8 +101,8 @@
 
    	[[[[mock expect] classMethod] andReturn:@"mocked"] foo];
    	
-    STAssertEqualObjects(@"mocked", [TestClassWithClassMethods foo], @"Should have stubbed method.");
-   	STAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should have 'unstubbed' method.");
+    XCTAssertEqualObjects(@"mocked", [TestClassWithClassMethods foo], @"Should have stubbed method.");
+   	XCTAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should have 'unstubbed' method.");
 }
 
 - (void)testCanStubClassMethodFromMockForSubclass
@@ -94,8 +110,8 @@
     id subclassMock = [OCMockObject mockForClass:[TestSubclassWithClassMethods class]];
 
     [[[[subclassMock stub] classMethod] andReturn:@"mocked-subclass"] foo];
-    STAssertEqualObjects(@"mocked-subclass", [TestSubclassWithClassMethods foo], @"Should have stubbed method.");
-    STAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should not have stubbed method in superclass.");
+    XCTAssertEqualObjects(@"mocked-subclass", [TestSubclassWithClassMethods foo], @"Should have stubbed method.");
+    XCTAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should not have stubbed method in superclass.");
 }
 
 - (void)testSuperclassReceivesMethodsAfterStopWasCalled
@@ -105,7 +121,7 @@
     [[[[mock stub] classMethod] andReturn:@"mocked"] foo];
     [mock stopMocking];
 
-    STAssertEqualObjects(@"Foo-ClassMethod", [TestSubclassWithClassMethods foo], @"Should not have stubbed class method.");
+    XCTAssertEqualObjects(@"Foo-ClassMethod", [TestSubclassWithClassMethods foo], @"Should not have stubbed class method.");
 }
 
 - (void)testCanReplaceSameMethodInSubclassAfterSuperclassMockWasStopped
@@ -117,7 +133,7 @@
     [superclassMock stopMocking];
 
     [[[[subclassMock stub] classMethod] andReturn:@"mocked-subclass"] foo];
-    STAssertEqualObjects(@"mocked-subclass", [TestSubclassWithClassMethods foo], @"Should have stubbed method");
+    XCTAssertEqualObjects(@"mocked-subclass", [TestSubclassWithClassMethods foo], @"Should have stubbed method");
 }
 
 - (void)testCanReplaceSameMethodInSuperclassAfterSubclassMockWasStopped
@@ -129,35 +145,30 @@
     [subclassMock stopMocking];
 
     [[[[superclassMock stub] classMethod] andReturn:@"mocked-superclass"] foo];
-    STAssertEqualObjects(@"mocked-superclass", [TestClassWithClassMethods foo], @"Should have stubbed method");
+    XCTAssertEqualObjects(@"mocked-superclass", [TestClassWithClassMethods foo], @"Should have stubbed method");
 }
 
-// The following test does not verify behaviour; it shows a problem. It only passes when run in
-// isolation because otherwise the other tests cause the problem that this test demonstrates.
-
-- (void)_ignore_testShowThatStubbingSuperclassMethodInSubclassLeavesImplementationInSubclass
+- (void)testStubbingIsOnlyActiveAtTheClassItWasAdded
 {
-    // stage 1: stub in superclass affects both superclass and subclass
+    // stage 1: stub in superclass affects only superclass
     id superclassMock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
     [[[[superclassMock stub] classMethod] andReturn:@"mocked-superclass"] foo];
-    STAssertEqualObjects(@"mocked-superclass", [TestClassWithClassMethods foo], @"Should have stubbed method");
-    STAssertEqualObjects(@"mocked-superclass", [TestSubclassWithClassMethods foo], @"Should have stubbed method");
+    XCTAssertEqualObjects(@"mocked-superclass", [TestClassWithClassMethods foo], @"Should have stubbed method");
+    XCTAssertEqualObjects(@"Foo-ClassMethod", [TestSubclassWithClassMethods foo], @"Should NOT have stubbed method");
     [superclassMock stopMocking];
 
     // stage 2: stub in subclass affects only subclass
     id subclassMock = [OCMockObject mockForClass:[TestSubclassWithClassMethods class]];
     [[[[subclassMock stub] classMethod] andReturn:@"mocked-subclass"] foo];
-    STAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should NOT have stubbed method");
-    STAssertEqualObjects(@"mocked-subclass", [TestSubclassWithClassMethods foo], @"Should have stubbed method");
+    XCTAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should NOT have stubbed method");
+    XCTAssertEqualObjects(@"mocked-subclass", [TestSubclassWithClassMethods foo], @"Should have stubbed method");
     [subclassMock stopMocking];
 
-    // stage 3: should be like stage 1, but it isn't (see last assert)
-    // This is because the subclass mock can't remove the method added to the subclass in stage 2
-    // and instead has to point the method in the subclass to the real implementation.
+    // stage 3: like stage 1; also demonstrates that subclass cleared all stubs
     id superclassMock2 = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
     [[[[superclassMock2 stub] classMethod] andReturn:@"mocked-superclass"] foo];
-    STAssertEqualObjects(@"mocked-superclass", [TestClassWithClassMethods foo], @"Should have stubbed method");
-    STAssertEqualObjects(@"Foo-ClassMethod", [TestSubclassWithClassMethods foo], @"Should NOT have stubbed method");
+    XCTAssertEqualObjects(@"mocked-superclass", [TestClassWithClassMethods foo], @"Should have stubbed method");
+    XCTAssertEqualObjects(@"Foo-ClassMethod", [TestSubclassWithClassMethods foo], @"Should NOT have stubbed method");
 }
 
 - (void)testStubsOnlyClassMethodWhenInstanceMethodWithSameNameExists
@@ -166,8 +177,8 @@
     
     [[[[mock stub] classMethod] andReturn:@"mocked"] bar];
     
-    STAssertEqualObjects(@"mocked", [TestClassWithClassMethods bar], @"Should have stubbed class method.");
-    STAssertThrows([mock bar], @"Should not have stubbed instance method.");
+    XCTAssertEqualObjects(@"mocked", [TestClassWithClassMethods bar], @"Should have stubbed class method.");
+    XCTAssertThrows([mock bar], @"Should not have stubbed instance method.");
 }
 
 - (void)testStubsClassMethodWhenNoInstanceMethodExistsWithName
@@ -176,7 +187,7 @@
     
     [[[mock stub] andReturn:@"mocked"] foo];
     
-    STAssertEqualObjects(@"mocked", [TestClassWithClassMethods foo], @"Should have stubbed class method.");
+    XCTAssertEqualObjects(@"mocked", [TestClassWithClassMethods foo], @"Should have stubbed class method.");
 }
 
 - (void)testStubsCanDistinguishInstanceAndClassMethods
@@ -186,8 +197,8 @@
     [[[[mock stub] classMethod] andReturn:@"mocked-class"] bar];
     [[[mock stub] andReturn:@"mocked-instance"] bar];
     
-    STAssertEqualObjects(@"mocked-class", [TestClassWithClassMethods bar], @"Should have stubbed class method.");
-    STAssertEqualObjects(@"mocked-instance", [mock bar], @"Should have stubbed instance method.");
+    XCTAssertEqualObjects(@"mocked-class", [TestClassWithClassMethods bar], @"Should have stubbed class method.");
+    XCTAssertEqualObjects(@"mocked-instance", [mock bar], @"Should have stubbed instance method.");
 }
 
 - (void)testRevertsAllStubbedMethodsOnDealloc
@@ -197,13 +208,13 @@
     [[[[mock stub] classMethod] andReturn:@"mocked-foo"] foo];
     [[[[mock stub] classMethod] andReturn:@"mocked-bar"] bar];
 
-    STAssertEqualObjects(@"mocked-foo", [TestClassWithClassMethods foo], @"Should have stubbed class method 'foo'.");
-    STAssertEqualObjects(@"mocked-bar", [TestClassWithClassMethods bar], @"Should have stubbed class method 'bar'.");
+    XCTAssertEqualObjects(@"mocked-foo", [TestClassWithClassMethods foo], @"Should have stubbed class method 'foo'.");
+    XCTAssertEqualObjects(@"mocked-bar", [TestClassWithClassMethods bar], @"Should have stubbed class method 'bar'.");
 
     [mock release];
 
-    STAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should have 'unstubbed' class method 'foo'.");
-    STAssertEqualObjects(@"Bar-ClassMethod", [TestClassWithClassMethods bar], @"Should have 'unstubbed' class method 'bar'.");
+    XCTAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should have 'unstubbed' class method 'foo'.");
+    XCTAssertEqualObjects(@"Bar-ClassMethod", [TestClassWithClassMethods bar], @"Should have 'unstubbed' class method 'bar'.");
 }
 
 - (void)testRevertsAllStubbedMethodsOnPartialMockDealloc
@@ -213,13 +224,25 @@
     [[[[mock stub] classMethod] andReturn:@"mocked-foo"] foo];
     [[[[mock stub] classMethod] andReturn:@"mocked-bar"] bar];
     
-    STAssertEqualObjects(@"mocked-foo", [TestClassWithClassMethods foo], @"Should have stubbed class method 'foo'.");
-    STAssertEqualObjects(@"mocked-bar", [TestClassWithClassMethods bar], @"Should have stubbed class method 'bar'.");
+    XCTAssertEqualObjects(@"mocked-foo", [TestClassWithClassMethods foo], @"Should have stubbed class method 'foo'.");
+    XCTAssertEqualObjects(@"mocked-bar", [TestClassWithClassMethods bar], @"Should have stubbed class method 'bar'.");
     
     [mock release];
     
-    STAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should have 'unstubbed' class method 'foo'.");
-    STAssertEqualObjects(@"Bar-ClassMethod", [TestClassWithClassMethods bar], @"Should have 'unstubbed' class method 'bar'.");
+    XCTAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should have 'unstubbed' class method 'foo'.");
+    XCTAssertEqualObjects(@"Bar-ClassMethod", [TestClassWithClassMethods bar], @"Should have 'unstubbed' class method 'bar'.");
+}
+
+- (void)testSecondClassMockDeactivatesFirst
+{
+    id mock1 = [[[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class]] autorelease];
+    [[[mock1 stub] andReturn:@"mocked-foo-1"] foo];
+
+    id mock2 = [[[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class]] autorelease];
+    XCTAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo]);
+
+    [mock2 stopMocking];
+    XCTAssertNoThrow([TestClassWithClassMethods foo]);
 }
 
 - (void)testForwardToRealObject
@@ -230,27 +253,27 @@
 
     [[[[mock expect] classMethod] andForwardToRealObject] foo];
     NSString *result = [TestClassWithClassMethods foo];
-    STAssertEqualObjects(result, classFooValue, nil);
-    STAssertNoThrow([mock verify], nil);
+    XCTAssertEqualObjects(result, classFooValue);
+    XCTAssertNoThrow([mock verify]);
     
     [[[mock expect] andForwardToRealObject] foo];
     result = [TestClassWithClassMethods foo];
-    STAssertEqualObjects(result, classFooValue, nil);
-    STAssertNoThrow([mock verify], nil);
+    XCTAssertEqualObjects(result, classFooValue);
+    XCTAssertNoThrow([mock verify]);
 
     [[[[mock expect] classMethod] andForwardToRealObject] bar];
     result = [TestClassWithClassMethods bar];
-    STAssertEqualObjects(result, classBarValue, nil);
-    STAssertNoThrow([mock verify], nil);
+    XCTAssertEqualObjects(result, classBarValue);
+    XCTAssertNoThrow([mock verify]);
     
     [[[[mock expect] classMethod] andForwardToRealObject] bar];
-    STAssertThrowsSpecificNamed([mock bar], NSException, NSInternalInconsistencyException, nil);
+    XCTAssertThrowsSpecificNamed([mock bar], NSException, NSInternalInconsistencyException, @"");
 
     [[[mock expect] andForwardToRealObject] bar];
-    STAssertThrowsSpecificNamed([mock bar], NSException, NSInternalInconsistencyException, @"Did not get the exception saying andForwardToRealObject not supported");
+    XCTAssertThrowsSpecificNamed([mock bar], NSException, NSInternalInconsistencyException, @"Did not get the exception saying andForwardToRealObject not supported");
 
     [[[mock expect] andForwardToRealObject] foo];
-    STAssertThrows([mock foo], nil);
+    XCTAssertThrows([mock foo]);
 }
 
 

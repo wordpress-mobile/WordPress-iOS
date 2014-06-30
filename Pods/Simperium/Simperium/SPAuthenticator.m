@@ -224,12 +224,19 @@ static NSString * SPUsername    = @"SPUsername";
 }
 
 - (void)createWithUsername:(NSString *)username password:(NSString *)password success:(SucceededBlockType)successBlock failure:(FailedBlockType)failureBlock {
+    NSAssert(self.simperium.APIKey, @"Simperium Error: attempted user creation with no APIKey");
+    
+    if (!self.simperium.APIKey) {
+        SPLogError(@"Simperium Error: attempted user creation with no APIKey");
+        return;
+    }
+    
     NSURL *tokenURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/create/", SPAuthURL, self.simperium.appID]];
     
     SPHttpRequest *request = [SPHttpRequest requestWithURL:tokenURL];
     NSMutableDictionary *authData = [@{
 		@"username" : username,
-		@"password" : password,
+		@"password" : password
 	} mutableCopy];
     
     // Backend authentication may need extra data

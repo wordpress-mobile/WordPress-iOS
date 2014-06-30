@@ -7,10 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SPProcessorNotificationNames.h"
+#import "SPProcessorConstants.h"
 
-@class Simperium;
-@class SPDiffer;
+
+
+#pragma mark ====================================================================================
+#pragma mark Constants
+#pragma mark ====================================================================================
+
+typedef void(^SPVersionHandlerBlockType)(NSString *key, NSString *version);
+typedef void(^SPChangeHandlerBlockType)(NSString *key);
 
 
 #pragma mark ====================================================================================
@@ -18,7 +24,7 @@
 #pragma mark ====================================================================================
 
 @interface SPIndexProcessor : NSObject
-- (void)processIndex:(NSArray *)indexArray bucket:(SPBucket *)bucket versionHandler:(void(^)(NSString *key, NSString *version))versionHandler;
-- (void)processVersions:(NSArray *)versions bucket:(SPBucket *)bucket firstSync:(BOOL)firstSync changeHandler:(void(^)(NSString *key))changeHandler;
+- (void)processIndex:(NSArray *)indexArray bucket:(SPBucket *)bucket versionHandler:(SPVersionHandlerBlockType)versionHandler;
+- (void)processVersions:(NSArray *)versions bucket:(SPBucket *)bucket changeHandler:(SPChangeHandlerBlockType)changeHandler;
 - (NSArray*)exportIndexStatus:(SPBucket *)bucket;
 @end

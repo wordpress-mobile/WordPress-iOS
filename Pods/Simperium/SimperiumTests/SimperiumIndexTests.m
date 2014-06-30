@@ -246,12 +246,12 @@
     [follower connect];
 
     XCTAssertTrue([self waitForCompletion: numConfigs/6 farmArray:[NSArray arrayWithObject:follower]], @"timed out (deleting many)");
-    int numLeft = [[followerBucket allObjects] count];
+    NSUInteger numLeft = [[followerBucket allObjects] count];
     
     [self waitFor:1.0];
     
     // Expect 10 objects left (70-60) plus the one that was created offline
-    XCTAssertTrue(numLeft == 10 + 1, @"didn't delete %d configs", numLeft);
+    XCTAssertTrue(numLeft == 10 + 1, @"didn't delete %luuu configs", (unsigned long)numLeft);
     
     offlineConfig = [followerBucket objectForKey:@"offlineConfig"];
     XCTAssertTrue(offlineConfig != nil, @"offline object was clobbered after re-index");

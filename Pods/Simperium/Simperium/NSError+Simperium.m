@@ -1,5 +1,5 @@
 //
-//  NSError_Simperium.h
+//  NSError+Simperium.h
 //  Simperium
 //
 //  Created by Jorge Leandro Perez on 4/14/14.
@@ -13,7 +13,11 @@
 
 + (NSError*)errorWithDomain:(NSString*)errorDomain code:(NSInteger)errorCode description:(NSString*)description
 {
-    return [NSError errorWithDomain:errorDomain code:errorCode userInfo:@{ NSLocalizedDescriptionKey : description }];
+    if (!description) {
+        return [NSError errorWithDomain:errorDomain code:errorCode userInfo:nil];
+    } else {
+        return [NSError errorWithDomain:errorDomain code:errorCode userInfo:@{ NSLocalizedDescriptionKey : description }];
+    }
 }
 
 @end

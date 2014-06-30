@@ -1,5 +1,5 @@
 platform :ios, '7.0'
-pod 'AFNetworking',	'2.2.3'
+pod 'AFNetworking',	'~> 2.3.1'
 pod 'CocoaLumberjack', '~> 1.8.1'
 pod 'WordPress-iOS-Shared', '~> 0.0.1'
 pod 'NSObject-SafeExpectations', '0.0.2'

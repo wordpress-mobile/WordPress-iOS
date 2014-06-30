@@ -1,5 +1,5 @@
 //
-//  NSError_Simperium.h
+//  NSError+Simperium.h
 //  Simperium
 //
 //  Created by Jorge Leandro Perez on 4/14/14.

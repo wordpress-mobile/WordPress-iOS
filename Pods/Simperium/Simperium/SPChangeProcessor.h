@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SPProcessorNotificationNames.h"
+#import "SPProcessorConstants.h"
 
 
 @class SPBucket;
@@ -16,15 +16,19 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-typedef void(^SPChangeErrorHandlerBlockType)(NSString *simperiumKey, NSError *error, BOOL *halt);
+typedef void(^SPChangeErrorHandlerBlockType)(NSString *simperiumKey, NSString *version, NSError *error);
 typedef void(^SPChangeEnumerationBlockType)(NSDictionary *change);
 
 typedef NS_ENUM(NSInteger, SPProcessorErrors) {
-    SPProcessorErrorsDuplicateChange,           // Should Re-Sync
-    SPProcessorErrorsInvalidChange,             // Should Retry, by sending the full data
-    SPProcessorErrorsServerError,               // Should Retry
-    SPProcessorErrorsClientError                // Should Nuke PendingChange
+    SPProcessorErrorsSentDuplicateChange,       // Should Re-Sync
+    SPProcessorErrorsSentInvalidChange,         // Send Full Data: The backend couldn't apply our diff
+    SPProcessorErrorsReceivedZombieChange,      // No need to handle: The backend sent a change for a locally nuked entity
+    SPProcessorErrorsReceivedUnknownChange,     // No need to handle: We've received a change for an unknown entity
+    SPProcessorErrorsReceivedInvalidChange,     // Should Redownload the Entity: We couldn't apply a remote diff
+    SPProcessorErrorsServerError,               // Should Retry: Catch-all server errors
+    SPProcessorErrorsClientError                // Should Nuke PendingChange: Catch-all client errors
 };
+
 
 #pragma mark ====================================================================================
 #pragma mark SPChangeProcessor
@@ -36,6 +40,7 @@ typedef NS_ENUM(NSInteger, SPProcessorErrors) {
 @property (nonatomic, strong, readonly) NSString	*clientID;
 @property (nonatomic, assign, readonly) int			numChangesPending;
 @property (nonatomic, assign, readonly) int			numKeysForObjectsWithMoreChanges;
+@property (nonatomic, assign, readonly) int         numKeysForObjectToDelete;
 @property (nonatomic, assign, readonly) BOOL        reachedMaxPendings;
 
 - (id)initWithLabel:(NSString *)label clientID:(NSString *)clientID;
@@ -46,6 +51,7 @@ typedef NS_ENUM(NSInteger, SPProcessorErrors) {
 - (void)processRemoteChanges:(NSArray *)changes bucket:(SPBucket *)bucket errorHandler:(SPChangeErrorHandlerBlockType)errorHandler;
 
 - (void)enqueueObjectForMoreChanges:(NSString *)key bucket:(SPBucket *)bucket;
+- (void)enqueueObjectDeletion:(NSString *)key bucket:(SPBucket *)bucket;
 - (void)enqueueObjectForRetry:(NSString *)key bucket:(SPBucket *)bucket overrideRemoteData:(BOOL)overrideRemoteData;
 - (void)discardPendingChanges:(NSString *)key bucket:(SPBucket *)bucket;
 
@@ -55,6 +61,7 @@ typedef NS_ENUM(NSInteger, SPProcessorErrors) {
 
 - (void)enumeratePendingChangesForBucket:(SPBucket *)bucket block:(SPChangeEnumerationBlockType)block;
 - (void)enumerateQueuedChangesForBucket:(SPBucket *)bucket block:(SPChangeEnumerationBlockType)block;
+- (void)enumerateQueuedDeletionsForBucket:(SPBucket*)bucket block:(SPChangeEnumerationBlockType)block;
 - (void)enumerateRetryChangesForBucket:(SPBucket *)bucket block:(SPChangeEnumerationBlockType)block;
 
 - (NSArray *)exportPendingChanges;

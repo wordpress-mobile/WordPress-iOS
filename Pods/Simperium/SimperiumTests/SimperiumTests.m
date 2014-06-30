@@ -139,8 +139,8 @@
 	
 	NSString* responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
 	
-    int code = httpResponse.statusCode;
-    XCTAssertTrue(code == 200, @"bad response code %d for request %@, response: %@", code, tokenURL, responseString);
+    NSInteger code = httpResponse.statusCode;
+    XCTAssertTrue(code == 200, @"bad response code %ld for request %@, response: %@", (long)code, tokenURL, responseString);
     if (code != 200) {
 		NSLog(@"Auth Response: %@", responseString);
         return;

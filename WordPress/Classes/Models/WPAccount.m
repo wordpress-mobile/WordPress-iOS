@@ -22,14 +22,14 @@
     if (self.managedObjectContext.parentContext) {
         return;
     }
-    
-	[[[self restApi] operationQueue] cancelAllOperations];
-    [[self restApi] reset];
 
-    // Clear keychain entries
-    NSError *error;
-    [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:@"WordPress.com" error:&error];
-    [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:WordPressComOAuthKeychainServiceName error:&error];
+    // We check _restApi directly since using the method would regenerate it if nil
+    // There's no need to cancel/reset anything on a fresh api object
+    if (_restApi) {
+        [[[self restApi] operationQueue] cancelAllOperations];
+        [[self restApi] reset];
+    }
+
     self.password = nil;
     self.authToken = nil;
 }

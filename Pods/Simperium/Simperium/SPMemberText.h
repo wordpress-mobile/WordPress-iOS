@@ -8,10 +8,7 @@
 
 #import "SPMember.h"
 
-@class DiffMatchPatch;
 
-@interface SPMemberText : SPMember {
-	DiffMatchPatch *dmp;
-}
+@interface SPMemberText : SPMember
 
 @end

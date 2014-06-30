@@ -9,17 +9,12 @@
 #import <Foundation/Foundation.h>
 
 
-@interface SPGhost : NSObject {
-	NSString *key;
-	NSMutableDictionary *memberData;
-    NSString *version;
-    BOOL needsSave;
-}
+@interface SPGhost : NSObject
 
-@property (copy, nonatomic) NSString *key;
-@property (copy, nonatomic) NSMutableDictionary *memberData;
-@property (copy, nonatomic) NSString *version;
-@property (nonatomic) BOOL needsSave;
+@property (copy,   nonatomic) NSString              *key;
+@property (copy,   nonatomic) NSMutableDictionary   *memberData;
+@property (copy,   nonatomic) NSString              *version;
+@property (assign, nonatomic) BOOL                  needsSave;
 
 - (id)initFromDictionary:(NSDictionary *)dict;
 - (id)initWithKey:(NSString *)k memberData:(NSMutableDictionary *)data;

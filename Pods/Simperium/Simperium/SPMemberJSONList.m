@@ -46,7 +46,7 @@
 			[self stringValueFromArray: otherValue], OP_VALUE, nil];
 }
 
-- (id)applyDiff:(id)thisValue otherValue:(id)otherValue {
+- (id)applyDiff:(id)thisValue otherValue:(id)otherValue error:(NSError **)error {
     // TODO: proper list diff, including transform
 
 	return otherValue;

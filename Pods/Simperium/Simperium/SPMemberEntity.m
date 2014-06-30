@@ -14,8 +14,7 @@
 @implementation SPMemberEntity
 @synthesize entityName;
 
-- (id)initFromDictionary:(NSDictionary *)dict
-{
+- (id)initFromDictionary:(NSDictionary *)dict {
     if (self = [super initFromDictionary:dict]) {
         self.entityName = [dict objectForKey:@"entityName"];
     }
@@ -48,7 +47,7 @@
     if ([items count] == 0)
         return nil;
     
-    return [items objectAtIndex:0];
+    return [items firstObject];
 }
 
 - (id)getValueFromDictionary:(NSDictionary *)dict key:(NSString *)key object:(id<SPDiffable>)object {
@@ -99,7 +98,7 @@
 			otherKey, OP_VALUE, nil];
 }
 
-- (id)applyDiff:(id)thisValue otherValue:(id)otherValue {
+- (id)applyDiff:(id)thisValue otherValue:(id)otherValue error:(NSError **)error {
 	return otherValue;
 }
 

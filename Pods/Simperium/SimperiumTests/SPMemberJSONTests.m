@@ -45,8 +45,11 @@
 												}
 								};
 
-	NSDictionary *output = [self.jsonMember applyDiff:local otherValue:diff];
-	XCTAssertEqualObjects(output, expected, @"Error applying ListInsertion Diff");
+    NSError *error = nil;
+    NSDictionary *output = [self.jsonMember applyDiff:local otherValue:diff error:&error];
+    
+    XCTAssertEqualObjects(output, expected, @"Error applying ListInsertion Diff");
+    XCTAssertNil(error, @"Error applying diff");
 }
 
 - (void)testListDeleteOperation {
@@ -67,8 +70,11 @@
 	
 	NSDictionary *expected	= @{ };
 	
-	NSDictionary *output = [self.jsonMember applyDiff:local otherValue:diff];
+    NSError *error = nil;
+	NSDictionary *output = [self.jsonMember applyDiff:local otherValue:diff error:&error];
+    
 	XCTAssertEqualObjects(output, expected, @"Error applying ListInsertion Diff");
+    XCTAssertNil(error, @"Error applying diff");
 }
 
 - (void)testListReplaceOperation {
@@ -87,14 +93,17 @@
 											}
 								};
 	
-	NSDictionary *expected	= @{
+    NSDictionary *expected	= @{
 								@"body" :	@{
 												@"something-else" : @(42)
 											}
 								};
 	
-	NSDictionary *output = [self.jsonMember applyDiff:local otherValue:diff];
-	XCTAssertEqualObjects(output, expected, @"Error applying ListInsertion Diff");
+    NSError *error = nil;
+    NSDictionary *output = [self.jsonMember applyDiff:local otherValue:diff error:&error];
+    
+    XCTAssertEqualObjects(output, expected, @"Error applying ListInsertion Diff");
+    XCTAssertNil(error, @"Error applying diff");
 }
 
 - (void)testObjectOperation {
@@ -123,8 +132,11 @@
 											}
 								};
 	
-	NSDictionary *output = [self.jsonMember applyDiff:local otherValue:diff];
-	XCTAssertEqualObjects(output, expected, @"Error applying ListInsertion Diff");
+    NSError *error = nil;
+    NSDictionary *output = [self.jsonMember applyDiff:local otherValue:diff error:&error];
+    
+    XCTAssertEqualObjects(output, expected, @"Error applying ListInsertion Diff");
+    XCTAssertNil(error, @"Error applying diff");
 }
 
 @end

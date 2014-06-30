@@ -1,10 +1,21 @@
-//---------------------------------------------------------------------------------------
-//  $Id$
-//  Copyright (c) 2013 by Mulle Kybernetik. See License file for details.
-//---------------------------------------------------------------------------------------
+/*
+ *  Copyright (c) 2013-2014 Erik Doernenburg and contributors
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may
+ *  not use these files except in compliance with the License. You may obtain
+ *  a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ *  License for the specific language governing permissions and limitations
+ *  under the License.
+ */
 
+#import <XCTest/XCTest.h>
 #import "NSMethodSignature+OCMAdditions.h"
-#import "NSMethodSignatureOCMAdditionsTests.h"
 
 #if TARGET_OS_IPHONE
 #define NSPoint CGPoint
@@ -12,13 +23,17 @@
 #define NSRect  CGRect
 #endif
 
+@interface NSMethodSignatureOCMAdditionsTests : XCTestCase
+
+@end
+
 @implementation NSMethodSignatureOCMAdditionsTests
 
 - (void)testDeterminesThatSpecialReturnIsNotNeededForNonStruct
 {
     const char *types = "i";
    	NSMethodSignature *sig = [NSMethodSignature signatureWithObjCTypes:types];
-    STAssertFalse([sig usesSpecialStructureReturn], @"Should have determined no need for special (stret) return.");
+    XCTAssertFalse([sig usesSpecialStructureReturn], @"Should have determined no need for special (stret) return.");
 }
 
 - (void)testDeterminesThatSpecialReturnIsNeededForLargeStruct
@@ -26,16 +41,16 @@
     // This type should(!) require special returns for all architectures
     const char *types = "{CATransform3D=ffffffffffffffff}";
    	NSMethodSignature *sig = [NSMethodSignature signatureWithObjCTypes:types];
-    STAssertTrue([sig usesSpecialStructureReturn], @"Should have determined need for special (stret) return.");
+    XCTAssertTrue([sig usesSpecialStructureReturn], @"Should have determined need for special (stret) return.");
 }
 
 - (void)testArchDependentSpecialReturns
 {
 #define ASSERT_ENC(expected, enctype) do {\
    BOOL useSpecial = expected; \
-   STAssertNoThrow(useSpecial = [[NSMethodSignature signatureWithObjCTypes:enctype] usesSpecialStructureReturn], \
+   XCTAssertNoThrow(useSpecial = [[NSMethodSignature signatureWithObjCTypes:enctype] usesSpecialStructureReturn], \
                   @"NSMethodSignature failed for type '%s'", enctype); \
-   STAssertEquals((int)useSpecial, (int)expected,\
+   XCTAssertEqual((int)useSpecial, (int)expected,\
                   @"Special (stret) return incorrect for type '%s'", enctype); \
  } while (0)
 #define ASSERT_TYPE(expected, type) ASSERT_ENC(expected, @encode(type))
@@ -89,7 +104,7 @@
 	NSString *debugDescription = [sig debugDescription];
 	NSRange stretYESRange = [debugDescription rangeOfString:@"is special struct return? YES"];
 	NSRange stretNORange = [debugDescription rangeOfString:@"is special struct return? NO"];
-	STAssertTrue(stretYESRange.length > 0 || stretNORange.length > 0, @"NSMethodSignature debugDescription has changed; need to change OCPartialMockObject impl");
+	XCTAssertTrue(stretYESRange.length > 0 || stretNORange.length > 0, @"NSMethodSignature debugDescription has changed; need to change OCPartialMockObject impl");
 }
 
 

@@ -68,6 +68,7 @@ static SPLogLevels logLevel						= SPLogLevelsInfo;
 		coordinator:(NSPersistentStoreCoordinator *)coordinator
 			  label:(NSString *)label
     bucketOverrides:(NSDictionary *)bucketOverrides {
+
 	
 	if ((self = [super init])) {
         

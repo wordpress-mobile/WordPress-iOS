@@ -58,7 +58,7 @@
 			[self dateValueFromNumber: otherValue], OP_VALUE, nil];
 }
 
-- (id)applyDiff:(id)thisValue otherValue:(id)otherValue {
+- (id)applyDiff:(id)thisValue otherValue:(id)otherValue error:(NSError **)error {
 	// Expect dates in Number format
 	//NSAssert([thisValue isKindOfClass:[NSNumber class]] && [otherValue isKindOfClass:[NSNumber class]],
 	//		 @"Simperium error: couldn't diff dates because their classes weren't NSNumber (NSDate not supported directly)");

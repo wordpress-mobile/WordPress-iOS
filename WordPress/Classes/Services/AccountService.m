@@ -112,6 +112,16 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
+    // Clear WordPress.com cookies
+    NSArray *wpcomCookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+    for (NSHTTPCookie *cookie in wpcomCookies) {
+        if ([cookie.domain hasSuffix:@"wordpress.com"]) {
+            [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
+        }
+    }
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+
+
     // Remove defaults
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];

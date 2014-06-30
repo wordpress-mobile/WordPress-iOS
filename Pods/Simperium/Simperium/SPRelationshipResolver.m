@@ -91,6 +91,11 @@ static SPLogLevels logLevel                             = SPLogLevelsInfo;
         return;
     }
     
+    if (bucketName.length == 0) {
+        SPLogWarn(@"Simperium warning: received pending reference to attribute %@ with empty bucket", attributeName);
+        return;
+    }
+    
     NSDictionary *path = @{
         SPRelationshipsPathKey          : fromKey,
         SPRelationshipsPathBucket       : bucketName,

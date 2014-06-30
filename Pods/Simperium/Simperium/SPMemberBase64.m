@@ -76,7 +76,7 @@
 			[self stringValueFromTransformable: otherValue], OP_VALUE, nil];
 }
 
-- (id)applyDiff:(id)thisValue otherValue:(id)otherValue {
+- (id)applyDiff:(id)thisValue otherValue:(id)otherValue error:(NSError **)error {
 	
 	return otherValue;
 }

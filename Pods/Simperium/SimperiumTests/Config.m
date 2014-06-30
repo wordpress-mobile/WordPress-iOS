@@ -26,8 +26,8 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"Config\n\twarpSpeed: %d\n\tcaptainsLog:%@\n\tshieldPercent:%f\n",
-            [self.warpSpeed intValue], self.captainsLog, [self.shieldPercent floatValue]];
+    return [NSString stringWithFormat:@"Config\n\twarpSpeed: %d\n\tcaptainsLog:%@\n\tshieldPercent:%f\n\tcost:%f\n",
+            self.warpSpeed.intValue, self.captainsLog, self.shieldPercent.floatValue, self.cost.floatValue];
 }
 
 - (BOOL)isEqualToObject:(TestObject *)otherObj {

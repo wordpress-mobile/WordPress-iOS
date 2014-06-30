@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0500"
+   LastUpgradeVersion = "0510"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -33,7 +33,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D31108AC1828DB8700737925"
-               BuildableName = "OCMockLibTests.octest"
+               BuildableName = "OCMockLibTests.xctest"
                BlueprintName = "OCMockLibTests"
                ReferencedContainer = "container:OCMock.xcodeproj">
             </BuildableReference>

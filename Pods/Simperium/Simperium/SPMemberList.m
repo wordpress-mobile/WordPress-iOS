@@ -62,7 +62,7 @@
 	return @{ OP_OP: OP_LIST_DMP, OP_VALUE: [a sp_diffDeltaWithArray:b diffMatchPatch:self.diffMatchPatch] };
 }
 
-- (id)applyDiff:(id)thisValue otherValue:(id)otherValue {
+- (id)applyDiff:(id)thisValue otherValue:(id)otherValue error:(NSError **)error {
 	
 	// Assuming OP_LIST_DMP. This code will have to change when OP_LIST is
 	// implemented and it will have to take the full change diff in order
@@ -73,7 +73,7 @@
 	return [source sp_arrayByApplyingDiffDelta:delta diffMatchPatch:self.diffMatchPatch];
 }
 
-- (NSDictionary *)transform:(id)thisValue otherValue:(id)otherValue oldValue:(id)oldValue {
+- (NSDictionary *)transform:(id)thisValue otherValue:(id)otherValue oldValue:(id)oldValue error:(NSError **)error {
 	NSArray *source = oldValue;
 	NSString *delta1 = thisValue;
 	NSString *delta2 = otherValue;

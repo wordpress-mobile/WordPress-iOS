@@ -1,9 +1,20 @@
-//---------------------------------------------------------------------------------------
-//  $Id$
-//  Copyright (c) 2013 by Mulle Kybernetik. See License file for details.
-//---------------------------------------------------------------------------------------
+/*
+ *  Copyright (c) 2013-2014 Erik Doernenburg and contributors
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may
+ *  not use these files except in compliance with the License. You may obtain
+ *  a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ *  License for the specific language governing permissions and limitations
+ *  under the License.
+ */
 
-#import "OCMockObjectForwardingTargetTests.h"
+#import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
 #import <objc/runtime.h>
 
@@ -119,6 +130,11 @@
 #pragma mark    Tests
 
 
+@interface OCMockForwardingTargetTests : XCTestCase
+
+@end
+
+
 @implementation OCMockForwardingTargetTests
 
 - (void)testNameShouldForwardToInternal
@@ -126,7 +142,7 @@
     InternalObject *internal = [[InternalObject alloc] init];
     internal.name = @"Internal Object";
     PublicObject *public = [[PublicObject alloc] initWithInternal:internal];
-    STAssertEqualObjects(@"Internal Object", public.name, nil);
+    XCTAssertEqualObjects(@"Internal Object", public.name);
 }
 
 - (void)testStubsMethodImplementation
@@ -135,7 +151,7 @@
     id mock = [OCMockObject partialMockForObject:public];
 
     [[[mock stub] andReturn:@"FOO"] name];
-    STAssertEqualObjects(@"FOO", [mock name], nil);
+    XCTAssertEqualObjects(@"FOO", [mock name]);
 }
 
 @end

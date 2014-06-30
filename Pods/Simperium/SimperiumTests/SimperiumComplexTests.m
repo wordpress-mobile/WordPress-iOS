@@ -24,7 +24,7 @@
     NSLog(@"%@ start", self.name);
     [self createAndStartFarms];
 
-    NSUInteger numConfigs = NUM_MULTIPLE_CONFIGS;
+    int numConfigs = NUM_MULTIPLE_CONFIGS;
     
     // Leader sends an object to followers, then changes multiple fields
     Farm *leader = self.farms[0];

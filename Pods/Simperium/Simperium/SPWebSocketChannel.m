@@ -41,6 +41,7 @@ static SPLogLevels logLevel							= SPLogLevelsInfo;
 
 typedef void(^SPWebSocketSyncedBlockType)(void);
 
+
 #pragma mark ====================================================================================
 #pragma mark Private
 #pragma mark ====================================================================================
@@ -49,7 +50,6 @@ typedef void(^SPWebSocketSyncedBlockType)(void);
 @property (nonatomic,   weak) Simperium                     *simperium;
 @property (nonatomic, strong) NSMutableArray                *versionsBatch;
 @property (nonatomic, strong) NSMutableArray                *changesBatch;
-@property (nonatomic, strong) NSMutableDictionary           *versionsWithErrors;
 @property (nonatomic, assign) NSInteger                     retryDelay;
 @property (nonatomic, assign) NSInteger                     objectVersionsPending;
 @property (nonatomic, assign) BOOL                          started;
@@ -68,10 +68,10 @@ typedef void(^SPWebSocketSyncedBlockType)(void);
 
 - (id)initWithSimperium:(Simperium *)s {
 	if ((self = [super init])) {
-        self.simperium			= s;
-        self.indexArray			= [NSMutableArray arrayWithCapacity:200];
-        self.changesBatch       = [NSMutableArray arrayWithCapacity:SPWebsocketChangesBatchSize];
-        self.versionsWithErrors = [NSMutableDictionary dictionaryWithCapacity:3];
+        _simperium      = s;
+        _indexArray     = [NSMutableArray arrayWithCapacity:200];
+        _changesBatch   = [NSMutableArray arrayWithCapacity:SPWebsocketChangesBatchSize];
+        _versionsBatch  = [NSMutableArray arrayWithCapacity:SPWebsocketIndexBatchSize];
     }
 	
 	return self;
@@ -88,15 +88,14 @@ typedef void(^SPWebSocketSyncedBlockType)(void);
         return;
 	}
     
-    NSInteger startVersion = [object.ghost.version integerValue];
     self.retrievingObjectHistory = YES;
-    self.objectVersionsPending = MIN(startVersion, numVersions);
     
-    for (NSInteger i=startVersion; i>=1 && i>=startVersion-_objectVersionsPending; i--) {
-        NSString *versionStr = [NSString stringWithFormat:@"%ld", (long)i];
-        NSString *message = [NSString stringWithFormat:@"%d:e:%@.%@", self.number, object.simperiumKey, versionStr];
-        SPLogVerbose(@"Simperium sending object version request (%@): %@", self.name, message);
-        [self.webSocketManager send:message];
+    NSInteger lastVersion   = [object.ghost.version integerValue];
+    NSInteger firstVersion  = MAX(lastVersion - numVersions, 1);
+    
+    for (NSInteger version = lastVersion; version >= firstVersion; --version) {
+        NSString *versionStr = [NSString stringWithFormat:@"%ld", (long)version];
+        [self requestVersion:versionStr forObjectWithKey:object.simperiumKey];
     }
 }
 
@@ -121,6 +120,21 @@ typedef void(^SPWebSocketSyncedBlockType)(void);
     }];
 }
 
+- (void)requestVersion:(NSString *)version forObjectWithKey:(NSString *)simperiumKey {
+    
+    NSAssert([NSThread isMainThread], @"This method should get called on the main thread!");
+    if (!version || !simperiumKey) {
+        return;
+    }
+    
+	++_objectVersionsPending;
+    
+    // Hit the WebSocket
+    SPLogVerbose(@"Simperium re-downloading entity (%@) %@.%@", self.name, simperiumKey, version);
+    NSString *message = [NSString stringWithFormat:@"%d:e:%@.%@", self.number, simperiumKey, version];
+    [self.webSocketManager send:message];
+}
+
 
 #pragma mark ====================================================================================
 #pragma mark Sending Object Changes
@@ -141,10 +155,16 @@ typedef void(^SPWebSocketSyncedBlockType)(void);
 		// AutoreleasePool:
 		//	While processing large amounts of objects, memory usage will potentially ramp up if we don't add a pool here!
 		@autoreleasepool {
-            NSSet *wrappedKey   = [NSSet setWithObject:key];
-			NSArray *changes    = [object.bucket.changeProcessor processLocalDeletionsWithKeys:wrappedKey];
-            for (NSDictionary *change in changes) {
-                [self sendChange:change];
+            SPChangeProcessor *processor = object.bucket.changeProcessor;
+
+            if (_indexing || !_authenticated || processor.reachedMaxPendings) {
+                [processor enqueueObjectDeletion:key bucket:object.bucket];
+            } else {
+                NSSet *wrappedKey   = [NSSet setWithObject:key];
+                NSArray *changes    = [processor processLocalDeletionsWithKeys:wrappedKey];
+                for (NSDictionary *change in changes) {
+                    [self sendChange:change];
+                }
             }
 		}
     });
@@ -267,19 +287,21 @@ typedef void(^SPWebSocketSyncedBlockType)(void);
     [bucket.changeProcessor notifyOfRemoteChanges:changes bucket:bucket];
     
     
+    __weak __typeof(self) weakSelf = self;
+    
 	dispatch_async(bucket.processorQueue, ^{
 		if (!self.authenticated) {
 			return;
 		}
 
-        [processor processRemoteChanges:changes bucket:bucket errorHandler:^(NSString *simperiumKey, NSError *error, BOOL *halt) {
+        [processor processRemoteChanges:changes bucket:bucket errorHandler:^(NSString *simperiumKey, NSString *version, NSError *error) {
             
-            SPLogError(@"Simperium received Error [%@] for object with key [%@]", error.localizedDescription, simperiumKey);
+            SPLogError(@"Simperium Received Error [%@] for object with key [%@]", error.localizedDescription, simperiumKey);
             
-            if (error.code == SPProcessorErrorsDuplicateChange) {           
+            if (error.code == SPProcessorErrorsSentDuplicateChange) {           
                 [processor discardPendingChanges:simperiumKey bucket:bucket];
                 
-            } else if (error.code == SPProcessorErrorsInvalidChange) {
+            } else if (error.code == SPProcessorErrorsSentInvalidChange) {
                 [processor enqueueObjectForRetry:simperiumKey bucket:bucket overrideRemoteData:YES];
                 
             } else if (error.code == SPProcessorErrorsServerError) {
@@ -287,6 +309,12 @@ typedef void(^SPWebSocketSyncedBlockType)(void);
                 
             } else if (error.code == SPProcessorErrorsClientError) {
                 [processor discardPendingChanges:simperiumKey bucket:bucket];
+                
+            } else if (error.code == SPProcessorErrorsReceivedInvalidChange) {
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf requestVersion:version forObjectWithKey:simperiumKey];
+                });
             }
         }];
         
@@ -358,15 +386,15 @@ typedef void(^SPWebSocketSyncedBlockType)(void);
     NSRange versionRange = NSMakeRange(keyRange.location + keyRange.length,
                                        headerRange.location - headerRange.length - keyRange.location);
     
-    NSString *key = [responseString substringToIndex:keyRange.location];
-    NSString *version = [responseString substringWithRange:versionRange];
-    NSString *payload = [responseString substringFromIndex:headerRange.location + headerRange.length];
+    NSString *key       = [responseString substringToIndex:keyRange.location];
+    NSString *version   = [responseString substringWithRange:versionRange];
+    NSString *payload   = [responseString substringFromIndex:headerRange.location + headerRange.length];
     SPLogVerbose(@"Simperium received version (%@): %@", self.name, responseString);
     
     // With websockets, the data is wrapped up (somewhat annoyingly) in a dictionary, so unwrap it
     // This processing should probably be moved off the main thread (or improved at the protocol level)
-    NSDictionary *payloadDict = [payload sp_objectFromJSONString];
-    NSDictionary *dataDict = [payloadDict objectForKey:@"data"];
+    NSDictionary *payloadDict   = [payload sp_objectFromJSONString];
+    NSDictionary *dataDict      = payloadDict[@"data"];
     
     if ([dataDict class] == [NSNull class] || dataDict == nil) {
         // No data
@@ -374,15 +402,9 @@ typedef void(^SPWebSocketSyncedBlockType)(void);
         _objectVersionsPending--;
         return;
     }
-    
-    // All unwrapped, now get it in the format we need for marshaling
-    NSString *payloadString = [dataDict sp_JSONString];
-    
-    // If there was an error previously, unflag it
-    [self.versionsWithErrors removeObjectForKey:key];
 	
-    // If retrieving object versions (e.g. for going back in time), return the result directly to the delegate
     if (_retrievingObjectHistory) {
+        // If retrieving object versions (e.g. for going back in time), return the result directly to the delegate
         if (--_objectVersionsPending == 0) {
             _retrievingObjectHistory = NO;
 		}
@@ -392,12 +414,12 @@ typedef void(^SPWebSocketSyncedBlockType)(void);
     } else {
         // Otherwise, process the result for indexing
         // Marshal everything into an array for later processing
-        NSArray *responseData = @[ key, payloadString, version ];
+        NSArray *responseData = @[ key, version, dataDict ];
         [self.versionsBatch addObject:responseData];
 
         // Batch responses for more efficient processing
 		if ( (self.versionsBatch.count == self.objectVersionsPending && self.objectVersionsPending < SPWebsocketIndexBatchSize) ||
-			 self.versionsBatch.count % SPWebsocketIndexBatchSize == 0)
+			 (self.versionsBatch.count % SPWebsocketIndexBatchSize == 0))
 		{
             [self processVersionsBatchForBucket:bucket];
 		}
@@ -489,13 +511,14 @@ typedef void(^SPWebSocketSyncedBlockType)(void);
 			
 			// Process Queued Changes: let's consider the SPWebsocketMaxPendingChanges limit
 			[processor enumerateQueuedChangesForBucket:bucket block:block];
+            [processor enumerateQueuedDeletionsForBucket:bucket block:block];
             
             // Ready posting local changes. If needed, hit the callback
             if (!self.onLocalChangesSent) {
                 return;
             }
             
-            if (processor.numChangesPending || processor.numKeysForObjectsWithMoreChanges) {
+            if (processor.numChangesPending || processor.numKeysForObjectsWithMoreChanges || processor.numKeysForObjectToDelete) {
                 return;
             }
             
@@ -551,7 +574,6 @@ typedef void(^SPWebSocketSyncedBlockType)(void);
     NSMutableArray *batch	= [self.versionsBatch copy];
 	NSInteger newPendings	= MAX(0, _objectVersionsPending - batch.count);
 	
-    BOOL firstSync			= bucket.lastChangeSignature == nil;
 	BOOL shouldHitFinished	= (_indexing && newPendings == 0);
 	
     dispatch_async(bucket.processorQueue, ^{
@@ -559,7 +581,7 @@ typedef void(^SPWebSocketSyncedBlockType)(void);
             return;
         }
         
-        [bucket.indexProcessor processVersions: batch bucket:bucket firstSync: firstSync changeHandler:^(NSString *key) {
+        [bucket.indexProcessor processVersions:batch bucket:bucket changeHandler:^(NSString *key) {
             // Local version was different, so process it as a local change
             [bucket.changeProcessor enqueueObjectForMoreChanges:key bucket:bucket];
         }];
@@ -587,8 +609,6 @@ typedef void(^SPWebSocketSyncedBlockType)(void);
         [bucket.delegate bucketWillStartIndexing:bucket];
 	}
 
-    self.versionsBatch = [NSMutableArray arrayWithCapacity:SPWebsocketIndexBatchSize];
-
     // Get all the latest versions
     SPLogInfo(@"Simperium processing %lu objects from index (%@)", (unsigned long)[currentIndexArray count], self.name);
 
@@ -598,10 +618,7 @@ typedef void(^SPWebSocketSyncedBlockType)(void);
             [bucket.indexProcessor processIndex:indexArrayCopy bucket:bucket versionHandler: ^(NSString *key, NSString *version) {
                 // For each version that is processed, create a network request
                 dispatch_async(dispatch_get_main_queue(), ^{
-					++_objectVersionsPending;
-                    NSString *message = [NSString stringWithFormat:@"%d:e:%@.%@", self.number, key, version];
-                    SPLogVerbose(@"Simperium sending object request (%@): %@", self.name, message);
-                    [self.webSocketManager send:message];
+                    [self requestVersion:version forObjectWithKey:key];
                 });
             }];
 
@@ -610,7 +627,7 @@ typedef void(^SPWebSocketSyncedBlockType)(void);
                 if (self.objectVersionsPending == 0) {
                     if (self.nextMark.length > 0) {
 						// More index pages to get
-                        [self requestLatestVersionsForBucket: bucket mark:self.nextMark];
+                        [self requestLatestVersionsForBucket:bucket mark:self.nextMark];
                     } else {
 						// The entire index has been retrieved
                         [self allVersionsFinishedForBucket:bucket];
@@ -627,31 +644,6 @@ typedef void(^SPWebSocketSyncedBlockType)(void);
     [self processVersionsBatchForBucket:bucket];
 
     SPLogVerbose(@"Simperium finished processing all objects from index (%@)", self.name);
-
-    // Save it now that all versions are fetched; it improves performance to wait until this point
-    //[simperium saveWithoutSyncing];
-
-    if ([self.versionsWithErrors count] > 0) {
-        // Try the index refresh again; this could be more efficient since we could know which version requests
-        // failed, but it should happen rarely so take the easy approach for now
-        SPLogWarn(@"Index refresh complete (%@) but %lu versions didn't load, retrying...", self.name, (unsigned long)[self.versionsWithErrors count]);
-
-        // Create an array in the expected format
-        NSMutableArray *errorArray = [NSMutableArray arrayWithCapacity: [self.versionsWithErrors count]];
-        for (NSString *key in [self.versionsWithErrors allKeys]) {
-            id errorVersion = [self.versionsWithErrors objectForKey:key];
-            NSDictionary *versionDict = @{ @"v" : errorVersion,
-										   @"id" : key};
-            [errorArray addObject:versionDict];
-        }
-		
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC);
-		dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
-			[self performSelector:@selector(requestVersionsForKeys:bucket:) withObject: errorArray withObject:bucket];
-		});
-
-        return;
-    }
 
     // All versions were received successfully, so update the lastChangeSignature
     [bucket setLastChangeSignature:self.pendingLastChangeSignature];

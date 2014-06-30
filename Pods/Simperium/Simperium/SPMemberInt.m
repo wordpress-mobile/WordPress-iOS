@@ -19,7 +19,7 @@
 			 @"Simperium error: couldn't diff ints because their classes weren't NSNumber");
 	
 	if ([thisValue isEqualToNumber: otherValue]) {
-		return [NSDictionary dictionary];
+		return @{ };
 	}
     
 	// Construct the diff in the expected format
@@ -40,13 +40,21 @@
 	return value;
 }
 
-- (id)applyDiff:(id)thisValue otherValue:(id)otherValue {
+- (id)applyDiff:(id)thisValue otherValue:(id)otherValue error:(NSError **)error {
 	NSAssert([thisValue isKindOfClass:[NSNumber class]] && [otherValue isKindOfClass:[NSNumber class]],
 			 @"Simperium error: couldn't apply diff to ints because their classes weren't NSNumber");
 	
 	// Integer changes just replace the previous value by default
 	// TODO: Not sure if this should be a copy or not...
 	return otherValue;
+}
+
+- (NSDictionary *)transform:(id)thisValue otherValue:(id)otherValue oldValue:(id)oldValue error:(NSError **)error {
+    // By default, don't transform anything, and take the local pending value
+    return @{
+        OP_OP       : OP_REPLACE,
+        OP_VALUE    : thisValue
+    };
 }
 
 @end

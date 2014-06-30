@@ -99,6 +99,8 @@ static CGFloat const SPAuthenticationFieldPaddingX = 10.0;
 }
 
 - (void)viewDidLoad {
+    [super viewDidLoad];
+    
     self.validator = [[SPAuthenticationValidator alloc] init];
     
 	SPAuthenticationConfiguration *configuration = [SPAuthenticationConfiguration sharedInstance];
@@ -259,6 +261,8 @@ static CGFloat const SPAuthenticationFieldPaddingX = 10.0;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
     self.tableView.scrollEnabled = NO;
     
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -273,6 +277,8 @@ static CGFloat const SPAuthenticationFieldPaddingX = 10.0;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
     // un-register for keyboard notifications
 	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 	[nc removeObserver: self name:UIKeyboardWillHideNotification object:nil];

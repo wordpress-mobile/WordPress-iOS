@@ -1,5 +1,6 @@
 simperium-ios
 =============
+[![Build Status](https://travis-ci.org/Simperium/simperium-ios.svg?branch=develop)](https://travis-ci.org/Simperium/simperium-ios)
 
 Simperium is a simple way for developers to move data as it changes, instantly and automatically. This is the iOS / OSX library. You can [browse the documentation](http://simperium.com/docs/ios/) or [try a tutorial](https://simperium.com/tutorials/simpletodo-ios/).
 

@@ -24,10 +24,10 @@
 @property (nonatomic, strong) SPSchema *schema;
 
 - (id)initWithSchema:(SPSchema *)schema;
-- (NSMutableDictionary *)diffForAddition: (id<SPDiffable>)object;
-- (NSDictionary *)diff:(id<SPDiffable>)object withDictionary:(NSDictionary *)dict;
-- (void)applyDiff:(NSDictionary *)diff to:(id<SPDiffable>)object;
-- (void)applyGhostDiff:(NSDictionary *)diff to:(id<SPDiffable>)object;
-- (NSDictionary *)transform:(id<SPDiffable>)object diff:(NSDictionary *)diff oldDiff:(NSDictionary *)oldDiff oldGhost:(SPGhost *)oldGhost;
+- (NSMutableDictionary *)diffForAddition:(id<SPDiffable>)object;
+- (NSDictionary *)diffFromDictionary:(NSDictionary *)dict toObject:(id<SPDiffable>)object;
+- (BOOL)applyDiffFromDictionary:(NSDictionary *)diff toObject:(id<SPDiffable>)object error:(NSError **)error;
+- (BOOL)applyGhostDiffFromDictionary:(NSDictionary *)diff toObject:(id<SPDiffable>)object error:(NSError **)error;
+- (NSDictionary *)transform:(id<SPDiffable>)object diff:(NSDictionary *)diff oldDiff:(NSDictionary *)oldDiff oldGhost:(SPGhost *)oldGhost error:(NSError **)error;
 
 @end

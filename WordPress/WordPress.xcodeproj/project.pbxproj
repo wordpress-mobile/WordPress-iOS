@@ -743,9 +743,9 @@
 		B52961441938C1C000A7351B /* MediaServiceRemoteXMLRPC.m in Sources */ = {isa = PBXBuildFile; fileRef = B52961431938C1C000A7351B /* MediaServiceRemoteXMLRPC.m */; };
 		B52961471938C28300A7351B /* MediaService.m in Sources */ = {isa = PBXBuildFile; fileRef = B52961461938C28300A7351B /* MediaService.m */; };
 		B529614B1938C2E100A7351B /* MediaServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = B529614A1938C2E100A7351B /* MediaServiceRemoteREST.m */; };
-		AD36E4301937E1050029E077 /* WordPressActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = AD36E42F1937E1050029E077 /* WordPressActivity.m */; };
 		B545186018E99AF500AC3A54 /* WPTableHeaderViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B545185F18E99AF500AC3A54 /* WPTableHeaderViewCell.m */; };
 		B5832044191ABD4700158FA8 /* NSScanner+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B5832043191ABD4700158FA8 /* NSScanner+Helpers.m */; };
+		B5D488841961FFA600900165 /* WordPressActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D488831961FFA600900165 /* WordPressActivity.m */; };
 		B5D88C571925048B00B50AC0 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D88C561925048B00B50AC0 /* Constants.m */; };
 		B5D88C5E192504B900B50AC0 /* Note.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D88C59192504B900B50AC0 /* Note.m */; };
 		B5D88C5F192504B900B50AC0 /* NoteAction.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D88C5B192504B900B50AC0 /* NoteAction.m */; };
@@ -1917,12 +1917,12 @@
 		B52961481938C2E100A7351B /* MediaServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaServiceRemote.h; sourceTree = "<group>"; };
 		B52961491938C2E100A7351B /* MediaServiceRemoteREST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaServiceRemoteREST.h; sourceTree = "<group>"; };
 		B529614A1938C2E100A7351B /* MediaServiceRemoteREST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaServiceRemoteREST.m; sourceTree = "<group>"; };
-		AD36E42E1937E1050029E077 /* WordPressActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressActivity.h; sourceTree = "<group>"; };
-		AD36E42F1937E1050029E077 /* WordPressActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressActivity.m; sourceTree = "<group>"; };
 		B545185E18E99AF500AC3A54 /* WPTableHeaderViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableHeaderViewCell.h; sourceTree = "<group>"; };
 		B545185F18E99AF500AC3A54 /* WPTableHeaderViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableHeaderViewCell.m; sourceTree = "<group>"; };
 		B5832042191ABD4700158FA8 /* NSScanner+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScanner+Helpers.h"; sourceTree = "<group>"; };
 		B5832043191ABD4700158FA8 /* NSScanner+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScanner+Helpers.m"; sourceTree = "<group>"; };
+		B5D488821961FFA600900165 /* WordPressActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressActivity.h; sourceTree = "<group>"; };
+		B5D488831961FFA600900165 /* WordPressActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressActivity.m; sourceTree = "<group>"; };
 		B5D88C561925048B00B50AC0 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		B5D88C58192504B900B50AC0 /* Note.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Note.h; path = Notifications/Note.h; sourceTree = "<group>"; };
 		B5D88C59192504B900B50AC0 /* Note.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Note.m; path = Notifications/Note.m; sourceTree = "<group>"; };
@@ -4099,8 +4099,8 @@
 				E10DB0071771926D00B7A0A3 /* GooglePlusActivity.m */,
 				E1D95EB617A28F5E00A3E9F3 /* WPActivityDefaults.h */,
 				E1D95EB717A28F5E00A3E9F3 /* WPActivityDefaults.m */,
-				AD36E42E1937E1050029E077 /* WordPressActivity.h */,
-				AD36E42F1937E1050029E077 /* WordPressActivity.m */,
+				B5D488821961FFA600900165 /* WordPressActivity.h */,
+				B5D488831961FFA600900165 /* WordPressActivity.m */,
 			);
 			path = Sharing;
 			sourceTree = "<group>";
@@ -5137,7 +5137,6 @@
 			files = (
 				C545E0A21811B9880020844C /* ContextManager.m in Sources */,
 				5D4AD40F185FE64C00CDEE17 /* WPMainTabBarController.m in Sources */,
-				AD99D3D71953C4D600C02D0C /* WordPressActivity.m in Sources */,
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				5D577D33189127BE00B964C3 /* PostGeolocationViewController.m in Sources */,
 				1D3623260D0F684500981E51 /* WordPressAppDelegate.m in Sources */,
@@ -5170,7 +5169,6 @@
 				CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */,
 				03958062100D6CFC00850742 /* WPLabel.m in Sources */,
 				CC701658185A7513007B37DB /* InlineComposeToolbarView.m in Sources */,
-				AD36E4301937E1050029E077 /* WordPressActivity.m in Sources */,
 				46F8714F1838C41600BC149B /* NSDate+StringFormatting.m in Sources */,
 				296526FE105810E100597FA3 /* NSString+Helpers.m in Sources */,
 				5DA5BF4418E32DCF005F11F9 /* Theme.m in Sources */,
@@ -5299,6 +5297,7 @@
 				E10DB0081771926D00B7A0A3 /* GooglePlusActivity.m in Sources */,
 				5D42A3DE175E7452005CFF05 /* AbstractComment.m in Sources */,
 				5DBCD9D518F35D7500B32229 /* ReaderTopicService.m in Sources */,
+				B5D488841961FFA600900165 /* WordPressActivity.m in Sources */,
 				5D42A3DF175E7452005CFF05 /* AbstractPost.m in Sources */,
 				5D42A3E0175E7452005CFF05 /* BasePost.m in Sources */,
 				5D42A3E1175E7452005CFF05 /* ReaderComment.m in Sources */,
@@ -5466,7 +5465,7 @@
 				PRODUCT_NAME = WordPress;
 				PROVISIONING_PROFILE = "1F764D01-F465-4642-A8F1-3329FA64642A";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Classes\"/** \"${PROJECT_DIR}/../Pods\"/**";
+				USER_HEADER_SEARCH_PATHS = "";
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 			};
 			name = Debug;
@@ -5505,7 +5504,7 @@
 				PRODUCT_NAME = WordPress;
 				PROVISIONING_PROFILE = "A5A51EB7-2E4D-4D01-A0E9-6E1C7BEC4951";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Classes\"/** \"${PROJECT_DIR}/../Pods\"/**";
+				USER_HEADER_SEARCH_PATHS = "";
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 			};
 			name = Release;
@@ -5562,7 +5561,7 @@
 				PROVISIONING_PROFILE = "A5A51EB7-2E4D-4D01-A0E9-6E1C7BEC4951";
 				STRIP_INSTALLED_PRODUCT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Classes\"/** \"${PROJECT_DIR}/../Pods\"/**";
+				USER_HEADER_SEARCH_PATHS = "";
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 			};
 			name = Distribution;
@@ -5621,7 +5620,7 @@
 				PRODUCT_NAME = WordPress;
 				PROVISIONING_PROFILE = "74FADB78-88AD-4CB2-9225-24AA1D4D5319";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Classes\"/** \"${PROJECT_DIR}/../Pods\"/**";
+				USER_HEADER_SEARCH_PATHS = "";
 				WPCOM_CONFIG = $HOME/.wpcom_internal_app_credentials;
 			};
 			name = "Release-Internal";

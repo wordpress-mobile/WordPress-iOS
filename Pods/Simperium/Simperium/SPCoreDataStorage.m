@@ -540,7 +540,7 @@ static NSInteger const SPWorkersDone	= 0;
 }
 
 
-#pragma mark - Sincronization
+#pragma mark - Synchronization
 
 - (void)beginSafeSection {
 	NSAssert([NSThread isMainThread] == false, @"It is not recommended to use this method on the main thread");

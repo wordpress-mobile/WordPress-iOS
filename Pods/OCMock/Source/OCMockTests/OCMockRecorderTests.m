@@ -1,115 +1,71 @@
-//---------------------------------------------------------------------------------------
-//  $Id$
-//  Copyright (c) 2004-2009 by Mulle Kybernetik. See License file for details.
-//---------------------------------------------------------------------------------------
+/*
+ *  Copyright (c) 2004-2014 Erik Doernenburg and contributors
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may
+ *  not use these files except in compliance with the License. You may obtain
+ *  a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ *  License for the specific language governing permissions and limitations
+ *  under the License.
+ */
 
-#import "OCMockRecorderTests.h"
+#import <XCTest/XCTest.h>
 #import <OCMock/OCMockRecorder.h>
+#import <OCMock/OCMockObject.h>
 #import "OCMReturnValueProvider.h"
 #import "OCMExceptionReturnValueProvider.h"
 #import "OCMArg.h"
+#import "OCMInvocationMatcher.h"
 
-@interface TestClassForRecorder : NSObject
 
-- (void)methodWithInt:(int)i andObject:(id)o;
-
-@end
-
-@implementation TestClassForRecorder
-
-- (void)methodWithInt:(int)i andObject:(id)o
-{
-}
+@interface OCMockRecorderTests : XCTestCase
 
 @end
 
 
 @implementation OCMockRecorderTests
 
-
-- (NSInvocation *)invocationForTargetClass:(Class)aClass selector:(SEL)aSelector
+- (void)testCreatesInvocationMatcher
 {
-    NSMethodSignature *signature = [aClass instanceMethodSignatureForSelector:aSelector];
+    NSString *arg = @"I love mocks.";
+
+    id mock = [OCMockObject mockForClass:[NSString class]];
+    OCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithMockObject:mock] autorelease];
+    [(id)recorder initWithString:arg];
+
+    NSMethodSignature *signature = [NSString instanceMethodSignatureForSelector:@selector(initWithString:)];
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-    [invocation setSelector:aSelector];
-    return invocation;
-}
-
-
-- (void)testStoresAndMatchesInvocation
-{
-    NSString *arg = @"I love mocks.";
-
-    OCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
-	[(id)recorder initWithString:arg];
-
-    NSInvocation *testInvocation = [self invocationForTargetClass:[NSString class] selector:@selector(initWithString:)];
-    [testInvocation setArgument:&arg atIndex:2];
-	STAssertTrue([recorder matchesInvocation:testInvocation], @"Should match.");
-}
-
-
-- (void)testOnlyMatchesInvocationWithRightArguments
-{
-    NSString *arg = @"I love mocks.";
-
-    OCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
-	[(id)recorder initWithString:@"whatever"];
-
-    NSInvocation *testInvocation = [self invocationForTargetClass:[NSString class] selector:@selector(initWithString:)];
-    [testInvocation setArgument:&arg atIndex:2];
-	STAssertFalse([recorder matchesInvocation:testInvocation], @"Should not match.");
-}
-
--(void)testSelectivelyIgnoresNonObjectArguments
-{
-    NSString *arg1 = @"I (.*) mocks.";
-    NSUInteger arg2 = NSRegularExpressionSearch;
-
-    OCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
-    [(id)recorder rangeOfString:[OCMArg any] options:0];
-    [recorder ignoringNonObjectArgs];
-
-    NSInvocation *testInvocation = [self invocationForTargetClass:[NSString class] selector:@selector(rangeOfString:options:)];
-    [testInvocation setArgument:&arg1 atIndex:2];
-    [testInvocation setArgument:&arg2 atIndex:3];
-    STAssertTrue([recorder matchesInvocation:testInvocation], @"Should match.");
-}
-
--(void)testSelectivelyIgnoresNonObjectArgumentsAndStillFailsWhenFollowingObjectArgsDontMatch
-{
-    int arg1 = 17;
-    NSString *arg2 = @"foo";
-
-    OCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[[[TestClassForRecorder alloc] init] autorelease]] autorelease];
-    [(id)recorder methodWithInt:12 andObject:@"bar"];
-    [recorder ignoringNonObjectArgs];
-
-    NSInvocation *testInvocation = [self invocationForTargetClass:[TestClassForRecorder class] selector:@selector(methodWithInt:andObject:)];
-    [testInvocation setArgument:&arg1 atIndex:2];
-    [testInvocation setArgument:&arg2 atIndex:3];
-    STAssertFalse([recorder matchesInvocation:testInvocation], @"Should not match.");
+    [invocation setSelector:@selector(initWithString:)];
+    [invocation setArgument:&arg atIndex:2];
+    XCTAssertTrue([[recorder invocationMatcher] matchesInvocation:invocation], @"Should match.");
 }
 
 - (void)testAddsReturnValueProvider
 {
-    OCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
-	[recorder andReturn:@"foo"];
+    id mock = [OCMockObject mockForClass:[NSString class]];
+    OCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithMockObject:mock] autorelease];
+    [recorder andReturn:@"foo"];
     NSArray *handlerList = [recorder invocationHandlers];
-	
-	STAssertEquals((NSUInteger)1, [handlerList count], @"Should have added one handler.");
-	STAssertEqualObjects([OCMReturnValueProvider class], [[handlerList objectAtIndex:0] class], @"Should have added correct handler.");
+
+    XCTAssertEqual((NSUInteger)1, [handlerList count], @"Should have added one handler.");
+    XCTAssertEqualObjects([OCMReturnValueProvider class], [[handlerList objectAtIndex:0] class], @"Should have added correct handler.");
 }
 
 - (void)testAddsExceptionReturnValueProvider
 {
-    OCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithSignatureResolver:[NSString string]] autorelease];
-	[recorder andThrow:[NSException exceptionWithName:@"TestException" reason:@"A reason" userInfo:nil]];
+    id mock = [OCMockObject mockForClass:[NSString class]];
+    OCMockRecorder *recorder = [[[OCMockRecorder alloc] initWithMockObject:mock] autorelease];
+    [recorder andThrow:[NSException exceptionWithName:@"TestException" reason:@"A reason" userInfo:nil]];
     NSArray *handlerList = [recorder invocationHandlers];
 
-	STAssertEquals((NSUInteger)1, [handlerList count], @"Should have added one handler.");
-	STAssertEqualObjects([OCMExceptionReturnValueProvider class], [[handlerList objectAtIndex:0] class], @"Should have added correct handler.");
-	
+    XCTAssertEqual((NSUInteger)1, [handlerList count], @"Should have added one handler.");
+    XCTAssertEqualObjects([OCMExceptionReturnValueProvider class], [[handlerList objectAtIndex:0] class], @"Should have added correct handler.");
+
 }
 
 @end

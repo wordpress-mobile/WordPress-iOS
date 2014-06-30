@@ -9,12 +9,13 @@
 #import <Foundation/Foundation.h>
 
 
-@interface NSString(NSString_Simperium)
+@interface NSString (Simperium)
 
 + (NSString *)sp_encodeBase64WithString:(NSString *)strData;
 + (NSString *)sp_encodeBase64WithData:(NSData *)objData;
 + (NSString *)sp_makeUUID;
 + (NSString *)sp_md5StringFromData:(NSData *)data;
++ (NSString *)sp_randomStringOfLength:(NSUInteger)length;
 - (NSString *)sp_urlEncodeString;
 - (NSArray *)sp_componentsSeparatedByString:(NSString *)separator limit:(NSInteger)limit;
 

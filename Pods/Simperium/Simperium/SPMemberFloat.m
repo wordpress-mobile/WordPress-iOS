@@ -31,7 +31,7 @@
 			otherValue, OP_VALUE, nil];
 }
 
-- (id)applyDiff:(id)thisValue otherValue:(id)otherValue {
+- (id)applyDiff:(id)thisValue otherValue:(id)otherValue error:(NSError **)error {
 	NSAssert([thisValue isKindOfClass:[NSNumber class]] && [otherValue isKindOfClass:[NSNumber class]],
 			 @"Simperium error: couldn't apply diff to floats because their classes weren't NSNumber");
 	

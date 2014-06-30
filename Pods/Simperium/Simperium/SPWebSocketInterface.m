@@ -148,6 +148,21 @@ typedef NS_ENUM(NSInteger, SPMessageIndex) {
     NSAssert(self.simperium.appID,          @"Missing appID");
     NSAssert(self.simperium.user.authToken, @"Missing authToken");
     
+    if (!self.simperium.clientID) {
+        SPLogError(@"Simperium Error: Attempted channel auth with empty clientID");
+        return;
+    }
+
+    if (!self.simperium.appID) {
+        SPLogError(@"Simperium Error: Attempted channel auth with empty appID");
+        return;
+    }
+    
+    if (!self.simperium.user.authToken) {
+        SPLogError(@"Simperium Error: Attempted channel auth with empty authToken");
+        return;
+    }
+    
     NSDictionary *jsonData = @{
 		@"api"		: @(SPAPIVersion.floatValue),
 		@"clientid"	: self.simperium.clientID,
@@ -162,7 +177,6 @@ typedef NS_ENUM(NSInteger, SPMessageIndex) {
     NSString *message = [NSString stringWithFormat:@"%d:init:%@", channel.number, [jsonData sp_JSONString]];
     [self send:message];
 }
-
 
 - (void)openWebSocket {
 	// Prevent multiple 'openWebSocket' calls to get executed
