@@ -8,6 +8,7 @@
 #import "ContextManager.h"
 #import "AccountService.h"
 #import <Helpshift/Helpshift.h>
+#import <Simperium/Simperium.h>
 #import <Mixpanel/Mixpanel.h>
 
 static NSString *const NotificationsDeviceIdKey = @"notification_device_id";
@@ -126,7 +127,15 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
             
         case UIApplicationStateBackground:
             if (completionHandler) {
-
+                Simperium *simperium = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+                [simperium backgroundFetchWithCompletion:^(UIBackgroundFetchResult result) {
+                    if (result == UIBackgroundFetchResultNewData) {
+                        DDLogVerbose(@"Background Fetch Completed with New Data!");
+                    } else {
+                        DDLogVerbose(@"Background Fetch Completed with No Data..");
+                    }
+                    completionHandler(result);
+                }];
             }
             break;
         default:

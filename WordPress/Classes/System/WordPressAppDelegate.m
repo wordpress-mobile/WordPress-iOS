@@ -7,12 +7,14 @@
 #import <GooglePlus/GooglePlus.h>
 #import <HockeySDK/HockeySDK.h>
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
+#import <Simperium/Simperium.h>
 #import <Helpshift/Helpshift.h>
 #import <Taplytics/Taplytics.h>
 
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
 #import "Media.h"
+#import "Note.h"
 #import "NotificationsManager.h"
 #import "NSString+Helpers.h"
 #import "PocketAPI.h"
@@ -59,7 +61,8 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 @property (nonatomic, assign) BOOL listeningForBlogChanges;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 @property (nonatomic, assign) UIBackgroundTaskIdentifier bgTask;
-@property (strong, nonatomic) DDFileLogger *fileLogger;
+@property (nonatomic, strong) DDFileLogger *fileLogger;
+@property (nonatomic, strong) Simperium *simperium;
 
 @end
 
@@ -81,11 +84,19 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [WordPressAppDelegate fixKeychainAccess];
-
-    // Crash reporting, logging, debugging
+	
+	// Simperium: Wire CoreData Stack
+	[self configureSimperium];
+    
+    // Crash reporting, logging
     [self configureLogging];
     [self configureHockeySDK];
     [self configureCrashlytics];
+    
+	// Start Simperium
+    [self loginSimperium];
+
+    // Debugging
     [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
     [self toggleExtraDebuggingIfNeeded];
     [self removeCredentialsForDebug];
@@ -703,7 +714,7 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     [context performBlock:^{
         NSError *error;
         NSMutableArray *mediaToKeep = [NSMutableArray array];
@@ -876,6 +887,46 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     [self.wpcomReachability startNotifier];
 #pragma clang diagnostic pop
 }
+
+#pragma mark - Simperium
+
+- (void)configureSimperium
+{
+    NSDictionary *bucketOverrides   = @{ @"NoteSimperium" : @"Note" };
+	ContextManager* manager         = [ContextManager sharedInstance];
+    
+	self.simperium = [[Simperium alloc] initWithModel:manager.managedObjectModel
+											  context:manager.mainContext
+										  coordinator:manager.persistentStoreCoordinator
+                                                label:nil
+                                      bucketOverrides:bucketOverrides];
+	
+#ifdef DEBUG
+	self.simperium.verboseLoggingEnabled = YES;
+#endif
+}
+
+- (void)loginSimperium
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
+	WPAccount *account              = [accountService defaultWordPressComAccount];
+	NSString *apiKey                = [WordPressComApiCredentials simperiumAPIKey];
+
+	if (!account.authToken.length || !apiKey.length) {
+		return;
+	}
+	
+	NSString *simperiumToken = [NSString stringWithFormat:@"WPCC/%@/%@", apiKey, account.authToken];
+	NSString *simperiumAppID = [WordPressComApiCredentials simperiumAppId];
+	[self.simperium authenticateWithAppID:simperiumAppID token:simperiumToken];
+}
+
+- (void)logoutSimperiumAndResetNotifications
+{
+	[self.simperium signOutAndRemoveLocalData:YES completion:nil];
+}
+
 
 #pragma mark - Keychain
 
@@ -1101,8 +1152,12 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 
 - (void)handleDefaultAccountChangedNotification:(NSNotification *)notification
 {
+	[self toggleExtraDebuggingIfNeeded];
+    
     // If the notification object is not nil, then it's a login
     if (notification.object) {
+        [self loginSimperium];
+
         NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
         ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
         ReaderTopic *topic = topicService.currentTopic;
@@ -1112,6 +1167,7 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
         }
     } else {
         // No need to check for welcome screen unless we are signing out
+        [self logoutSimperiumAndResetNotifications];
         [self showWelcomeScreenIfNeededAnimated:NO];
     }
 }
