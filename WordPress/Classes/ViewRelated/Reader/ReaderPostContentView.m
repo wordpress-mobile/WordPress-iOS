@@ -129,6 +129,7 @@
 {
     ReaderPostAttributionView *attrView = [[ReaderPostAttributionView alloc] init];
     attrView.translatesAutoresizingMaskIntoConstraints = NO;
+    [attrView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     attrView.delegate = self;
     return attrView;
 }

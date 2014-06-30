@@ -47,6 +47,7 @@
 {
     WPSimpleContentAttributionView *attrView = [[WPSimpleContentAttributionView alloc] init];
     attrView.translatesAutoresizingMaskIntoConstraints = NO;
+    [attrView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     return attrView;
 }
 
