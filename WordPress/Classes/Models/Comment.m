@@ -70,16 +70,13 @@ NSString * const CommentStatusDraft = @"draft";
             }
         }
         
-        NSSet *existingComments = contextBlog.comments;
-        if (existingComments && (existingComments.count > 0)) {
-            for (Comment *comment in existingComments) {
-                // Don't delete unpublished comments
-                if(![commentsToKeep containsObject:comment] && comment.commentID != nil) {
-                    DDLogInfo(@"Deleting Comment: %@", comment);
-                    [backgroundMOC deleteObject:comment];
-                }
-            }
-        }
+		for (Comment *comment in contextBlog.comments) {
+			// Don't delete unpublished comments
+			if(![commentsToKeep containsObject:comment] && comment.commentID != nil) {
+				DDLogInfo(@"Deleting Comment: %@", comment);
+				[backgroundMOC deleteObject:comment];
+			}
+		}
         
         [[ContextManager sharedInstance] saveDerivedContext:backgroundMOC];
     }];
