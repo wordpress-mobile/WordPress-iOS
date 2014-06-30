@@ -193,7 +193,7 @@
         
         //make sure we are not sharing URL like this: http://en.wordpress.com/reader/mobile/?v=post-16841252-1828
         if ([permaLink rangeOfString:@"wordpress.com/reader/mobile/"].location != NSNotFound) { 
-            permaLink = kMobileReaderURL;                 
+            permaLink = WPMobileReaderURL;                 
         } 
     }
     
@@ -503,7 +503,7 @@
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [self setLoading:NO];
     
-    if (!self.hasLoadedContent && ([aWebView.request.URL.absoluteString rangeOfString:kMobileReaderDetailURL].location == NSNotFound || self.detailContent)) {
+    if (!self.hasLoadedContent && ([aWebView.request.URL.absoluteString rangeOfString:WPMobileReaderDetailURL].location == NSNotFound || self.detailContent)) {
         [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.set_loaded_items(%@);", self.readerAllItems]];
         [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.show_article_details(%@);", self.detailContent]];
         

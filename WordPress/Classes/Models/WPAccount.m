@@ -14,6 +14,7 @@
 @dynamic blogs;
 @dynamic jetpackBlogs;
 
+
 #pragma mark - NSManagedObject subclass methods
 
 - (void)prepareForDeletion {
@@ -39,6 +40,7 @@
     _restApi = nil;
     _xmlrpcApi = nil;
 }
+
 
 #pragma mark - Custom accessors
 

@@ -160,11 +160,13 @@
 - (void)testDerivedContext {
     return;
     // Create a new derived context, which the mainContext is the parent
-    ATHStart();
     NSManagedObjectContext *derived = [[ContextManager sharedInstance] newDerivedContext];
     __block NSManagedObjectID *blogObjectID;
     __block Blog *newBlog;
     __block AccountService *service;
+    
+    // Note: Find or Create Blog will trigger a Context-Save call, which will, in turn, call ATHNotify
+    ATHStart();
     [derived performBlock:^{
         service = [[AccountService alloc] initWithManagedObjectContext:derived];
         WPAccount *derivedAccount = (WPAccount *)[derived objectWithID:[service defaultWordPressComAccount].objectID];

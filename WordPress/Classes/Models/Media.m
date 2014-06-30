@@ -78,12 +78,13 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
 }
 
 + (void)mergeNewMedia:(NSArray *)media forBlog:(Blog *)blog {
-    if ([blog isDeleted] || blog.managedObjectContext == nil)
+    if ([blog isDeleted] || blog.managedObjectContext == nil) {
         return;
+    }
     
-    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] newDerivedContext];
-    [backgroundMOC performBlock:^{
-        Blog *contextBlog = (Blog *)[backgroundMOC objectWithID:blog.objectID];
+    NSManagedObjectContext *derivedMOC = [[ContextManager sharedInstance] newDerivedContext];
+    [derivedMOC performBlock:^{
+        Blog *contextBlog = (Blog *)[derivedMOC objectWithID:blog.objectID];
         NSMutableArray *mediaToKeep = [NSMutableArray array];
         for (NSDictionary *item in media) {
             Media *mediaItem = [Media createOrReplaceMediaFromJSON:item forBlog:contextBlog];
@@ -94,12 +95,12 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
             for (Media *m in syncedMedia) {
                 if (![mediaToKeep containsObject:m] && m.remoteURL != nil) {
                     DDLogVerbose(@"Deleting media %@", m);
-                    [backgroundMOC deleteObject:m];
+                    [derivedMOC deleteObject:m];
                 }
             }
         }
         
-        [[ContextManager sharedInstance] saveDerivedContext:backgroundMOC];
+        [[ContextManager sharedInstance] saveDerivedContext:derivedMOC];
     }];
 }
 

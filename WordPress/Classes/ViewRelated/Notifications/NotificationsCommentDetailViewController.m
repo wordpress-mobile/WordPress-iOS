@@ -17,7 +17,6 @@
 #import "WPFixedWidthScrollView.h"
 #import "WPTableViewCell.h"
 #import "WPTableViewController.h"
-#import "NoteService.h"
 #import "NoteBodyItem.h"
 #import "AccountService.h"
 
@@ -26,25 +25,25 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
 @interface NotificationsCommentDetailViewController () <InlineComposeViewDelegate, WPContentViewDelegate, UIViewControllerRestoration>
 
-@property NSUInteger followBlogID;
-@property NSDictionary *commentActions;
-@property NSDictionary *followDetails;
-@property NSDictionary *comment;
-@property NSDictionary *post;
-@property NSMutableArray *commentThread;
-@property NSNumber *siteID;
-@property NSDictionary *followAction;
-@property NSURL *headerURL;
-@property BOOL hasScrollBackView;
+@property (nonatomic, assign) NSUInteger		followBlogID;
+@property (nonatomic, strong) NSDictionary		*commentActions;
+@property (nonatomic, strong) NSDictionary		*followDetails;
+@property (nonatomic, strong) NSDictionary		*comment;
+@property (nonatomic, strong) NSDictionary		*post;
+@property (nonatomic, strong) NSMutableArray	*commentThread;
+@property (nonatomic, strong) NSNumber			*siteID;
+@property (nonatomic, strong) NSDictionary		*followAction;
+@property (nonatomic, strong) NSURL				*headerURL;
+@property (nonatomic, assign) BOOL				hasScrollBackView;
 
-@property (nonatomic, strong) UIButton *approveButton;
-@property (nonatomic, strong) UIButton *trashButton;
-@property (nonatomic, strong) UIButton *spamButton;
-@property (nonatomic, strong) UIButton *replyButton;
+@property (nonatomic, strong) UIButton			*approveButton;
+@property (nonatomic, strong) UIButton			*trashButton;
+@property (nonatomic, strong) UIButton			*spamButton;
+@property (nonatomic, strong) UIButton			*replyButton;
 
-@property (nonatomic, strong) CommentView *commentView;
 @property (nonatomic, weak) IBOutlet NoteCommentPostBanner *postBanner;
-@property (nonatomic, strong) Note *note;
+@property (nonatomic, strong) CommentView		*commentView;
+@property (nonatomic, strong) Note				*note;
 
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 
@@ -176,8 +175,8 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     // get the note's actions
-    NSArray *actions = [self.note.noteData valueForKeyPath:@"body.actions"];
-    NSDictionary *action = [actions objectAtIndex:0];
+    NSArray *actions = self.note.bodyActions;
+    NSDictionary *action = [actions firstObject];
     self.siteID = [action valueForKeyPath:@"params.site_id"];
     
     NoteComment *comment = [[NoteComment alloc] initWithCommentID:[action valueForKeyPath:@"params.comment_id"]];
@@ -245,7 +244,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 }
 
 - (NSDictionary *)getActionByType:(NSString *)type {
-    NSArray *actions = [self.note.noteData valueForKeyPath:@"body.actions"];
+    NSArray *actions = [self.note bodyActions];
     for (NSDictionary *action in actions) {
         if ([[action valueForKey:@"type"] isEqualToString:type]) {
             return action;
@@ -354,16 +353,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     [[defaultAccount restApi] POST:path parameters:[commentAction valueForKeyPath:@"params.rest_body"] success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary *response = (NSDictionary *)responseObject;
-        if (response) {
-            NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.note.managedObjectContext];
-            [noteService refreshNote:self.note success:^{
-                // Buttons are adjusted optimistically, so no need to update UI
-            } failure:^(NSError *error) {
-                // Fail silently but force a refresh to revert any optimistic changes
-                [self displayNote];
-            }];
-        }
+        // The Note will be automatically updated by Simperium
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
     }];

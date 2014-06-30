@@ -3,8 +3,9 @@
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import <DTCoreText/DTCoreText.h>
 #import "WPWebViewController.h"
-#import "NoteService.h"
 #import "StatsViewController.h"
+#import "BlogService.h"
+#import "NSScanner+Helpers.h"
 
 @interface NotificationsBigBadgeViewController() <DTAttributedTextContentViewDelegate>
 
@@ -48,7 +49,7 @@
     [_scrollView addSubview:_badgeImageView];
     
     // Set icon URL and start a wee animation to catch the eye
-    NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_note.icon]];
+    NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_note.subjectIcon]];
     __weak UIImageView *weakBadgeImageView = _badgeImageView;
     [_badgeImageView setImageWithURLRequest:urlRequest
                            placeholderImage:nil
@@ -191,9 +192,16 @@
     id viewController;
     
     if ([self.note statsEvent]) {
-        NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.note.managedObjectContext];
-        Blog *blog = [noteService blogForStatsEventNote:self.note];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.note.managedObjectContext];
+        Blog *blog = [blogService blogByBlogId:self.note.metaSiteID];
+
+        // Attempt to load the blog by its name
+        if (!blog) {
+            NSString *blogName = [[NSScanner scannerWithString:self.note.subjectText] scanQuotedText];
+            blog = [blogService blogByBlogName:blogName];
+        }
         
+        // On success, push the Stats VC
         if (blog) {
             StatsViewController *statsVC = [[StatsViewController alloc] init];
             statsVC.blog = blog;

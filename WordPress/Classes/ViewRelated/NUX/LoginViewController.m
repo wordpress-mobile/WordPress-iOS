@@ -16,7 +16,6 @@
 #import "WPAccount.h"
 #import "Note.h"
 #import "ContextManager.h"
-#import "NoteService.h"
 #import "AccountService.h"
 #import "BlogService.h"
 #import "WPNUXHelpBadgeLabel.h"
@@ -856,6 +855,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 - (void)createWordPressComAccountForUsername:(NSString *)username password:(NSString *)password authToken:(NSString *)authToken
 {
     [self setAuthenticating:YES withStatusMessage:NSLocalizedString(@"Getting account information", nil)];
+
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
                                       
@@ -870,9 +870,6 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
                                     [self setAuthenticating:NO withStatusMessage:nil];
                                     [self displayRemoteError:error];
                                 }];
-
-    NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:account.managedObjectContext];
-    [noteService fetchNewNotificationsWithSuccess:nil failure:nil];
 }
 
 - (void)createSelfHostedAccountAndBlogWithUsername:(NSString *)username password:(NSString *)password xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options

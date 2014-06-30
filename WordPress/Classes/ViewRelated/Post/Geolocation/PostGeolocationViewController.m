@@ -60,7 +60,7 @@
         [view setExclusiveTouch:YES];
     }
 
-    if (self.post.geolocation) {
+    if ([self.post geolocation]) {
         [self refreshView];
     } else {
         [self updateLocation];

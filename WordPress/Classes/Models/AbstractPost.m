@@ -67,20 +67,18 @@
 }
 
 + (void)mergeNewPosts:(NSArray *)newObjects forBlog:(Blog *)blog {
-    NSManagedObjectContext *backgroundContext = [[ContextManager sharedInstance] newDerivedContext];
-    [backgroundContext performBlock:^{
+    NSManagedObjectContext *derivedMOC = [[ContextManager sharedInstance] newDerivedContext];
+    [derivedMOC performBlock:^{
         NSMutableArray *objectsToKeep = [NSMutableArray array];
-        Blog *contextBlog = (Blog *)[backgroundContext existingObjectWithID:blog.objectID error:nil];
+        Blog *contextBlog = (Blog *)[derivedMOC existingObjectWithID:blog.objectID error:nil];
         
-        NSArray *existingObjects = [self existingPostsForBlog:contextBlog inContext:backgroundContext];
+        NSArray *existingObjects = [self existingPostsForBlog:contextBlog inContext:derivedMOC];
         for (NSDictionary *newPost in newObjects) {
             NSNumber *postID = [[newPost objectForKey:[self remoteUniqueIdentifier]] numericValue];
-            AbstractPost *post;
             
             NSArray *existingPostsWithPostId = [existingObjects filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"postID == %@", postID]];
-            if (existingPostsWithPostId && existingPostsWithPostId.count > 0) {
-                post = existingPostsWithPostId[0];
-            } else {
+            AbstractPost *post = [existingPostsWithPostId firstObject];
+            if (!post) {
                 post = [self newPostForBlog:contextBlog];
                 post.postID = postID;
                 post.remoteStatus = AbstractPostRemoteStatusSync;
@@ -110,12 +108,12 @@
                     }
                 } else {
                     DDLogInfo(@"Deleting %@: %@", NSStringFromClass(self), post);
-                    [backgroundContext deleteObject:post];
+                    [derivedMOC deleteObject:post];
                 }
             }
         }
         
-        [[ContextManager sharedInstance] saveDerivedContext:backgroundContext];
+        [[ContextManager sharedInstance] saveDerivedContext:derivedMOC];
     }];
 }
 

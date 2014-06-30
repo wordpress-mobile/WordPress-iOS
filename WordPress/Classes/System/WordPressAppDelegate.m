@@ -7,12 +7,14 @@
 #import <GooglePlus/GooglePlus.h>
 #import <HockeySDK/HockeySDK.h>
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
+#import <Simperium/Simperium.h>
 #import <Helpshift/Helpshift.h>
 #import <Taplytics/Taplytics.h>
 
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
 #import "Media.h"
+#import "Note.h"
 #import "NotificationsManager.h"
 #import "NSString+Helpers.h"
 #import "PocketAPI.h"
@@ -59,30 +61,42 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 @property (nonatomic, assign) BOOL listeningForBlogChanges;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 @property (nonatomic, assign) UIBackgroundTaskIdentifier bgTask;
-@property (strong, nonatomic) DDFileLogger *fileLogger;
+@property (nonatomic, strong) DDFileLogger *fileLogger;
+@property (nonatomic, strong) Simperium *simperium;
 
 @end
 
 @implementation WordPressAppDelegate
 
-+ (WordPressAppDelegate *)sharedWordPressApplicationDelegate {
++ (WordPressAppDelegate *)sharedWordPressApplicationDelegate
+{
     return (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
 #pragma mark - UIApplicationDelegate
 
-- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
     [WordPressAppDelegate fixKeychainAccess];
-
-    // Crash reporting, logging, debugging
+	
+	// Simperium: Wire CoreData Stack
+	[self configureSimperium];
+    
+    // Crash reporting, logging
     [self configureLogging];
     [self configureHockeySDK];
     [self configureCrashlytics];
+    
+	// Start Simperium
+    [self loginSimperium];
+
+    // Debugging
     [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
     [self toggleExtraDebuggingIfNeeded];
     [self removeCredentialsForDebug];
@@ -142,7 +156,8 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     return YES;
 }
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
     
     // Launched by tapping a notification
@@ -157,7 +172,8 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     return YES;
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
     BOOL returnValue = NO;
     
     if ([[BITHockeyManager sharedHockeyManager].authenticator handleOpenURL:url
@@ -211,11 +227,13 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     return returnValue;
 }
 
-- (void)applicationWillTerminate:(UIApplication *)application {
+- (void)applicationWillTerminate:(UIApplication *)application
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 }
 
-- (void)applicationDidEnterBackground:(UIApplication *)application {
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
     [WPAnalytics track:WPAnalyticsStatApplicationClosed];
@@ -241,44 +259,53 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     }];
 }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application {
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application {
+- (void)applicationWillResignActive:(UIApplication *)application
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application {
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [WPAnalytics track:WPAnalyticsStatApplicationOpened];
 }
 
-- (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder {
+- (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder
+{
     return YES;
 }
 
-- (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder {
+- (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder
+{
     return YES;
 }
 
 #pragma mark - Push Notification delegate
 
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
 	[NotificationsManager registerDeviceToken:deviceToken];
 }
 
-- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
 	[NotificationsManager registrationDidFail:error];
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
     DDLogMethod();
     
     [NotificationsManager handleNotification:userInfo forState:application.applicationState completionHandler:nil];
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
     DDLogMethod();
     
     [NotificationsManager handleNotification:userInfo forState:[UIApplication sharedApplication].applicationState completionHandler:completionHandler];
@@ -286,7 +313,8 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 
 #pragma mark - Custom methods
 
-- (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated {
+- (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated
+{
     if ([self noBlogsAndNoWordPressDotComAccount]) {
         UIViewController *presenter = self.window.rootViewController;
         if (presenter.presentedViewController) {
@@ -297,7 +325,8 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     }
 }
 
-- (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor {
+- (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor
+{
     LoginViewController *loginViewController = [[LoginViewController alloc] init];
     if (thenEditor) {
         loginViewController.dismissBlock = ^{
@@ -312,7 +341,8 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     [self.window.rootViewController presentViewController:navigationController animated:animated completion:nil];
 }
 
-- (BOOL)noBlogsAndNoWordPressDotComAccount {
+- (BOOL)noBlogsAndNoWordPressDotComAccount
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -349,7 +379,8 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 
 #pragma mark - Tab bar methods
 
-- (UITabBarController *)tabBarController {
+- (UITabBarController *)tabBarController
+{
     if (_tabBarController) {
         return _tabBarController;
     }
@@ -429,30 +460,36 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     return _tabBarController;
 }
 
-- (void)showNotificationsTab {
+- (void)showNotificationsTab
+{
     NSInteger notificationsTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.notificationsViewController.navigationController];
     [self.tabBarController setSelectedIndex:notificationsTabIndex];
 }
 
-- (void)showReaderTab {
+- (void)showReaderTab
+{
     NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
     [self.tabBarController setSelectedIndex:readerTabIndex];
 }
 
-- (void)showBlogListTab {
+- (void)showBlogListTab
+{
     NSInteger blogListTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.blogListViewController.navigationController];
     [self.tabBarController setSelectedIndex:blogListTabIndex];
 }
 
-- (void)showMeTab {
+- (void)showMeTab
+{
     [self.tabBarController setSelectedIndex:IndexForMeTab];
 }
 
-- (void)showPostTab {
+- (void)showPostTab
+{
     [self showPostTabWithOptions:nil];
 }
 
-- (void)showPostTabWithOptions:(NSDictionary *)options {
+- (void)showPostTabWithOptions:(NSDictionary *)options
+{
     UIViewController *presenter = self.window.rootViewController;
     if (presenter.presentedViewController) {
         [presenter dismissViewControllerAnimated:NO completion:nil];
@@ -477,7 +514,8 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }
 
-- (void)switchTabToPostsListForPost:(AbstractPost *)post {
+- (void)switchTabToPostsListForPost:(AbstractPost *)post
+{
     // Make sure the desired tab is selected.
     [self showMeTab];
 
@@ -505,13 +543,15 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     [blogListNavController setViewControllers:@[blogListViewController, blogDetailsViewController, postsViewController]];
 }
 
-- (BOOL)isNavigatingMeTab {
+- (BOOL)isNavigatingMeTab
+{
     return (self.tabBarController.selectedIndex == IndexForMeTab && [self.blogListViewController.navigationController.viewControllers count] > 1);
 }
 
 #pragma mark - UITabBarControllerDelegate methods.
 
-- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
+{
     if ([tabBarController.viewControllers indexOfObject:viewController] == 3) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -561,7 +601,8 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 
 #pragma mark - Application directories
 
-- (void)changeCurrentDirectory {
+- (void)changeCurrentDirectory
+{
     // Set current directory for WordPress app
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -577,7 +618,8 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 
 #pragma mark - Notifications
 
-- (void)defaultAccountDidChange:(NSNotification *)notification {
+- (void)defaultAccountDidChange:(NSNotification *)notification
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
@@ -589,7 +631,8 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 
 #pragma mark - Crash reporting
 
-- (void)configureCrashlytics {
+- (void)configureCrashlytics
+{
 #if DEBUG
     return;
 #endif
@@ -641,7 +684,8 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     [Crashlytics setObjectValue:@([blogService blogCountForAllAccounts]) forKey:@"number_of_blogs"];
 }
 
-- (void)configureHockeySDK {
+- (void)configureHockeySDK
+{
 #ifndef INTERNAL_BUILD
     return;
 #endif
@@ -654,7 +698,8 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 
 #pragma mark - BITCrashManagerDelegate
 
-- (NSString *)applicationLogForCrashManager:(BITCrashManager *)crashManager {
+- (NSString *)applicationLogForCrashManager:(BITCrashManager *)crashManager
+{
     NSString *description = [self getLogFilesContentWithMaxSize:5000]; // 5000 bytes should be enough!
     if ([description length] == 0) {
         return nil;
@@ -665,10 +710,11 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 
 #pragma mark - Media cleanup
 
-- (void)cleanUnusedMediaFileFromTmpDir {
+- (void)cleanUnusedMediaFileFromTmpDir
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     [context performBlock:^{
         NSError *error;
         NSMutableArray *mediaToKeep = [NSMutableArray array];
@@ -732,7 +778,8 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 
 #pragma mark - Networking setup, User agents
 
-- (void)setupUserAgent {
+- (void)setupUserAgent
+{
     // Keep a copy of the original userAgent for use with certain webviews in the app.
     UIWebView *webView = [[UIWebView alloc] init];
     NSString *defaultUA = [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
@@ -749,7 +796,8 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
 }
 
-- (void)useDefaultUserAgent {
+- (void)useDefaultUserAgent
+{
     NSString *ua = [[NSUserDefaults standardUserDefaults] stringForKey:@"DefaultUserAgent"];
     NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:ua, @"UserAgent", nil];
     // We have to call registerDefaults else the change isn't picked up by UIWebViews.
@@ -757,7 +805,8 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     DDLogVerbose(@"User-Agent set to: %@", ua);
 }
 
-- (void)useAppUserAgent {
+- (void)useAppUserAgent
+{
     NSString *ua = [[NSUserDefaults standardUserDefaults] stringForKey:@"AppUserAgent"];
     NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:ua, @"UserAgent", nil];
     // We have to call registerDefaults else the change isn't picked up by UIWebViews.
@@ -766,11 +815,13 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     DDLogVerbose(@"User-Agent set to: %@", ua);
 }
 
-- (NSString *)applicationUserAgent {
+- (NSString *)applicationUserAgent
+{
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"UserAgent"];
 }
 
-- (void)setupSingleSignOn {
+- (void)setupSingleSignOn
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
@@ -781,7 +832,8 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     }
 }
 
-- (void)setupReachability {
+- (void)setupReachability
+{
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
     // Set the wpcom availability to YES to avoid issues with lazy reachibility notifier
@@ -835,6 +887,46 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     [self.wpcomReachability startNotifier];
 #pragma clang diagnostic pop
 }
+
+#pragma mark - Simperium
+
+- (void)configureSimperium
+{
+    NSDictionary *bucketOverrides   = @{ @"NoteSimperium" : @"Note" };
+	ContextManager* manager         = [ContextManager sharedInstance];
+    
+	self.simperium = [[Simperium alloc] initWithModel:manager.managedObjectModel
+											  context:manager.mainContext
+										  coordinator:manager.persistentStoreCoordinator
+                                                label:nil
+                                      bucketOverrides:bucketOverrides];
+	
+#ifdef DEBUG
+	self.simperium.verboseLoggingEnabled = YES;
+#endif
+}
+
+- (void)loginSimperium
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
+	WPAccount *account              = [accountService defaultWordPressComAccount];
+	NSString *apiKey                = [WordPressComApiCredentials simperiumAPIKey];
+
+	if (!account.authToken.length || !apiKey.length) {
+		return;
+	}
+	
+	NSString *simperiumToken = [NSString stringWithFormat:@"WPCC/%@/%@", apiKey, account.authToken];
+	NSString *simperiumAppID = [WordPressComApiCredentials simperiumAppId];
+	[self.simperium authenticateWithAppID:simperiumAppID token:simperiumToken];
+}
+
+- (void)logoutSimperiumAndResetNotifications
+{
+	[self.simperium signOutAndRemoveLocalData:YES completion:nil];
+}
+
 
 #pragma mark - Keychain
 
@@ -893,7 +985,8 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 
 #pragma mark - Debugging and logging
 
-- (void)printDebugLaunchInfoWithLaunchOptions:(NSDictionary *)launchOptions {
+- (void)printDebugLaunchInfoWithLaunchOptions:(NSDictionary *)launchOptions
+{
     UIDevice *device = [UIDevice currentDevice];
     NSInteger crashCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"crashCount"];
     NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
@@ -930,7 +1023,8 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     DDLogInfo(@"===========================================================================");
 }
 
-- (void)removeCredentialsForDebug {
+- (void)removeCredentialsForDebug
+{
 #if DEBUG
     /*
      A dictionary containing the credentials for all available protection spaces.
@@ -976,7 +1070,8 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     }
 }
 
-- (DDFileLogger *)fileLogger {
+- (DDFileLogger *)fileLogger
+{
     if (_fileLogger) {
         return _fileLogger;
     }
@@ -988,7 +1083,8 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 }
 
 // get the log content with a maximum byte size
-- (NSString *) getLogFilesContentWithMaxSize:(NSInteger)maxSize {
+- (NSString *)getLogFilesContentWithMaxSize:(NSInteger)maxSize
+{
     NSMutableString *description = [NSMutableString string];
     
     NSArray *sortedLogFileInfos = [[self.fileLogger logFileManager] sortedLogFileInfos];
@@ -1015,7 +1111,8 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     return description;
 }
 
-- (void)toggleExtraDebuggingIfNeeded {
+- (void)toggleExtraDebuggingIfNeeded
+{
     if (!_listeningForBlogChanges) {
         _listeningForBlogChanges = YES;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDefaultAccountChangedNotification:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
@@ -1050,11 +1147,17 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 	}
 }
 
-- (void)handleDefaultAccountChangedNotification:(NSNotification *)notification {
-	[self toggleExtraDebuggingIfNeeded];
 
+#pragma mark - Notifications
+
+- (void)handleDefaultAccountChangedNotification:(NSNotification *)notification
+{
+	[self toggleExtraDebuggingIfNeeded];
+    
     // If the notification object is not nil, then it's a login
     if (notification.object) {
+        [self loginSimperium];
+
         NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
         ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
         ReaderTopic *topic = topicService.currentTopic;
@@ -1064,6 +1167,7 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
         }
     } else {
         // No need to check for welcome screen unless we are signing out
+        [self logoutSimperiumAndResetNotifications];
         [self showWelcomeScreenIfNeededAnimated:NO];
     }
 }

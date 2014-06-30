@@ -118,6 +118,7 @@ static NSString *const Ellipsis =  @"\u2026";
     NSRange range = NSMakeRange(0, [self length]);
     NSMutableString *mString = [self mutableCopy];
     NSArray *matches = [regex matchesInString:mString options:NSRegularExpressionCaseInsensitive range:range];
+
     for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
         [mString replaceCharactersInRange:match.range withString:@""];
     }
