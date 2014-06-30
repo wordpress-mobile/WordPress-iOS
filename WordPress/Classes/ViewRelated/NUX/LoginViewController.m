@@ -16,11 +16,11 @@
 #import "WPAccount.h"
 #import "Note.h"
 #import "ContextManager.h"
-#import "NoteService.h"
 #import "AccountService.h"
 #import "BlogService.h"
 #import "WPNUXHelpBadgeLabel.h"
 #import <Helpshift/Helpshift.h>
+#import "WPAnalytics.h"
 
 static NSString *const ForgotPasswordDotComBaseUrl = @"https://wordpress.com";
 static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
@@ -870,9 +870,6 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
                                     [self setAuthenticating:NO withStatusMessage:nil];
                                     [self displayRemoteError:error];
                                 }];
-
-    NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:account.managedObjectContext];
-    [noteService fetchNewNotificationsWithSuccess:nil failure:nil];
 }
 
 - (void)createSelfHostedAccountAndBlogWithUsername:(NSString *)username password:(NSString *)password xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options
