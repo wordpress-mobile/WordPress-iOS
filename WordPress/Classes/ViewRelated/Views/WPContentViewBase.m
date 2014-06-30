@@ -19,6 +19,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 @interface WPContentViewBase()<WPContentAttributionViewDelegate>
 // Stores a reference to the image height constraint for easy adjustment.
 @property (nonatomic, strong) NSLayoutConstraint *featuredImageHeightConstraint;
+@property (nonatomic, strong) NSMutableArray *labelsNeedingPreferredMaxLayoutWidth;
 @end
 
 @implementation WPContentViewBase
@@ -44,6 +45,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 {
     self = [super init];
     if (self) {
+        self.labelsNeedingPreferredMaxLayoutWidth = [NSMutableArray array];
         [self constructSubviews];
         [self configureConstraints];
     }
@@ -52,8 +54,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
 - (void)layoutSubviews
 {
-    CGFloat width = CGRectGetWidth(self.bounds) - (WPContentViewHorizontalInnerPadding * 2);
-    [self.titleLabel setPreferredMaxLayoutWidth:width];
+    [self refreshLabelPreferredMaxLayoutWidth];
     [super layoutSubviews];
 }
 
@@ -128,7 +129,21 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     [self configureFeaturedImageView];
 }
 
+
 #pragma mark - Private Methods
+
+- (void)registerLabelForRefreshingPreferredMaxLayoutWidth:(UILabel *)label
+{
+    [self.labelsNeedingPreferredMaxLayoutWidth addObject:label];
+}
+
+- (void)refreshLabelPreferredMaxLayoutWidth
+{
+    CGFloat width = CGRectGetWidth(self.bounds) - (WPContentViewHorizontalInnerPadding * 2);
+    for (UILabel *label in self.labelsNeedingPreferredMaxLayoutWidth) {
+        [label setPreferredMaxLayoutWidth:width];
+    }
+}
 
 - (void)configureConstraints
 {
@@ -243,6 +258,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 {
     WPContentAttributionView *attrView = [[WPContentAttributionView alloc] init];
     attrView.translatesAutoresizingMaskIntoConstraints = NO;
+    [attrView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     attrView.delegate = self;
     return attrView;
 }
@@ -277,12 +293,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     titleLabel.textColor = [WPStyleGuide littleEddieGrey];
     titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     titleLabel.numberOfLines = 4;
-
-    // Make sure the title label is always sized to match its content.
-    [titleLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-    [titleLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
-    [titleLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-    [titleLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+    [self registerLabelForRefreshingPreferredMaxLayoutWidth:titleLabel];
 
     return titleLabel;
 }
@@ -294,6 +305,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     contentLabel.textColor = [WPStyleGuide littleEddieGrey];
     contentLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     contentLabel.numberOfLines = 4;
+    [self registerLabelForRefreshingPreferredMaxLayoutWidth:contentLabel];
 
     return contentLabel;
 }
