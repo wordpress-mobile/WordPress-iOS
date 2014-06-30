@@ -1,0 +1,739 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1FDD3BC98AB142A49E0D28C8 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B784562C41AA4F70AD9E1683 /* libPods.a */; };
+		609D5C4B847D477A93B60ABB /* libPods-WPXMLRPCTest-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 877A56A0005640AF9B9F6E1D /* libPods-WPXMLRPCTest-iOS.a */; };
+		87B8CEB01EE84A35BE33679A /* libPods-WPXMLRPCTest-OSX.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55D472F4DC414ECEA5AD0D42 /* libPods-WPXMLRPCTest-OSX.a */; };
+		E156190316DBC5A2006532C4 /* RequestTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = E156190216DBC5A2006532C4 /* RequestTestCase.xml */; };
+		E156190416DBC630006532C4 /* RequestTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = E156190216DBC5A2006532C4 /* RequestTestCase.xml */; };
+		E156190616DBCEA0006532C4 /* entities.xml in Resources */ = {isa = PBXBuildFile; fileRef = E156190516DBCEA0006532C4 /* entities.xml */; };
+		E156190716DBCEA7006532C4 /* entities.xml in Resources */ = {isa = PBXBuildFile; fileRef = E156190516DBCEA0006532C4 /* entities.xml */; };
+		E156190916DBCEF3006532C4 /* entitiesDecoded.xml in Resources */ = {isa = PBXBuildFile; fileRef = E156190816DBCEF3006532C4 /* entitiesDecoded.xml */; };
+		E156190A16DBCFFD006532C4 /* entitiesDecoded.xml in Resources */ = {isa = PBXBuildFile; fileRef = E156190816DBCEF3006532C4 /* entitiesDecoded.xml */; };
+		E156190D16DBD0FB006532C4 /* WPXMLRPCEntitiesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E156190C16DBD0FB006532C4 /* WPXMLRPCEntitiesTest.m */; };
+		E156190E16DBD0FB006532C4 /* WPXMLRPCEntitiesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E156190C16DBD0FB006532C4 /* WPXMLRPCEntitiesTest.m */; };
+		E156191116DBD90D006532C4 /* WPXMLRPCEncoderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E156191016DBD90D006532C4 /* WPXMLRPCEncoderTest.m */; };
+		E156191216DBD90D006532C4 /* WPXMLRPCEncoderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E156191016DBD90D006532C4 /* WPXMLRPCEncoderTest.m */; };
+		E171CDED170DE791005FE32A /* NoXmlResponseTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = E171CDEC170DE791005FE32A /* NoXmlResponseTestCase.xml */; };
+		E171CDEE170DEAF2005FE32A /* NoXmlResponseTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = E171CDEC170DE791005FE32A /* NoXmlResponseTestCase.xml */; };
+		E1C689CD16D4377D00B7732D /* WPBase64UtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C689CC16D4377D00B7732D /* WPBase64UtilsTest.m */; };
+		E1C689CE16D4377D00B7732D /* WPBase64UtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C689CC16D4377D00B7732D /* WPBase64UtilsTest.m */; };
+		E1C689D016D437EF00B7732D /* TestImage.base64 in Resources */ = {isa = PBXBuildFile; fileRef = E1C689CF16D437EF00B7732D /* TestImage.base64 */; };
+		E1C689D116D437EF00B7732D /* TestImage.base64 in Resources */ = {isa = PBXBuildFile; fileRef = E1C689CF16D437EF00B7732D /* TestImage.base64 */; };
+		E1C689D316D437F800B7732D /* TestImage.png in Resources */ = {isa = PBXBuildFile; fileRef = E1C689D216D437F800B7732D /* TestImage.png */; };
+		E1C689D416D437F800B7732D /* TestImage.png in Resources */ = {isa = PBXBuildFile; fileRef = E1C689D216D437F800B7732D /* TestImage.png */; };
+		E1C689D616D459BD00B7732D /* IncompleteXmlTest.xml in Resources */ = {isa = PBXBuildFile; fileRef = E1C689D516D459BD00B7732D /* IncompleteXmlTest.xml */; };
+		E1C689D716D459BD00B7732D /* IncompleteXmlTest.xml in Resources */ = {isa = PBXBuildFile; fileRef = E1C689D516D459BD00B7732D /* IncompleteXmlTest.xml */; };
+		E1D0D85B16D4048200E33F4C /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1D0D85A16D4048200E33F4C /* SenTestingKit.framework */; };
+		E1D0D85D16D4048200E33F4C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1D0D85C16D4048200E33F4C /* UIKit.framework */; };
+		E1D0D85F16D4048200E33F4C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1D0D85E16D4048200E33F4C /* Foundation.framework */; };
+		E1D0D87316D404AB00E33F4C /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1D0D85A16D4048200E33F4C /* SenTestingKit.framework */; };
+		E1D0D87516D404AC00E33F4C /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1D0D87416D404AB00E33F4C /* Cocoa.framework */; };
+		E1D0D8A216D4050900E33F4C /* WPXMLRPCDataCleaner.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D0D89316D4050900E33F4C /* WPXMLRPCDataCleaner.m */; };
+		E1D0D8A316D4050900E33F4C /* WPXMLRPCEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D0D89516D4050900E33F4C /* WPXMLRPCEncoder.m */; };
+		E1D0D8A416D4050900E33F4C /* WPXMLRPCDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D0D89716D4050900E33F4C /* WPXMLRPCDecoder.m */; };
+		E1D0D8A516D4050900E33F4C /* WPXMLRPCDecoderDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D0D89916D4050900E33F4C /* WPXMLRPCDecoderDelegate.m */; };
+		E1D0D8AB16D4051700E33F4C /* WPXMLRPCDecoderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D0D8AA16D4051700E33F4C /* WPXMLRPCDecoderTest.m */; };
+		E1D0D8B716D4053B00E33F4C /* AlternativeDateFormatsTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = E1D0D8AD16D4053B00E33F4C /* AlternativeDateFormatsTestCase.xml */; };
+		E1D0D8B816D4053B00E33F4C /* AlternativeDateFormatsTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = E1D0D8AD16D4053B00E33F4C /* AlternativeDateFormatsTestCase.xml */; };
+		E1D0D8B916D4053B00E33F4C /* DefaultTypeTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = E1D0D8AE16D4053B00E33F4C /* DefaultTypeTestCase.xml */; };
+		E1D0D8BA16D4053B00E33F4C /* DefaultTypeTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = E1D0D8AE16D4053B00E33F4C /* DefaultTypeTestCase.xml */; };
+		E1D0D8BB16D4053B00E33F4C /* EmptyBooleanTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = E1D0D8AF16D4053B00E33F4C /* EmptyBooleanTestCase.xml */; };
+		E1D0D8BC16D4053B00E33F4C /* EmptyBooleanTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = E1D0D8AF16D4053B00E33F4C /* EmptyBooleanTestCase.xml */; };
+		E1D0D8BD16D4053B00E33F4C /* EmptyDataTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = E1D0D8B016D4053B00E33F4C /* EmptyDataTestCase.xml */; };
+		E1D0D8BE16D4053B00E33F4C /* EmptyDataTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = E1D0D8B016D4053B00E33F4C /* EmptyDataTestCase.xml */; };
+		E1D0D8BF16D4053B00E33F4C /* EmptyDoubleTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = E1D0D8B116D4053B00E33F4C /* EmptyDoubleTestCase.xml */; };
+		E1D0D8C016D4053B00E33F4C /* EmptyDoubleTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = E1D0D8B116D4053B00E33F4C /* EmptyDoubleTestCase.xml */; };
+		E1D0D8C116D4053B00E33F4C /* EmptyIntegerTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = E1D0D8B216D4053B00E33F4C /* EmptyIntegerTestCase.xml */; };
+		E1D0D8C216D4053B00E33F4C /* EmptyIntegerTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = E1D0D8B216D4053B00E33F4C /* EmptyIntegerTestCase.xml */; };
+		E1D0D8C316D4053B00E33F4C /* EmptyStringTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = E1D0D8B316D4053B00E33F4C /* EmptyStringTestCase.xml */; };
+		E1D0D8C416D4053B00E33F4C /* EmptyStringTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = E1D0D8B316D4053B00E33F4C /* EmptyStringTestCase.xml */; };
+		E1D0D8C516D4053B00E33F4C /* SimpleArrayTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = E1D0D8B416D4053B00E33F4C /* SimpleArrayTestCase.xml */; };
+		E1D0D8C616D4053B00E33F4C /* SimpleArrayTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = E1D0D8B416D4053B00E33F4C /* SimpleArrayTestCase.xml */; };
+		E1D0D8C716D4053B00E33F4C /* SimpleStructTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = E1D0D8B516D4053B00E33F4C /* SimpleStructTestCase.xml */; };
+		E1D0D8C816D4053B00E33F4C /* SimpleStructTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = E1D0D8B516D4053B00E33F4C /* SimpleStructTestCase.xml */; };
+		E1D0D8C916D4053B00E33F4C /* TestCases.plist in Resources */ = {isa = PBXBuildFile; fileRef = E1D0D8B616D4053B00E33F4C /* TestCases.plist */; };
+		E1D0D8CA16D4053B00E33F4C /* TestCases.plist in Resources */ = {isa = PBXBuildFile; fileRef = E1D0D8B616D4053B00E33F4C /* TestCases.plist */; };
+		E1D0D8CB16D4054000E33F4C /* WPXMLRPCDecoderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D0D8AA16D4051700E33F4C /* WPXMLRPCDecoderTest.m */; };
+		E1D0D8D016D4055500E33F4C /* WPXMLRPCDataCleaner.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D0D89316D4050900E33F4C /* WPXMLRPCDataCleaner.m */; };
+		E1D0D8D116D4055500E33F4C /* WPXMLRPCEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D0D89516D4050900E33F4C /* WPXMLRPCEncoder.m */; };
+		E1D0D8D216D4055500E33F4C /* WPXMLRPCDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D0D89716D4050900E33F4C /* WPXMLRPCDecoder.m */; };
+		E1D0D8D316D4055500E33F4C /* WPXMLRPCDecoderDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D0D89916D4050900E33F4C /* WPXMLRPCDecoderDelegate.m */; };
+		E1D0D8D716D4088000E33F4C /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E1D0D8D616D4088000E33F4C /* libiconv.dylib */; };
+		E1D0D8D916D4088D00E33F4C /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E1D0D8D816D4088D00E33F4C /* libiconv.dylib */; };
+		E1D0D8E016D416D100E33F4C /* WPBase64Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D0D8DF16D416D100E33F4C /* WPBase64Utils.m */; };
+		E1D0D8E116D416D100E33F4C /* WPBase64Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D0D8DF16D416D100E33F4C /* WPBase64Utils.m */; };
+		E1D0D8E416D41AFE00E33F4C /* WPStringUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D0D8E316D41AFE00E33F4C /* WPStringUtils.m */; };
+		E1D0D8E516D41AFE00E33F4C /* WPStringUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D0D8E316D41AFE00E33F4C /* WPStringUtils.m */; };
+		E1D0D8E716D41BF000E33F4C /* EscapingTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = E1D0D8E616D41BF000E33F4C /* EscapingTestCase.xml */; };
+		E1D0D8E816D41BF000E33F4C /* EscapingTestCase.xml in Resources */ = {isa = PBXBuildFile; fileRef = E1D0D8E616D41BF000E33F4C /* EscapingTestCase.xml */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		55D472F4DC414ECEA5AD0D42 /* libPods-WPXMLRPCTest-OSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WPXMLRPCTest-OSX.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		877A56A0005640AF9B9F6E1D /* libPods-WPXMLRPCTest-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WPXMLRPCTest-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1AFBA4D41D74473B74174DE /* Pods-WPXMLRPCTest-iOS.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WPXMLRPCTest-iOS.xcconfig"; path = "Pods/Pods-WPXMLRPCTest-iOS.xcconfig"; sourceTree = SOURCE_ROOT; };
+		B6828D1AA25E4CFDB3CE3A70 /* Pods-WPXMLRPCTest-OSX.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WPXMLRPCTest-OSX.xcconfig"; path = "Pods/Pods-WPXMLRPCTest-OSX.xcconfig"; sourceTree = SOURCE_ROOT; };
+		B784562C41AA4F70AD9E1683 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E156190216DBC5A2006532C4 /* RequestTestCase.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = RequestTestCase.xml; sourceTree = "<group>"; };
+		E156190516DBCEA0006532C4 /* entities.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = entities.xml; sourceTree = "<group>"; };
+		E156190816DBCEF3006532C4 /* entitiesDecoded.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = entitiesDecoded.xml; sourceTree = "<group>"; };
+		E156190B16DBD0FB006532C4 /* WPXMLRPCEntitiesTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPXMLRPCEntitiesTest.h; sourceTree = "<group>"; };
+		E156190C16DBD0FB006532C4 /* WPXMLRPCEntitiesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPXMLRPCEntitiesTest.m; sourceTree = "<group>"; };
+		E156190F16DBD90D006532C4 /* WPXMLRPCEncoderTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPXMLRPCEncoderTest.h; sourceTree = "<group>"; };
+		E156191016DBD90D006532C4 /* WPXMLRPCEncoderTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPXMLRPCEncoderTest.m; sourceTree = "<group>"; };
+		E171CDEC170DE791005FE32A /* NoXmlResponseTestCase.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = NoXmlResponseTestCase.xml; sourceTree = "<group>"; };
+		E1C689CB16D4377D00B7732D /* WPBase64UtilsTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPBase64UtilsTest.h; sourceTree = "<group>"; };
+		E1C689CC16D4377D00B7732D /* WPBase64UtilsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPBase64UtilsTest.m; sourceTree = "<group>"; };
+		E1C689CF16D437EF00B7732D /* TestImage.base64 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TestImage.base64; sourceTree = "<group>"; };
+		E1C689D216D437F800B7732D /* TestImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TestImage.png; sourceTree = "<group>"; };
+		E1C689D516D459BD00B7732D /* IncompleteXmlTest.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = IncompleteXmlTest.xml; sourceTree = "<group>"; };
+		E1D0D85716D4048200E33F4C /* WPXMLRPCTest-iOS.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "WPXMLRPCTest-iOS.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1D0D85A16D4048200E33F4C /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		E1D0D85C16D4048200E33F4C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		E1D0D85E16D4048200E33F4C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		E1D0D86216D4048200E33F4C /* WPXMLRPCTest-iOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WPXMLRPCTest-iOS-Info.plist"; sourceTree = "<group>"; };
+		E1D0D86916D4048200E33F4C /* WPXMLRPCTest-iOS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WPXMLRPCTest-iOS-Prefix.pch"; sourceTree = "<group>"; };
+		E1D0D87216D404AB00E33F4C /* WPXMLRPCTest-OSX.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "WPXMLRPCTest-OSX.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1D0D87416D404AB00E33F4C /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		E1D0D87716D404AC00E33F4C /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		E1D0D87816D404AC00E33F4C /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		E1D0D87916D404AC00E33F4C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E1D0D87C16D404AC00E33F4C /* WPXMLRPCTest-OSX-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WPXMLRPCTest-OSX-Info.plist"; sourceTree = "<group>"; };
+		E1D0D88316D404AC00E33F4C /* WPXMLRPCTest-OSX-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WPXMLRPCTest-OSX-Prefix.pch"; sourceTree = "<group>"; };
+		E1D0D89216D4050900E33F4C /* WPXMLRPCDataCleaner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPXMLRPCDataCleaner.h; sourceTree = "<group>"; };
+		E1D0D89316D4050900E33F4C /* WPXMLRPCDataCleaner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPXMLRPCDataCleaner.m; sourceTree = "<group>"; };
+		E1D0D89416D4050900E33F4C /* WPXMLRPCEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPXMLRPCEncoder.h; sourceTree = "<group>"; };
+		E1D0D89516D4050900E33F4C /* WPXMLRPCEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPXMLRPCEncoder.m; sourceTree = "<group>"; };
+		E1D0D89616D4050900E33F4C /* WPXMLRPCDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPXMLRPCDecoder.h; sourceTree = "<group>"; };
+		E1D0D89716D4050900E33F4C /* WPXMLRPCDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPXMLRPCDecoder.m; sourceTree = "<group>"; };
+		E1D0D89816D4050900E33F4C /* WPXMLRPCDecoderDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPXMLRPCDecoderDelegate.h; sourceTree = "<group>"; };
+		E1D0D89916D4050900E33F4C /* WPXMLRPCDecoderDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPXMLRPCDecoderDelegate.m; sourceTree = "<group>"; };
+		E1D0D8A916D4051700E33F4C /* WPXMLRPCDecoderTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPXMLRPCDecoderTest.h; sourceTree = "<group>"; };
+		E1D0D8AA16D4051700E33F4C /* WPXMLRPCDecoderTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPXMLRPCDecoderTest.m; sourceTree = "<group>"; };
+		E1D0D8AD16D4053B00E33F4C /* AlternativeDateFormatsTestCase.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = AlternativeDateFormatsTestCase.xml; sourceTree = "<group>"; };
+		E1D0D8AE16D4053B00E33F4C /* DefaultTypeTestCase.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = DefaultTypeTestCase.xml; sourceTree = "<group>"; };
+		E1D0D8AF16D4053B00E33F4C /* EmptyBooleanTestCase.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = EmptyBooleanTestCase.xml; sourceTree = "<group>"; };
+		E1D0D8B016D4053B00E33F4C /* EmptyDataTestCase.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = EmptyDataTestCase.xml; sourceTree = "<group>"; };
+		E1D0D8B116D4053B00E33F4C /* EmptyDoubleTestCase.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = EmptyDoubleTestCase.xml; sourceTree = "<group>"; };
+		E1D0D8B216D4053B00E33F4C /* EmptyIntegerTestCase.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = EmptyIntegerTestCase.xml; sourceTree = "<group>"; };
+		E1D0D8B316D4053B00E33F4C /* EmptyStringTestCase.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = EmptyStringTestCase.xml; sourceTree = "<group>"; };
+		E1D0D8B416D4053B00E33F4C /* SimpleArrayTestCase.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SimpleArrayTestCase.xml; sourceTree = "<group>"; };
+		E1D0D8B516D4053B00E33F4C /* SimpleStructTestCase.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SimpleStructTestCase.xml; sourceTree = "<group>"; };
+		E1D0D8B616D4053B00E33F4C /* TestCases.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = TestCases.plist; sourceTree = "<group>"; };
+		E1D0D8D616D4088000E33F4C /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/usr/lib/libiconv.dylib; sourceTree = DEVELOPER_DIR; };
+		E1D0D8D816D4088D00E33F4C /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/usr/lib/libiconv.dylib; sourceTree = DEVELOPER_DIR; };
+		E1D0D8DA16D4157B00E33F4C /* WPXMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPXMLRPC.h; sourceTree = "<group>"; };
+		E1D0D8DE16D416D100E33F4C /* WPBase64Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPBase64Utils.h; sourceTree = "<group>"; };
+		E1D0D8DF16D416D100E33F4C /* WPBase64Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPBase64Utils.m; sourceTree = "<group>"; };
+		E1D0D8E216D41AFD00E33F4C /* WPStringUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPStringUtils.h; sourceTree = "<group>"; };
+		E1D0D8E316D41AFE00E33F4C /* WPStringUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPStringUtils.m; sourceTree = "<group>"; };
+		E1D0D8E616D41BF000E33F4C /* EscapingTestCase.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = EscapingTestCase.xml; sourceTree = "<group>"; };
+		F2E2BE4331E34958983F10CB /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E1D0D85316D4048200E33F4C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1D0D8D916D4088D00E33F4C /* libiconv.dylib in Frameworks */,
+				E1D0D85B16D4048200E33F4C /* SenTestingKit.framework in Frameworks */,
+				E1D0D85D16D4048200E33F4C /* UIKit.framework in Frameworks */,
+				E1D0D85F16D4048200E33F4C /* Foundation.framework in Frameworks */,
+				1FDD3BC98AB142A49E0D28C8 /* libPods.a in Frameworks */,
+				609D5C4B847D477A93B60ABB /* libPods-WPXMLRPCTest-iOS.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E1D0D86E16D404AB00E33F4C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1D0D8D716D4088000E33F4C /* libiconv.dylib in Frameworks */,
+				E1D0D87316D404AB00E33F4C /* SenTestingKit.framework in Frameworks */,
+				E1D0D87516D404AC00E33F4C /* Cocoa.framework in Frameworks */,
+				87B8CEB01EE84A35BE33679A /* libPods-WPXMLRPCTest-OSX.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E1D0D84B16D4033000E33F4C = {
+			isa = PBXGroup;
+			children = (
+				E1D0D8AC16D4053B00E33F4C /* Test Data */,
+				E1D0D8A816D4051700E33F4C /* Tests */,
+				E1D0D88716D404F200E33F4C /* WPXMLRPC */,
+				E1D0D86016D4048200E33F4C /* WPXMLRPCTest-iOS */,
+				E1D0D87A16D404AC00E33F4C /* WPXMLRPCTest-OSX */,
+				E1D0D85916D4048200E33F4C /* Frameworks */,
+				E1D0D85816D4048200E33F4C /* Products */,
+				F2E2BE4331E34958983F10CB /* Pods.xcconfig */,
+				B6828D1AA25E4CFDB3CE3A70 /* Pods-WPXMLRPCTest-OSX.xcconfig */,
+				B1AFBA4D41D74473B74174DE /* Pods-WPXMLRPCTest-iOS.xcconfig */,
+			);
+			sourceTree = "<group>";
+		};
+		E1D0D85816D4048200E33F4C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E1D0D85716D4048200E33F4C /* WPXMLRPCTest-iOS.octest */,
+				E1D0D87216D404AB00E33F4C /* WPXMLRPCTest-OSX.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E1D0D85916D4048200E33F4C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E1D0D8D816D4088D00E33F4C /* libiconv.dylib */,
+				E1D0D8D616D4088000E33F4C /* libiconv.dylib */,
+				E1D0D85A16D4048200E33F4C /* SenTestingKit.framework */,
+				E1D0D85C16D4048200E33F4C /* UIKit.framework */,
+				E1D0D85E16D4048200E33F4C /* Foundation.framework */,
+				E1D0D87416D404AB00E33F4C /* Cocoa.framework */,
+				E1D0D87616D404AC00E33F4C /* Other Frameworks */,
+				B784562C41AA4F70AD9E1683 /* libPods.a */,
+				55D472F4DC414ECEA5AD0D42 /* libPods-WPXMLRPCTest-OSX.a */,
+				877A56A0005640AF9B9F6E1D /* libPods-WPXMLRPCTest-iOS.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E1D0D86016D4048200E33F4C /* WPXMLRPCTest-iOS */ = {
+			isa = PBXGroup;
+			children = (
+				E1D0D86116D4048200E33F4C /* Supporting Files */,
+			);
+			path = "WPXMLRPCTest-iOS";
+			sourceTree = "<group>";
+		};
+		E1D0D86116D4048200E33F4C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E1D0D86216D4048200E33F4C /* WPXMLRPCTest-iOS-Info.plist */,
+				E1D0D86916D4048200E33F4C /* WPXMLRPCTest-iOS-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E1D0D87616D404AC00E33F4C /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E1D0D87716D404AC00E33F4C /* AppKit.framework */,
+				E1D0D87816D404AC00E33F4C /* CoreData.framework */,
+				E1D0D87916D404AC00E33F4C /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		E1D0D87A16D404AC00E33F4C /* WPXMLRPCTest-OSX */ = {
+			isa = PBXGroup;
+			children = (
+				E1D0D87B16D404AC00E33F4C /* Supporting Files */,
+			);
+			path = "WPXMLRPCTest-OSX";
+			sourceTree = "<group>";
+		};
+		E1D0D87B16D404AC00E33F4C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E1D0D87C16D404AC00E33F4C /* WPXMLRPCTest-OSX-Info.plist */,
+				E1D0D88316D404AC00E33F4C /* WPXMLRPCTest-OSX-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E1D0D88716D404F200E33F4C /* WPXMLRPC */ = {
+			isa = PBXGroup;
+			children = (
+				E1D0D89216D4050900E33F4C /* WPXMLRPCDataCleaner.h */,
+				E1D0D89316D4050900E33F4C /* WPXMLRPCDataCleaner.m */,
+				E1D0D89416D4050900E33F4C /* WPXMLRPCEncoder.h */,
+				E1D0D89516D4050900E33F4C /* WPXMLRPCEncoder.m */,
+				E1D0D89616D4050900E33F4C /* WPXMLRPCDecoder.h */,
+				E1D0D89716D4050900E33F4C /* WPXMLRPCDecoder.m */,
+				E1D0D89816D4050900E33F4C /* WPXMLRPCDecoderDelegate.h */,
+				E1D0D89916D4050900E33F4C /* WPXMLRPCDecoderDelegate.m */,
+				E1D0D8DA16D4157B00E33F4C /* WPXMLRPC.h */,
+				E1D0D8DE16D416D100E33F4C /* WPBase64Utils.h */,
+				E1D0D8DF16D416D100E33F4C /* WPBase64Utils.m */,
+				E1D0D8E216D41AFD00E33F4C /* WPStringUtils.h */,
+				E1D0D8E316D41AFE00E33F4C /* WPStringUtils.m */,
+			);
+			name = WPXMLRPC;
+			path = ../WPXMLRPC;
+			sourceTree = "<group>";
+		};
+		E1D0D8A816D4051700E33F4C /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				E1D0D8A916D4051700E33F4C /* WPXMLRPCDecoderTest.h */,
+				E1D0D8AA16D4051700E33F4C /* WPXMLRPCDecoderTest.m */,
+				E1C689CB16D4377D00B7732D /* WPBase64UtilsTest.h */,
+				E1C689CC16D4377D00B7732D /* WPBase64UtilsTest.m */,
+				E156190B16DBD0FB006532C4 /* WPXMLRPCEntitiesTest.h */,
+				E156190C16DBD0FB006532C4 /* WPXMLRPCEntitiesTest.m */,
+				E156190F16DBD90D006532C4 /* WPXMLRPCEncoderTest.h */,
+				E156191016DBD90D006532C4 /* WPXMLRPCEncoderTest.m */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		E1D0D8AC16D4053B00E33F4C /* Test Data */ = {
+			isa = PBXGroup;
+			children = (
+				E1D0D8AD16D4053B00E33F4C /* AlternativeDateFormatsTestCase.xml */,
+				E1D0D8AE16D4053B00E33F4C /* DefaultTypeTestCase.xml */,
+				E1D0D8AF16D4053B00E33F4C /* EmptyBooleanTestCase.xml */,
+				E1D0D8B016D4053B00E33F4C /* EmptyDataTestCase.xml */,
+				E1D0D8B116D4053B00E33F4C /* EmptyDoubleTestCase.xml */,
+				E1D0D8B216D4053B00E33F4C /* EmptyIntegerTestCase.xml */,
+				E1D0D8B316D4053B00E33F4C /* EmptyStringTestCase.xml */,
+				E1D0D8E616D41BF000E33F4C /* EscapingTestCase.xml */,
+				E1D0D8B416D4053B00E33F4C /* SimpleArrayTestCase.xml */,
+				E1D0D8B516D4053B00E33F4C /* SimpleStructTestCase.xml */,
+				E1D0D8B616D4053B00E33F4C /* TestCases.plist */,
+				E1C689CF16D437EF00B7732D /* TestImage.base64 */,
+				E1C689D216D437F800B7732D /* TestImage.png */,
+				E1C689D516D459BD00B7732D /* IncompleteXmlTest.xml */,
+				E156190216DBC5A2006532C4 /* RequestTestCase.xml */,
+				E156190516DBCEA0006532C4 /* entities.xml */,
+				E156190816DBCEF3006532C4 /* entitiesDecoded.xml */,
+				E171CDEC170DE791005FE32A /* NoXmlResponseTestCase.xml */,
+			);
+			path = "Test Data";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E1D0D85616D4048200E33F4C /* WPXMLRPCTest-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E1D0D86A16D4048200E33F4C /* Build configuration list for PBXNativeTarget "WPXMLRPCTest-iOS" */;
+			buildPhases = (
+				E1D0D85216D4048200E33F4C /* Sources */,
+				E1D0D85316D4048200E33F4C /* Frameworks */,
+				E1D0D85416D4048200E33F4C /* Resources */,
+				E1D0D85516D4048200E33F4C /* ShellScript */,
+				F0587B6299B34AAA9FB66B59 /* Copy Pods Resources */,
+				BFBAC2EF15BD48C69004C938 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "WPXMLRPCTest-iOS";
+			productName = "WPXMLRPCTest-iOS";
+			productReference = E1D0D85716D4048200E33F4C /* WPXMLRPCTest-iOS.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+		E1D0D87116D404AB00E33F4C /* WPXMLRPCTest-OSX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E1D0D88416D404AC00E33F4C /* Build configuration list for PBXNativeTarget "WPXMLRPCTest-OSX" */;
+			buildPhases = (
+				E1D0D86D16D404AB00E33F4C /* Sources */,
+				E1D0D86E16D404AB00E33F4C /* Frameworks */,
+				E1D0D86F16D404AB00E33F4C /* Resources */,
+				E1D0D87016D404AB00E33F4C /* ShellScript */,
+				257EC4085F5244599532958E /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "WPXMLRPCTest-OSX";
+			productName = "WPXMLRPCTest-OSX";
+			productReference = E1D0D87216D404AB00E33F4C /* WPXMLRPCTest-OSX.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E1D0D84C16D4033000E33F4C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+			};
+			buildConfigurationList = E1D0D84F16D4033000E33F4C /* Build configuration list for PBXProject "WPXMLRPCTest" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = E1D0D84B16D4033000E33F4C;
+			productRefGroup = E1D0D85816D4048200E33F4C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E1D0D85616D4048200E33F4C /* WPXMLRPCTest-iOS */,
+				E1D0D87116D404AB00E33F4C /* WPXMLRPCTest-OSX */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E1D0D85416D4048200E33F4C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1D0D8B716D4053B00E33F4C /* AlternativeDateFormatsTestCase.xml in Resources */,
+				E1D0D8B916D4053B00E33F4C /* DefaultTypeTestCase.xml in Resources */,
+				E1D0D8BB16D4053B00E33F4C /* EmptyBooleanTestCase.xml in Resources */,
+				E1D0D8BD16D4053B00E33F4C /* EmptyDataTestCase.xml in Resources */,
+				E1D0D8BF16D4053B00E33F4C /* EmptyDoubleTestCase.xml in Resources */,
+				E1D0D8C116D4053B00E33F4C /* EmptyIntegerTestCase.xml in Resources */,
+				E1D0D8C316D4053B00E33F4C /* EmptyStringTestCase.xml in Resources */,
+				E1D0D8C516D4053B00E33F4C /* SimpleArrayTestCase.xml in Resources */,
+				E1D0D8C716D4053B00E33F4C /* SimpleStructTestCase.xml in Resources */,
+				E1D0D8C916D4053B00E33F4C /* TestCases.plist in Resources */,
+				E1D0D8E716D41BF000E33F4C /* EscapingTestCase.xml in Resources */,
+				E1C689D016D437EF00B7732D /* TestImage.base64 in Resources */,
+				E1C689D316D437F800B7732D /* TestImage.png in Resources */,
+				E1C689D616D459BD00B7732D /* IncompleteXmlTest.xml in Resources */,
+				E156190316DBC5A2006532C4 /* RequestTestCase.xml in Resources */,
+				E156190616DBCEA0006532C4 /* entities.xml in Resources */,
+				E156190916DBCEF3006532C4 /* entitiesDecoded.xml in Resources */,
+				E171CDED170DE791005FE32A /* NoXmlResponseTestCase.xml in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E1D0D86F16D404AB00E33F4C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1D0D8B816D4053B00E33F4C /* AlternativeDateFormatsTestCase.xml in Resources */,
+				E1D0D8BA16D4053B00E33F4C /* DefaultTypeTestCase.xml in Resources */,
+				E1D0D8BC16D4053B00E33F4C /* EmptyBooleanTestCase.xml in Resources */,
+				E1D0D8BE16D4053B00E33F4C /* EmptyDataTestCase.xml in Resources */,
+				E1D0D8C016D4053B00E33F4C /* EmptyDoubleTestCase.xml in Resources */,
+				E1D0D8C216D4053B00E33F4C /* EmptyIntegerTestCase.xml in Resources */,
+				E1D0D8C416D4053B00E33F4C /* EmptyStringTestCase.xml in Resources */,
+				E1D0D8C616D4053B00E33F4C /* SimpleArrayTestCase.xml in Resources */,
+				E1D0D8C816D4053B00E33F4C /* SimpleStructTestCase.xml in Resources */,
+				E1D0D8CA16D4053B00E33F4C /* TestCases.plist in Resources */,
+				E1D0D8E816D41BF000E33F4C /* EscapingTestCase.xml in Resources */,
+				E1C689D116D437EF00B7732D /* TestImage.base64 in Resources */,
+				E1C689D416D437F800B7732D /* TestImage.png in Resources */,
+				E1C689D716D459BD00B7732D /* IncompleteXmlTest.xml in Resources */,
+				E156190416DBC630006532C4 /* RequestTestCase.xml in Resources */,
+				E156190716DBCEA7006532C4 /* entities.xml in Resources */,
+				E156190A16DBCFFD006532C4 /* entitiesDecoded.xml in Resources */,
+				E171CDEE170DEAF2005FE32A /* NoXmlResponseTestCase.xml in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		257EC4085F5244599532958E /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-WPXMLRPCTest-OSX-resources.sh\"\n";
+		};
+		BFBAC2EF15BD48C69004C938 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-WPXMLRPCTest-iOS-resources.sh\"\n";
+		};
+		E1D0D85516D4048200E33F4C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+		E1D0D87016D404AB00E33F4C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+		F0587B6299B34AAA9FB66B59 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E1D0D85216D4048200E33F4C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1D0D8A216D4050900E33F4C /* WPXMLRPCDataCleaner.m in Sources */,
+				E1D0D8A316D4050900E33F4C /* WPXMLRPCEncoder.m in Sources */,
+				E1D0D8A416D4050900E33F4C /* WPXMLRPCDecoder.m in Sources */,
+				E1D0D8A516D4050900E33F4C /* WPXMLRPCDecoderDelegate.m in Sources */,
+				E1D0D8AB16D4051700E33F4C /* WPXMLRPCDecoderTest.m in Sources */,
+				E1D0D8E016D416D100E33F4C /* WPBase64Utils.m in Sources */,
+				E1D0D8E416D41AFE00E33F4C /* WPStringUtils.m in Sources */,
+				E1C689CD16D4377D00B7732D /* WPBase64UtilsTest.m in Sources */,
+				E156190D16DBD0FB006532C4 /* WPXMLRPCEntitiesTest.m in Sources */,
+				E156191116DBD90D006532C4 /* WPXMLRPCEncoderTest.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E1D0D86D16D404AB00E33F4C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1D0D8CB16D4054000E33F4C /* WPXMLRPCDecoderTest.m in Sources */,
+				E1D0D8D016D4055500E33F4C /* WPXMLRPCDataCleaner.m in Sources */,
+				E1D0D8D116D4055500E33F4C /* WPXMLRPCEncoder.m in Sources */,
+				E1D0D8D216D4055500E33F4C /* WPXMLRPCDecoder.m in Sources */,
+				E1D0D8D316D4055500E33F4C /* WPXMLRPCDecoderDelegate.m in Sources */,
+				E1D0D8E116D416D100E33F4C /* WPBase64Utils.m in Sources */,
+				E1D0D8E516D41AFE00E33F4C /* WPStringUtils.m in Sources */,
+				E1C689CE16D4377D00B7732D /* WPBase64UtilsTest.m in Sources */,
+				E156190E16DBD0FB006532C4 /* WPXMLRPCEntitiesTest.m in Sources */,
+				E156191216DBD90D006532C4 /* WPXMLRPCEncoderTest.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		E1D0D85016D4033000E33F4C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+			};
+			name = Debug;
+		};
+		E1D0D85116D4033000E33F4C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+			};
+			name = Release;
+		};
+		E1D0D86B16D4048200E33F4C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B1AFBA4D41D74473B74174DE /* Pods-WPXMLRPCTest-iOS.xcconfig */;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WPXMLRPCTest-iOS/WPXMLRPCTest-iOS-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "WPXMLRPCTest-iOS/WPXMLRPCTest-iOS-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		E1D0D86C16D4048200E33F4C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B1AFBA4D41D74473B74174DE /* Pods-WPXMLRPCTest-iOS.xcconfig */;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WPXMLRPCTest-iOS/WPXMLRPCTest-iOS-Prefix.pch";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "WPXMLRPCTest-iOS/WPXMLRPCTest-iOS-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+		E1D0D88516D404AC00E33F4C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B6828D1AA25E4CFDB3CE3A70 /* Pods-WPXMLRPCTest-OSX.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WPXMLRPCTest-OSX/WPXMLRPCTest-OSX-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "WPXMLRPCTest-OSX/WPXMLRPCTest-OSX-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		E1D0D88616D404AC00E33F4C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B6828D1AA25E4CFDB3CE3A70 /* Pods-WPXMLRPCTest-OSX.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WPXMLRPCTest-OSX/WPXMLRPCTest-OSX-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "WPXMLRPCTest-OSX/WPXMLRPCTest-OSX-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E1D0D84F16D4033000E33F4C /* Build configuration list for PBXProject "WPXMLRPCTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E1D0D85016D4033000E33F4C /* Debug */,
+				E1D0D85116D4033000E33F4C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E1D0D86A16D4048200E33F4C /* Build configuration list for PBXNativeTarget "WPXMLRPCTest-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E1D0D86B16D4048200E33F4C /* Debug */,
+				E1D0D86C16D4048200E33F4C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E1D0D88416D404AC00E33F4C /* Build configuration list for PBXNativeTarget "WPXMLRPCTest-OSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E1D0D88516D404AC00E33F4C /* Debug */,
+				E1D0D88616D404AC00E33F4C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E1D0D84C16D4033000E33F4C /* Project object */;
+}

@@ -1,0 +1,33 @@
+<h2>NSAttributedString HTML Additions</h2>
+<h3>Introduction</h3>
+<p>This project aims to duplicate the methods <u>present on Mac OSX</u> which allow creation of <font face="Courier" color="blue">NSAttributedString</font> from HTML code.
+This is useful for drawing simple rich text - like this document - without having to use a UIWebView.</p>
+<p><img src="Oliver.jpg" width="100" height="100"></p>
+<p style="color:orange;"><i>Hi! I'm Oliver and I appreciate your help!</i></p>
+<h3>Features</h3>
+<p>At <em>present</em> the following tags are <b>supported</b>:</p>
+<ul><li>Headers <b>H1</b> - <b>H6</b></li><li>Paragraphs: <b>P</b></li><li>Bold: <b>B</b>, <b>STRONG</b></li><li>Italic: <b>I</b>, <b>EM</b></li>
+<li>Underline <b>U</b></li>
+<li>Superscript <b>SUP</b> and Subscript <b>SUB</b>, e.g. e = mc<sup>2</sup></li>
+<li>Strike Out <b>DEL</b>, e.g. <del>Something Removed</del> or <b>STRIKE</b> e.g. <strike>Something Striked</strike></li>
+<li><b>FONT</b> (face,color and size 1-7)</li>
+<li>Horizontal Rule <b>HR</b> (coloring via background-color style, simplified)</li>
+<li>Hyperlinks <b>A</b> (<a href="http://www.cocoanetics.com">Formatting</a> only, clickable as custom view)</li>
+<li>Unordered Lists <b>LI</b></li>
+<li>Ordered Lists <b>OL</b></li></ul>
+<p>Currently attributes are inherited from enclosed tags via brute force. I don't know if this is accurate.</p>
+<h3>Known Differences</h3>
+	<p>In many aspects DTCoreText is superior to the Mac version of generating NSAttributedStrings from HTML. These become apparent in the MacUnitTest where the output from both is directly compared. I am summarizing them here for references.</p>
+	<p>In the following "Mac" means the initWithHTML: methods there, "DTCoreText" means DTCoreText's initWithHTML and/or DTHTMLAttributedStringBuilder</p>
+	<ul>
+		<li>Mac does not support the video tag, DTCoreText does.</li>
+		<li>DTCoreText is able to synthesize small caps by putting all characters in upper case and using a second smaller font for lowercase characters.</li>
+		<li>I suspect that Mac makes use of the -webkit-margin-* CSS styles for spacing the paragraphs, DTCoreText only uses the -webkit-margin-bottom and margin-bottom at present.</li>
+		<li>Mac supports CSS following addresses, e.g. "ul ul" to change the list style for stacked lists. DTCoreText does not support that and so list bullets stay the same for multiple levels.</li>
+	</ul>
+
+<h3>Please Help!</h3>
+<p>If you find brief test cases where the created <font face="Courier" color="blue">NSAttributedString</font> differs from the version on OSX please send them to us!</p>
+<p>Also there are many small things that you could help this project with. You can either implement these yourself or sponsor their development.</p>	
+	<p>Follow <a href="http://twitter.com/cocoanetics">@cocoanetics</a> on Twitter</p>
+<p>This code is covered by a BSD License. &copy; 2011 Oliver Drobnik</p>
