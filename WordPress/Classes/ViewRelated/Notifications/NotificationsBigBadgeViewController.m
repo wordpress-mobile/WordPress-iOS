@@ -34,73 +34,73 @@
 {
     [super viewDidLoad];
     
-    [self.view setBackgroundColor:[WPStyleGuide itsEverywhereGrey]];
-    
-    _scrollView = [[UIScrollView alloc] init];
-    [_scrollView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [_scrollView setScrollEnabled:YES];
-    
-    // Create badge image view
-    _badgeImageView = [[UIImageView alloc] init];
-    [_badgeImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [_badgeImageView setContentMode: UIViewContentModeScaleAspectFit];
-    [_scrollView addSubview:_badgeImageView];
-    
-    // Set icon URL and start a wee animation to catch the eye
-    NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_note.icon]];
-    __weak UIImageView *weakBadgeImageView = _badgeImageView;
-    [_badgeImageView setImageWithURLRequest:urlRequest
-                           placeholderImage:nil
-                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                        [weakBadgeImageView setImage: image];
-                                        weakBadgeImageView.transform = CGAffineTransformMakeScale(0.0,0.0);
-                                        [UIView animateWithDuration:0.5f
-                                                              delay:0.2f
-                                             usingSpringWithDamping:0.7f
-                                              initialSpringVelocity:0.5f
-                                                            options:nil
-                                                         animations:^{
-                                                             weakBadgeImageView.transform = CGAffineTransformMakeScale(1.0,1.0);
-                                                         }
-                                                         completion:nil
-                                         ];
-                                    }
-                                    failure:nil
-     ];
-    
-    // Create note label
-    _noteLabel = [[DTAttributedLabel alloc] initWithFrame:CGRectMake(0.0, 0.0, IS_IPAD ? 480.0f : 320.0f, 0.0f)];
-    [_noteLabel setClipsToBounds:NO];
-    [_noteLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [_noteLabel setLayoutFrameHeightIsConstrainedByBounds:NO];
-    [_noteLabel setDelegate:self];
-    [_noteLabel setBackgroundColor:[UIColor clearColor]];
-    [_noteLabel setEdgeInsets:UIEdgeInsetsMake(0.0f, 20.0f, 0.0f, 20.0f)];
-    [_noteLabel setNumberOfLines:0];
-    
-    [_scrollView addSubview:_noteLabel];
-    
-    // Set note label from HTML content
-    NSString *noteBody = _note.bodyHtml;
-    if (!noteBody) {
-        noteBody = _note.titleForDisplay;
-    }
-    NSAttributedString *noteContentAttributedString = [[NSAttributedString alloc] initWithHTMLData:[noteBody dataUsingEncoding:NSUTF8StringEncoding] options:[WPStyleGuide defaultDTCoreTextOptions] documentAttributes:nil];
-    [_noteLabel setAttributedString:noteContentAttributedString];
-    
-    // Adjust height of noteLabel to match height of text content
-    DTCoreTextLayouter *layouter = [[DTCoreTextLayouter alloc] initWithAttributedString:noteContentAttributedString];
-    CGRect maxRect = CGRectMake(0.0f, 0.0f, _noteLabel.frame.size.width, CGFLOAT_HEIGHT_UNKNOWN);
-    NSRange entireString = NSMakeRange(0, [noteContentAttributedString length]);
-    DTCoreTextLayoutFrame *layoutFrame = [layouter layoutFrameWithRect:maxRect range:entireString];
-    CGSize sizeNeeded = layoutFrame.frame.size;
-    CGRect frame = _noteLabel.frame;
-    frame.size.height = sizeNeeded.height;
-    _noteLabel.frame = frame;
-    
-    [self.view addSubview:_scrollView];
-    
-    [self addLayoutConstraints];
+//    [self.view setBackgroundColor:[WPStyleGuide itsEverywhereGrey]];
+//    
+//    _scrollView = [[UIScrollView alloc] init];
+//    [_scrollView setTranslatesAutoresizingMaskIntoConstraints:NO];
+//    [_scrollView setScrollEnabled:YES];
+//    
+//    // Create badge image view
+//    _badgeImageView = [[UIImageView alloc] init];
+//    [_badgeImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
+//    [_badgeImageView setContentMode: UIViewContentModeScaleAspectFit];
+//    [_scrollView addSubview:_badgeImageView];
+//    
+//    // Set icon URL and start a wee animation to catch the eye
+//    NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_note.icon]];
+//    __weak UIImageView *weakBadgeImageView = _badgeImageView;
+//    [_badgeImageView setImageWithURLRequest:urlRequest
+//                           placeholderImage:nil
+//                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+//                                        [weakBadgeImageView setImage: image];
+//                                        weakBadgeImageView.transform = CGAffineTransformMakeScale(0.0,0.0);
+//                                        [UIView animateWithDuration:0.5f
+//                                                              delay:0.2f
+//                                             usingSpringWithDamping:0.7f
+//                                              initialSpringVelocity:0.5f
+//                                                            options:nil
+//                                                         animations:^{
+//                                                             weakBadgeImageView.transform = CGAffineTransformMakeScale(1.0,1.0);
+//                                                         }
+//                                                         completion:nil
+//                                         ];
+//                                    }
+//                                    failure:nil
+//     ];
+//    
+//    // Create note label
+//    _noteLabel = [[DTAttributedLabel alloc] initWithFrame:CGRectMake(0.0, 0.0, IS_IPAD ? 480.0f : 320.0f, 0.0f)];
+//    [_noteLabel setClipsToBounds:NO];
+//    [_noteLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+//    [_noteLabel setLayoutFrameHeightIsConstrainedByBounds:NO];
+//    [_noteLabel setDelegate:self];
+//    [_noteLabel setBackgroundColor:[UIColor clearColor]];
+//    [_noteLabel setEdgeInsets:UIEdgeInsetsMake(0.0f, 20.0f, 0.0f, 20.0f)];
+//    [_noteLabel setNumberOfLines:0];
+//    
+//    [_scrollView addSubview:_noteLabel];
+//    
+//    // Set note label from HTML content
+//    NSString *noteBody = _note.bodyHtml;
+//    if (!noteBody) {
+//        noteBody = _note.titleForDisplay;
+//    }
+//    NSAttributedString *noteContentAttributedString = [[NSAttributedString alloc] initWithHTMLData:[noteBody dataUsingEncoding:NSUTF8StringEncoding] options:[WPStyleGuide defaultDTCoreTextOptions] documentAttributes:nil];
+//    [_noteLabel setAttributedString:noteContentAttributedString];
+//    
+//    // Adjust height of noteLabel to match height of text content
+//    DTCoreTextLayouter *layouter = [[DTCoreTextLayouter alloc] initWithAttributedString:noteContentAttributedString];
+//    CGRect maxRect = CGRectMake(0.0f, 0.0f, _noteLabel.frame.size.width, CGFLOAT_HEIGHT_UNKNOWN);
+//    NSRange entireString = NSMakeRange(0, [noteContentAttributedString length]);
+//    DTCoreTextLayoutFrame *layoutFrame = [layouter layoutFrameWithRect:maxRect range:entireString];
+//    CGSize sizeNeeded = layoutFrame.frame.size;
+//    CGRect frame = _noteLabel.frame;
+//    frame.size.height = sizeNeeded.height;
+//    _noteLabel.frame = frame;
+//    
+//    [self.view addSubview:_scrollView];
+//    
+//    [self addLayoutConstraints];
 }
 
 /**
