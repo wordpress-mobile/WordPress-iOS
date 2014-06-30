@@ -87,48 +87,18 @@
 		destRect = CGRectMake(0, 0, scaledWidth, scaledHeight);
 	}
 	
-	// Create appropriately modified image.
-	UIImage *image = nil;
+	UIImage *finalImage = nil;
 	
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_4_0
-	CGImageRef sourceImg = nil;
-	if ([UIScreen instancesRespondToSelector:@selector(scale)]) {
-		UIGraphicsBeginImageContextWithOptions(destRect.size, opaque, 0.f); // 0.f for scale means "scale for device's main screen".
-		sourceImg = CGImageCreateWithImageInRect([self CGImage], sourceRect); // cropping happens here.
-		image = [UIImage imageWithCGImage:sourceImg scale:0.0 orientation:self.imageOrientation]; // create cropped UIImage.
-		
-	} else {
-		UIGraphicsBeginImageContext(destRect.size);
-		sourceImg = CGImageCreateWithImageInRect([self CGImage], sourceRect); // cropping happens here.
-		image = [UIImage imageWithCGImage:sourceImg]; // create cropped UIImage.
-	}
+	static const CGFloat kScaleForDevicesMainScreen = 0.f;
+	UIGraphicsBeginImageContextWithOptions(destRect.size, opaque, kScaleForDevicesMainScreen);
 	
-	CGImageRelease(sourceImg);
-	[image drawInRect:destRect]; // the actual scaling happens here, and orientation is taken care of automatically.
-	image = UIGraphicsGetImageFromCurrentImageContext();
+	finalImage = [self cropToRect:sourceRect
+				   andResizeToRec:destRect];
+	
 	UIGraphicsEndImageContext();
-#endif
 	
-	if (!image) {
-		// Try older method.
-		CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-        CGBitmapInfo bitmapInfo = kCGImageAlphaPremultipliedLast;
-        if (opaque) {
-            bitmapInfo = kCGImageAlphaNoneSkipLast;
-        }
-		CGContextRef context = CGBitmapContextCreate(NULL, scaledWidth, scaledHeight, 8, (scaledWidth * 4), 
-													 colorSpace, bitmapInfo);
-		CGImageRef sourceImg = CGImageCreateWithImageInRect([self CGImage], sourceRect);
-		CGContextDrawImage(context, destRect, sourceImg);
-		CGImageRelease(sourceImg);
-		CGImageRef finalImage = CGBitmapContextCreateImage(context);	
-		CGContextRelease(context);
-		CGColorSpaceRelease(colorSpace);
-		image = [UIImage imageWithCGImage:finalImage];
-		CGImageRelease(finalImage);
-	}
-	
-	return image;
+	return finalImage;
+
 }
 
 - (UIImage *)imageToFitSize:(CGSize)size method:(MGImageResizingMethod)resizeMethod
@@ -156,5 +126,87 @@
     return [self imageScaledToFitSize:fitSize ignoreAlpha:NO];
 }
 
+
+#pragma mark - ImageContext operations
+
+/**
+ *	@brief		Crops the image to the specified rect.
+ *	@details	Does not support animated images directly, but support could be added by replicating
+ *				cropToRect:andResizeToRect:'s logic.
+ *
+ *	@param		rect	The rect to crop this image to.
+ *
+ *	@returns	The cropped image.
+ */
+- (UIImage*)cropWithRect:(CGRect)rect
+{
+	CGImageRef cgImage = CGImageCreateWithImageInRect([self CGImage], rect);
+	UIImage *image = [UIImage imageWithCGImage:cgImage
+										 scale:0.0
+								   orientation:self.imageOrientation];
+	CGImageRelease(cgImage);
+	
+	return image;
+}
+
+/**
+ *	@brief		Crops & resizes the image.
+ *	@details	Supports animated images.
+ *
+ *	@param		cropRect	The rect to use for cropping.
+ *	@param		resizeRect	The rect to use for resizing.
+ *
+ *	@returns	The resulting image.
+ */
+- (UIImage*)cropToRect:(CGRect)cropRect
+		andResizeToRec:(CGRect)resizeRect
+{
+	UIImage *modifiedImage = nil;
+	
+	BOOL isAnimatedImage = (self.images != nil);
+	
+	if (!isAnimatedImage) {
+		
+		modifiedImage = [self cropWithRect:cropRect];
+		modifiedImage = [modifiedImage resizeToRect:resizeRect];
+	} else {
+		NSMutableArray *modifiedImages = [NSMutableArray arrayWithCapacity:[self.images count]];
+		
+		for (UIImage *image in self.images)
+		{
+			image = [image cropToRect:cropRect
+					   andResizeToRec:resizeRect];
+			
+			[modifiedImages addObject:image];
+		}
+		
+		modifiedImage = [UIImage animatedImageWithImages:modifiedImages
+												duration:self.duration];
+	}
+	
+	return modifiedImage;
+}
+
+/**
+ *	@brief		Resizes the image to the specified rect.
+ *	@details	This method must be called after UIGraphicsBeginImageContext() and before
+ *				UIGraphicsEndImageContext();.
+ *				Does not support animated images directly, but support could be added by replicating
+ *				cropToRect:andResizeToRect:'s logic.
+ *
+ *	@param		rect	The rect to resize this image to.
+ *
+ *	@returns	The resized image.
+ */
+- (UIImage*)resizeToRect:(CGRect)rect
+{
+	NSAssert(UIGraphicsGetCurrentContext() != NULL,
+			 @"A context should be created before calling this method.");
+	
+	[self drawInRect:rect];
+	UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+	
+	return image;
+}
 
 @end

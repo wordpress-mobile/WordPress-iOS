@@ -214,7 +214,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MGImageUtilities_Prefix.pch;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = "";
 				INFOPLIST_FILE = "MGImageUtilities-Info.plist";
 				PRODUCT_NAME = MGImageUtilities;
 			};
@@ -227,7 +227,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MGImageUtilities_Prefix.pch;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = "";
 				INFOPLIST_FILE = "MGImageUtilities-Info.plist";
 				PRODUCT_NAME = MGImageUtilities;
 				VALIDATE_PRODUCT = YES;
