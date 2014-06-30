@@ -57,7 +57,7 @@ NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotifi
 - (void)handleFriendFinderButtonTapped:(id)sender {
     WPFriendFinderViewController *controller = [[WPFriendFinderViewController alloc] init];
 	[self.navigationController pushViewController:controller animated:YES];
-    [controller loadURL:kMobileReaderFFURL];
+    [controller loadURL:WPMobileReaderFFURL];
 }
 
 - (void)dispatchTopicDidChangeNotification {
