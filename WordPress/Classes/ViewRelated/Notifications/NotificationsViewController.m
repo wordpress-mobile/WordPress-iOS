@@ -213,23 +213,23 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 
 - (void)pruneOldNotes
 {
-    NSNumber *pruneBefore;
-    Note *lastVisibleNote = [[[self.tableView visibleCells] lastObject] contentProvider];
-    if (lastVisibleNote) {
-        pruneBefore = lastVisibleNote.timestamp;
-    }
-
-    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
-    if (selectedIndexPath) {
-        Note *selectedNote = [self.resultsController objectAtIndexPath:selectedIndexPath];
-        if (selectedNote) {
-            // NSOrderedSame could mean either same timestamp, or lastVisibleNote is nil
-            // so we overwrite the value
-            if ([pruneBefore compare:selectedNote.timestamp] != NSOrderedAscending) {
-                pruneBefore = selectedNote.timestamp;
-            }
-        }
-    }
+//    NSNumber *pruneBefore;
+//    Note *lastVisibleNote = [[[self.tableView visibleCells] lastObject] contentProvider];
+//    if (lastVisibleNote) {
+//        pruneBefore = lastVisibleNote.timestamp;
+//    }
+//
+//    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+//    if (selectedIndexPath) {
+//        Note *selectedNote = [self.resultsController objectAtIndexPath:selectedIndexPath];
+//        if (selectedNote) {
+//            // NSOrderedSame could mean either same timestamp, or lastVisibleNote is nil
+//            // so we overwrite the value
+//            if ([pruneBefore compare:selectedNote.timestamp] != NSOrderedAscending) {
+//                pruneBefore = selectedNote.timestamp;
+//            }
+//        }
+//    }
 }
 
 - (void)showNotificationSettings {
@@ -301,14 +301,14 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
     
-    if(note.isUnread) {
-        note.unread = @(0);
-        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-
-        if (hasDetailView) {
-            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-        }
-    }
+//    if(note.isUnread) {
+//        note.unread = @(0);
+//        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+//
+//        if (hasDetailView) {
+//            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+//        }
+//    }
 }
 
 - (BOOL)noteHasDetailView:(Note *)note {

@@ -19,6 +19,7 @@
 #import "WPTableViewController.h"
 #import "NoteBodyItem.h"
 #import "AccountService.h"
+#import "WPAnalytics.h"
 
 const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight = 64.f;
 NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRestorationKey";
@@ -170,86 +171,86 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 }
 
 - (void)displayNote {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    // get the note's actions
-    NSArray *actions = [self.note.noteData valueForKeyPath:@"body.actions"];
-    NSDictionary *action = [actions objectAtIndex:0];
-    self.siteID = [action valueForKeyPath:@"params.site_id"];
-    
-    NoteComment *comment = [[NoteComment alloc] initWithCommentID:[action valueForKeyPath:@"params.comment_id"]];
-    [self.commentThread addObject:comment];
-    
-    NSString *postPath = [NSString stringWithFormat:@"sites/%@/posts/%@", [action valueForKeyPath:@"params.site_id"], [action valueForKeyPath:@"params.post_id"]];
-    
-    // if we don't have post information fetch it from the api
-    if (self.post == nil) {
-        [[defaultAccount restApi] GET:postPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            self.post = responseObject;
-            NSString *postTitle = [[self.post valueForKeyPath:@"title"] stringByDecodingXMLCharacters];
-            if (!postTitle || [postTitle isEqualToString:@""])
-                postTitle = NSLocalizedString(@"Untitled Post", @"Used when a post has no title");
-            self.postBanner.titleLabel.text = postTitle;
-            id authorAvatarURL = [self.post valueForKeyPath:@"author.avatar_URL"];
-            if ([authorAvatarURL isKindOfClass:[NSString class]]) {
-                [self.postBanner setAvatarURL:[NSURL URLWithString:authorAvatarURL]];
-            }
-            
-            NSString *headerUrl = [self.post objectForKey:@"URL"];
-            if (headerUrl != nil) {
-                self.headerURL = [NSURL URLWithString:headerUrl];
-            }
-            
-            self.postBanner.userInteractionEnabled = YES;
-            
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
-        }];
-    }
-
-    // disable the buttons until we can determine which ones can be used
-    // with this note
-    self.spamButton.enabled = NO;
-    self.trashButton.enabled = NO;
-    self.approveButton.enabled = NO;
-    self.replyButton.enabled = NO;
-
-    // figure out the actions available for the note
-    NSMutableDictionary *indexedActions = [[NSMutableDictionary alloc] initWithCapacity:[actions count]];
-    [actions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        NSString *actionType = [obj valueForKey:@"type"];
-        [indexedActions setObject:obj forKey:actionType];
-        if ([actionType isEqualToString:@"approve-comment"]) {
-            self.approveButton.enabled = YES;
-            [self updateApproveButton:YES];
-        } else if ([actionType isEqualToString:@"unapprove-comment"]) {
-            self.approveButton.enabled = YES;
-            [self updateApproveButton:NO];
-        } else if ([actionType isEqualToString:@"spam-comment"]) {
-            self.spamButton.enabled = YES;
-        } else if ([actionType isEqualToString:@"unspam-comment"]) {
-            self.spamButton.enabled = YES;
-        } else if ([actionType isEqualToString:@"trash-comment"]) {
-            self.trashButton.enabled = YES;
-        } else if ([actionType isEqualToString:@"untrash-comment"]) {
-            self.trashButton.enabled = YES;
-        } else if ([actionType isEqualToString:@"replyto-comment"]) {
-            self.replyButton.enabled = YES;
-        }
-    }];
-
-    self.commentActions = indexedActions;
+//    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+//    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+//    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+//
+//    // get the note's actions
+//    NSArray *actions = [self.note.noteData valueForKeyPath:@"body.actions"];
+//    NSDictionary *action = [actions objectAtIndex:0];
+//    self.siteID = [action valueForKeyPath:@"params.site_id"];
+//    
+//    NoteComment *comment = [[NoteComment alloc] initWithCommentID:[action valueForKeyPath:@"params.comment_id"]];
+//    [self.commentThread addObject:comment];
+//    
+//    NSString *postPath = [NSString stringWithFormat:@"sites/%@/posts/%@", [action valueForKeyPath:@"params.site_id"], [action valueForKeyPath:@"params.post_id"]];
+//    
+//    // if we don't have post information fetch it from the api
+//    if (self.post == nil) {
+//        [[defaultAccount restApi] GET:postPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//            self.post = responseObject;
+//            NSString *postTitle = [[self.post valueForKeyPath:@"title"] stringByDecodingXMLCharacters];
+//            if (!postTitle || [postTitle isEqualToString:@""])
+//                postTitle = NSLocalizedString(@"Untitled Post", @"Used when a post has no title");
+//            self.postBanner.titleLabel.text = postTitle;
+//            id authorAvatarURL = [self.post valueForKeyPath:@"author.avatar_URL"];
+//            if ([authorAvatarURL isKindOfClass:[NSString class]]) {
+//                [self.postBanner setAvatarURL:[NSURL URLWithString:authorAvatarURL]];
+//            }
+//            
+//            NSString *headerUrl = [self.post objectForKey:@"URL"];
+//            if (headerUrl != nil) {
+//                self.headerURL = [NSURL URLWithString:headerUrl];
+//            }
+//            
+//            self.postBanner.userInteractionEnabled = YES;
+//            
+//        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//            DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
+//        }];
+//    }
+//
+//    // disable the buttons until we can determine which ones can be used
+//    // with this note
+//    self.spamButton.enabled = NO;
+//    self.trashButton.enabled = NO;
+//    self.approveButton.enabled = NO;
+//    self.replyButton.enabled = NO;
+//
+//    // figure out the actions available for the note
+//    NSMutableDictionary *indexedActions = [[NSMutableDictionary alloc] initWithCapacity:[actions count]];
+//    [actions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+//        NSString *actionType = [obj valueForKey:@"type"];
+//        [indexedActions setObject:obj forKey:actionType];
+//        if ([actionType isEqualToString:@"approve-comment"]) {
+//            self.approveButton.enabled = YES;
+//            [self updateApproveButton:YES];
+//        } else if ([actionType isEqualToString:@"unapprove-comment"]) {
+//            self.approveButton.enabled = YES;
+//            [self updateApproveButton:NO];
+//        } else if ([actionType isEqualToString:@"spam-comment"]) {
+//            self.spamButton.enabled = YES;
+//        } else if ([actionType isEqualToString:@"unspam-comment"]) {
+//            self.spamButton.enabled = YES;
+//        } else if ([actionType isEqualToString:@"trash-comment"]) {
+//            self.trashButton.enabled = YES;
+//        } else if ([actionType isEqualToString:@"untrash-comment"]) {
+//            self.trashButton.enabled = YES;
+//        } else if ([actionType isEqualToString:@"replyto-comment"]) {
+//            self.replyButton.enabled = YES;
+//        }
+//    }];
+//
+//    self.commentActions = indexedActions;
 }
 
 - (NSDictionary *)getActionByType:(NSString *)type {
-    NSArray *actions = [self.note.noteData valueForKeyPath:@"body.actions"];
-    for (NSDictionary *action in actions) {
-        if ([[action valueForKey:@"type"] isEqualToString:type]) {
-            return action;
-        }
-    }
+//    NSArray *actions = [self.note.noteData valueForKeyPath:@"body.actions"];
+//    for (NSDictionary *action in actions) {
+//        if ([[action valueForKey:@"type"] isEqualToString:type]) {
+//            return action;
+//        }
+//    }
     return nil;
 }
 
