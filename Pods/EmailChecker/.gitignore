@@ -1,0 +1,26 @@
+# built application files
+*.apk
+*.ap_
+*.so
+*.o
+*.a
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# OSX generated files
+.DS_Store
+
+# Intellij project files
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# build dir
+bin/
+obj/
+build/

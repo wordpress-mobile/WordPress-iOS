@@ -1,0 +1,53 @@
+PODS:
+  - AFNetworking (2.2.3):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+    - AFNetworking/UIKit
+  - AFNetworking/NSURLConnection (2.2.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.2.3):
+    - AFNetworking/NSURLConnection
+  - AFNetworking/Reachability (2.2.3)
+  - AFNetworking/Security (2.2.3)
+  - AFNetworking/Serialization (2.2.3)
+  - AFNetworking/UIKit (2.2.3):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+  - CocoaLumberjack (1.8.1):
+    - CocoaLumberjack/Extensions
+  - CocoaLumberjack/Core (1.8.1)
+  - CocoaLumberjack/Extensions (1.8.1):
+    - CocoaLumberjack/Core
+  - DTCoreText (1.6.9):
+    - DTFoundation/Core (~> 1.6.0)
+    - DTFoundation/DTHTMLParser (~> 1.6.0)
+    - DTFoundation/UIKit (~> 1.6.0)
+  - DTFoundation/Core (1.6.3)
+  - DTFoundation/DTHTMLParser (1.6.3):
+    - DTFoundation/Core
+  - DTFoundation/UIKit (1.6.3):
+    - DTFoundation/Core
+  - OCMock (2.2.4)
+  - OHHTTPStubs (3.1.1)
+
+DEPENDENCIES:
+  - AFNetworking (= 2.2.3)
+  - CocoaLumberjack (~> 1.8.1)
+  - DTCoreText (= 1.6.9)
+  - OCMock
+  - OHHTTPStubs (= 3.1.1)
+
+SPEC CHECKSUMS:
+  AFNetworking: 47947303319594706f48a55185ea95a95159ab94
+  CocoaLumberjack: 9d198d6e19909b3b113a38c5f06f7bb8eedd0427
+  DTCoreText: 0c8472ec35854d24d5a45dc8cd0586c14ca5d790
+  DTFoundation: d8a7f570a0f89c5a81661e6537289c578f4f97a8
+  OCMock: 6db79185520e24f9f299548f2b8b07e41d881bd5
+  OHHTTPStubs: 58b42d245ad2416bac170ce18e1383913d17e315
+
+COCOAPODS: 0.33.0
