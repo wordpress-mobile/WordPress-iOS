@@ -3,7 +3,6 @@
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import <DTCoreText/DTCoreText.h>
 #import "WPWebViewController.h"
-#import "NoteService.h"
 #import "StatsViewController.h"
 
 @interface NotificationsBigBadgeViewController() <DTAttributedTextContentViewDelegate>
@@ -191,14 +190,14 @@
     id viewController;
     
     if ([self.note statsEvent]) {
-        NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.note.managedObjectContext];
-        Blog *blog = [noteService blogForStatsEventNote:self.note];
-        
-        if (blog) {
-            StatsViewController *statsVC = [[StatsViewController alloc] init];
-            statsVC.blog = blog;
-            viewController = statsVC;
-        }
+//        NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.note.managedObjectContext];
+//        Blog *blog = [noteService blogForStatsEventNote:self.note];
+//        
+//        if (blog) {
+//            StatsViewController *statsVC = [[StatsViewController alloc] init];
+//            statsVC.blog = blog;
+//            viewController = statsVC;
+//        }
     }
     
     if (!viewController) {

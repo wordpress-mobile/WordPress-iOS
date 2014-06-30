@@ -13,7 +13,6 @@
 #import "NotificationsManager.h"
 #import "NotificationSettingsViewController.h"
 #import "NotificationsBigBadgeViewController.h"
-#import "NoteService.h"
 #import "AccountService.h"
 #import "ReaderPostService.h"
 #import "ContextManager.h"
@@ -22,6 +21,8 @@
 #import "ReaderPost.h"
 #import "ReaderPostDetailViewController.h"
 #import "ContextManager.h"
+#import "WPAnalytics.h"
+
 
 NSString * const NotificationsJetpackInformationURL = @"http://jetpack.me/about/";
 
@@ -195,8 +196,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 
 - (void)refreshUnreadNotes
 {
-    NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.resultsController.managedObjectContext];
-    [noteService refreshUnreadNotes];
+
 }
 
 - (void)updateLastSeenTime
@@ -230,9 +230,6 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
             }
         }
     }
-
-    NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.resultsController.managedObjectContext];
-    [noteService pruneOldNotesBefore:pruneBefore];
 }
 
 - (void)showNotificationSettings {
@@ -311,14 +308,6 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
         if (hasDetailView) {
             [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
-        
-        NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:note.managedObjectContext];
-        [noteService markNoteAsRead:note
-                            success:nil
-                            failure:^(NSError *error) {
-                                note.unread = @(1);
-                            }
-         ];
     }
 }
 
@@ -400,19 +389,6 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     if (userInteraction) {
         [self pruneOldNotes];
     }
-    
-    Note *note = [[self.resultsController fetchedObjects] firstObject];
-    NSNumber *timestamp = note.timestamp ?: nil;
-    
-    NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.resultsController.managedObjectContext];
-    [noteService fetchNotificationsSince:timestamp success:^{
-        [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-
-        [self updateLastSeenTime];
-        if (success) {
-            success();
-        }
-    } failure:failure];
 }
 
 - (BOOL)hasMoreContent
@@ -438,19 +414,6 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     }
     
     _retrievingNotifications = YES;
-    
-    NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:self.resultsController.managedObjectContext];
-    [noteService fetchNotificationsBefore:lastNote.timestamp success:^{
-        _retrievingNotifications = NO;
-        if (success) {
-            success();
-        }
-    } failure:^(NSError *error) {
-        _retrievingNotifications = NO;
-        if (failure) {
-            failure(error);
-        }
-    }];
 }
 
 #pragma mark - DetailViewDelegate

@@ -6,7 +6,6 @@
 #import "UIDevice+WordPressIdentifier.h"
 #import <WPXMLRPCClient.h>
 #import "ContextManager.h"
-#import "NoteService.h"
 #import "AccountService.h"
 #import <Helpshift/Helpshift.h>
 #import <Mixpanel/Mixpanel.h>
@@ -127,19 +126,7 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
             
         case UIApplicationStateBackground:
             if (completionHandler) {
-                NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-                
-                [noteService fetchNewNotificationsWithSuccess:^(BOOL hasNewNotes) {
-                    DDLogVerbose(@"notification fetch completion handler completed with new notes: %@", hasNewNotes ? @"YES" : @"NO");
-                    if (hasNewNotes) {
-                        completionHandler(UIBackgroundFetchResultNewData);
-                    } else {
-                        completionHandler(UIBackgroundFetchResultNoData);
-                    }
-                } failure:^(NSError *error) {
-                    DDLogError(@"notification fetch completion handler failed with error: %@", error);
-                    completionHandler(UIBackgroundFetchResultFailed);
-                }];
+
             }
             break;
         default:
