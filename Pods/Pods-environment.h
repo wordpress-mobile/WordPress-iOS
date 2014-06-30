@@ -108,6 +108,12 @@
 #define COCOAPODS_VERSION_MINOR_EmailChecker 1
 #define COCOAPODS_VERSION_PATCH_EmailChecker 0
 
+// Google-Diff-Match-Patch
+#define COCOAPODS_POD_AVAILABLE_Google_Diff_Match_Patch
+#define COCOAPODS_VERSION_MAJOR_Google_Diff_Match_Patch 0
+#define COCOAPODS_VERSION_MINOR_Google_Diff_Match_Patch 0
+#define COCOAPODS_VERSION_PATCH_Google_Diff_Match_Patch 1
+
 // Helpshift
 #define COCOAPODS_POD_AVAILABLE_Helpshift
 #define COCOAPODS_VERSION_MAJOR_Helpshift 4
@@ -119,6 +125,12 @@
 #define COCOAPODS_VERSION_MAJOR_HockeySDK 3
 #define COCOAPODS_VERSION_MINOR_HockeySDK 5
 #define COCOAPODS_VERSION_PATCH_HockeySDK 5
+
+// JRSwizzle
+#define COCOAPODS_POD_AVAILABLE_JRSwizzle
+#define COCOAPODS_VERSION_MAJOR_JRSwizzle 1
+#define COCOAPODS_VERSION_MINOR_JRSwizzle 0
+#define COCOAPODS_VERSION_PATCH_JRSwizzle 0
 
 // MGImageUtilities
 #define COCOAPODS_POD_AVAILABLE_MGImageUtilities
@@ -167,6 +179,24 @@
 #define COCOAPODS_VERSION_MAJOR_SVProgressHUD 1
 #define COCOAPODS_VERSION_MINOR_SVProgressHUD 0
 #define COCOAPODS_VERSION_PATCH_SVProgressHUD 0
+
+// Simperium
+#define COCOAPODS_POD_AVAILABLE_Simperium
+#define COCOAPODS_VERSION_MAJOR_Simperium 0
+#define COCOAPODS_VERSION_MINOR_Simperium 6
+#define COCOAPODS_VERSION_PATCH_Simperium 6
+
+// Simperium/STKeychain
+#define COCOAPODS_POD_AVAILABLE_Simperium_STKeychain
+#define COCOAPODS_VERSION_MAJOR_Simperium_STKeychain 0
+#define COCOAPODS_VERSION_MINOR_Simperium_STKeychain 6
+#define COCOAPODS_VERSION_PATCH_Simperium_STKeychain 6
+
+// SocketRocket
+#define COCOAPODS_POD_AVAILABLE_SocketRocket
+#define COCOAPODS_VERSION_MAJOR_SocketRocket 0
+#define COCOAPODS_VERSION_MINOR_SocketRocket 3
+#define COCOAPODS_VERSION_PATCH_SocketRocket 1
 
 // Taplytics
 #define COCOAPODS_POD_AVAILABLE_Taplytics
