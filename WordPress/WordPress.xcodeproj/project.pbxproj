@@ -205,6 +205,7 @@
 		B545186618E9E07900AC3A54 /* NoteBodyItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B545186518E9E07900AC3A54 /* NoteBodyItem.m */; };
 		B545186A18E9E10C00AC3A54 /* XMLParserCollecter.m in Sources */ = {isa = PBXBuildFile; fileRef = B545186918E9E10C00AC3A54 /* XMLParserCollecter.m */; };
 		B5CC05F61962150600975CAC /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F51962150600975CAC /* Constants.m */; };
+		B5CC05F91962186D00975CAC /* Meta.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F81962186D00975CAC /* Meta.m */; };
 		B5F015CB195DFD7600F6ECF2 /* WordPressActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = B5F015CA195DFD7600F6ECF2 /* WordPressActivity.m */; };
 		C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */; };
 		C545E0A21811B9880020844C /* ContextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C545E0A11811B9880020844C /* ContextManager.m */; };
@@ -726,6 +727,8 @@
 		B545186818E9E10C00AC3A54 /* XMLParserCollecter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLParserCollecter.h; sourceTree = "<group>"; };
 		B545186918E9E10C00AC3A54 /* XMLParserCollecter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLParserCollecter.m; sourceTree = "<group>"; };
 		B5CC05F51962150600975CAC /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
+		B5CC05F71962186D00975CAC /* Meta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Meta.h; sourceTree = "<group>"; };
+		B5CC05F81962186D00975CAC /* Meta.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Meta.m; sourceTree = "<group>"; };
 		B5F015C9195DFD7600F6ECF2 /* WordPressActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressActivity.h; sourceTree = "<group>"; };
 		B5F015CA195DFD7600F6ECF2 /* WordPressActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressActivity.m; sourceTree = "<group>"; };
 		BB0E95DCE0724D3696D9F222 /* Pods-WordPressTest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.xcconfig"; path = "../Pods/Pods-WordPressTest.xcconfig"; sourceTree = SOURCE_ROOT; };
@@ -1721,6 +1724,8 @@
 		B545186718E9E08000AC3A54 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
+				B5CC05F71962186D00975CAC /* Meta.h */,
+				B5CC05F81962186D00975CAC /* Meta.m */,
 				CC1D802F1658354C002A542F /* Note.h */,
 				CC1D80301658354C002A542F /* Note.m */,
 				B545186118E9E06500AC3A54 /* NoteAction.h */,
@@ -2419,6 +2424,7 @@
 				CC669B261672C335009E16F8 /* NoteCommentPostBanner.m in Sources */,
 				37B7924D16768FCC0021B3A4 /* NotificationSettingsViewController.m in Sources */,
 				CC669B3A167AA82A009E16F8 /* NoteComment.m in Sources */,
+				B5CC05F91962186D00975CAC /* Meta.m in Sources */,
 				E1756E651694A99400D9EC00 /* WordPressComApiCredentials.m in Sources */,
 				5D8D53F119250412003C8859 /* BlogSelectorViewController.m in Sources */,
 				5D3D559718F88C3500782892 /* ReaderPostService.m in Sources */,
