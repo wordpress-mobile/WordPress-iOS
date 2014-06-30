@@ -1,0 +1,586 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		74291D0A1940C859004230D4 /* content.html in Resources */ = {isa = PBXBuildFile; fileRef = 74291D091940C859004230D4 /* content.html */; };
+		74587C59193E652B0001052D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74587C58193E652B0001052D /* QuartzCore.framework */; };
+		74664183193E591B008BD8B9 /* WordPressEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 74664182193E591B008BD8B9 /* WordPressEditor.m */; };
+		748D2A89193E516000D5ACC8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 748D2A88193E516000D5ACC8 /* Foundation.framework */; };
+		748D2A8B193E516000D5ACC8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 748D2A8A193E516000D5ACC8 /* CoreGraphics.framework */; };
+		748D2A8D193E516000D5ACC8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 748D2A8C193E516000D5ACC8 /* UIKit.framework */; };
+		748D2A93193E516000D5ACC8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 748D2A91193E516000D5ACC8 /* InfoPlist.strings */; };
+		748D2A95193E516000D5ACC8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 748D2A94193E516000D5ACC8 /* main.m */; };
+		748D2A99193E516000D5ACC8 /* WPAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 748D2A98193E516000D5ACC8 /* WPAppDelegate.m */; };
+		748D2A9C193E516000D5ACC8 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 748D2A9A193E516000D5ACC8 /* Main_iPhone.storyboard */; };
+		748D2A9F193E516000D5ACC8 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 748D2A9D193E516000D5ACC8 /* Main_iPad.storyboard */; };
+		748D2AA2193E516000D5ACC8 /* WPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 748D2AA1193E516000D5ACC8 /* WPViewController.m */; };
+		748D2AA4193E516000D5ACC8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 748D2AA3193E516000D5ACC8 /* Images.xcassets */; };
+		748D2AAB193E516000D5ACC8 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 748D2AAA193E516000D5ACC8 /* XCTest.framework */; };
+		748D2AAC193E516000D5ACC8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 748D2A88193E516000D5ACC8 /* Foundation.framework */; };
+		748D2AAD193E516000D5ACC8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 748D2A8C193E516000D5ACC8 /* UIKit.framework */; };
+		748D2AB5193E516000D5ACC8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 748D2AB3193E516000D5ACC8 /* InfoPlist.strings */; };
+		748D2AB7193E516000D5ACC8 /* EditorDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 748D2AB6193E516000D5ACC8 /* EditorDemoTests.m */; };
+		74CC70FE193FB36D007EF4D6 /* Merriweather-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 74DB7E23193F88AB00223E82 /* Merriweather-Bold.ttf */; };
+		74CC70FF193FB36D007EF4D6 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 74DB7E24193F88AB00223E82 /* OpenSans-Bold.ttf */; };
+		74CC7100193FB36D007EF4D6 /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 74DB7E25193F88AB00223E82 /* OpenSans-BoldItalic.ttf */; };
+		74CC7101193FB36D007EF4D6 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 74DB7E26193F88AB00223E82 /* OpenSans-Italic.ttf */; };
+		74CC7102193FB36D007EF4D6 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 74DB7E27193F88AB00223E82 /* OpenSans-Light.ttf */; };
+		74CC7103193FB36D007EF4D6 /* OpenSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 74DB7E28193F88AB00223E82 /* OpenSans-LightItalic.ttf */; };
+		74CC7104193FB36D007EF4D6 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 74DB7E29193F88AB00223E82 /* OpenSans-Regular.ttf */; };
+		B1341A871FF54DCCAEE52D3A /* libPods-EditorDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 986CDAC2D08B4B22A292BF20 /* libPods-EditorDemo.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		748D2AAE193E516000D5ACC8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 748D2A7D193E516000D5ACC8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 748D2A84193E516000D5ACC8;
+			remoteInfo = EditorDemo;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		672065BC6FBB4FA6881F92AE /* Pods-EditorDemo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EditorDemo.xcconfig"; path = "Pods/Pods-EditorDemo.xcconfig"; sourceTree = "<group>"; };
+		74291D091940C859004230D4 /* content.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = content.html; sourceTree = "<group>"; };
+		74587C58193E652B0001052D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		74664181193E591B008BD8B9 /* WordPressEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WordPressEditor.h; path = ../../Classes/exclude/WordPressEditor.h; sourceTree = "<group>"; };
+		74664182193E591B008BD8B9 /* WordPressEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WordPressEditor.m; path = ../../Classes/exclude/WordPressEditor.m; sourceTree = "<group>"; };
+		748D2A85193E516000D5ACC8 /* EditorDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EditorDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		748D2A88193E516000D5ACC8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		748D2A8A193E516000D5ACC8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		748D2A8C193E516000D5ACC8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		748D2A90193E516000D5ACC8 /* EditorDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "EditorDemo-Info.plist"; sourceTree = "<group>"; };
+		748D2A92193E516000D5ACC8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		748D2A94193E516000D5ACC8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		748D2A96193E516000D5ACC8 /* EditorDemo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EditorDemo-Prefix.pch"; sourceTree = "<group>"; };
+		748D2A97193E516000D5ACC8 /* WPAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPAppDelegate.h; sourceTree = "<group>"; };
+		748D2A98193E516000D5ACC8 /* WPAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WPAppDelegate.m; sourceTree = "<group>"; };
+		748D2A9B193E516000D5ACC8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
+		748D2A9E193E516000D5ACC8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
+		748D2AA0193E516000D5ACC8 /* WPViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPViewController.h; sourceTree = "<group>"; };
+		748D2AA1193E516000D5ACC8 /* WPViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WPViewController.m; sourceTree = "<group>"; };
+		748D2AA3193E516000D5ACC8 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		748D2AA9193E516000D5ACC8 /* EditorDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EditorDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		748D2AAA193E516000D5ACC8 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		748D2AB2193E516000D5ACC8 /* EditorDemoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "EditorDemoTests-Info.plist"; sourceTree = "<group>"; };
+		748D2AB4193E516000D5ACC8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		748D2AB6193E516000D5ACC8 /* EditorDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EditorDemoTests.m; sourceTree = "<group>"; };
+		74DB7E23193F88AB00223E82 /* Merriweather-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather-Bold.ttf"; sourceTree = SOURCE_ROOT; };
+		74DB7E24193F88AB00223E82 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = SOURCE_ROOT; };
+		74DB7E25193F88AB00223E82 /* OpenSans-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-BoldItalic.ttf"; sourceTree = SOURCE_ROOT; };
+		74DB7E26193F88AB00223E82 /* OpenSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Italic.ttf"; sourceTree = SOURCE_ROOT; };
+		74DB7E27193F88AB00223E82 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = SOURCE_ROOT; };
+		74DB7E28193F88AB00223E82 /* OpenSans-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-LightItalic.ttf"; sourceTree = SOURCE_ROOT; };
+		74DB7E29193F88AB00223E82 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = SOURCE_ROOT; };
+		986CDAC2D08B4B22A292BF20 /* libPods-EditorDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EditorDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		748D2A82193E516000D5ACC8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				74587C59193E652B0001052D /* QuartzCore.framework in Frameworks */,
+				748D2A8B193E516000D5ACC8 /* CoreGraphics.framework in Frameworks */,
+				748D2A8D193E516000D5ACC8 /* UIKit.framework in Frameworks */,
+				748D2A89193E516000D5ACC8 /* Foundation.framework in Frameworks */,
+				B1341A871FF54DCCAEE52D3A /* libPods-EditorDemo.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		748D2AA6193E516000D5ACC8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				748D2AAB193E516000D5ACC8 /* XCTest.framework in Frameworks */,
+				748D2AAD193E516000D5ACC8 /* UIKit.framework in Frameworks */,
+				748D2AAC193E516000D5ACC8 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		748D2A7C193E516000D5ACC8 = {
+			isa = PBXGroup;
+			children = (
+				748D2A8E193E516000D5ACC8 /* EditorDemo */,
+				748D2AB0193E516000D5ACC8 /* EditorDemoTests */,
+				748D2A87193E516000D5ACC8 /* Frameworks */,
+				748D2A86193E516000D5ACC8 /* Products */,
+				672065BC6FBB4FA6881F92AE /* Pods-EditorDemo.xcconfig */,
+			);
+			sourceTree = "<group>";
+		};
+		748D2A86193E516000D5ACC8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				748D2A85193E516000D5ACC8 /* EditorDemo.app */,
+				748D2AA9193E516000D5ACC8 /* EditorDemoTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		748D2A87193E516000D5ACC8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				74587C58193E652B0001052D /* QuartzCore.framework */,
+				748D2A88193E516000D5ACC8 /* Foundation.framework */,
+				748D2A8A193E516000D5ACC8 /* CoreGraphics.framework */,
+				748D2A8C193E516000D5ACC8 /* UIKit.framework */,
+				748D2AAA193E516000D5ACC8 /* XCTest.framework */,
+				986CDAC2D08B4B22A292BF20 /* libPods-EditorDemo.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		748D2A8E193E516000D5ACC8 /* EditorDemo */ = {
+			isa = PBXGroup;
+			children = (
+				748D2A97193E516000D5ACC8 /* WPAppDelegate.h */,
+				748D2A98193E516000D5ACC8 /* WPAppDelegate.m */,
+				748D2A9A193E516000D5ACC8 /* Main_iPhone.storyboard */,
+				748D2A9D193E516000D5ACC8 /* Main_iPad.storyboard */,
+				748D2AA0193E516000D5ACC8 /* WPViewController.h */,
+				748D2AA1193E516000D5ACC8 /* WPViewController.m */,
+				74291D091940C859004230D4 /* content.html */,
+				748D2AA3193E516000D5ACC8 /* Images.xcassets */,
+				748D2A8F193E516000D5ACC8 /* Supporting Files */,
+			);
+			path = EditorDemo;
+			sourceTree = "<group>";
+		};
+		748D2A8F193E516000D5ACC8 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				74DB7E2A193F88B700223E82 /* Fonts */,
+				748D2A90193E516000D5ACC8 /* EditorDemo-Info.plist */,
+				748D2A91193E516000D5ACC8 /* InfoPlist.strings */,
+				748D2A94193E516000D5ACC8 /* main.m */,
+				748D2A96193E516000D5ACC8 /* EditorDemo-Prefix.pch */,
+				74664181193E591B008BD8B9 /* WordPressEditor.h */,
+				74664182193E591B008BD8B9 /* WordPressEditor.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		748D2AB0193E516000D5ACC8 /* EditorDemoTests */ = {
+			isa = PBXGroup;
+			children = (
+				748D2AB6193E516000D5ACC8 /* EditorDemoTests.m */,
+				748D2AB1193E516000D5ACC8 /* Supporting Files */,
+			);
+			path = EditorDemoTests;
+			sourceTree = "<group>";
+		};
+		748D2AB1193E516000D5ACC8 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				748D2AB2193E516000D5ACC8 /* EditorDemoTests-Info.plist */,
+				748D2AB3193E516000D5ACC8 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		74DB7E2A193F88B700223E82 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				74DB7E23193F88AB00223E82 /* Merriweather-Bold.ttf */,
+				74DB7E24193F88AB00223E82 /* OpenSans-Bold.ttf */,
+				74DB7E25193F88AB00223E82 /* OpenSans-BoldItalic.ttf */,
+				74DB7E26193F88AB00223E82 /* OpenSans-Italic.ttf */,
+				74DB7E27193F88AB00223E82 /* OpenSans-Light.ttf */,
+				74DB7E28193F88AB00223E82 /* OpenSans-LightItalic.ttf */,
+				74DB7E29193F88AB00223E82 /* OpenSans-Regular.ttf */,
+			);
+			name = Fonts;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		748D2A84193E516000D5ACC8 /* EditorDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 748D2ABA193E516000D5ACC8 /* Build configuration list for PBXNativeTarget "EditorDemo" */;
+			buildPhases = (
+				6C6A8C1BA2C443B2A5583E1A /* Check Pods Manifest.lock */,
+				748D2A81193E516000D5ACC8 /* Sources */,
+				748D2A82193E516000D5ACC8 /* Frameworks */,
+				748D2A83193E516000D5ACC8 /* Resources */,
+				7B14E390F1F44925BD4E909E /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EditorDemo;
+			productName = EditorDemo;
+			productReference = 748D2A85193E516000D5ACC8 /* EditorDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		748D2AA8193E516000D5ACC8 /* EditorDemoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 748D2ABD193E516000D5ACC8 /* Build configuration list for PBXNativeTarget "EditorDemoTests" */;
+			buildPhases = (
+				748D2AA5193E516000D5ACC8 /* Sources */,
+				748D2AA6193E516000D5ACC8 /* Frameworks */,
+				748D2AA7193E516000D5ACC8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				748D2AAF193E516000D5ACC8 /* PBXTargetDependency */,
+			);
+			name = EditorDemoTests;
+			productName = EditorDemoTests;
+			productReference = 748D2AA9193E516000D5ACC8 /* EditorDemoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		748D2A7D193E516000D5ACC8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = WP;
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = "Automattic, Inc.";
+				TargetAttributes = {
+					748D2A84193E516000D5ACC8 = {
+						DevelopmentTeam = PZYM8XX95Q;
+					};
+					748D2AA8193E516000D5ACC8 = {
+						TestTargetID = 748D2A84193E516000D5ACC8;
+					};
+				};
+			};
+			buildConfigurationList = 748D2A80193E516000D5ACC8 /* Build configuration list for PBXProject "EditorDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 748D2A7C193E516000D5ACC8;
+			productRefGroup = 748D2A86193E516000D5ACC8 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				748D2A84193E516000D5ACC8 /* EditorDemo */,
+				748D2AA8193E516000D5ACC8 /* EditorDemoTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		748D2A83193E516000D5ACC8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				748D2A9F193E516000D5ACC8 /* Main_iPad.storyboard in Resources */,
+				74CC7104193FB36D007EF4D6 /* OpenSans-Regular.ttf in Resources */,
+				74291D0A1940C859004230D4 /* content.html in Resources */,
+				74CC7101193FB36D007EF4D6 /* OpenSans-Italic.ttf in Resources */,
+				748D2AA4193E516000D5ACC8 /* Images.xcassets in Resources */,
+				74CC70FF193FB36D007EF4D6 /* OpenSans-Bold.ttf in Resources */,
+				74CC7103193FB36D007EF4D6 /* OpenSans-LightItalic.ttf in Resources */,
+				74CC7100193FB36D007EF4D6 /* OpenSans-BoldItalic.ttf in Resources */,
+				74CC70FE193FB36D007EF4D6 /* Merriweather-Bold.ttf in Resources */,
+				74CC7102193FB36D007EF4D6 /* OpenSans-Light.ttf in Resources */,
+				748D2A9C193E516000D5ACC8 /* Main_iPhone.storyboard in Resources */,
+				748D2A93193E516000D5ACC8 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		748D2AA7193E516000D5ACC8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				748D2AB5193E516000D5ACC8 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6C6A8C1BA2C443B2A5583E1A /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		7B14E390F1F44925BD4E909E /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-EditorDemo-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		748D2A81193E516000D5ACC8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				74664183193E591B008BD8B9 /* WordPressEditor.m in Sources */,
+				748D2A95193E516000D5ACC8 /* main.m in Sources */,
+				748D2A99193E516000D5ACC8 /* WPAppDelegate.m in Sources */,
+				748D2AA2193E516000D5ACC8 /* WPViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		748D2AA5193E516000D5ACC8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				748D2AB7193E516000D5ACC8 /* EditorDemoTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		748D2AAF193E516000D5ACC8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 748D2A84193E516000D5ACC8 /* EditorDemo */;
+			targetProxy = 748D2AAE193E516000D5ACC8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		748D2A91193E516000D5ACC8 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				748D2A92193E516000D5ACC8 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		748D2A9A193E516000D5ACC8 /* Main_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				748D2A9B193E516000D5ACC8 /* Base */,
+			);
+			name = Main_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		748D2A9D193E516000D5ACC8 /* Main_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				748D2A9E193E516000D5ACC8 /* Base */,
+			);
+			name = Main_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+		748D2AB3193E516000D5ACC8 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				748D2AB4193E516000D5ACC8 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		748D2AB8193E516000D5ACC8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		748D2AB9193E516000D5ACC8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		748D2ABB193E516000D5ACC8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 672065BC6FBB4FA6881F92AE /* Pods-EditorDemo.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "EditorDemo/EditorDemo-Prefix.pch";
+				INFOPLIST_FILE = "EditorDemo/EditorDemo-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		748D2ABC193E516000D5ACC8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 672065BC6FBB4FA6881F92AE /* Pods-EditorDemo.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "EditorDemo/EditorDemo-Prefix.pch";
+				INFOPLIST_FILE = "EditorDemo/EditorDemo-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		748D2ABE193E516000D5ACC8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/EditorDemo.app/EditorDemo";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "EditorDemo/EditorDemo-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "EditorDemoTests/EditorDemoTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		748D2ABF193E516000D5ACC8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/EditorDemo.app/EditorDemo";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "EditorDemo/EditorDemo-Prefix.pch";
+				INFOPLIST_FILE = "EditorDemoTests/EditorDemoTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		748D2A80193E516000D5ACC8 /* Build configuration list for PBXProject "EditorDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				748D2AB8193E516000D5ACC8 /* Debug */,
+				748D2AB9193E516000D5ACC8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		748D2ABA193E516000D5ACC8 /* Build configuration list for PBXNativeTarget "EditorDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				748D2ABB193E516000D5ACC8 /* Debug */,
+				748D2ABC193E516000D5ACC8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		748D2ABD193E516000D5ACC8 /* Build configuration list for PBXNativeTarget "EditorDemoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				748D2ABE193E516000D5ACC8 /* Debug */,
+				748D2ABF193E516000D5ACC8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 748D2A7D193E516000D5ACC8 /* Project object */;
+}
