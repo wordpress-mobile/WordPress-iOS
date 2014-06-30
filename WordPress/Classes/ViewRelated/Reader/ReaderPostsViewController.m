@@ -23,6 +23,7 @@
 #import "RebloggingViewController.h"
 #import "ReaderTopicService.h"
 #import "ReaderPostService.h"
+#import "CustomHighlightButton.h"
 
 static CGFloat const RPVCHeaderHeightPhone = 10.f;
 static CGFloat const RPVCMaxImageHeightPercentage = 0.58f;
@@ -105,9 +106,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     
 	// Topics button
 	UIBarButtonItem *button = nil;
-    UIButton *topicsButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    CustomHighlightButton *topicsButton = [CustomHighlightButton buttonWithType:UIButtonTypeCustom];
+    topicsButton.tintColor = [UIColor colorWithWhite:1.0 alpha:0.5];
     [topicsButton setImage:[UIImage imageNamed:@"icon-reader-topics"] forState:UIControlStateNormal];
-    [topicsButton setImage:[UIImage imageNamed:@"icon-reader-topics-active"] forState:UIControlStateHighlighted];
+//    [topicsButton setImage:[UIImage imageNamed:@"icon-reader-topics-active"] forState:UIControlStateHighlighted];
 
     CGSize imageSize = [UIImage imageNamed:@"icon-reader-topics"].size;
     topicsButton.frame = CGRectMake(0.0, 0.0, imageSize.width, imageSize.height);
