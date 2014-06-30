@@ -12,10 +12,6 @@
 
 @implementation WordPressActivity
 
-- (UIImage *)activityImage {
-    return [UIImage imageNamed:@"sidebar-logo"];
-}
-
 - (NSString *)activityTitle {
     return @"WordPress";
 }
