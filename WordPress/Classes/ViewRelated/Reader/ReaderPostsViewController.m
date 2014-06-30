@@ -767,6 +767,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 }
 
+#pragma mark - WPAccount Notifications
+
 - (void)didChangeAccount:(NSNotification *)notification {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     [[[ReaderTopicService alloc] initWithManagedObjectContext:context] deleteAllTopics];
@@ -794,7 +796,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)fetchBlogsAndPrimaryBlog {
 	NSURL *xmlrpc;
-    NSString *username, *password, *authToken;
+    NSString *username;
+    NSString *password;
+    NSString *authToken;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
