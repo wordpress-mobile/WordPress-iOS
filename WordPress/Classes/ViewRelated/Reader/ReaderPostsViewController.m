@@ -23,7 +23,8 @@
 
 static CGFloat const RPVCHeaderHeightPhone = 10.0;
 static CGFloat const RPVCExtraTableViewHeightPercentage = 2.0;
-static CGFloat const RPVCEstimatedRowHeight = 400.0;
+static CGFloat const RPVCEstimatedRowHeightIPhone = 400.0;
+static CGFloat const RPVCEstimatedRowHeightIPad = 600.0;
 
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
@@ -82,6 +83,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.estimatedRowHeight = IS_IPAD ? RPVCEstimatedRowHeightIPad : RPVCEstimatedRowHeightIPhone;
 
     [self configureCellForLayout];
 
@@ -606,6 +608,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         [cell.postView setAvatarImage:image];
     } else {
         [post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
+            if (!image) {
+                return;
+            }
             if (cell == [self.tableView cellForRowAtIndexPath:indexPath]) {
                 [cell.postView setAvatarImage:image];
             }
@@ -751,11 +756,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 
 #pragma mark - TableView Methods
-
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return RPVCEstimatedRowHeight;
-}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
