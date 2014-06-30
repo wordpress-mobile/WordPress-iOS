@@ -6,7 +6,6 @@
 
 @interface ContextManager (TestHelper)
 
-@property (nonatomic, strong) NSManagedObjectContext *rootContext;
 @property (nonatomic, strong) NSManagedObjectContext *mainContext;
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
@@ -34,7 +33,6 @@
 
 - (void)setModelName:(NSString *)modelName {
     _managedObjectModel = [self modelWithName:modelName];
-    [ContextManager sharedInstance].rootContext = nil;
     [ContextManager sharedInstance].mainContext = nil;
     [ContextManager sharedInstance].persistentStoreCoordinator = nil;
 }
@@ -108,16 +106,7 @@
 }
 
 - (void)reset {
-    [[ContextManager sharedInstance].rootContext reset];
-    [ContextManager sharedInstance].rootContext = nil;
     [[ContextManager sharedInstance].mainContext reset];
-    [ContextManager sharedInstance].mainContext = nil;
-    [ContextManager sharedInstance].persistentStoreCoordinator = nil;
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:[ContextManager sharedInstance]];
-    
-    [[NSFileManager defaultManager] removeItemAtURL:[ContextManager storeURL] error:nil];
-    return;
 }
 
 - (NSManagedObjectModel *)managedObjectModel {
@@ -132,7 +121,7 @@
 
 @implementation ContextManager (TestHelper)
 
-@dynamic mainContext, rootContext;
+@dynamic mainContext;
 
 static void *const testPSCKey = "testPSCKey";
 
@@ -146,7 +135,7 @@ static void *const testPSCKey = "testPSCKey";
     
     psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[[ContextManager sharedInstance] managedObjectModel]];
     NSError *error;
-    NSPersistentStore *store = [psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[ContextManager storeURL] options:nil error:&error];
+    NSPersistentStore *store = [psc addPersistentStoreWithType:NSInMemoryStoreType configuration:nil URL:[ContextManager storeURL] options:nil error:&error];
     NSAssert(store != nil, @"Can't initialize core data storage");
     
     objc_setAssociatedObject([ContextManager sharedInstance], testPSCKey, psc, OBJC_ASSOCIATION_RETAIN);
@@ -166,22 +155,19 @@ static void *const testPSCKey = "testPSCKey";
 #pragma mark - Swizzle save methods
 
 + (void)load {
-    Method originalSaveChangesInRootContext = class_getInstanceMethod([ContextManager class], @selector(saveChangesInRootContext:));
-    Method testSaveChangesInRootContext = class_getInstanceMethod([ContextManager class], @selector(testSaveChangesInRootContext:));
-    method_exchangeImplementations(originalSaveChangesInRootContext, testSaveChangesInRootContext);
+    Method originalSaveContext = class_getInstanceMethod([ContextManager class], @selector(saveContext:));
+    Method testSaveContext = class_getInstanceMethod([ContextManager class], @selector(testSaveContext:));
+    method_exchangeImplementations(originalSaveContext, testSaveContext);
 }
 
-- (void)testSaveChangesInRootContext:(NSNotification *)notification {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] rootContext];
-    [context performBlockAndWait:^{
-        [context save:nil];
+- (void)testSaveContext:(NSManagedObjectContext *)context {
+	[self saveContext:context withCompletionBlock:^() {
+        if (ATHSemaphore) {
+            ATHNotify();
+        } else {
+            NSLog(@"No semaphore present for notify");
+        }
     }];
-
-    if (ATHSemaphore) {
-        ATHNotify();
-    } else {
-        NSLog(@"No semaphore present for notify");
-    }
 }
 
 @end
