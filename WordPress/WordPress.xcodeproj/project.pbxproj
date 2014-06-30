@@ -724,6 +724,7 @@
 		B545186218E9E06500AC3A54 /* NoteAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteAction.m; sourceTree = "<group>"; };
 		B545186418E9E07900AC3A54 /* NoteBodyItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteBodyItem.h; sourceTree = "<group>"; };
 		B545186518E9E07900AC3A54 /* NoteBodyItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteBodyItem.m; sourceTree = "<group>"; };
+		B5B63F3F19621A9F001601C3 /* WordPress 19.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 19.xcdatamodel"; sourceTree = "<group>"; };
 		B5CC05F51962150600975CAC /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		B5CC05F71962186D00975CAC /* Meta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Meta.h; sourceTree = "<group>"; };
 		B5CC05F81962186D00975CAC /* Meta.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Meta.m; sourceTree = "<group>"; };
@@ -2983,6 +2984,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				B5B63F3F19621A9F001601C3 /* WordPress 19.xcdatamodel */,
 				5D6CF8B4193BD96E0041D28F /* WordPress 18.xcdatamodel */,
 				5DB6D8F618F5DA6300956529 /* WordPress 17.xcdatamodel */,
 				5DA5BF4B18E331D8005F11F9 /* WordPress 16.xcdatamodel */,
@@ -3002,7 +3004,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = 5D6CF8B4193BD96E0041D28F /* WordPress 18.xcdatamodel */;
+			currentVersion = B5B63F3F19621A9F001601C3 /* WordPress 19.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";
