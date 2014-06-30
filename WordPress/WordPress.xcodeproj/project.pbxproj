@@ -32,8 +32,6 @@
 		30410686144E17AE00E98F07 /* next@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30410682144E17AE00E98F07 /* next@2x.png */; };
 		30410687144E17AE00E98F07 /* previous.png in Resources */ = {isa = PBXBuildFile; fileRef = 30410683144E17AE00E98F07 /* previous.png */; };
 		30410688144E17AE00E98F07 /* previous@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30410684144E17AE00E98F07 /* previous@2x.png */; };
-		306BAADF15C78C5400F37378 /* SidebarToolbarButtonHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 306BAADD15C78C5400F37378 /* SidebarToolbarButtonHighlighted.png */; };
-		306BAAE015C78C5400F37378 /* SidebarToolbarButtonHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 306BAADE15C78C5400F37378 /* SidebarToolbarButtonHighlighted@2x.png */; };
 		307B241F15ABE24C00F09A35 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 307B241D15ABE24C00F09A35 /* background.png */; };
 		307B242015ABE24C00F09A35 /* background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 307B241E15ABE24C00F09A35 /* background@2x.png */; };
 		30AF6CF513C2289600A29C00 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30AF6CF413C2289600A29C00 /* AboutViewController.xib */; };
@@ -57,10 +55,6 @@
 		374CB15515B85CF300DD0EBC /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 374CB15315B85CF300DD0EBC /* settings.png */; };
 		374CB15615B85CF300DD0EBC /* settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 374CB15415B85CF300DD0EBC /* settings@2x.png */; };
 		374CB16215B93C0800DD0EBC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 374CB16115B93C0800DD0EBC /* AudioToolbox.framework */; };
-		374F18AE15A5897500524ED0 /* sidebar_camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 374F188C15A5897500524ED0 /* sidebar_camera.png */; };
-		374F18AF15A5897500524ED0 /* sidebar_camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 374F188D15A5897500524ED0 /* sidebar_camera@2x.png */; };
-		374F18CC15A5897500524ED0 /* SidebarToolbarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 374F18AA15A5897500524ED0 /* SidebarToolbarButton.png */; };
-		374F18CD15A5897500524ED0 /* SidebarToolbarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 374F18AB15A5897500524ED0 /* SidebarToolbarButton@2x.png */; };
 		375D090D133B94C3000CC9CD /* BlogsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 375D090C133B94C3000CC9CD /* BlogsTableViewCell.m */; };
 		3768BEF213041E7900E7C9A9 /* BetaFeedbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3768BEF013041E7900E7C9A9 /* BetaFeedbackViewController.xib */; };
 		3768F4901340BBD60075B633 /* blavatar-wporg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3768F48C1340BBD60075B633 /* blavatar-wporg@2x.png */; };
@@ -97,7 +91,6 @@
 		5D119DA3176FBE040073D83A /* UIImageView+AFNetworkingExtra.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D119DA2176FBE040073D83A /* UIImageView+AFNetworkingExtra.m */; };
 		5D146EBB189857ED0068FDC6 /* FeaturedImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D146EBA189857ED0068FDC6 /* FeaturedImageViewController.m */; };
 		5D1EE80215E7AF3E007F1F02 /* JetpackSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1EE80015E7AF3E007F1F02 /* JetpackSettingsViewController.m */; };
-		5D2B80D11592447200161F6E /* QuickPhotoButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2B80D01592447200161F6E /* QuickPhotoButtonView.m */; };
 		5D358D6517723DB500739AA4 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D358D6417723DB500739AA4 /* OpenSans-Bold.ttf */; };
 		5D37941B19216B1300E26CA4 /* RebloggingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D37941A19216B1300E26CA4 /* RebloggingViewController.m */; };
 		5D3D559718F88C3500782892 /* ReaderPostService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D3D559618F88C3500782892 /* ReaderPostService.m */; };
@@ -665,8 +658,6 @@
 		30410682144E17AE00E98F07 /* next@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "next@2x.png"; path = "Resources/Images/next@2x.png"; sourceTree = "<group>"; };
 		30410683144E17AE00E98F07 /* previous.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = previous.png; path = Resources/Images/previous.png; sourceTree = "<group>"; };
 		30410684144E17AE00E98F07 /* previous@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "previous@2x.png"; path = "Resources/Images/previous@2x.png"; sourceTree = "<group>"; };
-		306BAADD15C78C5400F37378 /* SidebarToolbarButtonHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SidebarToolbarButtonHighlighted.png; path = Resources/Images/SidebarToolbarButtonHighlighted.png; sourceTree = "<group>"; };
-		306BAADE15C78C5400F37378 /* SidebarToolbarButtonHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SidebarToolbarButtonHighlighted@2x.png"; path = "Resources/Images/SidebarToolbarButtonHighlighted@2x.png"; sourceTree = "<group>"; };
 		307B241D15ABE24C00F09A35 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = background.png; path = Resources/Images/background.png; sourceTree = "<group>"; };
 		307B241E15ABE24C00F09A35 /* background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "background@2x.png"; path = "Resources/Images/background@2x.png"; sourceTree = "<group>"; };
 		30AF6CF413C2289600A29C00 /* AboutViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AboutViewController.xib; path = Resources/AboutViewController.xib; sourceTree = "<group>"; };
@@ -693,10 +684,6 @@
 		374CB15315B85CF300DD0EBC /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = settings.png; path = Resources/Images/settings.png; sourceTree = "<group>"; };
 		374CB15415B85CF300DD0EBC /* settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "settings@2x.png"; path = "Resources/Images/settings@2x.png"; sourceTree = "<group>"; };
 		374CB16115B93C0800DD0EBC /* AudioToolbox.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		374F188C15A5897500524ED0 /* sidebar_camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sidebar_camera.png; path = Resources/Images/sidebar_camera.png; sourceTree = "<group>"; };
-		374F188D15A5897500524ED0 /* sidebar_camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "sidebar_camera@2x.png"; path = "Resources/Images/sidebar_camera@2x.png"; sourceTree = "<group>"; };
-		374F18AA15A5897500524ED0 /* SidebarToolbarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SidebarToolbarButton.png; path = Resources/Images/SidebarToolbarButton.png; sourceTree = "<group>"; };
-		374F18AB15A5897500524ED0 /* SidebarToolbarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SidebarToolbarButton@2x.png"; path = "Resources/Images/SidebarToolbarButton@2x.png"; sourceTree = "<group>"; };
 		375D090B133B94C3000CC9CD /* BlogsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogsTableViewCell.h; sourceTree = "<group>"; };
 		375D090C133B94C3000CC9CD /* BlogsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogsTableViewCell.m; sourceTree = "<group>"; };
 		3768BEF013041E7900E7C9A9 /* BetaFeedbackViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = BetaFeedbackViewController.xib; path = Resources/BetaFeedbackViewController.xib; sourceTree = "<group>"; };
@@ -751,8 +738,6 @@
 		5D1EE7FF15E7AF3E007F1F02 /* JetpackSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackSettingsViewController.h; sourceTree = "<group>"; };
 		5D1EE80015E7AF3E007F1F02 /* JetpackSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackSettingsViewController.m; sourceTree = "<group>"; };
 		5D2B043515E83800007E3422 /* SettingsViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewControllerDelegate.h; sourceTree = "<group>"; };
-		5D2B80CF1592447200161F6E /* QuickPhotoButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuickPhotoButtonView.h; sourceTree = "<group>"; };
-		5D2B80D01592447200161F6E /* QuickPhotoButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuickPhotoButtonView.m; sourceTree = "<group>"; };
 		5D358D6417723DB500739AA4 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		5D37941919216B1300E26CA4 /* RebloggingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RebloggingViewController.h; sourceTree = "<group>"; };
 		5D37941A19216B1300E26CA4 /* RebloggingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RebloggingViewController.m; sourceTree = "<group>"; };
@@ -1604,8 +1589,6 @@
 				CC669B251672C335009E16F8 /* NoteCommentPostBanner.m */,
 				852F4E8A17BED193005ED539 /* PostSettingsSelectionViewController.h */,
 				852F4E8B17BED193005ED539 /* PostSettingsSelectionViewController.m */,
-				5D2B80CF1592447200161F6E /* QuickPhotoButtonView.h */,
-				5D2B80D01592447200161F6E /* QuickPhotoButtonView.m */,
 				E17BE25F134F5E4D00165C3D /* QuickPicturePreviewView.h */,
 				E17BE260134F5E4D00165C3D /* QuickPicturePreviewView.m */,
 				93740DC817D8F85600C41B2F /* WPAlertView.h */,
@@ -1800,19 +1783,6 @@
 				3716E400167296D30035F8C4 /* ToastView.xib */,
 			);
 			name = Notifications;
-			sourceTree = "<group>";
-		};
-		374F188915A5895B00524ED0 /* Sidebar */ = {
-			isa = PBXGroup;
-			children = (
-				374F188C15A5897500524ED0 /* sidebar_camera.png */,
-				374F188D15A5897500524ED0 /* sidebar_camera@2x.png */,
-				374F18AA15A5897500524ED0 /* SidebarToolbarButton.png */,
-				374F18AB15A5897500524ED0 /* SidebarToolbarButton@2x.png */,
-				306BAADD15C78C5400F37378 /* SidebarToolbarButtonHighlighted.png */,
-				306BAADE15C78C5400F37378 /* SidebarToolbarButtonHighlighted@2x.png */,
-			);
-			name = Sidebar;
 			sourceTree = "<group>";
 		};
 		3792259E12F6DBCC00F2176A /* Stats */ = {
@@ -2497,7 +2467,6 @@
 				85C720A317307B3600460645 /* NUX */,
 				AC600C100E20B81100D663AA /* Post Icons */,
 				E11C91CA135770DA0072A811 /* Rich Text Editor */,
-				374F188915A5895B00524ED0 /* Sidebar */,
 				5D725B08191EACFB00CA71ED /* default-identicon.png */,
 				5D725B09191EACFB00CA71ED /* default-identicon@2x.png */,
 				5DC029EB18E4C588009A1765 /* date_picker_selected.png */,
@@ -3323,8 +3292,6 @@
 				E24085A0183FDDEC002EB0EF /* penandink.png in Resources */,
 				85495F5B17C6FACF00871A7A /* icon-comments-trash.png in Resources */,
 				85A69D0417C530FE0061E254 /* OpenSans-LightItalic.ttf in Resources */,
-				374F18AE15A5897500524ED0 /* sidebar_camera.png in Resources */,
-				374F18AF15A5897500524ED0 /* sidebar_camera@2x.png in Resources */,
 				85ED988817DFA00000090D0B /* Images.xcassets in Resources */,
 				5DC02A2B18E4C589009A1765 /* theme-browse-current.png in Resources */,
 				85325A2517BB0DF8008E87D1 /* icon-menu-viewsite@2x.png in Resources */,
@@ -3333,8 +3300,6 @@
 				46F8714C1838BB4E00BC149B /* reader-postaction-tag@2x.png in Resources */,
 				85ED54F317CC1A01006564AE /* icon-posts-editor-preview.png in Resources */,
 				850DE06E17CDAF92003A1057 /* icon-comments-approve@2x.png in Resources */,
-				374F18CC15A5897500524ED0 /* SidebarToolbarButton.png in Resources */,
-				374F18CD15A5897500524ED0 /* SidebarToolbarButton@2x.png in Resources */,
 				E233414E182DB69500A4CC40 /* btn-back-chevron.png in Resources */,
 				5DD8A6E615A5ECDC00A673A4 /* sync_lite.png in Resources */,
 				5DD8A6E715A5ECDC00A673A4 /* sync_lite@2x.png in Resources */,
@@ -3377,8 +3342,6 @@
 				46F871521839528C00BC149B /* reader-postaction-time.png in Resources */,
 				E14D65C417E08617007E3EA4 /* reader-postaction-comment-blue@2x.png in Resources */,
 				85ED54FD17CC1A01006564AE /* icon-posts-editor-inspector-active@2x.png in Resources */,
-				306BAADF15C78C5400F37378 /* SidebarToolbarButtonHighlighted.png in Resources */,
-				306BAAE015C78C5400F37378 /* SidebarToolbarButtonHighlighted@2x.png in Resources */,
 				5DC02A2C18E4C589009A1765 /* theme-browse-current@2x.png in Resources */,
 				85495F6217C6FACF00871A7A /* icon-comments-flag@2x.png in Resources */,
 				85325A2E17BB0DF8008E87D1 /* icon-menu-stats.png in Resources */,
@@ -3683,7 +3646,6 @@
 				E13EB7A5157D230000885780 /* WordPressComApi.m in Sources */,
 				5D5D0027187DA9D30027CEF6 /* CategoriesViewController.m in Sources */,
 				E1E4CE0B1773C59B00430844 /* WPAvatarSource.m in Sources */,
-				5D2B80D11592447200161F6E /* QuickPhotoButtonView.m in Sources */,
 				852F4E8C17BED193005ED539 /* PostSettingsSelectionViewController.m in Sources */,
 				FD75DDAD15B021C80043F12C /* UIViewController+Rotation.m in Sources */,
 				CC0E20AE15B87DA100D3468B /* WPWebBridge.m in Sources */,
