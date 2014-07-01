@@ -14,13 +14,11 @@
 #import "ReachabilityUtils.h"
 #import "WPNUXUtility.h"
 #import "WPAccount.h"
-#import "Note.h"
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "BlogService.h"
 #import "WPNUXHelpBadgeLabel.h"
 #import <Helpshift/Helpshift.h>
-
 
 static NSString *const ForgotPasswordDotComBaseUrl = @"https://wordpress.com";
 static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
