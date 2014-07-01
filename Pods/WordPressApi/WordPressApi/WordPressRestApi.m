@@ -115,7 +115,7 @@ static NSString *WordPressRestApiRedirectUrl = nil;
 		[images enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 			NSData *imageData = UIImageJPEGRepresentation(obj, 1.f);
 			[formData appendPartWithFileData:imageData name:@"media[]"
-									fileName:[NSString stringWithFormat:@"image-%tu.jpg", idx]
+									fileName:[NSString stringWithFormat:@"image-%lu.jpg", (unsigned long)idx]
 									mimeType:@"image/jpeg"];
 		}];
 	};
