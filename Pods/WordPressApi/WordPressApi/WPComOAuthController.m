@@ -126,7 +126,7 @@ NSString *const WPComOAuthErrorDomain = @"WPComOAuthError";
                                   [self stringByUrlEncodingString:queryUrl]];
         [request setURL:[NSURL URLWithString:WPComOAuthLoginUrl]];
         [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
-        [request setValue:[NSString stringWithFormat:@"%tu", [request_body length]] forHTTPHeaderField:@"Content-Length"];
+        [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[request_body length]] forHTTPHeaderField:@"Content-Length"];
         [request addValue:@"*/*" forHTTPHeaderField:@"Accept"];
         [request setHTTPMethod:@"POST"];
     }

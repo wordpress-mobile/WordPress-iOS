@@ -15,6 +15,7 @@
 #import "WPXMLRPCRequest.h"
 #import "WPXMLRPCRequestOperation.h"
 #import "WPHTTPAuthenticationAlertView.h"
+#import "WPHTTPRequestOperation.h"
 
 #ifndef WPFLog
 #define WPFLog(...) NSLog(__VA_ARGS__)
@@ -112,7 +113,7 @@ static NSUInteger const WPXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
 
     WPXMLRPCEncoder *encoder = [[WPXMLRPCEncoder alloc] initWithMethod:method andParameters:parameters];
     [request setHTTPBodyStream:encoder.bodyStream];
-    [request setValue:[NSString stringWithFormat:@"%tu", encoder.contentLength] forHTTPHeaderField:@"Content-Length"];
+    [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)encoder.contentLength] forHTTPHeaderField:@"Content-Length"];
 
     return request;
 }
@@ -127,7 +128,7 @@ static NSUInteger const WPXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
 - (AFHTTPRequestOperation *)HTTPRequestOperationWithRequest:(NSURLRequest *)request
                                                     success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
                                                     failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure {
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    WPHTTPRequestOperation *operation = [[WPHTTPRequestOperation alloc] initWithRequest:request];
 
     BOOL extra_debug_on = getenv("WPDebugXMLRPC") ? YES : NO;
 #ifndef DEBUG
