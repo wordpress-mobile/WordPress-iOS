@@ -26,6 +26,9 @@ static CGFloat const RPVCExtraTableViewHeightPercentage = 2.0;
 static CGFloat const RPVCEstimatedRowHeightIPhone = 400.0;
 static CGFloat const RPVCEstimatedRowHeightIPad = 600.0;
 
+NSString * const FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
+NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier";
+
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
 @interface ReaderPostsViewController ()<WPTableImageSourceDelegate, ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate>
@@ -80,6 +83,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
+
+    [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:NoFeaturedImageCellIdentifier];
+    [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:FeaturedImageCellIdentifier];
 
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -756,6 +762,29 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 
 #pragma mark - TableView Methods
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell;
+    ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
+    if ([post featuredImageURLForDisplay]) {
+        cell = [tableView dequeueReusableCellWithIdentifier:FeaturedImageCellIdentifier];
+    } else {
+        cell = [tableView dequeueReusableCellWithIdentifier:NoFeaturedImageCellIdentifier];
+    }
+
+    if (self.tableView.isEditing) {
+		cell.accessoryType = UITableViewCellAccessoryNone;
+	} else {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+
+    [self configureCell:cell atIndexPath:indexPath];
+    if (!cell) {
+        NSLog(@"NO CELL!");
+    }
+
+    return cell;
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
