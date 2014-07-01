@@ -2,7 +2,6 @@
 
 #import "Blog+Jetpack.h"
 #import "WPAccount.h"
-#import "Note.h"
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
 #import "WordPressComOAuthClient.h"
