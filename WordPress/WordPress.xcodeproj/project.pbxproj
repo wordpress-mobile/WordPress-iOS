@@ -1597,6 +1597,7 @@
 		858DE3FF172F9991000AC628 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				B55853F419630AF900FAF6C3 /* Noticons-Regular.otf */,
 				462F4E0F183867AE0028D2F8 /* Merriweather-Bold.ttf */,
 				5D358D6417723DB500739AA4 /* OpenSans-Bold.ttf */,
 				858DE41017303BB4000AC628 /* OpenSans-Light.ttf */,
