@@ -15,7 +15,7 @@
 #import "AccountService.h"
 #import "NoteBodyItem.h"
 #import "NoteAction.h"
-#import "WPAnalytics.h"
+
 
 NSString *const WPNotificationFollowRestorationKey = @"WPNotificationFollowRestorationKey";
 NSString *const WPNotificationHeaderCellIdentifier = @"WPNotificationHeaderCellIdentifier";
