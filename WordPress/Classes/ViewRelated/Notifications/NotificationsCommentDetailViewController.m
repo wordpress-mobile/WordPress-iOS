@@ -19,7 +19,7 @@
 #import "WPTableViewController.h"
 #import "NoteBodyItem.h"
 #import "AccountService.h"
-#import "WPAnalytics.h"
+
 
 const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight = 64.f;
 NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRestorationKey";

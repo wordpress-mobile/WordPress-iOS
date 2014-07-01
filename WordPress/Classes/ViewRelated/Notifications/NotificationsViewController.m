@@ -25,7 +25,6 @@
 #import "ReaderPost.h"
 #import "ReaderPostDetailViewController.h"
 #import "ContextManager.h"
-#import "WPAnalytics.h"
 
 
 @interface NotificationsViewController ()
