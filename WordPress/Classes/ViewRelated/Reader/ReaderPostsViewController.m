@@ -51,6 +51,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @property (nonatomic, strong) ReaderPostTableViewCell *cellForLayout;
 @property (nonatomic, strong) NSLayoutConstraint *cellForLayoutWidthConstraint;
 
+@property (nonatomic) BOOL infiniteScrollEnabled;
+
 @end
 
 @implementation ReaderPostsViewController
@@ -66,13 +68,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id)init
+- (instancetype)init
 {
 	self = [super init];
 	if (self) {
-		self.hasMoreContent = YES;
-		self.infiniteScrollEnabled = YES;
-        self.incrementalLoadingSupported = YES;
+        _hasMoreContent = YES;
+        _infiniteScrollEnabled = YES;
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readerTopicDidChange:) name:ReaderTopicDidChangeNotification object:nil];
@@ -83,6 +84,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
+
+    self.incrementalLoadingSupported = YES;
 
     [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:NoFeaturedImageCellIdentifier];
     [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:FeaturedImageCellIdentifier];
