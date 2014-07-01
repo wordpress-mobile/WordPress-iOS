@@ -195,6 +195,7 @@
 		ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */; };
 		ACBAB6860E1247F700F38795 /* PostPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBAB6850E1247F700F38795 /* PostPreviewViewController.m */; };
 		ACC156CC0E10E67600D6E1A0 /* EditPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC156CB0E10E67600D6E1A0 /* EditPostViewController.m */; };
+		B51D9A7E19634D4400CA857B /* Noticons-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = B55853F419630AF900FAF6C3 /* Noticons-Regular.otf */; };
 		B55853F31962337500FAF6C3 /* NSScanner+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B55853F21962337500FAF6C3 /* NSScanner+Helpers.m */; };
 		B55853F719630D5400FAF6C3 /* NSAttributedString+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = B55853F619630D5400FAF6C3 /* NSAttributedString+Util.m */; };
 		B55853FC19630E7900FAF6C3 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = B55853F919630E7900FAF6C3 /* Notification.m */; };
@@ -2191,7 +2192,6 @@
 				E1D91456134A853D0089019C /* Localizable.strings in Resources */,
 				E13FA0CC134BDCBB007DCDD0 /* QuickPhotoViewController.xib in Resources */,
 				5DC02A3918E4C5BD009A1765 /* ThemeDetailsViewController~ipad.xib in Resources */,
-				462F4E10183867AE0028D2F8 /* Merriweather-Bold.ttf in Resources */,
 				30AF6CF513C2289600A29C00 /* AboutViewController.xib in Resources */,
 				E1FC3DB413C7788700F6B60F /* WPWebViewController~ipad.xib in Resources */,
 				37245ADC13FC23FF006CDBE3 /* WPWebViewController.xib in Resources */,
@@ -2203,18 +2203,20 @@
 				85A69D0417C530FE0061E254 /* OpenSans-LightItalic.ttf in Resources */,
 				85ED988817DFA00000090D0B /* Images.xcassets in Resources */,
 				5DC02A3818E4C5BD009A1765 /* ThemeDetailsViewController.xib in Resources */,
-				85A69D0217C530FE0061E254 /* OpenSans-BoldItalic.ttf in Resources */,
 				CC70165B185A7536007B37DB /* InlineComposeView.xib in Resources */,
-				85A69D0317C530FE0061E254 /* OpenSans-Italic.ttf in Resources */,
 				3716E401167296D30035F8C4 /* ToastView.xib in Resources */,
 				93740DCD17D8F87B00C41B2F /* WPAlertView.xib in Resources */,
 				5DA5BF3E18E32DCF005F11F9 /* EditMediaViewController.xib in Resources */,
 				5DA5BF4218E32DCF005F11F9 /* MediaBrowserViewController.xib in Resources */,
 				5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */,
 				85D80558171630B30075EEAC /* DotCom-Languages.plist in Resources */,
+				462F4E10183867AE0028D2F8 /* Merriweather-Bold.ttf in Resources */,
+				85A69D0317C530FE0061E254 /* OpenSans-Italic.ttf in Resources */,
+				85A69D0217C530FE0061E254 /* OpenSans-BoldItalic.ttf in Resources */,
 				858DE41217303BB4000AC628 /* OpenSans-Light.ttf in Resources */,
 				858DE41317303BB4000AC628 /* OpenSans-Regular.ttf in Resources */,
 				5D358D6517723DB500739AA4 /* OpenSans-Bold.ttf in Resources */,
+				B51D9A7E19634D4400CA857B /* Noticons-Regular.otf in Resources */,
 				5DC02A3718E4C5BD009A1765 /* ThemeBrowserViewController.xib in Resources */,
 				A2787D0219002AB1000D6CA6 /* HelpshiftConfig.plist in Resources */,
 			);
