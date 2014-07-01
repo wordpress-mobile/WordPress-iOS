@@ -17,7 +17,7 @@
 /**
  Returns the image (including edits and cropping) for the given representation.
  */
-- (CGImageRef)imageFromAssetRepresentation:(ALAssetRepresentation *)representation;
+- (CGImageRef)newImageFromAssetRepresentation:(ALAssetRepresentation *)representation;
 
 /**
  Returns a scaled down image.
