@@ -341,6 +341,10 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     return button;
 }
 
+- (UIButton *)addActionButtonWithImageName:(NSString *)buttonImageName selectedImageName:(NSString *)selectedImageName {
+    return [self addActionButtonWithImage:[UIImage imageNamed:buttonImageName] selectedImage:[UIImage imageNamed:selectedImageName]];
+}
+
 - (void)removeActionButton:(UIButton *)button {
     [button removeFromSuperview];
     [self.actionButtons removeObject:button];

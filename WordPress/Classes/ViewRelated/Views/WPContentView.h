@@ -31,6 +31,7 @@
 - (void)setFeaturedImage:(UIImage *)image;
 - (void)setAuthorDisplayName:(NSString *)authorName authorLink:(NSString *)authorLink;
 - (UIButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage;
+- (UIButton *)addActionButtonWithImageName:(NSString *)buttonImageName selectedImageName:(NSString *)selectedImageName;
 - (void)removeActionButton:(UIButton *)button;
 - (void)updateActionButtons;
 - (void)refreshMediaLayout;
