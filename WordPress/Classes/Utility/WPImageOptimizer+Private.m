@@ -9,23 +9,31 @@ static const CGFloat CompressionQuality = 0.7;
 @implementation WPImageOptimizer (Private)
 
 - (NSData *)rawDataFromAssetRepresentation:(ALAssetRepresentation *)representation {
-    CGImageRef sourceImage = [self imageFromAssetRepresentation:representation];
+    CGImageRef sourceImage = [self newImageFromAssetRepresentation:representation];
     NSDictionary *metadata = representation.metadata;
     NSString *type = representation.UTI;
     NSData *optimizedData = [self dataWithImage:sourceImage compressionQuality:1.0  type:type andMetadata:metadata];
+    
+    CGImageRelease(sourceImage);
+    sourceImage = nil;
+    
     return optimizedData;
 }
 
 - (NSData *)optimizedDataFromAssetRepresentation:(ALAssetRepresentation *)representation {
-    CGImageRef sourceImage = [self imageFromAssetRepresentation:representation];
+    CGImageRef sourceImage = [self newImageFromAssetRepresentation:representation];
     CGImageRef resizedImage = [self resizedImageWithImage:sourceImage scale:representation.scale orientation:representation.orientation];
     NSDictionary *metadata = [self metadataFromRepresentation:representation];
     NSString *type = representation.UTI;
     NSData *optimizedData = [self dataWithImage:resizedImage compressionQuality:CompressionQuality type:type andMetadata:metadata];
+    
+    CGImageRelease(sourceImage);
+    sourceImage = nil;
+    
     return optimizedData;
 }
 
-- (CGImageRef)imageFromAssetRepresentation:(ALAssetRepresentation *)representation {
+- (CGImageRef)newImageFromAssetRepresentation:(ALAssetRepresentation *)representation {
     CGImageRef fullResolutionImage = CGImageRetain(representation.fullResolutionImage);
     NSString *adjustmentXMP = [representation.metadata objectForKey:@"AdjustmentXMP"];
 
