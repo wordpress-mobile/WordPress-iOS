@@ -41,7 +41,6 @@ typedef enum {
 @property (nonatomic, strong) ReaderPostView *postView;
 @property (nonatomic, strong) UIImage *featuredImage;
 @property (nonatomic, strong) UIImage *avatarImage;
-@property (nonatomic, strong) NSURL *avatarImageURL;
 @property (nonatomic) BOOL infiniteScrollEnabled;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, strong) UIBarButtonItem *commentButton;
@@ -65,8 +64,13 @@ typedef enum {
 #pragma mark - LifeCycle Methods
 
 - (void)dealloc {
+    // Note: If the view isn't already loaded, hitting self.tableView will effectively trigger loadView sequence.
+    // Let's prevent that, whenever possible
+    if (self.isViewLoaded) {
+        self.tableView.delegate = nil;
+    }
+    
 	_resultsController.delegate = nil;
-    self.tableView.delegate = nil;
     self.postView.delegate = nil;
     
     self.activityFooter = nil;
@@ -83,22 +87,30 @@ typedef enum {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image avatarImage:(UIImage *)avatarImage {
+- (id)init {
 	self = [super init];
 	if (self) {
-		_post = post;
 		_comments = [NSMutableArray array];
-        _featuredImage = image;
-        _avatarImage = avatarImage;
         _showInlineActionBar = YES;
 	}
 	return self;
 }
 
-- (id)initWithPost:(ReaderPost *)post avatarImageURL:(NSURL *)avatarImageURL {
-	self = [self initWithPost:post featuredImage:nil avatarImage:nil];
+- (id)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image avatarImage:(UIImage *)avatarImage {
+	self = [self init];
 	if (self) {
-        _avatarImageURL =avatarImageURL;
+		_post = post;
+        _featuredImage = image;
+        _avatarImage = avatarImage;
+	}
+	return self;
+}
+
+- (id)initWithPost:(ReaderPost *)post avatarImageURL:(NSURL *)avatarImageURL {
+	self = [self init];
+	if (self) {
+		_post = post;
+        _avatarImageURL = avatarImageURL;
     }
 	return self;
 }

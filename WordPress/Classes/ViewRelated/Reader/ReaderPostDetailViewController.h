@@ -5,6 +5,7 @@
 
 @interface ReaderPostDetailViewController : UITableViewController<UITableViewDataSource, UITableViewDelegate, ReaderPostViewDelegate, ReaderCommentTableViewCellDelegate, NSFetchedResultsControllerDelegate>
 @property (nonatomic, strong) ReaderPost *post;
+@property (nonatomic, strong) NSURL *avatarImageURL;
 @property (nonatomic, assign) BOOL showInlineActionBar;
 
 - (id)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image avatarImage:(UIImage *)avatarImage;
