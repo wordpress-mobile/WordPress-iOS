@@ -898,7 +898,7 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 	self.simperium = [[Simperium alloc] initWithModel:manager.managedObjectModel
 											  context:manager.mainContext
 										  coordinator:manager.persistentStoreCoordinator
-                                                label:nil
+                                                label:[NSString string]
                                       bucketOverrides:bucketOverrides];
 	
 #ifdef DEBUG
