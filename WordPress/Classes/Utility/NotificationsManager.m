@@ -1,5 +1,4 @@
 #import "NotificationsManager.h"
-#import "Note.h"
 #import "WordPressAppDelegate.h"
 #import "WPAccount.h"
 #import "WordPressComApi.h"
@@ -11,13 +10,14 @@
 #import <Simperium/Simperium.h>
 #import <Mixpanel/Mixpanel.h>
 
-static NSString *const NotificationsDeviceIdKey = @"notification_device_id";
-static NSString *const NotificationsPreferencesKey = @"notification_preferences";
-NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
+static NSString *const NotificationsDeviceIdKey     = @"notification_device_id";
+static NSString *const NotificationsPreferencesKey  = @"notification_preferences";
+NSString *const NotificationsDeviceToken            = @"apnsDeviceToken";
 
 @implementation NotificationsManager
 
-+ (void)registerForPushNotifications {
++ (void)registerForPushNotifications
+{
 #if TARGET_IPHONE_SIMULATOR
     return;
 #endif
@@ -31,7 +31,8 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 
 #pragma mark - Device token registration
 
-+ (void)registerDeviceToken:(NSData *)deviceToken {
++ (void)registerDeviceToken:(NSData *)deviceToken
+{
     // We want to register Helpshift regardless so that way if a user isn't logged in
     // they can still get push notifications that we replied to their support ticket.
     [[Helpshift sharedInstance] registerDeviceToken:deviceToken];
@@ -63,7 +64,8 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
     [self syncPushNotificationInfo];
 }
 
-+ (void)registrationDidFail:(NSError *)error {
++ (void)registrationDidFail:(NSError *)error
+{
     DDLogError(@"Failed to register for push notifications: %@", error);
     [self unregisterDeviceToken];
 }
@@ -87,7 +89,8 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
                                                                  }];
 }
 
-+ (BOOL)deviceRegisteredForPushNotifications {
++ (BOOL)deviceRegisteredForPushNotifications
+{
     return [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken] != nil;
 }
 
@@ -154,7 +157,8 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 
 #pragma mark - WordPress.com XML RPC API
 
-+ (NSDictionary *)notificationSettingsDictionary {
++ (NSDictionary *)notificationSettingsDictionary
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
@@ -207,7 +211,8 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
     return updatedSettings;
 }
 
-+ (void)saveNotificationSettings {
++ (void)saveNotificationSettings
+{
     NSDictionary *settings = [NotificationsManager notificationSettingsDictionary];
     NSString *deviceId = [[NSUserDefaults standardUserDefaults] stringForKey:NotificationsDeviceIdKey];
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -223,7 +228,8 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
                                                }];
 }
 
-+ (void)fetchNotificationSettingsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
++ (void)fetchNotificationSettingsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure
+{
     NSString *deviceId = [[NSUserDefaults standardUserDefaults] stringForKey:NotificationsDeviceIdKey];
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
@@ -244,7 +250,8 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
                                                             }];
 }
 
-+ (void)syncPushNotificationInfo {
++ (void)syncPushNotificationInfo
+{
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
