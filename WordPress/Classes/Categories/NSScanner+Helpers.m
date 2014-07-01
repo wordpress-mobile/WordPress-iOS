@@ -1,19 +1,26 @@
 #import "NSScanner+Helpers.h"
 
+
+
 @implementation NSScanner (Helpers)
 
-- (NSString *)scanQuotedText
+- (NSArray *)scanQuotedText
 {
-    NSString *scanned = nil;
+    NSMutableArray *scanned = [NSMutableArray array];
+    NSString *quote = nil;
     
     while ([self isAtEnd] == NO) {
-        [self scanUpToString:@"\"" intoString:nil];
-        [self scanString:@"\"" intoString:nil];
-        [self scanUpToString:@"\"" intoString:&scanned];
-        [self scanString:@"\"" intoString:nil];
+        [self scanUpToString:@"\""  intoString:nil];
+        [self scanString:@"\""      intoString:nil];
+        [self scanUpToString:@"\""  intoString:&quote];
+        [self scanString:@"\""      intoString:nil];
+        
+        if (quote.length) {
+            [scanned addObject:quote];
+        }
     }
     
-    return (scanned.length > 0) ? scanned : nil;
+    return scanned;
 }
 
 @end
