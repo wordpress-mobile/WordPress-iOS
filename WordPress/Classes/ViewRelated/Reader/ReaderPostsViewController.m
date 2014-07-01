@@ -231,7 +231,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     UIEdgeInsets scrollInsets = self.tableView.scrollIndicatorInsets;
     scrollInsets.bottom = insets.bottom;
     self.tableView.scrollIndicatorInsets = scrollInsets;
-    [self.tableView layoutIfNeeded];
+    [self.tableView setNeedsLayout];
 }
 
 - (void)setTitle:(NSString *)title {
