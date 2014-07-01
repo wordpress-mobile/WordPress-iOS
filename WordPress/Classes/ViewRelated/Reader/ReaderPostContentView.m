@@ -29,6 +29,9 @@
 
         self.likeButton = [super createActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-like-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-like-active"]];
         [self.likeButton addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
+
+        // Optimistically set action buttons and prime constraints for scrolling performance.
+        self.actionButtons = @[self.likeButton, self.commentButton, self.reblogButton];
     }
     return self;
 }
