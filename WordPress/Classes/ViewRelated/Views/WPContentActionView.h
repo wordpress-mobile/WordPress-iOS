@@ -14,15 +14,20 @@
 @property (nonatomic, weak) id<WPContentViewProvider>contentProvider;
 
 /**
- Adds the specified button to the group of "action" buttons.
- 
- @param actionButton A `UIButton` to display.
+ The action buttons to display.
  */
-- (void)addActionButton:(UIButton *)actionButton;
+@property (nonatomic, strong) NSArray *actionButtons;
 
-/**
- Removes all the buttons previously added.
- */
-- (void)removeAllActionButtons;
+///**
+// Adds the specified button to the group of "action" buttons.
+// 
+// @param actionButton A `UIButton` to display.
+// */
+//- (void)addActionButton:(UIButton *)actionButton;
+//
+///**
+// Removes all the buttons previously added.
+// */
+//- (void)removeAllActionButtons;
 
 @end

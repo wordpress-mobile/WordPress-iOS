@@ -71,6 +71,11 @@ The object specifying the content (text, images, etc.) to display.
 @property (nonatomic, assign) BOOL alwaysHidesFeaturedImage;
 
 /**
+ An array of 'action' buttons to display in the internal `WPContentActionView`
+ */
+@property (nonatomic, strong) NSArray *actionButtons;
+
+/**
  Resets the content view's appearance.
  */
 - (void)reset;
@@ -119,12 +124,13 @@ The object specifying the content (text, images, etc.) to display.
 - (void)configureActionView;
 
 /**
- Adds a new button with the specified image to the content view's internal action bar.
+ Create a new button with the specified image for use with the internal action bar.
 
  @param buttonImage The image for the button's normal state.
  @param selectedButtonImage The image for the button's selected state.
+ @return The newly created button.
  */
-- (UIButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage;
+- (UIButton *)createActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage;
 
 /**
  Manually refresh the appearance of the buttons in the action bar. Useful if a
