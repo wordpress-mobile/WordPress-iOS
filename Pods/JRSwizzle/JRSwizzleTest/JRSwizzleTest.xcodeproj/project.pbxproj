@@ -1,0 +1,1168 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 44;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		79F3DBFA0CF33EE500733703 /* All Tests */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 79F3DC0C0CF33EFB00733703 /* Build configuration list for PBXAggregateTarget "All Tests" */;
+			buildPhases = (
+			);
+			dependencies = (
+				792609490CF3FA4A00A93D12 /* PBXTargetDependency */,
+				7926085F0CF3F32700A93D12 /* PBXTargetDependency */,
+				79F3DC3E0CF358B300733703 /* PBXTargetDependency */,
+				79F3DC400CF358B300733703 /* PBXTargetDependency */,
+			);
+			name = "All Tests";
+			productName = "All Tests";
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		7926079B0CF3EE5400A93D12 /* AppleSwizzleTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 79F3DC870CF3EAAD00733703 /* AppleSwizzleTest.m */; };
+		792607C80CF3F0A900A93D12 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08FB779EFE84155DC02AAC07 /* Foundation.framework */; };
+		792608460CF3F0AE00A93D12 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* main.m */; };
+		792608640CF3F34000A93D12 /* BallardSwizzleTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 79F3DC5E0CF36BC300733703 /* BallardSwizzleTest.m */; };
+		792608650CF3F34100A93D12 /* ClassicSwizzleTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 79F3DC1C0CF3411300733703 /* ClassicSwizzleTest.m */; };
+		792608690CF3F36900A93D12 /* MethodSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 79F3DC540CF36B3500733703 /* MethodSwizzle.m */; };
+		792608800CF3F57B00A93D12 /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7926087E0CF3F57B00A93D12 /* JRSwizzle.m */; };
+		792608810CF3F57B00A93D12 /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7926087E0CF3F57B00A93D12 /* JRSwizzle.m */; };
+		792608820CF3F57B00A93D12 /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7926087E0CF3F57B00A93D12 /* JRSwizzle.m */; };
+		792608880CF3F6BF00A93D12 /* JRSwizzleTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 792608870CF3F6BF00A93D12 /* JRSwizzleTest.m */; };
+		792608890CF3F6BF00A93D12 /* JRSwizzleTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 792608870CF3F6BF00A93D12 /* JRSwizzleTest.m */; };
+		7926088A0CF3F6BF00A93D12 /* JRSwizzleTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 792608870CF3F6BF00A93D12 /* JRSwizzleTest.m */; };
+		792608A80CF3F8DA00A93D12 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08FB779EFE84155DC02AAC07 /* Foundation.framework */; };
+		792609260CF3F8E500A93D12 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* main.m */; };
+		7926094C0CF3FA6400A93D12 /* BallardSwizzleTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 79F3DC5E0CF36BC300733703 /* BallardSwizzleTest.m */; };
+		7926094D0CF3FA6500A93D12 /* ClassicSwizzleTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 79F3DC1C0CF3411300733703 /* ClassicSwizzleTest.m */; };
+		7926094E0CF3FA6600A93D12 /* JRSwizzleTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 792608870CF3F6BF00A93D12 /* JRSwizzleTest.m */; };
+		792609500CF3FA7400A93D12 /* MethodSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 79F3DC540CF36B3500733703 /* MethodSwizzle.m */; };
+		792609510CF3FA7700A93D12 /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7926087E0CF3F57B00A93D12 /* JRSwizzle.m */; };
+		79F3DBE80CF33E6000733703 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* main.m */; settings = {ATTRIBUTES = (); }; };
+		79F3DBEA0CF33E6000733703 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08FB779EFE84155DC02AAC07 /* Foundation.framework */; };
+		79F3DC1D0CF3411300733703 /* ClassicSwizzleTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 79F3DC1C0CF3411300733703 /* ClassicSwizzleTest.m */; };
+		79F3DC560CF36B3500733703 /* MethodSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 79F3DC540CF36B3500733703 /* MethodSwizzle.m */; };
+		79F3DC5F0CF36BC300733703 /* BallardSwizzleTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 79F3DC5E0CF36BC300733703 /* BallardSwizzleTest.m */; };
+		79F3DC880CF3EAAD00733703 /* AppleSwizzleTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 79F3DC870CF3EAAD00733703 /* AppleSwizzleTest.m */; };
+		8DD76F9A0486AA7600D96B5E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* main.m */; settings = {ATTRIBUTES = (); }; };
+		8DD76F9C0486AA7600D96B5E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08FB779EFE84155DC02AAC07 /* Foundation.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		792607970CF3EE2100A93D12 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 79F3DBE60CF33E6000733703;
+			remoteInfo = "10.5 64-bit";
+		};
+		7926085C0CF3F26000A93D12 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 792607C20CF3F05800A93D12;
+			remoteInfo = 10.4;
+		};
+		7926085E0CF3F32700A93D12 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 792608540CF3F24400A93D12;
+			remoteInfo = "10.4 Test";
+		};
+		792609480CF3FA4A00A93D12 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7926093E0CF3F98E00A93D12;
+			remoteInfo = "10.3 Test";
+		};
+		7926094A0CF3FA5300A93D12 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 792608A20CF3F88400A93D12;
+			remoteInfo = 10.3;
+		};
+		79F3DC1F0CF3417200733703 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DD76F960486AA7600D96B5E;
+			remoteInfo = "10.5 32-bit";
+		};
+		79F3DC3D0CF358B300733703 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 79F3DC140CF33F5000733703;
+			remoteInfo = "10.5 32-bit Test";
+		};
+		79F3DC3F0CF358B300733703 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 79F3DC2C0CF341EC00733703;
+			remoteInfo = "10.5 64-bit Test";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		08FB7796FE84155DC02AAC07 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		08FB779EFE84155DC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		32A70AAB03705E1F00C91783 /* JRSwizzleTest_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRSwizzleTest_Prefix.pch; sourceTree = "<group>"; };
+		792607C30CF3F05800A93D12 /* JRSwizzleTest_1040 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = JRSwizzleTest_1040; sourceTree = BUILT_PRODUCTS_DIR; };
+		792608550CF3F24400A93D12 /* 10.4 Test.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "10.4 Test.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		792608560CF3F24400A93D12 /* 10.4 Test-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "10.4 Test-Info.plist"; sourceTree = "<group>"; };
+		7926087E0CF3F57B00A93D12 /* JRSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JRSwizzle.m; path = ../JRSwizzle.m; sourceTree = "<group>"; };
+		7926087F0CF3F57B00A93D12 /* JRSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JRSwizzle.h; path = ../JRSwizzle.h; sourceTree = "<group>"; };
+		792608860CF3F6BF00A93D12 /* JRSwizzleTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRSwizzleTest.h; sourceTree = "<group>"; };
+		792608870CF3F6BF00A93D12 /* JRSwizzleTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRSwizzleTest.m; sourceTree = "<group>"; };
+		792608A30CF3F88400A93D12 /* JRSwizzleTest_1030 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = JRSwizzleTest_1030; sourceTree = BUILT_PRODUCTS_DIR; };
+		7926093F0CF3F98E00A93D12 /* 10.3 Test.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "10.3 Test.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		792609400CF3F98E00A93D12 /* 10.3 Test-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "10.3 Test-Info.plist"; sourceTree = "<group>"; };
+		79F3DBEE0CF33E6000733703 /* JRSwizzleTest_1050_64 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = JRSwizzleTest_1050_64; sourceTree = BUILT_PRODUCTS_DIR; };
+		79F3DC150CF33F5000733703 /* 10.5 32-bit Test.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "10.5 32-bit Test.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79F3DC160CF33F5000733703 /* 10.5 32-bit Test-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "10.5 32-bit Test-Info.plist"; sourceTree = "<group>"; };
+		79F3DC1B0CF3411300733703 /* ClassicSwizzleTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassicSwizzleTest.h; sourceTree = "<group>"; };
+		79F3DC1C0CF3411300733703 /* ClassicSwizzleTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassicSwizzleTest.m; sourceTree = "<group>"; };
+		79F3DC2D0CF341EC00733703 /* 10.5 64-bit Test.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "10.5 64-bit Test.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79F3DC2E0CF341EC00733703 /* 10.5 64-bit Test-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "10.5 64-bit Test-Info.plist"; sourceTree = "<group>"; };
+		79F3DC540CF36B3500733703 /* MethodSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MethodSwizzle.m; sourceTree = "<group>"; };
+		79F3DC550CF36B3500733703 /* MethodSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MethodSwizzle.h; sourceTree = "<group>"; };
+		79F3DC5D0CF36BC300733703 /* BallardSwizzleTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallardSwizzleTest.h; sourceTree = "<group>"; };
+		79F3DC5E0CF36BC300733703 /* BallardSwizzleTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BallardSwizzleTest.m; sourceTree = "<group>"; };
+		79F3DC860CF3EAAD00733703 /* AppleSwizzleTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppleSwizzleTest.h; sourceTree = "<group>"; };
+		79F3DC870CF3EAAD00733703 /* AppleSwizzleTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppleSwizzleTest.m; sourceTree = "<group>"; };
+		8DD76FA10486AA7600D96B5E /* JRSwizzleTest_1050_32 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = JRSwizzleTest_1050_32; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		792607C10CF3F05800A93D12 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				792607C80CF3F0A900A93D12 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		792608520CF3F24400A93D12 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		792608A10CF3F88400A93D12 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				792608A80CF3F8DA00A93D12 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7926093C0CF3F98E00A93D12 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79F3DBE90CF33E6000733703 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				79F3DBEA0CF33E6000733703 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79F3DC120CF33F5000733703 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79F3DC2A0CF341EC00733703 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8DD76F9B0486AA7600D96B5E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DD76F9C0486AA7600D96B5E /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		08FB7794FE84155DC02AAC07 /* JRSwizzleTest */ = {
+			isa = PBXGroup;
+			children = (
+				79F3DC4B0CF36AC400733703 /* Tests */,
+				08FB7795FE84155DC02AAC07 /* Source */,
+				08FB779DFE84155DC02AAC07 /* External Frameworks and Libraries */,
+				1AB674ADFE9D54B511CA2CBB /* Products */,
+				792609400CF3F98E00A93D12 /* 10.3 Test-Info.plist */,
+				792608560CF3F24400A93D12 /* 10.4 Test-Info.plist */,
+				79F3DC160CF33F5000733703 /* 10.5 32-bit Test-Info.plist */,
+				79F3DC2E0CF341EC00733703 /* 10.5 64-bit Test-Info.plist */,
+			);
+			name = JRSwizzleTest;
+			sourceTree = "<group>";
+		};
+		08FB7795FE84155DC02AAC07 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				08FB7796FE84155DC02AAC07 /* main.m */,
+				7926087F0CF3F57B00A93D12 /* JRSwizzle.h */,
+				7926087E0CF3F57B00A93D12 /* JRSwizzle.m */,
+				79F3DC550CF36B3500733703 /* MethodSwizzle.h */,
+				79F3DC540CF36B3500733703 /* MethodSwizzle.m */,
+				32A70AAB03705E1F00C91783 /* JRSwizzleTest_Prefix.pch */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		08FB779DFE84155DC02AAC07 /* External Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				08FB779EFE84155DC02AAC07 /* Foundation.framework */,
+			);
+			name = "External Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+		1AB674ADFE9D54B511CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8DD76FA10486AA7600D96B5E /* JRSwizzleTest_1050_32 */,
+				79F3DBEE0CF33E6000733703 /* JRSwizzleTest_1050_64 */,
+				79F3DC150CF33F5000733703 /* 10.5 32-bit Test.octest */,
+				79F3DC2D0CF341EC00733703 /* 10.5 64-bit Test.octest */,
+				792607C30CF3F05800A93D12 /* JRSwizzleTest_1040 */,
+				792608550CF3F24400A93D12 /* 10.4 Test.octest */,
+				792608A30CF3F88400A93D12 /* JRSwizzleTest_1030 */,
+				7926093F0CF3F98E00A93D12 /* 10.3 Test.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		79F3DC4B0CF36AC400733703 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				79F3DC1B0CF3411300733703 /* ClassicSwizzleTest.h */,
+				79F3DC1C0CF3411300733703 /* ClassicSwizzleTest.m */,
+				79F3DC5D0CF36BC300733703 /* BallardSwizzleTest.h */,
+				79F3DC5E0CF36BC300733703 /* BallardSwizzleTest.m */,
+				79F3DC860CF3EAAD00733703 /* AppleSwizzleTest.h */,
+				79F3DC870CF3EAAD00733703 /* AppleSwizzleTest.m */,
+				792608860CF3F6BF00A93D12 /* JRSwizzleTest.h */,
+				792608870CF3F6BF00A93D12 /* JRSwizzleTest.m */,
+			);
+			name = Tests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		792607C20CF3F05800A93D12 /* 10.4 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 792607C70CF3F09500A93D12 /* Build configuration list for PBXNativeTarget "10.4" */;
+			buildPhases = (
+				792607C00CF3F05800A93D12 /* Sources */,
+				792607C10CF3F05800A93D12 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = 10.4;
+			productName = 10.4;
+			productReference = 792607C30CF3F05800A93D12 /* JRSwizzleTest_1040 */;
+			productType = "com.apple.product-type.tool";
+		};
+		792608540CF3F24400A93D12 /* 10.4 Test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 792608590CF3F24400A93D12 /* Build configuration list for PBXNativeTarget "10.4 Test" */;
+			buildPhases = (
+				792608500CF3F24400A93D12 /* Resources */,
+				792608510CF3F24400A93D12 /* Sources */,
+				792608520CF3F24400A93D12 /* Frameworks */,
+				792608530CF3F24400A93D12 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7926085D0CF3F26000A93D12 /* PBXTargetDependency */,
+			);
+			name = "10.4 Test";
+			productName = "10.4 Test";
+			productReference = 792608550CF3F24400A93D12 /* 10.4 Test.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+		792608A20CF3F88400A93D12 /* 10.3 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 792608A70CF3F8AC00A93D12 /* Build configuration list for PBXNativeTarget "10.3" */;
+			buildPhases = (
+				792608A00CF3F88400A93D12 /* Sources */,
+				792608A10CF3F88400A93D12 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = 10.3;
+			productName = 10.3;
+			productReference = 792608A30CF3F88400A93D12 /* JRSwizzleTest_1030 */;
+			productType = "com.apple.product-type.tool";
+		};
+		7926093E0CF3F98E00A93D12 /* 10.3 Test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 792609430CF3F98E00A93D12 /* Build configuration list for PBXNativeTarget "10.3 Test" */;
+			buildPhases = (
+				7926093A0CF3F98E00A93D12 /* Resources */,
+				7926093B0CF3F98E00A93D12 /* Sources */,
+				7926093C0CF3F98E00A93D12 /* Frameworks */,
+				7926093D0CF3F98E00A93D12 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7926094B0CF3FA5300A93D12 /* PBXTargetDependency */,
+			);
+			name = "10.3 Test";
+			productName = "10.3 Test";
+			productReference = 7926093F0CF3F98E00A93D12 /* 10.3 Test.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+		79F3DBE60CF33E6000733703 /* 10.5 64-bit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 79F3DBEB0CF33E6000733703 /* Build configuration list for PBXNativeTarget "10.5 64-bit" */;
+			buildPhases = (
+				79F3DBE70CF33E6000733703 /* Sources */,
+				79F3DBE90CF33E6000733703 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "10.5 64-bit";
+			productInstallPath = "$(HOME)/bin";
+			productName = JRSwizzleTest;
+			productReference = 79F3DBEE0CF33E6000733703 /* JRSwizzleTest_1050_64 */;
+			productType = "com.apple.product-type.tool";
+		};
+		79F3DC140CF33F5000733703 /* 10.5 32-bit Test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 79F3DC190CF33F5100733703 /* Build configuration list for PBXNativeTarget "10.5 32-bit Test" */;
+			buildPhases = (
+				79F3DC100CF33F5000733703 /* Resources */,
+				79F3DC110CF33F5000733703 /* Sources */,
+				79F3DC120CF33F5000733703 /* Frameworks */,
+				79F3DC130CF33F5000733703 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				79F3DC200CF3417200733703 /* PBXTargetDependency */,
+			);
+			name = "10.5 32-bit Test";
+			productName = "10.5 32-bit Test";
+			productReference = 79F3DC150CF33F5000733703 /* 10.5 32-bit Test.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+		79F3DC2C0CF341EC00733703 /* 10.5 64-bit Test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 79F3DC310CF341EC00733703 /* Build configuration list for PBXNativeTarget "10.5 64-bit Test" */;
+			buildPhases = (
+				79F3DC280CF341EC00733703 /* Resources */,
+				79F3DC290CF341EC00733703 /* Sources */,
+				79F3DC2A0CF341EC00733703 /* Frameworks */,
+				79F3DC2B0CF341EC00733703 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				792607980CF3EE2100A93D12 /* PBXTargetDependency */,
+			);
+			name = "10.5 64-bit Test";
+			productName = "10.5 64-bit Test";
+			productReference = 79F3DC2D0CF341EC00733703 /* 10.5 64-bit Test.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+		8DD76F960486AA7600D96B5E /* 10.5 32-bit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB927408733DD40010E9CD /* Build configuration list for PBXNativeTarget "10.5 32-bit" */;
+			buildPhases = (
+				8DD76F990486AA7600D96B5E /* Sources */,
+				8DD76F9B0486AA7600D96B5E /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "10.5 32-bit";
+			productInstallPath = "$(HOME)/bin";
+			productName = JRSwizzleTest;
+			productReference = 8DD76FA10486AA7600D96B5E /* JRSwizzleTest_1050_32 */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "JRSwizzleTest" */;
+			compatibilityVersion = "Xcode 3.0";
+			hasScannedForEncodings = 1;
+			mainGroup = 08FB7794FE84155DC02AAC07 /* JRSwizzleTest */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				79F3DBFA0CF33EE500733703 /* All Tests */,
+				792608A20CF3F88400A93D12 /* 10.3 */,
+				792607C20CF3F05800A93D12 /* 10.4 */,
+				8DD76F960486AA7600D96B5E /* 10.5 32-bit */,
+				79F3DBE60CF33E6000733703 /* 10.5 64-bit */,
+				7926093E0CF3F98E00A93D12 /* 10.3 Test */,
+				792608540CF3F24400A93D12 /* 10.4 Test */,
+				79F3DC140CF33F5000733703 /* 10.5 32-bit Test */,
+				79F3DC2C0CF341EC00733703 /* 10.5 64-bit Test */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		792608500CF3F24400A93D12 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7926093A0CF3F98E00A93D12 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79F3DC100CF33F5000733703 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79F3DC280CF341EC00733703 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		792608530CF3F24400A93D12 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+		7926093D0CF3F98E00A93D12 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+		79F3DC130CF33F5000733703 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+		79F3DC2B0CF341EC00733703 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		792607C00CF3F05800A93D12 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				792608460CF3F0AE00A93D12 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		792608510CF3F24400A93D12 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				792608640CF3F34000A93D12 /* BallardSwizzleTest.m in Sources */,
+				792608650CF3F34100A93D12 /* ClassicSwizzleTest.m in Sources */,
+				792608690CF3F36900A93D12 /* MethodSwizzle.m in Sources */,
+				792608820CF3F57B00A93D12 /* JRSwizzle.m in Sources */,
+				792608880CF3F6BF00A93D12 /* JRSwizzleTest.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		792608A00CF3F88400A93D12 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				792609260CF3F8E500A93D12 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7926093B0CF3F98E00A93D12 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7926094C0CF3FA6400A93D12 /* BallardSwizzleTest.m in Sources */,
+				7926094D0CF3FA6500A93D12 /* ClassicSwizzleTest.m in Sources */,
+				7926094E0CF3FA6600A93D12 /* JRSwizzleTest.m in Sources */,
+				792609500CF3FA7400A93D12 /* MethodSwizzle.m in Sources */,
+				792609510CF3FA7700A93D12 /* JRSwizzle.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79F3DBE70CF33E6000733703 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				79F3DBE80CF33E6000733703 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79F3DC110CF33F5000733703 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				79F3DC1D0CF3411300733703 /* ClassicSwizzleTest.m in Sources */,
+				79F3DC560CF36B3500733703 /* MethodSwizzle.m in Sources */,
+				79F3DC5F0CF36BC300733703 /* BallardSwizzleTest.m in Sources */,
+				79F3DC880CF3EAAD00733703 /* AppleSwizzleTest.m in Sources */,
+				792608800CF3F57B00A93D12 /* JRSwizzle.m in Sources */,
+				7926088A0CF3F6BF00A93D12 /* JRSwizzleTest.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		79F3DC290CF341EC00733703 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7926079B0CF3EE5400A93D12 /* AppleSwizzleTest.m in Sources */,
+				792608810CF3F57B00A93D12 /* JRSwizzle.m in Sources */,
+				792608890CF3F6BF00A93D12 /* JRSwizzleTest.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8DD76F990486AA7600D96B5E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DD76F9A0486AA7600D96B5E /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		792607980CF3EE2100A93D12 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 79F3DBE60CF33E6000733703 /* 10.5 64-bit */;
+			targetProxy = 792607970CF3EE2100A93D12 /* PBXContainerItemProxy */;
+		};
+		7926085D0CF3F26000A93D12 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 792607C20CF3F05800A93D12 /* 10.4 */;
+			targetProxy = 7926085C0CF3F26000A93D12 /* PBXContainerItemProxy */;
+		};
+		7926085F0CF3F32700A93D12 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 792608540CF3F24400A93D12 /* 10.4 Test */;
+			targetProxy = 7926085E0CF3F32700A93D12 /* PBXContainerItemProxy */;
+		};
+		792609490CF3FA4A00A93D12 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7926093E0CF3F98E00A93D12 /* 10.3 Test */;
+			targetProxy = 792609480CF3FA4A00A93D12 /* PBXContainerItemProxy */;
+		};
+		7926094B0CF3FA5300A93D12 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 792608A20CF3F88400A93D12 /* 10.3 */;
+			targetProxy = 7926094A0CF3FA5300A93D12 /* PBXContainerItemProxy */;
+		};
+		79F3DC200CF3417200733703 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8DD76F960486AA7600D96B5E /* 10.5 32-bit */;
+			targetProxy = 79F3DC1F0CF3417200733703 /* PBXContainerItemProxy */;
+		};
+		79F3DC3E0CF358B300733703 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 79F3DC140CF33F5000733703 /* 10.5 32-bit Test */;
+			targetProxy = 79F3DC3D0CF358B300733703 /* PBXContainerItemProxy */;
+		};
+		79F3DC400CF358B300733703 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 79F3DC2C0CF341EC00733703 /* 10.5 64-bit Test */;
+			targetProxy = 79F3DC3F0CF358B300733703 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB927508733DD40010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = JRSwizzleTest_Prefix.pch;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = JRSwizzleTest_1050_32;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		1DEB927608733DD40010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = JRSwizzleTest_Prefix.pch;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = JRSwizzleTest_1050_32;
+			};
+			name = Release;
+		};
+		1DEB927908733DD40010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+			};
+			name = Debug;
+		};
+		1DEB927A08733DD40010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+			};
+			name = Release;
+		};
+		792607C50CF3F05800A93D12 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_PATH = /usr/local/bin;
+				PREBINDING = NO;
+				PRODUCT_NAME = JRSwizzleTest_1040;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		792607C60CF3F05800A93D12 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				PREBINDING = NO;
+				PRODUCT_NAME = JRSwizzleTest_1040;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		792608570CF3F24400A93D12 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/JRSwizzleTest_1040";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
+				INFOPLIST_FILE = "10.4 Test-Info.plist";
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Cocoa,
+					"-framework",
+					SenTestingKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "10.4 Test";
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		792608580CF3F24400A93D12 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/JRSwizzleTest_1040";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
+				INFOPLIST_FILE = "10.4 Test-Info.plist";
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Cocoa,
+					"-framework",
+					SenTestingKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "10.4 Test";
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		792608A50CF3F88500A93D12 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = ppc;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INSTALL_PATH = /usr/local/bin;
+				PREBINDING = NO;
+				PRODUCT_NAME = JRSwizzleTest_1030;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.3.9.sdk";
+				VALID_ARCHS = ppc;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		792608A60CF3F88500A93D12 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = ppc;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INSTALL_PATH = /usr/local/bin;
+				PREBINDING = NO;
+				PRODUCT_NAME = JRSwizzleTest_1030;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.3.9.sdk";
+				VALID_ARCHS = ppc;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		792609410CF3F98E00A93D12 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = ppc;
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/JRSwizzleTest_1030";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
+				INFOPLIST_FILE = "10.3 Test-Info.plist";
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Cocoa,
+					"-framework",
+					SenTestingKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "10.3 Test";
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.3.9.sdk";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				VALID_ARCHS = ppc;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		792609420CF3F98E00A93D12 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = ppc;
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/JRSwizzleTest_1030";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
+				INFOPLIST_FILE = "10.3 Test-Info.plist";
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Cocoa,
+					"-framework",
+					SenTestingKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "10.3 Test";
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.3.9.sdk";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				VALID_ARCHS = ppc;
+				WRAPPER_EXTENSION = octest;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		79F3DBEC0CF33E6000733703 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = JRSwizzleTest_Prefix.pch;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = JRSwizzleTest_1050_64;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		79F3DBED0CF33E6000733703 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc64,
+					x86_64,
+				);
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = JRSwizzleTest_Prefix.pch;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = JRSwizzleTest_1050_64;
+			};
+			name = Release;
+		};
+		79F3DBFB0CF33EE500733703 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = "All Tests";
+			};
+			name = Debug;
+		};
+		79F3DBFC0CF33EE500733703 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = "All Tests";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		79F3DC170CF33F5100733703 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/JRSwizzleTest_1050_32";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
+				INFOPLIST_FILE = "10.5 32-bit Test-Info.plist";
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Cocoa,
+					"-framework",
+					SenTestingKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "10.5 32-bit Test";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		79F3DC180CF33F5100733703 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/JRSwizzleTest_1050_32";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
+				INFOPLIST_FILE = "10.5 32-bit Test-Info.plist";
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Cocoa,
+					"-framework",
+					SenTestingKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "10.5 32-bit Test";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		79F3DC2F0CF341EC00733703 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc64,
+					x86_64,
+				);
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/JRSwizzleTest_1050_64";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
+				INFOPLIST_FILE = "10.5 64-bit Test-Info.plist";
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Cocoa,
+					"-framework",
+					SenTestingKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "10.5 64-bit Test";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		79F3DC300CF341EC00733703 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc64,
+					x86_64,
+				);
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/JRSwizzleTest_1050_64";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
+				INFOPLIST_FILE = "10.5 64-bit Test-Info.plist";
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Cocoa,
+					"-framework",
+					SenTestingKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "10.5 64-bit Test";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB927408733DD40010E9CD /* Build configuration list for PBXNativeTarget "10.5 32-bit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB927508733DD40010E9CD /* Debug */,
+				1DEB927608733DD40010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "JRSwizzleTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB927908733DD40010E9CD /* Debug */,
+				1DEB927A08733DD40010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		792607C70CF3F09500A93D12 /* Build configuration list for PBXNativeTarget "10.4" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				792607C50CF3F05800A93D12 /* Debug */,
+				792607C60CF3F05800A93D12 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		792608590CF3F24400A93D12 /* Build configuration list for PBXNativeTarget "10.4 Test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				792608570CF3F24400A93D12 /* Debug */,
+				792608580CF3F24400A93D12 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		792608A70CF3F8AC00A93D12 /* Build configuration list for PBXNativeTarget "10.3" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				792608A50CF3F88500A93D12 /* Debug */,
+				792608A60CF3F88500A93D12 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		792609430CF3F98E00A93D12 /* Build configuration list for PBXNativeTarget "10.3 Test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				792609410CF3F98E00A93D12 /* Debug */,
+				792609420CF3F98E00A93D12 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		79F3DBEB0CF33E6000733703 /* Build configuration list for PBXNativeTarget "10.5 64-bit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				79F3DBEC0CF33E6000733703 /* Debug */,
+				79F3DBED0CF33E6000733703 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		79F3DC0C0CF33EFB00733703 /* Build configuration list for PBXAggregateTarget "All Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				79F3DBFB0CF33EE500733703 /* Debug */,
+				79F3DBFC0CF33EE500733703 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		79F3DC190CF33F5100733703 /* Build configuration list for PBXNativeTarget "10.5 32-bit Test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				79F3DC170CF33F5100733703 /* Debug */,
+				79F3DC180CF33F5100733703 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		79F3DC310CF341EC00733703 /* Build configuration list for PBXNativeTarget "10.5 64-bit Test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				79F3DC2F0CF341EC00733703 /* Debug */,
+				79F3DC300CF341EC00733703 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}
