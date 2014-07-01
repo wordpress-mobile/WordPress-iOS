@@ -12,10 +12,6 @@
 
 @implementation WordPressActivity
 
-- (UIImage *)activityImage {
-    return [UIImage imageNamed:@"sidebar-logo"];
-}
-
 - (NSString *)activityTitle {
     return @"WordPress";
 }
@@ -50,9 +46,12 @@
 -(UIViewController *)activityViewController{
     NSString * content = [self.summary stringByAppendingString:[NSString stringWithFormat:@"\n\n <a href=\"%@\">%@</a>", self.URL, self.URL]];
 
+    __weak __typeof(self) weakSelf = self;
     EditPostViewController * editPostViewController = [[EditPostViewController alloc] initWithTitle:self.title andContent:content andTags:self.tags andImage:nil];
-    editPostViewController.activityDelegate = self;
-
+    editPostViewController.onClose = ^(){
+        [weakSelf activityDidFinish:YES];
+    };
+    
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
     navController.navigationBar.translucent = NO;
@@ -60,10 +59,6 @@
     navController.restorationClass = [EditPostViewController class];
 
     return navController;
-}
-
-- (void)editPostViewDismissed {
-    [self activityDidFinish:YES];
 }
 
 @end
