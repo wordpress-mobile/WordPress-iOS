@@ -204,6 +204,7 @@
 		B558540B1963197200FAF6C3 /* NoteBlockTextTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B55854041963197200FAF6C3 /* NoteBlockTextTableViewCell.m */; };
 		B558540C1963197200FAF6C3 /* NoteBlockUserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B55854061963197200FAF6C3 /* NoteBlockUserTableViewCell.m */; };
 		B558540D1963197200FAF6C3 /* NoteTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B55854081963197200FAF6C3 /* NoteTableViewCell.m */; };
+		B558541319631A1000FAF6C3 /* NotificationDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B558540F19631A1000FAF6C3 /* NotificationDetailsViewController.m */; };
 		B558541419631A1000FAF6C3 /* Notifications.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B558541019631A1000FAF6C3 /* Notifications.storyboard */; };
 		B5CC05F61962150600975CAC /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F51962150600975CAC /* Constants.m */; };
 		B5CC05F91962186D00975CAC /* Meta.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F81962186D00975CAC /* Meta.m */; };
@@ -727,6 +728,8 @@
 		B55854061963197200FAF6C3 /* NoteBlockUserTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteBlockUserTableViewCell.m; sourceTree = "<group>"; };
 		B55854071963197200FAF6C3 /* NoteTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteTableViewCell.h; sourceTree = "<group>"; };
 		B55854081963197200FAF6C3 /* NoteTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteTableViewCell.m; sourceTree = "<group>"; };
+		B558540E19631A1000FAF6C3 /* NotificationDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationDetailsViewController.h; sourceTree = "<group>"; };
+		B558540F19631A1000FAF6C3 /* NotificationDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationDetailsViewController.m; sourceTree = "<group>"; };
 		B558541019631A1000FAF6C3 /* Notifications.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Notifications.storyboard; sourceTree = "<group>"; };
 		B5B63F3F19621A9F001601C3 /* WordPress 19.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 19.xcdatamodel"; sourceTree = "<group>"; };
 		B5CC05F51962150600975CAC /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
@@ -1815,6 +1818,8 @@
 				B558541019631A1000FAF6C3 /* Notifications.storyboard */,
 				CC1D80131656D938002A542F /* NotificationsViewController.h */,
 				CC1D80121656D937002A542F /* NotificationsViewController.m */,
+				B558540E19631A1000FAF6C3 /* NotificationDetailsViewController.h */,
+				B558540F19631A1000FAF6C3 /* NotificationDetailsViewController.m */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
@@ -2480,6 +2485,7 @@
 				5D42A3F9175E75EE005CFF05 /* ReaderMediaView.m in Sources */,
 				85D2275918F1EB8A001DA8DA /* WPAnalyticsTrackerMixpanel.m in Sources */,
 				E149D64F19349E69006A843D /* AccountServiceRemoteXMLRPC.m in Sources */,
+				B558541319631A1000FAF6C3 /* NotificationDetailsViewController.m in Sources */,
 				46F8D7FB183C293200E10A38 /* ReaderPostView.m in Sources */,
 				5D42A3FB175E75EE005CFF05 /* ReaderPostDetailViewController.m in Sources */,
 				E18EE94E19349EBA00B0A40C /* BlogServiceRemote.m in Sources */,
