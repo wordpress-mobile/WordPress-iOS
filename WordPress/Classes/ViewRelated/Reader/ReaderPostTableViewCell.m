@@ -33,21 +33,21 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
 	self.post = nil;
 }
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.sideBorderView = [[UIView alloc] init];
-        self.sideBorderView.translatesAutoresizingMaskIntoConstraints = NO;
-        self.sideBorderView.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1.f];
-		self.sideBorderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        [self.contentView addSubview:self.sideBorderView];
+        _sideBorderView = [[UIView alloc] init];
+        _sideBorderView.translatesAutoresizingMaskIntoConstraints = NO;
+        _sideBorderView.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1.f];
+		_sideBorderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [self.contentView addSubview:_sideBorderView];
 
-        self.postView = [[ReaderPostContentView alloc] init];
-        self.postView.translatesAutoresizingMaskIntoConstraints = NO;
-        self.postView.backgroundColor = [UIColor whiteColor];
+        _postView = [[ReaderPostContentView alloc] init];
+        _postView.translatesAutoresizingMaskIntoConstraints = NO;
+        _postView.backgroundColor = [UIColor whiteColor];
         self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-        [self.contentView addSubview:self.postView];
+        [self.contentView addSubview:_postView];
 
         [self configureConstraints];
     }

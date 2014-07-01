@@ -31,13 +31,13 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
 {
     self = [super init];
     if (self) {
-        self.currentActionButtons = [NSMutableArray array];
-        self.buttonConstraints = [NSMutableArray array];
+        _currentActionButtons = [NSMutableArray array];
+        _buttonConstraints = [NSMutableArray array];
 
-        self.borderView = [self viewForBorder];
+        _borderView = [self viewForBorder];
         [self addSubview:self.borderView];
 
-        self.timeButton = [self buttonForTimeButton];
+        _timeButton = [self buttonForTimeButton];
         [self addSubview:self.timeButton];
 
         [self configureConstraints];
