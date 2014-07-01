@@ -276,6 +276,8 @@ NSString *const WPComOAuthErrorDomain = @"WPComOAuthError";
         NSString *redirectUrl = [params objectForKey:@"redirect_uri"];
         if (clientId && redirectUrl) {
             WPComOAuthController *ssoController = [[WPComOAuthController alloc] initForSSO];
+            [ssoController setWordPressComUsername:_username];
+            [ssoController setWordPressComPassword:_password];
             [ssoController setClient:clientId];
             [ssoController setRedirectUrl:redirectUrl];
             [ssoController present];
