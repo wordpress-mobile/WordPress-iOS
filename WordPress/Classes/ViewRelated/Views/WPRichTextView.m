@@ -40,9 +40,9 @@
 {
     self = [super init];
     if (self) {
-        self.mediaArray = [NSMutableArray array];
-        self.mediaQueue = [[ReaderMediaQueue alloc] initWithDelegate:self];
-        self.textContentView = [self buildTextContentView];
+        _mediaArray = [NSMutableArray array];
+        _mediaQueue = [[ReaderMediaQueue alloc] initWithDelegate:self];
+        _textContentView = [self buildTextContentView];
         [self addSubview:self.textContentView];
         [self configureConstraints];
     }

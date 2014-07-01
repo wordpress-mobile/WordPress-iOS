@@ -17,13 +17,13 @@ const CGFloat WPContentAttributionLabelHeight = 18.0;
 {
     self = [super init];
     if (self) {
-        self.avatarImageView = [self imageViewForAvatar];
+        _avatarImageView = [self imageViewForAvatar];
         [self addSubview:self.avatarImageView];
 
-        self.attributionNameLabel = [self labelForAttributionName];
+        _attributionNameLabel = [self labelForAttributionName];
         [self addSubview:self.attributionNameLabel];
 
-        self.attributionLinkButton = [self buttonForAttributionLink];
+        _attributionLinkButton = [self buttonForAttributionLink];
         [self addSubview:self.attributionLinkButton];
 
         [self configureConstraints];
