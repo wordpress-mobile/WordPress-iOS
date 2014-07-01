@@ -145,7 +145,6 @@
 		return;
 	}
 	self.comment.content = self.textView.text;
-	commentViewController.wasLastCommentPending = YES;
 	[commentViewController showComment:comment];
 	[self.navigationController popViewControllerAnimated:YES];
 	
