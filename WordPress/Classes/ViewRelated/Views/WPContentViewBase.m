@@ -17,8 +17,9 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
 
 @interface WPContentViewBase()<WPContentAttributionViewDelegate>
-// Stores a reference to the image height constraint for easy adjustment.
-@property (nonatomic, strong) NSLayoutConstraint *featuredImageHeightConstraint;
+// Stores a reference to the image height constraints for easy adjustment.
+@property (nonatomic, strong) NSLayoutConstraint *featuredImageZeroHeightConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *featuredImagePercentageHeightConstraint;
 @property (nonatomic, strong) NSMutableArray *labelsNeedingPreferredMaxLayoutWidth;
 @end
 
@@ -202,32 +203,48 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
 - (void)configureFeaturedImageHeightConstraint
 {
-    if (self.featuredImageHeightConstraint) {
-        [self removeConstraint:self.featuredImageHeightConstraint];
-        self.featuredImageHeightConstraint = nil;
+    if (!self.featuredImagePercentageHeightConstraint) {
+        self.featuredImagePercentageHeightConstraint = [NSLayoutConstraint constraintWithItem:self.featuredImageView
+                                                                                    attribute:NSLayoutAttributeHeight
+                                                                                    relatedBy:NSLayoutRelationEqual
+                                                                                       toItem:self.featuredImageView
+                                                                                    attribute:NSLayoutAttributeWidth
+                                                                                   multiplier:WPContentViewMaxImageHeightPercentage
+                                                                                     constant:0];
     }
 
-    NSLayoutConstraint *constraint;
-    if (!self.featuredImageView.hidden) {
-        constraint = [NSLayoutConstraint constraintWithItem:self.featuredImageView
-                                                  attribute:NSLayoutAttributeHeight
-                                                  relatedBy:NSLayoutRelationEqual
-                                                     toItem:self.featuredImageView
-                                                  attribute:NSLayoutAttributeWidth
-                                                 multiplier:WPContentViewMaxImageHeightPercentage
-                                                   constant:0];
-        constraint.priority = 900;
-    } else {
+    if (!self.featuredImageZeroHeightConstraint) {
         NSDictionary *views = NSDictionaryOfVariableBindings(_featuredImageView);
-        constraint = [[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_featuredImageView(0)]"
-                                                              options:0
-                                                              metrics:nil
-                                                                views:views] firstObject];
-    }
-    self.featuredImageHeightConstraint = constraint;
-    [self addConstraint:self.featuredImageHeightConstraint];
+        self.featuredImageZeroHeightConstraint = [[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_featuredImageView(0)]"
+                                                                                          options:0
+                                                                                          metrics:nil
+                                                                                            views:views] firstObject];
 
-    [self setNeedsUpdateConstraints];
+    }
+
+    NSLayoutConstraint *constraintToAdd;
+    NSLayoutConstraint *constraintToRemove;
+
+    if (self.featuredImageView.hidden)
+    {
+        constraintToRemove = self.featuredImagePercentageHeightConstraint;
+        constraintToAdd = self.featuredImageZeroHeightConstraint;
+    } else {
+        // configure percentage height constraint
+        constraintToAdd = self.featuredImagePercentageHeightConstraint;
+        constraintToRemove = self.featuredImageZeroHeightConstraint;
+    }
+
+    // Remove the old constraint if necessary.
+    if([self.constraints indexOfObject:constraintToRemove] != NSNotFound) {
+        [self removeConstraint:constraintToRemove];
+    }
+
+    // Add the new constraint and update if necessary.
+    if([self.constraints indexOfObject:constraintToAdd] == NSNotFound) {
+        [self addConstraint:constraintToAdd];
+        [self setNeedsUpdateConstraints];
+    }
 }
 
 - (void)constructSubviews
@@ -345,9 +362,13 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
 - (void)configureFeaturedImageView
 {
-    NSURL *featuredImageURL = [self.contentProvider featuredImageURLForDisplay];
-    self.featuredImageView.hidden = (featuredImageURL == nil) || self.alwaysHidesFeaturedImage;
-    [self configureFeaturedImageHeightConstraint];
+    if (self.contentProvider) {
+        NSURL *featuredImageURL = [self.contentProvider featuredImageURLForDisplay];
+        self.featuredImageView.hidden = (featuredImageURL == nil) || self.alwaysHidesFeaturedImage;
+        [self configureFeaturedImageHeightConstraint];
+    } else {
+        self.featuredImageView.image = nil;
+    }
 }
 
 - (void)configureTitleView
