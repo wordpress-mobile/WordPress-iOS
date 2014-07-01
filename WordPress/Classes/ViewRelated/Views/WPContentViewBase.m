@@ -291,6 +291,8 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     titleLabel.textColor = [WPStyleGuide littleEddieGrey];
+    titleLabel.backgroundColor = [UIColor whiteColor];
+    titleLabel.opaque = YES;
     titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     titleLabel.numberOfLines = 4;
     [self registerLabelForRefreshingPreferredMaxLayoutWidth:titleLabel];
@@ -303,6 +305,8 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     UILabel *contentLabel = [[UILabel alloc] init];
     contentLabel.translatesAutoresizingMaskIntoConstraints = NO;
     contentLabel.textColor = [WPStyleGuide littleEddieGrey];
+    contentLabel.backgroundColor = [UIColor whiteColor];
+    contentLabel.opaque = YES;
     contentLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     contentLabel.numberOfLines = 4;
     [self registerLabelForRefreshingPreferredMaxLayoutWidth:contentLabel];
@@ -371,7 +375,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     // noop. Subclasses should override.
 }
 
-- (UIButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage
+- (UIButton *)createActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage
 {
     ContentActionButton *button = [ContentActionButton buttonWithType:UIButtonTypeCustom];
     [button setImage:buttonImage forState:UIControlStateNormal];
@@ -382,14 +386,23 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     button.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 12.0);
     button.drawLabelBubble = YES;
 
-    [self.actionView addActionButton:button];
-
     return button;
 }
 
-- (void)removeAllActionButtons
+- (NSArray *)actionButtons
 {
-    [self.actionView removeAllActionButtons];
+    if (!self.actionView) {
+        return nil;
+    }
+    return self.actionView.actionButtons;
+}
+
+- (void)setActionButtons:(NSArray *)actionButtons
+{
+    if (!self.actionView) {
+        return;
+    }
+    self.actionView.actionButtons = actionButtons;
 }
 
 - (void)updateActionButtons

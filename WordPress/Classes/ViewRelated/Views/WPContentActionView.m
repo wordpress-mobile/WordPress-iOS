@@ -7,7 +7,7 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
 
 @interface WPContentActionView()
 
-@property (nonatomic, strong) NSMutableArray *actionButtons;
+@property (nonatomic, strong) NSMutableArray *currentActionButtons;
 @property (nonatomic, strong) UIView *borderView;
 @property (nonatomic, strong) UIButton *timeButton;
 @property (nonatomic, strong) NSTimer *dateRefreshTimer;
@@ -31,7 +31,7 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
 {
     self = [super init];
     if (self) {
-        self.actionButtons = [NSMutableArray array];
+        self.currentActionButtons = [NSMutableArray array];
         self.buttonConstraints = [NSMutableArray array];
 
         self.borderView = [self viewForBorder];
@@ -51,23 +51,6 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
 - (CGSize)intrinsicContentSize
 {
     return CGSizeMake(UIViewNoIntrinsicMetric, WPContentActionViewButtonHeight);
-}
-
-- (void)addActionButton:(UIButton *)actionButton
-{
-    actionButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.actionButtons addObject:actionButton];
-    [self addSubview:actionButton];
-    [self resetButtonConstraints];
-}
-
-- (void)removeAllActionButtons
-{
-    for (UIButton *button in self.actionButtons) {
-        [button removeFromSuperview];
-    }
-    [self.actionButtons removeAllObjects];
-    [self resetButtonConstraints];
 }
 
 - (void)setContentProvider:(id<WPContentViewProvider>)contentProvider
@@ -93,6 +76,24 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
     [self refreshDate:nil];
 }
 
+- (void)setActionButtons:(NSArray *)actionButtons
+{
+    if ([actionButtons isEqualToArray:self.currentActionButtons]) {
+        return;
+    }
+
+    for (UIButton *button in self.currentActionButtons) {
+        [button removeFromSuperview];
+    }
+    [self.currentActionButtons removeAllObjects];
+
+    [self.currentActionButtons addObjectsFromArray:actionButtons];
+    for (UIButton *button in self.currentActionButtons) {
+        button.translatesAutoresizingMaskIntoConstraints = NO;
+        [self addSubview:button];
+    }
+    [self resetButtonConstraints];
+}
 
 #pragma mark - Private Methods
 
@@ -138,8 +139,7 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
 
     NSMutableArray *constraints = [NSMutableArray array];
     UIButton *previousButton;
-    NSArray* reversedActionButtons = [[self.actionButtons reverseObjectEnumerator] allObjects];
-    for (UIButton *button in reversedActionButtons) {
+    for (UIButton *button in self.currentActionButtons) {
         NSDictionary *views;
         NSDictionary *metrics;
         if (previousButton) {

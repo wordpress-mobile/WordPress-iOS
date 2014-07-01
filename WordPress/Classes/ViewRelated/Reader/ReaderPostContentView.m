@@ -21,13 +21,13 @@
     self = [super init];
     if (self) {
         // Action buttons
-        self.reblogButton = [super addActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-reblog-done"]];
+        self.reblogButton = [super createActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-reblog-done"]];
         [self.reblogButton addTarget:self action:@selector(reblogAction:) forControlEvents:UIControlEventTouchUpInside];
 
-        self.commentButton = [super addActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-comment-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-comment-active"]];
+        self.commentButton = [super createActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-comment-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-comment-active"]];
         [self.commentButton addTarget:self action:@selector(commentAction:) forControlEvents:UIControlEventTouchUpInside];
 
-        self.likeButton = [super addActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-like-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-like-active"]];
+        self.likeButton = [super createActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-like-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-like-active"]];
         [self.likeButton addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     return self;
@@ -44,11 +44,21 @@
 
 - (void)setAvatarImage:(UIImage *)image
 {
+    static UIImage *wpcomBlavatar;
+    static UIImage *gravatarReader;
     if (!image) {
         if (self.post.isWPCom) {
-            image = [UIImage imageNamed:@"wpcom_blavatar"];
+            static dispatch_once_t blavatarOnceToken;
+            dispatch_once(&blavatarOnceToken, ^{
+                wpcomBlavatar = [UIImage imageNamed:@"wpcom_blavatar"];
+            });
+            image = wpcomBlavatar;
         } else {
-            image = [UIImage imageNamed:@"gravatar-reader"];
+            static dispatch_once_t gravatarOnceToken;
+            dispatch_once(&gravatarOnceToken, ^{
+                gravatarReader = [UIImage imageNamed:@"gravatar-reader"];
+            });
+            image = gravatarReader;
         }
     }
     [self.attributionView setAvatarImage:image];
@@ -68,18 +78,20 @@
         return;
     }
 
-    [self.actionView removeAllActionButtons];
+    NSMutableArray *actionButtons = [NSMutableArray array];
+
+    [actionButtons addObject:self.likeButton];
+
+    if (self.post.commentsOpen) {
+        [actionButtons addObject:self.commentButton];
+    }
 
     // Don't reblog private blogs
     if (![self privateContent]) {
-        [self.actionView addActionButton:self.reblogButton];
+        [actionButtons addObject:self.reblogButton];
     }
-
-    if (self.post.commentsOpen) {
-        [self.actionView addActionButton:self.commentButton];
-    }
-
-    [self.actionView addActionButton:self.likeButton];
+    
+    self.actionView.actionButtons = actionButtons;
 
     [self updateActionButtons];
 }
