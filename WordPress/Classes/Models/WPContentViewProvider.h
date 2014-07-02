@@ -12,4 +12,5 @@
 - (NSDate *)dateForDisplay;
 @optional
 - (BOOL)unreadStatusForDisplay;
+- (NSURL *)featuredImageURLForDisplay;
 @end
