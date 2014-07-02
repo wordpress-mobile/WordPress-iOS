@@ -94,15 +94,6 @@ typedef enum {
 	return self;
 }
 
-- (instancetype)initWithPost:(ReaderPost *)post avatarImageURL:(NSURL *)avatarImageURL
-{
-	self = [self initWithPost:post featuredImage:nil avatarImage:nil];
-	if (self) {
-        _avatarImageURL = avatarImageURL;
-    }
-	return self;
-}
-
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
