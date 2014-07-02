@@ -4,7 +4,6 @@
 
 typedef void (^OptionsHandler)(NSDictionary *options);
 typedef void (^PostFormatsHandler)(NSDictionary *postFormats);
-typedef void (^CommentsHandler)(NSArray *comments);
 typedef void (^CategoriesHandler)(NSArray *categories);
 typedef void (^PostsHandler)(NSArray *posts);
 typedef void (^PagesHandler)(NSArray *pages);
@@ -43,10 +42,6 @@ typedef void (^MediaHandler)(NSArray *media);
                    success:(OptionsHandler)success
                    failure:(void (^)(NSError *error))failure;
 
-- (void)syncCommentsForBlog:(Blog *)blog
-                    success:(CommentsHandler)success
-                    failure:(void (^)(NSError *error))failure;
-
 - (void)syncMediaLibraryForBlog:(Blog *)blog
                         success:(MediaHandler)success
                         failure:(void (^)(NSError *error))failure;
@@ -57,7 +52,6 @@ typedef void (^MediaHandler)(NSArray *media);
 
 - (void)syncBlogContentAndMetadata:(Blog *)blog
                  categoriesSuccess:(CategoriesHandler)categoriesSuccess
-                   commentsSuccess:(CommentsHandler)commentsSuccess
                       mediaSuccess:(MediaHandler)mediaSuccess
                     optionsSuccess:(OptionsHandler)optionsSuccess
                       pagesSuccess:(PagesHandler)pagesSuccess
