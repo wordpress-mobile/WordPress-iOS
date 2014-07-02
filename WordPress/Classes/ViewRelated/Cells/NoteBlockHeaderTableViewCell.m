@@ -45,7 +45,7 @@ static CGFloat const WPTableHeaderHeightPadding = 5.0f;
     [super awakeFromNib];
     
     self.headerLabel.font               = [WPStyleGuide regularTextFont];
-    self.headerLabel.textColor          = [WPStyleGuide newKidOnTheBlockBlue];
+    self.headerLabel.textColor          = [WPStyleGuide notificationSubjectTextColor];
     self.headerLabel.textAlignment      = NSTextAlignmentLeft;
     
     self.noticonView.layer.cornerRadius = WPTableHeaderNoticonRadius;
