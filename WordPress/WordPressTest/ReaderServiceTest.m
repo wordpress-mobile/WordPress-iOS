@@ -1,3 +1,4 @@
+#import "AsyncTestHelper.h"
 #import "CoreDataTestHelper.h"
 #import "ContextManager.h"
 #import "WPAccount.h"
@@ -437,6 +438,25 @@
     XCTAssertTrue(post.isDeleted, @"The post should have been deleted.");
 
 
+}
+
+- (void)testPostFromPrivateBlogCannotBeReblogged {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+
+    RemoteReaderPost *remotePost = [self remoteReaderPostForTests];
+    remotePost.isBlogPrivate = YES;
+    ReaderPost *post = [service createOrReplaceFromRemotePost:remotePost forTopic:nil];
+
+    ATHStart();
+    [service reblogPost:post toSite:0 note:nil success:^{
+        XCTFail(@"Posts from private blogs should not be rebloggable.");
+        ATHNotify();
+    } failure:^(NSError *error) {
+        XCTAssertTrue([error.domain isEqualToString:ReaderPostServiceErrorDomain], @"Reblogging a private post failed but not for the expected reason.");
+        ATHNotify();
+    }];
+    ATHEnd();
 }
 
 @end

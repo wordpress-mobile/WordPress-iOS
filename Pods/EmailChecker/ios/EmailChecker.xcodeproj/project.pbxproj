@@ -1,0 +1,441 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		507765701833AB6000BA6CA5 /* EmailChecker.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5077656F1833AB6000BA6CA5 /* EmailChecker.mm */; };
+		5086AFC118324A3F00ED61AF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5086AFC018324A3F00ED61AF /* Foundation.framework */; };
+		5086AFC618324A3F00ED61AF /* EmailChecker.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5086AFC518324A3F00ED61AF /* EmailChecker.h */; };
+		5086AFCF18324A3F00ED61AF /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5086AFCE18324A3F00ED61AF /* XCTest.framework */; };
+		5086AFD018324A3F00ED61AF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5086AFC018324A3F00ED61AF /* Foundation.framework */; };
+		5086AFD218324A3F00ED61AF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5086AFD118324A3F00ED61AF /* UIKit.framework */; };
+		5086AFD518324A3F00ED61AF /* libEmailChecker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5086AFBD18324A3F00ED61AF /* libEmailChecker.a */; };
+		5086AFDB18324A3F00ED61AF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5086AFD918324A3F00ED61AF /* InfoPlist.strings */; };
+		5086AFDD18324A3F00ED61AF /* EmailCheckerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5086AFDC18324A3F00ED61AF /* EmailCheckerTests.mm */; };
+		50F8B77D18327EF100ABE203 /* EmailDomainSpellChecker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50F8B77B18327EF100ABE203 /* EmailDomainSpellChecker.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5086AFD318324A3F00ED61AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5086AFB518324A3F00ED61AF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5086AFBC18324A3F00ED61AF;
+			remoteInfo = EmailChecker;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5086AFBB18324A3F00ED61AF /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				5086AFC618324A3F00ED61AF /* EmailChecker.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		5077656F1833AB6000BA6CA5 /* EmailChecker.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EmailChecker.mm; sourceTree = "<group>"; };
+		5086AFBD18324A3F00ED61AF /* libEmailChecker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libEmailChecker.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5086AFC018324A3F00ED61AF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		5086AFC418324A3F00ED61AF /* EmailChecker-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EmailChecker-Prefix.pch"; sourceTree = "<group>"; };
+		5086AFC518324A3F00ED61AF /* EmailChecker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailChecker.h; sourceTree = "<group>"; };
+		5086AFCD18324A3F00ED61AF /* EmailCheckerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EmailCheckerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5086AFCE18324A3F00ED61AF /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		5086AFD118324A3F00ED61AF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		5086AFD818324A3F00ED61AF /* EmailCheckerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "EmailCheckerTests-Info.plist"; sourceTree = "<group>"; };
+		5086AFDA18324A3F00ED61AF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		5086AFDC18324A3F00ED61AF /* EmailCheckerTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EmailCheckerTests.mm; sourceTree = "<group>"; };
+		50F8B77B18327EF100ABE203 /* EmailDomainSpellChecker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EmailDomainSpellChecker.cpp; sourceTree = "<group>"; };
+		50F8B77C18327EF100ABE203 /* EmailDomainSpellChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmailDomainSpellChecker.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5086AFBA18324A3F00ED61AF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5086AFC118324A3F00ED61AF /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5086AFCA18324A3F00ED61AF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5086AFD518324A3F00ED61AF /* libEmailChecker.a in Frameworks */,
+				5086AFCF18324A3F00ED61AF /* XCTest.framework in Frameworks */,
+				5086AFD218324A3F00ED61AF /* UIKit.framework in Frameworks */,
+				5086AFD018324A3F00ED61AF /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5086AFB418324A3F00ED61AF = {
+			isa = PBXGroup;
+			children = (
+				50F8B77A18327EF100ABE203 /* common */,
+				5086AFC218324A3F00ED61AF /* EmailChecker */,
+				5086AFD618324A3F00ED61AF /* EmailCheckerTests */,
+				5086AFBF18324A3F00ED61AF /* Frameworks */,
+				5086AFBE18324A3F00ED61AF /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		5086AFBE18324A3F00ED61AF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5086AFBD18324A3F00ED61AF /* libEmailChecker.a */,
+				5086AFCD18324A3F00ED61AF /* EmailCheckerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5086AFBF18324A3F00ED61AF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5086AFC018324A3F00ED61AF /* Foundation.framework */,
+				5086AFCE18324A3F00ED61AF /* XCTest.framework */,
+				5086AFD118324A3F00ED61AF /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5086AFC218324A3F00ED61AF /* EmailChecker */ = {
+			isa = PBXGroup;
+			children = (
+				5077656F1833AB6000BA6CA5 /* EmailChecker.mm */,
+				5086AFC518324A3F00ED61AF /* EmailChecker.h */,
+				5086AFC318324A3F00ED61AF /* Supporting Files */,
+			);
+			path = EmailChecker;
+			sourceTree = "<group>";
+		};
+		5086AFC318324A3F00ED61AF /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				5086AFC418324A3F00ED61AF /* EmailChecker-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		5086AFD618324A3F00ED61AF /* EmailCheckerTests */ = {
+			isa = PBXGroup;
+			children = (
+				5086AFDC18324A3F00ED61AF /* EmailCheckerTests.mm */,
+				5086AFD718324A3F00ED61AF /* Supporting Files */,
+			);
+			path = EmailCheckerTests;
+			sourceTree = "<group>";
+		};
+		5086AFD718324A3F00ED61AF /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				5086AFD818324A3F00ED61AF /* EmailCheckerTests-Info.plist */,
+				5086AFD918324A3F00ED61AF /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		50F8B77A18327EF100ABE203 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				50F8B77B18327EF100ABE203 /* EmailDomainSpellChecker.cpp */,
+				50F8B77C18327EF100ABE203 /* EmailDomainSpellChecker.h */,
+			);
+			name = common;
+			path = ../common;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5086AFBC18324A3F00ED61AF /* EmailChecker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5086AFE018324A3F00ED61AF /* Build configuration list for PBXNativeTarget "EmailChecker" */;
+			buildPhases = (
+				5086AFB918324A3F00ED61AF /* Sources */,
+				5086AFBA18324A3F00ED61AF /* Frameworks */,
+				5086AFBB18324A3F00ED61AF /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EmailChecker;
+			productName = EmailChecker;
+			productReference = 5086AFBD18324A3F00ED61AF /* libEmailChecker.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		5086AFCC18324A3F00ED61AF /* EmailCheckerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5086AFE318324A3F00ED61AF /* Build configuration list for PBXNativeTarget "EmailCheckerTests" */;
+			buildPhases = (
+				5086AFC918324A3F00ED61AF /* Sources */,
+				5086AFCA18324A3F00ED61AF /* Frameworks */,
+				5086AFCB18324A3F00ED61AF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5086AFD418324A3F00ED61AF /* PBXTargetDependency */,
+			);
+			name = EmailCheckerTests;
+			productName = EmailCheckerTests;
+			productReference = 5086AFCD18324A3F00ED61AF /* EmailCheckerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5086AFB518324A3F00ED61AF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = Automattic;
+			};
+			buildConfigurationList = 5086AFB818324A3F00ED61AF /* Build configuration list for PBXProject "EmailChecker" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 5086AFB418324A3F00ED61AF;
+			productRefGroup = 5086AFBE18324A3F00ED61AF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5086AFBC18324A3F00ED61AF /* EmailChecker */,
+				5086AFCC18324A3F00ED61AF /* EmailCheckerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		5086AFCB18324A3F00ED61AF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5086AFDB18324A3F00ED61AF /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5086AFB918324A3F00ED61AF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				507765701833AB6000BA6CA5 /* EmailChecker.mm in Sources */,
+				50F8B77D18327EF100ABE203 /* EmailDomainSpellChecker.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5086AFC918324A3F00ED61AF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5086AFDD18324A3F00ED61AF /* EmailCheckerTests.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5086AFD418324A3F00ED61AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5086AFBC18324A3F00ED61AF /* EmailChecker */;
+			targetProxy = 5086AFD318324A3F00ED61AF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		5086AFD918324A3F00ED61AF /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5086AFDA18324A3F00ED61AF /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		5086AFDE18324A3F00ED61AF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		5086AFDF18324A3F00ED61AF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		5086AFE118324A3F00ED61AF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/EmailChecker.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "EmailChecker/EmailChecker-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		5086AFE218324A3F00ED61AF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/EmailChecker.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "EmailChecker/EmailChecker-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		5086AFE418324A3F00ED61AF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "EmailChecker/EmailChecker-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "EmailCheckerTests/EmailCheckerTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		5086AFE518324A3F00ED61AF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "EmailChecker/EmailChecker-Prefix.pch";
+				INFOPLIST_FILE = "EmailCheckerTests/EmailCheckerTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5086AFB818324A3F00ED61AF /* Build configuration list for PBXProject "EmailChecker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5086AFDE18324A3F00ED61AF /* Debug */,
+				5086AFDF18324A3F00ED61AF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5086AFE018324A3F00ED61AF /* Build configuration list for PBXNativeTarget "EmailChecker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5086AFE118324A3F00ED61AF /* Debug */,
+				5086AFE218324A3F00ED61AF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5086AFE318324A3F00ED61AF /* Build configuration list for PBXNativeTarget "EmailCheckerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5086AFE418324A3F00ED61AF /* Debug */,
+				5086AFE518324A3F00ED61AF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5086AFB518324A3F00ED61AF /* Project object */;
+}
