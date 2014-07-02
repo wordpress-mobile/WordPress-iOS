@@ -310,9 +310,8 @@ typedef void (^LoadCommentCompletionBlock)(BOOL success, Comment *comment);
         NSArray *userInfo                   = (NSArray *)sender;
         ReaderPost *post                    = (ReaderPost *)[userInfo firstObject];
         Notification *note                  = (Notification *)[userInfo lastObject];
-        
+#warning Test Me
         readerViewController.post           = post;
-        readerViewController.avatarImageURL = [NSURL URLWithString:note.icon];
     }
 }
 

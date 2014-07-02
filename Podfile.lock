@@ -111,7 +111,7 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-iOS-Editor (= 0.1.4)
   - WordPress-iOS-Shared (= 0.0.3)
-  - WordPressApi (from `https://github.com/wordpress-mobile/WordPressApi.git`, branch `afnetworking2`)
+  - WordPressApi (from `https://github.com/wordpress-mobile/WordPressApi.git`)
   - WordPressCom-Stats-iOS (= 0.0.3)
   - wpxmlrpc (~> 0.4.1)
 
@@ -128,7 +128,6 @@ EXTERNAL SOURCES:
   SocketRocket:
     :git: https://github.com/jleandroperez/SocketRocket.git
   WordPressApi:
-    :branch: afnetworking2
     :git: https://github.com/wordpress-mobile/WordPressApi.git
 
 SPEC CHECKSUMS:
@@ -161,7 +160,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 1944dd25ee46fbc592740148ab47d543f80f0bba
   WordPress-iOS-Editor: cfaf84cfa38ce3b229af126fceaa0d3dfd90932f
   WordPress-iOS-Shared: 3634ae17fdde3c4cac5e7fbfa88f89b2997f3468
-  WordPressApi: bb742477bb0bc57cf66363cf49dacd8c14c0dd33
+  WordPressApi: 2e05a82014171bc6f9d6cdab580cc16e9c5f2c6c
   WordPressCom-Stats-iOS: f1a296a9287073c8a36aecdc3888ac854a777a39
   wpxmlrpc: a56b534ad0eb7db28a580eabb68a4a3d3426f6d7
 

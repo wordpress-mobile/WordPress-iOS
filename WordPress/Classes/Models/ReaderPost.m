@@ -134,8 +134,24 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 #pragma mark - WPContentViewProvider protocol
 
-- (NSDate *)dateForDisplay {
+- (NSString *)authorForDisplay
+{
+    return [self authorString];
+}
+
+- (NSDate *)dateForDisplay
+{
     return [self sortDate];
+}
+
+- (NSString *)contentPreviewForDisplay
+{
+    return self.summary;
+}
+
+- (NSURL *)featuredImageURLForDisplay
+{
+    return [self featuredImageURL];
 }
 
 @end
