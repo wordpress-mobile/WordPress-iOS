@@ -17,7 +17,6 @@ NSString * const CommentStatusDraft = @"draft";
 @dynamic post;
 @synthesize isNew;
 
-
 #pragma mark - Helper methods
 
 + (NSString *)titleForStatus:(NSString *)status {
