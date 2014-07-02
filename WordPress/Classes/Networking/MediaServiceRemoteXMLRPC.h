@@ -1,8 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "MediaServiceRemote.h"
+#import "ServiceRemoteXMLRPC.h"
 
-@class WPXMLRPCClient;
-
-@interface MediaServiceRemoteXMLRPC : NSObject <MediaServiceRemote>
-- (id)initWithApi:(WPXMLRPCClient *)api;
+@interface MediaServiceRemoteXMLRPC : NSObject <MediaServiceRemote, ServiceRemoteXMLRPC>
 @end
