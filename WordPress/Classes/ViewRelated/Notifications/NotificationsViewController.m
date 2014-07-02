@@ -197,18 +197,20 @@ typedef void (^LoadCommentCompletionBlock)(BOOL success, Comment *comment);
 
 - (void)loadCommentWithId:(NSNumber *)commentId fromSite:(NSNumber *)siteID completion:(LoadCommentCompletionBlock)completion
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    completion(false, nil);
     
-    BlogService *blogService        = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blog                      = [blogService blogByBlogId:siteID];
-    
-    [blogService syncCommentsForBlog:blog success:^{
-        [context refreshObject:blog mergeChanges:NO];
-        NSSet *results = [blog.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"commentID == %@", commentId]];
-        completion(results.count, [results anyObject]);
-    } failure:^(NSError *error) {
-        completion(false, nil);
-    }];
+//    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+//    
+//    BlogService *blogService        = [[BlogService alloc] initWithManagedObjectContext:context];
+//    Blog *blog                      = [blogService blogByBlogId:siteID];
+//    
+//    [blogService syncCommentsForBlog:blog success:^{
+//        [context refreshObject:blog mergeChanges:NO];
+//        NSSet *results = [blog.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"commentID == %@", commentId]];
+//        completion(results.count, [results anyObject]);
+//    } failure:^(NSError *error) {
+//        completion(false, nil);
+//    }];
 
     
     //    NSString *commentPath = [NSString stringWithFormat:@"sites/%@/comments/%@", siteID, commentId];
