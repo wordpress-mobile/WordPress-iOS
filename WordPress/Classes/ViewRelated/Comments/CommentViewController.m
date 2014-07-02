@@ -3,6 +3,7 @@
 #import "NSString+XMLExtensions.h"
 #import "CommentsViewController.h"
 #import "Comment.h"
+#import "CommentService.h"
 #import "EditCommentViewController.h"
 #import "WPWebViewController.h"
 #import "CommentView.h"
@@ -152,8 +153,8 @@ CGFloat const CommentViewUnapproveButtonTag                                     
     // Get rid of any transient reply if popping the view
     // (ideally transient replies should be handled more cleanly)
     if ([self isMovingFromParentViewController] && self.transientReply) {
-        [self.reply remove];
-        self.reply = nil;
+        CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+        [commentService deleteComment:self.reply success:nil failure:nil];
     }
 }
 
@@ -235,8 +236,9 @@ CGFloat const CommentViewUnapproveButtonTag                                     
 
 - (void)deleteComment
 {
-    [self.comment remove];
-    
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    [commentService deleteComment:self.comment success:nil failure:nil];
+
     // Note: the parent class of CommentsViewController will pop this as a result of NSFetchedResultsChangeDelete
 }
 
@@ -262,10 +264,11 @@ CGFloat const CommentViewUnapproveButtonTag                                     
 - (void)approveOrUnapproveAction:(id)sender
 {
     UIBarButtonItem *barButton = sender;
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     if (barButton.tag == CommentViewApproveButtonTag) {
-        [self.comment approve];
+        [commentService approveComment:self.comment success:nil failure:nil];
     } else {
-        [self.comment unapprove];
+        [commentService unapproveComment:self.comment success:nil failure:nil];
     }
     [self updateApproveButton];
 }
@@ -289,7 +292,8 @@ CGFloat const CommentViewUnapproveButtonTag                                     
 
 - (void)spamAction:(id)sender
 {
-    [self.comment spam];
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    [commentService spamComment:self.comment success:nil failure:nil];
 }
 
 - (void)editAction:(id)sender
@@ -307,8 +311,9 @@ CGFloat const CommentViewUnapproveButtonTag                                     
     if(self.inlineComposeView.isDisplayed) {
         [self.inlineComposeView dismissComposer];
     } else {
-        self.reply                  = [self.comment restoreReply];
-        self.transientReply         = YES;
+        CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+        self.reply = [commentService restoreReplyForComment:self.comment];
+        self.transientReply = YES;
         self.inlineComposeView.text = self.reply.content;
         [self.inlineComposeView displayComposer];
     }
@@ -410,8 +415,8 @@ CGFloat const CommentViewUnapproveButtonTag                                     
     self.reply.status = CommentStatusApproved;
     self.transientReply = NO;
 
-    // upload with success saves the reply with the published status when successfull
-    [self.reply uploadWithSuccess:^{
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:self.reply.managedObjectContext];
+    [commentService uploadComment:self.reply success:^{
         // the current modal experience shows success by dismissising the editor
         // ideally we switch to an optimistic experience
     } failure:^(NSError *error) {
