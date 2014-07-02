@@ -1,10 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "BlogServiceRemote.h"
+#import "ServiceRemoteXMLRPC.h"
 
-@class WPXMLRPCClient;
-
-@interface BlogServiceRemoteXMLRPC : NSObject<BlogServiceRemote>
-
-- (id)initWithApi:(WPXMLRPCClient *)api;
-
+@interface BlogServiceRemoteXMLRPC : NSObject<BlogServiceRemote, ServiceRemoteXMLRPC>
 @end
