@@ -38,47 +38,15 @@
                                                 <constraint firstAttribute="height" constant="70" id="pUF-ZJ-yUx"/>
                                             </constraints>
                                         </imageView>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WeU-d6-5Kw" userLabel="SubjectView">
-                                            <rect key="frame" x="103" y="24" width="184" height="41"/>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="184" translatesAutoresizingMaskIntoConstraints="NO" id="Hsr-sO-JhT" userLabel="SubjectLabel">
+                                            <rect key="frame" x="103" y="34" width="184" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hsr-sO-JhT" userLabel="SubjectLabel">
-                                                    <rect key="frame" x="0.0" y="0.0" width="184" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6US-u2-00z" userLabel="DateImageView">
-                                                    <rect key="frame" x="0.0" y="25" width="16" height="16"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="16" id="0ks-Xh-8LZ"/>
-                                                        <constraint firstAttribute="height" constant="16" id="BMc-uw-mJi"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="? Days" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cxx-79-FPK" userLabel="DateLabel">
-                                                    <rect key="frame" x="18" y="21" width="53" height="24"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                            <constraints>
-                                                <constraint firstItem="Hsr-sO-JhT" firstAttribute="leading" secondItem="WeU-d6-5Kw" secondAttribute="leading" id="3Qd-fi-jso"/>
-                                                <constraint firstAttribute="trailing" secondItem="Hsr-sO-JhT" secondAttribute="trailing" id="HUy-ad-ChJ"/>
-                                                <constraint firstAttribute="bottom" secondItem="6US-u2-00z" secondAttribute="bottom" id="IPr-Cs-MUK"/>
-                                                <constraint firstItem="Cxx-79-FPK" firstAttribute="top" secondItem="Hsr-sO-JhT" secondAttribute="bottom" id="JnA-mb-ACX"/>
-                                                <constraint firstItem="6US-u2-00z" firstAttribute="top" secondItem="Hsr-sO-JhT" secondAttribute="bottom" constant="4" id="OJW-sH-hMT"/>
-                                                <constraint firstItem="Cxx-79-FPK" firstAttribute="leading" secondItem="6US-u2-00z" secondAttribute="trailing" constant="2" id="YMS-wq-uim"/>
-                                                <constraint firstItem="6US-u2-00z" firstAttribute="leading" secondItem="WeU-d6-5Kw" secondAttribute="leading" id="dqT-W7-BoM"/>
-                                                <constraint firstItem="6US-u2-00z" firstAttribute="centerY" secondItem="Cxx-79-FPK" secondAttribute="centerY" id="eE5-lo-qKF"/>
-                                                <constraint firstItem="Hsr-sO-JhT" firstAttribute="top" secondItem="WeU-d6-5Kw" secondAttribute="top" id="kSf-an-IUp"/>
-                                            </constraints>
-                                        </view>
+                                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2q7-LL-bBc" userLabel="NoticonView">
                                             <rect key="frame" x="74" y="60" width="24" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -94,23 +62,19 @@
                                         </view>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="WeU-d6-5Kw" secondAttribute="bottom" constant="7" id="30r-eY-a7J"/>
-                                        <constraint firstAttribute="centerY" secondItem="WeU-d6-5Kw" secondAttribute="centerY" id="9HC-Kt-JCg"/>
                                         <constraint firstItem="R7q-Mu-Mc6" firstAttribute="leading" secondItem="LJE-oV-90i" secondAttribute="trailing" constant="8" id="C5w-85-GgC"/>
-                                        <constraint firstAttribute="trailing" secondItem="WeU-d6-5Kw" secondAttribute="trailing" id="DfN-mt-fc8"/>
-                                        <constraint firstItem="WeU-d6-5Kw" firstAttribute="leading" secondItem="R7q-Mu-Mc6" secondAttribute="trailing" constant="8" id="Nca-BT-wFe"/>
-                                        <constraint firstAttribute="trailing" secondItem="WeU-d6-5Kw" secondAttribute="trailing" id="Nww-XC-iy0"/>
-                                        <constraint firstItem="WeU-d6-5Kw" firstAttribute="top" relation="greaterThanOrEqual" secondItem="FJF-yg-kdX" secondAttribute="top" constant="7" id="fZn-7w-OFt"/>
+                                        <constraint firstAttribute="trailing" secondItem="Hsr-sO-JhT" secondAttribute="trailing" id="CeS-ci-Vfj"/>
+                                        <constraint firstItem="Hsr-sO-JhT" firstAttribute="top" relation="greaterThanOrEqual" secondItem="FJF-yg-kdX" secondAttribute="top" constant="7" id="GGc-0O-g5M"/>
+                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Hsr-sO-JhT" secondAttribute="bottom" constant="7" id="Htl-qV-e2h"/>
+                                        <constraint firstItem="Hsr-sO-JhT" firstAttribute="leading" secondItem="R7q-Mu-Mc6" secondAttribute="trailing" constant="8" id="UI3-Qp-kw5"/>
+                                        <constraint firstAttribute="centerY" secondItem="Hsr-sO-JhT" secondAttribute="centerY" id="YSs-uM-ZNd"/>
                                         <constraint firstAttribute="centerY" secondItem="R7q-Mu-Mc6" secondAttribute="centerY" id="ftn-29-pev"/>
-                                        <constraint firstItem="WeU-d6-5Kw" firstAttribute="leading" secondItem="R7q-Mu-Mc6" secondAttribute="trailing" constant="8" id="vz0-ZK-wXo"/>
                                         <constraint firstAttribute="centerY" secondItem="LJE-oV-90i" secondAttribute="centerY" id="zNd-Ol-MYz"/>
                                         <constraint firstItem="LJE-oV-90i" firstAttribute="leading" secondItem="FJF-yg-kdX" secondAttribute="leading" constant="9" id="zS7-yk-cxX"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <inset key="separatorInset" minX="25" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
-                                    <outlet property="dateImageView" destination="6US-u2-00z" id="gxp-jJ-g3i"/>
-                                    <outlet property="dateLabel" destination="Cxx-79-FPK" id="EEH-8U-dJ1"/>
                                     <outlet property="iconImageView" destination="R7q-Mu-Mc6" id="J6X-Yj-4MV"/>
                                     <outlet property="noticonLabel" destination="nl9-dn-cL7" id="zCB-5g-PGM"/>
                                     <outlet property="noticonView" destination="2q7-LL-bBc" id="OR5-ud-JY3"/>

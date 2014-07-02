@@ -344,7 +344,6 @@ typedef void (^LoadCommentCompletionBlock)(BOOL success, Comment *comment);
     cell.attributedSubject  = note.subjectBlock.attributedSubject;
     cell.read               = [note.read boolValue];
     cell.iconURL            = note.iconURL;
-    cell.timestamp          = note.timestampAsDate;
     cell.noticon            = note.noticon;
 }
 

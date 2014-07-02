@@ -19,7 +19,6 @@ static CGFloat const NoteCellUnreadRadius               = 4.0f;
 static CGFloat const NoteCellNoticonRadius              = 12.0f;
 static NSInteger const NoteCellNumberOfLines            = 3;
 static NSString * const NoteCellPlaceholderImageName    = @"gravatar";
-static NSString * const NoteCellDateImageName           = @"reader-postaction-time";
 
 
 #pragma mark ====================================================================================
@@ -29,11 +28,9 @@ static NSString * const NoteCellDateImageName           = @"reader-postaction-ti
 @interface NoteTableViewCell ()
 @property (nonatomic, weak, readwrite) IBOutlet UIView      *unreadView;
 @property (nonatomic, weak, readwrite) IBOutlet UIImageView *iconImageView;
-@property (nonatomic, weak, readwrite) IBOutlet UIImageView *dateImageView;
 @property (nonatomic, weak, readwrite) IBOutlet UILabel     *noticonLabel;
 @property (nonatomic, weak, readwrite) IBOutlet UIView      *noticonView;
 @property (nonatomic, weak, readwrite) IBOutlet UILabel     *subjectLabel;
-@property (nonatomic, weak, readwrite) IBOutlet UILabel     *dateLabel;
 @end
 
 
@@ -48,9 +45,7 @@ static NSString * const NoteCellDateImageName           = @"reader-postaction-ti
     [super awakeFromNib];
 
     NSAssert(self.unreadView, nil);
-    NSAssert(self.dateImageView, nil);
     NSAssert(self.subjectLabel, nil);
-    NSAssert(self.dateLabel, nil);
     
     self.unreadView.backgroundColor         = [WPStyleGuide newKidOnTheBlockBlue];
     self.unreadView.layer.cornerRadius      = NoteCellUnreadRadius;
@@ -60,9 +55,6 @@ static NSString * const NoteCellDateImageName           = @"reader-postaction-ti
     self.noticonLabel.font                  = [WPStyleGuide notificationIconFont];
     self.noticonLabel.textColor             = [UIColor whiteColor];
     
-    self.dateImageView.image                = [UIImage imageNamed:NoteCellDateImageName];
-    [self.dateImageView sizeToFit];
-    
     self.subjectLabel.backgroundColor       = [UIColor clearColor];
     self.subjectLabel.textAlignment         = NSTextAlignmentLeft;
     self.subjectLabel.numberOfLines         = NoteCellNumberOfLines;
@@ -70,13 +62,6 @@ static NSString * const NoteCellDateImageName           = @"reader-postaction-ti
     self.subjectLabel.shadowOffset          = CGSizeZero;
     self.subjectLabel.font                  = [WPStyleGuide notificationSubjectFont];
     self.subjectLabel.textColor             = [WPStyleGuide littleEddieGrey];
-    
-    self.dateLabel.backgroundColor          = [UIColor clearColor];
-    self.dateLabel.textAlignment            = NSTextAlignmentLeft;
-    self.dateLabel.lineBreakMode            = NSLineBreakByWordWrapping;
-    self.dateLabel.font                     = [WPStyleGuide subtitleFont];
-    self.dateLabel.shadowOffset             = CGSizeZero;
-    self.dateLabel.textColor                = [WPStyleGuide allTAllShadeGrey];
 }
 
 - (void)layoutSubviews
@@ -107,16 +92,6 @@ static NSString * const NoteCellDateImageName           = @"reader-postaction-ti
 - (void)setRead:(BOOL)read
 {
     self.unreadView.hidden = read;
-}
-
-- (void)setTimestamp:(NSDate *)timestamp
-{
-    if ([_timestamp isEqual:timestamp]) {
-        return;
-    }
-    
-    _timestamp = timestamp;
-    self.dateLabel.text = [timestamp shortString];
 }
 
 - (void)setNoticon:(NSString *)noticon
