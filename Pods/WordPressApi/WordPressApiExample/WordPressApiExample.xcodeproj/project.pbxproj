@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		59178B7619226808002E8EB0 /* WPHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 59178B7519226808002E8EB0 /* WPHTTPRequestOperation.m */; };
 		595DC5F1191A756000FA0B10 /* WordPressRestApiJSONRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 595DC5F0191A756000FA0B10 /* WordPressRestApiJSONRequestOperationManager.m */; };
 		A5157ADD21264416AA7DE4D6 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B8BE1138AD74E5AA6AE86D9 /* libPods.a */; };
 		E15CEBB114C59B3500CFDBB7 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E15CEBB014C59B3500CFDBB7 /* libiconv.dylib */; };
@@ -37,6 +38,8 @@
 
 /* Begin PBXFileReference section */
 		2B8BE1138AD74E5AA6AE86D9 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		59178B7419226808002E8EB0 /* WPHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPHTTPRequestOperation.h; sourceTree = "<group>"; };
+		59178B7519226808002E8EB0 /* WPHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPHTTPRequestOperation.m; sourceTree = "<group>"; };
 		595DC5EF191A756000FA0B10 /* WordPressRestApiJSONRequestOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressRestApiJSONRequestOperationManager.h; sourceTree = "<group>"; };
 		595DC5F0191A756000FA0B10 /* WordPressRestApiJSONRequestOperationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressRestApiJSONRequestOperationManager.m; sourceTree = "<group>"; };
 		906AFB6868F74568BF80D9AA /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
@@ -178,6 +181,8 @@
 				E1C49D5416D4E205007C541A /* WPXMLRPCRequest.m */,
 				E1C49D5516D4E205007C541A /* WPXMLRPCRequestOperation.h */,
 				E1C49D5616D4E206007C541A /* WPXMLRPCRequestOperation.m */,
+				59178B7419226808002E8EB0 /* WPHTTPRequestOperation.h */,
+				59178B7519226808002E8EB0 /* WPHTTPRequestOperation.m */,
 				E1F7544014A0A9B200DB35A3 /* WPXMLRPCClient.h */,
 				E1F7544114A0A9B200DB35A3 /* WPXMLRPCClient.m */,
 				E1F7544214A0A9B200DB35A3 /* WordPressXMLRPCApi.h */,
@@ -294,6 +299,7 @@
 				E1C49D6216D4F3F6007C541A /* WordPressApi.m in Sources */,
 				E1C49D6516D4F641007C541A /* WordPressRestApi.m in Sources */,
 				E1C49D9B16D541EF007C541A /* WPComOAuthController.m in Sources */,
+				59178B7619226808002E8EB0 /* WPHTTPRequestOperation.m in Sources */,
 				E1C49D9E16D54DF6007C541A /* WordPressRestApiJSONRequestOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
