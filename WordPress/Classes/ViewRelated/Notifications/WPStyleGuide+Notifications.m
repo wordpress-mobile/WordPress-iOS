@@ -14,6 +14,11 @@
     return [UIColor colorWithRed:0xA4/255.0 green:0xB9/255.0 blue:0xC9/255.0 alpha:0xFF/255.0];
 }
 
++ (UIColor *)notificationSubjectTextColor
+{
+    return [[self class] notificationIconColor];
+}
+
 + (UIColor *)notificationSubjectBackgroundColor
 {
     return [UIColor whiteColor];
