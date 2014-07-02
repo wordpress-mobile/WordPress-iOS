@@ -193,7 +193,7 @@ typedef void (^LoadCommentCompletionBlock)(BOOL success, Comment *comment);
     }];
 }
 
-#warning Implement Me Properly Please!!
+//#warning TODO: Implement Me Properly Please!!
 
 - (void)loadCommentWithId:(NSNumber *)commentId fromSite:(NSNumber *)siteID completion:(LoadCommentCompletionBlock)completion
 {
@@ -266,8 +266,7 @@ typedef void (^LoadCommentCompletionBlock)(BOOL success, Comment *comment);
     if (note.isMatcher) {
         [self loadPostWithId:note.metaPostID fromSite:note.metaSiteID completion:^(BOOL success, ReaderPost *post) {
             if (success) {
-                NSArray *userInfo = [NSArray arrayWithObjects:post, note, nil];
-                [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:userInfo];
+                [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:post];
             } else {
                 [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             }
@@ -306,12 +305,7 @@ typedef void (^LoadCommentCompletionBlock)(BOOL success, Comment *comment);
     
     } else if([segue.identifier isEqualToString:readerSegueID]) {
         ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
-        
-        NSArray *userInfo                   = (NSArray *)sender;
-        ReaderPost *post                    = (ReaderPost *)[userInfo firstObject];
-        Notification *note                  = (Notification *)[userInfo lastObject];
-#warning Test Me
-        readerViewController.post           = post;
+        readerViewController.post = sender;
     }
 }
 

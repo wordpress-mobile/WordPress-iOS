@@ -74,8 +74,11 @@ typedef enum {
 
 - (void)dealloc
 {
+    // Prevent loading the view here
+    if (self.isViewLoaded) {
+        self.tableView.delegate = nil;
+    }
 	self.resultsController.delegate = nil;
-    self.tableView.delegate = nil;
     self.postView.delegate = nil;
     self.commentPublisher.delegate = nil;
 
