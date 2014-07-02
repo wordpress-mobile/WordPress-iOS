@@ -9,6 +9,12 @@ extern NSString *const WPEditorNavigationRestorationID;
 @interface EditPostViewController : WPEditorViewController <UINavigationControllerDelegate, CTAssetsPickerControllerDelegate, WPEditorViewControllerDelegate>
 
 /*
+ EditPostViewController instance will execute the onClose callback, if provided, whenever the UI is dismissed.
+ */
+typedef void (^EditPostCompletionHandler)(void);
+@property (nonatomic, copy, readwrite) EditPostCompletionHandler onClose;
+
+/*
  Initialize the editor with the specified post.
  @param post The post to edit.
  */
@@ -34,5 +40,6 @@ extern NSString *const WPEditorNavigationRestorationID;
          andContent:(NSString *)content
             andTags:(NSString *)tags
            andImage:(NSString *)image;
+
 
 @end
