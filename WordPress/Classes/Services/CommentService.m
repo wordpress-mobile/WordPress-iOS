@@ -214,7 +214,7 @@
     }
 
     NSSet *existingComments = blog.comments;
-    if (existingComments && (existingComments.count > 0)) {
+    if (existingComments.count > 0) {
         for (Comment *comment in existingComments) {
             // Don't delete unpublished comments
             if(![commentsToKeep containsObject:comment] && comment.commentID != nil) {
