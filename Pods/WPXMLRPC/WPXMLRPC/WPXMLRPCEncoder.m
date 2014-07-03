@@ -24,6 +24,7 @@
 #import "WPXMLRPCEncoder.h"
 #import "WPBase64Utils.h"
 #import "WPStringUtils.h"
+#import <objc/runtime.h>
 
 @interface WPXMLRPCEncoder (WPXMLRPCEncoderPrivate)
 
@@ -59,7 +60,7 @@
 - (void)dealloc {
     if (_streamingCacheFile != nil) {
         [_streamingCacheFile closeFile];
-        //[[NSFileManager defaultManager] removeItemAtPath:_streamingCacheFilePath error:nil];
+        [[NSFileManager defaultManager] removeItemAtPath:_streamingCacheFilePath error:nil];
     }
 }
 
@@ -168,7 +169,9 @@
     if (_streamingCacheFilePath == nil) {
         [self encodeForStreaming];
     }
-    return [NSInputStream inputStreamWithFileAtPath:_streamingCacheFilePath];
+    NSInputStream * inputStream = [NSInputStream inputStreamWithFileAtPath:_streamingCacheFilePath];
+    objc_setAssociatedObject(inputStream, @selector(bodyStream), self, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    return inputStream;
 }
 
 - (NSUInteger)contentLength {
