@@ -292,19 +292,7 @@ static UIEdgeInsets NotificationTableInsets     = { 0.0f, 0.0f, 20.0f, 0.0f };
     
     if ([segue.identifier isEqualToString:webViewSegueID] && [sender isKindOfClass:[NSURL class]]) {
         WPWebViewController *webViewController      = segue.destinationViewController;
-        NSURL *url                                  = sender;
-        
-        if ([url isWordPressDotComUrl]) {
-            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-            AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
-            WPAccount *defaultAccount       = [accountService defaultWordPressComAccount];
-            
-            webViewController.username      = defaultAccount.username;
-            webViewController.password      = defaultAccount.password;
-            webViewController.url           = [url ensureSecureURL];
-        } else {
-            webViewController.url           = url;
-        }
+        webViewController.url                       = (NSURL *)sender;
         
     } else if([segue.identifier isEqualToString:statsSegueID] && [sender isKindOfClass:[Blog class]]) {
         StatsViewController *statsViewController    = segue.destinationViewController;

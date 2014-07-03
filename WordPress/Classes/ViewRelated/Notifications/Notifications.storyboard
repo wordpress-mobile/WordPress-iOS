@@ -216,7 +216,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="79"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="gravatar.png" translatesAutoresizingMaskIntoConstraints="NO" id="uO0-Jy-JBJ" userLabel="GravatarImageView">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="left.png" translatesAutoresizingMaskIntoConstraints="NO" id="uO0-Jy-JBJ" userLabel="GravatarImageView">
                                             <rect key="frame" x="10" y="10" width="60" height="60"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         </imageView>
@@ -292,15 +292,6 @@
         <scene sceneID="1zS-D4-F1Z">
             <objects>
                 <viewController id="Bbj-DX-KQ7" customClass="WPWebViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Fet-iI-Yu7"/>
-                        <viewControllerLayoutGuide type="bottom" id="8RI-b5-DZL"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="eLS-pN-QAu">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
                     <navigationItem key="navigationItem" id="Ggf-4b-Gwr"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fEj-cd-uMn" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -347,7 +338,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="gravatar.png" width="85" height="85"/>
+        <image name="left.png" width="85" height="85"/>
         <image name="reader-postaction-follow.png" width="16" height="16"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
