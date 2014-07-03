@@ -1,0 +1,4 @@
+language: objective-c  
+before_install: cd Source
+script: "../Tools/travis.sh"
+ 

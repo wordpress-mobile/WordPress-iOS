@@ -8,6 +8,7 @@
 #import <Helpshift/Helpshift.h>
 #import <Taplytics/Taplytics.h>
 #import "WPAnalytics.h"
+#import <WordPress-iOS-Shared/WPStyleGuide.h>
 
 static NSString *const UserDefaultsFeedbackEnabled = @"wp_feedback_enabled";
 static NSString *const UserDefaultsHelpshiftEnabled = @"wp_helpshift_enabled";
@@ -20,6 +21,7 @@ static NSString *const FeedbackCheckUrl = @"http://api.wordpress.org/iphoneapp/f
 
 @property (nonatomic, assign) BOOL feedbackEnabled;
 @property (nonatomic, assign) BOOL helpshiftEnabled;
+@property (nonatomic, assign) NSInteger helpshiftUnreadCount;
 
 @end
 
@@ -105,6 +107,8 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
         self.title = NSLocalizedString(@"Support", @"");
         _feedbackEnabled = YES;
         _helpshiftEnabled = NO;
+        
+        _helpshiftUnreadCount = 0;
     }
 
     return self;
@@ -116,6 +120,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     self.feedbackEnabled = [defaults boolForKey:UserDefaultsFeedbackEnabled];
+    
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
@@ -131,6 +136,11 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     _helpshiftEnabled = [defaults boolForKey:UserDefaultsHelpshiftEnabled];
+
+    [[Helpshift sharedInstance] setDelegate:self];
+    _helpshiftUnreadCount = [[Helpshift sharedInstance] getNotificationCountFromRemote:NO];
+
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -179,6 +189,13 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
         switchAccessory.tag = indexPath.row;
         [switchAccessory addTarget:self action:@selector(handleCellSwitchChanged:) forControlEvents:UIControlEventValueChanged];
         cell.accessoryView = switchAccessory;
+    } else if (indexPath.section == SettingsSectionFAQForums && indexPath.row == 0) {
+        static NSString *CellIdentifierBadgeAccessory = @"SupportViewBadgeAccessoryCell";
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierBadgeAccessory];
+        
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifierBadgeAccessory];
+        }
     } else {
         static NSString *CellIdentifier = @"SupportViewStandardCell";
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -197,13 +214,27 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 {
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     [WPStyleGuide configureTableViewCell:cell];
+    
+    if (indexPath.section == SettingsSectionFAQForums && indexPath.row == 0) {
+        cell.textLabel.text = (self.helpshiftEnabled) ? NSLocalizedString(@"Contact Us", nil)
+                                                      : NSLocalizedString(@"WordPress Help Center", @"");
 
-    if (indexPath.section == SettingsSectionFAQForums && !self.helpshiftEnabled && indexPath.row == 0) {
-        cell.textLabel.text = NSLocalizedString(@"WordPress Help Center", @"");
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    } else if (indexPath.section == SettingsSectionFAQForums && self.helpshiftEnabled && indexPath.row == 0) {
-        cell.textLabel.text = NSLocalizedString(@"Contact Us", nil);
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        if (self.helpshiftUnreadCount > 0) {
+            UILabel *helpshiftUnreadCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
+            helpshiftUnreadCountLabel.layer.masksToBounds = YES;
+            helpshiftUnreadCountLabel.layer.cornerRadius = 15;
+            helpshiftUnreadCountLabel.textAlignment = NSTextAlignmentCenter;
+            helpshiftUnreadCountLabel.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
+            helpshiftUnreadCountLabel.textColor = [UIColor whiteColor];
+
+            helpshiftUnreadCountLabel.text = [NSString stringWithFormat:@"%i", self.helpshiftUnreadCount];
+            cell.accessoryView = helpshiftUnreadCountLabel;
+
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        } else {
+            cell.accessoryView = nil;
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
     } else if (indexPath.section == SettingsSectionFeedback) {
         cell.textLabel.text = NSLocalizedString(@"E-mail Support", @"");
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
@@ -236,8 +267,6 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }
-
-
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
@@ -360,6 +389,17 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     }
 
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Helpshift Delegate
+
+- (void)didReceiveNotificationCount:(NSInteger)count {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.helpshiftUnreadCount = count;
+    
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:SettingsSectionFAQForums];
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    });
 }
 
 @end

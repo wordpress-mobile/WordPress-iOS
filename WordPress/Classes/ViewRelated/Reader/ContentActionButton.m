@@ -32,15 +32,6 @@ CGFloat const BackingLayerHorizontalPadding = 4.0f;
     }
 }
 
-- (void)setTitle:(NSString *)title forState:(UIControlState)state {
-    [super setTitle:title forState:state];
-    if ([title length] > 0) {
-        if (self.labelBubble) {
-            self.labelBubble.frame = [self frameForLabelBubble];
-        }
-    }
-}
-
 - (void)setDrawLabelBubble:(BOOL)drawLabelBubble
 {
     if (_drawLabelBubble == drawLabelBubble) {

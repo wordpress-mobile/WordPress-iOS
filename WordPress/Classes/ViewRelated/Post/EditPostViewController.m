@@ -602,7 +602,12 @@ NS_OPTIONS(NSInteger, ActionSheetTag){
 
 - (void)dismissEditView
 {
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    if (self.onClose) {
+        self.onClose();
+        self.onClose = nil;
+	} else{
+		[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+	}
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
