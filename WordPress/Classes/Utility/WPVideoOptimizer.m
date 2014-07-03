@@ -70,12 +70,12 @@ static long long VideoMaxSize = 1024 * 1024 * 20;
         if (session.status!=AVAssetExportSessionStatusCompleted){
             NSError* error=session.error;
             if (handler){
-                handler([[self class] resolutionForVideo:videoPath], error);
+                handler(CGSizeZero, error);
             }
             return;
         }
         if (handler){
-            handler(CGSizeZero, nil);
+            handler([[self class] resolutionForVideo:videoPath], nil);
         }
     }];
 }
