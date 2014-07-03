@@ -24,7 +24,7 @@
 #import "ReaderPostDetailViewController.h"
 
 #import "Comment.h"
-#import "BlogService.h"
+#import "CommentService.h"
 #import "CommentViewController.h"
 
 
@@ -36,12 +36,6 @@
 @interface NotificationsViewController ()
 
 @property (nonatomic, assign) dispatch_once_t trackedViewDisplay;
-
-typedef void (^LoadPostCompletionBlock)(BOOL success, ReaderPost *post);
-- (void)loadPostWithId:(NSNumber *)postID fromSite:(NSNumber *)siteID completion:(LoadPostCompletionBlock)completion;
-
-typedef void (^LoadCommentCompletionBlock)(BOOL success, Comment *comment);
-- (void)loadCommentWithId:(NSNumber *)commentId fromSite:(NSNumber *)siteID completion:(LoadCommentCompletionBlock)completion;
 
 @end
 
@@ -179,51 +173,26 @@ typedef void (^LoadCommentCompletionBlock)(BOOL success, Comment *comment);
 
 #pragma mark - REST Helpers
 
-- (void)loadPostWithId:(NSNumber *)postID fromSite:(NSNumber *)siteID completion:(LoadPostCompletionBlock)completion
+- (void)loadPostWithId:(NSNumber *)postID
+              fromSite:(NSNumber *)siteID
+               success:(void (^)(ReaderPost *post))success
+               failure:(void (^)(NSError *error))failure
 {
-    ContextManager *contextManager  = [ContextManager sharedInstance];
-    NSManagedObjectContext *context = [contextManager mainContext];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderPostService *service      = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     
-    [service fetchPost:postID.integerValue forSite:siteID.integerValue success:^(ReaderPost *post) {
-        completion(YES, post);
-    } failure:^(NSError *error) {
-        DDLogError(@"[RestAPI] %@", error);
-        completion(NO, nil);
-    }];
+    [service fetchPost:postID.integerValue forSite:siteID.integerValue success:success failure:failure];
 }
 
-//#warning TODO: Implement Me Properly Please!!
-
-- (void)loadCommentWithId:(NSNumber *)commentId fromSite:(NSNumber *)siteID completion:(LoadCommentCompletionBlock)completion
+- (void)loadCommentWithId:(NSNumber *)commentId
+                 fromSite:(NSNumber *)siteID
+                  success:(void (^)(Comment *comment))success
+                  failure:(void (^)(NSError *error))failure
 {
-    completion(false, nil);
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
     
-//    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-//    
-//    BlogService *blogService        = [[BlogService alloc] initWithManagedObjectContext:context];
-//    Blog *blog                      = [blogService blogByBlogId:siteID];
-//    
-//    [blogService syncCommentsForBlog:blog success:^{
-//        [context refreshObject:blog mergeChanges:NO];
-//        NSSet *results = [blog.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"commentID == %@", commentId]];
-//        completion(results.count, [results anyObject]);
-//    } failure:^(NSError *error) {
-//        completion(false, nil);
-//    }];
-
-    
-    //    NSString *commentPath = [NSString stringWithFormat:@"sites/%@/comments/%@", siteID, commentId];
-    //    [blog.restApi GET:commentPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-    //
-    //        NSDictionary *comment = responseObject;
-    //
-    //        [Comment mergeNewComments:@[comment] forBlog:blog];
-    //        NSLog(@"Here: %@", responseObject);
-    //
-    //    } failure:^(AFHTTPRequestOperation *operation, NSError *error){
-    //        DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
-    //    }];
+    [commentService loadCommentWithID:commentId fromBlogWithID:siteID success:success failure:failure];
 }
 
 
@@ -266,21 +235,17 @@ typedef void (^LoadCommentCompletionBlock)(BOOL success, Comment *comment);
     
     // At last, push the details
     if (note.isMatcher) {
-        [self loadPostWithId:note.metaPostID fromSite:note.metaSiteID completion:^(BOOL success, ReaderPost *post) {
-            if (success) {
-                [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:post];
-            } else {
-                [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-            }
+        [self loadPostWithId:note.metaPostID fromSite:note.metaSiteID success:^(ReaderPost *post) {
+            [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:post];
+        } failure:^(NSError *error) {
+            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
         }];
         
     } else if (note.isComment) {
-        [self loadCommentWithId:note.metaCommentID fromSite:note.metaSiteID completion:^(BOOL success, Comment *comment) {
-            if (success) {
-                [self performSegueWithIdentifier:NSStringFromClass([CommentViewController class]) sender:comment];
-            } else {
-                [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-            }
+        [self loadCommentWithId:note.metaCommentID fromSite:note.metaSiteID success:^(Comment *comment) {
+            [self performSegueWithIdentifier:NSStringFromClass([CommentViewController class]) sender:comment];
+        } failure:^(NSError *error) {
+            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
         }];
         
     } else {
