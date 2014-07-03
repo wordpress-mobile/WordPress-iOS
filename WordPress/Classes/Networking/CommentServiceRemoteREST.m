@@ -19,6 +19,27 @@
     return self;
 }
 
+- (void)getCommentWithID:(NSNumber *)commentID
+                 forBlog:(Blog *)blog
+                 success:(void (^)(RemoteComment *comment))success
+                 failure:(void (^)(NSError *error))failure {
+ 
+    NSString *commentPath = [NSString stringWithFormat:@"sites/%@/comments/%@", blog.blogID, commentID];
+    [blog.restApi GET:commentPath
+           parameters:nil
+              success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                  if (success) {
+                      RemoteComment *parsed = [self remoteCommentFromJSONDictionary:responseObject];
+                      success(parsed);
+                  }
+              }
+              failure:^(AFHTTPRequestOperation *operation, NSError *error){
+                  if (failure) {
+                      failure(error);
+                  }
+              }];
+}
+
 - (void)getCommentsForBlog:(Blog *)blog
                    success:(void (^)(NSArray *))success
                    failure:(void (^)(NSError *))failure {
