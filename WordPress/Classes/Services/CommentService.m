@@ -1,5 +1,6 @@
 #import "CommentService.h"
 #import "Blog.h"
+#import "BlogService.h"
 #import "Comment.h"
 #import "CommentServiceRemote.h"
 #import "CommentServiceRemoteXMLRPC.h"
@@ -80,6 +81,48 @@
                                }];
                            }
                        }];
+}
+
+// Load a comment
+
+#warning TODO: Caching?
+
+- (void)loadCommentWithID:(NSNumber *)commentID
+           fromBlogWithID:(NSNumber *)blogID
+                  success:(void (^)(Comment *comment))success
+                  failure:(void (^)(NSError *error))failure {
+    
+    BlogService *blogService    = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    Blog *blog                  = [blogService blogByBlogId:blogID];
+    
+    if (!blog) {
+        if (failure) {
+            NSError *error = [NSError errorWithDomain:NSStringFromClass([self class]) code:-1 userInfo:nil];
+            failure(error);
+        }
+        return;
+    }
+    
+    void (^successBlock)(RemoteComment *remoteComment) = ^(RemoteComment *remoteComment) {
+        [self.managedObjectContext performBlock:^{
+            Comment *comment = [self findCommentWithID:commentID inBlog:blog];
+            if (!comment) {
+                comment = [self createCommentForBlog:blog];
+            }
+            [self updateComment:comment withRemoteComment:remoteComment];
+            
+            [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext];
+            
+            if (success) {
+                dispatch_async(dispatch_get_main_queue(), ^(){
+                    success(comment);
+                });
+            }
+        }];
+    };
+    
+    id<CommentServiceRemote> remote = [self remoteForBlog:blog];
+    [remote getCommentWithID:commentID forBlog:blog success:successBlock failure:failure];
 }
 
 // Upload comment
