@@ -22,6 +22,9 @@
 
 #import "WPToast.h"
 
+#import "WordPressAppDelegate.h"
+#import <Simperium/Simperium.h>
+#import <Simperium/SPBucket.h>
 
 
 #pragma mark ==========================================================================================
@@ -42,6 +45,15 @@ static UIEdgeInsets NotificationTableInsets     = { 0.0f, 0.0f, 20.0f, 0.0f };
 
 
 #pragma mark ==========================================================================================
+#pragma mark Private
+#pragma mark ==========================================================================================
+
+@interface NotificationDetailsViewController () <SPBucketDelegate>
+
+@end
+
+
+#pragma mark ==========================================================================================
 #pragma mark NotificationDetailsViewController
 #pragma mark ==========================================================================================
 
@@ -58,7 +70,22 @@ static UIEdgeInsets NotificationTableInsets     = { 0.0f, 0.0f, 20.0f, 0.0f };
     
     self.title                      = NSLocalizedString(@"Details", @"Notification Details Section Title");
     self.restorationClass           = [self class];
+    
+    Simperium *simperium            = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+    SPBucket *notificationsBucket   = [simperium bucketForName:NSStringFromClass([Notification class])];
+    notificationsBucket.delegate    = self;
 }
+
+#pragma mark - SPBucketDeltage Methods
+
+- (void)bucket:(SPBucket *)bucket didChangeObjectForKey:(NSString *)key forChangeType:(SPBucketChangeType)changeType memberNames:(NSArray *)memberNames
+{
+    // Reload the table, if *our* notification got updated
+    if ([self.note.simperiumKey isEqualToString:key]) {
+        [self.tableView reloadData];
+    }
+}
+
 
 #pragma mark - UIViewController Restoration
 
