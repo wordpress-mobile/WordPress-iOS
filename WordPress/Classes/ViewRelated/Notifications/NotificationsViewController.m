@@ -23,6 +23,8 @@
 #import "ReaderPostService.h"
 #import "ReaderPostDetailViewController.h"
 
+#import "BlogService.h"
+
 #import "Comment.h"
 #import "CommentService.h"
 #import "CommentViewController.h"
@@ -174,6 +176,12 @@
 
 - (void)showReaderForNotification:(Notification *)note
 {
+    // Failsafe
+    if (note.metaPostID == nil || note.metaSiteID == nil) {
+        [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
+        return;
+    }
+    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderPostService *service      = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     
@@ -191,9 +199,17 @@
 - (void)showCommentForNotification:(Notification *)note
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
+    BlogService *blogService        = [[BlogService alloc] initWithManagedObjectContext:context];
+    Blog *blog                      = [blogService blogByBlogId:note.metaSiteID];
     
-    [service loadCommentWithID:note.metaCommentID fromBlogWithID:note.metaSiteID success:^(Comment *comment) {
+    // If we don't have the blog, fall back to the reader
+    if (!blog || !note.metaCommentID) {
+        [self showReaderForNotification:note];
+        return;
+    }
+    
+    CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
+    [commentService loadCommentWithID:note.metaCommentID fromBlog:blog success:^(Comment *comment) {
         if ([self.navigationController.topViewController isEqual:self]) {
             [self performSegueWithIdentifier:NSStringFromClass([CommentViewController class]) sender:comment];
         }
