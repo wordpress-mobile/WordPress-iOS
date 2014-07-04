@@ -21,7 +21,7 @@
 
 // Load a comment
 - (void)loadCommentWithID:(NSNumber *)commentID
-           fromBlogWithID:(NSNumber *)blogID
+                 fromBlog:(Blog *)blog
                   success:(void (^)(Comment *comment))success
                   failure:(void (^)(NSError *error))failure;
 
