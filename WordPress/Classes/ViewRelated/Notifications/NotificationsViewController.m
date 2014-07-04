@@ -34,9 +34,7 @@
 #pragma mark ====================================================================================
 
 @interface NotificationsViewController ()
-
 @property (nonatomic, assign) dispatch_once_t trackedViewDisplay;
-
 @end
 
 
@@ -171,28 +169,44 @@
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
-#pragma mark - REST Helpers
 
-- (void)loadPostWithId:(NSNumber *)postID
-              fromSite:(NSNumber *)siteID
-               success:(void (^)(ReaderPost *post))success
-               failure:(void (^)(NSError *error))failure
+#pragma mark - Segue Helpers
+
+- (void)showReaderForNotification:(Notification *)note
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderPostService *service      = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     
-    [service fetchPost:postID.integerValue forSite:siteID.integerValue success:success failure:failure];
+    [service fetchPost:note.metaPostID.integerValue forSite:note.metaSiteID.integerValue success:^(ReaderPost *post) {
+        if ([self.navigationController.topViewController isEqual:self]) {
+            [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:post];
+        }
+        
+    } failure:^(NSError *error) {
+        [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
+        
+    }];
 }
 
-- (void)loadCommentWithId:(NSNumber *)commentId
-                 fromSite:(NSNumber *)siteID
-                  success:(void (^)(Comment *comment))success
-                  failure:(void (^)(NSError *error))failure
+- (void)showCommentForNotification:(Notification *)note
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
+    CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
     
-    [commentService loadCommentWithID:commentId fromBlogWithID:siteID success:success failure:failure];
+    [service loadCommentWithID:note.metaCommentID fromBlogWithID:note.metaSiteID success:^(Comment *comment) {
+        if ([self.navigationController.topViewController isEqual:self]) {
+            [self performSegueWithIdentifier:NSStringFromClass([CommentViewController class]) sender:comment];
+        }
+        
+    } failure:^(NSError *error) {
+        [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
+        
+    }];
+}
+
+- (void)showDetailsForNotification:(Notification *)note
+{
+    [self performSegueWithIdentifier:NSStringFromClass([NotificationDetailsViewController class]) sender:note];
 }
 
 
@@ -235,21 +249,13 @@
     
     // At last, push the details
     if (note.isMatcher) {
-        [self loadPostWithId:note.metaPostID fromSite:note.metaSiteID success:^(ReaderPost *post) {
-            [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:post];
-        } failure:^(NSError *error) {
-            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-        }];
+        [self showReaderForNotification:note];
         
     } else if (note.isComment) {
-        [self loadCommentWithId:note.metaCommentID fromSite:note.metaSiteID success:^(Comment *comment) {
-            [self performSegueWithIdentifier:NSStringFromClass([CommentViewController class]) sender:comment];
-        } failure:^(NSError *error) {
-            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-        }];
+        [self showCommentForNotification:note];
         
     } else {
-        [self performSegueWithIdentifier:NSStringFromClass([NotificationDetailsViewController class]) sender:note];
+        [self showDetailsForNotification:note];
     }
 }
 
