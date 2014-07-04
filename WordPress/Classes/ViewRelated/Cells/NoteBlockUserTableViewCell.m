@@ -15,6 +15,7 @@ static CGFloat NotificationBlockFollowCellHeight                = 80.0f;
 static NSTimeInterval const NotificationAnimationDuration       = 0.3f;
 static NSTimeInterval const NotificationAnimationAlphaInitial   = 0.5f;
 static NSTimeInterval const NotificationAnimationAlphaFinal     = 1.0f;
+static NSString *NotificationPlaceholderImageName               = @"gravatar";
 
 
 #pragma mark ====================================================================================
@@ -111,7 +112,7 @@ static NSTimeInterval const NotificationAnimationAlphaFinal     = 1.0f;
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     
     [self.gravatarImageView setImageWithURLRequest:request
-                           placeholderImage:nil
+                           placeholderImage:[UIImage imageNamed:NotificationPlaceholderImageName]
                                     success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
                                         [weakSelf displayImage:image];
                                     }
