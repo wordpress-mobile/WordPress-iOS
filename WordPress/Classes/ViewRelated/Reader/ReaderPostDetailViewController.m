@@ -85,12 +85,21 @@ typedef enum {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        _comments = [NSMutableArray array];
+    }
+    return self;
+}
+
 - (instancetype)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image avatarImage:(UIImage *)avatarImage
 {
 	self = [super init];
 	if (self) {
-        _post = post;
         _comments = [NSMutableArray array];
+        _post = post;
         _featuredImage = image;
         _avatarImage = avatarImage;
 	}
