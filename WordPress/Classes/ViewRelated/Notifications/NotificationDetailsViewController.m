@@ -243,6 +243,8 @@ static UIEdgeInsets NotificationTableInsets     = { 0.0f, 0.0f, 20.0f, 0.0f };
         NotificationURL *blogURL = [block.urls firstObject];
         if (blogURL.url) {
             [self openURL:blogURL.url];
+        } else {
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
         }
     }
 }
