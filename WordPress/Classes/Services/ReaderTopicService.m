@@ -8,7 +8,9 @@
 #import "WPAccount.h"
 #import "WordPressComApi.h"
 
-NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey";
+NSString * const ReaderTopicDidChangeViaUserInteractionNotification = @"ReaderTopicDidChangeViaUserInteractionNotification";
+NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotification";
+static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey";
 
 @interface ReaderTopicService ()
 
@@ -89,18 +91,20 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
     return topic;
 }
 
-- (void)setCurrentTopic:(ReaderTopic *)topic {
+- (void)setCurrentTopic:(ReaderTopic *)topic
+{
     if (!topic) {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderTopicCurrentTopicURIKey];
+        [NSUserDefaults resetStandardUserDefaults];
     } else {
         if ([topic.objectID isTemporaryID]) {
             [[ContextManager sharedInstance] obtainPermanentIDForObject:topic];
         }
         NSURL *topicURI = topic.objectID.URIRepresentation;
         [[NSUserDefaults standardUserDefaults] setObject:[topicURI absoluteString] forKey:ReaderTopicCurrentTopicURIKey];
+        [NSUserDefaults resetStandardUserDefaults];
+        [[NSNotificationCenter defaultCenter] postNotificationName:ReaderTopicDidChangeNotification object:nil];
     }
-    [NSUserDefaults resetStandardUserDefaults];
-
 }
 
 - (NSUInteger)numberOfSubscribedTopics {
@@ -126,7 +130,113 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
     }];
 }
 
+- (void)subscribeToAndMakeTopicCurrent:(ReaderTopic *)topic
+{
+    // Optimistically mark the topic subscribed.
+    topic.isSubscribed = YES;
+    [self.managedObjectContext performBlockAndWait:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
+    [self setCurrentTopic:topic];
+
+    NSString *topicName = [topic.title lowercaseString];
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
+    [remoteService followTopicNamed:topicName withSuccess:^{
+        // noop
+    } failure:^(NSError *error) {
+        DDLogError(@"%@ error following topic: %@", NSStringFromSelector(_cmd), error);
+    }];
+
+}
+
+- (void)unfollowTopic:(ReaderTopic *)topic withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
+    NSString *topicName = [topic.title trim];
+
+    BOOL deletingCurrentTopic = [topic isEqual:self.currentTopic];
+
+    // Optimistically unfollow the topic
+    if (topic.isRecommended) {
+        topic.isSubscribed = NO;
+    } else {
+        [self.managedObjectContext deleteObject:topic];
+    }
+    [self.managedObjectContext performBlockAndWait:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
+
+    if (deletingCurrentTopic) {
+        // set the current topic to nil and call the current topic to choose a default.
+        [self setCurrentTopic:nil];
+        [self currentTopic];
+    }
+    // Now do it for realz.
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
+    [remoteService unfollowTopicNamed:topicName withSuccess:^{
+        // Sync the menu for good measure.
+        [self fetchReaderMenuWithSuccess:success failure:failure];
+    } failure:^(NSError *error) {
+        if (failure) {
+            DDLogError(@"%@ error unfollowing topic: %@", NSStringFromSelector(_cmd), error);
+            failure(error);
+        }
+    }];
+}
+
+- (void)followTopicNamed:(NSString *)topicName withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
+    topicName = [[topicName lowercaseString] trim];
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
+    [remoteService followTopicNamed:topicName withSuccess:^{
+        [self fetchReaderMenuWithSuccess:^{
+            [self selectTopicNamed:topicName];
+        } failure:failure];
+    } failure:^(NSError *error) {
+        if (failure) {
+            DDLogError(@"%@ error following topic by name: %@", NSStringFromSelector(_cmd), error);
+            failure(error);
+        }
+    }];
+}
+
+
 #pragma mark - Private Methods
+
+/**
+ Get the api to use for the request.
+ */
+- (WordPressComApi *)apiForRequest {
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    WordPressComApi *api = [defaultAccount restApi];
+    if (![api hasCredentials]) {
+        api = [WordPressComApi anonymousApi];
+    }
+    return api;
+}
+
+/**
+ Finds an existing topic matching the specified name and, if found, makes it the 
+ selected topic.
+ */
+- (void)selectTopicNamed:(NSString *)topicName
+{
+    NSError *error;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
+    request.predicate = [NSPredicate predicateWithFormat:@"title CONTAINS[c] %@", topicName];
+
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
+    request.sortDescriptors = @[sortDescriptor];
+    NSArray *topics = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@ error fetching topic: %@", NSStringFromSelector(_cmd), error);
+        return;
+    }
+    if ([topics count] > 0) {
+        ReaderTopic *topic = [topics objectAtIndex:0];
+        [self setCurrentTopic:topic];
+    }
+}
 
 /**
  Create a new `ReaderTopic` or update an existing `ReaderTopic`.

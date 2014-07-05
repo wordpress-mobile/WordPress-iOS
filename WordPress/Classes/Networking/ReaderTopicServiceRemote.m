@@ -10,7 +10,8 @@
 
 @implementation ReaderTopicServiceRemote
 
-- (id)initWithRemoteApi:(WordPressComApi *)api {
+- (id)initWithRemoteApi:(WordPressComApi *)api
+{
     self = [super init];
     if (self) {
         _api = api;
@@ -19,7 +20,8 @@
     return self;
 }
 
-- (void)fetchReaderMenuWithSuccess:(void (^)(NSArray *topics))success failure:(void (^)(NSError *error))failure {
+- (void)fetchReaderMenuWithSuccess:(void (^)(NSArray *topics))success failure:(void (^)(NSError *error))failure
+{
     
     NSString *path = @"read/menu";
     
@@ -82,6 +84,41 @@
 
 }
 
+- (void)unfollowTopicNamed:(NSString *)topicName withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
+    NSString *path =[NSString stringWithFormat:@"read/tags/%@/mine/delete", [topicName lowercaseString]];
+
+    [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (!success) {
+            return;
+        }
+        success();
+
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+- (void)followTopicNamed:(NSString *)topicName withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
+    NSString *path =[NSString stringWithFormat:@"read/tags/%@/mine/new", [topicName lowercaseString]];
+
+    [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (!success) {
+            return;
+        }
+        success();
+
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+
 #pragma mark - Private Methods
 
 /**
@@ -92,7 +129,8 @@
  @param recommended Whether the topic is recommended.
  @return A RemoteReaderTopic instance.
  */
-- (RemoteReaderTopic *)normalizeTopicDictionary:(NSDictionary *)topicDict subscribed:(BOOL)subscribed recommended:(BOOL)recommended {
+- (RemoteReaderTopic *)normalizeTopicDictionary:(NSDictionary *)topicDict subscribed:(BOOL)subscribed recommended:(BOOL)recommended
+{
     NSNumber *topicID = [topicDict numberForKey:@"ID"];
     if (topicID == nil) {
         topicID = @0;
