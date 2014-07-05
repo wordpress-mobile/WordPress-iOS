@@ -86,7 +86,8 @@
 
 - (void)unfollowTopicNamed:(NSString *)topicName withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    NSString *path =[NSString stringWithFormat:@"read/tags/%@/mine/delete", [topicName lowercaseString]];
+    topicName = [[topicName lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *path =[NSString stringWithFormat:@"read/tags/%@/mine/delete", topicName];
 
     [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (!success) {
@@ -103,7 +104,8 @@
 
 - (void)followTopicNamed:(NSString *)topicName withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    NSString *path =[NSString stringWithFormat:@"read/tags/%@/mine/new", [topicName lowercaseString]];
+    topicName = [[topicName lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *path =[NSString stringWithFormat:@"read/tags/%@/mine/new", topicName];
 
     [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (!success) {
