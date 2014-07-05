@@ -89,14 +89,6 @@
 
 
 
-- (void)syncCommentsForBlog:(Blog *)blog success:(CommentsHandler)success failure:(void (^)(NSError *))failure
-{
-    WPXMLRPCRequestOperation *operation = [self operationForCommentsWithBlog:blog success:success failure:failure];
-    [blog.api enqueueXMLRPCRequestOperation:operation];
-}
-
-
-
 - (void)syncMediaLibraryForBlog:(Blog *)blog success:(MediaHandler)success failure:(void (^)(NSError *))failure
 {
     WPXMLRPCRequestOperation *operation = [self operationForMediaLibraryWithBlog:blog success:success failure:failure];
@@ -114,7 +106,6 @@
 
 - (void)syncBlogContentAndMetadata:(Blog *)blog
                  categoriesSuccess:(CategoriesHandler)categoriesSuccess
-                   commentsSuccess:(CommentsHandler)commentsSuccess
                       mediaSuccess:(MediaHandler)mediaSuccess
                     optionsSuccess:(OptionsHandler)optionsSuccess
                       pagesSuccess:(PagesHandler)pagesSuccess
@@ -132,12 +123,6 @@
     [operations addObject:operation];
     operation = [self operationForCategoriesWithBlog:blog success:categoriesSuccess failure:nil];
     [operations addObject:operation];
-
-    if (!blog.isSyncingComments) {
-        operation = [self operationForCommentsWithBlog:blog success:commentsSuccess failure:nil];
-        [operations addObject:operation];
-        blog.isSyncingComments = YES;
-    }
 
     if (!blog.isSyncingPosts) {
         operation = [self operationForPostsWithBlog:blog batchSize:40 loadMore:NO success:postsSuccess failure:nil];
@@ -209,28 +194,6 @@
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         DDLogError(@"Error syncing post formats (%@): %@", operation.request.URL, error);
-
-        if (failure) {
-            failure(error);
-        }
-    }];
-
-    return operation;
-}
-
-- (WPXMLRPCRequestOperation *)operationForCommentsWithBlog:(Blog *)blog success:(CommentsHandler)success failure:(void (^)(NSError *error))failure
-{
-    NSDictionary *requestOptions = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:100] forKey:@"number"];
-    NSArray *parameters = [blog getXMLRPCArgsWithExtra:requestOptions];
-    WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getComments" parameters:parameters];
-    WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
-
-        if (success) {
-            success(responseObject);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing comments (%@): %@", operation.request.URL, error);
 
         if (failure) {
             failure(error);
