@@ -186,6 +186,17 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
 - (void)followTopicNamed:(NSString *)topicName withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     topicName = [[topicName lowercaseString] trim];
+
+    // If the topic already is in core data, just make it the current topic.
+    ReaderTopic *topic = [self findTopicNamed:topicName];
+    if (topic) {
+        [self setCurrentTopic:topic];
+        if (success) {
+            success();
+        }
+        return;
+    }
+
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
     [remoteService followTopicNamed:topicName withSuccess:^{
         [self fetchReaderMenuWithSuccess:^{
@@ -221,6 +232,18 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
  */
 - (void)selectTopicNamed:(NSString *)topicName
 {
+    ReaderTopic *topic = [self findTopicNamed:topicName];
+    [self setCurrentTopic:topic];
+}
+
+/**
+ Find an existing topic with the specified title. 
+ 
+ @param topicName The title of the topic to find in core data. 
+ @return A matching `ReaderTopic` instance or nil.
+ */
+- (ReaderTopic *)findTopicNamed:(NSString *)topicName
+{
     NSError *error;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
     request.predicate = [NSPredicate predicateWithFormat:@"title CONTAINS[c] %@", topicName];
@@ -230,12 +253,13 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
     NSArray *topics = [self.managedObjectContext executeFetchRequest:request error:&error];
     if (error) {
         DDLogError(@"%@ error fetching topic: %@", NSStringFromSelector(_cmd), error);
-        return;
+        return nil;
     }
-    if ([topics count] > 0) {
-        ReaderTopic *topic = [topics objectAtIndex:0];
-        [self setCurrentTopic:topic];
+
+    if ([topics count] == 0) {
+        return nil;
     }
+    return [topics objectAtIndex:0];
 }
 
 /**
