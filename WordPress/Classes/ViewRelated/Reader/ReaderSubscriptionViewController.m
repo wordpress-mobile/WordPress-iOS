@@ -336,7 +336,7 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
         return _cancelButton;
     }
 
-    _cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"Title for a nav bar button for closing the reader topics subscription feature.")
+    _cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"Title for a nav bar button for closing the reader topics subscription feature.")
                                                                      style:UIBarButtonItemStylePlain
                                                                     target:self
                                                                     action:@selector(handleCancelButtonTapped:)];
