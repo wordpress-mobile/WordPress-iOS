@@ -64,6 +64,14 @@
 {
     [super setEditing:editing animated:animated];
     [self.tableView setEditing:editing animated:animated];
+
+    if (editing) {
+        UITableViewCell *cell = [[self.tableView visibleCells] lastObject];
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+        if (indexPath.section == 0 && [self.tableView numberOfSections] > 1) {
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+        }
+    }
 }
 
 - (BOOL)isWPComUser
