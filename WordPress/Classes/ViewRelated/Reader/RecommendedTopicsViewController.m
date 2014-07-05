@@ -15,6 +15,11 @@
 
 @implementation RecommendedTopicsViewController
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -40,6 +45,18 @@
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleReaderTopicChanged:) name:ReaderTopicDidChangeNotification object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 
 #pragma mark - Instance Methods
 
@@ -58,11 +75,22 @@
 
 - (void)updateSelectedTopic
 {
+    NSArray *cells = [self.tableView visibleCells];
+    for (UITableViewCell *cell in cells) {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+
     ReaderTopic *topic = [self currentTopic];
     NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:topic];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
 }
+
+- (void)handleReaderTopicChanged:(NSNotification *)notification
+{
+    [self updateSelectedTopic];
+}
+
 
 #pragma mark - TableView Handler Delegate Methods
 
