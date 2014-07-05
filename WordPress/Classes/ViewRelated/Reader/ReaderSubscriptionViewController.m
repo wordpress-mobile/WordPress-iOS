@@ -175,7 +175,7 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
                                                             message:description
                                                            delegate:nil
-                                                  cancelButtonTitle:nil
+                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"Label text for the close button on an alert view.")
                                                   otherButtonTitles:nil, nil];
         [alertView show];
     }];
