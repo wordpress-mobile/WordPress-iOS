@@ -28,6 +28,7 @@
 + (NSDictionary *)defaultDTCoreTextOptions;
 
 // Colors
++ (UIColor *)wordPressBlue;
 + (UIColor *)baseLighterBlue;
 + (UIColor *)baseDarkerBlue;
 + (UIColor *)lightBlue;
