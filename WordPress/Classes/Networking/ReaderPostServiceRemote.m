@@ -304,29 +304,10 @@
         // Actually decode twice to remove the encodings
         img = [img stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         img = [img stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-
-        // Remove the protocol. We'll specify http or https when used.
-        img = [self removeProtocolFromPath:img];
-    } else {
-        img = [self removeProtocolFromPath:img];
     }
     return img;
 }
 
-/** 
- Strip the protocol from the beginning of an image path
- 
- @param img The image URL.
- @return A string of the image url with the protocol removed.
- */
-- (NSString *)removeProtocolFromPath:(NSString *)imagePath {
-    NSRange rng = [imagePath rangeOfString:@"://" options:NSBackwardsSearch];
-    if (rng.location == NSNotFound) {
-        return imagePath;
-    }
-    rng.location = rng.location + 3;
-    return [imagePath substringFromIndex:rng.location];
-}
 
 #pragma mark - Data sanitization methods
 
