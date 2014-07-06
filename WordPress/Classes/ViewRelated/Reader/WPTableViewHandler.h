@@ -17,6 +17,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (void)deletingSelectedRowAtIndexPath:(NSIndexPath *)indexPath;
+- (void)tableViewDidChangeContent:(UITableView *)tableView;
 
 @end
 
