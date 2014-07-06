@@ -225,13 +225,8 @@ typedef enum {
     [self.inlineComposeView dismissComposer];
 }
 
-#pragma mark - View getters/builders
 
-- (void)updateFeaturedImage: (UIImage *)image
-{
-    self.featuredImage = image;
-    [self.postView setFeaturedImage:self.featuredImage];
-}
+#pragma mark - View getters/builders
 
 - (void)buildHeader
 {
@@ -739,16 +734,16 @@ typedef enum {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
+
     if (indexPath.section == ReaderDetailContentSection) {
-        CGSize size = [self.postView sizeThatFits:CGSizeMake(CGRectGetWidth(self.tableView.bounds), CGFLOAT_MAX)];
+        CGSize size = [self.postView sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
         return size.height + 1;
     }
     
 	if ([self.comments count] == 0) {
 		return 0.0f;
 	}
-    
-    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : tableView.frame.size.width;
 	
 	ReaderComment *comment = [self.comments objectAtIndex:indexPath.row];
 	return [ReaderCommentTableViewCell heightForComment:comment
