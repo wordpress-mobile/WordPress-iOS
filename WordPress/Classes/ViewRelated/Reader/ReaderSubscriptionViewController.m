@@ -478,6 +478,7 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     UIPageControl *pageControl = [[UIPageControl alloc] init];
     pageControl.translatesAutoresizingMaskIntoConstraints = NO;
     pageControl.backgroundColor = [UIColor clearColor];
+    pageControl.userInteractionEnabled = NO;
     _pageControl = pageControl;
 
     return _pageControl;

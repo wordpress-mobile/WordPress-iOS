@@ -95,9 +95,13 @@
     }
 
     ReaderTopic *topic = [self currentTopic];
-    NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:topic];
+    NSIndexPath *indexPath  = [self.tableViewHandler.resultsController indexPathForObject:topic];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
+
+    if (!self.editing) {
+        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
+    }
 }
 
 - (void)handleReaderTopicChanged:(NSNotification *)notification
@@ -218,6 +222,11 @@
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return NSLocalizedString(@"Unfollow", @"Label of the table view cell's delete button, when unfollowing tags.");
+}
+
+- (void)tableViewDidChangeContent:(UITableView *)tableView
+{
+    [self updateSelectedTopic];
 }
 
 @end

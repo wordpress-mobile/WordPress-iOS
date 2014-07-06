@@ -233,6 +233,10 @@ static CGFloat const DefaultCellHeight = 44.0;
         self.indexPathSelectedBeforeUpdates = nil;
         self.indexPathSelectedAfterUpdates = nil;
     }
+
+    if ([self.delegate respondsToSelector:@selector(tableViewDidChangeContent:)]) {
+        [self.delegate tableViewDidChangeContent:self.tableView];
+    }
 }
 
 - (void)controller:(NSFetchedResultsController *)controller
