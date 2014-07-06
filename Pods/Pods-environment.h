@@ -196,7 +196,7 @@
 #define COCOAPODS_POD_AVAILABLE_WordPress_iOS_Shared
 #define COCOAPODS_VERSION_MAJOR_WordPress_iOS_Shared 0
 #define COCOAPODS_VERSION_MINOR_WordPress_iOS_Shared 0
-#define COCOAPODS_VERSION_PATCH_WordPress_iOS_Shared 3
+#define COCOAPODS_VERSION_PATCH_WordPress_iOS_Shared 5
 
 // WordPressApi
 #define COCOAPODS_POD_AVAILABLE_WordPressApi

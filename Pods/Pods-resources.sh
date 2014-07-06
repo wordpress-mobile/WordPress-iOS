@@ -138,6 +138,7 @@ install_resource "WordPress-iOS-Editor/Assets/icon_format_underline_highlighted.
 install_resource "WordPress-iOS-Editor/Assets/icon_format_underline_highlighted@2x.png"
 install_resource "google-plus-ios-sdk/google-plus-ios-sdk-1.5.1/GooglePlus.bundle"
 install_resource "${BUILT_PRODUCTS_DIR}/HockeySDKResources.bundle"
+install_resource "${BUILT_PRODUCTS_DIR}/WordPress-iOS-Shared.bundle"
 
 rsync -avr --copy-links --no-relative --exclude '*/.svn/*' --files-from="$RESOURCES_TO_COPY" / "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
 if [[ "${ACTION}" == "install" ]]; then

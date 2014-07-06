@@ -60,7 +60,7 @@ PODS:
     - CocoaLumberjack (~> 1.8.1)
     - UIAlertView+Blocks
     - WordPress-iOS-Shared (~> 0.0.2)
-  - WordPress-iOS-Shared (0.0.3):
+  - WordPress-iOS-Shared (0.0.5):
     - AFNetworking (~> 2.3.1)
     - CocoaLumberjack (~> 1.8.1)
     - DTCoreText (= 1.6.9)
@@ -96,7 +96,7 @@ DEPENDENCIES:
   - Taplytics (~> 1.2.50)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-iOS-Editor (= 0.1.4)
-  - WordPress-iOS-Shared (= 0.0.3)
+  - WordPress-iOS-Shared (= 0.0.5)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPressApi.git`)
   - WordPressCom-Stats-iOS (= 0.0.3)
   - wpxmlrpc (~> 0.4.1)
@@ -137,7 +137,7 @@ SPEC CHECKSUMS:
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
   UIDeviceIdentifier: 1944dd25ee46fbc592740148ab47d543f80f0bba
   WordPress-iOS-Editor: cfaf84cfa38ce3b229af126fceaa0d3dfd90932f
-  WordPress-iOS-Shared: 3634ae17fdde3c4cac5e7fbfa88f89b2997f3468
+  WordPress-iOS-Shared: d784467055100976f10f77df4b72af8fc53d94f8
   WordPressApi: 2e05a82014171bc6f9d6cdab580cc16e9c5f2c6c
   WordPressCom-Stats-iOS: f1a296a9287073c8a36aecdc3888ac854a777a39
   wpxmlrpc: a56b534ad0eb7db28a580eabb68a4a3d3426f6d7
