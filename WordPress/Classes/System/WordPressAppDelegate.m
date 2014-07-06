@@ -324,9 +324,9 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 
 - (void)customizeAppearance {
     UIColor *defaultTintColor = self.window.tintColor;
-    self.window.tintColor = [WPStyleGuide newKidOnTheBlockBlue];
+    self.window.tintColor = [WPStyleGuide wordPressBlue];
     
-    [[UINavigationBar appearance] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
+    [[UINavigationBar appearance] setBarTintColor:[WPStyleGuide wordPressBlue]];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearanceWhenContainedIn:[MFMailComposeViewController class], nil] setBarTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearanceWhenContainedIn:[MFMailComposeViewController class], nil] setTintColor:defaultTintColor];
@@ -337,13 +337,13 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 //    [[UINavigationBar appearance] setShadowImage:[UIImage imageNamed:@"transparent-point"]];
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor lightGrayColor]} forState:UIControlStateDisabled];
-    [[UIToolbar appearance] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
-    [[UISwitch appearance] setOnTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
+    [[UIToolbar appearance] setBarTintColor:[WPStyleGuide wordPressBlue]];
+    [[UISwitch appearance] setOnTintColor:[WPStyleGuide wordPressBlue]];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     [[UITabBarItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"OpenSans" size:10.0]} forState:UIControlStateNormal];
 
     [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-    [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
+    [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[WPStyleGuide wordPressBlue]];
     [[UIToolbar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[UIColor darkGrayColor]];
 }
 
