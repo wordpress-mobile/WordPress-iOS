@@ -228,6 +228,12 @@ typedef enum {
 
 #pragma mark - View getters/builders
 
+- (void)updateFeaturedImage:(UIImage *)image
+{
+    self.featuredImage = image;
+    [self.postView setFeaturedImage:self.featuredImage];
+}
+
 - (void)buildHeader
 {
     self.postView = [[ReaderPostRichContentView alloc] init];
