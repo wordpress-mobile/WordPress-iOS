@@ -474,9 +474,9 @@
     });
 
     NSInteger length = [content length] - range.location;
-	range = [regex rangeOfFirstMatchInString:content options:NSRegularExpressionCaseInsensitive range:NSMakeRange(range.location, length)];
+    range = [regex rangeOfFirstMatchInString:content options:NSRegularExpressionCaseInsensitive range:NSMakeRange(range.location, length)];
 
-	if (range.location == NSNotFound) {
+    if (range.location == NSNotFound) {
         return str;
     }
 
