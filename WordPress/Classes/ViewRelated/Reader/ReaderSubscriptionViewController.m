@@ -200,6 +200,76 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     [self.controllers addObject:placeholder];
 }
 
+- (void)configureSearchBar
+{
+    if (![self isWPComUser]) {
+        [self.searchBar removeFromSuperview];
+        return;
+    }
+
+    [self.view addSubview:self.searchBar];
+}
+
+- (void)configureToolBar
+{
+    if (![self isWPComUser]) {
+        [self.toolBar removeFromSuperview];
+        return;
+    }
+
+    [self.view addSubview:self.toolBar];
+}
+
+- (void)configurePageViewController
+{
+    [self addChildViewController:self.pageViewController];
+    [self.pageViewController willMoveToParentViewController:self];
+    UIView *childView = self.pageViewController.view;
+    childView.frame = self.contentView.bounds;
+    childView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.contentView addSubview:self.pageViewController.view];
+    [self.pageViewController didMoveToParentViewController:self];
+
+    UIViewController *startingController = [self viewControllerAtIndex:self.currentIndex];
+    [self.pageViewController setViewControllers:@[startingController]
+                                      direction:UIPageViewControllerNavigationOrientationHorizontal
+                                       animated:NO
+                                     completion:nil];
+}
+
+- (void)configureTitleView
+{
+    if ([self.controllers count] < 2) {
+        return;
+    }
+    self.navigationItem.titleView = self.titleView;
+}
+
+- (void)configureNavbar
+{
+    // Update title & page
+    NSString *title = [[self currentViewController] title];
+    if ([self.controllers count] < 2) {
+        self.navigationItem.title = title;
+    } else {
+        self.pageControl.numberOfPages = [self.controllers count];
+        self.pageControl.currentPage = self.currentIndex;
+        self.titleLabel.text = title;
+    }
+
+    // Edit button
+    if (self.currentIndex == 0 && [self isWPComUser]) {
+        self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    } else {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
+
+    // Cancel button
+    if (self.navigationItem.leftBarButtonItem != self.cancelButton) {
+        self.navigationItem.leftBarButtonItem = self.cancelButton;
+    }
+}
+
 - (void)configureConstraints
 {
     [self.view removeConstraints:self.view.constraints];
@@ -255,76 +325,6 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
         format = [NSString stringWithFormat:@"|[%@]|", viewName];
     }
     return format;
-}
-
-- (void)configureNavbar
-{
-    // Update title & page
-    NSString *title = [[self currentViewController] title];
-    if ([self.controllers count] < 2) {
-        self.navigationItem.title = title;
-    } else {
-        self.pageControl.numberOfPages = [self.controllers count];
-        self.pageControl.currentPage = self.currentIndex;
-        self.titleLabel.text = title;
-    }
-
-    // Edit button
-    if (self.currentIndex == 0 && [self isWPComUser]) {
-        self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    } else {
-        self.navigationItem.rightBarButtonItem = nil;
-    }
-
-    // Cancel button
-    if (self.navigationItem.leftBarButtonItem != self.cancelButton) {
-        self.navigationItem.leftBarButtonItem = self.cancelButton;
-    }
-}
-
-- (void)configureTitleView
-{
-    if ([self.controllers count] < 2) {
-        return;
-    }
-	self.navigationItem.titleView = self.titleView;
-}
-
-- (void)configureSearchBar
-{
-    if (![self isWPComUser]) {
-        [self.searchBar removeFromSuperview];
-        return;
-    }
-
-    [self.view addSubview:self.searchBar];
-}
-
-- (void)configureToolBar
-{
-    if (![self isWPComUser]) {
-        [self.toolBar removeFromSuperview];
-        return;
-    }
-
-    [self.view addSubview:self.toolBar];
-}
-
-- (void)configurePageViewController
-{
-    [self addChildViewController:self.pageViewController];
-    [self.pageViewController willMoveToParentViewController:self];
-    UIView *childView = self.pageViewController.view;
-    childView.frame = self.contentView.bounds;
-    childView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.contentView addSubview:self.pageViewController.view];
-    [self.pageViewController didMoveToParentViewController:self];
-
-    UIViewController *startingController = [self viewControllerAtIndex:self.currentIndex];
-    [self.pageViewController setViewControllers:@[startingController]
-                                      direction:UIPageViewControllerNavigationOrientationHorizontal
-                                       animated:NO
-                                     completion:nil];
 }
 
 
@@ -383,9 +383,9 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
         return _friendButton;
     }
     UIBarButtonItem *friendButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Friends", @"")
-																		   style:[WPStyleGuide barButtonStyleForBordered]
-																		  target:self
-																		  action:@selector(handleFriendFinderButtonTapped:)];
+                                                                     style:[WPStyleGuide barButtonStyleForBordered]
+                                                                    target:self
+                                                                    action:@selector(handleFriendFinderButtonTapped:)];
 
     _friendButton = friendButton;
 
@@ -427,9 +427,9 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     }
 
     CGFloat y = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? 6.0 : 0.0;
-	UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, y, 200.0f, 32.0)];
-	titleView.backgroundColor = [UIColor clearColor];
-	titleView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, y, 200.0f, 32.0)];
+    titleView.backgroundColor = [UIColor clearColor];
+    titleView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     _titleView = titleView;
 
     [_titleView addSubview:self.titleLabel];
@@ -464,8 +464,8 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     titleLabel.font = [WPStyleGuide regularTextFontBold];
     titleLabel.textColor = [UIColor whiteColor];
-	titleLabel.textAlignment = NSTextAlignmentCenter;
-	titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.backgroundColor = [UIColor clearColor];
     _titleLabel = titleLabel;
 
     return _titleLabel;
@@ -510,7 +510,7 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
 - (void)handleFriendFinderButtonTapped:(id)sender
 {
     WPFriendFinderViewController *controller = [[WPFriendFinderViewController alloc] init];
-	[self.navigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:controller animated:YES];
     [controller loadURL:FriendFinderURL];
 }
 
