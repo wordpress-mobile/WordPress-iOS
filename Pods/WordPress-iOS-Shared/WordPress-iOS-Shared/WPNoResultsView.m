@@ -2,6 +2,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "WPStyleGuide.h"
 #import "WPNUXUtility.h"
+#import "WPFontManager.h"
 
 @interface WPNoResultsView ()
 @property (nonatomic, copy) UILabel *titleLabel;
@@ -88,7 +89,7 @@
 
     // Setup message text
     _messageLabel = [[UILabel alloc] init];
-    _messageLabel.font = [UIFont fontWithName:@"OpenSans" size:14.0];
+    _messageLabel.font = [WPFontManager openSansRegularFontOfSize:14.0];
     _messageLabel.textColor = [WPStyleGuide allTAllShadeGrey];
     [self setMessageText:messageText];
     _messageLabel.numberOfLines = 0;

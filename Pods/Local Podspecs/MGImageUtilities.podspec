@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
   s.homepage     = "http://mattgemmell.com/2010/07/05/mgimageutilities/"
   s.license      = 'BSD'
   s.author       = { "Matt Gemmell" => "matt@mattgemmell.com" }
-  s.source       = { :git => "https://github.com/mattgemmell/MGImageUtilities.git", :commit => "2903a9a2993684ea001b06c61cba2a51faf631d6" }
+  s.source       = { :git => "https://github.com/wordpress-mobile/MGImageUtilities.git", :branch => 'gifsupport' }
   s.platform     = :ios
   s.source_files = 'Classes/UIImage*.{h,m}'
 end
