@@ -133,7 +133,7 @@
  */
 - (NSString *)sanitizeTopicNameForAPI:(NSString *)topicName
 {
-    if (!topicName) {
+    if (!topicName || [topicName length] == 0) {
         return @"";
     }
     topicName = [[topicName lowercaseString] trim];

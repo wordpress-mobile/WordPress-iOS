@@ -179,7 +179,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     ReaderTopic *topic = (ReaderTopic *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
@@ -191,14 +191,14 @@
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
     switch (section) {
-		case 0:
-			return NSLocalizedString(@"Lists", @"Section title for the default reader lists");
-			break;
+        case 0:
+            return NSLocalizedString(@"Lists", @"Section title for the default reader lists");
+            break;
 
-		default:
-			return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
-			break;
-	}
+        default:
+            return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
+            break;
+    }
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath

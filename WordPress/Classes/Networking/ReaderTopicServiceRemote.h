@@ -24,7 +24,7 @@
  objects describing topics is passed as an argument.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)unfollowTopicNamed:(NSString *)topic
+- (void)unfollowTopicNamed:(NSString *)topicName
                withSuccess:(void (^)())success
                    failure:(void (^)(NSError *error))failure;
 
