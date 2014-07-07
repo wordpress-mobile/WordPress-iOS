@@ -191,7 +191,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 
 - (void)updateLastSeenTime
 {
-    // get the most recent note
+    // Find the most recent note
     Note *note = [self.resultsController.fetchedObjects firstObject];
     if (!note) {
         return;

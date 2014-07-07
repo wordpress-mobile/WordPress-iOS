@@ -23,13 +23,6 @@
 		93B682F9194F95AE00EBF6DF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93B682D8194F95AD00EBF6DF /* UIKit.framework */; };
 		93B68301194F95AE00EBF6DF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 93B682FF194F95AE00EBF6DF /* InfoPlist.strings */; };
 		93B68303194F95AE00EBF6DF /* StatsDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 93B68302194F95AE00EBF6DF /* StatsDemoTests.m */; };
-		93B683141950867900EBF6DF /* Merriweather-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 93B6830D1950867900EBF6DF /* Merriweather-Bold.ttf */; };
-		93B683151950867900EBF6DF /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 93B6830E1950867900EBF6DF /* OpenSans-Bold.ttf */; };
-		93B683161950867900EBF6DF /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 93B6830F1950867900EBF6DF /* OpenSans-BoldItalic.ttf */; };
-		93B683171950867900EBF6DF /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 93B683101950867900EBF6DF /* OpenSans-Italic.ttf */; };
-		93B683181950867900EBF6DF /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 93B683111950867900EBF6DF /* OpenSans-Light.ttf */; };
-		93B683191950867900EBF6DF /* OpenSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 93B683121950867900EBF6DF /* OpenSans-LightItalic.ttf */; };
-		93B6831A1950867900EBF6DF /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 93B683131950867900EBF6DF /* OpenSans-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,13 +58,6 @@
 		93B682FE194F95AE00EBF6DF /* StatsDemoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "StatsDemoTests-Info.plist"; sourceTree = "<group>"; };
 		93B68300194F95AE00EBF6DF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		93B68302194F95AE00EBF6DF /* StatsDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StatsDemoTests.m; sourceTree = "<group>"; };
-		93B6830D1950867900EBF6DF /* Merriweather-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather-Bold.ttf"; sourceTree = "<group>"; };
-		93B6830E1950867900EBF6DF /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
-		93B6830F1950867900EBF6DF /* OpenSans-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-BoldItalic.ttf"; sourceTree = "<group>"; };
-		93B683101950867900EBF6DF /* OpenSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Italic.ttf"; sourceTree = "<group>"; };
-		93B683111950867900EBF6DF /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
-		93B683121950867900EBF6DF /* OpenSans-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-LightItalic.ttf"; sourceTree = "<group>"; };
-		93B683131950867900EBF6DF /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,13 +165,6 @@
 		93B6830C1950866300EBF6DF /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				93B6830D1950867900EBF6DF /* Merriweather-Bold.ttf */,
-				93B6830E1950867900EBF6DF /* OpenSans-Bold.ttf */,
-				93B6830F1950867900EBF6DF /* OpenSans-BoldItalic.ttf */,
-				93B683101950867900EBF6DF /* OpenSans-Italic.ttf */,
-				93B683111950867900EBF6DF /* OpenSans-Light.ttf */,
-				93B683121950867900EBF6DF /* OpenSans-LightItalic.ttf */,
-				93B683131950867900EBF6DF /* OpenSans-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -270,14 +249,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				93B682EB194F95AD00EBF6DF /* Main_iPad.storyboard in Resources */,
-				93B6831A1950867900EBF6DF /* OpenSans-Regular.ttf in Resources */,
-				93B683171950867900EBF6DF /* OpenSans-Italic.ttf in Resources */,
 				93B682F0194F95AD00EBF6DF /* Images.xcassets in Resources */,
-				93B683151950867900EBF6DF /* OpenSans-Bold.ttf in Resources */,
-				93B683191950867900EBF6DF /* OpenSans-LightItalic.ttf in Resources */,
-				93B683161950867900EBF6DF /* OpenSans-BoldItalic.ttf in Resources */,
-				93B683141950867900EBF6DF /* Merriweather-Bold.ttf in Resources */,
-				93B683181950867900EBF6DF /* OpenSans-Light.ttf in Resources */,
 				93B682E8194F95AD00EBF6DF /* Main_iPhone.storyboard in Resources */,
 				93B682DF194F95AD00EBF6DF /* InfoPlist.strings in Resources */,
 			);
