@@ -330,6 +330,8 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearanceWhenContainedIn:[MFMailComposeViewController class], nil] setBarTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearanceWhenContainedIn:[MFMailComposeViewController class], nil] setTintColor:defaultTintColor];
+    
+    [[UITabBar appearance] setTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
 
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [UIFont fontWithName:@"OpenSans-Bold" size:16.0]} ];
 // temporarily removed to fix transparent UINavigationBar within Helpshift
