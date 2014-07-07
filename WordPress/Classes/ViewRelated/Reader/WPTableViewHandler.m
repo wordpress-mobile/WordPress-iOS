@@ -111,8 +111,8 @@ static CGFloat const DefaultCellHeight = 44.0;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:DefaultCellIdentifier];
 
     if (self.tableView.isEditing) {
-		cell.accessoryType = UITableViewCellAccessoryNone;
-	} else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    } else {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
 
@@ -193,7 +193,7 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 - (UITableViewRowAnimation)tableViewRowAnimation
 {
-	return UITableViewRowAnimationFade;
+    return UITableViewRowAnimationFade;
 }
 
 - (NSFetchedResultsController *)resultsController
