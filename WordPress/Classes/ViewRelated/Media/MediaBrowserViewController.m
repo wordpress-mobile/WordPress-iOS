@@ -113,7 +113,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     
     UIBarButtonItem *addMediaButton;
     UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
-    CustomHighlightButton *button = [[CustomHighlightButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+    CustomHighlightButton *button = [[CustomHighlightButton alloc] initWithFrame:CGRectMake(0.0, 0.0, image.size.width, image.size.height)];
     [button setImage:image forState:UIControlStateNormal];
     [button addTarget:self action:@selector(addMediaButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     addMediaButton = [[UIBarButtonItem alloc] initWithCustomView:button];
