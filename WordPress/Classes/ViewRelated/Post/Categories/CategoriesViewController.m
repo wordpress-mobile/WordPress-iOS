@@ -38,7 +38,7 @@
     // Show the add category button if we're selecting categories for a post.
     if (self.selectionMode == CategoriesSelectionModePost ) {
         UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
-        CustomHighlightButton *button = [[CustomHighlightButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+        CustomHighlightButton *button = [[CustomHighlightButton alloc] initWithFrame:CGRectMake(0.0, 0.0, image.size.width, image.size.height)];
         [button setImage:image forState:UIControlStateNormal];
         [button addTarget:self action:@selector(showAddNewCategory) forControlEvents:UIControlEventTouchUpInside];
         UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];

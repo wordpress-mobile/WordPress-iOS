@@ -109,11 +109,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     
 	// Topics button
-	UIBarButtonItem *button = nil;
+    UIBarButtonItem *button = nil;
     CustomHighlightButton *topicsButton = [CustomHighlightButton buttonWithType:UIButtonTypeCustom];
     topicsButton.tintColor = [UIColor colorWithWhite:1.0 alpha:0.5];
     [topicsButton setImage:[UIImage imageNamed:@"icon-reader-topics"] forState:UIControlStateNormal];
-//    [topicsButton setImage:[UIImage imageNamed:@"icon-reader-topics-active"] forState:UIControlStateHighlighted];
 
     CGSize imageSize = [UIImage imageNamed:@"icon-reader-topics"].size;
     topicsButton.frame = CGRectMake(0.0, 0.0, imageSize.width, imageSize.height);
