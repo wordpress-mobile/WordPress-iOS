@@ -356,8 +356,15 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     searchBar.translucent = NO;
     searchBar.barTintColor = [WPStyleGuide itsEverywhereGrey];
     searchBar.backgroundImage = [[UIImage alloc] init];
-
     [searchBar setImage:[UIImage imageNamed:@"icon-reader-tag"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
+
+    // Replace the default "Search" keyboard button with a "Done" button.
+    // Apple doesn't expose `returnKeyType` on `UISearchBar` so we'll check to make sure it supports the right protocol, cast and set.
+    // Avoids having to walk the view tree looking for an internal textfield, or subclassing UISearchBar to expose the property.
+    if ([searchBar conformsToProtocol:@protocol(UITextInputTraits)]) {
+        [(id<UITextInputTraits>)searchBar setReturnKeyType:UIReturnKeyDone];
+    }
+
     _searchBar = searchBar;
 
     return _searchBar;
