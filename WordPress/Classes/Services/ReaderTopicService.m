@@ -186,6 +186,9 @@ NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"
         for (ReaderTopic *topic in currentTopics) {
             if (![topicsToKeep containsObject:topic]) {
                 DDLogInfo(@"Deleting ReaderTopic: %@", topic);
+                if ([topic isEqual:self.currentTopic]) {
+                    self.currentTopic = nil;
+                }
                 [self.managedObjectContext deleteObject:topic];
             }
         }
