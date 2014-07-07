@@ -1,6 +1,7 @@
 #import "ActivityLogViewController.h"
 #import "WordPressAppDelegate.h"
 #import "ActivityLogDetailViewController.h"
+#import "SettingsViewController.h"
 #import <DDFileLogger.h>
 #import "WPTableViewSectionHeaderView.h"
 #import "WPTableViewSectionFooterView.h"
@@ -45,6 +46,19 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
     [self loadLogFiles];
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:ActivityLogCellIdentifier];
+}
+
+- (NSUInteger)supportedInterfaceOrientations {
+    if (IS_IPHONE){
+		for (UIViewController * viewController in self.navigationController.viewControllers) {
+			if (IS_IPHONE && [viewController isKindOfClass:[SettingsViewController class]]) {
+				return UIInterfaceOrientationMaskAllButUpsideDown;
+			}
+		}
+		return UIInterfaceOrientationMaskPortrait;
+	}
+    
+    return UIInterfaceOrientationMaskAll;
 }
 
 - (void)didReceiveMemoryWarning

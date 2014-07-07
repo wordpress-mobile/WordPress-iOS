@@ -1,5 +1,5 @@
 #import "ActivityLogDetailViewController.h"
-
+#import "SettingsViewController.h"
 
 @interface ActivityLogDetailViewController ()
 
@@ -58,6 +58,19 @@
         [self.popover dismissPopoverAnimated:animated];
         self.popover = nil;
     }
+}
+
+- (NSUInteger)supportedInterfaceOrientations {
+    if (IS_IPHONE){
+		for (UIViewController * viewController in self.navigationController.viewControllers) {
+			if (IS_IPHONE && [viewController isKindOfClass:[SettingsViewController class]]) {
+				return UIInterfaceOrientationMaskAllButUpsideDown;
+			}
+		}
+		return UIInterfaceOrientationMaskPortrait;
+	}
+    
+    return UIInterfaceOrientationMaskAll;
 }
 
 - (void)didReceiveMemoryWarning

@@ -1,5 +1,6 @@
 #import "SupportViewController.h"
 #import "WPWebViewController.h"
+#import "SettingsViewController.h"
 #import "ActivityLogViewController.h"
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import "WordPressAppDelegate.h"
@@ -141,6 +142,19 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     _helpshiftUnreadCount = [[Helpshift sharedInstance] getNotificationCountFromRemote:NO];
 
     [self.tableView reloadData];
+}
+
+- (NSUInteger)supportedInterfaceOrientations {
+    if (IS_IPHONE){
+		for (UIViewController * viewController in self.navigationController.viewControllers) {
+			if (IS_IPHONE && [viewController isKindOfClass:[SettingsViewController class]]) {
+				return UIInterfaceOrientationMaskAllButUpsideDown;
+			}
+		}
+		return UIInterfaceOrientationMaskPortrait;
+	}
+    
+    return UIInterfaceOrientationMaskAll;
 }
 
 - (void)didReceiveMemoryWarning
