@@ -15,28 +15,24 @@
  */
 
 #import "OCMMacroState.h"
-#import "OCMStubRecorder.h"
-#import "OCMockObject.h"
-#import "OCMExpectationRecorder.h"
-#import "OCMVerifier.h"
-#import "OCMInvocationMatcher.h"
+#import "OCMockRecorder.h"
+#import "OCMVerifyMacroState.h"
+#import "OCMStubMacroState.h"
 
 
 @implementation OCMMacroState
 
 OCMMacroState *globalState;
 
-#pragma mark  Methods to begin/end macros
 
 + (void)beginStubMacro
 {
-    OCMStubRecorder *recorder = [[[OCMStubRecorder alloc] init] autorelease];
-    globalState = [[[OCMMacroState alloc] initWithRecorder:recorder] autorelease];
+    globalState = [[[OCMStubMacroState alloc] init] autorelease];
 }
 
-+ (OCMStubRecorder *)endStubMacro
++ (OCMockRecorder *)endStubMacro
 {
-    OCMStubRecorder *recorder = (OCMStubRecorder *)[globalState recorder];
+    OCMockRecorder *recorder = [((OCMStubMacroState *)globalState) recorder];
     globalState = nil;
     return recorder;
 }
@@ -44,11 +40,11 @@ OCMMacroState *globalState;
 
 + (void)beginExpectMacro
 {
-    OCMExpectationRecorder *recorder = [[[OCMExpectationRecorder alloc] init] autorelease];
-    globalState = [[[OCMMacroState alloc] initWithRecorder:recorder] autorelease];
+    [self beginStubMacro];
+    [(OCMStubMacroState *)globalState setShouldRecordExpectation:YES];
 }
 
-+ (OCMStubRecorder *)endExpectMacro
++ (OCMockRecorder *)endExpectMacro
 {
     return [self endStubMacro];
 }
@@ -56,9 +52,7 @@ OCMMacroState *globalState;
 
 + (void)beginVerifyMacroAtLocation:(OCMLocation *)aLocation
 {
-    OCMVerifier *recorder = [[[OCMVerifier alloc] init] autorelease];
-    [recorder setLocation:aLocation];
-    globalState = [[[OCMMacroState alloc] initWithRecorder:recorder] autorelease];
+    globalState = [[[OCMVerifyMacroState alloc] initWithLocation:aLocation] autorelease];
 }
 
 + (void)endVerifyMacro
@@ -67,42 +61,32 @@ OCMMacroState *globalState;
 }
 
 
-#pragma mark  Accessing global state
-
 + (OCMMacroState *)globalState
 {
     return globalState;
 }
 
 
-#pragma mark  Init, dealloc, accessors
-
-- (id)initWithRecorder:(OCMRecorder *)aRecorder
-{
-    self = [super init];
-    recorder = [aRecorder retain];
-    return self;
-}
-
 - (void)dealloc
 {
-    [recorder release];
     if(globalState == self)
         globalState = nil;
     [super dealloc];
 }
 
-- (OCMRecorder *)recorder
-{
-    return recorder;
-}
-
-
-#pragma mark  Changing the recorder
-
 - (void)switchToClassMethod
 {
-    [recorder classMethod];
+
+}
+
+- (BOOL)hasSwitchedToClassMethod
+{
+    return NO;
+}
+
+- (void)handleInvocation:(NSInvocation *)anInvocation
+{
+    // to be implemented by subclasses
 }
 
 

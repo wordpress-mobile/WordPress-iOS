@@ -14,12 +14,17 @@
  *  under the License.
  */
 
-#import "OCMRecorder.h"
-#import "OCMLocation.h"
+#import <Foundation/Foundation.h>
+
+@class OCMockObject;
 
 
-@interface OCMVerifier : OCMRecorder
+@interface OCMVerifier : NSProxy
+{
+    OCMockObject    *mockObject;
+    BOOL            verifyAsClassMethod;
+}
 
-@property(retain) OCMLocation *location;
+- (id)initWithMockObject:(OCMockObject *)aMockObject;
 
 @end

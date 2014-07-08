@@ -75,12 +75,10 @@
         NSArray *existingObjects = [self existingPostsForBlog:contextBlog inContext:backgroundContext];
         for (NSDictionary *newPost in newObjects) {
             NSNumber *postID = [[newPost objectForKey:[self remoteUniqueIdentifier]] numericValue];
-            AbstractPost *post;
             
             NSArray *existingPostsWithPostId = [existingObjects filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"postID == %@", postID]];
-            if (existingPostsWithPostId && existingPostsWithPostId.count > 0) {
-                post = existingPostsWithPostId[0];
-            } else {
+            AbstractPost *post = [existingPostsWithPostId firstObject];
+            if (!post) {
                 post = [self newPostForBlog:contextBlog];
                 post.postID = postID;
                 post.remoteStatus = AbstractPostRemoteStatusSync;

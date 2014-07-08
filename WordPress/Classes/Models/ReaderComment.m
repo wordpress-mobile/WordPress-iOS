@@ -141,11 +141,8 @@
         return;
     }
 
-	ReaderComment *comment;
-    if ([results count] > 0) {
-		comment = (ReaderComment *)[results objectAtIndex:0];
-		
-    } else {
+	ReaderComment *comment = [results firstObject];
+    if (!comment) {
 		comment = (ReaderComment *)[NSEntityDescription insertNewObjectForEntityForName:@"ReaderComment"
 														   inManagedObjectContext:context];
 		comment.commentID = [dict numberForKey:@"ID"];
