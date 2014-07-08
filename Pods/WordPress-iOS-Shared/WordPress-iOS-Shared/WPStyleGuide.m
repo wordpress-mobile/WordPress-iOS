@@ -383,7 +383,7 @@
     [followButton setTitle:followedString forState:UIControlStateSelected];
     [followButton setImage:[UIImage imageNamed:@"reader-postaction-follow"] forState:UIControlStateNormal];
     [followButton setImage:[UIImage imageNamed:@"reader-postaction-following"] forState:UIControlStateSelected];
-    [followButton setTitleColor:[UIColor colorWithHexString:@"90aec2"] forState:UIControlStateNormal];
+    [followButton setTitleColor:[UIColor colorWithRed:144.0/255.0 green:174.0/255.0 blue:194.0/255.0 alpha:1.0] forState:UIControlStateNormal];
 }
 
 @end
