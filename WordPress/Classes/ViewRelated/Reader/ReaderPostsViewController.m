@@ -877,6 +877,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 }
 
+
+#pragma mark - WPAccount Notifications
+
 - (void)didChangeAccount:(NSNotification *)notification
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];

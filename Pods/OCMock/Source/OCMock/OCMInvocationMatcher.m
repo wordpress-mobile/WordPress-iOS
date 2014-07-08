@@ -34,11 +34,7 @@
 - (void)setInvocation:(NSInvocation *)anInvocation;
 {
     [recordedInvocation release];
-    // When the method has a char* argument we do not retain the arguments. This makes it possible
-    // to match char* args literally and with anyPointer. Not retaining the argument means that
-    // in these cases tests that use their own autorelease pools may fail unexpectedly.
-    if([anInvocation hasCharPointerArgument])
-        [anInvocation retainArguments];
+    [anInvocation retainArguments];
     recordedInvocation = [anInvocation retain];
 }
 
@@ -69,7 +65,6 @@
     if(OCMIsAliasSelector(sel) &&
        OCMOriginalSelectorForAlias(sel) == [recordedInvocation selector])
         return YES;
-
     return NO;
 }
 

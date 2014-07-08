@@ -20,6 +20,7 @@
 #import "OCMFunctions.h"
 #import "OCMMacroState.h"
 
+
 @implementation OCClassMockObject
 
 #pragma mark  Initialisers, description, accessors, etc.
@@ -40,7 +41,7 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"OCMockObject(%@)", NSStringFromClass(mockedClass)];
+	return [NSString stringWithFormat:@"OCMockObject[%@]", NSStringFromClass(mockedClass)];
 }
 
 - (Class)mockedClass
@@ -134,7 +135,28 @@
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
-    return [mockedClass instanceMethodSignatureForSelector:aSelector];
+    OCMMacroState *macroState = [OCMMacroState globalState];
+    if(macroState != nil)
+    {
+        if([macroState hasSwitchedToClassMethod])
+        {
+            return [mockedClass methodSignatureForSelector:aSelector];
+        }
+        else
+        {
+            NSMethodSignature *signature = [mockedClass instanceMethodSignatureForSelector:aSelector];
+            if((signature == nil) && [mockedClass respondsToSelector:aSelector])
+            {
+                [macroState switchToClassMethod];
+                signature = [mockedClass methodSignatureForSelector:aSelector];
+            }
+            return signature;
+        }
+    }
+    else
+    {
+        return [mockedClass instanceMethodSignatureForSelector:aSelector];
+    }
 }
 
 - (Class)mockObjectClass

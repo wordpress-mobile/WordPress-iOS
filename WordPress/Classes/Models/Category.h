@@ -2,9 +2,7 @@
 #import "Blog.h"
 #import "WordPressAppDelegate.h"
 
-@interface Category : NSManagedObject {
-
-}
+@interface Category : NSManagedObject
 
 @property (nonatomic, strong) NSNumber *categoryID;
 @property (nonatomic, strong) NSString *categoryName;

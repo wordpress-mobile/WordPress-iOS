@@ -1,12 +1,25 @@
 #import <Foundation/Foundation.h>
 #import "LocalCoreDataService.h"
 
-@class Blog, WPAccount;
+@class Blog;
+@class WPAccount;
 
 @interface BlogService : NSObject <LocalCoreDataService>
 
+
+/**
+ Returns the blog that matches with a given blogID
+ */
 - (Blog *)blogByBlogId:(NSNumber *)blogID;
 
+/**
+ Attempt to get the right blog that matches a given Blog Name
+ */
+- (Blog *)blogByBlogName:(NSString *)blogName;
+
+/**
+ Stores the blog's URL in NSUserDefaults, for later retrieval
+ */
 - (void)flagBlogAsLastUsed:(Blog *)blog;
 
 /**
