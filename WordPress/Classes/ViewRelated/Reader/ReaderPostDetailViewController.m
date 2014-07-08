@@ -441,7 +441,7 @@ typedef enum {
                                                       object:moviePlayer];
         
         // Dismiss the view controller
-        [[[WordPressAppDelegate sharedWordPressApplicationDelegate].window rootViewController] dismissViewControllerAnimated:YES completion:nil];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
@@ -456,7 +456,7 @@ typedef enum {
 
     controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     controller.modalPresentationStyle = UIModalPresentationFullScreen;
-    [self.navigationController pushViewController:controller animated:YES];
+    [self presentViewController:controller animated:YES completion:nil];
 }
 
 - (void)contentView:(UIView *)contentView didReceiveAttributionLinkAction:(id)sender
@@ -553,10 +553,14 @@ typedef enum {
 	} else {
         controller = [[WPImageViewController alloc] initWithImage:readerImageView.image];
 	}
-    
-    controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    controller.modalPresentationStyle = UIModalPresentationFullScreen;
-    [self.navigationController pushViewController:controller animated:YES];
+
+    if ([controller isKindOfClass:[WPImageViewController class]]) {
+        controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        controller.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:controller animated:YES completion:nil];
+    } else {
+        [self.navigationController pushViewController:controller animated:YES];
+    }
 }
 
 - (void)richTextView:(WPRichTextView *)richTextView didReceiveVideoLinkAction:(ReaderVideoView *)readerVideoView
@@ -577,18 +581,18 @@ typedef enum {
 
 		controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		controller.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self.navigationController presentViewController:controller animated:YES completion:nil];
+        [self presentViewController:controller animated:YES completion:nil];
 
 	} else {
 		// Should either be an iframe, or an object embed. In either case a src attribute should have been parsed for the contentURL.
 		// Assume this is content we can show and try to load it.
         UIViewController *controller = [[WPWebVideoViewController alloc] initWithURL:readerVideoView.contentURL];
+        controller.title = (readerVideoView.title != nil) ? readerVideoView.title : @"Video";
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
         navController.navigationBar.translucent = NO;
         navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         navController.modalPresentationStyle = UIModalPresentationFullScreen;
-		navController.title = (readerVideoView.title != nil) ? readerVideoView.title : @"Video";
-        [self.navigationController presentViewController:navController animated:YES completion:nil];
+        [self presentViewController:navController animated:YES completion:nil];
 	}
 }
 
