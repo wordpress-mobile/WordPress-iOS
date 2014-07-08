@@ -272,7 +272,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 - (void)displayGenericErrorMessageWithHelpshiftButton:(NSString *)message
 {
     WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
-    overlayView.secondaryButtonText = NSLocalizedString(@"Contact Us", nil);
+    overlayView.secondaryButtonText = NSLocalizedString(@"Contact Us", @"The text on the button at the bottom of the error message when a user has repeated trouble logging in");
     overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
         [self showHelpshiftConversationView];
