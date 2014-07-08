@@ -6,9 +6,9 @@
 #import "UIDevice+WordPressIdentifier.h"
 #import <WPXMLRPCClient.h>
 #import "ContextManager.h"
-#import "NoteService.h"
 #import "AccountService.h"
 #import <Helpshift/Helpshift.h>
+#import <Simperium/Simperium.h>
 #import <Mixpanel/Mixpanel.h>
 
 static NSString *const NotificationsDeviceIdKey = @"notification_device_id";
@@ -127,18 +127,14 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
             
         case UIApplicationStateBackground:
             if (completionHandler) {
-                NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-                
-                [noteService fetchNewNotificationsWithSuccess:^(BOOL hasNewNotes) {
-                    DDLogVerbose(@"notification fetch completion handler completed with new notes: %@", hasNewNotes ? @"YES" : @"NO");
-                    if (hasNewNotes) {
-                        completionHandler(UIBackgroundFetchResultNewData);
+                Simperium *simperium = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+                [simperium backgroundFetchWithCompletion:^(UIBackgroundFetchResult result) {
+                    if (result == UIBackgroundFetchResultNewData) {
+                        DDLogVerbose(@"Background Fetch Completed with New Data!");
                     } else {
-                        completionHandler(UIBackgroundFetchResultNoData);
+                        DDLogVerbose(@"Background Fetch Completed with No Data..");
                     }
-                } failure:^(NSError *error) {
-                    DDLogError(@"notification fetch completion handler failed with error: %@", error);
-                    completionHandler(UIBackgroundFetchResultFailed);
+                    completionHandler(result);
                 }];
             }
             break;

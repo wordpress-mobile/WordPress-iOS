@@ -1,5 +1,9 @@
-static NSString *const kMobileReaderURL	= @"https://en.wordpress.com/reader/mobile/v2/?chrome=no";
-static NSString *const kMobileReaderDetailURL = @"https://en.wordpress.com/reader/mobile/v2/?template=details";
-static NSString *const kMobileReaderFFURL = @"https://en.wordpress.com/reader/mobile/v2/?template=friendfinder";
+extern NSString *const WPMobileReaderURL;
+extern NSString *const WPMobileReaderDetailURL;
+extern NSString *const WPMobileReaderFFURL;
 
-static NSString *const kXML_RPC_ERROR_OCCURS = @"kXML_RPC_ERROR_OCCURS";
+extern NSString *const WPComXMLRPCUrl;
+extern NSString *const WPComDefaultAccountUrlKey;
+extern NSString *const WPComDefaultAccountUsernameKey;
+
+extern NSString *const WPNotificationsJetpackInformationURL;

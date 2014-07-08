@@ -23,34 +23,13 @@
 {
 	const char *returnType = [[anInvocation methodSignature] methodReturnType];
 	const char *valueType = [(NSValue *)returnValue objCType];
-    if(![self isMethodReturnType:returnType compatibleWithValueType:valueType])
-    {
-        [NSException raise:NSInvalidArgumentException
-                    format:@"Return value does not match method signature; signature declares '%s' but value is '%s'.", returnType, valueType];
-    }
-
-    void *buffer = malloc([[anInvocation methodSignature] methodReturnLength]);
+	/* ARM64 uses 'B' for BOOLs in method signatures but 'c' in NSValue; that case should match */
+	if((strcmp(returnType, valueType) != 0) && !(returnType[0] == 'B' && valueType[0] == 'c'))
+		@throw [NSException exceptionWithName:NSInvalidArgumentException reason:[NSString stringWithFormat:@"Return value does not match method signature; signature declares '%s' but value is '%s'.", returnType, valueType] userInfo:nil];
+	void *buffer = malloc([[anInvocation methodSignature] methodReturnLength]);
 	[returnValue getValue:buffer];
 	[anInvocation setReturnValue:buffer];
 	free(buffer);
-}
-
-
-- (BOOL)isMethodReturnType:(const char *)returnType compatibleWithValueType:(const char *)valueType
-{
-      /* Allow void* for methods that return id, mainly to be able to handle nil */
-    if(strcmp(returnType, @encode(id)) == 0 && strcmp(valueType, @encode(void *)) == 0)
-        return YES;
-
-     /* ARM64 uses 'B' for BOOLs in method signatures but 'c' in NSValue; that case should match */
-    if(returnType[0] == 'B' && valueType[0] == 'c')
-        return YES;
-
-    /* Same types are obviously compatible */
-    if(strcmp(returnType, valueType) == 0)
-        return YES;
-
-    return NO;
 }
 
 @end

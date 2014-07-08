@@ -78,8 +78,9 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
 }
 
 + (void)mergeNewMedia:(NSArray *)media forBlog:(Blog *)blog {
-    if ([blog isDeleted] || blog.managedObjectContext == nil)
+    if ([blog isDeleted] || blog.managedObjectContext == nil) {
         return;
+    }
     
     NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] newDerivedContext];
     [backgroundMOC performBlock:^{

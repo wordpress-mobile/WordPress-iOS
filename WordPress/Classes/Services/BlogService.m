@@ -11,6 +11,7 @@
 #import "BlogServiceRemoteREST.h"
 #import "BlogServiceRemoteProxy.h"
 
+
 @interface BlogService ()
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
@@ -23,7 +24,8 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 @implementation BlogService
 
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context {
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context
+{
     self = [super init];
     if (self) {
         _managedObjectContext = context;
@@ -50,7 +52,34 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     return [results firstObject];
 }
 
-- (void)flagBlogAsLastUsed:(Blog *)blog {
+- (Blog *)blogByBlogName:(NSString *)blogName
+{
+    if (!blogName) {
+        return nil;
+    }
+    
+    NSPredicate *subjectPredicate       = [NSPredicate predicateWithFormat:@"self.blogName CONTAINS[cd] %@", blogName];
+    NSPredicate *wpcomPredicate         = [NSPredicate predicateWithFormat:@"self.account.isWpcom == YES"];
+    NSPredicate *jetpackPredicate       = [NSPredicate predicateWithFormat:@"self.jetpackAccount != nil"];
+    NSPredicate *statsBlogsPredicate    = [NSCompoundPredicate orPredicateWithSubpredicates:@[wpcomPredicate, jetpackPredicate]];
+    NSPredicate *combinedPredicate      = [NSCompoundPredicate andPredicateWithSubpredicates:@[subjectPredicate, statsBlogsPredicate]];
+    
+    NSFetchRequest *fetchRequest        = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Blog class])];
+    fetchRequest.predicate              = combinedPredicate;
+    
+    NSError *error = nil;
+    NSArray *blogs = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    
+    if (error) {
+        DDLogError(@"Error while retrieving blog named %d: %@", blogName, error);
+        return nil;
+    }
+    
+    return [blogs firstObject];
+}
+
+- (void)flagBlogAsLastUsed:(Blog *)blog
+{
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:blog.url forKey:LastUsedBlogURLDefaultsKey];
     [defaults synchronize];

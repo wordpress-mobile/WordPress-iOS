@@ -27,6 +27,8 @@ pod 'WordPress-iOS-Shared', :git => 'https://github.com/wordpress-mobile/WordPre
 pod 'WordPress-iOS-Editor', '0.1.4'
 pod 'WordPressCom-Stats-iOS', '0.0.4'
 pod 'NSObject-SafeExpectations', '0.0.2'
+pod 'SocketRocket', :git => 'https://github.com/jleandroperez/SocketRocket.git'
+pod 'Simperium', '0.6.5'
 
 target :WordPressTest, :exclusive => true do
   pod 'OHHTTPStubs', '1.1.1'

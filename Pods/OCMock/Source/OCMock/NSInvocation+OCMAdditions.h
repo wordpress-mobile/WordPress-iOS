@@ -18,8 +18,6 @@
 
 @interface NSInvocation(OCMAdditions)
 
-- (BOOL)hasCharPointerArgument;
-
 - (id)getArgumentAtIndexAsObject:(int)argIndex;
 
 - (NSString *)invocationDescription;

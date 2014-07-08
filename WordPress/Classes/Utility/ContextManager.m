@@ -8,7 +8,6 @@ static ContextManager *instance;
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, strong) NSManagedObjectContext *mainContext;
-@property (nonatomic, strong) NSManagedObjectContext *rootContext;
 
 @end
 
@@ -41,33 +40,10 @@ static ContextManager *instance;
         return _mainContext;
     }
     _mainContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-    _mainContext.parentContext = self.rootContext;
-    _mainContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveChangesInRootContext:) name:NSManagedObjectContextDidSaveNotification object:_mainContext];
     return _mainContext;
 }
 
-- (NSManagedObjectContext *const)rootContext {
-    if (_rootContext) {
-        return _rootContext;
-    }
-    _rootContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    _rootContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
-    _rootContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-
-    return _rootContext;
-}
-
-- (void)saveChangesInRootContext:(NSNotification *)notification {
-    [self.rootContext performBlock:^{
-        DDLogVerbose(@"Saving changes in root context");
-        [self.rootContext processPendingChanges];
-        
-        // Changes are not saved out to the persistent store coordinator until the root context is saved
-        [self saveContext:self.rootContext];
-    }];
-}
 
 #pragma mark - Context Saving and Merging
 
@@ -100,11 +76,15 @@ static ContextManager *instance;
 }
 
 - (void)saveContext:(NSManagedObjectContext *)context {
+	[self saveContext:context withCompletionBlock:nil];
+}
+
+- (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock {
     // Save derived contexts a little differently
     // TODO - When the service refactor is complete, remove this - calling methods to Services should know what kind of context
     //        it is and call the saveDerivedContext at the end of the work
     if (context.parentContext == self.mainContext) {
-        [self saveDerivedContext:context];
+        [self saveDerivedContext:context withCompletionBlock:completionBlock];
         return;
     }
     
@@ -120,10 +100,19 @@ static ContextManager *instance;
                                            reason:@"Unresolved Core Data save error"
                                          userInfo:[error userInfo]];
         }
+		
+        if (completionBlock) {
+            dispatch_async(dispatch_get_main_queue(), completionBlock);
+        }
     }];
 }
 
 - (BOOL)obtainPermanentIDForObject:(NSManagedObject *)managedObject {
+    // Failsafe
+    if (!managedObject) {
+        return NO;
+    }
+    
     if (managedObject && ![managedObject.objectID isTemporaryID]) {
         // Object already has a permanent ID so just return success.
         return YES;
@@ -158,9 +147,10 @@ static ContextManager *instance;
     NSURL *storeURL = [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:@"WordPress.sqlite"]];
 	
 	// This is important for automatic version migration. Leave it here!
-	NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
-							 [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption,
-							 [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption, nil];
+	NSDictionary *options = @{
+		NSInferMappingModelAutomaticallyOption			: @(YES),
+		NSMigratePersistentStoresAutomaticallyOption	: @(YES)
+	};
 	
 	NSError *error = nil;
 	
@@ -176,6 +166,7 @@ static ContextManager *instance;
 	} else {
 		DDLogInfo(@"Source store: %@", sourceMetadata);
 	}
+	
 	NSManagedObjectModel *destinationModel = [self managedObjectModel];
 	BOOL pscCompatibile = [destinationModel
 						   isConfiguration:nil
@@ -185,6 +176,7 @@ static ContextManager *instance;
 	} else {
 		DDLogInfo(@"Migration needed");
 	}
+	
 	NSManagedObjectModel *sourceModel = [NSManagedObjectModel mergedModelFromBundles:nil forStoreMetadata:sourceMetadata];
 	if (sourceModel != nil) {
 		DDLogInfo(@"source model found");
@@ -194,7 +186,7 @@ static ContextManager *instance;
     
 	NSMigrationManager *manager = [[NSMigrationManager alloc] initWithSourceModel:sourceModel
 																 destinationModel:destinationModel];
-	NSMappingModel *mappingModel = [NSMappingModel mappingModelFromBundles:[NSArray arrayWithObject:[NSBundle mainBundle]]
+	NSMappingModel *mappingModel = [NSMappingModel mappingModelFromBundles:@[ [NSBundle mainBundle] ]
 															forSourceModel:sourceModel
 														  destinationModel:destinationModel];
 	if (mappingModel != nil) {
@@ -233,6 +225,7 @@ static ContextManager *instance;
         
         // make a backup of the old database
         [[NSFileManager defaultManager] copyItemAtPath:storeURL.path toPath:[storeURL.path stringByAppendingString:@"~"] error:&error];
+		
         // delete the sqlite file and try again
 		[[NSFileManager defaultManager] removeItemAtPath:storeURL.path error:nil];
 		if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
