@@ -16,19 +16,9 @@
 #import "DTWeakSupport.h"
 #import "DTLog.h"
 
-@interface DTCoreTextGlyphRun ()
-
-@property (nonatomic, assign) CGRect frame;
-@property (nonatomic, assign) NSInteger numberOfGlyphs;
-@property (nonatomic, DT_WEAK_PROPERTY, readwrite) NSDictionary *attributes;
-
-@end
-
-
 @implementation DTCoreTextGlyphRun
 {
 	CTRunRef _run;
-	
 	CGRect _frame;
 	
 	CGFloat _offset; // x distance from line origin 
@@ -45,8 +35,8 @@
 	const CGPoint *_glyphPositionPoints;
 	
 	DT_WEAK_VARIABLE DTCoreTextLayoutLine *_line;	// retain cycle, since these objects are retained by the _line
-	DT_WEAK_VARIABLE NSDictionary *_attributes;
-    NSArray *_stringIndices;
+	DT_WEAK_VARIABLE NSDictionary *_attributes; // weak because it is owned by _run IVAR
+	NSArray *_stringIndices;
 	
 	DTTextAttachment *_attachment;
 	BOOL _hyperlink;
@@ -127,10 +117,16 @@
 {
 	// get the scaling factor of the current translation matrix
 	CGAffineTransform ctm = CGContextGetCTM(context);
-	CGFloat contentScale = ctm.a; // needed for  rounding operations
+	CGFloat contentScale = MAX(ctm.a, -ctm.d); // needed for  rounding operations
+	
+	if (contentScale<1 || contentScale>2)
+	{
+		contentScale = 2;
+	}
+	
 	CGFloat smallestPixelWidth = 1.0f/contentScale;
 	
-	DTColor *backgroundColor = [_attributes backgroundColor];
+	DTColor *backgroundColor = [self.attributes backgroundColor];
 	
 	// -------------- Line-Out, Underline, Background-Color
 	BOOL drawStrikeOut = [[_attributes objectForKey:DTStrikeOutAttribute] boolValue];
@@ -179,6 +175,8 @@
 		
 		if (drawStrikeOut || drawUnderline)
 		{
+			BOOL didDrawSomething = NO;
+			
 			CGContextSaveGState(context);
 			
 			CTFontRef usedFont = (__bridge CTFontRef)([_attributes objectForKey:(id)kCTFontAttributeName]);
@@ -187,7 +185,7 @@
 			
 			if (usedFont)
 			{
-				fontUnderlineThickness = CTFontGetUnderlineThickness(usedFont);
+				fontUnderlineThickness = CTFontGetUnderlineThickness(usedFont) * smallestPixelWidth;
 			}
 			else
 			{
@@ -219,9 +217,12 @@
 				
 				CGContextMoveToPoint(context, runStrokeBounds.origin.x, y);
 				CGContextAddLineToPoint(context, runStrokeBounds.origin.x + runStrokeBounds.size.width, y);
+				
+				didDrawSomething = YES;
 			}
 			
-			if (drawUnderline)
+			// only draw underlines if Core Text didn't draw them yet
+			if (drawUnderline && !DTCoreTextDrawsUnderlinesWithGlyphs())
 			{
 				CGFloat y;
 				
@@ -237,9 +238,14 @@
 				
 				CGContextMoveToPoint(context, runStrokeBounds.origin.x, y);
 				CGContextAddLineToPoint(context, runStrokeBounds.origin.x + runStrokeBounds.size.width, y);
+				
+				didDrawSomething = YES;
 			}
 			
-			CGContextStrokePath(context);
+			if (didDrawSomething)
+			{
+				CGContextStrokePath(context);
+			}
 			
 			CGContextRestoreGState(context); // restore antialiasing
 		}
@@ -248,8 +254,7 @@
 
 - (CGPathRef)newPathWithGlyphs
 {
-	NSDictionary *attributes = self.attributes;
-	CTFontRef font = (__bridge CTFontRef)[attributes objectForKey:(id)kCTFontAttributeName];
+	CTFontRef font = (__bridge CTFontRef)[self.attributes objectForKey:(id)kCTFontAttributeName];
 
 	if (!font)
 	{
