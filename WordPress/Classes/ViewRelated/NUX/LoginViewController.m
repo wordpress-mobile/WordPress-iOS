@@ -78,7 +78,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     
-    self.view.backgroundColor = [WPNUXUtility backgroundColor];
+    self.view.backgroundColor = [WPStyleGuide wordPressBlue];
     _userIsDotCom = self.onlyDotComAllowed || !self.prefersSelfHosted;
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
