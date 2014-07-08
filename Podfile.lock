@@ -28,14 +28,16 @@ PODS:
   - CrashlyticsLumberjack (1.0.1):
     - CocoaLumberjack/Core
   - CTAssetsPickerController (2.2.2)
-  - DTCoreText (1.6.9):
-    - DTFoundation/Core (~> 1.6.0)
-    - DTFoundation/DTHTMLParser (~> 1.6.0)
-    - DTFoundation/UIKit (~> 1.6.0)
-  - DTFoundation/Core (1.6.3)
-  - DTFoundation/DTHTMLParser (1.6.3):
+  - DTCoreText (1.6.13):
+    - DTFoundation/Core (~> 1.7.1)
+    - DTFoundation/DTAnimatedGIF (~> 1.7.1)
+    - DTFoundation/DTHTMLParser (~> 1.7.1)
+    - DTFoundation/UIKit (~> 1.7.1)
+  - DTFoundation/Core (1.7.1)
+  - DTFoundation/DTAnimatedGIF (1.7.1)
+  - DTFoundation/DTHTMLParser (1.7.1):
     - DTFoundation/Core
-  - DTFoundation/UIKit (1.6.3):
+  - DTFoundation/UIKit (1.7.1):
     - DTFoundation/Core
   - EmailChecker (0.1)
   - google-plus-ios-sdk (1.5.1)
@@ -49,7 +51,7 @@ PODS:
     - NSLogger
   - NSObject-SafeExpectations (0.0.2)
   - NSURL+IDN (0.1)
-  - OCMock (3.0)
+  - OCMock (3.0.2)
   - OHHTTPStubs (1.1.1)
   - Reachability (3.1.1)
   - SVProgressHUD (1.0)
@@ -60,10 +62,10 @@ PODS:
     - CocoaLumberjack (~> 1.8.1)
     - UIAlertView+Blocks
     - WordPress-iOS-Shared (~> 0.0.2)
-  - WordPress-iOS-Shared (0.0.5):
+  - WordPress-iOS-Shared (0.0.6):
     - AFNetworking (~> 2.3.1)
     - CocoaLumberjack (~> 1.8.1)
-    - DTCoreText (= 1.6.9)
+    - DTCoreText (= 1.6.13)
   - WordPressApi (0.0.1):
     - AFNetworking (~> 2.3.1)
     - wpxmlrpc (~> 0.1)
@@ -79,7 +81,7 @@ DEPENDENCIES:
   - CocoaLumberjack (~> 1.8.1)
   - CrashlyticsLumberjack (~> 1.0.0)
   - CTAssetsPickerController (~> 2.2.2)
-  - DTCoreText (= 1.6.9)
+  - DTCoreText (= 1.6.13)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec`)
   - google-plus-ios-sdk (~> 1.5)
   - Helpshift (~> 4.5.0)
@@ -96,7 +98,7 @@ DEPENDENCIES:
   - Taplytics (~> 1.2.50)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-iOS-Editor (= 0.1.4)
-  - WordPress-iOS-Shared (= 0.0.5)
+  - WordPress-iOS-Shared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, tag `0.0.6`)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPressApi.git`)
   - WordPressCom-Stats-iOS (= 0.0.4)
   - wpxmlrpc (~> 0.4.1)
@@ -109,6 +111,9 @@ EXTERNAL SOURCES:
     :git: git://github.com/wordpress-mobile/MGImageUtilities.git
   NSURL+IDN:
     :podspec: https://raw.github.com/koke/NSURL-IDN/master/Podfile
+  WordPress-iOS-Shared:
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
+    :tag: 0.0.6
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPressApi.git
 
@@ -117,19 +122,19 @@ SPEC CHECKSUMS:
   CocoaLumberjack: 9d198d6e19909b3b113a38c5f06f7bb8eedd0427
   CrashlyticsLumberjack: b2a184319db06a070ccc176c07c503720ebedf81
   CTAssetsPickerController: e1247f76d97a129b75c4050990e75fd2eff7430f
-  DTCoreText: 0c8472ec35854d24d5a45dc8cd0586c14ca5d790
-  DTFoundation: d8a7f570a0f89c5a81661e6537289c578f4f97a8
+  DTCoreText: 84eb8ba2e70448fdd9d837540e371f9f587b65ba
+  DTFoundation: ef6fb95da64f202d1600bc23dde79c6fd74c0c2d
   EmailChecker: e909e6d113fac7ad5e3c304fabce30fc4a79c80e
   google-plus-ios-sdk: 98d76ce1f1edbfe8730628aafe017301a734042c
   Helpshift: 6c34462c4b94b8882e837a5bff7989c3118df15f
   HockeySDK: f9af97c2f5df4eb6ca6d2a9c408f2ff498edd608
-  MGImageUtilities: ab3580f2161b10f8a41331baea87aaafbd688950
+  MGImageUtilities: ce03a910781d7e189814d668af340bc1c0238363
   Mixpanel: 9cc470a58346f60da8ce2982096bcc72b5a7372b
   NSLogger: c4df4b0208d724f244c05f1966b7402f14d7bf55
   NSLogger-CocoaLumberjack-connector: 8f659ea51386f0a0e8c2643bf9273010a83a15f5
   NSObject-SafeExpectations: c31276ef7209016849fc4e5c8ed5ae5453e1e208
   NSURL+IDN: 22633c0149b86d6391f32f23776bc0e6ecc532e2
-  OCMock: 6e6041173cf801f458ef66ec1a8fa3d974947335
+  OCMock: b9836ab89d8d5e66cbe6333f93857037c310ee62
   OHHTTPStubs: d6ace2645e4744a0ad6c5a72940999a5632037fb
   Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
   SVProgressHUD: 5034c6e22b8c2ca3e09402e48d41ed0340aa1c50
@@ -137,7 +142,7 @@ SPEC CHECKSUMS:
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
   UIDeviceIdentifier: 1944dd25ee46fbc592740148ab47d543f80f0bba
   WordPress-iOS-Editor: cfaf84cfa38ce3b229af126fceaa0d3dfd90932f
-  WordPress-iOS-Shared: d784467055100976f10f77df4b72af8fc53d94f8
+  WordPress-iOS-Shared: 2fc2e61b4c02d78b5cb14ca205f0748865dcd7c5
   WordPressApi: 2e05a82014171bc6f9d6cdab580cc16e9c5f2c6c
   WordPressCom-Stats-iOS: 963fcb6168b7e96c63c21a9b0cec162fa352f6ff
   wpxmlrpc: a56b534ad0eb7db28a580eabb68a4a3d3426f6d7
