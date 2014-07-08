@@ -2,7 +2,7 @@
 #import "WPTableViewControllerSubclass.h"
 #import "ReaderPostsViewController.h"
 #import "ReaderPostTableViewCell.h"
-#import "ReaderTopicsViewController.h"
+#import "ReaderSubscriptionViewController.h"
 #import "ReaderPostDetailViewController.h"
 #import "ReaderPost.h"
 #import "WordPressAppDelegate.h"
@@ -39,7 +39,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @property (nonatomic, strong) WPTableImageSource *featuredImageSource;
 @property (nonatomic, assign) CGFloat keyboardOffset;
 @property (nonatomic, assign) CGFloat lastOffset;
-@property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, strong) WPAnimatedBox *animatedBox;
 @property (nonatomic, strong) UIGestureRecognizer *tapOffKeyboardGesture;
 
@@ -275,7 +274,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     UIEdgeInsets scrollInsets = self.tableView.scrollIndicatorInsets;
     scrollInsets.bottom = insets.bottom;
     self.tableView.scrollIndicatorInsets = scrollInsets;
-    [self.tableView layoutIfNeeded];
+    [self.tableView setNeedsLayout];
 }
 
 - (void)setTitle:(NSString *)title
@@ -286,14 +285,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     NSInteger tabIndex = [self.tabBarController.viewControllers indexOfObject:self.navigationController];
     UITabBarItem *tabItem = [[[self.tabBarController tabBar] items] objectAtIndex:tabIndex];
     tabItem.title = NSLocalizedString(@"Reader", @"Description of the Reader tab");
-}
-
-- (void)dismissPopover
-{
-    if (self.popover) {
-        [self.popover dismissPopoverAnimated:YES];
-        self.popover = nil;
-    }
 }
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification
@@ -459,25 +450,34 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 #pragma mark - Actions
 
+//- (void)topicsAction:(id)sender
+//{
+//	ReaderTopicsViewController *controller = [[ReaderTopicsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+//    if (IS_IPAD) {
+//        if (self.popover && [self.popover isPopoverVisible]) {
+//            [self dismissPopover];
+//            return;
+//        }
+//        
+//        self.popover = [[UIPopoverController alloc] initWithContentViewController:controller];
+//        
+//        UIBarButtonItem *shareButton = self.navigationItem.rightBarButtonItem;
+//        [self.popover presentPopoverFromBarButtonItem:shareButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+//    } else {
+//        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+//        navController.navigationBar.translucent = NO;
+//        [self presentViewController:navController animated:YES completion:nil];
+//    }
+//}
+
 - (void)topicsAction:(id)sender
 {
-	ReaderTopicsViewController *controller = [[ReaderTopicsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    if (IS_IPAD) {
-        if (self.popover && [self.popover isPopoverVisible]) {
-            [self dismissPopover];
-            return;
-        }
-        
-        self.popover = [[UIPopoverController alloc] initWithContentViewController:controller];
-        
-        UIBarButtonItem *shareButton = self.navigationItem.rightBarButtonItem;
-        [self.popover presentPopoverFromBarButtonItem:shareButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    } else {
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-        navController.navigationBar.translucent = NO;
-        [self presentViewController:navController animated:YES completion:nil];
-    }
+    ReaderSubscriptionViewController *controller = [[ReaderSubscriptionViewController alloc] init];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.navigationBar.translucent = NO;
+    [self presentViewController:navController animated:YES completion:nil];
 }
+
 
 - (void)dismissKeyboard:(id)sender
 {
@@ -859,10 +859,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)readerTopicDidChange:(NSNotification *)notification
 {
-	if (IS_IPAD){
-        [self dismissPopover];
-	}
-
     [self updateTitle];
 
 	self.loadingMore = NO;
