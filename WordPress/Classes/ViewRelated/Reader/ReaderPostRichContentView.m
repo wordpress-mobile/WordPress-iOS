@@ -52,6 +52,7 @@
     self.richTextView.attributedString = [[NSAttributedString alloc] initWithHTMLData:data
                                                                               options:[WPStyleGuide defaultDTCoreTextOptions]
                                                                    documentAttributes:nil];
+    self.richTextView.privateContent = [self privateContent];
 }
 
 - (WPRichTextView *)richTextView
