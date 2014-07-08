@@ -52,6 +52,7 @@ static NSString *const GenerateApplicationSpecificPasswordUrl = @"http://en.supp
     NSString *_dotComSiteUrl;
     NSArray *_blogs;
     Blog *_blog;
+    NSUInteger _numberOfTimesLoginFailed;
 }
 
 @end
@@ -261,6 +262,20 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
         [self showHelpViewController:NO];
+    };
+    overlayView.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+        [overlayView dismiss];
+    };
+    [self.view addSubview:overlayView];
+}
+
+- (void)displayGenericErrorMessageWithHelpshiftButton:(NSString *)message
+{
+    WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
+    overlayView.secondaryButtonText = NSLocalizedString(@"Contact Us", @"The text on the button at the bottom of the error message when a user has repeated trouble logging in");
+    overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+        [overlayView dismiss];
+        [self showHelpshiftConversationView];
     };
     overlayView.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
@@ -658,6 +673,11 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     [self.navigationController pushViewController:supportViewController animated:animated];
 }
 
+- (void)showHelpshiftConversationView
+{
+    [[Helpshift sharedInstance] showConversation:self withOptions:nil];
+}
+
 - (BOOL)isUrlWPCom:(NSString *)url
 {
     NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"wordpress\\.com/?$" options:NSRegularExpressionCaseInsensitive error:nil];
@@ -942,7 +962,15 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         if ([message rangeOfString:@"application-specific"].location != NSNotFound) {
             [self displayGenerateApplicationSpecificPasswordErrorMessage:message];
         } else {
-            [self displayGenericErrorMessage:message];
+            if (error.code == WordPressComOAuthErrorInvalidRequest) {
+                _numberOfTimesLoginFailed++;
+            }
+            
+            if ([SupportViewController isHelpshiftEnabled] && _numberOfTimesLoginFailed >= 2) {
+                [self displayGenericErrorMessageWithHelpshiftButton:message];
+            } else {
+                [self displayGenericErrorMessage:message];
+            }
         }
         return;
     }
