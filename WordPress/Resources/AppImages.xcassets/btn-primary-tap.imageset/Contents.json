@@ -6,9 +6,20 @@
       "filename" : "btn-primary-tap.png"
     },
     {
+      "resizing" : {
+        "mode" : "3-part-horizontal",
+        "center" : {
+          "mode" : "fill",
+          "width" : 1
+        },
+        "capInsets" : {
+          "right" : 9,
+          "left" : 8
+        }
+      },
       "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "btn-primary-tap@2x.png"
+      "filename" : "btn-primary-tap@2x.png",
+      "scale" : "2x"
     }
   ],
   "info" : {
