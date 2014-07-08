@@ -225,9 +225,10 @@ typedef enum {
     [self.inlineComposeView dismissComposer];
 }
 
+
 #pragma mark - View getters/builders
 
-- (void)updateFeaturedImage: (UIImage *)image
+- (void)updateFeaturedImage:(UIImage *)image
 {
     self.featuredImage = image;
     [self.postView setFeaturedImage:self.featuredImage];
@@ -351,7 +352,6 @@ typedef enum {
 
 - (void)handleShareButtonTapped:(id)sender
 {
-    NSString *permaLink = self.post.permaLink;
     NSString *title = self.post.postTitle;
     NSString *summary = self.post.summary;
     NSString *tags = self.post.tags;
@@ -369,8 +369,10 @@ typedef enum {
         postDictionary[@"tags"] = tags;
     }
     [activityItems addObject:postDictionary];
-    
-    [activityItems addObject:[NSURL URLWithString:permaLink]];
+    NSURL *permaLink = [NSURL URLWithString:self.post.permaLink];
+    if (permaLink) {
+        [activityItems addObject:permaLink];
+    }
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:[WPActivityDefaults defaultActivities]];
     if (title) {
         [activityViewController setValue:title forKey:@"subject"];
@@ -739,16 +741,16 @@ typedef enum {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
+
     if (indexPath.section == ReaderDetailContentSection) {
-        CGSize size = [self.postView sizeThatFits:CGSizeMake(CGRectGetWidth(self.tableView.bounds), CGFLOAT_MAX)];
+        CGSize size = [self.postView sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
         return size.height + 1;
     }
     
 	if ([self.comments count] == 0) {
 		return 0.0f;
 	}
-    
-    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : tableView.frame.size.width;
 	
 	ReaderComment *comment = [self.comments objectAtIndex:indexPath.row];
 	return [ReaderCommentTableViewCell heightForComment:comment

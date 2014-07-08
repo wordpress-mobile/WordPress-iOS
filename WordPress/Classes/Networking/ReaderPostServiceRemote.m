@@ -304,29 +304,10 @@
         // Actually decode twice to remove the encodings
         img = [img stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         img = [img stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-
-        // Remove the protocol. We'll specify http or https when used.
-        img = [self removeProtocolFromPath:img];
-    } else {
-        img = [self removeProtocolFromPath:img];
     }
     return img;
 }
 
-/** 
- Strip the protocol from the beginning of an image path
- 
- @param img The image URL.
- @return A string of the image url with the protocol removed.
- */
-- (NSString *)removeProtocolFromPath:(NSString *)imagePath {
-    NSRange rng = [imagePath rangeOfString:@"://" options:NSBackwardsSearch];
-    if (rng.location == NSNotFound) {
-        return imagePath;
-    }
-    rng.location = rng.location + 3;
-    return [imagePath substringFromIndex:rng.location];
-}
 
 #pragma mark - Data sanitization methods
 
@@ -403,7 +384,7 @@
  Get the url path of the featured image to use for a post.
 
  @param dict A dictionary representing a post object from the REST API.
- @return The url path for the featured iamge or an empty string.
+ @return The url path for the featured image or an empty string.
  */
 - (NSString *)featuredImageFromPostDictionary:(NSDictionary *)dict {
     NSString *featuredImage = @"";
@@ -411,6 +392,8 @@
     NSDictionary *featured_media = [dict dictionaryForKey:@"featured_media"];
     if (featured_media && [[featured_media stringForKey:@"type"] isEqualToString:@"image"]) {
         featuredImage = [self stringOrEmptyString:[featured_media stringForKey:@"uri"]];
+    } else if ([featuredImage length] == 0) {
+        featuredImage = [dict stringForKey:@"featured_image"];
     }
 
     // Values set in editorial trumps the rest
@@ -419,7 +402,70 @@
         featuredImage = editorialImage;
     }
 
+    if ([featuredImage length] == 0) {
+        featuredImage = [self searchContentForImageToFeature:[dict stringForKey:@"content"]];
+    }
+
     return [self sanitizeFeaturedImageString:featuredImage];
+}
+
+/**
+ Search the passed string for an image that is a good candidate to feature.
+ 
+ @param content The content string to search.
+ @return The url path for the image or an empty string.
+ */
+- (NSString *)searchContentForImageToFeature:(NSString *)content
+{
+    NSString *str = @"";
+    // If there is no image tag in the content, just bail.
+    if (!content || [content rangeOfString:@"img"].location == NSNotFound) {
+        return str;
+    }
+
+    // If there is not a large or full sized image, just bail.
+    NSString *className = @"size-full";
+    NSRange range = [content rangeOfString:className];
+    if (range.location == NSNotFound) {
+        className = @"size-large";
+        range = [content rangeOfString:className];
+
+        if (range.location == NSNotFound) {
+            className = @"size-medium";
+            range = [content rangeOfString:className];
+
+            if (range.location == NSNotFound) {
+                return str;
+            }
+        }
+    }
+
+    // find the start of the image
+    range = [content rangeOfString:@"<img" options:NSBackwardsSearch | NSCaseInsensitiveSearch range:NSMakeRange(0, range.location)];
+    if (range.location == NSNotFound) {
+        return str;
+    }
+
+    // Build the regex once and keep it around for subsequent calls.
+    static NSRegularExpression *regex;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSError *error;
+        regex = [NSRegularExpression regularExpressionWithPattern:@"src=\"\\S+\"" options:NSRegularExpressionCaseInsensitive error:&error];
+    });
+
+    NSInteger length = [content length] - range.location;
+    range = [regex rangeOfFirstMatchInString:content options:NSRegularExpressionCaseInsensitive range:NSMakeRange(range.location, length)];
+
+    if (range.location == NSNotFound) {
+        return str;
+    }
+
+    range = NSMakeRange(range.location+5, range.length-6);
+    str = [content substringWithRange:range];
+
+    str = [[str componentsSeparatedByString:@"?"] objectAtIndex:0];
+    return str;
 }
 
 /**
