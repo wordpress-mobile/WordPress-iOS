@@ -65,8 +65,7 @@ const char *OCMTypeWithoutQualifiers(const char *objCType)
 
 Class OCMCreateSubclass(Class class, void *ref)
 {
-    double timestamp = [NSDate timeIntervalSinceReferenceDate];
-    const char *className = [[NSString stringWithFormat:@"%@-%p-%f", NSStringFromClass(class), ref, timestamp] UTF8String];
+    const char *className = [[NSString stringWithFormat:@"%@-%p-%u", NSStringFromClass(class), ref, arc4random()] UTF8String];
     Class subclass = objc_allocateClassPair(class, className, 0);
     objc_registerClassPair(subclass);
     return subclass;

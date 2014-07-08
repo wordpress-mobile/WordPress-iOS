@@ -1,3 +1,0 @@
-@interface WordPressShared : NSObject
-
-@end
