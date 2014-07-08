@@ -39,7 +39,7 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
     if (self) {
         _sideBorderView = [[UIView alloc] init];
         _sideBorderView.translatesAutoresizingMaskIntoConstraints = NO;
-        _sideBorderView.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1.f];
+        _sideBorderView.backgroundColor = [UIColor colorWithRed:210.0/255.0 green:222.0/255.0 blue:238.0/255.0 alpha:1.0];
 		_sideBorderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [self.contentView addSubview:_sideBorderView];
 
