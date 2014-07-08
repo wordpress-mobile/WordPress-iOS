@@ -352,8 +352,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
 
-    CGSize imageSize = postView.featuredImageView.image.size;
-    UIImage *image = [self.featuredImageSource imageForURL:post.featuredImageURL withSize:imageSize];
+    UIImage *image = [cell.postView.featuredImageView.image copy];
     UIImage *avatarImage = [post cachedAvatarWithSize:CGSizeMake(WPContentAttributionViewAvatarSize, WPContentAttributionViewAvatarSize)];
 
     RebloggingViewController *controller = [[RebloggingViewController alloc] initWithPost:post featuredImage:image avatarImage:avatarImage];
@@ -820,8 +819,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	ReaderPost *post = [self.resultsController.fetchedObjects objectAtIndex:indexPath.row];
     ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
 
-    CGSize imageSize = cell.postView.featuredImageView.image.size;
-    UIImage *image = [_featuredImageSource imageForURL:post.featuredImageURL withSize:imageSize];
+    UIImage *image = [cell.postView.featuredImageView.image copy];
     UIImage *avatarImage = [cell.post cachedAvatarWithSize:CGSizeMake(32.0, 32.0)];
 // TODO: the detail controller should just fetch the cached versions of these resources vs passing them around here. :P
 	self.detailController = [[ReaderPostDetailViewController alloc] initWithPost:post featuredImage:image avatarImage:avatarImage];
