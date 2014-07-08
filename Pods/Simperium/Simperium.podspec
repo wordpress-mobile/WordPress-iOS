@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "Simperium"
-  s.version      = "0.6.6"
+  s.version      = "0.6.5"
   s.summary      = "Simperium libraries."
   s.description  = "Simperium is a simple way for developers to move data as it changes, instantly and automatically."
   s.homepage     = "https://github.com/Simperium/simperium-ios"

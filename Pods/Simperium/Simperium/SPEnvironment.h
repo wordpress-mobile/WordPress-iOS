@@ -8,5 +8,3 @@ extern NSString* const SPWebsocketURL;
 extern NSString* const SPAPIVersion;
 extern NSString* const SPLibraryID;
 extern NSString* const SPLibraryVersion;
-extern NSTimeInterval const SPCertificateExpiration;
-extern NSString* const SPCertificatePayload;

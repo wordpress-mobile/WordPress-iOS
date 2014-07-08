@@ -184,13 +184,13 @@
 #define COCOAPODS_POD_AVAILABLE_Simperium
 #define COCOAPODS_VERSION_MAJOR_Simperium 0
 #define COCOAPODS_VERSION_MINOR_Simperium 6
-#define COCOAPODS_VERSION_PATCH_Simperium 6
+#define COCOAPODS_VERSION_PATCH_Simperium 5
 
-// Simperium/STKeychain
-#define COCOAPODS_POD_AVAILABLE_Simperium_STKeychain
-#define COCOAPODS_VERSION_MAJOR_Simperium_STKeychain 0
-#define COCOAPODS_VERSION_MINOR_Simperium_STKeychain 6
-#define COCOAPODS_VERSION_PATCH_Simperium_STKeychain 6
+// Simperium/no-arc
+#define COCOAPODS_POD_AVAILABLE_Simperium_no_arc
+#define COCOAPODS_VERSION_MAJOR_Simperium_no_arc 0
+#define COCOAPODS_VERSION_MINOR_Simperium_no_arc 6
+#define COCOAPODS_VERSION_PATCH_Simperium_no_arc 5
 
 // SocketRocket
 #define COCOAPODS_POD_AVAILABLE_SocketRocket
