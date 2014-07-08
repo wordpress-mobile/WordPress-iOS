@@ -1,10 +1,14 @@
 Pod::Spec.new do |spec|
   spec.name         = 'DTFoundation'
-  spec.version      = '1.6.3'
+  spec.version      = '1.7.1'
   spec.summary      = "Standard toolset classes and categories."
   spec.homepage     = "https://github.com/Cocoanetics/DTFoundation"
-  spec.author       = { "Oliver Drobnik" => "oliver@drobnik.com" }
+  spec.author       = { "Oliver Drobnik" => "oliver@cocoanetics.com" }
+  spec.documentation_url = 'http://docs.cocoanetics.com/DTFoundation'
+  spec.social_media_url = 'https://twitter.com/cocoanetics'
   spec.source       = { :git => "https://github.com/Cocoanetics/DTFoundation.git", :tag => spec.version.to_s }
+  spec.ios.deployment_target = '6.0'
+  spec.osx.deployment_target = '10.6'
   spec.license      = 'BSD'
   spec.requires_arc = true
 
@@ -31,6 +35,12 @@ Pod::Spec.new do |spec|
     ss.platform = :osx, '10.6'
     ss.dependency 'DTFoundation/Core'
     ss.osx.source_files = 'Core/Source/OSX/*.{h,m}'
+  end
+
+  spec.subspec 'DTAnimatedGIF' do |ss|
+    ss.ios.deployment_target = '4.3'
+    ss.ios.frameworks = 'ImageIO'
+    ss.source_files = 'Core/Source/iOS/DTAnimatedGIF/*.{h,m}'
   end
 
   spec.subspec 'DTAWS' do |ss|
@@ -60,6 +70,7 @@ Pod::Spec.new do |spec|
     ss.osx.deployment_target = '10.6'
     ss.framework = 'SystemConfiguration'
     ss.source_files = 'Core/Source/DTReachability/*.{h,m}'
+    ss.dependency 'DTFoundation/Core'
   end
 
   spec.subspec 'DTSidePanel' do |ss|
@@ -74,6 +85,7 @@ Pod::Spec.new do |spec|
     ss.osx.deployment_target = '10.6'
     ss.library = 'sqlite3'
     ss.source_files = 'Core/Source/DTSQLite/*.{h,m}'
+    ss.dependency 'DTFoundation/Core'
   end
 
   spec.subspec 'DTUTI' do |ss|
@@ -92,6 +104,14 @@ Pod::Spec.new do |spec|
     ss.subspec 'Minizip' do |sss|
       sss.source_files = 'Core/Source/Externals/minizip/*.{h,c}'
     end
+  end
+  
+  spec.subspec 'DTProgressHUD' do |ss|
+    ss.platform = :ios, '6.0'
+    ss.dependency 'DTFoundation/UIKit'
+	ss.dependency 'DTFoundation/Core'
+    ss.ios.frameworks = 'QuartzCore'
+    ss.ios.source_files = 'Core/Source/iOS/DTProgressHUD/*.{h,m}'
   end
 
 end

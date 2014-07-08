@@ -318,9 +318,10 @@ void _processingInstruction (void *context, const xmlChar *target, const xmlChar
 	_handler.processingInstruction = NULL;
 	
 	// inform delegate
-	if ([_delegate respondsToSelector:@selector(parser:parseErrorOccurred:)])
+	__strong __typeof__(_delegate) delegate = _delegate;
+	if ([delegate respondsToSelector:@selector(parser:parseErrorOccurred:)])
 	{
-		[_delegate parser:self parseErrorOccurred:self.parserError];
+		[delegate parser:self parseErrorOccurred:self.parserError];
 	}
 }
 
@@ -335,7 +336,7 @@ void _processingInstruction (void *context, const xmlChar *target, const xmlChar
 {
 	_delegate = delegate;
 	
-	if ([_delegate respondsToSelector:@selector(parserDidStartDocument:)])
+	if ([delegate respondsToSelector:@selector(parserDidStartDocument:)])
 	{
 		_handler.startDocument = _startDocument;
 	}
@@ -344,7 +345,7 @@ void _processingInstruction (void *context, const xmlChar *target, const xmlChar
 		_handler.startDocument = NULL;
 	}
 	
-	if ([_delegate respondsToSelector:@selector(parserDidEndDocument:)])
+	if ([delegate respondsToSelector:@selector(parserDidEndDocument:)])
 	{
 		_handler.endDocument = _endDocument;
 	}
