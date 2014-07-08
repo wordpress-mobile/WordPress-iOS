@@ -189,7 +189,7 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
 {
     UIView *borderView = [[UIView alloc] initWithFrame:CGRectZero];
     borderView.translatesAutoresizingMaskIntoConstraints = NO;
-    borderView.backgroundColor = [UIColor colorWithRed:241.0/255.0 green:241.0/255.0 blue:241.0/255.0 alpha:1.0];
+    borderView.backgroundColor = [UIColor colorWithRed:232.0/255.0 green:240.0/255.0 blue:245.0/255.0 alpha:1.0];
     return borderView;
 }
 
@@ -204,6 +204,7 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
     // Disable it for now (could be used for permalinks in the future)
     [button setImage:[UIImage imageNamed:@"reader-postaction-time"] forState:UIControlStateDisabled];
     [button setTitleColor:[UIColor colorWithRed:170.0/255.0 green:170.0/255.0 blue:170.0/255.0 alpha:1.0] forState:UIControlStateDisabled];
+    [button setTitleColor:[UIColor colorWithRed:177.0/255.0 green:198.0/255.0 blue:212.0/255.0 alpha:1.0] forState:UIControlStateDisabled];
     [button setEnabled:NO];
 
     return button;
