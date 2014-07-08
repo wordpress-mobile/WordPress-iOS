@@ -27,6 +27,7 @@
 		unsigned int delegateSupportsDidPresentActionSheet:1;
 		unsigned int delegateSupportsWillDismissWithButtonIndex:1;
 		unsigned int delegateSupportsDidDismissWithButtonIndex:1;
+		unsigned int delegateSupportsClickedButtonAtIndex:1;
 	} _delegateFlags;
 	
 	BOOL _isDeallocating;
@@ -124,8 +125,15 @@
 	}
 }
 
-
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+	if (_delegateFlags.delegateSupportsDidDismissWithButtonIndex)
+	{
+		[_externalDelegate actionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
+	}
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 	NSNumber *key = [NSNumber numberWithInteger:buttonIndex];
 	
@@ -136,12 +144,11 @@
 		block();
 	}
 
-	if (_delegateFlags.delegateSupportsDidDismissWithButtonIndex)
+	if (_delegateFlags.delegateSupportsClickedButtonAtIndex)
 	{
-		[_externalDelegate actionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
+		[_externalDelegate actionSheet:actionSheet clickedButtonAtIndex:buttonIndex];
 	}
 }
-
 
 #pragma mark - Properties
 
@@ -201,6 +208,11 @@
 	if ([_externalDelegate respondsToSelector:@selector(actionSheet:didDismissWithButtonIndex:)])
 	{
 		_delegateFlags.delegateSupportsDidDismissWithButtonIndex = YES;
+	}
+	
+	if ([_externalDelegate respondsToSelector:@selector(actionSheet:clickedButtonAtIndex:)])
+	{
+		_delegateFlags.delegateSupportsClickedButtonAtIndex = YES;
 	}
 }
 
