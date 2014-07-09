@@ -85,13 +85,15 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
 	[super viewDidLoad];
 
+    [self configureCellSeparatorStyle];
+
     self.incrementalLoadingSupported = YES;
 
     [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:NoFeaturedImageCellIdentifier];
     [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:FeaturedImageCellIdentifier];
 
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
-	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+
     self.tableView.estimatedRowHeight = IS_IPAD ? RPVCEstimatedRowHeightIPad : RPVCEstimatedRowHeightIPhone;
 
     [self configureCellForLayout];
@@ -218,6 +220,20 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 
 #pragma mark - Instance Methods
+
+- (void)configureCellSeparatorStyle
+{
+    // Setting the separator style will cause the table view to redraw all its cells.
+    // We want to avoid this when we first load the tableview as there is a performance
+    // cost.  As a work around, unset the delegate and datasource, and restore them
+    // after setting the style.
+    self.tableView.delegate = nil;
+    self.tableView.dataSource = nil;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+
+}
 
 - (void)configureCellForLayout
 {
