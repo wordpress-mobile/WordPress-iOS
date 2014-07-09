@@ -635,6 +635,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     post.sortDate = [DateUtils dateFromISOString:remotePost.sortDate];
     post.status = remotePost.status;
     post.tags = remotePost.tags;
+    post.isSharingEnabled = remotePost.isSharingEnabled;
+    post.isLikesEnabled = remotePost.isLikesEnabled;
 
     // Construct a summary if necessary.
     NSString *summary = [self formatSummary:remotePost.summary];
