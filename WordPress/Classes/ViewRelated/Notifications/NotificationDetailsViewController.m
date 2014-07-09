@@ -268,8 +268,8 @@ static UIEdgeInsets NotificationTableInsets     = { 0.0f, 0.0f, 20.0f, 0.0f };
             blog                = [service blogByBlogName:blogName];
         }
 
-        // On success, push the Stats VC
-        if (blog) {
+        // On success, push the Stats VC (ONLY if it's a WPcom blog)
+        if ([blog isWPcom]) {
             segueID = NSStringFromClass([StatsViewController class]);
             sender  = blog;
         }
