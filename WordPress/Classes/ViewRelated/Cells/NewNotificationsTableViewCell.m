@@ -18,7 +18,7 @@
     // combine author and title
     NSString *title = [contentProvider titleForDisplay];
     NSString *content = [[contentProvider contentPreviewForDisplay] stringByNormalizingWhitespace];
-    if (!(title.length > 0)) {
+    if (title.length == 0) {
         title = NSLocalizedString(@"(No Title)", nil);
     }
     
