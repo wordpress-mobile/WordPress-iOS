@@ -143,10 +143,10 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
         NSDictionary *views;
         NSDictionary *metrics;
         if (previousButton) {
-            // Adjust button spacing to account for differences in image size.
-            CGFloat lastImageWidth = previousButton.imageView.image.size.width;
-            CGFloat width = button.imageView.image.size.width;
-            CGFloat diff = width - lastImageWidth;
+            // Adjust button spacing to account for differences in width.
+            CGFloat previousButtonWidth = previousButton.intrinsicContentSize.width;
+            CGFloat width = button.intrinsicContentSize.width;
+            CGFloat diff = width - previousButtonWidth;
             CGFloat buttonSpacing = WPContentActionViewButtonSpacing + diff;
             metrics = @{@"buttonSpacing":@(buttonSpacing)};
 
