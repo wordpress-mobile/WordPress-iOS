@@ -23,6 +23,9 @@
 @property (nonatomic, strong) NSString *sortDate;
 @property (nonatomic, strong) NSString *summary;
 @property (nonatomic, strong) NSString *tags;
+@property (nonatomic) BOOL isLikesEnabled;
+@property (nonatomic) BOOL isSharingEnabled;
+
 
 // Base Post Model
 @property (nonatomic, strong) NSString *author;
