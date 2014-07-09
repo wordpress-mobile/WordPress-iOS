@@ -450,26 +450,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 #pragma mark - Actions
 
-//- (void)topicsAction:(id)sender
-//{
-//	ReaderTopicsViewController *controller = [[ReaderTopicsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-//    if (IS_IPAD) {
-//        if (self.popover && [self.popover isPopoverVisible]) {
-//            [self dismissPopover];
-//            return;
-//        }
-//        
-//        self.popover = [[UIPopoverController alloc] initWithContentViewController:controller];
-//        
-//        UIBarButtonItem *shareButton = self.navigationItem.rightBarButtonItem;
-//        [self.popover presentPopoverFromBarButtonItem:shareButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-//    } else {
-//        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-//        navController.navigationBar.translucent = NO;
-//        [self presentViewController:navController animated:YES completion:nil];
-//    }
-//}
-
 - (void)topicsAction:(id)sender
 {
     ReaderSubscriptionViewController *controller = [[ReaderSubscriptionViewController alloc] init];
@@ -721,12 +701,21 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     DDLogMethod();
-	if ([self.resultsController.fetchedObjects count] == 0)
+	if ([self.resultsController.fetchedObjects count] == 0) {
 		return;
-	
-	if (self.loadingMore)
+    }
+
+	if (self.loadingMore) {
         return;
-    
+    }
+
+    if (self.currentTopic == nil) {
+        if (failure) {
+            failure(nil);
+        }
+        return;
+    }
+
 	self.loadingMore = YES;
 
 	ReaderPost *post = self.resultsController.fetchedObjects.lastObject;
