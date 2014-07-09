@@ -714,6 +714,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         if (failure) {
             failure(nil);
         }
+        return;
     }
 
 	self.loadingMore = YES;
