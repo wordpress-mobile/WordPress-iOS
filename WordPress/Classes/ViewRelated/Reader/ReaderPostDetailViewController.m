@@ -23,6 +23,7 @@
 
 #import "ReaderCommentTableViewCell.h"
 #import "ReaderPostRichContentView.h"
+#import "CustomHighlightButton.h"
 
 static NSInteger const ReaderCommentsToSync = 100;
 static NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
@@ -228,9 +229,10 @@ typedef enum {
     [self.inlineComposeView dismissComposer];
 }
 
+
 #pragma mark - View getters/builders
 
-- (void)updateFeaturedImage: (UIImage *)image
+- (void)updateFeaturedImage:(UIImage *)image
 {
     self.featuredImage = image;
     [self.postView setFeaturedImage:self.featuredImage];
@@ -278,7 +280,7 @@ typedef enum {
 
 	// Top Navigation bar and Sharing
     UIImage *image = [UIImage imageNamed:@"icon-posts-share"];
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+    CustomHighlightButton *button = [[CustomHighlightButton alloc] initWithFrame:CGRectMake(0.0, 0.0, image.size.width, image.size.height)];
     [button setImage:image forState:UIControlStateNormal];
     [button addTarget:self action:@selector(handleShareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     _shareButton = [[UIBarButtonItem alloc] initWithCustomView:button];
@@ -354,7 +356,6 @@ typedef enum {
 
 - (void)handleShareButtonTapped:(id)sender
 {
-    NSString *permaLink = self.post.permaLink;
     NSString *title = self.post.postTitle;
     NSString *summary = self.post.summary;
     NSString *tags = self.post.tags;
@@ -372,8 +373,10 @@ typedef enum {
         postDictionary[@"tags"] = tags;
     }
     [activityItems addObject:postDictionary];
-    
-    [activityItems addObject:[NSURL URLWithString:permaLink]];
+    NSURL *permaLink = [NSURL URLWithString:self.post.permaLink];
+    if (permaLink) {
+        [activityItems addObject:permaLink];
+    }
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:[WPActivityDefaults defaultActivities]];
     if (title) {
         [activityViewController setValue:title forKey:@"subject"];
@@ -451,7 +454,7 @@ typedef enum {
                                                       object:moviePlayer];
         
         // Dismiss the view controller
-        [[[WordPressAppDelegate sharedWordPressApplicationDelegate].window rootViewController] dismissViewControllerAnimated:YES completion:nil];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
@@ -466,7 +469,7 @@ typedef enum {
 
     controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     controller.modalPresentationStyle = UIModalPresentationFullScreen;
-    [self.navigationController pushViewController:controller animated:YES];
+    [self presentViewController:controller animated:YES completion:nil];
 }
 
 - (void)contentView:(UIView *)contentView didReceiveAttributionLinkAction:(id)sender
@@ -563,10 +566,14 @@ typedef enum {
 	} else {
         controller = [[WPImageViewController alloc] initWithImage:readerImageView.image];
 	}
-    
-    controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    controller.modalPresentationStyle = UIModalPresentationFullScreen;
-    [self.navigationController pushViewController:controller animated:YES];
+
+    if ([controller isKindOfClass:[WPImageViewController class]]) {
+        controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        controller.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:controller animated:YES completion:nil];
+    } else {
+        [self.navigationController pushViewController:controller animated:YES];
+    }
 }
 
 - (void)richTextView:(WPRichTextView *)richTextView didReceiveVideoLinkAction:(ReaderVideoView *)readerVideoView
@@ -587,18 +594,18 @@ typedef enum {
 
 		controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		controller.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self.navigationController presentViewController:controller animated:YES completion:nil];
+        [self presentViewController:controller animated:YES completion:nil];
 
 	} else {
 		// Should either be an iframe, or an object embed. In either case a src attribute should have been parsed for the contentURL.
 		// Assume this is content we can show and try to load it.
         UIViewController *controller = [[WPWebVideoViewController alloc] initWithURL:readerVideoView.contentURL];
+        controller.title = (readerVideoView.title != nil) ? readerVideoView.title : @"Video";
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
         navController.navigationBar.translucent = NO;
         navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         navController.modalPresentationStyle = UIModalPresentationFullScreen;
-		navController.title = (readerVideoView.title != nil) ? readerVideoView.title : @"Video";
-        [self.navigationController presentViewController:navController animated:YES completion:nil];
+        [self presentViewController:navController animated:YES completion:nil];
 	}
 }
 
@@ -742,16 +749,16 @@ typedef enum {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
+
     if (indexPath.section == ReaderDetailContentSection) {
-        CGSize size = [self.postView sizeThatFits:CGSizeMake(CGRectGetWidth(self.tableView.bounds), CGFLOAT_MAX)];
+        CGSize size = [self.postView sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
         return size.height + 1;
     }
     
 	if ([self.comments count] == 0) {
 		return 0.0f;
 	}
-    
-    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : tableView.frame.size.width;
 	
 	ReaderComment *comment = [self.comments objectAtIndex:indexPath.row];
 	return [ReaderCommentTableViewCell heightForComment:comment

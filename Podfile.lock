@@ -28,14 +28,16 @@ PODS:
   - CrashlyticsLumberjack (1.0.1):
     - CocoaLumberjack/Core
   - CTAssetsPickerController (2.2.2)
-  - DTCoreText (1.6.9):
-    - DTFoundation/Core (~> 1.6.0)
-    - DTFoundation/DTHTMLParser (~> 1.6.0)
-    - DTFoundation/UIKit (~> 1.6.0)
-  - DTFoundation/Core (1.6.3)
-  - DTFoundation/DTHTMLParser (1.6.3):
+  - DTCoreText (1.6.13):
+    - DTFoundation/Core (~> 1.7.1)
+    - DTFoundation/DTAnimatedGIF (~> 1.7.1)
+    - DTFoundation/DTHTMLParser (~> 1.7.1)
+    - DTFoundation/UIKit (~> 1.7.1)
+  - DTFoundation/Core (1.7.1)
+  - DTFoundation/DTAnimatedGIF (1.7.1)
+  - DTFoundation/DTHTMLParser (1.7.1):
     - DTFoundation/Core
-  - DTFoundation/UIKit (1.6.3):
+  - DTFoundation/UIKit (1.7.1):
     - DTFoundation/Core
   - EmailChecker (0.1)
   - Google-Diff-Match-Patch (0.0.1)
@@ -54,12 +56,12 @@ PODS:
   - OCMock (3.0)
   - OHHTTPStubs (1.1.1)
   - Reachability (3.1.1)
-  - Simperium (0.6.6):
+  - Simperium (0.6.5):
     - Google-Diff-Match-Patch
     - JRSwizzle
-    - Simperium/STKeychain
+    - Simperium/no-arc
     - SocketRocket
-  - Simperium/STKeychain (0.6.6):
+  - Simperium/no-arc (0.6.5):
     - Google-Diff-Match-Patch
     - JRSwizzle
     - SocketRocket
@@ -72,14 +74,14 @@ PODS:
     - CocoaLumberjack (~> 1.8.1)
     - UIAlertView+Blocks
     - WordPress-iOS-Shared (~> 0.0.2)
-  - WordPress-iOS-Shared (0.0.3):
+  - WordPress-iOS-Shared (0.0.6):
     - AFNetworking (~> 2.3.1)
     - CocoaLumberjack (~> 1.8.1)
-    - DTCoreText (= 1.6.9)
+    - DTCoreText (= 1.6.13)
   - WordPressApi (0.0.1):
     - AFNetworking (~> 2.3.1)
     - wpxmlrpc (~> 0.1)
-  - WordPressCom-Stats-iOS (0.0.3):
+  - WordPressCom-Stats-iOS (0.0.4):
     - AFNetworking (~> 2.3.1)
     - CocoaLumberjack (~> 1.8.1)
     - NSObject-SafeExpectations (= 0.0.2)
@@ -91,7 +93,7 @@ DEPENDENCIES:
   - CocoaLumberjack (~> 1.8.1)
   - CrashlyticsLumberjack (~> 1.0.0)
   - CTAssetsPickerController (~> 2.2.2)
-  - DTCoreText (= 1.6.9)
+  - DTCoreText (= 1.6.13)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec`)
   - google-plus-ios-sdk (~> 1.5)
   - Helpshift (~> 4.5.0)
@@ -104,15 +106,15 @@ DEPENDENCIES:
   - OCMock
   - OHHTTPStubs (= 1.1.1)
   - Reachability (= 3.1.1)
-  - Simperium (from `https://raw.github.com/Simperium/simperium-ios/develop/Simperium.podspec`)
+  - Simperium (= 0.6.5)
   - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`)
   - SVProgressHUD (~> 1.0)
   - Taplytics (~> 1.2.50)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-iOS-Editor (= 0.1.4)
-  - WordPress-iOS-Shared (= 0.0.3)
+  - WordPress-iOS-Shared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, tag `0.0.6`)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPressApi.git`)
-  - WordPressCom-Stats-iOS (= 0.0.3)
+  - WordPressCom-Stats-iOS (= 0.0.4)
   - wpxmlrpc (~> 0.4.1)
 
 EXTERNAL SOURCES:
@@ -123,10 +125,11 @@ EXTERNAL SOURCES:
     :git: git://github.com/wordpress-mobile/MGImageUtilities.git
   NSURL+IDN:
     :podspec: https://raw.github.com/koke/NSURL-IDN/master/Podfile
-  Simperium:
-    :podspec: https://raw.github.com/Simperium/simperium-ios/develop/Simperium.podspec
   SocketRocket:
     :git: https://github.com/jleandroperez/SocketRocket.git
+  WordPress-iOS-Shared:
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
+    :tag: 0.0.6
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPressApi.git
 
@@ -135,8 +138,8 @@ SPEC CHECKSUMS:
   CocoaLumberjack: 9d198d6e19909b3b113a38c5f06f7bb8eedd0427
   CrashlyticsLumberjack: 8ee2adbd0f815d8b111e5f72cd82d39b08430ebc
   CTAssetsPickerController: e1247f76d97a129b75c4050990e75fd2eff7430f
-  DTCoreText: e48c1526945272133b8c935c40da3f3e79836f1b
-  DTFoundation: d8a7f570a0f89c5a81661e6537289c578f4f97a8
+  DTCoreText: 84eb8ba2e70448fdd9d837540e371f9f587b65ba
+  DTFoundation: ef6fb95da64f202d1600bc23dde79c6fd74c0c2d
   EmailChecker: e909e6d113fac7ad5e3c304fabce30fc4a79c80e
   Google-Diff-Match-Patch: 63f4950ecbd0bf3f7ccae48987e958fc825041d3
   google-plus-ios-sdk: 98d76ce1f1edbfe8730628aafe017301a734042c
@@ -152,16 +155,16 @@ SPEC CHECKSUMS:
   OCMock: 6e6041173cf801f458ef66ec1a8fa3d974947335
   OHHTTPStubs: cb1cef742f2fba18b192fb92ede52a69cf3a04d5
   Reachability: be4883bb93f31e38266ae3365e5600a317aae735
-  Simperium: 1d77ba174fd2e8d030380c27a9db8412f8da1335
+  Simperium: df03533ca84845c2004b4c836f6a403102a53321
   SocketRocket: 9cbe08469513356cddc0afcab1ff160bd190296a
   SVProgressHUD: 5e10939a296debf5fe5a5895eda9539b8b2114f1
   Taplytics: 292c7c0a7814914f6a1a3e34fdf96b7233c2425d
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
   UIDeviceIdentifier: 1944dd25ee46fbc592740148ab47d543f80f0bba
   WordPress-iOS-Editor: cfaf84cfa38ce3b229af126fceaa0d3dfd90932f
-  WordPress-iOS-Shared: 3634ae17fdde3c4cac5e7fbfa88f89b2997f3468
+  WordPress-iOS-Shared: 2fc2e61b4c02d78b5cb14ca205f0748865dcd7c5
   WordPressApi: 2e05a82014171bc6f9d6cdab580cc16e9c5f2c6c
-  WordPressCom-Stats-iOS: f1a296a9287073c8a36aecdc3888ac854a777a39
+  WordPressCom-Stats-iOS: 963fcb6168b7e96c63c21a9b0cec162fa352f6ff
   wpxmlrpc: a56b534ad0eb7db28a580eabb68a4a3d3426f6d7
 
 COCOAPODS: 0.33.1
