@@ -262,12 +262,6 @@ static UIEdgeInsets NotificationTableInsets     = { 0.0f, 0.0f, 20.0f, 0.0f };
         BlogService *service    = [[BlogService alloc] initWithManagedObjectContext:self.note.managedObjectContext];
         Blog *blog              = [service blogByBlogId:self.note.metaSiteID];
 
-        // Attempt to load the blog by its name
-        if (!blog) {
-            NSString *blogName  = [[[NSScanner scannerWithString:self.note.subjectBlock.text] scanQuotedText] firstObject];
-            blog                = [service blogByBlogName:blogName];
-        }
-
         // On success, push the Stats VC (ONLY if it's a WPcom blog)
         if ([blog isWPcom]) {
             segueID = NSStringFromClass([StatsViewController class]);
