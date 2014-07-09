@@ -3,14 +3,23 @@ Change Log
 
 This is the history of version updates.
 
-<<<<<<< HEAD
-=======
+**Version 1.7.1**
+
+- ADDED: DTAnimatedGIF in separate static lib / subspec
+- FIXED: DTActionSheet "noticeable delay" choosing an action
+
+**Version 1.7.0**
+
+- ADDED: DTProgressHUD
+- FIXED: Deprecation warning in DTActivityTitleView when compiling >= iOS 7
+- FIXED: Some targets where built only for 64-bit
+- FIXED: Warning about weak variable being accessed multiple times
+
 **Version 1.6.3**
 
 - FIXED: DTFolderMonitor might cause exception if monitoring is started and stopped quickly in succession
 - CHANGED: Migrated unit testing to XCTest
 
->>>>>>> release-1.6.3
 **Version 1.6.2**
 
 - ADDED: DTCustomColoredAccessory gains DTCustomColoredAccessoryTypeSquare

@@ -82,25 +82,31 @@
 #define COCOAPODS_POD_AVAILABLE_DTCoreText
 #define COCOAPODS_VERSION_MAJOR_DTCoreText 1
 #define COCOAPODS_VERSION_MINOR_DTCoreText 6
-#define COCOAPODS_VERSION_PATCH_DTCoreText 9
+#define COCOAPODS_VERSION_PATCH_DTCoreText 13
 
 // DTFoundation/Core
 #define COCOAPODS_POD_AVAILABLE_DTFoundation_Core
 #define COCOAPODS_VERSION_MAJOR_DTFoundation_Core 1
-#define COCOAPODS_VERSION_MINOR_DTFoundation_Core 6
-#define COCOAPODS_VERSION_PATCH_DTFoundation_Core 3
+#define COCOAPODS_VERSION_MINOR_DTFoundation_Core 7
+#define COCOAPODS_VERSION_PATCH_DTFoundation_Core 1
+
+// DTFoundation/DTAnimatedGIF
+#define COCOAPODS_POD_AVAILABLE_DTFoundation_DTAnimatedGIF
+#define COCOAPODS_VERSION_MAJOR_DTFoundation_DTAnimatedGIF 1
+#define COCOAPODS_VERSION_MINOR_DTFoundation_DTAnimatedGIF 7
+#define COCOAPODS_VERSION_PATCH_DTFoundation_DTAnimatedGIF 1
 
 // DTFoundation/DTHTMLParser
 #define COCOAPODS_POD_AVAILABLE_DTFoundation_DTHTMLParser
 #define COCOAPODS_VERSION_MAJOR_DTFoundation_DTHTMLParser 1
-#define COCOAPODS_VERSION_MINOR_DTFoundation_DTHTMLParser 6
-#define COCOAPODS_VERSION_PATCH_DTFoundation_DTHTMLParser 3
+#define COCOAPODS_VERSION_MINOR_DTFoundation_DTHTMLParser 7
+#define COCOAPODS_VERSION_PATCH_DTFoundation_DTHTMLParser 1
 
 // DTFoundation/UIKit
 #define COCOAPODS_POD_AVAILABLE_DTFoundation_UIKit
 #define COCOAPODS_VERSION_MAJOR_DTFoundation_UIKit 1
-#define COCOAPODS_VERSION_MINOR_DTFoundation_UIKit 6
-#define COCOAPODS_VERSION_PATCH_DTFoundation_UIKit 3
+#define COCOAPODS_VERSION_MINOR_DTFoundation_UIKit 7
+#define COCOAPODS_VERSION_PATCH_DTFoundation_UIKit 1
 
 // EmailChecker
 #define COCOAPODS_POD_AVAILABLE_EmailChecker
@@ -184,13 +190,13 @@
 #define COCOAPODS_POD_AVAILABLE_Simperium
 #define COCOAPODS_VERSION_MAJOR_Simperium 0
 #define COCOAPODS_VERSION_MINOR_Simperium 6
-#define COCOAPODS_VERSION_PATCH_Simperium 6
+#define COCOAPODS_VERSION_PATCH_Simperium 5
 
-// Simperium/STKeychain
-#define COCOAPODS_POD_AVAILABLE_Simperium_STKeychain
-#define COCOAPODS_VERSION_MAJOR_Simperium_STKeychain 0
-#define COCOAPODS_VERSION_MINOR_Simperium_STKeychain 6
-#define COCOAPODS_VERSION_PATCH_Simperium_STKeychain 6
+// Simperium/no-arc
+#define COCOAPODS_POD_AVAILABLE_Simperium_no_arc
+#define COCOAPODS_VERSION_MAJOR_Simperium_no_arc 0
+#define COCOAPODS_VERSION_MINOR_Simperium_no_arc 6
+#define COCOAPODS_VERSION_PATCH_Simperium_no_arc 5
 
 // SocketRocket
 #define COCOAPODS_POD_AVAILABLE_SocketRocket
@@ -226,7 +232,7 @@
 #define COCOAPODS_POD_AVAILABLE_WordPress_iOS_Shared
 #define COCOAPODS_VERSION_MAJOR_WordPress_iOS_Shared 0
 #define COCOAPODS_VERSION_MINOR_WordPress_iOS_Shared 0
-#define COCOAPODS_VERSION_PATCH_WordPress_iOS_Shared 3
+#define COCOAPODS_VERSION_PATCH_WordPress_iOS_Shared 6
 
 // WordPressApi
 #define COCOAPODS_POD_AVAILABLE_WordPressApi
@@ -238,7 +244,7 @@
 #define COCOAPODS_POD_AVAILABLE_WordPressCom_Stats_iOS
 #define COCOAPODS_VERSION_MAJOR_WordPressCom_Stats_iOS 0
 #define COCOAPODS_VERSION_MINOR_WordPressCom_Stats_iOS 0
-#define COCOAPODS_VERSION_PATCH_WordPressCom_Stats_iOS 3
+#define COCOAPODS_VERSION_PATCH_WordPressCom_Stats_iOS 4
 
 // google-plus-ios-sdk
 #define COCOAPODS_POD_AVAILABLE_google_plus_ios_sdk

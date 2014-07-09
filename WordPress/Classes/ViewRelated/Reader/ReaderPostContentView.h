@@ -59,4 +59,10 @@
  */
 - (void)configurePost:(ReaderPost *)post;
 
+/**
+ A Boolean value indicating whether the currently displayed content belongs to a private blog.
+ */
+- (BOOL)privateContent;
+
+
 @end
