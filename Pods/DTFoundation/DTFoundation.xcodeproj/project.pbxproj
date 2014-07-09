@@ -39,12 +39,6 @@
 		A70C4FCD17AA7CEC00000DF5 /* UIView+DTDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = A78EDD2D17A65D4B00480205 /* UIView+DTDebug.m */; };
 		A70C4FCE17AA7CED00000DF5 /* UIColor+DTDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = A78EDD2B17A65D4B00480205 /* UIColor+DTDebug.m */; };
 		A70C4FCF17AA7CED00000DF5 /* UIView+DTDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = A78EDD2D17A65D4B00480205 /* UIView+DTDebug.m */; };
-		A70C4FD017AA7CF800000DF5 /* DTActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = A78EDD5D17A65F7700480205 /* DTActionSheet.m */; };
-		A70C4FD117AA7CF800000DF5 /* DTAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = A78EDD5F17A65F7700480205 /* DTAlertView.m */; };
-		A70C4FD217AA7CF800000DF5 /* UIView+DTActionHandlers.m in Sources */ = {isa = PBXBuildFile; fileRef = A78EDD6117A65F7700480205 /* UIView+DTActionHandlers.m */; };
-		A70C4FD317AA7CF900000DF5 /* DTActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = A78EDD5D17A65F7700480205 /* DTActionSheet.m */; };
-		A70C4FD417AA7CF900000DF5 /* DTAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = A78EDD5F17A65F7700480205 /* DTAlertView.m */; };
-		A70C4FD517AA7CF900000DF5 /* UIView+DTActionHandlers.m in Sources */ = {isa = PBXBuildFile; fileRef = A78EDD6117A65F7700480205 /* UIView+DTActionHandlers.m */; };
 		A70C4FE817AA7F0200000DF5 /* DTScriptExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = A78EDD1817A65AD700480205 /* DTScriptExpression.m */; };
 		A70C4FE917AA7F0200000DF5 /* DTScriptVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = A78EDD1A17A65AD700480205 /* DTScriptVariable.m */; };
 		A70C4FEA17AA7F0200000DF5 /* NSScanner+DTScripting.m in Sources */ = {isa = PBXBuildFile; fileRef = A78EDD1C17A65AD800480205 /* NSScanner+DTScripting.m */; };
@@ -67,9 +61,6 @@
 		A70C4FFB17AA7F7D00000DF5 /* DTCoreGraphicsUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = A7D0AA6B153C39920020F18B /* DTCoreGraphicsUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A70C4FFC17AA7F9000000DF5 /* UIColor+DTDebug.h in Headers */ = {isa = PBXBuildFile; fileRef = A78EDD2A17A65D4B00480205 /* UIColor+DTDebug.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A70C4FFD17AA7F9000000DF5 /* UIView+DTDebug.h in Headers */ = {isa = PBXBuildFile; fileRef = A78EDD2C17A65D4B00480205 /* UIView+DTDebug.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A70C4FFE17AA7F9C00000DF5 /* DTActionSheet.h in Headers */ = {isa = PBXBuildFile; fileRef = A78EDD5C17A65F7700480205 /* DTActionSheet.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A70C4FFF17AA7F9C00000DF5 /* DTAlertView.h in Headers */ = {isa = PBXBuildFile; fileRef = A78EDD5E17A65F7700480205 /* DTAlertView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A70C500017AA7F9C00000DF5 /* UIView+DTActionHandlers.h in Headers */ = {isa = PBXBuildFile; fileRef = A78EDD6017A65F7700480205 /* UIView+DTActionHandlers.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A70D74D11743AFBC00E6E626 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F4DFF8147FD08900F4059A /* UIKit.framework */; };
 		A70D74D21743AFBC00E6E626 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F4DFFA147FD08F00F4059A /* Foundation.framework */; };
 		A70D74D31743AFBC00E6E626 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE5B9311610A38200CA0D99 /* CoreGraphics.framework */; };
@@ -181,6 +172,12 @@
 		A77DD42314E825FC00F34B03 /* unzip.h in Headers */ = {isa = PBXBuildFile; fileRef = A77DD41314E825FC00F34B03 /* unzip.h */; };
 		A77DD42614E825FC00F34B03 /* zip.h in Headers */ = {isa = PBXBuildFile; fileRef = A77DD41514E825FC00F34B03 /* zip.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A77DD42714E825FC00F34B03 /* zip.h in Headers */ = {isa = PBXBuildFile; fileRef = A77DD41514E825FC00F34B03 /* zip.h */; };
+		A78381EB1963F92300AF09D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A78381B31963F8BD00AF09D3 /* Main.storyboard */; };
+		A78381EC1963F92600AF09D3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A78381B71963F8BD00AF09D3 /* Images.xcassets */; };
+		A78381ED1963F92A00AF09D3 /* simpson20.gif in Resources */ = {isa = PBXBuildFile; fileRef = A78381B81963F8BD00AF09D3 /* simpson20.gif */; };
+		A78381EE1963F92F00AF09D3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A78381BB1963F8BD00AF09D3 /* AppDelegate.m */; };
+		A78381EF1963F92F00AF09D3 /* GIFViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A78381BD1963F8BD00AF09D3 /* GIFViewController.m */; };
+		A78381F01963F92F00AF09D3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A78381BE1963F8BD00AF09D3 /* main.m */; };
 		A78D661D17AFFCCC0039F5E6 /* DTFolderMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = A78D661B17AFFCCC0039F5E6 /* DTFolderMonitor.h */; };
 		A78D661E17AFFCCC0039F5E6 /* DTFolderMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = A78D661B17AFFCCC0039F5E6 /* DTFolderMonitor.h */; };
 		A78D661F17AFFCCC0039F5E6 /* DTFolderMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = A78D661B17AFFCCC0039F5E6 /* DTFolderMonitor.h */; };
@@ -237,6 +234,9 @@
 		A79D99C21792D2490082BC06 /* NSURL+DTAWS.m in Sources */ = {isa = PBXBuildFile; fileRef = A79D99C11792D2490082BC06 /* NSURL+DTAWS.m */; };
 		A7A7CC7914866CAF00EC2EE4 /* DTVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = A70B4CC81486621B00873A4A /* DTVersion.m */; };
 		A7A7CC7A14866CAF00EC2EE4 /* NSString+DTFormatNumbers.m in Sources */ = {isa = PBXBuildFile; fileRef = A70B4CCB1486621B00873A4A /* NSString+DTFormatNumbers.m */; };
+		A7AC21C9196417BF0009E1B9 /* DTAnimatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AC21A8196409560009E1B9 /* DTAnimatedGIF.m */; };
+		A7AC21CC196417D00009E1B9 /* libDTAnimatedGIF.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7AC21AF196417830009E1B9 /* libDTAnimatedGIF.a */; };
+		A7AC21CE1964184F0009E1B9 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7AC21CD1964184F0009E1B9 /* ImageIO.framework */; };
 		A7C92B5D174F6A1A0019D70A /* toolbar-icon-menu.png in Resources */ = {isa = PBXBuildFile; fileRef = A7C92B5B174F6A1A0019D70A /* toolbar-icon-menu.png */; };
 		A7C92B5E174F6A1A0019D70A /* toolbar-icon-menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7C92B5C174F6A1A0019D70A /* toolbar-icon-menu@2x.png */; };
 		A7C92B63174F72C30019D70A /* ModalPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C92B61174F72C30019D70A /* ModalPanelViewController.m */; };
@@ -337,6 +337,25 @@
 		C04948B5DABE59E8CC2340AF /* DTZipArchiveGZip.m in Sources */ = {isa = PBXBuildFile; fileRef = C0494E1FBE9D6D4FB042F2A3 /* DTZipArchiveGZip.m */; };
 		C0494DA5BB16F9A0E8533152 /* DTZipArchivePKZip.m in Sources */ = {isa = PBXBuildFile; fileRef = C0494776E02407791E96C641 /* DTZipArchivePKZip.m */; };
 		E2262E82163846AB00BFDAD7 /* DTFoundation.h in Headers */ = {isa = PBXBuildFile; fileRef = A70B4CC51486621B00873A4A /* DTFoundation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F88FF6851920A9DF00120808 /* DTProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = F88FF6841920A9DF00120808 /* DTProgressHUD.m */; };
+		F88FF6B91920ABA000120808 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F88FF6AB1920ABA000120808 /* Main_iPad.storyboard */; };
+		F88FF6BA1920ABA000120808 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F88FF6AD1920ABA000120808 /* Main_iPhone.storyboard */; };
+		F88FF6BB1920ABA000120808 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F88FF6AF1920ABA000120808 /* Images.xcassets */; };
+		F88FF6BF1920ABA000120808 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F88FF6B41920ABA000120808 /* AppDelegate.m */; };
+		F88FF6C11920ABA000120808 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F88FF6B51920ABA000120808 /* main.m */; };
+		F88FF6C31920ABA000120808 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F88FF6B71920ABA000120808 /* ViewController.m */; };
+		F88FF6C61920AC1900120808 /* libDTProgressHUD_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F88FF6801920A83300120808 /* libDTProgressHUD_iOS.a */; };
+		F88FF6C71920AE7300120808 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7917CB5191A3CD500964D63 /* UIKit.framework */; };
+		F88FF6C91920AE9700120808 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F88FF6C81920AE9700120808 /* CoreGraphics.framework */; };
+		F88FF6CC1920AF2900120808 /* libDTFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A70B4CE71486637E00873A4A /* libDTFoundation.a */; };
+		F88FF6CF1920B0CC00120808 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F88FF6CE1920B0CC00120808 /* QuartzCore.framework */; };
+		F88FF6D21920BF5200120808 /* DTProgressHUDWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = F88FF6D11920BF5200120808 /* DTProgressHUDWindow.m */; };
+		F88FF6DA1920F1AF00120808 /* DTActionSheet.h in Headers */ = {isa = PBXBuildFile; fileRef = F88FF6D41920F1AF00120808 /* DTActionSheet.h */; };
+		F88FF6DB1920F1AF00120808 /* DTActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = F88FF6D51920F1AF00120808 /* DTActionSheet.m */; };
+		F88FF6DC1920F1AF00120808 /* DTAlertView.h in Headers */ = {isa = PBXBuildFile; fileRef = F88FF6D61920F1AF00120808 /* DTAlertView.h */; };
+		F88FF6DD1920F1AF00120808 /* DTAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = F88FF6D71920F1AF00120808 /* DTAlertView.m */; };
+		F88FF6DE1920F1AF00120808 /* UIView+DTActionHandlers.h in Headers */ = {isa = PBXBuildFile; fileRef = F88FF6D81920F1AF00120808 /* UIView+DTActionHandlers.h */; };
+		F88FF6DF1920F1AF00120808 /* UIView+DTActionHandlers.m in Sources */ = {isa = PBXBuildFile; fileRef = F88FF6D91920F1AF00120808 /* UIView+DTActionHandlers.m */; };
 		FA2A29291609F7330023CDD7 /* DTVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = A70B4CC81486621B00873A4A /* DTVersion.m */; };
 		FA9CB81817ABDF1500A596C5 /* DTASN1BitString.m in Sources */ = {isa = PBXBuildFile; fileRef = A78EDD1F17A65AD800480205 /* DTASN1BitString.m */; };
 		FA9CB81917ABDF1500A596C5 /* DTASN1Parser.m in Sources */ = {isa = PBXBuildFile; fileRef = A78EDD2117A65AD800480205 /* DTASN1Parser.m */; };
@@ -411,12 +430,33 @@
 			remoteGlobalIDString = A7E383D9160DFF8600CF72D6;
 			remoteInfo = "DTZipArchive (iOS)";
 		};
+		A7AC21CA196417CC0009E1B9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7F4DF9A147FB61500F4059A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A7AC21AE196417830009E1B9;
+			remoteInfo = "DTAnimatedGIF (iOS)";
+		};
 		A7D9D6601758CA5400C29B6F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A7F4DF9A147FB61500F4059A /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = A72121D9173BFFB1003C6F0A;
 			remoteInfo = "DTReachability (iOS)";
+		};
+		F88FF6C41920ABD900120808 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7F4DF9A147FB61500F4059A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F88FF6771920A83300120808;
+			remoteInfo = "DTProgressHUD (iOS)";
+		};
+		F88FF6CA1920AF1F00120808 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7F4DF9A147FB61500F4059A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A70B4CE61486637E00873A4A;
+			remoteInfo = "Static Library";
 		};
 		FAF37A5817AFDF5D009AC27C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -471,6 +511,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A7AC21AD196417830009E1B9 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A7C92B78174FB8900019D70A /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -510,6 +559,15 @@
 				C0494033163C863A470098D8 /* DTZipArchiveNode.h in CopyFiles */,
 				C04946681218C94801D2AB78 /* DTZipArchivePKZip.h in CopyFiles */,
 				C049420F39CD4294FCE0F549 /* DTZipArchiveGZip.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F88FF67B1920A83300120808 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/${PRODUCT_NAME}";
+			dstSubfolderSpec = 16;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -630,6 +688,17 @@
 		A77DD41414E825FC00F34B03 /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
 		A77DD41514E825FC00F34B03 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
 		A78220BA168060CA005B602D /* libDTUTI_iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libDTUTI_iOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A78381B01963F8BD00AF09D3 /* DTAnimatedGIFDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DTAnimatedGIFDemo-Info.plist"; sourceTree = "<group>"; };
+		A78381B11963F8BD00AF09D3 /* DTAnimatedGIFDemo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DTAnimatedGIFDemo-Prefix.pch"; sourceTree = "<group>"; };
+		A78381B41963F8BD00AF09D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A78381B71963F8BD00AF09D3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		A78381B81963F8BD00AF09D3 /* simpson20.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = simpson20.gif; sourceTree = "<group>"; };
+		A78381BA1963F8BD00AF09D3 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		A78381BB1963F8BD00AF09D3 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		A78381BC1963F8BD00AF09D3 /* GIFViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GIFViewController.h; sourceTree = "<group>"; };
+		A78381BD1963F8BD00AF09D3 /* GIFViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GIFViewController.m; sourceTree = "<group>"; };
+		A78381BE1963F8BD00AF09D3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		A78381C31963F8D700AF09D3 /* DTAnimatedGIF Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DTAnimatedGIF Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7859D3D16DF8D180076F2DB /* AppledocSettings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppledocSettings.plist; path = ../AppledocSettings.plist; sourceTree = "<group>"; };
 		A78D661B17AFFCCC0039F5E6 /* DTFolderMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTFolderMonitor.h; sourceTree = "<group>"; };
 		A78D661C17AFFCCC0039F5E6 /* DTFolderMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTFolderMonitor.m; sourceTree = "<group>"; };
@@ -653,12 +722,6 @@
 		A78EDD2B17A65D4B00480205 /* UIColor+DTDebug.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+DTDebug.m"; sourceTree = "<group>"; };
 		A78EDD2C17A65D4B00480205 /* UIView+DTDebug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+DTDebug.h"; sourceTree = "<group>"; };
 		A78EDD2D17A65D4B00480205 /* UIView+DTDebug.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+DTDebug.m"; sourceTree = "<group>"; };
-		A78EDD5C17A65F7700480205 /* DTActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTActionSheet.h; sourceTree = "<group>"; };
-		A78EDD5D17A65F7700480205 /* DTActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTActionSheet.m; sourceTree = "<group>"; };
-		A78EDD5E17A65F7700480205 /* DTAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTAlertView.h; sourceTree = "<group>"; };
-		A78EDD5F17A65F7700480205 /* DTAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTAlertView.m; sourceTree = "<group>"; };
-		A78EDD6017A65F7700480205 /* UIView+DTActionHandlers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+DTActionHandlers.h"; sourceTree = "<group>"; };
-		A78EDD6117A65F7700480205 /* UIView+DTActionHandlers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+DTActionHandlers.m"; sourceTree = "<group>"; };
 		A7917C77191A312600964D63 /* Unit Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Unit Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7917C9D191A322F00964D63 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/usr/lib/libz.1.2.5.dylib; sourceTree = DEVELOPER_DIR; };
 		A7917CA2191A327A00964D63 /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/usr/lib/libxml2.2.dylib; sourceTree = DEVELOPER_DIR; };
@@ -671,6 +734,10 @@
 		A79D99AA1792D1F50082BC06 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		A79D99C01792D2490082BC06 /* NSURL+DTAWS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+DTAWS.h"; sourceTree = "<group>"; };
 		A79D99C11792D2490082BC06 /* NSURL+DTAWS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+DTAWS.m"; sourceTree = "<group>"; };
+		A7AC21A7196409560009E1B9 /* DTAnimatedGIF.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DTAnimatedGIF.h; sourceTree = "<group>"; };
+		A7AC21A8196409560009E1B9 /* DTAnimatedGIF.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DTAnimatedGIF.m; sourceTree = "<group>"; };
+		A7AC21AF196417830009E1B9 /* libDTAnimatedGIF.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libDTAnimatedGIF.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7AC21CD1964184F0009E1B9 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.0.sdk/System/Library/Frameworks/ImageIO.framework; sourceTree = DEVELOPER_DIR; };
 		A7BAD10E1483F934000E2B6A /* DTFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DTFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7C619EF162D8D84002C0C1A /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		A7C8181E18339146000CE7BD /* AppKit Subspec-template.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "AppKit Subspec-template.markdown"; sourceTree = "<group>"; };
@@ -769,6 +836,30 @@
 		C0494E27A3F90498A211E228 /* DTZipArchiveTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTZipArchiveTest.m; sourceTree = "<group>"; };
 		C0494E7390203BE4105C5070 /* DTZipArchivePKZip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTZipArchivePKZip.h; sourceTree = "<group>"; };
 		C0494FCC2C675F2CDF315027 /* DTZipArchiveNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTZipArchiveNode.m; sourceTree = "<group>"; };
+		F88FF6801920A83300120808 /* libDTProgressHUD_iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libDTProgressHUD_iOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F88FF6831920A9DF00120808 /* DTProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTProgressHUD.h; sourceTree = "<group>"; };
+		F88FF6841920A9DF00120808 /* DTProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTProgressHUD.m; sourceTree = "<group>"; };
+		F88FF6A51920AAB600120808 /* DTProgressHUD Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DTProgressHUD Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F88FF6A81920ABA000120808 /* DTProgressHUDDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DTProgressHUDDemo-Info.plist"; sourceTree = "<group>"; };
+		F88FF6A91920ABA000120808 /* DTProgressHUDDemo-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DTProgressHUDDemo-Prefix.pch"; sourceTree = "<group>"; };
+		F88FF6AC1920ABA000120808 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
+		F88FF6AE1920ABA000120808 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
+		F88FF6AF1920ABA000120808 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		F88FF6B31920ABA000120808 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		F88FF6B41920ABA000120808 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		F88FF6B51920ABA000120808 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		F88FF6B61920ABA000120808 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		F88FF6B71920ABA000120808 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		F88FF6C81920AE9700120808 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
+		F88FF6CE1920B0CC00120808 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
+		F88FF6D01920BF5200120808 /* DTProgressHUDWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTProgressHUDWindow.h; sourceTree = "<group>"; };
+		F88FF6D11920BF5200120808 /* DTProgressHUDWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTProgressHUDWindow.m; sourceTree = "<group>"; };
+		F88FF6D41920F1AF00120808 /* DTActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTActionSheet.h; sourceTree = "<group>"; };
+		F88FF6D51920F1AF00120808 /* DTActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTActionSheet.m; sourceTree = "<group>"; };
+		F88FF6D61920F1AF00120808 /* DTAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTAlertView.h; sourceTree = "<group>"; };
+		F88FF6D71920F1AF00120808 /* DTAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTAlertView.m; sourceTree = "<group>"; };
+		F88FF6D81920F1AF00120808 /* UIView+DTActionHandlers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+DTActionHandlers.h"; sourceTree = "<group>"; };
+		F88FF6D91920F1AF00120808 /* UIView+DTActionHandlers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+DTActionHandlers.m"; sourceTree = "<group>"; };
 		FA17734F182BA95600432258 /* gzip_sample.txt.foo */ = {isa = PBXFileReference; lastKnownFileType = file; path = gzip_sample.txt.foo; sourceTree = "<group>"; };
 		FA177350182BA95600432258 /* gzip_sample.txt-z */ = {isa = PBXFileReference; lastKnownFileType = file; path = "gzip_sample.txt-z"; sourceTree = "<group>"; };
 		FA177351182BA95600432258 /* gzip_sample.txt-gz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "gzip_sample.txt-gz"; sourceTree = "<group>"; };
@@ -865,6 +956,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A78381C01963F8D700AF09D3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7AC21CE1964184F0009E1B9 /* ImageIO.framework in Frameworks */,
+				A7AC21CC196417D00009E1B9 /* libDTAnimatedGIF.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A7917C74191A312600964D63 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -882,6 +982,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		A79D99991792D1F50082BC06 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7AC21AC196417830009E1B9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -947,6 +1054,25 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F88FF67A1920A83300120808 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F88FF6931920AAB600120808 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F88FF6CF1920B0CC00120808 /* QuartzCore.framework in Frameworks */,
+				F88FF6CC1920AF2900120808 /* libDTFoundation.a in Frameworks */,
+				F88FF6C91920AE9700120808 /* CoreGraphics.framework in Frameworks */,
+				F88FF6C71920AE7300120808 /* UIKit.framework in Frameworks */,
+				F88FF6C61920AC1900120808 /* libDTProgressHUD_iOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1017,6 +1143,8 @@
 		A70D74BE1743AF5400E6E626 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
+				A78381AF1963F8BD00AF09D3 /* DTAnimatedGIF */,
+				F88FF6A71920ABA000120808 /* DTProgressHUDDemo */,
 				A7D9D64C1758C8E600C29B6F /* DTReachability */,
 				A70D74BF1743AF5400E6E626 /* DTSidePanels */,
 				FAF37A3917AFDE9E009AC27C /* DTZipArchiveDemo */,
@@ -1118,7 +1246,9 @@
 		A76DB48E16A5E37F0010CD85 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				A78EDD5B17A65F7600480205 /* Blocks Additions */,
+				F88FF6D31920F1AF00120808 /* BlocksAdditions */,
+				A7AC21A6196409270009E1B9 /* DTAnimatedGIF */,
+				F88FF6821920A9DF00120808 /* DTProgressHUD */,
 				A78EDD2917A65D4A00480205 /* Debug */,
 				A74663B11743D00500D4D7D5 /* DTSidePanel */,
 				A7C92B99174FBBAF0019D70A /* Experimental */,
@@ -1213,6 +1343,39 @@
 			path = minizip;
 			sourceTree = "<group>";
 		};
+		A78381AF1963F8BD00AF09D3 /* DTAnimatedGIF */ = {
+			isa = PBXGroup;
+			children = (
+				A78381B01963F8BD00AF09D3 /* DTAnimatedGIFDemo-Info.plist */,
+				A78381B11963F8BD00AF09D3 /* DTAnimatedGIFDemo-Prefix.pch */,
+				A78381B21963F8BD00AF09D3 /* Resources */,
+				A78381B91963F8BD00AF09D3 /* Source */,
+			);
+			path = DTAnimatedGIF;
+			sourceTree = "<group>";
+		};
+		A78381B21963F8BD00AF09D3 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A78381B31963F8BD00AF09D3 /* Main.storyboard */,
+				A78381B71963F8BD00AF09D3 /* Images.xcassets */,
+				A78381B81963F8BD00AF09D3 /* simpson20.gif */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A78381B91963F8BD00AF09D3 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				A78381BA1963F8BD00AF09D3 /* AppDelegate.h */,
+				A78381BB1963F8BD00AF09D3 /* AppDelegate.m */,
+				A78381BC1963F8BD00AF09D3 /* GIFViewController.h */,
+				A78381BD1963F8BD00AF09D3 /* GIFViewController.m */,
+				A78381BE1963F8BD00AF09D3 /* main.m */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
 		A78EDD1617A65AD700480205 /* DTScripting */ = {
 			isa = PBXGroup;
 			children = (
@@ -1261,20 +1424,6 @@
 			path = Debug;
 			sourceTree = "<group>";
 		};
-		A78EDD5B17A65F7600480205 /* Blocks Additions */ = {
-			isa = PBXGroup;
-			children = (
-				A78EDD5C17A65F7700480205 /* DTActionSheet.h */,
-				A78EDD5D17A65F7700480205 /* DTActionSheet.m */,
-				A78EDD5E17A65F7700480205 /* DTAlertView.h */,
-				A78EDD5F17A65F7700480205 /* DTAlertView.m */,
-				A78EDD6017A65F7700480205 /* UIView+DTActionHandlers.h */,
-				A78EDD6117A65F7700480205 /* UIView+DTActionHandlers.m */,
-			);
-			name = "Blocks Additions";
-			path = BlocksAdditions;
-			sourceTree = "<group>";
-		};
 		A79D99BF1792D2380082BC06 /* DTAWS */ = {
 			isa = PBXGroup;
 			children = (
@@ -1287,6 +1436,9 @@
 		A7AB49DB1483C47F00028FE8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A7AC21CD1964184F0009E1B9 /* ImageIO.framework */,
+				F88FF6CE1920B0CC00120808 /* QuartzCore.framework */,
+				F88FF6C81920AE9700120808 /* CoreGraphics.framework */,
 				A7917CB5191A3CD500964D63 /* UIKit.framework */,
 				A7917CA2191A327A00964D63 /* libxml2.2.dylib */,
 				A7917C9D191A322F00964D63 /* libz.1.2.5.dylib */,
@@ -1306,6 +1458,15 @@
 				A7E889A716A9B190009EF0DF /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A7AC21A6196409270009E1B9 /* DTAnimatedGIF */ = {
+			isa = PBXGroup;
+			children = (
+				A7AC21A7196409560009E1B9 /* DTAnimatedGIF.h */,
+				A7AC21A8196409560009E1B9 /* DTAnimatedGIF.m */,
+			);
+			path = DTAnimatedGIF;
 			sourceTree = "<group>";
 		};
 		A7C92B71174FB81C0019D70A /* DTSQLite */ = {
@@ -1538,6 +1699,10 @@
 				FA9CB80C17ABDEF200A596C5 /* libDTASN1.a */,
 				FAF37A2017AFDD93009AC27C /* DTZipArchive.app */,
 				A7917C77191A312600964D63 /* Unit Tests.xctest */,
+				F88FF6801920A83300120808 /* libDTProgressHUD_iOS.a */,
+				F88FF6A51920AAB600120808 /* DTProgressHUD Demo.app */,
+				A78381C31963F8D700AF09D3 /* DTAnimatedGIF Demo.app */,
+				A7AC21AF196417830009E1B9 /* libDTAnimatedGIF.a */,
 			);
 			name = Products;
 			path = ../..;
@@ -1554,6 +1719,63 @@
 				C04945A5A98C7DDBA43FB17E /* UnitTests-Info.plist */,
 			);
 			path = zipContent;
+			sourceTree = "<group>";
+		};
+		F88FF6821920A9DF00120808 /* DTProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				F88FF6831920A9DF00120808 /* DTProgressHUD.h */,
+				F88FF6841920A9DF00120808 /* DTProgressHUD.m */,
+				F88FF6D01920BF5200120808 /* DTProgressHUDWindow.h */,
+				F88FF6D11920BF5200120808 /* DTProgressHUDWindow.m */,
+			);
+			path = DTProgressHUD;
+			sourceTree = "<group>";
+		};
+		F88FF6A71920ABA000120808 /* DTProgressHUDDemo */ = {
+			isa = PBXGroup;
+			children = (
+				F88FF6A81920ABA000120808 /* DTProgressHUDDemo-Info.plist */,
+				F88FF6A91920ABA000120808 /* DTProgressHUDDemo-Prefix.pch */,
+				F88FF6AA1920ABA000120808 /* Resources */,
+				F88FF6B21920ABA000120808 /* Source */,
+			);
+			path = DTProgressHUDDemo;
+			sourceTree = "<group>";
+		};
+		F88FF6AA1920ABA000120808 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F88FF6AB1920ABA000120808 /* Main_iPad.storyboard */,
+				F88FF6AD1920ABA000120808 /* Main_iPhone.storyboard */,
+				F88FF6AF1920ABA000120808 /* Images.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		F88FF6B21920ABA000120808 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				F88FF6B31920ABA000120808 /* AppDelegate.h */,
+				F88FF6B41920ABA000120808 /* AppDelegate.m */,
+				F88FF6B51920ABA000120808 /* main.m */,
+				F88FF6B61920ABA000120808 /* ViewController.h */,
+				F88FF6B71920ABA000120808 /* ViewController.m */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		F88FF6D31920F1AF00120808 /* BlocksAdditions */ = {
+			isa = PBXGroup;
+			children = (
+				F88FF6D41920F1AF00120808 /* DTActionSheet.h */,
+				F88FF6D51920F1AF00120808 /* DTActionSheet.m */,
+				F88FF6D61920F1AF00120808 /* DTAlertView.h */,
+				F88FF6D71920F1AF00120808 /* DTAlertView.m */,
+				F88FF6D81920F1AF00120808 /* UIView+DTActionHandlers.h */,
+				F88FF6D91920F1AF00120808 /* UIView+DTActionHandlers.m */,
+			);
+			path = BlocksAdditions;
 			sourceTree = "<group>";
 		};
 		FAF37A3917AFDE9E009AC27C /* DTZipArchiveDemo */ = {
@@ -1607,6 +1829,7 @@
 			files = (
 				A70B4CF2148663A800873A4A /* DTVersion.h in Headers */,
 				A70B4CF3148663A800873A4A /* NSString+DTFormatNumbers.h in Headers */,
+				F88FF6DE1920F1AF00120808 /* UIView+DTActionHandlers.h in Headers */,
 				A70B4CF7148663AF00873A4A /* DTFoundation.h in Headers */,
 				A77DD41714E825FC00F34B03 /* crypt.h in Headers */,
 				A77DD41B14E825FC00F34B03 /* ioapi.h in Headers */,
@@ -1616,6 +1839,7 @@
 				A7D8628214EBF65C001436AF /* NSString+DTPaths.h in Headers */,
 				A7D6F2E615063448001CACDD /* DTExtendedFileAttributes.h in Headers */,
 				A7D0AA26153C1B160020F18B /* NSDictionary+DTError.h in Headers */,
+				F88FF6DC1920F1AF00120808 /* DTAlertView.h in Headers */,
 				A7D0AA2C153C1FE40020F18B /* NSString+DTURLEncoding.h in Headers */,
 				A7D0AA4B153C233E0020F18B /* NSString+DTUtilities.h in Headers */,
 				A768BE3D17FC3C91008834C6 /* DTBlockFunctions.h in Headers */,
@@ -1633,6 +1857,7 @@
 				A76DB4CD16A5E5100010CD85 /* NSURL+DTAppLinks.h in Headers */,
 				A76DB4D116A5E5100010CD85 /* UIApplication+DTNetworkActivity.h in Headers */,
 				A76DB4D516A5E5100010CD85 /* UIImage+DTFoundation.h in Headers */,
+				F88FF6DA1920F1AF00120808 /* DTActionSheet.h in Headers */,
 				A76DB4DD16A5E5100010CD85 /* UIView+DTFoundation.h in Headers */,
 				A76DB4E116A5E5100010CD85 /* UIWebView+DTFoundation.h in Headers */,
 				A7E88ED316BC0278008CBA9C /* DTCustomColoredAccessory.h in Headers */,
@@ -1725,9 +1950,6 @@
 				A70C4FFA17AA7F6900000DF5 /* NSScanner+DTScripting.h in Headers */,
 				A70C4FFC17AA7F9000000DF5 /* UIColor+DTDebug.h in Headers */,
 				A70C4FFD17AA7F9000000DF5 /* UIView+DTDebug.h in Headers */,
-				A70C4FFE17AA7F9C00000DF5 /* DTActionSheet.h in Headers */,
-				A70C4FFF17AA7F9C00000DF5 /* DTAlertView.h in Headers */,
-				A70C500017AA7F9C00000DF5 /* UIView+DTActionHandlers.h in Headers */,
 				A78D661D17AFFCCC0039F5E6 /* DTFolderMonitor.h in Headers */,
 				A7FA5FA417B0F7B4000FC61F /* DTLog.h in Headers */,
 				A7FA5FB117B127E0000FC61F /* DTAsyncFileDeleter.h in Headers */,
@@ -1872,6 +2094,24 @@
 			productReference = A78220BA168060CA005B602D /* libDTUTI_iOS.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		A78381C21963F8D700AF09D3 /* DTAnimatedGIF Demo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A78381E31963F8D700AF09D3 /* Build configuration list for PBXNativeTarget "DTAnimatedGIF Demo" */;
+			buildPhases = (
+				A78381BF1963F8D700AF09D3 /* Sources */,
+				A78381C01963F8D700AF09D3 /* Frameworks */,
+				A78381C11963F8D700AF09D3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A7AC21CB196417CC0009E1B9 /* PBXTargetDependency */,
+			);
+			name = "DTAnimatedGIF Demo";
+			productName = "DTAnimatedGIF Demo";
+			productReference = A78381C31963F8D700AF09D3 /* DTAnimatedGIF Demo.app */;
+			productType = "com.apple.product-type.application";
+		};
 		A7917C76191A312600964D63 /* Unit Tests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A7917C86191A312700964D63 /* Build configuration list for PBXNativeTarget "Unit Tests" */;
@@ -1908,6 +2148,23 @@
 			name = "DTAWS (iOS)";
 			productName = DTAWS;
 			productReference = A79D999C1792D1F50082BC06 /* libDTAWS.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		A7AC21AE196417830009E1B9 /* DTAnimatedGIF (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A7AC21C0196417830009E1B9 /* Build configuration list for PBXNativeTarget "DTAnimatedGIF (iOS)" */;
+			buildPhases = (
+				A7AC21AB196417830009E1B9 /* Sources */,
+				A7AC21AC196417830009E1B9 /* Frameworks */,
+				A7AC21AD196417830009E1B9 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "DTAnimatedGIF (iOS)";
+			productName = DTAnimatedGIF;
+			productReference = A7AC21AF196417830009E1B9 /* libDTAnimatedGIF.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		A7BAD10D1483F934000E2B6A /* Static Framework */ = {
@@ -2051,6 +2308,42 @@
 			productReference = A7E889A416A9B190009EF0DF /* libDTUTI_Mac.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		F88FF6771920A83300120808 /* DTProgressHUD (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F88FF67C1920A83300120808 /* Build configuration list for PBXNativeTarget "DTProgressHUD (iOS)" */;
+			buildPhases = (
+				F88FF6781920A83300120808 /* Sources */,
+				F88FF67A1920A83300120808 /* Frameworks */,
+				F88FF67B1920A83300120808 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "DTProgressHUD (iOS)";
+			productName = DTReachability;
+			productReference = F88FF6801920A83300120808 /* libDTProgressHUD_iOS.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		F88FF6861920AAB600120808 /* DTProgressHUD Demo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F88FF6A11920AAB600120808 /* Build configuration list for PBXNativeTarget "DTProgressHUD Demo" */;
+			buildPhases = (
+				F88FF68B1920AAB600120808 /* Sources */,
+				F88FF6931920AAB600120808 /* Frameworks */,
+				F88FF69C1920AAB600120808 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F88FF6CB1920AF1F00120808 /* PBXTargetDependency */,
+				F88FF6C51920ABD900120808 /* PBXTargetDependency */,
+			);
+			name = "DTProgressHUD Demo";
+			productName = DTZipArchiveDemo;
+			productReference = F88FF6A51920AAB600120808 /* DTProgressHUD Demo.app */;
+			productType = "com.apple.product-type.application";
+		};
 		FA9CB80B17ABDEF200A596C5 /* DTASN1 (iOS) */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = FA9CB81717ABDEF200A596C5 /* Build configuration list for PBXNativeTarget "DTASN1 (iOS)" */;
@@ -2094,11 +2387,17 @@
 			isa = PBXProject;
 			attributes = {
 				LastTestingUpgradeCheck = 0510;
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = Cocoanetics;
 				TargetAttributes = {
+					A78381C21963F8D700AF09D3 = {
+						CreatedOnToolsVersion = 6.0;
+					};
 					A7917C76191A312600964D63 = {
 						TestTargetID = A7F4DFED147FBAC600F4059A;
+					};
+					A7AC21AE196417830009E1B9 = {
+						CreatedOnToolsVersion = 6.0;
 					};
 				};
 			};
@@ -2108,6 +2407,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = A7F4DF98147FB61500F4059A;
 			productRefGroup = A7F4DFA6147FB61500F4059A /* Products */;
@@ -2118,20 +2418,24 @@
 				A7BAD10D1483F934000E2B6A /* Static Framework */,
 				A70B4CE61486637E00873A4A /* Static Library */,
 				A710A4FF1607556000437D36 /* Static Library (Mac) */,
+				A7AC21AE196417830009E1B9 /* DTAnimatedGIF (iOS) */,
 				A79D999B1792D1F50082BC06 /* DTAWS (iOS) */,
 				FA9CB80B17ABDEF200A596C5 /* DTASN1 (iOS) */,
 				A7E383C1160DFEDB00CF72D6 /* DTHTMLParser (iOS) */,
 				3D7CE53D166613B60028D339 /* DTHTMLParser (Mac) */,
-				A7E383D9160DFF8600CF72D6 /* DTZipArchive (iOS) */,
-				A7D8C7AF1723174600025675 /* DTZipArchive (Mac) */,
-				A78220B9168060CA005B602D /* DTUTI (iOS) */,
-				A7E889A316A9B190009EF0DF /* DTUTI (Mac) */,
+				F88FF6771920A83300120808 /* DTProgressHUD (iOS) */,
 				A72121D9173BFFB1003C6F0A /* DTReachability (iOS) */,
 				A72121E9173BFFED003C6F0A /* DTReachability (Mac) */,
 				A7C92B79174FB8900019D70A /* DTSQLite (iOS) */,
 				A7C92B8B174FB9720019D70A /* DTSQLite (Mac) */,
-				A70D74CF1743AFBC00E6E626 /* DTSidePanels Demo */,
+				A78220B9168060CA005B602D /* DTUTI (iOS) */,
+				A7E889A316A9B190009EF0DF /* DTUTI (Mac) */,
+				A7E383D9160DFF8600CF72D6 /* DTZipArchive (iOS) */,
+				A7D8C7AF1723174600025675 /* DTZipArchive (Mac) */,
+				A78381C21963F8D700AF09D3 /* DTAnimatedGIF Demo */,
+				F88FF6861920AAB600120808 /* DTProgressHUD Demo */,
 				A7D9D62C1758C89800C29B6F /* DTReachability Demo */,
+				A70D74CF1743AFBC00E6E626 /* DTSidePanels Demo */,
 				FAF37A1F17AFDD93009AC27C /* DTZipArchive Demo */,
 				A7917C76191A312600964D63 /* Unit Tests */,
 			);
@@ -2150,6 +2454,16 @@
 				A7C92B5D174F6A1A0019D70A /* toolbar-icon-menu.png in Resources */,
 				A7C92B5E174F6A1A0019D70A /* toolbar-icon-menu@2x.png in Resources */,
 				A7C92B66174F75B70019D70A /* ModalPanelViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A78381C11963F8D700AF09D3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A78381ED1963F92A00AF09D3 /* simpson20.gif in Resources */,
+				A78381EB1963F92300AF09D3 /* Main.storyboard in Resources */,
+				A78381EC1963F92600AF09D3 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2192,6 +2506,16 @@
 				A7D9D6771758CF7200C29B6F /* Default.png in Resources */,
 				A7D9D6781758CF7200C29B6F /* Default@2x.png in Resources */,
 				A7D9D6791758CF7200C29B6F /* ViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F88FF69C1920AAB600120808 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F88FF6BB1920ABA000120808 /* Images.xcassets in Resources */,
+				F88FF6B91920ABA000120808 /* Main_iPad.storyboard in Resources */,
+				F88FF6BA1920ABA000120808 /* Main_iPhone.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2275,14 +2599,17 @@
 				A79231D1157A0B9400C3ACBB /* NSURL+DTUnshorten.m in Sources */,
 				A766136416143F8A00DF6C2B /* NSMutableArray+DTMoving.m in Sources */,
 				A7950101161D680000358BC3 /* NSData+DTCrypto.m in Sources */,
+				F88FF6DF1920F1AF00120808 /* UIView+DTActionHandlers.m in Sources */,
 				FAB1726F16301F0D00B44EDC /* DTFoundationConstants.m in Sources */,
 				A73B6F8F163169BB002CCCA7 /* NSFileWrapper+DTCopying.m in Sources */,
 				A7FAA38B1652291D006ED151 /* NSURL+DTComparing.m in Sources */,
+				F88FF6DD1920F1AF00120808 /* DTAlertView.m in Sources */,
 				A76DB4A216A5E37F0010CD85 /* DTActivityTitleView.m in Sources */,
 				A76DB4AE16A5E37F0010CD85 /* DTPieProgressIndicator.m in Sources */,
 				A76DB4B416A5E37F0010CD85 /* DTSmartPagingScrollView.m in Sources */,
 				A76DB4CF16A5E5100010CD85 /* NSURL+DTAppLinks.m in Sources */,
 				A76DB4D316A5E5100010CD85 /* UIApplication+DTNetworkActivity.m in Sources */,
+				F88FF6DB1920F1AF00120808 /* DTActionSheet.m in Sources */,
 				A76DB4D716A5E5100010CD85 /* UIImage+DTFoundation.m in Sources */,
 				A76DB4DF16A5E5100010CD85 /* UIView+DTFoundation.m in Sources */,
 				A76DB4E316A5E5100010CD85 /* UIWebView+DTFoundation.m in Sources */,
@@ -2293,9 +2620,6 @@
 				A7C92B6C174F9AEC0019D70A /* UIViewController+DTSidePanelController.m in Sources */,
 				A70C4FCC17AA7CEC00000DF5 /* UIColor+DTDebug.m in Sources */,
 				A70C4FCD17AA7CEC00000DF5 /* UIView+DTDebug.m in Sources */,
-				A70C4FD017AA7CF800000DF5 /* DTActionSheet.m in Sources */,
-				A70C4FD117AA7CF800000DF5 /* DTAlertView.m in Sources */,
-				A70C4FD217AA7CF800000DF5 /* UIView+DTActionHandlers.m in Sources */,
 				A70C4FE817AA7F0200000DF5 /* DTScriptExpression.m in Sources */,
 				A70C4FE917AA7F0200000DF5 /* DTScriptVariable.m in Sources */,
 				A70C4FEA17AA7F0200000DF5 /* NSScanner+DTScripting.m in Sources */,
@@ -2381,6 +2705,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A78381BF1963F8D700AF09D3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A78381EE1963F92F00AF09D3 /* AppDelegate.m in Sources */,
+				A78381F01963F92F00AF09D3 /* main.m in Sources */,
+				A78381EF1963F92F00AF09D3 /* GIFViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A7917C73191A312600964D63 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2403,6 +2737,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				A79D99C21792D2490082BC06 /* NSURL+DTAWS.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7AC21AB196417830009E1B9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7AC21C9196417BF0009E1B9 /* DTAnimatedGIF.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2439,9 +2781,6 @@
 				A7FB1215175C9C6200D4B7F0 /* DTSidePanelController.m in Sources */,
 				A70C4FCE17AA7CED00000DF5 /* UIColor+DTDebug.m in Sources */,
 				A70C4FCF17AA7CED00000DF5 /* UIView+DTDebug.m in Sources */,
-				A70C4FD317AA7CF900000DF5 /* DTActionSheet.m in Sources */,
-				A70C4FD417AA7CF900000DF5 /* DTAlertView.m in Sources */,
-				A70C4FD517AA7CF900000DF5 /* UIView+DTActionHandlers.m in Sources */,
 				A70C4FEB17AA7F0300000DF5 /* DTScriptExpression.m in Sources */,
 				A70C4FEC17AA7F0300000DF5 /* DTScriptVariable.m in Sources */,
 				A70C4FED17AA7F0300000DF5 /* NSScanner+DTScripting.m in Sources */,
@@ -2529,6 +2868,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F88FF6781920A83300120808 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F88FF6851920A9DF00120808 /* DTProgressHUD.m in Sources */,
+				F88FF6D21920BF5200120808 /* DTProgressHUDWindow.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F88FF68B1920AAB600120808 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F88FF6C31920ABA000120808 /* ViewController.m in Sources */,
+				F88FF6BF1920ABA000120808 /* AppDelegate.m in Sources */,
+				F88FF6C11920ABA000120808 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FA9CB80817ABDEF200A596C5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2586,10 +2944,25 @@
 			target = A7E383D9160DFF8600CF72D6 /* DTZipArchive (iOS) */;
 			targetProxy = A7917C9F191A325A00964D63 /* PBXContainerItemProxy */;
 		};
+		A7AC21CB196417CC0009E1B9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A7AC21AE196417830009E1B9 /* DTAnimatedGIF (iOS) */;
+			targetProxy = A7AC21CA196417CC0009E1B9 /* PBXContainerItemProxy */;
+		};
 		A7D9D6611758CA5400C29B6F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A72121D9173BFFB1003C6F0A /* DTReachability (iOS) */;
 			targetProxy = A7D9D6601758CA5400C29B6F /* PBXContainerItemProxy */;
+		};
+		F88FF6C51920ABD900120808 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F88FF6771920A83300120808 /* DTProgressHUD (iOS) */;
+			targetProxy = F88FF6C41920ABD900120808 /* PBXContainerItemProxy */;
+		};
+		F88FF6CB1920AF1F00120808 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A70B4CE61486637E00873A4A /* Static Library */;
+			targetProxy = F88FF6CA1920AF1F00120808 /* PBXContainerItemProxy */;
 		};
 		FAF37A5917AFDF5D009AC27C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2603,11 +2976,37 @@
 		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		A78381B31963F8BD00AF09D3 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A78381B41963F8BD00AF09D3 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		F88FF6AB1920ABA000120808 /* Main_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F88FF6AC1920ABA000120808 /* Base */,
+			);
+			name = Main_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+		F88FF6AD1920ABA000120808 /* Main_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F88FF6AE1920ABA000120808 /* Base */,
+			);
+			name = Main_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
 		3D7CE545166613B60028D339 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -2627,7 +3026,6 @@
 		3D7CE546166613B60028D339 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -2650,6 +3048,7 @@
 				DSTROOT = /tmp/DTFoundation.dst;
 				GCC_PREFIX_HEADER = "Core/DTFoundation-Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = DTFoundation;
 				PUBLIC_HEADERS_FOLDER_PATH = ../../DTFoundation;
 				SDKROOT = iphoneos;
@@ -2663,6 +3062,7 @@
 				DSTROOT = /tmp/DTFoundation.dst;
 				GCC_PREFIX_HEADER = "Core/DTFoundation-Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = DTFoundation;
 				PUBLIC_HEADERS_FOLDER_PATH = ../../DTFoundation;
 				SDKROOT = iphoneos;
@@ -2673,7 +3073,6 @@
 		A70D74E71743AFBC00E6E626 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -2692,7 +3091,6 @@
 		A70D74E81743AFBC00E6E626 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -2712,15 +3110,16 @@
 		A70ED6B617F98468008A801A /* Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
@@ -2753,7 +3152,6 @@
 		A70ED6B817F98468008A801A /* Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CONTENTS_FOLDER_PATH = "$(WRAPPER_NAME)/Versions/$(FRAMEWORK_VERSION)";
 				DEAD_CODE_STRIPPING = NO;
 				DEPLOYMENT_POSTPROCESSING = YES;
@@ -2780,6 +3178,7 @@
 				DSTROOT = /tmp/DTFoundation.dst;
 				GCC_PREFIX_HEADER = "Core/DTFoundation-Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = DTFoundation;
 				PUBLIC_HEADERS_FOLDER_PATH = ../../DTFoundation;
 				SDKROOT = iphoneos;
@@ -2790,7 +3189,6 @@
 		A70ED6BB17F98468008A801A /* Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -2813,7 +3211,6 @@
 		A70ED6BC17F98468008A801A /* Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -2836,7 +3233,6 @@
 		A70ED6BD17F98468008A801A /* Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -2852,7 +3248,6 @@
 		A70ED6BE17F98468008A801A /* Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -2860,6 +3255,7 @@
 				DSTROOT = /tmp/DTHTMLParser.dst;
 				GCC_PREFIX_HEADER = "Core/DTFoundation-Prefix.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = DTHTMLParser_iOS;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -2870,7 +3266,6 @@
 		A70ED6BF17F98468008A801A /* Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -2890,7 +3285,6 @@
 		A70ED6C017F98468008A801A /* Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -2907,7 +3301,6 @@
 		A70ED6C117F98468008A801A /* Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -2926,7 +3319,6 @@
 		A70ED6C217F98468008A801A /* Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -2943,7 +3335,6 @@
 		A70ED6C317F98468008A801A /* Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -2965,7 +3356,6 @@
 		A70ED6C417F98468008A801A /* Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -2981,7 +3371,6 @@
 		A70ED6C517F98468008A801A /* Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3002,7 +3391,6 @@
 		A70ED6C617F98468008A801A /* Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3018,7 +3406,6 @@
 		A70ED6C717F98468008A801A /* Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3039,7 +3426,6 @@
 		A70ED6C817F98468008A801A /* Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3058,7 +3444,6 @@
 		A70ED6C917F98468008A801A /* Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3076,7 +3461,6 @@
 		A70ED6CA17F98468008A801A /* Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3096,7 +3480,6 @@
 		A710A5091607556000437D36 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -3119,7 +3502,6 @@
 		A710A50A1607556000437D36 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -3143,7 +3525,6 @@
 		A72121E4173BFFB1003C6F0A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3159,7 +3540,6 @@
 		A72121E5173BFFB1003C6F0A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3175,7 +3555,6 @@
 		A72121F3173BFFED003C6F0A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3196,7 +3575,6 @@
 		A72121F4173BFFED003C6F0A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3218,7 +3596,6 @@
 		A78220C3168060CA005B602D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3235,7 +3612,6 @@
 		A78220C4168060CA005B602D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3246,6 +3622,84 @@
 				PRODUCT_NAME = DTUTI_iOS;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		A78381E41963F8D700AF09D3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Demo/DTAnimatedGIF/DTAnimatedGIFDemo-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "Demo/DTAnimatedGIF/DTAnimatedGIFDemo-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				METAL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		A78381E51963F8D700AF09D3 /* Coverage */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Demo/DTAnimatedGIF/DTAnimatedGIFDemo-Prefix.pch";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "Demo/DTAnimatedGIF/DTAnimatedGIFDemo-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				METAL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+			};
+			name = Coverage;
+		};
+		A78381E61963F8D700AF09D3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Demo/DTAnimatedGIF/DTAnimatedGIFDemo-Prefix.pch";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "Demo/DTAnimatedGIF/DTAnimatedGIFDemo-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				METAL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
@@ -3348,7 +3802,6 @@
 		A79D99B91792D1F60082BC06 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -3371,7 +3824,6 @@
 		A79D99BA1792D1F60082BC06 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -3392,10 +3844,78 @@
 			};
 			name = Release;
 		};
+		A7AC21C1196417830009E1B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Core/DTFoundation-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				METAL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = DTAnimatedGIF;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		A7AC21C2196417830009E1B9 /* Coverage */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Core/DTFoundation-Prefix.pch";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				METAL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = DTAnimatedGIF;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Coverage;
+		};
+		A7AC21C3196417830009E1B9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Core/DTFoundation-Prefix.pch";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				METAL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = DTAnimatedGIF;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 		A7BAD1171483F934000E2B6A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CONTENTS_FOLDER_PATH = "$(WRAPPER_NAME)/Versions/$(FRAMEWORK_VERSION)";
 				DEAD_CODE_STRIPPING = NO;
 				DEPLOYMENT_POSTPROCESSING = YES;
@@ -3419,7 +3939,6 @@
 		A7BAD1181483F934000E2B6A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CONTENTS_FOLDER_PATH = "$(WRAPPER_NAME)/Versions/$(FRAMEWORK_VERSION)";
 				DEAD_CODE_STRIPPING = NO;
 				DEPLOYMENT_POSTPROCESSING = YES;
@@ -3443,7 +3962,6 @@
 		A7C92B84174FB8900019D70A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3459,7 +3977,6 @@
 		A7C92B85174FB8900019D70A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3475,7 +3992,6 @@
 		A7C92B95174FB9720019D70A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3496,7 +4012,6 @@
 		A7C92B96174FB9720019D70A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3518,7 +4033,6 @@
 		A7D8C7C01723174600025675 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3537,7 +4051,6 @@
 		A7D8C7C11723174600025675 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3556,7 +4069,6 @@
 		A7D9D64A1758C89900C29B6F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3574,7 +4086,6 @@
 		A7D9D64B1758C89900C29B6F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3593,7 +4104,6 @@
 		A7E383CB160DFEDB00CF72D6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3601,6 +4111,7 @@
 				DSTROOT = /tmp/DTHTMLParser.dst;
 				GCC_PREFIX_HEADER = "Core/DTFoundation-Prefix.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = DTHTMLParser_iOS;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -3611,7 +4122,6 @@
 		A7E383CC160DFEDB00CF72D6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3619,6 +4129,7 @@
 				DSTROOT = /tmp/DTHTMLParser.dst;
 				GCC_PREFIX_HEADER = "Core/DTFoundation-Prefix.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = DTHTMLParser_iOS;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -3629,7 +4140,6 @@
 		A7E383E4160DFF8600CF72D6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3646,7 +4156,6 @@
 		A7E383E5160DFF8600CF72D6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3663,7 +4172,6 @@
 		A7E889B216A9B190009EF0DF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3685,7 +4193,6 @@
 		A7E889B316A9B190009EF0DF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3708,15 +4215,16 @@
 		A7F4DFB0147FB61500F4059A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3744,15 +4252,16 @@
 		A7F4DFB1147FB61500F4059A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_THUMB_SUPPORT = NO;
@@ -3786,10 +4295,117 @@
 			};
 			name = Release;
 		};
+		F88FF67D1920A83300120808 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				DSTROOT = /tmp/DTReachability.dst;
+				GCC_PREFIX_HEADER = "Core/DTFoundation-Prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				PRODUCT_NAME = DTProgressHUD_iOS;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		F88FF67E1920A83300120808 /* Coverage */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				DSTROOT = /tmp/DTReachability.dst;
+				GCC_PREFIX_HEADER = "Core/DTFoundation-Prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				PRODUCT_NAME = DTProgressHUD_iOS;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Coverage;
+		};
+		F88FF67F1920A83300120808 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				DSTROOT = /tmp/DTReachability.dst;
+				GCC_PREFIX_HEADER = "Core/DTFoundation-Prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				PRODUCT_NAME = DTProgressHUD_iOS;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		F88FF6A21920AAB600120808 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_PREFIX_HEADER = "Demo/DTProgressHUDDemo/DTProgressHUDDemo-Prefix.pch";
+				INFOPLIST_FILE = "Demo/DTProgressHUDDemo/DTProgressHUDDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "DTProgressHUD Demo";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		F88FF6A31920AAB600120808 /* Coverage */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_PREFIX_HEADER = "Demo/DTProgressHUDDemo/DTProgressHUDDemo-Prefix.pch";
+				INFOPLIST_FILE = "Demo/DTProgressHUDDemo/DTProgressHUDDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "DTProgressHUD Demo";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Coverage;
+		};
+		F88FF6A41920AAB600120808 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PREFIX_HEADER = "Demo/DTProgressHUDDemo/DTProgressHUDDemo-Prefix.pch";
+				INFOPLIST_FILE = "Demo/DTProgressHUDDemo/DTProgressHUDDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "DTProgressHUD Demo";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 		FA9CB81517ABDEF200A596C5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3805,7 +4421,6 @@
 		FA9CB81617ABDEF200A596C5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3821,7 +4436,6 @@
 		FAF37A3617AFDD93009AC27C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3841,7 +4455,6 @@
 		FAF37A3717AFDD93009AC27C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -3931,6 +4544,16 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		A78381E31963F8D700AF09D3 /* Build configuration list for PBXNativeTarget "DTAnimatedGIF Demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A78381E41963F8D700AF09D3 /* Debug */,
+				A78381E51963F8D700AF09D3 /* Coverage */,
+				A78381E61963F8D700AF09D3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A7917C86191A312700964D63 /* Build configuration list for PBXNativeTarget "Unit Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -3939,6 +4562,7 @@
 				A7917C89191A312700964D63 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A79D99BD1792D1F60082BC06 /* Build configuration list for PBXNativeTarget "DTAWS (iOS)" */ = {
 			isa = XCConfigurationList;
@@ -3946,6 +4570,16 @@
 				A79D99B91792D1F60082BC06 /* Debug */,
 				A70ED6BC17F98468008A801A /* Coverage */,
 				A79D99BA1792D1F60082BC06 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A7AC21C0196417830009E1B9 /* Build configuration list for PBXNativeTarget "DTAnimatedGIF (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A7AC21C1196417830009E1B9 /* Debug */,
+				A7AC21C2196417830009E1B9 /* Coverage */,
+				A7AC21C3196417830009E1B9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -4046,6 +4680,26 @@
 				A7F4DFEF147FBAC600F4059A /* Debug */,
 				A70ED6B717F98468008A801A /* Coverage */,
 				A7F4DFF0147FBAC600F4059A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F88FF67C1920A83300120808 /* Build configuration list for PBXNativeTarget "DTProgressHUD (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F88FF67D1920A83300120808 /* Debug */,
+				F88FF67E1920A83300120808 /* Coverage */,
+				F88FF67F1920A83300120808 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F88FF6A11920AAB600120808 /* Build configuration list for PBXNativeTarget "DTProgressHUD Demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F88FF6A21920AAB600120808 /* Debug */,
+				F88FF6A31920AAB600120808 /* Coverage */,
+				F88FF6A41920AAB600120808 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -45,15 +45,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>UIAppFonts</key>
-	<array>
-		<string>OpenSans-Light.ttf</string>
-		<string>OpenSans-Regular.ttf</string>
-		<string>OpenSans-Bold.ttf</string>
-		<string>OpenSans-Italic.ttf</string>
-		<string>OpenSans-BoldItalic.ttf</string>
-		<string>OpenSans-LightItalic.ttf</string>
-		<string>Merriweather-Bold.ttf</string>
-	</array>
 </dict>
 </plist>

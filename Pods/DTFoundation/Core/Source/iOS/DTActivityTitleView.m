@@ -23,21 +23,21 @@
 	self = [super init];
 	
 	if (self)
-    {
+	{
 		self.titleLabel = [[UILabel alloc] init];
 		self.titleLabel.backgroundColor = [UIColor clearColor];
 		
 		self.activityIndicator.hidesWhenStopped = YES;
 		
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-        {
+		{
 			self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 			self.titleLabel.textColor = [UIColor colorWithRed:113.0/255.0 green:120.0/255.0 blue:128.0/255.0 alpha:1.0];
 			self.titleLabel.shadowOffset = CGSizeMake(0, 1);
 			self.titleLabel.shadowColor = [UIColor whiteColor];
 		}
-        else
-        {
+		else
+		{
 			self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
 			self.titleLabel.textColor = [UIColor whiteColor];
 			self.titleLabel.shadowOffset = CGSizeMake(0, -1);
@@ -61,15 +61,15 @@
 - (void)setBusy:(BOOL)busy
 {
 	if (busy)
-    {
+	{
 		[self.activityIndicator startAnimating];
 	}
 	else
 	{
 		[self.activityIndicator stopAnimating];
 	}
-    
-    [self setNeedsLayout];
+	
+	[self setNeedsLayout];
 }
 
 - (BOOL)busy
@@ -82,13 +82,20 @@
 	self.titleLabel.text = title;
 	CGFloat gap = 5.0;
 	CGFloat height = self.activityIndicator.frame.size.height;
+	
+#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_6_1
+	// issue 60: sizeWithFont: is deprecated with deployment target >= iOS 7
+	NSDictionary *attribs = @{NSFontAttributeName:self.titleLabel.font};
+	CGSize neededSize = [self.titleLabel.text sizeWithAttributes:attribs];
+#else
 	CGSize neededSize = [self.titleLabel.text sizeWithFont:self.titleLabel.font];
-
+#endif
+	
 	if (height < neededSize.height)
-    {
+	{
 		height = neededSize.height;
 	}
-
+	
 	CGRect titleRect = CGRectMake(self.activityIndicator.frame.size.width+gap, 0, neededSize.width, height);
 	self.titleLabel.frame = titleRect;
 	self.bounds  = CGRectMake(0, 0, self.activityIndicator.frame.size.width+neededSize.width+gap, height);

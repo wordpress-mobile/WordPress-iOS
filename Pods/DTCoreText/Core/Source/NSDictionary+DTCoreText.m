@@ -84,7 +84,15 @@
 
 - (BOOL)hasAttachment
 {
-	return [self objectForKey:NSAttachmentAttributeName]!=nil;
+	id attachment = [self objectForKey:NSAttachmentAttributeName];
+	
+	if (!attachment)
+	{
+		// could also be modern NS-style attachment
+		attachment = [self objectForKey:@"NSAttachment"];
+	}
+	
+	return attachment!=nil;
 }
 
 - (DTCoreTextParagraphStyle *)paragraphStyle
@@ -113,6 +121,8 @@
 {
 	CTFontRef ctFont = (__bridge CTFontRef)[self objectForKey:(id)kCTFontAttributeName];
 	
+	// on Mac NSFont and CTFont are toll-free bridged, so this works there as well
+	
 	if (ctFont)
 	{
 		return [DTCoreTextFontDescriptor fontDescriptorForCTFont:ctFont];
@@ -139,8 +149,6 @@
 			
 			return fontDescriptor;
 		}
-#else
-#warning Creating an NSFont in modern style for Mac not implemented yet
 #endif
 	}
 	
@@ -167,8 +175,7 @@
 		// test if this a valid color, workaround for iOS 7 bug
 		size_t componentCount = CGColorGetNumberOfComponents(cgColor);
 		
-		if (componentCount)
-
+		if (componentCount>0 && componentCount<=4)
 		{
 			return [DTColor colorWithCGColor:cgColor];
 		}
@@ -219,6 +226,41 @@
 	NSNumber *kerningNum = [self objectForKey:(id)kCTKernAttributeName];
 	
 	return [kerningNum floatValue];
+}
+
+- (DTColor *)backgroundStrokeColor
+{
+	CGColorRef cgColor = (__bridge CGColorRef)[self objectForKey:DTBackgroundStrokeColorAttribute];
+	
+	if (cgColor)
+	{
+		return [DTColor colorWithCGColor:cgColor];
+	}
+	return nil;
+}
+
+- (CGFloat)backgroundStrokeWidth
+{
+	NSNumber *num = [self objectForKey:DTBackgroundStrokeWidthAttribute];
+	
+	if (num)
+	{
+		return [num floatValue];
+	}
+
+	return 0.0f;
+}
+
+- (CGFloat)backgroundCornerRadius
+{
+	NSNumber *num = [self objectForKey:DTBackgroundCornerRadiusAttribute];
+	
+	if (num)
+	{
+		return [num floatValue];
+	}
+	
+	return 0.0f;
 }
 
 @end

@@ -40,7 +40,6 @@ typedef NS_ENUM(NSInteger, SPProcessorErrors) {
 @property (nonatomic, strong, readonly) NSString	*clientID;
 @property (nonatomic, assign, readonly) int			numChangesPending;
 @property (nonatomic, assign, readonly) int			numKeysForObjectsWithMoreChanges;
-@property (nonatomic, assign, readonly) int         numKeysForObjectToDelete;
 @property (nonatomic, assign, readonly) BOOL        reachedMaxPendings;
 
 - (id)initWithLabel:(NSString *)label clientID:(NSString *)clientID;
@@ -51,7 +50,6 @@ typedef NS_ENUM(NSInteger, SPProcessorErrors) {
 - (void)processRemoteChanges:(NSArray *)changes bucket:(SPBucket *)bucket errorHandler:(SPChangeErrorHandlerBlockType)errorHandler;
 
 - (void)enqueueObjectForMoreChanges:(NSString *)key bucket:(SPBucket *)bucket;
-- (void)enqueueObjectDeletion:(NSString *)key bucket:(SPBucket *)bucket;
 - (void)enqueueObjectForRetry:(NSString *)key bucket:(SPBucket *)bucket overrideRemoteData:(BOOL)overrideRemoteData;
 - (void)discardPendingChanges:(NSString *)key bucket:(SPBucket *)bucket;
 
@@ -61,7 +59,6 @@ typedef NS_ENUM(NSInteger, SPProcessorErrors) {
 
 - (void)enumeratePendingChangesForBucket:(SPBucket *)bucket block:(SPChangeEnumerationBlockType)block;
 - (void)enumerateQueuedChangesForBucket:(SPBucket *)bucket block:(SPChangeEnumerationBlockType)block;
-- (void)enumerateQueuedDeletionsForBucket:(SPBucket*)bucket block:(SPChangeEnumerationBlockType)block;
 - (void)enumerateRetryChangesForBucket:(SPBucket *)bucket block:(SPChangeEnumerationBlockType)block;
 
 - (NSArray *)exportPendingChanges;

@@ -134,19 +134,20 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    _helpshiftEnabled = [defaults boolForKey:UserDefaultsHelpshiftEnabled];
-
+    _helpshiftEnabled = [[self class] isHelpshiftEnabled];
     [[Helpshift sharedInstance] setDelegate:self];
     _helpshiftUnreadCount = [[Helpshift sharedInstance] getNotificationCountFromRemote:NO];
 
     [self.tableView reloadData];
 }
 
-- (void)didReceiveMemoryWarning
++ (BOOL)isHelpshiftEnabled
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+#ifdef DEBUG
+    return true;
+#else
+    return [[NSUserDefaults standardUserDefaults] boolForKey:UserDefaultsHelpshiftEnabled];
+#endif
 }
 
 #pragma mark - Table view data source
