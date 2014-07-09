@@ -52,32 +52,6 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     return [results firstObject];
 }
 
-- (Blog *)blogByBlogName:(NSString *)blogName
-{
-    if (!blogName) {
-        return nil;
-    }
-    
-    NSPredicate *subjectPredicate       = [NSPredicate predicateWithFormat:@"self.blogName CONTAINS[cd] %@", blogName];
-    NSPredicate *wpcomPredicate         = [NSPredicate predicateWithFormat:@"self.account.isWpcom == YES"];
-    NSPredicate *jetpackPredicate       = [NSPredicate predicateWithFormat:@"self.jetpackAccount != nil"];
-    NSPredicate *statsBlogsPredicate    = [NSCompoundPredicate orPredicateWithSubpredicates:@[wpcomPredicate, jetpackPredicate]];
-    NSPredicate *combinedPredicate      = [NSCompoundPredicate andPredicateWithSubpredicates:@[subjectPredicate, statsBlogsPredicate]];
-    
-    NSFetchRequest *fetchRequest        = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Blog class])];
-    fetchRequest.predicate              = combinedPredicate;
-    
-    NSError *error = nil;
-    NSArray *blogs = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    
-    if (error) {
-        DDLogError(@"Error while retrieving blog named %d: %@", blogName, error);
-        return nil;
-    }
-    
-    return [blogs firstObject];
-}
-
 - (void)flagBlogAsLastUsed:(Blog *)blog
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
