@@ -1162,13 +1162,17 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     if (notification.object) {
         [self loginSimperium];
 
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
-        ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
-        ReaderTopic *topic = topicService.currentTopic;
-        if (topic) {
-            ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-            [service fetchPostsForTopic:topic success:nil failure:nil];
-        }
+        NSManagedObjectContext *context     = [[ContextManager sharedInstance] newDerivedContext];
+        ReaderTopicService *topicService    = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
+
+        [context performBlock:^{
+            ReaderTopic *topic              = topicService.currentTopic;
+            if (topic) {
+                ReaderPostService *service  = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+                [service fetchPostsForTopic:topic success:nil failure:nil];
+            }
+        }];
+
     } else {
         // No need to check for welcome screen unless we are signing out
         [self logoutSimperiumAndResetNotifications];
