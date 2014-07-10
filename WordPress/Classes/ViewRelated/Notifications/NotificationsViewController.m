@@ -125,7 +125,6 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 25, 0, 0);
     self.infiniteScrollEnabled = NO;
-	self.refreshControl = nil;
     
     if ([NotificationsManager deviceRegisteredForPushNotifications]) {
         UIBarButtonItem *pushSettings = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Manage", @"")
@@ -339,6 +338,12 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 - (void)syncItems
 {
 	// No-Op. Handled by Simperium!
+}
+
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure
+{
+	// No-Op. Handled by Simperium!
+    success();
 }
 
 #pragma mark - DetailViewDelegate
