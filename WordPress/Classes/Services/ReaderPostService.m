@@ -220,12 +220,10 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
             [remoteService unfollowSiteAtURL:post.blogURL success:successBlock failure:failureBlock];
         }
     } else {
-        if (failure) {
-            NSString *description = NSLocalizedString(@"Could not toggle Follow: missing blogURL attribute", @"An error description explaining that Follow could not be toggled due to a missing blogURL attribute.");
-            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : description };
-            NSError *error = [NSError errorWithDomain:ReaderPostServiceErrorDomain code:0 userInfo:userInfo];
-            failure(error);
-        }
+        NSString *description = NSLocalizedString(@"Could not toggle Follow: missing blogURL attribute", @"An error description explaining that Follow could not be toggled due to a missing blogURL attribute.");
+        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : description };
+        NSError *error = [NSError errorWithDomain:ReaderPostServiceErrorDomain code:0 userInfo:userInfo];
+        failureBlock(error);
     }
 }
 
