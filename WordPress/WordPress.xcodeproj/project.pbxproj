@@ -1654,6 +1654,7 @@
 			children = (
 				E159D1011309AAF200F498E2 /* Migrations */,
 				85A1B6721742E7DB00BA5E35 /* Analytics */,
+				E1523EB216D3B2EE002C5A36 /* Sharing */,
 				FD9A948A12FAEA2300438F94 /* DateUtils.h */,
 				FD9A948B12FAEA2300438F94 /* DateUtils.m */,
 				5DB4683918A2E718004A89A9 /* LocationService.h */,
@@ -1663,7 +1664,6 @@
 				5D2B043515E83800007E3422 /* SettingsViewControllerDelegate.h */,
 				292CECFE1027259000BD407D /* SFHFKeychainUtils.h */,
 				292CECFF1027259000BD407D /* SFHFKeychainUtils.m */,
-				E1523EB216D3B2EE002C5A36 /* Sharing */,
 				8514973F171E13DF00B87F3F /* WPAsyncBlockOperation.h */,
 				85149740171E13DF00B87F3F /* WPAsyncBlockOperation.m */,
 				E1E4CE091773C59B00430844 /* WPAvatarSource.h */,
