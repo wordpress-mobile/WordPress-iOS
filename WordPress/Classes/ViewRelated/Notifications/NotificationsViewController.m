@@ -246,11 +246,11 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
             [self.navigationController pushViewController:commentDetailViewController animated:YES];
         } else if ([note isMatcher] && [note metaPostID] && [note metaSiteID]) {
             [self loadPostWithId:[note metaPostID] fromSite:[note metaSiteID] block:^(BOOL success, ReaderPost *post) {
-                if (!success) {
+                if (!success || ![self.navigationController.topViewController isEqual:self]) {
                     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
                     return;
                 }
-                
+            
                 ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post featuredImage:nil avatarImage:nil];
                 [self.navigationController pushViewController:controller animated:YES];
             }];
