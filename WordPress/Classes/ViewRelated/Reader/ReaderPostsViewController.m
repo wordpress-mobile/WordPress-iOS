@@ -500,6 +500,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [service deletePostsWithNoTopic];
     [service fetchPost:postId forSite:blogId success:^(ReaderPost *post) {
+        if (![self.navigationController.topViewController isEqual:self]) {
+            return;
+        }
+        
         ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post
                                                                                             featuredImage:nil
                                                                                               avatarImage:nil];
@@ -574,29 +578,27 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)configureCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath
 {
-	if (!aCell)
+	if (!aCell) {
         return;
+    }
 
-	ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)aCell;
-	cell.selectionStyle = UITableViewCellSelectionStyleNone;
-	cell.accessoryType = UITableViewCellAccessoryNone;
-	
-	ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
+    ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)aCell;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.accessoryType = UITableViewCellAccessoryNone;
 
-	[cell configureCell:post];
+    ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
+    [cell configureCell:post];
     [self setImageForPost:post forCell:cell indexPath:indexPath];
     [self setAvatarForPost:post forCell:cell indexPath:indexPath];
-    
     cell.postView.delegate = self;
-    cell.postView.shouldShowActions = post.isWPCom;
-
 }
 
 - (UIImage *)imageForURL:(NSURL *)imageURL size:(CGSize)imageSize
 {
-    if (!imageURL)
+    if (!imageURL) {
         return nil;
-    
+    }
+
     if (CGSizeEqualToSize(imageSize, CGSizeZero)) {
         imageSize.width = self.tableView.bounds.size.width;
         imageSize.height = round(imageSize.width * WPContentViewMaxImageHeightPercentage);

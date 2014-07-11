@@ -42,6 +42,7 @@
 - (void)configurePost:(ReaderPost *)post
 {
     self.post = post;
+    self.shouldShowActions = post.isWPCom;
     self.contentProvider = post;
 }
 
@@ -78,6 +79,7 @@
 - (void)configureActionButtons
 {
     if (!self.shouldShowActions) {
+        self.actionButtons = @[];
         return;
     }
 
@@ -96,7 +98,7 @@
         [actionButtons addObject:self.reblogButton];
     }
     
-    self.actionView.actionButtons = actionButtons;
+    self.actionButtons = actionButtons;
 
     [self updateActionButtons];
 }
