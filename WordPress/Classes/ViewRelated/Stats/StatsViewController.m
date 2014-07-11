@@ -7,10 +7,11 @@
 #import "ContextManager.h"
 #import "WPStatsViewController_Private.h"
 
+@interface StatsViewController ()
+@property (nonatomic, assign) BOOL showingJetpackLogin;
+@end
 
-@implementation StatsViewController {
-    BOOL _showingJetpackLogin;
-}
+@implementation StatsViewController
 
 - (id)init {
     self = [super init];
@@ -66,10 +67,10 @@
 }
 
 - (void)promptForJetpackCredentials {
-    if (_showingJetpackLogin) {
+    if (self.showingJetpackLogin) {
         return;
     }
-    _showingJetpackLogin = YES;
+    self.showingJetpackLogin = YES;
     JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
     controller.showFullScreen = NO;
     __weak JetpackSettingsViewController *safeController = controller;
@@ -79,7 +80,7 @@
             [WPAnalytics track:WPAnalyticsStatPerformedJetpackSignInFromStatsScreen];
             [safeController.view removeFromSuperview];
             [safeController removeFromParentViewController];
-            _showingJetpackLogin = NO;
+            self.showingJetpackLogin = NO;
             self.tableView.scrollEnabled = YES;
             [self initStats];
         }
