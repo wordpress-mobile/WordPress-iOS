@@ -193,7 +193,10 @@
     
     if ([self.note statsEvent]) {
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.note.managedObjectContext];
-        Blog *blog = [blogService blogByBlogId:self.note.metaSiteID];
+        Blog *blog = nil;
+        if ([self.note.metaSiteID intValue] > 0) {
+            blog = [blogService blogByBlogId:self.note.metaSiteID];
+        }
 
         // Attempt to load the blog by its name
         if (!blog) {

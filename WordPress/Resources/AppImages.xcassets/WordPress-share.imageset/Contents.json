@@ -3,22 +3,22 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "NNGPlusActivity.png"
+      "filename" : "WordPress-share.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "NNGPlusActivity@2x.png"
+      "filename" : "WordPress-share@2x.png"
     },
     {
       "idiom" : "ipad",
       "scale" : "1x",
-      "filename" : "NNGPlusActivity~ipad.png"
+      "filename" : "WordPress-share~ipad.png"
     },
     {
       "idiom" : "ipad",
       "scale" : "2x",
-      "filename" : "NNGPlusActivity@2x~ipad.png"
+      "filename" : "WordPress-share@2x~ipad.png"
     }
   ],
   "info" : {

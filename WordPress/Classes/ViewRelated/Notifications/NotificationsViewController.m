@@ -125,7 +125,6 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 25, 0, 0);
     self.infiniteScrollEnabled = NO;
-	self.refreshControl = nil;
     
     if ([NotificationsManager deviceRegisteredForPushNotifications]) {
         UIBarButtonItem *pushSettings = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Manage", @"")
@@ -285,11 +284,10 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 
 - (void)loadPostWithId:(NSNumber *)postID fromSite:(NSNumber *)siteID block:(NotificationsLoadPostBlock)block
 {
-    ContextManager *contextManager = [ContextManager sharedInstance];
-    NSManagedObjectContext *context = [contextManager newDerivedContext];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service fetchPost:[postID integerValue] forSite:[siteID integerValue] success:^(ReaderPost *post) {
-        [contextManager saveDerivedContext:context];
+    [service fetchPost:postID.integerValue forSite:siteID.integerValue success:^(ReaderPost *post) {
+        [[ContextManager sharedInstance] saveContext:context];
         block(YES, post);
     } failure:^(NSError *error) {
         DDLogError(@"[RestAPI] %@", error);
@@ -339,6 +337,12 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 - (void)syncItems
 {
 	// No-Op. Handled by Simperium!
+}
+
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure
+{
+	// No-Op. Handled by Simperium!
+    success();
 }
 
 #pragma mark - DetailViewDelegate

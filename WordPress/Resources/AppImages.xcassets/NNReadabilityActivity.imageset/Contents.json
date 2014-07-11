@@ -1,6 +1,16 @@
 {
   "images" : [
     {
+      "idiom" : "universal",
+      "scale" : "1x",
+      "filename" : "NNReadabilityActivity.png"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x",
+      "filename" : "NNReadabilityActivity@2x.png"
+    },
+    {
       "idiom" : "ipad",
       "scale" : "1x",
       "filename" : "NNReadabilityActivity~ipad.png"
