@@ -8,7 +8,9 @@
 #import "WPStatsViewController_Private.h"
 
 
-@implementation StatsViewController
+@implementation StatsViewController {
+    BOOL _showingJetpackLogin;
+}
 
 - (id)init {
     self = [super init];
@@ -64,6 +66,10 @@
 }
 
 - (void)promptForJetpackCredentials {
+    if (_showingJetpackLogin) {
+        return;
+    }
+    _showingJetpackLogin = YES;
     JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
     controller.showFullScreen = NO;
     __weak JetpackSettingsViewController *safeController = controller;
@@ -73,6 +79,7 @@
             [WPAnalytics track:WPAnalyticsStatPerformedJetpackSignInFromStatsScreen];
             [safeController.view removeFromSuperview];
             [safeController removeFromParentViewController];
+            _showingJetpackLogin = NO;
             self.tableView.scrollEnabled = YES;
             [self initStats];
         }
