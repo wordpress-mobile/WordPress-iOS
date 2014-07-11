@@ -22,7 +22,6 @@
 - (void)beginSession
 {
     [Mixpanel sharedInstanceWithToken:[WordPressComApiCredentials mixpanelAPIToken]];
-    
     // Tracking session count will help us isolate users who just installed the app
     NSUInteger sessionCount = [[[[Mixpanel sharedInstance] currentSuperProperties] objectForKey:@"session_count"] intValue];
     sessionCount++;
@@ -32,11 +31,12 @@
     WPAccount *account = [accountService defaultWordPressComAccount];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     
-    BOOL dotcom_user, jetpack_user;
+    BOOL dotcom_user = NO;
+    BOOL jetpack_user = NO;
     if (account != nil) {
-        dotcom_user = true;
+        dotcom_user = YES;
         if ([[account jetpackBlogs] count] > 0) {
-            jetpack_user = true;
+            jetpack_user = YES;
         }
     }
     
