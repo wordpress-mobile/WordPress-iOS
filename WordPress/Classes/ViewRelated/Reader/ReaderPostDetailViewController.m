@@ -110,7 +110,6 @@ typedef enum {
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:@"PostCell"];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    self.tableView.backgroundColor = [UIColor whiteColor];
 
 	[self buildHeader];
 	[WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.shareButton forNavigationItem:self.navigationItem];
@@ -231,7 +230,6 @@ typedef enum {
     self.postView = [[ReaderPostRichContentView alloc] init];
     self.postView.translatesAutoresizingMaskIntoConstraints = NO;
     self.postView.delegate = self;
-    self.postView.shouldShowActions = self.post.isWPCom;
     [self.postView configurePost:self.post];
     self.postView.backgroundColor = [UIColor whiteColor];
 

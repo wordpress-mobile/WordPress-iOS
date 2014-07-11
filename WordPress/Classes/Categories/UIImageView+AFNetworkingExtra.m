@@ -23,6 +23,33 @@
 						 }];
 }
 
+- (void)setImageWithURL:(NSURL *)url emptyCachePlaceholderImage:(UIImage *)emptyCachePlaceholderImage
+{
+    UIImage *placeholderImage = [self cachedImageForURL:url] ?: emptyCachePlaceholderImage;
+    [self setImageWithURL:url placeholderImage:placeholderImage];
+}
 
+- (UIImage *)cachedImageForURL:(NSURL *)url
+{
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSCachedURLResponse *cachedResponse = [[NSURLCache sharedURLCache] cachedResponseForRequest:request];
+    if (![cachedResponse            isKindOfClass:[NSCachedURLResponse class]]  ||
+        ![cachedResponse.response   isKindOfClass:[NSURLResponse class]]        ||
+        ![cachedResponse.data       isKindOfClass:[NSData class]]               ||
+        cachedResponse.data.length == 0) {
+        return nil;
+    }
+    
+    NSError *error = nil;
+    id responseObject = [[AFImageResponseSerializer serializer] responseObjectForResponse:cachedResponse.response
+                                                                                     data:cachedResponse.data
+                                                                                    error:&error];
+    
+    if (error || ![responseObject isKindOfClass:[UIImage class]]) {
+        return nil;
+    }
+    
+    return responseObject;
+}
 
 @end
