@@ -16,6 +16,10 @@
     return @"WordPress";
 }
 
+- (UIImage *)activityImage {
+    return [UIImage imageNamed:@"WordPress-share"];
+}
+
 - (NSString *)activityType {
     return NSStringFromClass([self class]);
 }
