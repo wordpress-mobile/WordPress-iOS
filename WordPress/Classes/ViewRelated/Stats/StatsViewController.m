@@ -9,6 +9,10 @@
 
 static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
+@interface StatsViewController ()
+@property (nonatomic, assign) BOOL showingJetpackLogin;
+@end
+
 @implementation StatsViewController
 
 - (id)init {
@@ -65,6 +69,10 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 }
 
 - (void)promptForJetpackCredentials {
+    if (self.showingJetpackLogin) {
+        return;
+    }
+    self.showingJetpackLogin = YES;
     JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
     controller.showFullScreen = NO;
     __weak JetpackSettingsViewController *safeController = controller;
@@ -74,6 +82,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
             [WPAnalytics track:WPAnalyticsStatPerformedJetpackSignInFromStatsScreen];
             [safeController.view removeFromSuperview];
             [safeController removeFromParentViewController];
+            self.showingJetpackLogin = NO;
             self.tableView.scrollEnabled = YES;
             [self initStats];
         }
