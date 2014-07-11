@@ -500,6 +500,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [service deletePostsWithNoTopic];
     [service fetchPost:postId forSite:blogId success:^(ReaderPost *post) {
+        if (![self.navigationController.topViewController isEqual:self]) {
+            return;
+        }
+        
         ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post
                                                                                             featuredImage:nil
                                                                                               avatarImage:nil];
