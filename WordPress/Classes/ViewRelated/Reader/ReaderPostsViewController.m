@@ -85,13 +85,15 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
 	[super viewDidLoad];
 
+    [self configureCellSeparatorStyle];
+
     self.incrementalLoadingSupported = YES;
 
     [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:NoFeaturedImageCellIdentifier];
     [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:FeaturedImageCellIdentifier];
 
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
-	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+
     self.tableView.estimatedRowHeight = IS_IPAD ? RPVCEstimatedRowHeightIPad : RPVCEstimatedRowHeightIPhone;
 
     [self configureCellForLayout];
@@ -218,6 +220,19 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 
 #pragma mark - Instance Methods
+
+- (void)configureCellSeparatorStyle
+{
+    // Setting the separator style will cause the table view to redraw all its cells.
+    // We want to avoid this when we first load the tableview as there is a performance
+    // cost.  As a work around, unset the delegate and datasource, and restore them
+    // after setting the style.
+    self.tableView.delegate = nil;
+    self.tableView.dataSource = nil;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+}
 
 - (void)configureCellForLayout
 {
@@ -353,8 +368,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
 
-    CGSize imageSize = postView.featuredImageView.image.size;
-    UIImage *image = [self.featuredImageSource imageForURL:post.featuredImageURL withSize:imageSize];
+    UIImage *image = [cell.postView.featuredImageView.image copy];
     UIImage *avatarImage = [post cachedAvatarWithSize:CGSizeMake(WPContentAttributionViewAvatarSize, WPContentAttributionViewAvatarSize)];
 
     RebloggingViewController *controller = [[RebloggingViewController alloc] initWithPost:post featuredImage:image avatarImage:avatarImage];
@@ -450,26 +464,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 
 #pragma mark - Actions
-
-//- (void)topicsAction:(id)sender
-//{
-//	ReaderTopicsViewController *controller = [[ReaderTopicsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-//    if (IS_IPAD) {
-//        if (self.popover && [self.popover isPopoverVisible]) {
-//            [self dismissPopover];
-//            return;
-//        }
-//        
-//        self.popover = [[UIPopoverController alloc] initWithContentViewController:controller];
-//        
-//        UIBarButtonItem *shareButton = self.navigationItem.rightBarButtonItem;
-//        [self.popover presentPopoverFromBarButtonItem:shareButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-//    } else {
-//        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-//        navController.navigationBar.translucent = NO;
-//        [self presentViewController:navController animated:YES completion:nil];
-//    }
-//}
 
 - (void)topicsAction:(id)sender
 {
@@ -722,12 +716,21 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     DDLogMethod();
-	if ([self.resultsController.fetchedObjects count] == 0)
+	if ([self.resultsController.fetchedObjects count] == 0) {
 		return;
-	
-	if (self.loadingMore)
+    }
+
+	if (self.loadingMore) {
         return;
-    
+    }
+
+    if (self.currentTopic == nil) {
+        if (failure) {
+            failure(nil);
+        }
+        return;
+    }
+
 	self.loadingMore = YES;
 
 	ReaderPost *post = self.resultsController.fetchedObjects.lastObject;
@@ -821,8 +824,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	ReaderPost *post = [self.resultsController.fetchedObjects objectAtIndex:indexPath.row];
     ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
 
-    CGSize imageSize = cell.postView.featuredImageView.image.size;
-    UIImage *image = [_featuredImageSource imageForURL:post.featuredImageURL withSize:imageSize];
+    UIImage *image = [cell.postView.featuredImageView.image copy];
     UIImage *avatarImage = [cell.post cachedAvatarWithSize:CGSizeMake(32.0, 32.0)];
 // TODO: the detail controller should just fetch the cached versions of these resources vs passing them around here. :P
 	self.detailController = [[ReaderPostDetailViewController alloc] initWithPost:post featuredImage:image avatarImage:avatarImage];
