@@ -153,7 +153,10 @@
                didDrawLayoutFrame:(DTCoreTextLayoutFrame *)layoutFrame
                         inContext:(CGContextRef)context
 {
-        [self invalidateIntrinsicContentSize];
+    // DTCoreText was performing this call in BG. Let's make sure UIKit gets handled on the main thread!
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self invalidateIntrinsicContentSize]; 
+    });
 }
 
 - (BOOL)isEmoji:(NSURL *)url
