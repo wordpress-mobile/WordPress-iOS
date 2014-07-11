@@ -107,7 +107,7 @@ DEPENDENCIES:
   - OHHTTPStubs (= 1.1.1)
   - Reachability (= 3.1.1)
   - Simperium (= 0.6.5)
-  - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`)
+  - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`, branch `master`)
   - SVProgressHUD (~> 1.0)
   - Taplytics (~> 1.2.50)
   - UIDeviceIdentifier (~> 0.1)
@@ -126,6 +126,7 @@ EXTERNAL SOURCES:
   NSURL+IDN:
     :podspec: https://raw.github.com/koke/NSURL-IDN/master/Podfile
   SocketRocket:
+    :branch: master
     :git: https://github.com/jleandroperez/SocketRocket.git
   WordPress-iOS-Shared:
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
@@ -156,7 +157,7 @@ SPEC CHECKSUMS:
   OHHTTPStubs: cb1cef742f2fba18b192fb92ede52a69cf3a04d5
   Reachability: be4883bb93f31e38266ae3365e5600a317aae735
   Simperium: df03533ca84845c2004b4c836f6a403102a53321
-  SocketRocket: 9cbe08469513356cddc0afcab1ff160bd190296a
+  SocketRocket: b809068861cb66d871eb93a428696b1eb5451318
   SVProgressHUD: 5e10939a296debf5fe5a5895eda9539b8b2114f1
   Taplytics: 292c7c0a7814914f6a1a3e34fdf96b7233c2425d
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
