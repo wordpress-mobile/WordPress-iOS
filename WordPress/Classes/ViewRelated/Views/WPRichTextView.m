@@ -36,9 +36,9 @@
     self.textContentView.delegate = nil;
 }
 
-- (instancetype)init
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [super init];
+    self = [super initWithFrame:frame];
     if (self) {
         _mediaArray = [NSMutableArray array];
         _mediaQueue = [[ReaderMediaQueue alloc] initWithDelegate:self];
