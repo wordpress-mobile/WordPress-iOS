@@ -170,8 +170,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         self.viewHasAppeared = YES;
     }
 
-    [self resizeTableViewForImagePreloading];
-
     // Delay box animation after the view appears
     double delayInSeconds = 0.3;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -203,7 +201,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    [self resizeTableViewForImagePreloading];
     [self configureNoResultsView];
 }
 
@@ -270,27 +267,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     } else {
         self.title = NSLocalizedString(@"Reader", @"Default title for the reader before topics are loaded the first time.");
     }
-}
-
-- (void)resizeTableViewForImagePreloading
-{
-    // Use a little trick to preload more images by making the table view longer
-    CGRect rect = self.tableView.frame;
-    CGFloat navigationHeight = self.navigationController.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - self.navigationController.navigationBar.frame.origin.y;
-    CGFloat extraHeight = navigationHeight * RPVCExtraTableViewHeightPercentage;
-    rect.size.height = navigationHeight + extraHeight;
-    self.tableView.frame = rect;
-    
-    // Move insets up to compensate
-    UIEdgeInsets insets = self.tableView.contentInset;
-    insets.bottom = extraHeight + [self tabBarSize].height;
-    self.tableView.contentInset = insets;
-    
-    // Adjust the scroll insets as well
-    UIEdgeInsets scrollInsets = self.tableView.scrollIndicatorInsets;
-    scrollInsets.bottom = insets.bottom;
-    self.tableView.scrollIndicatorInsets = scrollInsets;
-    [self.tableView setNeedsLayout];
 }
 
 - (void)setTitle:(NSString *)title
