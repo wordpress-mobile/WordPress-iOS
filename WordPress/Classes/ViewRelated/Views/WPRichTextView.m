@@ -73,6 +73,7 @@
 - (void)setEdgeInsets:(UIEdgeInsets)edgeInsets
 {
     self.textContentView.edgeInsets = edgeInsets;
+    [self relayoutTextContentView];
 }
 
 - (NSAttributedString *)attributedString
@@ -83,7 +84,7 @@
 - (void)setAttributedString:(NSAttributedString *)attributedString
 {
     self.textContentView.attributedString = attributedString;
-    [self.textContentView relayoutText];
+    [self relayoutTextContentView];
 }
 
 
@@ -96,11 +97,11 @@
 {
     NSDictionary *views = NSDictionaryOfVariableBindings(_textContentView);
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_textContentView]|"
-                                                                 options:NSLayoutFormatAlignAllLeft
+                                                                 options:0
                                                                  metrics:nil
                                                                    views:views]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_textContentView]|"
-                                                                 options:NSLayoutFormatAlignAllLeft
+                                                                 options:0
                                                                  metrics:nil
                                                                    views:views]];
     [self setNeedsUpdateConstraints];
@@ -167,14 +168,8 @@
 - (void)handleMediaViewLoaded:(ReaderMediaView *)mediaView
 {
     BOOL frameChanged = [self updateMediaLayout:mediaView];
-
     if (frameChanged) {
-        // need to reset the layouter because otherwise we get the old framesetter or cached layout frames
-        self.textContentView.layouter = nil;
-
-        // layout might have changed due to image sizes
-        [self.textContentView relayoutText];
-        [self invalidateIntrinsicContentSize];
+        [self relayoutTextContentView];
     }
 }
 
@@ -253,10 +248,9 @@
         if ([self updateMediaLayout:mediaView]) {
             frameChanged = YES;
         }
-
-        if (frameChanged) {
-            [self relayoutTextContentView];
-        }
+    }
+    if (frameChanged) {
+        [self relayoutTextContentView];
     }
 }
 
@@ -311,8 +305,9 @@
 
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttachment:(DTTextAttachment *)attachment frame:(CGRect)frame
 {
-    if (!attachment.contentURL)
+    if (!attachment.contentURL) {
         return nil;
+    }
 
     // The textContentView will render the first time with the original frame, and then update when media loads.
     // To avoid showing gaps in the layout due to the original attachment sizes, relayout the view after a brief delay.
