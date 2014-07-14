@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MbC-cA-c9S">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MbC-cA-c9S">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -97,7 +97,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tfv-il-pov" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="368" y="35"/>
+            <point key="canvasLocation" x="304" y="-372"/>
         </scene>
         <!--Notification Details View Controller-->
         <scene sceneID="0oX-bB-0qa">
@@ -263,11 +263,12 @@
                     <connections>
                         <segue destination="Bbj-DX-KQ7" kind="push" identifier="WPWebViewController" id="ypC-nX-8xX"/>
                         <segue destination="8p8-88-FGK" kind="push" identifier="StatsViewController" id="LbX-cC-eQB"/>
+                        <segue destination="xj3-6N-2Jy" kind="push" identifier="ReaderPostDetailViewController" id="bzs-Og-i8b"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bJT-Hx-TtA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="935" y="35"/>
+            <point key="canvasLocation" x="1027" y="-372"/>
         </scene>
         <!--Reader Post Detail View Controller-->
         <scene sceneID="ET8-9p-ZLz">
@@ -286,7 +287,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="h51-jr-fqU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="941" y="-791"/>
+            <point key="canvasLocation" x="1573" y="-1271"/>
         </scene>
         <!--Web View Controller-->
         <scene sceneID="1zS-D4-F1Z">
@@ -315,26 +316,17 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qLX-Om-Xrs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="935" y="804"/>
+            <point key="canvasLocation" x="1027" y="501"/>
         </scene>
         <!--Stats View Controller-->
         <scene sceneID="iWL-VB-TOS">
             <objects>
                 <viewController id="8p8-88-FGK" customClass="StatsViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="cRk-Zk-Yf3"/>
-                        <viewControllerLayoutGuide type="bottom" id="kI1-Us-qN1"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="fwI-NH-PAV">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
                     <navigationItem key="navigationItem" id="Emb-tQ-YvX"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KeQ-Nv-SGg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1573" y="413"/>
+            <point key="canvasLocation" x="1573" y="501"/>
         </scene>
     </scenes>
     <resources>
@@ -346,4 +338,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="4ec-Ni-5a5"/>
+    </inferredMetricsTieBreakers>
 </document>
