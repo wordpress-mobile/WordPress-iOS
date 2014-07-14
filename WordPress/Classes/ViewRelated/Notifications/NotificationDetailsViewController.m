@@ -9,6 +9,7 @@
 
 #import "NSURL+Util.h"
 #import "NSScanner+Helpers.h"
+#import "UITableView+Helpers.h"
 
 #import "WPWebViewController.h"
 
@@ -19,6 +20,10 @@
 #import "Blog.h"
 #import "BlogService.h"
 #import "StatsViewController.h"
+
+#import "ReaderPost.h"
+#import "ReaderPostService.h"
+#import "ReaderPostDetailViewController.h"
 
 #import "WPToast.h"
 
@@ -227,7 +232,11 @@ static UIEdgeInsets NotificationTableInsets     = { 0.0f, 0.0f, 20.0f, 0.0f };
         
         cell.attributedText                 = block.attributedText;
         cell.onUrlClick                     = ^(NSURL *url){
-            [weakSelf openURL:url];
+            for (NotificationURL *noteURL in block.urls) {
+                if ([noteURL.url isEqual:url]) {
+                    [weakSelf handleNotificationURL:noteURL];
+                }
+            }
         };
         
         return cell;
@@ -240,9 +249,9 @@ static UIEdgeInsets NotificationTableInsets     = { 0.0f, 0.0f, 20.0f, 0.0f };
     
     // When tapping a User's cell, let's push the associated blog. If any!
     if (block.type == NoteBlockTypesUser) {
-        NotificationURL *blogURL = [block.urls firstObject];
-        if (blogURL.url) {
-            [self openURL:blogURL.url];
+        NSURL *blogURL = [[block.urls firstObject] url];
+        if (blogURL) {
+            [self openURL:blogURL];
         } else {
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
         }
@@ -250,26 +259,64 @@ static UIEdgeInsets NotificationTableInsets     = { 0.0f, 0.0f, 20.0f, 0.0f };
 }
 
 
-#pragma mark - Action Helpers
+
+#pragma mark - Helpers
+
+- (void)handleNotificationURL:(NotificationURL *)notificationURL
+{
+    if ([notificationURL.type isEqual:NoteLinkTypePost] && _note.metaPostID && _note.metaSiteID) {
+        [self openReaderWithPostID:self.note.metaPostID siteID:self.note.metaSiteID];
+        
+    } else if (_note.isStatsEvent && _note.metaSiteID){
+        [self openStatsForSiteID:_note.metaSiteID fallbackURL:notificationURL.url];
+        
+    } else if (notificationURL.url) {
+        [self openURL:notificationURL.url];
+        
+    } else {
+        [self.tableView deselectSelectedRowWithAnimation:YES];
+    }
+}
+
+
+#pragma mark - Action Handlers
+
+- (void)openReaderWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    ReaderPostService *service      = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    
+    [service fetchPost:postID.integerValue forSite:siteID.integerValue success:^(ReaderPost *post) {
+        if ([self.navigationController.topViewController isEqual:self]) {
+            [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:post];
+        }
+        
+    } failure:^(NSError *error) {
+        [self.tableView deselectSelectedRowWithAnimation:YES];
+        
+    }];
+}
+
+- (void)openStatsForSiteID:(NSNumber *)siteID fallbackURL:(NSURL *)fallbackURL
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
+    Blog *blog                      = [service blogByBlogId:siteID];
+    
+    if (blog.isWPcom) {
+        [self performSegueWithIdentifier:NSStringFromClass([StatsViewController class]) sender:blog];
+
+    } else if (fallbackURL) {
+        [self openURL:fallbackURL];
+        
+    } else {
+        [self.tableView deselectSelectedRowWithAnimation:YES];
+    }
+}
 
 - (void)openURL:(NSURL *)url
 {
-    NSString *segueID   = NSStringFromClass([WPWebViewController class]);
-    id sender           = url;
-    
-    // Detect if it's a stats notification, and push the StatsVC
-    if ([self.note isStatsEvent]) {
-        BlogService *service    = [[BlogService alloc] initWithManagedObjectContext:self.note.managedObjectContext];
-        Blog *blog              = [service blogByBlogId:self.note.metaSiteID];
-
-        // On success, push the Stats VC (ONLY if it's a WPcom blog)
-        if ([blog isWPcom]) {
-            segueID = NSStringFromClass([StatsViewController class]);
-            sender  = blog;
-        }
-    }
-    
-    [self performSegueWithIdentifier:segueID sender:sender];
+    [self performSegueWithIdentifier:NSStringFromClass([WPWebViewController class]) sender:url];
 }
 
 - (void)toggleFollowWithBlock:(NotificationBlock *)block
@@ -320,16 +367,21 @@ static UIEdgeInsets NotificationTableInsets     = { 0.0f, 0.0f, 20.0f, 0.0f };
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    NSString *webViewSegueID = NSStringFromClass([WPWebViewController class]);
-    NSString *statsSegueID   = NSStringFromClass([StatsViewController class]);
+    NSString *webViewSegueID    = NSStringFromClass([WPWebViewController class]);
+    NSString *statsSegueID      = NSStringFromClass([StatsViewController class]);
+    NSString *readerSegueID     = NSStringFromClass([ReaderPostDetailViewController class]);
     
     if ([segue.identifier isEqualToString:webViewSegueID] && [sender isKindOfClass:[NSURL class]]) {
-        WPWebViewController *webViewController      = segue.destinationViewController;
-        webViewController.url                       = (NSURL *)sender;
+        WPWebViewController *webViewController = segue.destinationViewController;
+        webViewController.url = (NSURL *)sender;
         
     } else if([segue.identifier isEqualToString:statsSegueID] && [sender isKindOfClass:[Blog class]]) {
-        StatsViewController *statsViewController    = segue.destinationViewController;
-        statsViewController.blog                    = (Blog *)sender;
+        StatsViewController *statsViewController = segue.destinationViewController;
+        statsViewController.blog = (Blog *)sender;
+        
+    } else if([segue.identifier isEqualToString:readerSegueID] && [sender isKindOfClass:[ReaderPost class]]) {
+        ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
+        readerViewController.post = (ReaderPost *)sender;
     }
 }
 
