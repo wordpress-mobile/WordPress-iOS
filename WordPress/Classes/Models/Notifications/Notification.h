@@ -11,6 +11,7 @@ extern NSString * NoteActionSpamKey;
 extern NSString * NoteActionTrashKey;
 
 extern NSString * NoteLinkTypeUser;
+extern NSString * NoteLinkTypePost;
 
 
 #pragma mark ====================================================================================
