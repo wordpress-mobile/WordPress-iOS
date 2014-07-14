@@ -213,12 +213,17 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         } else {
             [remoteService unfollowSite:[post.siteID integerValue] success:successBlock failure:failureBlock];
         }
-    } else {
+    } else if (post.blogURL) {
         if (follow) {
             [remoteService followSiteAtURL:post.blogURL success:successBlock failure:failureBlock];
         } else {
             [remoteService unfollowSiteAtURL:post.blogURL success:successBlock failure:failureBlock];
         }
+    } else {
+        NSString *description = NSLocalizedString(@"Could not toggle Follow: missing blogURL attribute", @"An error description explaining that Follow could not be toggled due to a missing blogURL attribute.");
+        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : description };
+        NSError *error = [NSError errorWithDomain:ReaderPostServiceErrorDomain code:0 userInfo:userInfo];
+        failureBlock(error);
     }
 }
 
@@ -635,6 +640,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     post.sortDate = [DateUtils dateFromISOString:remotePost.sortDate];
     post.status = remotePost.status;
     post.tags = remotePost.tags;
+    post.isSharingEnabled = remotePost.isSharingEnabled;
+    post.isLikesEnabled = remotePost.isLikesEnabled;
 
     // Construct a summary if necessary.
     NSString *summary = [self formatSummary:remotePost.summary];
