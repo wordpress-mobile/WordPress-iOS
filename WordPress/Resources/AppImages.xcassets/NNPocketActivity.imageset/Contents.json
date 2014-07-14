@@ -1,6 +1,16 @@
 {
   "images" : [
     {
+      "idiom" : "universal",
+      "scale" : "1x",
+      "filename" : "NNPocketActivity.png"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x",
+      "filename" : "NNPocketActivity@2x.png"
+    },
+    {
       "idiom" : "ipad",
       "scale" : "1x",
       "filename" : "NNPocketActivity~ipad.png"

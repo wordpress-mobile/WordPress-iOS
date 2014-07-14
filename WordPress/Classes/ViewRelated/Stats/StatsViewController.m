@@ -7,6 +7,11 @@
 #import "ContextManager.h"
 #import "WPStatsViewController_Private.h"
 
+static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
+
+@interface StatsViewController ()
+@property (nonatomic, assign) BOOL showingJetpackLogin;
+@end
 
 @implementation StatsViewController
 
@@ -64,6 +69,10 @@
 }
 
 - (void)promptForJetpackCredentials {
+    if (self.showingJetpackLogin) {
+        return;
+    }
+    self.showingJetpackLogin = YES;
     JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
     controller.showFullScreen = NO;
     __weak JetpackSettingsViewController *safeController = controller;
@@ -73,6 +82,7 @@
             [WPAnalytics track:WPAnalyticsStatPerformedJetpackSignInFromStatsScreen];
             [safeController.view removeFromSuperview];
             [safeController removeFromParentViewController];
+            self.showingJetpackLogin = NO;
             self.tableView.scrollEnabled = YES;
             [self initStats];
         }
@@ -90,5 +100,31 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+#pragma mark - Restoration
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
+{
+    NSURL *blogObjectURL = [[self.blog objectID] URIRepresentation];
+    [coder encodeObject:blogObjectURL forKey:StatsBlogObjectURLRestorationKey];
+    [super encodeRestorableStateWithCoder:coder];
+}
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
+    NSURL *blogObjectURL = [coder decodeObjectForKey:StatsBlogObjectURLRestorationKey];
+    if (!blogObjectURL) {
+        return nil;
+    }
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectID *blogObjectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:blogObjectURL];
+    Blog *blog = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
+    if (!blog) {
+        return nil;
+    }
+    StatsViewController *viewController = [[self alloc] init];
+    viewController.blog = blog;
+
+    return viewController;
+}
 
 @end
