@@ -77,7 +77,6 @@
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     self.infiniteScrollEnabled  = NO;
-	self.refreshControl         = nil;
     
     [self updateTabBarBadgeNumber];
 }
@@ -337,6 +336,12 @@
 - (void)syncItems
 {
 	// No-Op. Handled by Simperium!
+}
+
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure
+{
+	// No-Op. Handled by Simperium!
+    success();
 }
 
 - (NSString *)noResultsTitleText

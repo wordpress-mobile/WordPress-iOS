@@ -12,6 +12,7 @@
 #import "WPFixedWidthScrollView.h"
 #import "WPTableViewCell.h"
 #import "DTLinkButton.h"
+#import "WPToast.h"
 
 
 
@@ -407,21 +408,29 @@ CGFloat const CommentViewUnapproveButtonTag                                     
 - (void)composeView:(InlineComposeView *)view didSendText:(NSString *)text
 {
     self.reply.content = text;
+
     [[ContextManager sharedInstance] saveContext:self.reply.managedObjectContext];
 
-    [self.inlineComposeView clearText];
-    [self.inlineComposeView dismissComposer];
-
-    self.reply.status = CommentStatusApproved;
+    self.inlineComposeView.enabled = NO;
     self.transientReply = NO;
 
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:self.reply.managedObjectContext];
     [commentService uploadComment:self.reply success:^{
-        // the current modal experience shows success by dismissising the editor
-        // ideally we switch to an optimistic experience
+        self.reply.status = CommentStatusApproved;
+        
+        [self.inlineComposeView clearText];
+        self.inlineComposeView.enabled = YES;
+        [self.inlineComposeView dismissComposer];
+        
+        [WPToast showToastWithMessage:NSLocalizedString(@"Replied", @"User replied to a comment")
+                             andImage:[UIImage imageNamed:@"action_icon_replied"]];
+        
     } failure:^(NSError *error) {
         // reset to draft status, AppDelegate automatically shows UIAlert when comment fails
         self.reply.status = CommentStatusDraft;
+        
+        self.inlineComposeView.enabled = YES;
+        [self.inlineComposeView displayComposer];
 
         DDLogError(@"Could not reply to comment: %@", error);
     }];
