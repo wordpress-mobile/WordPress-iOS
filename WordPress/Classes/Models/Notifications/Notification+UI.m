@@ -19,7 +19,6 @@
         return [NSAttributedString new];
     }
     
-    NSArray *keywords                       = @[ @"liked", @"commented", @"followed", @"matched", @"reblogged", @"replied" ];
     NSDictionary *attributes                = [WPStyleGuide notificationSubjectAttributes];
     NSDictionary *attributesBold            = [WPStyleGuide notificationSubjectAttributesBold];
     NSDictionary *attributesItalics         = [WPStyleGuide notificationSubjectAttributesItalics];
@@ -27,7 +26,12 @@
     
     // Bold text up until "liked", "commented", "matched" or "followed"
     [theString applyAttributesToQuotes:attributesItalics];
-    [theString applyAttributes:attributesBold untilKeywords:keywords];
+    
+    for (NotificationURL *url in self.urls) {
+        if ([url.type isEqual:NoteLinkTypeUser]) {
+            [theString addAttributes:attributesBold range:url.range];
+        }
+    }
 
     return theString;
 }

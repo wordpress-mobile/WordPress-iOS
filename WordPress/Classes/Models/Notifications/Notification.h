@@ -10,6 +10,8 @@ extern NSString * NoteActionApproveKey;
 extern NSString * NoteActionSpamKey;
 extern NSString * NoteActionTrashKey;
 
+extern NSString * NoteLinkTypeUser;
+
 
 #pragma mark ====================================================================================
 #pragma mark Notification
