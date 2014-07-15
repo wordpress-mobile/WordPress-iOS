@@ -37,8 +37,10 @@
 
 - (UIView *)viewForContent
 {
+    // Minimal frame so internal DTAttriutedTextContentView gets layout.
+    CGRect frame = CGRectMake(0.0, 0.0, CGRectGetWidth(self.bounds), 1.0);
     CGFloat horizontalInnerPadding = WPContentViewHorizontalInnerPadding - 4.0;
-    WPRichTextView *richTextView = [[WPRichTextView alloc] init];
+    WPRichTextView *richTextView = [[WPRichTextView alloc] initWithFrame:frame];
     richTextView.translatesAutoresizingMaskIntoConstraints = NO;
     richTextView.delegate = self;
     richTextView.edgeInsets = UIEdgeInsetsMake(0.0, horizontalInnerPadding, 0.0, horizontalInnerPadding);
