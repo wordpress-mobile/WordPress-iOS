@@ -44,11 +44,11 @@
     
     activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     activityIndicator.hidesWhenStopped = YES;
+    activityIndicator.accessibilityIdentifier = @"activityIndicator";
     [self addSubview:activityIndicator];
 }
 
 - (void)showActivityIndicator:(BOOL)show {
-    
     if (show) {
         [activityIndicator startAnimating];
     } else {

@@ -20,7 +20,8 @@
 #import "BlogService.h"
 #import "WPNUXHelpBadgeLabel.h"
 #import <Helpshift/Helpshift.h>
-
+#import "WPAnalytics.h"
+#import "WPError.h"
 
 static NSString *const ForgotPasswordDotComBaseUrl = @"https://wordpress.com";
 static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
@@ -424,6 +425,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _usernameText.autocorrectionType = UITextAutocorrectionTypeNo;
         _usernameText.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _usernameText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+        _usernameText.accessibilityIdentifier = @"Username";
         [_mainView addSubview:_usernameText];
     }
     
@@ -438,6 +440,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _passwordText.showSecureTextEntryToggle = YES;
         _passwordText.showTopLineSeparator = YES;
         _passwordText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+        _passwordText.accessibilityIdentifier = @"Password";
         [_mainView addSubview:_passwordText];
     }
     
@@ -466,6 +469,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _signInButton = [[WPNUXMainButton alloc] init];
         [_signInButton addTarget:self action:@selector(signInButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         _signInButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+        _signInButton.accessibilityIdentifier = @"Sign In";
         [_mainView addSubview:_signInButton];
     }
     _signInButton.enabled = [self isSignInEnabled];

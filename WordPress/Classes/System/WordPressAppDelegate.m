@@ -48,6 +48,10 @@
 #import "DDASLLogger.h"
 #endif
 
+#if INTEGRATION_TESTING
+#import <Subliminal/Subliminal.h>
+#endif
+
 int ddLogLevel = LOG_LEVEL_INFO;
 static NSString * const WPTabBarRestorationID = @"WPTabBarID";
 static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
@@ -169,6 +173,10 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     [self.window makeKeyAndVisible];
     
     [self showWelcomeScreenIfNeededAnimated:NO];
+    
+#if INTEGRATION_TESTING
+    [[SLTestController sharedTestController] runTests:[SLTest allTests] withCompletionBlock:nil];
+#endif
     
     return YES;
 }
@@ -410,6 +418,7 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     UIImage *tabBackgroundImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     _tabBarController.tabBar.backgroundImage = tabBackgroundImage;
+    _tabBarController.tabBar.accessibilityIdentifier = @"tabBar";
     
     self.readerPostsViewController = [[ReaderPostsViewController alloc] init];
     UINavigationController *readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerPostsViewController];

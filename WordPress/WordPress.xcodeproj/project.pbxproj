@@ -205,6 +205,7 @@
 		A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */; };
 		A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */; };
 		A0E293F10E21027E00C6919C /* WPAddCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */; };
+		A247FCA31975E47800BB7C2F /* libPods-IntegrationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A247FCA21975E47800BB7C2F /* libPods-IntegrationTests.a */; };
 		A25EBD87156E330600530E3D /* WPTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A25EBD86156E330600530E3D /* WPTableViewController.m */; };
 		A2787D0219002AB1000D6CA6 /* HelpshiftConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = A2787D0119002AB1000D6CA6 /* HelpshiftConfig.plist */; };
 		A2D55B981975BBFC00B9A561 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
@@ -501,6 +502,7 @@
 		A2D55CBF1975BBFC00B9A561 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3D6D2B1349F5D30061136A /* ImageIO.framework */; };
 		A2D55CC01975BBFC00B9A561 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69187343EC8F435684EFFAF1 /* libPods.a */; };
 		A2D55CC11975BBFC00B9A561 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1CCFB32175D624F0016BD8A /* Crashlytics.framework */; };
+		A2D55CCD1975BD2600B9A561 /* LoginTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A2D55CCC1975BD2600B9A561 /* LoginTest.m */; };
 		A2DC5B1A1953451B009584C3 /* WPNUXHelpBadgeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A2DC5B191953451B009584C3 /* WPNUXHelpBadgeLabel.m */; };
 		ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */; };
 		ACBAB6860E1247F700F38795 /* PostPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBAB6850E1247F700F38795 /* PostPreviewViewController.m */; };
@@ -1049,11 +1051,13 @@
 		A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAddCategoryViewController.m; sourceTree = "<group>"; };
 		A2205B811975A9BD00413FE6 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "../Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		A2205B831975AAD800413FE6 /* libPods-IntegrationTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-IntegrationTests.a"; path = "../Pods/build/Debug-iphoneos/libPods-IntegrationTests.a"; sourceTree = "<group>"; };
+		A247FCA21975E47800BB7C2F /* libPods-IntegrationTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-IntegrationTests.a"; path = "../Pods/build/Debug-iphoneos/libPods-IntegrationTests.a"; sourceTree = "<group>"; };
 		A25EBD85156E330600530E3D /* WPTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableViewController.h; sourceTree = "<group>"; };
 		A25EBD86156E330600530E3D /* WPTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewController.m; sourceTree = "<group>"; };
 		A2787D0119002AB1000D6CA6 /* HelpshiftConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = HelpshiftConfig.plist; sourceTree = "<group>"; };
 		A284044518BFE7F300D982B6 /* WordPress 15.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 15.xcdatamodel"; sourceTree = "<group>"; };
 		A2D55CC91975BBFC00B9A561 /* WordPress copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WordPress copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A2D55CCC1975BD2600B9A561 /* LoginTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginTest.m; sourceTree = "<group>"; };
 		A2DC5B181953451B009584C3 /* WPNUXHelpBadgeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNUXHelpBadgeLabel.h; sourceTree = "<group>"; };
 		A2DC5B191953451B009584C3 /* WPNUXHelpBadgeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPNUXHelpBadgeLabel.m; sourceTree = "<group>"; };
 		ACBAB5FC0E121C7300F38795 /* PostSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostSettingsViewController.h; sourceTree = "<group>"; };
@@ -1373,6 +1377,7 @@
 				A2D55CBF1975BBFC00B9A561 /* ImageIO.framework in Frameworks */,
 				A2D55CC01975BBFC00B9A561 /* libPods.a in Frameworks */,
 				A2D55CC11975BBFC00B9A561 /* Crashlytics.framework in Frameworks */,
+				A247FCA31975E47800BB7C2F /* libPods-IntegrationTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1548,6 +1553,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A247FCA21975E47800BB7C2F /* libPods-IntegrationTests.a */,
 				A2205B831975AAD800413FE6 /* libPods-IntegrationTests.a */,
 				A2205B811975A9BD00413FE6 /* libPods.a */,
 				E10675C9183FA78E00E5CE5C /* XCTest.framework */,
@@ -2125,6 +2131,7 @@
 		A27B39EB1975A2A2004A3052 /* IntegrationTests */ = {
 			isa = PBXGroup;
 			children = (
+				A2D55CCC1975BD2600B9A561 /* LoginTest.m */,
 			);
 			path = IntegrationTests;
 			sourceTree = "<group>";
@@ -3158,6 +3165,7 @@
 				A2D55BF71975BBFC00B9A561 /* WPcomLoginViewController.m in Sources */,
 				A2D55BF81975BBFC00B9A561 /* WPTableViewActivityCell.m in Sources */,
 				A2D55BF91975BBFC00B9A561 /* ThemeBrowserCell.m in Sources */,
+				A2D55CCD1975BD2600B9A561 /* LoginTest.m in Sources */,
 				A2D55BFA1975BBFC00B9A561 /* SupportViewController.m in Sources */,
 				A2D55BFB1975BBFC00B9A561 /* EditMediaViewController.m in Sources */,
 				A2D55BFC1975BBFC00B9A561 /* EditSiteViewController.m in Sources */,
@@ -3653,11 +3661,24 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"BITHOCKEY_VERSION=\"@\\\"3.5.5\\\"\"",
+					"BITHOCKEY_C_VERSION=\"\\\"3.5.5\\\"\"",
+					"BITHOCKEY_BUILD=\"@\\\"28\\\"\"",
+					"BITHOCKEY_C_BUILD=\"\\\"28\\\"\"",
+					"${inherited}",
+					"NSLOGGER_BUILD_USERNAME=\"${USER}\"",
+					"INTEGRATION_TESTING=1",
+				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_CFLAGS = (
 					"-Wno-format-security",
 					"-DDEBUG",
@@ -3698,6 +3719,7 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_CFLAGS = (
 					"-Wno-format-security",
 					"-Wno-format",
@@ -3738,6 +3760,7 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_CFLAGS = (
 					"-Wno-format-security",
 					"-Wno-format",
@@ -3774,6 +3797,7 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_CFLAGS = (
 					"-Wno-format",
 					"-Wno-format-security",
