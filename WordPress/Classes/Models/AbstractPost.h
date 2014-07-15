@@ -28,7 +28,6 @@
 - (BOOL)hasCategories;
 - (BOOL)hasTags;
 
-+ (AbstractPost *)newDraftForBlog:(Blog *)blog;
 + (NSString *const)remoteUniqueIdentifier;
 + (void)mergeNewPosts:(NSArray *)newObjects forBlog:(Blog *)blog;
 - (void)updateFromDictionary:(NSDictionary *)postInfo;

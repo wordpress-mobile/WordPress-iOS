@@ -276,6 +276,7 @@
 		E15618FD16DB8677006532C4 /* UIKitTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E15618FC16DB8677006532C4 /* UIKitTestHelper.m */; };
 		E15618FF16DBA983006532C4 /* xmlrpc-response-newpost.xml in Resources */ = {isa = PBXBuildFile; fileRef = E15618FE16DBA983006532C4 /* xmlrpc-response-newpost.xml */; };
 		E156190116DBABDE006532C4 /* xmlrpc-response-getpost.xml in Resources */ = {isa = PBXBuildFile; fileRef = E156190016DBABDE006532C4 /* xmlrpc-response-getpost.xml */; };
+		E15FC2E719702909006A7B4B /* PostService.m in Sources */ = {isa = PBXBuildFile; fileRef = E15FC2E619702909006A7B4B /* PostService.m */; };
 		E16AB92E14D978240047A2E5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		E16AB93414D978240047A2E5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E16AB93214D978240047A2E5 /* InfoPlist.strings */; };
 		E174F6E6172A73960004F23A /* WPAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E105E9CE1726955600C0D9E7 /* WPAccount.m */; };
@@ -886,6 +887,8 @@
 		E15618FC16DB8677006532C4 /* UIKitTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIKitTestHelper.m; sourceTree = "<group>"; };
 		E15618FE16DBA983006532C4 /* xmlrpc-response-newpost.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-response-newpost.xml"; sourceTree = "<group>"; };
 		E156190016DBABDE006532C4 /* xmlrpc-response-getpost.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-response-getpost.xml"; sourceTree = "<group>"; };
+		E15FC2E519702909006A7B4B /* PostService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostService.h; sourceTree = "<group>"; };
+		E15FC2E619702909006A7B4B /* PostService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostService.m; sourceTree = "<group>"; };
 		E1634517183B733B005E967F /* WordPressComOAuthClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressComOAuthClient.h; sourceTree = "<group>"; };
 		E1634518183B733B005E967F /* WordPressComOAuthClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressComOAuthClient.m; sourceTree = "<group>"; };
 		E167745A1377F24300EE44DD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -1770,6 +1773,8 @@
 				5DE8A03A1912C58800B2FF59 /* RemoteReaderPost.m */,
 				5DE8A03C1912C59600B2FF59 /* RemoteReaderTopic.h */,
 				5DE8A03D1912C59600B2FF59 /* RemoteReaderTopic.m */,
+				E15FC2E519702909006A7B4B /* PostService.h */,
+				E15FC2E619702909006A7B4B /* PostService.m */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -2449,6 +2454,7 @@
 				5DA5BF4018E32DCF005F11F9 /* MediaBrowserCell.m in Sources */,
 				5DE8A03E1912C59600B2FF59 /* RemoteReaderTopic.m in Sources */,
 				83418AAA11C9FA6E00ACF00C /* Comment.m in Sources */,
+				E15FC2E719702909006A7B4B /* PostService.m in Sources */,
 				E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */,
 				8350E49611D2C71E00A7B073 /* Media.m in Sources */,
 				83610AAA11F4AD2C00421116 /* WPcomLoginViewController.m in Sources */,
