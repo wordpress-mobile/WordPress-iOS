@@ -7,6 +7,7 @@
 #import "Post.h"
 #import "Constants.h"
 #import "BlogService.h"
+#import "PostService.h"
 #import "ContextManager.h"
 
 #define TAG_OFFSET 1010
@@ -201,7 +202,8 @@
     [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"posts_view" }];
 
     _addingNewPost = YES;
-    Post *post = [Post newDraftForBlog:self.blog];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    Post *post = [postService createDraftPostForBlog:self.blog];
     [self editPost:post];
 }
 

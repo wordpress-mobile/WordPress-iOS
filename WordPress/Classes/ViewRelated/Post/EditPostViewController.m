@@ -7,6 +7,7 @@
 #import "WPBlogSelectorButton.h"
 #import "LocationService.h"
 #import "BlogService.h"
+#import "PostService.h"
 #import "MediaService.h"
 #import "WPMediaUploader.h"
 #import "WPUploadStatusView.h"
@@ -103,9 +104,10 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
 
     Blog *blog = [blogService lastUsedOrFirstBlog];
-    return [self initWithPost:[Post newDraftForBlog:blog]];
+    return [self initWithPost:[postService createDraftPostForBlog:blog]];
 }
 
 - (id)initWithPost:(AbstractPost *)post
@@ -231,7 +233,7 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
             BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
             [blogService flagBlogAsLastUsed:blog];
-            AbstractPost *newPost = [[self.post class] newDraftForBlog:blog];
+            AbstractPost *newPost = [self createNewDraftForBlog:blog];
             AbstractPost *oldPost = self.post;
             
             NSString *content = oldPost.content;
@@ -388,6 +390,11 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 }
 
 #pragma mark - Instance Methods
+
+- (AbstractPost *)createNewDraftForBlog:(Blog *)blog {
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    return [postService createDraftPostForBlog:blog];
+}
 
 - (void)geotagNewPost {
     if (EditPostViewControllerModeNewPost != self.editMode) {

@@ -2,6 +2,7 @@
 #import "EditPageViewController.h"
 #import "WPTableViewControllerSubclass.h"
 #import "BlogService.h"
+#import "PostService.h"
 #import "ContextManager.h"
 
 #define TAG_OFFSET 1010
@@ -71,7 +72,8 @@
 }
 
 - (void)showAddPostView {
-    Page *post = [Page newDraftForBlog:self.blog];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    Page *post = [postService createDraftPageForBlog:self.blog];
     [self editPost:post];
 }
 
