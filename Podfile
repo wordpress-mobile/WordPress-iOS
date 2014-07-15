@@ -34,3 +34,7 @@ target :WordPressTest, :exclusive => true do
   pod 'OHHTTPStubs', '1.1.1'
   pod 'OCMock'
 end
+
+target :'IntegrationTests', :exclusive => true do
+  pod 'Subliminal'
+end

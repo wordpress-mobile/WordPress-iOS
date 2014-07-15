@@ -1,0 +1,2 @@
+PODS_INTEGRATIONTESTS_TAPLYTICS_FRAMEWORK_SEARCH_PATHS = "$(PODS_ROOT)/Taplytics"
+PODS_INTEGRATIONTESTS_TAPLYTICS_OTHER_LDFLAGS = -licucore -framework CFNetwork -framework CoreTelephony -framework Security -framework SystemConfiguration -framework Taplytics -weak_framework AdSupport

@@ -1,0 +1,2 @@
+PODS_INTEGRATIONTESTS_GOOGLE_PLUS_IOS_SDK_FRAMEWORK_SEARCH_PATHS = "$(PODS_ROOT)/google-plus-ios-sdk/google-plus-ios-sdk-1.5.1" "$(PODS_ROOT)/google-plus-ios-sdk/google-plus-ios-sdk-1.5.1"
+PODS_INTEGRATIONTESTS_GOOGLE_PLUS_IOS_SDK_OTHER_LDFLAGS = -framework AddressBook -framework AssetsLibrary -framework CoreGraphics -framework CoreLocation -framework CoreMotion -framework CoreText -framework Foundation -framework GoogleOpenSource -framework GooglePlus -framework MediaPlayer -framework Security -framework SystemConfiguration -framework UIKit

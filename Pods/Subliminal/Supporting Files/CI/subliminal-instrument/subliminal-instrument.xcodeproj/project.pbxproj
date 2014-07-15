@@ -1,0 +1,748 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F009213B18A87E4400F4CF62 /* SITerminalStringFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F009213A18A87E4400F4CF62 /* SITerminalStringFormatter.m */; };
+		F00CD4EF18CAC8FF00C652DC /* SITerminalReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0CFFE58188CEEE8009FEB8B /* SITerminalReporter.m */; };
+		F00CD4F318CAC90900C652DC /* SIReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0CFFE55188CEE89009FEB8B /* SIReporter.m */; };
+		F00CD4F518CAC92300C652DC /* SISLLogParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F0CFFE52188CED2A009FEB8B /* SISLLogParser.m */; };
+		F00CD50A18CACD9200C652DC /* SIFileReportWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E9223F18A087C200E59B1D /* SIFileReportWriter.m */; };
+		F00CD55318CADCE700C652DC /* SILoggingTerminal.js in Resources */ = {isa = PBXBuildFile; fileRef = F0ACA89D189647C80008D182 /* SILoggingTerminal.js */; };
+		F026C41F188A1279006B7DB0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F026C41E188A1279006B7DB0 /* Foundation.framework */; };
+		F026C422188A1279006B7DB0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F026C421188A1279006B7DB0 /* main.m */; };
+		F026C426188A1279006B7DB0 /* subliminal_instrument.1 in Copy man page */ = {isa = PBXBuildFile; fileRef = F026C425188A1279006B7DB0 /* subliminal_instrument.1 */; };
+		F063D46218B328B7005C2655 /* NSFileHandle+StringWriting.m in Sources */ = {isa = PBXBuildFile; fileRef = F063D46118B328B7005C2655 /* NSFileHandle+StringWriting.m */; };
+		F08298B5188A832C002AB6ED /* NSTask+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = F08298B4188A832C002AB6ED /* NSTask+Utilities.m */; };
+		F0CA5A2F18BF138300C7D6D8 /* SIOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = F0CDB5F118B40864001D00D6 /* SIOptions.m */; };
+		F0CA5A3018BF144400C7D6D8 /* SIOptionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0CA5A2918BF133500C7D6D8 /* SIOptionsTests.m */; };
+		F0CDB5F218B40864001D00D6 /* SIOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = F0CDB5F118B40864001D00D6 /* SIOptions.m */; };
+		F0CFFE4C188CBE38009FEB8B /* SubliminalInstrument.m in Sources */ = {isa = PBXBuildFile; fileRef = F0CFFE4B188CBE38009FEB8B /* SubliminalInstrument.m */; };
+		F0CFFE53188CED2A009FEB8B /* SISLLogParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F0CFFE52188CED2A009FEB8B /* SISLLogParser.m */; };
+		F0CFFE56188CEE89009FEB8B /* SIReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0CFFE55188CEE89009FEB8B /* SIReporter.m */; };
+		F0CFFE59188CEEE8009FEB8B /* SITerminalReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0CFFE58188CEEE8009FEB8B /* SITerminalReporter.m */; };
+		F0D8A11D188DDCF400C90E41 /* watchdog.sh in Copy watchdog.sh */ = {isa = PBXBuildFile; fileRef = F0D8A119188DD8A700C90E41 /* watchdog.sh */; };
+		F0E9224018A087C200E59B1D /* SIFileReportWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E9223F18A087C200E59B1D /* SIFileReportWriter.m */; };
+		F0F5DB9018C2F12B006BC976 /* SubliminalInstrumentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F5DB8F18C2F12B006BC976 /* SubliminalInstrumentTests.m */; };
+		F0F5DB9418C302DB006BC976 /* SubliminalInstrument.m in Sources */ = {isa = PBXBuildFile; fileRef = F0CFFE4B188CBE38009FEB8B /* SubliminalInstrument.m */; };
+		F0F5DB9518C302ED006BC976 /* NSFileHandle+StringWriting.m in Sources */ = {isa = PBXBuildFile; fileRef = F063D46118B328B7005C2655 /* NSFileHandle+StringWriting.m */; };
+		F0F5DB9818C36250006BC976 /* NSPipe+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F5DB9718C36250006BC976 /* NSPipe+Utilities.m */; };
+		F0F5DB9918C362BC006BC976 /* NSPipe+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F5DB9718C36250006BC976 /* NSPipe+Utilities.m */; };
+		F0F726F418B0D6B600D2BBE7 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0F726E618B0D33F00D2BBE7 /* SenTestingKit.framework */; };
+		F0F7270418B0D6C400D2BBE7 /* SLLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F02578C3189106200084A6DB /* SLLogger.framework */; };
+		F0F7270518B0D6C900D2BBE7 /* OCMock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0ACA872189640580008D182 /* OCMock.framework */; };
+		F0F7270A18B0D70700D2BBE7 /* SISLLogParserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F025787D1890F9DB0084A6DB /* SISLLogParserTests.m */; };
+		F0F7270B18B0D70B00D2BBE7 /* SITerminalStringFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F009213C18A8904E00F4CF62 /* SITerminalStringFormatterTests.m */; };
+		F0F7270D18B0D78C00D2BBE7 /* SITerminalStringFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F009213A18A87E4400F4CF62 /* SITerminalStringFormatter.m */; };
+		F0F7270E18B0D79500D2BBE7 /* SILoggingTerminal.m in Sources */ = {isa = PBXBuildFile; fileRef = F0ACA87E189641170008D182 /* SILoggingTerminal.m */; };
+		F0F7271018B0D7DF00D2BBE7 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F02578C718910E0B0084A6DB /* JavaScriptCore.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F02578731890F9290084A6DB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F025786B1890F9290084A6DB /* Subliminal.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F0695D8B16011515000B05D0;
+			remoteInfo = Subliminal;
+		};
+		F02578751890F9290084A6DB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F025786B1890F9290084A6DB /* Subliminal.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F0D240521683F7130031B67C;
+			remoteInfo = "Subliminal Unit Tests";
+		};
+		F02578771890F9290084A6DB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F025786B1890F9290084A6DB /* Subliminal.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F0AC809416BB299500C5D5C0;
+			remoteInfo = "Subliminal Integration Tests";
+		};
+		F02578C2189106200084A6DB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F025786B1890F9290084A6DB /* Subliminal.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F02578891890FF7A0084A6DB;
+			remoteInfo = SLLogger;
+		};
+		F0ACA871189640580008D182 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F0ACA86A189640580008D182 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 030EF0A814632FD000B04273;
+			remoteInfo = OCMock;
+		};
+		F0ACA873189640580008D182 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F0ACA86A189640580008D182 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 030EF0C014632FD000B04273;
+			remoteInfo = OCMockTests;
+		};
+		F0ACA875189640580008D182 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F0ACA86A189640580008D182 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 030EF0DC14632FF700B04273;
+			remoteInfo = OCMockLib;
+		};
+		F0ACA877189640580008D182 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F0ACA86A189640580008D182 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F04D5FDD1547E14D009D1CBF;
+			remoteInfo = OCMockTestsTouch;
+		};
+		F0F726FE18B0D6B600D2BBE7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F026C413188A1279006B7DB0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F026C41A188A1279006B7DB0;
+			remoteInfo = "subliminal-instrument";
+		};
+		F0F7270618B0D6D500D2BBE7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F0ACA86A189640580008D182 /* OCMock.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 030EF0A714632FD000B04273;
+			remoteInfo = OCMock;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F026C419188A1279006B7DB0 /* Copy man page */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+				F026C426188A1279006B7DB0 /* subliminal_instrument.1 in Copy man page */,
+			);
+			name = "Copy man page";
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		F0D8A11C188DDCD900C90E41 /* Copy watchdog.sh */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				F0D8A11D188DDCF400C90E41 /* watchdog.sh in Copy watchdog.sh */,
+			);
+			name = "Copy watchdog.sh";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		F009213918A87E4400F4CF62 /* SITerminalStringFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SITerminalStringFormatter.h; sourceTree = "<group>"; };
+		F009213A18A87E4400F4CF62 /* SITerminalStringFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SITerminalStringFormatter.m; sourceTree = "<group>"; };
+		F009213C18A8904E00F4CF62 /* SITerminalStringFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SITerminalStringFormatterTests.m; sourceTree = "<group>"; };
+		F00CD4BE18CABDFF00C652DC /* SISLLogEvents.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SISLLogEvents.h; sourceTree = "<group>"; };
+		F02578501890F5510084A6DB /* subliminal-instrument Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "subliminal-instrument Tests-Info.plist"; sourceTree = "<group>"; };
+		F02578521890F5510084A6DB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		F02578561890F5510084A6DB /* subliminal-instrument Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "subliminal-instrument Tests-Prefix.pch"; sourceTree = "<group>"; };
+		F025786B1890F9290084A6DB /* Subliminal.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Subliminal.xcodeproj; path = ../../../../Subliminal.xcodeproj; sourceTree = "<group>"; };
+		F025787D1890F9DB0084A6DB /* SISLLogParserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SISLLogParserTests.m; sourceTree = "<group>"; };
+		F02578C718910E0B0084A6DB /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F026C41B188A1279006B7DB0 /* subliminal-instrument */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "subliminal-instrument"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F026C41E188A1279006B7DB0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		F026C421188A1279006B7DB0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		F026C424188A1279006B7DB0 /* subliminal-instrument-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "subliminal-instrument-Prefix.pch"; sourceTree = "<group>"; };
+		F026C425188A1279006B7DB0 /* subliminal_instrument.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = subliminal_instrument.1; sourceTree = "<group>"; };
+		F063D46018B328B7005C2655 /* NSFileHandle+StringWriting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileHandle+StringWriting.h"; sourceTree = "<group>"; };
+		F063D46118B328B7005C2655 /* NSFileHandle+StringWriting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileHandle+StringWriting.m"; sourceTree = "<group>"; };
+		F08298B3188A832C002AB6ED /* NSTask+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTask+Utilities.h"; sourceTree = "<group>"; };
+		F08298B4188A832C002AB6ED /* NSTask+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTask+Utilities.m"; sourceTree = "<group>"; };
+		F0ACA86A189640580008D182 /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = "../../../../Unit Tests/OCMock/Source/OCMock.xcodeproj"; sourceTree = "<group>"; };
+		F0ACA87D189641170008D182 /* SILoggingTerminal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SILoggingTerminal.h; sourceTree = "<group>"; };
+		F0ACA87E189641170008D182 /* SILoggingTerminal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SILoggingTerminal.m; sourceTree = "<group>"; };
+		F0ACA89D189647C80008D182 /* SILoggingTerminal.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = SILoggingTerminal.js; sourceTree = "<group>"; };
+		F0CA5A2918BF133500C7D6D8 /* SIOptionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIOptionsTests.m; sourceTree = "<group>"; };
+		F0CDB5F018B40864001D00D6 /* SIOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIOptions.h; sourceTree = "<group>"; };
+		F0CDB5F118B40864001D00D6 /* SIOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIOptions.m; sourceTree = "<group>"; };
+		F0CFFE4A188CBE38009FEB8B /* SubliminalInstrument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubliminalInstrument.h; sourceTree = "<group>"; };
+		F0CFFE4B188CBE38009FEB8B /* SubliminalInstrument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubliminalInstrument.m; sourceTree = "<group>"; };
+		F0CFFE51188CED2A009FEB8B /* SISLLogParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SISLLogParser.h; sourceTree = "<group>"; };
+		F0CFFE52188CED2A009FEB8B /* SISLLogParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SISLLogParser.m; sourceTree = "<group>"; };
+		F0CFFE54188CEE89009FEB8B /* SIReporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIReporter.h; sourceTree = "<group>"; };
+		F0CFFE55188CEE89009FEB8B /* SIReporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIReporter.m; sourceTree = "<group>"; };
+		F0CFFE57188CEEE8009FEB8B /* SITerminalReporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SITerminalReporter.h; sourceTree = "<group>"; };
+		F0CFFE58188CEEE8009FEB8B /* SITerminalReporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SITerminalReporter.m; sourceTree = "<group>"; };
+		F0D8A119188DD8A700C90E41 /* watchdog.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = watchdog.sh; path = ../scripts/watchdog.sh; sourceTree = "<group>"; };
+		F0E9223E18A087C200E59B1D /* SIFileReportWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIFileReportWriter.h; sourceTree = "<group>"; };
+		F0E9223F18A087C200E59B1D /* SIFileReportWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIFileReportWriter.m; sourceTree = "<group>"; };
+		F0F5DB8F18C2F12B006BC976 /* SubliminalInstrumentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubliminalInstrumentTests.m; sourceTree = "<group>"; };
+		F0F5DB9618C36250006BC976 /* NSPipe+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPipe+Utilities.h"; sourceTree = "<group>"; };
+		F0F5DB9718C36250006BC976 /* NSPipe+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPipe+Utilities.m"; sourceTree = "<group>"; };
+		F0F726E618B0D33F00D2BBE7 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		F0F726F318B0D6B600D2BBE7 /* subliminal-instrument Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "subliminal-instrument Tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F026C418188A1279006B7DB0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F026C41F188A1279006B7DB0 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F0F726F018B0D6B600D2BBE7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F0F726F418B0D6B600D2BBE7 /* SenTestingKit.framework in Frameworks */,
+				F0F7271018B0D7DF00D2BBE7 /* JavaScriptCore.framework in Frameworks */,
+				F0F7270518B0D6C900D2BBE7 /* OCMock.framework in Frameworks */,
+				F0F7270418B0D6C400D2BBE7 /* SLLogger.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F025784E1890F5510084A6DB /* subliminal-instrument Tests */ = {
+			isa = PBXGroup;
+			children = (
+				F025784F1890F5510084A6DB /* Supporting Files */,
+				F0ACA86918963F720008D182 /* OCMock */,
+				F025785D1890F9020084A6DB /* Subliminal */,
+				F0ACA87C189640BB0008D182 /* Utilities */,
+				F0CA5A2918BF133500C7D6D8 /* SIOptionsTests.m */,
+				F0F5DB8F18C2F12B006BC976 /* SubliminalInstrumentTests.m */,
+				F025787D1890F9DB0084A6DB /* SISLLogParserTests.m */,
+				F009213C18A8904E00F4CF62 /* SITerminalStringFormatterTests.m */,
+			);
+			path = "subliminal-instrument Tests";
+			sourceTree = "<group>";
+		};
+		F025784F1890F5510084A6DB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F02578501890F5510084A6DB /* subliminal-instrument Tests-Info.plist */,
+				F02578511890F5510084A6DB /* InfoPlist.strings */,
+				F02578561890F5510084A6DB /* subliminal-instrument Tests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F025785D1890F9020084A6DB /* Subliminal */ = {
+			isa = PBXGroup;
+			children = (
+				F025786B1890F9290084A6DB /* Subliminal.xcodeproj */,
+			);
+			name = Subliminal;
+			sourceTree = "<group>";
+		};
+		F025786C1890F9290084A6DB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F02578741890F9290084A6DB /* libSubliminal.a */,
+				F02578761890F9290084A6DB /* Subliminal (Unit Tests).octest */,
+				F02578781890F9290084A6DB /* Subliminal (Integration Tests).app */,
+				F02578C3189106200084A6DB /* SLLogger.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F026C412188A1279006B7DB0 = {
+			isa = PBXGroup;
+			children = (
+				F026C420188A1279006B7DB0 /* subliminal-instrument */,
+				F025784E1890F5510084A6DB /* subliminal-instrument Tests */,
+				F026C41D188A1279006B7DB0 /* Frameworks */,
+				F026C41C188A1279006B7DB0 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F026C41C188A1279006B7DB0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F026C41B188A1279006B7DB0 /* subliminal-instrument */,
+				F0F726F318B0D6B600D2BBE7 /* subliminal-instrument Tests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F026C41D188A1279006B7DB0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F0F726E618B0D33F00D2BBE7 /* SenTestingKit.framework */,
+				F02578C718910E0B0084A6DB /* JavaScriptCore.framework */,
+				F026C41E188A1279006B7DB0 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F026C420188A1279006B7DB0 /* subliminal-instrument */ = {
+			isa = PBXGroup;
+			children = (
+				F026C421188A1279006B7DB0 /* main.m */,
+				F08298B3188A832C002AB6ED /* NSTask+Utilities.h */,
+				F08298B4188A832C002AB6ED /* NSTask+Utilities.m */,
+				F063D46018B328B7005C2655 /* NSFileHandle+StringWriting.h */,
+				F063D46118B328B7005C2655 /* NSFileHandle+StringWriting.m */,
+				F0F5DB9618C36250006BC976 /* NSPipe+Utilities.h */,
+				F0F5DB9718C36250006BC976 /* NSPipe+Utilities.m */,
+				F0CDB5F018B40864001D00D6 /* SIOptions.h */,
+				F0CDB5F118B40864001D00D6 /* SIOptions.m */,
+				F0CFFE4A188CBE38009FEB8B /* SubliminalInstrument.h */,
+				F0CFFE4B188CBE38009FEB8B /* SubliminalInstrument.m */,
+				F00CD4BE18CABDFF00C652DC /* SISLLogEvents.h */,
+				F0CFFE51188CED2A009FEB8B /* SISLLogParser.h */,
+				F0CFFE52188CED2A009FEB8B /* SISLLogParser.m */,
+				F0CFFE54188CEE89009FEB8B /* SIReporter.h */,
+				F0CFFE55188CEE89009FEB8B /* SIReporter.m */,
+				F0CFFE57188CEEE8009FEB8B /* SITerminalReporter.h */,
+				F0CFFE58188CEEE8009FEB8B /* SITerminalReporter.m */,
+				F0E9223E18A087C200E59B1D /* SIFileReportWriter.h */,
+				F0E9223F18A087C200E59B1D /* SIFileReportWriter.m */,
+				F009213918A87E4400F4CF62 /* SITerminalStringFormatter.h */,
+				F009213A18A87E4400F4CF62 /* SITerminalStringFormatter.m */,
+				F026C425188A1279006B7DB0 /* subliminal_instrument.1 */,
+				F026C423188A1279006B7DB0 /* Supporting Files */,
+				F0D8A119188DD8A700C90E41 /* watchdog.sh */,
+			);
+			path = "subliminal-instrument";
+			sourceTree = "<group>";
+		};
+		F026C423188A1279006B7DB0 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F026C424188A1279006B7DB0 /* subliminal-instrument-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F0ACA86918963F720008D182 /* OCMock */ = {
+			isa = PBXGroup;
+			children = (
+				F0ACA86A189640580008D182 /* OCMock.xcodeproj */,
+			);
+			name = OCMock;
+			sourceTree = "<group>";
+		};
+		F0ACA86B189640580008D182 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F0ACA872189640580008D182 /* OCMock.framework */,
+				F0ACA874189640580008D182 /* OCMockTests.octest */,
+				F0ACA876189640580008D182 /* libOCMock.a */,
+				F0ACA878189640580008D182 /* OCMockTestsTouch.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F0ACA87C189640BB0008D182 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				F0ACA89D189647C80008D182 /* SILoggingTerminal.js */,
+				F0ACA87D189641170008D182 /* SILoggingTerminal.h */,
+				F0ACA87E189641170008D182 /* SILoggingTerminal.m */,
+			);
+			name = Utilities;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F026C41A188A1279006B7DB0 /* subliminal-instrument */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F026C429188A1279006B7DB0 /* Build configuration list for PBXNativeTarget "subliminal-instrument" */;
+			buildPhases = (
+				F026C417188A1279006B7DB0 /* Sources */,
+				F026C418188A1279006B7DB0 /* Frameworks */,
+				F0D8A11C188DDCD900C90E41 /* Copy watchdog.sh */,
+				F0D8A11E188DDDD900C90E41 /* Make watchdog.sh executable */,
+				F026C419188A1279006B7DB0 /* Copy man page */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "subliminal-instrument";
+			productName = "subliminal-instrument";
+			productReference = F026C41B188A1279006B7DB0 /* subliminal-instrument */;
+			productType = "com.apple.product-type.tool";
+		};
+		F0F726F218B0D6B600D2BBE7 /* subliminal-instrument Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F0F7270018B0D6B600D2BBE7 /* Build configuration list for PBXNativeTarget "subliminal-instrument Tests" */;
+			buildPhases = (
+				F0CA5A2E18BF137300C7D6D8 /* Sources */,
+				F0F726F018B0D6B600D2BBE7 /* Frameworks */,
+				F00CD54A18CADCE000C652DC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F0F726FF18B0D6B600D2BBE7 /* PBXTargetDependency */,
+				F0F7270718B0D6D500D2BBE7 /* PBXTargetDependency */,
+			);
+			name = "subliminal-instrument Tests";
+			productName = "subliminal-instrument Tests";
+			productReference = F0F726F318B0D6B600D2BBE7 /* subliminal-instrument Tests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F026C413188A1279006B7DB0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = jeffreywear;
+				TargetAttributes = {
+					F0F726F218B0D6B600D2BBE7 = {
+						TestTargetID = F026C41A188A1279006B7DB0;
+					};
+				};
+			};
+			buildConfigurationList = F026C416188A1279006B7DB0 /* Build configuration list for PBXProject "subliminal-instrument" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = F026C412188A1279006B7DB0;
+			productRefGroup = F026C41C188A1279006B7DB0 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = F0ACA86B189640580008D182 /* Products */;
+					ProjectRef = F0ACA86A189640580008D182 /* OCMock.xcodeproj */;
+				},
+				{
+					ProductGroup = F025786C1890F9290084A6DB /* Products */;
+					ProjectRef = F025786B1890F9290084A6DB /* Subliminal.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				F026C41A188A1279006B7DB0 /* subliminal-instrument */,
+				F0F726F218B0D6B600D2BBE7 /* subliminal-instrument Tests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		F02578741890F9290084A6DB /* libSubliminal.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSubliminal.a;
+			remoteRef = F02578731890F9290084A6DB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F02578761890F9290084A6DB /* Subliminal (Unit Tests).octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Subliminal (Unit Tests).octest";
+			remoteRef = F02578751890F9290084A6DB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F02578781890F9290084A6DB /* Subliminal (Integration Tests).app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "Subliminal (Integration Tests).app";
+			remoteRef = F02578771890F9290084A6DB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F02578C3189106200084A6DB /* SLLogger.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SLLogger.framework;
+			remoteRef = F02578C2189106200084A6DB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F0ACA872189640580008D182 /* OCMock.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OCMock.framework;
+			remoteRef = F0ACA871189640580008D182 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F0ACA874189640580008D182 /* OCMockTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = OCMockTests.octest;
+			remoteRef = F0ACA873189640580008D182 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F0ACA876189640580008D182 /* libOCMock.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libOCMock.a;
+			remoteRef = F0ACA875189640580008D182 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F0ACA878189640580008D182 /* OCMockTestsTouch.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = OCMockTestsTouch.octest;
+			remoteRef = F0ACA877189640580008D182 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F00CD54A18CADCE000C652DC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F00CD55318CADCE700C652DC /* SILoggingTerminal.js in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F0D8A11E188DDDD900C90E41 /* Make watchdog.sh executable */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Make watchdog.sh executable";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "chmod +x \"${BUILT_PRODUCTS_DIR}/watchdog.sh\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F026C417188A1279006B7DB0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F0CFFE56188CEE89009FEB8B /* SIReporter.m in Sources */,
+				F009213B18A87E4400F4CF62 /* SITerminalStringFormatter.m in Sources */,
+				F0CFFE53188CED2A009FEB8B /* SISLLogParser.m in Sources */,
+				F0CFFE59188CEEE8009FEB8B /* SITerminalReporter.m in Sources */,
+				F08298B5188A832C002AB6ED /* NSTask+Utilities.m in Sources */,
+				F0E9224018A087C200E59B1D /* SIFileReportWriter.m in Sources */,
+				F026C422188A1279006B7DB0 /* main.m in Sources */,
+				F0CDB5F218B40864001D00D6 /* SIOptions.m in Sources */,
+				F063D46218B328B7005C2655 /* NSFileHandle+StringWriting.m in Sources */,
+				F0CFFE4C188CBE38009FEB8B /* SubliminalInstrument.m in Sources */,
+				F0F5DB9818C36250006BC976 /* NSPipe+Utilities.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F0CA5A2E18BF137300C7D6D8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F0CA5A3018BF144400C7D6D8 /* SIOptionsTests.m in Sources */,
+				F0F5DB9018C2F12B006BC976 /* SubliminalInstrumentTests.m in Sources */,
+				F0F5DB9518C302ED006BC976 /* NSFileHandle+StringWriting.m in Sources */,
+				F0F5DB9418C302DB006BC976 /* SubliminalInstrument.m in Sources */,
+				F00CD50A18CACD9200C652DC /* SIFileReportWriter.m in Sources */,
+				F00CD4F518CAC92300C652DC /* SISLLogParser.m in Sources */,
+				F0CA5A2F18BF138300C7D6D8 /* SIOptions.m in Sources */,
+				F00CD4EF18CAC8FF00C652DC /* SITerminalReporter.m in Sources */,
+				F00CD4F318CAC90900C652DC /* SIReporter.m in Sources */,
+				F0F5DB9918C362BC006BC976 /* NSPipe+Utilities.m in Sources */,
+				F0F7270B18B0D70B00D2BBE7 /* SITerminalStringFormatterTests.m in Sources */,
+				F0F7270D18B0D78C00D2BBE7 /* SITerminalStringFormatter.m in Sources */,
+				F0F7270A18B0D70700D2BBE7 /* SISLLogParserTests.m in Sources */,
+				F0F7270E18B0D79500D2BBE7 /* SILoggingTerminal.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F0F726FF18B0D6B600D2BBE7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F026C41A188A1279006B7DB0 /* subliminal-instrument */;
+			targetProxy = F0F726FE18B0D6B600D2BBE7 /* PBXContainerItemProxy */;
+		};
+		F0F7270718B0D6D500D2BBE7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = OCMock;
+			targetProxy = F0F7270618B0D6D500D2BBE7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		F02578511890F5510084A6DB /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F02578521890F5510084A6DB /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F026C427188A1279006B7DB0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		F026C428188A1279006B7DB0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		F026C42A188A1279006B7DB0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "subliminal-instrument/subliminal-instrument-Prefix.pch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		F026C42B188A1279006B7DB0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "subliminal-instrument/subliminal-instrument-Prefix.pch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		F0F7270118B0D6B600D2BBE7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "subliminal-instrument Tests/subliminal-instrument Tests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "subliminal-instrument Tests/subliminal-instrument Tests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		F0F7270218B0D6B600D2BBE7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "subliminal-instrument Tests/subliminal-instrument Tests-Prefix.pch";
+				INFOPLIST_FILE = "subliminal-instrument Tests/subliminal-instrument Tests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F026C416188A1279006B7DB0 /* Build configuration list for PBXProject "subliminal-instrument" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F026C427188A1279006B7DB0 /* Debug */,
+				F026C428188A1279006B7DB0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F026C429188A1279006B7DB0 /* Build configuration list for PBXNativeTarget "subliminal-instrument" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F026C42A188A1279006B7DB0 /* Debug */,
+				F026C42B188A1279006B7DB0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F0F7270018B0D6B600D2BBE7 /* Build configuration list for PBXNativeTarget "subliminal-instrument Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F0F7270118B0D6B600D2BBE7 /* Debug */,
+				F0F7270218B0D6B600D2BBE7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F026C413188A1279006B7DB0 /* Project object */;
+}
