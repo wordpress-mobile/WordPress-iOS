@@ -253,24 +253,39 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
 
+    // Define failure block
+    void (^failureBlock)(NSError *error) = ^void(NSError *error) {
+        readerPost.isReblogged = NO;
+        [self.managedObjectContext performBlockAndWait:^{
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        }];
+        if(failure) {
+            failure(error);
+        }
+    };
+
+    // Define success block
+    void (^successBlock)(BOOL isReblogged) = ^void(BOOL isReblogged) {
+        if (!isReblogged) {
+            // This is a failsafe. If we receive a success from the REST api, and
+            // isReblogged is false then either the user has disabled rebloging,
+            // or its not a wpcom blog. We shouldn't reach this point but just in case...
+            NSString *description = NSLocalizedString(@"Reblogging might not be permitted for this post.", @"An error description explaining that a post could not be reblogged.");
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : description };
+            NSError *error = [NSError errorWithDomain:ReaderPostServiceErrorDomain code:0 userInfo:userInfo];
+            failureBlock(error);
+        } else if (success) {
+            success();
+        }
+    };
+
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
     [remoteService reblogPost:[readerPost.postID integerValue]
                      fromSite:[readerPost.siteID integerValue]
                        toSite:siteID
                          note:note
-                      success:^(BOOL isReblogged) {
-                          if(success) {
-                              success();
-                          }
-                      } failure:^(NSError *error) {
-                          readerPost.isReblogged = NO;
-                          [self.managedObjectContext performBlockAndWait:^{
-                              [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                          }];
-                          if(failure) {
-                              failure(error);
-                          }
-                      }];
+                      success:successBlock
+                      failure:failureBlock];
 }
 
 - (void)deletePostsWithNoTopic {
