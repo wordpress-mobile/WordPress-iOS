@@ -13,9 +13,9 @@ const CGFloat WPContentAttributionLabelHeight = 18.0;
     self.contentProvider = nil;
 }
 
-- (instancetype)init
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [super init];
+    self = [super initWithFrame:frame];
     if (self) {
         _avatarImageView = [self imageViewForAvatar];
         [self addSubview:self.avatarImageView];

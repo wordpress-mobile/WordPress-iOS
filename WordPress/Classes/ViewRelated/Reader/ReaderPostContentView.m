@@ -16,9 +16,9 @@
 
 #pragma mark - LifeCycle Methods
 
-- (instancetype)init
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [super init];
+    self = [super initWithFrame:frame];
     if (self) {
         // Action buttons
         _reblogButton = [super createActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-reblog-done"]];
@@ -42,6 +42,7 @@
 - (void)configurePost:(ReaderPost *)post
 {
     self.post = post;
+    self.shouldShowActions = post.isWPCom;
     self.contentProvider = post;
 }
 
@@ -78,6 +79,7 @@
 - (void)configureActionButtons
 {
     if (!self.shouldShowActions) {
+        self.actionButtons = @[];
         return;
     }
 
@@ -96,7 +98,7 @@
         [actionButtons addObject:self.reblogButton];
     }
     
-    self.actionView.actionButtons = actionButtons;
+    self.actionButtons = actionButtons;
 
     [self updateActionButtons];
 }

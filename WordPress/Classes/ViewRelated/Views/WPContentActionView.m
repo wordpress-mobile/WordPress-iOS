@@ -27,9 +27,9 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
     self.contentProvider = nil;
 }
 
-- (instancetype)init
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [super init];
+    self = [super initWithFrame:frame];
     if (self) {
         _currentActionButtons = [NSMutableArray array];
         _buttonConstraints = [NSMutableArray array];
