@@ -45,7 +45,7 @@ static NSInteger RowIndexForDatePicker = 0;
 
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
 
-@interface PostSettingsViewController () <UITextFieldDelegate, WPTableImageSourceDelegate, WPPickerViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
+@interface PostSettingsViewController () <UITextFieldDelegate, WPTableImageSourceDelegate, WPPickerViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate> {
     WPMediaUploader *_mediaUploader;
     UIPopoverController *_popover;
 }
@@ -826,6 +826,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     if (IS_IPAD) {
         _popover = [[UIPopoverController alloc] initWithContentViewController:picker];
         CGRect frame = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]];
+        _popover.delegate = self;
         [_popover presentPopoverFromRect:frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
         [self.navigationController presentViewController:picker animated:YES completion:nil];
@@ -970,6 +971,12 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     } failureBlock:^(NSError *error){
         DDLogError(@"can't get asset %@: %@", assetURL, [error localizedDescription]);
     }];
+}
+
+#pragma mark - UIPopoverControllerDelegate methods
+- (void)popoverController:(UIPopoverController *)popoverController willRepositionPopoverToRect:(inout CGRect *)rect inView:(inout UIView *__autoreleasing *)view
+{
+    *rect = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]];
 }
 
 @end
