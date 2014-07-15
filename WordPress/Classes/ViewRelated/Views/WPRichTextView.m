@@ -23,11 +23,11 @@
 #pragma mark - LifeCycle Methods
 
 + (void)initialize {
-	// DTCoreText will cache font descriptors on a background thread. However, because the font cache
-	// updated synchronously, the detail view controller ends up waiting for the fonts to load anyway
-	// (at least for the first time). We'll have DTCoreText prime its font cache here so things are ready
-	// for the detail view, and avoid a perceived lag.
-	[DTCoreTextFontDescriptor fontDescriptorWithFontAttributes:nil];
+    // DTCoreText will cache font descriptors on a background thread. However, because the font cache
+    // updated synchronously, the detail view controller ends up waiting for the fonts to load anyway
+    // (at least for the first time). We'll have DTCoreText prime its font cache here so things are ready
+    // for the detail view, and avoid a perceived lag.
+    [DTCoreTextFontDescriptor fontDescriptorWithFontAttributes:nil];
 }
 
 - (void)dealloc
@@ -36,9 +36,9 @@
     self.textContentView.delegate = nil;
 }
 
-- (instancetype)init
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [super init];
+    self = [super initWithFrame:frame];
     if (self) {
         _mediaArray = [NSMutableArray array];
         _mediaQueue = [[ReaderMediaQueue alloc] initWithDelegate:self];
@@ -73,6 +73,7 @@
 - (void)setEdgeInsets:(UIEdgeInsets)edgeInsets
 {
     self.textContentView.edgeInsets = edgeInsets;
+    [self relayoutTextContentView];
 }
 
 - (NSAttributedString *)attributedString
@@ -83,7 +84,7 @@
 - (void)setAttributedString:(NSAttributedString *)attributedString
 {
     self.textContentView.attributedString = attributedString;
-    [self.textContentView relayoutText];
+    [self relayoutTextContentView];
 }
 
 
@@ -96,11 +97,11 @@
 {
     NSDictionary *views = NSDictionaryOfVariableBindings(_textContentView);
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_textContentView]|"
-                                                                 options:NSLayoutFormatAlignAllLeft
+                                                                 options:0
                                                                  metrics:nil
                                                                    views:views]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_textContentView]|"
-                                                                 options:NSLayoutFormatAlignAllLeft
+                                                                 options:0
                                                                  metrics:nil
                                                                    views:views]];
     [self setNeedsUpdateConstraints];
@@ -167,14 +168,8 @@
 - (void)handleMediaViewLoaded:(ReaderMediaView *)mediaView
 {
     BOOL frameChanged = [self updateMediaLayout:mediaView];
-
     if (frameChanged) {
-        // need to reset the layouter because otherwise we get the old framesetter or cached layout frames
-        self.textContentView.layouter = nil;
-
-        // layout might have changed due to image sizes
-        [self.textContentView relayoutText];
-        [self invalidateIntrinsicContentSize];
+        [self relayoutTextContentView];
     }
 }
 
@@ -186,11 +181,11 @@
     CGSize originalSize = imageView.frame.size;
     CGSize imageSize = imageView.image.size;
 
-	if ([self isEmoji:url]) {
-		CGFloat scale = [UIScreen mainScreen].scale;
-		imageSize.width *= scale;
-		imageSize.height *= scale;
-	} else {
+    if ([self isEmoji:url]) {
+        CGFloat scale = [UIScreen mainScreen].scale;
+        imageSize.width *= scale;
+        imageSize.height *= scale;
+    } else {
         if (imageView.image) {
             CGFloat ratio = imageSize.width / imageSize.height;
             CGFloat width = self.frame.size.width;
@@ -201,20 +196,20 @@
         } else {
             imageSize = CGSizeMake(0.0f, 0.0f);
         }
-	}
+    }
 
     // Widths should always match
     if (imageSize.height != originalSize.height) {
         frameChanged = YES;
     }
 
-	NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
 
-	// update all attachments that matchin this URL (possibly multiple images with same size)
-	for (DTTextAttachment *attachment in [self.textContentView.layoutFrame textAttachmentsWithPredicate:pred]) {
-		attachment.originalSize = originalSize;
-		attachment.displaySize = imageSize;
-	}
+    // update all attachments that matchin this URL (possibly multiple images with same size)
+    for (DTTextAttachment *attachment in [self.textContentView.layoutFrame textAttachmentsWithPredicate:pred]) {
+        attachment.originalSize = originalSize;
+        attachment.displaySize = imageSize;
+    }
 
     return frameChanged;
 }
@@ -253,10 +248,9 @@
         if ([self updateMediaLayout:mediaView]) {
             frameChanged = YES;
         }
-
-        if (frameChanged) {
-            [self relayoutTextContentView];
-        }
+    }
+    if (frameChanged) {
+        [self relayoutTextContentView];
     }
 }
 
@@ -285,34 +279,35 @@
 
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame
 {
-	NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:nil];
+    NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:nil];
 
-	NSURL *URL = [attributes objectForKey:DTLinkAttribute];
-	NSString *identifier = [attributes objectForKey:DTGUIDAttribute];
+    NSURL *URL = [attributes objectForKey:DTLinkAttribute];
+    NSString *identifier = [attributes objectForKey:DTGUIDAttribute];
 
-	DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
-	button.URL = URL;
-	button.minimumHitSize = CGSizeMake(25, 25); // adjusts it's bounds so that button is always large enough
-	button.GUID = identifier;
+    DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
+    button.URL = URL;
+    button.minimumHitSize = CGSizeMake(25, 25); // adjusts it's bounds so that button is always large enough
+    button.GUID = identifier;
 
-	// get image with normal link text
-	UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDefault];
-	[button setImage:normalImage forState:UIControlStateNormal];
+    // get image with normal link text
+    UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDefault];
+    [button setImage:normalImage forState:UIControlStateNormal];
 
-	// get image for highlighted link text
-	UIImage *highlightImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDrawLinksHighlighted];
-	[button setImage:highlightImage forState:UIControlStateHighlighted];
+    // get image for highlighted link text
+    UIImage *highlightImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDrawLinksHighlighted];
+    [button setImage:highlightImage forState:UIControlStateHighlighted];
 
-	// use normal push action for opening URL
-	[button addTarget:self action:@selector(linkAction:) forControlEvents:UIControlEventTouchUpInside];
+    // use normal push action for opening URL
+    [button addTarget:self action:@selector(linkAction:) forControlEvents:UIControlEventTouchUpInside];
 
-	return button;
+    return button;
 }
 
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttachment:(DTTextAttachment *)attachment frame:(CGRect)frame
 {
-    if (!attachment.contentURL)
+    if (!attachment.contentURL) {
         return nil;
+    }
 
     // The textContentView will render the first time with the original frame, and then update when media loads.
     // To avoid showing gaps in the layout due to the original attachment sizes, relayout the view after a brief delay.
@@ -321,21 +316,21 @@
     CGFloat width = CGRectGetWidth(self.textContentView.frame);
     CGFloat availableWidth = width - (self.textContentView.edgeInsets.left + self.textContentView.edgeInsets.right);
 
-	// The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image itself to run out to the edges,
-	// so position it offset by the inverse of _textContentView's edgeInsets.
-	// Remeber to add an extra 10px to the frame to preserve aspect ratio.
-	UIEdgeInsets edgeInsets = self.textContentView.edgeInsets;
-	edgeInsets.left = 0.0 - edgeInsets.left;
-	edgeInsets.top = 0.0;
-	edgeInsets.right = 0.0 - edgeInsets.right;
-	edgeInsets.bottom = 0.0;
+    // The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image itself to run out to the edges,
+    // so position it offset by the inverse of _textContentView's edgeInsets.
+    // Remeber to add an extra 10px to the frame to preserve aspect ratio.
+    UIEdgeInsets edgeInsets = self.textContentView.edgeInsets;
+    edgeInsets.left = 0.0 - edgeInsets.left;
+    edgeInsets.top = 0.0;
+    edgeInsets.right = 0.0 - edgeInsets.right;
+    edgeInsets.bottom = 0.0;
 
-	if ([attachment isKindOfClass:[DTImageTextAttachment class]]) {
-		if ([self isEmoji:attachment.contentURL]) {
-			// minimal frame to suppress drawing context errors with 0 height or width.
-			frame.size.width = MAX(frame.size.width, 1.0);
-			frame.size.height = MAX(frame.size.height, 1.0);
-			ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
+    if ([attachment isKindOfClass:[DTImageTextAttachment class]]) {
+        if ([self isEmoji:attachment.contentURL]) {
+            // minimal frame to suppress drawing context errors with 0 height or width.
+            frame.size.width = MAX(frame.size.width, 1.0);
+            frame.size.height = MAX(frame.size.height, 1.0);
+            ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
             [_mediaArray addObject:imageView];
             [self.mediaQueue enqueueMedia:imageView
                                   withURL:attachment.contentURL
@@ -344,13 +339,13 @@
                                 isPrivate:self.privateContent
                                   success:nil
                                   failure:nil];
-			return imageView;
-		}
+            return imageView;
+        }
 
         DTImageTextAttachment *imageAttachment = (DTImageTextAttachment *)attachment;
 
-		if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
-			UIImage *image = imageAttachment.image;
+        if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
+            UIImage *image = imageAttachment.image;
 
             CGFloat ratio = image.size.width / image.size.height;
             frame.size.width = availableWidth;
@@ -358,22 +353,22 @@
 
             // offset the top edge inset keeping the image from bumping the text above it.
             frame.size.height += edgeInsets.top;
-		} else {
+        } else {
             // minimal frame to suppress drawing context errors with 0 height or width.
             frame.size.width = 1.0;
             frame.size.height = 1.0;
-		}
+        }
 
-		ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
-		imageView.edgeInsets = edgeInsets;
+        ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
+        imageView.edgeInsets = edgeInsets;
 
-		[_mediaArray addObject:imageView];
-		imageView.linkURL = attachment.hyperLinkURL;
-		[imageView addTarget:self action:@selector(imageLinkAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_mediaArray addObject:imageView];
+        imageView.linkURL = attachment.hyperLinkURL;
+        [imageView addTarget:self action:@selector(imageLinkAction:) forControlEvents:UIControlEventTouchUpInside];
 
-		if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
-			[imageView setImage:imageAttachment.image];
-		} else {
+        if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
+            [imageView setImage:imageAttachment.image];
+        } else {
 
             [self.mediaQueue enqueueMedia:imageView
                                   withURL:attachment.contentURL
@@ -382,46 +377,46 @@
                                 isPrivate:self.privateContent
                                   success:nil
                                   failure:nil];
-		}
+        }
 
-		return imageView;
+        return imageView;
 
-	} else {
+    } else {
 
-		ReaderVideoContentType videoType;
+        ReaderVideoContentType videoType;
 
-		if ([attachment isKindOfClass:[DTVideoTextAttachment class]]) {
-			videoType = ReaderVideoContentTypeVideo;
-		} else if ([attachment isKindOfClass:[DTIframeTextAttachment class]]) {
-			videoType = ReaderVideoContentTypeIFrame;
-		} else if ([attachment isKindOfClass:[DTObjectTextAttachment class]]) {
-			videoType = ReaderVideoContentTypeEmbed;
-		} else {
-			return nil; // Can't handle whatever this is :P
-		}
+        if ([attachment isKindOfClass:[DTVideoTextAttachment class]]) {
+            videoType = ReaderVideoContentTypeVideo;
+        } else if ([attachment isKindOfClass:[DTIframeTextAttachment class]]) {
+            videoType = ReaderVideoContentTypeIFrame;
+        } else if ([attachment isKindOfClass:[DTObjectTextAttachment class]]) {
+            videoType = ReaderVideoContentTypeEmbed;
+        } else {
+            return nil; // Can't handle whatever this is :P
+        }
 
         // we won't show the vid until we've loaded its thumb.
         // minimal frame to suppress drawing context errors with 0 height or width.
         frame.size.width = 1.0;
         frame.size.height = 1.0;
 
-		ReaderVideoView *videoView = [[ReaderVideoView alloc] initWithFrame:frame];
-		videoView.edgeInsets = edgeInsets;
+        ReaderVideoView *videoView = [[ReaderVideoView alloc] initWithFrame:frame];
+        videoView.edgeInsets = edgeInsets;
 
-		[_mediaArray addObject:videoView];
-		[videoView setContentURL:attachment.contentURL ofType:videoType success:^(id readerVideoView) {
-			[self handleMediaViewLoaded:readerVideoView];
-		} failure:^(id readerVideoView, NSError *error) {
+        [_mediaArray addObject:videoView];
+        [videoView setContentURL:attachment.contentURL ofType:videoType success:^(id readerVideoView) {
+            [self handleMediaViewLoaded:readerVideoView];
+        } failure:^(id readerVideoView, NSError *error) {
             // if the image is 404, just show a black image.
             ReaderVideoView *videoView = (ReaderVideoView *)readerVideoView;
             videoView.image = [UIImage imageWithColor:[UIColor blackColor] havingSize:CGSizeMake(2.0f, 1.0f)];
-			[self handleMediaViewLoaded:readerVideoView];
-		}];
+            [self handleMediaViewLoaded:readerVideoView];
+        }];
         
-		[videoView addTarget:self action:@selector(videoLinkAction:) forControlEvents:UIControlEventTouchUpInside];
+        [videoView addTarget:self action:@selector(videoLinkAction:) forControlEvents:UIControlEventTouchUpInside];
         
-		return videoView;
-	}
+        return videoView;
+    }
 }
 
 @end

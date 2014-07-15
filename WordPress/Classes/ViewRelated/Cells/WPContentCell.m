@@ -1,6 +1,7 @@
 #import "WPContentCell.h"
 
 #import <AFNetworking/UIKit+AFNetworking.h>
+#import "UIImageView+AFNetworkingExtra.h"
 #import "WPComLanguages.h"
 #import "UIImageView+Gravatar.h"
 #import "NSDate+StringFormatting.h"
@@ -184,7 +185,7 @@ CGFloat const WPContentCellDefaultOrigin                    = 15.0f;
         NSString *url = [NSString stringWithFormat:@"%@", [contentProvider avatarURLForDisplay]];
         if (url) {
             url = [url stringByReplacingOccurrencesOfString:@"s=256" withString:[NSString stringWithFormat:@"s=%.0f", WPContentCellImageWidth * [[UIScreen mainScreen] scale]]];
-            [_gravatarImageView setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"gravatar"]];
+            [_gravatarImageView setImageWithURL:[NSURL URLWithString:url] emptyCachePlaceholderImage:[UIImage imageNamed:@"gravatar"] ];
         } else {
             [_gravatarImageView setImage:[UIImage imageNamed:@"gravatar"]];
         }
