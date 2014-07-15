@@ -72,7 +72,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 }
 
 - (id)initWithPost:(AbstractPost *)aPost {
-    self = [super init];
+    self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.apost = aPost;
         _mediaUploader = [[WPMediaUploader alloc] init];
@@ -106,6 +106,9 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [self.tableView registerNib:[UINib nibWithNibName:@"WPTableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
     
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 44.0)]; // add some vertical padding
+    
+    // This hack is required to compensate first section fake height of 1.0f
+    self.tableView.contentInset = UIEdgeInsetsMake(-1.0f, 0, 0, 0);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -335,7 +338,11 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (IS_IPAD && section == 0) {
         return WPTableViewTopMargin;
+    } else if (section == 0) {
+        // Grouped table views don't allow 0.0f values
+        return 1.0f;
     }
+    
     NSString *title = [self titleForHeaderInSection:section];
     return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
