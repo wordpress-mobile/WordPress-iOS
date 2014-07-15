@@ -208,24 +208,19 @@
     return [NSString stringWithFormat:@"%@|%@", [url absoluteString], NSStringFromCGSize(size)];
 }
 
-/**
- Returns a Photon URL to resize the image at the given `url` to the specified `size`.
- */
 - (NSURL *)photonURLForURL:(NSURL *)url withSize:(CGSize)size
 {
     NSString *urlString = [url absoluteString];
-    if ([urlString hasPrefix:@"http"]) {
-        NSRange range = [urlString rangeOfString:@"http://"];
-        if (range.location == 0) {
-            urlString = [urlString substringFromIndex:range.length];
-        } else {
-            range = [urlString rangeOfString:@"https://"];
-            if (range.location == 0) {
-                // Photon doesn't support https
-                return url;
-            }
-        }
+    NSString *sslFlag = @"";
+    if ([urlString hasPrefix:@"https"]) {
+        sslFlag = @"ssl=1";
     }
+
+    NSRange range = [urlString rangeOfString:@"://"];
+    if (range.location != NSNotFound) {
+        urlString = [urlString substringFromIndex:(range.location + range.length)];
+    }
+
     // Photon will fail if the URL doesn't end in one of the accepted extensions
     NSArray *acceptedImageTypes = @[@"gif", @"jpg", @"jpeg", @"png"];
     if ([acceptedImageTypes indexOfObject:url.pathExtension] == NSNotFound) {
@@ -253,14 +248,19 @@
     if (imgpressRange.location != NSNotFound) {
         urlString = [urlString substringToIndex:imgpressRange.location];
     }
-    
+
+    NSString *photonURLString;
     if (height == 0) {
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"https://i0.wp.com/%@?w=%i", urlString, width]];
+        photonURLString = [NSString stringWithFormat:@"https://i0.wp.com/%@?w=%i", urlString, width];
     } else {
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"https://i0.wp.com/%@?resize=%i,%i", urlString, width, height]];
+        photonURLString = [NSString stringWithFormat:@"https://i0.wp.com/%@?resize=%i,%i", urlString, width, height];
     }
-    
-    return url;
+
+    if (sslFlag) {
+        photonURLString = [NSString stringWithFormat:@"%@&%@", photonURLString, sslFlag];
+    }
+
+    return [NSURL URLWithString:photonURLString];
 }
 
 @end
