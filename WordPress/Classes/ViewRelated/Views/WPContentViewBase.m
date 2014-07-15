@@ -42,9 +42,9 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     self.delegate = nil;
 }
 
-- (instancetype)init
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [super init];
+    self = [super initWithFrame:frame];
     if (self) {
         self.labelsNeedingPreferredMaxLayoutWidth = [NSMutableArray array];
         [self constructSubviews];
