@@ -82,7 +82,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [WPNUXUtility backgroundColor];
+    self.view.backgroundColor = [WPStyleGuide wordPressBlue];
         
     [self initializeView];
     
