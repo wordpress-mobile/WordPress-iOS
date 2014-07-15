@@ -133,6 +133,11 @@ typedef enum {
     self.commentPublisher.delegate = self;
 
     self.tableView.tableHeaderView = self.inlineComposeView;
+
+    // Let pushed view controllers just show an arrow for the back button, not title.
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] init];
+    backButton.title = @"";
+    self.navigationItem.backBarButtonItem = backButton;
 }
 
 - (void)viewWillAppear:(BOOL)animated
