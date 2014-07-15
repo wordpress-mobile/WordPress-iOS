@@ -7,4 +7,6 @@
 				success:(void (^)(UIImage *image))success
 				failure:(void (^)(NSError *error))failure;
 
+- (void)setImageWithURL:(NSURL *)url emptyCachePlaceholderImage:(UIImage *)emptyCachePlaceholderImage;
+
 @end

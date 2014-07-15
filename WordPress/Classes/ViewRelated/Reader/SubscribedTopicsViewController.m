@@ -206,7 +206,7 @@
     if (indexPath.section == 0) {
         return NO;
     }
-    return YES;
+    return self.isEditing;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
