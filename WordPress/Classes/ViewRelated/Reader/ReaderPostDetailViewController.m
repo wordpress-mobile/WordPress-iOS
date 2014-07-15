@@ -29,12 +29,6 @@ static NSInteger const ReaderCommentsToSync = 100;
 static NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
 static CGFloat const SectionHeaderHeight = 25.0f;
 
-typedef enum {
-    ReaderDetailContentSection = 0,
-    ReaderDetailCommentsSection,
-    ReaderDetailSectionCount
-} ReaderDetailSection;
-
 @interface ReaderPostDetailViewController ()<UIActionSheetDelegate,
                                             MFMailComposeViewControllerDelegate,
                                             UIPopoverControllerDelegate,
@@ -111,7 +105,9 @@ typedef enum {
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:@"PostCell"];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
-	[self buildHeader];
+    [self configurePostView];
+    [self configureTableHeaderView];
+
 	[WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.shareButton forNavigationItem:self.navigationItem];
 
 	[self prepareComments];
@@ -131,7 +127,7 @@ typedef enum {
 
     self.commentPublisher.delegate = self;
 
-    self.tableView.tableHeaderView = self.inlineComposeView;
+    [self.view addSubview:self.inlineComposeView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -152,6 +148,7 @@ typedef enum {
     toolbar.tintColor = [UIColor whiteColor];
     toolbar.translucent = NO;
 
+    [self refreshHeightForTableHeaderView];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -186,20 +183,18 @@ typedef enum {
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    [self.postView refreshMediaLayout]; // Resize media in the post detail to match the width of the new orientation.
+
+    if (IS_IPHONE) {
+        // Resize media in the post detail to match the width of the new orientation.
+        // No need to refresh on iPad when using a fixed width.
+        [self.postView refreshMediaLayout];
+        [self refreshHeightForTableHeaderView];
+    }
 
 	// Make sure a selected comment is visible after rotating.
 	if ([self.tableView indexPathForSelectedRow] != nil && self.inlineComposeView.isDisplayed) {
 		[self.tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionNone animated:NO];
 	}
-}
-
-- (void)refreshPostViewCell
-{
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-    [self.tableView beginUpdates];
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    [self.tableView endUpdates];
 }
 
 
@@ -225,9 +220,10 @@ typedef enum {
     [self.postView setFeaturedImage:self.featuredImage];
 }
 
-- (void)buildHeader
+- (void)configurePostView
 {
-    self.postView = [[ReaderPostRichContentView alloc] init];
+    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
+    self.postView = [[ReaderPostRichContentView alloc] initWithFrame:CGRectMake(0.0, 0.0, width, 1.0)]; // minimal frame so rich text will have initial layout.
     self.postView.translatesAutoresizingMaskIntoConstraints = NO;
     self.postView.delegate = self;
     [self.postView configurePost:self.post];
@@ -256,6 +252,53 @@ typedef enum {
             }
         }
     }
+
+}
+
+- (void)configureTableHeaderView
+{
+    UIView *tableHeaderView = [[UIView alloc] init];
+    [tableHeaderView addSubview:self.postView];
+
+    CGFloat marginTop = IS_IPAD ? WPTableViewTopMargin : 0;
+    NSDictionary *views = NSDictionaryOfVariableBindings(_postView);
+    NSDictionary *metrics = @{@"WPTableViewWidth": @(WPTableViewFixedWidth), @"marginTop": @(marginTop)};
+    if (IS_IPAD) {
+        [tableHeaderView addConstraint:[NSLayoutConstraint constraintWithItem:self.postView
+                                                                    attribute:NSLayoutAttributeCenterX
+                                                                    relatedBy:NSLayoutRelationEqual
+                                                                       toItem:tableHeaderView
+                                                                    attribute:NSLayoutAttributeCenterX
+                                                                   multiplier:1.0
+                                                                     constant:0.0]];
+        [tableHeaderView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_postView(WPTableViewWidth)]"
+                                                                                options:0
+                                                                                metrics:metrics
+                                                                                  views:views]];
+    } else {
+        [tableHeaderView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_postView]|"
+                                                                                options:0
+                                                                                metrics:nil
+                                                                                  views:views]];
+    }
+    // Don't anchor the post view to the bottom of its superview allows for (visually) smoother rotation.
+    [tableHeaderView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(marginTop)-[_postView]"
+                                                                            options:0
+                                                                            metrics:metrics
+                                                                              views:views]];
+    self.tableView.tableHeaderView = tableHeaderView;
+    [self refreshHeightForTableHeaderView];
+}
+
+- (void)refreshHeightForTableHeaderView
+{
+    CGFloat marginTop = IS_IPAD ? WPTableViewTopMargin : 0;
+    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
+    CGSize size = [self.postView sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
+    CGFloat height = size.height + marginTop;
+    UIView *tableHeaderView = self.tableView.tableHeaderView;
+    tableHeaderView.frame = CGRectMake(0.0, 0.0, CGRectGetWidth(self.tableView.bounds), height);
+    self.tableView.tableHeaderView = tableHeaderView;
 }
 
 - (UIBarButtonItem *)shareButton
@@ -598,7 +641,7 @@ typedef enum {
 - (void)richTextViewDidLoadAllMedia:(WPRichTextView *)richTextView
 {
     [self.postView layoutIfNeeded];
-    [self refreshPostViewCell];
+    [self refreshHeightForTableHeaderView];
 }
 
 
@@ -726,21 +769,12 @@ typedef enum {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return IS_IPHONE ? 1 : WPTableViewTopMargin;
-    }
-    
     return SectionHeaderHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
-
-    if (indexPath.section == ReaderDetailContentSection) {
-        CGSize size = [self.postView sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
-        return size.height + 1;
-    }
     
 	if ([self.comments count] == 0) {
 		return 0.0f;
@@ -755,37 +789,16 @@ typedef enum {
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == ReaderDetailContentSection) {
-        return 1;
-    }
 	return [self.comments count];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	return ReaderDetailSectionCount;
+	return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == ReaderDetailContentSection) {
-        UITableViewCell *postCell = [self.tableView dequeueReusableCellWithIdentifier:@"PostCell"];
-        postCell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-        [postCell.contentView addSubview:self.postView];
-
-        NSDictionary *views = NSDictionaryOfVariableBindings(_postView);
-        [postCell.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_postView]|"
-                                                                                 options:0
-                                                                                 metrics:nil
-                                                                                   views:views]];
-        [postCell.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_postView]|"
-                                                                                 options:0
-                                                                                 metrics:nil
-                                                                                   views:views]];
-        return postCell;
-    }
-    
 	NSString *cellIdentifier = @"ReaderCommentCell";
     ReaderCommentTableViewCell *cell = (ReaderCommentTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
@@ -851,10 +864,6 @@ typedef enum {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == ReaderDetailContentSection) {
-        return;
-    }
-    
 	if (![self canComment]) {
 		[self.tableView deselectRowAtIndexPath:indexPath animated:NO];
 		return;
@@ -865,10 +874,6 @@ typedef enum {
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == ReaderDetailContentSection) {
-        return NO;
-    }
-
     // if we selected the already active comment allow highlight
     // so we can toggle the inline composer
     ReaderComment *comment = [self.comments objectAtIndex:indexPath.row];
@@ -891,10 +896,6 @@ typedef enum {
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == ReaderDetailContentSection) {
-        return;
-    }
-    
 	if (IS_IPAD) {
 		cell.accessoryType = UITableViewCellAccessoryNone;
 	}
