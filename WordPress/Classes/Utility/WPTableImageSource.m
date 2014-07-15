@@ -208,6 +208,9 @@
     return [NSString stringWithFormat:@"%@|%@", [url absoluteString], NSStringFromCGSize(size)];
 }
 
+/**
+ Returns a Photon URL to resize the image at the given `url` to the specified `size`.
+*/
 - (NSURL *)photonURLForURL:(NSURL *)url withSize:(CGSize)size
 {
     NSString *urlString = [url absoluteString];
