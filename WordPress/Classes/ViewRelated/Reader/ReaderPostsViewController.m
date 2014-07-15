@@ -613,6 +613,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)setAvatarForPost:(ReaderPost *)post forCell:(ReaderPostTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
 {
+    if ([cell isEqual:self.cellForLayout]) {
+        return;
+    }
+
     CGSize imageSize = CGSizeMake(WPContentViewAuthorAvatarSize, WPContentViewAuthorAvatarSize);
     UIImage *image = [post cachedAvatarWithSize:imageSize];
     if (image) {
@@ -631,6 +635,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)setImageForPost:(ReaderPost *)post forCell:(ReaderPostTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
 {
+    if ([cell isEqual:self.cellForLayout]) {
+        return;
+    }
+
     NSURL *imageURL = [post featuredImageURLForDisplay];
     if (!imageURL) {
         return;
