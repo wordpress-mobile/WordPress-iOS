@@ -20,10 +20,10 @@
 #import "WPAvatarSource.h"
 #import "ReaderPostService.h"
 #import "ReaderPost.h"
-
 #import "ReaderCommentTableViewCell.h"
 #import "ReaderPostRichContentView.h"
 #import "CustomHighlightButton.h"
+#import "WPTableImageSource.h"
 
 static NSInteger const ReaderCommentsToSync = 100;
 static NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
@@ -37,14 +37,12 @@ static CGFloat const SectionHeaderHeight = 25.0f;
                                             ReaderPostContentViewDelegate,
                                             WPRichTextViewDelegate,
                                             ReaderCommentTableViewCellDelegate,
+                                            WPTableImageSourceDelegate,
                                             NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, strong) UIGestureRecognizer *tapOffKeyboardGesture;
 @property (nonatomic, strong) ReaderPostRichContentView *postView;
-@property (nonatomic, strong) UIImage *featuredImage;
-@property (nonatomic, strong) UIImage *avatarImage;
-@property (nonatomic, strong) NSURL *avatarImageURL;
 @property (nonatomic) BOOL infiniteScrollEnabled;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, strong) UIBarButtonItem *commentButton;
@@ -60,6 +58,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 @property (nonatomic) BOOL isSyncing;
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 @property (nonatomic, strong) ReaderCommentPublisher *commentPublisher;
+@property (nonatomic, strong) WPTableImageSource *featuredImageSource;
 
 @end
 
@@ -77,14 +76,12 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (instancetype)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image avatarImage:(UIImage *)avatarImage
+- (instancetype)initWithPost:(ReaderPost *)post
 {
     self = [super init];
     if (self) {
         _post = post;
         _comments = [NSMutableArray array];
-        _featuredImage = image;
-        _avatarImage = avatarImage;
     }
     return self;
 }
@@ -219,12 +216,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
 #pragma mark - View getters/builders
 
-- (void)updateFeaturedImage:(UIImage *)image
-{
-    self.featuredImage = image;
-    [self.postView setFeaturedImage:self.featuredImage];
-}
-
 - (void)configurePostView
 {
     CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
@@ -252,12 +243,34 @@ static CGFloat const SectionHeaderHeight = 25.0f;
         if ([content rangeOfString:[featuredImageURL absoluteString]].length > 0) {
             self.postView.alwaysHidesFeaturedImage = YES;
         } else {
-            if (self.featuredImage) {
-                [self.postView setFeaturedImage:self.featuredImage];
-            }
+            [self fetchFeaturedImage];
         }
     }
+}
 
+- (void)fetchFeaturedImage
+{
+    if (!self.featuredImageSource) {
+        CGFloat maxWidth = IS_IPAD ? WPTableViewFixedWidth : MAX(CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds));;
+        CGFloat maxHeight = maxWidth * WPContentViewMaxImageHeightPercentage;
+        self.featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
+        self.featuredImageSource.delegate = self;
+    }
+
+    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
+    CGFloat height = round(width * WPContentViewMaxImageHeightPercentage);
+    CGSize size = CGSizeMake(width, height);
+
+    NSURL *imageURL = [self.post featuredImageURLForDisplay];
+    UIImage *image = [self.featuredImageSource imageForURL:imageURL withSize:size];
+    if(image) {
+        [self.postView setFeaturedImage:image];
+    } else {
+        [self.featuredImageSource fetchImageForURL:imageURL
+                                          withSize:size
+                                         indexPath:[NSIndexPath indexPathForRow:0 inSection:0]
+                                         isPrivate:self.post.isPrivate];
+    }
 }
 
 - (void)configureTableHeaderView
@@ -533,7 +546,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
 - (void)postView:(ReaderPostContentView *)postView didReceiveReblogAction:(id)sender
 {
-    RebloggingViewController *controller = [[RebloggingViewController alloc] initWithPost:self.post featuredImage:self.featuredImage avatarImage:self.avatarImage];
+    RebloggingViewController *controller = [[RebloggingViewController alloc] initWithPost:self.post];
     controller.delegate = self;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -1038,6 +1051,14 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     
     //field not found in this view.
     return NO;
+}
+
+
+#pragma mark - WPTableImageSource Delegate
+
+- (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath
+{
+    [self.postView setFeaturedImage:image];
 }
 
 @end
