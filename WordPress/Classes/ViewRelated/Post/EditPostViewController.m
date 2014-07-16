@@ -10,21 +10,31 @@
 #import "MediaService.h"
 #import "WPMediaUploader.h"
 #import "WPUploadStatusView.h"
+#import "WPVideoOptimizer.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
+static void * EditPostViewControllerContext = &EditPostViewControllerContext;
 
-@interface EditPostViewController ()<UIPopoverControllerDelegate> {
-    NSOperationQueue *_mediaUploadQueue;
-}
+NSInteger const MaxNumberOfVideosSelected = 1;
+
+NS_OPTIONS(NSInteger, ActionSheetTag){
+    ActionSheetTagDraftOptions = 201,
+};
+
+@interface EditPostViewController ()<UIPopoverControllerDelegate>
 
 @property (nonatomic, strong) UIButton *titleBarButton;
 @property (nonatomic, strong) UIView *uploadStatusView;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
+@property (nonatomic, assign) int numberOfVideosSelected;
+@property (nonatomic, strong) NSOperationQueue *mediaUploadQueue;
+@property (nonatomic, strong) NSMutableDictionary *videosToOptimize;
+@property (nonatomic, strong) NSString *videoToOptimize;
 
 @end
 
@@ -122,6 +132,7 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
         } else {
             _editMode = EditPostViewControllerModeEditPost;
         }
+        _videosToOptimize = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -130,7 +141,7 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 {
     _mediaUploadQueue = [NSOperationQueue new];
     _mediaUploadQueue.maxConcurrentOperationCount = 4;
-    [_mediaUploadQueue addObserver:self forKeyPath:@"operationCount" options:NSKeyValueObservingOptionNew context:nil];
+    [_mediaUploadQueue addObserver:self forKeyPath:@"operationCount" options:NSKeyValueObservingOptionNew context:EditPostViewControllerContext];
 }
 
 - (void)viewDidLoad
@@ -169,7 +180,7 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     NSInteger blogCount = [blogService blogCountForAllAccounts];
     
-    if (_mediaUploadQueue.operationCount > 0) {
+    if ([self isMediaInUploading] ) {
         self.navigationItem.titleView = self.uploadStatusView;
     } else if(blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
         self.navigationItem.title = [self editorTitle];
@@ -330,9 +341,8 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
     CTAssetsPickerController *picker = [[CTAssetsPickerController alloc] init];
 	picker.delegate = self;
     
-    // Only show photos for now (not videos)
-    picker.assetsFilter = [ALAssetsFilter allPhotos];
-    
+    picker.assetsFilter = [ALAssetsFilter allAssets];
+    self.numberOfVideosSelected = 0;
     [self presentViewController:picker animated:YES completion:nil];
     picker.navigationBar.translucent = NO;
 }
@@ -378,7 +388,7 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
                                          otherButtonTitles:NSLocalizedString(@"Update Draft", @"Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post."), nil];
     }
     
-    actionSheet.tag = 201;
+    actionSheet.tag = ActionSheetTagDraftOptions;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
     if (IS_IPAD) {
         [actionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES];
@@ -572,7 +582,7 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
     [self.post.managedObjectContext performBlock:^{
         NSMutableArray *mediaToRemove = [[NSMutableArray alloc] init];
         for (Media *media in self.post.media) {
-            if (media.remoteStatus == MediaRemoteStatusPushing) {
+            if (media.remoteStatus == MediaRemoteStatusPushing || media.remoteStatus == MediaRemoteStatusProcessing) {
                 [mediaToRemove addObject:media];
             }
         }
@@ -743,10 +753,17 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 - (BOOL)isMediaInUploading
 {
 	BOOL isMediaInUploading = NO;
-	
+	if (_mediaUploadQueue.operationCount > 0){
+        return YES;
+    }
+    
+    if (self.videosToOptimize.count > 0){
+        return YES;
+    }
+    
 	NSSet *mediaFiles = self.post.media;
 	for (Media *media in mediaFiles) {
-		if(media.remoteStatus == MediaRemoteStatusPushing) {
+		if(media.remoteStatus == MediaRemoteStatusPushing || media.remoteStatus == MediaRemoteStatusProcessing) {
 			isMediaInUploading = YES;
 			break;
 		}
@@ -788,7 +805,6 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 - (void)insertMedia:(Media *)media
 {
 	NSString *prefix = @"<br /><br />";
-    
 	if(self.post.content == nil || [self.post.content isEqualToString:@""]) {
 		self.post.content = @"";
 		prefix = @"";
@@ -865,6 +881,22 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
         if (buttonIndex == 1) {
             [self cancelMediaUploads];
         }
+    } else if (alertView.tag == EditPostViewControllerAlertTagVideoCompression) {
+        if (buttonIndex == 0) {
+            self.videosToOptimize[self.videoToOptimize] = @(NO);
+        }
+        if (buttonIndex == 1) {
+            [WPVideoOptimizer setPermanentVideoOptimizationDecisionTaken:YES];
+            [WPVideoOptimizer setShouldOptimizeVideos:NO];
+        }
+        if (buttonIndex == 2) {
+            self.videosToOptimize[self.videoToOptimize] = @(YES);
+        }
+        if (buttonIndex == 3) {
+            [WPVideoOptimizer setPermanentVideoOptimizationDecisionTaken:YES];
+            [WPVideoOptimizer setShouldOptimizeVideos:YES];
+        }
+        
     }
     return;
 }
@@ -880,7 +912,7 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if ([actionSheet tag] == 201) {
+    if ([actionSheet tag] == ActionSheetTagDraftOptions) {
         // Discard
         if (buttonIndex == 0) {
             [self discardChangesAndDismiss];
@@ -949,7 +981,26 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
     
     for (ALAsset *asset in assets) {
         if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
-            // Could handle videos here
+            NSNumber *optimize = self.videosToOptimize[[[asset defaultRepresentation] url].absoluteString];
+            MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+            [mediaService createVideoMediaWithAsset:asset optimize:[optimize boolValue]
+                                    forPostObjectID:self.post.objectID
+                                         completion:^(Media *media,  NSError * error) {
+                if(error){
+                    return;
+                }
+                AFHTTPRequestOperation *operation = [mediaService operationToUploadMedia:media withSuccess:^{
+                    [self insertMedia:media];
+                } failure:^(NSError *error) {
+                    if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
+                        DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
+                        return;
+                    }
+                    
+                    [WPError showAlertWithTitle:NSLocalizedString(@"Upload failed", nil) message:error.localizedDescription];
+                }];
+                [_mediaUploadQueue addOperation:operation];
+            }];            
         } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
             MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
             [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
@@ -967,17 +1018,96 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
             }];
         }
     }
+    [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
     [self setupNavbar];
+    [self.videosToOptimize removeAllObjects];
+}
+
+- (BOOL)assetsPickerController:(CTAssetsPickerController *)picker shouldSelectAsset:(ALAsset *)asset {
+    if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto){
+        return YES;
+    }
+    if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypeVideo){
+        if (!self.post.blog.videoPressEnabled && self.post.blog.isWPcom){
+            [WPError showAlertWithTitle:NSLocalizedString(@"VideoPress unavailable", nil)
+                                message:NSLocalizedString(@"Get the VideoPress upgrade to upload video!", nil)
+                      withLearnMoreButton:YES
+                  learnMorePressedBlock:^(UIAlertView *alertView) {
+                                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://videopress.com"]];
+                                }];
+            return NO;
+        }
+        
+        if (self.numberOfVideosSelected >= MaxNumberOfVideosSelected){
+           [WPError showAlertWithTitle:NSLocalizedString(@"Only one video at a time please", nil)  message:NSLocalizedString(@"Only one video upload at a time please, please deselect previous video selection", nil) withSupportButton:NO];
+            return NO;
+        }
+        
+        return YES;
+    }
+    
+    if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypeUnknown){
+        return NO;
+    }
+    
+    return NO;
+}
+
+- (void)assetsPickerController:(CTAssetsPickerController *)picker didSelectAsset:(ALAsset *)asset {
+    if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypeVideo){
+        self.numberOfVideosSelected++;
+        [self showVideoOptions];
+        self.videoToOptimize = [asset.defaultRepresentation.url absoluteString];
+    }
+}
+
+- (void)assetsPickerController:(CTAssetsPickerController *)picker didDeselectAsset:(ALAsset *)asset {
+    if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypeVideo){
+        self.numberOfVideosSelected--;
+    }
 }
 
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([object isEqual:_mediaUploadQueue]) {
+    if (context == EditPostViewControllerContext && object ==_mediaUploadQueue && [keyPath isEqualToString:@"operationCount"]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self setupNavbar];
         });
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
+}
+
+#pragma mark - Video Press checking
+
+- (void)checkVideoPressEnabled {
+    // Check IFF the blog doesn't already have it enabled
+    // The blog's transient property will last only for an in-memory session
+    if (!self.post.blog.videoPressEnabled) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+        
+        [blogService checkVideoPressEnabledForBlog:self.post.blog success:^(BOOL enabled) {
+            self.post.blog.videoPressEnabled = enabled;
+        } failure:^(NSError *error) {
+            DDLogWarn(@"checkVideoPressEnabled failed: %@", [error localizedDescription]);
+            self.post.blog.videoPressEnabled = NO;
+        }];
+    }
+}
+
+- (void)showVideoOptions{
+    if ([WPVideoOptimizer isPermanentVideoOptimizationDecisionTaken]){
+        return;
+    }
+    UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Video upload options.", @"Title of message with options for video upload size. That shown when a user picks a video to add to a post and it's too big.")
+                                                         message:NSLocalizedString(@"Video files can spend a lot of bandwidth to upload for your blog, do you want to resize them to a lower resolution?.", @"Explanation for the user about videos size. That showns when a user picks a video to add to a post.")
+                                                        delegate:self
+                                               cancelButtonTitle:NSLocalizedString(@"Don't resize", @"User option if doesn't want to compress.")
+                                               otherButtonTitles:NSLocalizedString(@"Never resize", @"User option if he never wants to compress a video before sending it."), NSLocalizedString(@"Compress this time only", @"User option if he wants to compress the video this time only."), NSLocalizedString(@"Resize always", @"User option if he always wants to compress a video before sending it."),nil];
+    alertView.tag = EditPostViewControllerAlertTagVideoCompression;
+    [alertView show];
 }
 
 @end

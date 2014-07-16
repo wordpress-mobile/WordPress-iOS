@@ -24,6 +24,7 @@
 #import "WPXMLRPCEncoder.h"
 #import "WPBase64Utils.h"
 #import "WPStringUtils.h"
+#import <objc/runtime.h>
 
 @interface WPXMLRPCEncoder (WPXMLRPCEncoderPrivate)
 
@@ -168,7 +169,9 @@
     if (_streamingCacheFilePath == nil) {
         [self encodeForStreaming];
     }
-    return [NSInputStream inputStreamWithFileAtPath:_streamingCacheFilePath];
+    NSInputStream * inputStream = [NSInputStream inputStreamWithFileAtPath:_streamingCacheFilePath];
+    objc_setAssociatedObject(inputStream, @selector(bodyStream), self, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    return inputStream;
 }
 
 - (NSUInteger)contentLength {

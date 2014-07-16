@@ -4,6 +4,11 @@
 
 @protocol MediaServiceRemote <NSObject>
 
-- (AFHTTPRequestOperation *)operationToUploadFile:(NSString *)path ofType:(NSString *)type withFilename:(NSString *)filename toBlog:(Blog *)blog success:(void (^)(NSNumber *mediaID, NSString *url))success failure:(void (^)(NSError *error))failure;
+- (AFHTTPRequestOperation *)operationToUploadFile:(NSString *)path
+                                           ofType:(NSString *)type
+                                     withFilename:(NSString *)filename
+                                           toBlog:(Blog *)blog
+                                          success:(void (^)(NSNumber *mediaID, NSString *url, NSString * shortCode))success
+                                          failure:(void (^)(NSError *error))failure;
 
 @end

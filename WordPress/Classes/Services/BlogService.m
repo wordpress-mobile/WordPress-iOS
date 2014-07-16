@@ -328,7 +328,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
                             [self.managedObjectContext performBlockAndWait:^{
                                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
                             }];
-
+                            
                             if (success) {
                                 success();
                             }
@@ -352,7 +352,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 - (void)checkVideoPressEnabledForBlog:(Blog *)blog success:(void (^)(BOOL enabled))success failure:(void (^)(NSError *error))failure
 {
     if (!blog.isWPcom) {
-        if (success) success(YES);
+        if (success) success(NO);
         return;
     }
     NSArray *parameters = [blog getXMLRPCArgsWithExtra:nil];
@@ -362,7 +362,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         if(([responseObject isKindOfClass:[NSDictionary class]]) && ([responseObject objectForKey:@"videopress_enabled"] != nil)) {
             videoEnabled = [[responseObject objectForKey:@"videopress_enabled"] boolValue];
         } else {
-            videoEnabled = YES;
+            videoEnabled = NO;
         }
         
         if (success) {

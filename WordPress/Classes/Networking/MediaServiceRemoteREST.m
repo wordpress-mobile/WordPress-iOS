@@ -20,7 +20,7 @@
                                            ofType:(NSString *)type
                                      withFilename:(NSString *)filename
                                            toBlog:(Blog *)blog
-                                          success:(void (^)(NSNumber *mediaID, NSString *url))success
+                                          success:(void (^)(NSNumber *mediaID, NSString *url, NSString * shortCode))success
                                           failure:(void (^)(NSError *))failure {
     NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/new", blog.dotComID];
     NSMutableURLRequest *request = [self.api.requestSerializer multipartFormRequestWithMethod:@"POST" URLString:[[NSURL URLWithString:apiPath relativeToURL:self.api.baseURL] absoluteString] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
@@ -33,7 +33,7 @@
             NSDictionary *media = [[response arrayForKey:@"media"] firstObject];
             NSNumber *mediaID = [media numberForKey:@"id"];
             NSString *url = [media stringForKey:@"link"];
-            success(mediaID, url);
+            success(mediaID, url, nil);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
