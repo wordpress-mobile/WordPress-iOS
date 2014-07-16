@@ -215,12 +215,12 @@
 {
     NSString *urlString = [url absoluteString];
     NSString *sslFlag = @"";
-    if ([urlString hasPrefix:@"https"]) {
+    if ([[url scheme] isEqualToString:@"https"]) {
         sslFlag = @"ssl=1";
     }
 
     NSRange range = [urlString rangeOfString:@"://"];
-    if (range.location != NSNotFound) {
+    if (range.location != NSNotFound && range.location < 6) {
         urlString = [urlString substringFromIndex:(range.location + range.length)];
     }
 
