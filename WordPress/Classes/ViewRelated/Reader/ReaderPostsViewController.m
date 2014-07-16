@@ -170,8 +170,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         self.viewHasAppeared = YES;
     }
 
-    [self resizeTableViewForImagePreloading];
-
     // Delay box animation after the view appears
     double delayInSeconds = 0.3;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -203,7 +201,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    [self resizeTableViewForImagePreloading];
     [self configureNoResultsView];
 }
 
@@ -270,27 +267,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     } else {
         self.title = NSLocalizedString(@"Reader", @"Default title for the reader before topics are loaded the first time.");
     }
-}
-
-- (void)resizeTableViewForImagePreloading
-{
-    // Use a little trick to preload more images by making the table view longer
-    CGRect rect = self.tableView.frame;
-    CGFloat navigationHeight = self.navigationController.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - self.navigationController.navigationBar.frame.origin.y;
-    CGFloat extraHeight = navigationHeight * RPVCExtraTableViewHeightPercentage;
-    rect.size.height = navigationHeight + extraHeight;
-    self.tableView.frame = rect;
-    
-    // Move insets up to compensate
-    UIEdgeInsets insets = self.tableView.contentInset;
-    insets.bottom = extraHeight + [self tabBarSize].height;
-    self.tableView.contentInset = insets;
-    
-    // Adjust the scroll insets as well
-    UIEdgeInsets scrollInsets = self.tableView.scrollIndicatorInsets;
-    scrollInsets.bottom = insets.bottom;
-    self.tableView.scrollIndicatorInsets = scrollInsets;
-    [self.tableView setNeedsLayout];
 }
 
 - (void)setTitle:(NSString *)title
@@ -500,6 +476,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [service deletePostsWithNoTopic];
     [service fetchPost:postId forSite:blogId success:^(ReaderPost *post) {
+        if (![self.navigationController.topViewController isEqual:self]) {
+            return;
+        }
+        
         ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post
                                                                                             featuredImage:nil
                                                                                               avatarImage:nil];
@@ -574,38 +554,73 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)configureCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath
 {
-	if (!aCell)
+	if (!aCell) {
         return;
+    }
 
-	ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)aCell;
-	cell.selectionStyle = UITableViewCellSelectionStyleNone;
-	cell.accessoryType = UITableViewCellAccessoryNone;
-	
-	ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
+    ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)aCell;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.accessoryType = UITableViewCellAccessoryNone;
 
-	[cell configureCell:post];
+    ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
+
+    [cell configureCell:post];
     [self setImageForPost:post forCell:cell indexPath:indexPath];
     [self setAvatarForPost:post forCell:cell indexPath:indexPath];
-    
+
     cell.postView.delegate = self;
     cell.postView.shouldShowActions = post.isWPCom;
-
 }
 
-- (UIImage *)imageForURL:(NSURL *)imageURL size:(CGSize)imageSize
+- (CGSize)sizeForFeaturedImage
 {
-    if (!imageURL)
-        return nil;
-    
-    if (CGSizeEqualToSize(imageSize, CGSizeZero)) {
-        imageSize.width = self.tableView.bounds.size.width;
-        imageSize.height = round(imageSize.width * WPContentViewMaxImageHeightPercentage);
+    CGSize imageSize = CGSizeZero;
+    imageSize.width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
+    imageSize.height = round(imageSize.width * WPContentViewMaxImageHeightPercentage);
+    return imageSize;
+}
+
+- (void)preloadImagesForCellsAfterIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger numberToPreload = 2; // keep the number small else they compete and slow each other down.
+    for (NSInteger i = 1; i <= numberToPreload; i++) {
+        NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:indexPath.row + i inSection:indexPath.section];
+        if ([self.tableView numberOfRowsInSection:indexPath.section] < nextIndexPath.row) {
+            ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:nextIndexPath];
+            NSURL *imageURL = [post featuredImageURLForDisplay];
+            if (!imageURL) {
+                // No image to feature.
+                continue;
+            }
+
+            UIImage *image = [self imageForURL:imageURL];
+            if (image) {
+                // already cached.
+                continue;
+            } else {
+                [self.featuredImageSource fetchImageForURL:imageURL
+                                                  withSize:[self sizeForFeaturedImage]
+                                                 indexPath:indexPath
+                                                 isPrivate:post.isPrivate];
+            }
+        }
     }
-    return [self.featuredImageSource imageForURL:imageURL withSize:imageSize];
+}
+
+- (UIImage *)imageForURL:(NSURL *)imageURL
+{
+    if (!imageURL) {
+        return nil;
+    }
+    return [self.featuredImageSource imageForURL:imageURL withSize:[self sizeForFeaturedImage]];
 }
 
 - (void)setAvatarForPost:(ReaderPost *)post forCell:(ReaderPostTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
 {
+    if ([cell isEqual:self.cellForLayout]) {
+        return;
+    }
+
     CGSize imageSize = CGSizeMake(WPContentViewAuthorAvatarSize, WPContentViewAuthorAvatarSize);
     UIImage *image = [post cachedAvatarWithSize:imageSize];
     if (image) {
@@ -624,24 +639,22 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)setImageForPost:(ReaderPost *)post forCell:(ReaderPostTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
 {
-    NSURL *imageURL = post.featuredImageURL;
-    
-    if (!imageURL) {
+    if ([cell isEqual:self.cellForLayout]) {
         return;
     }
 
-    // We know the width, but not the height; let the image loader figure that out
-    CGFloat imageWidth = self.tableView.frame.size.width;
-    if (IS_IPAD) {
-        imageWidth = WPTableViewFixedWidth;
+    NSURL *imageURL = [post featuredImageURLForDisplay];
+    if (!imageURL) {
+        return;
     }
-    CGSize imageSize = CGSizeMake(imageWidth, 0);
-    UIImage *image = [self imageForURL:imageURL size:imageSize];
-    
+    UIImage *image = [self imageForURL:imageURL];
     if (image) {
         [cell.postView setFeaturedImage:image];
     } else {
-        [self.featuredImageSource fetchImageForURL:imageURL withSize:imageSize indexPath:indexPath isPrivate:post.isPrivate];
+        [self.featuredImageSource fetchImageForURL:imageURL
+                                          withSize:[self sizeForFeaturedImage]
+                                         indexPath:indexPath
+                                         isPrivate:post.isPrivate];
     }
 }
 
@@ -834,6 +847,11 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [WPAnalytics track:WPAnalyticsStatReaderOpenedArticle];
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Preload here to avoid unnecessary preload calls when fetching cells for reasons other than for display.
+    [self preloadImagesForCellsAfterIndexPath:indexPath];
+}
 
 #pragma mark - NSFetchedResultsController overrides
 
@@ -844,6 +862,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
+    // Index paths may have changed. We don't want callbacks for stale paths.
+    [self.featuredImageSource invalidateIndexPaths];
     [self.tableView reloadData];
     [self.noResultsView removeFromSuperview];
 }
