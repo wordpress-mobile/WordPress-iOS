@@ -52,6 +52,10 @@
     //  DTLinkAttribute     = @"NSLinkAttributeName"
     //  NSLinkAttributeName = @"NSLink"
     for (NotificationURL *url in self.urls) {
+        if (!url.url) {
+            continue;
+        }
+        
         [theString addAttribute:DTLinkAttribute value:url.url range:url.range];
         [theString addAttribute:NSForegroundColorAttributeName value:[WPStyleGuide baseLighterBlue] range:url.range];
     }
