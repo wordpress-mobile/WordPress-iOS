@@ -222,6 +222,21 @@
         return url;
     }
 
+    // If the URL is already a Photon URL, just return it.
+    static NSRegularExpression *regex;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSError *error;
+        regex = [NSRegularExpression regularExpressionWithPattern:@"i\\d+\\.wp\\.com" options:NSRegularExpressionCaseInsensitive error:&error];
+    });
+    NSString *host = [url host];
+    NSArray *matches = [regex matchesInString:host options:NSMatchingCompleted range:NSMakeRange(0, [host length])];
+    if ([matches count] > 0) {
+        return url;
+    }
+
+    // Compose the URL
+
     NSString *urlString = [url absoluteString];
     NSString *sslFlag = @"";
     if ([[url scheme] isEqualToString:@"https"]) {
