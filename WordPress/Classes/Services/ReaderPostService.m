@@ -42,7 +42,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
 @implementation ReaderPostService
 
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context {
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context
+{
     self = [super init];
     if (self) {
         _managedObjectContext = context;
@@ -53,7 +54,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
 #pragma mark - Fetch Methods
 
-- (void)fetchPostsForTopic:(ReaderTopic *)topic earlierThan:(NSDate *)date success:(void (^)(BOOL hasMore))success failure:(void (^)(NSError *error))failure {
+- (void)fetchPostsForTopic:(ReaderTopic *)topic earlierThan:(NSDate *)date success:(void (^)(BOOL hasMore))success failure:(void (^)(NSError *error))failure
+{
     NSManagedObjectID *topicObjectID = topic.objectID;
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
     [remoteService fetchPostsFromEndpoint:[NSURL URLWithString:topic.path]
@@ -68,11 +70,13 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
                                   }];
 }
 
-- (void)fetchPostsForTopic:(ReaderTopic *)topic success:(void (^)(BOOL hasMore))success failure:(void (^)(NSError *error))failure {
+- (void)fetchPostsForTopic:(ReaderTopic *)topic success:(void (^)(BOOL hasMore))success failure:(void (^)(NSError *error))failure
+{
     [self fetchPostsForTopic:topic earlierThan:[NSDate date] success:success failure:failure];
 }
 
-- (void)fetchPost:(NSUInteger)postID forSite:(NSUInteger)siteID success:(void (^)(ReaderPost *post))success failure:(void (^)(NSError *error))failure {
+- (void)fetchPost:(NSUInteger)postID forSite:(NSUInteger)siteID success:(void (^)(ReaderPost *post))success failure:(void (^)(NSError *error))failure
+{
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
     [remoteService fetchPost:postID fromSite:siteID success:^(RemoteReaderPost *remotePost) {
         if (!success) {
@@ -90,7 +94,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     }];
 }
 
-- (void)backfillPostsForTopic:(ReaderTopic *)topic success:(void (^)(BOOL hasMore))success failure:(void (^)(NSError *error))failure {
+- (void)backfillPostsForTopic:(ReaderTopic *)topic success:(void (^)(BOOL hasMore))success failure:(void (^)(NSError *error))failure
+{
     ReaderPost *post = [self newestPostForTopic:topic];
     ReaderPostServiceBackfillState *state = [[ReaderPostServiceBackfillState alloc] init];
     if (post) {
@@ -110,7 +115,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
 #pragma mark - Update Methods
 
-- (void)toggleLikedForPost:(ReaderPost *)post success:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)toggleLikedForPost:(ReaderPost *)post success:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     // Get a the post in our own context
     NSError *error;
     ReaderPost *readerPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:post.objectID error:&error];
@@ -166,7 +172,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     }
 }
 
-- (void)toggleFollowingForPost:(ReaderPost *)post success:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)toggleFollowingForPost:(ReaderPost *)post success:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     // Get a the post in our own context
     NSError *error;
     ReaderPost *readerPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:post.objectID error:&error];
@@ -227,7 +234,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     }
 }
 
-- (void)reblogPost:(ReaderPost *)post toSite:(NSUInteger)siteID note:(NSString *)note success:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)reblogPost:(ReaderPost *)post toSite:(NSUInteger)siteID note:(NSString *)note success:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     // Get a the post in our own context
     NSError *error;
     ReaderPost *readerPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:post.objectID error:&error];
@@ -273,7 +281,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
                       }];
 }
 
-- (void)deletePostsWithNoTopic {
+- (void)deletePostsWithNoTopic
+{
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
 
@@ -299,7 +308,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 /**
  Get the api to use for the request.
  */
-- (WordPressComApi *)apiForRequest {
+- (WordPressComApi *)apiForRequest
+{
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
     WordPressComApi *api = [defaultAccount restApi];
@@ -309,7 +319,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     return api;
 }
 
-- (NSUInteger)numberOfPostsForTopic:(ReaderTopic *)topic {
+- (NSUInteger)numberOfPostsForTopic:(ReaderTopic *)topic
+{
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
 
@@ -328,7 +339,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  @param topic The ReaderTopic for the post
  @return The newest post in Core Data for the topic, or nil.
  */
-- (ReaderPost *)newestPostForTopic:(ReaderTopic *)topic {
+- (ReaderPost *)newestPostForTopic:(ReaderTopic *)topic
+{
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@", topic];
@@ -423,7 +435,11 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  @param topicObjectID The ObjectID of the ReaderTopic to assign to the newly created posts.
  @param success block called on a successful fetch which should be performed after merging
  */
-- (void)mergePosts:(NSArray *)posts earlierThan:(NSDate *)date forTopic:(NSManagedObjectID *)topicObjectID callingSuccess:(void (^)(BOOL hasMore))success {
+- (void)mergePosts:(NSArray *)posts
+       earlierThan:(NSDate *)date
+          forTopic:(NSManagedObjectID *)topicObjectID
+    callingSuccess:(void (^)(BOOL hasMore))success
+{
     // Use a performBlock here so the work to merge does not block the main thread.
     [self.managedObjectContext performBlock:^{
 
@@ -467,7 +483,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  @param date The date to delete posts earlier than.
  @param topic The ReaderTopic to delete posts from.
  */
-- (void)deletePostsEarlierThan:(NSDate *)date forTopic:(ReaderTopic *)topic {
+- (void)deletePostsEarlierThan:(NSDate *)date forTopic:(ReaderTopic *)topic
+{
     // Don't trust the relationships on the topic to be current or correct.
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
@@ -503,7 +520,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  @param topic The ReaderTopic to delete posts from.
  @param posts The batch of posts to use as a filter.
  */
-- (void)deletePostsForTopic:(ReaderTopic *)topic missingFromBatch:(NSArray *)posts {
+- (void)deletePostsForTopic:(ReaderTopic *)topic missingFromBatch:(NSArray *)posts
+{
     // Don't trust the relationships on the topic to be current or correct.
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
@@ -538,7 +556,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  
  @param topic the `ReaderTopic` to delete posts from.
  */
-- (void)deletePostsInExcessOfMaxAllowedForTopic:(ReaderTopic *)topic {
+- (void)deletePostsInExcessOfMaxAllowedForTopic:(ReaderTopic *)topic
+{
     // Don't trust the relationships on the topic to be current or correct.
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
@@ -577,7 +596,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  @param topic The `ReaderTopic` to assign to the created posts.
  @return An array of `ReaderPost` objects
  */
-- (NSMutableArray *)makeNewPostsFromRemotePosts:(NSArray *)posts forTopic:(ReaderTopic *)topic {
+- (NSMutableArray *)makeNewPostsFromRemotePosts:(NSArray *)posts forTopic:(ReaderTopic *)topic
+{
     NSMutableArray *newPosts = [NSMutableArray array];
     for (RemoteReaderPost *post in posts) {
         ReaderPost *newPost = [self createOrReplaceFromRemotePost:post forTopic:topic];
@@ -597,7 +617,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  @param topic The `ReaderTopic` to assign to the created post.
  @return A `ReaderPost` model object whose properties are populated with the values from the passed dictionary.
  */
-- (ReaderPost *)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderTopic *)topic {
+- (ReaderPost *)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderTopic *)topic
+{
     NSError *error;
     ReaderPost *post;
     NSString *globalID = remotePost.globalID;
@@ -670,7 +691,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  @param content The post content as a string. 
  @return The formatted content.
  */
-- (NSString *)formatContent:(NSString *)content {
+- (NSString *)formatContent:(NSString *)content
+{
     if ([self containsVideoPress:content]) {
         content = [self formatVideoPress:content];
     }
@@ -687,7 +709,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  @param string The summary to format. 
  @return The formatted summary.
  */
-- (NSString *)formatSummary:(NSString *)summary {
+- (NSString *)formatSummary:(NSString *)summary
+{
     summary = [self makePlainText:summary];
     NSRange rng = [summary rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@".?!"] options:NSBackwardsSearch];
     if (rng.location == NSNotFound || rng.location < ReaderPostServiceSummaryLength) {
@@ -702,7 +725,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  @param string The post's content string. This should be the formatted content string. 
  @return A summary for the post.
  */
-- (NSString *)createSummaryFromContent:(NSString *)string {
+- (NSString *)createSummaryFromContent:(NSString *)string
+{
     string = [self makePlainText:string];
     string = [string stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]];
     return [string stringByEllipsizingWithMaxLength:ReaderPostServiceSummaryLength preserveWords:YES];
@@ -714,7 +738,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  @param string The string to transform.
  @return The transformed string.
  */
-- (NSString *)makePlainText:(NSString *)string {
+- (NSString *)makePlainText:(NSString *)string
+{
     return [[[string stringByRemovingScriptsAndStrippingHTML] stringByDecodingXMLCharacters] trim];
 }
 
@@ -724,7 +749,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  @param string The string to normalize.
  @return A string with normalized paragraphs.
  */
-- (NSString *)normalizeParagraphs:(NSString *)string {
+- (NSString *)normalizeParagraphs:(NSString *)string
+{
     if (!string) {
         return @"";
     }
@@ -759,7 +785,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  @param string An HTML string to sanitize.
  @return A string with inline styles removed.
  */
-- (NSString *)removeInlineStyles:(NSString *)string {
+- (NSString *)removeInlineStyles:(NSString *)string
+{
     if (!string) {
         return @"";
     }
@@ -782,7 +809,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  @return YES if a match was found, else returns NO.
  */
 
-- (BOOL)containsVideoPress:(NSString *)string {
+- (BOOL)containsVideoPress:(NSString *)string
+{
     return [string rangeOfString:@"class=\"videopress-placeholder"].location != NSNotFound;
 }
 
@@ -792,7 +820,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  @param string An HTML string.
  @return The HTML string with videopress markup replaced with in image tag.
  */
-- (NSString *)formatVideoPress:(NSString *)string {
+- (NSString *)formatVideoPress:(NSString *)string
+{
     NSMutableString *mstr = [string mutableCopy];
 
     static NSRegularExpression *regexVideoPress;
@@ -847,7 +876,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  @param summary The already formatted post summary.
  @return A title for the post that is a snippet of the summary.
  */
-- (NSString *)titleFromSummary:(NSString *)summary {
+- (NSString *)titleFromSummary:(NSString *)summary
+{
     return [summary stringByEllipsizingWithMaxLength:ReaderPostServiceTitleLength preserveWords:YES];
 }
 
