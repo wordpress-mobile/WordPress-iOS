@@ -53,6 +53,8 @@ static NSString * const WPTabBarRestorationID = @"WPTabBarID";
 static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
 static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
 static NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
+static NSInteger const IndexForReaderTab = 0;
+static NSInteger const IndexForNotificationsTab = 1;
 static NSInteger const IndexForMeTab = 2;
 static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 
@@ -466,20 +468,17 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 
 - (void)showNotificationsTab
 {
-    NSInteger notificationsTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.notificationsViewController.navigationController];
-    [self.tabBarController setSelectedIndex:notificationsTabIndex];
+    [self.tabBarController setSelectedIndex:IndexForNotificationsTab];
 }
 
 - (void)showReaderTab
 {
-    NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
-    [self.tabBarController setSelectedIndex:readerTabIndex];
+    [self.tabBarController setSelectedIndex:IndexForReaderTab];
 }
 
 - (void)showBlogListTab
 {
-    NSInteger blogListTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.blogListViewController.navigationController];
-    [self.tabBarController setSelectedIndex:blogListTabIndex];
+    [self.tabBarController setSelectedIndex:IndexForMeTab];
 }
 
 - (void)showMeTab
