@@ -898,7 +898,7 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 - (void)configureSimperium
 {
 	ContextManager* manager         = [ContextManager sharedInstance];
-    NSDictionary *bucketOverrides   = @{ NSStringFromClass([Notification class]) : @"Note" };
+    NSDictionary *bucketOverrides   = @{ NSStringFromClass([Notification class]) : @"note20" };
     
 	self.simperium = [[Simperium alloc] initWithModel:manager.managedObjectModel
 											  context:manager.mainContext
@@ -921,9 +921,9 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 	if (!account.authToken.length || !apiKey.length) {
 		return;
 	}
-	
-	NSString *simperiumToken = [NSString stringWithFormat:@"WPCC/%@/%@", apiKey, account.authToken];
-	NSString *simperiumAppID = [WordPressComApiCredentials simperiumAppId];
+
+    NSString *simperiumToken = [NSString stringWithFormat:@"WPCC/%@/%@", apiKey, account.authToken];
+    NSString *simperiumAppID = [WordPressComApiCredentials simperiumAppId];
 	[self.simperium authenticateWithAppID:simperiumAppID token:simperiumToken];
 }
 
