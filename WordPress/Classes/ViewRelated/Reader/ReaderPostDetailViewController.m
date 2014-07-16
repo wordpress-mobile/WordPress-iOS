@@ -69,7 +69,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
 - (void)dealloc
 {
-	self.resultsController.delegate = nil;
+    self.resultsController.delegate = nil;
     self.tableView.delegate = nil;
     self.postView.delegate = nil;
     self.commentPublisher.delegate = nil;
@@ -79,38 +79,38 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
 - (instancetype)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image avatarImage:(UIImage *)avatarImage
 {
-	self = [super init];
-	if (self) {
+    self = [super init];
+    if (self) {
         _post = post;
         _comments = [NSMutableArray array];
         _featuredImage = image;
         _avatarImage = avatarImage;
-	}
-	return self;
+    }
+    return self;
 }
 
 - (void)viewDidLoad
 {
-	[super viewDidLoad];
+    [super viewDidLoad];
 
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
 
-	if (self.infiniteScrollEnabled) {
+    if (self.infiniteScrollEnabled) {
         [self enableInfiniteScrolling];
     }
 	
-	self.title = self.post.postTitle;
-	
-	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.title = self.post.postTitle;
+
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:@"PostCell"];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
     [self configurePostView];
     [self configureTableHeaderView];
 
-	[WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.shareButton forNavigationItem:self.navigationItem];
+    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.shareButton forNavigationItem:self.navigationItem];
 
-	[self prepareComments];
+    [self prepareComments];
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
     [self.inlineComposeView setButtonTitle:NSLocalizedString(@"Post", nil)];
@@ -137,18 +137,18 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	[super viewWillAppear:animated];
-	
-	CGSize contentSize = self.tableView.contentSize;
+    [super viewWillAppear:animated];
+
+    CGSize contentSize = self.tableView.contentSize;
     if (contentSize.height > self.savedScrollOffset.y) {
         [self.tableView scrollRectToVisible:CGRectMake(self.savedScrollOffset.x, self.savedScrollOffset.y, 0.0f, 0.0f) animated:NO];
     } else {
         [self.tableView scrollRectToVisible:CGRectMake(0.0f, contentSize.height, 0.0f, 0.0f) animated:NO];
     }
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 
-	UIToolbar *toolbar = self.navigationController.toolbar;
+    UIToolbar *toolbar = self.navigationController.toolbar;
     toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
     toolbar.tintColor = [UIColor whiteColor];
     toolbar.translucent = NO;
@@ -157,16 +157,16 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-	
+    [super viewDidAppear:animated];
+
     // Do not start auto-sync if connection is down
-	WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if (appDelegate.connectionAvailable == NO)
         return;
 	
     NSDate *lastSynced = [self lastSyncDate];
     if ((lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > ReaderPostDetailViewControllerRefreshTimeout) && self.post.isWPCom) {
-		[self syncWithUserInteraction:NO];
+        [self syncWithUserInteraction:NO];
     }
     
     [self.tableView reloadData];
@@ -175,19 +175,19 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
 	
-	if (IS_IPHONE) {
+    if (IS_IPHONE) {
         self.savedScrollOffset = self.tableView.contentOffset;
     }
 
     [self.inlineComposeView dismissComposer];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 
     if (IS_IPHONE) {
         // Resize media in the post detail to match the width of the new orientation.
@@ -196,10 +196,10 @@ static CGFloat const SectionHeaderHeight = 25.0f;
         [self refreshHeightForTableHeaderView];
     }
 
-	// Make sure a selected comment is visible after rotating.
-	if ([self.tableView indexPathForSelectedRow] != nil && self.inlineComposeView.isDisplayed) {
-		[self.tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionNone animated:NO];
-	}
+    // Make sure a selected comment is visible after rotating.
+    if ([self.tableView indexPathForSelectedRow] != nil && self.inlineComposeView.isDisplayed) {
+        [self.tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionNone animated:NO];
+    }
 }
 
 
@@ -312,7 +312,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
         return _shareButton;
     }
 
-	// Top Navigation bar and Sharing
+    // Top Navigation bar and Sharing
     UIImage *image = [UIImage imageNamed:@"icon-posts-share"];
     CustomHighlightButton *button = [[CustomHighlightButton alloc] initWithFrame:CGRectMake(0.0, 0.0, image.size.width, image.size.height)];
     [button setImage:image forState:UIControlStateNormal];
@@ -344,43 +344,43 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
 - (BOOL)canComment
 {
-	return self.post.commentsOpen;
+    return self.post.commentsOpen;
 }
 
 - (void)prepareComments
 {
-	self.resultsController = nil;
-	[self.comments removeAllObjects];
-	
-	__block void(__unsafe_unretained ^flattenComments)(NSArray *) = ^void (NSArray *comments) {
-		// Ensure the array is correctly sorted. 
-		comments = [comments sortedArrayUsingComparator: ^(id obj1, id obj2) {
-			ReaderComment *a = obj1;
-			ReaderComment *b = obj2;
-			if ([[a dateCreated] timeIntervalSince1970] > [[b dateCreated] timeIntervalSince1970]) {
-				return (NSComparisonResult)NSOrderedDescending;
-			}
-			if ([[a dateCreated] timeIntervalSince1970] < [[b dateCreated] timeIntervalSince1970]) {
-				return (NSComparisonResult)NSOrderedAscending;
-			}
-			return (NSComparisonResult)NSOrderedSame;
-		}];
-		
-		for (ReaderComment *comment in comments) {
-			[self.comments addObject:comment];
-			if ([comment.childComments count] > 0) {
-				flattenComments([comment.childComments allObjects]);
-			}
-		}
-	};
-	
-	flattenComments(self.resultsController.fetchedObjects);
-	
-	// Cache attributed strings.
-	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, NULL), ^{
-		for (ReaderComment *comment in self.comments) {
-			comment.attributedContent = [ReaderCommentTableViewCell convertHTMLToAttributedString:comment.content withOptions:nil];
-		}
+    self.resultsController = nil;
+    [self.comments removeAllObjects];
+
+    __block void(__unsafe_unretained ^flattenComments)(NSArray *) = ^void (NSArray *comments) {
+        // Ensure the array is correctly sorted. 
+        comments = [comments sortedArrayUsingComparator: ^(id obj1, id obj2) {
+            ReaderComment *a = obj1;
+            ReaderComment *b = obj2;
+            if ([[a dateCreated] timeIntervalSince1970] > [[b dateCreated] timeIntervalSince1970]) {
+                return (NSComparisonResult)NSOrderedDescending;
+            }
+            if ([[a dateCreated] timeIntervalSince1970] < [[b dateCreated] timeIntervalSince1970]) {
+                return (NSComparisonResult)NSOrderedAscending;
+            }
+            return (NSComparisonResult)NSOrderedSame;
+        }];
+
+        for (ReaderComment *comment in comments) {
+            [self.comments addObject:comment];
+            if ([comment.childComments count] > 0) {
+                flattenComments([comment.childComments allObjects]);
+            }
+        }
+    };
+
+    flattenComments(self.resultsController.fetchedObjects);
+
+    // Cache attributed strings.
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, NULL), ^{
+        for (ReaderComment *comment in self.comments) {
+            comment.attributedContent = [ReaderCommentTableViewCell convertHTMLToAttributedString:comment.content withOptions:nil];
+        }
         __weak ReaderPostDetailViewController *weakSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf.tableView reloadData];
@@ -395,8 +395,8 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     NSString *tags = self.post.tags;
 
     NSMutableArray *activityItems = [NSMutableArray array];
-	NSMutableDictionary *postDictionary = [NSMutableDictionary dictionary];
-	
+    NSMutableDictionary *postDictionary = [NSMutableDictionary dictionary];
+
     if (title) {
         postDictionary[@"title"] = title;
     }
@@ -437,7 +437,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
 - (BOOL)isReplying
 {
-	return ([self.tableView indexPathForSelectedRow] != nil) ? YES : NO;
+    return ([self.tableView indexPathForSelectedRow] != nil) ? YES : NO;
 }
 
 - (CGSize)tabBarSize
@@ -526,8 +526,8 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     [service toggleFollowingForPost:post success:^{
         //noop
     } failure:^(NSError *error) {
-		DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
-		[followButton setSelected:post.isFollowing];
+        DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
+        [followButton setSelected:post.isFollowing];
     }];
 }
 
@@ -551,8 +551,8 @@ static CGFloat const SectionHeaderHeight = 25.0f;
             [WPAnalytics track:WPAnalyticsStatReaderLikedArticle];
         }
     } failure:^(NSError *error) {
-		DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
-		[postView updateActionButtons];
+        DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
+        [postView updateActionButtons];
     }];
 	[postView updateActionButtons];
 }
@@ -571,35 +571,35 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 - (void)richTextView:(WPRichTextView *)richTextView didReceiveLinkAction:(NSURL *)linkURL
 {
     WPWebViewController *controller = [[WPWebViewController alloc] init];
-	[controller setUrl:linkURL];
-	[self.navigationController pushViewController:controller animated:YES];
+    [controller setUrl:linkURL];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(ReaderImageView *)readerImageView
 {
-	UIViewController *controller;
-    
-	if (readerImageView.linkURL) {
-		NSString *url = [readerImageView.linkURL absoluteString];
-		
-		BOOL matched = NO;
-		NSArray *types = @[@".png", @".jpg", @".gif", @".jpeg"];
-		for (NSString *type in types) {
-			if (NSNotFound != [url rangeOfString:type].location) {
-				matched = YES;
-				break;
-			}
-		}
-		
-		if (matched) {
+    UIViewController *controller;
+
+    if (readerImageView.linkURL) {
+        NSString *url = [readerImageView.linkURL absoluteString];
+
+        BOOL matched = NO;
+        NSArray *types = @[@".png", @".jpg", @".gif", @".jpeg"];
+        for (NSString *type in types) {
+            if (NSNotFound != [url rangeOfString:type].location) {
+                matched = YES;
+                break;
+            }
+        }
+
+        if (matched) {
             controller = [[WPImageViewController alloc] initWithImage:readerImageView.image andURL:readerImageView.linkURL];
-		} else {
+        } else {
             controller = [[WPWebViewController alloc] init];
-			[(WPWebViewController *)controller setUrl:readerImageView.linkURL];
-		}
-	} else {
+            [(WPWebViewController *)controller setUrl:readerImageView.linkURL];
+        }
+    } else {
         controller = [[WPImageViewController alloc] initWithImage:readerImageView.image];
-	}
+    }
 
     if ([controller isKindOfClass:[WPImageViewController class]]) {
         controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -612,9 +612,9 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
 - (void)richTextView:(WPRichTextView *)richTextView didReceiveVideoLinkAction:(ReaderVideoView *)readerVideoView
 {
-	if (readerVideoView.contentType == ReaderVideoContentTypeVideo) {
+    if (readerVideoView.contentType == ReaderVideoContentTypeVideo) {
 
-		MPMoviePlayerViewController *controller = [[MPMoviePlayerViewController alloc] initWithContentURL:readerVideoView.contentURL];
+        MPMoviePlayerViewController *controller = [[MPMoviePlayerViewController alloc] initWithContentURL:readerVideoView.contentURL];
         // Remove the movie player view controller from the "playback did finish" notification observers
         [[NSNotificationCenter defaultCenter] removeObserver:controller
                                                         name:MPMoviePlayerPlaybackDidFinishNotification
@@ -626,13 +626,13 @@ static CGFloat const SectionHeaderHeight = 25.0f;
                                                      name:MPMoviePlayerPlaybackDidFinishNotification
                                                    object:controller.moviePlayer];
 
-		controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-		controller.modalPresentationStyle = UIModalPresentationFullScreen;
+        controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        controller.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:controller animated:YES completion:nil];
 
-	} else {
-		// Should either be an iframe, or an object embed. In either case a src attribute should have been parsed for the contentURL.
-		// Assume this is content we can show and try to load it.
+    } else {
+        // Should either be an iframe, or an object embed. In either case a src attribute should have been parsed for the contentURL.
+        // Assume this is content we can show and try to load it.
         UIViewController *controller = [[WPWebVideoViewController alloc] initWithURL:readerVideoView.contentURL];
         controller.title = (readerVideoView.title != nil) ? readerVideoView.title : @"Video";
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -640,7 +640,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
         navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         navController.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:navController animated:YES completion:nil];
-	}
+    }
 }
 
 - (void)richTextViewDidLoadAllMedia:(WPRichTextView *)richTextView
@@ -662,73 +662,73 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
 - (NSDate *)lastSyncDate
 {
-	return self.post.dateCommentsSynced;
+    return self.post.dateCommentsSynced;
 }
 
 - (void)syncWithUserInteraction:(BOOL)userInteraction
 {
-	if ([self.post.postID integerValue] == 0 ) { // Weird that this should ever happen. 
-		self.post.dateCommentsSynced = [NSDate date];
-		return;
-	}
-	self.isSyncing = YES;
-	NSDictionary *params = @{@"number":[NSNumber numberWithInteger:ReaderCommentsToSync]};
+    if ([self.post.postID integerValue] == 0 ) { // Weird that this should ever happen.
+        self.post.dateCommentsSynced = [NSDate date];
+        return;
+    }
+    self.isSyncing = YES;
+    NSDictionary *params = @{@"number":[NSNumber numberWithInteger:ReaderCommentsToSync]};
 
-	[ReaderPost getCommentsForPost:[self.post.postID integerValue]
-						  fromSite:[self.post.siteID stringValue]
-					withParameters:params
-						   success:^(AFHTTPRequestOperation *operation, id responseObject) {
-							   [self onSyncSuccess:operation response:responseObject];
-						   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-						   }];
+    [ReaderPost getCommentsForPost:[self.post.postID integerValue]
+                          fromSite:[self.post.siteID stringValue]
+                    withParameters:params
+                           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                               [self onSyncSuccess:operation response:responseObject];
+                           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                           }];
 }
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-	if ([self.resultsController.fetchedObjects count] == 0) {
-		return;
+    if ([self.resultsController.fetchedObjects count] == 0) {
+        return;
     }
 	
-	if (self.loadingMore) {
+    if (self.loadingMore) {
         return;
     }
 
-	self.loadingMore = YES;
-	self.isSyncing = YES;
-	NSUInteger numberToSync = [self.comments count] + ReaderCommentsToSync;
-	NSDictionary *params = @{@"number":[NSNumber numberWithInteger:numberToSync]};
+    self.loadingMore = YES;
+    self.isSyncing = YES;
+    NSUInteger numberToSync = [self.comments count] + ReaderCommentsToSync;
+    NSDictionary *params = @{@"number":[NSNumber numberWithInteger:numberToSync]};
 
-	[ReaderPost getCommentsForPost:[self.post.postID integerValue]
-						  fromSite:[self.post.siteID stringValue]
-					withParameters:params
-						   success:^(AFHTTPRequestOperation *operation, id responseObject) {
-							   [self onSyncSuccess:operation response:responseObject];
-						   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-						   }];
+    [ReaderPost getCommentsForPost:[self.post.postID integerValue]
+                          fromSite:[self.post.siteID stringValue]
+                    withParameters:params
+                           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                               [self onSyncSuccess:operation response:responseObject];
+                           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                           }];
 }
 
 - (void)onSyncSuccess:(AFHTTPRequestOperation *)operation response:(id)responseObject
 {
-	self.post.dateCommentsSynced = [NSDate date];
-	self.loadingMore = NO;
-	self.isSyncing = NO;
-	NSDictionary *resp = (NSDictionary *)responseObject;
-	NSArray *commentsArr = [resp arrayForKey:@"comments"];
-	
-	if (!commentsArr) {
-		self.hasMoreContent = NO;
-		return;
-	}
-	
-	if ([commentsArr count] < ([self.comments count] + ReaderCommentsToSync)) {
-		self.hasMoreContent = NO;
-	}
-	
-	[ReaderComment syncAndThreadComments:commentsArr
-								 forPost:self.post
-							 withContext:[[ContextManager sharedInstance] mainContext]];
-	
-	[self prepareComments];
+    self.post.dateCommentsSynced = [NSDate date];
+    self.loadingMore = NO;
+    self.isSyncing = NO;
+    NSDictionary *resp = (NSDictionary *)responseObject;
+    NSArray *commentsArr = [resp arrayForKey:@"comments"];
+
+    if (!commentsArr) {
+        self.hasMoreContent = NO;
+        return;
+    }
+
+    if ([commentsArr count] < ([self.comments count] + ReaderCommentsToSync)) {
+        self.hasMoreContent = NO;
+    }
+
+    [ReaderComment syncAndThreadComments:commentsArr
+                                 forPost:self.post
+                             withContext:[[ContextManager sharedInstance] mainContext]];
+
+    [self prepareComments];
 }
 
 
@@ -780,43 +780,43 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
-    
-	if ([self.comments count] == 0) {
-		return 0.0f;
-	}
-	
-	ReaderComment *comment = [self.comments objectAtIndex:indexPath.row];
-	return [ReaderCommentTableViewCell heightForComment:comment
-												  width:width
-											 tableStyle:tableView.style
-										  accessoryType:UITableViewCellAccessoryNone];
+
+    if ([self.comments count] == 0) {
+        return 0.0f;
+    }
+
+    ReaderComment *comment = [self.comments objectAtIndex:indexPath.row];
+    return [ReaderCommentTableViewCell heightForComment:comment
+                                                  width:width
+                                             tableStyle:tableView.style
+                                          accessoryType:UITableViewCellAccessoryNone];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	return [self.comments count];
+    return [self.comments count];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	return 1;
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSString *cellIdentifier = @"ReaderCommentCell";
+    NSString *cellIdentifier = @"ReaderCommentCell";
     ReaderCommentTableViewCell *cell = (ReaderCommentTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[ReaderCommentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
         cell.delegate = self;
     }
-	cell.accessoryType = UITableViewCellAccessoryNone;
-	
-	ReaderComment *comment = [self.comments objectAtIndex:indexPath.row];
-	[cell configureCell:comment];
+    cell.accessoryType = UITableViewCellAccessoryNone;
+
+    ReaderComment *comment = [self.comments objectAtIndex:indexPath.row];
+    [cell configureCell:comment];
     [self setAvatarForComment:comment forCell:cell indexPath:indexPath];
 
-	return cell;
+    return cell;
 }
 
 - (void)setAvatarForComment:(ReaderComment *)comment forCell:(ReaderCommentTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
@@ -858,21 +858,21 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
     self.commentPublisher.comment = comment;
 
-	if ([self canComment]) {
+    if ([self canComment]) {
         [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
         
-		[self.inlineComposeView displayComposer];
-	}
-	
-	return indexPath;
+        [self.inlineComposeView displayComposer];
+    }
+
+    return indexPath;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if (![self canComment]) {
-		[self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-		return;
-	}
+    if (![self canComment]) {
+        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+        return;
+    }
 
     [self.tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewRowAnimationTop animated:YES];
 }
@@ -901,16 +901,16 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if (IS_IPAD) {
-		cell.accessoryType = UITableViewCellAccessoryNone;
-	}
-	
+    if (IS_IPAD) {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+
     // Are we approaching the end of the table?
     if ((indexPath.section + 1 == [self numberOfSectionsInTableView:tableView]) &&
-		(indexPath.row + 4 >= [self tableView:tableView numberOfRowsInSection:indexPath.section]) &&
-		[self tableView:tableView numberOfRowsInSection:indexPath.section] > 10) {
-        
-		// Only 3 rows till the end of table
+        (indexPath.row + 4 >= [self tableView:tableView numberOfRowsInSection:indexPath.section]) &&
+        [self tableView:tableView numberOfRowsInSection:indexPath.section] > 10) {
+
+        // Only 3 rows till the end of table
         if (!self.isSyncing && self.hasMoreContent) {
             [self.activityFooter startAnimating];
             [self loadMoreWithSuccess:^{
@@ -949,8 +949,8 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 - (void)readerCommentTableViewCell:(ReaderCommentTableViewCell *)cell didTapURL:(NSURL *)url
 {
     WPWebViewController *controller = [[WPWebViewController alloc] init];
-	[controller setUrl:url];
-	[self.navigationController pushViewController:controller animated:YES];
+    [controller setUrl:url];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark - Fetched results controller
@@ -961,17 +961,17 @@ static CGFloat const SectionHeaderHeight = 25.0f;
         return _resultsController;
     }
 	
-	NSString *entityName = @"ReaderComment";
-	NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
-	
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSString *entityName = @"ReaderComment";
+    NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
+
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:@"ReaderComment" inManagedObjectContext:moc]];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(post = %@) && (parentID = 0)", self.post];
     [fetchRequest setPredicate:predicate];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:YES];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     
-	_resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+    _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                              managedObjectContext:moc
                                                                sectionNameKeyPath:nil
                                                                         cacheName:nil];
