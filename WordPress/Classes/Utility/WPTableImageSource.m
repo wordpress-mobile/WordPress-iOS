@@ -217,7 +217,7 @@
     NSArray *acceptedImageTypes = @[@"gif", @"jpg", @"jpeg", @"png"];
     if ([acceptedImageTypes indexOfObject:url.pathExtension] == NSNotFound) {
         if (![url scheme]) {
-            url = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", [url absoluteString]]];
+            return [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", [url absoluteString]]];
         }
         return url;
     }
@@ -230,8 +230,8 @@
         regex = [NSRegularExpression regularExpressionWithPattern:@"i\\d+\\.wp\\.com" options:NSRegularExpressionCaseInsensitive error:&error];
     });
     NSString *host = [url host];
-    NSArray *matches = [regex matchesInString:host options:NSMatchingCompleted range:NSMakeRange(0, [host length])];
-    if ([matches count] > 0) {
+    NSInteger count = [regex numberOfMatchesInString:host options:NSMatchingCompleted range:NSMakeRange(0, [host length])];
+    if (count > 0) {
         return url;
     }
 
