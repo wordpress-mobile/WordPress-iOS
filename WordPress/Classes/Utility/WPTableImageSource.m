@@ -213,6 +213,15 @@
 */
 - (NSURL *)photonURLForURL:(NSURL *)url withSize:(CGSize)size
 {
+    // Photon will fail if the URL doesn't end in one of the accepted extensions
+    NSArray *acceptedImageTypes = @[@"gif", @"jpg", @"jpeg", @"png"];
+    if ([acceptedImageTypes indexOfObject:url.pathExtension] == NSNotFound) {
+        if (![url scheme]) {
+            url = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", [url absoluteString]]];
+        }
+        return url;
+    }
+
     NSString *urlString = [url absoluteString];
     NSString *sslFlag = @"";
     if ([[url scheme] isEqualToString:@"https"]) {
@@ -222,15 +231,6 @@
     NSRange range = [urlString rangeOfString:@"://"];
     if (range.location != NSNotFound && range.location < 6) {
         urlString = [urlString substringFromIndex:(range.location + range.length)];
-    }
-
-    // Photon will fail if the URL doesn't end in one of the accepted extensions
-    NSArray *acceptedImageTypes = @[@"gif", @"jpg", @"jpeg", @"png"];
-    if ([acceptedImageTypes indexOfObject:url.pathExtension] == NSNotFound) {
-        if (![url scheme]) {
-            url = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", [url absoluteString]]];
-        }
-        return url;
     }
     CGFloat scale = [[UIScreen mainScreen] scale];
     NSUInteger width = scale * size.width;
