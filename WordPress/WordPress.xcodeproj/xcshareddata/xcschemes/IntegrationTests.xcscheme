@@ -32,7 +32,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A27B38B419759FD2004A3052"
+            BlueprintIdentifier = "A2D55B961975BBFC00B9A561"
             BuildableName = "WordPress copy.app"
             BlueprintName = "IntegrationTests"
             ReferencedContainer = "container:WordPress.xcodeproj">

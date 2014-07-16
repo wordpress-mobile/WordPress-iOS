@@ -80,6 +80,7 @@ CGFloat const blavatarImageSize = 50.f;
                                                            style:UIBarButtonItemStylePlain
                                                           target:self
                                                           action:@selector(showSettings:)];
+    self.settingsButton.accessibilityLabel = NSLocalizedString(@"Settings", nil);
     self.navigationItem.rightBarButtonItem = self.settingsButton;
 
     // Remove one-pixel gap resulting from a top-aligned grouped table view

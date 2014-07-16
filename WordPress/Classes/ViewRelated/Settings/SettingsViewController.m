@@ -305,7 +305,7 @@ CGFloat const blavatarImageViewSize = 43.f;
                 actionSheet = [[UIActionSheet alloc] initWithTitle:signOutTitle 
                                                           delegate:self 
                                                  cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                            destructiveButtonTitle:NSLocalizedString(@"Sign Out", @"")otherButtonTitles:nil, nil ];
+                                            destructiveButtonTitle:NSLocalizedString(@"Sign Out", @"") otherButtonTitles:nil];
                 actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
                 [actionSheet showInView:self.view];
             } else if (indexPath.row == [self rowForNotifications]) {

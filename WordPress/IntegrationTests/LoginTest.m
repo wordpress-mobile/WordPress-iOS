@@ -32,4 +32,15 @@
                             @"Sign in was not successful.");
 }
 
+- (void)testLogoutSucceeds {
+    [[SLElement elementWithAccessibilityLabel:@"Me"] tap];
+    [[SLElement elementWithAccessibilityLabel:@"Settings"] tap];
+    [[SLElement elementWithAccessibilityIdentifier:@"wpcom-sign-out"] tap];
+    [[SLElement elementWithAccessibilityLabel:@"Sign Out"] tap];
+    
+    SLAssertTrueWithTimeout([[SLTextField elementWithAccessibilityIdentifier:@"Username"] isValid],
+                            5.0,
+                            @"Sign out failed.");
+}
+
 @end
