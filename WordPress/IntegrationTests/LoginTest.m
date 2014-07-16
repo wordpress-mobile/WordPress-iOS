@@ -1,4 +1,5 @@
 #import <Subliminal/Subliminal.h>
+#import "IntegrationTestsInfo.h"
 
 @interface LoginTest : SLTest
 
@@ -20,10 +21,8 @@
     SLTextField *passwordField = [SLTextField elementWithAccessibilityIdentifier:@"Password"];
     SLElement *submitButton = [SLElement elementWithAccessibilityIdentifier:@"Sign In"];
     
-    
-    NSString *username = @"Jeff", *password = @"foo";
-    [usernameField setText:username];
-    [passwordField setText:password];
+    [usernameField setText:[IntegrationTestsInfo WPComUsername]];
+    [passwordField setText:[IntegrationTestsInfo WPComPassword]];
     
     [submitButton tap];
     

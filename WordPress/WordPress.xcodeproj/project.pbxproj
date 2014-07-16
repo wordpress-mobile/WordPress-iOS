@@ -207,6 +207,7 @@
 		A0E293F10E21027E00C6919C /* WPAddCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */; };
 		A247FCA31975E47800BB7C2F /* libPods-IntegrationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A247FCA21975E47800BB7C2F /* libPods-IntegrationTests.a */; };
 		A25EBD87156E330600530E3D /* WPTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A25EBD86156E330600530E3D /* WPTableViewController.m */; };
+		A25F61FB1976D47200E9F1E3 /* generate_test_info.rb in Resources */ = {isa = PBXBuildFile; fileRef = A25F61FA1976D47200E9F1E3 /* generate_test_info.rb */; };
 		A2787D0219002AB1000D6CA6 /* HelpshiftConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = A2787D0119002AB1000D6CA6 /* HelpshiftConfig.plist */; };
 		A2D55B981975BBFC00B9A561 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
 		A2D55B991975BBFC00B9A561 /* defaultPostTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */; };
@@ -504,6 +505,7 @@
 		A2D55CC11975BBFC00B9A561 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1CCFB32175D624F0016BD8A /* Crashlytics.framework */; };
 		A2D55CCD1975BD2600B9A561 /* LoginTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A2D55CCC1975BD2600B9A561 /* LoginTest.m */; };
 		A2DC5B1A1953451B009584C3 /* WPNUXHelpBadgeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A2DC5B191953451B009584C3 /* WPNUXHelpBadgeLabel.m */; };
+		A2F76A0B1976D83800398F87 /* IntegrationTestsInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F76A0A1976D83800398F87 /* IntegrationTestsInfo.m */; };
 		ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */; };
 		ACBAB6860E1247F700F38795 /* PostPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBAB6850E1247F700F38795 /* PostPreviewViewController.m */; };
 		ACC156CC0E10E67600D6E1A0 /* EditPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC156CB0E10E67600D6E1A0 /* EditPostViewController.m */; };
@@ -1054,12 +1056,16 @@
 		A247FCA21975E47800BB7C2F /* libPods-IntegrationTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-IntegrationTests.a"; path = "../Pods/build/Debug-iphoneos/libPods-IntegrationTests.a"; sourceTree = "<group>"; };
 		A25EBD85156E330600530E3D /* WPTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableViewController.h; sourceTree = "<group>"; };
 		A25EBD86156E330600530E3D /* WPTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewController.m; sourceTree = "<group>"; };
+		A25F61F71976D42400E9F1E3 /* IntegrationTestsInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntegrationTestsInfo.h; sourceTree = "<group>"; };
+		A25F61F81976D42400E9F1E3 /* IntegrationTestsInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntegrationTestsInfo.m; sourceTree = "<group>"; };
+		A25F61FA1976D47200E9F1E3 /* generate_test_info.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = generate_test_info.rb; sourceTree = "<group>"; };
 		A2787D0119002AB1000D6CA6 /* HelpshiftConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = HelpshiftConfig.plist; sourceTree = "<group>"; };
 		A284044518BFE7F300D982B6 /* WordPress 15.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 15.xcdatamodel"; sourceTree = "<group>"; };
 		A2D55CC91975BBFC00B9A561 /* WordPress copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WordPress copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2D55CCC1975BD2600B9A561 /* LoginTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginTest.m; sourceTree = "<group>"; };
 		A2DC5B181953451B009584C3 /* WPNUXHelpBadgeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNUXHelpBadgeLabel.h; sourceTree = "<group>"; };
 		A2DC5B191953451B009584C3 /* WPNUXHelpBadgeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPNUXHelpBadgeLabel.m; sourceTree = "<group>"; };
+		A2F76A0A1976D83800398F87 /* IntegrationTestsInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntegrationTestsInfo.m; sourceTree = "<group>"; };
 		ACBAB5FC0E121C7300F38795 /* PostSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostSettingsViewController.h; sourceTree = "<group>"; };
 		ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostSettingsViewController.m; sourceTree = "<group>"; };
 		ACBAB6840E1247F700F38795 /* PostPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostPreviewViewController.h; sourceTree = "<group>"; };
@@ -2131,6 +2137,9 @@
 		A27B39EB1975A2A2004A3052 /* IntegrationTests */ = {
 			isa = PBXGroup;
 			children = (
+				A25F61FA1976D47200E9F1E3 /* generate_test_info.rb */,
+				A25F61F71976D42400E9F1E3 /* IntegrationTestsInfo.h */,
+				A25F61F81976D42400E9F1E3 /* IntegrationTestsInfo.m */,
 				A2D55CCC1975BD2600B9A561 /* LoginTest.m */,
 			);
 			path = IntegrationTests;
@@ -2444,6 +2453,7 @@
 			isa = PBXGroup;
 			children = (
 				E1756E641694A99400D9EC00 /* WordPressComApiCredentials.m */,
+				A2F76A0A1976D83800398F87 /* IntegrationTestsInfo.m */,
 			);
 			name = "Derived Sources";
 			path = /private/tmp/WordPress.build;
@@ -2548,6 +2558,7 @@
 				A2D55B971975BBFC00B9A561 /* Resources */,
 				A2D55BC41975BBFC00B9A561 /* CopyFiles */,
 				A2D55BC51975BBFC00B9A561 /* Generate WP.com credentials */,
+				A25F61FC1976D5C100E9F1E3 /* ShellScript */,
 				A2D55BC61975BBFC00B9A561 /* Sources */,
 				A2D55CA71975BBFC00B9A561 /* Frameworks */,
 				A2D55CC21975BBFC00B9A561 /* Copy Pods Resources */,
@@ -2716,6 +2727,7 @@
 				A2D55BAC1975BBFC00B9A561 /* AboutViewController.xib in Resources */,
 				A2D55BAD1975BBFC00B9A561 /* WPWebViewController~ipad.xib in Resources */,
 				A2D55BAE1975BBFC00B9A561 /* WPWebViewController.xib in Resources */,
+				A25F61FB1976D47200E9F1E3 /* generate_test_info.rb in Resources */,
 				A2D55BAF1975BBFC00B9A561 /* AppImages.xcassets in Resources */,
 				A2D55BB01975BBFC00B9A561 /* loader.html in Resources */,
 				A2D55BB11975BBFC00B9A561 /* postPreview.html in Resources */,
@@ -2786,6 +2798,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Pods-resources.sh\"\n";
+		};
+		A25F61FC1976D5C100E9F1E3 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/IntegrationTests/generate_test_info.rb",
+			);
+			outputPaths = (
+				/tmp/WordPress.build/IntegrationTestsInfo.m,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "DERIVED_TMP_DIR=/tmp/WordPress.build\ncp ${SOURCE_ROOT}/IntegrationTests/IntegrationTestsInfo.m ${DERIVED_TMP_DIR}/IntegrationTestsInfo.m\n\necho \"Generating integration tests info file in ${DERIVED_TMP_DIR}/IntegrationTestsInfo.m\"\nruby ${SOURCE_ROOT}/IntegrationTests/generate_test_info.rb > ${DERIVED_TMP_DIR}/IntegrationTestsInfo.m\n";
+			showEnvVarsInLog = 0;
 		};
 		A2D55BC51975BBFC00B9A561 /* Generate WP.com credentials */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3268,6 +3296,7 @@
 				A2D55C5D1975BBFC00B9A561 /* WPAsyncBlockOperation.m in Sources */,
 				A2D55C5E1975BBFC00B9A561 /* LoginViewController.m in Sources */,
 				A2D55C5F1975BBFC00B9A561 /* Constants.m in Sources */,
+				A2F76A0B1976D83800398F87 /* IntegrationTestsInfo.m in Sources */,
 				A2D55C601975BBFC00B9A561 /* FeaturedImageViewController.m in Sources */,
 				A2D55C611975BBFC00B9A561 /* WPWalkthroughTextField.m in Sources */,
 				A2D55C621975BBFC00B9A561 /* WPWalkthroughOverlayView.m in Sources */,
