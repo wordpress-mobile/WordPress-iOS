@@ -96,7 +96,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
 - (void)backfillPostsForTopic:(ReaderTopic *)topic success:(void (^)(BOOL hasMore))success failure:(void (^)(NSError *error))failure
 {
-    ReaderPost *post = [self newestPostForTopic:topic];
+    NSManagedObjectID *topicObjectID = topic.objectID;
+    ReaderPost *post = [self newestPostForTopic:topicObjectID];
     ReaderPostServiceBackfillState *state = [[ReaderPostServiceBackfillState alloc] init];
     if (post) {
         state.backfillDate = post.sortDate;
@@ -106,7 +107,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     state.backfillBatchNumber = 0;
     state.backfilledRemotePosts = [NSMutableArray array];
 
-    [self fetchPostsToBackfillTopic:topic
+    [self fetchPostsToBackfillTopic:topicObjectID
                         earlierThan:[NSDate date]
                       backfillState:(ReaderPostServiceBackfillState *)state
                             success:success
@@ -336,12 +337,17 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 /**
  Retrieve the newest post for the specified topic
  
- @param topic The ReaderTopic for the post
+ @param topicObjectID The `NSManagedObjectID` of the ReaderTopic for the post
  @return The newest post in Core Data for the topic, or nil.
  */
-- (ReaderPost *)newestPostForTopic:(ReaderTopic *)topic
+- (ReaderPost *)newestPostForTopic:(NSManagedObjectID *)topicObjectID
 {
     NSError *error;
+    ReaderTopic *topic = (ReaderTopic *)[self.managedObjectContext existingObjectWithID:topicObjectID error:&error];
+    if (error) {
+        DDLogError(@"%@, error fetching topic from NSManagedObjectID : %@", NSStringFromSelector(_cmd), error);
+        return nil;
+    }
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@", topic];
     [fetchRequest setPredicate:pred];
@@ -365,24 +371,34 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  This should only be called once the backfill date, array and batch count have
  been initialized as in `fetchPostsToBackfillTopic:success:failure:`.
  
- @param topic The Topic for which to request posts.
+ @param topicObjectID The NSManagedObjectID of the Topic for which to request posts.
  @param date The date to get posts earlier than.
  @param state The current `ReaderPostServiceBackfillState`
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)fetchPostsToBackfillTopic:(ReaderTopic *)topic
+- (void)fetchPostsToBackfillTopic:(NSManagedObjectID *)topicObjectID
                       earlierThan:(NSDate *)date
                     backfillState:(ReaderPostServiceBackfillState *)state
                           success:(void (^)(BOOL hasMore))success
                           failure:(void (^)(NSError *error))failure
 {
+    NSError *error;
+    ReaderTopic *topic = (ReaderTopic *)[self.managedObjectContext existingObjectWithID:topicObjectID error:&error];
+    if (error) {
+        DDLogError(@"%@, error fetching topic from NSManagedObjectID : %@", NSStringFromSelector(_cmd), error);
+        if (failure) {
+            failure(error);
+            return;
+        }
+    }
+
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
     [remoteService fetchPostsFromEndpoint:[NSURL URLWithString:topic.path]
                                     count:ReaderPostServiceNumberToSync
                                    before:date
                                   success:^(NSArray *posts) {
-                                      [self processBackfillPostsForTopic:topic posts:posts backfillState:state success:success failure:failure];
+                                      [self processBackfillPostsForTopic:topicObjectID posts:posts backfillState:state success:success failure:failure];
                                   } failure:^(NSError *error) {
                                       if (failure) {
                                           failure(error);
@@ -395,13 +411,13 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  When backfilling, the goal is to request up to three batches of post, or until 
  a fetched batch includes the newest posts currently in Core Data.
  
- @param topic The Topic for which to request posts.
+ @param topicObjectID The NSManagedObjectID of the Topic for which to request posts.
  @param posts An array of fetched posts.
  @param state The current `ReaderPostServiceBackfillState`
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)processBackfillPostsForTopic:(ReaderTopic *)topic
+- (void)processBackfillPostsForTopic:(NSManagedObjectID *)topicObjectID
                                posts:(NSArray *)posts
                        backfillState:(ReaderPostServiceBackfillState *)state
                              success:(void (^)(BOOL hasMore))success
@@ -418,9 +434,9 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
     if (state.backfillBatchNumber > ReaderPostServiceMaxBatchesToBackfill || (oldestDate && (oldestDate == [oldestDate earlierDate:state.backfillDate]))) {
         // our work is done
-        [self mergePosts:state.backfilledRemotePosts earlierThan:[NSDate date] forTopic:topic.objectID callingSuccess:success];
+        [self mergePosts:state.backfilledRemotePosts earlierThan:[NSDate date] forTopic:topicObjectID callingSuccess:success];
     } else {
-        [self fetchPostsToBackfillTopic:topic earlierThan:oldestDate backfillState:state success:success failure:failure];
+        [self fetchPostsToBackfillTopic:topicObjectID earlierThan:oldestDate backfillState:state success:success failure:failure];
     }
 }
 
