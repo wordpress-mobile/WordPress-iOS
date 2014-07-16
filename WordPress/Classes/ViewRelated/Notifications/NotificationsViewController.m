@@ -254,9 +254,6 @@
     if(!note.read.boolValue) {
         note.read = @(1);
         [[ContextManager sharedInstance] saveContext:note.managedObjectContext];
-        
-        NoteTableViewCell *cell = (NoteTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-        cell.read = true;
     }
     
     // Tracker!
