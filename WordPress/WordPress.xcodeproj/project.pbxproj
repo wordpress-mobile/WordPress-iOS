@@ -2137,12 +2137,36 @@
 		A27B39EB1975A2A2004A3052 /* IntegrationTests */ = {
 			isa = PBXGroup;
 			children = (
+				A2F76A0F1976EC2400398F87 /* Supporting Files */,
+				A2F76A0C1976E94800398F87 /* Helpers */,
+				A2F76A101976EC3200398F87 /* Tests */,
+			);
+			path = IntegrationTests;
+			sourceTree = "<group>";
+		};
+		A2F76A0C1976E94800398F87 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
+		A2F76A0F1976EC2400398F87 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
 				A25F61FA1976D47200E9F1E3 /* generate_test_info.rb */,
 				A25F61F71976D42400E9F1E3 /* IntegrationTestsInfo.h */,
 				A25F61F81976D42400E9F1E3 /* IntegrationTestsInfo.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A2F76A101976EC3200398F87 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
 				A2D55CCC1975BD2600B9A561 /* LoginTest.m */,
 			);
-			path = IntegrationTests;
+			name = Tests;
 			sourceTree = "<group>";
 		};
 		AC3439790E11434600E5D79B /* Post */ = {
