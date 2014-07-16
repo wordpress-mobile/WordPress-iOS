@@ -61,7 +61,7 @@ CGFloat const ReblogViewTextBottomInset = 30;
     [self configureNavbar];
     [self configureView];
 
-	UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlePostViewTapped:)];
+    UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlePostViewTapped:)];
     tgr.cancelsTouchesInView = YES;
     [self.postView addGestureRecognizer:tgr];
 }
@@ -325,30 +325,30 @@ CGFloat const ReblogViewTextBottomInset = 30;
     self.navigationItem.leftBarButtonItem.enabled = NO;
 
     self.navigationItem.rightBarButtonItem = self.activityBarItem;
-	[self.activityView startAnimating];
+    [self.activityView startAnimating];
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
 
     [service reblogPost:self.post toSite:[self.blog.blogID integerValue] note:[self.textView.text trim] success:^{
         [WPToast showToastWithMessage:NSLocalizedString(@"Reblogged", @"User reblogged a post.")
-							 andImage:[UIImage imageNamed:@"action_icon_replied"]];
+                             andImage:[UIImage imageNamed:@"action_icon_replied"]];
 
-		if ([self.delegate respondsToSelector:@selector(postWasReblogged:)]) {
-			[self.delegate postWasReblogged:self.post];
-		}
+        if ([self.delegate respondsToSelector:@selector(postWasReblogged:)]) {
+            [self.delegate postWasReblogged:self.post];
+        }
 
         [WPAnalytics track:WPAnalyticsStatReaderRebloggedArticle];
         [self dismiss];
 
     } failure:^(NSError *error) {
-		DDLogError(@"Error Reblogging Post : %@", [error localizedDescription]);
+        DDLogError(@"Error Reblogging Post : %@", [error localizedDescription]);
         [self.textView setEditable:YES];
         self.navigationItem.leftBarButtonItem.enabled = YES;
-		[self.activityView stopAnimating];
+        [self.activityView stopAnimating];
         self.navigationItem.rightBarButtonItem = self.publishBarItem;
 
-		// TODO: Failure reason.
+        // TODO: Failure reason.
         [WPError showAlertWithTitle:NSLocalizedString(@"Reblog failed", nil) message:NSLocalizedString(@"There was a problem reblogging. Please try again.", nil)];
     }];
 }
