@@ -76,7 +76,7 @@
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
-    self.infiniteScrollEnabled  = NO;
+    self.infiniteScrollEnabled = NO;
     
     [self updateTabBarBadgeNumber];
 }
