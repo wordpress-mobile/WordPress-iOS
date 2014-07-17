@@ -31,10 +31,6 @@
 
 - (UIImage *)imageForURL:(NSURL *)url withSize:(CGSize)size
 {
-    // Force rounding and only cache based on width
-    size.width = ceilf(size.width);
-    size.height = 0;
-    
     UIImage *image = [self cachedImageForURL:url withSize:size];
     if (image) {
         return image;
