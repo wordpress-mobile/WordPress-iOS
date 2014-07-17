@@ -107,10 +107,10 @@
     paragraphStyle.maximumLineHeight        = 24;
     
     return @{
-             NSParagraphStyleAttributeName   : paragraphStyle,
-             NSFontAttributeName             : [WPStyleGuide notificationBlockFont],
-             NSForegroundColorAttributeName  : [WPStyleGuide littleEddieGrey],
-             };
+        NSParagraphStyleAttributeName   : paragraphStyle,
+        NSFontAttributeName             : [WPStyleGuide notificationBlockFont],
+        NSForegroundColorAttributeName  : [WPStyleGuide littleEddieGrey],
+    };
 }
 
 + (NSDictionary *)notificationBlockAttributesBold
@@ -120,10 +120,10 @@
     paragraphStyle.maximumLineHeight        = 24;
     
     return @{
-             NSParagraphStyleAttributeName   : paragraphStyle,
-             NSFontAttributeName             : [WPStyleGuide notificationBlockFontBold],
-             NSForegroundColorAttributeName  : [WPStyleGuide littleEddieGrey],
-             };
+        NSParagraphStyleAttributeName   : paragraphStyle,
+        NSFontAttributeName             : [WPStyleGuide notificationBlockFontBold],
+        NSForegroundColorAttributeName  : [WPStyleGuide littleEddieGrey],
+    };
 }
 
 @end
