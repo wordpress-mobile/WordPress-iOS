@@ -106,8 +106,7 @@ NSInteger const kMeTabIndex = 2;
     [self removeCredentialsForDebug];
     
     // Stats and feedback
-    [Taplytics startTaplyticsAPIKey:[WordPressComApiCredentials taplyticsAPIKey]
-                            options:@{@"shakeMenu":@NO}];
+    [Taplytics startTaplyticsAPIKey:[WordPressComApiCredentials taplyticsAPIKey]];
     [SupportViewController checkIfFeedbackShouldBeEnabled];
 
     [Helpshift installForApiKey:[WordPressComApiCredentials helpshiftAPIKey] domainName:[WordPressComApiCredentials helpshiftDomainName] appID:[WordPressComApiCredentials helpshiftAppId]];
