@@ -1,5 +1,6 @@
 #import "Notification.h"
 #import "NSDictionary+SafeExpectations.h"
+#import "NSDate+ISO8601.h"
 
 
 
@@ -255,8 +256,7 @@ NSString const *NoteHeightKey           = @"height";
 - (NSDate *)timestampAsDate
 {
     if (!_date) {
-        NSTimeInterval timeInterval = [self.timestamp doubleValue];
-        _date = [NSDate dateWithTimeIntervalSince1970:timeInterval];
+        _date = [NSDate dateWithISO8601String:self.timestamp];
     }
     
     return self.date;

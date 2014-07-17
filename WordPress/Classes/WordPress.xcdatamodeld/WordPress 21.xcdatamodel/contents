@@ -266,7 +266,7 @@
         <attribute name="read" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="simperiumKey" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="subject" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="timestamp" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
@@ -374,12 +374,12 @@
         <element name="Comment" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="345"/>
         <element name="Meta" positionX="9" positionY="153" width="128" height="105"/>
+        <element name="Notification" positionX="9" positionY="153" width="128" height="210"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="150"/>
         <element name="ReaderComment" positionX="0" positionY="0" width="128" height="120"/>
         <element name="ReaderPost" positionX="0" positionY="0" width="128" height="463"/>
         <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="180"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
-        <element name="Notification" positionX="9" positionY="153" width="128" height="210"/>
     </elements>
 </model>
