@@ -285,14 +285,15 @@ static UIEdgeInsets NotificationTableInsets     = { 0.0f, 0.0f, 20.0f, 0.0f };
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderPostService *service      = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    __weak __typeof(self)weakSelf   = self;
     
     [service fetchPost:postID.integerValue forSite:siteID.integerValue success:^(ReaderPost *post) {
-        if ([self.navigationController.topViewController isEqual:self]) {
-            [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:post];
+        if ([weakSelf.navigationController.topViewController isEqual:weakSelf]) {
+            [weakSelf performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:post];
         }
         
     } failure:^(NSError *error) {
-        [self.tableView deselectSelectedRowWithAnimation:YES];
+        [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
         
     }];
 }

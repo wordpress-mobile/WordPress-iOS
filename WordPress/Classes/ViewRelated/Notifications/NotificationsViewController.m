@@ -5,6 +5,8 @@
 #import "ContextManager.h"
 #import "Constants.h"
 
+#import "UITableView+Helpers.h"
+
 #import "WPTableViewControllerSubclass.h"
 #import "WPWebViewController.h"
 #import "Notification.h"
@@ -183,15 +185,15 @@
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderPostService *service      = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    __weak __typeof(self)weakSelf   = self;
     
     [service fetchPost:note.metaPostID.integerValue forSite:note.metaSiteID.integerValue success:^(ReaderPost *post) {
-        if ([self.navigationController.topViewController isEqual:self]) {
-            [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:post];
+        if ([weakSelf.navigationController.topViewController isEqual:weakSelf]) {
+            [weakSelf performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:post];
         }
         
     } failure:^(NSError *error) {
-        [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
-        
+        [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
     }];
 }
 
@@ -200,6 +202,7 @@
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService        = [[BlogService alloc] initWithManagedObjectContext:context];
     Blog *blog                      = [blogService blogByBlogId:note.metaSiteID];
+    __weak __typeof(self)weakSelf   = self;
     
     // If we don't have the blog, fall back to the reader
     if (!blog || !note.metaCommentID) {
@@ -209,13 +212,12 @@
     
     CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
     [commentService loadCommentWithID:note.metaCommentID fromBlog:blog success:^(Comment *comment) {
-        if ([self.navigationController.topViewController isEqual:self]) {
-            [self performSegueWithIdentifier:NSStringFromClass([CommentViewController class]) sender:comment];
+        if ([weakSelf.navigationController.topViewController isEqual:weakSelf]) {
+            [weakSelf performSegueWithIdentifier:NSStringFromClass([CommentViewController class]) sender:comment];
         }
         
     } failure:^(NSError *error) {
-        [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
-        
+        [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
     }];
 }
 
