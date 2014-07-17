@@ -103,8 +103,7 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     [self removeCredentialsForDebug];
     
     // Stats and feedback
-    [Taplytics startTaplyticsAPIKey:[WordPressComApiCredentials taplyticsAPIKey]
-                            options:@{@"shakeMenu":@NO}];
+    [Taplytics startTaplyticsAPIKey:[WordPressComApiCredentials taplyticsAPIKey]];
     [SupportViewController checkIfFeedbackShouldBeEnabled];
 
     [Helpshift installForApiKey:[WordPressComApiCredentials helpshiftAPIKey] domainName:[WordPressComApiCredentials helpshiftDomainName] appID:[WordPressComApiCredentials helpshiftAppId]];
