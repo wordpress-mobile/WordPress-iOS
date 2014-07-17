@@ -6,12 +6,12 @@
 @class Simperium;
 @class Blog;
 
-@interface WordPressAppDelegate : NSObject <UIApplicationDelegate>
-
 // Tab index constants
 extern NSInteger const kReaderTabIndex;
 extern NSInteger const kNotificationsTabIndex;
 extern NSInteger const kMeTabIndex;
+
+@interface WordPressAppDelegate : NSObject <UIApplicationDelegate>
 
 @property (nonatomic, strong) IBOutlet UIWindow *window;
 @property (nonatomic, strong) UINavigationController *navigationController;
