@@ -31,8 +31,7 @@
         [[SLElement elementWithAccessibilityIdentifier:@"wpcom-sign-out"] tap];
         [[SLElement elementWithAccessibilityLabel:@"Sign Out"] tap];
         
-        // wait for reader to finish up some stuff in the background
-        [self wait:10.0];
+        [self wait:2.0];
     }
 }
 
@@ -44,8 +43,9 @@
     SLAssertTrueWithTimeout([[SLElement elementWithAccessibilityIdentifier:@"tabBar"] isValid],
                             5.0,
                             @"Sign in was not successful.");
-    
-    [self wait:5.0];
+
+    // wait for reader to finish up some stuff in the background before teardown
+    [self wait:10.0];
 }
 
 - (void)testLoginFailsWithBadUsernameAndPassword {
