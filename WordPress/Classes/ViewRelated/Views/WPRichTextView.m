@@ -160,11 +160,6 @@
     });
 }
 
-- (BOOL)isEmoji:(NSURL *)url
-{
-    return ([[url absoluteString] rangeOfString:@"wp.com/wp-includes/images/smilies"].location != NSNotFound);
-}
-
 - (void)handleMediaViewLoaded:(ReaderMediaView *)mediaView
 {
     BOOL frameChanged = [self updateMediaLayout:mediaView];
@@ -181,21 +176,15 @@
     CGSize originalSize = imageView.frame.size;
     CGSize imageSize = imageView.image.size;
 
-    if ([self isEmoji:url]) {
-        CGFloat scale = [UIScreen mainScreen].scale;
-        imageSize.width *= scale;
-        imageSize.height *= scale;
-    } else {
-        if (imageView.image) {
-            CGFloat ratio = imageSize.width / imageSize.height;
-            CGFloat width = self.frame.size.width;
-            CGFloat availableWidth = width - (self.textContentView.edgeInsets.left + self.textContentView.edgeInsets.right);
+    if (imageView.image) {
+        CGFloat ratio = imageSize.width / imageSize.height;
+        CGFloat width = self.frame.size.width;
+        CGFloat availableWidth = width - (self.textContentView.edgeInsets.left + self.textContentView.edgeInsets.right);
 
-            imageSize.width = availableWidth;
-            imageSize.height = roundf(width / ratio) + imageView.edgeInsets.top;
-        } else {
-            imageSize = CGSizeMake(0.0f, 0.0f);
-        }
+        imageSize.width = availableWidth;
+        imageSize.height = roundf(width / ratio) + imageView.edgeInsets.top;
+    } else {
+        imageSize = CGSizeMake(0.0f, 0.0f);
     }
 
     // Widths should always match
@@ -326,21 +315,6 @@
     edgeInsets.bottom = 0.0;
 
     if ([attachment isKindOfClass:[DTImageTextAttachment class]]) {
-        if ([self isEmoji:attachment.contentURL]) {
-            // minimal frame to suppress drawing context errors with 0 height or width.
-            frame.size.width = MAX(frame.size.width, 1.0);
-            frame.size.height = MAX(frame.size.height, 1.0);
-            ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
-            [_mediaArray addObject:imageView];
-            [self.mediaQueue enqueueMedia:imageView
-                                  withURL:attachment.contentURL
-                         placeholderImage:nil
-                                     size:CGSizeMake(15.0, 15.0)
-                                isPrivate:self.privateContent
-                                  success:nil
-                                  failure:nil];
-            return imageView;
-        }
 
         DTImageTextAttachment *imageAttachment = (DTImageTextAttachment *)attachment;
 
