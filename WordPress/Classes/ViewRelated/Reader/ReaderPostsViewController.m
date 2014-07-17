@@ -600,7 +600,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
             } else {
                 [self.featuredImageSource fetchImageForURL:imageURL
                                                   withSize:[self sizeForFeaturedImage]
-                                                 indexPath:indexPath
+                                                 indexPath:nextIndexPath
                                                  isPrivate:post.isPrivate];
             }
         }
