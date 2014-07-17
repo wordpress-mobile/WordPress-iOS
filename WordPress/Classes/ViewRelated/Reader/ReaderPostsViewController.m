@@ -21,6 +21,7 @@
 #import "ReaderTopicService.h"
 #import "ReaderPostService.h"
 #import "CustomHighlightButton.h"
+#import "BlogService.h"
 
 static CGFloat const RPVCHeaderHeightPhone = 10.0;
 static CGFloat const RPVCExtraTableViewHeightPercentage = 2.0;
@@ -655,6 +656,16 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
                                           withSize:[self sizeForFeaturedImage]
                                          indexPath:indexPath
                                          isPrivate:post.isPrivate];
+    }
+}
+
+- (void)syncItems
+{
+    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    if ([service numberOfAccounts] > 0) {
+        [super syncItems];
+    } else {
+        [self configureNoResultsView];
     }
 }
 
