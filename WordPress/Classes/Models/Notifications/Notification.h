@@ -24,7 +24,7 @@ extern NSString * NoteLinkTypePost;
 @property (nonatomic, strong,  readonly) NSString           *noticon;
 
 @property (nonatomic, strong, readwrite) NSNumber           *read;
-@property (nonatomic, strong,  readonly) NSNumber           *timestamp;
+@property (nonatomic, strong,  readonly) NSString           *timestamp;
 @property (nonatomic, strong,  readonly) NSString           *type;
 @property (nonatomic, strong,  readonly) NSString           *url;
 
