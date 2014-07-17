@@ -142,8 +142,8 @@
     if (!metadata) {
         return;
     }
-    
-    metadata.last_seen      = note.timestamp;
+
+    metadata.last_seen      = @(note.timestampAsDate.timeIntervalSince1970);
     [simperium save];
 }
 
