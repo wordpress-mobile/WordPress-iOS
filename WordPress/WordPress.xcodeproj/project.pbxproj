@@ -48,6 +48,7 @@
 		5D119DA3176FBE040073D83A /* UIImageView+AFNetworkingExtra.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D119DA2176FBE040073D83A /* UIImageView+AFNetworkingExtra.m */; };
 		5D146EBB189857ED0068FDC6 /* FeaturedImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D146EBA189857ED0068FDC6 /* FeaturedImageViewController.m */; };
 		5D1EE80215E7AF3E007F1F02 /* JetpackSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1EE80015E7AF3E007F1F02 /* JetpackSettingsViewController.m */; };
+		5D2BEB4919758102005425F7 /* WPTableImageSourceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2BEB4819758102005425F7 /* WPTableImageSourceTest.m */; };
 		5D358D6517723DB500739AA4 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D358D6417723DB500739AA4 /* OpenSans-Bold.ttf */; };
 		5D37941B19216B1300E26CA4 /* RebloggingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D37941A19216B1300E26CA4 /* RebloggingViewController.m */; };
 		5D3D559718F88C3500782892 /* ReaderPostService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D3D559618F88C3500782892 /* ReaderPostService.m */; };
@@ -439,6 +440,7 @@
 		5D1EE7FF15E7AF3E007F1F02 /* JetpackSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackSettingsViewController.h; sourceTree = "<group>"; };
 		5D1EE80015E7AF3E007F1F02 /* JetpackSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackSettingsViewController.m; sourceTree = "<group>"; };
 		5D2B043515E83800007E3422 /* SettingsViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewControllerDelegate.h; sourceTree = "<group>"; };
+		5D2BEB4819758102005425F7 /* WPTableImageSourceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableImageSourceTest.m; sourceTree = "<group>"; };
 		5D358D6417723DB500739AA4 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		5D37941919216B1300E26CA4 /* RebloggingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RebloggingViewController.h; sourceTree = "<group>"; };
 		5D37941A19216B1300E26CA4 /* RebloggingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RebloggingViewController.m; sourceTree = "<group>"; };
@@ -1989,6 +1991,7 @@
 				F1564E5A18946087009F8F97 /* NSStringHelpersTest.m */,
 				E10675C7183F82E900E5CE5C /* SettingsViewControllerTest.m */,
 				E1E4CE0C177439D100430844 /* WPAvatarSourceTest.m */,
+				5D2BEB4819758102005425F7 /* WPTableImageSourceTest.m */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -2651,6 +2654,7 @@
 				5DFA9D1A196B1BA30061FF96 /* ReaderTopicServiceTest.m in Sources */,
 				C5CFDC2A184F962B00097B05 /* CoreDataConcurrencyTest.m in Sources */,
 				5DE8A0411912D95B00B2FF59 /* ReaderPostServiceTest.m in Sources */,
+				5D2BEB4919758102005425F7 /* WPTableImageSourceTest.m in Sources */,
 				E150520F16CAC75A00D3DDDC /* CoreDataTestHelper.m in Sources */,
 				E10675C8183F82E900E5CE5C /* SettingsViewControllerTest.m in Sources */,
 				F1564E5B18946087009F8F97 /* NSStringHelpersTest.m in Sources */,
