@@ -209,6 +209,7 @@
 		A25EBD87156E330600530E3D /* WPTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A25EBD86156E330600530E3D /* WPTableViewController.m */; };
 		A25F61FB1976D47200E9F1E3 /* generate_test_info.rb in Resources */ = {isa = PBXBuildFile; fileRef = A25F61FA1976D47200E9F1E3 /* generate_test_info.rb */; };
 		A2787D0219002AB1000D6CA6 /* HelpshiftConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = A2787D0119002AB1000D6CA6 /* HelpshiftConfig.plist */; };
+		A29D67A8197878F000A97C28 /* sample.WPiOS_integration_tests in Resources */ = {isa = PBXBuildFile; fileRef = A29D67A7197878F000A97C28 /* sample.WPiOS_integration_tests */; };
 		A2D55B981975BBFC00B9A561 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
 		A2D55B991975BBFC00B9A561 /* defaultPostTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */; };
 		A2D55B9A1975BBFC00B9A561 /* defaultPostTemplate_old.html in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97040E33B21600CA8540 /* defaultPostTemplate_old.html */; };
@@ -1061,6 +1062,7 @@
 		A25F61FA1976D47200E9F1E3 /* generate_test_info.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = generate_test_info.rb; sourceTree = "<group>"; };
 		A2787D0119002AB1000D6CA6 /* HelpshiftConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = HelpshiftConfig.plist; sourceTree = "<group>"; };
 		A284044518BFE7F300D982B6 /* WordPress 15.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 15.xcdatamodel"; sourceTree = "<group>"; };
+		A29D67A7197878F000A97C28 /* sample.WPiOS_integration_tests */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sample.WPiOS_integration_tests; sourceTree = "<group>"; };
 		A2D55CC91975BBFC00B9A561 /* WordPress copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WordPress copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2D55CCC1975BD2600B9A561 /* LoginTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginTest.m; sourceTree = "<group>"; };
 		A2DC5B181953451B009584C3 /* WPNUXHelpBadgeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNUXHelpBadgeLabel.h; sourceTree = "<group>"; };
@@ -2154,6 +2156,7 @@
 		A2F76A0F1976EC2400398F87 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A29D67A7197878F000A97C28 /* sample.WPiOS_integration_tests */,
 				A25F61FA1976D47200E9F1E3 /* generate_test_info.rb */,
 				A25F61F71976D42400E9F1E3 /* IntegrationTestsInfo.h */,
 				A25F61F81976D42400E9F1E3 /* IntegrationTestsInfo.m */,
@@ -2755,6 +2758,7 @@
 				A2D55BAF1975BBFC00B9A561 /* AppImages.xcassets in Resources */,
 				A2D55BB01975BBFC00B9A561 /* loader.html in Resources */,
 				A2D55BB11975BBFC00B9A561 /* postPreview.html in Resources */,
+				A29D67A8197878F000A97C28 /* sample.WPiOS_integration_tests in Resources */,
 				A2D55BB21975BBFC00B9A561 /* WPAlertView.h in Resources */,
 				A2D55BB31975BBFC00B9A561 /* OpenSans-LightItalic.ttf in Resources */,
 				A2D55BB41975BBFC00B9A561 /* Images.xcassets in Resources */,
