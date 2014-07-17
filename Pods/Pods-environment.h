@@ -207,8 +207,8 @@
 // Taplytics
 #define COCOAPODS_POD_AVAILABLE_Taplytics
 #define COCOAPODS_VERSION_MAJOR_Taplytics 1
-#define COCOAPODS_VERSION_MINOR_Taplytics 2
-#define COCOAPODS_VERSION_PATCH_Taplytics 50
+#define COCOAPODS_VERSION_MINOR_Taplytics 3
+#define COCOAPODS_VERSION_PATCH_Taplytics 10
 
 // UIAlertView+Blocks
 #define COCOAPODS_POD_AVAILABLE_UIAlertView_Blocks
