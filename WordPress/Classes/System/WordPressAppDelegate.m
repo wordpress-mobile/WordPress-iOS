@@ -53,10 +53,10 @@ static NSString * const WPTabBarRestorationID = @"WPTabBarID";
 static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
 static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
 static NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
-static NSInteger const IndexForReaderTab = 0;
-static NSInteger const IndexForNotificationsTab = 1;
-static NSInteger const IndexForMeTab = 2;
 static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
+NSInteger const kReaderTabIndex = 0;
+NSInteger const kNotificationsTabIndex = 1;
+NSInteger const kMeTabIndex = 2;
 
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
@@ -466,24 +466,8 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     return _tabBarController;
 }
 
-- (void)showNotificationsTab
-{
-    [self.tabBarController setSelectedIndex:IndexForNotificationsTab];
-}
-
-- (void)showReaderTab
-{
-    [self.tabBarController setSelectedIndex:IndexForReaderTab];
-}
-
-- (void)showBlogListTab
-{
-    [self.tabBarController setSelectedIndex:IndexForMeTab];
-}
-
-- (void)showMeTab
-{
-    [self.tabBarController setSelectedIndex:IndexForMeTab];
+- (void)showTabForIndex: (NSInteger)tabIndex {
+    [self.tabBarController setSelectedIndex:tabIndex];
 }
 
 - (void)showPostTab
@@ -520,10 +504,10 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 - (void)switchTabToPostsListForPost:(AbstractPost *)post
 {
     // Make sure the desired tab is selected.
-    [self showMeTab];
+    [self showTabForIndex:kMeTabIndex];
 
     // Check which VC is showing.
-    UINavigationController *blogListNavController = [self.tabBarController.viewControllers objectAtIndex:IndexForMeTab];
+    UINavigationController *blogListNavController = [self.tabBarController.viewControllers objectAtIndex:kMeTabIndex];
     UIViewController *topVC = blogListNavController.topViewController;
     if ([topVC isKindOfClass:[PostsViewController class]]) {
         Blog *blog = ((PostsViewController *)topVC).blog;
@@ -548,7 +532,7 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 
 - (BOOL)isNavigatingMeTab
 {
-    return (self.tabBarController.selectedIndex == IndexForMeTab && [self.blogListViewController.navigationController.viewControllers count] > 1);
+    return (self.tabBarController.selectedIndex == kMeTabIndex && [self.blogListViewController.navigationController.viewControllers count] > 1);
 }
 
 #pragma mark - UITabBarControllerDelegate methods.
