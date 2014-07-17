@@ -302,5 +302,18 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     }
 }
 
+- (NSUInteger)numberOfAccounts
+{
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:[NSEntityDescription entityForName:@"Account" inManagedObjectContext:self.managedObjectContext]];
+    [request setIncludesSubentities:NO];
+
+    NSError *error;
+    NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&error];
+    if(count == NSNotFound) {
+        count = 0;
+    }
+    return count;
+}
 
 @end
