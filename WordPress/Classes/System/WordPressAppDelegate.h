@@ -8,6 +8,11 @@
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate>
 
+// Tab index constants
+extern NSInteger const kReaderTabIndex;
+extern NSInteger const kNotificationsTabIndex;
+extern NSInteger const kMeTabIndex;
+
 @property (nonatomic, strong) IBOutlet UIWindow *window;
 @property (nonatomic, strong) UINavigationController *navigationController;
 @property (nonatomic, strong) UITabBarController *tabBarController;
@@ -32,10 +37,7 @@
 ///-----------------------
 /// @name Tab bar controls
 ///-----------------------
-- (void)showNotificationsTab;
-- (void)showBlogListTab;
-- (void)showReaderTab;
-- (void)showMeTab;
+- (void)showTabForIndex: (NSInteger)tabIndex;
 - (void)showPostTab;
 - (void)switchTabToPostsListForPost:(AbstractPost *)post;
 - (BOOL)isNavigatingMeTab;
