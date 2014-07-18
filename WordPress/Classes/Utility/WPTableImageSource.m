@@ -6,12 +6,22 @@
 #import "WPAccount.h"
 #import "WPImageSource.h"
 
+static NSUInteger const WPTableImageSourceBatchSize = 10;
+
+@interface WPTableImageSource()
+@property (nonatomic, strong) NSMutableArray *pendingDownloads;
+@property (nonatomic, strong) NSMutableArray *currentDownloads;
+@property (nonatomic) NSUInteger downloadCounter;
+@end
+
 @implementation WPTableImageSource {
     dispatch_queue_t _processingQueue;
     NSCache *_imageCache;
     CGSize _maxSize;
     NSDate *_lastInvalidationOfIndexPaths;
 }
+
+#pragma mark - Lifecycle Methods
 
 - (id)init
 {
@@ -26,9 +36,14 @@
         _imageCache = [[NSCache alloc] init];
         _maxSize = CGSizeMake(ceil(size.width), ceil(size.height));
         _forceLargerSizeWhenFetching = YES;
+        _currentDownloads = [NSMutableArray array];
+        _pendingDownloads = [NSMutableArray array];
     }
     return self;
 }
+
+
+#pragma mark - Image fetching
 
 - (UIImage *)imageForURL:(NSURL *)url withSize:(CGSize)size
 {
@@ -53,81 +68,51 @@
 {
     NSAssert(url!=nil, @"url shouldn't be nil");
     NSAssert(!CGSizeEqualToSize(size, CGSizeZero), @"size shouldn't be zero");
-    
+
     // Failsafe
     if (url == nil || size.width == 0) {
         return;
     }
-    
-    // If the requested size has a 0 height, it means we know the desired width only.
-    // Make the request with a 0 height and we'll update later once the image is loaded and
-    // we can find its width/height ratio.
-    CGSize requestSize;
-    if (size.height == 0) {
-        requestSize = CGSizeMake(MAX(size.width, _maxSize.width), size.height);
+
+    NSDictionary *queueItem = @{@"url":url, @"size":NSStringFromCGSize(size), @"indexPath":indexPath, @"isPrivate":@(isPrivate)};
+
+    if ([self.currentDownloads count] < WPTableImageSourceBatchSize) {
+        [self requestImage:queueItem];
     } else {
-        requestSize = CGSizeMake(MAX(size.width, _maxSize.width), MAX(size.height, _maxSize.height));
-    }
-    
-    NSDictionary *receiver = @{@"size": NSStringFromCGSize(size), @"indexPath": indexPath, @"date": [NSDate date]};
-    void (^successBlock)(UIImage *) = ^(UIImage *image) {
-        NSDictionary *_receiver = receiver;
-        if (size.height == 0) {
-            CGFloat ratio = image.size.width / image.size.height;
-            CGFloat height = round(size.width / ratio);
-            CGSize receiverSize = CGSizeMake(size.width, height);
-            
-            NSMutableDictionary *dict = [_receiver mutableCopy];
-            [dict setObject:NSStringFromCGSize(receiverSize) forKey:@"size"];
-            _receiver = dict;
-        }
-        
-        [self setCachedImage:image forURL:url withSize:_maxSize];
-        [self processImage:image forURL:url receiver:_receiver];
-    };
-    
-    void (^failureBlock)(NSError *) = ^(NSError *error) {
-        DDLogError(@"Failed getting image %@: %@", url, error);
-        [self handleImageDownloadFailedForReceiver:receiver error:error];
-    };
-    
-    url = [self photonURLForURL:url withSize:requestSize];
-    
-    if (isPrivate) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-        [[WPImageSource sharedSource] downloadImageForURL:url
-                                                authToken:[[defaultAccount restApi] authToken]
-                                              withSuccess:successBlock
-                                                  failure:failureBlock];
-    } else {
-        [[WPImageSource sharedSource] downloadImageForURL:url
-                                              withSuccess:successBlock
-                                                  failure:failureBlock];
+        [self enqueueImageDownload:queueItem];
     }
 }
 
 - (void)invalidateIndexPaths
 {
     _lastInvalidationOfIndexPaths = [NSDate date];
+    self.downloadCounter = 0;
+    [self.pendingDownloads removeAllObjects];
+    [self.currentDownloads removeAllObjects];
 }
+
 
 #pragma mark - Private methods
 
-- (void)handleImageDownloadFailedForReceiver:(NSDictionary *)receiver error:(NSError *)error {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(tableImageSource:imageFailedforIndexPath:error:)]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (_lastInvalidationOfIndexPaths
-                && [_lastInvalidationOfIndexPaths compare:receiver[@"date"]] == NSOrderedDescending) {
-                // This index path has been invalidated, don't call the delegate
-                return;
-            }
+- (void)handleImageDownloadFailedForReceiver:(NSDictionary *)receiver error:(NSError *)error
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (_lastInvalidationOfIndexPaths
+            && [_lastInvalidationOfIndexPaths compare:receiver[@"date"]] == NSOrderedDescending) {
+            // This index path has been invalidated, don't call the delegate
+            return;
+        }
+
+        if (self.delegate && [self.delegate respondsToSelector:@selector(tableImageSource:imageFailedforIndexPath:error:)]) {
             NSIndexPath *indexPath = [receiver objectForKey:@"indexPath"];
             [self.delegate tableImageSource:self imageFailedforIndexPath:indexPath error:error];
-        });
-    }
+        }
+
+        self.downloadCounter++;
+        [self updateCurrentDownloads];
+    });
 }
+
 
 #pragma mark - Image processing
 
@@ -154,21 +139,24 @@
 			if (!CGSizeEqualToSize(resizedImage.size, size)) {
 				resizedImage = [self resizeImage:image toSize:size];
 			}
-			
+
 			[self setCachedImage:resizedImage forURL:url withSize:size];
 		}
 
-        if (self.delegate && [self.delegate respondsToSelector:@selector(tableImageSource:imageReady:forIndexPath:)]) {
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                if (_lastInvalidationOfIndexPaths
-                    && [_lastInvalidationOfIndexPaths compare:receiver[@"date"]] == NSOrderedDescending) {
-                    // This index path has been invalidated, don't call the delegate
-                    return;
-                }
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            if (_lastInvalidationOfIndexPaths
+                && [_lastInvalidationOfIndexPaths compare:receiver[@"date"]] == NSOrderedDescending) {
+                // This index path has been invalidated, don't call the delegate
+                return;
+            }
 
+            if (self.delegate && [self.delegate respondsToSelector:@selector(tableImageSource:imageReady:forIndexPath:)]) {
                 [self.delegate tableImageSource:self imageReady:resizedImage forIndexPath:receiver[@"indexPath"]];
-            });
-        }
+            }
+
+            self.downloadCounter++;
+            [self updateCurrentDownloads];
+        });
     });
 }
 
@@ -290,7 +278,9 @@
     return [NSURL URLWithString:photonURLString];
 }
 
-
+/**
+ Constructs a Photon query string from the  supplied parameters.
+ */
 - (NSString *)photonQueryStringWithWidth:(NSUInteger)width height:(NSUInteger)height usingSSL:(BOOL)useSSL
 {
     NSString *queryString;
@@ -308,5 +298,122 @@
     return queryString;
 }
 
+
+#pragma mark - Download queue wrangling
+
+/**
+ Adds a requested image to the pending queue.
+ */
+- (void)enqueueImageDownload:(NSDictionary *)queueItem
+{
+    [self.pendingDownloads addObject:queueItem];
+}
+
+/**
+    Downloads the image specified.
+ */
+- (void)requestImage:(NSDictionary *)queueItem
+{
+    [self.currentDownloads addObject:queueItem];
+
+    NSURL *url = [queueItem objectForKey:@"url"];
+    CGSize size = CGSizeFromString([queueItem stringForKey:@"size"]);
+    NSIndexPath *indexPath = [queueItem objectForKey:@"indexPath"];
+    BOOL isPrivate = [[queueItem numberForKey:@"isPrivate"] boolValue];
+
+    // If the requested size has a 0 height, it means we know the desired width only.
+    // Make the request with a 0 height and we'll update later once the image is loaded and
+    // we can find its width/height ratio.
+    CGSize requestSize;
+    if (size.height == 0) {
+        requestSize = CGSizeMake(MAX(size.width, _maxSize.width), size.height);
+    } else {
+        requestSize = CGSizeMake(MAX(size.width, _maxSize.width), MAX(size.height, _maxSize.height));
+    }
+
+    NSDictionary *receiver = @{@"size": NSStringFromCGSize(size), @"indexPath": indexPath, @"date": [NSDate date]};
+    void (^successBlock)(UIImage *) = ^(UIImage *image) {
+        self.downloadCounter++;
+        [self.currentDownloads removeObject:queueItem];
+
+        NSDictionary *_receiver = receiver;
+        if (size.height == 0) {
+            CGFloat ratio = image.size.width / image.size.height;
+            CGFloat height = round(size.width / ratio);
+            CGSize receiverSize = CGSizeMake(size.width, height);
+
+            NSMutableDictionary *dict = [_receiver mutableCopy];
+            [dict setObject:NSStringFromCGSize(receiverSize) forKey:@"size"];
+            _receiver = dict;
+        }
+
+        [self setCachedImage:image forURL:url withSize:_maxSize];
+        [self processImage:image forURL:url receiver:_receiver];
+    };
+
+    void (^failureBlock)(NSError *) = ^(NSError *error) {
+        DDLogError(@"Failed getting image %@: %@", url, error);
+        self.downloadCounter++;
+        [self handleImageDownloadFailedForReceiver:receiver error:error];
+    };
+
+    url = [self photonURLForURL:url withSize:requestSize];
+
+    if (isPrivate) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+        [[WPImageSource sharedSource] downloadImageForURL:url
+                                                authToken:[[defaultAccount restApi] authToken]
+                                              withSuccess:successBlock
+                                                  failure:failureBlock];
+    } else {
+        [[WPImageSource sharedSource] downloadImageForURL:url
+                                              withSuccess:successBlock
+                                                  failure:failureBlock];
+    }
+}
+
+/**
+ Checks the progress of the current batch of downloads. 
+ Starts the next batch when the current batch completes. 
+ Notifies the delegate when a batch completes, and when the queue is emptied.
+ */
+- (void)updateCurrentDownloads
+{
+    // Did we load everything in the active queue?
+    if (self.downloadCounter < [self.currentDownloads count]) {
+        return;
+    }
+
+    if ([self.delegate respondsToSelector:@selector(tableImageSource:didLoadImagesAtIndexPaths:)]) {
+        NSMutableArray *indexPaths = [NSMutableArray array];
+        for (NSDictionary *queueItem in self.currentDownloads) {
+            NSIndexPath *indexPath = [queueItem objectForKey:@"indexPath"];
+            [indexPaths addObject:indexPath];
+        }
+        [self.delegate tableImageSource:self didLoadImagesAtIndexPaths:indexPaths];
+    }
+
+    // Reset for the next batch.
+    self.downloadCounter = 0;
+    [self.currentDownloads removeAllObjects];
+
+    // Bail if nothing else to do
+    if ([self.pendingDownloads count] == 0) {
+        if ([self.delegate respondsToSelector:@selector(tableImageSourceFinishedLoadingImages:)]) {
+            [self.delegate tableImageSourceFinishedLoadingImages:self];
+        }
+        return;
+    }
+
+    // Load the next batch
+    NSInteger num = MIN(WPTableImageSourceBatchSize, [self.pendingDownloads count]);
+    for (NSInteger i = 0; i < num; i++) {
+        NSDictionary *queueItem = [self.pendingDownloads objectAtIndex:0];
+        [self.pendingDownloads removeObject:queueItem];
+        [self requestImage:queueItem];
+    }
+}
 
 @end
