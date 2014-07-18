@@ -1,7 +1,7 @@
 #import "WPTableViewControllerSubclass.h"
 #import "PostsViewController.h"
 #import "EditPostViewController.h"
-#import "NewPostTableViewCell.h"
+#import "PostTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
 #import "Post.h"
@@ -14,6 +14,9 @@
 @interface PostsViewController () {
     BOOL _addingNewPost;
 }
+
+@property (nonatomic, strong) PostTableViewCell *cellForLayout;
+@property (nonatomic, strong) NSLayoutConstraint *cellForLayoutWidthConstraint;
 
 @end
 
@@ -65,6 +68,8 @@
     button.accessibilityLabel = [self newPostAccessibilityLabel];
     button.accessibilityIdentifier = @"addpost";
     UIBarButtonItem *composeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+
+    [self configureCellForLayout];
 
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:composeButtonItem forNavigationItem:self.navigationItem];
     
@@ -134,15 +139,12 @@
     return nil;
 }
 
-- (void)configureCell:(NewPostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {    
-    Post *apost = (Post*) [self.resultsController objectAtIndexPath:indexPath];
-    cell.contentProvider = apost;
-	if (apost.remoteStatus == AbstractPostRemoteStatusPushing) {
-		cell.selectionStyle = UITableViewCellSelectionStyleNone;
-	} else {
-		cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-	}
+- (void)configureCell:(PostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+    Post *post = (Post *) [self.resultsController objectAtIndexPath:indexPath];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.accessoryType = UITableViewCellAccessoryNone;
+
+    [cell configureCell:post];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -156,10 +158,12 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];    
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
-    CGFloat width = MIN(WPTableViewFixedWidth, CGRectGetWidth(tableView.frame));
-    return [NewPostTableViewCell rowHeightForContentProvider:post andWidth:width];
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self configureCell:self.cellForLayout atIndexPath:indexPath];
+    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
+    CGSize size = [self.cellForLayout sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
+    return ceil(size.height + 1);
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -271,7 +275,7 @@
 }
 
 - (Class)cellClass {
-    return [NewPostTableViewCell class];
+    return [PostTableViewCell class];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller
@@ -293,5 +297,29 @@
 	return YES;
 }
 
+#pragma mark - Instance Methods
+
+- (void)configureCellForLayout
+{
+    NSString *CellIdentifier = @"CellForLayoutIdentifier";
+    [self.tableView registerClass:[PostTableViewCell class] forCellReuseIdentifier:CellIdentifier];
+    self.cellForLayout = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    [self updateCellForLayoutWidthConstraint:CGRectGetWidth(self.tableView.bounds)];
+}
+
+- (void)updateCellForLayoutWidthConstraint:(CGFloat)width
+{
+    UIView *contentView = self.cellForLayout.contentView;
+    if (self.cellForLayoutWidthConstraint) {
+        [contentView removeConstraint:self.cellForLayoutWidthConstraint];
+    }
+    NSDictionary *views = NSDictionaryOfVariableBindings(contentView);
+    NSDictionary *metrics = @{@"width":@(width)};
+    self.cellForLayoutWidthConstraint = [[NSLayoutConstraint constraintsWithVisualFormat:@"[contentView(width)]"
+                                                                                 options:0
+                                                                                 metrics:metrics
+                                                                                   views:views] firstObject];
+    [contentView addConstraint:self.cellForLayoutWidthConstraint];
+}
 
 @end

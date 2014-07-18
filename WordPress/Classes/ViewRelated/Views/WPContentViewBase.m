@@ -362,7 +362,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
 - (void)configureFeaturedImageView
 {
-    if (self.contentProvider) {
+    if (self.contentProvider && [self.contentProvider respondsToSelector:@selector(featuredImageURLForDisplay)]) {
         NSURL *featuredImageURL = [self.contentProvider featuredImageURLForDisplay];
         self.featuredImageView.hidden = (featuredImageURL == nil) || self.alwaysHidesFeaturedImage;
         [self configureFeaturedImageHeightConstraint];

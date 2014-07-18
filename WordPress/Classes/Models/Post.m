@@ -71,6 +71,7 @@
         password = nil;
     }
     self.password = password;
+    self.author         = [postInfo objectForKey:@"wp_author_display_name"];
     self.tags           = [postInfo objectForKey:@"mt_keywords"];
 	self.permaLink      = [postInfo objectForKey:@"permaLink"];
 	self.mt_excerpt		= [postInfo objectForKey:@"mt_excerpt"];

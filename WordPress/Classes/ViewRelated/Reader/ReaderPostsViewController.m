@@ -569,7 +569,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self setAvatarForPost:post forCell:cell indexPath:indexPath];
 
     cell.postView.delegate = self;
-    cell.postView.shouldShowActions = post.isWPCom;
 }
 
 - (CGSize)sizeForFeaturedImage
