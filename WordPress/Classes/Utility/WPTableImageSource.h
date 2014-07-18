@@ -76,7 +76,8 @@
 /**
  Invalidates stored index paths.
  
- Calling this method doesn't cancel the image requests, but prevents them from calling the delegate.
+ Calling this method cancles pending requests. Active requests will continue, but
+ will not notifiy the delegate of success or failure.
  */
 - (void)invalidateIndexPaths;
 
@@ -106,5 +107,23 @@
  @param error the error, if any.
  */
 - (void)tableImageSource:(WPTableImageSource *)tableImageSource imageFailedforIndexPath:(NSIndexPath *)indexPath error:(NSError *)error;
+
+/**
+ Notifies the delegate that the `WPTableImageSource` finished downloading a batch 
+ of images with the specified index paths. The returned index paths include failed 
+ downloads.
+ 
+ @param tableImageSource the image source sending the message.
+ @param indexPaths the indexPaths of the images that were fetched.
+ */
+- (void)tableImageSource:(WPTableImageSource *)tableImageSource didLoadImagesAtIndexPaths:(NSArray *)indexPaths;
+
+/**
+ Notifies the delegate that the `WPTableImageSource` as finished downloading all
+ requested images.
+
+ @param tableImageSource the image source sending the message.
+ */
+- (void)tableImageSourceFinishedLoadingImages:(WPTableImageSource *)tableImageSource;
 
 @end
