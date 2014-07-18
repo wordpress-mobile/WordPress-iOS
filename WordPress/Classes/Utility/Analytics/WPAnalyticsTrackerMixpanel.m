@@ -8,6 +8,12 @@
 #import "Blog.h"
 #import "BlogService.h"
 
+@interface WPAnalyticsTrackerMixpanel()
+
+@property (nonatomic, assign) NSUInteger sessionCount;
+
+@end
+
 @implementation WPAnalyticsTrackerMixpanel
 
 - (instancetype)init
@@ -23,37 +29,12 @@
 {
     [Mixpanel sharedInstanceWithToken:[WordPressComApiCredentials mixpanelAPIToken]];
     // Tracking session count will help us isolate users who just installed the app
-    NSUInteger sessionCount = [[[[Mixpanel sharedInstance] currentSuperProperties] objectForKey:@"session_count"] intValue];
-    sessionCount++;
+    self.sessionCount = [[[[Mixpanel sharedInstance] currentSuperProperties] objectForKey:@"session_count"] intValue];
+    self.sessionCount++;
     
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *account = [accountService defaultWordPressComAccount];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    
-    BOOL dotcom_user = NO;
-    BOOL jetpack_user = NO;
-    if (account != nil) {
-        dotcom_user = YES;
-        if ([[account jetpackBlogs] count] > 0) {
-            jetpack_user = YES;
-        }
-    }
-    
-    NSDictionary *properties = @{
-                                 @"platform": @"iOS",
-                                 @"session_count": @(sessionCount),
-                                 @"dotcom_user": @(dotcom_user),
-                                 @"jetpack_user": @(jetpack_user),
-                                 @"number_of_blogs" : @([blogService blogCountForAllAccounts]) };
-    [[Mixpanel sharedInstance] registerSuperProperties:properties];
-    
-    NSString *username = account.username;
-    if (account && [username length] > 0) {
-        [[Mixpanel sharedInstance] identify:username];
-        [[Mixpanel sharedInstance].people set:@{ @"$username": username, @"$first_name" : username }];
-    }
+    [self refreshMetadata];
 }
+
 - (void)track:(WPAnalyticsStat)stat
 {
     [self track:stat withProperties:nil];
@@ -73,6 +54,37 @@
 - (void)endSession
 {
     [_aggregatedStatProperties removeAllObjects];
+}
+
+- (void)refreshMetadata
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *account = [accountService defaultWordPressComAccount];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    
+    BOOL dotcom_user = NO;
+    BOOL jetpack_user = NO;
+    if (account != nil) {
+        dotcom_user = YES;
+        if ([[account jetpackBlogs] count] > 0) {
+            jetpack_user = YES;
+        }
+    }
+    
+    NSDictionary *properties = @{
+                                 @"platform": @"iOS",
+                                 @"session_count": @(self.sessionCount),
+                                 @"dotcom_user": @(dotcom_user),
+                                 @"jetpack_user": @(jetpack_user),
+                                 @"number_of_blogs" : @([blogService blogCountForAllAccounts]) };
+    [[Mixpanel sharedInstance] registerSuperProperties:properties];
+    
+    NSString *username = account.username;
+    if (account && [username length] > 0) {
+        [[Mixpanel sharedInstance] identify:username];
+        [[Mixpanel sharedInstance].people set:@{ @"$username": username, @"$first_name" : username }];
+    }
 }
 
 #pragma mark - Private Methods
