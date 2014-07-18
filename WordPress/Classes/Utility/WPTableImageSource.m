@@ -333,9 +333,6 @@ static NSUInteger const WPTableImageSourceBatchSize = 10;
 
     NSDictionary *receiver = @{@"size": NSStringFromCGSize(size), @"indexPath": indexPath, @"date": [NSDate date]};
     void (^successBlock)(UIImage *) = ^(UIImage *image) {
-        self.downloadCounter++;
-        [self.currentDownloads removeObject:queueItem];
-
         NSDictionary *_receiver = receiver;
         if (size.height == 0) {
             CGFloat ratio = image.size.width / image.size.height;
