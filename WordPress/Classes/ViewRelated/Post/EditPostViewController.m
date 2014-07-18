@@ -967,7 +967,10 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
             }];
         }
     }
-    [self setupNavbar];
+    
+    // Need to refresh the post object. If we didn't, self.post.media would appear
+    // to be unchanged causing the Media State Methods to fail.
+    [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
 }
 
 #pragma mark - KVO
