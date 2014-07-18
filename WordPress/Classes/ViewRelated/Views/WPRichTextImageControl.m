@@ -1,12 +1,8 @@
-//
-//  WPRichTextImageControl.m
-//  WordPress
-//
-//  Created by aerych on 7/18/14.
-//  Copyright (c) 2014 WordPress. All rights reserved.
-//
-
 #import "WPRichTextImageControl.h"
+
+@interface WPRichTextImageControl()
+@property (nonatomic, strong, readwrite) UIImageView *imageView;
+@end
 
 @implementation WPRichTextImageControl
 
@@ -14,18 +10,12 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
+		_imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(frame), CGRectGetWidth(frame))];
+		_imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		_imageView.contentMode = UIViewContentModeScaleAspectFit;
+		[self addSubview:_imageView];
     }
     return self;
 }
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 @end
