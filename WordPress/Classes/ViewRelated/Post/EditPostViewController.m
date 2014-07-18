@@ -15,6 +15,7 @@
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
+static NSInteger const MaximumNumberOfPictures = 4;
 
 @interface EditPostViewController ()<UIPopoverControllerDelegate> {
     NSOperationQueue *_mediaUploadQueue;
@@ -25,6 +26,7 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
+@property (assign) int numberOfPicturesSelected;
 
 @end
 
@@ -332,6 +334,7 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
     
     // Only show photos for now (not videos)
     picker.assetsFilter = [ALAssetsFilter allPhotos];
+    self.numberOfPicturesSelected = 0;
     
     [self presentViewController:picker animated:YES completion:nil];
     picker.navigationBar.translucent = NO;
@@ -946,7 +949,8 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 
 #pragma mark - CTAssetsPickerController delegate
 
-- (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets {
+- (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
+{
     [self dismissViewControllerAnimated:YES completion:nil];
     
     for (ALAsset *asset in assets) {
@@ -973,6 +977,33 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
     // Need to refresh the post object. If we didn't, self.post.media would appear
     // to be unchanged causing the Media State Methods to fail.
     [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
+}
+
+- (BOOL)assetsPickerController:(CTAssetsPickerController *)picker shouldSelectAsset:(ALAsset *)asset
+{
+    if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto) {
+        if (self.numberOfPicturesSelected < MaximumNumberOfPictures) {
+            return YES;
+        } else {
+            return NO;
+        }
+    } else {
+        return NO;
+    }
+}
+
+- (void)assetsPickerController:(CTAssetsPickerController *)picker didSelectAsset:(ALAsset *)asset
+{
+    if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto){
+        self.numberOfPicturesSelected++;
+    }
+}
+
+- (void)assetsPickerController:(CTAssetsPickerController *)picker didDeselectAsset:(ALAsset *)asset
+{
+    if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto){
+        self.numberOfPicturesSelected--;
+    }
 }
 
 #pragma mark - KVO
