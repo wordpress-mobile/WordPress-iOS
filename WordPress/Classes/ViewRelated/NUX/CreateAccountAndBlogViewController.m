@@ -720,7 +720,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
                 blog = [accountService createBlogWithAccount:defaultAccount];
                 blog.xmlrpc = blogOptions[@"xmlrpc"];
             }
-            blog.blogID = blogOptions[@"blogid"];
+            blog.blogID = [blogOptions numberForKey:@"blogid"];
             blog.blogName = [blogOptions[@"blogname"] stringByDecodingXMLCharacters];
             blog.url = blogOptions[@"url"];
 
