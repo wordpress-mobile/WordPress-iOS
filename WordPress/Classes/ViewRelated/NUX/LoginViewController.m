@@ -169,7 +169,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         isSiteUrlFilled = updatedStringHasContent;
     }
     _signInButton.enabled = isUsernameFilled && isPasswordFilled && (_userIsDotCom || isSiteUrlFilled);
-    _forgotPassword.enabled = (_userIsDotCom || isSiteUrlFilled);
+    _forgotPassword.hidden = !(_userIsDotCom || isSiteUrlFilled);
     
     return YES;
 }
@@ -541,10 +541,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         [_forgotPassword addTarget:self action:@selector(forgotPassword:) forControlEvents:UIControlEventTouchUpInside];
         _forgotPassword.titleLabel.font = [WPNUXUtility tosLabelFont];
         [_forgotPassword setTitleColor:[WPNUXUtility tosLabelColor] forState:UIControlStateNormal];
-        [_forgotPassword setTitleColor:[UIColor colorWithWhite:1.0 alpha:0.4] forState:UIControlStateDisabled];
         [_mainView addSubview:_forgotPassword];
     }
-    _forgotPassword.enabled = [self isForgotPasswordEnabled];
+    _forgotPassword.hidden = ![self isForgotPasswordEnabled];
 }
 
 - (void)layoutControls
