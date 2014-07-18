@@ -67,6 +67,7 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
 
 + (void)registerTracker:(id<WPAnalyticsTracker>)tracker;
 + (void)beginSession;
++ (void)refreshMetadata;
 + (void)track:(WPAnalyticsStat)stat;
 + (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties;
 + (void)endSession;
@@ -81,5 +82,6 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
 @optional
 - (void)beginSession;
 - (void)endSession;
+- (void)refreshMetadata;
 
 @end
