@@ -814,7 +814,9 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 		self.post.content = content;
 	}
     
-    [self refreshUIForCurrentPost];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self refreshUIForCurrentPost];
+    });
     [self.post save];
 }
 
