@@ -122,7 +122,7 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
     
     switch (state) {
         case UIApplicationStateInactive:
-            [[WordPressAppDelegate sharedWordPressApplicationDelegate] showNotificationsTab];
+            [[WordPressAppDelegate sharedWordPressApplicationDelegate] showTabForIndex:kNotificationsTabIndex];
             break;
             
         case UIApplicationStateBackground:
@@ -147,7 +147,7 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
     NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     if (remoteNotif) {
         DDLogVerbose(@"Launched with a remote notification as parameter:  %@", remoteNotif);
-        [[WordPressAppDelegate sharedWordPressApplicationDelegate] showNotificationsTab];
+        [[WordPressAppDelegate sharedWordPressApplicationDelegate] showTabForIndex:kNotificationsTabIndex];
     }
 }
 
