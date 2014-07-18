@@ -12,6 +12,7 @@
 
 static NSString *const UserDefaultsFeedbackEnabled = @"wp_feedback_enabled";
 static NSString *const UserDefaultsHelpshiftEnabled = @"wp_helpshift_enabled";
+static NSString *const UserDefaultsHelpshiftWasUsed = @"wp_helpshift_used";
 static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 static NSString * const kExtraDebugDefaultsKey = @"extra_debug";
 
@@ -66,11 +67,20 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 }
 
 + (void)checkIfHelpshiftShouldBeEnabled {
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{UserDefaultsHelpshiftEnabled:@NO}];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults registerDefaults:@{UserDefaultsHelpshiftEnabled:@NO}];
+
+    BOOL userHasUsedHelpshift = [defaults boolForKey:UserDefaultsHelpshiftWasUsed];
+
+    if (userHasUsedHelpshift) {
+        [defaults setBool:YES forKey:UserDefaultsHelpshiftEnabled];
+        [defaults synchronize];
+        return;
+    }
     
     [Taplytics runCodeExperiment:@"Helpshift Distribution" withBaseline:^(NSDictionary *variables) {
         DDLogInfo(@"Taplytics: Helpshift Experiment - Baseline Enabled");
-        
+
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults setBool:NO forKey:UserDefaultsHelpshiftEnabled];
         [defaults synchronize];
@@ -314,6 +324,11 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     if (indexPath.section == SettingsSectionFAQForums) {
+        if (self.helpshiftEnabled) {
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setBool:YES forKey:UserDefaultsHelpshiftWasUsed];
+        }
+        
         switch (indexPath.row) {
             case 0:
                 if (self.helpshiftEnabled) {
