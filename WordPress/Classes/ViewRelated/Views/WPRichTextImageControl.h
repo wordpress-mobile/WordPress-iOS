@@ -1,13 +1,9 @@
-//
-//  WPRichTextImageControl.h
-//  WordPress
-//
-//  Created by aerych on 7/18/14.
-//  Copyright (c) 2014 WordPress. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 
 @interface WPRichTextImageControl : UIControl
+
+@property (nonatomic, strong, readonly) UIImageView *imageView;
+@property (nonatomic, strong) NSURL *contentURL;
+@property (nonatomic, strong) NSURL *linkURL;
 
 @end
