@@ -56,12 +56,12 @@ PODS:
   - OCMock (3.0)
   - OHHTTPStubs (1.1.1)
   - Reachability (3.1.1)
-  - Simperium (0.6.5):
+  - Simperium (0.6.6):
     - Google-Diff-Match-Patch
     - JRSwizzle
     - Simperium/no-arc
     - SocketRocket
-  - Simperium/no-arc (0.6.5):
+  - Simperium/no-arc (0.6.6):
     - Google-Diff-Match-Patch
     - JRSwizzle
     - SocketRocket
@@ -106,7 +106,7 @@ DEPENDENCIES:
   - OCMock
   - OHHTTPStubs (= 1.1.1)
   - Reachability (= 3.1.1)
-  - Simperium (= 0.6.5)
+  - Simperium (= 0.6.6)
   - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`, branch `master`)
   - SVProgressHUD (~> 1.0)
   - Taplytics (~> 1.2.50)
@@ -156,7 +156,7 @@ SPEC CHECKSUMS:
   OCMock: 6e6041173cf801f458ef66ec1a8fa3d974947335
   OHHTTPStubs: cb1cef742f2fba18b192fb92ede52a69cf3a04d5
   Reachability: be4883bb93f31e38266ae3365e5600a317aae735
-  Simperium: df03533ca84845c2004b4c836f6a403102a53321
+  Simperium: 6c7e8ebbfb32a854d3cbbab2f5dc8d6f5b311885
   SocketRocket: b809068861cb66d871eb93a428696b1eb5451318
   SVProgressHUD: 5e10939a296debf5fe5a5895eda9539b8b2114f1
   Taplytics: 292c7c0a7814914f6a1a3e34fdf96b7233c2425d
