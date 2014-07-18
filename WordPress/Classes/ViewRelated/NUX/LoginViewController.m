@@ -657,6 +657,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
         if (didAuthenticate) {
             [WPAnalytics track:WPAnalyticsStatSignedInToJetpack];
+            [WPAnalytics refreshMetadata];
         } else {
             [WPAnalytics track:WPAnalyticsStatSkippedConnectingToJetpack];
         }
@@ -885,6 +886,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
                                 success:^{
                                     [self setAuthenticating:NO withStatusMessage:nil];
                                     [self dismiss];
+                                    [WPAnalytics refreshMetadata];
                                 }
                                 failure:^(NSError *error) {
                                     [self setAuthenticating:NO withStatusMessage:nil];
@@ -930,6 +932,8 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     } else {
         [self dismiss];
     }
+    
+    [WPAnalytics refreshMetadata];
 }
 
 - (void)handleGuessXMLRPCURLFailure:(NSError *)error
