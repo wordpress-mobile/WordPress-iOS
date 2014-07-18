@@ -1,5 +1,4 @@
 #import "WPTableViewCell.h"
-#import "WPTableViewCell.h"
 
 @class WPContentViewBase;
 
