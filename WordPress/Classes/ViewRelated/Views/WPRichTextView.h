@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 
-@class ReaderImageView;
-@class ReaderVideoView;
+@class WPRichTextImageControl;
+@class WPRichTextVideoControl;
 @class WPRichTextView;
 
 /**
@@ -23,17 +23,17 @@
  Tells the delegate the user has tapped on an image. 
 
  @param richTextView The richTextView informing the delegate of the event.
- @param readerImageView The `ReaderImageView` instance tapped by the user.
+ @param imageControl The `WPRichTextImageControl` instance tapped by the user.
  */
-- (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(ReaderImageView *)readerImageView;
+- (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(WPRichTextImageControl *)imageControl;
 
 /**
  Tells the delegate the user has tapped on a video preview image.
 
  @param richTextView The richTextView informing the delegate of the event.
- @param readerVideoView The `ReaderVideoView` instance tapped by the user.
+ @param videoControl The `WPRichTextVideoControl` instance tapped by the user.
  */
-- (void)richTextView:(WPRichTextView *)richTextView didReceiveVideoLinkAction:(ReaderVideoView *)readerVideoView;
+- (void)richTextView:(WPRichTextView *)richTextView didReceiveVideoLinkAction:(WPRichTextVideoControl *)videoControl;
 
 /**
  Tells the delegate the `WPRichTextView` has loaded all its media for display.
