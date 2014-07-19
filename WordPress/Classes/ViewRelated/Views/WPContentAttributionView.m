@@ -17,14 +17,7 @@ const CGFloat WPContentAttributionLabelHeight = 18.0;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _avatarImageView = [self imageViewForAvatar];
-        [self addSubview:self.avatarImageView];
-
-        _attributionNameLabel = [self labelForAttributionName];
-        [self addSubview:self.attributionNameLabel];
-
-        _attributionLinkButton = [self buttonForAttributionLink];
-        [self addSubview:self.attributionLinkButton];
+        [self setupSubviews];
 
         [self configureConstraints];
     }
@@ -109,6 +102,17 @@ const CGFloat WPContentAttributionLabelHeight = 18.0;
 
 
 #pragma mark - Subview factories
+
+- (void)setupSubviews {
+    _avatarImageView = [self imageViewForAvatar];
+    [self addSubview:self.avatarImageView];
+
+    _attributionNameLabel = [self labelForAttributionName];
+    [self addSubview:self.attributionNameLabel];
+
+    _attributionLinkButton = [self buttonForAttributionLink];
+    [self addSubview:self.attributionLinkButton];
+}
 
 - (UILabel *)labelForAttributionName
 {

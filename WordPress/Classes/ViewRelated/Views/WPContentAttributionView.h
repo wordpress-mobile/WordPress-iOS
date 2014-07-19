@@ -2,6 +2,7 @@
 #import "WPContentViewProvider.h"
 
 extern const CGFloat WPContentAttributionViewAvatarSize;
+extern const CGFloat WPContentAttributionLabelHeight;
 
 @class WPContentAttributionView;
 
@@ -69,6 +70,8 @@ extern const CGFloat WPContentAttributionViewAvatarSize;
 @property (nonatomic, strong) UIView *borderView;
 
 // Configuration
+- (void)setupSubviews;
+- (void)configureView;
 - (void)configureAttributionButton;
 
 @end

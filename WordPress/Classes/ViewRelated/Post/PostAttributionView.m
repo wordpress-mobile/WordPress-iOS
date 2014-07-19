@@ -10,18 +10,52 @@
 
 @implementation PostAttributionView
 
-#pragma mark - LifeCycle Methods
+- (void)setupSubviews {
+    [super setupSubviews];
 
-- (instancetype)initWithFrame:(CGRect)frame
+    _postStatusLabel = [self labelForPostStatus];
+    [self addSubview:_postStatusLabel];
+}
+
+- (void)configureConstraints
 {
-    self = [super initWithFrame:frame];
-    if (self) {
-        [self hideAttributionButton:YES];
+    UIImageView *avatarImageView = self.avatarImageView;
+    UILabel *attributionNameLabel = self.attributionNameLabel;
+    UILabel *postStatusLabel = self.postStatusLabel;
 
-        _postStatusLabel = [self labelForPostStatus];
-        [self addSubview:_postStatusLabel];
-    }
-    return self;
+    NSDictionary *views = NSDictionaryOfVariableBindings(avatarImageView, attributionNameLabel, postStatusLabel);
+    NSDictionary *metrics = @{@"avatarSize": @(WPContentAttributionViewAvatarSize),
+                              @"labelHeight":@(WPContentAttributionLabelHeight)};
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[avatarImageView(avatarSize)]"
+                                                                 options:NSLayoutFormatAlignAllTop
+                                                                 metrics:metrics
+                                                                   views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[avatarImageView(avatarSize)]"
+                                                                 options:NSLayoutFormatAlignAllLeft
+                                                                 metrics:metrics
+                                                                   views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-40-[attributionNameLabel]|"
+                                                                 options:NSLayoutFormatAlignAllTop
+                                                                 metrics:metrics
+                                                                   views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-40-[postStatusLabel]|"
+                                                                 options:NSLayoutFormatAlignAllBottom
+                                                                 metrics:metrics
+                                                                   views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(-2)-[attributionNameLabel(labelHeight)][postStatusLabel(labelHeight)]"
+                                                                 options:NSLayoutFormatAlignAllLeft
+                                                                 metrics:metrics
+                                                                   views:views]];
+    [super setNeedsUpdateConstraints];
+}
+
+- (void)configureView {
+    [super configureView];
+    self.postStatusLabel.text = [self.contentProvider statusForDisplay];
+}
+
+- (void)configureAttributionButton {
+    [self hideAttributionButton:YES];
 }
 
 #pragma mark - Subview factories
