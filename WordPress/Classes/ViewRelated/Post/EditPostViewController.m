@@ -350,6 +350,7 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 	}
     
     if (![self hasChanges]) {
+        [WPAnalytics track:WPAnalyticsStatEditorClosed];
         [self discardChangesAndDismiss];
         return;
     }
@@ -697,6 +698,8 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
         }
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Schedule", nil)]) {
         [WPAnalytics track:WPAnalyticsStatEditorScheduledPost withProperties:properties];
+    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Save", nil)]) {
+        [WPAnalytics track:WPAnalyticsStatEditorSavedDraft];
     } else {
         [WPAnalytics track:WPAnalyticsStatEditorUpdatedPost withProperties:properties];
     }
@@ -884,6 +887,7 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
         // Discard
         if (buttonIndex == 0) {
             [self discardChangesAndDismiss];
+            [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
         }
         
         if (buttonIndex == 1) {
