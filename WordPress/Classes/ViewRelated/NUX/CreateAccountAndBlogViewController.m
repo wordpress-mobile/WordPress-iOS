@@ -727,6 +727,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
             [[ContextManager sharedInstance] saveContext:context];
 
             [blogService syncBlog:blog success:nil failure:nil];
+            [WPAnalytics refreshMetadata];
             [self setAuthenticating:NO];
             [self dismissViewControllerAnimated:YES completion:nil];
         };
