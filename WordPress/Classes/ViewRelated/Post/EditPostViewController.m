@@ -15,6 +15,7 @@
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
+static NSInteger const MaximumNumberOfPictures = 4;
 
 @interface EditPostViewController ()<UIPopoverControllerDelegate> {
     NSOperationQueue *_mediaUploadQueue;
@@ -817,7 +818,9 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 		self.post.content = content;
 	}
     
-    [self refreshUIForCurrentPost];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self refreshUIForCurrentPost];
+    });
     [self.post save];
 }
 
@@ -948,7 +951,8 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 
 #pragma mark - CTAssetsPickerController delegate
 
-- (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets {
+- (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
+{
     [self dismissViewControllerAnimated:YES completion:nil];
     
     for (ALAsset *asset in assets) {
@@ -971,7 +975,19 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
             }];
         }
     }
-    [self setupNavbar];
+    
+    // Need to refresh the post object. If we didn't, self.post.media would appear
+    // to be unchanged causing the Media State Methods to fail.
+    [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
+}
+
+- (BOOL)assetsPickerController:(CTAssetsPickerController *)picker shouldSelectAsset:(ALAsset *)asset
+{
+    if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto) {
+        return picker.selectedAssets.count < MaximumNumberOfPictures;
+    } else {
+        return YES;
+    }
 }
 
 #pragma mark - KVO
