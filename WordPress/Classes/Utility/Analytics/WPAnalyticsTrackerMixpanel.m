@@ -8,12 +8,6 @@
 #import "Blog.h"
 #import "BlogService.h"
 
-@interface WPAnalyticsTrackerMixpanel()
-
-@property (nonatomic, assign) NSInteger sessionCount;
-
-@end
-
 @implementation WPAnalyticsTrackerMixpanel
 
 - (instancetype)init
@@ -28,10 +22,6 @@
 - (void)beginSession
 {
     [Mixpanel sharedInstanceWithToken:[WordPressComApiCredentials mixpanelAPIToken]];
-    // Tracking session count will help us isolate users who just installed the app
-    self.sessionCount = [[[[Mixpanel sharedInstance] currentSuperProperties] objectForKey:@"session_count"] integerValue];
-    self.sessionCount++;
-    
     [self refreshMetadata];
 }
 
@@ -72,13 +62,12 @@
         }
     }
     
-    NSDictionary *properties = @{
-                                 @"platform": @"iOS",
-                                 @"session_count": @(self.sessionCount),
-                                 @"dotcom_user": @(dotcom_user),
-                                 @"jetpack_user": @(jetpack_user),
-                                 @"number_of_blogs" : @([blogService blogCountForAllAccounts]) };
-    [[Mixpanel sharedInstance] registerSuperProperties:properties];
+    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
+    superProperties[@"platform"] = @"iOS";
+    superProperties[@"dotcom_user"] = @(dotcom_user);
+    superProperties[@"jetpack_user"] = @(jetpack_user);
+    superProperties[@"number_of_blogs"] = @([blogService blogCountForAllAccounts]);
+    [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
     
     NSString *username = account.username;
     if (account && [username length] > 0) {
@@ -177,6 +166,7 @@
         case WPAnalyticsStatApplicationOpened:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Application Opened"];
             [instructions setPeoplePropertyToIncrement:@"Application Opened"];
+            [self incrementSessionCount];
             break;
         case WPAnalyticsStatApplicationClosed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Application Closed"];
@@ -440,6 +430,16 @@
     }
     
     [self saveProperty:property withValue:@(newValue) forStat:stat];
+}
+
+- (void)incrementSessionCount
+{
+    NSInteger sessionCount = [[[[Mixpanel sharedInstance] currentSuperProperties] objectForKey:@"session_count"] integerValue];
+    sessionCount++;
+    
+    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
+    superProperties[@"session_count"] = @(sessionCount);
+    [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
 }
 
 @end
