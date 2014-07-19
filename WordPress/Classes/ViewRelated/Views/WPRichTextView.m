@@ -2,19 +2,18 @@
 #import <DTCoreText/DTCoreText.h>
 #import "DTTiledLayerWithoutFade.h"
 #import "DTAttributedTextContentView.h"
-#import "ReaderMediaQueue.h"
-#import "ReaderMediaView.h"
-#import "ReaderImageView.h"
-#import "ReaderVideoView.h"
+#import "WPTableImageSource.h"
+#import "WPRichTextImageControl.h"
+#import "WPRichTextVideoControl.h"
 #import "UIImage+Util.h"
+#import "VideoThumbnailServiceRemote.h"
 
-
-@interface WPRichTextView()<DTAttributedTextContentViewDelegate, ReaderMediaQueueDelegate>
+@interface WPRichTextView()<DTAttributedTextContentViewDelegate, WPTableImageSourceDelegate>
 
 @property (nonatomic, strong) DTAttributedTextContentView *textContentView;
 @property (nonatomic, assign) BOOL willRefreshMediaLayout;
 @property (nonatomic, strong) NSMutableArray *mediaArray;
-@property (nonatomic, strong) ReaderMediaQueue *mediaQueue;
+@property (nonatomic, strong) WPTableImageSource *imageSource;
 
 @end
 
@@ -34,6 +33,11 @@
 {
     self.delegate = nil;
     self.textContentView.delegate = nil;
+
+    // Avoids lazy init.
+    if (_imageSource) {
+        _imageSource.delegate = nil;
+    }
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -41,7 +45,6 @@
     self = [super initWithFrame:frame];
     if (self) {
         _mediaArray = [NSMutableArray array];
-        _mediaQueue = [[ReaderMediaQueue alloc] initWithDelegate:self];
         _textContentView = [self buildTextContentView];
         [self addSubview:self.textContentView];
         [self configureConstraints];
@@ -123,6 +126,33 @@
     return textContentView;
 }
 
+- (WPTableImageSource *)imageSource
+{
+    if (_imageSource) {
+        return _imageSource;
+    }
+
+    self.imageSource = [[WPTableImageSource alloc] initWithMaxSize:[self maxImageDisplaySize]];
+    _imageSource.forceLargerSizeWhenFetching = NO;
+    _imageSource.delegate = self;
+
+    return _imageSource;
+}
+
+- (WPRichTextImageControl *)imageControlForAttachment:(DTImageTextAttachment *)imageAttachment
+{
+    WPRichTextImageControl *imageControl = [[WPRichTextImageControl alloc] initWithFrame:CGRectZero];
+
+    if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
+        [imageControl.imageView setImage:imageAttachment.image];
+    }
+
+    CGSize size = [self displaySizeForImage:imageControl.imageView.image];
+    imageControl.frame = CGRectMake(0.0, 0.0, size.width, size.height);
+
+    return imageControl;
+}
+
 
 #pragma mark - Event Handlers
 
@@ -133,14 +163,14 @@
     }
 }
 
-- (void)imageLinkAction:(ReaderImageView *)sender
+- (void)imageLinkAction:(WPRichTextImageControl *)sender
 {
     if ([self.delegate respondsToSelector:@selector(richTextView:didReceiveImageLinkAction:)]) {
         [self.delegate richTextView:self didReceiveImageLinkAction:sender];
     }
 }
 
-- (void)videoLinkAction:(ReaderVideoView *)sender
+- (void)videoLinkAction:(WPRichTextVideoControl *)sender
 {
     if ([self.delegate respondsToSelector:@selector(richTextView:didReceiveVideoLinkAction:)]) {
         [self.delegate richTextView:self didReceiveVideoLinkAction:sender];
@@ -158,49 +188,6 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self invalidateIntrinsicContentSize]; 
     });
-}
-
-- (void)handleMediaViewLoaded:(ReaderMediaView *)mediaView
-{
-    BOOL frameChanged = [self updateMediaLayout:mediaView];
-    if (frameChanged) {
-        [self relayoutTextContentView];
-    }
-}
-
-- (BOOL)updateMediaLayout:(ReaderMediaView *)imageView
-{
-    BOOL frameChanged = NO;
-    NSURL *url = imageView.contentURL;
-
-    CGSize originalSize = imageView.frame.size;
-    CGSize imageSize = imageView.image.size;
-
-    if (imageView.image) {
-        CGFloat ratio = imageSize.width / imageSize.height;
-        CGFloat width = self.frame.size.width;
-        CGFloat availableWidth = width - (self.textContentView.edgeInsets.left + self.textContentView.edgeInsets.right);
-
-        imageSize.width = availableWidth;
-        imageSize.height = roundf(width / ratio) + imageView.edgeInsets.top;
-    } else {
-        imageSize = CGSizeMake(0.0f, 0.0f);
-    }
-
-    // Widths should always match
-    if (imageSize.height != originalSize.height) {
-        frameChanged = YES;
-    }
-
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
-
-    // update all attachments that matchin this URL (possibly multiple images with same size)
-    for (DTTextAttachment *attachment in [self.textContentView.layoutFrame textAttachmentsWithPredicate:pred]) {
-        attachment.originalSize = originalSize;
-        attachment.displaySize = imageSize;
-    }
-
-    return frameChanged;
 }
 
 // Relayout the textContentView after a brief delay.  Used to make sure there are no
@@ -226,21 +213,92 @@
 
 - (void)refreshMediaLayout
 {
-    [self refreshMediaLayoutInArray:self.mediaArray];
+    [self refreshLayoutForMediaInArray:self.mediaArray];
 }
 
-- (void)refreshMediaLayoutInArray:(NSArray *)mediaArray
+- (CGSize)maxImageDisplaySize
+{
+    CGFloat insets = self.edgeInsets.left + self.edgeInsets.right;
+    CGFloat side = MAX(CGRectGetWidth(self.bounds) - insets, CGRectGetHeight(self.bounds) - insets);
+    return CGSizeMake(side, side);
+}
+
+- (CGSize)displaySizeForImage:(UIImage *)image
+{
+    if (!image) {
+        return CGSizeMake(1.0, 1.0);
+    }
+
+    CGFloat width = image.size.width;
+    CGFloat height = image.size.height;
+    CGFloat ratio = width / height;
+
+    CGFloat maxWidth = CGRectGetWidth(self.bounds) - (self.edgeInsets.left + self.edgeInsets.right);
+    CGFloat lineHeight = 16.0; // row height
+
+    // If the width is greater than current max width, shrink it down.
+    if (width > maxWidth) {
+        width = maxWidth;
+        height = width / ratio;
+    }
+
+    // if our height is less than line height, render within a text run.
+    if (height < lineHeight) {
+        return CGSizeMake(width, height);
+    }
+
+    // We want the image to be centered, so return its natural height but the max width
+    return CGSizeMake(maxWidth, height);
+}
+
+- (void)refreshLayoutForMediaAtIndexPaths:(NSArray *)indexPaths
+{
+    NSMutableArray *arr = [NSMutableArray array];
+    for (NSIndexPath *indexPath in indexPaths) {
+        NSUInteger index = [indexPath indexAtPosition:0];
+        if (index >= [self.mediaArray count]) {
+            continue;
+        }
+        WPRichTextImageControl *imageControl = [self.mediaArray objectAtIndex:index];
+        [arr addObject:imageControl];
+    }
+    [self refreshLayoutForMediaInArray:arr];
+}
+
+- (void)refreshLayoutForMediaInArray:(NSArray *)images
 {
     BOOL frameChanged = NO;
 
-    for (ReaderMediaView *mediaView in mediaArray) {
-        if ([self updateMediaLayout:mediaView]) {
+    for (WPRichTextImageControl *imageControl in images) {
+        if ([self updateLayoutForMediaItem:imageControl]) {
             frameChanged = YES;
         }
     }
+
     if (frameChanged) {
         [self relayoutTextContentView];
     }
+}
+
+- (BOOL)updateLayoutForMediaItem:(WPRichTextImageControl *)imageControl
+{
+    BOOL frameChanged = NO;
+    NSURL *url = imageControl.contentURL;
+
+    CGSize originalSize = imageControl.frame.size;
+    CGSize preferredSize = [self displaySizeForImage:imageControl.imageView.image];
+
+    frameChanged = !CGSizeEqualToSize(originalSize, preferredSize);
+
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
+
+    // update all attachments that matchin this URL (possibly multiple images with same size)
+    for (DTTextAttachment *attachment in [self.textContentView.layoutFrame textAttachmentsWithPredicate:pred]) {
+        attachment.originalSize = originalSize;
+        attachment.displaySize = preferredSize;
+    }
+    
+    return frameChanged;
 }
 
 - (void)relayoutTextContentView
@@ -254,15 +312,26 @@
 }
 
 
-#pragma mark - ReaderMediaQueueDelegate methods
+#pragma mark - WPTableImageSource Delegate Methods
 
-- (void)readerMediaQueue:(ReaderMediaQueue *)mediaQueue didLoadBatch:(NSArray *)batch
+- (void)tableImageSource:(WPTableImageSource *)tableImageSource didLoadImagesAtIndexPaths:(NSArray *)indexPaths
 {
-    [self refreshMediaLayoutInArray:batch];
+    [self refreshLayoutForMediaAtIndexPaths:indexPaths];
     if ([self.delegate respondsToSelector:@selector(richTextViewDidLoadAllMedia:)]) {
         [self.delegate richTextViewDidLoadAllMedia:self];
     }
 }
+
+- (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath
+{
+    NSUInteger index = [indexPath indexAtPosition:0];
+    if (index >= [self.mediaArray count]) {
+        return;
+    }
+    WPRichTextImageControl *imageControl = [self.mediaArray objectAtIndex:index];
+    [imageControl.imageView setImage:image];
+}
+
 
 #pragma mark - DTCoreAttributedTextContentView Delegate Methods
 
@@ -298,98 +367,68 @@
         return nil;
     }
 
-    // The textContentView will render the first time with the original frame, and then update when media loads.
-    // To avoid showing gaps in the layout due to the original attachment sizes, relayout the view after a brief delay.
+    // DTAttributedTextContentView will perform its first render pass with the original width and height (if specified) of the image.
+    // However, we don't want gaps in the text while waiting for an image to load so we reset the starting frame.
+    // Refresh the layout after a brief delay so that the desired image frame is used while the image is still loading.
     [self refreshLayoutAfterDelay];
-
-    CGFloat width = CGRectGetWidth(self.textContentView.frame);
-    CGFloat availableWidth = width - (self.textContentView.edgeInsets.left + self.textContentView.edgeInsets.right);
-
-    // The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image itself to run out to the edges,
-    // so position it offset by the inverse of _textContentView's edgeInsets.
-    // Remeber to add an extra 10px to the frame to preserve aspect ratio.
-    UIEdgeInsets edgeInsets = self.textContentView.edgeInsets;
-    edgeInsets.left = 0.0 - edgeInsets.left;
-    edgeInsets.top = 0.0;
-    edgeInsets.right = 0.0 - edgeInsets.right;
-    edgeInsets.bottom = 0.0;
 
     if ([attachment isKindOfClass:[DTImageTextAttachment class]]) {
 
         DTImageTextAttachment *imageAttachment = (DTImageTextAttachment *)attachment;
+        WPRichTextImageControl *imageControl = [self imageControlForAttachment:imageAttachment];
+        imageControl.contentURL = attachment.contentURL;
+        imageControl.linkURL = attachment.hyperLinkURL;
+        [imageControl addTarget:self action:@selector(imageLinkAction:) forControlEvents:UIControlEventTouchUpInside];
 
-        if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
-            UIImage *image = imageAttachment.image;
+        [self.mediaArray addObject:imageControl];
 
-            CGFloat ratio = image.size.width / image.size.height;
-            frame.size.width = availableWidth;
-            frame.size.height = roundf(width / ratio);
+        if (!imageControl.imageView.image) {
+            NSUInteger index = [self.mediaArray count] - 1;
+            NSIndexPath *indexPath = [NSIndexPath indexPathWithIndex:index];
 
-            // offset the top edge inset keeping the image from bumping the text above it.
-            frame.size.height += edgeInsets.top;
-        } else {
-            // minimal frame to suppress drawing context errors with 0 height or width.
-            frame.size.width = 1.0;
-            frame.size.height = 1.0;
+            [self.imageSource fetchImageForURL:imageControl.contentURL
+                                      withSize:[self maxImageDisplaySize]
+                                     indexPath:indexPath
+                                     isPrivate:self.privateContent];
         }
 
-        ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
-        imageView.edgeInsets = edgeInsets;
-
-        [_mediaArray addObject:imageView];
-        imageView.linkURL = attachment.hyperLinkURL;
-        [imageView addTarget:self action:@selector(imageLinkAction:) forControlEvents:UIControlEventTouchUpInside];
-
-        if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
-            [imageView setImage:imageAttachment.image];
-        } else {
-
-            [self.mediaQueue enqueueMedia:imageView
-                                  withURL:attachment.contentURL
-                         placeholderImage:nil
-                                     size:CGSizeMake(width, 0.0f) // Passing zero for height to get the correct aspect ratio
-                                isPrivate:self.privateContent
-                                  success:nil
-                                  failure:nil];
-        }
-
-        return imageView;
+        return imageControl;
 
     } else {
 
-        ReaderVideoContentType videoType;
+        WPRichTextVideoControl *videoControl = [[WPRichTextVideoControl alloc] initWithFrame:CGRectMake(0.0, 0.0, 1.0, 1.0)];
 
         if ([attachment isKindOfClass:[DTVideoTextAttachment class]]) {
-            videoType = ReaderVideoContentTypeVideo;
+            videoControl.isHTMLContent = NO;
         } else if ([attachment isKindOfClass:[DTIframeTextAttachment class]]) {
-            videoType = ReaderVideoContentTypeIFrame;
+            videoControl.isHTMLContent = YES;
         } else if ([attachment isKindOfClass:[DTObjectTextAttachment class]]) {
-            videoType = ReaderVideoContentTypeEmbed;
+            videoControl.isHTMLContent = YES;
         } else {
             return nil; // Can't handle whatever this is :P
         }
 
-        // we won't show the vid until we've loaded its thumb.
-        // minimal frame to suppress drawing context errors with 0 height or width.
-        frame.size.width = 1.0;
-        frame.size.height = 1.0;
+        videoControl.contentURL = attachment.contentURL;
+        [videoControl addTarget:self action:@selector(videoLinkAction:) forControlEvents:UIControlEventTouchUpInside];
 
-        ReaderVideoView *videoView = [[ReaderVideoView alloc] initWithFrame:frame];
-        videoView.edgeInsets = edgeInsets;
+        [self.mediaArray addObject:videoControl];
+        NSUInteger index = [self.mediaArray count] - 1;
+        NSIndexPath *indexPath = [NSIndexPath indexPathWithIndex:index];
 
-        [_mediaArray addObject:videoView];
-        [videoView setContentURL:attachment.contentURL ofType:videoType success:^(id readerVideoView) {
-            [self handleMediaViewLoaded:readerVideoView];
-        } failure:^(id readerVideoView, NSError *error) {
-            // if the image is 404, just show a black image.
-            ReaderVideoView *videoView = (ReaderVideoView *)readerVideoView;
-            videoView.image = [UIImage imageWithColor:[UIColor blackColor] havingSize:CGSizeMake(2.0f, 1.0f)];
-            [self handleMediaViewLoaded:readerVideoView];
-        }];
-        
-        [videoView addTarget:self action:@selector(videoLinkAction:) forControlEvents:UIControlEventTouchUpInside];
-        
-        return videoView;
+        VideoThumbnailServiceRemote *service = [[VideoThumbnailServiceRemote alloc] init];
+        [service getThumbnailForVideoAtURL:videoControl.contentURL
+                                   success:^(NSURL *thumbnailURL, NSString *title) {
+                                       videoControl.title = title;
+                                       [self.imageSource fetchImageForURL:thumbnailURL
+                                                                 withSize:[self maxImageDisplaySize]
+                                                                indexPath:indexPath
+                                                                isPrivate:NO];
+                                   }
+                                   failure:^(NSError *error) {
+                                       DDLogError(@"Error retriving video thumbnail: %@", error);
+                                   }];
+
+        return videoControl;
     }
 }
 
