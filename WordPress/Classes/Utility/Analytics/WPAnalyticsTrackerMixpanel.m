@@ -10,7 +10,7 @@
 
 @interface WPAnalyticsTrackerMixpanel()
 
-@property (nonatomic, assign) NSUInteger sessionCount;
+@property (nonatomic, assign) NSInteger sessionCount;
 
 @end
 
@@ -29,7 +29,7 @@
 {
     [Mixpanel sharedInstanceWithToken:[WordPressComApiCredentials mixpanelAPIToken]];
     // Tracking session count will help us isolate users who just installed the app
-    self.sessionCount = [[[[Mixpanel sharedInstance] currentSuperProperties] objectForKey:@"session_count"] intValue];
+    self.sessionCount = [[[[Mixpanel sharedInstance] currentSuperProperties] objectForKey:@"session_count"] integerValue];
     self.sessionCount++;
     
     [self refreshMetadata];
