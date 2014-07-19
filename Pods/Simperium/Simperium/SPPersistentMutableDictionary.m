@@ -281,8 +281,9 @@ static SPLogLevels logLevel					= SPLogLevelsError;
             return _managedObjectContext;
         }
         
-        _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-        _managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
+        NSManagedObjectContext *managedObjectContext    = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+        managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
+        _managedObjectContext                           = managedObjectContext;
     }
     
     return _managedObjectContext;
@@ -315,12 +316,15 @@ static SPLogLevels logLevel					= SPLogLevelsError;
 		// Finally, load the PSC
 		NSURL *storeURL = [baseURL URLByAppendingPathComponent:self.filename];
 		
-		_persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
-		if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error])
+        NSManagedObjectModel *context       = self.managedObjectModel;
+		NSPersistentStoreCoordinator *psc   = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:context];
+		if (![psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error])
 		{
 			SPLogError(@"Unresolved error %@, %@", error, [error userInfo]);
 			abort();
 		}
+        
+        _persistentStoreCoordinator = psc;
 	}
     
     return _persistentStoreCoordinator;
