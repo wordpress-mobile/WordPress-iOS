@@ -34,11 +34,6 @@
 
 #pragma mark - Private Methods
 
-- (void)configureAttributionView
-{
-    [super configureAttributionView];
-}
-
 - (WPContentAttributionView *)viewForAttributionView
 {
     PostAttributionView *attrView = [[PostAttributionView alloc] init];

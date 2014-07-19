@@ -4,7 +4,7 @@
 @class Post;
 
 /**
- The delegate of the`NewPostContentView` should adopt the `NewPostContentViewDelegate` protocol.
+ The delegate of the`PostContentView` should adopt the `PostContentViewDelegate` protocol.
  Protocol methods allow the delegate to respond to user interactions.
  */
 @protocol PostContentViewDelegate <WPContentViewBaseDelegate>
@@ -30,7 +30,7 @@
 
 /**
  A version of `WPContentViewBase` modified to show delete and edit
- action buttons, a full date, and a `NewPostAttributionView`.
+ action buttons, a full date, and a `PostAttributionView`.
  */
 @interface PostContentView : WPContentViewBase
 

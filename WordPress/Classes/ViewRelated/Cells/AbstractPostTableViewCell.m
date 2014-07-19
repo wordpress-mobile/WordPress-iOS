@@ -1,8 +1,8 @@
 #import "AbstractPostTableViewCell.h"
 #import "WPContentViewBase.h"
 
-const CGFloat PTVCBHorizontalOuterPadding = 8.0f;
-const CGFloat PTVCBVerticalOuterPadding = 16.0f;
+const CGFloat APTVCHorizontalOuterPadding = 8.0f;
+const CGFloat APTVCVerticalOuterPadding = 16.0f;
 
 @interface AbstractPostTableViewCell ()
 
@@ -42,11 +42,11 @@ const CGFloat PTVCBVerticalOuterPadding = 16.0f;
 
 - (CGSize)sizeThatFits:(CGSize)size
 {
-    CGFloat padding = IS_IPHONE ? PTVCBHorizontalOuterPadding : 0;
+    CGFloat padding = IS_IPHONE ? APTVCHorizontalOuterPadding : 0;
     CGFloat innerWidth = size.width - (padding * 2);
-    CGFloat innerHeight = size.height - PTVCBVerticalOuterPadding;
+    CGFloat innerHeight = size.height - APTVCVerticalOuterPadding;
     CGSize postViewSize = [self.postView sizeThatFits:CGSizeMake(innerWidth, innerHeight)];
-    CGFloat desiredHeight = postViewSize.height + PTVCBVerticalOuterPadding;
+    CGFloat desiredHeight = postViewSize.height + APTVCVerticalOuterPadding;
 
     return CGSizeMake(size.width, desiredHeight);
 }
@@ -76,10 +76,10 @@ const CGFloat PTVCBVerticalOuterPadding = 16.0f;
 
 - (void)configureConstraints
 {
-    NSNumber *borderSidePadding = IS_IPHONE ? @(PTVCBHorizontalOuterPadding - 1) : @0; // Just to the left of the container
-    NSNumber *borderBottomPadding = @(PTVCBVerticalOuterPadding - 1);
-    NSNumber *bottomPadding = @(PTVCBVerticalOuterPadding);
-    NSNumber *sidePadding = IS_IPHONE ? @(PTVCBHorizontalOuterPadding) : @0;
+    NSNumber *borderSidePadding = IS_IPHONE ? @(APTVCHorizontalOuterPadding - 1) : @0; // Just to the left of the container
+    NSNumber *borderBottomPadding = @(APTVCVerticalOuterPadding - 1);
+    NSNumber *bottomPadding = @(APTVCVerticalOuterPadding);
+    NSNumber *sidePadding = IS_IPHONE ? @(APTVCHorizontalOuterPadding) : @0;
     NSDictionary *metrics =  @{@"borderSidePadding":borderSidePadding,
                                @"borderBottomPadding":borderBottomPadding,
                                @"sidePadding":sidePadding,
