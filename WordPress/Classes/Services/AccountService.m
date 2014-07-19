@@ -110,7 +110,9 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     WPAccount *account = [self defaultWordPressComAccount];
     [self.managedObjectContext deleteObject:account];
 
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+        [WPAnalytics refreshMetadata];
+    }];
 
     // Clear WordPress.com cookies
     NSArray *wpcomCookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];

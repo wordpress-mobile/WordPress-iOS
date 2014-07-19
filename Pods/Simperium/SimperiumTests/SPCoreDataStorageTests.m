@@ -1,5 +1,5 @@
 //
-//  DeletionCascadeTest.m
+//  SPCoreDataStorageTests.m
 //  Simperium
 //
 //  Created by Jorge Leandro Perez on 12/5/13.
@@ -19,27 +19,27 @@ static NSInteger const kNumberOfPosts		= 10;
 static NSInteger const kCommentsPerPost		= 50;
 static NSInteger const kStressIterations	= 100;
 
-@interface DeletionCascadeTest : XCTestCase
+@interface SPCoreDataStorageTests : XCTestCase
 
 @end
 
-@implementation DeletionCascadeTest
+@implementation SPCoreDataStorageTests
 
 - (void)testStress {
 	for (NSInteger i = 0; ++i <= kStressIterations; ) {
 		NSLog(@"<> Stress Iteration %ld", (long)i);
 		
 		NSDate *reference = [NSDate date];
-		[self testInsertion];
+		[self testInsertingChildEntitiesWhileDeletingRootEntity];
 		NSLog(@" >> Insertion Delta: %f", reference.timeIntervalSinceNow);
 		
 		reference = [NSDate date];
-		[self testUpdates];
+		[self testUpdatingChildEntitiesWhileDeletingRootEntity];
 		NSLog(@" >> Updates Delta: %f", reference.timeIntervalSinceNow);
 	}
 }
 
-- (void)testInsertion
+- (void)testInsertingChildEntitiesWhileDeletingRootEntity
 {
 	dispatch_group_t group			= dispatch_group_create();
 	
@@ -110,7 +110,7 @@ static NSInteger const kStressIterations	= 100;
 	WaitUntilBlockCompletes();	
 }
 
-- (void)testUpdates
+- (void)testUpdatingChildEntitiesWhileDeletingRootEntity
 {	
 	MockSimperium* s				= [MockSimperium mockSimperium];
 	
