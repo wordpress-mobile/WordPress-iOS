@@ -26,7 +26,6 @@ static NSInteger const MaximumNumberOfPictures = 4;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
-@property (assign) int numberOfPicturesSelected;
 
 @end
 
@@ -334,7 +333,6 @@ static NSInteger const MaximumNumberOfPictures = 4;
     
     // Only show photos for now (not videos)
     picker.assetsFilter = [ALAssetsFilter allPhotos];
-    self.numberOfPicturesSelected = 0;
     
     [self presentViewController:picker animated:YES completion:nil];
     picker.navigationBar.translucent = NO;
@@ -982,27 +980,9 @@ static NSInteger const MaximumNumberOfPictures = 4;
 - (BOOL)assetsPickerController:(CTAssetsPickerController *)picker shouldSelectAsset:(ALAsset *)asset
 {
     if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto) {
-        if (self.numberOfPicturesSelected < MaximumNumberOfPictures) {
-            return YES;
-        } else {
-            return NO;
-        }
+        return picker.selectedAssets.count < MaximumNumberOfPictures;
     } else {
-        return NO;
-    }
-}
-
-- (void)assetsPickerController:(CTAssetsPickerController *)picker didSelectAsset:(ALAsset *)asset
-{
-    if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto){
-        self.numberOfPicturesSelected++;
-    }
-}
-
-- (void)assetsPickerController:(CTAssetsPickerController *)picker didDeselectAsset:(ALAsset *)asset
-{
-    if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto){
-        self.numberOfPicturesSelected--;
+        return YES;
     }
 }
 
