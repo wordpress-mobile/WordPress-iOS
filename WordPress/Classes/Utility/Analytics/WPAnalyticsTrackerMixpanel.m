@@ -388,6 +388,9 @@
             [instructions addSuperPropertyToFlag:@"jetpack_user"];
             [instructions addSuperPropertyToFlag:@"dotcom_user"];
             break;
+        case WPAnalyticsStatSignedIn:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Signed In"];
+            break;
         case WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Selected Learn More in Connect to Jetpack Screen"];
             break;

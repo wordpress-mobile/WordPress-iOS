@@ -886,6 +886,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
                                 success:^{
                                     [self setAuthenticating:NO withStatusMessage:nil];
                                     [self dismiss];
+                                    [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:@{ @"dotcom_user" : @(YES) }];
                                     [WPAnalytics refreshMetadata];
                                 }
                                 failure:^(NSError *error) {
@@ -933,6 +934,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         [self dismiss];
     }
     
+    [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:@{ @"dotcom_user" : @(NO) }];
     [WPAnalytics refreshMetadata];
 }
 
