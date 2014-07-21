@@ -155,10 +155,16 @@ typedef void(^SPWebSocketSyncedBlockType)(void);
 		// AutoreleasePool:
 		//	While processing large amounts of objects, memory usage will potentially ramp up if we don't add a pool here!
 		@autoreleasepool {
-            NSSet *wrappedKey   = [NSSet setWithObject:key];
-			NSArray *changes    = [object.bucket.changeProcessor processLocalDeletionsWithKeys:wrappedKey];
-            for (NSDictionary *change in changes) {
-                [self sendChange:change];
+            SPChangeProcessor *processor = object.bucket.changeProcessor;
+
+            if (_indexing || !_authenticated || processor.reachedMaxPendings) {
+                [processor enqueueObjectDeletion:key bucket:object.bucket];
+            } else {
+                NSSet *wrappedKey   = [NSSet setWithObject:key];
+                NSArray *changes    = [processor processLocalDeletionsWithKeys:wrappedKey];
+                for (NSDictionary *change in changes) {
+                    [self sendChange:change];
+                }
             }
 		}
     });
@@ -505,13 +511,14 @@ typedef void(^SPWebSocketSyncedBlockType)(void);
 			
 			// Process Queued Changes: let's consider the SPWebsocketMaxPendingChanges limit
 			[processor enumerateQueuedChangesForBucket:bucket block:block];
+            [processor enumerateQueuedDeletionsForBucket:bucket block:block];
             
             // Ready posting local changes. If needed, hit the callback
             if (!self.onLocalChangesSent) {
                 return;
             }
             
-            if (processor.numChangesPending || processor.numKeysForObjectsWithMoreChanges) {
+            if (processor.numChangesPending || processor.numKeysForObjectsWithMoreChanges || processor.numKeysForObjectToDelete) {
                 return;
             }
             
