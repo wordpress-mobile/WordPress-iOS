@@ -173,7 +173,30 @@ NSInteger const kMeTabIndex = 2;
     
     [self showWelcomeScreenIfNeededAnimated:NO];
     
+    [self retrieveEmailAddressIfApplicable];
+    
     return YES;
+}
+
+- (void)retrieveEmailAddressIfApplicable
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:@"email_address_retrieved"]) {
+        return;
+    }
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    [[defaultAccount restApi] getUserDetailsWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *response = (NSDictionary *)responseObject;
+        if ([[response stringForKey:@"email"] length] > 0) {
+            [WPAnalyticsTrackerMixpanel registerEmailAddress:[response stringForKey:@"email"]];
+            [userDefaults setBool:YES forKey:@"email_address_retrieved"];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        DDLogError(@"Failed to retrieve /me endpoint");
+    }];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation

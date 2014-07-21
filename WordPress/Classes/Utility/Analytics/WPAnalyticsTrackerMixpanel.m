@@ -87,6 +87,12 @@
     }
 }
 
++ (void)registerEmailAddress:(NSString *)email
+{
+    NSParameterAssert(email != nil);
+    [[Mixpanel sharedInstance].people set:@"$email" to:email];
+}
+
 #pragma mark - Private Methods
 
 - (NSString *)convertWPStatToString:(WPAnalyticsStat)stat
