@@ -1,4 +1,5 @@
 #import "WPNUXSecondaryButton.h"
+#import <WordPress-iOS-Shared/WPFontManager.h>
 
 @implementation WPNUXSecondaryButton
 
@@ -41,7 +42,7 @@
 
 - (void)configureButton
 {
-    self.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:15.0];
+    self.titleLabel.font = [WPFontManager openSansRegularFontOfSize:15.0];
     self.titleLabel.minimumScaleFactor = 10.0/15.0;
     [self setTitleEdgeInsets:UIEdgeInsetsMake(0, 15.0, 0, 15.0)];
     [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
