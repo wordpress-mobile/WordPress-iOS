@@ -10,10 +10,11 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-		_imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(frame), CGRectGetWidth(frame))];
-		_imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		_imageView.contentMode = UIViewContentModeScaleAspectFit;
-		[self addSubview:_imageView];
+        self.clipsToBounds = YES;
+        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(frame), CGRectGetWidth(frame))];
+        _imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        _imageView.contentMode = UIViewContentModeScaleAspectFit;
+        [self addSubview:_imageView];
     }
     return self;
 }
