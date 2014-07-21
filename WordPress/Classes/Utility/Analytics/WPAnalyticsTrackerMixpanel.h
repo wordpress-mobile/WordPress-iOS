@@ -5,6 +5,6 @@
     NSMutableDictionary *_aggregatedStatProperties;
 }
 
-+ (void)registerEmailAddress:(NSString *)email;
++ (void)resetEmailRetrievalCheck;
 
 @end

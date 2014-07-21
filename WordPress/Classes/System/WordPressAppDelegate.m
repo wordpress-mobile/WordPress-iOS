@@ -43,7 +43,6 @@
 
 #import "WPAnalyticsTrackerMixpanel.h"
 #import "WPAnalyticsTrackerWPCom.h"
-#import "WPAnalyticsUserInformationService.h"
 
 #if DEBUG
 #import "DDTTYLogger.h"
@@ -173,8 +172,6 @@ NSInteger const kMeTabIndex = 2;
     [self.window makeKeyAndVisible];
     
     [self showWelcomeScreenIfNeededAnimated:NO];
-    
-    [WPAnalyticsUserInformationService retrieveAndRegisterEmailAddressIfApplicable];
     
     return YES;
 }
