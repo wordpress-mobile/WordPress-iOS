@@ -310,7 +310,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 
     NSError *error;
     NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&error];
-    if(count == NSNotFound) {
+    if (count == NSNotFound) {
         count = 0;
     }
     return count;
