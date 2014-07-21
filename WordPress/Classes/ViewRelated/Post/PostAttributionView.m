@@ -13,6 +13,8 @@
 - (void)setupSubviews {
     [super setupSubviews];
 
+    self.attributionNameLabel.textColor = [WPStyleGuide newKidOnTheBlockBlue];
+
     _postStatusLabel = [self labelForPostStatus];
     [self addSubview:_postStatusLabel];
 }
