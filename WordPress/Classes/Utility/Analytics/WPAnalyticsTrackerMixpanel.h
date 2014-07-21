@@ -5,4 +5,6 @@
     NSMutableDictionary *_aggregatedStatProperties;
 }
 
++ (void)registerEmailAddress:(NSString *)email;
+
 @end
