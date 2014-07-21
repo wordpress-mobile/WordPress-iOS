@@ -221,7 +221,6 @@
     CGRect screenRect = [[UIScreen mainScreen] applicationFrame];
     CGFloat insets = self.edgeInsets.left + self.edgeInsets.right;
     CGFloat side = MAX(CGRectGetWidth(screenRect) - insets, CGRectGetHeight(screenRect) - insets);
-NSLog(@"maxImageDisplaySize: %f", side);
     return CGSizeMake(side, side);
 }
 
@@ -250,8 +249,6 @@ NSLog(@"maxImageDisplaySize: %f", side);
     }
 
     // We want the image to be centered, so return its natural height but the max width
-NSLog(@"Natural Image Size: %@", NSStringFromCGSize(image.size));
-NSLog(@"displaySizeForImage: %f, %f", maxWidth, height);
     return CGSizeMake(maxWidth, height);
 }
 
