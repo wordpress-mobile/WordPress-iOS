@@ -1,6 +1,7 @@
 #import "Post.h"
 #import "NSMutableDictionary+Helpers.h"
 #import "ContextManager.h"
+#import "WPAvatarSource.h"
 
 @interface Post(InternalProperties)
 // We shouldn't need to store this, but if we don't send IDs on edits
@@ -34,6 +35,7 @@
 
 @dynamic geolocation, tags, postFormat;
 @dynamic categories;
+@dynamic authorAvatarURL;
 @synthesize specialType;
 
 #pragma mark - NSManagedObject subclass methods
@@ -71,7 +73,14 @@
         password = nil;
     }
     self.password = password;
-    self.author         = [postInfo objectForKey:@"wp_author_display_name"];
+    if ([postInfo objectForKey:@"wp_author_display_name"]) {
+        self.author = [postInfo objectForKey:@"wp_author_display_name"];
+    }
+    else if ([postInfo objectForKey:@"author"]) {
+        NSDictionary *author = [postInfo objectForKey:@"author"];
+        self.author = [author objectForKey:@"name"];
+        self.authorAvatarURL = [author objectForKey:@"avatar_URL"];
+    }
     self.tags           = [postInfo objectForKey:@"mt_keywords"];
 	self.permaLink      = [postInfo objectForKey:@"permaLink"];
 	self.mt_excerpt		= [postInfo objectForKey:@"mt_excerpt"];
@@ -245,6 +254,40 @@
         return false;
 }
 
+#pragma mark - Avatar
+
+- (UIImage *)cachedAvatarWithSize:(CGSize)size
+{
+    NSString *hash;
+    WPAvatarSourceType type = [self avatarSourceTypeWithHash:&hash];
+    if (!hash) {
+        return nil;
+    }
+    return [[WPAvatarSource sharedSource] cachedImageForAvatarHash:hash ofType:type withSize:size];
+}
+
+- (void)fetchAvatarWithSize:(CGSize)size success:(void (^)(UIImage *image))success
+{
+    NSString *hash;
+    WPAvatarSourceType type = [self avatarSourceTypeWithHash:&hash];
+
+    if (hash) {
+        [[WPAvatarSource sharedSource] fetchImageForAvatarHash:hash ofType:type withSize:size success:success];
+    } else if (success) {
+        success(nil);
+    }
+}
+
+- (WPAvatarSourceType)avatarSourceTypeWithHash:(NSString **)hash
+{
+    if (self.authorAvatarURL) {
+        NSURL *avatarURL = [NSURL URLWithString:self.authorAvatarURL];
+        if (avatarURL) {
+            return [[WPAvatarSource sharedSource] parseURL:avatarURL forAvatarHash:hash];
+        }
+    }
+    return WPAvatarSourceTypeUnknown;
+}
 
 #pragma mark - QuickPhoto
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification {

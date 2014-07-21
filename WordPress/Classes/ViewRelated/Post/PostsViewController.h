@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "WPTableViewController.h"
+#import "PostContentView.h"
 
 @class EditPostViewController;
 

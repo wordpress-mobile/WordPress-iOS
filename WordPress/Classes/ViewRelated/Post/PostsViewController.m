@@ -145,6 +145,7 @@
     cell.accessoryType = UITableViewCellAccessoryNone;
 
     [cell configureCell:post];
+    [self setAvatarForPost:post forCell:cell indexPath:indexPath];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -320,6 +321,29 @@
                                                                                  metrics:metrics
                                                                                    views:views] firstObject];
     [contentView addConstraint:self.cellForLayoutWidthConstraint];
+}
+
+- (void)setAvatarForPost:(Post *)post forCell:(PostTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
+{
+    if ([cell isEqual:self.cellForLayout]) {
+        return;
+    }
+
+    CGSize imageSize = CGSizeMake(WPContentViewAuthorAvatarSize, WPContentViewAuthorAvatarSize);
+    UIImage *image = [post cachedAvatarWithSize:imageSize];
+    if (image) {
+        [cell.postView setAvatarImage:image];
+    } else {
+        [cell.postView setAvatarImage:[UIImage imageNamed:@"gravatar"]];
+        [post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
+            if (!image) {
+                return;
+            }
+            if (cell == [self.tableView cellForRowAtIndexPath:indexPath]) {
+                [cell.postView setAvatarImage:image];
+            }
+        }];
+    }
 }
 
 @end

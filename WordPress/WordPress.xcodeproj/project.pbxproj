@@ -411,6 +411,7 @@
 		3118440319793BDD00035EDA /* PostAttributionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostAttributionView.m; sourceTree = "<group>"; };
 		31184405197970DD00035EDA /* AbstractPostTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractPostTableViewCell.h; sourceTree = "<group>"; };
 		31184406197970DD00035EDA /* AbstractPostTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractPostTableViewCell.m; sourceTree = "<group>"; };
+		315C5530197D724A00721D15 /* WordPress 21.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 21.xcdatamodel"; sourceTree = "<group>"; };
 		3716E400167296D30035F8C4 /* ToastView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ToastView.xib; path = Resources/ToastView.xib; sourceTree = "<group>"; };
 		37245ADB13FC23FF006CDBE3 /* WPWebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WPWebViewController.xib; path = Resources/WPWebViewController.xib; sourceTree = "<group>"; };
 		372AD15216682BA100F21BC1 /* NotificationsFollowDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsFollowDetailViewController.h; sourceTree = "<group>"; };
@@ -3113,6 +3114,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				315C5530197D724A00721D15 /* WordPress 21.xcdatamodel */,
 				DA67DF58196D8F6A005B5BC8 /* WordPress 20.xcdatamodel */,
 				B5B63F3F19621A9F001601C3 /* WordPress 19.xcdatamodel */,
 				5D6CF8B4193BD96E0041D28F /* WordPress 18.xcdatamodel */,
@@ -3134,7 +3136,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = DA67DF58196D8F6A005B5BC8 /* WordPress 20.xcdatamodel */;
+			currentVersion = 315C5530197D724A00721D15 /* WordPress 21.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";
