@@ -6,6 +6,7 @@
 #import "UIImageView+Gravatar.h"
 #import "NSDate+StringFormatting.h"
 #import "NSString+Util.h"
+#import <WordPress-iOS-Shared/WPFontManager.h>
 
 @interface WPContentCell() {
     UIImageView *_gravatarImageView;
@@ -226,12 +227,12 @@ CGFloat const WPContentCellDefaultOrigin                    = 15.0f;
 
 + (UIFont *)titleFont
 {
-    return [UIFont fontWithName:@"OpenSans" size:14.0];
+    return [WPFontManager openSansRegularFontOfSize:14.0];
 }
 
 + (UIFont *)titleFontBold
 {
-    return [UIFont fontWithName:@"OpenSans-Bold" size:14.0];
+    return [WPFontManager openSansBoldFontOfSize:14.0];
 }
 
 + (NSDictionary *)titleAttributes
