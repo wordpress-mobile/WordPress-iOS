@@ -407,7 +407,10 @@ static NSUInteger const WPTableImageSourceBatchSize = 10;
     // Load the next batch
     NSInteger num = MIN(WPTableImageSourceBatchSize, [self.pendingDownloads count]);
     for (NSInteger i = 0; i < num; i++) {
-        NSDictionary *queueItem = [self.pendingDownloads objectAtIndex:0];
+        NSDictionary *queueItem = [self.pendingDownloads firstObject];
+        if (!queueItem) { // just in case the count is off for some reason.
+            break;
+        }
         [self.pendingDownloads removeObject:queueItem];
         [self requestImage:queueItem];
     }

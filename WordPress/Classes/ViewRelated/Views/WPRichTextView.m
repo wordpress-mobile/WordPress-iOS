@@ -218,8 +218,10 @@
 
 - (CGSize)maxImageDisplaySize
 {
+    CGRect screenRect = [[UIScreen mainScreen] applicationFrame];
     CGFloat insets = self.edgeInsets.left + self.edgeInsets.right;
-    CGFloat side = MAX(CGRectGetWidth(self.bounds) - insets, CGRectGetHeight(self.bounds) - insets);
+    CGFloat side = MAX(CGRectGetWidth(screenRect) - insets, CGRectGetHeight(screenRect) - insets);
+NSLog(@"maxImageDisplaySize: %f", side);
     return CGSizeMake(side, side);
 }
 
@@ -248,6 +250,8 @@
     }
 
     // We want the image to be centered, so return its natural height but the max width
+NSLog(@"Natural Image Size: %@", NSStringFromCGSize(image.size));
+NSLog(@"displaySizeForImage: %f, %f", maxWidth, height);
     return CGSizeMake(maxWidth, height);
 }
 
@@ -286,16 +290,16 @@
     NSURL *url = imageControl.contentURL;
 
     CGSize originalSize = imageControl.frame.size;
-    CGSize preferredSize = [self displaySizeForImage:imageControl.imageView.image];
+    CGSize displaySize = [self displaySizeForImage:imageControl.imageView.image];
 
-    frameChanged = !CGSizeEqualToSize(originalSize, preferredSize);
+    frameChanged = !CGSizeEqualToSize(originalSize, displaySize);
 
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
 
     // update all attachments that matchin this URL (possibly multiple images with same size)
     for (DTTextAttachment *attachment in [self.textContentView.layoutFrame textAttachmentsWithPredicate:pred]) {
         attachment.originalSize = originalSize;
-        attachment.displaySize = preferredSize;
+        attachment.displaySize = displaySize;
     }
     
     return frameChanged;
