@@ -9,6 +9,7 @@
 #import "BlogService.h"
 #import "ContextManager.h"
 #import "WPToast.h"
+#import <WordPress-iOS-Shared/WPFontManager.h>
 
 CGFloat const ReblogViewPostMargin = 10;
 CGFloat const ReblogViewTextBottomInset = 30;
@@ -123,12 +124,12 @@ CGFloat const ReblogViewTextBottomInset = 30;
         UIButton *titleButton = self.titleBarButton;
         self.navigationItem.titleView = titleButton;
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", NSLocalizedString(@"Reblog to", @"")]
-                                                                                      attributes:@{ NSFontAttributeName : [UIFont fontWithName:@"OpenSans-Bold" size:14.0] }];
+                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
 
         if (!self.blog) {
             self.blog = [blogService lastUsedOrFirstWPcomBlog];
         }
-        NSDictionary *subtextAttributes = @{ NSFontAttributeName: [UIFont fontWithName:@"OpenSans" size:10.0] };
+        NSDictionary *subtextAttributes = @{ NSFontAttributeName: [WPFontManager openSansRegularFontOfSize:10.0] };
         NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:self.blog.blogName
                                                                                          attributes:subtextAttributes];
         [titleText appendAttributedString:titleSubtext];

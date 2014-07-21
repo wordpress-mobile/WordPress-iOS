@@ -20,6 +20,7 @@
 #import "BlogService.h"
 #import "WPNUXHelpBadgeLabel.h"
 #import <Helpshift/Helpshift.h>
+#import <WordPress-iOS-Shared/WPFontManager.h>
 
 
 static NSString *const ForgotPasswordDotComBaseUrl = @"https://wordpress.com";
@@ -408,7 +409,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _helpBadge.textAlignment = NSTextAlignmentCenter;
         _helpBadge.backgroundColor = [UIColor colorWithHexString:@"dd3d36"];
         _helpBadge.textColor = [UIColor whiteColor];
-        _helpBadge.font = [UIFont fontWithName:@"OpenSans" size:8.0];
+        _helpBadge.font = [WPFontManager openSansRegularFontOfSize:8.0];
         _helpBadge.hidden = YES;
         [_mainView addSubview:_helpBadge];
     }
