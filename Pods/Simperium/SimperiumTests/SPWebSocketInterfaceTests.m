@@ -1,5 +1,5 @@
 //
-//  RemoteDebugTests.m
+//  SPWebSocketInterfaceTests.m
 //  Simperium
 //
 //  Created by Jorge Leandro Perez on 11/11/13.
@@ -15,11 +15,11 @@
 #import "Config.h"
 
 
-@interface RemoteDebugTests : XCTestCase
+@interface SPWebSocketInterfaceTests : XCTestCase
 
 @end
 
-@implementation RemoteDebugTests
+@implementation SPWebSocketInterfaceTests
 
 - (void)setUp {
     [super setUp];
@@ -29,7 +29,7 @@
     [super tearDown];
 }
 
-- (void)testRemoteLogging {
+- (void)testRemoteLoglevelMessage {
 	//	log:<log level>
 	//		log level = int, 0 = OFF, 1 = regular, 2 = verbose?
 	
@@ -63,7 +63,7 @@
 	XCTAssertTrue([sentMessages containsObject:message], @"Error message wasn't sent through the WebSocket interface");
 }
 
-- (void)testRemoteIndex {
+- (void)testRemoteIndexRequest {
 	// Add a new object
 	MockSimperium* s		= [MockSimperium mockSimperium];
 

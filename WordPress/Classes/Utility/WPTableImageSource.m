@@ -213,6 +213,30 @@
 */
 - (NSURL *)photonURLForURL:(NSURL *)url withSize:(CGSize)size
 {
+    // Photon will fail if the URL doesn't end in one of the accepted extensions
+    NSArray *acceptedImageTypes = @[@"gif", @"jpg", @"jpeg", @"png"];
+    if ([acceptedImageTypes indexOfObject:url.pathExtension] == NSNotFound) {
+        if (![url scheme]) {
+            return [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", [url absoluteString]]];
+        }
+        return url;
+    }
+
+    // If the URL is already a Photon URL, just return it.
+    static NSRegularExpression *regex;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSError *error;
+        regex = [NSRegularExpression regularExpressionWithPattern:@"i\\d+\\.wp\\.com" options:NSRegularExpressionCaseInsensitive error:&error];
+    });
+    NSString *host = [url host];
+    NSInteger count = [regex numberOfMatchesInString:host options:NSMatchingCompleted range:NSMakeRange(0, [host length])];
+    if (count > 0) {
+        return url;
+    }
+
+    // Compose the URL
+
     NSString *urlString = [url absoluteString];
     NSString *sslFlag = @"";
     if ([[url scheme] isEqualToString:@"https"]) {
@@ -222,15 +246,6 @@
     NSRange range = [urlString rangeOfString:@"://"];
     if (range.location != NSNotFound && range.location < 6) {
         urlString = [urlString substringFromIndex:(range.location + range.length)];
-    }
-
-    // Photon will fail if the URL doesn't end in one of the accepted extensions
-    NSArray *acceptedImageTypes = @[@"gif", @"jpg", @"jpeg", @"png"];
-    if ([acceptedImageTypes indexOfObject:url.pathExtension] == NSNotFound) {
-        if (![url scheme]) {
-            url = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", [url absoluteString]]];
-        }
-        return url;
     }
     CGFloat scale = [[UIScreen mainScreen] scale];
     NSUInteger width = scale * size.width;
