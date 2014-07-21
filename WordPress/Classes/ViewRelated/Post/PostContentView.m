@@ -2,6 +2,7 @@
 #import "Post.h"
 #import "ContentActionButton.h"
 #import "PostAttributionView.h"
+#import "PostContentActionView.h"
 
 @interface PostContentView ()
 
@@ -33,6 +34,13 @@
 }
 
 #pragma mark - Private Methods
+
+- (WPContentActionView *)viewForActionView
+{
+    PostContentActionView *actionView = [[PostContentActionView alloc] init];
+    actionView.translatesAutoresizingMaskIntoConstraints = NO;
+    return actionView;
+}
 
 - (WPContentAttributionView *)viewForAttributionView
 {

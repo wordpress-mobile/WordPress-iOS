@@ -3,5 +3,6 @@
 @interface NSDate (StringFormatting)
 
 - (NSString *)shortString;
+- (NSString *)longString;
 
 @end
