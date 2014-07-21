@@ -3,5 +3,6 @@
 @interface WPAnalyticsUserInformationService : NSObject
 
 + (void)retrieveAndRegisterEmailAddressIfApplicable;
++ (void)resetEmailRetrievalCheck;
 
 @end
