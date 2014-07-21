@@ -585,7 +585,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     NSInteger numberToPreload = 2; // keep the number small else they compete and slow each other down.
     for (NSInteger i = 1; i <= numberToPreload; i++) {
         NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:indexPath.row + i inSection:indexPath.section];
-        if ([self.tableView numberOfRowsInSection:indexPath.section] < nextIndexPath.row) {
+        if ([self.tableView numberOfRowsInSection:indexPath.section] > nextIndexPath.row) {
             ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:nextIndexPath];
             NSURL *imageURL = [post featuredImageURLForDisplay];
             if (!imageURL) {
@@ -600,7 +600,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
             } else {
                 [self.featuredImageSource fetchImageForURL:imageURL
                                                   withSize:[self sizeForFeaturedImage]
-                                                 indexPath:indexPath
+                                                 indexPath:nextIndexPath
                                                  isPrivate:post.isPrivate];
             }
         }

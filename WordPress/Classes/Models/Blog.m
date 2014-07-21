@@ -270,6 +270,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
             }
         }
         [self dataSave];
+        [WPAnalytics refreshMetadata];
     }];
 }
 

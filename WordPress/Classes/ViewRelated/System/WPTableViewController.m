@@ -389,8 +389,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
     
     _didTriggerRefresh = YES;
-	[self syncItemsViaUserInteraction];
     [self.noResultsView removeFromSuperview];
+	[self syncItemsViaUserInteraction];
 }
 
 - (BOOL)userCanRefresh {
