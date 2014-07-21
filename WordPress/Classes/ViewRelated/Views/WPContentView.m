@@ -147,12 +147,11 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         _timeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         _timeButton.backgroundColor = [UIColor clearColor];
         _timeButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+        [_timeButton addTarget:self action:@selector(timeLinkAction:) forControlEvents:UIControlEventTouchUpInside];
         [_timeButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPVSmallButtonLeftPadding, 0, 0)];
+        [_timeButton setImage:[UIImage imageNamed:@"reader-postaction-time"] forState:UIControlStateNormal];
+        [_timeButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
         
-        // Disable it for now (could be used for permalinks in the future)
-        [_timeButton setImage:[UIImage imageNamed:@"reader-postaction-time"] forState:UIControlStateDisabled];
-        [_timeButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateDisabled];
-        [_timeButton setEnabled:NO];
         [_bottomView addSubview:_timeButton];
         
         // Update the relative timestamp once per minute
@@ -394,6 +393,12 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     }
 }
 
+- (void)timeLinkAction:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(contentView:didReceiveTimeLinkAction:)]) {
+        [self.delegate contentView:self didReceiveTimeLinkAction:sender];
+    }
+}
+
 
 #pragma mark - Helper methods
 
@@ -471,7 +476,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 - (void)refreshDate:(NSTimer *)timer {
     NSString *title = [self.contentProvider.dateForDisplay shortString];
-    [self.timeButton setTitle:title forState:UIControlStateNormal | UIControlStateDisabled];
+    [self.timeButton setTitle:title forState:UIControlStateNormal];
 }
 
 - (void)refreshDate {

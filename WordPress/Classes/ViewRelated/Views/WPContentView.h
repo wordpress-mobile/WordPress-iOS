@@ -15,6 +15,7 @@
 - (void)contentView:(WPContentView *)contentView didReceiveVideoLinkAction:(id)sender;
 - (void)contentView:(WPContentView *)contentView didReceiveFeaturedImageAction:(id)sender;
 - (void)contentView:(WPContentView *)contentView didReceiveAuthorLinkAction:(id)sender;
+- (void)contentView:(WPContentView *)contentView didReceiveTimeLinkAction:(id)sender;
 - (void)contentViewDidLoadAllMedia:(WPContentView *)contentView;
 @end
 
