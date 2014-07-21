@@ -6,7 +6,7 @@
 #import "AccountServiceRemote.h"
 #import "AccountServiceRemoteREST.h"
 #import "AccountServiceRemoteXMLRPC.h"
-#import "WPAnalyticsUserInformationService.h"
+#import "WPAnalyticsTrackerMixpanel.h"
 
 #import "NSString+XMLExtensions.h"
 
@@ -124,7 +124,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     }
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     
-    [WPAnalyticsUserInformationService resetEmailRetrievalCheck];
+    [WPAnalyticsTrackerMixpanel resetEmailRetrievalCheck];
     
     // Remove defaults
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
