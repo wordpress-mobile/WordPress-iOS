@@ -6,7 +6,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TaplyticsManager.h"
 
 typedef void(^TLExperimentBlock)(NSDictionary *variables);
 
@@ -17,8 +16,8 @@ typedef void(^TLExperimentBlock)(NSDictionary *variables);
  Delegate method called when an experiment is changed, use this to call runCodeExperiment:withBaseline:variations: again
  in your code to test and visually see the different code experiments. Only necessary for code experiments, visual experiments
  will update themselves.
- @param experimentName the name of the experiment
- @param variationName the name of the experiment variation, nil if Baseline
+ @param experimentName The name of the experiment
+ @param variationName The name of the experiment variation, nil if Baseline
  */
 - (void)taplyticsExperimentChanged:(NSString*)experimentName variationName:(NSString*)variationName;
 
@@ -28,7 +27,13 @@ typedef void(^TLExperimentBlock)(NSDictionary *variables);
 @interface Taplytics : NSObject
 
 /**
- Start the Taplytics SDK with your api key. the api key can be found in the 'project settings' page.
+ Start the Taplytics SDK with your api key. the api key can be found in the 'project settings' page. 
+ 
+ On the first launch of your app Taplytics will show your launch image for a maximum of two seconds, this gives Taplytics time 
+ to download your experiment's configuration and display the experiment's changes to your users. In subsequent launches of your 
+ app Taplytics will use the experiment's configuration from disk, and not show your launch image. If you do not want this behavior, use:
+ [Taplytics startTaplyticsAPIKey:@"API_KEY" options:@{@"delayLoad":@0}];
+ 
  Console Logging: Taplytics will only log to the console in development builds.
  @param apiKey your api key
  */
@@ -36,12 +41,19 @@ typedef void(^TLExperimentBlock)(NSDictionary *variables);
 
 /**
  Start the Taplytics SDK with your api key. the api key can be found in the 'project settings' page.
+ 
+ On the first launch of your app Taplytics will show your launch image for a maximum of two seconds, this gives Taplytics time
+ to download your experiment's configuration and display the experiment's changes to your users. In subsequent launches of your
+ app Taplytics use the experiment's configuration from disk, and not show your launch image. If you do not want this behavior, use:
+ [Taplytics startTaplyticsAPIKey:@"API_KEY" options:@{@"delayLoad":@0}];
+ 
  Console Logging: Taplytics will only log to the console in development builds.
- @param apiKey your api key
- @param options taplytics options dictionary, used for testing. Options include:
+ @param apiKey Your API key
+ @param options Taplytics options dictionary, used for testing. Options include:
             - @{@"delayLoad":@2} allows Taplytics to show your app's launch image and load its configuration for a maximum number of seconds
-                on app launch. This is useful when running a code experiments on the first screen of your app, this will ensure that your users
-                will get shown a variation on the first launch of your app.
+                on app launch, the default for first launch is 2 seconds. This is useful when running a code experiments on the first screen 
+                of your app, this will ensure that your users will get shown a variation on the first launch of your app. Set to @0 for no
+                delay.
             - @{@"liveUpdate":@NO} Taplytics will auto-detect an app store build or a development build. But to force production mode use @NO,
                 or @YES to force live update mode for testing.
             - @{@"shakeMenu":@NO} To disable the Taplytics development mode shake menu set @NO, only use if you have your own development shake menu.
@@ -57,7 +69,7 @@ typedef void(^TLExperimentBlock)(NSDictionary *variables);
     [Taplytics performBackgroundFetch:completeBlock];
  }
  
- @param completionBlock completion block called when fetch is complete
+ @param completionBlock Completion block called when fetch is complete
  */
 + (void)performBackgroundFetch:(void(^)(UIBackgroundFetchResult result))completionBlock NS_AVAILABLE_IOS(7_0);
 
@@ -85,7 +97,7 @@ typedef void(^TLExperimentBlock)(NSDictionary *variables);
  }}];
  
  @param experimentName Name of the experiment to run
- @param baselineBlock baseline block called if experiment is in baseline variation
+ @param baselineBlock Baseline block called if experiment is in baseline variation
  @param variationNamesAndBlocks NSDictionary with keys of variation names and values of variation blocks.
  */
 + (void)runCodeExperiment:(NSString*)experimentName withBaseline:(TLExperimentBlock)baselineBlock variations:(NSDictionary*)variationNamesAndBlocks;
@@ -98,18 +110,9 @@ typedef void(^TLExperimentBlock)(NSDictionary *variables);
 
 /**
  Report that an experiment goal has been achieved, optionally pass number value to track goal such as purchase revenue.
- @param goalName the name of the experiment goal
- @param value a numerical value to be tracked with the goal. For example purcahse revenue.
+ @param goalName The name of the experiment goal
+ @param value A numerical value to be tracked with the goal. For example purcahse revenue.
  */
 + (void)goalAchieved:(NSString*)goalName value:(NSNumber*)value;
-
-/**
- DEPRECATED Start Taplytics Methods, please use startTaplyticsAPIKey:options:
- */
-+ (void)startTaplyticsAPIKey:(NSString*)apiKey liveUpdate:(BOOL)liveUpdate __deprecated;
-
-+ (void)startTaplyticsAPIKey:(NSString*)apiKey server:(TLServer)server __deprecated;
-
-+ (void)startTaplyticsAPIKey:(NSString*)apiKey server:(TLServer)server liveUpdate:(BOOL)liveUpdate __deprecated;
 
 @end

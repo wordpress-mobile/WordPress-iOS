@@ -161,11 +161,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
 + (BOOL)isHelpshiftEnabled
 {
-#ifdef DEBUG
-    return true;
-#else
     return [[NSUserDefaults standardUserDefaults] boolForKey:UserDefaultsHelpshiftEnabled];
-#endif
 }
 
 - (void)showLoadingSpinner {
