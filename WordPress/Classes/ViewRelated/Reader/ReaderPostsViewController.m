@@ -24,7 +24,6 @@
 #import "BlogService.h"
 
 static CGFloat const RPVCHeaderHeightPhone = 10.0;
-static CGFloat const RPVCExtraTableViewHeightPercentage = 2.0;
 static CGFloat const RPVCEstimatedRowHeightIPhone = 400.0;
 static CGFloat const RPVCEstimatedRowHeightIPad = 600.0;
 
