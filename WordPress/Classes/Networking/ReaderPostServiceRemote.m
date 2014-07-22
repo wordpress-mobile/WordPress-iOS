@@ -259,6 +259,8 @@
     post.status = [self stringOrEmptyString:[dict stringForKey:@"status"]];
     post.summary = [self stringOrEmptyString:[dict stringForKey:@"excerpt"]];
     post.tags = [self tagsFromPostDictionary:dict];
+    post.isSharingEnabled = [[dict numberForKey:@"sharing_enabled"] boolValue];
+    post.isLikesEnabled = [[dict numberForKey:@"likes_enabled"] boolValue];
 
     return post;
 }
