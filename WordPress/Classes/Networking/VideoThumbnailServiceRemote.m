@@ -83,7 +83,12 @@
                                         NSDictionary *dict = (NSDictionary *)responseObject;
                                         NSString *title = [dict stringForKeyPath:@"entry.media$group.media$title.$t"];
                                         NSArray *thumbs = [dict objectForKeyPath:@"entry.media$group.media$thumbnail"];
-                                        NSDictionary *thumb = [thumbs objectAtIndex:3];
+                                        NSDictionary *thumb = [thumbs objectAtIndex:0];
+                                        for (NSDictionary *item in thumbs) {
+                                            if ([[item numberForKey:@"width"] integerValue] > [[thumb numberForKey:@"width"] integerValue]) {
+                                                thumb = item;
+                                            }
+                                        }
                                         NSString *thumbPath = [thumb stringForKey:@"url"];
                                         NSURL *url = [NSURL URLWithString:thumbPath];
                                         success(url, title);
