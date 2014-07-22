@@ -210,29 +210,42 @@
 
 /**
  Returns a Photon URL to resize the image at the given `url` to the specified `size`.
- */
+*/
 - (NSURL *)photonURLForURL:(NSURL *)url withSize:(CGSize)size
 {
-    NSString *urlString = [url absoluteString];
-    if ([urlString hasPrefix:@"http"]) {
-        NSRange range = [urlString rangeOfString:@"http://"];
-        if (range.location == 0) {
-            urlString = [urlString substringFromIndex:range.length];
-        } else {
-            range = [urlString rangeOfString:@"https://"];
-            if (range.location == 0) {
-                // Photon doesn't support https
-                return url;
-            }
-        }
-    }
     // Photon will fail if the URL doesn't end in one of the accepted extensions
     NSArray *acceptedImageTypes = @[@"gif", @"jpg", @"jpeg", @"png"];
     if ([acceptedImageTypes indexOfObject:url.pathExtension] == NSNotFound) {
         if (![url scheme]) {
-            url = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", [url absoluteString]]];
+            return [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", [url absoluteString]]];
         }
         return url;
+    }
+
+    // If the URL is already a Photon URL, just return it.
+    static NSRegularExpression *regex;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSError *error;
+        regex = [NSRegularExpression regularExpressionWithPattern:@"i\\d+\\.wp\\.com" options:NSRegularExpressionCaseInsensitive error:&error];
+    });
+    NSString *host = [url host];
+    NSInteger count = [regex numberOfMatchesInString:host options:NSMatchingCompleted range:NSMakeRange(0, [host length])];
+    if (count > 0) {
+        return url;
+    }
+
+    // Compose the URL
+
+    NSString *urlString = [url absoluteString];
+    NSString *sslFlag = @"";
+    if ([[url scheme] isEqualToString:@"https"]) {
+        sslFlag = @"ssl=1";
+    }
+
+    NSRange range = [urlString rangeOfString:@"://"];
+    if (range.location != NSNotFound && range.location < 6) {
+        urlString = [urlString substringFromIndex:(range.location + range.length)];
     }
     CGFloat scale = [[UIScreen mainScreen] scale];
     NSUInteger width = scale * size.width;
@@ -253,14 +266,19 @@
     if (imgpressRange.location != NSNotFound) {
         urlString = [urlString substringToIndex:imgpressRange.location];
     }
-    
+
+    NSString *photonURLString;
     if (height == 0) {
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"https://i0.wp.com/%@?w=%i", urlString, width]];
+        photonURLString = [NSString stringWithFormat:@"https://i0.wp.com/%@?w=%i", urlString, width];
     } else {
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"https://i0.wp.com/%@?resize=%i,%i", urlString, width, height]];
+        photonURLString = [NSString stringWithFormat:@"https://i0.wp.com/%@?resize=%i,%i", urlString, width, height];
     }
-    
-    return url;
+
+    if (sslFlag) {
+        photonURLString = [NSString stringWithFormat:@"%@&%@", photonURLString, sslFlag];
+    }
+
+    return [NSURL URLWithString:photonURLString];
 }
 
 @end
