@@ -21,11 +21,27 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 #if TARGET_IPHONE_SIMULATOR
     return;
 #endif
+    // Register for push notifications
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
     
-    [[UIApplication sharedApplication]
-     registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-                                         UIRemoteNotificationTypeSound |
-                                         UIRemoteNotificationTypeAlert)];
+    // Build the notification actions and categories
+    UIMutableUserNotificationAction *commentLikeAction = [[UIMutableUserNotificationAction alloc] init];
+    commentLikeAction.identifier = @"COMMENT_LIKE";
+    commentLikeAction.title = NSLocalizedString(@"Like", @"Like (verb)");
+    commentLikeAction.activationMode = UIUserNotificationActivationModeBackground;
+    commentLikeAction.destructive = NO;
+    commentLikeAction.authenticationRequired = NO;
+    UIMutableUserNotificationCategory *commentLikeCategory = [[UIMutableUserNotificationCategory alloc] init];
+    commentLikeCategory.identifier = @"COMMENT_LIKE_CATEGORY";
+    [commentLikeCategory setActions:@[commentLikeAction] forContext:UIUserNotificationActionContextDefault];
+    
+    UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+    
+    NSSet *categories = [NSSet setWithObjects:commentLikeCategory, nil];
+    
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types categories:categories];
+    
+    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
 }
 
 
@@ -148,6 +164,37 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
     if (remoteNotif) {
         DDLogVerbose(@"Launched with a remote notification as parameter:  %@", remoteNotif);
         [[WordPressAppDelegate sharedWordPressApplicationDelegate] showNotificationsTab];
+    }
+}
+
++ (void)handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)remoteNotification {
+    // Ensure we have a WP.com account
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    
+    if (![[defaultAccount restApi] hasCredentials]) {
+        return;
+    }
+    
+    // Comment like
+    if ([identifier isEqualToString:@"COMMENT_LIKE"]) {
+        // Get the site and comment id and like the comment via the REST API
+        NSInteger blogId = [remoteNotification[@"blog_id"] integerValue];
+        NSInteger commentId = [remoteNotification[@"comment_id"] integerValue];
+        
+        if (blogId && commentId) {
+            [[defaultAccount restApi] likeComment: blogId
+                                     forCommentID:commentId
+                                          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                              DDLogInfo(@"Liked comment!");
+                                          }
+                                          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                              DDLogInfo(@"Couldn't like comment!");
+                                          }
+             ];
+            
+        }
     }
 }
 
