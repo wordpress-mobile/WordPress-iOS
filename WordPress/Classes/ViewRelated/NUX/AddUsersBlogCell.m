@@ -1,5 +1,6 @@
 #import "AddUsersBlogCell.h"
 #import "UIImageView+Gravatar.h"
+#import <WordPress-iOS-Shared/WPFontManager.h>
 
 @interface AddUsersBlogCell() {
     UILabel *_titleLabel;
@@ -28,7 +29,7 @@ CGFloat const AddUsersBlogCellStandardOffset = 16.0;
         
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.backgroundColor = [UIColor clearColor];
-        _titleLabel.font = [UIFont fontWithName:@"OpenSans" size:15.0];
+        _titleLabel.font = [WPFontManager openSansRegularFontOfSize:15.0];
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.numberOfLines = 0;
         _titleLabel.textColor = [UIColor whiteColor];
@@ -154,7 +155,7 @@ CGFloat const AddUsersBlogCellStandardOffset = 16.0;
 
 + (CGSize)sizeForText:(NSString *)text
 {
-    UIFont *titleFont = [UIFont fontWithName:@"OpenSans" size:15.0];
+    UIFont *titleFont = [WPFontManager openSansRegularFontOfSize:15.0];
     return [text suggestedSizeWithFont:titleFont width:AddUsersBlogCellMaxTextWidth];
 }
 
