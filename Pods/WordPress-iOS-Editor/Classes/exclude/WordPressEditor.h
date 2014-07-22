@@ -1,3 +1,0 @@
-@interface WordPressEditor : NSObject
-
-@end
