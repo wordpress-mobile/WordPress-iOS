@@ -76,8 +76,7 @@
 /**
  Invalidates stored index paths.
  
- Calling this method cancles pending requests. Active requests will continue, but
- will not notifiy the delegate of success or failure.
+ Calling this method doesn't cancel the image requests, but prevents them from calling the delegate.
  */
 - (void)invalidateIndexPaths;
 
