@@ -14,11 +14,15 @@
 #import "Meta.h"
 
 #import "NotificationSettingsViewController.h"
+<<<<<<< HEAD
 #import "NoteTableViewCell.h"
 #import "NotificationsManager.h"
 #import "NotificationDetailsViewController.h"
 
 #import "WPAccount.h"
+=======
+#import "NotificationsBigBadgeDetailViewController.h"
+>>>>>>> origin/develop
 #import "AccountService.h"
 
 #import "ReaderPost.h"

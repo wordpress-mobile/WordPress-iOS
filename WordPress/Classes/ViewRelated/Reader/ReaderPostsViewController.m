@@ -21,6 +21,7 @@
 #import "ReaderTopicService.h"
 #import "ReaderPostService.h"
 #import "CustomHighlightButton.h"
+#import "BlogService.h"
 
 static CGFloat const RPVCHeaderHeightPhone = 10.0;
 static CGFloat const RPVCExtraTableViewHeightPercentage = 2.0;
@@ -29,7 +30,6 @@ static CGFloat const RPVCEstimatedRowHeightIPad = 600.0;
 
 NSString * const FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
 NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier";
-
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
 @interface ReaderPostsViewController ()<WPTableImageSourceDelegate, ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate>
@@ -42,16 +42,14 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @property (nonatomic, assign) CGFloat lastOffset;
 @property (nonatomic, strong) WPAnimatedBox *animatedBox;
 @property (nonatomic, strong) UIGestureRecognizer *tapOffKeyboardGesture;
-
 @property (nonatomic, strong) ReaderPostDetailViewController *detailController;
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 @property (nonatomic, strong) ReaderCommentPublisher *commentPublisher;
 @property (nonatomic, readonly) ReaderTopic *currentTopic;
-
 @property (nonatomic, strong) ReaderPostTableViewCell *cellForLayout;
 @property (nonatomic, strong) NSLayoutConstraint *cellForLayoutWidthConstraint;
-
 @property (nonatomic) BOOL infiniteScrollEnabled;
+@property (nonatomic, strong) NSMutableDictionary *cachedRowHeights;
 
 @end
 
@@ -85,6 +83,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
 	[super viewDidLoad];
 
+    self.cachedRowHeights = [NSMutableDictionary dictionary];
+
     [self configureCellSeparatorStyle];
 
     self.incrementalLoadingSupported = YES;
@@ -93,8 +93,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:FeaturedImageCellIdentifier];
 
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
-
-    self.tableView.estimatedRowHeight = IS_IPAD ? RPVCEstimatedRowHeightIPad : RPVCEstimatedRowHeightIPhone;
 
     [self configureCellForLayout];
 
@@ -213,6 +211,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         width = CGRectGetHeight(self.tableView.window.frame);
     }
     [self updateCellForLayoutWidthConstraint:width];
+    if (IS_IPHONE) {
+        [self.cachedRowHeights removeAllObjects];
+    }
 }
 
 
@@ -658,6 +659,16 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 }
 
+- (void)syncItems
+{
+    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    if ([service numberOfAccounts] > 0) {
+        [super syncItems];
+    } else {
+        [self configureNoResultsView];
+    }
+}
+
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure
 {
     DDLogMethod();
@@ -806,12 +817,41 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     return cell;
 }
 
+- (void)cacheHeight:(CGFloat)height forIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *key = [NSString stringWithFormat:@"%i", indexPath.row];
+    [self.cachedRowHeights setObject:@(height) forKey:key];
+}
+
+- (NSNumber *)cachedHeightForIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *key = [NSString stringWithFormat:@"%i", indexPath.row];
+    return [self.cachedRowHeights numberForKey:key];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSNumber *height = [self cachedHeightForIndexPath:indexPath];
+    if (height) {
+        return [height floatValue];
+    }
+    return IS_IPAD ? RPVCEstimatedRowHeightIPad : RPVCEstimatedRowHeightIPhone;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSNumber *cachedHeight = [self cachedHeightForIndexPath:indexPath];
+    if (cachedHeight) {
+        return [cachedHeight floatValue];
+    }
+
     [self configureCell:self.cellForLayout atIndexPath:indexPath];
     CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
     CGSize size = [self.cellForLayout sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
-    return ceil(size.height + 1);
+    CGFloat height = ceil(size.height) + 1;
+
+    [self cacheHeight:height forIndexPath:indexPath];
+    return height;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -874,7 +914,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath
 {
-    // Do nothing (prevent superclass from adjusting table view)
+    if (type == NSFetchedResultsChangeInsert || type == NSFetchedResultsChangeDelete) {
+        [self.cachedRowHeights removeAllObjects];
+    }
+    // Do not call super. (prevent superclass from adjusting table view)
 }
 
 

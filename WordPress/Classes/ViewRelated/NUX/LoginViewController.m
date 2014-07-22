@@ -19,6 +19,7 @@
 #import "BlogService.h"
 #import "WPNUXHelpBadgeLabel.h"
 #import <Helpshift/Helpshift.h>
+#import <WordPress-iOS-Shared/WPFontManager.h>
 
 static NSString *const ForgotPasswordDotComBaseUrl = @"https://wordpress.com";
 static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
@@ -167,7 +168,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         isSiteUrlFilled = updatedStringHasContent;
     }
     _signInButton.enabled = isUsernameFilled && isPasswordFilled && (_userIsDotCom || isSiteUrlFilled);
-    _forgotPassword.enabled = (_userIsDotCom || isSiteUrlFilled);
+    _forgotPassword.hidden = !(_userIsDotCom || isSiteUrlFilled);
     
     return YES;
 }
@@ -406,7 +407,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _helpBadge.textAlignment = NSTextAlignmentCenter;
         _helpBadge.backgroundColor = [UIColor colorWithHexString:@"dd3d36"];
         _helpBadge.textColor = [UIColor whiteColor];
-        _helpBadge.font = [UIFont fontWithName:@"OpenSans" size:8.0];
+        _helpBadge.font = [WPFontManager openSansRegularFontOfSize:8.0];
         _helpBadge.hidden = YES;
         [_mainView addSubview:_helpBadge];
     }
@@ -539,10 +540,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         [_forgotPassword addTarget:self action:@selector(forgotPassword:) forControlEvents:UIControlEventTouchUpInside];
         _forgotPassword.titleLabel.font = [WPNUXUtility tosLabelFont];
         [_forgotPassword setTitleColor:[WPNUXUtility tosLabelColor] forState:UIControlStateNormal];
-        [_forgotPassword setTitleColor:[UIColor colorWithWhite:1.0 alpha:0.4] forState:UIControlStateDisabled];
         [_mainView addSubview:_forgotPassword];
     }
-    _forgotPassword.enabled = [self isForgotPasswordEnabled];
+    _forgotPassword.hidden = ![self isForgotPasswordEnabled];
 }
 
 - (void)layoutControls
