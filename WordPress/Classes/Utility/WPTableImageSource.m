@@ -210,9 +210,11 @@ static NSUInteger const WPTableImageSourceBatchSize = 10;
         regex = [NSRegularExpression regularExpressionWithPattern:@"i\\d+\\.wp\\.com" options:NSRegularExpressionCaseInsensitive error:&error];
     });
     NSString *host = [url host];
-    NSInteger count = [regex numberOfMatchesInString:host options:NSMatchingCompleted range:NSMakeRange(0, [host length])];
-    if (count > 0) {
-        return YES;
+    if ([host length] > 0) { // relative URLs may not have a host
+        NSInteger count = [regex numberOfMatchesInString:host options:NSMatchingCompleted range:NSMakeRange(0, [host length])];
+        if (count > 0) {
+            return YES;
+        }
     }
     return NO;
 }
