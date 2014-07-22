@@ -9,12 +9,20 @@
 #import <Taplytics/Taplytics.h>
 #import "WPAnalytics.h"
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
+#import "ContextManager.h"
+#import "WPAccount.h"
+#import "AccountService.h"
+#import "BlogService.h"
+#import "Blog.h"
 
 static NSString *const UserDefaultsFeedbackEnabled = @"wp_feedback_enabled";
 static NSString *const UserDefaultsHelpshiftEnabled = @"wp_helpshift_enabled";
 static NSString *const UserDefaultsHelpshiftWasUsed = @"wp_helpshift_used";
 static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 static NSString * const kExtraDebugDefaultsKey = @"extra_debug";
+int const kActivitySpinnerTag = 101;
+int const kHelpshiftWindowTypeFAQs = 1;
+int const kHelpshiftWindowTypeConversation = 2;
 
 static NSString *const FeedbackCheckUrl = @"http://api.wordpress.org/iphoneapp/feedback-check/1.0/";
 
@@ -158,6 +166,77 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 #else
     return [[NSUserDefaults standardUserDefaults] boolForKey:UserDefaultsHelpshiftEnabled];
 #endif
+}
+
+- (void)showLoadingSpinner {
+    UIActivityIndicatorView *loading = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    loading.tag = kActivitySpinnerTag;
+    loading.center = self.view.center;
+    loading.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    [self.view addSubview:loading];
+    [loading startAnimating];
+}
+
+- (void)hideLoadingSpinner {
+    [[self.view viewWithTag:kActivitySpinnerTag] removeFromSuperview];
+}
+
+- (void)prepareAndDisplayHelpshiftWindowOfType:(int)helpshiftType {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:YES forKey:UserDefaultsHelpshiftWasUsed];
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    
+    [Taplytics goalAchieved:@"Helpshift opened"];
+    
+    NSString *isWPCom = defaultAccount.isWpcom ? @"Yes" : @"No";
+    NSMutableDictionary *metaData = [NSMutableDictionary dictionaryWithDictionary:@{ @"isWPCom" : isWPCom }];
+
+    NSArray *allBlogs = [blogService blogsForAllAccounts];
+    for (int i = 0; i < allBlogs.count; i++) {
+        Blog *blog = allBlogs[i];
+        
+        NSDictionary *blogData = @{[NSString stringWithFormat:@"blog-%i-Name", i+1]: blog.blogName,
+                                   [NSString stringWithFormat:@"blog-%i-ID", i+1]: blog.blogID,
+                                   [NSString stringWithFormat:@"blog-%i-URL", i+1]: blog.url};
+        
+        [metaData addEntriesFromDictionary:blogData];
+    }
+    
+    if (defaultAccount) {
+        [self showLoadingSpinner];
+        
+        [metaData addEntriesFromDictionary:@{@"WPCom Username": defaultAccount.username}];
+        
+        [defaultAccount.restApi GET:@"me"
+                         parameters:nil
+                            success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                [self hideLoadingSpinner];
+                                
+                                NSString *displayName = ([responseObject valueForKey:@"display_name"]) ? [responseObject objectForKey:@"display_name"] : nil;
+                                NSString *emailAddress = ([responseObject valueForKey:@"email"]) ? [responseObject objectForKey:@"email"] : nil;
+
+                                [self displayHelpshiftWindowOfType:helpshiftType withUsername:displayName andEmail:emailAddress andMetadata:metaData];
+                            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                [self hideLoadingSpinner];
+                                [self displayHelpshiftWindowOfType:helpshiftType withUsername:defaultAccount.username andEmail:nil andMetadata:metaData];
+                            }];
+    } else {
+        [self displayHelpshiftWindowOfType:helpshiftType withUsername:nil andEmail:nil andMetadata:metaData];
+    }
+}
+
+- (void)displayHelpshiftWindowOfType:(int)helpshiftType withUsername:(NSString*)username andEmail:(NSString*)email andMetadata:(NSDictionary*)metaData {
+    [Helpshift setName:username andEmail:email];
+    
+    if (helpshiftType == kHelpshiftWindowTypeFAQs) {
+        [[Helpshift sharedInstance] showFAQs:self withOptions:@{HSCustomMetadataKey: metaData}];
+    } else if (helpshiftType == kHelpshiftWindowTypeConversation) {
+        [[Helpshift sharedInstance] showConversation:self withOptions:@{HSCustomMetadataKey: metaData}];
+    }
 }
 
 #pragma mark - Table view data source
@@ -325,14 +404,13 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
     if (indexPath.section == SettingsSectionFAQForums) {
         if (self.helpshiftEnabled) {
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            [defaults setBool:YES forKey:UserDefaultsHelpshiftWasUsed];
+
         }
         
         switch (indexPath.row) {
             case 0:
                 if (self.helpshiftEnabled) {
-                    [[Helpshift sharedInstance] showFAQs:self withOptions:nil];
+                    [self prepareAndDisplayHelpshiftWindowOfType:kHelpshiftWindowTypeFAQs];
                 } else {
                     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ios.wordpress.org/faq"]];
                 }
@@ -340,8 +418,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
                 break;
             case 1:
                 if (self.helpshiftEnabled) {
-                    [Taplytics goalAchieved:@"Helpshift opened"];
-                    [[Helpshift sharedInstance] showConversation:self withOptions:nil];
+                    [self prepareAndDisplayHelpshiftWindowOfType:kHelpshiftWindowTypeConversation];
                 } else {
                     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ios.forums.wordpress.org"]];
                 }
