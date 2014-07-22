@@ -192,7 +192,8 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     
     [Taplytics goalAchieved:@"Helpshift opened"];
     
-    NSMutableDictionary *metaData = [NSMutableDictionary dictionaryWithObjectsAndKeys:(defaultAccount.isWpcom)?@"Yes":@"No", @"isWPCom", nil];
+    NSString *isWPCom = defaultAccount.isWpcom ? @"Yes" : @"No";
+    NSMutableDictionary *metaData = [NSMutableDictionary dictionaryWithDictionary:@{ @"isWPCom" : isWPCom }];
 
     NSArray *allBlogs = [blogService blogsForAllAccounts];
     for (int i = 0; i < allBlogs.count; i++) {
