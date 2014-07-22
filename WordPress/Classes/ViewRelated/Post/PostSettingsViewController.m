@@ -310,7 +310,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 - (NSString *)titleForHeaderInSection:(NSInteger)section {
     NSInteger sec = [[self.sections objectAtIndex:section] integerValue];
     if (sec == PostSettingsSectionTaxonomy) {
-        // No title
+        return NSLocalizedString(@"Taxonomy", @"Label for the Taxonomy area (categories, keywords, ...) in post settings.");
         
     } else if (sec == PostSettingsSectionMeta) {
         return NSLocalizedString(@"Publish", @"The grandiose Publish button in the Post Editor! Should use the same translation as core WP.");
@@ -338,13 +338,15 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (IS_IPAD && section == 0) {
         return WPTableViewTopMargin;
-    } else if (section == 0) {
-        // Grouped table views don't allow 0.0f values
-        return 1.0f;
     }
     
     NSString *title = [self titleForHeaderInSection:section];
     return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    // Remove extra padding caused by section footers in grouped table views
+    return 1.0f;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
