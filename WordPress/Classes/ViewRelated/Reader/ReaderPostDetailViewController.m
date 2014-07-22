@@ -127,6 +127,11 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
     self.commentPublisher.delegate = self;
 
+    // Let pushed view controllers just show an arrow for the back button, not title.
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] init];
+    backButton.title = @"";
+    self.navigationItem.backBarButtonItem = backButton;
+
     [self.view addSubview:self.inlineComposeView];
 }
 

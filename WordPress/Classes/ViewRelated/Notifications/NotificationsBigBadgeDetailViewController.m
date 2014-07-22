@@ -1,4 +1,4 @@
-#import "NotificationsBigBadgeViewController.h"
+#import "NotificationsBigBadgeDetailViewController.h"
 
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import <DTCoreText/DTCoreText.h>
@@ -7,7 +7,7 @@
 #import "BlogService.h"
 #import "NSScanner+Helpers.h"
 
-@interface NotificationsBigBadgeViewController() <DTAttributedTextContentViewDelegate>
+@interface NotificationsBigBadgeDetailViewController() <DTAttributedTextContentViewDelegate>
 
 @property UIScrollView *scrollView;
 @property UIImageView *badgeImageView;
@@ -17,7 +17,7 @@
 
 @end
 
-@implementation NotificationsBigBadgeViewController
+@implementation NotificationsBigBadgeDetailViewController
 
 - (id)initWithNote:(Note *)note {
     self = [super init];
