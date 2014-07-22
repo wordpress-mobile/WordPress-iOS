@@ -1,8 +1,8 @@
 #import <UIKit/UIKit.h>
-#import "WPTableViewController.h"
+#import "AbstractPostsViewController.h"
 #import "ReaderPostContentView.h"
 
-@interface ReaderPostsViewController : WPTableViewController<ReaderPostContentViewDelegate>
+@interface ReaderPostsViewController : AbstractPostsViewController <ReaderPostContentViewDelegate>
 
 - (void)openPost:(NSUInteger*)postId onBlog:(NSUInteger)blogId;
 

@@ -1,12 +1,11 @@
 #import <Foundation/Foundation.h>
-#import "WPTableViewController.h"
+#import "AbstractPostsViewController.h"
 #import "PostContentView.h"
 
 @class EditPostViewController;
 
-@interface PostsViewController : WPTableViewController <NSFetchedResultsControllerDelegate>
+@interface PostsViewController : AbstractPostsViewController <NSFetchedResultsControllerDelegate>
 
-@property (nonatomic, assign) BOOL anyMorePosts;
 @property (nonatomic, strong) NSMutableArray *drafts;
 
 - (void)showAddPostView;

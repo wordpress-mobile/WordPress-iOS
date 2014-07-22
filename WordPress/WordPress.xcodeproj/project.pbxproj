@@ -30,6 +30,7 @@
 		3118440119793B6300035EDA /* PostContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3118440019793B6300035EDA /* PostContentView.m */; };
 		3118440419793BDD00035EDA /* PostAttributionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3118440319793BDD00035EDA /* PostAttributionView.m */; };
 		31184407197970DD00035EDA /* AbstractPostTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 31184406197970DD00035EDA /* AbstractPostTableViewCell.m */; };
+		31338410197EAE5300610AE5 /* AbstractPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3133840F197EAE5300610AE5 /* AbstractPostsViewController.m */; };
 		315C5533197D783500721D15 /* PostContentActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 315C5532197D783500721D15 /* PostContentActionView.m */; };
 		3716E401167296D30035F8C4 /* ToastView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3716E400167296D30035F8C4 /* ToastView.xib */; };
 		37245ADC13FC23FF006CDBE3 /* WPWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37245ADB13FC23FF006CDBE3 /* WPWebViewController.xib */; };
@@ -412,6 +413,8 @@
 		3118440319793BDD00035EDA /* PostAttributionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostAttributionView.m; sourceTree = "<group>"; };
 		31184405197970DD00035EDA /* AbstractPostTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractPostTableViewCell.h; sourceTree = "<group>"; };
 		31184406197970DD00035EDA /* AbstractPostTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractPostTableViewCell.m; sourceTree = "<group>"; };
+		3133840E197EAE5300610AE5 /* AbstractPostsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractPostsViewController.h; sourceTree = "<group>"; };
+		3133840F197EAE5300610AE5 /* AbstractPostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractPostsViewController.m; sourceTree = "<group>"; };
 		315C5530197D724A00721D15 /* WordPress 21.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 21.xcdatamodel"; sourceTree = "<group>"; };
 		315C5531197D783500721D15 /* PostContentActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostContentActionView.h; sourceTree = "<group>"; };
 		315C5532197D783500721D15 /* PostContentActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostContentActionView.m; sourceTree = "<group>"; };
@@ -1807,6 +1810,8 @@
 				5D62BAD818AAAE9B0044E5F7 /* PostSettingsViewController_Internal.h */,
 				5DF94E2E1962B99C00359241 /* PostSettingsSelectionViewController.h */,
 				5DF94E2F1962B99C00359241 /* PostSettingsSelectionViewController.m */,
+				3133840E197EAE5300610AE5 /* AbstractPostsViewController.h */,
+				3133840F197EAE5300610AE5 /* AbstractPostsViewController.m */,
 				2F970F720DF92274006BD934 /* PostsViewController.h */,
 				2F970F730DF92274006BD934 /* PostsViewController.m */,
 				5D146EB9189857ED0068FDC6 /* FeaturedImageViewController.h */,
@@ -2436,6 +2441,7 @@
 				5D577D33189127BE00B964C3 /* PostGeolocationViewController.m in Sources */,
 				1D3623260D0F684500981E51 /* WordPressAppDelegate.m in Sources */,
 				5DB3BA0818D11D8D00F3F3E9 /* PublishDatePickerView.m in Sources */,
+				31338410197EAE5300610AE5 /* AbstractPostsViewController.m in Sources */,
 				2F970F740DF92274006BD934 /* PostsViewController.m in Sources */,
 				31184407197970DD00035EDA /* AbstractPostTableViewCell.m in Sources */,
 				46E4792C185BD2B8007AA76F /* CommentView.m in Sources */,

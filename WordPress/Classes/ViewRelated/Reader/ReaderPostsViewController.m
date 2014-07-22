@@ -22,11 +22,6 @@
 #import "ReaderPostService.h"
 #import "CustomHighlightButton.h"
 
-static CGFloat const RPVCHeaderHeightPhone = 10.0;
-static CGFloat const RPVCExtraTableViewHeightPercentage = 2.0;
-static CGFloat const RPVCEstimatedRowHeightIPhone = 400.0;
-static CGFloat const RPVCEstimatedRowHeightIPad = 600.0;
-
 NSString * const FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
 NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier";
 
@@ -47,9 +42,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 @property (nonatomic, strong) ReaderCommentPublisher *commentPublisher;
 @property (nonatomic, readonly) ReaderTopic *currentTopic;
-
-@property (nonatomic, strong) ReaderPostTableViewCell *cellForLayout;
-@property (nonatomic, strong) NSLayoutConstraint *cellForLayoutWidthConstraint;
 
 @property (nonatomic) BOOL infiniteScrollEnabled;
 
@@ -85,18 +77,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
 	[super viewDidLoad];
 
-    [self configureCellSeparatorStyle];
-
     self.incrementalLoadingSupported = YES;
 
     [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:NoFeaturedImageCellIdentifier];
     [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:FeaturedImageCellIdentifier];
 
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
-
-    self.tableView.estimatedRowHeight = IS_IPAD ? RPVCEstimatedRowHeightIPad : RPVCEstimatedRowHeightIPhone;
-
-    [self configureCellForLayout];
 
     CGFloat maxWidth;
     if (IS_IPHONE) {
@@ -109,7 +95,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     self.featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
     self.featuredImageSource.delegate = self;
 
-    
 	// Topics button
     UIBarButtonItem *button = nil;
     CustomHighlightButton *topicsButton = [CustomHighlightButton buttonWithType:UIButtonTypeCustom];
@@ -204,55 +189,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self configureNoResultsView];
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    CGFloat width;
-    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
-        width = CGRectGetWidth(self.tableView.window.frame);
-    } else {
-        width = CGRectGetHeight(self.tableView.window.frame);
-    }
-    [self updateCellForLayoutWidthConstraint:width];
-}
-
-
 #pragma mark - Instance Methods
-
-- (void)configureCellSeparatorStyle
-{
-    // Setting the separator style will cause the table view to redraw all its cells.
-    // We want to avoid this when we first load the tableview as there is a performance
-    // cost.  As a work around, unset the delegate and datasource, and restore them
-    // after setting the style.
-    self.tableView.delegate = nil;
-    self.tableView.dataSource = nil;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-}
-
-- (void)configureCellForLayout
-{
-    NSString *CellIdentifier = @"CellForLayoutIdentifier";
-    [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:CellIdentifier];
-    self.cellForLayout = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    [self updateCellForLayoutWidthConstraint:CGRectGetWidth(self.tableView.bounds)];
-}
-
-- (void)updateCellForLayoutWidthConstraint:(CGFloat)width
-{
-    UIView *contentView = self.cellForLayout.contentView;
-    if (self.cellForLayoutWidthConstraint) {
-        [contentView removeConstraint:self.cellForLayoutWidthConstraint];
-    }
-    NSDictionary *views = NSDictionaryOfVariableBindings(contentView);
-    NSDictionary *metrics = @{@"width":@(width)};
-    self.cellForLayoutWidthConstraint = [[NSLayoutConstraint constraintsWithVisualFormat:@"[contentView(width)]"
-                                                                             options:0
-                                                                             metrics:metrics
-                                                                               views:views] firstObject];
-    [contentView addConstraint:self.cellForLayoutWidthConstraint];
-}
 
 - (ReaderTopic *)currentTopic
 {
@@ -449,7 +386,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self presentViewController:navController animated:YES completion:nil];
 }
 
-
 - (void)dismissKeyboard:(id)sender
 {
     for (UIGestureRecognizer *gesture in self.view.gestureRecognizers) {
@@ -507,7 +443,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     return NSLocalizedString(@"Sorry. No posts yet.", @"");
 }
-
 
 - (NSString *)noResultsMessageText
 {
@@ -803,27 +738,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     return cell;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self configureCell:self.cellForLayout atIndexPath:indexPath];
-    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
-    CGSize size = [self.cellForLayout sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
-    return ceil(size.height + 1);
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return [[UIView alloc] initWithFrame:CGRectZero];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if (IS_IPHONE) {
-        return RPVCHeaderHeightPhone;
-    }
-    return [super tableView:tableView heightForHeaderInSection:section];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
