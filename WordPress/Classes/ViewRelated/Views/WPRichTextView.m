@@ -450,6 +450,10 @@ static NSUInteger const WPRichTextViewMediaBatchSize = 5;
                                    }
                                    failure:^(NSError *error) {
                                        DDLogError(@"Error retriving video thumbnail: %@", error);
+                                       CGFloat side = 200.0;
+                                       UIImage *blankImage = [UIImage imageWithColor:[UIColor blackColor] havingSize:CGSizeMake(side, side)];
+                                       videoControl.imageView.image = blankImage;
+                                       [self updateLayoutForMediaItem:videoControl];
                                    }];
 
         return videoControl;
