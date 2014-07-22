@@ -683,7 +683,11 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
             [self updateTitle];
             [self syncReaderItemsWithSuccess:success failure:failure];
         } failure:^(NSError *error) {
-            failure(error);
+            if (error.code == ReaderTopicServiceErrorNoAccount) {
+                failure(nil);
+            } else {
+                failure(error);
+            }
         }];
         return;
     }
