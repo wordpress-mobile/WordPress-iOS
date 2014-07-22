@@ -434,7 +434,7 @@
 
 - (void)incrementSessionCount
 {
-    NSInteger sessionCount = [[[[Mixpanel sharedInstance] currentSuperProperties] objectForKey:@"session_count"] integerValue];
+    NSInteger sessionCount = [[[[Mixpanel sharedInstance] currentSuperProperties] numberForKey:@"session_count"] integerValue];
     sessionCount++;
     
     NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
