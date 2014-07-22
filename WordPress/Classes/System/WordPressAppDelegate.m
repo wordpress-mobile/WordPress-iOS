@@ -240,7 +240,7 @@ NSInteger const kMeTabIndex = 2;
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
-    [WPAnalytics track:WPAnalyticsStatApplicationClosed];
+    [WPAnalytics track:WPAnalyticsStatApplicationClosed withProperties:@{@"last_visible_screen": [self currentlySelectedScreen]}];
     [WPAnalytics endSession];
     
     // Let the app finish any uploads that are in progress
@@ -261,6 +261,37 @@ NSInteger const kMeTabIndex = 2;
             }
         });
     }];
+}
+
+- (NSString *)currentlySelectedScreen
+{
+    // Check if the post editor or login view is up
+    UIViewController *rootViewController = self.window.rootViewController;
+    if ([rootViewController.presentedViewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *navController = (UINavigationController *)rootViewController.presentedViewController;
+        UIViewController *firstViewController = [navController.viewControllers firstObject];
+        if ([firstViewController isKindOfClass:[EditPostViewController class]]) {
+            return @"Post Editor";
+        } else if ([firstViewController isKindOfClass:[LoginViewController class]]) {
+            return @"Login View";
+        }
+    }
+   
+    // Check which tab is currently selected
+    switch (self.tabBarController.selectedIndex) {
+        case kReaderTabIndex:
+            return @"Reader";
+            break;
+        case kNotificationsTabIndex:
+            return @"Notifications";
+            break;
+        case kMeTabIndex:
+            return @"Blog List";
+            break;
+        default:
+            // Shouldn't get here but just incase
+            return @"";
+    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
