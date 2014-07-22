@@ -642,7 +642,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 	}
 }
 
-- (void)richTextViewDidLoadAllMedia:(WPRichTextView *)richTextView
+- (void)richTextViewDidLoadMediaBatch:(WPRichTextView *)richTextView
 {
     [self.postView layoutIfNeeded];
     [self refreshHeightForTableHeaderView];

@@ -77,10 +77,10 @@
     }
 }
 
-- (void)richTextViewDidLoadAllMedia:(WPRichTextView *)richTextView
+- (void)richTextViewDidLoadMediaBatch:(WPRichTextView *)richTextView
 {
-    if ([self.delegate respondsToSelector:@selector(richTextViewDidLoadAllMedia:)]) {
-        [self.delegate richTextViewDidLoadAllMedia:richTextView];
+    if ([self.delegate respondsToSelector:@selector(richTextViewDidLoadMediaBatch:)]) {
+        [self.delegate richTextViewDidLoadMediaBatch:richTextView];
     }
 }
 
