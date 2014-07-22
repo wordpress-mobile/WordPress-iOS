@@ -24,6 +24,9 @@
 
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
+static CGFloat const RPVCEstimatedRowHeightIPhone = 400.0;
+static CGFloat const RPVCEstimatedRowHeightIPad = 600.0;
+
 @interface ReaderPostsViewController () <ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate>
 
 @property (nonatomic, assign) BOOL hasMoreContent;
@@ -75,6 +78,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     self.incrementalLoadingSupported = YES;
 
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+
+    self.tableView.estimatedRowHeight = IS_IPAD ? RPVCEstimatedRowHeightIPad : RPVCEstimatedRowHeightIPhone;
 
 	// Topics button
     UIBarButtonItem *button = nil;

@@ -5,8 +5,6 @@
 #import "BasePost.h"
 
 static CGFloat const APVCHeaderHeightPhone = 10.0;
-static CGFloat const APVCEstimatedRowHeightIPhone = 400.0;
-static CGFloat const APVCEstimatedRowHeightIPad = 600.0;
 
 NSString * const FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
 NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier";
@@ -29,8 +27,6 @@ NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier
 
     [self.tableView registerClass:[self cellClass] forCellReuseIdentifier:NoFeaturedImageCellIdentifier];
     [self.tableView registerClass:[self cellClass] forCellReuseIdentifier:FeaturedImageCellIdentifier];
-
-    self.tableView.estimatedRowHeight = IS_IPAD ? APVCEstimatedRowHeightIPad : APVCEstimatedRowHeightIPhone;
 
     CGFloat maxWidth;
     if (IS_IPHONE) {
