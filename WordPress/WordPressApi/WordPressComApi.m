@@ -549,6 +549,14 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
            failure:failure];
 }
 
+- (void)likeComment:(NSUInteger)blogID forCommentID:(NSUInteger)commentID success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+    NSString *likePath = [NSString stringWithFormat: @"sites/%d/comments/%d/likes/new", blogID, commentID];
+    [self POST:likePath
+    parameters:nil
+       success:success
+       failure:failure];
+}
+
 #pragma mark - Blog Themes
 
 - (void)fetchThemesForBlogId:(NSString *)blogId

@@ -312,6 +312,12 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     [NotificationsManager handleNotification:userInfo forState:[UIApplication sharedApplication].applicationState completionHandler:completionHandler];
 }
 
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)remoteNotification completionHandler:(void (^)())completionHandler {
+    [NotificationsManager handleActionWithIdentifier:identifier forRemoteNotification:remoteNotification];
+    
+    completionHandler();
+}
+
 #pragma mark - Custom methods
 
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated
