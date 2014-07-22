@@ -67,7 +67,7 @@ PODS:
     - SocketRocket
   - SocketRocket (0.3.1-beta2)
   - SVProgressHUD (1.0)
-  - Taplytics (1.2.50)
+  - Taplytics (1.3.12)
   - UIAlertView+Blocks (0.8.1)
   - UIDeviceIdentifier (0.4.2)
   - WordPress-iOS-Editor (0.1.6):
@@ -109,7 +109,7 @@ DEPENDENCIES:
   - Simperium (= 0.6.6)
   - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`, branch `master`)
   - SVProgressHUD (~> 1.0)
-  - Taplytics (~> 1.2.50)
+  - Taplytics (~> 1.3.10)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-iOS-Editor (= 0.1.6)
   - WordPress-iOS-Shared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, tag `0.0.6`)
@@ -149,7 +149,7 @@ SPEC CHECKSUMS:
   JRSwizzle: 30da7a2c539a4ebf954b16d15f6dd8221c9f6fa5
   MGImageUtilities: ce03a910781d7e189814d668af340bc1c0238363
   Mixpanel: 9cc470a58346f60da8ce2982096bcc72b5a7372b
-  NSLogger: c4df4b0208d724f244c05f1966b7402f14d7bf55
+  NSLogger: 3df5dca5dcbf99fe1e5c54931e44880f6e7eb089
   NSLogger-CocoaLumberjack-connector: 8f659ea51386f0a0e8c2643bf9273010a83a15f5
   NSObject-SafeExpectations: c31276ef7209016849fc4e5c8ed5ae5453e1e208
   NSURL+IDN: 22633c0149b86d6391f32f23776bc0e6ecc532e2
@@ -159,7 +159,7 @@ SPEC CHECKSUMS:
   Simperium: 6c7e8ebbfb32a854d3cbbab2f5dc8d6f5b311885
   SocketRocket: b809068861cb66d871eb93a428696b1eb5451318
   SVProgressHUD: 5034c6e22b8c2ca3e09402e48d41ed0340aa1c50
-  Taplytics: 292c7c0a7814914f6a1a3e34fdf96b7233c2425d
+  Taplytics: d8f820afa67a73fd1ddccb1bc6144d10f2c3ad61
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
   UIDeviceIdentifier: 1944dd25ee46fbc592740148ab47d543f80f0bba
   WordPress-iOS-Editor: e0af92d2a923be2bbdb957b76f0505e12ae1cc96
