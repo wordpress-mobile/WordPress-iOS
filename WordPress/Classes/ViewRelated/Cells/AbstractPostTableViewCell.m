@@ -12,6 +12,19 @@ const CGFloat APTVCVerticalOuterPadding = 16.0f;
 
 @implementation AbstractPostTableViewCell
 
++ (instancetype)cellForSubview:(UIView *)subview
+{
+    UIView *view = subview;
+	while (![view isKindOfClass:self]) {
+		view = (UIView *)view.superview;
+	}
+
+    if (view == subview)
+        return nil;
+
+    return (AbstractPostTableViewCell *)view;
+}
+
 #pragma mark - Lifecycle Methods
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier

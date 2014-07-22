@@ -20,7 +20,14 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Action buttons (edit/delete) will be created here
+        // Action buttons
+        _editButton = [super createActionButtonWithImage:[UIImage imageNamed:@"postaction-edit"] selectedImage:[UIImage imageNamed:@"postaction-edit"]];
+        [_editButton addTarget:self action:@selector(editAction:) forControlEvents:UIControlEventTouchUpInside];
+
+        _deleteButton = [super createActionButtonWithImage:[UIImage imageNamed:@"postaction-delete"] selectedImage:[UIImage imageNamed:@"postaction-delete"]];
+        [_deleteButton addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
+
+        [super setActionButtons:@[_deleteButton, _editButton]];
     }
     return self;
 }

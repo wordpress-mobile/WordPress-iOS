@@ -5,20 +5,6 @@
 
 @implementation ReaderPostTableViewCell
 
-+ (ReaderPostTableViewCell *)cellForSubview:(UIView *)subview
-{
-    UIView *view = subview;
-	while (![view isKindOfClass:self]) {
-		view = (UIView *)view.superview;
-	}
-    
-    if (view == subview)
-        return nil;
-    
-    return (ReaderPostTableViewCell *)view;
-}
-
-
 #pragma mark - Lifecycle Methods
 
 - (void)dealloc

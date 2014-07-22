@@ -7,7 +7,6 @@
 
 @property (nonatomic, strong) ReaderPost *post;
 
-+ (ReaderPostTableViewCell *)cellForSubview:(UIView *)subview;
 - (void)configureCell:(ReaderPost *)post;
 
 @end

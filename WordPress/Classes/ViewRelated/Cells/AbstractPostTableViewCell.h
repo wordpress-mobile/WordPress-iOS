@@ -6,6 +6,7 @@
 
 @property(nonatomic, strong) WPContentViewBase *postView;
 
++ (instancetype)cellForSubview:(UIView *)subview;
 - (WPContentViewBase *)configurePostView;
 
 @end

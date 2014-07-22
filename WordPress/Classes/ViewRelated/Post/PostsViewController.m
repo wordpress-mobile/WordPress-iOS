@@ -12,9 +12,11 @@
 
 #define TAG_OFFSET 1010
 
-@interface PostsViewController () {
+@interface PostsViewController () <PostContentViewDelegate, UIAlertViewDelegate> {
     BOOL _addingNewPost;
 }
+
+@property (strong, nonatomic) NSIndexPath *indexPathToBeDeleted;
 
 @end
 
@@ -138,6 +140,8 @@
     [cell configureCell:post];
     [self setAvatarForPost:post forCell:cell indexPath:indexPath];
     [self setImageForPost:post forCell:cell indexPath:indexPath];
+
+    cell.postView.delegate = self;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -152,15 +156,7 @@
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return UITableViewCellEditingStyleDelete;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self deletePostAtIndexPath:indexPath];
+    return NO;
 }
 
 #pragma mark -
@@ -313,6 +309,47 @@
                 [cell.postView setAvatarImage:image];
             }
         }];
+    }
+}
+
+#pragma mark - PostContentView delegate methods
+
+- (void)postView:(PostContentView *)postView didReceiveEditAction:(id)sender {
+    PostTableViewCell *cell = (PostTableViewCell *)[PostTableViewCell cellForSubview:sender];
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
+    if (post.remoteStatus == AbstractPostRemoteStatusPushing) {
+        // Don't allow editing while pushing changes
+        return;
+    }
+
+    [self editPost:post];
+}
+
+- (void)postView:(PostContentView *)postView didReceiveDeleteAction:(id)sender {
+    PostTableViewCell *cell = (PostTableViewCell *)[PostTableViewCell cellForSubview:sender];
+    self.indexPathToBeDeleted = [self.tableView indexPathForCell:cell];
+
+    NSString *message = NSLocalizedString(@"Are you sure you wish to move this post to trash?", nil);
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete Post", nil)
+                                                        message:message
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                              otherButtonTitles:NSLocalizedString(@"Delete Post", nil), nil];
+    [alertView show];
+}
+
+#pragma mark - UIAlertView delegate methods
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        self.indexPathToBeDeleted = nil;
+    }
+    else if (buttonIndex == 1) {
+        if (self.indexPathToBeDeleted) {
+            [self deletePostAtIndexPath:self.indexPathToBeDeleted];
+            self.indexPathToBeDeleted = nil;
+        }
     }
 }
 
