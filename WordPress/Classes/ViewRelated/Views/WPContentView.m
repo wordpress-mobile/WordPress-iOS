@@ -4,6 +4,7 @@
 #import <DTCoreText/DTCoreText.h>
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
+#import <WordPress-iOS-Shared/WPFontManager.h>
 #import "UIImageView+Gravatar.h"
 #import "WordPressAppDelegate.h"
 #import "WPWebViewController.h"
@@ -68,11 +69,11 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 }
 
 + (UIFont *)summaryFont {
-    return (IS_IPAD ? [UIFont fontWithName:@"OpenSans" size:16.0f] : [UIFont fontWithName:@"OpenSans" size:14.0f]);
+    return (IS_IPAD ? [WPFontManager openSansRegularFontOfSize:16.0] : [WPFontManager openSansRegularFontOfSize:14.0]);
 }
 
 + (UIFont *)moreContentFont {
-    return [UIFont fontWithName:@"OpenSans" size:12.0f];
+    return [WPFontManager openSansRegularFontOfSize:12.0];
 }
 
 
@@ -121,7 +122,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         _bylineLabel.backgroundColor = [UIColor clearColor];
         _bylineLabel.numberOfLines = 1;
         _bylineLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        _bylineLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+        _bylineLabel.font = [WPFontManager openSansRegularFontOfSize:12.0];
         _bylineLabel.adjustsFontSizeToFitWidth = NO;
         _bylineLabel.textColor = [UIColor colorWithHexString:@"333"];
         [_byView addSubview:_bylineLabel];
@@ -129,7 +130,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         _byButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _byButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         _byButton.backgroundColor = [UIColor clearColor];
-        _byButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+        _byButton.titleLabel.font = [WPFontManager openSansRegularFontOfSize:12.0];
         [_byButton addTarget:self action:@selector(authorLinkAction:) forControlEvents:UIControlEventTouchUpInside];
         [_byButton setTitleColor:[WPStyleGuide buttonActionColor] forState:UIControlStateNormal];
         [_byView addSubview:_byButton];
@@ -146,7 +147,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         _timeButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _timeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         _timeButton.backgroundColor = [UIColor clearColor];
-        _timeButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+        _timeButton.titleLabel.font = [WPFontManager openSansRegularFontOfSize:12.0];
         [_timeButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPVSmallButtonLeftPadding, 0, 0)];
         
         // Disable it for now (could be used for permalinks in the future)
