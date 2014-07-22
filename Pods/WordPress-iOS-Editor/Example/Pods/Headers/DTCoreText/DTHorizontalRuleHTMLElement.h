@@ -1,1 +1,0 @@
-../../DTCoreText/Core/Source/DTHorizontalRuleHTMLElement.h
