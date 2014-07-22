@@ -62,6 +62,14 @@ extern NSString *const NotificationsDeviceToken;
  */
 + (void)handleNotificationForApplicationLaunch:(NSDictionary *)launchOptions;
 
+/**
+ Handle an action taken from a remote notification
+ 
+ @param identifier the identifier of the action
+ @param remoteNotification the notification object
+ */
++ (void)handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)remoteNotification;
+
 ///--------------------------------------
 /// @name WordPress.com Notifications API
 ///--------------------------------------
