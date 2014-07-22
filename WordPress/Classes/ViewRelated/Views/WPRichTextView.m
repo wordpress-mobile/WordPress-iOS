@@ -8,11 +8,15 @@
 #import "UIImage+Util.h"
 #import "VideoThumbnailServiceRemote.h"
 
+static NSUInteger const WPRichTextViewMediaBatchSize = 5;
+
 @interface WPRichTextView()<DTAttributedTextContentViewDelegate, WPTableImageSourceDelegate>
 
 @property (nonatomic, strong) DTAttributedTextContentView *textContentView;
 @property (nonatomic, assign) BOOL willRefreshMediaLayout;
 @property (nonatomic, strong) NSMutableArray *mediaArray;
+@property (nonatomic, strong) NSMutableArray *mediaIndexPathsPendingDownload;
+@property (nonatomic, strong) NSMutableArray *mediaIndexPathsNeedingLayout;
 @property (nonatomic, strong) WPTableImageSource *imageSource;
 
 @end
@@ -45,6 +49,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         _mediaArray = [NSMutableArray array];
+        _mediaIndexPathsNeedingLayout = [NSMutableArray array];
+        _mediaIndexPathsPendingDownload = [NSMutableArray array];
         _textContentView = [self buildTextContentView];
         [self addSubview:self.textContentView];
         [self configureConstraints];
@@ -205,8 +211,8 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self refreshMediaLayout];
 
-        if ([self.delegate respondsToSelector:@selector(richTextViewDidLoadAllMedia:)]) {
-            [self.delegate richTextViewDidLoadAllMedia:self]; // So the delegate can correct its size.
+        if ([self.delegate respondsToSelector:@selector(richTextViewDidLoadMediaBatch:)]) {
+            [self.delegate richTextViewDidLoadMediaBatch:self]; // So the delegate can correct its size.
         }
     });
 }
@@ -315,12 +321,10 @@
 
 #pragma mark - WPTableImageSource Delegate Methods
 
-- (void)tableImageSource:(WPTableImageSource *)tableImageSource didLoadImagesAtIndexPaths:(NSArray *)indexPaths
+- (void)tableImageSource:(WPTableImageSource *)tableImageSource imageFailedforIndexPath:(NSIndexPath *)indexPath error:(NSError *)error
 {
-    [self refreshLayoutForMediaAtIndexPaths:indexPaths];
-    if ([self.delegate respondsToSelector:@selector(richTextViewDidLoadAllMedia:)]) {
-        [self.delegate richTextViewDidLoadAllMedia:self];
-    }
+    [self.mediaIndexPathsPendingDownload removeObject:indexPath];
+    [self checkPendingImageDownloads];
 }
 
 - (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath
@@ -331,6 +335,23 @@
     }
     WPRichTextImageControl *imageControl = [self.mediaArray objectAtIndex:index];
     [imageControl.imageView setImage:image];
+
+    [self.mediaIndexPathsPendingDownload removeObject:indexPath];
+    [self.mediaIndexPathsNeedingLayout addObject:indexPath];
+    [self checkPendingImageDownloads];
+}
+
+- (void)checkPendingImageDownloads
+{
+    NSUInteger count = [self.mediaIndexPathsPendingDownload count];
+    if (count == 0 || (count % WPRichTextViewMediaBatchSize) == 0) {
+        [self refreshLayoutForMediaAtIndexPaths:self.mediaIndexPathsNeedingLayout];
+        [self.mediaIndexPathsNeedingLayout removeAllObjects];
+
+        if ([self.delegate respondsToSelector:@selector(richTextViewDidLoadMediaBatch:)]) {
+            [self.delegate richTextViewDidLoadMediaBatch:self];
+        }
+    }
 }
 
 
@@ -387,6 +408,7 @@
             NSUInteger index = [self.mediaArray count] - 1;
             NSIndexPath *indexPath = [NSIndexPath indexPathWithIndex:index];
 
+            [self.mediaIndexPathsPendingDownload addObject:indexPath];
             [self.imageSource fetchImageForURL:imageControl.contentURL
                                       withSize:[self maxImageDisplaySize]
                                      indexPath:indexPath
@@ -420,6 +442,7 @@
         [service getThumbnailForVideoAtURL:videoControl.contentURL
                                    success:^(NSURL *thumbnailURL, NSString *title) {
                                        videoControl.title = title;
+                                       [self.mediaIndexPathsPendingDownload addObject:indexPath];
                                        [self.imageSource fetchImageForURL:thumbnailURL
                                                                  withSize:[self maxImageDisplaySize]
                                                                 indexPath:indexPath

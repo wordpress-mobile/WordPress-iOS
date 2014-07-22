@@ -36,11 +36,11 @@
 - (void)richTextView:(WPRichTextView *)richTextView didReceiveVideoLinkAction:(WPRichTextVideoControl *)videoControl;
 
 /**
- Tells the delegate the `WPRichTextView` has loaded all its media for display.
+ Tells the delegate the `WPRichTextView` has loaded a batch of media for display.
 
  @param richTextView The richTextView informing the delegate of the event.
  */
-- (void)richTextViewDidLoadAllMedia:(WPRichTextView *)richTextView;
+- (void)richTextViewDidLoadMediaBatch:(WPRichTextView *)richTextView;
 @end
 
 
