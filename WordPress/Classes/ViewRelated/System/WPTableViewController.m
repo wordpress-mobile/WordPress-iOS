@@ -592,7 +592,9 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
                 [WPError showNetworkingAlertWithError:error];
             }
         } else {
-            [WPError showNetworkingAlertWithError:error];
+            if (error) {
+                [WPError showNetworkingAlertWithError:error];
+            }
         }
     }];
 }
