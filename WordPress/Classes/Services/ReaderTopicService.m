@@ -45,7 +45,8 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
     
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithRemoteApi:api];
     [remoteService fetchReaderMenuWithSuccess:^(NSArray *topics) {
-        if (defaultAccount.isDeleted) {
+        WPAccount *reloadedAccount = (WPAccount *)[self.managedObjectContext existingObjectWithID:defaultAccount.objectID error:nil];
+        if (!reloadedAccount) {
             failure([self errorForMissingAccount]);
             return;
         }
