@@ -2,6 +2,7 @@
 #import "WPNUXPrimaryButton.h"
 #import "WPNUXSecondaryButton.h"
 #import "WPNUXUtility.h"
+#import <WordPress-iOS-Shared/WPFontManager.h>
 
 @interface WPAlertView() {
     UITapGestureRecognizer *_gestureRecognizer;
@@ -343,9 +344,9 @@ CGFloat const WPAlertViewDefaultTextFieldLabelWidth = 118.0f;
 
 - (void)configureView
 {
-    self.titleLabel.font = [UIFont fontWithName:@"OpenSans-Light" size:25.0];
+    self.titleLabel.font = [WPFontManager openSansLightFontOfSize:25.0];
     self.descriptionLabel.font = [WPNUXUtility descriptionTextFont];
-    self.bottomLabel.font = [UIFont fontWithName:@"OpenSans" size:10.0];
+    self.bottomLabel.font = [WPFontManager openSansRegularFontOfSize:10.0];
 }
 
 - (void)configureButtonVisibility
