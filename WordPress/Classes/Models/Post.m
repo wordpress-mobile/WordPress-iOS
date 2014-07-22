@@ -358,6 +358,10 @@ NSUInteger const PostSummaryLength = 150;
     self.post_thumbnail = featuredImage.mediaID;
 }
 
+- (NSURL *)featuredImageURLForDisplay {
+    return [NSURL URLWithString:self.featuredImage.remoteURL];
+}
+
 #pragma mark - WPContentViewProvider protocol
 
 - (NSString *)contentPreviewForDisplay {

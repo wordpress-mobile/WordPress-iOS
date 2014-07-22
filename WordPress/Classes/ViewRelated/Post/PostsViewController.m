@@ -8,6 +8,7 @@
 #import "Constants.h"
 #import "BlogService.h"
 #import "ContextManager.h"
+#import "WPTableImageSource.h"
 
 #define TAG_OFFSET 1010
 
@@ -136,6 +137,7 @@
 
     [cell configureCell:post];
     [self setAvatarForPost:post forCell:cell indexPath:indexPath];
+    [self setImageForPost:post forCell:cell indexPath:indexPath];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -259,6 +261,15 @@
 
 - (Class)cellClass {
     return [PostTableViewCell class];
+}
+
+#pragma mark - NSFetchedResultsController overrides
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
+    [super controllerDidChangeContent:controller];
+    // Index paths may have changed. We don't want callbacks for stale paths.
+    [self.featuredImageSource invalidateIndexPaths];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller

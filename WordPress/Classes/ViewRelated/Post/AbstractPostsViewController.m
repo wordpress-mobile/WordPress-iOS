@@ -1,9 +1,15 @@
+#import "WPTableViewControllerSubclass.h"
 #import "AbstractPostsViewController.h"
 #import "AbstractPostTableViewCell.h"
+#import "WPContentViewBase.h"
+#import "BasePost.h"
 
 static CGFloat const APVCHeaderHeightPhone = 10.0;
 static CGFloat const APVCEstimatedRowHeightIPhone = 400.0;
 static CGFloat const APVCEstimatedRowHeightIPad = 600.0;
+
+NSString * const FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
+NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier";
 
 @interface AbstractPostsViewController ()
 
@@ -13,10 +19,29 @@ static CGFloat const APVCEstimatedRowHeightIPad = 600.0;
 
 @implementation AbstractPostsViewController
 
+- (void)dealloc
+{
+    self.featuredImageSource.delegate = nil;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    [self.tableView registerClass:[self cellClass] forCellReuseIdentifier:NoFeaturedImageCellIdentifier];
+    [self.tableView registerClass:[self cellClass] forCellReuseIdentifier:FeaturedImageCellIdentifier];
+
     self.tableView.estimatedRowHeight = IS_IPAD ? APVCEstimatedRowHeightIPad : APVCEstimatedRowHeightIPhone;
+
+    CGFloat maxWidth;
+    if (IS_IPHONE) {
+        maxWidth = MAX(CGRectGetWidth(self.tableView.bounds), CGRectGetHeight(self.tableView.bounds));
+    } else {
+        maxWidth = WPTableViewFixedWidth;
+    }
+
+    CGFloat maxHeight = maxWidth * WPContentViewMaxImageHeightPercentage;
+    self.featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
+    self.featuredImageSource.delegate = self;
 
     [self configureCellSeparatorStyle];
 
@@ -74,6 +99,26 @@ static CGFloat const APVCEstimatedRowHeightIPad = 600.0;
 
 #pragma mark TableView Delegate
 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell;
+    BasePost *post = (BasePost *)[self.resultsController objectAtIndexPath:indexPath];
+    if ([post respondsToSelector:@selector(featuredImageURLForDisplay)] && [post featuredImageURLForDisplay]) {
+        cell = [tableView dequeueReusableCellWithIdentifier:FeaturedImageCellIdentifier];
+    } else {
+        cell = [tableView dequeueReusableCellWithIdentifier:NoFeaturedImageCellIdentifier];
+    }
+
+    if (self.tableView.isEditing) {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+
+    [self configureCell:cell atIndexPath:indexPath];
+
+    return cell;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self configureCell:self.cellForLayout atIndexPath:indexPath];
@@ -95,6 +140,12 @@ static CGFloat const APVCEstimatedRowHeightIPad = 600.0;
     return [super tableView:tableView heightForHeaderInSection:section];
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Preload here to avoid unnecessary preload calls when fetching cells for reasons other than for display.
+    [self preloadImagesForCellsAfterIndexPath:indexPath];
+}
+
 #pragma mark - Subclass Methods
 
 // Subclasses should override
@@ -104,6 +155,95 @@ static CGFloat const APVCEstimatedRowHeightIPad = 600.0;
 
 - (void)configureCell:(AbstractPostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     // noop. Subclasses should override.
+}
+
+#pragma mark - Featured Image Management
+
+- (CGSize)sizeForFeaturedImage
+{
+    CGSize imageSize = CGSizeZero;
+    imageSize.width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
+    imageSize.height = round(imageSize.width * WPContentViewMaxImageHeightPercentage);
+    return imageSize;
+}
+
+- (void)preloadImagesForCellsAfterIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger numberToPreload = 2; // keep the number small else they compete and slow each other down.
+    for (NSInteger i = 1; i <= numberToPreload; i++) {
+        NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:indexPath.row + i inSection:indexPath.section];
+        if ([self.tableView numberOfRowsInSection:indexPath.section] > nextIndexPath.row) {
+            BasePost *post = (BasePost *)[self.resultsController objectAtIndexPath:nextIndexPath];
+            NSURL *imageURL = [post respondsToSelector:@selector(featuredImageURLForDisplay)] ? [post featuredImageURLForDisplay] : nil;
+            if (!imageURL) {
+                // No image to feature.
+                continue;
+            }
+
+            UIImage *image = [self imageForURL:imageURL];
+            if (image) {
+                // already cached.
+                continue;
+            } else {
+                BOOL isPrivate = NO;
+                if ([post respondsToSelector:@selector(isPrivate)]) {
+                    isPrivate = [post performSelector:@selector(isPrivate)];
+                }
+                [self.featuredImageSource fetchImageForURL:imageURL
+                                                  withSize:[self sizeForFeaturedImage]
+                                                 indexPath:nextIndexPath
+                                                 isPrivate:isPrivate];
+            }
+        }
+    }
+}
+
+- (UIImage *)imageForURL:(NSURL *)imageURL
+{
+    if (!imageURL) {
+        return nil;
+    }
+    return [self.featuredImageSource imageForURL:imageURL withSize:[self sizeForFeaturedImage]];
+}
+
+- (void)setImageForPost:(BasePost *)post forCell:(AbstractPostTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
+{
+    if ([cell isEqual:self.cellForLayout]) {
+        return;
+    }
+
+    NSURL *imageURL = [post respondsToSelector:@selector(featuredImageURLForDisplay)] ? [post featuredImageURLForDisplay] : nil;
+    if (!imageURL) {
+        return;
+    }
+    UIImage *image = [self imageForURL:imageURL];
+    if (image) {
+        [cell.postView setFeaturedImage:image];
+    } else {
+        BOOL isPrivate = NO;
+        if ([post respondsToSelector:@selector(isPrivate)]) {
+            isPrivate = [post performSelector:@selector(isPrivate)];
+        }
+        [self.featuredImageSource fetchImageForURL:imageURL
+                                          withSize:[self sizeForFeaturedImage]
+                                         indexPath:indexPath
+                                         isPrivate:isPrivate];
+    }
+}
+
+#pragma mark - WPTableImageSourceDelegate
+
+- (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath
+{
+    AbstractPostTableViewCell *cell = (AbstractPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+
+    // Don't do anything if the cell is out of view or out of range
+    // (this is a safety check in case the Reader doesn't properly kill image requests when changing topics)
+    if (cell == nil) {
+        return;
+    }
+
+    [cell.postView setFeaturedImage:image];
 }
 
 @end

@@ -22,17 +22,13 @@
 #import "ReaderPostService.h"
 #import "CustomHighlightButton.h"
 
-NSString * const FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
-NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier";
-
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
-@interface ReaderPostsViewController ()<WPTableImageSourceDelegate, ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate>
+@interface ReaderPostsViewController () <ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate>
 
 @property (nonatomic, assign) BOOL hasMoreContent;
 @property (nonatomic, assign) BOOL loadingMore;
 @property (nonatomic, assign) BOOL viewHasAppeared;
-@property (nonatomic, strong) WPTableImageSource *featuredImageSource;
 @property (nonatomic, assign) CGFloat keyboardOffset;
 @property (nonatomic, assign) CGFloat lastOffset;
 @property (nonatomic, strong) WPAnimatedBox *animatedBox;
@@ -53,7 +49,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)dealloc
 {
-    self.featuredImageSource.delegate = nil;
     self.inlineComposeView.delegate = nil;
     self.inlineComposeView = nil;
     self.commentPublisher = nil;
@@ -79,21 +74,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     self.incrementalLoadingSupported = YES;
 
-    [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:NoFeaturedImageCellIdentifier];
-    [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:FeaturedImageCellIdentifier];
-
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
-
-    CGFloat maxWidth;
-    if (IS_IPHONE) {
-        maxWidth = MAX(CGRectGetWidth(self.tableView.bounds), CGRectGetHeight(self.tableView.bounds));
-    } else {
-        maxWidth = WPTableViewFixedWidth;
-    }
-
-    CGFloat maxHeight = maxWidth * WPContentViewMaxImageHeightPercentage;
-    self.featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
-    self.featuredImageSource.delegate = self;
 
 	// Topics button
     UIBarButtonItem *button = nil;
@@ -506,49 +487,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     cell.postView.delegate = self;
 }
 
-- (CGSize)sizeForFeaturedImage
-{
-    CGSize imageSize = CGSizeZero;
-    imageSize.width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
-    imageSize.height = round(imageSize.width * WPContentViewMaxImageHeightPercentage);
-    return imageSize;
-}
-
-- (void)preloadImagesForCellsAfterIndexPath:(NSIndexPath *)indexPath
-{
-    NSInteger numberToPreload = 2; // keep the number small else they compete and slow each other down.
-    for (NSInteger i = 1; i <= numberToPreload; i++) {
-        NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:indexPath.row + i inSection:indexPath.section];
-        if ([self.tableView numberOfRowsInSection:indexPath.section] > nextIndexPath.row) {
-            ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:nextIndexPath];
-            NSURL *imageURL = [post featuredImageURLForDisplay];
-            if (!imageURL) {
-                // No image to feature.
-                continue;
-            }
-
-            UIImage *image = [self imageForURL:imageURL];
-            if (image) {
-                // already cached.
-                continue;
-            } else {
-                [self.featuredImageSource fetchImageForURL:imageURL
-                                                  withSize:[self sizeForFeaturedImage]
-                                                 indexPath:nextIndexPath
-                                                 isPrivate:post.isPrivate];
-            }
-        }
-    }
-}
-
-- (UIImage *)imageForURL:(NSURL *)imageURL
-{
-    if (!imageURL) {
-        return nil;
-    }
-    return [self.featuredImageSource imageForURL:imageURL withSize:[self sizeForFeaturedImage]];
-}
-
 - (void)setAvatarForPost:(ReaderPost *)post forCell:(ReaderPostTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
 {
     if ([cell isEqual:self.cellForLayout]) {
@@ -568,27 +506,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
                 [cell.postView setAvatarImage:image];
             }
         }];
-    }
-}
-
-- (void)setImageForPost:(ReaderPost *)post forCell:(ReaderPostTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
-{
-    if ([cell isEqual:self.cellForLayout]) {
-        return;
-    }
-
-    NSURL *imageURL = [post featuredImageURLForDisplay];
-    if (!imageURL) {
-        return;
-    }
-    UIImage *image = [self imageForURL:imageURL];
-    if (image) {
-        [cell.postView setFeaturedImage:image];
-    } else {
-        [self.featuredImageSource fetchImageForURL:imageURL
-                                          withSize:[self sizeForFeaturedImage]
-                                         indexPath:indexPath
-                                         isPrivate:post.isPrivate];
     }
 }
 
@@ -717,29 +634,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 #pragma mark - TableView Methods
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell;
-    ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
-    if ([post featuredImageURLForDisplay]) {
-        cell = [tableView dequeueReusableCellWithIdentifier:FeaturedImageCellIdentifier];
-    } else {
-        cell = [tableView dequeueReusableCellWithIdentifier:NoFeaturedImageCellIdentifier];
-    }
-
-    if (self.tableView.isEditing) {
-		cell.accessoryType = UITableViewCellAccessoryNone;
-	} else {
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }
-
-    [self configureCell:cell atIndexPath:indexPath];
-    if (!cell) {
-        NSLog(@"NO CELL!");
-    }
-
-    return cell;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (IS_IPAD) {
@@ -758,12 +652,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self.navigationController pushViewController:self.detailController animated:YES];
     
     [WPAnalytics track:WPAnalyticsStatReaderOpenedArticle];
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Preload here to avoid unnecessary preload calls when fetching cells for reasons other than for display.
-    [self preloadImagesForCellsAfterIndexPath:indexPath];
 }
 
 #pragma mark - NSFetchedResultsController overrides
@@ -858,24 +746,16 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath
 {
-    ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    
-    // Don't do anything if the cell is out of view or out of range
-    // (this is a safety check in case the Reader doesn't properly kill image requests when changing topics)
-    if (cell == nil) {
-        return;
-    }
+    [super tableImageSource:tableImageSource imageReady:image forIndexPath:indexPath];
 
-    [cell.postView setFeaturedImage:image];
-    
     // Failsafe: If the topic has changed, fetchedObject count might be zero
     if (self.resultsController.fetchedObjects.count == 0) {
         return;
     }
-    
+
     // Update the detail view if it's open and applicable
     ReaderPost *post = [self.resultsController objectAtIndexPath:indexPath];
-    
+
     if (post == self.detailController.post) {
         [self.detailController updateFeaturedImage:image];
     }
