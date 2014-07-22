@@ -142,6 +142,10 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     [self reloadData];
+    
+    if (IS_IPAD && [_popover isPopoverVisible]) {
+        [self presentImagePickerPopover:_popover];
+    }
 }
 
 #pragma mark - KVO
@@ -825,8 +829,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     
     if (IS_IPAD) {
         _popover = [[UIPopoverController alloc] initWithContentViewController:picker];
-        CGRect frame = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]];
-        [_popover presentPopoverFromRect:frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        [self presentImagePickerPopover:_popover];
     } else {
         [self.navigationController presentViewController:picker animated:YES completion:nil];
     }
@@ -860,6 +863,11 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
                                  isPrivate:self.post.blog.isPrivate];
         
     }
+}
+
+- (void)presentImagePickerPopover:(UIPopoverController *)popover {
+    CGRect frame = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]];
+    [popover presentPopoverFromRect:frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 - (WPTableImageSource *)imageSource {
