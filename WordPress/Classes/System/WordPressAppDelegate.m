@@ -10,6 +10,7 @@
 #import <Simperium/Simperium.h>
 #import <Helpshift/Helpshift.h>
 #import <Taplytics/Taplytics.h>
+#import <WordPress-iOS-Shared/WPFontManager.h>
 
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
@@ -367,7 +368,7 @@ NSInteger const kMeTabIndex = 2;
     [[UITabBar appearance] setShadowImage:[UIImage imageWithColor:[UIColor colorWithRed:210.0/255.0 green:222.0/255.0 blue:230.0/255.0 alpha:1.0]]];
     [[UITabBar appearance] setTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
 
-    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [UIFont fontWithName:@"OpenSans-Bold" size:16.0]} ];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [WPFontManager openSansBoldFontOfSize:16.0]} ];
 // temporarily removed to fix transparent UINavigationBar within Helpshift
 //    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"transparent-point"] forBarMetrics:UIBarMetricsDefault];
 //    [[UINavigationBar appearance] setShadowImage:[UIImage imageNamed:@"transparent-point"]];
@@ -376,7 +377,7 @@ NSInteger const kMeTabIndex = 2;
     [[UIToolbar appearance] setBarTintColor:[WPStyleGuide wordPressBlue]];
     [[UISwitch appearance] setOnTintColor:[WPStyleGuide wordPressBlue]];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    [[UITabBarItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"OpenSans" size:10.0]} forState:UIControlStateNormal];
+    [[UITabBarItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPFontManager openSansRegularFontOfSize:10.0]} forState:UIControlStateNormal];
 
     [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[WPStyleGuide wordPressBlue]];
