@@ -1,4 +1,5 @@
 #import "WPStyleGuide+Notifications.h"
+#import "WPFontManager.h"
 
 
 
@@ -26,17 +27,17 @@
 
 + (UIFont *)notificationSubjectFont
 {
-    return [UIFont fontWithName:@"OpenSans" size:14.0];
+    return [WPFontManager openSansRegularFontOfSize:14.0f];
 }
 
 + (UIFont *)notificationSubjectFontBold
 {
-    return [UIFont fontWithName:@"OpenSans-Bold" size:14.0];
+    return [WPFontManager openSansBoldFontOfSize:14.0f];
 }
 
 + (UIFont *)notificationSubjectFontItalics
 {
-    return [UIFont fontWithName:@"OpenSans-Italic" size:14.0];
+    return [WPFontManager openSansItalicFontOfSize:14.0f];
 }
 
 + (NSParagraphStyle *)notificationSubjectParagraphStyle
@@ -91,13 +92,13 @@
 + (UIFont *)notificationBlockFont
 {
     CGFloat size = (IS_IPAD ? 18.0f : 16.0f);
-    return [UIFont fontWithName:@"OpenSans" size:size];
+    return [WPFontManager openSansRegularFontOfSize:size];
 }
 
 + (UIFont *)notificationBlockFontBold
 {
     CGFloat size = (IS_IPAD ? 18.0f : 16.0f);
-    return [UIFont fontWithName:@"OpenSans-Bold" size:size];
+    return [WPFontManager openSansBoldFontOfSize:size];
 }
 
 + (NSDictionary *)notificationBlockAttributes
