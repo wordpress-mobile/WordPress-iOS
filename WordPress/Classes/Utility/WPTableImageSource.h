@@ -108,22 +108,4 @@
  */
 - (void)tableImageSource:(WPTableImageSource *)tableImageSource imageFailedforIndexPath:(NSIndexPath *)indexPath error:(NSError *)error;
 
-/**
- Notifies the delegate that the `WPTableImageSource` finished downloading a batch 
- of images with the specified index paths. The returned index paths include failed 
- downloads.
- 
- @param tableImageSource the image source sending the message.
- @param indexPaths the indexPaths of the images that were fetched.
- */
-- (void)tableImageSource:(WPTableImageSource *)tableImageSource didLoadImagesAtIndexPaths:(NSArray *)indexPaths;
-
-/**
- Notifies the delegate that the `WPTableImageSource` as finished downloading all
- requested images.
-
- @param tableImageSource the image source sending the message.
- */
-- (void)tableImageSourceFinishedLoadingImages:(WPTableImageSource *)tableImageSource;
-
 @end

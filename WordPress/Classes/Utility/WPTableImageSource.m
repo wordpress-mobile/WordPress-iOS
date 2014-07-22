@@ -6,14 +6,6 @@
 #import "WPAccount.h"
 #import "WPImageSource.h"
 
-static NSUInteger const WPTableImageSourceBatchSize = 10;
-
-@interface WPTableImageSource()
-@property (nonatomic, strong) NSMutableArray *pendingDownloads;
-@property (nonatomic, strong) NSMutableArray *currentDownloads;
-@property (nonatomic) NSUInteger downloadCounter;
-@end
-
 @implementation WPTableImageSource {
     dispatch_queue_t _processingQueue;
     NSCache *_imageCache;
@@ -36,8 +28,6 @@ static NSUInteger const WPTableImageSourceBatchSize = 10;
         _imageCache = [[NSCache alloc] init];
         _maxSize = CGSizeMake(ceil(size.width), ceil(size.height));
         _forceLargerSizeWhenFetching = YES;
-        _currentDownloads = [NSMutableArray array];
-        _pendingDownloads = [NSMutableArray array];
     }
     return self;
 }
@@ -74,21 +64,58 @@ static NSUInteger const WPTableImageSourceBatchSize = 10;
         return;
     }
 
-    NSDictionary *queueItem = @{@"url":url, @"size":NSStringFromCGSize(size), @"indexPath":indexPath, @"isPrivate":@(isPrivate)};
-
-    if ([self.currentDownloads count] < WPTableImageSourceBatchSize) {
-        [self requestImage:queueItem];
+    // If the requested size has a 0 height, it means we know the desired width only.
+    // Make the request with a 0 height and we'll update later once the image is loaded and
+    // we can find its width/height ratio.
+    CGSize requestSize;
+    if (size.height == 0) {
+        requestSize = CGSizeMake(MAX(size.width, _maxSize.width), size.height);
     } else {
-        [self enqueueImageDownload:queueItem];
+        requestSize = CGSizeMake(MAX(size.width, _maxSize.width), MAX(size.height, _maxSize.height));
+    }
+
+    NSDictionary *receiver = @{@"size": NSStringFromCGSize(size), @"indexPath": indexPath, @"date": [NSDate date]};
+    void (^successBlock)(UIImage *) = ^(UIImage *image) {
+        NSDictionary *_receiver = receiver;
+        if (size.height == 0) {
+            CGFloat ratio = image.size.width / image.size.height;
+            CGFloat height = round(size.width / ratio);
+            CGSize receiverSize = CGSizeMake(size.width, height);
+
+            NSMutableDictionary *dict = [_receiver mutableCopy];
+            [dict setObject:NSStringFromCGSize(receiverSize) forKey:@"size"];
+            _receiver = dict;
+        }
+
+        [self setCachedImage:image forURL:url withSize:_maxSize];
+        [self processImage:image forURL:url receiver:_receiver];
+    };
+
+    void (^failureBlock)(NSError *) = ^(NSError *error) {
+        DDLogError(@"Failed getting image %@: %@", url, error);
+        [self handleImageDownloadFailedForReceiver:receiver error:error];
+    };
+
+    url = [self photonURLForURL:url withSize:requestSize];
+
+    if (isPrivate) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+        [[WPImageSource sharedSource] downloadImageForURL:url
+                                                authToken:[[defaultAccount restApi] authToken]
+                                              withSuccess:successBlock
+                                                  failure:failureBlock];
+    } else {
+        [[WPImageSource sharedSource] downloadImageForURL:url
+                                              withSuccess:successBlock
+                                                  failure:failureBlock];
     }
 }
 
 - (void)invalidateIndexPaths
 {
     _lastInvalidationOfIndexPaths = [NSDate date];
-    self.downloadCounter = 0;
-    [self.pendingDownloads removeAllObjects];
-    [self.currentDownloads removeAllObjects];
 }
 
 
@@ -107,9 +134,6 @@ static NSUInteger const WPTableImageSourceBatchSize = 10;
             NSIndexPath *indexPath = [receiver objectForKey:@"indexPath"];
             [self.delegate tableImageSource:self imageFailedforIndexPath:indexPath error:error];
         }
-
-        self.downloadCounter++;
-        [self updateCurrentDownloads];
     });
 }
 
@@ -153,9 +177,6 @@ static NSUInteger const WPTableImageSourceBatchSize = 10;
             if (self.delegate && [self.delegate respondsToSelector:@selector(tableImageSource:imageReady:forIndexPath:)]) {
                 [self.delegate tableImageSource:self imageReady:resizedImage forIndexPath:receiver[@"indexPath"]];
             }
-
-            self.downloadCounter++;
-            [self updateCurrentDownloads];
         });
     });
 }
@@ -298,124 +319,6 @@ static NSUInteger const WPTableImageSourceBatchSize = 10;
     }
 
     return queryString;
-}
-
-
-#pragma mark - Download queue wrangling
-
-/**
- Adds a requested image to the pending queue.
- */
-- (void)enqueueImageDownload:(NSDictionary *)queueItem
-{
-    [self.pendingDownloads addObject:queueItem];
-}
-
-/**
-    Downloads the image specified.
- */
-- (void)requestImage:(NSDictionary *)queueItem
-{
-    [self.currentDownloads addObject:queueItem];
-
-    NSURL *url = [queueItem objectForKey:@"url"];
-    CGSize size = CGSizeFromString([queueItem stringForKey:@"size"]);
-    NSIndexPath *indexPath = [queueItem objectForKey:@"indexPath"];
-    BOOL isPrivate = [[queueItem numberForKey:@"isPrivate"] boolValue];
-
-    // If the requested size has a 0 height, it means we know the desired width only.
-    // Make the request with a 0 height and we'll update later once the image is loaded and
-    // we can find its width/height ratio.
-    CGSize requestSize;
-    if (size.height == 0) {
-        requestSize = CGSizeMake(MAX(size.width, _maxSize.width), size.height);
-    } else {
-        requestSize = CGSizeMake(MAX(size.width, _maxSize.width), MAX(size.height, _maxSize.height));
-    }
-
-    NSDictionary *receiver = @{@"size": NSStringFromCGSize(size), @"indexPath": indexPath, @"date": [NSDate date]};
-    void (^successBlock)(UIImage *) = ^(UIImage *image) {
-        NSDictionary *_receiver = receiver;
-        if (size.height == 0) {
-            CGFloat ratio = image.size.width / image.size.height;
-            CGFloat height = round(size.width / ratio);
-            CGSize receiverSize = CGSizeMake(size.width, height);
-
-            NSMutableDictionary *dict = [_receiver mutableCopy];
-            [dict setObject:NSStringFromCGSize(receiverSize) forKey:@"size"];
-            _receiver = dict;
-        }
-
-        [self setCachedImage:image forURL:url withSize:_maxSize];
-        [self processImage:image forURL:url receiver:_receiver];
-    };
-
-    void (^failureBlock)(NSError *) = ^(NSError *error) {
-        DDLogError(@"Failed getting image %@: %@", url, error);
-        self.downloadCounter++;
-        [self handleImageDownloadFailedForReceiver:receiver error:error];
-    };
-
-    url = [self photonURLForURL:url withSize:requestSize];
-
-    if (isPrivate) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-        [[WPImageSource sharedSource] downloadImageForURL:url
-                                                authToken:[[defaultAccount restApi] authToken]
-                                              withSuccess:successBlock
-                                                  failure:failureBlock];
-    } else {
-        [[WPImageSource sharedSource] downloadImageForURL:url
-                                              withSuccess:successBlock
-                                                  failure:failureBlock];
-    }
-}
-
-/**
- Checks the progress of the current batch of downloads. 
- Starts the next batch when the current batch completes. 
- Notifies the delegate when a batch completes, and when the queue is emptied.
- */
-- (void)updateCurrentDownloads
-{
-    // Did we load everything in the active queue?
-    if (self.downloadCounter < [self.currentDownloads count]) {
-        return;
-    }
-
-    if ([self.delegate respondsToSelector:@selector(tableImageSource:didLoadImagesAtIndexPaths:)]) {
-        NSMutableArray *indexPaths = [NSMutableArray array];
-        for (NSDictionary *queueItem in self.currentDownloads) {
-            NSIndexPath *indexPath = [queueItem objectForKey:@"indexPath"];
-            [indexPaths addObject:indexPath];
-        }
-        [self.delegate tableImageSource:self didLoadImagesAtIndexPaths:indexPaths];
-    }
-
-    // Reset for the next batch.
-    self.downloadCounter = 0;
-    [self.currentDownloads removeAllObjects];
-
-    // Bail if nothing else to do
-    if ([self.pendingDownloads count] == 0) {
-        if ([self.delegate respondsToSelector:@selector(tableImageSourceFinishedLoadingImages:)]) {
-            [self.delegate tableImageSourceFinishedLoadingImages:self];
-        }
-        return;
-    }
-
-    // Load the next batch
-    NSInteger num = MIN(WPTableImageSourceBatchSize, [self.pendingDownloads count]);
-    for (NSInteger i = 0; i < num; i++) {
-        NSDictionary *queueItem = [self.pendingDownloads firstObject];
-        if (!queueItem) { // just in case the count is off for some reason.
-            break;
-        }
-        [self.pendingDownloads removeObject:queueItem];
-        [self requestImage:queueItem];
-    }
 }
 
 @end
