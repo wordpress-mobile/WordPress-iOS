@@ -36,7 +36,7 @@
 		379DA04E166E6EFE001A43CC /* NotificationsFollowDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 379DA04D166E6EFE001A43CC /* NotificationsFollowDetailViewController.xib */; };
 		379DA051166E938E001A43CC /* NotificationsFollowTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 379DA050166E938E001A43CC /* NotificationsFollowTableViewCell.m */; };
 		37B7924D16768FCC0021B3A4 /* NotificationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B7924C16768FCB0021B3A4 /* NotificationSettingsViewController.m */; };
-		37F395FC18E5CE2D00AF1919 /* NotificationsBigBadgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F395FB18E5CE2D00AF1919 /* NotificationsBigBadgeViewController.m */; };
+		37F395FC18E5CE2D00AF1919 /* NotificationsBigBadgeDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F395FB18E5CE2D00AF1919 /* NotificationsBigBadgeDetailViewController.m */; };
 		45C73C25113C36F70024D0D2 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45C73C24113C36F70024D0D2 /* MainWindow-iPad.xib */; };
 		462F4E0A18369F0B0028D2F8 /* BlogDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 462F4E0718369F0B0028D2F8 /* BlogDetailsViewController.m */; };
 		462F4E0B18369F0B0028D2F8 /* BlogListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 462F4E0918369F0B0028D2F8 /* BlogListViewController.m */; };
@@ -415,8 +415,8 @@
 		379DA050166E938E001A43CC /* NotificationsFollowTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsFollowTableViewCell.m; sourceTree = "<group>"; };
 		37B7924B16768FCB0021B3A4 /* NotificationSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationSettingsViewController.h; sourceTree = "<group>"; };
 		37B7924C16768FCB0021B3A4 /* NotificationSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationSettingsViewController.m; sourceTree = "<group>"; };
-		37F395FA18E5CE2D00AF1919 /* NotificationsBigBadgeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsBigBadgeViewController.h; sourceTree = "<group>"; };
-		37F395FB18E5CE2D00AF1919 /* NotificationsBigBadgeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsBigBadgeViewController.m; sourceTree = "<group>"; };
+		37F395FA18E5CE2D00AF1919 /* NotificationsBigBadgeDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsBigBadgeDetailViewController.h; sourceTree = "<group>"; };
+		37F395FB18E5CE2D00AF1919 /* NotificationsBigBadgeDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsBigBadgeDetailViewController.m; sourceTree = "<group>"; };
 		45B71DE4113EDAA100D0A33C /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		45C73C24113C36F70024D0D2 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "Resources-iPad/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		462F4E0618369F0B0028D2F8 /* BlogDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogDetailsViewController.h; sourceTree = "<group>"; };
@@ -1937,8 +1937,8 @@
 				372AD15316682BA100F21BC1 /* NotificationsFollowDetailViewController.m */,
 				CC669B38167AA82A009E16F8 /* NoteComment.h */,
 				CC669B39167AA82A009E16F8 /* NoteComment.m */,
-				37F395FA18E5CE2D00AF1919 /* NotificationsBigBadgeViewController.h */,
-				37F395FB18E5CE2D00AF1919 /* NotificationsBigBadgeViewController.m */,
+				37F395FA18E5CE2D00AF1919 /* NotificationsBigBadgeDetailViewController.h */,
+				37F395FB18E5CE2D00AF1919 /* NotificationsBigBadgeDetailViewController.m */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
@@ -2594,7 +2594,7 @@
 				462F4E0B18369F0B0028D2F8 /* BlogListViewController.m in Sources */,
 				5D42A3F9175E75EE005CFF05 /* ReaderMediaView.m in Sources */,
 				85D2275918F1EB8A001DA8DA /* WPAnalyticsTrackerMixpanel.m in Sources */,
-				37F395FC18E5CE2D00AF1919 /* NotificationsBigBadgeViewController.m in Sources */,
+				37F395FC18E5CE2D00AF1919 /* NotificationsBigBadgeDetailViewController.m in Sources */,
 				E149D64F19349E69006A843D /* AccountServiceRemoteXMLRPC.m in Sources */,
 				5DF94E461962BAA700359241 /* WPRichTextView.m in Sources */,
 				5D42A3FB175E75EE005CFF05 /* ReaderPostDetailViewController.m in Sources */,
