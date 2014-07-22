@@ -261,15 +261,22 @@
 	
 	// get image with normal link text
 	UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDefault];
-	[button setImage:normalImage forState:UIControlStateNormal];
-	
+    if (!normalImage) {
+        return nil;
+    }
+
 	// get image for highlighted link text
 	UIImage *highlightImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDrawLinksHighlighted];
-	[button setImage:highlightImage forState:UIControlStateHighlighted];
+    if (!highlightImage) {
+        highlightImage = normalImage;
+    }
+
+	[button setImage:normalImage forState:UIControlStateNormal];
+    [button setImage:highlightImage forState:UIControlStateHighlighted];
 	
 	// use normal push action for opening URL
 	[button addTarget:self action:@selector(handleLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
-	
+
 	return button;
 }
 
