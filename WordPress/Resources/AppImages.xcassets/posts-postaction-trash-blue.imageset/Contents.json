@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "postaction-delete.png"
+      "filename" : "posts-postaction-trash-blue.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "postaction-delete@2x.png"
+      "filename" : "posts-postaction-trash-blue@2x.png"
     }
   ],
   "info" : {

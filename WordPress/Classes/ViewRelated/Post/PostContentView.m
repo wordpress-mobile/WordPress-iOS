@@ -21,10 +21,10 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Action buttons
-        _editButton = [super createActionButtonWithImage:[UIImage imageNamed:@"postaction-edit"] selectedImage:[UIImage imageNamed:@"postaction-edit"]];
+        _editButton = [super createActionButtonWithImage:[UIImage imageNamed:@"posts-postaction-edit-blue"] selectedImage:[UIImage imageNamed:@"posts-postaction-edit-blue"]];
         [_editButton addTarget:self action:@selector(editAction:) forControlEvents:UIControlEventTouchUpInside];
 
-        _deleteButton = [super createActionButtonWithImage:[UIImage imageNamed:@"postaction-delete"] selectedImage:[UIImage imageNamed:@"postaction-delete"]];
+        _deleteButton = [super createActionButtonWithImage:[UIImage imageNamed:@"posts-postaction-trash-blue"] selectedImage:[UIImage imageNamed:@"posts-postaction-trash-active"]];
         [_deleteButton addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
 
         [super setActionButtons:@[_deleteButton, _editButton]];
