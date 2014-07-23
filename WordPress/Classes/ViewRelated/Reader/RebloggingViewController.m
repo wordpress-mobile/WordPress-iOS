@@ -321,11 +321,15 @@ CGFloat const ReblogViewTextBottomInset = 30;
         self.featuredImageSource.delegate = self;
     }
 
+    NSURL *imageURL = [self.post featuredImageURLForDisplay];
+    if (!imageURL) {
+        return;
+    }
+
     CGFloat width = CGRectGetWidth(self.view.bounds);
     CGFloat height = round(width * WPContentViewMaxImageHeightPercentage);
     CGSize size = CGSizeMake(width, height);
 
-    NSURL *imageURL = [self.post featuredImageURLForDisplay];
     UIImage *image = [self.featuredImageSource imageForURL:imageURL withSize:size];
     if(image) {
         [self.postView setFeaturedImage:image];
