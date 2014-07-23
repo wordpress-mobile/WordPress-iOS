@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "Note.h"
 
-@interface NotificationsBigBadgeViewController : UIViewController
+@interface NotificationsBigBadgeDetailViewController : UIViewController
 
 - (id)initWithNote:(Note *)note;
 
