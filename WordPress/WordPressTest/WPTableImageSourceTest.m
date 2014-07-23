@@ -43,4 +43,15 @@
     XCTAssertFalse(([[photonURL query] rangeOfString:@"&ssl=1"].location != NSNotFound), @"The Photon URL should not be formatted for ssl.");
 }
 
+- (void)testPhotonURLReturnsUnChanged
+{
+    // arbitrary size
+    CGSize size = CGSizeMake(300, 150);
+    NSString *path = @"https://i0.wp.com/path/to/image.jpg";
+    NSURL *url = [NSURL URLWithString:path];
+    NSURL *photonURL = [self.source photonURLForURL:url withSize:size];
+
+    XCTAssertTrue([[photonURL absoluteString] isEqualToString:path]);
+}
+
 @end

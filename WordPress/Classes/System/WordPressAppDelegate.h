@@ -6,6 +6,11 @@
 @class Simperium;
 @class Blog;
 
+// Tab index constants
+extern NSInteger const kReaderTabIndex;
+extern NSInteger const kNotificationsTabIndex;
+extern NSInteger const kMeTabIndex;
+
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate>
 
 @property (nonatomic, strong) IBOutlet UIWindow *window;
@@ -32,10 +37,7 @@
 ///-----------------------
 /// @name Tab bar controls
 ///-----------------------
-- (void)showNotificationsTab;
-- (void)showBlogListTab;
-- (void)showReaderTab;
-- (void)showMeTab;
+- (void)showTabForIndex: (NSInteger)tabIndex;
 - (void)showPostTab;
 - (void)switchTabToPostsListForPost:(AbstractPost *)post;
 - (BOOL)isNavigatingMeTab;
