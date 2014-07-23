@@ -16,7 +16,7 @@
 #import "Constants.h"
 #import "NotificationsManager.h"
 #import "NotificationSettingsViewController.h"
-#import "NotificationsBigBadgeViewController.h"
+#import "NotificationsBigBadgeDetailViewController.h"
 #import "AccountService.h"
 #import "ReaderPostService.h"
 #import "ContextManager.h"
@@ -258,7 +258,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
             NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNote:note];
             [self.navigationController pushViewController:detailViewController animated:YES];
         } else if ([note templateType] == WPNoteTemplateBigBadge) {
-            NotificationsBigBadgeViewController *bigBadgeViewController = [[NotificationsBigBadgeViewController alloc] initWithNote: note];
+            NotificationsBigBadgeDetailViewController *bigBadgeViewController = [[NotificationsBigBadgeDetailViewController alloc] initWithNote: note];
             [self.navigationController pushViewController:bigBadgeViewController animated:YES];
         }
     } else {

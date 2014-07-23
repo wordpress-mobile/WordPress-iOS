@@ -10,6 +10,7 @@
 #import "ContextManager.h"
 #import "WPToast.h"
 #import "WPTableImageSource.h"
+#import <WordPress-iOS-Shared/WPFontManager.h>
 
 CGFloat const ReblogViewPostMargin = 10;
 CGFloat const ReblogViewTextBottomInset = 30;
@@ -123,12 +124,12 @@ CGFloat const ReblogViewTextBottomInset = 30;
         UIButton *titleButton = self.titleBarButton;
         self.navigationItem.titleView = titleButton;
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", NSLocalizedString(@"Reblog to", @"")]
-                                                                                      attributes:@{ NSFontAttributeName : [UIFont fontWithName:@"OpenSans-Bold" size:14.0] }];
+                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
 
         if (!self.blog) {
             self.blog = [blogService lastUsedOrFirstWPcomBlog];
         }
-        NSDictionary *subtextAttributes = @{ NSFontAttributeName: [UIFont fontWithName:@"OpenSans" size:10.0] };
+        NSDictionary *subtextAttributes = @{ NSFontAttributeName: [WPFontManager openSansRegularFontOfSize:10.0] };
         NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:self.blog.blogName
                                                                                          attributes:subtextAttributes];
         [titleText appendAttributedString:titleSubtext];
@@ -366,14 +367,22 @@ CGFloat const ReblogViewTextBottomInset = 30;
         [self dismiss];
 
     } failure:^(NSError *error) {
-        DDLogError(@"Error Reblogging Post : %@", [error localizedDescription]);
+        NSString *localizedDescription = [error localizedDescription];
+        DDLogError(@"Error Reblogging Post : %@", localizedDescription);
+
         [self.textView setEditable:YES];
         self.navigationItem.leftBarButtonItem.enabled = YES;
         [self.activityView stopAnimating];
         self.navigationItem.rightBarButtonItem = self.publishBarItem;
 
-        // TODO: Failure reason.
-        [WPError showAlertWithTitle:NSLocalizedString(@"Reblog failed", nil) message:NSLocalizedString(@"There was a problem reblogging. Please try again.", nil)];
+        NSString *message;
+        if ([localizedDescription length]) {
+            message = localizedDescription;
+        } else {
+            message = NSLocalizedString(@"There was a problem reblogging. Please try again.", @"A generic error message stating there was a problem reblogging a post suggesting the user try again.");
+        }
+
+        [WPError showAlertWithTitle:NSLocalizedString(@"Could not reblog post", @"Error message title stating that an attempt to reblog a post failed.") message:message];
     }];
 }
 
