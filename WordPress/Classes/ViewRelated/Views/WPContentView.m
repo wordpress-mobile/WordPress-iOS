@@ -57,7 +57,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 @property (nonatomic, strong) UIButton *timeButton;
 @property (nonatomic, strong) UILabel *bylineLabel;
 @property (nonatomic, strong) UIButton *byButton;
-@property (nonatomic, assign) BOOL willRefreshMediaLayout;
+@property (nonatomic, assign) BOOL willRefreshMediaLayout, shouldShowDateInByView;
 
 @end
 
@@ -145,7 +145,6 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         [_bottomView.layer addSublayer:_bottomBorder];
         
         _timeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _timeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         _timeButton.backgroundColor = [UIColor clearColor];
         _timeButton.titleLabel.font = [WPFontManager openSansRegularFontOfSize:12.0];
         [_timeButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPVSmallButtonLeftPadding, 0, 0)];
@@ -154,7 +153,15 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         [_timeButton setImage:[UIImage imageNamed:@"reader-postaction-time"] forState:UIControlStateDisabled];
         [_timeButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateDisabled];
         [_timeButton setEnabled:NO];
-        [_bottomView addSubview:_timeButton];
+        
+        if (_shouldShowDateInByView) {
+            _timeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+            _timeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+            [_byView addSubview:_timeButton];
+        } else {
+            _timeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+            [_bottomView addSubview:_timeButton];
+        }
         
         // Update the relative timestamp once per minute
         _dateRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(refreshDate:) userInfo:nil repeats:YES];
@@ -171,6 +178,10 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
     [_dateRefreshTimer invalidate];
     _dateRefreshTimer = nil;
+}
+
+- (void)setShouldShowDateInByView {
+    _shouldShowDateInByView = YES;
 }
 
 - (UIView *)viewForFullContent {
@@ -318,8 +329,11 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         lastImageWidth = actionButton.imageView.image.size.width;
     }
 
-    CGFloat timeWidth = buttonX - RPVHorizontalInnerPadding;
-    self.timeButton.frame = CGRectMake(RPVHorizontalInnerPadding, RPVBorderHeight, timeWidth, RPVControlButtonHeight);
+    CGFloat timeWidth = _shouldShowDateInByView ? RPVControlButtonWidth : buttonX - RPVHorizontalInnerPadding;
+    CGFloat timeHeight = _shouldShowDateInByView ? _byView.frame.size.height : RPVControlButtonHeight;
+    CGFloat timeXPosition = _shouldShowDateInByView ? _byView.frame.size.width - timeWidth - RPVHorizontalInnerPadding : RPVHorizontalInnerPadding;
+    CGFloat timeYPosition = _shouldShowDateInByView ? 0.0f : RPVBorderHeight;
+    self.timeButton.frame = CGRectMake(timeXPosition, timeYPosition, timeWidth, timeHeight);
     
     // Update own frame
     CGRect ownFrame = self.frame;
@@ -330,7 +344,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 - (ContentActionButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage {
     ContentActionButton *button = [ContentActionButton buttonWithType:UIButtonTypeSystem];
     
-    button.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    button.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
     [button setTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [button setImage:buttonImage forState:UIControlStateNormal];
     [button setImage:selectedButtonImage forState:UIControlStateSelected];

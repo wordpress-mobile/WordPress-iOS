@@ -29,6 +29,7 @@
 @property (nonatomic, strong) UIImageView *avatarImageView;
 
 - (id)initWithFrame:(CGRect)frame;
+- (void)setShouldShowDateInByView;
 - (void)setFeaturedImage:(UIImage *)image;
 - (void)setAuthorDisplayName:(NSString *)authorName authorLink:(NSString *)authorLink;
 - (ContentActionButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage;
