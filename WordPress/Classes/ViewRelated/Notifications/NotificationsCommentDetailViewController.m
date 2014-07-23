@@ -19,6 +19,7 @@
 #import "WPTableViewController.h"
 #import "NoteBodyItem.h"
 #import "AccountService.h"
+#import "ContentActionButton.h"
 
 
 const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight = 64.f;
@@ -37,10 +38,10 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 @property (nonatomic, strong) NSURL				*headerURL;
 @property (nonatomic, assign) BOOL				hasScrollBackView;
 
-@property (nonatomic, strong) UIButton			*approveButton;
-@property (nonatomic, strong) UIButton			*trashButton;
-@property (nonatomic, strong) UIButton			*spamButton;
-@property (nonatomic, strong) UIButton			*replyButton;
+@property (nonatomic, strong) ContentActionButton			*approveButton;
+@property (nonatomic, strong) ContentActionButton			*trashButton;
+@property (nonatomic, strong) ContentActionButton			*spamButton;
+@property (nonatomic, strong) ContentActionButton			*replyButton;
 
 @property (nonatomic, weak) IBOutlet NoteCommentPostBanner *postBanner;
 @property (nonatomic, strong) CommentView		*commentView;
@@ -121,22 +122,32 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     self.view = scrollView;
     self.view.backgroundColor = [UIColor whiteColor];
     
-    self.trashButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-trash"] selectedImage:[UIImage imageNamed:@"icon-comments-trash-active"]];
-    self.trashButton.accessibilityLabel = NSLocalizedString(@"Move to trash", @"Spoken accessibility label.");
-    [self.trashButton addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
-    
-    self.approveButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-approve"] selectedImage:[UIImage imageNamed:@"icon-comments-approve-active"]];
-    self.approveButton.accessibilityLabel = NSLocalizedString(@"Toggle approve or unapprove", @"Spoken accessibility label.");
-    [self.approveButton addTarget:self action:@selector(approveOrUnapproveAction:) forControlEvents:UIControlEventTouchUpInside];
-    
-    self.spamButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-flag"] selectedImage:[UIImage imageNamed:@"icon-comments-flag-active"]];
-    self.spamButton.accessibilityLabel = NSLocalizedString(@"Mark as spam", @"Spoken accessibility label.");
-    [self.spamButton addTarget:self action:@selector(spamAction:) forControlEvents:UIControlEventTouchUpInside];
-
-    self.replyButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-comment-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-comment-active"]];
+    self.replyButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-reply"] selectedImage:[UIImage imageNamed:@"reader-postaction-comment-active"]];
+    [self.replyButton setTitle:NSLocalizedString(@"Reply", @"Verb, reply to a comment") forState:UIControlStateNormal];
     self.replyButton.accessibilityLabel = NSLocalizedString(@"Reply", @"Spoken accessibility label.");
     [self.replyButton addTarget:self action:@selector(replyAction:) forControlEvents:UIControlEventTouchUpInside];
-
+    [self.replyButton repositionTitleAndImage];
+    
+    self.approveButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-unapprove"] selectedImage:[UIImage imageNamed:@"icon-comments-approve-active"]];
+    [self.approveButton setTitle:NSLocalizedString(@"Unapprove", @"Verb, unapprove a comment") forState:UIControlStateNormal];
+    self.approveButton.accessibilityLabel = NSLocalizedString(@"Toggle approve or unapprove", @"Spoken accessibility label.");
+    [self.approveButton addTarget:self action:@selector(approveOrUnapproveAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.approveButton repositionTitleAndImage];
+    
+    self.spamButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-flag"] selectedImage:[UIImage imageNamed:@"icon-comments-flag-active"]];
+    [self.spamButton setTitle:NSLocalizedString(@"Spam", @"Verb, spam comment") forState:UIControlStateNormal];
+    //self.spamButton.titleEdgeInsets = titleEdgeInsets;
+    self.spamButton.accessibilityLabel = NSLocalizedString(@"Mark as spam", @"Spoken accessibility label.");
+    [self.spamButton addTarget:self action:@selector(spamAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.spamButton repositionTitleAndImage];
+    
+    self.trashButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-trash"] selectedImage:[UIImage imageNamed:@"icon-comments-trash-active"]];
+    [self.trashButton setTitle:NSLocalizedString(@"Trash", "Verb, trash comment") forState:UIControlStateNormal];
+    //self.trashButton.titleEdgeInsets = titleEdgeInsets;
+    self.trashButton.accessibilityLabel = NSLocalizedString(@"Move to trash", @"Spoken accessibility label.");
+    [self.trashButton addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.trashButton repositionTitleAndImage];
+    
     [self.view addSubview:self.commentView];
     
     self.title = NSLocalizedString(@"Comment", @"Title for detail view of a comment notification");
@@ -257,13 +268,15 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 - (void)updateApproveButton:(BOOL)canBeApproved {
     if (canBeApproved) {
         [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-approve"] forState:UIControlStateNormal];
-        [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-approve-active"] forState:UIControlStateSelected];
+        [self.approveButton setTitle:NSLocalizedString(@"Approve", @"Verb, approve a comment") forState:UIControlStateNormal];
         self.approveButton.accessibilityLabel = NSLocalizedString(@"Approve", @"Spoken accessibility label.");
     } else {
         [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-unapprove"] forState:UIControlStateNormal];
-        [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-unapprove-active"] forState:UIControlStateSelected];
+        [self.approveButton setTitle:NSLocalizedString(@"Unapprove", @"Verb, unapprove a comment") forState:UIControlStateNormal];
         self.approveButton.accessibilityLabel = NSLocalizedString(@"Unapprove", @"Spoken accessibility label.");
     }
+    
+    [self.approveButton adjustImageSpacing];
 }
 
 

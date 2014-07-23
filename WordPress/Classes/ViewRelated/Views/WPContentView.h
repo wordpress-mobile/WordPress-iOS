@@ -3,6 +3,7 @@
 #import "DTAttributedTextContentView.h"
 #import "ReaderMediaQueue.h"
 #import "WPContentViewProvider.h"
+#import "ContentActionButton.h"
 
 @class WPContentView;
 
@@ -30,7 +31,7 @@
 - (id)initWithFrame:(CGRect)frame;
 - (void)setFeaturedImage:(UIImage *)image;
 - (void)setAuthorDisplayName:(NSString *)authorName authorLink:(NSString *)authorLink;
-- (UIButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage;
+- (ContentActionButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage;
 - (void)removeActionButton:(UIButton *)button;
 - (void)updateActionButtons;
 - (void)refreshMediaLayout;
