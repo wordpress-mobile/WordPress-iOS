@@ -9,6 +9,7 @@
 // | Stats
 // | Settings
 // | View Site
+// | Edit Theme
 // | View Admin
 
 #import "BlogDetailsViewController.h"
@@ -32,7 +33,8 @@ const typedef enum {
     BlogDetailsRowStats = 0,
     BlogDetailsRowViewSite = 1,
     BlogDetailsRowEditSettings = 2,
-    BlogDetailsRowViewAdmin = 3
+    BlogDetailsRowEditTheme = 3,
+    BlogDetailsRowViewAdmin = 4
 } BlogDetailsRow;
 
 const typedef enum {
@@ -69,7 +71,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     
     BlogDetailsViewController *viewController = [[self alloc] initWithStyle:UITableViewStyleGrouped];
     viewController.blog = restoredBlog;
-
+    
     return viewController;
 }
 
@@ -96,7 +98,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     if (!_blog.options) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-
+        
         [blogService syncOptionsForBlog:_blog success:nil failure:nil];
     }
 }
@@ -167,6 +169,9 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
                 cell.textLabel.text = NSLocalizedString(@"View Site", nil);
                 cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewsite"];
                 break;
+            case BlogDetailsRowEditTheme:
+                cell.textLabel.text = NSLocalizedString(@"Edit Theme", nil);
+                cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
             case BlogDetailsRowViewAdmin:
                 cell.textLabel.text = NSLocalizedString(@"View Admin", nil);
                 cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewadmin"];
@@ -182,7 +187,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     [self configureCell:cell atIndexPath:indexPath];
     [WPStyleGuide configureTableViewCell:cell];
-
+    
     return cell;
 }
 
@@ -193,7 +198,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
         EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
         [self.navigationController pushViewController:editSiteViewController animated:YES];
     }
-
+    
     Class controllerClass;
     if (indexPath.section == TableViewSectionContentType) {
         switch (indexPath.row) {
@@ -221,6 +226,9 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
             case BlogDetailsRowViewSite:
                 [self showViewSiteForBlog:self.blog];
                 break;
+            case BlogDetailsRowEditTheme:
+                controllerClass =  [ThemeBrowserViewController class];
+                break;
             case BlogDetailsRowViewAdmin:
                 [self showViewAdminForBlog:self.blog];
                 break;
@@ -235,10 +243,10 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
             [self.navigationController.visibleViewController performSelector:@selector(setBlog:) withObject:self.blog];
         }
         [self.navigationController popToRootViewControllerAnimated:NO];
-    
+        
         return;
     }
-
+    
     UIViewController *viewController = (UIViewController *)[[controllerClass alloc] init];
     viewController.restorationIdentifier = NSStringFromClass(controllerClass);
     viewController.restorationClass = controllerClass;
