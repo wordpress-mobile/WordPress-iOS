@@ -5,7 +5,13 @@
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
 
-NSUInteger const PostSummaryLength = 150;
+NSUInteger const WPPostSummaryLength = 150;
+
+@interface Post() {
+    NSString *_summary;
+}
+
+@end
 
 @interface Post(InternalProperties)
 // We shouldn't need to store this, but if we don't send IDs on edits
@@ -41,7 +47,6 @@ NSUInteger const PostSummaryLength = 150;
 @dynamic categories;
 @dynamic authorAvatarURL;
 @synthesize specialType;
-@synthesize summary = _summary;
 
 #pragma mark - NSManagedObject subclass methods
 
@@ -366,12 +371,6 @@ NSUInteger const PostSummaryLength = 150;
 #pragma mark - WPContentViewProvider protocol
 
 - (NSString *)contentPreviewForDisplay {
-    return self.summary;
-}
-
-#pragma mark - Property Getters
-
-- (NSString *)summary {
     if (!_summary) {
         _summary = [self createSummaryFromContent:self.content];
     }
@@ -381,7 +380,7 @@ NSUInteger const PostSummaryLength = 150;
 - (NSString *)createSummaryFromContent:(NSString *)string {
     string = [[[string stringByRemovingScriptsAndStrippingHTML] stringByDecodingXMLCharacters] trim];
     string = [string stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]];
-    return [string stringByEllipsizingWithMaxLength:PostSummaryLength preserveWords:YES];
+    return [string stringByEllipsizingWithMaxLength:WPPostSummaryLength preserveWords:YES];
 }
 
 @end

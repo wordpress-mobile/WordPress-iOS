@@ -24,11 +24,6 @@
  */
 @property (nonatomic, strong) NSString *specialType;
 
-/**
- Stored in order to avoid re-parsing the content
- */
-@property (nonatomic, strong) NSString *summary;
-
 ///---------------------
 /// @name Helper methods
 ///---------------------
