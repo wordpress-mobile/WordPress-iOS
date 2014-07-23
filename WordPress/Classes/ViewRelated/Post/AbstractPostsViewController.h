@@ -1,10 +1,10 @@
 #import "WPTableViewController.h"
-#import "WPTableImageSource.h"
 
 @class AbstractPostTableViewCell;
 @class BasePost;
+@class WPTableImageSource;
 
-@interface AbstractPostsViewController : WPTableViewController <WPTableImageSourceDelegate>
+@interface AbstractPostsViewController : WPTableViewController
 
 @property (nonatomic, strong) AbstractPostTableViewCell *cellForLayout;
 @property (nonatomic, strong) WPTableImageSource *featuredImageSource;

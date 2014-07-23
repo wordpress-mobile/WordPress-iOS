@@ -3,6 +3,7 @@
 #import "AbstractPostTableViewCell.h"
 #import "WPContentViewBase.h"
 #import "BasePost.h"
+#import "WPTableImageSource.h"
 
 static CGFloat const APVCHeaderHeightPhone = 10.0;
 static CGFloat const APVCEstimatedRowHeightIPhone = 400.0;
@@ -11,7 +12,7 @@ static CGFloat const APVCEstimatedRowHeightIPad = 600.0;
 NSString * const FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
 NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier";
 
-@interface AbstractPostsViewController ()
+@interface AbstractPostsViewController () <WPTableImageSourceDelegate>
 
 @property (nonatomic, strong) NSLayoutConstraint *cellForLayoutWidthConstraint;
 

@@ -25,7 +25,7 @@
 
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
-@interface ReaderPostsViewController ()<WPTableImageSourceDelegate, ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate>
+@interface ReaderPostsViewController ()<ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate>
 
 @property (nonatomic, assign) BOOL hasMoreContent;
 @property (nonatomic, assign) BOOL loadingMore;
@@ -262,10 +262,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
 
-    UIImage *image = [cell.postView.featuredImageView.image copy];
-    UIImage *avatarImage = [post cachedAvatarWithSize:CGSizeMake(WPContentAttributionViewAvatarSize, WPContentAttributionViewAvatarSize)];
-
-    RebloggingViewController *controller = [[RebloggingViewController alloc] initWithPost:post featuredImage:image avatarImage:avatarImage];
+    RebloggingViewController *controller = [[RebloggingViewController alloc] initWithPost:post];
     controller.delegate = self;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -397,11 +394,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
             return;
         }
         
-        ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post
-                                                                                            featuredImage:nil
-                                                                                              avatarImage:nil];
-
+        ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post];
         [self.navigationController pushViewController:controller animated:YES];
+
     } failure:^(NSError *error) {
         DDLogError(@"%@, error fetching post for site", _cmd, error);
     }];
@@ -681,13 +676,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     // Pass the image forward
 	ReaderPost *post = [self.resultsController.fetchedObjects objectAtIndex:indexPath.row];
-    ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-
-    UIImage *image = [cell.postView.featuredImageView.image copy];
-    UIImage *avatarImage = [cell.post cachedAvatarWithSize:CGSizeMake(32.0, 32.0)];
-// TODO: the detail controller should just fetch the cached versions of these resources vs passing them around here. :P
-	self.detailController = [[ReaderPostDetailViewController alloc] initWithPost:post featuredImage:image avatarImage:avatarImage];
-    
+	self.detailController = [[ReaderPostDetailViewController alloc] initWithPost:post];
     [self.navigationController pushViewController:self.detailController animated:YES];
     
     [WPAnalytics track:WPAnalyticsStatReaderOpenedArticle];
@@ -780,25 +769,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     return tabBarSize;
-}
-
-#pragma mark - WPTableImageSourceDelegate
-
-- (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath
-{
-    [super tableImageSource:tableImageSource imageReady:image forIndexPath:indexPath];
-
-    // Failsafe: If the topic has changed, fetchedObject count might be zero
-    if (self.resultsController.fetchedObjects.count == 0) {
-        return;
-    }
-
-    // Update the detail view if it's open and applicable
-    ReaderPost *post = [self.resultsController objectAtIndexPath:indexPath];
-
-    if (post == self.detailController.post) {
-        [self.detailController updateFeaturedImage:image];
-    }
 }
 
 @end
