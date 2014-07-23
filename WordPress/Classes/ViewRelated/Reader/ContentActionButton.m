@@ -90,4 +90,19 @@ CGFloat const BackingLayerHorizontalPadding = 4.0f;
     return CGRectMake(x, y, w, h);
 }
 
+- (void)repositionTitleAndImage {
+    [self sizeToFit];
+    CGFloat spacing = 3.0f;
+    
+    CGSize imageSize = [self imageForState:UIControlStateNormal].size;
+    self.titleEdgeInsets = UIEdgeInsetsMake(0.0, -imageSize.width, -(imageSize.height + spacing), 0.0);
+    
+    [self adjustImageSpacing];
+}
+
+- (void)adjustImageSpacing {
+    CGSize titleSize = self.titleLabel.frame.size;
+    self.imageEdgeInsets = UIEdgeInsetsMake(-(titleSize.height), 0.0, 0.0, -titleSize.width);
+}
+
 @end

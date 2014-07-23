@@ -21,7 +21,7 @@
 
 const CGFloat RPVAuthorPadding = 8.0f;
 const CGFloat RPVHorizontalInnerPadding = 12.0f;
-const CGFloat RPVMetaViewHeight = 48.0f;
+const CGFloat RPVMetaViewHeight = 52.0f;
 const CGFloat RPVAuthorViewHeight = 32.0f;
 const CGFloat RPVVerticalPadding = 14.0f;
 const CGFloat RPVAvatarSize = 32.0f;
@@ -34,8 +34,8 @@ const CGFloat RPVSmallButtonLeftPadding = 2; // Follow, tag
 const CGFloat RPVLineHeightMultiple = 1.03f;
 
 // Control buttons (Like, Reblog, ...)
-const CGFloat RPVControlButtonHeight = 48.0f;
-const CGFloat RPVControlButtonWidth = 48.0f;
+const CGFloat RPVControlButtonHeight = 52.0f;
+const CGFloat RPVControlButtonWidth = 52.0f;
 const CGFloat RPVControlButtonSpacing = 12.0f;
 const CGFloat RPVControlButtonBorderSize = 0.0f;
 
@@ -291,7 +291,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         if (actionButton.hidden)
             continue;
 
-        // Left most visible button needs a different size to aligh properly
+        // Left most visible button needs a different size to align properly
         if (buttonWidth == 0.0f) {
             [actionButton sizeToFit];
             buttonWidth = CGRectGetWidth(actionButton.frame);
@@ -327,15 +327,19 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     self.frame = ownFrame;
 }
 
-- (UIButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage {
-    ContentActionButton *button = [ContentActionButton buttonWithType:UIButtonTypeCustom];
-    button.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
+- (ContentActionButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage {
+    ContentActionButton *button = [ContentActionButton buttonWithType:UIButtonTypeSystem];
+    
+    button.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    [button setTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [button setImage:buttonImage forState:UIControlStateNormal];
     [button setImage:selectedButtonImage forState:UIControlStateSelected];
+    [button.titleLabel setLineBreakMode: NSLineBreakByTruncatingTail];
     [button.titleLabel setFont:[WPStyleGuide labelFontNormal]];
     [button setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
+    [button setContentMode:UIViewContentModeCenter];
     button.titleEdgeInsets = UIEdgeInsetsMake(0.0f, 6.0f, 0.0f, -6.0f);
-    button.drawLabelBubble = YES;
+    
     [self.bottomView addSubview:button];
     [self.actionButtons addObject:button];
 
