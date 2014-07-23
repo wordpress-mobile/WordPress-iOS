@@ -251,7 +251,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
                     return;
                 }
             
-                ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post featuredImage:nil avatarImage:nil];
+                ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post];
                 [self.navigationController pushViewController:controller animated:YES];
             }];
         } else if ([note templateType] == WPNoteTemplateMultiLineList || [note templateType] == WPNoteTemplateSingleLineList) {
