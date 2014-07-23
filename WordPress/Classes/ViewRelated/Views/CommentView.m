@@ -18,6 +18,7 @@ const CGFloat CommentViewHeaderLabelVerticalInset = 10.0f;
 
 - (id)initWithFrame:(CGRect)frame
 {
+    [self setShouldShowDateInByView];
     self = [super initWithFrame:frame];
     if (self) {
         _headerLabel = [[DTAttributedLabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, frame.size.width, 0.0f)];
