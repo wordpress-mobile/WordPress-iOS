@@ -53,4 +53,13 @@
     }
 }
 
++ (void)refreshMetadata
+{
+    for (id<WPAnalyticsTracker> tracker in [self trackers]) {
+        if ([tracker respondsToSelector:@selector(refreshMetadata)]) {
+            [tracker refreshMetadata];
+        }
+    }
+}
+
 @end
