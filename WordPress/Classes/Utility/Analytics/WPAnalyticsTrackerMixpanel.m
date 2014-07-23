@@ -7,8 +7,11 @@
 #import "ContextManager.h"
 #import "Blog.h"
 #import "BlogService.h"
+#import "WPAnalyticsTrackerMixpanel.h"
 
 @implementation WPAnalyticsTrackerMixpanel
+
+NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
 
 - (instancetype)init
 {
@@ -74,6 +77,42 @@
         [[Mixpanel sharedInstance] identify:username];
         [[Mixpanel sharedInstance].people set:@{ @"$username": username, @"$first_name" : username }];
     }
+    
+    [self retrieveAndRegisterEmailAddressIfApplicable];
+}
+
+- (void)retrieveAndRegisterEmailAddressIfApplicable
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:EmailAddressRetrievedKey]) {
+        return;
+    }
+    
+    DDLogInfo(@"Retrieving /me endpoint");
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    if (defaultAccount == nil) {
+        return;
+    }
+    
+    [[defaultAccount restApi] getUserDetailsWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *response = (NSDictionary *)responseObject;
+        if ([[response stringForKey:@"email"] length] > 0) {
+            [[Mixpanel sharedInstance].people set:@"$email" to:[response stringForKey:@"email"]];
+            [userDefaults setBool:YES forKey:EmailAddressRetrievedKey];
+            [userDefaults synchronize];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        DDLogError(@"Failed to retrieve /me endpoint");
+    }];
+}
+
++ (void)resetEmailRetrievalCheck
+{
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:EmailAddressRetrievedKey];
 }
 
 #pragma mark - Private Methods
