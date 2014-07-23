@@ -7,7 +7,6 @@
 #import "ReaderPost.h"
 #import "WordPressAppDelegate.h"
 #import "NSString+XMLExtensions.h"
-#import "WPFriendFinderViewController.h"
 #import "WPAccount.h"
 #import "WPTableImageSource.h"
 #import "WPNoResultsView.h"
@@ -21,10 +20,10 @@
 #import "ReaderTopicService.h"
 #import "ReaderPostService.h"
 #import "CustomHighlightButton.h"
+#import "UIView+Subviews.h"
 #import "BlogService.h"
 
 static CGFloat const RPVCHeaderHeightPhone = 10.0;
-static CGFloat const RPVCExtraTableViewHeightPercentage = 2.0;
 static CGFloat const RPVCEstimatedRowHeightIPhone = 400.0;
 static CGFloat const RPVCEstimatedRowHeightIPad = 600.0;
 
@@ -494,8 +493,35 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 #pragma mark - WPTableViewSublass methods
 
+- (void)configureNoResultsView {
+    if (![self isViewLoaded]) {
+        return;
+    }
+
+    [self.noResultsView removeFromSuperview];
+
+    [self.noResultsView setTitleText:[self noResultsTitleText]];
+    [self.noResultsView setMessageText:[self noResultsMessageText]];
+
+    if (!self.resultsController || (self.resultsController && [[self.resultsController fetchedObjects] count] > 0)) {
+        return;
+    }
+
+    // only add and animate no results view if it isn't already
+    // in the table view
+    if (![self.noResultsView isDescendantOfView:self.tableView]) {
+        [self.tableView addSubviewWithFadeAnimation:self.noResultsView];
+    } else {
+        [self.noResultsView centerInSuperview];
+    }
+}
+
 - (NSString *)noResultsTitleText
 {
+    if (self.isSyncing) {
+        return NSLocalizedString(@"Fetching posts...", @"A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.");
+    }
+
     NSRange range = [self.currentTopic.path rangeOfString:@"following"];
     if (range.location != NSNotFound) {
         return NSLocalizedString(@"You're not following any sites yet.", @"");
@@ -512,6 +538,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (NSString *)noResultsMessageText
 {
+    if (self.isSyncing) {
+        return @"";
+    }
 	return NSLocalizedString(@"Tap the tag icon to browse posts from popular sites.", nil);
 }
 
@@ -672,7 +701,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure
 {
     DDLogMethod();
-
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
 
     if(!self.currentTopic) {
@@ -889,6 +917,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [super tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
     // Preload here to avoid unnecessary preload calls when fetching cells for reasons other than for display.
     [self preloadImagesForCellsAfterIndexPath:indexPath];
 }
@@ -905,7 +934,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     // Index paths may have changed. We don't want callbacks for stale paths.
     [self.featuredImageSource invalidateIndexPaths];
     [self.tableView reloadData];
-    [self.noResultsView removeFromSuperview];
+    [self configureNoResultsView];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller
@@ -929,13 +958,11 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 	self.loadingMore = NO;
 	self.hasMoreContent = YES;
-	[(WPNoResultsView *)self.noResultsView setTitleText:[self noResultsTitleText]];
 
 	[self.tableView setContentOffset:CGPointMake(0, 0) animated:NO];
 	[self resetResultsController];
 	[self.tableView reloadData];
     [self syncItems];
-	[self configureNoResultsView];
 
     [WPAnalytics track:WPAnalyticsStatReaderLoadedTag withProperties:[self tagPropertyForStats]];
     if ([self isCurrentTagFreshlyPressed]) {
