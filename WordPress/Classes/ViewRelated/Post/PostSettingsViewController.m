@@ -72,7 +72,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 }
 
 - (id)initWithPost:(AbstractPost *)aPost {
-    self = [super init];
+    self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.apost = aPost;
         _mediaUploader = [[WPMediaUploader alloc] init];
@@ -106,6 +106,9 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [self.tableView registerNib:[UINib nibWithNibName:@"WPTableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
     
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 44.0)]; // add some vertical padding
+    
+    // This hack is required to compensate first section fake height of 1.0f
+    self.tableView.contentInset = UIEdgeInsetsMake(-1.0f, 0, 0, 0);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -307,7 +310,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 - (NSString *)titleForHeaderInSection:(NSInteger)section {
     NSInteger sec = [[self.sections objectAtIndex:section] integerValue];
     if (sec == PostSettingsSectionTaxonomy) {
-        // No title
+        return NSLocalizedString(@"Taxonomy", @"Label for the Taxonomy area (categories, keywords, ...) in post settings.");
         
     } else if (sec == PostSettingsSectionMeta) {
         return NSLocalizedString(@"Publish", @"The grandiose Publish button in the Post Editor! Should use the same translation as core WP.");
@@ -336,8 +339,14 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     if (IS_IPAD && section == 0) {
         return WPTableViewTopMargin;
     }
+    
     NSString *title = [self titleForHeaderInSection:section];
     return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    // Remove extra padding caused by section footers in grouped table views
+    return 1.0f;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
