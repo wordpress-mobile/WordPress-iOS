@@ -12,6 +12,7 @@
 
 static NSString *const UserDefaultsFeedbackEnabled = @"wp_feedback_enabled";
 static NSString *const UserDefaultsHelpshiftEnabled = @"wp_helpshift_enabled";
+static NSString *const UserDefaultsHelpshiftWasUsed = @"wp_helpshift_used";
 static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 static NSString * const kExtraDebugDefaultsKey = @"extra_debug";
 
@@ -66,11 +67,20 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 }
 
 + (void)checkIfHelpshiftShouldBeEnabled {
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{UserDefaultsHelpshiftEnabled:@NO}];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults registerDefaults:@{UserDefaultsHelpshiftEnabled:@NO}];
+
+    BOOL userHasUsedHelpshift = [defaults boolForKey:UserDefaultsHelpshiftWasUsed];
+
+    if (userHasUsedHelpshift) {
+        [defaults setBool:YES forKey:UserDefaultsHelpshiftEnabled];
+        [defaults synchronize];
+        return;
+    }
     
     [Taplytics runCodeExperiment:@"Helpshift Distribution" withBaseline:^(NSDictionary *variables) {
         DDLogInfo(@"Taplytics: Helpshift Experiment - Baseline Enabled");
-        
+
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults setBool:NO forKey:UserDefaultsHelpshiftEnabled];
         [defaults synchronize];
@@ -160,7 +170,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == SettingsSectionFAQForums) {
-        return 1;
+        return 2;
     }
     
     if (section == SettingsSectionActivityLog) {
@@ -216,25 +226,42 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     [WPStyleGuide configureTableViewCell:cell];
     
-    if (indexPath.section == SettingsSectionFAQForums && indexPath.row == 0) {
-        cell.textLabel.text = (self.helpshiftEnabled) ? NSLocalizedString(@"Contact Us", nil)
-                                                      : NSLocalizedString(@"WordPress Help Center", @"");
+    if (indexPath.section == SettingsSectionFAQForums) {
+        switch (indexPath.row) {
+            case 0:
+                cell.textLabel.text = NSLocalizedString(@"WordPress Help Center", @"");
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
-        if (self.helpshiftUnreadCount > 0) {
-            UILabel *helpshiftUnreadCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
-            helpshiftUnreadCountLabel.layer.masksToBounds = YES;
-            helpshiftUnreadCountLabel.layer.cornerRadius = 15;
-            helpshiftUnreadCountLabel.textAlignment = NSTextAlignmentCenter;
-            helpshiftUnreadCountLabel.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
-            helpshiftUnreadCountLabel.textColor = [UIColor whiteColor];
-
-            helpshiftUnreadCountLabel.text = [NSString stringWithFormat:@"%i", self.helpshiftUnreadCount];
-            cell.accessoryView = helpshiftUnreadCountLabel;
-
-            cell.accessoryType = UITableViewCellAccessoryNone;
-        } else {
-            cell.accessoryView = nil;
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                break;
+            case 1:
+                if (self.helpshiftEnabled) {
+                    cell.textLabel.text = NSLocalizedString(@"Contact Us", nil);
+                    
+                    if (self.helpshiftUnreadCount > 0) {
+                        UILabel *helpshiftUnreadCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
+                        helpshiftUnreadCountLabel.layer.masksToBounds = YES;
+                        helpshiftUnreadCountLabel.layer.cornerRadius = 15;
+                        helpshiftUnreadCountLabel.textAlignment = NSTextAlignmentCenter;
+                        helpshiftUnreadCountLabel.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
+                        helpshiftUnreadCountLabel.textColor = [UIColor whiteColor];
+                        
+                        helpshiftUnreadCountLabel.text = [NSString stringWithFormat:@"%i", self.helpshiftUnreadCount];
+                        cell.accessoryView = helpshiftUnreadCountLabel;
+                        
+                        cell.accessoryType = UITableViewCellAccessoryNone;
+                    } else {
+                        cell.accessoryView = nil;
+                        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    }
+                } else {
+                    cell.textLabel.text = NSLocalizedString(@"WordPress Forums", @"");
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                }
+                
+                break;
+            default:
+                // should never get here
+                break;
         }
     } else if (indexPath.section == SettingsSectionFeedback) {
         cell.textLabel.text = NSLocalizedString(@"E-mail Support", @"");
@@ -296,11 +323,34 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if (indexPath.section == SettingsSectionFAQForums && !self.helpshiftEnabled && indexPath.row == 0) {
-        [[Helpshift sharedInstance] showFAQs:self withOptions:nil];
-    } else if (indexPath.section == SettingsSectionFAQForums && self.helpshiftEnabled && indexPath.row == 0) {
-        [Taplytics goalAchieved:@"Helpshift opened"];
-        [[Helpshift sharedInstance] showConversation:self withOptions:nil];
+    if (indexPath.section == SettingsSectionFAQForums) {
+        if (self.helpshiftEnabled) {
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setBool:YES forKey:UserDefaultsHelpshiftWasUsed];
+        }
+        
+        switch (indexPath.row) {
+            case 0:
+                if (self.helpshiftEnabled) {
+                    [[Helpshift sharedInstance] showFAQs:self withOptions:nil];
+                } else {
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ios.wordpress.org/faq"]];
+                }
+                
+                break;
+            case 1:
+                if (self.helpshiftEnabled) {
+                    [Taplytics goalAchieved:@"Helpshift opened"];
+                    [[Helpshift sharedInstance] showConversation:self withOptions:nil];
+                } else {
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ios.forums.wordpress.org"]];
+                }
+                
+                break;
+            default:
+                // should never get here
+                break;
+        }
     } else if (indexPath.section == SettingsSectionFeedback) {
         if ([MFMailComposeViewController canSendMail]) {
             MFMailComposeViewController *mailComposeViewController = [self feedbackMailViewController];

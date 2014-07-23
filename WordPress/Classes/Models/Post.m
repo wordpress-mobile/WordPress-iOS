@@ -295,6 +295,7 @@ NSUInteger const PostSummaryLength = 150;
 }
 
 #pragma mark - QuickPhoto
+
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification {
     Media *media = (Media *)[notification object];
     [media save];

@@ -10,6 +10,7 @@
 #import <Simperium/Simperium.h>
 #import <Helpshift/Helpshift.h>
 #import <Taplytics/Taplytics.h>
+#import <WordPress-iOS-Shared/WPFontManager.h>
 
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
@@ -53,8 +54,10 @@ static NSString * const WPTabBarRestorationID = @"WPTabBarID";
 static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
 static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
 static NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
-static NSInteger const IndexForMeTab = 2;
 static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
+NSInteger const kReaderTabIndex = 0;
+NSInteger const kNotificationsTabIndex = 1;
+NSInteger const kMeTabIndex = 2;
 
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
@@ -365,7 +368,7 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     [[UITabBar appearance] setShadowImage:[UIImage imageWithColor:[UIColor colorWithRed:210.0/255.0 green:222.0/255.0 blue:230.0/255.0 alpha:1.0]]];
     [[UITabBar appearance] setTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
 
-    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [UIFont fontWithName:@"OpenSans-Bold" size:16.0]} ];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [WPFontManager openSansBoldFontOfSize:16.0]} ];
 // temporarily removed to fix transparent UINavigationBar within Helpshift
 //    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"transparent-point"] forBarMetrics:UIBarMetricsDefault];
 //    [[UINavigationBar appearance] setShadowImage:[UIImage imageNamed:@"transparent-point"]];
@@ -374,7 +377,7 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     [[UIToolbar appearance] setBarTintColor:[WPStyleGuide wordPressBlue]];
     [[UISwitch appearance] setOnTintColor:[WPStyleGuide wordPressBlue]];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    [[UITabBarItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"OpenSans" size:10.0]} forState:UIControlStateNormal];
+    [[UITabBarItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPFontManager openSansRegularFontOfSize:10.0]} forState:UIControlStateNormal];
 
     [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[WPStyleGuide wordPressBlue]];
@@ -401,15 +404,7 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 
     // Create a background
     // (not strictly needed when white, but left here for possible customization)
-    UIColor *backgroundColor = [UIColor whiteColor];
-    CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
-    UIGraphicsBeginImageContext(rect.size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context, [backgroundColor CGColor]);
-    CGContextFillRect(context, rect);
-    UIImage *tabBackgroundImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    _tabBarController.tabBar.backgroundImage = tabBackgroundImage;
+    _tabBarController.tabBar.backgroundImage = [UIImage imageWithColor:[UIColor whiteColor]];
     
     self.readerPostsViewController = [[ReaderPostsViewController alloc] init];
     UINavigationController *readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerPostsViewController];
@@ -464,27 +459,8 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
     return _tabBarController;
 }
 
-- (void)showNotificationsTab
-{
-    NSInteger notificationsTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.notificationsViewController.navigationController];
-    [self.tabBarController setSelectedIndex:notificationsTabIndex];
-}
-
-- (void)showReaderTab
-{
-    NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
-    [self.tabBarController setSelectedIndex:readerTabIndex];
-}
-
-- (void)showBlogListTab
-{
-    NSInteger blogListTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.blogListViewController.navigationController];
-    [self.tabBarController setSelectedIndex:blogListTabIndex];
-}
-
-- (void)showMeTab
-{
-    [self.tabBarController setSelectedIndex:IndexForMeTab];
+- (void)showTabForIndex: (NSInteger)tabIndex {
+    [self.tabBarController setSelectedIndex:tabIndex];
 }
 
 - (void)showPostTab
@@ -521,10 +497,10 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 - (void)switchTabToPostsListForPost:(AbstractPost *)post
 {
     // Make sure the desired tab is selected.
-    [self showMeTab];
+    [self showTabForIndex:kMeTabIndex];
 
     // Check which VC is showing.
-    UINavigationController *blogListNavController = [self.tabBarController.viewControllers objectAtIndex:IndexForMeTab];
+    UINavigationController *blogListNavController = [self.tabBarController.viewControllers objectAtIndex:kMeTabIndex];
     UIViewController *topVC = blogListNavController.topViewController;
     if ([topVC isKindOfClass:[PostsViewController class]]) {
         Blog *blog = ((PostsViewController *)topVC).blog;
@@ -549,7 +525,7 @@ static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 
 - (BOOL)isNavigatingMeTab
 {
-    return (self.tabBarController.selectedIndex == IndexForMeTab && [self.blogListViewController.navigationController.viewControllers count] > 1);
+    return (self.tabBarController.selectedIndex == kMeTabIndex && [self.blogListViewController.navigationController.viewControllers count] > 1);
 }
 
 #pragma mark - UITabBarControllerDelegate methods.

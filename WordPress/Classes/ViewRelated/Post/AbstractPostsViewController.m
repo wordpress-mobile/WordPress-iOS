@@ -5,6 +5,8 @@
 #import "BasePost.h"
 
 static CGFloat const APVCHeaderHeightPhone = 10.0;
+static CGFloat const APVCEstimatedRowHeightIPhone = 400.0;
+static CGFloat const APVCEstimatedRowHeightIPad = 600.0;
 
 NSString * const FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
 NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier";
@@ -22,7 +24,8 @@ NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier
     self.featuredImageSource.delegate = nil;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 
     [self.tableView registerClass:[self cellClass] forCellReuseIdentifier:NoFeaturedImageCellIdentifier];
@@ -53,6 +56,9 @@ NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier
         width = CGRectGetHeight(self.tableView.window.frame);
     }
     [self updateCellForLayoutWidthConstraint:width];
+    if (IS_IPHONE) {
+        [self.cachedRowHeights removeAllObjects];
+    }
 }
 
 #pragma mark - Instance Methods
@@ -95,7 +101,8 @@ NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier
 
 #pragma mark TableView Delegate
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     UITableViewCell *cell;
     BasePost *post = (BasePost *)[self.resultsController objectAtIndexPath:indexPath];
     if ([post respondsToSelector:@selector(featuredImageURLForDisplay)] && [post featuredImageURLForDisplay]) {
@@ -115,12 +122,41 @@ NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier
     return cell;
 }
 
+- (void)cacheHeight:(CGFloat)height forIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *key = [NSString stringWithFormat:@"%i", indexPath.row];
+    [self.cachedRowHeights setObject:@(height) forKey:key];
+}
+
+- (NSNumber *)cachedHeightForIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *key = [NSString stringWithFormat:@"%i", indexPath.row];
+    return [self.cachedRowHeights numberForKey:key];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSNumber *height = [self cachedHeightForIndexPath:indexPath];
+    if (height) {
+        return [height floatValue];
+    }
+    return IS_IPAD ? APVCEstimatedRowHeightIPad : APVCEstimatedRowHeightIPhone;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSNumber *cachedHeight = [self cachedHeightForIndexPath:indexPath];
+    if (cachedHeight) {
+        return [cachedHeight floatValue];
+    }
+
     [self configureCell:self.cellForLayout atIndexPath:indexPath];
     CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
     CGSize size = [self.cellForLayout sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
-    return ceil(size.height + 1);
+    CGFloat height = ceil(size.height) + 1;
+
+    [self cacheHeight:height forIndexPath:indexPath];
+    return height;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section

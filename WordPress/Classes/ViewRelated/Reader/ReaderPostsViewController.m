@@ -21,13 +21,11 @@
 #import "ReaderTopicService.h"
 #import "ReaderPostService.h"
 #import "CustomHighlightButton.h"
+#import "BlogService.h"
 
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
-static CGFloat const RPVCEstimatedRowHeightIPhone = 400.0;
-static CGFloat const RPVCEstimatedRowHeightIPad = 600.0;
-
-@interface ReaderPostsViewController () <ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate>
+@interface ReaderPostsViewController ()<WPTableImageSourceDelegate, ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate>
 
 @property (nonatomic, assign) BOOL hasMoreContent;
 @property (nonatomic, assign) BOOL loadingMore;
@@ -36,7 +34,6 @@ static CGFloat const RPVCEstimatedRowHeightIPad = 600.0;
 @property (nonatomic, assign) CGFloat lastOffset;
 @property (nonatomic, strong) WPAnimatedBox *animatedBox;
 @property (nonatomic, strong) UIGestureRecognizer *tapOffKeyboardGesture;
-
 @property (nonatomic, strong) ReaderPostDetailViewController *detailController;
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 @property (nonatomic, strong) ReaderCommentPublisher *commentPublisher;
@@ -78,8 +75,6 @@ static CGFloat const RPVCEstimatedRowHeightIPad = 600.0;
     self.incrementalLoadingSupported = YES;
 
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
-
-    self.tableView.estimatedRowHeight = IS_IPAD ? RPVCEstimatedRowHeightIPad : RPVCEstimatedRowHeightIPhone;
 
 	// Topics button
     UIBarButtonItem *button = nil;
@@ -514,6 +509,16 @@ static CGFloat const RPVCEstimatedRowHeightIPad = 600.0;
     }
 }
 
+- (void)syncItems
+{
+    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    if ([service numberOfAccounts] > 0) {
+        [super syncItems];
+    } else {
+        [self configureNoResultsView];
+    }
+}
+
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure
 {
     DDLogMethod();
@@ -680,7 +685,10 @@ static CGFloat const RPVCEstimatedRowHeightIPad = 600.0;
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath
 {
-    // Do nothing (prevent superclass from adjusting table view)
+    if (type == NSFetchedResultsChangeInsert || type == NSFetchedResultsChangeDelete) {
+        [self.cachedRowHeights removeAllObjects];
+    }
+    // Do not call super. (prevent superclass from adjusting table view)
 }
 
 

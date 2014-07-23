@@ -15,7 +15,7 @@
 
 @implementation NSStringSimperiumTest
 
-- (void)testMissingSeparator
+- (void)testSeparatingComponentsOnStringWithMissingSeparator
 {
     NSString *sample = @"One Two Three Four Five Six Seven Eight Nine Ten";
     
@@ -25,7 +25,7 @@
     XCTAssert([[result firstObject] isEqualToString:sample], @"Issue while splitting");
 }
 
-- (void)testWithSeparator
+- (void)testSeparatingComponentsOnStringWithValidSeparator
 {
     NSString *sample    = @"One:Two:Three:Four:Five:Six:Seven:Eight:Nine:Ten";
     NSArray *control    = [sample componentsSeparatedByString:@":"];

@@ -281,6 +281,10 @@
             _addingNewPost = NO;
         }
     }
+
+    if (type == NSFetchedResultsChangeInsert || type == NSFetchedResultsChangeDelete) {
+        [self.cachedRowHeights removeAllObjects];
+    }
 }
 
 - (BOOL)userCanCreateEntity {
