@@ -181,11 +181,18 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 
 - (void)updateTabBarBadgeNumber
 {
-    UIApplication *application = [UIApplication sharedApplication];
-    NSInteger count = application.applicationIconBadgeNumber;
+    NSInteger count         = [[UIApplication sharedApplication] applicationIconBadgeNumber];
+    NSString *countString   = nil;
     
-    NSString *countString = count == 0 ? nil : [NSString stringWithFormat:@"%d", count];
-    self.navigationController.tabBarItem.badgeValue = countString;
+    if (count > 0) {
+        countString = [NSString stringWithFormat:@"%d", count];
+    }
+    
+    // Note: self.navigationViewController might be nil. Let's hit the UITabBarController instead
+    UITabBarController *tabBarController    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] tabBarController];
+    UITabBarItem *tabBarItem                = tabBarController.tabBar.items[kNotificationsTabIndex];
+    
+    tabBarItem.badgeValue                   = countString;
 }
 
 - (void)updateLastSeenTime
