@@ -30,6 +30,8 @@
     for (NotificationURL *url in self.urls) {
         if ([url.type isEqual:NoteLinkTypeUser]) {
             [theString addAttributes:attributesBold range:url.range];
+        } else if ( [url.type isEqual:NoteLinkTypePost]) {
+            [theString addAttributes:attributesItalics range:url.range];
         }
     }
 
@@ -44,6 +46,7 @@
     
     NSDictionary *attributes                = [WPStyleGuide notificationBlockAttributes];
     NSDictionary *attributesBold            = [WPStyleGuide notificationBlockAttributesBold];
+    NSDictionary *attributesItalics         = [WPStyleGuide notificationBlockAttributesItalics];
     NSMutableAttributedString *theString    = [[NSMutableAttributedString alloc] initWithString:self.text attributes:attributes];
     
     [theString applyAttributesToQuotes:attributesBold];
@@ -52,6 +55,10 @@
     //  DTLinkAttribute     = @"NSLinkAttributeName"
     //  NSLinkAttributeName = @"NSLink"
     for (NotificationURL *url in self.urls) {
+        if ([url.type isEqual:NoteLinkTypePost]) {
+            [theString addAttributes:attributesItalics range:url.range];
+        }
+        
         if (!url.url) {
             continue;
         }

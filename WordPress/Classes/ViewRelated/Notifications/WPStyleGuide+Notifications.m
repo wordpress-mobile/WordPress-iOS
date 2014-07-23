@@ -101,6 +101,12 @@
     return [WPFontManager openSansBoldFontOfSize:size];
 }
 
++ (UIFont *)notificationBlockFontItalics
+{
+    CGFloat size = (IS_IPAD ? 18.0f : 16.0f);
+    return [WPFontManager openSansItalicFontOfSize:size];
+}
+
 + (NSDictionary *)notificationBlockAttributes
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
@@ -124,6 +130,19 @@
         NSParagraphStyleAttributeName   : paragraphStyle,
         NSFontAttributeName             : [WPStyleGuide notificationBlockFontBold],
         NSForegroundColorAttributeName  : [WPStyleGuide littleEddieGrey],
+    };
+}
+
++ (NSDictionary *)notificationBlockAttributesItalics
+{
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.minimumLineHeight        = 24;
+    paragraphStyle.maximumLineHeight        = 24;
+    
+    return @{
+             NSParagraphStyleAttributeName   : paragraphStyle,
+             NSFontAttributeName             : [WPStyleGuide notificationBlockFontItalics],
+             NSForegroundColorAttributeName  : [WPStyleGuide littleEddieGrey],
     };
 }
 
