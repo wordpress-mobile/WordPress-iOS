@@ -214,7 +214,9 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
                                 
                                 NSString *displayName = ([responseObject valueForKey:@"display_name"]) ? [responseObject objectForKey:@"display_name"] : nil;
                                 NSString *emailAddress = ([responseObject valueForKey:@"email"]) ? [responseObject objectForKey:@"email"] : nil;
+                                NSString *userID = ([responseObject valueForKey:@"ID"]) ? [[responseObject objectForKey:@"ID"] stringValue] : nil;
 
+                                [Helpshift setUserIdentifier:userID];
                                 [self displayHelpshiftWindowOfType:helpshiftType withUsername:displayName andEmail:emailAddress andMetadata:metaData];
                             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                 [self hideLoadingSpinner];
