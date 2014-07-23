@@ -65,7 +65,8 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     self.view = scrollView;
     self.view.backgroundColor = [UIColor whiteColor];
     
-    self.trashButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-trash"] selectedImage:[UIImage imageNamed:@"icon-comments-trash-active"]];
+    self.trashButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-trash"]
+                                                    selectedImage:[UIImage imageNamed:@"icon-comments-trash-active"]];
     self.trashButton.accessibilityLabel = NSLocalizedString(@"Move to trash", @"Spoken accessibility label.");
     [self.trashButton addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
     
