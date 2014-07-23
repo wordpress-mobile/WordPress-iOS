@@ -113,7 +113,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [[UIApplication sharedApplication] removeObserver:self forKeyPath:@"applicationIconBadgeNumber"];
+    [[UIApplication sharedApplication] removeObserver:self forKeyPath:NSStringFromSelector(@selector(applicationIconBadgeNumber))];
 }
 
 - (void)viewDidLoad
@@ -135,11 +135,10 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     }
     
     // Watch for application badge number changes
-    UIApplication *application = [UIApplication sharedApplication];
-    [application addObserver:self
-                  forKeyPath:@"applicationIconBadgeNumber"
-                     options:NSKeyValueObservingOptionNew
-                     context:nil];
+    UIApplication *application  = [UIApplication sharedApplication];
+    NSString *badgeKeyPath      = NSStringFromSelector(@selector(applicationIconBadgeNumber));
+    [application addObserver:self forKeyPath:badgeKeyPath options:NSKeyValueObservingOptionNew context:nil];
+    
     [self updateTabBarBadgeNumber];
 }
 
@@ -147,6 +146,10 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 {
     DDLogMethod();
     [super viewWillAppear:animated];
+    
+    // Listen to appDidBecomeActive Note
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(handleApplicationDidBecomeActiveNote:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -162,15 +165,37 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     [self resetApplicationBadge];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    DDLogMethod();
+    [super viewWillDisappear:animated];
 
-#pragma mark - NSObject(NSKeyValueObserving) methods
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
+#pragma mark - NSObject(NSKeyValueObserving) Helpers
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if ([keyPath isEqualToString:@"applicationIconBadgeNumber"]) {
+    if ([keyPath isEqualToString:NSStringFromSelector(@selector(applicationIconBadgeNumber))]) {
         [self updateTabBarBadgeNumber];
     }
 }
+
+
+#pragma mark - NSNotification Helpers
+
+- (void)handleApplicationDidBecomeActiveNote:(NSNotification *)note
+{
+    // Let's reset the badge, whenever the app comes back to FG, and this view was upfront!
+    if (!self.isViewLoaded || !self.view.window) {
+        return;
+    }
+    
+    [self resetApplicationBadge];
+}
+
 
 #pragma mark - Custom methods
 
