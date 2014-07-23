@@ -314,16 +314,16 @@ CGFloat const ReblogViewTextBottomInset = 30;
 
 - (void)fetchFeaturedImage
 {
+    NSURL *imageURL = [self.post featuredImageURLForDisplay];
+    if (!imageURL) {
+        return;
+    }
+
     if (!self.featuredImageSource) {
         CGFloat maxWidth = MAX(CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds));;
         CGFloat maxHeight = maxWidth * WPContentViewMaxImageHeightPercentage;
         self.featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
         self.featuredImageSource.delegate = self;
-    }
-
-    NSURL *imageURL = [self.post featuredImageURLForDisplay];
-    if (!imageURL) {
-        return;
     }
 
     CGFloat width = CGRectGetWidth(self.view.bounds);
