@@ -222,9 +222,6 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 }
 
 - (void)setContentProvider:(id<WPContentViewProvider>)contentProvider {
-    if (_contentProvider == contentProvider)
-        return;
-    
     _contentProvider = contentProvider;
     [self configureContentView:_contentProvider];
 }

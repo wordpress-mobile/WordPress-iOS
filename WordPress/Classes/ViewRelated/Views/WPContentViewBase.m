@@ -64,9 +64,6 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
 - (void)setContentProvider:(id<WPContentViewProvider>)contentProvider
 {
-    if (_contentProvider == contentProvider)
-        return;
-
     _contentProvider = contentProvider;
     [self configureView];
 }
