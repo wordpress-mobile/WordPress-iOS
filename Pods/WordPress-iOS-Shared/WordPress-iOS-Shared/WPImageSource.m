@@ -3,7 +3,6 @@
 
 #import "WPAnimatedImageResponseSerializer.h"
 
-NSUInteger const WPImageSourceMaxConcurrentOperations = 10;
 NSString * const WPImageSourceErrorDomain = @"WPImageSourceErrorDomain";
 
 @implementation WPImageSource {
