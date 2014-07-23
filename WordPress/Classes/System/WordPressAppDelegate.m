@@ -278,20 +278,19 @@ NSInteger const kMeTabIndex = 2;
     }
    
     // Check which tab is currently selected
+    NSString *currentlySelectedScreen = @"";
     switch (self.tabBarController.selectedIndex) {
         case kReaderTabIndex:
-            return @"Reader";
+            currentlySelectedScreen = @"Reader";
             break;
         case kNotificationsTabIndex:
-            return @"Notifications";
+            currentlySelectedScreen = @"Notifications";
             break;
         case kMeTabIndex:
-            return @"Blog List";
+            currentlySelectedScreen = @"Blog List";
             break;
-        default:
-            // Shouldn't get here but just incase
-            return @"";
     }
+    return currentlySelectedScreen;
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
