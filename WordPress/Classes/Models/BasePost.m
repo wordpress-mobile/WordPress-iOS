@@ -206,13 +206,7 @@
 
 - (NSString *)statusForDisplay {
     if (self.remoteStatus == AbstractPostRemoteStatusSync) {
-        if ([self.status isEqualToString:@"pending"]) {
-            return NSLocalizedString(@"Pending", @"");
-        } else if ([self.status isEqualToString:@"draft"]) {
-            return self.statusTitle;
-        } else {
-            return @"";
-        }
+        return [[self class] titleForStatus:self.status];
     } else {
         NSString *statusText = [AbstractPost titleForRemoteStatus:@((int)self.remoteStatus)];
         if ([statusText isEqualToString:NSLocalizedString(@"Uploading", nil)]) {
