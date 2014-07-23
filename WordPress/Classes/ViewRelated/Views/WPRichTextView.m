@@ -8,7 +8,6 @@
 #import "UIImage+Util.h"
 #import "VideoThumbnailServiceRemote.h"
 
-static NSUInteger const WPRichTextViewMediaBatchSize = 5;
 static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
 
 @interface WPRichTextView()<DTAttributedTextContentViewDelegate, WPTableImageSourceDelegate>
