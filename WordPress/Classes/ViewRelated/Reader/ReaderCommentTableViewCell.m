@@ -156,7 +156,7 @@ const CGFloat RPVAuthorBadgeHeight = 12.0f;
         self.authorBadgeLabel.textColor = [UIColor whiteColor];
         self.authorBadgeLabel.textAlignment = NSTextAlignmentCenter;
         self.authorBadgeLabel.font = [WPFontManager openSansBoldFontOfSize:6.0];
-        self.authorBadgeLabel.text = @"Author";
+        self.authorBadgeLabel.text = NSLocalizedString(@"Author", @"Author badge text in Reader comment");
         [self.contentView addSubview:self.authorBadgeLabel];
 
         // Make sure the text view doesn't overlap any of the other views.
