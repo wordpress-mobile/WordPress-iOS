@@ -93,8 +93,8 @@
         [actionButtons addObject:self.commentButton];
     }
 
-    // Reblogging just for non private blogs with sharing enabled
-    if (![self privateContent] && self.post.isSharingEnabled) {
+    // Reblogging just for non private blogs
+    if (![self privateContent]) {
         [actionButtons addObject:self.reblogButton];
     }
     
