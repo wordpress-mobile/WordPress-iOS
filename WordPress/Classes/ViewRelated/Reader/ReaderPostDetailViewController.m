@@ -180,7 +180,15 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     if ((lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > ReaderPostDetailViewControllerRefreshTimeout) && self.post.isWPCom) {
 		[self syncWithUserInteraction:NO];
     }
-    
+
+    // The first time the activity view controller is loaded, there is a bit of
+    // processing that happens under the hood. This can cause a stutter
+    // if the user taps the share button while scrolling. A work around is to
+    // prime the activity controller when there is no animation occuring.
+    // The performance hit only happens once so its fine to discard the controller
+    // after it loads its view.
+    [[self activityViewControllerForSharing] view];
+
     [self.tableView reloadData];
 }
 
@@ -400,7 +408,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 	});
 }
 
-- (void)handleShareButtonTapped:(id)sender
+- (UIActivityViewController *)activityViewControllerForSharing
 {
     NSString *title = self.post.postTitle;
     NSString *summary = self.post.summary;
@@ -408,7 +416,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
     NSMutableArray *activityItems = [NSMutableArray array];
 	NSMutableDictionary *postDictionary = [NSMutableDictionary dictionary];
-	
+
     if (title) {
         postDictionary[@"title"] = title;
     }
@@ -433,7 +441,12 @@ static CGFloat const SectionHeaderHeight = 25.0f;
         }
         [WPActivityDefaults trackActivityType:activityType];
     };
+    return activityViewController;
+}
 
+- (void)handleShareButtonTapped:(id)sender
+{
+    UIActivityViewController *activityViewController = [self activityViewControllerForSharing];
     if (IS_IPAD) {
         if (self.popover) {
             [self dismissPopover];
