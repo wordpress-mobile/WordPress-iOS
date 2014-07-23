@@ -917,6 +917,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [super tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
     // Preload here to avoid unnecessary preload calls when fetching cells for reasons other than for display.
     [self preloadImagesForCellsAfterIndexPath:indexPath];
 }
