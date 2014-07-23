@@ -8,12 +8,16 @@
 #import "WPWebViewController.h"
 #import "NSDate+StringFormatting.h"
 #import "NSString+Helpers.h"
+#import "WPFontManager.h"
 
 #define RCTVCVerticalPadding 10.0f
 #define RCTVCIndentationWidth 40.0f
 #define RCTVCCommentTextTopMargin 25.0f
 #define RCTVCLeftMargin 40.0f
 #define RCTVCMaxIndentationLevel 3
+#define RCTVCTopAuthorBadgeMargin 45.0f
+const CGFloat RPVAuthorBadgeWidth = 32.0f;
+const CGFloat RPVAuthorBadgeHeight = 12.0f;
 
 @interface ReaderCommentTableViewCell()<DTAttributedTextContentViewDelegate>
 
@@ -22,6 +26,7 @@
 @property (nonatomic, strong) UIImageView *avatarImageView;
 @property (nonatomic, strong) UIButton *bylineButton;
 @property (nonatomic, strong) UIButton *timeButton;
+@property (nonatomic, strong) UILabel *authorBadgeLabel;
 
 - (void)handleLinkTapped:(id)sender;
 
@@ -146,6 +151,14 @@
 		self.textContentView.shouldLayoutCustomSubviews = YES;
 		[self.contentView addSubview:self.textContentView];
 
+        self.authorBadgeLabel = [[UILabel alloc] initWithFrame:CGRectMake(RPVHorizontalInnerPadding, RCTVCTopAuthorBadgeMargin, RPVAuthorBadgeWidth, RPVAuthorBadgeHeight)];
+        self.authorBadgeLabel.backgroundColor = [WPStyleGuide jazzyOrange];
+        self.authorBadgeLabel.textColor = [UIColor whiteColor];
+        self.authorBadgeLabel.textAlignment = NSTextAlignmentCenter;
+        self.authorBadgeLabel.font = [WPFontManager openSansBoldFontOfSize:6.0];
+        self.authorBadgeLabel.text = NSLocalizedString(@"Author", @"Author badge text in Reader comment");
+        [self.contentView addSubview:self.authorBadgeLabel];
+
         // Make sure the text view doesn't overlap any of the other views.
         [self.contentView sendSubviewToBack:self.textContentView];
     }
@@ -167,6 +180,9 @@
 
     // Avatar
 	self.avatarImageView.frame = CGRectMake(RPVHorizontalInnerPadding, RCTVCVerticalPadding + 1.0f, RPVAvatarSize, RPVAvatarSize);
+
+    // Author badge label
+    self.authorBadgeLabel.frame = CGRectMake(RPVHorizontalInnerPadding, RCTVCTopAuthorBadgeMargin, RPVAuthorBadgeWidth, RPVAuthorBadgeHeight);
 
     // Date button
     frame = self.timeButton.frame;
@@ -222,6 +238,8 @@
 	}
 
 	self.textContentView.attributedString = comment.attributedContent;
+
+    self.authorBadgeLabel.hidden = ![comment.author_url isEqualToString:comment.post.authorURL];
 }
 
 - (void)handleLinkTapped:(id)sender {
