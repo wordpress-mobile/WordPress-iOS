@@ -4,13 +4,6 @@
 
 @implementation PostTableViewCell
 
-#pragma mark - Lifecycle Methods
-
-- (void)dealloc
-{
-	self.post = nil;
-}
-
 #pragma mark - Private Methods
 
 - (WPContentViewBase *)configurePostView {
@@ -25,7 +18,9 @@
 - (void)configureCell:(Post *)post
 {
     self.post = post;
-    [(PostContentView *)self.postView configurePost:post];
+    if ([self.postView isKindOfClass:[PostContentView class]]) {
+        [(PostContentView *)self.postView configurePost:post];
+    }
 }
 
 @end

@@ -63,39 +63,39 @@ NSUInteger const WPPostSummaryLength = 150;
 }
 
 - (void)updateFromDictionary:(NSDictionary *)postInfo {
-    self.postTitle      = [postInfo objectForKey:@"title"];
-	//keep attention: getPosts and getPost returning IDs in different types
-	if ([[postInfo objectForKey:@"postid"] isKindOfClass:[NSString class]]) {
-	  self.postID         = [[postInfo objectForKey:@"postid"] numericValue];
-	} else {
-	  self.postID         = [postInfo objectForKey:@"postid"];
-	}
-      
-	self.content        = [postInfo objectForKey:@"description"];
-    if ([[postInfo objectForKey:@"date_created_gmt"] isKindOfClass:[NSDate class]]) {
-        self.date_created_gmt    = [postInfo objectForKey:@"date_created_gmt"];
+    self.postTitle = postInfo[@"title"];
+    //keep attention: getPosts and getPost returning IDs in different types
+    if ([postInfo[@"postid"] isKindOfClass:[NSString class]]) {
+        self.postID = [postInfo[@"postid"] numericValue];
     } else {
-        self.dateCreated = [postInfo objectForKey:@"dateCreated"];
+        self.postID = postInfo[@"postid"];
     }
-    self.status         = [postInfo objectForKey:@"post_status"];
-    NSString *password = [postInfo objectForKey:@"wp_password"];
+
+    self.content = postInfo[@"description"];
+    if ([postInfo[@"date_created_gmt"] isKindOfClass:[NSDate class]]) {
+        self.date_created_gmt = postInfo[@"date_created_gmt"];
+    } else {
+        self.dateCreated = postInfo[@"dateCreated"];
+    }
+    self.status = postInfo[@"post_status"];
+    NSString *password = postInfo[@"wp_password"];
     if ([password isEqualToString:@""]) {
         password = nil;
     }
     self.password = password;
-    if ([postInfo objectForKey:@"wp_author_display_name"]) {
-        self.author = [postInfo objectForKey:@"wp_author_display_name"];
+    if (postInfo[@"wp_author_display_name"]) {
+        self.author = postInfo[@"wp_author_display_name"];
     }
-    else if ([postInfo objectForKey:@"author"]) {
-        NSDictionary *author = [postInfo objectForKey:@"author"];
-        self.author = [author objectForKey:@"name"];
-        self.authorAvatarURL = [author objectForKey:@"avatar_URL"];
+    else if (postInfo[@"author"]) {
+        NSDictionary *author = postInfo[@"author"];
+        self.author = author[@"name"];
+        self.authorAvatarURL = author[@"avatar_URL"];
     }
-    self.tags           = [postInfo objectForKey:@"mt_keywords"];
-	self.permaLink      = [postInfo objectForKey:@"permaLink"];
-	self.mt_excerpt		= [postInfo objectForKey:@"mt_excerpt"];
-	self.mt_text_more	= [postInfo objectForKey:@"mt_text_more"];
-    NSString *wp_more_text = [postInfo objectForKey:@"wp_more_text"];
+    self.tags = postInfo[@"mt_keywords"];
+    self.permaLink = postInfo[@"permaLink"];
+    self.mt_excerpt = postInfo[@"mt_excerpt"];
+    self.mt_text_more = postInfo[@"mt_text_more"];
+    NSString *wp_more_text = postInfo[@"wp_more_text"];
     if ([wp_more_text length] > 0) {
         wp_more_text = [@" " stringByAppendingString:wp_more_text]; // Give us a little padding.
     }
@@ -103,57 +103,57 @@ NSUInteger const WPPostSummaryLength = 150;
         self.content = [NSString stringWithFormat:@"%@\n\n<!--more%@-->\n\n%@", self.content, wp_more_text, self.mt_text_more];
         self.mt_text_more = nil;
     }
-	self.wp_slug		= [postInfo objectForKey:@"wp_slug"];
-	self.post_thumbnail = [[postInfo objectForKey:@"wp_post_thumbnail"] numericValue];
+    self.wp_slug = postInfo[@"wp_slug"];
+    self.post_thumbnail = [postInfo[@"wp_post_thumbnail"] numericValue];
     if (self.post_thumbnail != nil && [self.post_thumbnail intValue] == 0)
         self.post_thumbnail = nil;
-	self.postFormat		= [postInfo objectForKey:@"wp_post_format"];
-	
-    self.remoteStatus   = AbstractPostRemoteStatusSync;
-    if ([postInfo objectForKey:@"categories"]) {
-        [self setCategoriesFromNames:[postInfo objectForKey:@"categories"]];
+    self.postFormat = postInfo[@"wp_post_format"];
+
+    self.remoteStatus = AbstractPostRemoteStatusSync;
+    if (postInfo[@"categories"]) {
+        [self setCategoriesFromNames:postInfo[@"categories"]];
     }
 
-	self.latitudeID = nil;
-	self.longitudeID = nil;
-	self.publicID = nil;
-	
-	if ([postInfo objectForKey:@"custom_fields"]) {
-		NSArray *customFields = [postInfo objectForKey:@"custom_fields"];
-		NSString *geo_longitude = nil;
-		NSString *geo_latitude = nil;
-		NSString *geo_longitude_id = nil;
-		NSString *geo_latitude_id = nil;
-		NSString *geo_public_id = nil;
-		for (NSDictionary *customField in customFields) {
-			NSString *ID = [customField objectForKey:@"id"];
-			NSString *key = [customField objectForKey:@"key"];
-			NSString *value = [customField objectForKey:@"value"];
+    self.latitudeID = nil;
+    self.longitudeID = nil;
+    self.publicID = nil;
 
-			if (key) {
-				if ([key isEqualToString:@"geo_longitude"]) {
-					geo_longitude = value;
-					geo_longitude_id = ID;
-				} else if ([key isEqualToString:@"geo_latitude"]) {
-					geo_latitude = value;
-					geo_latitude_id = ID;
-				} else if ([key isEqualToString:@"geo_public"]) {
-					geo_public_id = ID;
-				}
-			}
-		}
-		
-		if (geo_latitude && geo_longitude) {
-			CLLocationCoordinate2D coord;
-			coord.latitude = [geo_latitude doubleValue];
-			coord.longitude = [geo_longitude doubleValue];
-			Coordinate *c = [[Coordinate alloc] initWithCoordinate:coord];
-			self.geolocation = c;
-			self.latitudeID = geo_latitude_id;
-			self.longitudeID = geo_longitude_id;
-			self.publicID = geo_public_id;
-		}
-	}
+    if (postInfo[@"custom_fields"]) {
+        NSArray *customFields = postInfo[@"custom_fields"];
+        NSString *geo_longitude = nil;
+        NSString *geo_latitude = nil;
+        NSString *geo_longitude_id = nil;
+        NSString *geo_latitude_id = nil;
+        NSString *geo_public_id = nil;
+        for (NSDictionary *customField in customFields) {
+            NSString *ID = customField[@"id"];
+            NSString *key = customField[@"key"];
+            NSString *value = customField[@"value"];
+
+            if (key) {
+                if ([key isEqualToString:@"geo_longitude"]) {
+                    geo_longitude = value;
+                    geo_longitude_id = ID;
+                } else if ([key isEqualToString:@"geo_latitude"]) {
+                    geo_latitude = value;
+                    geo_latitude_id = ID;
+                } else if ([key isEqualToString:@"geo_public"]) {
+                    geo_public_id = ID;
+                }
+            }
+        }
+
+        if (geo_latitude && geo_longitude) {
+            CLLocationCoordinate2D coord;
+            coord.latitude = [geo_latitude doubleValue];
+            coord.longitude = [geo_longitude doubleValue];
+            Coordinate *c = [[Coordinate alloc] initWithCoordinate:coord];
+            self.geolocation = c;
+            self.latitudeID = geo_latitude_id;
+            self.longitudeID = geo_longitude_id;
+            self.publicID = geo_public_id;
+        }
+    }
 }
 
 - (NSString *)categoriesText {
@@ -163,11 +163,11 @@ NSUInteger const WPPostSummaryLength = 150;
 - (NSString *)postFormatText {
     NSDictionary *allFormats = self.blog.postFormats;
     NSString *formatText = self.postFormat;
-    if ([allFormats objectForKey:self.postFormat]) {
-        formatText = [allFormats objectForKey:self.postFormat];
+    if (allFormats[self.postFormat]) {
+        formatText = allFormats[self.postFormat];
     }
-    if ((formatText == nil || [formatText isEqualToString:@""]) && [allFormats objectForKey:@"standard"]) {
-        formatText = [allFormats objectForKey:@"standard"];
+    if ((formatText == nil || [formatText isEqualToString:@""]) && allFormats[@"standard"]) {
+        formatText = allFormats[@"standard"];
     }
     return formatText;
 }
@@ -457,7 +457,7 @@ NSUInteger const WPPostSummaryLength = 150;
     DDLogMethod();
     // XML-RPC doesn't like empty post thumbnail ID's for new posts, but it's required to delete them on edit. see #1395 and #1507
     NSMutableDictionary *xmlrpcDictionary = [NSMutableDictionary dictionaryWithDictionary:[self XMLRPCDictionary]];
-    if ([[xmlrpcDictionary objectForKey:@"wp_post_thumbnail"] isEqual:@""]) {
+    if ([xmlrpcDictionary[@"wp_post_thumbnail"] isEqual:@""]) {
         [xmlrpcDictionary removeObjectForKey:@"wp_post_thumbnail"];
     }
     NSArray *parameters = [self.blog getXMLRPCArgsWithExtra:xmlrpcDictionary];

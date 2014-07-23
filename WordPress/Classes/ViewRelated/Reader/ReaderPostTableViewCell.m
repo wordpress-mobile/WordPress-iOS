@@ -5,13 +5,6 @@
 
 @implementation ReaderPostTableViewCell
 
-#pragma mark - Lifecycle Methods
-
-- (void)dealloc
-{
-	self.post = nil;
-}
-
 #pragma mark - Private Methods
 
 - (WPContentViewBase *)configurePostView {
@@ -26,7 +19,9 @@
 - (void)configureCell:(ReaderPost *)post
 {
 	self.post = post;
-    [(ReaderPostContentView *)self.postView configurePost:post];
+    if ([self.postView isKindOfClass:[ReaderPostContentView class]]) {
+        [(ReaderPostContentView *)self.postView configurePost:post];
+    }
 }
 
 @end

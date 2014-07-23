@@ -21,7 +21,7 @@ NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier
 
 - (void)dealloc
 {
-    self.featuredImageSource.delegate = nil;
+    _featuredImageSource.delegate = nil;
 }
 
 - (void)viewDidLoad

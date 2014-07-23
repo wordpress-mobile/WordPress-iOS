@@ -22,8 +22,6 @@
 
 @implementation PostsViewController
 
-@synthesize drafts;
-
 #pragma mark -
 #pragma mark View lifecycle
 
@@ -133,7 +131,7 @@
 #pragma mark TableView delegate
 
 - (void)configureCell:(PostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    Post *post = (Post *) [self.resultsController objectAtIndexPath:indexPath];
+    Post *post = (Post *)[self.resultsController objectAtIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.accessoryType = UITableViewCellAccessoryNone;
 
