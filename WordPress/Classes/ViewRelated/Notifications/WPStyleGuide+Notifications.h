@@ -21,7 +21,9 @@
 + (UIColor *)notificationBlockBackgroundColor;
 + (UIFont *)notificationBlockFont;
 + (UIFont *)notificationBlockFontBold;
++ (UIFont *)notificationBlockFontItalics;
 + (NSDictionary *)notificationBlockAttributes;
 + (NSDictionary *)notificationBlockAttributesBold;
++ (NSDictionary *)notificationBlockAttributesItalics;
 
 @end
