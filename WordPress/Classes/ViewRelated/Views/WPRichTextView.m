@@ -9,6 +9,7 @@
 #import "VideoThumbnailServiceRemote.h"
 
 static NSUInteger const WPRichTextViewMediaBatchSize = 5;
+static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
 
 @interface WPRichTextView()<DTAttributedTextContentViewDelegate, WPTableImageSourceDelegate>
 
@@ -18,7 +19,7 @@ static NSUInteger const WPRichTextViewMediaBatchSize = 5;
 @property (nonatomic, strong) NSMutableArray *mediaIndexPathsPendingDownload;
 @property (nonatomic, strong) NSMutableArray *mediaIndexPathsNeedingLayout;
 @property (nonatomic, strong) WPTableImageSource *imageSource;
-
+@property (nonatomic, strong) NSDate *dateOfLastMediaRefresh;
 @end
 
 @implementation WPRichTextView
@@ -343,14 +344,23 @@ static NSUInteger const WPRichTextViewMediaBatchSize = 5;
 
 - (void)checkPendingImageDownloads
 {
-    NSUInteger count = [self.mediaIndexPathsPendingDownload count];
-    if (count == 0 || (count % WPRichTextViewMediaBatchSize) == 0) {
-        [self refreshLayoutForMediaAtIndexPaths:self.mediaIndexPathsNeedingLayout];
-        [self.mediaIndexPathsNeedingLayout removeAllObjects];
+    if (!self.dateOfLastMediaRefresh) {
+        self.dateOfLastMediaRefresh = [NSDate date];
+    }
 
-        if ([self.delegate respondsToSelector:@selector(richTextViewDidLoadMediaBatch:)]) {
-            [self.delegate richTextViewDidLoadMediaBatch:self];
-        }
+    NSUInteger count = [self.mediaIndexPathsPendingDownload count];
+    NSTimeInterval intervalSinceLastRefresh = fabs([self.dateOfLastMediaRefresh timeIntervalSinceNow]);
+
+    if (intervalSinceLastRefresh < WPRichTextMinimumIntervalBetweenMediaRefreshes && count > 0) {
+        return;
+    }
+
+    [self refreshLayoutForMediaAtIndexPaths:self.mediaIndexPathsNeedingLayout];
+    [self.mediaIndexPathsNeedingLayout removeAllObjects];
+    self.dateOfLastMediaRefresh = [NSDate date];
+
+    if ([self.delegate respondsToSelector:@selector(richTextViewDidLoadMediaBatch:)]) {
+        [self.delegate richTextViewDidLoadMediaBatch:self];
     }
 }
 
