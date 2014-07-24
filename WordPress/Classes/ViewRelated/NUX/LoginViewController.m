@@ -674,7 +674,11 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (void)showHelpshiftConversationView
 {
-    [[Helpshift sharedInstance] showConversation:self withOptions:nil];
+    NSDictionary *metaData = @{@"Source": @"Failed login",
+                               @"Username": _usernameText.text,
+                               @"SiteURL": _siteUrlText.text};
+    
+    [[Helpshift sharedInstance] showConversation:self withOptions:@{HSCustomMetadataKey: metaData}];
 }
 
 - (BOOL)isUrlWPCom:(NSString *)url
@@ -884,6 +888,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
                                 success:^{
                                     [self setAuthenticating:NO withStatusMessage:nil];
                                     [self dismiss];
+                                    [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:@{ @"dotcom_user" : @(YES) }];
                                     [WPAnalytics refreshMetadata];
                                 }
                                 failure:^(NSError *error) {
@@ -931,6 +936,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         [self dismiss];
     }
     
+    [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:@{ @"dotcom_user" : @(NO) }];
     [WPAnalytics refreshMetadata];
 }
 
