@@ -21,7 +21,7 @@
 
 const CGFloat RPVAuthorPadding = 8.0f;
 const CGFloat RPVHorizontalInnerPadding = 12.0f;
-const CGFloat RPVMetaViewHeight = 52.0f;
+const CGFloat RPVMetaViewHeight = 48.0f;
 const CGFloat RPVAuthorViewHeight = 32.0f;
 const CGFloat RPVVerticalPadding = 14.0f;
 const CGFloat RPVAvatarSize = 32.0f;
@@ -34,8 +34,8 @@ const CGFloat RPVSmallButtonLeftPadding = 2; // Follow, tag
 const CGFloat RPVLineHeightMultiple = 1.03f;
 
 // Control buttons (Like, Reblog, ...)
-const CGFloat RPVControlButtonHeight = 52.0f;
-const CGFloat RPVControlButtonWidth = 52.0f;
+const CGFloat RPVControlButtonHeight = 48.0f;
+const CGFloat RPVControlButtonWidth = 48.0f;
 const CGFloat RPVControlButtonSpacing = 12.0f;
 const CGFloat RPVControlButtonBorderSize = 0.0f;
 
