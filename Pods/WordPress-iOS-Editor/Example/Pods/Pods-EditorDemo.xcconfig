@@ -1,5 +1,0 @@
-GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/AFNetworking" "${PODS_ROOT}/Headers/CocoaLumberjack" "${PODS_ROOT}/Headers/DTCoreText" "${PODS_ROOT}/Headers/DTFoundation" "${PODS_ROOT}/Headers/UIAlertView+Blocks" "${PODS_ROOT}/Headers/WordPress-iOS-Editor" "${PODS_ROOT}/Headers/WordPress-iOS-Shared" "$(SDKROOT)/usr/include/libxml2"
-OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers" -isystem "${PODS_ROOT}/Headers/AFNetworking" -isystem "${PODS_ROOT}/Headers/CocoaLumberjack" -isystem "${PODS_ROOT}/Headers/DTCoreText" -isystem "${PODS_ROOT}/Headers/DTFoundation" -isystem "${PODS_ROOT}/Headers/UIAlertView+Blocks" -isystem "${PODS_ROOT}/Headers/WordPress-iOS-Editor" -isystem "${PODS_ROOT}/Headers/WordPress-iOS-Shared"
-OTHER_LDFLAGS = -ObjC -lxml2 -framework CoreGraphics -framework CoreText -framework ImageIO -framework MediaPlayer -framework MobileCoreServices -framework QuartzCore -framework Security -framework SystemConfiguration
-PODS_ROOT = ${SRCROOT}/Pods

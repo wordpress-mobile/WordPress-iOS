@@ -10,6 +10,7 @@
 #import "ContextManager.h"
 #import "WPToast.h"
 #import "WPTableImageSource.h"
+
 #import <WordPress-iOS-Shared/WPFontManager.h>
 
 CGFloat const ReblogViewPostMargin = 10;
