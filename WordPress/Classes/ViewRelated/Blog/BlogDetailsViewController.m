@@ -160,15 +160,15 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
                 cell.imageView.image = [UIImage imageNamed:@"icon-menu-stats"];
                 break;
             case BlogDetailsRowEditSettings:
-                cell.textLabel.text = NSLocalizedString(@"Edit Site Settings", nil);
+                cell.textLabel.text = NSLocalizedString(@"Edit Site", nil);
                 cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
                 break;
             case BlogDetailsRowViewSite:
-                cell.textLabel.text = NSLocalizedString(@"View Web Site", nil);
+                cell.textLabel.text = NSLocalizedString(@"View Site", nil);
                 cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewsite"];
                 break;
             case BlogDetailsRowViewAdmin:
-                cell.textLabel.text = NSLocalizedString(@"View Web Admin", nil);
+                cell.textLabel.text = NSLocalizedString(@"View Admin", nil);
                 cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewadmin"];
                 break;
             default:
