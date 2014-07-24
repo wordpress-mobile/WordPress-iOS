@@ -19,13 +19,14 @@
 #import "WPTableViewController.h"
 #import "NoteBodyItem.h"
 #import "AccountService.h"
-#import "ContentActionButton.h"
+#import <Simperium/Simperium.h>
+#import "VerticallyStackedButton.h"
 
 
 const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight = 64.f;
 NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRestorationKey";
 
-@interface NotificationsCommentDetailViewController () <InlineComposeViewDelegate, WPContentViewDelegate, UIViewControllerRestoration>
+@interface NotificationsCommentDetailViewController () <InlineComposeViewDelegate, WPContentViewDelegate, UIViewControllerRestoration, SPBucketDelegate>
 
 @property (nonatomic, assign) NSUInteger		followBlogID;
 @property (nonatomic, strong) NSDictionary		*commentActions;
@@ -38,10 +39,10 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 @property (nonatomic, strong) NSURL				*headerURL;
 @property (nonatomic, assign) BOOL				hasScrollBackView;
 
-@property (nonatomic, strong) ContentActionButton			*approveButton;
-@property (nonatomic, strong) ContentActionButton			*trashButton;
-@property (nonatomic, strong) ContentActionButton			*spamButton;
-@property (nonatomic, strong) ContentActionButton			*replyButton;
+@property (nonatomic, strong) UIButton			*approveButton;
+@property (nonatomic, strong) UIButton			*trashButton;
+@property (nonatomic, strong) UIButton			*spamButton;
+@property (nonatomic, strong) UIButton			*replyButton;
 
 @property (nonatomic, weak) IBOutlet NoteCommentPostBanner *postBanner;
 @property (nonatomic, strong) CommentView		*commentView;
@@ -122,31 +123,37 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     self.view = scrollView;
     self.view.backgroundColor = [UIColor whiteColor];
     
-    self.replyButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-reply"] selectedImage:[UIImage imageNamed:@"reader-postaction-comment-active"]];
+
+    
+    self.replyButton = [VerticallyStackedButton buttonWithType:UIButtonTypeSystem];
+    [self.replyButton setImage:[UIImage imageNamed:@"icon-comments-reply"] forState:UIControlStateNormal];
     [self.replyButton setTitle:NSLocalizedString(@"Reply", @"Verb, reply to a comment") forState:UIControlStateNormal];
     self.replyButton.accessibilityLabel = NSLocalizedString(@"Reply", @"Spoken accessibility label.");
     [self.replyButton addTarget:self action:@selector(replyAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self.replyButton repositionTitleAndImage];
+    [self.commentView addCustomActionButton:self.replyButton];
     
-    self.approveButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-unapprove"] selectedImage:[UIImage imageNamed:@"icon-comments-approve-active"]];
-    [self.approveButton setTitle:NSLocalizedString(@"Unapprove", @"Verb, unapprove a comment") forState:UIControlStateNormal];
+    self.approveButton = [VerticallyStackedButton buttonWithType:UIButtonTypeSystem];
+    [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-approve"] forState:UIControlStateNormal];
+    [self.approveButton.imageView setContentMode:UIViewContentModeCenter];
+    [self.approveButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
+    [self.approveButton setTitle:NSLocalizedString(@"Approve", @"Verb, approve a comment") forState:UIControlStateNormal];
     self.approveButton.accessibilityLabel = NSLocalizedString(@"Toggle approve or unapprove", @"Spoken accessibility label.");
     [self.approveButton addTarget:self action:@selector(approveOrUnapproveAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self.approveButton repositionTitleAndImage];
+    [self.commentView addCustomActionButton:self.approveButton];
     
-    self.spamButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-flag"] selectedImage:[UIImage imageNamed:@"icon-comments-flag-active"]];
+    self.spamButton = [VerticallyStackedButton buttonWithType:UIButtonTypeSystem];
+    [self.spamButton setImage:[UIImage imageNamed:@"icon-comments-flag"] forState:UIControlStateNormal];
     [self.spamButton setTitle:NSLocalizedString(@"Spam", @"Verb, spam comment") forState:UIControlStateNormal];
-    //self.spamButton.titleEdgeInsets = titleEdgeInsets;
     self.spamButton.accessibilityLabel = NSLocalizedString(@"Mark as spam", @"Spoken accessibility label.");
     [self.spamButton addTarget:self action:@selector(spamAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self.spamButton repositionTitleAndImage];
+    [self.commentView addCustomActionButton:self.spamButton];
     
-    self.trashButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-trash"] selectedImage:[UIImage imageNamed:@"icon-comments-trash-active"]];
+    self.trashButton = [VerticallyStackedButton buttonWithType:UIButtonTypeSystem];
+    [self.trashButton setImage:[UIImage imageNamed:@"icon-comments-trash"] forState:UIControlStateNormal];
     [self.trashButton setTitle:NSLocalizedString(@"Trash", "Verb, trash comment") forState:UIControlStateNormal];
-    //self.trashButton.titleEdgeInsets = titleEdgeInsets;
     self.trashButton.accessibilityLabel = NSLocalizedString(@"Move to trash", @"Spoken accessibility label.");
     [self.trashButton addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self.trashButton repositionTitleAndImage];
+    [self.commentView addCustomActionButton:self.trashButton];
     
     [self.view addSubview:self.commentView];
     
@@ -173,6 +180,10 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
                                              selector:@selector(onHideKeyboard:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+    
+    Simperium *simperium = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+    SPBucket *noteBucket = [simperium bucketForName:@"NoteSimperium"];
+    noteBucket.delegate = self;
 
 }
 
@@ -221,38 +232,51 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         }];
     }
 
+    [self updateActionButtons];
+}
+
+- (void)updateActionButtons {
     // disable the buttons until we can determine which ones can be used
     // with this note
-    self.spamButton.enabled = NO;
-    self.trashButton.enabled = NO;
-    self.approveButton.enabled = NO;
-    self.replyButton.enabled = NO;
-
+    [self setAllActionButtonsEnabled:NO];
+    
     // figure out the actions available for the note
+    NSArray *actions = self.note.bodyActions;
     NSMutableDictionary *indexedActions = [[NSMutableDictionary alloc] initWithCapacity:[actions count]];
     [actions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSString *actionType = [obj valueForKey:@"type"];
         [indexedActions setObject:obj forKey:actionType];
-        if ([actionType isEqualToString:@"approve-comment"]) {
-            self.approveButton.enabled = YES;
-            [self updateApproveButton:YES];
-        } else if ([actionType isEqualToString:@"unapprove-comment"]) {
-            self.approveButton.enabled = YES;
-            [self updateApproveButton:NO];
-        } else if ([actionType isEqualToString:@"spam-comment"]) {
-            self.spamButton.enabled = YES;
-        } else if ([actionType isEqualToString:@"unspam-comment"]) {
-            self.spamButton.enabled = YES;
-        } else if ([actionType isEqualToString:@"trash-comment"]) {
-            self.trashButton.enabled = YES;
-        } else if ([actionType isEqualToString:@"untrash-comment"]) {
-            self.trashButton.enabled = YES;
-        } else if ([actionType isEqualToString:@"replyto-comment"]) {
-            self.replyButton.enabled = YES;
-        }
+        [self updateActionButtonForType:actionType];
     }];
-
+    
     self.commentActions = indexedActions;
+}
+
+- (void)updateActionButtonForType:(NSString*)actionType {
+    if ([actionType isEqualToString:@"approve-comment"]) {
+        self.approveButton.enabled = YES;
+        [self updateApproveButton:YES];
+    } else if ([actionType isEqualToString:@"unapprove-comment"]) {
+        self.approveButton.enabled = YES;
+        [self updateApproveButton:NO];
+    } else if ([actionType isEqualToString:@"spam-comment"]) {
+        self.spamButton.enabled = YES;
+    } else if ([actionType isEqualToString:@"unspam-comment"]) {
+        self.spamButton.enabled = YES;
+    } else if ([actionType isEqualToString:@"trash-comment"]) {
+        self.trashButton.enabled = YES;
+    } else if ([actionType isEqualToString:@"untrash-comment"]) {
+        self.trashButton.enabled = YES;
+    } else if ([actionType isEqualToString:@"replyto-comment"]) {
+        self.replyButton.enabled = YES;
+    }
+}
+
+- (void)setAllActionButtonsEnabled:(BOOL)enabled {
+    self.spamButton.enabled = enabled;
+    self.trashButton.enabled = enabled;
+    self.approveButton.enabled = enabled;
+    self.replyButton.enabled = enabled;
 }
 
 - (NSDictionary *)getActionByType:(NSString *)type {
@@ -275,8 +299,6 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         [self.approveButton setTitle:NSLocalizedString(@"Unapprove", @"Verb, unapprove a comment") forState:UIControlStateNormal];
         self.approveButton.accessibilityLabel = NSLocalizedString(@"Unapprove", @"Spoken accessibility label.");
     }
-    
-    [self.approveButton adjustImageSpacing];
 }
 
 
@@ -313,11 +335,11 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         // Pressed approve, so flip button optimistically to unapprove
         [self updateApproveButton:NO];
         [WPAnalytics track:WPAnalyticsStatNotificationApproved];
-        [self performCommentAction:approveAction];
+        [self performCommentAction:approveAction forButton:sender];
     } else if (unapproveAction) {
         // Pressed unapprove, so flip button optimistically to approve
         [self updateApproveButton:YES];
-        [self performCommentAction:unapproveAction];
+        [self performCommentAction:unapproveAction forButton:sender];
     }
     
     [WPAnalytics track:WPAnalyticsStatNotificationPerformedAction];
@@ -329,9 +351,9 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     
     if (trashAction) {
         [WPAnalytics track:WPAnalyticsStatNotificationTrashed];
-        [self performCommentAction:trashAction];
+        [self performCommentAction:trashAction forButton:sender];
     } else if (untrashAction) {
-        [self performCommentAction:untrashAction];
+        [self performCommentAction:untrashAction forButton:sender];
     }
     
     [WPAnalytics track:WPAnalyticsStatNotificationPerformedAction];
@@ -343,9 +365,9 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     
     if (spamAction) {
         [WPAnalytics track:WPAnalyticsStatNotificationFlaggedAsSpam];
-        [self performCommentAction:spamAction];
+        [self performCommentAction:spamAction forButton:sender];
     } else if (unspamAction) {
-        [self performCommentAction:unspamAction];
+        [self performCommentAction:unspamAction forButton:sender];
     }
     
     [WPAnalytics track:WPAnalyticsStatNotificationPerformedAction];
@@ -359,8 +381,15 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     }
 }
 
-- (void)performCommentAction:(NSDictionary *)commentAction {
+- (void)performCommentAction:(NSDictionary *)commentAction forButton:(UIButton*)button {
     NSString *path = [NSString stringWithFormat:@"/rest/v1%@", [commentAction valueForKeyPath:@"params.rest_path"]];
+    
+    [self setAllActionButtonsEnabled:NO];
+    UIActivityIndicatorView *aView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    aView.frame = CGRectMake(0, 0, button.frame.size.width, button.frame.size.height);
+    aView.backgroundColor = [UIColor whiteColor];
+    [button addSubview:aView];
+    [aView startAnimating];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
@@ -368,8 +397,13 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
     [[defaultAccount restApi] POST:path parameters:[commentAction valueForKeyPath:@"params.rest_body"] success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // The Note will be automatically updated by Simperium
+        [aView removeFromSuperview];
+        [self setAllActionButtonsEnabled:YES];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [aView removeFromSuperview];
+        [self setAllActionButtonsEnabled:YES];
         DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
+        // TODO Alert?
     }];
 
 }
@@ -516,6 +550,14 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     UIScrollView *scrollView = (UIScrollView *)self.view;
     scrollView.contentInset = UIEdgeInsetsMake(0.f, 0.f, 0.f, 0.f);
     [self.view removeGestureRecognizer:self.tapGesture];
+}
+
+#pragma mark - Simperium delegate
+
+- (void)bucket:(SPBucket *)bucket didChangeObjectForKey:(NSString *)key forChangeType:(SPBucketChangeType)changeType memberNames:(NSArray *)memberNames {
+    if ([key isEqualToString:self.note.simperiumKey]) {
+        [self updateActionButtons];
+    }
 }
 
 
