@@ -8,7 +8,7 @@
 
 @property (nonatomic, weak) id<RebloggingViewControllerDelegate> delegate;
 
-- (id)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image avatarImage:(UIImage *)avatarImage;
+- (id)initWithPost:(ReaderPost *)post;
 
 @end
 

@@ -52,8 +52,8 @@
 
 - (void)dealloc
 {
-    NSString *keyPath = NSStringFromSelector(@selector(applicationIconBadgeNumber));
-    [[UIApplication sharedApplication] removeObserver:self forKeyPath:keyPath];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[UIApplication sharedApplication] removeObserver:self forKeyPath:NSStringFromSelector(@selector(applicationIconBadgeNumber))];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
@@ -82,6 +82,7 @@
     
     self.infiniteScrollEnabled = NO;
     
+    [self showManageButtonIfNeeded];
     [self updateTabBarBadgeNumber];
 }
 
@@ -89,14 +90,12 @@
 {
     DDLogMethod();
     [super viewWillAppear:animated];
-    
-    [self showManageButtonIfNeeded];
-}
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
+    // Listen to appDidBecomeActive Note
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(handleApplicationDidBecomeActiveNote:) name:UIApplicationDidBecomeActiveNotification object:nil];
+
+    // Hit the Tracker
     dispatch_once(&_trackedViewDisplay, ^{
         [WPAnalytics track:WPAnalyticsStatNotificationsAccessed];
     });
@@ -105,14 +104,35 @@
     [self resetApplicationBadge];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    DDLogMethod();
+    [super viewWillDisappear:animated];
 
-#pragma mark - NSObject(NSKeyValueObserving) methods
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
+#pragma mark - NSObject(NSKeyValueObserving) Helpers
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if ([keyPath isEqualToString:NSStringFromSelector(@selector(applicationIconBadgeNumber))]) {
         [self updateTabBarBadgeNumber];
     }
+}
+
+
+#pragma mark - NSNotification Helpers
+
+- (void)handleApplicationDidBecomeActiveNote:(NSNotification *)note
+{
+    // Let's reset the badge, whenever the app comes back to FG, and this view was upfront!
+    if (!self.isViewLoaded || !self.view.window) {
+        return;
+    }
+    
+    [self resetApplicationBadge];
 }
 
 
@@ -128,7 +148,11 @@
     NSInteger count         = [[UIApplication sharedApplication] applicationIconBadgeNumber];
     NSString *countString   = (count) ? [NSString stringWithFormat:@"%d", count] : nil;
     
-    self.navigationController.tabBarItem.badgeValue = countString;
+    // Note: self.navigationViewController might be nil. Let's hit the UITabBarController instead
+    UITabBarController *tabBarController    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] tabBarController];
+    UITabBarItem *tabBarItem                = tabBarController.tabBar.items[kNotificationsTabIndex];
+    
+    tabBarItem.badgeValue                   = countString;
 }
 
 - (void)updateLastSeenTime
