@@ -12,9 +12,9 @@
 @interface WPWebSnapshotRequest : NSObject
 
 @property (nonatomic) NSURLRequest *urlRequest;
-@property (nonatomic) CGSize canvasSize;
+@property (nonatomic) CGSize snapshotSize;
 @property (nonatomic, copy) WPWebSnapshotterSnapshotCompletionHandler callback;
 
-+ (WPWebSnapshotRequest *)snapshotRequestWithURLRequest:(NSURLRequest *)urlRequest canvasSize:(CGSize)canvasSize completionHandler:(WPWebSnapshotterSnapshotCompletionHandler)completionHandler;
++ (WPWebSnapshotRequest *)snapshotRequestWithURLRequest:(NSURLRequest *)urlRequest snapshotSize:(CGSize)snapshotSize completionHandler:(WPWebSnapshotterSnapshotCompletionHandler)completionHandler;
 
 @end
