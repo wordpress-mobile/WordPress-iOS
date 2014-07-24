@@ -44,6 +44,8 @@
 #import "WPAnalyticsTrackerMixpanel.h"
 #import "WPAnalyticsTrackerWPCom.h"
 
+#import "Reachability.h"
+
 #if DEBUG
 #import "DDTTYLogger.h"
 #import "DDASLLogger.h"
