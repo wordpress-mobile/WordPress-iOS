@@ -780,7 +780,10 @@ NSInteger const kMeTabIndex = 2;
             NSString *filepath = [documentsDirectory stringByAppendingPathComponent:currentPath];
 
             if (![pathsToKeep containsObject:filepath]) {
-                [[NSFileManager defaultManager] removeItemAtPath:filepath error:nil];
+                NSError *nukeError = nil;
+                if ([[NSFileManager defaultManager] removeItemAtPath:filepath error:&nukeError] == NO) {
+                    DDLogError(@"Error [%@] while nuking Unused Media at path [%@]", nukeError.localizedDescription, filepath);
+                }
             }
         }
     }];
