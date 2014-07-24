@@ -10,11 +10,11 @@
 
 @implementation WPWebSnapshotRequest
 
-+ (WPWebSnapshotRequest *)snapshotRequestWithURLRequest:(NSURLRequest *)urlRequest canvasSize:(CGSize)canvasSize completionHandler:(WPWebSnapshotterSnapshotCompletionHandler)completionHandler
++ (WPWebSnapshotRequest *)snapshotRequestWithURLRequest:(NSURLRequest *)urlRequest snapshotSize:(CGSize)snapshotSize completionHandler:(WPWebSnapshotterSnapshotCompletionHandler)completionHandler
 {
     WPWebSnapshotRequest *request = [[WPWebSnapshotRequest alloc] init];
     request.urlRequest = urlRequest;
-    request.canvasSize = canvasSize;
+    request.snapshotSize = snapshotSize;
     request.callback = completionHandler;
     
     return request;

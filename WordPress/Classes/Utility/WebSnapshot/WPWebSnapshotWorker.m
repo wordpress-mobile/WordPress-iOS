@@ -34,9 +34,10 @@
             return nil;
         }
         
-        self.webView = [[UIWebView alloc] initWithFrame:keyWindow.bounds];
+        self.webView = [[UIWebView alloc] initWithFrame:CGRectZero];
         self.webView.userInteractionEnabled = NO;
         self.webView.hidden = NO;
+        self.webView.scalesPageToFit = YES;
         self.webView.delegate = self;
         UIView *backmostView = keyWindow.subviews.firstObject;
         [keyWindow insertSubview:self.webView belowSubview:backmostView];
@@ -56,6 +57,7 @@
     self.snapshotRequest = snapshotRequest;
     self.callback = completionHandler;
     
+    self.webView.frame = CGRectMake(0, 0, snapshotRequest.snapshotSize.width, snapshotRequest.snapshotSize.height);
     [self.webView loadRequest:self.snapshotRequest.urlRequest];
     
     self.status = WPWebSnapshotWorkerStatusExecuting;

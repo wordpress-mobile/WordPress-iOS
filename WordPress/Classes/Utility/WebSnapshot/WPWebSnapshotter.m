@@ -40,11 +40,11 @@
 }
 
 - (void)captureSnapshotOfURLRequest:(NSURLRequest *)urlRequest
-                         canvasSize:(CGSize)canvasSize
+                       snapshotSize:(CGSize)snapshotSize
                   completionHandler:(WPWebSnapshotterSnapshotCompletionHandler)completionHandler
 {
     WPWebSnapshotRequest *request = [WPWebSnapshotRequest snapshotRequestWithURLRequest:urlRequest
-                                                                             canvasSize:canvasSize
+                                                                           snapshotSize:snapshotSize
                                                                       completionHandler:completionHandler];
     
     UIView *cachedView = [self cachedSnapshotForRequest:request];
