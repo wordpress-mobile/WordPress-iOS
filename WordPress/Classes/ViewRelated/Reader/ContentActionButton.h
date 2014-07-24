@@ -4,7 +4,4 @@
 
 @property (nonatomic) BOOL drawLabelBubble;
 
-- (void)repositionTitleAndImage;
-- (void)adjustImageSpacing;
-
 @end
