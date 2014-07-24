@@ -385,11 +385,11 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     NSString *path = [NSString stringWithFormat:@"/rest/v1%@", [commentAction valueForKeyPath:@"params.rest_path"]];
     
     [self setAllActionButtonsEnabled:NO];
-    UIActivityIndicatorView *aView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    aView.frame = CGRectMake(0, 0, button.frame.size.width, button.frame.size.height);
-    aView.backgroundColor = [UIColor whiteColor];
-    [button addSubview:aView];
-    [aView startAnimating];
+    UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    indicatorView.frame = CGRectMake(0, 0, button.frame.size.width, button.frame.size.height);
+    indicatorView.backgroundColor = [UIColor whiteColor];
+    [button addSubview:indicatorView];
+    [indicatorView startAnimating];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
@@ -397,13 +397,14 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
     [[defaultAccount restApi] POST:path parameters:[commentAction valueForKeyPath:@"params.rest_body"] success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // The Note will be automatically updated by Simperium
-        [aView removeFromSuperview];
+        [indicatorView removeFromSuperview];
         [self setAllActionButtonsEnabled:YES];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [aView removeFromSuperview];
+        [indicatorView removeFromSuperview];
         [self setAllActionButtonsEnabled:YES];
+        [WPError showAlertWithTitle:NSLocalizedString(@"Error", @"Title for error alert dialog")
+                            message:NSLocalizedString(@"The comment could not be moderated.", @"Error message when comment could not be moderated")];
         DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
-        // TODO Alert?
     }];
 
 }
