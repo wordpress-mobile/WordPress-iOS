@@ -39,13 +39,13 @@
     return self;
 }
 
-- (void)captureSnapshotOfURL:(NSURL *)url
-                  canvasSize:(CGSize)canvasSize
-           completionHandler:(WPWebSnapshotterSnapshotCompletionHandler)completionHandler
+- (void)captureSnapshotOfURLRequest:(NSURLRequest *)urlRequest
+                         canvasSize:(CGSize)canvasSize
+                  completionHandler:(WPWebSnapshotterSnapshotCompletionHandler)completionHandler
 {
-    WPWebSnapshotRequest *request = [WPWebSnapshotRequest snapshotRequestWithURL:url
-                                                                      canvasSize:canvasSize
-                                                               completionHandler:completionHandler];
+    WPWebSnapshotRequest *request = [WPWebSnapshotRequest snapshotRequestWithURLRequest:urlRequest
+                                                                             canvasSize:canvasSize
+                                                                      completionHandler:completionHandler];
     
     UIView *cachedView = [self cachedSnapshotForRequest:request];
     if (cachedView) {
@@ -122,8 +122,8 @@
             });
         });
     } else {
-        [self.worker startSnapshotWithRequest:request completionHandler:^(UIView *view, NSURL *url) {
-            [self storeSnapshotView:view forRequest:request];
+        [self.worker startSnapshotWithRequest:request completionHandler:^(UIView *view, WPWebSnapshotRequest *returnedRequest) {
+            [self storeSnapshotView:view forRequest:returnedRequest];
             request.callback(view);
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 [self popSnapshotRequest:YES];

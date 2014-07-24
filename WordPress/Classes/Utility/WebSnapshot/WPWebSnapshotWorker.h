@@ -15,7 +15,7 @@ typedef NS_ENUM(NSUInteger, WPWebSnapshotWorkerStatus) {
     WPWebSnapshotWorkerStatusExecuting
 };
 
-typedef void (^WPWebSnapshotWorkerCompletionHandler)(UIView *view, NSURL *url);
+typedef void (^WPWebSnapshotWorkerCompletionHandler)(UIView *view, WPWebSnapshotRequest *request);
 
 @interface WPWebSnapshotWorker : NSObject
 

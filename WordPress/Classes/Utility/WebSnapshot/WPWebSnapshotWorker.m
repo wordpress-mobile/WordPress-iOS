@@ -56,10 +56,8 @@
     self.snapshotRequest = snapshotRequest;
     self.callback = completionHandler;
     
-    NSURLRequest *request = [NSURLRequest requestWithURL:self.snapshotRequest.snapshotURL
-                                             cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                         timeoutInterval:10.0f];
-    [self.webView loadRequest:request];
+    [self.webView loadRequest:self.snapshotRequest.urlRequest];
+    
     self.status = WPWebSnapshotWorkerStatusExecuting;
 }
 
@@ -72,7 +70,7 @@
     if (self.callback) {
         CGRect rect = self.webView.bounds;
         UIView *view = [self.webView resizableSnapshotViewFromRect:rect afterScreenUpdates:NO withCapInsets:UIEdgeInsetsZero];
-        self.callback(view, self.snapshotRequest.snapshotURL);
+        self.callback(view, self.snapshotRequest);
     }
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self];

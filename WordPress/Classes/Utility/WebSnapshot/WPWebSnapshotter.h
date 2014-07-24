@@ -19,8 +19,8 @@ typedef void (^WPWebSnapshotterSnapshotCompletionHandler)(UIView *view);
 
 // canvasSize's component values must not exceed the size of their corresponding axis within the
 // app's key window
-- (void)captureSnapshotOfURL:(NSURL *)url
-                  canvasSize:(CGSize)canvasSize
-           completionHandler:(WPWebSnapshotterSnapshotCompletionHandler)completionHandler;
+- (void)captureSnapshotOfURLRequest:(NSURLRequest *)urlRequest
+                         canvasSize:(CGSize)canvasSize
+                  completionHandler:(WPWebSnapshotterSnapshotCompletionHandler)completionHandler;
 
 @end
