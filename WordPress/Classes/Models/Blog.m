@@ -12,18 +12,9 @@ static NSInteger const ImageSizeMediumHeight = 360;
 static NSInteger const ImageSizeLargeWidth = 640;
 static NSInteger const ImageSizeLargeHeight = 480;
 
-@interface Blog (PrivateMethods)
-
-@property (readwrite, assign) BOOL reachable;
-
-@end
-
-
 @implementation Blog {
     WPXMLRPCClient *_api;
     NSString *_blavatarUrl;
-    Reachability *_reachability;
-    BOOL _isReachable;
 }
 
 @dynamic blogID;
@@ -65,19 +56,10 @@ static NSInteger const ImageSizeLargeHeight = 480;
     // Clean up instance variables
     _blavatarUrl = nil;
     _api = nil;
-    [_reachability stopNotifier];
-    _reachability = nil;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)awakeFromFetch {
-    [super awakeFromFetch];
-    
-    if (!self.isDeleted) {
-        [self reachability];
-    }
-}
 
 #pragma mark -
 
@@ -286,9 +268,6 @@ static NSInteger const ImageSizeLargeHeight = 480;
 {
     DDLogInfo(@"<Blog:%@> remove", self.hostURL);
     [self.api cancelAllHTTPOperations];
-    _reachability.reachableBlock = nil;
-    _reachability.unreachableBlock = nil;
-    [_reachability stopNotifier];
     [self.managedObjectContext performBlock:^{
         WPAccount *account = self.account;
 
@@ -339,33 +318,6 @@ static NSInteger const ImageSizeLargeHeight = 480;
 - (NSString *)version
 {
     return [self getOptionValue:@"software_version"];
-}
-
-- (Reachability *)reachability {
-    if (_reachability == nil) {
-        _reachability = [Reachability reachabilityWithHostname:self.hostname];
-        __weak Blog *blog = self;
-        blog.reachable = YES;
-        _reachability.reachableBlock = ^(Reachability *reach) {
-            blog.reachable = YES;
-        };
-        _reachability.unreachableBlock = ^(Reachability *reach) {
-            blog.reachable = NO;
-        };
-        [_reachability startNotifier];
-    }
-    
-    return _reachability;
-}
-
-- (BOOL)reachable {
-    // Creates reachability object if it's nil
-    [self reachability];
-    return _isReachable;
-}
-
-- (void)setReachable:(BOOL)reachable {
-    _isReachable = reachable;
 }
 
 - (NSString *)username
