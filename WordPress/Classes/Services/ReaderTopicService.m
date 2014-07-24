@@ -50,7 +50,7 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
             failure([self errorForMissingAccount]);
             return;
         }
-        [self mergeTopics:topics forAccount:defaultAccount];
+        [self mergeTopics:topics forAccount:reloadedAccount];
         [self.managedObjectContext performBlockAndWait:^{
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }];

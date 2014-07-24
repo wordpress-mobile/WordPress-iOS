@@ -684,6 +684,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
             [self syncReaderItemsWithSuccess:success failure:failure];
         } failure:^(NSError *error) {
             if (error.code == ReaderTopicServiceErrorNoAccount) {
+                // Fetching the menu should be invisible to the user.
+                // If the failure is not a network error we probably don't want to show
+                // the user. In this case, the user likely logged out and an error message
+                // would be in appropriate.
                 failure(nil);
             } else {
                 failure(error);
