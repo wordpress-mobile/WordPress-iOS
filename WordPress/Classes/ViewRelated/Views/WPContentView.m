@@ -343,18 +343,16 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 - (UIButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage {
     ContentActionButton *button = [ContentActionButton buttonWithType:UIButtonTypeCustom];
-    
     button.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
-    [button setTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [button setImage:buttonImage forState:UIControlStateNormal];
     [button setImage:selectedButtonImage forState:UIControlStateSelected];
-    [button.titleLabel setLineBreakMode: NSLineBreakByTruncatingTail];
     [button.titleLabel setFont:[WPStyleGuide labelFontNormal]];
+    [button setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
     button.titleEdgeInsets = UIEdgeInsetsMake(0.0f, 6.0f, 0.0f, -6.0f);
-    
+    button.drawLabelBubble = YES;
     [self.bottomView addSubview:button];
     [self.actionButtons addObject:button];
-
+    
     return button;
 }
 
