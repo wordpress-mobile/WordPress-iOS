@@ -3,15 +3,12 @@
 #import <CoreData/CoreData.h>
 #import <WordPressApi/WordPressApi.h>
 
-#import "Reachability.h"
 
 @class WPAccount;
 @class WordPressComApi;
 
 @interface Blog : NSManagedObject
 
-@property (weak, readonly) Reachability *reachability;
-@property (readonly) BOOL reachable;
 @property (nonatomic, strong, readwrite) NSNumber       *blogID;
 @property (nonatomic, strong, readwrite) NSString       *blogName;
 @property (nonatomic, strong, readwrite) NSString       *xmlrpc;
