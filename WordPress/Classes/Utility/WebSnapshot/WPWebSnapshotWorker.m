@@ -91,19 +91,42 @@
 
 #pragma mark - UIWebViewDelegate
 
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    BOOL shouldStartLoad = YES;
+    
+    if ([self.webViewCustomizationDelegate respondsToSelector:@selector(webView:shouldStartLoadWithRequest:navigationType:)]) {
+        shouldStartLoad = [self.webViewCustomizationDelegate webView:webView shouldStartLoadWithRequest:request navigationType:navigationType];
+    }
+    
+    return shouldStartLoad;
+}
+
 - (void)webViewDidStartLoad:(UIWebView *)webView
 {
     self.numberOfCurrentLoads += 1;
+    
+    if ([self.webViewCustomizationDelegate respondsToSelector:@selector(webViewDidStartLoad:)]) {
+        [self.webViewCustomizationDelegate webViewDidStartLoad:webView];
+    }
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
     [self didFinishWebViewRequest];
+    
+    if ([self.webViewCustomizationDelegate respondsToSelector:@selector(webViewDidFinishLoad:)]) {
+        [self.webViewCustomizationDelegate webViewDidFinishLoad:webView];
+    }
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     [self didFinishWebViewRequest];
+    
+    if ([self.webViewCustomizationDelegate respondsToSelector:@selector(webView:didFailLoadWithError:)]) {
+        [self.webViewCustomizationDelegate webView:webView didFailLoadWithError:error];
+    }
 }
 
 @end

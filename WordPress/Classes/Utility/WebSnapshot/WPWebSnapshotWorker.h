@@ -21,6 +21,9 @@ typedef void (^WPWebSnapshotWorkerCompletionHandler)(UIView *view, NSURL *url);
 
 @property (nonatomic, readonly) WPWebSnapshotWorkerStatus status;
 
+// optional: allows external customization of the webview used to capture screenshots
+@property (nonatomic, weak) id<UIWebViewDelegate> webViewCustomizationDelegate;
+
 - (void)startSnapshotWithRequest:(WPWebSnapshotRequest *)snapshotRequest completionHandler:(WPWebSnapshotWorkerCompletionHandler)completionHandler;
 
 @end

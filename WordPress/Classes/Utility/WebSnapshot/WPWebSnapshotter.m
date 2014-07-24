@@ -12,7 +12,7 @@
 
 @interface WPWebSnapshotter ()
 
-@property (nonatomic) WPWebSnapshotWorker *worker;
+@property (nonatomic, readwrite) WPWebSnapshotWorker *worker;
 @property (nonatomic) NSMutableArray *requestQueue;
 @property (nonatomic) NSCache *cache;
 

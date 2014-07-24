@@ -7,12 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+@class  WPWebSnapshotWorker;
 
 typedef void (^WPWebSnapshotterSnapshotCompletionHandler)(UIView *view);
 
 // Captures UIView snapshots of URLs. Captured views are cached by instances of this class.
 
 @interface WPWebSnapshotter : NSObject
+
+@property (nonatomic, readonly) WPWebSnapshotWorker *worker;
 
 // canvasSize's component values must not exceed the size of their corresponding axis within the
 // app's key window
