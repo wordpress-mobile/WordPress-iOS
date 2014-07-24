@@ -341,8 +341,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     self.frame = ownFrame;
 }
 
-- (ContentActionButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage {
-    ContentActionButton *button = [ContentActionButton buttonWithType:UIButtonTypeSystem];
+- (UIButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage {
+    ContentActionButton *button = [ContentActionButton buttonWithType:UIButtonTypeCustom];
     
     button.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
     [button setTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
@@ -350,14 +350,17 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     [button setImage:selectedButtonImage forState:UIControlStateSelected];
     [button.titleLabel setLineBreakMode: NSLineBreakByTruncatingTail];
     [button.titleLabel setFont:[WPStyleGuide labelFontNormal]];
-    [button setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
-    [button setContentMode:UIViewContentModeCenter];
     button.titleEdgeInsets = UIEdgeInsetsMake(0.0f, 6.0f, 0.0f, -6.0f);
     
     [self.bottomView addSubview:button];
     [self.actionButtons addObject:button];
 
     return button;
+}
+
+- (void)addCustomActionButton:(UIButton*)actionButton {
+    [self.bottomView addSubview:actionButton];
+    [self.actionButtons addObject:actionButton];
 }
 
 - (void)removeActionButton:(UIButton *)button {
