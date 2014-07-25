@@ -3,47 +3,50 @@
 #import <CoreData/CoreData.h>
 #import <WordPressApi/WordPressApi.h>
 
-#import "Reachability.h"
 
 @class WPAccount;
 @class WordPressComApi;
 
 @interface Blog : NSManagedObject
 
-@property (nonatomic, strong) NSNumber *blogID;
-@property (nonatomic, strong) NSString *blogName, *xmlrpc, *apiKey;
-@property (weak, readonly) NSString *blavatarUrl;
-@property (nonatomic, strong) NSNumber *hasOlderPosts, *hasOlderPages;
-@property (nonatomic, strong) NSSet *posts;
-@property (nonatomic, strong) NSSet *categories;
-@property (nonatomic, strong) NSSet *comments;
-@property (nonatomic, strong) NSSet *themes;
-@property (nonatomic, strong) NSSet *media;
-@property (nonatomic, strong) NSString *currentThemeId;
-@property (nonatomic, assign) BOOL isSyncingPosts;
-@property (nonatomic, assign) BOOL isSyncingPages;
-@property (nonatomic, assign) BOOL isSyncingComments;
-@property (nonatomic, assign) BOOL isSyncingMedia;
-@property (nonatomic, strong) NSDate *lastPostsSync;
-@property (nonatomic, strong) NSDate *lastPagesSync;
-@property (nonatomic, strong) NSDate *lastCommentsSync;
-@property (nonatomic, strong) NSDate *lastStatsSync;
-@property (nonatomic, strong) NSString *lastUpdateWarning;
-@property (nonatomic, assign) BOOL geolocationEnabled;
-@property (nonatomic, assign) BOOL visible;
-@property (nonatomic, weak) NSNumber *isActivated;
-@property (nonatomic, strong) NSDictionary *options; //we can store an NSArray or an NSDictionary as a transformable attribute...
-@property (nonatomic, strong) NSDictionary *postFormats;
-@property (nonatomic, strong) WPAccount *account;
-@property (nonatomic, strong) WPAccount *jetpackAccount;
-@property (weak, readonly) NSArray *sortedPostFormatNames;
-@property (readonly, nonatomic, strong) WPXMLRPCClient *api;
-@property (weak, readonly) NSString *version;
-@property (nonatomic, readonly, strong) NSString *username;
-@property (nonatomic, readonly, strong) NSString *password;
-@property (weak, readonly) Reachability *reachability;
-@property (readonly) BOOL reachable;
-@property (nonatomic, assign) BOOL videoPressEnabled;
+@property (nonatomic, strong, readwrite) NSNumber       *blogID;
+@property (nonatomic, strong, readwrite) NSString       *blogName;
+@property (nonatomic, strong, readwrite) NSString       *xmlrpc;
+@property (nonatomic, strong, readwrite) NSString       *apiKey;
+@property (nonatomic, strong, readwrite) NSNumber       *hasOlderPosts;
+@property (nonatomic, strong, readwrite) NSNumber       *hasOlderPages;
+@property (nonatomic, strong, readwrite) NSSet          *posts;
+@property (nonatomic, strong, readwrite) NSSet          *categories;
+@property (nonatomic, strong, readwrite) NSSet          *comments;
+@property (nonatomic, strong, readwrite) NSSet          *themes;
+@property (nonatomic, strong, readwrite) NSSet          *media;
+@property (nonatomic, strong, readwrite) NSString       *currentThemeId;
+@property (nonatomic, assign, readwrite) BOOL           isSyncingPosts;
+@property (nonatomic, assign, readwrite) BOOL           isSyncingPages;
+@property (nonatomic, assign, readwrite) BOOL           isSyncingComments;
+@property (nonatomic, assign, readwrite) BOOL           isSyncingMedia;
+@property (nonatomic, strong, readwrite) NSDate         *lastPostsSync;
+@property (nonatomic, strong, readwrite) NSDate         *lastPagesSync;
+@property (nonatomic, strong, readwrite) NSDate         *lastCommentsSync;
+@property (nonatomic, strong, readwrite) NSDate         *lastStatsSync;
+@property (nonatomic, strong, readwrite) NSString       *lastUpdateWarning;
+@property (nonatomic, assign, readwrite) BOOL           geolocationEnabled;
+@property (nonatomic, assign, readwrite) BOOL           visible;
+@property (nonatomic,   weak, readwrite) NSNumber       *isActivated;
+@property (nonatomic, strong, readwrite) NSDictionary   *options;
+@property (nonatomic, strong, readwrite) NSDictionary   *postFormats;
+@property (nonatomic, strong, readwrite) WPAccount      *account;
+@property (nonatomic, strong, readwrite) WPAccount      *jetpackAccount;
+@property (nonatomic, assign, readwrite) BOOL           videoPressEnabled;
+
+// Readonly Properties
+@property (nonatomic,   weak,  readonly) NSString       *blavatarUrl;
+@property (nonatomic,   weak,  readonly) NSArray        *sortedPostFormatNames;
+@property (nonatomic, strong,  readonly) WPXMLRPCClient *api;
+@property (nonatomic,   weak,  readonly) NSString       *version;
+@property (nonatomic, strong,  readonly) NSString       *username;
+@property (nonatomic, strong,  readonly) NSString       *password;
+
 
 /**
  URL properties (example: http://wp.koke.me/sub/xmlrpc.php)
