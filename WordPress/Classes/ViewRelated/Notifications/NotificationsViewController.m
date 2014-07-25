@@ -16,7 +16,7 @@
 #import "Constants.h"
 #import "NotificationsManager.h"
 #import "NotificationSettingsViewController.h"
-#import "NotificationsBigBadgeViewController.h"
+#import "NotificationsBigBadgeDetailViewController.h"
 #import "AccountService.h"
 #import "ReaderPostService.h"
 #import "ContextManager.h"
@@ -113,7 +113,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [[UIApplication sharedApplication] removeObserver:self forKeyPath:@"applicationIconBadgeNumber"];
+    [[UIApplication sharedApplication] removeObserver:self forKeyPath:NSStringFromSelector(@selector(applicationIconBadgeNumber))];
 }
 
 - (void)viewDidLoad
@@ -135,11 +135,10 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     }
     
     // Watch for application badge number changes
-    UIApplication *application = [UIApplication sharedApplication];
-    [application addObserver:self
-                  forKeyPath:@"applicationIconBadgeNumber"
-                     options:NSKeyValueObservingOptionNew
-                     context:nil];
+    UIApplication *application  = [UIApplication sharedApplication];
+    NSString *badgeKeyPath      = NSStringFromSelector(@selector(applicationIconBadgeNumber));
+    [application addObserver:self forKeyPath:badgeKeyPath options:NSKeyValueObservingOptionNew context:nil];
+    
     [self updateTabBarBadgeNumber];
 }
 
@@ -147,6 +146,13 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 {
     DDLogMethod();
     [super viewWillAppear:animated];
+    
+    // Reload!
+    [self.tableView reloadData];
+    
+    // Listen to appDidBecomeActive Note
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(handleApplicationDidBecomeActiveNote:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -162,15 +168,41 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     [self resetApplicationBadge];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    DDLogMethod();
+    [super viewWillDisappear:animated];
 
-#pragma mark - NSObject(NSKeyValueObserving) methods
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
+#pragma mark - NSObject(NSKeyValueObserving) Helpers
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if ([keyPath isEqualToString:@"applicationIconBadgeNumber"]) {
+    if ([keyPath isEqualToString:NSStringFromSelector(@selector(applicationIconBadgeNumber))]) {
         [self updateTabBarBadgeNumber];
     }
 }
+
+
+#pragma mark - NSNotification Helpers
+
+- (void)handleApplicationDidBecomeActiveNote:(NSNotification *)note
+{
+    // Let's reset the badge, whenever the app comes back to FG, and this view was upfront!
+    if (!self.isViewLoaded || !self.view.window) {
+        return;
+    }
+    
+    // Reload
+    [self.tableView reloadData];
+    
+    // Reset the badge: the notifications are visible!
+    [self resetApplicationBadge];
+}
+
 
 #pragma mark - Custom methods
 
@@ -181,11 +213,18 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 
 - (void)updateTabBarBadgeNumber
 {
-    UIApplication *application = [UIApplication sharedApplication];
-    NSInteger count = application.applicationIconBadgeNumber;
+    NSInteger count         = [[UIApplication sharedApplication] applicationIconBadgeNumber];
+    NSString *countString   = nil;
     
-    NSString *countString = count == 0 ? nil : [NSString stringWithFormat:@"%d", count];
-    self.navigationController.tabBarItem.badgeValue = countString;
+    if (count > 0) {
+        countString = [NSString stringWithFormat:@"%d", count];
+    }
+    
+    // Note: self.navigationViewController might be nil. Let's hit the UITabBarController instead
+    UITabBarController *tabBarController    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] tabBarController];
+    UITabBarItem *tabBarItem                = tabBarController.tabBar.items[kNotificationsTabIndex];
+    
+    tabBarItem.badgeValue                   = countString;
 }
 
 - (void)updateLastSeenTime
@@ -251,14 +290,14 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
                     return;
                 }
             
-                ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post featuredImage:nil avatarImage:nil];
+                ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post];
                 [self.navigationController pushViewController:controller animated:YES];
             }];
         } else if ([note templateType] == WPNoteTemplateMultiLineList || [note templateType] == WPNoteTemplateSingleLineList) {
             NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNote:note];
             [self.navigationController pushViewController:detailViewController animated:YES];
         } else if ([note templateType] == WPNoteTemplateBigBadge) {
-            NotificationsBigBadgeViewController *bigBadgeViewController = [[NotificationsBigBadgeViewController alloc] initWithNote: note];
+            NotificationsBigBadgeDetailViewController *bigBadgeViewController = [[NotificationsBigBadgeDetailViewController alloc] initWithNote: note];
             [self.navigationController pushViewController:bigBadgeViewController animated:YES];
         }
     } else {

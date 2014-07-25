@@ -9,11 +9,20 @@
 #import <Taplytics/Taplytics.h>
 #import "WPAnalytics.h"
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
+#import "ContextManager.h"
+#import "WPAccount.h"
+#import "AccountService.h"
+#import "BlogService.h"
+#import "Blog.h"
 
 static NSString *const UserDefaultsFeedbackEnabled = @"wp_feedback_enabled";
 static NSString *const UserDefaultsHelpshiftEnabled = @"wp_helpshift_enabled";
+static NSString *const UserDefaultsHelpshiftWasUsed = @"wp_helpshift_used";
 static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 static NSString * const kExtraDebugDefaultsKey = @"extra_debug";
+int const kActivitySpinnerTag = 101;
+int const kHelpshiftWindowTypeFAQs = 1;
+int const kHelpshiftWindowTypeConversation = 2;
 
 static NSString *const FeedbackCheckUrl = @"http://api.wordpress.org/iphoneapp/feedback-check/1.0/";
 
@@ -66,11 +75,20 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 }
 
 + (void)checkIfHelpshiftShouldBeEnabled {
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{UserDefaultsHelpshiftEnabled:@NO}];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults registerDefaults:@{UserDefaultsHelpshiftEnabled:@NO}];
+
+    BOOL userHasUsedHelpshift = [defaults boolForKey:UserDefaultsHelpshiftWasUsed];
+
+    if (userHasUsedHelpshift) {
+        [defaults setBool:YES forKey:UserDefaultsHelpshiftEnabled];
+        [defaults synchronize];
+        return;
+    }
     
     [Taplytics runCodeExperiment:@"Helpshift Distribution" withBaseline:^(NSDictionary *variables) {
         DDLogInfo(@"Taplytics: Helpshift Experiment - Baseline Enabled");
-        
+
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults setBool:NO forKey:UserDefaultsHelpshiftEnabled];
         [defaults synchronize];
@@ -143,11 +161,80 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
 + (BOOL)isHelpshiftEnabled
 {
-#ifdef DEBUG
-    return true;
-#else
     return [[NSUserDefaults standardUserDefaults] boolForKey:UserDefaultsHelpshiftEnabled];
-#endif
+}
+
+- (void)showLoadingSpinner {
+    UIActivityIndicatorView *loading = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    loading.tag = kActivitySpinnerTag;
+    loading.center = self.view.center;
+    loading.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    [self.view addSubview:loading];
+    [loading startAnimating];
+}
+
+- (void)hideLoadingSpinner {
+    [[self.view viewWithTag:kActivitySpinnerTag] removeFromSuperview];
+}
+
+- (void)prepareAndDisplayHelpshiftWindowOfType:(int)helpshiftType {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:YES forKey:UserDefaultsHelpshiftWasUsed];
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    
+    [Taplytics goalAchieved:@"Helpshift opened"];
+    
+    NSString *isWPCom = defaultAccount.isWpcom ? @"Yes" : @"No";
+    NSMutableDictionary *metaData = [NSMutableDictionary dictionaryWithDictionary:@{ @"isWPCom" : isWPCom }];
+
+    NSArray *allBlogs = [blogService blogsForAllAccounts];
+    for (int i = 0; i < allBlogs.count; i++) {
+        Blog *blog = allBlogs[i];
+        
+        NSDictionary *blogData = @{[NSString stringWithFormat:@"blog-%i-Name", i+1]: blog.blogName,
+                                   [NSString stringWithFormat:@"blog-%i-ID", i+1]: blog.blogID,
+                                   [NSString stringWithFormat:@"blog-%i-URL", i+1]: blog.url};
+        
+        [metaData addEntriesFromDictionary:blogData];
+    }
+    
+    if (defaultAccount) {
+        [self showLoadingSpinner];
+        
+        [metaData addEntriesFromDictionary:@{@"WPCom Username": defaultAccount.username}];
+        
+        [defaultAccount.restApi GET:@"me"
+                         parameters:nil
+                            success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                [self hideLoadingSpinner];
+                                
+                                NSString *displayName = ([responseObject valueForKey:@"display_name"]) ? [responseObject objectForKey:@"display_name"] : nil;
+                                NSString *emailAddress = ([responseObject valueForKey:@"email"]) ? [responseObject objectForKey:@"email"] : nil;
+                                NSString *userID = ([responseObject valueForKey:@"ID"]) ? [[responseObject objectForKey:@"ID"] stringValue] : nil;
+
+                                [Helpshift setUserIdentifier:userID];
+                                [self displayHelpshiftWindowOfType:helpshiftType withUsername:displayName andEmail:emailAddress andMetadata:metaData];
+                            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                [self hideLoadingSpinner];
+                                [self displayHelpshiftWindowOfType:helpshiftType withUsername:defaultAccount.username andEmail:nil andMetadata:metaData];
+                            }];
+    } else {
+        [self displayHelpshiftWindowOfType:helpshiftType withUsername:nil andEmail:nil andMetadata:metaData];
+    }
+}
+
+- (void)displayHelpshiftWindowOfType:(int)helpshiftType withUsername:(NSString*)username andEmail:(NSString*)email andMetadata:(NSDictionary*)metaData {
+    [Helpshift setName:username andEmail:email];
+    
+    if (helpshiftType == kHelpshiftWindowTypeFAQs) {
+        [[Helpshift sharedInstance] showFAQs:self withOptions:@{HSCustomMetadataKey: metaData}];
+    } else if (helpshiftType == kHelpshiftWindowTypeConversation) {
+        [[Helpshift sharedInstance] showConversation:self withOptions:@{HSCustomMetadataKey: metaData}];
+    }
 }
 
 #pragma mark - Table view data source
@@ -160,7 +247,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == SettingsSectionFAQForums) {
-        return 1;
+        return 2;
     }
     
     if (section == SettingsSectionActivityLog) {
@@ -216,25 +303,42 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     [WPStyleGuide configureTableViewCell:cell];
     
-    if (indexPath.section == SettingsSectionFAQForums && indexPath.row == 0) {
-        cell.textLabel.text = (self.helpshiftEnabled) ? NSLocalizedString(@"Contact Us", nil)
-                                                      : NSLocalizedString(@"WordPress Help Center", @"");
+    if (indexPath.section == SettingsSectionFAQForums) {
+        switch (indexPath.row) {
+            case 0:
+                cell.textLabel.text = NSLocalizedString(@"WordPress Help Center", @"");
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
-        if (self.helpshiftUnreadCount > 0) {
-            UILabel *helpshiftUnreadCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
-            helpshiftUnreadCountLabel.layer.masksToBounds = YES;
-            helpshiftUnreadCountLabel.layer.cornerRadius = 15;
-            helpshiftUnreadCountLabel.textAlignment = NSTextAlignmentCenter;
-            helpshiftUnreadCountLabel.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
-            helpshiftUnreadCountLabel.textColor = [UIColor whiteColor];
-
-            helpshiftUnreadCountLabel.text = [NSString stringWithFormat:@"%i", self.helpshiftUnreadCount];
-            cell.accessoryView = helpshiftUnreadCountLabel;
-
-            cell.accessoryType = UITableViewCellAccessoryNone;
-        } else {
-            cell.accessoryView = nil;
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                break;
+            case 1:
+                if (self.helpshiftEnabled) {
+                    cell.textLabel.text = NSLocalizedString(@"Contact Us", nil);
+                    
+                    if (self.helpshiftUnreadCount > 0) {
+                        UILabel *helpshiftUnreadCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
+                        helpshiftUnreadCountLabel.layer.masksToBounds = YES;
+                        helpshiftUnreadCountLabel.layer.cornerRadius = 15;
+                        helpshiftUnreadCountLabel.textAlignment = NSTextAlignmentCenter;
+                        helpshiftUnreadCountLabel.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
+                        helpshiftUnreadCountLabel.textColor = [UIColor whiteColor];
+                        
+                        helpshiftUnreadCountLabel.text = [NSString stringWithFormat:@"%i", self.helpshiftUnreadCount];
+                        cell.accessoryView = helpshiftUnreadCountLabel;
+                        
+                        cell.accessoryType = UITableViewCellAccessoryNone;
+                    } else {
+                        cell.accessoryView = nil;
+                        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    }
+                } else {
+                    cell.textLabel.text = NSLocalizedString(@"WordPress Forums", @"");
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                }
+                
+                break;
+            default:
+                // should never get here
+                break;
         }
     } else if (indexPath.section == SettingsSectionFeedback) {
         cell.textLabel.text = NSLocalizedString(@"E-mail Support", @"");
@@ -296,11 +400,32 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if (indexPath.section == SettingsSectionFAQForums && !self.helpshiftEnabled && indexPath.row == 0) {
-        [[Helpshift sharedInstance] showFAQs:self withOptions:nil];
-    } else if (indexPath.section == SettingsSectionFAQForums && self.helpshiftEnabled && indexPath.row == 0) {
-        [Taplytics goalAchieved:@"Helpshift opened"];
-        [[Helpshift sharedInstance] showConversation:self withOptions:nil];
+    if (indexPath.section == SettingsSectionFAQForums) {
+        if (self.helpshiftEnabled) {
+
+        }
+        
+        switch (indexPath.row) {
+            case 0:
+                if (self.helpshiftEnabled) {
+                    [self prepareAndDisplayHelpshiftWindowOfType:kHelpshiftWindowTypeFAQs];
+                } else {
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ios.wordpress.org/faq"]];
+                }
+                
+                break;
+            case 1:
+                if (self.helpshiftEnabled) {
+                    [self prepareAndDisplayHelpshiftWindowOfType:kHelpshiftWindowTypeConversation];
+                } else {
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ios.forums.wordpress.org"]];
+                }
+                
+                break;
+            default:
+                // should never get here
+                break;
+        }
     } else if (indexPath.section == SettingsSectionFeedback) {
         if ([MFMailComposeViewController canSendMail]) {
             MFMailComposeViewController *mailComposeViewController = [self feedbackMailViewController];

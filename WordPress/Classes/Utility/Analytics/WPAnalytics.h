@@ -24,6 +24,9 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatEditorUpdatedPost,
     WPAnalyticsStatEditorScheduledPost,
     WPAnalyticsStatEditorPublishedPost,
+    WPAnalyticsStatEditorClosed,
+    WPAnalyticsStatEditorDiscardedChanges,
+    WPAnalyticsStatEditorSavedDraft,
     WPAnalyticsStatPublishedPostWithPhoto,
     WPAnalyticsStatPublishedPostWithVideo,
     WPAnalyticsStatPublishedPostWithCategories,
@@ -57,6 +60,7 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatAddedSelfHostedSiteButJetpackNotConnectedToWPCom,
     WPAnalyticsStatSkippedConnectingToJetpack,
     WPAnalyticsStatSignedInToJetpack,
+    WPAnalyticsStatSignedIn,
     WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen,
     WPAnalyticsStatPerformedJetpackSignInFromStatsScreen,
     WPAnalyticsStatSelectedInstallJetpack,
@@ -67,6 +71,7 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
 
 + (void)registerTracker:(id<WPAnalyticsTracker>)tracker;
 + (void)beginSession;
++ (void)refreshMetadata;
 + (void)track:(WPAnalyticsStat)stat;
 + (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties;
 + (void)endSession;
@@ -81,5 +86,6 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
 @optional
 - (void)beginSession;
 - (void)endSession;
+- (void)refreshMetadata;
 
 @end

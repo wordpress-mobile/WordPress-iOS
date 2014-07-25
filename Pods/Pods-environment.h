@@ -190,13 +190,13 @@
 #define COCOAPODS_POD_AVAILABLE_Simperium
 #define COCOAPODS_VERSION_MAJOR_Simperium 0
 #define COCOAPODS_VERSION_MINOR_Simperium 6
-#define COCOAPODS_VERSION_PATCH_Simperium 5
+#define COCOAPODS_VERSION_PATCH_Simperium 6
 
 // Simperium/no-arc
 #define COCOAPODS_POD_AVAILABLE_Simperium_no_arc
 #define COCOAPODS_VERSION_MAJOR_Simperium_no_arc 0
 #define COCOAPODS_VERSION_MINOR_Simperium_no_arc 6
-#define COCOAPODS_VERSION_PATCH_Simperium_no_arc 5
+#define COCOAPODS_VERSION_PATCH_Simperium_no_arc 6
 
 // SocketRocket
 #define COCOAPODS_POD_AVAILABLE_SocketRocket
@@ -207,8 +207,8 @@
 // Taplytics
 #define COCOAPODS_POD_AVAILABLE_Taplytics
 #define COCOAPODS_VERSION_MAJOR_Taplytics 1
-#define COCOAPODS_VERSION_MINOR_Taplytics 2
-#define COCOAPODS_VERSION_PATCH_Taplytics 50
+#define COCOAPODS_VERSION_MINOR_Taplytics 3
+#define COCOAPODS_VERSION_PATCH_Taplytics 12
 
 // UIAlertView+Blocks
 #define COCOAPODS_POD_AVAILABLE_UIAlertView_Blocks
@@ -226,7 +226,7 @@
 #define COCOAPODS_POD_AVAILABLE_WordPress_iOS_Editor
 #define COCOAPODS_VERSION_MAJOR_WordPress_iOS_Editor 0
 #define COCOAPODS_VERSION_MINOR_WordPress_iOS_Editor 1
-#define COCOAPODS_VERSION_PATCH_WordPress_iOS_Editor 4
+#define COCOAPODS_VERSION_PATCH_WordPress_iOS_Editor 6
 
 // WordPress-iOS-Shared
 #define COCOAPODS_POD_AVAILABLE_WordPress_iOS_Shared
