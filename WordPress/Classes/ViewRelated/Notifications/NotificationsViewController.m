@@ -147,6 +147,9 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     DDLogMethod();
     [super viewWillAppear:animated];
     
+    // Reload!
+    [self.tableView reloadData];
+    
     // Listen to appDidBecomeActive Note
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(handleApplicationDidBecomeActiveNote:) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -193,6 +196,10 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
         return;
     }
     
+    // Reload
+    [self.tableView reloadData];
+    
+    // Reset the badge: the notifications are visible!
     [self resetApplicationBadge];
 }
 
