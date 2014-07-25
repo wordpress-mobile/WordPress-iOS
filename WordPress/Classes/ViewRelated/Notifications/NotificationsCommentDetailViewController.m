@@ -26,7 +26,7 @@
 const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight = 64.f;
 NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRestorationKey";
 
-@interface NotificationsCommentDetailViewController () <InlineComposeViewDelegate, WPContentViewDelegate, UIViewControllerRestoration, SPBucketDelegate>
+@interface NotificationsCommentDetailViewController () <InlineComposeViewDelegate, WPContentViewDelegate, UIViewControllerRestoration, UIActionSheetDelegate, SPBucketDelegate>
 
 @property (nonatomic, assign) NSUInteger		followBlogID;
 @property (nonatomic, strong) NSDictionary		*commentActions;
@@ -122,8 +122,6 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
     self.view = scrollView;
     self.view.backgroundColor = [UIColor whiteColor];
-    
-
     
     self.replyButton = [VerticallyStackedButton buttonWithType:UIButtonTypeSystem];
     [self.replyButton setImage:[UIImage imageNamed:@"icon-comments-reply"] forState:UIControlStateNormal];
@@ -374,9 +372,13 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     NSDictionary *untrashAction = [self.commentActions objectForKey:@"untrash-comment"];
     
     if (trashAction) {
-        [self updateTrashButton:NO];
-        [self performCommentAction:trashAction forButton:sender];
-        [WPAnalytics track:WPAnalyticsStatNotificationTrashed];
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you sure you want to delete this comment?", @"")
+                                                                 delegate:self
+                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                                   destructiveButtonTitle:NSLocalizedString(@"Delete", @"")
+                                                        otherButtonTitles:nil];
+        actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
+        [actionSheet showFromToolbar:self.navigationController.toolbar];
     } else if (untrashAction) {
         [self updateTrashButton:YES];
         [self performCommentAction:untrashAction forButton:sender];
@@ -414,7 +416,9 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     
     [self setAllActionButtonsEnabled:NO];
     UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    indicatorView.frame = CGRectMake(0, 0, button.frame.size.width, button.frame.size.height);
+    indicatorView.backgroundColor = [UIColor whiteColor];
+    CGFloat indicatorPadding = 10.0f;
+    indicatorView.frame = CGRectMake(-5.0f, 0, button.frame.size.width + indicatorPadding, button.frame.size.height);
     [button addSubview:indicatorView];
     [indicatorView startAnimating];
     
@@ -578,6 +582,20 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     UIScrollView *scrollView = (UIScrollView *)self.view;
     scrollView.contentInset = UIEdgeInsetsMake(0.f, 0.f, 0.f, 0.f);
     [self.view removeGestureRecognizer:self.tapGesture];
+}
+
+#pragma mark - UIActionSheet delegate methods
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        NSDictionary *trashAction = [self.commentActions objectForKey:@"trash-comment"];
+        
+        if (trashAction) {
+            [self updateTrashButton:NO];
+            [self performCommentAction:trashAction forButton:self.trashButton];
+            [WPAnalytics track:WPAnalyticsStatNotificationTrashed];
+        }
+    }
 }
 
 #pragma mark - Simperium delegate
