@@ -6,7 +6,6 @@
 
 @property (nonatomic, strong) ReaderPost *post;
 
-- (instancetype)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image avatarImage:(UIImage *)avatarImage;
-- (void)updateFeaturedImage:(UIImage *)image;
+- (instancetype)initWithPost:(ReaderPost *)post;
 
 @end

@@ -389,8 +389,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
     
     _didTriggerRefresh = YES;
-	[self syncItemsViaUserInteraction];
     [self.noResultsView removeFromSuperview];
+	[self syncItemsViaUserInteraction];
 }
 
 - (BOOL)userCanRefresh {
@@ -592,7 +592,9 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
                 [WPError showNetworkingAlertWithError:error];
             }
         } else {
-            [WPError showNetworkingAlertWithError:error];
+            if (error) {
+                [WPError showNetworkingAlertWithError:error];
+            }
         }
     }];
 }

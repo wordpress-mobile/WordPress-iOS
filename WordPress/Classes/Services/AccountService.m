@@ -6,6 +6,7 @@
 #import "AccountServiceRemote.h"
 #import "AccountServiceRemoteREST.h"
 #import "AccountServiceRemoteXMLRPC.h"
+#import "WPAnalyticsTrackerMixpanel.h"
 
 #import "NSString+XMLExtensions.h"
 
@@ -110,7 +111,9 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     WPAccount *account = [self defaultWordPressComAccount];
     [self.managedObjectContext deleteObject:account];
 
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+        [WPAnalytics refreshMetadata];
+    }];
 
     // Clear WordPress.com cookies
     NSArray *wpcomCookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
@@ -120,8 +123,9 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
         }
     }
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
-
-
+    
+    [WPAnalyticsTrackerMixpanel resetEmailRetrievalCheck];
+    
     // Remove defaults
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
@@ -302,5 +306,18 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     }
 }
 
+- (NSUInteger)numberOfAccounts
+{
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:[NSEntityDescription entityForName:@"Account" inManagedObjectContext:self.managedObjectContext]];
+    [request setIncludesSubentities:NO];
+
+    NSError *error;
+    NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&error];
+    if (count == NSNotFound) {
+        count = 0;
+    }
+    return count;
+}
 
 @end
