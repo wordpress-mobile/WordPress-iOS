@@ -236,7 +236,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 // WP.COM private blog.
 - (BOOL)isPrivate
 {
-    return (self.isWPcom && [[self getOptionValue:@"blog_public"] isEqual:@"-1"]);
+    return (self.isWPcom && [[self getOptionValue:@"blog_public"] isEqualToString:@"-1"]);
 }
 
 - (NSDictionary *)getImageResizeDimensions
