@@ -261,14 +261,50 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         [self updateApproveButton:NO];
     } else if ([actionType isEqualToString:@"spam-comment"]) {
         self.spamButton.enabled = YES;
+        [self updateSpamButton:YES];
     } else if ([actionType isEqualToString:@"unspam-comment"]) {
         self.spamButton.enabled = YES;
+        [self updateSpamButton:NO];
     } else if ([actionType isEqualToString:@"trash-comment"]) {
         self.trashButton.enabled = YES;
+        [self updateTrashButton:YES];
     } else if ([actionType isEqualToString:@"untrash-comment"]) {
         self.trashButton.enabled = YES;
+        [self updateTrashButton:NO];
     } else if ([actionType isEqualToString:@"replyto-comment"]) {
         self.replyButton.enabled = YES;
+    }
+}
+
+- (void)updateApproveButton:(BOOL)canBeApproved {
+    if (canBeApproved) {
+        [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-approve"] forState:UIControlStateNormal];
+        [self.approveButton setTitle:NSLocalizedString(@"Approve", @"Verb, approve a comment") forState:UIControlStateNormal];
+        self.approveButton.accessibilityLabel = NSLocalizedString(@"Approve", @"Spoken accessibility label.");
+    } else {
+        [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-unapprove"] forState:UIControlStateNormal];
+        [self.approveButton setTitle:NSLocalizedString(@"Unapprove", @"Verb, unapprove a comment") forState:UIControlStateNormal];
+        self.approveButton.accessibilityLabel = NSLocalizedString(@"Unapprove", @"Spoken accessibility label.");
+    }
+}
+
+- (void)updateSpamButton:(BOOL)canBeSpammed {
+    if (canBeSpammed) {
+        [self.spamButton setTitle:NSLocalizedString(@"Spam", "Verb, mark a comment as spam") forState:UIControlStateNormal];
+        self.spamButton.accessibilityLabel = NSLocalizedString(@"Spam", @"Spoken accessibility label.");
+    } else {
+        [self.spamButton setTitle:NSLocalizedString(@"Not Spam", "Mark a comment as not spam") forState:UIControlStateNormal];
+        self.spamButton.accessibilityLabel = NSLocalizedString(@"Not Spam", @"Spoken accessibility label.");
+    }
+}
+
+- (void)updateTrashButton:(BOOL)canBeTrashed {
+    if (canBeTrashed) {
+        [self.trashButton setTitle:NSLocalizedString(@"Trash", "Verb, move a comment to the trash") forState:UIControlStateNormal];
+        self.trashButton.accessibilityLabel = NSLocalizedString(@"Trash", @"Spoken accessibility label.");
+    } else {
+        [self.trashButton setTitle:NSLocalizedString(@"Untrash", "Verb, remove a comment from the trash") forState:UIControlStateNormal];
+        self.trashButton.accessibilityLabel = NSLocalizedString(@"Not Spam", @"Spoken accessibility label.");
     }
 }
 
@@ -288,19 +324,6 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     }
     return nil;
 }
-
-- (void)updateApproveButton:(BOOL)canBeApproved {
-    if (canBeApproved) {
-        [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-approve"] forState:UIControlStateNormal];
-        [self.approveButton setTitle:NSLocalizedString(@"Approve", @"Verb, approve a comment") forState:UIControlStateNormal];
-        self.approveButton.accessibilityLabel = NSLocalizedString(@"Approve", @"Spoken accessibility label.");
-    } else {
-        [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-unapprove"] forState:UIControlStateNormal];
-        [self.approveButton setTitle:NSLocalizedString(@"Unapprove", @"Verb, unapprove a comment") forState:UIControlStateNormal];
-        self.approveButton.accessibilityLabel = NSLocalizedString(@"Unapprove", @"Spoken accessibility label.");
-    }
-}
-
 
 #pragma mark - Actions
 
@@ -334,8 +357,9 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     if (approveAction) {
         // Pressed approve, so flip button optimistically to unapprove
         [self updateApproveButton:NO];
-        [WPAnalytics track:WPAnalyticsStatNotificationApproved];
         [self performCommentAction:approveAction forButton:sender];
+        
+        [WPAnalytics track:WPAnalyticsStatNotificationApproved];
     } else if (unapproveAction) {
         // Pressed unapprove, so flip button optimistically to approve
         [self updateApproveButton:YES];
@@ -350,9 +374,11 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     NSDictionary *untrashAction = [self.commentActions objectForKey:@"untrash-comment"];
     
     if (trashAction) {
-        [WPAnalytics track:WPAnalyticsStatNotificationTrashed];
+        [self updateTrashButton:NO];
         [self performCommentAction:trashAction forButton:sender];
+        [WPAnalytics track:WPAnalyticsStatNotificationTrashed];
     } else if (untrashAction) {
+        [self updateTrashButton:YES];
         [self performCommentAction:untrashAction forButton:sender];
     }
     
@@ -364,9 +390,11 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     NSDictionary *unspamAction = [self.commentActions objectForKey:@"unspam-comment"];
     
     if (spamAction) {
+        [self updateSpamButton:NO];
         [WPAnalytics track:WPAnalyticsStatNotificationFlaggedAsSpam];
         [self performCommentAction:spamAction forButton:sender];
     } else if (unspamAction) {
+        [self updateSpamButton:YES];
         [self performCommentAction:unspamAction forButton:sender];
     }
     
@@ -387,7 +415,6 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     [self setAllActionButtonsEnabled:NO];
     UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     indicatorView.frame = CGRectMake(0, 0, button.frame.size.width, button.frame.size.height);
-    indicatorView.backgroundColor = [UIColor whiteColor];
     [button addSubview:indicatorView];
     [indicatorView startAnimating];
     
@@ -402,7 +429,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [indicatorView removeFromSuperview];
         [self setAllActionButtonsEnabled:YES];
-        [WPError showAlertWithTitle:NSLocalizedString(@"Error", @"Title for error alert dialog")
+        [WPError showAlertWithTitle:NSLocalizedString(@"Error", @"")
                             message:NSLocalizedString(@"The comment could not be moderated.", @"Error message when comment could not be moderated")];
         DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
     }];
