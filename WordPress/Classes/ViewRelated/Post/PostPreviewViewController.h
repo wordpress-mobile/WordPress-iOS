@@ -3,6 +3,6 @@
 
 @interface PostPreviewViewController : UIViewController <UIWebViewDelegate>
 
-- (id)initWithPost:(AbstractPost *)aPost;
+- (instancetype)initWithPost:(AbstractPost *)aPost;
 
 @end
