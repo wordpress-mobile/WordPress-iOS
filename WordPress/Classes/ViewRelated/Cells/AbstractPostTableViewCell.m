@@ -15,9 +15,9 @@ const CGFloat APTVCVerticalOuterPadding = 16.0f;
 + (instancetype)cellForSubview:(UIView *)subview
 {
     UIView *view = subview;
-	while (![view isKindOfClass:self]) {
-		view = (UIView *)view.superview;
-	}
+    while (![view isKindOfClass:self]) {
+        view = (UIView *)view.superview;
+    }
 
     if (view == subview)
         return nil;
@@ -34,7 +34,7 @@ const CGFloat APTVCVerticalOuterPadding = 16.0f;
         _sideBorderView = [[UIView alloc] init];
         _sideBorderView.translatesAutoresizingMaskIntoConstraints = NO;
         _sideBorderView.backgroundColor = [UIColor colorWithRed:210.0/255.0 green:222.0/255.0 blue:238.0/255.0 alpha:1.0];
-		_sideBorderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        _sideBorderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [self.contentView addSubview:_sideBorderView];
 
         _postView = [self configurePostView];
@@ -50,6 +50,7 @@ const CGFloat APTVCVerticalOuterPadding = 16.0f;
 
 - (WPContentViewBase *)configurePostView {
     // noop. Subclasses should override.
+    AssertSubclassMethod();
     return nil;
 }
 
