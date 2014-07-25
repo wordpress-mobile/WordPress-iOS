@@ -486,7 +486,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 }
 
 - (void)configureNoResultsView {
-    if (![self isViewLoaded]) {
+    if (!self.isViewLoaded) {
         return;
     }
     
@@ -494,26 +494,28 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     [self.noResultsActivityIndicator stopAnimating];
     [self.noResultsActivityIndicator removeFromSuperview];
     
-    if (self.resultsController && [[_resultsController fetchedObjects] count] == 0) {
-        if (self.isSyncing) {
-            // Show activity indicator view when syncing is occuring
-            // and the fetched results controller has no objects
-            
-            [self.noResultsActivityIndicator startAnimating];
-            self.noResultsActivityIndicator.center = [self.tableView convertPoint:self.tableView.center fromView:self.tableView.superview];
-            [self.tableView addSubview:self.noResultsActivityIndicator];
+    if (self.resultsController.fetchedObjects.count) {
+        return;
+    }
+    
+    if (self.isSyncing) {
+        // Show activity indicator view when syncing is occuring and the fetched results controller has no objects
+        [self.noResultsActivityIndicator startAnimating];
+        self.noResultsActivityIndicator.center = [self.tableView convertPoint:self.tableView.center fromView:self.tableView.superview];
+        [self.tableView addSubview:self.noResultsActivityIndicator];
+        
+    } else {
+        // Refresh the NoResultsView Properties
+        self.noResultsView.titleText        = self.noResultsTitleText;
+        self.noResultsView.messageText      = self.noResultsMessageText;
+        self.noResultsView.accessoryView    = self.noResultsAccessoryView;
+        self.noResultsView.buttonTitle      = self.noResultsButtonText;
+        
+        // Show no results view if the fetched results controller has no objects and syncing is not happening.
+        if (![self.noResultsView isDescendantOfView:self.tableView]) {
+            [self.tableView addSubviewWithFadeAnimation:self.noResultsView];
         } else {
-            // Show no results view if the fetched results controller
-            // has no objects and syncing is not happening.
-            
-            
-            // only add and animate no results view if it isn't already
-            // in the table view
-            if (![self.noResultsView isDescendantOfView:self.tableView]) {
-                [self.tableView addSubviewWithFadeAnimation:self.noResultsView];
-            } else {
-                [self.noResultsView centerInSuperview];
-            }
+            [self.noResultsView centerInSuperview];
         }
     }
 }
@@ -521,7 +523,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 - (WPNoResultsView *)noResultsView {
 	
     if (!_noResultsView) {
-        _noResultsView = [WPNoResultsView noResultsViewWithTitle:[self noResultsTitleText] message:[self noResultsMessageText] accessoryView:[self noResultsAccessoryView] buttonTitle:[self noResultsButtonText]];
+        _noResultsView = [WPNoResultsView new];
         _noResultsView.delegate = self;
     }
     
