@@ -5,10 +5,9 @@
 #import "WPFontManager.h"
 
 @interface WPNoResultsView ()
-@property (nonatomic, copy) UILabel *titleLabel;
-@property (nonatomic, copy) UILabel *messageLabel;
-@property (nonatomic, copy) UIView *accessoryView;
-@property (nonatomic, copy) UIButton *button;
+@property (nonatomic, strong) UILabel   *titleLabel;
+@property (nonatomic, strong) UILabel   *messageLabel;
+@property (nonatomic, strong) UIButton  *button;
 @end
 
 @implementation WPNoResultsView
@@ -16,21 +15,59 @@
 #pragma mark -
 #pragma mark Lifecycle Methods
 
-+ (WPNoResultsView *)noResultsViewWithTitle:(NSString *)titleText message:(NSString *)messageText accessoryView:(UIView *)accessoryView buttonTitle:(NSString *)buttonTitle {
++ (instancetype)noResultsViewWithTitle:(NSString *)titleText message:(NSString *)messageText accessoryView:(UIView *)accessoryView buttonTitle:(NSString *)buttonTitle {
     
-    WPNoResultsView *view = [[WPNoResultsView alloc] init];
-    [view setupWithTitle:titleText message:messageText accessoryView:accessoryView buttonTitle:buttonTitle];
-    
-    return view;
-}
+    WPNoResultsView *noResultsView  = [WPNoResultsView new];
 
-- (void)didMoveToSuperview {
-    [self centerInSuperview];
+    noResultsView.accessoryView     = accessoryView;
+    noResultsView.titleText         = titleText;
+    noResultsView.messageText       = messageText;
+    noResultsView.buttonTitle       = buttonTitle;
+    
+    return noResultsView;
 }
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     self.delegate = nil;
+}
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        // Title Label
+        _titleLabel                 = [[UILabel alloc] init];
+        _titleLabel.numberOfLines   = 0;
+        
+        // Message Label
+        _messageLabel               = [[UILabel alloc] init];
+        _messageLabel.font          = [WPFontManager openSansRegularFontOfSize:14.0];
+        _messageLabel.textColor     = [WPStyleGuide allTAllShadeGrey];
+        _messageLabel.numberOfLines = 0;
+        _messageLabel.textAlignment = NSTextAlignmentCenter;
+        
+        // Button
+        _button                     = [UIButton buttonWithType:UIButtonTypeCustom];
+        _button.titleLabel.font     = [WPStyleGuide regularTextFont];
+        [_button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_button setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateNormal];
+        [_button setBackgroundImage:[self newButtonBackgroundImage] forState:UIControlStateNormal];
+        
+        // Insert Subviews
+        [self addSubview:_titleLabel];
+        [self addSubview:_messageLabel];
+        [self addSubview:_button];
+        
+        // Listen for orientation changes
+        NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+        [nc addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    }
+    
+    return self;
+}
+
+- (void)didMoveToSuperview {
+    [self centerInSuperview];
 }
 
 - (void)layoutSubviews {
@@ -67,65 +104,36 @@
     CGRect viewFrame = CGRectMake(0, 0, width, CGRectGetMaxY(bottomViewRect));
     self.frame = viewFrame;
     
-    if ([self superview]) {
+    if (self.superview) {
         [self centerInSuperview];
     }
 }
 
-#pragma mark Instance Methods
+#pragma mark Helper Methods
 
-- (void)setupWithTitle:(NSString *)titleText message:(NSString *)messageText accessoryView:(UIView *)accessoryView buttonTitle:(NSString *)buttonTitle {
+- (UIImage *)newButtonBackgroundImage {
+    CGRect fillRect         = {0, 0, 11.0, 36.0};
+    UIEdgeInsets capInsets  = {4, 4, 4, 4};
     
-    [self addSubview:accessoryView];
+    UIGraphicsBeginImageContextWithOptions(fillRect.size, NO, [[UIScreen mainScreen] scale]);
+    CGContextRef context    = UIGraphicsGetCurrentContext();
     
-    // Setup Accessory View
-    _accessoryView = accessoryView;
+    CGContextSetStrokeColorWithColor(context, [WPStyleGuide allTAllShadeGrey].CGColor);
+    CGContextAddPath(context, [UIBezierPath bezierPathWithRoundedRect:CGRectInset(fillRect, 1, 1) cornerRadius:2.0].CGPath);
+    CGContextStrokePath(context);
     
-    // Setup title label
-    _titleLabel = [[UILabel alloc] init];
-    _titleLabel.numberOfLines = 0;
-    [self setTitleText:titleText];
-    [self addSubview:_titleLabel];
+    UIImage *mainImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return [mainImage resizableImageWithCapInsets:capInsets];
+}
 
-    // Setup message text
-    _messageLabel = [[UILabel alloc] init];
-    _messageLabel.font = [WPFontManager openSansRegularFontOfSize:14.0];
-    _messageLabel.textColor = [WPStyleGuide allTAllShadeGrey];
-    [self setMessageText:messageText];
-    _messageLabel.numberOfLines = 0;
-    _messageLabel.textAlignment = NSTextAlignmentCenter;
-    [self addSubview:_messageLabel];
 
-    // Setup button
-    if (buttonTitle.length > 0) {
-        _button = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_button setTitle:buttonTitle forState:UIControlStateNormal];
-        [_button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
-        [_button setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateNormal];
-        [_button.titleLabel setFont:[WPStyleGuide regularTextFont]];
-        
-        // Generate button background image
-        CGRect fillRect = CGRectMake(0, 0, 11.0, 36.0);
-        UIEdgeInsets capInsets = UIEdgeInsetsMake(4, 4, 4, 4);
-        UIImage *mainImage;
-        
-        UIGraphicsBeginImageContextWithOptions(fillRect.size, NO, [[UIScreen mainScreen] scale]);
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        CGContextSetStrokeColorWithColor(context, [WPStyleGuide allTAllShadeGrey].CGColor);
-        CGContextAddPath(context, [UIBezierPath bezierPathWithRoundedRect:CGRectInset(fillRect, 1, 1) cornerRadius:2.0].CGPath);
-        CGContextStrokePath(context);
-        mainImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        
-        [_button setBackgroundImage:[mainImage resizableImageWithCapInsets:capInsets] forState:UIControlStateNormal];
-        
-        [self addSubview:_button];
-    }
-    
-    // Register for orientation changes
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
-    
-    [self setNeedsLayout];
+#pragma mark - Properties
+
+- (NSString *)titleText {
+    return _titleLabel.text;
 }
 
 - (void)setTitleText:(NSString *)title {
@@ -135,10 +143,45 @@
     [self setNeedsLayout];
 }
 
+- (NSString *)messageText {
+    return _messageLabel.text;
+}
+
 - (void)setMessageText:(NSString *)message {
     _messageLabel.text = message;
     [self setNeedsLayout];
 }
+
+- (void)setAccessoryView:(UIView *)accessoryView {
+    if (accessoryView == _accessoryView) {
+        return;
+    }
+    
+    [_accessoryView removeFromSuperview];
+    _accessoryView = accessoryView;
+    
+    if (accessoryView) {
+        [self addSubview:accessoryView];
+    }
+    
+    [self setNeedsLayout];
+}
+
+- (NSString *)buttonTitle {
+    return [self.button titleForState:UIControlStateNormal];
+}
+
+- (void)setButtonTitle:(NSString *)title {
+    self.button.hidden = (title.length == 0);
+    
+    if (title.length) {
+        [self.button setTitle:title forState:UIControlStateNormal];
+    }
+    [self setNeedsLayout];
+}
+
+
+#pragma mark - Public Helpers
 
 - (void)showInView:(UIView *)view {
     [view addSubview:self];
@@ -147,7 +190,7 @@
 
 - (void)centerInSuperview {
 
-    if (![self superview]) {
+    if (!self.superview) {
         return;
     }
     
@@ -175,17 +218,15 @@
     self.frame = frame;
 }
 
+
+#pragma mark - Notification Hanlders
+
 - (void)orientationDidChange:(NSNotification *)notification {
     
-    UIDevice *device = notification.object;
-
-    // hide the accessory view in landscape orientation on iPhone to help
-    // ensure entire view fits on screen
-    if (UIDeviceOrientationIsLandscape(device.orientation) && IS_IPHONE) {
-        _accessoryView.hidden = YES;
-    } else {
-        _accessoryView.hidden = NO;
-    }
+    // Hide the accessory view in landscape orientation on iPhone to ensure entire view fits on screen
+    UIDevice *device        = notification.object;
+    _accessoryView.hidden   = (UIDeviceOrientationIsLandscape(device.orientation) && IS_IPHONE);
+    
     [self setNeedsLayout];
 }
 
