@@ -33,11 +33,11 @@ PODS:
     - DTFoundation/DTAnimatedGIF (~> 1.7.1)
     - DTFoundation/DTHTMLParser (~> 1.7.1)
     - DTFoundation/UIKit (~> 1.7.1)
-  - DTFoundation/Core (1.7.1)
-  - DTFoundation/DTAnimatedGIF (1.7.1)
-  - DTFoundation/DTHTMLParser (1.7.1):
+  - DTFoundation/Core (1.7.2)
+  - DTFoundation/DTAnimatedGIF (1.7.2)
+  - DTFoundation/DTHTMLParser (1.7.2):
     - DTFoundation/Core
-  - DTFoundation/UIKit (1.7.1):
+  - DTFoundation/UIKit (1.7.2):
     - DTFoundation/Core
   - EmailChecker (0.1)
   - Google-Diff-Match-Patch (0.0.1)
@@ -140,7 +140,7 @@ SPEC CHECKSUMS:
   CrashlyticsLumberjack: b2a184319db06a070ccc176c07c503720ebedf81
   CTAssetsPickerController: e1247f76d97a129b75c4050990e75fd2eff7430f
   DTCoreText: 84eb8ba2e70448fdd9d837540e371f9f587b65ba
-  DTFoundation: ef6fb95da64f202d1600bc23dde79c6fd74c0c2d
+  DTFoundation: 126729614911ae7dbab3dcc1c078f189943bee66
   EmailChecker: e909e6d113fac7ad5e3c304fabce30fc4a79c80e
   Google-Diff-Match-Patch: 1f9c0b972c351d9c0a4fee137eb96896460477cd
   google-plus-ios-sdk: 98d76ce1f1edbfe8730628aafe017301a734042c
