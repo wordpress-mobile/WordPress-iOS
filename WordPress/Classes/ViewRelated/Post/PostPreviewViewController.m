@@ -24,7 +24,7 @@
 	self.webView.delegate = nil;
 }
 
-- (id)initWithPost:(AbstractPost *)aPost {
+- (instancetype)initWithPost:(AbstractPost *)aPost {
     self = [super init];
     if (self) {
         self.apost = aPost;
@@ -188,13 +188,11 @@
     
     NSString *link = self.apost.original.permaLink;
 
-    WordPressAppDelegate  *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
 
-    if( appDelegate.connectionAvailable == NO ) {
+    if (appDelegate.connectionAvailable == NO) {
         [self showSimplePreviewWithMessage:[NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection appears to be offline.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")]];
-    } else if ( self.apost.blog.reachable == NO ) {
-        [self showSimplePreviewWithMessage:[NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection cannot reach your site.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")]];
-    } else if (link == nil ) {
+    } else if (link == nil) {
         [self showSimplePreview];
     } else {
         if(needsLogin) {
@@ -248,6 +246,12 @@
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     DDLogMethodParam(error);
     self.loadingView.hidden = YES;
+    
+    NSString *errorMessage = [NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>",
+                              NSLocalizedString(@"There has been an error while trying to reach your site.", nil),
+                              NSLocalizedString(@"A simple preview is shown below.", @"")];
+    
+    [self showSimplePreviewWithMessage:errorMessage];
 }
 
 - (BOOL)webView:(UIWebView *)awebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {

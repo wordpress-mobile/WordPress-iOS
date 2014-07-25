@@ -20,6 +20,7 @@
 #import "BlogService.h"
 #import "WPNUXHelpBadgeLabel.h"
 #import <Helpshift/Helpshift.h>
+#import <WordPress-iOS-Shared/WPFontManager.h>
 
 
 static NSString *const ForgotPasswordDotComBaseUrl = @"https://wordpress.com";
@@ -169,7 +170,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         isSiteUrlFilled = updatedStringHasContent;
     }
     _signInButton.enabled = isUsernameFilled && isPasswordFilled && (_userIsDotCom || isSiteUrlFilled);
-    _forgotPassword.enabled = (_userIsDotCom || isSiteUrlFilled);
+    _forgotPassword.hidden = !(_userIsDotCom || isSiteUrlFilled);
     
     return YES;
 }
@@ -408,7 +409,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _helpBadge.textAlignment = NSTextAlignmentCenter;
         _helpBadge.backgroundColor = [UIColor colorWithHexString:@"dd3d36"];
         _helpBadge.textColor = [UIColor whiteColor];
-        _helpBadge.font = [UIFont fontWithName:@"OpenSans" size:8.0];
+        _helpBadge.font = [WPFontManager openSansRegularFontOfSize:8.0];
         _helpBadge.hidden = YES;
         [_mainView addSubview:_helpBadge];
     }
@@ -541,10 +542,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         [_forgotPassword addTarget:self action:@selector(forgotPassword:) forControlEvents:UIControlEventTouchUpInside];
         _forgotPassword.titleLabel.font = [WPNUXUtility tosLabelFont];
         [_forgotPassword setTitleColor:[WPNUXUtility tosLabelColor] forState:UIControlStateNormal];
-        [_forgotPassword setTitleColor:[UIColor colorWithWhite:1.0 alpha:0.4] forState:UIControlStateDisabled];
         [_mainView addSubview:_forgotPassword];
     }
-    _forgotPassword.enabled = [self isForgotPasswordEnabled];
+    _forgotPassword.hidden = ![self isForgotPasswordEnabled];
 }
 
 - (void)layoutControls
@@ -636,7 +636,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
     
     if (!defaultAccount) {
-        [delegate showBlogListTab];
+        [delegate showTabForIndex:kMeTabIndex];
     }
     
     self.parentViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -657,6 +657,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
         if (didAuthenticate) {
             [WPAnalytics track:WPAnalyticsStatSignedInToJetpack];
+            [WPAnalytics refreshMetadata];
         } else {
             [WPAnalytics track:WPAnalyticsStatSkippedConnectingToJetpack];
         }
@@ -675,7 +676,11 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (void)showHelpshiftConversationView
 {
-    [[Helpshift sharedInstance] showConversation:self withOptions:nil];
+    NSDictionary *metaData = @{@"Source": @"Failed login",
+                               @"Username": _usernameText.text,
+                               @"SiteURL": _siteUrlText.text};
+    
+    [[Helpshift sharedInstance] showConversation:self withOptions:@{HSCustomMetadataKey: metaData}];
 }
 
 - (BOOL)isUrlWPCom:(NSString *)url
@@ -885,6 +890,8 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
                                 success:^{
                                     [self setAuthenticating:NO withStatusMessage:nil];
                                     [self dismiss];
+                                    [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:@{ @"dotcom_user" : @(YES) }];
+                                    [WPAnalytics refreshMetadata];
                                 }
                                 failure:^(NSError *error) {
                                     [self setAuthenticating:NO withStatusMessage:nil];
@@ -930,6 +937,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     } else {
         [self dismiss];
     }
+    
+    [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:@{ @"dotcom_user" : @(NO) }];
+    [WPAnalytics refreshMetadata];
 }
 
 - (void)handleGuessXMLRPCURLFailure:(NSError *)error

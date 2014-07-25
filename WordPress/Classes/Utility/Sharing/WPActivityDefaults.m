@@ -40,6 +40,8 @@
         stat = WPAnalyticsStatSentItemToGooglePlus;
     } else if ([activityType isEqualToString:NSStringFromClass([WordPressActivity class])]) {
         stat = WPAnalyticsStatSentItemToWordPress;
+    } else if ([activityType isEqualToString:UIActivityTypeCopyToPasteboard] || [activityType isEqualToString:UIActivityTypeAddToReadingList] || [activityType isEqualToString:NSStringFromClass([SafariActivity class])]) {
+        return;
     } else {
         [WPAnalytics track:WPAnalyticsStatSharedItem];
         return;

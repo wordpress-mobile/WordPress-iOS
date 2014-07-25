@@ -12,9 +12,11 @@
 #import "WPUploadStatusView.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
+#import <WordPress-iOS-Shared/WPFontManager.h>
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
+static NSInteger const MaximumNumberOfPictures = 4;
 
 @interface EditPostViewController ()<UIPopoverControllerDelegate> {
     NSOperationQueue *_mediaUploadQueue;
@@ -177,10 +179,10 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
         UIButton *titleButton = self.titleBarButton;
         self.navigationItem.titleView = titleButton;
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", [self editorTitle]]
-                                                                                      attributes:@{ NSFontAttributeName : [UIFont fontWithName:@"OpenSans-Bold" size:14.0] }];
+                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
         
         NSString *subtext = [self.post.blog.blogName length] == 0 ? self.post.blog.url : self.post.blog.blogName;
-        NSDictionary *subtextAttributes = @{ NSFontAttributeName: [UIFont fontWithName:@"OpenSans" size:10.0] };
+        NSDictionary *subtextAttributes = @{ NSFontAttributeName: [WPFontManager openSansRegularFontOfSize:10.0] };
         NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:subtext
                                                                                          attributes:subtextAttributes];
         [titleText appendAttributedString:titleSubtext];
@@ -350,6 +352,7 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 	}
     
     if (![self hasChanges]) {
+        [WPAnalytics track:WPAnalyticsStatEditorClosed];
         [self discardChangesAndDismiss];
         return;
     }
@@ -697,6 +700,8 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
         }
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Schedule", nil)]) {
         [WPAnalytics track:WPAnalyticsStatEditorScheduledPost withProperties:properties];
+    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Save", nil)]) {
+        [WPAnalytics track:WPAnalyticsStatEditorSavedDraft];
     } else {
         [WPAnalytics track:WPAnalyticsStatEditorUpdatedPost withProperties:properties];
     }
@@ -814,7 +819,9 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 		self.post.content = content;
 	}
     
-    [self refreshUIForCurrentPost];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self refreshUIForCurrentPost];
+    });
     [self.post save];
 }
 
@@ -884,6 +891,7 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
         // Discard
         if (buttonIndex == 0) {
             [self discardChangesAndDismiss];
+            [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
         }
         
         if (buttonIndex == 1) {
@@ -944,7 +952,8 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 
 #pragma mark - CTAssetsPickerController delegate
 
-- (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets {
+- (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
+{
     [self dismissViewControllerAnimated:YES completion:nil];
     
     for (ALAsset *asset in assets) {
@@ -967,7 +976,19 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
             }];
         }
     }
-    [self setupNavbar];
+    
+    // Need to refresh the post object. If we didn't, self.post.media would appear
+    // to be unchanged causing the Media State Methods to fail.
+    [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
+}
+
+- (BOOL)assetsPickerController:(CTAssetsPickerController *)picker shouldSelectAsset:(ALAsset *)asset
+{
+    if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto) {
+        return picker.selectedAssets.count < MaximumNumberOfPictures;
+    } else {
+        return YES;
+    }
 }
 
 #pragma mark - KVO
