@@ -5,6 +5,8 @@
 
 @interface CategoryService : NSObject <LocalCoreDataService>
 
+- (Category *)newCategoryForBlogObjectID:(NSManagedObjectID *)blogObjectID;
+
 - (BOOL)existsName:(NSString *)name forBlogObjectID:(NSManagedObjectID *)blogObjectID withParentId:(NSNumber *)parentId;
 
 - (Category *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID andCategoryID:(NSNumber *)categoryID;

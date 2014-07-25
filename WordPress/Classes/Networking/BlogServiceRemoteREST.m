@@ -54,6 +54,7 @@
                                 @"admin_url",
                                 @"login_url",
                                 @"image_default_link_type",
+                                @"post_formats",
                                 @"software_version",
                                 @"videopress_enabled",
                                 ];
