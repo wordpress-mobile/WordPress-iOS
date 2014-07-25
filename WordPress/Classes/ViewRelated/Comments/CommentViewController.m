@@ -80,7 +80,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     [self.commentView addCustomActionButton:self.approveButton];
 
     self.spamButton = [VerticallyStackedButton buttonWithType:UIButtonTypeSystem];
-    [self.spamButton setImage:[UIImage imageNamed:@"icon-comments-flag"] forState:UIControlStateNormal];
+    [self.spamButton setImage:[UIImage imageNamed:@"icon-comments-spam"] forState:UIControlStateNormal];
     [self.spamButton setTitle:NSLocalizedString(@"Spam", @"Verb, mark a comment as spam") forState:UIControlStateNormal];
     self.spamButton.accessibilityLabel = NSLocalizedString(@"Mark as spam", @"Spoken accessibility label.");
     [self.spamButton addTarget:self action:@selector(spamAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -233,13 +233,14 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     self.replyButton.enabled = enabled;
 }
 
-
 #pragma mark - Actions
 
 - (void)approveOrUnapproveAction:(id)sender {
     UIButton *button = sender;
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [self setAllActionButtonsEnabled:NO];
+    
+    // Show an activity indicator in place of the button until the operation completes
     UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [indicatorView setBackgroundColor:[UIColor whiteColor]];
     CGFloat indicatorPadding = 10.0f;

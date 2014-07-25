@@ -51,6 +51,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 
 @property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
+
 @end
 
 @implementation NotificationsCommentDetailViewController
@@ -132,15 +133,13 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     
     self.approveButton = [VerticallyStackedButton buttonWithType:UIButtonTypeSystem];
     [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-approve"] forState:UIControlStateNormal];
-    [self.approveButton.imageView setContentMode:UIViewContentModeCenter];
-    [self.approveButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
     [self.approveButton setTitle:NSLocalizedString(@"Approve", @"Verb, approve a comment") forState:UIControlStateNormal];
     self.approveButton.accessibilityLabel = NSLocalizedString(@"Toggle approve or unapprove", @"Spoken accessibility label.");
     [self.approveButton addTarget:self action:@selector(approveOrUnapproveAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.commentView addCustomActionButton:self.approveButton];
     
     self.spamButton = [VerticallyStackedButton buttonWithType:UIButtonTypeSystem];
-    [self.spamButton setImage:[UIImage imageNamed:@"icon-comments-flag"] forState:UIControlStateNormal];
+    [self.spamButton setImage:[UIImage imageNamed:@"icon-comments-spam"] forState:UIControlStateNormal];
     [self.spamButton setTitle:NSLocalizedString(@"Spam", @"Verb, spam comment") forState:UIControlStateNormal];
     self.spamButton.accessibilityLabel = NSLocalizedString(@"Mark as spam", @"Spoken accessibility label.");
     [self.spamButton addTarget:self action:@selector(spamAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -415,6 +414,8 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     NSString *path = [NSString stringWithFormat:@"/rest/v1%@", [commentAction valueForKeyPath:@"params.rest_path"]];
     
     [self setAllActionButtonsEnabled:NO];
+    
+    // Show an activity indicator in place of the button until the operation completes
     UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     indicatorView.backgroundColor = [UIColor whiteColor];
     CGFloat indicatorPadding = 10.0f;
