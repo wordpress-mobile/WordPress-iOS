@@ -2,20 +2,6 @@
 #import "NSMutableDictionary+Helpers.h"
 #import "ContextManager.h"
 
-@interface Post(InternalProperties)
-// We shouldn't need to store this, but if we don't send IDs on edits
-// custom fields get duplicated and stop working
-@property (nonatomic, retain) NSString *latitudeID;
-@property (nonatomic, retain) NSString *longitudeID;
-@property (nonatomic, retain) NSString *publicID;
-@end
-
-@implementation Post(InternalProperties)
-@dynamic latitudeID, longitudeID, publicID;
-@end
-
-#pragma mark -
-
 @interface AbstractPost (WordPressApi)
 - (NSDictionary *)XMLRPCDictionary;
 @end
@@ -33,6 +19,7 @@
 @implementation Post 
 
 @dynamic geolocation, tags, postFormat;
+@dynamic latitudeID, longitudeID, publicID;
 @dynamic categories;
 @synthesize specialType;
 
