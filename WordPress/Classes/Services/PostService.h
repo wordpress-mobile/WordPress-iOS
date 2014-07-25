@@ -8,4 +8,8 @@
 - (Post *)createDraftPostForBlog:(Blog *)blog;
 - (Page *)createDraftPageForBlog:(Blog *)blog;
 
+- (void)syncPostsForBlog:(Blog *)blog
+                 success:(void (^)())success
+                 failure:(void (^)(NSError *error))failure;
+
 @end

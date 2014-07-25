@@ -28,6 +28,11 @@
     return category;
 }
 
+- (Category *)newCategoryForBlogObjectID:(NSManagedObjectID *)blogObjectID {
+    Blog *blog = [self blogWithObjectID:blogObjectID];
+    return [self newCategoryForBlog:blog];
+}
+
 - (BOOL)existsName:(NSString *)name forBlogObjectID:(NSManagedObjectID *)blogObjectID withParentId:(NSNumber *)parentId {
     Blog *blog = [self blogWithObjectID:blogObjectID];
     

@@ -254,22 +254,8 @@
 
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-
-    //Re-sync media, in case new media was added server-side
-    [blogService syncMediaLibraryForBlog:self.blog success:nil failure:nil];
-
-    if (userInteraction) {
-        // If triggered by a pull to refresh, sync posts and metadata
-        [blogService syncPostsAndMetadataForBlog:self.blog success:success failure:failure];
-    } else {
-        // If blog has no posts, then sync posts including metadata
-        if (self.blog.posts.count == 0) {
-            [blogService syncPostsAndMetadataForBlog:self.blog success:success failure:failure];
-        } else {
-            [blogService syncPostsForBlog:self.blog success:success failure:failure loadMore:NO];
-        }
-    }
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+    [postService syncPostsForBlog:self.blog success:success failure:failure];
 }
 
 - (Class)cellClass {
