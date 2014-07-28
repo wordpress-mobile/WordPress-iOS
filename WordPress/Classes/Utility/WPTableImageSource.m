@@ -230,9 +230,11 @@
         regex = [NSRegularExpression regularExpressionWithPattern:@"i\\d+\\.wp\\.com" options:NSRegularExpressionCaseInsensitive error:&error];
     });
     NSString *host = [url host];
-    NSInteger count = [regex numberOfMatchesInString:host options:NSMatchingCompleted range:NSMakeRange(0, [host length])];
-    if (count > 0) {
-        return url;
+    if (host) {
+        NSInteger count = [regex numberOfMatchesInString:host options:NSMatchingCompleted range:NSMakeRange(0, [host length])];
+        if (count > 0) {
+            return url;
+        }
     }
 
     // Compose the URL
