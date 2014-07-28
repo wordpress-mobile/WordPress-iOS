@@ -18,6 +18,7 @@
     ((WPRichTextView *)self.contentView).delegate = nil;
 }
 
+
 #pragma mark - Public Methods
 
 - (void)refreshMediaLayout
@@ -82,24 +83,24 @@
     }
 }
 
-- (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(ReaderImageView *)readerImageView
+- (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(WPRichTextImageControl *)imageControl
 {
     if ([self.delegate respondsToSelector:@selector(richTextView:didReceiveImageLinkAction:)]) {
-        [self.delegate richTextView:richTextView didReceiveImageLinkAction:readerImageView];
+        [self.delegate richTextView:richTextView didReceiveImageLinkAction:imageControl];
     }
 }
 
-- (void)richTextView:(WPRichTextView *)richTextView didReceiveVideoLinkAction:(ReaderVideoView *)readerVideoView
+- (void)richTextView:(WPRichTextView *)richTextView didReceiveVideoLinkAction:(WPRichTextVideoControl *)videoControl
 {
     if ([self.delegate respondsToSelector:@selector(richTextView:didReceiveVideoLinkAction:)]) {
-        [self.delegate richTextView:richTextView didReceiveVideoLinkAction:readerVideoView];
+        [self.delegate richTextView:richTextView didReceiveVideoLinkAction:videoControl];
     }
 }
 
-- (void)richTextViewDidLoadAllMedia:(WPRichTextView *)richTextView
+- (void)richTextViewDidLoadMediaBatch:(WPRichTextView *)richTextView
 {
-    if ([self.delegate respondsToSelector:@selector(richTextViewDidLoadAllMedia:)]) {
-        [self.delegate richTextViewDidLoadAllMedia:richTextView];
+    if ([self.delegate respondsToSelector:@selector(richTextViewDidLoadMediaBatch:)]) {
+        [self.delegate richTextViewDidLoadMediaBatch:richTextView];
     }
 }
 
