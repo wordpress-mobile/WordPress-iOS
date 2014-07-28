@@ -143,6 +143,7 @@ static UIEdgeInsets NotificationTableInsets     = { 0.0f, 0.0f, 20.0f, 0.0f };
     [super encodeRestorableStateWithCoder:coder];
 }
 
+
 #pragma mark - Helpers
 
 - (NotificationBlock *)blockForIndexPath:(NSIndexPath *)indexPath
@@ -152,6 +153,7 @@ static UIEdgeInsets NotificationTableInsets     = { 0.0f, 0.0f, 20.0f, 0.0f };
     
     return block;
 }
+
 
 #pragma mark - UITableViewDelegate Methods
 
