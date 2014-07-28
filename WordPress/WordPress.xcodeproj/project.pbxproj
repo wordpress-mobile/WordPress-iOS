@@ -45,7 +45,10 @@
 		5D0077A7182AE9DF00F865DB /* ReaderMediaQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D0077A6182AE9DF00F865DB /* ReaderMediaQueue.m */; };
 		5D08B90419648C3400D5B381 /* ReaderSubscriptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D08B90319648C3400D5B381 /* ReaderSubscriptionViewController.m */; };
 		5D119DA3176FBE040073D83A /* UIImageView+AFNetworkingExtra.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D119DA2176FBE040073D83A /* UIImageView+AFNetworkingExtra.m */; };
+		5D11E3261979E76D00E70992 /* VideoThumbnailServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D11E3251979E76D00E70992 /* VideoThumbnailServiceRemote.m */; };
 		5D146EBB189857ED0068FDC6 /* FeaturedImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D146EBA189857ED0068FDC6 /* FeaturedImageViewController.m */; };
+		5D1945621979C3D5003EDDAD /* WPRichTextImageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1945611979C3D5003EDDAD /* WPRichTextImageControl.m */; };
+		5D1945651979E091003EDDAD /* WPRichTextVideoControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1945641979E091003EDDAD /* WPRichTextVideoControl.m */; };
 		5D1EE80215E7AF3E007F1F02 /* JetpackSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1EE80015E7AF3E007F1F02 /* JetpackSettingsViewController.m */; };
 		5D2BEB4919758102005425F7 /* WPTableImageSourceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2BEB4819758102005425F7 /* WPTableImageSourceTest.m */; };
 		5D37941B19216B1300E26CA4 /* RebloggingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D37941A19216B1300E26CA4 /* RebloggingViewController.m */; };
@@ -430,8 +433,14 @@
 		5D08B90319648C3400D5B381 /* ReaderSubscriptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderSubscriptionViewController.m; sourceTree = "<group>"; };
 		5D119DA1176FBE040073D83A /* UIImageView+AFNetworkingExtra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworkingExtra.h"; sourceTree = "<group>"; };
 		5D119DA2176FBE040073D83A /* UIImageView+AFNetworkingExtra.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworkingExtra.m"; sourceTree = "<group>"; };
+		5D11E3241979E76D00E70992 /* VideoThumbnailServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoThumbnailServiceRemote.h; sourceTree = "<group>"; };
+		5D11E3251979E76D00E70992 /* VideoThumbnailServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoThumbnailServiceRemote.m; sourceTree = "<group>"; };
 		5D146EB9189857ED0068FDC6 /* FeaturedImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeaturedImageViewController.h; sourceTree = "<group>"; };
 		5D146EBA189857ED0068FDC6 /* FeaturedImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeaturedImageViewController.m; sourceTree = "<group>"; };
+		5D1945601979C3D5003EDDAD /* WPRichTextImageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPRichTextImageControl.h; sourceTree = "<group>"; };
+		5D1945611979C3D5003EDDAD /* WPRichTextImageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPRichTextImageControl.m; sourceTree = "<group>"; };
+		5D1945631979E091003EDDAD /* WPRichTextVideoControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPRichTextVideoControl.h; sourceTree = "<group>"; };
+		5D1945641979E091003EDDAD /* WPRichTextVideoControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPRichTextVideoControl.m; sourceTree = "<group>"; };
 		5D1EE7FF15E7AF3E007F1F02 /* JetpackSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackSettingsViewController.h; sourceTree = "<group>"; };
 		5D1EE80015E7AF3E007F1F02 /* JetpackSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackSettingsViewController.m; sourceTree = "<group>"; };
 		5D2B043515E83800007E3422 /* SettingsViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewControllerDelegate.h; sourceTree = "<group>"; };
@@ -1115,6 +1124,10 @@
 				5DEB61B3156FCD3400242C35 /* WPWebView.m */,
 				ADF544C0195A0F620092213D /* CustomHighlightButton.h */,
 				ADF544C1195A0F620092213D /* CustomHighlightButton.m */,
+				5D1945601979C3D5003EDDAD /* WPRichTextImageControl.h */,
+				5D1945611979C3D5003EDDAD /* WPRichTextImageControl.m */,
+				5D1945631979E091003EDDAD /* WPRichTextVideoControl.h */,
+				5D1945641979E091003EDDAD /* WPRichTextVideoControl.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1594,6 +1607,8 @@
 				E18EE95019349EC300B0A40C /* ReaderTopicServiceRemote.m */,
 				E1249B481940AE610035E895 /* ServiceRemoteREST.h */,
 				E1249B471940AE550035E895 /* ServiceRemoteXMLRPC.h */,
+				5D11E3241979E76D00E70992 /* VideoThumbnailServiceRemote.h */,
+				5D11E3251979E76D00E70992 /* VideoThumbnailServiceRemote.m */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -2494,6 +2509,7 @@
 				A25EBD87156E330600530E3D /* WPTableViewController.m in Sources */,
 				5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */,
 				B55853F31962337500FAF6C3 /* NSScanner+Helpers.m in Sources */,
+				5D1945651979E091003EDDAD /* WPRichTextVideoControl.m in Sources */,
 				5DEB61B8156FCD5200242C35 /* WPChromelessWebViewController.m in Sources */,
 				CC24E5EF1577D1EA00A6D5B5 /* WPFriendFinderViewController.m in Sources */,
 				E1AB07AD1578D34300D6AD64 /* SettingsViewController.m in Sources */,
@@ -2527,6 +2543,7 @@
 				8516972C169D42F4006C5DED /* WPToast.m in Sources */,
 				93C4864F181043D700A24725 /* ActivityLogDetailViewController.m in Sources */,
 				CC70165E185BB97A007B37DB /* ReaderCommentPublisher.m in Sources */,
+				5D11E3261979E76D00E70992 /* VideoThumbnailServiceRemote.m in Sources */,
 				859F761D18F2159800EF8D5D /* WPAnalyticsTrackerMixpanelInstructionsForStat.m in Sources */,
 				E1523EB516D3B305002C5A36 /* InstapaperActivity.m in Sources */,
 				E18EE94B19349EAE00B0A40C /* AccountServiceRemote.m in Sources */,
@@ -2613,6 +2630,7 @@
 				5DA3EE13192508F700294E0B /* WPImageOptimizer+Private.m in Sources */,
 				5D119DA3176FBE040073D83A /* UIImageView+AFNetworkingExtra.m in Sources */,
 				5DF59C0B1770AE3A00171208 /* UILabel+SuggestSize.m in Sources */,
+				5D1945621979C3D5003EDDAD /* WPRichTextImageControl.m in Sources */,
 				E1F5A1BC1771C90A00E0495F /* WPTableImageSource.m in Sources */,
 				851734431798C64700A30E27 /* NSURL+Util.m in Sources */,
 				5DF738971965FACD00393584 /* RecommendedTopicsViewController.m in Sources */,
