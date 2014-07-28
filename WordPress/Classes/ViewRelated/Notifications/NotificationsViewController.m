@@ -152,13 +152,12 @@
 
 - (void)updateTabBarBadgeNumber
 {
-    NSInteger count         = [[UIApplication sharedApplication] applicationIconBadgeNumber];
-    NSString *countString   = (count) ? [NSString stringWithFormat:@"%d", count] : nil;
-    
     // Note: self.navigationViewController might be nil. Let's hit the UITabBarController instead
     UITabBarController *tabBarController    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] tabBarController];
     UITabBarItem *tabBarItem                = tabBarController.tabBar.items[kNotificationsTabIndex];
-    
+ 
+    NSInteger count                         = [[UIApplication sharedApplication] applicationIconBadgeNumber];
+    NSString *countString                   = (count) ? [NSString stringWithFormat:@"%d", count] : nil;
     tabBarItem.badgeValue                   = countString;
 }
 
@@ -171,7 +170,7 @@
     
     NSString *bucketName    = NSStringFromClass([Meta class]);
     Simperium *simperium    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
-    Meta *metadata          = [[simperium bucketForName:bucketName] objectForKey:[bucketName lowercaseString]];
+    Meta *metadata          = [[simperium bucketForName:bucketName] objectForKey:bucketName.lowercaseString];
     if (!metadata) {
         return;
     }
@@ -182,15 +181,14 @@
 
 - (void)showManageButtonIfNeeded
 {
-    UINavigationItem *navigationItem = self.navigationItem;
-    if (![NotificationsManager deviceRegisteredForPushNotifications] || navigationItem.rightBarButtonItem) {
+    if (![NotificationsManager deviceRegisteredForPushNotifications]) {
         return;
     }
     
-    navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Manage", @"")
-                                                                         style:UIBarButtonItemStylePlain
-                                                                        target:self
-                                                                        action:@selector(showNotificationSettings)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Manage", @"")
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(showNotificationSettings)];
 }
 
 - (void)showNotificationSettings
@@ -349,7 +347,7 @@
 - (NSFetchRequest *)fetchRequest
 {
     NSString *sortKey               = NSStringFromSelector(@selector(timestamp));
-    NSFetchRequest *fetchRequest    = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
+    NSFetchRequest *fetchRequest    = [NSFetchRequest fetchRequestWithEntityName:self.entityName];
     fetchRequest.sortDescriptors    = @[ [NSSortDescriptor sortDescriptorWithKey:sortKey ascending:NO] ];
     
     return fetchRequest;
