@@ -13,8 +13,12 @@
 
 @property (nonatomic) NSURLRequest *urlRequest;
 @property (nonatomic) CGSize snapshotSize;
+@property (nonatomic) NSString *didFinishJavascript;
 @property (nonatomic, copy) WPWebSnapshotterSnapshotCompletionHandler callback;
 
-+ (WPWebSnapshotRequest *)snapshotRequestWithURLRequest:(NSURLRequest *)urlRequest snapshotSize:(CGSize)snapshotSize completionHandler:(WPWebSnapshotterSnapshotCompletionHandler)completionHandler;
++ (WPWebSnapshotRequest *)snapshotRequestWithURLRequest:(NSURLRequest *)urlRequest
+                                           snapshotSize:(CGSize)snapshotSize
+                                    didFinishJavascript:(NSString *)javascript
+                                      completionHandler:(WPWebSnapshotterSnapshotCompletionHandler)completionHandler;
 
 @end

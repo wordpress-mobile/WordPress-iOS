@@ -9,20 +9,45 @@
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
 #import "AccountService.h"
+#import "WPWebSnapshotter.h"
+#import "WPWebSnapshotWorker.h"
+#import "WPAuthenticatedSessionWebViewManager.h"
+#import "NSString+Helpers.h"
 
-@interface ThemeDetailsViewController ()
+typedef NS_ENUM(NSUInteger, ThemeDetailsViewControllerControlButtonState) {
+    ThemeDetailsViewControllerControlButtonStateLivePreview,
+    ThemeDetailsViewControllerControlButtonStateViewSite
+};
+
+// used when creating livesnapshots to resizes the webview to make the screenshot look more like
+// stock thumbnail images
+static NSString* const ThemeDetailsViewControllerJavascriptResizeScript =
+@"var meta = document.createElement('meta'); " \
+"meta.setAttribute( 'name', 'viewport' ); " \
+"meta.setAttribute( 'content', 'width=1280, height=1024'); " \
+"document.getElementsByTagName('head')[0].appendChild(meta)";
+
+@interface ThemeDetailsViewController () <WPAuthenticatedSessionWebViewManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *themeControlsView;
 @property (weak, nonatomic) IBOutlet UIView *themeControlsContainerView;
 @property (weak, nonatomic) IBOutlet UILabel *themeName;
 @property (weak, nonatomic) IBOutlet UIImageView *screenshot;
+@property (weak, nonatomic) IBOutlet UIView *livePreview;
+@property (weak, nonatomic) IBOutlet UIView *livePreviewOverlayView;
 @property (weak, nonatomic) IBOutlet UIButton *livePreviewButton;
 @property (weak, nonatomic) IBOutlet UIButton *activateButton;
+@property (nonatomic) ThemeDetailsViewControllerControlButtonState controlButtonState;
 @property (nonatomic, strong) Theme *theme;
 @property (nonatomic, weak) UILabel *tagCloud;
 @property (nonatomic, weak) UILabel *currentTheme;
 @property (nonatomic, weak) UILabel *premiumTheme;
 @property (weak, nonatomic) UIView *infoView;
+@property (nonatomic, strong) WPAuthenticatedSessionWebViewManager *authenticatedWebViewManager;
+@property (nonatomic, strong) NSString *previewUsername;
+@property (nonatomic, strong) NSString *previewPassword;
+@property (nonatomic, strong) NSURL *previewLoginURL;
+@property (nonatomic, strong) NSURL *previewDestinationURL;
 
 @end
 
@@ -32,6 +57,7 @@
     self = [super init];
     if (self) {
         _theme = theme;
+        _authenticatedWebViewManager = [[WPAuthenticatedSessionWebViewManager alloc] initWithDelegate:self];
     }
     return self;
 }
@@ -55,15 +81,18 @@
         .size = self.themeName.frame.size
     };
     
+    self.controlButtonState = ThemeDetailsViewControllerControlButtonStateLivePreview;
+    
     self.livePreviewButton.titleLabel.font = [WPStyleGuide regularTextFont];
-    self.activateButton.titleLabel.font = self.livePreviewButton.titleLabel.font;
-    self.livePreviewButton.titleLabel.text = NSLocalizedString(@"Live Preview", nil);
-    self.activateButton.titleLabel.text = NSLocalizedString(@"Activate", nil);
     [self.livePreviewButton setBackgroundColor:[WPStyleGuide whisperGrey]];
-    [self.activateButton setBackgroundColor:[WPStyleGuide baseDarkerBlue]];
+    [self.livePreviewButton setTitleColor:[WPStyleGuide readGrey] forState:UIControlStateDisabled];
     self.livePreviewButton.layer.cornerRadius = 3.0f;
-    self.activateButton.layer.cornerRadius = 3.0f;
     self.livePreviewButton.exclusiveTouch = YES;
+    
+    self.activateButton.titleLabel.font = self.livePreviewButton.titleLabel.font;
+    self.activateButton.titleLabel.text = NSLocalizedString(@"Activate", nil);
+    [self.activateButton setBackgroundColor:[WPStyleGuide baseDarkerBlue]];
+    self.activateButton.layer.cornerRadius = 3.0f;
     self.activateButton.exclusiveTouch = YES;
     
     if ([self.theme isCurrentTheme]) {
@@ -155,6 +184,15 @@
     [self.view addSubview:_infoView];
 }
 
+- (WPWebSnapshotter *)webSnapshotter
+{
+    if (_webSnapshotter == nil) {
+        _webSnapshotter = [[WPWebSnapshotter alloc] init];
+    }
+    
+    return _webSnapshotter;
+}
+
 - (NSString *)formattedTags {
     NSMutableArray *formattedTags = [NSMutableArray array];
     [self.theme.tags enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL *stop) {
@@ -173,9 +211,27 @@
     self.screenshot.image = nil;
 }
 
+- (void)setControlButtonState:(ThemeDetailsViewControllerControlButtonState)controlButtonState
+{
+    _controlButtonState = controlButtonState;
+    
+    switch (_controlButtonState) {
+        case ThemeDetailsViewControllerControlButtonStateLivePreview:
+            [self.livePreviewButton setTitle:NSLocalizedString(@"Live Preview", nil) forState:UIControlStateNormal];
+            self.livePreviewButton.enabled = YES;
+            break;
+        case ThemeDetailsViewControllerControlButtonStateViewSite:
+            [self.livePreviewButton setTitle:NSLocalizedString(@"View Site", nil) forState:UIControlStateNormal];
+            self.livePreviewButton.enabled = YES;
+            break;
+        default:
+            break;
+    }
+}
+
 - (void)showViewSite {
     // Remove activate theme button, and live preview becomes the 'View Site' button
-    [self.livePreviewButton setTitle:NSLocalizedString(@"View Site", @"") forState:UIControlStateNormal];
+    self.controlButtonState = ThemeDetailsViewControllerControlButtonStateViewSite;
     self.livePreviewButton.center = CGPointMake(self.screenshot.center.x, self.livePreviewButton.center.y);
     self.activateButton.alpha = 0;
 }
@@ -214,17 +270,68 @@
 }
 
 - (IBAction)livePreviewPressed:(id)sender {
-    // Live preview URL yields the same result as 'view current site'.
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    WPWebViewController *livePreviewController = [[WPWebViewController alloc] init];
-    livePreviewController.username = defaultAccount.username;
-    livePreviewController.password = defaultAccount.password;
-    [livePreviewController setWpLoginURL:[NSURL URLWithString:self.theme.blog.loginUrl]];
-    livePreviewController.url = [NSURL URLWithString:self.theme.previewUrl];
-    [self.navigationController pushViewController:livePreviewController animated:YES];
+    
+    NSString *username = defaultAccount.username;
+    NSString *password = defaultAccount.password;
+    NSURL *loginURL = [NSURL URLWithString:self.theme.blog.loginUrl];
+    NSURL *destinationURL = [NSURL URLWithString:self.theme.previewUrl];
+    
+    switch (self.controlButtonState) {
+        case ThemeDetailsViewControllerControlButtonStateLivePreview:
+        {
+            __block UIActivityIndicatorView *loading = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+            [loading startAnimating];
+            loading.center = CGPointMake(self.livePreviewButton.bounds.size.width/2, self.livePreviewButton.bounds.size.height/2);
+            [self.livePreviewButton setTitle:@"" forState:UIControlStateNormal];
+            [self.livePreviewButton addSubview:loading];
+            
+            self.previewUsername = username;
+            self.previewPassword = password;
+            self.previewLoginURL = loginURL;
+            self.previewDestinationURL = destinationURL;
+            self.webSnapshotter.worker.webViewCustomizationDelegate = self.authenticatedWebViewManager;
+            
+            [self.webSnapshotter captureSnapshotOfURLRequest:[self.authenticatedWebViewManager URLRequestForAuthenticatedSession]
+                                                snapshotSize:self.livePreview.frame.size
+                                  didFinishLoadingJavascript:ThemeDetailsViewControllerJavascriptResizeScript
+                                           completionHandler:^(UIView *view) {
+                                               [loading removeFromSuperview];
+                                               
+                                               self.livePreviewButton.enabled = NO;
+                                               
+                                               self.livePreview.hidden = NO;
+                                               view.layer.opacity = 0.f;
+                                               [self.livePreview addSubview:view];
+                                               
+                                               [UIView animateWithDuration:0.275
+                                                                animations:^{
+                                                                    view.layer.opacity = 1.f;
+                                                                }];
+                                           }];
+            
+            [UIView animateWithDuration:0.325
+                             animations:^{
+                                 self.livePreviewOverlayView.alpha = .4f;
+                             }];
+            break;
+        }
+        case ThemeDetailsViewControllerControlButtonStateViewSite:
+        {
+            WPWebViewController *livePreviewController = [[WPWebViewController alloc] init];
+            livePreviewController.username = username;
+            livePreviewController.password = password;
+            [livePreviewController setWpLoginURL:loginURL];
+            livePreviewController.url = destinationURL;
+            
+            [self.navigationController pushViewController:livePreviewController animated:YES];
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 - (IBAction)activatePressed:(id)sender {
@@ -247,5 +354,25 @@
     }];
 }
 
+#pragma mark - WPAuthenticatedSessionWebViewManagerDelegate
+- (NSString *)username
+{
+    return self.previewUsername;
+}
+
+- (NSString *)password
+{
+    return self.previewPassword;
+}
+
+- (NSURL *)destinationURL
+{
+    return self.previewDestinationURL;
+}
+
+- (NSURL *)loginURL
+{
+    return self.previewLoginURL;
+}
 
 @end

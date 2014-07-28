@@ -43,8 +43,20 @@
                        snapshotSize:(CGSize)snapshotSize
                   completionHandler:(WPWebSnapshotterSnapshotCompletionHandler)completionHandler
 {
+    [self captureSnapshotOfURLRequest:urlRequest
+                         snapshotSize:snapshotSize
+           didFinishLoadingJavascript:nil
+                    completionHandler:completionHandler];
+}
+
+- (void)captureSnapshotOfURLRequest:(NSURLRequest *)urlRequest
+                       snapshotSize:(CGSize)snapshotSize
+         didFinishLoadingJavascript:(NSString *)javascript
+                  completionHandler:(WPWebSnapshotterSnapshotCompletionHandler)completionHandler
+{
     WPWebSnapshotRequest *request = [WPWebSnapshotRequest snapshotRequestWithURLRequest:urlRequest
                                                                            snapshotSize:snapshotSize
+                                                                    didFinishJavascript:javascript
                                                                       completionHandler:completionHandler];
     
     UIView *cachedView = [self cachedSnapshotForRequest:request];

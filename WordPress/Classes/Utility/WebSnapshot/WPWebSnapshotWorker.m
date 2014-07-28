@@ -113,6 +113,10 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
+    if (self.snapshotRequest.didFinishJavascript.length > 0) {
+        [webView stringByEvaluatingJavaScriptFromString:self.snapshotRequest.didFinishJavascript];
+    }
+    
     [self didFinishWebViewRequest];
     
     if ([self.webViewCustomizationDelegate respondsToSelector:@selector(webViewDidFinishLoad:)]) {
