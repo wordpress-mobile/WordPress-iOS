@@ -299,7 +299,17 @@ static NSString* const ThemeDetailsViewControllerJavascriptResizeScript =
             self.previewDestinationURL = destinationURL;
             self.webSnapshotter.worker.webViewCustomizationDelegate = self.authenticatedWebViewManager;
             
-            [self.webSnapshotter captureSnapshotOfURLRequest:[self.authenticatedWebViewManager URLRequestForAuthenticatedSession]
+            NSMutableURLRequest *request = [self.authenticatedWebViewManager URLRequestForAuthenticatedSession].mutableCopy;
+            NSString *requestBody = [[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding];
+            
+            if ([[[request URL] absoluteString] isEqualToString:self.previewLoginURL.absoluteString] ||
+                [[[request URL] absoluteString] rangeOfString:@"wp-login.php"].location != NSNotFound) {
+                // first login: ensure appropriate cookies are set
+                NSString *forcedMobileRequestBody = [requestBody stringByAppendingString:@"&ak_action=reject_mobile"];
+                [request setHTTPBody:[forcedMobileRequestBody dataUsingEncoding:NSUTF8StringEncoding]];
+            }
+            
+            [self.webSnapshotter captureSnapshotOfURLRequest:request
                                                 snapshotSize:self.livePreview.frame.size
                                   didFinishLoadingJavascript:ThemeDetailsViewControllerJavascriptResizeScript
                                            completionHandler:^(UIView *view) {
