@@ -19,7 +19,7 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
 @property (nonatomic, strong) NSMutableArray *mediaIndexPathsNeedingLayout;
 @property (nonatomic, strong) WPTableImageSource *imageSource;
 @property (nonatomic, strong) NSDate *dateOfLastMediaRefresh;
-@property (nonatomic) BOOL willCheckPendingDownloadsAfterDelay;
+@property (nonatomic) BOOL needsCheckPendingDownloadsAfterDelay;
 @end
 
 @implementation WPRichTextView
@@ -356,18 +356,21 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
         // Its possible that the remaining download could take a significant amount of time to complete.
         // Rather than waiting a long time to refresh and display the images that are already downloaded
         // Check again after a brief delay.
-        if (self.willCheckPendingDownloadsAfterDelay) {
+        if (self.needsCheckPendingDownloadsAfterDelay) {
             return;
         }
 
-        self.willCheckPendingDownloadsAfterDelay = YES;
+        self.needsCheckPendingDownloadsAfterDelay = YES;
+
+        // Note: There is a scenario where more than one block could be queued.
+        // Keep this in mind when making future changes.
         dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(WPRichTextMinimumIntervalBetweenMediaRefreshes * NSEC_PER_SEC));
         dispatch_after(when, dispatch_get_main_queue(), ^{
             [self checkPendingImageDownloadsIfNeeded];
         });
         return;
     }
-    self.willCheckPendingDownloadsAfterDelay = NO;
+    self.needsCheckPendingDownloadsAfterDelay = NO;
 
     [self refreshLayoutForMediaAtIndexPaths:self.mediaIndexPathsNeedingLayout];
     [self.mediaIndexPathsNeedingLayout removeAllObjects];
@@ -381,7 +384,7 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
 - (void)checkPendingImageDownloadsIfNeeded
 {
     // If the flag is no longer set there is nothing to do.
-    if (!self.willCheckPendingDownloadsAfterDelay) {
+    if (!self.needsCheckPendingDownloadsAfterDelay) {
         return;
     }
     [self checkPendingImageDownloads];
