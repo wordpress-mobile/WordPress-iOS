@@ -217,7 +217,7 @@ static NSString* const ThemeDetailsViewControllerJavascriptResizeScript =
     
     switch (_controlButtonState) {
         case ThemeDetailsViewControllerControlButtonStateLivePreview:
-            [self.livePreviewButton setTitle:NSLocalizedString(@"Live Preview", nil) forState:UIControlStateNormal];
+            [self configureButtonForLivePreview];
             self.livePreviewButton.enabled = YES;
             break;
         case ThemeDetailsViewControllerControlButtonStateViewSite:
@@ -227,6 +227,11 @@ static NSString* const ThemeDetailsViewControllerJavascriptResizeScript =
         default:
             break;
     }
+}
+
+- (void)configureButtonForLivePreview
+{
+    [self.livePreviewButton setTitle:NSLocalizedString(@"Live Preview", nil) forState:UIControlStateNormal];
 }
 
 - (void)showViewSite {
@@ -300,12 +305,13 @@ static NSString* const ThemeDetailsViewControllerJavascriptResizeScript =
                                            completionHandler:^(UIView *view) {
                                                [loading removeFromSuperview];
                                                
+                                               [self configureButtonForLivePreview];
                                                self.livePreviewButton.enabled = NO;
                                                
                                                self.livePreview.hidden = NO;
                                                view.layer.opacity = 0.f;
                                                [self.livePreview addSubview:view];
-                                               
+                                                
                                                [UIView animateWithDuration:0.275
                                                                 animations:^{
                                                                     view.layer.opacity = 1.f;

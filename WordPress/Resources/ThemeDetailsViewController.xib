@@ -59,7 +59,7 @@
                             <rect key="frame" x="7" y="315" width="148" height="43"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                            <state key="normal" title="Live Preview">
+                            <state key="normal">
                                 <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </state>
                             <state key="disabled" title="Live Preview"/>
