@@ -15,7 +15,7 @@ extern NSString * const ReaderSiteServiceErrorDomain;
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)fetchFollowedSitesWithSuccess:(void(^)(NSArray *sites))success
+- (void)fetchFollowedSitesWithSuccess:(void(^)())success
                               failure:(void(^)(NSError *error))failure;
 
 /**
