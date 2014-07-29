@@ -1,5 +1,6 @@
 #import "ReaderPostService.h"
 #import "ReaderPostServiceRemote.h"
+#import "ReaderSiteService.h"
 #import "WordPressComApi.h"
 #import "ReaderPost.h"
 #import "ReaderTopic.h"
@@ -214,18 +215,18 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         }
     };
 
-    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
+    ReaderSiteService *siteService = [[ReaderSiteService alloc] init];
     if (post.isWPCom) {
         if (follow) {
-            [remoteService followSite:[post.siteID integerValue] success:successBlock failure:failureBlock];
+            [siteService followSiteWithID:[post.siteID integerValue] success:successBlock failure:failureBlock];
         } else {
-            [remoteService unfollowSite:[post.siteID integerValue] success:successBlock failure:failureBlock];
+            [siteService unfollowSiteWithID:[post.siteID integerValue] success:successBlock failure:failureBlock];
         }
     } else if (post.blogURL) {
         if (follow) {
-            [remoteService followSiteAtURL:post.blogURL success:successBlock failure:failureBlock];
+            [siteService followSiteAtURL:post.blogURL success:successBlock failure:failureBlock];
         } else {
-            [remoteService unfollowSiteAtURL:post.blogURL success:successBlock failure:failureBlock];
+            [siteService followSiteAtURL:post.blogURL success:successBlock failure:failureBlock];
         }
     } else {
         NSString *description = NSLocalizedString(@"Could not toggle Follow: missing blogURL attribute", @"An error description explaining that Follow could not be toggled due to a missing blogURL attribute.");

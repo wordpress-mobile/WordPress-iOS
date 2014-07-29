@@ -88,50 +88,6 @@
            failure:(void (^)(NSError *error))failure;
 
 /**
- Follow a wpcom site.
-
- @param siteID The ID of the site.
- @param success block called on a successful fetch.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-- (void)followSite:(NSUInteger)siteID
-           success:(void (^)())success
-           failure:(void(^)(NSError *error))failure;
-
-/**
- Unfollow a wpcom site
-
- @param siteID The ID of the site.
- @param success block called on a successful fetch.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-- (void)unfollowSite:(NSUInteger)siteID
-             success:(void (^)())success
-             failure:(void(^)(NSError *error))failure;
-
-/**
- Follow a wporg site.
-
- @param siteURL The URL of the site as a string.
- @param success block called on a successful fetch.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-- (void)followSiteAtURL:(NSString *)siteURL
-                success:(void (^)())success
-                failure:(void(^)(NSError *error))failure;
-
-/**
- Unfollow a wporg site
-
- @param siteURL The URL of the site as a string.
- @param success block called on a successful fetch.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-- (void)unfollowSiteAtURL:(NSString *)siteID
-                  success:(void (^)())success
-                  failure:(void(^)(NSError *error))failure;
-
-/**
  Reblog a post from one site to another
  
  @param postID The ID of the post to reblog.

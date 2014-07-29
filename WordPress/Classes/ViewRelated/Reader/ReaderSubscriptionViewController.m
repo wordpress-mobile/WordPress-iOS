@@ -6,8 +6,10 @@
 #import "WPAccount.h"
 #import "AccountService.h"
 #import "ReaderTopicService.h"
+#import "ReaderSiteService.h"
 #import "WPTableViewCell.h"
 #import "WPAlertView.h"
+#import "WPToast.h"
 
 static NSString *const FriendFinderURL = @"https://en.wordpress.com/reader/mobile/v2/?template=friendfinder";
 static NSString *const SubscribedTopicsPageIdentifier = @"SubscribedTopicsPageIdentifier";
@@ -162,6 +164,66 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     return placeholder.controller;
 }
 
+- (void)followTopicOrSite:(NSString *)topicOrSite
+{
+    NSString *str = [topicOrSite trim];
+    if (![str length]) {
+        return;
+    }
+
+    NSURL *site = [self URLFromString:str];
+    if (site) {
+        [self followSite:site];
+    } else {
+        [self followTopicNamed:str];
+    }
+}
+
+- (NSURL *)URLFromString:(NSString *)str
+{
+    // if the string contains space its not a URL
+    if ([str rangeOfString:@" "].location != NSNotFound) {
+        return nil;
+    }
+
+    // if the string does not have a dot or protocol its not a URL
+    if ([str rangeOfString:@"."].location == NSNotFound && [str rangeOfString:@"://"].location == NSNotFound) {
+        return nil;
+    }
+
+    NSString *urlStr = str;
+    if ([urlStr rangeOfString:@"://"].location == NSNotFound) {
+        urlStr = [NSString stringWithFormat:@"http://%@", urlStr];
+    }
+
+    NSURL *url = [NSURL URLWithString:urlStr];
+    if (![url host]) {
+        return nil;
+    }
+
+    return url;
+}
+
+- (void)followSite:(NSURL *)site
+{
+    ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    [service followSiteByURL:site success:^{
+        [WPToast showToastWithMessage:NSLocalizedString(@"Followed", @"User followed a site.")
+                             andImage:[UIImage imageNamed:@"action_icon_replied"]];
+    } failure:^(NSError *error) {
+        DDLogError(@"Could not follow site: %@", error);
+
+        NSString *title = NSLocalizedString(@"Could not Follow Site", @"");
+        NSString *description = [error localizedDescription];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
+                                                            message:description
+                                                           delegate:nil
+                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"Label text for the close button on an alert view.")
+                                                  otherButtonTitles:nil, nil];
+        [alertView show];
+    }];
+}
+
 - (void)followTopicNamed:(NSString *)topicName
 {
     ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
@@ -171,7 +233,7 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
         DDLogError(@"Could not follow topic: %@", error);
 
         NSString *title = NSLocalizedString(@"Could not Follow Topic", @"");
-        NSString *description = error.localizedDescription;
+        NSString *description = [error localizedDescription];
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
                                                             message:description
                                                            delegate:nil
@@ -352,7 +414,7 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     UISearchBar *searchBar = [[UISearchBar alloc] init];
     searchBar.delegate = self;
     searchBar.translatesAutoresizingMaskIntoConstraints = NO;
-    searchBar.placeholder = NSLocalizedString(@"Enter a tag to follow", @"Placeholder text prompting the user to type the name of the tag they would like to follow.");
+    searchBar.placeholder = NSLocalizedString(@"Enter a tag or URL to follow", @"Placeholder text prompting the user to type the name of the tag or URL they would like to follow.");
     searchBar.translucent = NO;
     searchBar.barTintColor = [WPStyleGuide itsEverywhereGrey];
     searchBar.backgroundImage = [[UIImage alloc] init];
@@ -538,7 +600,7 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    [self followTopicNamed:searchBar.text];
+    [self followTopicOrSite:searchBar.text];
     searchBar.text = nil;
     [searchBar resignFirstResponder];
 }
