@@ -125,7 +125,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
             return 3;
             break;
         case TableViewSectionAdminType:
-            return 4;
+            return 5;
             break;
         default:
             return 0;
@@ -172,6 +172,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
             case BlogDetailsRowEditTheme:
                 cell.textLabel.text = NSLocalizedString(@"Edit Theme", nil);
                 cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
+                break;
             case BlogDetailsRowViewAdmin:
                 cell.textLabel.text = NSLocalizedString(@"View Admin", nil);
                 cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewadmin"];
