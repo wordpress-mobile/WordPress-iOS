@@ -1,5 +1,6 @@
 #import "ReaderSiteServiceRemote.h"
 #import "WordPressComApi.h"
+#import "RemoteReaderSite.h"
 
 NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteErrorDomain";
 
@@ -19,7 +20,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 
 - (void)fetchFollowedSitesWithSuccess:(void(^)(NSArray *sites))success failure:(void(^)(NSError *error))failure
 {
-    NSString *path = @"read/following/mine";
+    NSString *path = @"read/following/mine?meta=site,feed";
 
     [self.api GET:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (!success) {
@@ -27,7 +28,13 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
         }
         NSDictionary *dict = (NSDictionary *)responseObject;
         NSArray *arr = [dict arrayForKey:@"subscriptions"];
-        success(arr);
+        NSMutableArray *sites = [NSMutableArray array];
+        for (NSDictionary *dict in arr) {
+            RemoteReaderSite *site = [self normalizeSiteDictionary:dict];
+            site.isSubscribed = YES;
+            [sites addObject:site];
+        }
+        success(sites);
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
@@ -137,5 +144,25 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
         [self.api GET:newPath parameters:nil success:successBlock failure:failureBlock];
     }];
 }
+
+
+- (RemoteReaderSite *)normalizeSiteDictionary:(NSDictionary *)dict
+{
+    NSDictionary *meta = [dict dictionaryForKeyPath:@"meta.data.site"];
+    if (!meta) {
+        meta = [dict dictionaryForKeyPath:@"meta.data.feed"];
+    }
+
+    RemoteReaderSite *site = [[RemoteReaderSite alloc] init];
+    site.recordID = [dict numberForKey:@"ID"];
+    site.siteID = [dict numberForKey:@"ID"];
+    site.feedID = [dict numberForKey:@"feed_ID"];
+    site.name = [dict stringForKey:@"name"];
+    site.path = [dict stringForKey:@"URL"];
+    site.icon = [dict stringForKeyPath:@"icon.img"];
+
+    return site;
+}
+
 
 @end

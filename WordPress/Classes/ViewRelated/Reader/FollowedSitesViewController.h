@@ -2,4 +2,6 @@
 
 @interface FollowedSitesViewController : UIViewController
 
+@property (nonatomic, strong) UITableView *tableView;
+
 @end

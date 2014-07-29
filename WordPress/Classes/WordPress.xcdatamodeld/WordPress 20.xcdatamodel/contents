@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13E28" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractComment" representedClassName="AbstractComment" isAbstract="YES">
         <attribute name="author" optional="YES" attributeType="String">
             <userInfo/>
@@ -56,6 +56,7 @@
         <attribute name="xmlrpc" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="blogs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Blog" inverseName="account" inverseEntity="Blog" indexed="YES" syncable="YES"/>
         <relationship name="jetpackBlogs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Blog" inverseName="jetpackAccount" inverseEntity="Blog" indexed="YES" syncable="YES"/>
+        <relationship name="readerSites" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderSite" inverseName="account" inverseEntity="ReaderSite" syncable="YES"/>
         <relationship name="readerTopics" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderTopic" inverseName="account" inverseEntity="ReaderTopic" syncable="YES"/>
     </entity>
     <entity name="BasePost" representedClassName="BasePost" isAbstract="YES">
@@ -336,6 +337,16 @@
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderComment" inverseName="post" inverseEntity="ReaderComment" indexed="YES" syncable="YES"/>
         <relationship name="topic" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderTopic" inverseName="posts" inverseEntity="ReaderTopic" syncable="YES"/>
     </entity>
+    <entity name="ReaderSite" representedClassName="ReaderSite" syncable="YES">
+        <attribute name="feedID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isSubscribed" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="name" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="path" attributeType="String" syncable="YES"/>
+        <attribute name="recordID" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="siteID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="readerSites" inverseEntity="Account" syncable="YES"/>
+    </entity>
     <entity name="ReaderTopic" representedClassName="ReaderTopic" syncable="YES">
         <attribute name="isRecommended" optional="YES" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="isSubscribed" optional="YES" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
@@ -365,7 +376,7 @@
     <elements>
         <element name="AbstractComment" positionX="0" positionY="0" width="128" height="240"/>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="Account" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="Account" positionX="0" positionY="0" width="128" height="30"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="240"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="450"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
@@ -379,5 +390,6 @@
         <element name="ReaderPost" positionX="0" positionY="0" width="128" height="463"/>
         <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="180"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
+        <element name="ReaderSite" positionX="9" positionY="153" width="128" height="30"/>
     </elements>
 </model>

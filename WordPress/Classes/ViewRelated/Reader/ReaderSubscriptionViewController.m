@@ -2,6 +2,7 @@
 #import "WPFriendFinderViewController.h"
 #import "SubscribedTopicsViewController.h"
 #import "RecommendedTopicsViewController.h"
+#import "FollowedSitesViewController.h"
 #import "ContextManager.h"
 #import "WPAccount.h"
 #import "AccountService.h"
@@ -14,6 +15,7 @@
 static NSString *const FriendFinderURL = @"https://en.wordpress.com/reader/mobile/v2/?template=friendfinder";
 static NSString *const SubscribedTopicsPageIdentifier = @"SubscribedTopicsPageIdentifier";
 static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPageIdentifier";
+static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifier";
 
 @interface ReaderSubscriptionPagePlaceholder : NSObject
 @property (nonatomic, strong) NSString *identifier;
@@ -55,6 +57,7 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     if (self) {
         [self configureControllers];
         [self syncTopics];
+        // sync sites
     }
     return self;
 }
@@ -154,15 +157,23 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     if (placeholder.controller) {
         return placeholder.controller;
     }
+
+    // Lazy load controllers.
     if ([placeholder.identifier isEqualToString:SubscribedTopicsPageIdentifier]) {
         placeholder.controller = [[SubscribedTopicsViewController alloc] init];
 
     } else if ([placeholder.identifier isEqualToString:RecommendedTopicsPageIdentifier]) {
         placeholder.controller = [[RecommendedTopicsViewController alloc] init];
+
+    } else if ([placeholder.identifier isEqualToString:FollowedSitesPageIdentifier]) {
+        placeholder.controller = [[FollowedSitesViewController alloc] init];
     }
 
     return placeholder.controller;
 }
+
+
+#pragma mark - Follow Topic / Site Methods
 
 - (void)followTopicOrSite:(NSString *)topicOrSite
 {
@@ -251,14 +262,23 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     self.controllers = [NSMutableArray array];
     ReaderSubscriptionPagePlaceholder *placeholder;
 
-    if ([self isWPComUser]) {
-        placeholder = [[ReaderSubscriptionPagePlaceholder alloc] init];
-        placeholder.identifier = SubscribedTopicsPageIdentifier;
-        [self.controllers addObject:placeholder];
-    }
-
+    // Recommended topics is our default
     placeholder = [[ReaderSubscriptionPagePlaceholder alloc] init];
     placeholder.identifier = RecommendedTopicsPageIdentifier;
+    [self.controllers addObject:placeholder];
+
+    if (![self isWPComUser]) {
+        return;
+    }
+
+    // Followed topics. Insert at index zero so its the first thing shown.
+    placeholder = [[ReaderSubscriptionPagePlaceholder alloc] init];
+    placeholder.identifier = SubscribedTopicsPageIdentifier;
+    [self.controllers insertObject:placeholder atIndex:0];
+
+    // Followed sites
+    placeholder = [[ReaderSubscriptionPagePlaceholder alloc] init];
+    placeholder.identifier = FollowedSitesPageIdentifier;
     [self.controllers addObject:placeholder];
 }
 
