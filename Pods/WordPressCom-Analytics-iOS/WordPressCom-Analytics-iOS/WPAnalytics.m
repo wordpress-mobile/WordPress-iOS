@@ -20,6 +20,11 @@
     [[self trackers] addObject:tracker];
 }
 
++ (void)clearTrackers
+{
+    [[self trackers] removeAllObjects];
+}
+
 + (void)track:(WPAnalyticsStat)stat
 {
     for (id<WPAnalyticsTracker> tracker in [self trackers]) {
