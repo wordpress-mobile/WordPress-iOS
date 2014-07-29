@@ -20,6 +20,9 @@ const CGFloat WPToastAnimationVisibleDuration = 0.35f;
 - (void)showToastWithMessage:(NSString *)message andImage:(UIImage *)image
 {
     UIViewController *parentViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+    if (parentViewController.presentedViewController) {
+        parentViewController = parentViewController.presentedViewController;
+    }
     UIView *parentView = parentViewController.view;
 
     [[NSBundle mainBundle] loadNibNamed:@"ToastView" owner:self options:nil];
