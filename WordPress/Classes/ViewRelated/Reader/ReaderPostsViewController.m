@@ -489,16 +489,19 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 #pragma mark - WPTableViewSublass methods
 
 - (void)configureNoResultsView {
-    if (![self isViewLoaded]) {
+    if (!self.isViewLoaded) {
         return;
     }
 
     [self.noResultsView removeFromSuperview];
 
-    [self.noResultsView setTitleText:[self noResultsTitleText]];
-    [self.noResultsView setMessageText:[self noResultsMessageText]];
+    // Refresh the NoResultsView Properties
+    self.noResultsView.titleText        = self.noResultsTitleText;
+    self.noResultsView.messageText      = self.noResultsMessageText;
+    self.noResultsView.accessoryView    = self.noResultsAccessoryView;
+    self.noResultsView.buttonTitle      = self.noResultsButtonText;
 
-    if (!self.resultsController || (self.resultsController && [[self.resultsController fetchedObjects] count] > 0)) {
+    if (!self.resultsController || (self.resultsController.fetchedObjects.count > 0)) {
         return;
     }
 
