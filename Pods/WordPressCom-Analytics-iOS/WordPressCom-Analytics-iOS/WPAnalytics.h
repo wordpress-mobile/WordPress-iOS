@@ -70,6 +70,7 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
 @interface WPAnalytics : NSObject
 
 + (void)registerTracker:(id<WPAnalyticsTracker>)tracker;
++ (void)clearTrackers;
 + (void)beginSession;
 + (void)refreshMetadata;
 + (void)track:(WPAnalyticsStat)stat;

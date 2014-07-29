@@ -240,6 +240,12 @@
 #define COCOAPODS_VERSION_MINOR_WordPressApi 0
 #define COCOAPODS_VERSION_PATCH_WordPressApi 1
 
+// WordPressCom-Analytics-iOS
+#define COCOAPODS_POD_AVAILABLE_WordPressCom_Analytics_iOS
+#define COCOAPODS_VERSION_MAJOR_WordPressCom_Analytics_iOS 0
+#define COCOAPODS_VERSION_MINOR_WordPressCom_Analytics_iOS 0
+#define COCOAPODS_VERSION_PATCH_WordPressCom_Analytics_iOS 1
+
 // WordPressCom-Stats-iOS
 #define COCOAPODS_POD_AVAILABLE_WordPressCom_Stats_iOS
 #define COCOAPODS_VERSION_MAJOR_WordPressCom_Stats_iOS 0
