@@ -364,7 +364,8 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
  @param path The unique, cannonical path of the topic.
  @return A matching `ReaderTopic` or nil if there is no match.
  */
-- (ReaderTopic *)findWithPath:(NSString *)path {
+- (ReaderTopic *)findWithPath:(NSString *)path
+{
     NSArray *results = [[self allTopics] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"path == %@", [path lowercaseString]]];
     return [results firstObject];
 }

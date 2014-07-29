@@ -50,7 +50,14 @@
 		5D0077A7182AE9DF00F865DB /* ReaderMediaQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D0077A6182AE9DF00F865DB /* ReaderMediaQueue.m */; };
 		5D08B90419648C3400D5B381 /* ReaderSubscriptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D08B90319648C3400D5B381 /* ReaderSubscriptionViewController.m */; };
 		5D119DA3176FBE040073D83A /* UIImageView+AFNetworkingExtra.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D119DA2176FBE040073D83A /* UIImageView+AFNetworkingExtra.m */; };
+		5D12FE191987FE4100378BD6 /* ReaderSite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D12FE181987FE4100378BD6 /* ReaderSite.m */; };
+		5D12FE1E1988243700378BD6 /* RemoteReaderPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D12FE1B1988243700378BD6 /* RemoteReaderPost.m */; };
+		5D12FE1F1988243700378BD6 /* RemoteReaderTopic.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D12FE1D1988243700378BD6 /* RemoteReaderTopic.m */; };
+		5D12FE221988245B00378BD6 /* RemoteReaderSite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D12FE211988245B00378BD6 /* RemoteReaderSite.m */; };
 		5D146EBB189857ED0068FDC6 /* FeaturedImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D146EBA189857ED0068FDC6 /* FeaturedImageViewController.m */; };
+		5D1D9C50198837D0009D13B7 /* RemoteReaderPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D12FE1B1988243700378BD6 /* RemoteReaderPost.m */; };
+		5D1D9C51198837D0009D13B7 /* RemoteReaderSite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D12FE211988245B00378BD6 /* RemoteReaderSite.m */; };
+		5D1D9C52198837D0009D13B7 /* RemoteReaderTopic.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D12FE1D1988243700378BD6 /* RemoteReaderTopic.m */; };
 		5D1EE80215E7AF3E007F1F02 /* JetpackSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1EE80015E7AF3E007F1F02 /* JetpackSettingsViewController.m */; };
 		5D20A6531982D56600463A91 /* FollowedSitesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D20A6521982D56600463A91 /* FollowedSitesViewController.m */; };
 		5D2BEB4919758102005425F7 /* WPTableImageSourceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2BEB4819758102005425F7 /* WPTableImageSourceTest.m */; };
@@ -112,8 +119,6 @@
 		5DC02A3818E4C5BD009A1765 /* ThemeDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DC02A3518E4C5BD009A1765 /* ThemeDetailsViewController.xib */; };
 		5DC02A3918E4C5BD009A1765 /* ThemeDetailsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DC02A3618E4C5BD009A1765 /* ThemeDetailsViewController~ipad.xib */; };
 		5DC3A44D1610B9BC00A890BE /* UINavigationController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC3A44C1610B9BC00A890BE /* UINavigationController+Rotation.m */; };
-		5DE8A03B1912C58800B2FF59 /* RemoteReaderPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DE8A03A1912C58800B2FF59 /* RemoteReaderPost.m */; };
-		5DE8A03E1912C59600B2FF59 /* RemoteReaderTopic.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DE8A03D1912C59600B2FF59 /* RemoteReaderTopic.m */; };
 		5DE8A0411912D95B00B2FF59 /* ReaderPostServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DE8A0401912D95B00B2FF59 /* ReaderPostServiceTest.m */; };
 		5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B3156FCD3400242C35 /* WPWebView.m */; };
 		5DEB61B8156FCD5200242C35 /* WPChromelessWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B7156FCD5200242C35 /* WPChromelessWebViewController.m */; };
@@ -438,6 +443,14 @@
 		5D08B90319648C3400D5B381 /* ReaderSubscriptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderSubscriptionViewController.m; sourceTree = "<group>"; };
 		5D119DA1176FBE040073D83A /* UIImageView+AFNetworkingExtra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworkingExtra.h"; sourceTree = "<group>"; };
 		5D119DA2176FBE040073D83A /* UIImageView+AFNetworkingExtra.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworkingExtra.m"; sourceTree = "<group>"; };
+		5D12FE171987FE4100378BD6 /* ReaderSite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderSite.h; sourceTree = "<group>"; };
+		5D12FE181987FE4100378BD6 /* ReaderSite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderSite.m; sourceTree = "<group>"; };
+		5D12FE1A1988243700378BD6 /* RemoteReaderPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteReaderPost.h; path = "Remote Objects/RemoteReaderPost.h"; sourceTree = "<group>"; };
+		5D12FE1B1988243700378BD6 /* RemoteReaderPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteReaderPost.m; path = "Remote Objects/RemoteReaderPost.m"; sourceTree = "<group>"; };
+		5D12FE1C1988243700378BD6 /* RemoteReaderTopic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteReaderTopic.h; path = "Remote Objects/RemoteReaderTopic.h"; sourceTree = "<group>"; };
+		5D12FE1D1988243700378BD6 /* RemoteReaderTopic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteReaderTopic.m; path = "Remote Objects/RemoteReaderTopic.m"; sourceTree = "<group>"; };
+		5D12FE201988245B00378BD6 /* RemoteReaderSite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteReaderSite.h; path = "Remote Objects/RemoteReaderSite.h"; sourceTree = "<group>"; };
+		5D12FE211988245B00378BD6 /* RemoteReaderSite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteReaderSite.m; path = "Remote Objects/RemoteReaderSite.m"; sourceTree = "<group>"; };
 		5D146EB9189857ED0068FDC6 /* FeaturedImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeaturedImageViewController.h; sourceTree = "<group>"; };
 		5D146EBA189857ED0068FDC6 /* FeaturedImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeaturedImageViewController.m; sourceTree = "<group>"; };
 		5D1EE7FF15E7AF3E007F1F02 /* JetpackSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackSettingsViewController.h; sourceTree = "<group>"; };
@@ -559,10 +572,6 @@
 		5DC02A3618E4C5BD009A1765 /* ThemeDetailsViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "ThemeDetailsViewController~ipad.xib"; path = "Resources/ThemeDetailsViewController~ipad.xib"; sourceTree = "<group>"; };
 		5DC3A44B1610B9BC00A890BE /* UINavigationController+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Rotation.h"; sourceTree = "<group>"; };
 		5DC3A44C1610B9BC00A890BE /* UINavigationController+Rotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Rotation.m"; sourceTree = "<group>"; };
-		5DE8A0391912C58800B2FF59 /* RemoteReaderPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteReaderPost.h; sourceTree = "<group>"; };
-		5DE8A03A1912C58800B2FF59 /* RemoteReaderPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteReaderPost.m; sourceTree = "<group>"; };
-		5DE8A03C1912C59600B2FF59 /* RemoteReaderTopic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteReaderTopic.h; sourceTree = "<group>"; };
-		5DE8A03D1912C59600B2FF59 /* RemoteReaderTopic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteReaderTopic.m; sourceTree = "<group>"; };
 		5DE8A0401912D95B00B2FF59 /* ReaderPostServiceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPostServiceTest.m; sourceTree = "<group>"; };
 		5DEB61B2156FCD3400242C35 /* WPWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWebView.h; sourceTree = "<group>"; };
 		5DEB61B3156FCD3400242C35 /* WPWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWebView.m; sourceTree = "<group>"; };
@@ -1271,6 +1280,8 @@
 				5D42A3DB175E7452005CFF05 /* ReaderComment.m */,
 				5D42A3DC175E7452005CFF05 /* ReaderPost.h */,
 				5D42A3DD175E7452005CFF05 /* ReaderPost.m */,
+				5D12FE171987FE4100378BD6 /* ReaderSite.h */,
+				5D12FE181987FE4100378BD6 /* ReaderSite.m */,
 				5DBCD9D018F3569F00B32229 /* ReaderTopic.h */,
 				5DBCD9D118F3569F00B32229 /* ReaderTopic.m */,
 				5DA5BF3318E32DCF005F11F9 /* Theme.h */,
@@ -1766,10 +1777,6 @@
 				5D44EB371986D8BA008B7175 /* ReaderSiteService.m */,
 				5DBCD9D318F35D7500B32229 /* ReaderTopicService.h */,
 				5DBCD9D418F35D7500B32229 /* ReaderTopicService.m */,
-				5DE8A0391912C58800B2FF59 /* RemoteReaderPost.h */,
-				5DE8A03A1912C58800B2FF59 /* RemoteReaderPost.m */,
-				5DE8A03C1912C59600B2FF59 /* RemoteReaderTopic.h */,
-				5DE8A03D1912C59600B2FF59 /* RemoteReaderTopic.m */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1988,6 +1995,12 @@
 			children = (
 				E1249B4119408C910035E895 /* RemoteComment.h */,
 				E1249B4219408C910035E895 /* RemoteComment.m */,
+				5D12FE1A1988243700378BD6 /* RemoteReaderPost.h */,
+				5D12FE1B1988243700378BD6 /* RemoteReaderPost.m */,
+				5D12FE201988245B00378BD6 /* RemoteReaderSite.h */,
+				5D12FE211988245B00378BD6 /* RemoteReaderSite.m */,
+				5D12FE1C1988243700378BD6 /* RemoteReaderTopic.h */,
+				5D12FE1D1988243700378BD6 /* RemoteReaderTopic.m */,
 			);
 			name = "Remote Objects";
 			sourceTree = "<group>";
@@ -2398,6 +2411,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D1D9C50198837D0009D13B7 /* RemoteReaderPost.m in Sources */,
+				5D1D9C51198837D0009D13B7 /* RemoteReaderSite.m in Sources */,
+				5D1D9C52198837D0009D13B7 /* RemoteReaderTopic.m in Sources */,
 				C545E0A21811B9880020844C /* ContextManager.m in Sources */,
 				5D4AD40F185FE64C00CDEE17 /* WPMainTabBarController.m in Sources */,
 				B5F015CB195DFD7600F6ECF2 /* WordPressActivity.m in Sources */,
@@ -2429,7 +2445,6 @@
 				5D62BAD718AA88210044E5F7 /* PageSettingsViewController.m in Sources */,
 				5DF94E301962B99C00359241 /* PostSettingsSelectionViewController.m in Sources */,
 				EC4696FF0EA75D460040EE8E /* PagesViewController.m in Sources */,
-				5DE8A03B1912C58800B2FF59 /* RemoteReaderPost.m in Sources */,
 				7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */,
 				B545186618E9E07900AC3A54 /* NoteBodyItem.m in Sources */,
 				E149D64E19349E69006A843D /* AccountServiceRemoteREST.m in Sources */,
@@ -2442,7 +2457,6 @@
 				ADF544C2195A0F620092213D /* CustomHighlightButton.m in Sources */,
 				2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */,
 				5DA5BF4018E32DCF005F11F9 /* MediaBrowserCell.m in Sources */,
-				5DE8A03E1912C59600B2FF59 /* RemoteReaderTopic.m in Sources */,
 				83418AAA11C9FA6E00ACF00C /* Comment.m in Sources */,
 				E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */,
 				8350E49611D2C71E00A7B073 /* Media.m in Sources */,
@@ -2632,11 +2646,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D12FE1E1988243700378BD6 /* RemoteReaderPost.m in Sources */,
+				5D12FE221988245B00378BD6 /* RemoteReaderSite.m in Sources */,
 				5DA3EE1A1925111700294E0B /* WPImageOptimizerTest.m in Sources */,
 				E150520C16CAC5C400D3DDDC /* BlogJetpackTest.m in Sources */,
 				5DFA9D1A196B1BA30061FF96 /* ReaderTopicServiceTest.m in Sources */,
+				5D12FE1F1988243700378BD6 /* RemoteReaderTopic.m in Sources */,
 				C5CFDC2A184F962B00097B05 /* CoreDataConcurrencyTest.m in Sources */,
 				5DE8A0411912D95B00B2FF59 /* ReaderPostServiceTest.m in Sources */,
+				5D12FE191987FE4100378BD6 /* ReaderSite.m in Sources */,
 				5D2BEB4919758102005425F7 /* WPTableImageSourceTest.m in Sources */,
 				E150520F16CAC75A00D3DDDC /* CoreDataTestHelper.m in Sources */,
 				E10675C8183F82E900E5CE5C /* SettingsViewControllerTest.m in Sources */,
