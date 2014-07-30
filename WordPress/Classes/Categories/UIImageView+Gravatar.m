@@ -55,7 +55,12 @@ NSString *const GravatarDefault = @"gravatar.png";
     } else {
         placeholderImage = blavatarDefaultImageWPorg;
     }
-    [self setImageWithURL:[self blavatarURLForHost:blavatarUrl] placeholderImage:placeholderImage];
+
+    if ([blavatarUrl rangeOfString:@"gravatar.com/blavatar"].location == NSNotFound) {
+        [self setImageWithURL:[self blavatarURLForHost:blavatarUrl] placeholderImage:placeholderImage];
+    } else {
+        [self setImageWithURL:[self blavatarURLForBlavatarURL:blavatarUrl] placeholderImage:placeholderImage];
+    }
 }
 
 - (NSURL *)gravatarURLForEmail:(NSString *)email
@@ -78,6 +83,13 @@ NSString *const GravatarDefault = @"gravatar.png";
 {
     NSString *blavatarUrl = [NSString stringWithFormat:@"%@/%@?d=404&s=%d", BlavatarBaseUrl, [host md5], size];
     return [NSURL URLWithString:blavatarUrl];
+}
+
+- (NSURL *)blavatarURLForBlavatarURL:(NSString *)path
+{
+    CGFloat size = [self sizeForBlavatarDownload];
+    NSString *blavatarURL = [NSString stringWithFormat:@"%@?d=404&s=%d", path, size];
+    return [NSURL URLWithString:blavatarURL];
 }
 
 - (NSInteger)sizeForGravatarDownload

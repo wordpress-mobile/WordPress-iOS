@@ -3,6 +3,11 @@
 #import "WPTableViewHandler.h"
 #import "ContextManager.h"
 #import "ReaderSite.h"
+#import "ReaderSiteService.h"
+#import "WPTableViewCell.h"
+#import "UIImageView+Gravatar.h"
+
+static NSString * const SiteCellIdentifier = @"SiteCellIdentifier";
 
 @interface FollowedSitesViewController ()<WPTableViewHandlerDelegate>
 
@@ -20,8 +25,8 @@
 
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.tableView.rowHeight = 44.0;
-    self.tableView.estimatedRowHeight = 44.0;
+    self.tableView.rowHeight = 54.0;
+    self.tableView.estimatedRowHeight = 54.0;
     [self.view addSubview:self.tableView];
 
     if (IS_IPHONE) {
@@ -37,11 +42,51 @@
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self syncSites];
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
+{
+    [super setEditing:editing animated:animated];
+    [self.tableView setEditing:editing animated:animated];
+}
+
+
 #pragma mark - Private Methods
+
+- (void)syncSites
+{
+    ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    [service fetchFollowedSitesWithSuccess:^{
+        // noop
+    } failure:^(NSError *error) {
+        DDLogError(@"Could not sync sites: %@", error);
+    }];
+}
 
 - (void)unfollowSiteAtIndexPath:(NSIndexPath *)indexPath
 {
-// TODO
+    ReaderSite *site = (ReaderSite *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    [service unfollowSite:site success:^{
+        [self syncSites];
+
+    } failure:^(NSError *error) {
+        DDLogError(@"Could not unfollow site: %@", error);
+
+        NSString *title = NSLocalizedString(@"Could not Unfollow Site", @"");
+        NSString *description = error.localizedDescription;
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
+                                                            message:description
+                                                           delegate:nil
+                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"Label text for the close button on an alert view.")
+                                                  otherButtonTitles:nil, nil];
+        [alertView show];
+    }];
 }
 
 
@@ -66,7 +111,6 @@
     return request;
 }
 
-
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     if ([cell.textLabel.text length] == 0) {
@@ -76,10 +120,26 @@
         [WPStyleGuide configureTableViewCell:cell];
     }
     cell.accessoryType = UITableViewCellAccessoryNone;
+    cell.imageView.image = [UIImage imageNamed:@"gravatar-reader"];
 
     ReaderSite *site = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = [site.name capitalizedString];
     cell.detailTextLabel.text = site.path;
+    if (site.icon) {
+        [cell.imageView setImageWithBlavatarUrl:site.icon];
+    }
+
+    [WPStyleGuide configureTableViewSmallSubtitleCell:cell];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:SiteCellIdentifier];
+    if (!cell) {
+        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:SiteCellIdentifier];
+    }
+    [self configureCell:cell atIndexPath:indexPath];
+    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -87,11 +147,13 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 54.0;
+}
+
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
-        return NO;
-    }
     return self.isEditing;
 }
 
@@ -107,8 +169,12 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return NSLocalizedString(@"Unfollow", @"Label of the table view cell's delete button, when unfollowing tags.");
+    return NSLocalizedString(@"Unfollow", @"Label of the table view cell's delete button, when unfollowing a site.");
 }
 
+- (NSString *)titleForHeaderInSection:(NSInteger)section
+{
+    return NSLocalizedString(@"Sites", @"Section title for sites the user has followed.");
+}
 
 @end

@@ -7,6 +7,8 @@ typedef enum : NSUInteger {
 
 extern NSString * const ReaderSiteServiceErrorDomain;
 
+@class ReaderSite;
+
 @interface ReaderSiteService : NSObject<LocalCoreDataService>
 
 /**
@@ -74,5 +76,16 @@ extern NSString * const ReaderSiteServiceErrorDomain;
 - (void)unfollowSiteAtURL:(NSString *)siteURL
                   success:(void(^)())success
                   failure:(void(^)(NSError *error))failure;
+
+/**
+ Unfollows the specified `ReaderSite`.
+
+ @param site The `ReaderSite` to unfollow.
+ @param success block called on a successful unfollow.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)unfollowSite:(ReaderSite *)site
+             success:(void(^)())success
+             failure:(void(^)(NSError *error))failure;
 
 @end
