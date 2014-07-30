@@ -8,4 +8,9 @@
                 success:(void (^)(NSArray *posts))success
                 failure:(void (^)(NSError *error))failure;
 
+- (void)getPostsForBlog:(Blog *)blog
+                options:(NSDictionary *)options
+                success:(void (^)(NSArray *posts))success
+                failure:(void (^)(NSError *error))failure;
+
 @end

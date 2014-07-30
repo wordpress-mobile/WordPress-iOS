@@ -124,8 +124,8 @@
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    [blogService syncPostsForBlog:self.blog success:success failure:failure loadMore:YES];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+    [postService loadMorePostsForBlog:self.blog success:success failure:failure];    
 }
 
 #pragma mark -
