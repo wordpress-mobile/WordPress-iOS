@@ -620,6 +620,10 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         timeZone = [NSTimeZone timeZoneForSecondsFromGMT:timeZoneOffsetSeconds];
     }
     
+    if (!timeZone) {
+        timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+    }
+    
     return timeZone;
 }
 
