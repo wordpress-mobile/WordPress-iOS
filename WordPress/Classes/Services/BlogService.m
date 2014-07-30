@@ -600,4 +600,27 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     };
 }
 
+- (NSTimeZone *)timeZoneForBlog:(Blog *)blog
+{
+    NSString *timeZoneName = [blog.options stringForKey:@"timezone"];
+    NSNumber *gmtOffSet = [blog.options numberForKey:@"gmt_offset"];
+    id optionValue = [blog getOptionValue:@"time_zone"];
+    
+    NSTimeZone *timeZone = nil;
+    if (timeZoneName.length > 0) {
+        timeZone = [NSTimeZone timeZoneWithName:timeZoneName];
+    }
+    
+    if (!timeZone && gmtOffSet != nil) {
+        timeZone = [NSTimeZone timeZoneForSecondsFromGMT:(gmtOffSet.floatValue * 60.0 * 60.0)];
+    }
+    
+    if (!timeZone && optionValue != nil) {
+        NSInteger timeZoneOffsetSeconds = [optionValue floatValue] * 60.0 * 60.0;
+        timeZone = [NSTimeZone timeZoneForSecondsFromGMT:timeZoneOffsetSeconds];
+    }
+    
+    return timeZone;
+}
+
 @end
