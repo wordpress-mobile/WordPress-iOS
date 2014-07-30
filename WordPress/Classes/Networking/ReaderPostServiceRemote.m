@@ -285,21 +285,43 @@
  @return A sanitized URL.
  */
 - (NSString *)sanitizeFeaturedImageString:(NSString *)img {
-    NSRange rng = [img rangeOfString:@"mshots/"];
-    if (NSNotFound != rng.location) {
+    NSRange mshotRng = [img rangeOfString:@"wp.com/mshots/"];
+    if (NSNotFound != mshotRng.location) {
         // MShots are sceen caps of the actual site. There URLs look like this:
         // https://s0.wp.com/mshots/v1/http%3A%2F%2Fsitename.wordpress.com%2F2013%2F05%2F13%2Fr-i-p-mom%2F?w=252
-        // We want the URL but not the size info in the query string.
-        rng = [img rangeOfString:@"?" options:NSBackwardsSearch];
-        img = [img substringWithRange:NSMakeRange(0, rng.location)];
-    } else if (NSNotFound != [img rangeOfString:@"imgpress"].location) {
+        // We want the mshot URL but not the size info in the query string.
+        NSRange rng = [img rangeOfString:@"?" options:NSBackwardsSearch];
+        if (rng.location != NSNotFound) {
+            img = [img substringWithRange:NSMakeRange(0, rng.location)];
+        }
+        return img;
+    }
+
+    NSRange imgPressRng = [img rangeOfString:@"wp.com/imgpress"];
+    if (imgPressRng.location != NSNotFound) {
         // ImagePress urls look like this:
         // https://s0.wp.com/imgpress?resize=252%2C160&url=http%3A%2F%2Fsitename.files.wordpress.com%2F2014%2F04%2Fimage-name.jpg&unsharpmask=80,0.5,3
         // We want the URL of the image being sent to ImagePress without all the ImagePress stuff
-        NSRange rng;
-        rng.location = [img rangeOfString:@"http" options:NSBackwardsSearch].location; // the beginning of the image URL
-        rng.length = [img rangeOfString:@"&unsharp" options:NSBackwardsSearch].location - rng.location; // ImagePress filters.
-        img = [img substringWithRange:rng];
+
+        // Find the start of the actual URL for the image
+        NSRange httpRng = [img rangeOfString:@"http" options:NSBackwardsSearch];
+        NSInteger location = 0;
+        if (httpRng.location != NSNotFound) {
+            location = httpRng.location;
+        }
+
+        // Find the last of the image press options after the image URL
+        // Search from the start of the URL to the end of the string
+        NSRange ampRng = [img rangeOfString:@"&" options:nil range:NSMakeRange(location, [img length] - location)];
+        // Default length is the remainder of the string following the start of the image URL.
+        NSInteger length = [img length] - location;
+        if (ampRng.location != NSNotFound) {
+            // The actual length is the location of the first ampersand after the starting index of the image URL, minus the starting index of the image URL.
+            length = ampRng.location - location;
+        }
+
+        // Retrieve the image URL substring from the range.
+        img = [img substringWithRange:NSMakeRange(location, length)];
 
         // Actually decode twice to remove the encodings
         img = [img stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
