@@ -6,12 +6,14 @@
 #import "ReaderSiteService.h"
 #import "WPTableViewCell.h"
 #import "UIImageView+Gravatar.h"
+#import "WPNoResultsView.h"
 
 static NSString * const SiteCellIdentifier = @"SiteCellIdentifier";
 
 @interface FollowedSitesViewController ()<WPTableViewHandlerDelegate>
 
 @property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
+@property (nonatomic, strong) WPNoResultsView *noResultsView;
 
 @end
 
@@ -45,7 +47,7 @@ static NSString * const SiteCellIdentifier = @"SiteCellIdentifier";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    [self configureNoResultsView];
     [self syncSites];
 }
 
@@ -62,9 +64,10 @@ static NSString * const SiteCellIdentifier = @"SiteCellIdentifier";
 {
     ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     [service fetchFollowedSitesWithSuccess:^{
-        // noop
+        [self configureNoResultsView];
     } failure:^(NSError *error) {
         DDLogError(@"Could not sync sites: %@", error);
+        [self configureNoResultsView];
     }];
 }
 
@@ -89,6 +92,30 @@ static NSString * const SiteCellIdentifier = @"SiteCellIdentifier";
     }];
 }
 
+- (void)configureNoResultsView
+{
+    if ([[self.tableViewHandler.resultsController fetchedObjects] count] > 0) {
+        [self.noResultsView removeFromSuperview];
+    } else {
+        [self.view addSubview:self.noResultsView];
+        [self.noResultsView centerInSuperview];
+    }
+}
+
+- (WPNoResultsView *)noResultsView
+{
+    if (_noResultsView) {
+        return _noResultsView;
+    }
+
+    NSString *title = NSLocalizedString(@"No Sites", @"Title of a message explaining that the user is not currently following any blogs in their reader.");
+    NSString *message = NSLocalizedString(@"You're not following any sites yet.  Why not follow one now?", @"A suggestion to the user that they try following a site in their reader.");
+    _noResultsView = [WPNoResultsView noResultsViewWithTitle:title
+                                                     message:message
+                                               accessoryView:nil
+                                                 buttonTitle:nil];
+    return _noResultsView;
+}
 
 #pragma mark - TableView Handler Delegate Methods
 
@@ -174,7 +201,15 @@ static NSString * const SiteCellIdentifier = @"SiteCellIdentifier";
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
-    return NSLocalizedString(@"Sites", @"Section title for sites the user has followed.");
+    if ([[self.tableViewHandler.resultsController fetchedObjects] count] > 0) {
+        return NSLocalizedString(@"Sites", @"Section title for sites the user has followed.");
+    }
+    return nil;
+}
+
+- (void)tableViewDidChangeContent:(UITableView *)tableView
+{
+    [self configureNoResultsView];
 }
 
 @end
