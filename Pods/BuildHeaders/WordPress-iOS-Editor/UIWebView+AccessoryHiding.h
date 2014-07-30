@@ -1,0 +1,1 @@
+../../WordPress-iOS-Editor/Classes/UIWebView+AccessoryHiding.h
