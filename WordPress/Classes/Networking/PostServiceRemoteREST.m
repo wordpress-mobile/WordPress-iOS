@@ -74,11 +74,9 @@
         post.password = nil;
     }
     post.parentID = jsonPost[@"parent"];
-    // FIXME: remove conversion once API is fixed
-    // post_thumbnail should either be a dictionary or null, but it returns an empty string when there is no featured image
+    // post_thumbnail can be null, which will transform to NSNull, so we need to add the extra check
     NSDictionary *postThumbnail = [jsonPost dictionaryForKey:@"post_thumbnail"];
     post.postThumbnailID = [postThumbnail numberForKey:@"ID"];
-    // post.postThumbnailID = jsonPost[@"post_thumbnail"][@"ID"];
     post.type = jsonPost[@"type"];
     post.format = jsonPost[@"format"];
 
