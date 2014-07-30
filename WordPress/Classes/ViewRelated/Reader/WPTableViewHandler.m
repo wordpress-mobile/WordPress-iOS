@@ -139,7 +139,7 @@ static CGFloat const DefaultCellHeight = 44.0;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([self.delegate respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)]) {
-        [self.delegate tableView:tableView heightForRowAtIndexPath:indexPath];
+        return [self.delegate tableView:tableView heightForRowAtIndexPath:indexPath];
     }
     return DefaultCellHeight;
 }

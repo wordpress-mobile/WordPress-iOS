@@ -376,12 +376,12 @@
     <elements>
         <element name="AbstractComment" positionX="0" positionY="0" width="128" height="240"/>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="Account" positionX="0" positionY="0" width="128" height="30"/>
+        <element name="Account" positionX="0" positionY="0" width="128" height="150"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="240"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="450"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="75"/>
-        <element name="Media" positionX="0" positionY="0" width="128" height="345"/>
+        <element name="Media" positionX="0" positionY="0" width="128" height="343"/>
         <element name="Meta" positionX="9" positionY="153" width="128" height="105"/>
         <element name="NoteSimperium" positionX="0" positionY="0" width="128" height="178"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
@@ -390,6 +390,6 @@
         <element name="ReaderPost" positionX="0" positionY="0" width="128" height="463"/>
         <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="180"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
-        <element name="ReaderSite" positionX="9" positionY="153" width="128" height="30"/>
+        <element name="ReaderSite" positionX="9" positionY="153" width="128" height="163"/>
     </elements>
 </model>
