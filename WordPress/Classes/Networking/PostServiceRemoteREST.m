@@ -24,12 +24,24 @@
 - (void)getPostsForBlog:(Blog *)blog
                 success:(void (^)(NSArray *))success
                 failure:(void (^)(NSError *))failure {
+    [self getPostsForBlog:blog options:nil success:success failure:failure];
+}
+
+- (void)getPostsForBlog:(Blog *)blog
+                options:(NSDictionary *)options
+                success:(void (^)(NSArray *))success
+                failure:(void (^)(NSError *))failure {
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts", blog.dotComID];
     NSDictionary *parameters = @{
                                  @"status": @"any",
                                  @"context": @"edit",
                                  @"number": @40,
                                  };
+    if (options) {
+        NSMutableDictionary *mutableParameters = [parameters mutableCopy];
+        [mutableParameters addEntriesFromDictionary:options];
+        parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
+    }
     [self.api GET:path
        parameters:parameters
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -62,6 +74,12 @@
     post.authorEmail = [jsonPost[@"author"] stringForKey:@"email"];
     post.authorURL = jsonPost[@"author"][@"URL"];
     post.date = [NSDate dateWithWordPressComJSONString:jsonPost[@"date"]];
+    // FIXME: the API returns invalid dates for drafts
+    // Use the last modified date until this is resolved, otherwise drafts get
+    // pushed to the end of the posts list
+    if (post.date == nil) {
+        post.date = [NSDate dateWithWordPressComJSONString:jsonPost[@"modified"]];
+    }
     post.title = jsonPost[@"title"];
     post.URL = [NSURL URLWithString:jsonPost[@"URL"]];
     post.shortURL = [NSURL URLWithString:jsonPost[@"short_URL"]];

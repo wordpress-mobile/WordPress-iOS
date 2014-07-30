@@ -60,7 +60,7 @@
     [remote getPostsForBlog:blog
                     success:^(NSArray *posts) {
                         [self.managedObjectContext performBlock:^{
-                            [self mergePosts:posts forBlog:blog completionHandler:success];
+                            [self mergePosts:posts forBlog:blog purgeExisting:YES completionHandler:success];
                         }];
                     } failure:^(NSError *error) {
                         if (failure) {
@@ -71,6 +71,37 @@
                     }];
 }
 
+- (void)loadMorePostsForBlog:(Blog *)blog
+                     success:(void (^)())success
+                     failure:(void (^)(NSError *))failure {
+    id<PostServiceRemote> remote = [self remoteForBlog:blog];
+    NSMutableDictionary *options = [NSMutableDictionary dictionary];
+    if ([remote isKindOfClass:[PostServiceRemoteREST class]]) {
+        NSSet *postsWithDate = [blog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"date_created_gmt != NULL"]];
+        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"date_created_gmt" ascending:YES];
+        Post *oldestPost = [[postsWithDate sortedArrayUsingDescriptors:@[sortDescriptor]] firstObject];
+        // FIXME: convert date to JSON format?
+        if (oldestPost.date_created_gmt) {
+            options[@"before"] = oldestPost.date_created_gmt;
+        }
+    } else if ([remote isKindOfClass:[PostServiceRemoteXMLRPC class]]) {
+        NSUInteger postCount = [blog.posts count];
+        postCount += 40;
+        options[@"number"] = @(postCount);
+    }
+    [remote getPostsForBlog:blog options:options success:^(NSArray *posts) {
+        [self.managedObjectContext performBlock:^{
+            [self mergePosts:posts forBlog:blog purgeExisting:NO completionHandler:success];
+        }];
+    } failure:^(NSError *error) {
+        if (failure) {
+            [self.managedObjectContext performBlock:^{
+                failure(error);
+            }];
+        }
+    }];
+}
+
 #pragma mark -
 
 - (void)initializeDraft:(AbstractPost *)post {
@@ -78,7 +109,7 @@
     post.status = @"publish";
 }
 
-- (void)mergePosts:(NSArray *)posts forBlog:(Blog *)blog completionHandler:(void (^)(void))completion {
+- (void)mergePosts:(NSArray *)posts forBlog:(Blog *)blog purgeExisting:(BOOL)purge completionHandler:(void (^)(void))completion {
     NSMutableArray *postsToKeep = [NSMutableArray array];
     for (RemotePost *remotePost in posts) {
         Post *post = [self findPostWithID:remotePost.postID inBlog:blog];
@@ -89,12 +120,14 @@
         [postsToKeep addObject:post];
     }
 
-    NSSet *existingPosts = [blog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL)", @(AbstractPostRemoteStatusSync)]];
-    if (existingPosts.count > 0) {
-        for (Post *post in existingPosts) {
-            if(![postsToKeep containsObject:post]) {
-                DDLogInfo(@"Deleting Post: %@", post);
-                [self.managedObjectContext deleteObject:post];
+    if (purge) {
+        NSSet *existingPosts = [blog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL)", @(AbstractPostRemoteStatusSync)]];
+        if (existingPosts.count > 0) {
+            for (Post *post in existingPosts) {
+                if(![postsToKeep containsObject:post]) {
+                    DDLogInfo(@"Deleting Post: %@", post);
+                    [self.managedObjectContext deleteObject:post];
+                }
             }
         }
     }

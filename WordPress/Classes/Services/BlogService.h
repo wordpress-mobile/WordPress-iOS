@@ -58,15 +58,6 @@
  */
 - (void)syncPostsAndMetadataForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure;
 
-/*! Sync only blog posts (no metadata lists)
- *  Used for instances where comments and pages aren't necessarily needed to be updated.
- *
- *  \param success  Completion block called if the operation was a success
- *  \param failure  Completion block called if the operation was a failure
- *  \param more     If posts already exist then sync an additional batch
- */
-- (void)syncPostsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
-
 - (void)syncPagesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
 - (void)syncCategoriesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)syncOptionsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure;
