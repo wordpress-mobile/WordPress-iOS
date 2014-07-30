@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/wordpress-mobile/WordPressCom-Stats-iOS.svg?branch=develop)](https://travis-ci.org/wordpress-mobile/WordPressCom-Stats-iOS)
+
 ![WordPress Logo](http://s.w.org/about/images/logos/wordpress-logo-hoz-rgb.png)
 
 # WordPressCom-Stats-iOS

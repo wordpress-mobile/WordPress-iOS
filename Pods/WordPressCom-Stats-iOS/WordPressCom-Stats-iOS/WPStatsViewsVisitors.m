@@ -37,9 +37,12 @@ NSString *const StatsPointCountKey = @"count";
     NSMutableArray *periodToViews = [NSMutableArray array];
     NSMutableArray *periodToVisitors = [NSMutableArray array];
     NSArray *periodData = data[@"data"];
+    
     [periodData enumerateObjectsUsingBlock:^(NSArray *d, NSUInteger idx, BOOL *stop) {
-        [periodToViews addObject:@{StatsPointNameKey: [self nicePointName:d[0] forUnit:unit], StatsPointCountKey: d[1]}];
-        [periodToVisitors addObject:@{StatsPointNameKey: [self nicePointName:d[0] forUnit:unit], StatsPointCountKey: d[2]}];
+        NSDictionary *nicePointNames = [self nicePointNames:d[0] forUnit:unit];
+        
+        [periodToViews addObject:@{StatsPointNameKey: nicePointNames[StatsPointNameKey], StatsPointCountKey: d[1]}];
+        [periodToVisitors addObject:@{StatsPointNameKey: nicePointNames[StatsPointNameKey], StatsPointCountKey: d[2]}];
     }];
     
     self.dateFormatter = nil;
@@ -52,11 +55,13 @@ NSString *const StatsPointCountKey = @"count";
     return _viewsVisitorsData[@(unit)];
 }
 
-- (NSString *)nicePointName:(NSString *)name forUnit:(WPStatsViewsVisitorsUnit)unit {
+- (NSDictionary *)nicePointNames:(NSString *)name forUnit:(WPStatsViewsVisitorsUnit)unit {
     if (name.length == 0) {
         DDLogWarn(@"Invalid date/name passed into nicePointName for unit: %@", @(unit));
-        return @"";
+        return @{};
     }
+
+    NSString *niceName;
     
     switch (unit) {
         case StatsViewsVisitorsUnitDay:
@@ -64,7 +69,8 @@ NSString *const StatsPointCountKey = @"count";
             self.dateFormatter.dateFormat = @"yyyy-MM-dd";
             NSDate *d = [self.dateFormatter dateFromString:name];
             self.dateFormatter.dateFormat = @"LLL dd";
-            return [self.dateFormatter stringFromDate:d];
+            niceName = [self.dateFormatter stringFromDate:d];
+            break;
         }
         case StatsViewsVisitorsUnitWeek:
         {
@@ -72,18 +78,24 @@ NSString *const StatsPointCountKey = @"count";
             self.dateFormatter.dateFormat = @"yyyy'W'MM'W'dd";
             NSDate *d = [self.dateFormatter dateFromString:name];
             self.dateFormatter.dateFormat = @"LLL dd";
-            return [self.dateFormatter stringFromDate:d];
+            niceName = [self.dateFormatter stringFromDate:d];
+            break;
         }
         case StatsViewsVisitorsUnitMonth:
         {
             self.dateFormatter.dateFormat = @"yyyy-MM-dd";
             NSDate *d = [self.dateFormatter dateFromString:name];
             self.dateFormatter.dateFormat = @"LLL yyyy"; // L is stand-alone month
-            return [self.dateFormatter stringFromDate:d];
+            niceName = [self.dateFormatter stringFromDate:d];
+            break;
         }
         default:
-            return @"";
+        {
+            niceName = @"";
+        }
     }
+    
+    return @{StatsPointNameKey : niceName};
 }
 
 @end
