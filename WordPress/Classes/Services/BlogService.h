@@ -91,6 +91,11 @@
 
 - (NSArray *)blogsForAllAccounts;
 
+/*! Determine timezone for blog from blog options.  If no timezone information is stored on
+ *  the device, then assume GMT+0 is the default.
+ *  
+ *  \param blog     The blog/site to determine the timezone for.
+ */
 - (NSTimeZone *)timeZoneForBlog:(Blog *)blog;
 
 

@@ -62,7 +62,8 @@
 {
     NSTimeZone *timeZone = [self.blogService timeZoneForBlog:self.blog];
     
-    XCTAssertNil(timeZone, @"No timezone should have been determined.");
+    XCTAssertNotNil(timeZone, @"Timezone should never be nil.");
+    XCTAssertEqualObjects(timeZone, [NSTimeZone timeZoneForSecondsFromGMT:0], @"Timezone should be GMT+0");
 }
 
 - (void)testTimeZoneForBlogNilOptions
@@ -71,7 +72,8 @@
     
     NSTimeZone *timeZone = [self.blogService timeZoneForBlog:self.blog];
     
-    XCTAssertNil(timeZone, @"No timezone should have been determined.");
+    XCTAssertNotNil(timeZone, @"Timezone should never be nil.");
+    XCTAssertEqualObjects(timeZone, [NSTimeZone timeZoneForSecondsFromGMT:0], @"Timezone should be GMT+0");
 }
 
 - (void)testTimeZoneForBlogEmptyOptions
@@ -80,7 +82,8 @@
     
     NSTimeZone *timeZone = [self.blogService timeZoneForBlog:self.blog];
     
-    XCTAssertNil(timeZone, @"No timezone should have been determined.");
+    XCTAssertNotNil(timeZone, @"Timezone should never be nil.");
+    XCTAssertEqualObjects(timeZone, [NSTimeZone timeZoneForSecondsFromGMT:0], @"Timezone should be GMT+0");
 }
 
 - (void)testTimeZoneForBlogXMLRPCTimeZoneOption
