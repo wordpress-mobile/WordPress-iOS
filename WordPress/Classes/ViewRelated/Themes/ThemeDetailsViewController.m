@@ -11,7 +11,7 @@
 #import "AccountService.h"
 #import "WPWebSnapshotter.h"
 #import "WPWebSnapshotWorker.h"
-#import "WPAuthenticatedSessionWebViewManager.h"
+#import "WPDesktopSiteWebViewManager.h"
 #import "NSString+Helpers.h"
 
 typedef NS_ENUM(NSUInteger, ThemeDetailsViewControllerControlButtonState) {
@@ -43,7 +43,7 @@ static NSString* const ThemeDetailsViewControllerJavascriptResizeScript =
 @property (nonatomic, weak) UILabel *currentTheme;
 @property (nonatomic, weak) UILabel *premiumTheme;
 @property (weak, nonatomic) UIView *infoView;
-@property (nonatomic, strong) WPAuthenticatedSessionWebViewManager *authenticatedWebViewManager;
+@property (nonatomic, strong) WPDesktopSiteWebViewManager *authenticatedWebViewManager;
 @property (nonatomic, strong) NSString *previewUsername;
 @property (nonatomic, strong) NSString *previewPassword;
 @property (nonatomic, strong) NSURL *previewLoginURL;
@@ -57,7 +57,7 @@ static NSString* const ThemeDetailsViewControllerJavascriptResizeScript =
     self = [super init];
     if (self) {
         _theme = theme;
-        _authenticatedWebViewManager = [[WPAuthenticatedSessionWebViewManager alloc] initWithDelegate:self];
+        _authenticatedWebViewManager = [[WPDesktopSiteWebViewManager alloc] initWithDelegate:self];
     }
     return self;
 }
@@ -299,17 +299,7 @@ static NSString* const ThemeDetailsViewControllerJavascriptResizeScript =
             self.previewDestinationURL = destinationURL;
             self.webSnapshotter.worker.webViewCustomizationDelegate = self.authenticatedWebViewManager;
             
-            NSMutableURLRequest *request = [self.authenticatedWebViewManager URLRequestForAuthenticatedSession].mutableCopy;
-            NSString *requestBody = [[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding];
-            
-            if ([[[request URL] absoluteString] isEqualToString:self.previewLoginURL.absoluteString] ||
-                [[[request URL] absoluteString] rangeOfString:@"wp-login.php"].location != NSNotFound) {
-                // first login: ensure appropriate cookies are set
-                NSString *forcedMobileRequestBody = [requestBody stringByAppendingString:@"&ak_action=reject_mobile"];
-                [request setHTTPBody:[forcedMobileRequestBody dataUsingEncoding:NSUTF8StringEncoding]];
-            }
-            
-            [self.webSnapshotter captureSnapshotOfURLRequest:request
+            [self.webSnapshotter captureSnapshotOfURLRequest:[self.authenticatedWebViewManager URLRequestForAuthenticatedSession]
                                                 snapshotSize:self.livePreview.frame.size
                                   didFinishLoadingJavascript:ThemeDetailsViewControllerJavascriptResizeScript
                                            completionHandler:^(UIView *view) {

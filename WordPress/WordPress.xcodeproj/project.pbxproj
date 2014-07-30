@@ -26,6 +26,7 @@
 		00F2E3FB166EEFE100D0527C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E10B3651158F2D3F00419A93 /* QuartzCore.framework */; };
 		0386092C19817323003675C7 /* WPAuthenticatedSessionWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386092B19817323003675C7 /* WPAuthenticatedSessionWebViewManager.m */; };
 		03958062100D6CFC00850742 /* WPLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03958061100D6CFC00850742 /* WPLabel.m */; };
+		03B55E24198975EE00415565 /* WPDesktopSiteWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B55E23198975EE00415565 /* WPDesktopSiteWebViewManager.m */; };
 		03CE52291986E9DC0033A6D9 /* WPWebSnapshotRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CE52281986E9DC0033A6D9 /* WPWebSnapshotRequest.m */; };
 		03E5D2151980748F00078E20 /* WPWebSnapshotter.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E5D2121980748F00078E20 /* WPWebSnapshotter.m */; };
 		03E5D2161980748F00078E20 /* WPWebSnapshotWorker.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E5D2141980748F00078E20 /* WPWebSnapshotWorker.m */; };
@@ -392,6 +393,8 @@
 		0386092B19817323003675C7 /* WPAuthenticatedSessionWebViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAuthenticatedSessionWebViewManager.m; sourceTree = "<group>"; };
 		03958060100D6CFC00850742 /* WPLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLabel.h; sourceTree = "<group>"; };
 		03958061100D6CFC00850742 /* WPLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLabel.m; sourceTree = "<group>"; };
+		03B55E22198975EE00415565 /* WPDesktopSiteWebViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPDesktopSiteWebViewManager.h; sourceTree = "<group>"; };
+		03B55E23198975EE00415565 /* WPDesktopSiteWebViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPDesktopSiteWebViewManager.m; sourceTree = "<group>"; };
 		03CE52271986E9DC0033A6D9 /* WPWebSnapshotRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WPWebSnapshotRequest.h; path = WebSnapshot/Internal/WPWebSnapshotRequest.h; sourceTree = "<group>"; };
 		03CE52281986E9DC0033A6D9 /* WPWebSnapshotRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WPWebSnapshotRequest.m; path = WebSnapshot/Internal/WPWebSnapshotRequest.m; sourceTree = "<group>"; };
 		03E5D2111980748F00078E20 /* WPWebSnapshotter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WPWebSnapshotter.h; path = WebSnapshot/WPWebSnapshotter.h; sourceTree = "<group>"; };
@@ -1745,6 +1748,8 @@
 				B5CC05FB196218E100975CAC /* XMLParserCollecter.m */,
 				0386092A19817323003675C7 /* WPAuthenticatedSessionWebViewManager.h */,
 				0386092B19817323003675C7 /* WPAuthenticatedSessionWebViewManager.m */,
+				03B55E22198975EE00415565 /* WPDesktopSiteWebViewManager.h */,
+				03B55E23198975EE00415565 /* WPDesktopSiteWebViewManager.m */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -2487,6 +2492,7 @@
 				CC701659185A7513007B37DB /* InlineComposeView.m in Sources */,
 				59379AA4191904C200B49251 /* AnimatedGIFImageSerialization.m in Sources */,
 				E149D65119349E69006A843D /* MediaServiceRemoteXMLRPC.m in Sources */,
+				03B55E24198975EE00415565 /* WPDesktopSiteWebViewManager.m in Sources */,
 				5D3D559A18F88C5E00782892 /* ReaderPostServiceRemote.m in Sources */,
 				5DF94E421962BAA700359241 /* WPContentActionView.m in Sources */,
 				C57A31A4183D2111007745B9 /* NotificationsManager.m in Sources */,
