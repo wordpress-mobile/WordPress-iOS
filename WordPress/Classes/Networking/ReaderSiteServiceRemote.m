@@ -88,7 +88,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 
 - (void)unfollowSiteAtURL:(NSString *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
 {
-    NSString *path = @"read/following/mine/delete";
+    NSString *path = [NSString stringWithFormat:@"read/following/mine/delete?url=%@", siteURL];
     NSDictionary *params = @{@"url": siteURL};
     [self.api POST:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
@@ -155,11 +155,11 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 
     RemoteReaderSite *site = [[RemoteReaderSite alloc] init];
     site.recordID = [dict numberForKey:@"ID"];
-    site.siteID = [dict numberForKey:@"ID"];
-    site.feedID = [dict numberForKey:@"feed_ID"];
-    site.name = [dict stringForKey:@"name"];
-    site.path = [dict stringForKey:@"URL"];
-    site.icon = [dict stringForKeyPath:@"icon.img"];
+    site.siteID = [meta numberForKey:@"ID"];
+    site.feedID = [meta numberForKey:@"feed_ID"];
+    site.name = [meta stringForKey:@"name"];
+    site.path = [meta stringForKey:@"URL"];
+    site.icon = [meta stringForKeyPath:@"icon.img"];
 
     return site;
 }

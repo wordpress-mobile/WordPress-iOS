@@ -136,6 +136,17 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     [service unfollowSiteAtURL:siteURL success:success failure:failure];
 }
 
+- (void)unfollowSite:(ReaderSite *)site
+             success:(void(^)())success
+             failure:(void(^)(NSError *error))failure
+{
+    if ([site isFeed]) {
+        [self unfollowSiteAtURL:site.path success:success failure:failure];
+    } else {
+        [self unfollowSiteWithID:[site.siteID integerValue] success:success failure:failure];
+    }
+}
+
 
 #pragma mark - Private Methods
 
@@ -207,7 +218,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
     ReaderSite *site = [self findSiteByRecordID:remoteSite.recordID];
     if (site == nil) {
-        site = [NSEntityDescription insertNewObjectForEntityForName:@"ReaderSite"
+        site = (ReaderSite *)[NSEntityDescription insertNewObjectForEntityForName:@"ReaderSite"
                                               inManagedObjectContext:self.managedObjectContext];
     }
 

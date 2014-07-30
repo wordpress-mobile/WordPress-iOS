@@ -1,4 +1,5 @@
 #import "ReaderSubscriptionViewController.h"
+#import "ReaderEditableSubscriptionPage.h"
 #import "WPFriendFinderViewController.h"
 #import "SubscribedTopicsViewController.h"
 #import "RecommendedTopicsViewController.h"
@@ -57,7 +58,7 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
     if (self) {
         [self configureControllers];
         [self syncTopics];
-        // sync sites
+        [self syncSites];
     }
     return self;
 }
@@ -103,6 +104,18 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
         // noop
     } failure:^(NSError *error) {
         DDLogError(@"Error background syncing topics : %@", error);
+    }];
+}
+
+- (void)syncSites
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+
+    ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:context];
+    [service fetchFollowedSitesWithSuccess:^{
+        //noop.
+    } failure:^(NSError *error) {
+        DDLogError(@"Error background syncing followed sites : %@", error);
     }];
 }
 
@@ -219,6 +232,7 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
 {
     ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [service followSiteByURL:site success:^{
+        [self syncSites];
         [WPToast showToastWithMessage:NSLocalizedString(@"Followed", @"User followed a site.")
                              andImage:[UIImage imageNamed:@"action_icon_replied"]];
     } failure:^(NSError *error) {
@@ -340,7 +354,8 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
     }
 
     // Edit button
-    if (self.currentIndex == 0 && [self isWPComUser]) {
+    UIViewController *controller = [self currentViewController];
+    if ([controller conformsToProtocol:@protocol(ReaderEditableSubscriptionPage)]) {
         self.navigationItem.rightBarButtonItem = self.editButtonItem;
     } else {
         self.navigationItem.rightBarButtonItem = nil;
