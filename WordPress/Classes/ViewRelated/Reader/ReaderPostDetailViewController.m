@@ -8,8 +8,6 @@
 #import "ReaderComment.h"
 #import "ReaderCommentTableViewCell.h"
 #import "IOS7CorrectedTextView.h"
-#import "ReaderImageView.h"
-#import "ReaderVideoView.h"
 #import "WPImageViewController.h"
 #import "WPWebVideoViewController.h"
 #import "WPWebViewController.h"
@@ -20,6 +18,8 @@
 #import "WPAvatarSource.h"
 #import "ReaderPostService.h"
 #import "ReaderPost.h"
+#import "WPRichTextVideoControl.h"
+#import "WPRichTextImageControl.h"
 #import "ReaderCommentTableViewCell.h"
 #import "ReaderPostRichContentView.h"
 #import "CustomHighlightButton.h"
@@ -601,12 +601,12 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(ReaderImageView *)readerImageView
+- (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(WPRichTextImageControl *)imageControl
 {
     UIViewController *controller;
 
-    if (readerImageView.linkURL) {
-        NSString *url = [readerImageView.linkURL absoluteString];
+    if (imageControl.linkURL) {
+        NSString *url = [imageControl.linkURL absoluteString];
 
         BOOL matched = NO;
         NSArray *types = @[@".png", @".jpg", @".gif", @".jpeg"];
@@ -618,13 +618,13 @@ static CGFloat const SectionHeaderHeight = 25.0f;
         }
 
         if (matched) {
-            controller = [[WPImageViewController alloc] initWithImage:readerImageView.image andURL:readerImageView.linkURL];
+            controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image andURL:imageControl.linkURL];
         } else {
             controller = [[WPWebViewController alloc] init];
-            [(WPWebViewController *)controller setUrl:readerImageView.linkURL];
+            [(WPWebViewController *)controller setUrl:imageControl.linkURL];
         }
     } else {
-        controller = [[WPImageViewController alloc] initWithImage:readerImageView.image];
+        controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image];
     }
 
     if ([controller isKindOfClass:[WPImageViewController class]]) {
@@ -636,11 +636,11 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     }
 }
 
-- (void)richTextView:(WPRichTextView *)richTextView didReceiveVideoLinkAction:(ReaderVideoView *)readerVideoView
+- (void)richTextView:(WPRichTextView *)richTextView didReceiveVideoLinkAction:(WPRichTextVideoControl *)videoControl
 {
-    if (readerVideoView.contentType == ReaderVideoContentTypeVideo) {
+    if (!videoControl.isHTMLContent) {
+        MPMoviePlayerViewController *controller = [[MPMoviePlayerViewController alloc] initWithContentURL:videoControl.contentURL];
 
-        MPMoviePlayerViewController *controller = [[MPMoviePlayerViewController alloc] initWithContentURL:readerVideoView.contentURL];
         // Remove the movie player view controller from the "playback did finish" notification observers
         [[NSNotificationCenter defaultCenter] removeObserver:controller
                                                         name:MPMoviePlayerPlaybackDidFinishNotification
@@ -659,8 +659,8 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     } else {
         // Should either be an iframe, or an object embed. In either case a src attribute should have been parsed for the contentURL.
         // Assume this is content we can show and try to load it.
-        UIViewController *controller = [[WPWebVideoViewController alloc] initWithURL:readerVideoView.contentURL];
-        controller.title = (readerVideoView.title != nil) ? readerVideoView.title : @"Video";
+        UIViewController *controller = [[WPWebVideoViewController alloc] initWithURL:videoControl.contentURL];
+        controller.title = (videoControl.title != nil) ? videoControl.title : @"Video";
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
         navController.navigationBar.translucent = NO;
         navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -669,7 +669,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     }
 }
 
-- (void)richTextViewDidLoadAllMedia:(WPRichTextView *)richTextView
+- (void)richTextViewDidLoadMediaBatch:(WPRichTextView *)richTextView
 {
     [self.postView layoutIfNeeded];
     [self refreshHeightForTableHeaderView];
