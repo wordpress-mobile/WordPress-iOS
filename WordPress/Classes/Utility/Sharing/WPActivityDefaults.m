@@ -16,7 +16,7 @@
     GooglePlusActivity *googlePlusActivity = [[GooglePlusActivity alloc] init];
     WordPressActivity *wordPressActivity = [[WordPressActivity alloc] init];
     
-    return @[safariActivity, instapaperActivity, pocketActivity, googlePlusActivity, wordPressActivity];
+    return @[safariActivity, wordPressActivity, instapaperActivity, pocketActivity, googlePlusActivity];
 }
 
 + (void)trackActivityType:(NSString *)activityType
