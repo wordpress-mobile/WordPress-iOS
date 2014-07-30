@@ -24,9 +24,11 @@ echo "[*] starting xcodebuild to build the project.."
 if [ -d WordPress.xcworkspace ]; then
     # we're running the script from the CLI
     xcode_workspace="WordPress.xcworkspace"
+    additional_pipe=""
 elif [ -d ../WordPress.xcworkspace ]; then
     # we're running the script from Xcode
     xcode_workspace="../WordPress.xcworkspace"
+    additional_pipe="| sed 's/\\(.*\\.\\m\\{1,2\\}:[0-9]*:[0-9]*:\\)/\\1 warning:/'"
 else
     # error!
     echo >&2 "workspace not found, analyzing stopped"
@@ -44,6 +46,16 @@ cd ${temp_dir}
 oclint-xcodebuild -e Pods/
 
 echo "[*] starting analyzing"
-oclint-json-compilation-database -e Pods/ oclint_args "-rc LONG_LINE=120 SHORT_VARIABLE_NAME=1" 
+if [ -d WordPress.xcworkspace ]; then
+    # we're running the script from the CLI
+    oclint-json-compilation-database -e Pods/ oclint_args "-rc LONG_LINE=120 SHORT_VARIABLE_NAME=1"
+elif [ -d ../WordPress.xcworkspace ]; then
+    # we're running the script from Xcode
+    oclint-json-compilation-database -e Pods/ oclint_args "-rc LONG_LINE=120 SHORT_VARIABLE_NAME=1" | sed 's/\\(.*\\.\\m\\{1,2\\}:[0-9]*:[0-9]*:\\)/\\1 warning:/'
+else
+    # error!
+    echo >&2 "workspace not found, analyzing stopped"
+    exit 1
+fi
 
 rm -rf ${build_dir}
