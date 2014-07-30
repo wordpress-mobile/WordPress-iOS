@@ -12,4 +12,8 @@
                  success:(void (^)())success
                  failure:(void (^)(NSError *error))failure;
 
+- (void)loadMorePostsForBlog:(Blog *)blog
+                     success:(void (^)())success
+                     failure:(void (^)(NSError *error))failure;
+
 @end

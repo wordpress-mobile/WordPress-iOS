@@ -23,9 +23,21 @@
 - (void)getPostsForBlog:(Blog *)blog
                 success:(void (^)(NSArray *))success
                 failure:(void (^)(NSError *))failure {
+    [self getPostsForBlog:blog options:nil success:success failure:failure];
+}
+
+- (void)getPostsForBlog:(Blog *)blog
+                options:(NSDictionary *)options
+                success:(void (^)(NSArray *posts))success
+                failure:(void (^)(NSError *error))failure {
     NSDictionary *extraParameters = @{
                                       @"number": @40,
                                       };
+    if (options) {
+        NSMutableDictionary *mutableParameters = [extraParameters mutableCopy];
+        [mutableParameters addEntriesFromDictionary:options];
+        extraParameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
+    }
     NSArray *parameters = [blog getXMLRPCArgsWithExtra:extraParameters];
     [self.api callMethod:@"wp.getPosts"
               parameters:parameters
