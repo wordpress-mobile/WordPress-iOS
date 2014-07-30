@@ -91,5 +91,7 @@
 
 - (NSArray *)blogsForAllAccounts;
 
+- (NSTimeZone *)timeZoneForBlog:(Blog *)blog;
+
 
 @end

@@ -30,8 +30,9 @@ typedef NS_ENUM(NSInteger, StatsSection) {
 @property (nonatomic, weak) id<WPStatsViewControllerDelegate> statsDelegate;
 @property (nonatomic, strong) NSNumber *siteID;
 @property (nonatomic, copy)   NSString *oauth2Token;
+@property (nonatomic, strong) NSTimeZone *siteTimeZone;
 
-- (instancetype)initWithSiteID:(NSNumber *)siteID andOAuth2Token:(NSString *)oauth2Token;
+- (instancetype)initWithSiteID:(NSNumber *)siteID siteTimeZone:(NSTimeZone *)timeZone andOAuth2Token:(NSString *)oauth2Token;
 
 @end
 

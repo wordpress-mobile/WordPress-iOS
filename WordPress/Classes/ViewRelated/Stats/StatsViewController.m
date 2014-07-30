@@ -6,6 +6,7 @@
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import "WPStatsViewController_Private.h"
+#import "BlogService.h"
 
 static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
@@ -23,17 +24,6 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     return self;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    
-}
-
 - (void)setBlog:(Blog *)blog {
     _blog = blog;
     DDLogInfo(@"Loading Stats for the following blog: %@", [blog url]);
@@ -47,6 +37,11 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 }
 
 - (void)initStats {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    
+    self.siteTimeZone = [blogService timeZoneForBlog:self.blog];
+    
     if (self.blog.isWPcom) {
         
         self.oauth2Token = self.blog.restApi.authToken;

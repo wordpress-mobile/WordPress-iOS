@@ -4,6 +4,7 @@
 #import <WPStyleGuide.h>
 #import "WPStatsCollectionViewFlowLayout.h"
 #import "WPStatsGraphBackgroundView.h"
+#import "WPStyleGuide+Stats.h"
 
 @interface WPStatsGraphViewController () <UICollectionViewDelegateFlowLayout>
 
@@ -16,6 +17,7 @@
 
 static NSString *const CategoryBarCell = @"CategoryBarCell";
 static NSString *const LegendView = @"LegendView";
+static NSString *const FooterView = @"FooterView";
 static NSString *const GraphBackgroundView = @"GraphBackgroundView";
 
 @implementation WPStatsGraphViewController
@@ -38,6 +40,7 @@ static NSString *const GraphBackgroundView = @"GraphBackgroundView";
     self.collectionView.backgroundColor = [UIColor lightGrayColor];
     
     self.flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    self.collectionView.allowsMultipleSelection = YES;
     self.collectionView.showsHorizontalScrollIndicator = NO;
     self.collectionView.showsVerticalScrollIndicator = NO;
     self.collectionView.scrollEnabled = NO;
@@ -45,6 +48,7 @@ static NSString *const GraphBackgroundView = @"GraphBackgroundView";
     
     [self.collectionView registerClass:[WPStatsGraphBarCell class] forCellWithReuseIdentifier:CategoryBarCell];
     [self.collectionView registerClass:[WPStatsGraphLegendView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:LegendView];
+    [self.collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:FooterView];
     [self.collectionView registerClass:[WPStatsGraphBackgroundView class] forSupplementaryViewOfKind:WPStatsCollectionElementKindGraphBackground withReuseIdentifier:GraphBackgroundView];
     
 }
@@ -54,9 +58,38 @@ static NSString *const GraphBackgroundView = @"GraphBackgroundView";
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     
     [self.collectionView performBatchUpdates:nil completion:nil];
+    
+    if ([[self.collectionView indexPathsForSelectedItems] count] > 0) {
+        NSIndexPath *indexPath = [self.collectionView indexPathsForSelectedItems][0];
+        [self collectionView:self.collectionView didSelectItemAtIndexPath:indexPath];
+    }
 }
 
 #pragma mark - UICollectionViewDelegate methods
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSArray *selectedIndexPaths = [collectionView indexPathsForSelectedItems];
+    [selectedIndexPaths enumerateObjectsUsingBlock:^(NSIndexPath *selectedIndexPath, NSUInteger idx, BOOL *stop) {
+        if (!([selectedIndexPath compare:indexPath] == NSOrderedSame)) {
+            [collectionView deselectItemAtIndexPath:selectedIndexPath animated:YES];
+        }
+    }];
+    
+    if ([self.graphDelegate respondsToSelector:@selector(statsGraphViewController:didSelectData:withXLocation:)]) {
+        UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+        CGFloat x = cell.center.x + collectionView.contentInset.left;
+        [self.graphDelegate statsGraphViewController:self didSelectData:[self barDataForIndexPath:indexPath] withXLocation:x];
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([[collectionView indexPathsForSelectedItems] count] == 0
+        && [self.graphDelegate respondsToSelector:@selector(statsGraphViewControllerDidDeselectAllBars:)]) {
+        [self.graphDelegate statsGraphViewControllerDidDeselectAllBars:self];
+    }
+}
 
 #pragma mark - UICollectionViewDataSource methods
 
@@ -68,23 +101,14 @@ static NSString *const GraphBackgroundView = @"GraphBackgroundView";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     WPStatsGraphBarCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CategoryBarCell forIndexPath:indexPath];
-    NSDictionary *categoryData = [self.viewsVisitors viewsVisitorsForUnit:self.currentUnit];
-    NSArray *barData = @[@{ @"color" : [WPStyleGuide statsLighterBlue],
-                            @"value" : categoryData[StatsViewsCategory][indexPath.row][@"count"],
-                            @"name" : StatsViewsCategory,
-                            },
-                         @{ @"color" : [WPStyleGuide statsDarkerBlue],
-                            @"value" : categoryData[StatsVisitorsCategory][indexPath.row][@"count"],
-                            @"name" : StatsVisitorsCategory,
-                            }
-                         ];
-
+    NSArray *barData = [self barDataForIndexPath:indexPath];
+    
     cell.maximumY = self.maximumY;
     cell.numberOfYValues = self.numberOfYValues;
     
     [cell setCategoryBars:barData];
     // TODO :: Name is the same for all points - should put this somewhere better
-    [cell setBarName:categoryData[StatsViewsCategory][indexPath.row][@"name"]];
+    [cell setBarName:[self.viewsVisitors viewsVisitorsForUnit:self.currentUnit][StatsViewsCategory][indexPath.row][@"name"]];
     [cell finishedSettingProperties];
     
     return cell;
@@ -94,9 +118,8 @@ static NSString *const GraphBackgroundView = @"GraphBackgroundView";
 {
     if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
         WPStatsGraphLegendView *legend = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:LegendView forIndexPath:indexPath];
-        // FIXME - These category titles ARE NOT LOCALIZABLE
-        [legend addCategory:StatsViewsCategory withColor:[WPStyleGuide statsLighterBlue]];
-        [legend addCategory:StatsVisitorsCategory withColor:[WPStyleGuide statsDarkerBlue]];
+        [legend addCategory:NSLocalizedString(@"Views", @"Views Category in Site Stats") withColor:[WPStyleGuide statsLighterBlue]];
+        [legend addCategory:NSLocalizedString(@"Visitors", @"Visitors Category in Site Stats") withColor:[WPStyleGuide statsDarkerBlue]];
         [legend finishedAddingCategories];
 
         return legend;
@@ -136,6 +159,8 @@ static NSString *const GraphBackgroundView = @"GraphBackgroundView";
     return spacing;
 }
 
+#pragma mark - Property methods
+
 - (void)setViewsVisitors:(WPStatsViewsVisitors *)viewsVisitors
 {
     _viewsVisitors = viewsVisitors;
@@ -147,6 +172,8 @@ static NSString *const GraphBackgroundView = @"GraphBackgroundView";
     _currentUnit = currentUnit;
     [self calculateMaximumYValue];
 }
+
+#pragma mark - Private methods
 
 - (void)calculateMaximumYValue
 {
@@ -171,6 +198,23 @@ static NSString *const GraphBackgroundView = @"GraphBackgroundView";
     NSUInteger countViews = [categoryData[StatsViewsCategory] count];
     NSUInteger countVisitors = [categoryData[StatsVisitorsCategory] count];
     self.numberOfXValues = MAX(countViews, countVisitors);
+}
+
+- (NSArray *)barDataForIndexPath:(NSIndexPath *)indexPath
+{
+    NSDictionary *categoryData = [self.viewsVisitors viewsVisitorsForUnit:self.currentUnit];
+    
+    return @[@{ @"color" : [WPStyleGuide textFieldPlaceholderGrey],
+                @"selectedColor" : [WPStyleGuide statsLighterOrange],
+                @"value" : categoryData[StatsViewsCategory][indexPath.row][StatsPointCountKey],
+                @"name" : StatsViewsCategory
+                },
+             @{ @"color" : [WPStyleGuide littleEddieGrey],
+                @"selectedColor" : [WPStyleGuide jazzyOrange],
+                @"value" : categoryData[StatsVisitorsCategory][indexPath.row][StatsPointCountKey],
+                @"name" : StatsVisitorsCategory
+                }
+             ];
 }
 
 @end

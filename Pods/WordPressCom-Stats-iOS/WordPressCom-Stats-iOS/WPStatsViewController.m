@@ -13,6 +13,7 @@
 #import "WPStatsService.h"
 #import "WPStyleGuide.h"
 #import "WPStatsGraphViewController.h"
+#import "WPStatsGraphToastView.h"
 
 static NSString *const VisitorsUnitButtonCellReuseIdentifier = @"VisitorsUnitButtonCellReuseIdentifier";
 static NSString *const TodayYesterdayButtonCellReuseIdentifier = @"TodayYesterdayButtonCellReuseIdentifier";
@@ -24,9 +25,12 @@ static NSString *const StatsGroupedCellIdentifier = @"StatsGroupedCellIdentifier
 static NSString *const LinkToWebviewCellIdentifier = @"LinkToWebviewCellIdentifier";
 static NSString *const WPStatsSiteIDRestorationKey = @"WPStatsSiteIDRestorationKey";
 static NSString *const WPStatsOAuth2TokenRestorationKey = @"WPStatsOAuth2TokenRestorationKey";
+static NSString *const WPStatsTimeZoneRestorationKey = @"WPStatsTimeZoneRestorationKey";
 
 static NSUInteger const ResultRowMaxItems = 10;
 static CGFloat const HeaderHeight = 44.0f;
+static CGFloat const GraphHeight = 200.0f;
+static CGFloat const GraphToastHeight = 75.0f;
 
 typedef NS_ENUM(NSInteger, VisitorsRow) {
     VisitorRowGraphUnitButton,
@@ -50,7 +54,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     TotalFollowersShareRowTotalRows
 };
 
-@interface WPStatsViewController () <UITableViewDataSource, UITableViewDelegate, WPStatsTodayYesterdayButtonCellDelegate, UIViewControllerRestoration, StatsButtonCellDelegate>
+@interface WPStatsViewController () <UITableViewDataSource, UITableViewDelegate, WPStatsTodayYesterdayButtonCellDelegate, UIViewControllerRestoration, StatsButtonCellDelegate, WPStatsGraphViewControllerDelegate>
 
 @property (nonatomic, strong) WPStatsService *statsService;
 @property (nonatomic, strong) NSMutableDictionary *statModels;
@@ -60,6 +64,8 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 @property (nonatomic, weak) WPNoResultsView *noResultsView;
 @property (nonatomic, strong) NSMutableDictionary *expandedLinkGroups;
 @property (nonatomic, strong) WPStatsGraphViewController *graphViewController;
+@property (nonatomic, strong) WPStatsGraphToastView *graphToastView;
+@property (nonatomic, assign, getter=isShowingGraphToast) BOOL showingGraphToast;
 
 @end
 
@@ -71,8 +77,9 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         return nil;
     
     NSString *oauth2Token = [coder decodeObjectForKey:WPStatsOAuth2TokenRestorationKey];
+    NSTimeZone *timeZone = [coder decodeObjectForKey:WPStatsTimeZoneRestorationKey];
     
-    WPStatsViewController *viewController = [[self alloc] initWithSiteID:siteID andOAuth2Token:oauth2Token];
+    WPStatsViewController *viewController = [[self alloc] initWithSiteID:siteID siteTimeZone:timeZone andOAuth2Token:oauth2Token];
     
     return viewController;
 }
@@ -94,6 +101,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         
         _resultsAvailable = NO;
         _graphViewController = [[WPStatsGraphViewController alloc] init];
+        _showingGraphToast = NO;
         [self addChildViewController:_graphViewController];
         
         self.restorationIdentifier = NSStringFromClass([self class]);
@@ -102,12 +110,13 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     return self;
 }
 
-- (instancetype)initWithSiteID:(NSNumber *)siteID andOAuth2Token:(NSString *)oauth2Token
+- (instancetype)initWithSiteID:(NSNumber *)siteID siteTimeZone:(NSTimeZone *)timeZone andOAuth2Token:(NSString *)oauth2Token
 {
     self = [self init];
     if (self) {
         _siteID = siteID;
         _oauth2Token = oauth2Token;
+        _siteTimeZone = timeZone;
     }
     
     return self;
@@ -131,11 +140,13 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     [self.tableView registerClass:[WPStatsCounterCell class] forCellReuseIdentifier:CountCellReuseIdentifier];
     [self.tableView registerClass:[WPStatsNoResultsCell class] forCellReuseIdentifier:NoResultsCellIdentifier];
     [self.tableView registerClass:[WPStatsTwoColumnCell class] forCellReuseIdentifier:ResultRowCellIdentifier];
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:GraphCellIdentifier];
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:GraphCellIdentifier];
     [self.tableView registerClass:[WPStatsLinkToWebviewCell class] forCellReuseIdentifier:LinkToWebviewCellIdentifier];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refreshControlTriggered) forControlEvents:UIControlEventValueChanged];
+    
+    self.graphViewController.graphDelegate = self;
 
     [self showNoResultsWithTitle:NSLocalizedString(@"Fetching latest stats", @"Message to display while initially loading stats") message:nil];
     
@@ -159,7 +170,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 - (void)initStats
 {
     if (self.statsService == nil) {
-        self.statsService = [[WPStatsService alloc] initWithSiteId:self.siteID andOAuth2Token:self.oauth2Token];
+        self.statsService = [[WPStatsService alloc] initWithSiteId:self.siteID siteTimeZone:self.siteTimeZone andOAuth2Token:self.oauth2Token];
         [self loadStats];
     }
 }
@@ -187,7 +198,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         }
         DDLogError(@"Stats: Error fetching stats %@", error);
     };
-
+    
     [self.statsService retrieveStatsWithCompletionHandler:^(WPStatsSummary *summary, NSDictionary *topPosts, NSDictionary *clicks, NSDictionary *countryViews, NSDictionary *referrers, NSDictionary *searchTerms, WPStatsViewsVisitors *viewsVisitors) {
         self.statModels[@(StatsSectionVisitors)] = summary;
         self.statModels[@(StatsSectionVisitorsGraph)] = viewsVisitors;
@@ -201,6 +212,8 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         [self hideNoResultsView];
         [self.tableView reloadData];
         [self.refreshControl endRefreshing];
+        [self statsGraphViewControllerDidDeselectAllBars:nil];
+        [self.graphViewController.collectionView reloadData];
     } failureHandler:failure];
 }
 
@@ -256,7 +269,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
                 case VisitorRowGraphUnitButton:
                     return [WPStatsButtonCell heightForRow];
                 case VisitorRowGraph:
-                    return 200.0f;
+                    return GraphHeight + (self.isShowingGraphToast ? GraphToastHeight + 6.0f : 0.0f);
                 case VisitorRowTodayStats:
                 case VisitorRowBestEver:
                 case VisitorRowAllTime:
@@ -304,15 +317,21 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
                 }
                 case VisitorRowGraph:
                 {
-                    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:GraphCellIdentifier];
+                    WPTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:GraphCellIdentifier];
+                    cell.clipsToBounds = YES;
                     self.graphViewController.viewsVisitors = self.statModels[@(StatsSectionVisitorsGraph)];
                     self.graphViewController.currentUnit = self.currentViewsVisitorsGraphUnit;
                     
                     if (![[cell.contentView subviews] containsObject:self.graphViewController.view]) {
                         UIView *graphView = self.graphViewController.view;
-                        graphView.frame = cell.contentView.bounds;
-                        graphView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+                        graphView.frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(cell.contentView.bounds), GraphHeight);
+                        graphView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
                         [cell.contentView addSubview:graphView];
+                        
+                        WPStatsGraphToastView *toastView = [[WPStatsGraphToastView alloc] initWithFrame:CGRectMake(0, GraphHeight, CGRectGetWidth(cell.contentView.bounds), GraphToastHeight)];
+                        toastView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+                        [cell.contentView addSubview:toastView];
+                        self.graphToastView = toastView;
                     }
                     
                     return cell;
@@ -639,6 +658,8 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 #pragma mark - Visitors Graph button selectors
 
 - (void)graphUnitSelected:(WPStatsViewsVisitorsUnit)unit {
+    [self statsGraphViewControllerDidDeselectAllBars:nil];
+    
     self.currentViewsVisitorsGraphUnit = unit;
     self.graphViewController.currentUnit = unit;
     [self.graphViewController.collectionView reloadData];
@@ -649,6 +670,29 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 - (void)statsButtonCell:(WPStatsButtonCell *)statsButtonCell didSelectIndex:(NSUInteger)index {
     WPStatsViewsVisitorsUnit unit = (WPStatsViewsVisitorsUnit)index;
     [self graphUnitSelected:unit];
+}
+
+#pragma mark - WPStatsGraphViewControllerDelegate methods
+
+- (void)statsGraphViewController:(WPStatsGraphViewController *)controller didSelectData:(NSArray *)data withXLocation:(CGFloat)xLocation
+{
+    self.showingGraphToast = YES;
+    self.graphToastView.xOffset = xLocation;
+    self.graphToastView.viewCount = [data[0][@"value"] unsignedIntegerValue];
+    self.graphToastView.visitorsCount = [data[1][@"value"] unsignedIntegerValue];
+
+    // Causes table rows to be redrawn if heights have changed
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
+}
+
+- (void)statsGraphViewControllerDidDeselectAllBars:(WPStatsGraphViewController *)controller
+{
+    self.showingGraphToast = NO;
+    
+    // Causes table rows to be redrawn if heights have changed
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
 }
 
 @end
