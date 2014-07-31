@@ -44,7 +44,7 @@ static NSString *NotificationActionUnfollowIcon     = @"action_icon_unfollowed";
 static NSString *NotificationActionFollowIcon       = @"action_icon_followed";
 static NSString *NotificationRestFollowingKey       = @"is_following";
 
-static UIEdgeInsets NotificationTableInsets         = { 0.0f, 0.0f, 20.0f, 0.0f };
+static UIEdgeInsets NotificationTableInsets         = { 40.0f, 0.0f, 20.0f, 0.0f };
 
 
 #pragma mark ==========================================================================================
@@ -73,20 +73,27 @@ static UIEdgeInsets NotificationTableInsets         = { 0.0f, 0.0f, 20.0f, 0.0f 
     self.title                      = NSLocalizedString(@"Details", @"Notification Details Section Title");
     self.restorationClass           = [self class];
     
-#warning Unhack Width
-    NotificationHeaderView *header  = [NotificationHeaderView headerWithWidth:600];
+    NotificationHeaderView *header  = [NotificationHeaderView headerWithWidth:CGRectGetWidth(self.view.bounds)];
     header.noticon                  = self.note.noticon;
     header.attributedText           = self.note.subjectBlock.attributedSubject;
-    
-    // Make sure the header has the proper width, before attaching it to the tableView
-    [header refreshHeight];
     self.tableView.tableHeaderView  = header;
+    
+    [self refreshHeightForTableHeaderView];
     
     Simperium *simperium            = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
     SPBucket *notificationsBucket   = [simperium bucketForName:NSStringFromClass([Notification class])];
     notificationsBucket.delegate    = self;
 }
 
+
+#pragma mark - Helpers
+
+- (void)refreshHeightForTableHeaderView
+{
+    NotificationHeaderView *header = (NotificationHeaderView *)self.tableView.tableHeaderView;
+    [header refreshHeight];
+    self.tableView.tableHeaderView = header;
+}
 
 #pragma mark - SPBucketDeltage Methods
 
