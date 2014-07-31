@@ -401,10 +401,6 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     if (indexPath.section == SettingsSectionFAQForums) {
-        if (self.helpshiftEnabled) {
-
-        }
-        
         switch (indexPath.row) {
             case 0:
                 if (self.helpshiftEnabled) {
