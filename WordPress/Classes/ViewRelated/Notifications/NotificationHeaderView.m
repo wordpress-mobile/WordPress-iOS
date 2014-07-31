@@ -14,7 +14,9 @@ static CGFloat const NotificationHeaderNoticonRadius    = 15.0f;
 static CGFloat const NotificationHeaderNoticonPadding   = 3.0f;
 static CGFloat const NotificationHeaderNoticonSize      = 30;
 
-static CGFloat const NotificationHeaderSpaceTop         = 15;
+static CGFloat const NotificationHeaderWidthMax         = 600.0f;
+
+static CGFloat const NotificationHeaderSpaceTop         = 10;
 static CGFloat const NotificationHeaderSpaceLeading     = 16;
 static CGFloat const NotificationHeaderSpaceMiddle      = 10;
 static CGFloat const NotificationHeaderSpaceTrailing    = 20;
@@ -46,6 +48,7 @@ static CGFloat const NotificationHeaderSpaceTrailing    = 20;
     self = [super initWithCoder:aDecoder];
     if (self) {
         [self setupSubviews];
+        [self setupConstraints];
     }
     return self;
 }
@@ -55,6 +58,7 @@ static CGFloat const NotificationHeaderSpaceTrailing    = 20;
     self = [super initWithFrame:frame];
     if (self) {
         [self setupSubviews];
+        [self setupConstraints];
     }
     return self;
 }
@@ -80,24 +84,14 @@ static CGFloat const NotificationHeaderSpaceTrailing    = 20;
     self.headerLabel                = headerLabel;
     
     UIView *containerView           = [UIView new];
+    containerView.backgroundColor   = [WPStyleGuide notificationSubjectBackgroundColor];
     self.containerView              = containerView;
-    
-    // Disable tAMC, as needed
-    containerView.translatesAutoresizingMaskIntoConstraints = NO;
-    noticonView.translatesAutoresizingMaskIntoConstraints   = NO;
-    noticonLabel.translatesAutoresizingMaskIntoConstraints  = NO;
-    headerLabel.translatesAutoresizingMaskIntoConstraints   = NO;
     
     // Arrange the Hierarchy
     [noticonView addSubview:noticonLabel];
     [containerView addSubview:noticonView];
     [containerView addSubview:headerLabel];
     [self addSubview:containerView];
-    
-    // And at last!
-    self.backgroundColor            = [WPStyleGuide notificationSubjectBackgroundColor];
-    
-    [self setupConstraints];
 }
 
 - (void)setupConstraints
@@ -111,13 +105,19 @@ static CGFloat const NotificationHeaderSpaceTrailing    = 20;
         @"bottom"     : @(NotificationHeaderSpaceTop)
     };
     
-    NSDictionary *views             = NSDictionaryOfVariableBindings(_containerView, _noticonView, _noticonLabel, _headerLabel);
+    NSDictionary *views             = NSDictionaryOfVariableBindings(_noticonView, _headerLabel);
 
     NSString *noticonViewFormat     = @"V:[_noticonView(==iconSize)]";
     NSString *horizontalFormat      = @"|-(leading)-[_noticonView(==iconSize)]-(middle)-[_headerLabel]-(trailing)-|";
     NSString *verticalFormat        = @"V:|-(top)-[_headerLabel]-(bottom)-|";
 
 
+    // Disable tAMC, as needed
+    self.containerView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.noticonView.translatesAutoresizingMaskIntoConstraints   = NO;
+    self.noticonLabel.translatesAutoresizingMaskIntoConstraints  = NO;
+    self.headerLabel.translatesAutoresizingMaskIntoConstraints   = NO;
+    
     // Apply Horizontal and Vertical layouts
     [_noticonView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:noticonViewFormat
                                                                          options:0
@@ -198,20 +198,31 @@ static CGFloat const NotificationHeaderSpaceTrailing    = 20;
                                                       constant:0.0]];
     
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_containerView
-                                                     attribute:NSLayoutAttributeCenterY
+                                                     attribute:NSLayoutAttributeTop
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:self
-                                                     attribute:NSLayoutAttributeCenterY
+                                                     attribute:NSLayoutAttributeTop
                                                     multiplier:1.0
                                                       constant:0.0]];
     
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_containerView
-                                                     attribute:NSLayoutAttributeWidth
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
-                                                     attribute:NSLayoutAttributeWidth
-                                                    multiplier:1.0
-                                                      constant:0.0]];
+    // Limit the width to NotificationHeaderWidthMax pixels
+    if (CGRectGetWidth(self.bounds) > NotificationHeaderWidthMax) {
+        [_containerView addConstraint:[NSLayoutConstraint constraintWithItem:_containerView
+                                                         attribute:NSLayoutAttributeWidth
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:nil
+                                                         attribute:NSLayoutAttributeNotAnAttribute
+                                                        multiplier:0.0f
+                                                          constant:NotificationHeaderWidthMax]];
+    } else {
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:_containerView
+                                                         attribute:NSLayoutAttributeWidth
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self
+                                                         attribute:NSLayoutAttributeWidth
+                                                        multiplier:1.0
+                                                          constant:0.0]];
+    }
     
     [self setNeedsLayout];
 }
@@ -219,10 +230,10 @@ static CGFloat const NotificationHeaderSpaceTrailing    = 20;
 - (void)refreshHeight
 {
     [super layoutIfNeeded];
-#warning iPad Width Max 600px
-    CGRect frame    = self.frame;
-    frame.size      = _containerView.frame.size;
-    self.frame      = frame;
+
+    CGRect frame        = self.frame;
+    frame.size.height   = _containerView.frame.size.height;
+    self.frame          = frame;
 }
 
 #pragma mark - Properties
