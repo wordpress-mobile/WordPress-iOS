@@ -9,6 +9,7 @@
 // | Stats
 // | Settings
 // | View Site
+// | Edit Theme
 // | View Admin
 
 #import "BlogDetailsViewController.h"
@@ -25,20 +26,27 @@
 #import "BlogService.h"
 #import "WPTableViewSectionHeaderView.h"
 
-const typedef enum {
-    BlogDetailsRowPosts = 0,
-    BlogDetailsRowPages = 1,
-    BlogDetailsRowComments = 2,
-    BlogDetailsRowStats = 0,
-    BlogDetailsRowViewSite = 1,
-    BlogDetailsRowEditSettings = 2,
-    BlogDetailsRowViewAdmin = 3
-} BlogDetailsRow;
-
-const typedef enum {
+typedef NS_ENUM(NSUInteger, TableSectionContentType) {
     TableViewSectionContentType = 0,
-    TableViewSectionAdminType
-} TableSectionContentType;
+    TableViewSectionAdminType = 1,
+    TableViewSectionCount = 2
+};
+
+typedef NS_ENUM(NSUInteger, TableViewSectionContent) {
+    TableViewSectionContentPostsRow = 0,
+    TableViewSectionContentPagesRow = 1,
+    TableViewSectionContentCommentsRow = 2,
+    TableViewSectionContentCount = 3
+};
+
+typedef NS_ENUM(NSUInteger, TableViewSectionAdmin) {
+    TableViewSectionAdminStatsRow = 0,
+    TableViewSectionAdminViewSiteRow = 1,
+    TableViewSectionAdminEditSettingsRow = 2,
+    TableViewSectionAdminEditThemeRow = 3,
+    TableViewSectionAdminViewAdminRow = 4,
+    TableViewSectionAdminCount = 5
+};
 
 static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
 NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
@@ -69,7 +77,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     
     BlogDetailsViewController *viewController = [[self alloc] initWithStyle:UITableViewStyleGrouped];
     viewController.blog = restoredBlog;
-
+    
     return viewController;
 }
 
@@ -96,7 +104,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     if (!_blog.options) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-
+        
         [blogService syncOptionsForBlog:_blog success:nil failure:nil];
     }
 }
@@ -114,16 +122,16 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 2;
+    return TableViewSectionCount;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case TableViewSectionContentType:
-            return 3;
+            return TableViewSectionContentCount;
             break;
         case TableViewSectionAdminType:
-            return 4;
+            return TableViewSectionAdminCount;
             break;
         default:
             return 0;
@@ -134,15 +142,15 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == TableViewSectionContentType) {
         switch (indexPath.row) {
-            case BlogDetailsRowPosts:
+            case TableViewSectionContentPostsRow:
                 cell.textLabel.text = NSLocalizedString(@"Posts", nil);
                 cell.imageView.image = [UIImage imageNamed:@"icon-menu-posts"];
                 break;
-            case BlogDetailsRowPages:
+            case TableViewSectionContentPagesRow:
                 cell.textLabel.text = NSLocalizedString(@"Pages", nil);
                 cell.imageView.image = [UIImage imageNamed:@"icon-menu-pages"];
                 break;
-            case BlogDetailsRowComments:
+            case TableViewSectionContentCommentsRow:
                 cell.textLabel.text = NSLocalizedString(@"Comments", nil);
                 cell.imageView.image = [UIImage imageNamed:@"icon-menu-comments"];
                 NSUInteger numberOfPendingComments = [self.blog numberOfPendingComments];
@@ -155,19 +163,23 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
         }
     } else if (indexPath.section == TableViewSectionAdminType) {
         switch (indexPath.row) {
-            case BlogDetailsRowStats:
+            case TableViewSectionAdminStatsRow:
                 cell.textLabel.text = NSLocalizedString(@"Stats", nil);
                 cell.imageView.image = [UIImage imageNamed:@"icon-menu-stats"];
                 break;
-            case BlogDetailsRowEditSettings:
+            case TableViewSectionAdminEditSettingsRow:
                 cell.textLabel.text = NSLocalizedString(@"Edit Site", nil);
                 cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
                 break;
-            case BlogDetailsRowViewSite:
+            case TableViewSectionAdminViewSiteRow:
                 cell.textLabel.text = NSLocalizedString(@"View Site", nil);
                 cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewsite"];
                 break;
-            case BlogDetailsRowViewAdmin:
+            case TableViewSectionAdminEditThemeRow:
+                cell.textLabel.text = NSLocalizedString(@"Edit Theme", nil);
+                cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
+                break;
+            case TableViewSectionAdminViewAdminRow:
                 cell.textLabel.text = NSLocalizedString(@"View Admin", nil);
                 cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewadmin"];
                 break;
@@ -182,30 +194,30 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     [self configureCell:cell atIndexPath:indexPath];
     [WPStyleGuide configureTableViewCell:cell];
-
+    
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if (indexPath.section == TableViewSectionAdminType && indexPath.row == BlogDetailsRowEditSettings) {
+    if (indexPath.section == TableViewSectionAdminType && indexPath.row == TableViewSectionAdminEditSettingsRow) {
         EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
         [self.navigationController pushViewController:editSiteViewController animated:YES];
     }
-
+    
     Class controllerClass;
     if (indexPath.section == TableViewSectionContentType) {
         switch (indexPath.row) {
-            case BlogDetailsRowPosts:
+            case TableViewSectionContentPostsRow:
                 [WPAnalytics track:WPAnalyticsStatOpenedPosts];
                 controllerClass = [PostsViewController class];
                 break;
-            case BlogDetailsRowPages:
+            case TableViewSectionContentPagesRow:
                 [WPAnalytics track:WPAnalyticsStatOpenedPages];
                 controllerClass = [PagesViewController class];
                 break;
-            case BlogDetailsRowComments:
+            case TableViewSectionContentCommentsRow:
                 [WPAnalytics track:WPAnalyticsStatOpenedComments];
                 controllerClass = [CommentsViewController class];
                 break;
@@ -214,14 +226,17 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
         }
     } else if (indexPath.section == TableViewSectionAdminType) {
         switch (indexPath.row) {
-            case BlogDetailsRowStats:
+            case TableViewSectionAdminStatsRow:
                 [WPAnalytics track:WPAnalyticsStatStatsAccessed];
                 controllerClass =  [StatsViewController class];
                 break;
-            case BlogDetailsRowViewSite:
+            case TableViewSectionAdminViewSiteRow:
                 [self showViewSiteForBlog:self.blog];
                 break;
-            case BlogDetailsRowViewAdmin:
+            case TableViewSectionAdminEditThemeRow:
+                controllerClass =  [ThemeBrowserViewController class];
+                break;
+            case TableViewSectionAdminViewAdminRow:
                 [self showViewAdminForBlog:self.blog];
                 break;
             default:
@@ -235,10 +250,10 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
             [self.navigationController.visibleViewController performSelector:@selector(setBlog:) withObject:self.blog];
         }
         [self.navigationController popToRootViewControllerAnimated:NO];
-    
+        
         return;
     }
-
+    
     UIViewController *viewController = (UIViewController *)[[controllerClass alloc] init];
     viewController.restorationIdentifier = NSStringFromClass(controllerClass);
     viewController.restorationClass = controllerClass;
@@ -317,15 +332,15 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 }
 
 - (BOOL)isRowForViewSite:(NSUInteger)index {
-    return index == BlogDetailsRowViewSite;
+    return index == TableViewSectionAdminViewSiteRow;
 }
 
 - (BOOL)isRowForViewAdmin:(NSUInteger)index {
-    return index == BlogDetailsRowViewAdmin;
+    return index == TableViewSectionAdminViewAdminRow;
 }
 
 - (BOOL)isRowForEditBlog:(NSUInteger)index {
-    return index == BlogDetailsRowEditSettings;
+    return index == TableViewSectionAdminEditSettingsRow;
 }
 
 /*

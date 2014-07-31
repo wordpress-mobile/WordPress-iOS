@@ -1,18 +1,18 @@
 #import "WPWebViewController.h"
-#import "WordPressAppDelegate.h"
 #import "ReachabilityUtils.h"
 #import "WPActivityDefaults.h"
-#import "NSString+Helpers.h"
-#import "WPCookie.h"
 #import "Constants.h"
 #import "WPError.h"
+#import "WPAuthenticatedSessionWebViewManager.h"
 
 @class WPReaderDetailViewController;
 
 @interface WPWebViewController () <UIWebViewDelegate>
 
-@property (weak, readonly) UIScrollView *scrollView;
-@property (nonatomic) BOOL isLoading, needsLogin, hasLoadedContent;
+@property (nonatomic) WPAuthenticatedSessionWebViewManager *authenticatedWebViewManager;
+@property (nonatomic, weak, readonly) UIScrollView *scrollView;
+@property (nonatomic) BOOL isLoading;
+@property (nonatomic) BOOL hasLoadedContent;
 
 @end
 
@@ -84,6 +84,10 @@
     self.webView.scalesPageToFit = YES;
     self.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
     
+    self.authenticatedWebViewManager = [[WPAuthenticatedSessionWebViewManager alloc] initWithUsername:self.username
+                                                                                             password:self.password
+                                                                                       destinationURL:self.url
+                                                                                             loginURL:self.wpLoginURL];
     if (self.url) {
         [self refreshWebView];
     } else {
@@ -238,51 +242,8 @@
         return;
     }
     
-    if (!self.needsLogin && self.username && self.password && ![WPCookie hasCookieForURL:self.url andUsername:self.username]) {
-        DDLogWarn(@"We have login credentials but no cookie, let's try login first");
-        [self retryWithLogin];
-        return;
-    }
-    
-    NSURL *webURL;
-    if (self.needsLogin) {
-        if (self.wpLoginURL != nil) {
-            webURL = self.wpLoginURL;
-        } else { //try to guess the login URL
-            webURL = [[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"];
-        }
-    } else {
-        webURL = self.url;
-    }
-
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:webURL];
-    request.cachePolicy = NSURLRequestReturnCacheDataElseLoad;
-    [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
-    
-    [request setCachePolicy:NSURLRequestReturnCacheDataElseLoad];
-    if (self.needsLogin) {
-        NSString *request_body = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=%@",
-                                  [self.username stringByUrlEncoding],
-                                  [self.password stringByUrlEncoding],
-                                  [[self.url absoluteString] stringByUrlEncoding]];
-        
-        if ( self.wpLoginURL != nil )
-            [request setURL: self.wpLoginURL];
-        else
-             [request setURL:[[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"]];
-        
-        [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
-        [request setValue:[NSString stringWithFormat:@"%d", [request_body length]] forHTTPHeaderField:@"Content-Length"];
-        [request addValue:@"*/*" forHTTPHeaderField:@"Accept"];
-        [request setHTTPMethod:@"POST"];
-    }
+    NSURLRequest *request = [self.authenticatedWebViewManager URLRequestForAuthenticatedSession];
     [self.webView loadRequest:request];
-}
-
-- (void)retryWithLogin {
-    self.needsLogin = YES;
-    [self refreshWebView];    
 }
 
 - (void)setUrl:(NSURL *)theURL {
@@ -458,19 +419,16 @@
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     DDLogInfo(@"%@ %@: %@", self, NSStringFromSelector(_cmd), [[request URL] absoluteString]);
     
+    BOOL shouldStartLoad = YES;
+    
     NSURL *requestedURL = [request URL];
     NSString *requestedURLAbsoluteString = [requestedURL absoluteString];
     
-    if (!self.needsLogin && [requestedURLAbsoluteString rangeOfString:@"wp-login.php"].location != NSNotFound) {
-        if (self.username && self.password) {
-            DDLogInfo(@"WP is asking for credentials, let's login first");
-            [self retryWithLogin];
-            return NO;
-        }
-    }
+    shouldStartLoad = [self.authenticatedWebViewManager webView:webView shouldStartLoadWithRequest:request navigationType:navigationType];
     
     //the user clicked a link available in the detailsView, a new webView will be pushed into the stack
-    if (![requestedURL isEqual:self.url] && 
+    if (shouldStartLoad &&
+        ![requestedURL isEqual:self.url] &&
         [requestedURLAbsoluteString rangeOfString:@"file://"].location == NSNotFound && 
         self.detailContent != nil &&
         navigationType == UIWebViewNavigationTypeLinkClicked
@@ -479,15 +437,16 @@
         WPWebViewController *webViewController = [[WPWebViewController alloc] init];
         [webViewController setUrl:[request URL]];
         [self.navigationController pushViewController:webViewController animated:YES];
-        return NO;
+        shouldStartLoad = NO;
     }
     
-    [self setLoading:YES];        
-    return YES;
+    [self setLoading:shouldStartLoad];
+    return shouldStartLoad;
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     DDLogInfo(@"%@ %@: %@", self, NSStringFromSelector(_cmd), error);
+    
     // -999: Canceled AJAX request
     // 102:  Frame load interrupted: canceled wp-login redirect to make the POST
     if (self.isLoading && ([error code] != -999) && [error code] != 102) {
@@ -502,6 +461,7 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+    
     [self setLoading:NO];
     
     if (!self.hasLoadedContent && ([aWebView.request.URL.absoluteString rangeOfString:WPMobileReaderDetailURL].location == NSNotFound || self.detailContent)) {

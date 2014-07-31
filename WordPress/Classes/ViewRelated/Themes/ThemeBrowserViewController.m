@@ -6,6 +6,7 @@
 #import "Blog.h"
 #import "WPStyleGuide.h"
 #import "WPNoResultsView.h"
+#import "WPWebSnapshotter.h"
 
 static NSString *const ThemeCellIdentifier = @"theme";
 static NSString *const SearchHeaderIdentifier = @"search_header";
@@ -22,6 +23,7 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
 @property (nonatomic, strong) Theme *currentTheme;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, assign) BOOL showingSortOptions;
+@property (nonatomic, strong) WPWebSnapshotter *webSnapshotter;
 
 @end
 
@@ -36,6 +38,8 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
         _sortingOptions = @[NSLocalizedString(@"Trending", @"Theme sort, trending themes"),
                             NSLocalizedString(@"Newest", @"Theme sort, newest themes"),
                             NSLocalizedString(@"Popular", @"Theme sort, popular themes")];
+
+        _webSnapshotter = [[WPWebSnapshotter alloc] init];
     }
     return self;
 }
