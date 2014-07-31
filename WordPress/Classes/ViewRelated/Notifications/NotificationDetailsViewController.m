@@ -44,7 +44,8 @@ static NSString *NotificationActionUnfollowIcon     = @"action_icon_unfollowed";
 static NSString *NotificationActionFollowIcon       = @"action_icon_followed";
 static NSString *NotificationRestFollowingKey       = @"is_following";
 
-static UIEdgeInsets NotificationTableInsets         = { 40.0f, 0.0f, 20.0f, 0.0f };
+static UIEdgeInsets NotificationTableInsetsPhone    = { 0.0f, 0.0f, 20.0f, 0.0f };
+static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f };
 
 
 #pragma mark ==========================================================================================
@@ -65,7 +66,7 @@ static UIEdgeInsets NotificationTableInsets         = { 40.0f, 0.0f, 20.0f, 0.0f
 {
     [super viewDidLoad];
     
-    self.tableView.contentInset     = NotificationTableInsets;
+    self.tableView.contentInset     = IS_IPAD ? NotificationTableInsetsPad : NotificationTableInsetsPhone;
     self.tableView.backgroundColor  = [WPStyleGuide itsEverywhereGrey];
     self.tableView.separatorColor   = [WPStyleGuide readGrey];
     self.tableView.separatorStyle   = UITableViewCellSeparatorStyleNone;
