@@ -44,7 +44,7 @@
         webURL = destinationURL;
     }
     
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:webURL];
     request.cachePolicy = NSURLRequestReturnCacheDataElseLoad;
     [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
