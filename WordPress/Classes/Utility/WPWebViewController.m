@@ -7,7 +7,7 @@
 
 @class WPReaderDetailViewController;
 
-@interface WPWebViewController () <UIWebViewDelegate, WPAuthenticatedSessionWebViewManagerDelegate>
+@interface WPWebViewController () <UIWebViewDelegate>
 
 @property (nonatomic) WPAuthenticatedSessionWebViewManager *authenticatedWebViewManager;
 @property (nonatomic, weak, readonly) UIScrollView *scrollView;
@@ -17,14 +17,6 @@
 @end
 
 @implementation WPWebViewController
-
-- (instancetype)init
-{
-    if (self = [super init]) {
-        _authenticatedWebViewManager = [[WPAuthenticatedSessionWebViewManager alloc] initWithDelegate:self];
-    }
-    return self;
-}
 
 - (void)dealloc {
     _webView.delegate = nil;
@@ -92,6 +84,10 @@
     self.webView.scalesPageToFit = YES;
     self.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
     
+    self.authenticatedWebViewManager = [[WPAuthenticatedSessionWebViewManager alloc] initWithUsername:self.username
+                                                                                             password:self.password
+                                                                                       destinationURL:self.url
+                                                                                             loginURL:self.wpLoginURL];
     if (self.url) {
         [self refreshWebView];
     } else {
@@ -522,18 +518,6 @@
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
     [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark - WPAuthenticatedSessionWebViewManagerDelegate
-
-- (NSURL *)destinationURL
-{
-    return self.url;
-}
-
-- (NSURL *)loginURL
-{
-    return self.wpLoginURL;
 }
 
 #pragma mark - custom methods

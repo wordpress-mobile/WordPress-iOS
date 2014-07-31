@@ -27,7 +27,7 @@ static NSString* const ThemeDetailsViewControllerJavascriptResizeScript =
 "meta.setAttribute( 'content', 'width=1280, height=1024'); " \
 "document.getElementsByTagName('head')[0].appendChild(meta)";
 
-@interface ThemeDetailsViewController () <WPAuthenticatedSessionWebViewManagerDelegate>
+@interface ThemeDetailsViewController ()
 
 @property (weak, nonatomic) IBOutlet UIView *themeControlsView;
 @property (weak, nonatomic) IBOutlet UIView *themeControlsContainerView;
@@ -44,10 +44,6 @@ static NSString* const ThemeDetailsViewControllerJavascriptResizeScript =
 @property (nonatomic, weak) UILabel *premiumTheme;
 @property (weak, nonatomic) UIView *infoView;
 @property (nonatomic, strong) WPDesktopSiteWebViewManager *authenticatedWebViewManager;
-@property (nonatomic, strong) NSString *previewUsername;
-@property (nonatomic, strong) NSString *previewPassword;
-@property (nonatomic, strong) NSURL *previewLoginURL;
-@property (nonatomic, strong) NSURL *previewDestinationURL;
 
 @end
 
@@ -57,7 +53,6 @@ static NSString* const ThemeDetailsViewControllerJavascriptResizeScript =
     self = [super init];
     if (self) {
         _theme = theme;
-        _authenticatedWebViewManager = [[WPDesktopSiteWebViewManager alloc] initWithDelegate:self];
     }
     return self;
 }
@@ -110,6 +105,20 @@ static NSString* const ThemeDetailsViewControllerJavascriptResizeScript =
     [[WPImageSource sharedSource] downloadImageForURL:[NSURL URLWithString:self.theme.screenshotUrl] withSuccess:^(UIImage *image) {
         self.screenshot.image = image;
     } failure:nil];
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    
+    NSString *username = defaultAccount.username;
+    NSString *password = defaultAccount.password;
+    NSURL *loginURL = [NSURL URLWithString:self.theme.blog.loginUrl];
+    NSURL *destinationURL = [NSURL URLWithString:self.theme.previewUrl];
+    
+    self.authenticatedWebViewManager = [[WPDesktopSiteWebViewManager alloc] initWithUsername:username
+                                                                                    password:password
+                                                                              destinationURL:destinationURL
+                                                                                    loginURL:loginURL];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -275,15 +284,6 @@ static NSString* const ThemeDetailsViewControllerJavascriptResizeScript =
 }
 
 - (IBAction)livePreviewPressed:(id)sender {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    
-    NSString *username = defaultAccount.username;
-    NSString *password = defaultAccount.password;
-    NSURL *loginURL = [NSURL URLWithString:self.theme.blog.loginUrl];
-    NSURL *destinationURL = [NSURL URLWithString:self.theme.previewUrl];
-    
     switch (self.controlButtonState) {
         case ThemeDetailsViewControllerControlButtonStateLivePreview:
         {
@@ -293,10 +293,6 @@ static NSString* const ThemeDetailsViewControllerJavascriptResizeScript =
             [self.livePreviewButton setTitle:@"" forState:UIControlStateNormal];
             [self.livePreviewButton addSubview:loading];
             
-            self.previewUsername = username;
-            self.previewPassword = password;
-            self.previewLoginURL = loginURL;
-            self.previewDestinationURL = destinationURL;
             self.webSnapshotter.worker.webViewCustomizationDelegate = self.authenticatedWebViewManager;
             
             [self.webSnapshotter captureSnapshotOfURLRequest:[self.authenticatedWebViewManager URLRequestForAuthenticatedSession]
@@ -326,6 +322,15 @@ static NSString* const ThemeDetailsViewControllerJavascriptResizeScript =
         }
         case ThemeDetailsViewControllerControlButtonStateViewSite:
         {
+            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+            WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+            
+            NSString *username = defaultAccount.username;
+            NSString *password = defaultAccount.password;
+            NSURL *loginURL = [NSURL URLWithString:self.theme.blog.loginUrl];
+            NSURL *destinationURL = [NSURL URLWithString:self.theme.previewUrl];
+            
             WPWebViewController *livePreviewController = [[WPWebViewController alloc] init];
             livePreviewController.username = username;
             livePreviewController.password = password;
@@ -358,27 +363,6 @@ static NSString* const ThemeDetailsViewControllerJavascriptResizeScript =
         [self.activateButton setTitle:NSLocalizedString(@"Activate", nil) forState:UIControlStateNormal];
         [WPError showNetworkingAlertWithError:error];
     }];
-}
-
-#pragma mark - WPAuthenticatedSessionWebViewManagerDelegate
-- (NSString *)username
-{
-    return self.previewUsername;
-}
-
-- (NSString *)password
-{
-    return self.previewPassword;
-}
-
-- (NSURL *)destinationURL
-{
-    return self.previewDestinationURL;
-}
-
-- (NSURL *)loginURL
-{
-    return self.previewLoginURL;
 }
 
 @end

@@ -5,8 +5,11 @@
 
 @interface WPAuthenticatedSessionWebViewManager ()
 
-@property (nonatomic, weak) id<WPAuthenticatedSessionWebViewManagerDelegate> delegate;
 @property (nonatomic) BOOL forceLogin;
+@property (nonatomic) NSString *username;
+@property (nonatomic) NSString *password;
+@property (nonatomic) NSURL *destinationURL;
+@property (nonatomic) NSURL *loginURL;
 
 @end
 
@@ -14,34 +17,35 @@
 
 #pragma mark - Public
 
-- (instancetype)initWithDelegate:(id<WPAuthenticatedSessionWebViewManagerDelegate>)delegate
+- (instancetype)initWithUsername:(NSString *)username
+                        password:(NSString *)password
+                  destinationURL:(NSURL *)destinationURL
+                        loginURL:(NSURL *)loginURL
 {
     if (self = [super init]) {
-        _delegate = delegate;
+        _username = username;
+        _password = password;
+        _destinationURL = destinationURL;
+        _loginURL = loginURL;
     }
     return self;
 }
 
 - (NSURLRequest *)URLRequestForAuthenticatedSession
 {
-    NSString *username = [self safeDelegateUsername];
-    NSString *password = [self safeDelegatePassword];
-    NSURL *destinationURL = [self safeDelegateDestinationURL];
-    NSURL *loginURL = [self safeDelegateLoginURL];
-    
-    if (!self.forceLogin && username && password && ![WPCookie hasCookieForURL:destinationURL andUsername:username]) {
+    if (!self.forceLogin && self.username && self.password && ![WPCookie hasCookieForURL:self.destinationURL andUsername:self.username]) {
         self.forceLogin = YES;
     }
     
     NSURL *webURL;
     if (self.forceLogin) {
-        if (loginURL != nil) {
-            webURL = loginURL;
+        if (self.loginURL != nil) {
+            webURL = self.loginURL;
         } else { //try to guess the login URL
-            webURL = [[NSURL alloc] initWithScheme:destinationURL.scheme host:destinationURL.host path:@"/wp-login.php"];
+            webURL = [[NSURL alloc] initWithScheme:self.destinationURL.scheme host:self.destinationURL.host path:@"/wp-login.php"];
         }
     } else {
-        webURL = destinationURL;
+        webURL = self.destinationURL;
     }
     
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
@@ -52,14 +56,14 @@
     [request setCachePolicy:NSURLRequestReturnCacheDataElseLoad];
     if (self.forceLogin) {
         NSString *request_body = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=%@",
-                                  [username stringByUrlEncoding],
-                                  [password stringByUrlEncoding],
-                                  [[destinationURL absoluteString] stringByUrlEncoding]];
+                                  [self.username stringByUrlEncoding],
+                                  [self.password stringByUrlEncoding],
+                                  [[self.destinationURL absoluteString] stringByUrlEncoding]];
         
-        if (loginURL != nil )
-            [request setURL: loginURL];
+        if (self.loginURL != nil )
+            [request setURL:self.loginURL];
         else
-            [request setURL:[[NSURL alloc] initWithScheme:destinationURL.scheme host:destinationURL.host path:@"/wp-login.php"]];
+            [request setURL:[[NSURL alloc] initWithScheme:self.destinationURL.scheme host:self.destinationURL.host path:@"/wp-login.php"]];
         
         [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
         [request setValue:[NSString stringWithFormat:@"%d", [request_body length]] forHTTPHeaderField:@"Content-Length"];
@@ -80,10 +84,7 @@
     NSString *requestedURLAbsoluteString = [requestedURL absoluteString];
     
     if(!self.forceLogin && [requestedURLAbsoluteString rangeOfString:@"wp-login.php"].location != NSNotFound) {
-        NSString *username = [self safeDelegateUsername];
-        NSString *password = [self safeDelegatePassword];
-        
-        if (username && password) {
+        if (self.username && self.password) {
             DDLogInfo(@"WP is asking for credentials, let's login first");
             self.forceLogin = YES;
             [webView loadRequest:[self URLRequestForAuthenticatedSession]];
@@ -92,44 +93,6 @@
     }
     
     return shouldStartLoad;
-}
-
-#pragma mark - Private
-
-- (NSString *)safeDelegateUsername
-{
-    NSString *username = nil;
-    if ([self.delegate respondsToSelector:@selector(username)]) {
-        username = [self.delegate username];
-    }
-    return username;
-}
-
-- (NSString *)safeDelegatePassword
-{
-    NSString *password = nil;
-    if ([self.delegate respondsToSelector:@selector(password)]) {
-        password = [self.delegate password];
-    }
-    return password;
-}
-
-- (NSURL *)safeDelegateDestinationURL
-{
-    NSURL *destinationURL = nil;
-    if ([self.delegate respondsToSelector:@selector(destinationURL)]) {
-        destinationURL = [self.delegate destinationURL];
-    }
-    return destinationURL;
-}
-
-- (NSURL *)safeDelegateLoginURL
-{
-    NSURL *loginURL = nil;
-    if ([self.delegate respondsToSelector:@selector(loginURL)]) {
-        loginURL = [self.delegate loginURL];
-    }
-    return loginURL;
 }
 
 @end

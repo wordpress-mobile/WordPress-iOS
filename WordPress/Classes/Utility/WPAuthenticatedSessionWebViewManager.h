@@ -1,14 +1,5 @@
 #import <Foundation/Foundation.h>
 
-@protocol WPAuthenticatedSessionWebViewManagerDelegate <NSObject>
-
-- (NSString *)username;
-- (NSString *)password;
-- (NSURL *)destinationURL;
-- (NSURL *)loginURL;
-
-@end
-
 // Manages authenticated web sessions for UIWebViews. This implements parts of the UIWebViewDelegate,
 // and will vend the correct URL Requests to use for the authenticated session.
 //
@@ -21,7 +12,11 @@
 
 @interface WPAuthenticatedSessionWebViewManager : NSObject <UIWebViewDelegate>
 
-- (instancetype)initWithDelegate:(id<WPAuthenticatedSessionWebViewManagerDelegate>)delegate; // designated initializer
+// designated initializer
+- (instancetype)initWithUsername:(NSString *)username
+                        password:(NSString *)password
+                  destinationURL:(NSURL *)destinationURL
+                        loginURL:(NSURL *)loginURL;
 
 - (NSURLRequest *)URLRequestForAuthenticatedSession;
 
