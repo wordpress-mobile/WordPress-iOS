@@ -28,7 +28,8 @@ static ContextManager *instance;
 #pragma mark - Contexts
 
 - (NSManagedObjectContext *const)newDerivedContext {
-    NSManagedObjectContext *derived = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    NSManagedObjectContext *derived = [[NSManagedObjectContext alloc]
+                                       initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     derived.parentContext = self.mainContext;
     derived.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 
@@ -81,8 +82,8 @@ static ContextManager *instance;
 
 - (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock {
     // Save derived contexts a little differently
-    // TODO - When the service refactor is complete, remove this - calling methods to Services should know what kind of context
-    //        it is and call the saveDerivedContext at the end of the work
+    // TODO - When the service refactor is complete, remove this - calling methods to Services should know
+    //        what kind of context it is and call the saveDerivedContext at the end of the work
     if (context.parentContext == self.mainContext) {
         [self saveDerivedContext:context withCompletionBlock:completionBlock];
         return;
@@ -143,7 +144,9 @@ static ContextManager *instance;
         return _persistentStoreCoordinator;
     }
     
-    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                                        NSUserDomainMask,
+                                                                        YES) lastObject];
     NSURL *storeURL = [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:@"WordPress.sqlite"]];
 	
 	// This is important for automatic version migration. Leave it here!
@@ -214,8 +217,14 @@ static ContextManager *instance;
 	
 	DDLogInfo(@"End of debugging migration detection");
 #endif
-    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
+    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc]
+                                   initWithManagedObjectModel:[self managedObjectModel]];
+    
+    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+                                                   configuration:nil
+                                                             URL:storeURL
+                                                         options:options
+                                                           error:&error]) {
 		DDLogError(@"Error opening the database. %@\nDeleting the file and trying again", error);
 #ifdef CORE_DATA_MIGRATION_DEBUG
 		// Don't delete the database on debug builds
@@ -224,11 +233,17 @@ static ContextManager *instance;
 #endif
         
         // make a backup of the old database
-        [[NSFileManager defaultManager] copyItemAtPath:storeURL.path toPath:[storeURL.path stringByAppendingString:@"~"] error:&error];
+        [[NSFileManager defaultManager] copyItemAtPath:storeURL.path
+                                                toPath:[storeURL.path stringByAppendingString:@"~"]
+                                                 error:&error];
 		
         // delete the sqlite file and try again
 		[[NSFileManager defaultManager] removeItemAtPath:storeURL.path error:nil];
-		if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+		if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+                                                       configuration:nil
+                                                                 URL:storeURL
+                                                             options:nil
+                                                               error:&error]) {
 			DDLogError(@"Unresolved error %@, %@", error, [error userInfo]);
 			abort();
 		}
