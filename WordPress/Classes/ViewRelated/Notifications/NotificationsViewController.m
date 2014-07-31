@@ -77,7 +77,7 @@
 {
     DDLogMethod();
     [super viewDidLoad];
-    
+
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     self.infiniteScrollEnabled = NO;
@@ -299,9 +299,9 @@
     // At last, push the details
     if (note.isMatcher) {
         [self showReaderForNotification:note];
-        
-    } else if (note.isComment) {
-        [self showCommentForNotification:note];
+#warning Uncomment
+//    } else if (note.isComment) {
+//        [self showCommentForNotification:note];
         
     } else {
         [self showDetailsForNotification:note];
