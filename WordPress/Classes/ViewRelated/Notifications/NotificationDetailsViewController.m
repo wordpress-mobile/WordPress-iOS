@@ -86,6 +86,12 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
     notificationsBucket.delegate    = self;
 }
 
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    // Note: we do this to force layout!
+    [self.tableView reloadData];
+}
+
 
 #pragma mark - Helpers
 
