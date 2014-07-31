@@ -10,7 +10,7 @@
 @interface WPWebViewController () <UIWebViewDelegate, WPAuthenticatedSessionWebViewManagerDelegate>
 
 @property (nonatomic) WPAuthenticatedSessionWebViewManager *authenticatedWebViewManager;
-@property (weak, readonly) UIScrollView *scrollView;
+@property (nonatomic, weak, readonly) UIScrollView *scrollView;
 @property (nonatomic) BOOL isLoading;
 @property (nonatomic) BOOL hasLoadedContent;
 
