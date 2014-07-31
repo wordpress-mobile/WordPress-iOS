@@ -2,10 +2,10 @@
 
 @implementation WPWebSnapshotRequest
 
-+ (WPWebSnapshotRequest *)snapshotRequestWithURLRequest:(NSURLRequest *)urlRequest
-                                           snapshotSize:(CGSize)snapshotSize
-                                    didFinishJavascript:(NSString *)javascript
-                                      completionHandler:(WPWebSnapshotterSnapshotCompletionHandler)completionHandler
++ (instancetype)snapshotRequestWithURLRequest:(NSURLRequest *)urlRequest
+                                 snapshotSize:(CGSize)snapshotSize
+                          didFinishJavascript:(NSString *)javascript
+                            completionHandler:(WPWebSnapshotterSnapshotCompletionHandler)completionHandler
 {
     WPWebSnapshotRequest *request = [[WPWebSnapshotRequest alloc] init];
     request.urlRequest = urlRequest;
