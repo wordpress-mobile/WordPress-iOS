@@ -954,9 +954,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
     [self dismissViewControllerAnimated:YES completion:nil];
     
     for (ALAsset *asset in assets) {
-        if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
-            // Could handle videos here
-        } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
+        if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
             MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
             [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
                 AFHTTPRequestOperation *operation = [mediaService operationToUploadMedia:media withSuccess:^{

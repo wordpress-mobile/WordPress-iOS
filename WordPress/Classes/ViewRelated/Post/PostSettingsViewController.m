@@ -409,9 +409,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     if (cell.tag == PostSettingsRowCategories) {
         [self showCategoriesSelection];
         
-    } else if (cell.tag == PostSettingsRowTags) {
-        // noop
-        
     } else if (cell.tag == PostSettingsRowPublishDate && !self.datePicker) {
         [self configureAndShowDatePicker];
         
@@ -420,9 +417,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         
     } else if (cell.tag == PostSettingsRowVisibility) {
         [self showPostVisibilitySelector];
-        
-    } else if (cell.tag == PostSettingsRowPassword) {
-        // noop
         
     } else if (cell.tag == PostSettingsRowFormat) {
         [self showPostFormatSelector];
