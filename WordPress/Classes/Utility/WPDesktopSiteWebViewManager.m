@@ -1,11 +1,3 @@
-//
-//  WPLivePreviewWorkaroundWebViewManager.m
-//  WordPress
-//
-//  Created by Josh Avant on 7/30/14.
-//  Copyright (c) 2014 WordPress. All rights reserved.
-//
-
 #import "WPDesktopSiteWebViewManager.h"
 
 @implementation WPDesktopSiteWebViewManager
