@@ -290,7 +290,10 @@ NSInteger const kMeTabIndex = 2;
         case kMeTabIndex:
             currentlySelectedScreen = @"Blog List";
             break;
+        default:
+            break;
     }
+
     return currentlySelectedScreen;
 }
 

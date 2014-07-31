@@ -260,24 +260,23 @@ static CGFloat const DefaultCellHeight = 44.0;
         case NSFetchedResultsChangeInsert:
             [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
             break;
-
         case NSFetchedResultsChangeDelete:
             [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:[self tableViewRowAnimation]];
             if ([_indexPathSelectedBeforeUpdates isEqual:indexPath]) {
                 [self deletingSelectedRowAtIndexPath:indexPath];
             }
             break;
-
         case NSFetchedResultsChangeUpdate:
             [self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:newIndexPath];
             break;
-
         case NSFetchedResultsChangeMove:
             [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:[self tableViewRowAnimation]];
             [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
             if ([_indexPathSelectedBeforeUpdates isEqual:indexPath] && _indexPathSelectedAfterUpdates == nil) {
                 _indexPathSelectedAfterUpdates = newIndexPath;
             }
+            break;
+        default:
             break;
     }
 }
@@ -288,9 +287,10 @@ static CGFloat const DefaultCellHeight = 44.0;
         case NSFetchedResultsChangeInsert:
             [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:[self tableViewRowAnimation]];
             break;
-
         case NSFetchedResultsChangeDelete:
             [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:[self tableViewRowAnimation]];
+            break;
+        default:
             break;
     }
 }

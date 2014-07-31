@@ -61,6 +61,8 @@
             break;
         case UITableViewCellAccessoryNone:
             break;
+        default:
+            break;
     }
 
     // reduce width for grouped table views
