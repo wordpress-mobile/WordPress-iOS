@@ -16,21 +16,15 @@
 - (instancetype)init
 {
     if (self = [super init]) {
-        UIApplication *application = [UIApplication sharedApplication];
-        if (!application) {
-            return nil;
-        }
-        
-        UIWindow *keyWindow = application.keyWindow;
-        if (!keyWindow) {
-            return nil;
-        }
+        NSAssert([[UIApplication sharedApplication] keyWindow] != nil, @"keyWindow is nil! This can't be called before keyWindow is instantiated.");
         
         _webView = [[UIWebView alloc] initWithFrame:CGRectZero];
         _webView.userInteractionEnabled = NO;
         _webView.hidden = NO;
         _webView.scalesPageToFit = YES;
         _webView.delegate = self;
+        
+        UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
         UIView *backmostView = keyWindow.subviews.firstObject;
         [keyWindow insertSubview:self.webView belowSubview:backmostView];
         
