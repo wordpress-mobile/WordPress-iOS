@@ -144,15 +144,18 @@ static NSString * const SiteCellIdentifier = @"SiteCellIdentifier";
         // The sizeToFit call in [WPStyleGuide configureTableViewCell:] seems to mess with the
         // UI when cells are configured the first time round and the modal animation is playing.
         // A work around is to only style the cells when not displaying text.
-        [WPStyleGuide configureTableViewCell:cell];
+        [WPStyleGuide configureTableViewSmallSubtitleCell:cell];
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.accessoryType = UITableViewCellAccessoryNone;
-    cell.imageView.image = [UIImage imageNamed:@"gravatar-reader"];
+    cell.imageView.image = [UIImage imageNamed:@"icon-feed"];
+    cell.imageView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 
     ReaderSite *site = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = [site.name capitalizedString];
     cell.detailTextLabel.text = site.path;
     if (site.icon) {
+        cell.imageView.backgroundColor = nil;
         [cell.imageView setImageWithBlavatarUrl:site.icon];
     }
 
@@ -171,7 +174,7 @@ static NSString * const SiteCellIdentifier = @"SiteCellIdentifier";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
