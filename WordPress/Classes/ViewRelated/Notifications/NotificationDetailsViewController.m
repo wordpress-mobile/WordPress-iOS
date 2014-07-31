@@ -2,7 +2,8 @@
 #import "Notification.h"
 #import "Notification+UI.h"
 
-#import "NoteBlockHeaderTableViewCell.h"
+#import "NotificationHeaderView.h"
+
 #import "NoteBlockTextTableViewCell.h"
 #import "NoteBlockImageTableViewCell.h"
 #import "NoteBlockUserTableViewCell.h"
@@ -32,21 +33,18 @@
 #import <Simperium/SPBucket.h>
 
 
+
 #pragma mark ==========================================================================================
 #pragma mark Constants
 #pragma mark ==========================================================================================
 
-typedef NS_ENUM(NSInteger, NotificationDetailSections) {
-    NotificationDetailSectionsHeader    = 0,
-    NotificationDetailSectionsBodyItems = 1,
-    NotificationDetailSectionsCount     = 2
-};
+static NSUInteger NotificationDetailSectionsCount   = 1;
 
-static NSString *NotificationActionUnfollowIcon = @"action_icon_unfollowed";
-static NSString *NotificationActionFollowIcon   = @"action_icon_followed";
-static NSString *NotificationRestFollowingKey   = @"is_following";
+static NSString *NotificationActionUnfollowIcon     = @"action_icon_unfollowed";
+static NSString *NotificationActionFollowIcon       = @"action_icon_followed";
+static NSString *NotificationRestFollowingKey       = @"is_following";
 
-static UIEdgeInsets NotificationTableInsets     = { 0.0f, 0.0f, 20.0f, 0.0f };
+static UIEdgeInsets NotificationTableInsets         = { 0.0f, 0.0f, 20.0f, 0.0f };
 
 
 #pragma mark ==========================================================================================
@@ -75,19 +73,18 @@ static UIEdgeInsets NotificationTableInsets     = { 0.0f, 0.0f, 20.0f, 0.0f };
     self.title                      = NSLocalizedString(@"Details", @"Notification Details Section Title");
     self.restorationClass           = [self class];
     
+#warning Unhack Width
+    NotificationHeaderView *header  = [NotificationHeaderView headerWithWidth:600];
+    header.noticon                  = self.note.noticon;
+    header.attributedText           = self.note.subjectBlock.attributedSubject;
+    
+    // Make sure the header has the proper width, before attaching it to the tableView
+    [header refreshHeight];
+    self.tableView.tableHeaderView  = header;
+    
     Simperium *simperium            = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
     SPBucket *notificationsBucket   = [simperium bucketForName:NSStringFromClass([Notification class])];
     notificationsBucket.delegate    = self;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-    NSIndexPath *selectedIndexPath = self.tableView.indexPathForSelectedRow;
-    if (selectedIndexPath) {
-        [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
-    }
 }
 
 
@@ -148,10 +145,7 @@ static UIEdgeInsets NotificationTableInsets     = { 0.0f, 0.0f, 20.0f, 0.0f };
 
 - (NotificationBlock *)blockForIndexPath:(NSIndexPath *)indexPath
 {
-    NotificationBlock *block = (indexPath.section == NotificationDetailSectionsHeader) ? self.note.subjectBlock : self.note.bodyBlocks[indexPath.row];
-    NSAssert([block isKindOfClass:[NotificationBlock class]], nil);
-    
-    return block;
+    return self.note.bodyBlocks[indexPath.row];
 }
 
 
@@ -164,17 +158,14 @@ static UIEdgeInsets NotificationTableInsets     = { 0.0f, 0.0f, 20.0f, 0.0f };
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return (section == NotificationDetailSectionsHeader) ? 1 : self.note.bodyBlocks.count;
+    return self.note.bodyBlocks.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NotificationBlock *block = [self blockForIndexPath:indexPath];
 
-    if (indexPath.section == NotificationDetailSectionsHeader) {
-        return [NoteBlockHeaderTableViewCell heightWithText:block.text];
-        
-    } else if (block.type == NoteBlockTypesUser) {
+    if (block.type == NoteBlockTypesUser) {
         return [NoteBlockUserTableViewCell heightWithText:block.text];
         
     } else if (block.type == NoteBlockTypesImage) {
@@ -189,17 +180,8 @@ static UIEdgeInsets NotificationTableInsets     = { 0.0f, 0.0f, 20.0f, 0.0f };
 {
     NotificationBlock *block        = [self blockForIndexPath:indexPath];
     __weak __typeof(self) weakSelf  = self;
-    
-    if (indexPath.section == NotificationDetailSectionsHeader) {
-        NSString *reuseIdentifier           = [NoteBlockHeaderTableViewCell reuseIdentifier];
-        NoteBlockHeaderTableViewCell *cell  = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
-        
-        cell.noticon                        = self.note.noticon;
-        cell.attributedText                 = block.attributedSubject;
-        
-        return cell;
-        
-    } else if (block.type == NoteBlockTypesUser) {
+
+    if (block.type == NoteBlockTypesUser) {
         NSString *reuseIdentifier           = [NoteBlockUserTableViewCell reuseIdentifier];
         NoteBlockUserTableViewCell *cell    = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
 

@@ -1,12 +1,14 @@
 #import <UIKit/UIKit.h>
-#import "WPTableViewCell.h"
-#import "NoteBlockTableViewCell.h"
 
 
 
-@interface NoteBlockHeaderTableViewCell : WPTableViewCell <NoteBlockTableViewCell>
+@interface NotificationHeaderView : UIView
 
 @property (nonatomic, strong) NSString              *noticon;
 @property (nonatomic, strong) NSAttributedString    *attributedText;
+
+- (void)refreshHeight;
+
++ (instancetype)headerWithWidth:(CGFloat)width;
 
 @end
