@@ -424,9 +424,7 @@
     NSURL *requestedURL = [request URL];
     NSString *requestedURLAbsoluteString = [requestedURL absoluteString];
     
-    if ([self.authenticatedWebViewManager respondsToSelector:@selector(webView:shouldStartLoadWithRequest:navigationType:)]) {
-        shouldStartLoad = [self.authenticatedWebViewManager webView:webView shouldStartLoadWithRequest:request navigationType:navigationType];
-    }
+    shouldStartLoad = [self.authenticatedWebViewManager webView:webView shouldStartLoadWithRequest:request navigationType:navigationType];
     
     //the user clicked a link available in the detailsView, a new webView will be pushed into the stack
     if (shouldStartLoad &&
@@ -448,9 +446,6 @@
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     DDLogInfo(@"%@ %@: %@", self, NSStringFromSelector(_cmd), error);
-    if ([self.authenticatedWebViewManager respondsToSelector:@selector(webView:didFailLoadWithError::)]) {
-        [self.authenticatedWebViewManager webView:webView didFailLoadWithError:error];
-    }
     
     // -999: Canceled AJAX request
     // 102:  Frame load interrupted: canceled wp-login redirect to make the POST
@@ -462,17 +457,10 @@
 
 - (void)webViewDidStartLoad:(UIWebView *)aWebView {
     DDLogInfo(@"%@ %@%@", self, NSStringFromSelector(_cmd), aWebView.request.URL);
-    
-    if ([self.authenticatedWebViewManager respondsToSelector:@selector(webViewDidStartLoad:)]) {
-        [self.authenticatedWebViewManager webViewDidStartLoad:aWebView];
-    }
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    if ([self.authenticatedWebViewManager respondsToSelector:@selector(webViewDidFinishLoad:)]) {
-        [self.authenticatedWebViewManager webViewDidFinishLoad:aWebView];
-    }
     
     [self setLoading:NO];
     
