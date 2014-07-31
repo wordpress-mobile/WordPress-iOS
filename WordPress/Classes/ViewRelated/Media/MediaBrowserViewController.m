@@ -730,9 +730,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     // 4 buttons: small, original, custom, cancel
     // 3 buttons: original, custom, cancel
     // The last three buttons are always the same, so we can count down, then count up and avoid alot of branching.
-    if (buttonIndex == actionSheet.numberOfButtons - 1) {
-        // cancel button. Noop.
-    } else if (buttonIndex == actionSheet.numberOfButtons - 2) {
+    if (buttonIndex == actionSheet.numberOfButtons - 2) {
         // custom
         [self showCustomSizeAlert];
     } else if (buttonIndex == actionSheet.numberOfButtons - 3) {
