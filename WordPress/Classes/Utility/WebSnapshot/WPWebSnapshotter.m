@@ -2,6 +2,12 @@
 #import "WPWebSnapshotWorker.h"
 #import "WPWebSnapshotRequest.h"
 
+static const NSUInteger kWPWebSnapshotterURLCacheMemoryCapacity = 20*1000*1000;
+static const NSUInteger kWPWebSnapshotterURLCacheDiskCapacity = 100*1000*1000;
+static NSString* const WPWebSnapshotterURLCacheDiskPath = @"Media";
+
+static const NSUInteger kWPWebSnapshotterCacheTotalCostLimit = 20*1000*1000;
+
 @interface WPWebSnapshotter ()
 
 @property (nonatomic, readwrite) WPWebSnapshotWorker *worker;
@@ -16,17 +22,19 @@
 {
     self = [super init];
     if (self) {
-        NSURLCache *cache = [[NSURLCache alloc] initWithMemoryCapacity:20*1000*1000 diskCapacity:100*1000*1000 diskPath:@"Media"];
+        NSURLCache *cache = [[NSURLCache alloc] initWithMemoryCapacity:kWPWebSnapshotterURLCacheMemoryCapacity
+                                                          diskCapacity:kWPWebSnapshotterURLCacheDiskCapacity
+                                                              diskPath:WPWebSnapshotterURLCacheDiskPath];
 
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
         configuration.URLCache = cache;
         configuration.timeoutIntervalForRequest = 10.0f;
         configuration.timeoutIntervalForResource = 45.0f;
         
-        self.worker = [[WPWebSnapshotWorker alloc] init];
-        self.requestQueue = [NSMutableArray array];
-        self.cache = [[NSCache alloc] init];
-        self.cache.totalCostLimit = 20*1000*1000;
+        _worker = [[WPWebSnapshotWorker alloc] init];
+        _requestQueue = [NSMutableArray array];
+        _cache = [[NSCache alloc] init];
+        _cache.totalCostLimit = kWPWebSnapshotterCacheTotalCostLimit;
     }
     return self;
 }
