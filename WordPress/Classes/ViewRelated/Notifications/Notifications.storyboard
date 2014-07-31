@@ -110,8 +110,8 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xQl-T8-nxx" customClass="DTAttributedLabel">
-                                            <rect key="frame" x="20" y="0.5" width="280" height="35"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xQl-T8-nxx" customClass="DTAttributedLabel">
+                                            <rect key="frame" x="20" y="4" width="280" height="35"/>
                                             <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
                                         </view>
                                     </subviews>
