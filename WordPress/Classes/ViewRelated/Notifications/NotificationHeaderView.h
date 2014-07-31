@@ -7,8 +7,6 @@
 @property (nonatomic, strong) NSString              *noticon;
 @property (nonatomic, strong) NSAttributedString    *attributedText;
 
-- (void)refreshHeight;
-
 + (instancetype)headerWithWidth:(CGFloat)width;
 
 @end

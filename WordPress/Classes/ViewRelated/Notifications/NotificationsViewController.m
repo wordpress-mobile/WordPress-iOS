@@ -299,9 +299,9 @@
     // At last, push the details
     if (note.isMatcher) {
         [self showReaderForNotification:note];
-#warning Uncomment
-//    } else if (note.isComment) {
-//        [self showCommentForNotification:note];
+
+    } else if (note.isComment) {
+        [self showCommentForNotification:note];
         
     } else {
         [self showDetailsForNotification:note];

@@ -77,30 +77,20 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
     NotificationHeaderView *header  = [NotificationHeaderView headerWithWidth:CGRectGetWidth(self.view.bounds)];
     header.noticon                  = self.note.noticon;
     header.attributedText           = self.note.subjectBlock.attributedSubject;
+    [header layoutIfNeeded];
     self.tableView.tableHeaderView  = header;
-    
-    [self refreshHeightForTableHeaderView];
     
     Simperium *simperium            = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
     SPBucket *notificationsBucket   = [simperium bucketForName:NSStringFromClass([Notification class])];
     notificationsBucket.delegate    = self;
 }
 
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     // Note: we do this to force layout!
     [self.tableView reloadData];
 }
 
-
-#pragma mark - Helpers
-
-- (void)refreshHeightForTableHeaderView
-{
-    NotificationHeaderView *header = (NotificationHeaderView *)self.tableView.tableHeaderView;
-    [header refreshHeight];
-    self.tableView.tableHeaderView = header;
-}
 
 #pragma mark - SPBucketDeltage Methods
 
