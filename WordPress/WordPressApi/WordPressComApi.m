@@ -679,17 +679,17 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     if ([ambiguousErrors.allKeys containsObject:errorCode]) {
         if (errorMessage != nil) {
             return errorMessage;
-        } else {
-            return [ambiguousErrors objectForKey:errorCode];
         }
+
+        return [ambiguousErrors objectForKey:errorCode];
     }
     
     // Return an error message if there's one included rather than the unhelpful "Unknown Error"
     if (errorMessage != nil) {
         return errorMessage;
-    } else {
-        return NSLocalizedString(@"Unknown error", nil);
     }
+
+    return NSLocalizedString(@"Unknown error", nil);
 }
 
 @end

@@ -162,9 +162,9 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
     
     if ([self sectionForDotCom] >= 0) {
         return 1;
-    } else {
-        return 0;
     }
+
+    return 0;
 }
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
@@ -270,9 +270,9 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
 - (NSPredicate *)fetchRequestPredicate {
     if ([self.tableView isEditing]) {
         return nil;
-    } else {
-        return [NSPredicate predicateWithFormat:@"visible = YES"];
     }
+
+    return [NSPredicate predicateWithFormat:@"visible = YES"];
 }
 
 - (NSString *)controller:(NSFetchedResultsController *)controller sectionIndexTitleForSectionName:(NSString *)sectionName {

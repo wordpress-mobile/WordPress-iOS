@@ -25,9 +25,9 @@
         return NSLocalizedString(@"Privately published", @"");
     } else if ([status isEqualToString:@"publish"]) {
         return NSLocalizedString(@"Published", @"");
-    } else {
-        return status;
     }
+
+    return status;
 }
 
 + (NSString *)statusForTitle:(NSString *)title {
@@ -39,9 +39,9 @@
         return @"private";
     } else if ([title isEqualToString:NSLocalizedString(@"Published", @"")]) {
         return @"publish";
-    } else {
-        return title;
     }
+
+    return title;
 }
 
 - (NSArray *)availableStatuses {
@@ -210,20 +210,20 @@
             return NSLocalizedString(@"Pending", @"");
         } else if ([self.status isEqualToString:@"draft"]) {
             return self.statusTitle;
-        } else {
-            return @"";
         }
-    } else {
-        NSString *statusText = [AbstractPost titleForRemoteStatus:@((int)self.remoteStatus)];
-        if ([statusText isEqualToString:NSLocalizedString(@"Uploading", nil)]) {
-            if ([WPComLanguages isRightToLeft]) {
-                return [NSString stringWithFormat:@"…%@", statusText];
-            } else {
-                return [NSString stringWithFormat:@"%@…", statusText];
-            }
-        }
-        return statusText;
+        
+        return @"";
     }
+
+    NSString *statusText = [AbstractPost titleForRemoteStatus:@((int)self.remoteStatus)];
+    if ([statusText isEqualToString:NSLocalizedString(@"Uploading", nil)]) {
+        if ([WPComLanguages isRightToLeft]) {
+            return [NSString stringWithFormat:@"…%@", statusText];
+        }
+
+        return [NSString stringWithFormat:@"%@…", statusText];
+    }
+    return statusText;
 }
 
 

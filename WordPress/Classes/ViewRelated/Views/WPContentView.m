@@ -640,42 +640,41 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         
 		return imageView;
 		
-	} else {
-		
-		ReaderVideoContentType videoType;
-		
-		if ([attachment isKindOfClass:[DTVideoTextAttachment class]]) {
-			videoType = ReaderVideoContentTypeVideo;
-		} else if ([attachment isKindOfClass:[DTIframeTextAttachment class]]) {
-			videoType = ReaderVideoContentTypeIFrame;
-		} else if ([attachment isKindOfClass:[DTObjectTextAttachment class]]) {
-			videoType = ReaderVideoContentTypeEmbed;
-		} else {
-			return nil; // Can't handle whatever this is :P
-		}
-        
-        // we won't show the vid until we've loaded its thumb.
-        // minimal frame to suppress drawing context errors with 0 height or width.
-        frame.size.width = 1.0f;
-        frame.size.height = 1.0f;
-        
-		ReaderVideoView *videoView = [[ReaderVideoView alloc] initWithFrame:frame];
-		videoView.edgeInsets = edgeInsets;
-        
-		[_mediaArray addObject:videoView];
-		[videoView setContentURL:attachment.contentURL ofType:videoType success:^(id readerVideoView) {
-			[self handleMediaViewLoaded:readerVideoView];
-		} failure:^(id readerVideoView, NSError *error) {
-            // if the image is 404, just show a black image.
-            ReaderVideoView *videoView = (ReaderVideoView *)readerVideoView;
-            videoView.image = [UIImage imageWithColor:[UIColor blackColor] havingSize:CGSizeMake(2.0f, 1.0f)];
-			[self handleMediaViewLoaded:readerVideoView];
-		}];
-        
-		[videoView addTarget:self action:@selector(videoLinkAction:) forControlEvents:UIControlEventTouchUpInside];
-        
-		return videoView;
 	}
+
+    ReaderVideoContentType videoType;
+    
+    if ([attachment isKindOfClass:[DTVideoTextAttachment class]]) {
+        videoType = ReaderVideoContentTypeVideo;
+    } else if ([attachment isKindOfClass:[DTIframeTextAttachment class]]) {
+        videoType = ReaderVideoContentTypeIFrame;
+    } else if ([attachment isKindOfClass:[DTObjectTextAttachment class]]) {
+        videoType = ReaderVideoContentTypeEmbed;
+    } else {
+        return nil; // Can't handle whatever this is :P
+    }
+
+    // we won't show the vid until we've loaded its thumb.
+    // minimal frame to suppress drawing context errors with 0 height or width.
+    frame.size.width = 1.0f;
+    frame.size.height = 1.0f;
+
+    ReaderVideoView *videoView = [[ReaderVideoView alloc] initWithFrame:frame];
+    videoView.edgeInsets = edgeInsets;
+
+    [_mediaArray addObject:videoView];
+    [videoView setContentURL:attachment.contentURL ofType:videoType success:^(id readerVideoView) {
+        [self handleMediaViewLoaded:readerVideoView];
+    } failure:^(id readerVideoView, NSError *error) {
+        // if the image is 404, just show a black image.
+        ReaderVideoView *videoView = (ReaderVideoView *)readerVideoView;
+        videoView.image = [UIImage imageWithColor:[UIColor blackColor] havingSize:CGSizeMake(2.0f, 1.0f)];
+        [self handleMediaViewLoaded:readerVideoView];
+    }];
+
+    [videoView addTarget:self action:@selector(videoLinkAction:) forControlEvents:UIControlEventTouchUpInside];
+
+    return videoView;
 }
 
 @end

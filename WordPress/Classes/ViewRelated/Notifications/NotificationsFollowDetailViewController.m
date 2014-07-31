@@ -146,9 +146,9 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 {
     if (section == WPNotificationSectionsFollow) {
         return self.filteredBodyItems.count;
-    } else {
-        return 1;
-	}
+    }
+
+    return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -158,9 +158,9 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 		return [WPTableHeaderViewCell cellHeightForText:subject];
     } else if (indexPath.section == WPNotificationSectionsFollow) {
         return WPNotificationsFollowPersonCellHeight;
-    } else {
-        return WPNotificationsFollowBottomCellHeight;
-	}
+    }
+    
+    return WPNotificationsFollowBottomCellHeight;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -231,18 +231,18 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
         }
 		
         return cell;
-    } else {
-        UITableViewCell *cell			= [tableView dequeueReusableCellWithIdentifier:WPNotificationFooterCellIdentifier];
-
-		cell.accessoryType				= UITableViewCellAccessoryDisclosureIndicator;
-        cell.backgroundColor			= [WPStyleGuide itsEverywhereGrey];
-		cell.textLabel.backgroundColor	= [UIColor clearColor];
-		cell.textLabel.textColor		= [WPStyleGuide newKidOnTheBlockBlue];
-		cell.textLabel.font				= [WPStyleGuide regularTextFont];
-		cell.textLabel.text				= _note.bodyFooterText;
-		
-        return cell;
     }
+
+    UITableViewCell *cell			= [tableView dequeueReusableCellWithIdentifier:WPNotificationFooterCellIdentifier];
+
+    cell.accessoryType				= UITableViewCellAccessoryDisclosureIndicator;
+    cell.backgroundColor			= [WPStyleGuide itsEverywhereGrey];
+    cell.textLabel.backgroundColor	= [UIColor clearColor];
+    cell.textLabel.textColor		= [WPStyleGuide newKidOnTheBlockBlue];
+    cell.textLabel.font				= [WPStyleGuide regularTextFont];
+    cell.textLabel.text				= _note.bodyFooterText;
+    
+    return cell;
 }
 
 - (void)toggleFollowBlog:(NoteBodyItem *)item block:(NoteToggleFollowBlock)block

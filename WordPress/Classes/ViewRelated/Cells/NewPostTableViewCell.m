@@ -17,18 +17,18 @@
             return [UIColor lightGrayColor];
         } else if ([post.status isEqualToString:@"draft"]) {
             return [WPStyleGuide jazzyOrange];
-        } else {
-            return [UIColor blackColor];
         }
-    } else {
-        if (post.remoteStatus == AbstractPostRemoteStatusPushing) {
-            return [WPStyleGuide newKidOnTheBlockBlue];
-        } else if (post.remoteStatus == AbstractPostRemoteStatusFailed) {
-            return [WPStyleGuide fireOrange];
-        } else {
-            return [WPStyleGuide jazzyOrange];
-        }
+
+        return [UIColor blackColor];
     }
+
+    if (post.remoteStatus == AbstractPostRemoteStatusPushing) {
+        return [WPStyleGuide newKidOnTheBlockBlue];
+    } else if (post.remoteStatus == AbstractPostRemoteStatusFailed) {
+        return [WPStyleGuide fireOrange];
+    }
+
+    return [WPStyleGuide jazzyOrange];
 }
 
 @end

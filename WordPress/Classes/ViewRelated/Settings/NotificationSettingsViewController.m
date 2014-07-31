@@ -217,29 +217,31 @@ BOOL hasChanges;
         NSString *mute_value = [_notificationMutePreferences objectForKey:@"value"];
         if (mute_value && ![mute_value isEqualToString:@"0"]){
             return 1;
-        } else {
-            if (_mutedBlogsArray) {
-                return 3;
-            } else {
-                return 2;
-            }
         }
-    } else {
-        return 0;
+
+        if (_mutedBlogsArray) {
+            return 3;
+        }
+        
+        return 2;
     }
+    
+    return 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if (section == 0)
-        return 1;
-    else if (section == 1)
-        return [_notificationPrefArray count];
-    else if (section == 2)
-        return [_mutedBlogsArray count];
-    else
-        return 0;
+    switch (section) {
+        case 0:
+            return 1;
+        case 1:
+            return [_notificationPrefArray count];
+        case 2:
+            return [_mutedBlogsArray count];
+    }
+    
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -335,12 +337,16 @@ BOOL hasChanges;
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
-    if (section == 0)
-        return @"";
-    else if (section == 1)
-        return NSLocalizedString(@"Push Notifications", @"");
-    else
-        return NSLocalizedString(@"Sites", @"");
+    switch (section) {
+        case 0:
+            return @"";
+        case 1:
+            return NSLocalizedString(@"Push Notifications", @"");
+        default:
+            break;
+    }
+    
+    return NSLocalizedString(@"Sites", @"");    
 }
 
 #pragma mark - Table view delegate

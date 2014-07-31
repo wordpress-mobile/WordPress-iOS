@@ -39,9 +39,9 @@
     if ((items != nil) && (items.count > 0)) {
         // Already exists
         return YES;
-    } else {
-        return NO;
     }
+
+    return NO;
 }
 
 - (Category *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID andCategoryID:(NSNumber *)categoryID {
