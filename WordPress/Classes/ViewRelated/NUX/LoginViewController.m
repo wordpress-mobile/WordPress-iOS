@@ -94,8 +94,10 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     [self addMainView];
     [self initializeViewWithDefaultWPComAccount:defaultAccount];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -116,7 +118,8 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     return UIInterfaceOrientationMaskAll;
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+                                         duration:(NSTimeInterval)duration {
     
     [self layoutControls];
 }
@@ -132,10 +135,8 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         } else {
             [_siteUrlText becomeFirstResponder];
         }
-    } else if (textField == _siteUrlText) {
-        if (_signInButton.enabled) {
-            [self signInButtonAction:nil];
-        }
+    } else if (textField == _siteUrlText && _signInButton.enabled) {
+        [self signInButtonAction:nil];
     }
     
 	return YES;
@@ -153,7 +154,8 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     return YES;
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range
+                                                       replacementString:(NSString *)string
 {
     BOOL isUsernameFilled = [self isUsernameFilled];
     BOOL isPasswordFilled = [self isPasswordFilled];
@@ -203,7 +205,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         [overlayView dismiss];
         
         NSString *path = nil;
-        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+writing.php" options:NSRegularExpressionCaseInsensitive error:nil];
+        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+writing.php"
+                                                                               options:NSRegularExpressionCaseInsensitive
+                                                                                 error:nil];
         NSRange rng = [regex rangeOfFirstMatchInString:message options:0 range:NSMakeRange(0, [message length])];
         
         if (rng.location == NSNotFound) {
