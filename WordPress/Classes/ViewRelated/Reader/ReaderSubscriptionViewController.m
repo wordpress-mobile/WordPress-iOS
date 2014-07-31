@@ -234,7 +234,7 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
     [service followSiteByURL:site success:^{
         [self syncSites];
         [WPToast showToastWithMessage:NSLocalizedString(@"Followed", @"User followed a site.")
-                             andImage:[UIImage imageNamed:@"action_icon_replied"]];
+                             andImage:[UIImage imageNamed:@"action-icon-followed"]];
     } failure:^(NSError *error) {
         DDLogError(@"Could not follow site: %@", error);
 
