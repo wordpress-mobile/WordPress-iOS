@@ -17,10 +17,10 @@
 
 @implementation WPWebViewController
 
-- (id)init
+- (instancetype)init
 {
     if (self = [super init]) {
-        self.authenticatedWebViewManager = [[WPAuthenticatedSessionWebViewManager alloc] initWithDelegate:self];
+        _authenticatedWebViewManager = [[WPAuthenticatedSessionWebViewManager alloc] initWithDelegate:self];
     }
     return self;
 }

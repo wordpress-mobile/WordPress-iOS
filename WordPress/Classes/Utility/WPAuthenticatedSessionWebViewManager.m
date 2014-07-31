@@ -14,10 +14,10 @@
 
 #pragma mark - Public
 
-- (id)initWithDelegate:(id<WPAuthenticatedSessionWebViewManagerDelegate>)delegate
+- (instancetype)initWithDelegate:(id<WPAuthenticatedSessionWebViewManagerDelegate>)delegate
 {
     if (self = [super init]) {
-        self.delegate = delegate;
+        _delegate = delegate;
     }
     return self;
 }

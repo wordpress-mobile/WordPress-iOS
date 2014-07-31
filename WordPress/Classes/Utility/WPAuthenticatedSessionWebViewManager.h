@@ -21,7 +21,7 @@
 
 @interface WPAuthenticatedSessionWebViewManager : NSObject <UIWebViewDelegate>
 
-- (id)initWithDelegate:(id<WPAuthenticatedSessionWebViewManagerDelegate>)delegate; // designated initializer
+- (instancetype)initWithDelegate:(id<WPAuthenticatedSessionWebViewManagerDelegate>)delegate; // designated initializer
 
 - (NSURLRequest *)URLRequestForAuthenticatedSession;
 

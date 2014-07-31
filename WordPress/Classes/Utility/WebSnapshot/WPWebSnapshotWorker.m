@@ -13,7 +13,7 @@
 
 @implementation WPWebSnapshotWorker
 
-- (id)init
+- (instancetype)init
 {
     if (self = [super init]) {
         UIApplication *application = [UIApplication sharedApplication];
