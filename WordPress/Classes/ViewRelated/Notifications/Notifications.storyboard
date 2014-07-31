@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6185.11" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MbC-cA-c9S">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MbC-cA-c9S">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6190.4"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
         <!--Notifications View Controller-->
@@ -103,54 +103,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockHeaderTableViewCell" id="RJV-8C-CD4" userLabel="Note Header Table View Cell" customClass="NoteBlockHeaderTableViewCell">
-                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RJV-8C-CD4" id="T8z-QE-ifG">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sqq-87-nG7" userLabel="NoticonView">
-                                            <rect key="frame" x="16" y="7" width="30" height="30"/>
-                                            <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n1W-4g-Vel" userLabel="NoticonLabel">
-                                                    <rect key="frame" x="0.0" y="6" width="30" height="24"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="30" id="BML-h2-kPi"/>
-                                                <constraint firstAttribute="width" constant="30" id="Bjs-BF-t2X"/>
-                                            </constraints>
-                                        </view>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="244" translatesAutoresizingMaskIntoConstraints="NO" id="VZH-ss-Kdh">
-                                            <rect key="frame" x="56" y="0.0" width="244" height="43"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <constraints>
-                                        <constraint firstItem="VZH-ss-Kdh" firstAttribute="top" secondItem="T8z-QE-ifG" secondAttribute="top" id="3iY-Ru-rKk"/>
-                                        <constraint firstAttribute="trailing" secondItem="VZH-ss-Kdh" secondAttribute="trailing" constant="20" id="7oB-Mk-VAJ"/>
-                                        <constraint firstItem="sqq-87-nG7" firstAttribute="leading" secondItem="T8z-QE-ifG" secondAttribute="leading" constant="16" id="8WJ-u6-9Ss"/>
-                                        <constraint firstAttribute="bottom" secondItem="VZH-ss-Kdh" secondAttribute="bottom" id="EFR-tJ-a94"/>
-                                        <constraint firstAttribute="centerY" secondItem="sqq-87-nG7" secondAttribute="centerY" id="Y5F-wS-Avx"/>
-                                        <constraint firstItem="VZH-ss-Kdh" firstAttribute="leading" secondItem="sqq-87-nG7" secondAttribute="trailing" constant="10" id="sLi-SO-h9c"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="headerLabel" destination="VZH-ss-Kdh" id="ujg-Zz-1TD"/>
-                                    <outlet property="noticonLabel" destination="n1W-4g-Vel" id="R8h-mi-t37"/>
-                                    <outlet property="noticonView" destination="sqq-87-nG7" id="yhD-pZ-wxT"/>
-                                </connections>
-                            </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockTextTableViewCell" id="jmW-dd-Cbx" customClass="NoteBlockTextTableViewCell">
-                                <rect key="frame" x="0.0" y="66" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jmW-dd-Cbx" id="giy-cd-Nqj">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -175,7 +129,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockImageTableViewCell" rowHeight="200" id="haN-FG-i9H" customClass="NoteBlockImageTableViewCell">
-                                <rect key="frame" x="0.0" y="110" width="320" height="200"/>
+                                <rect key="frame" x="0.0" y="66" width="320" height="200"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="haN-FG-i9H" id="jcD-Sy-kp4">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="199"/>
@@ -200,7 +154,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockUserTableViewCell" rowHeight="80" id="5xE-rP-cOl" customClass="NoteBlockUserTableViewCell">
-                                <rect key="frame" x="0.0" y="310" width="320" height="80"/>
+                                <rect key="frame" x="0.0" y="266" width="320" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5xE-rP-cOl" id="cu5-vz-Y42">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="79"/>
@@ -293,7 +247,7 @@
                         <viewControllerLayoutGuide type="top" id="xYS-yX-g0N"/>
                         <viewControllerLayoutGuide type="bottom" id="TTR-85-LXw"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="tRp-aP-jzw">
+                    <view key="view" autoresizesSubviews="NO" contentMode="scaleToFill" id="tRp-aP-jzw">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -322,12 +276,9 @@
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4">
-            <size key="portraitSize" width="320" height="568"/>
-            <size key="landscapeSize" width="568" height="320"/>
-        </simulatedScreenMetrics>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="4ec-Ni-5a5"/>
+        <segue reference="bzs-Og-i8b"/>
     </inferredMetricsTieBreakers>
 </document>
