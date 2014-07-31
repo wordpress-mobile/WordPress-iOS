@@ -26,16 +26,16 @@
             return nil;
         }
         
-        self.webView = [[UIWebView alloc] initWithFrame:CGRectZero];
-        self.webView.userInteractionEnabled = NO;
-        self.webView.hidden = NO;
-        self.webView.scalesPageToFit = YES;
-        self.webView.delegate = self;
+        _webView = [[UIWebView alloc] initWithFrame:CGRectZero];
+        _webView.userInteractionEnabled = NO;
+        _webView.hidden = NO;
+        _webView.scalesPageToFit = YES;
+        _webView.delegate = self;
         UIView *backmostView = keyWindow.subviews.firstObject;
         [keyWindow insertSubview:self.webView belowSubview:backmostView];
         
-        self.status = WPWebSnapshotWorkerStatusReady;
-        self.numberOfCurrentLoads = 0;
+        _status = WPWebSnapshotWorkerStatusReady;
+        _numberOfCurrentLoads = 0;
     }
     return self;
 }
