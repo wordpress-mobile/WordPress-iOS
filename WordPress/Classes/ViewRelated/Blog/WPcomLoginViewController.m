@@ -288,6 +288,8 @@
         case 1:
             [self signIn:self];
             break;
+        default:
+            break;
 	}
 
 	return YES;	
