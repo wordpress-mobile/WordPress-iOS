@@ -15,8 +15,9 @@ static CGFloat const NotificationHeaderNoticonPadding   = 3.0f;
 static CGFloat const NotificationHeaderNoticonSize      = 30;
 
 static CGFloat const NotificationHeaderWidthMax         = 600.0f;
+static CGFloat const NotificationHeaderHeightMin        = 48.0f;
 
-static CGFloat const NotificationHeaderSpaceTop         = 10;
+static CGFloat const NotificationHeaderSpaceTop         = 6;
 static CGFloat const NotificationHeaderSpaceLeading     = 16;
 static CGFloat const NotificationHeaderSpaceMiddle      = 10;
 static CGFloat const NotificationHeaderSpaceTrailing    = 20;
@@ -187,6 +188,15 @@ static CGFloat const NotificationHeaderSpaceTrailing    = 20;
                                                               multiplier:1.0
                                                                 constant:0.0]];
     
+    [_containerView addConstraint:[NSLayoutConstraint constraintWithItem:_containerView
+                                                               attribute:NSLayoutAttributeHeight
+                                                               relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                  toItem:nil
+                                                               attribute:NSLayoutAttributeNotAnAttribute
+                                                              multiplier:1.0
+                                                                constant:NotificationHeaderHeightMin]];
+    
+    
     // Make sure that the containerView is pinned to the top left corner of (self).
     // Plus, let's match the width as well!
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_containerView
@@ -227,13 +237,15 @@ static CGFloat const NotificationHeaderSpaceTrailing    = 20;
     [self setNeedsLayout];
 }
 
-- (void)refreshHeight
+- (void)layoutSubviews
 {
-    [super layoutIfNeeded];
+    [super layoutSubviews];
 
     CGRect frame        = self.frame;
     frame.size.height   = _containerView.frame.size.height;
     self.frame          = frame;
+    
+    [super layoutSubviews];
 }
 
 #pragma mark - Properties
