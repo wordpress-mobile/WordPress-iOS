@@ -41,7 +41,7 @@ static ContextManager *instance;
         return _mainContext;
     }
     _mainContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-    
+
     return _mainContext;
 }
 
@@ -58,17 +58,17 @@ static ContextManager *instance;
         if (![context obtainPermanentIDsForObjects:context.insertedObjects.allObjects error:&error]) {
             DDLogError(@"Error obtaining permanent object IDs for %@, %@", context.insertedObjects.allObjects, error);
         }
-        
+
         if (![context save:&error]) {
             @throw [NSException exceptionWithName:@"Unresolved Core Data save error"
                                            reason:@"Unresolved Core Data save error - derived context"
                                          userInfo:[error userInfo]];
         }
-        
+
         if (completionBlock) {
             dispatch_async(dispatch_get_main_queue(), completionBlock);
         }
-        
+
         // While this is needed because we don't observe change notifications for the derived context, it
         // breaks concurrency rules for Core Data.  Provide a mechanism to destroy a derived context that
         // unregisters it from the save notification instead and rely upon that for merging.
@@ -77,7 +77,7 @@ static ContextManager *instance;
 }
 
 - (void)saveContext:(NSManagedObjectContext *)context {
-	[self saveContext:context withCompletionBlock:nil];
+    [self saveContext:context withCompletionBlock:nil];
 }
 
 - (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock {
@@ -88,20 +88,20 @@ static ContextManager *instance;
         [self saveDerivedContext:context withCompletionBlock:completionBlock];
         return;
     }
-    
+
     [context performBlock:^{
         NSError *error;
         if (![context obtainPermanentIDsForObjects:context.insertedObjects.allObjects error:&error]) {
             DDLogError(@"Error obtaining permanent object IDs for %@, %@", context.insertedObjects.allObjects, error);
         }
-        
+
         if (![context save:&error]) {
             DDLogError(@"Unresolved core data error\n%@:", error);
             @throw [NSException exceptionWithName:@"Unresolved Core Data save error"
                                            reason:@"Unresolved Core Data save error"
                                          userInfo:[error userInfo]];
         }
-		
+
         if (completionBlock) {
             dispatch_async(dispatch_get_main_queue(), completionBlock);
         }
@@ -113,7 +113,7 @@ static ContextManager *instance;
     if (!managedObject) {
         return NO;
     }
-    
+
     if (managedObject && ![managedObject.objectID isTemporaryID]) {
         // Object already has a permanent ID so just return success.
         return YES;
@@ -143,112 +143,93 @@ static ContextManager *instance;
     if (_persistentStoreCoordinator) {
         return _persistentStoreCoordinator;
     }
-    
+
     NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                                                         NSUserDomainMask,
                                                                         YES) lastObject];
     NSURL *storeURL = [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:@"WordPress.sqlite"]];
-	
-	// This is important for automatic version migration. Leave it here!
-	NSDictionary *options = @{
-		NSInferMappingModelAutomaticallyOption			: @(YES),
-		NSMigratePersistentStoresAutomaticallyOption	: @(YES)
-	};
-	
-	NSError *error = nil;
-	
+
+    // This is important for automatic version migration. Leave it here!
+    NSDictionary *options = @{
+        NSInferMappingModelAutomaticallyOption            : @(YES),
+        NSMigratePersistentStoresAutomaticallyOption    : @(YES)
+    };
+
+    NSError *error = nil;
+
     // The following conditional code is meant to test the detection of mapping model for migrations
     // It should remain disabled unless you are debugging why migrations aren't run
 #if FALSE
-	DDLogInfo(@"Debugging migration detection");
-	NSDictionary *sourceMetadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:NSSQLiteStoreType
-																							  URL:storeURL
-																							error:&error];
-	if (sourceMetadata == nil) {
-		DDLogInfo(@"Can't find source persistent store");
-	} else {
-		DDLogInfo(@"Source store: %@", sourceMetadata);
-	}
-	
-	NSManagedObjectModel *destinationModel = [self managedObjectModel];
-	BOOL pscCompatibile = [destinationModel
-						   isConfiguration:nil
-						   compatibleWithStoreMetadata:sourceMetadata];
-	if (pscCompatibile) {
-		DDLogInfo(@"No migration needed");
-	} else {
-		DDLogInfo(@"Migration needed");
-	}
-	
-	NSManagedObjectModel *sourceModel = [NSManagedObjectModel mergedModelFromBundles:nil forStoreMetadata:sourceMetadata];
-	if (sourceModel != nil) {
-		DDLogInfo(@"source model found");
-	} else {
-		DDLogInfo(@"source model not found");
-	}
-    
-	NSMigrationManager *manager = [[NSMigrationManager alloc] initWithSourceModel:sourceModel
-																 destinationModel:destinationModel];
-	NSMappingModel *mappingModel = [NSMappingModel mappingModelFromBundles:@[ [NSBundle mainBundle] ]
-															forSourceModel:sourceModel
-														  destinationModel:destinationModel];
-	if (mappingModel != nil) {
-		DDLogInfo(@"mapping model found");
-	} else {
-		DDLogInfo(@"mapping model not found");
-	}
-    
-	if (NO) {
-		BOOL migrates = [manager migrateStoreFromURL:storeURL
-												type:NSSQLiteStoreType
-											 options:nil
-									withMappingModel:mappingModel
-									toDestinationURL:storeURL
-									 destinationType:NSSQLiteStoreType
-								  destinationOptions:nil
-											   error:&error];
-        
-		if (migrates) {
-			DDLogInfo(@"migration went OK");
-		} else {
-			DDLogInfo(@"migration failed: %@", [error localizedDescription]);
-		}
-	}
-	
-	DDLogInfo(@"End of debugging migration detection");
+    DDLogInfo(@"Debugging migration detection");
+    NSDictionary *sourceMetadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:NSSQLiteStoreType
+                                                                                              URL:storeURL
+                                                                                            error:&error];
+
+    DDLogInfo( (sourceMetadata == nil) ? @"Can't find source persistent store" : @"Source store: %@", sourceMetadata );
+
+    NSManagedObjectModel *destinationModel = [self managedObjectModel];
+    BOOL pscCompatibile = [destinationModel
+                           isConfiguration:nil
+                           compatibleWithStoreMetadata:sourceMetadata];
+    DDLogInfo( (pscCompatibile) ? @"No migration needed" : @"Migration needed" );
+
+    NSManagedObjectModel *sourceModel = [NSManagedObjectModel mergedModelFromBundles:nil forStoreMetadata:sourceMetadata];
+    DDLogInfo( (sourceModel) ? @"source model found" : @"source model not found" );
+
+    NSMigrationManager *manager = [[NSMigrationManager alloc] initWithSourceModel:sourceModel
+                                                                 destinationModel:destinationModel];
+    NSMappingModel *mappingModel = [NSMappingModel mappingModelFromBundles:@[ [NSBundle mainBundle] ]
+                                                            forSourceModel:sourceModel
+                                                          destinationModel:destinationModel];
+    DDLogInfo( (mappingModel) ? @"mapping model found" : @"mapping model not found" );
+
+    if (NO) {
+        BOOL migrates = [manager migrateStoreFromURL:storeURL
+                                                type:NSSQLiteStoreType
+                                             options:nil
+                                    withMappingModel:mappingModel
+                                    toDestinationURL:storeURL
+                                     destinationType:NSSQLiteStoreType
+                                  destinationOptions:nil
+                                               error:&error];
+
+        DDLogInfo( (migrates) ? @"migration went OK" : @"migration failed: %@", [error localizedDescription] );
+    }
+
+    DDLogInfo(@"End of debugging migration detection");
 #endif
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc]
                                    initWithManagedObjectModel:[self managedObjectModel]];
-    
+
     if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
                                                    configuration:nil
                                                              URL:storeURL
                                                          options:options
                                                            error:&error]) {
-		DDLogError(@"Error opening the database. %@\nDeleting the file and trying again", error);
+        DDLogError(@"Error opening the database. %@\nDeleting the file and trying again", error);
 #ifdef CORE_DATA_MIGRATION_DEBUG
-		// Don't delete the database on debug builds
-		// Makes migration debugging less of a pain
-		abort();
+        // Don't delete the database on debug builds
+        // Makes migration debugging less of a pain
+        abort();
 #endif
-        
+
         // make a backup of the old database
         [[NSFileManager defaultManager] copyItemAtPath:storeURL.path
                                                 toPath:[storeURL.path stringByAppendingString:@"~"]
                                                  error:&error];
-		
+
         // delete the sqlite file and try again
-		[[NSFileManager defaultManager] removeItemAtPath:storeURL.path error:nil];
-		if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+        [[NSFileManager defaultManager] removeItemAtPath:storeURL.path error:nil];
+        if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
                                                        configuration:nil
                                                                  URL:storeURL
                                                              options:nil
                                                                error:&error]) {
-			DDLogError(@"Unresolved error %@, %@", error, [error userInfo]);
-			abort();
-		}
+            DDLogError(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        }
     }
-    
+
     return _persistentStoreCoordinator;
 }
 
