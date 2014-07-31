@@ -92,9 +92,6 @@ static NSInteger const MaximumNumberOfPictures = 4;
                 NSString *aimg = [NSString stringWithFormat:@"<a href=\"%@\"><img src=\"%@\"></a>", [imageURL absoluteString], [imageURL absoluteString]];
                 content = [NSString stringWithFormat:@"%@\n%@", aimg, content];
                 post.content = content;
-            } else {
-                // Assume image as base64 encoded string.
-                // TODO: Wrangle a base64 encoded image.
             }
         }
     }
