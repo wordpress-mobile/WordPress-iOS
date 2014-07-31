@@ -125,15 +125,18 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     switch (section) {
 		case 0:
             // URL, username, [password]
-            if ([self.blog isWPcom])
+            if ([self.blog isWPcom]) {
                 return 2;
+            }
+
             return 3;
 		case 1:
             // Settings: Geolocation, [ Push Notifications ]
-            if ([self canTogglePushNotifications])
+            if ([self canTogglePushNotifications]) {
                 return 2;
-            else
-                return 1;	
+            }
+
+            return 1;
         case 2:
             return 1;
 	}

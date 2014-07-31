@@ -257,18 +257,18 @@
     AbstractPost *original = (AbstractPost *)self.original;
     
     //Do not move the Featured Image check below in the code.
-    if ((self.post_thumbnail != original.post_thumbnail)
-        && (![self.post_thumbnail  isEqual:original.post_thumbnail])){
+    if ((self.post_thumbnail != original.post_thumbnail) && (![self.post_thumbnail isEqual:original.post_thumbnail])) {
         self.isFeaturedImageChanged = YES;
         return YES;
-    } else {
-        self.isFeaturedImageChanged = NO;
     }
+    
+    self.isFeaturedImageChanged = NO;
     
     // Relationships are not going to be nil, just empty sets,
     // so we can avoid the extra check
-    if (![self.media isEqual:original.media])
+    if (![self.media isEqual:original.media]) {
         return YES;
+    }
 	
     return NO;
 }

@@ -983,9 +983,9 @@ static NSInteger const MaximumNumberOfPictures = 4;
 {
     if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto) {
         return picker.selectedAssets.count < MaximumNumberOfPictures;
-    } else {
-        return YES;
     }
+
+    return YES;
 }
 
 #pragma mark - KVO

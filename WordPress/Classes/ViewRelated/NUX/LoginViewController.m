@@ -730,9 +730,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 {
     if ([self areSelfHostedFieldsFilled] && !_userIsDotCom) {
         return [self isUrlValid];
-    } else {
-        return [self areDotComFieldsFilled];
     }
+
+    return [self areDotComFieldsFilled];
 }
 
 - (BOOL)isUsernameFilled

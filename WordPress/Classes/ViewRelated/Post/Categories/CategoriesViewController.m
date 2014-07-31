@@ -114,10 +114,10 @@
 - (NSInteger)indentationLevelForCategory:(NSNumber *)parentID categoryCollection:(NSMutableDictionary *)categoryDict {
     if ([parentID intValue] == 0) {
         return 0;
-    } else {
-        Category *category = [categoryDict objectForKey:parentID];
-        return ([self indentationLevelForCategory:category.parentID categoryCollection:categoryDict]) + 1;
     }
+
+    Category *category = [categoryDict objectForKey:parentID];
+    return ([self indentationLevelForCategory:category.parentID categoryCollection:categoryDict]) + 1;
 }
 
 

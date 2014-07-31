@@ -101,9 +101,9 @@
 - (Post *)post {
     if ([self.apost isKindOfClass:[Post class]]) {
         return (Post *)self.apost;
-    } else {
-        return nil;
     }
+
+    return nil;
 }
 
 - (NSString *)buildSimplePreview {

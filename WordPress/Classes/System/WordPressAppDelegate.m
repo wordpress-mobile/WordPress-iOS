@@ -714,9 +714,9 @@ NSInteger const kMeTabIndex = 2;
     NSString *description = [self getLogFilesContentWithMaxSize:5000]; // 5000 bytes should be enough!
     if ([description length] == 0) {
         return nil;
-    } else {
-        return description;
     }
+
+    return description;
 }
 
 #pragma mark - Media cleanup

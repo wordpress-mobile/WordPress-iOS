@@ -276,17 +276,17 @@ CGFloat const WPContentCellDefaultOrigin                    = 15.0f;
 
     if ([[self class] shortDateString]) {
         return [date shortString];
-    } else {
-        static NSDateFormatter *dateFormatter = nil;
-        
-        if (dateFormatter == nil) {
-            dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-            [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        }
-        
-        return [dateFormatter stringFromDate:date];
     }
+
+    static NSDateFormatter *dateFormatter = nil;
+    
+    if (dateFormatter == nil) {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    }
+    
+    return [dateFormatter stringFromDate:date];
 }
 
 
@@ -309,9 +309,9 @@ CGFloat const WPContentCellDefaultOrigin                    = 15.0f;
 + (CGFloat)textXOrigin {
     if ([[self class] showGravatarImage]) {
         return ([[self class] gravatarXOrigin] + WPContentCellImageWidth + WPContentCellStandardOffset);
-    } else {
-        return WPContentCellDefaultOrigin;
     }
+
+    return WPContentCellDefaultOrigin;
 }
 
 + (CGFloat)gravatarXOrigin {
@@ -329,9 +329,9 @@ CGFloat const WPContentCellDefaultOrigin                    = 15.0f;
         CGSize size;
         size = [statusText boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] statusAttributes] context:nil].size;
             return CGRectMake([[self class] textXOrigin], WPContentCellVerticalPadding, size.width, size.height);
-    } else {
-        return CGRectMake(0, WPContentCellVerticalPadding, 0, 0);
     }
+
+    return CGRectMake(0, WPContentCellVerticalPadding, 0, 0);
 }
 
 + (CGRect)titleLabelFrameForContentProvider:(id<WPContentViewProvider>)contentProvider previousFrame:(CGRect)previousFrame maxWidth:(CGFloat)maxWidth

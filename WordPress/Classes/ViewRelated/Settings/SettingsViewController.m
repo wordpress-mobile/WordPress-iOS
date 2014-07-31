@@ -128,17 +128,15 @@ CGFloat const blavatarImageViewSize = 43.f;
     
             if (defaultAccount) {
                 return [self rowForSignOut] + 1;
-            } else {
-                return 1;
             }
+
+            return 1;
         }
 
         case SettingsSectionMedia:
             return 1;
-
         case SettingsSectionInfo:
             return 2;
-            
         default:
             return 0;
     }

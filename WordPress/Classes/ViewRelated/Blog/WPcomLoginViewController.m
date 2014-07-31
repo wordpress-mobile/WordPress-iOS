@@ -101,18 +101,20 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if(section == 0)
+    if(section == 0) {
 		return 2;
-	else
-		return 1;
+    }
+    
+    return 1;
 }
 
 
 - (NSString *)titleForFooterInSection:(NSInteger)section {
-    if(section == 0)
+    if(section == 0) {
 		return footerText;
-    else
-		return @"";
+    }
+
+    return @"";
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section

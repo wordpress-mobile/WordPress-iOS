@@ -23,10 +23,9 @@ NSString * const CommentStatusDraft = @"draft";
         return NSLocalizedString(@"Pending moderation", @"");
     } else if ([status isEqualToString:@"approve"]) {
         return NSLocalizedString(@"Comments", @"");
-    } else {
-        return status;
     }
 
+    return status;
 }
 
 - (NSString *)postTitle {

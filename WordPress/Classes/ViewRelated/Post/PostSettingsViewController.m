@@ -190,9 +190,9 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 - (Post *)post {
     if ([self.apost isKindOfClass:[Post class]]) {
         return (Post *)self.apost;
-    } else {
-        return nil;
     }
+
+    return nil;
 }
 
 - (void)endEditingAction:(id)sender {
@@ -906,9 +906,9 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         return NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP.");
     } else if ([self.apost.status isEqualToString:@"private"]) {
         return NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.");
-    } else {
-        return NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.");
     }
+    
+    return NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.");
 }
 
 - (void)dismissTagsKeyboardIfAppropriate:(UITapGestureRecognizer *)gestureRecognizer {

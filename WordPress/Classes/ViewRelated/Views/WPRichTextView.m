@@ -453,47 +453,46 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
 
         return imageControl;
 
-    } else {
-
-        WPRichTextVideoControl *videoControl = [[WPRichTextVideoControl alloc] initWithFrame:CGRectMake(0.0, 0.0, 1.0, 1.0)];
-
-        if ([attachment isKindOfClass:[DTVideoTextAttachment class]]) {
-            videoControl.isHTMLContent = NO;
-        } else if ([attachment isKindOfClass:[DTIframeTextAttachment class]]) {
-            videoControl.isHTMLContent = YES;
-        } else if ([attachment isKindOfClass:[DTObjectTextAttachment class]]) {
-            videoControl.isHTMLContent = YES;
-        } else {
-            return nil; // Can't handle whatever this is :P
-        }
-
-        videoControl.contentURL = attachment.contentURL;
-        [videoControl addTarget:self action:@selector(videoLinkAction:) forControlEvents:UIControlEventTouchUpInside];
-
-        [self.mediaArray addObject:videoControl];
-        NSUInteger index = [self.mediaArray count] - 1;
-        NSIndexPath *indexPath = [NSIndexPath indexPathWithIndex:index];
-
-        VideoThumbnailServiceRemote *service = [[VideoThumbnailServiceRemote alloc] init];
-        [service getThumbnailForVideoAtURL:videoControl.contentURL
-                                   success:^(NSURL *thumbnailURL, NSString *title) {
-                                       videoControl.title = title;
-                                       [self.mediaIndexPathsPendingDownload addObject:indexPath];
-                                       [self.imageSource fetchImageForURL:thumbnailURL
-                                                                 withSize:[self maxImageDisplaySize]
-                                                                indexPath:indexPath
-                                                                isPrivate:NO];
-                                   }
-                                   failure:^(NSError *error) {
-                                       DDLogError(@"Error retriving video thumbnail: %@", error);
-                                       CGFloat side = 200.0;
-                                       UIImage *blankImage = [UIImage imageWithColor:[UIColor blackColor] havingSize:CGSizeMake(side, side)];
-                                       videoControl.imageView.image = blankImage;
-                                       [self updateLayoutForMediaItem:videoControl];
-                                   }];
-
-        return videoControl;
     }
+
+    WPRichTextVideoControl *videoControl = [[WPRichTextVideoControl alloc] initWithFrame:CGRectMake(0.0, 0.0, 1.0, 1.0)];
+
+    if ([attachment isKindOfClass:[DTVideoTextAttachment class]]) {
+        videoControl.isHTMLContent = NO;
+    } else if ([attachment isKindOfClass:[DTIframeTextAttachment class]]) {
+        videoControl.isHTMLContent = YES;
+    } else if ([attachment isKindOfClass:[DTObjectTextAttachment class]]) {
+        videoControl.isHTMLContent = YES;
+    } else {
+        return nil; // Can't handle whatever this is :P
+    }
+
+    videoControl.contentURL = attachment.contentURL;
+    [videoControl addTarget:self action:@selector(videoLinkAction:) forControlEvents:UIControlEventTouchUpInside];
+
+    [self.mediaArray addObject:videoControl];
+    NSUInteger index = [self.mediaArray count] - 1;
+    NSIndexPath *indexPath = [NSIndexPath indexPathWithIndex:index];
+
+    VideoThumbnailServiceRemote *service = [[VideoThumbnailServiceRemote alloc] init];
+    [service getThumbnailForVideoAtURL:videoControl.contentURL
+                               success:^(NSURL *thumbnailURL, NSString *title) {
+                                   videoControl.title = title;
+                                   [self.mediaIndexPathsPendingDownload addObject:indexPath];
+                                   [self.imageSource fetchImageForURL:thumbnailURL
+                                                             withSize:[self maxImageDisplaySize]
+                                                            indexPath:indexPath
+                                                            isPrivate:NO];
+                               }
+                               failure:^(NSError *error) {
+                                   DDLogError(@"Error retriving video thumbnail: %@", error);
+                                   CGFloat side = 200.0;
+                                   UIImage *blankImage = [UIImage imageWithColor:[UIColor blackColor] havingSize:CGSizeMake(side, side)];
+                                   videoControl.imageView.image = blankImage;
+                                   [self updateLayoutForMediaItem:videoControl];
+                               }];
+
+    return videoControl;
 }
 
 @end
