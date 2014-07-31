@@ -190,9 +190,9 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
         return NSLocalizedString(@"Image", @"");
     } else if (self.mediaType == MediaTypeVideo) {
         return NSLocalizedString(@"Video", @"");
-    } else {
-        return self.mediaTypeString;
     }
+
+    return self.mediaTypeString;
 }
 
 - (BOOL)featured {

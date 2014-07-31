@@ -5,10 +5,11 @@
 
 - (BOOL)myShouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations
-    if ( IS_IPHONE && interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown ) 
-        return NO; 
-    else  
-        return YES;  
+    if ( IS_IPHONE && interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown ) {
+        return NO;
+    }
+
+    return YES;
 }
 
 + (void)load {

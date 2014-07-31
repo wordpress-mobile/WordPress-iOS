@@ -301,9 +301,9 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 {
     if (account.restApi) {
         return [[AccountServiceRemoteREST alloc] initWithApi:account.restApi];
-    } else {
-        return [[AccountServiceRemoteXMLRPC alloc] initWithApi:account.xmlrpcApi];
     }
+
+    return [[AccountServiceRemoteXMLRPC alloc] initWithApi:account.xmlrpcApi];
 }
 
 - (NSUInteger)numberOfAccounts

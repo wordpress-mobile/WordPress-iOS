@@ -237,9 +237,9 @@ CGFloat const blavatarImageSize = 50.f;
     
     if (indexPath.section == [self sectionForSelfHosted] && tableView.editing) {
         return UITableViewCellEditingStyleDelete;
-    } else {
-        return UITableViewCellEditingStyleNone;
     }
+    
+    return UITableViewCellEditingStyleNone;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -289,9 +289,9 @@ CGFloat const blavatarImageSize = 50.f;
     
     if ([self sectionForDotCom] >= 0) {
         return 1;
-    } else {
-        return 0;
     }
+
+    return 0;
 }
 
 - (NSIndexPath *)indexPathForAddSite {
@@ -463,9 +463,9 @@ CGFloat const blavatarImageSize = 50.f;
 - (NSPredicate *)fetchRequestPredicate {
     if ([self.tableView isEditing]) {
         return nil;
-    } else {
-        return [NSPredicate predicateWithFormat:@"visible = YES"];
     }
+
+    return [NSPredicate predicateWithFormat:@"visible = YES"];
 }
 
 - (void)updateFetchRequest {

@@ -205,17 +205,17 @@
     NSString *title = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.get_article_title();"];
     if (title != nil && [[title trim] isEqualToString:@""] == NO) {
         return [title trim];
-    } else {
-        //load the title from the document
-        title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"]; 
-        
-        if ( title != nil && [[title trim] isEqualToString:@""] == NO) {
-            return title;
-        } else {
-             NSString* permaLink = [self getDocumentPermalink];
-             return ( permaLink != nil) ? permaLink : @"";
-        }
     }
+
+    //load the title from the document
+    title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"]; 
+
+    if ( title != nil && [[title trim] isEqualToString:@""] == NO) {
+        return title;
+    }
+
+    NSString* permaLink = [self getDocumentPermalink];
+    return ( permaLink != nil) ? permaLink : @"";
     
     return @"";
 }

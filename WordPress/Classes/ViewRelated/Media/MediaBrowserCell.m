@@ -198,42 +198,42 @@
     } else if (_media.remoteStatus == MediaRemoteStatusFailed) {
         return NSLocalizedString(@"Upload failed.", @"Uploading message when a media upload has failed.");
     
-    } else {
-        if (_media.title.length > 0) {
-            return _media.title;
-        }
-
-        NSString *filesizeString = nil;
-        if ([_media.filesize floatValue] > 1024) {
-            filesizeString = [NSString stringWithFormat:@"%.2f MB", ([_media.filesize floatValue]/1024)];
-        } else {
-            filesizeString = [NSString stringWithFormat:@"%.2f KB", [_media.filesize floatValue]];
-        }
-        
-        if (_media.mediaType == MediaTypeImage) {
-            return [NSString stringWithFormat:@"%dx%d %@", [_media.width intValue], [_media.height intValue], filesizeString];
-        } else if (_media.mediaType == MediaTypeVideo) {
-            NSNumber *valueForDisplay = [NSNumber numberWithDouble:[_media.length doubleValue]];
-            NSNumber *days = [NSNumber numberWithDouble:
-                              ([valueForDisplay doubleValue] / 86400)];
-            NSNumber *hours = [NSNumber numberWithDouble:
-                               (([valueForDisplay doubleValue] / 3600) -
-                                ([days intValue] * 24))];
-            NSNumber *minutes = [NSNumber numberWithDouble:
-                                 (([valueForDisplay doubleValue] / 60) -
-                                  ([days intValue] * 24 * 60) -
-                                  ([hours intValue] * 60))];
-            NSNumber *seconds = [NSNumber numberWithInt:([valueForDisplay intValue] % 60)];
-            return [NSString stringWithFormat:
-                           @"%02d:%02d:%02d %@",
-                           [hours intValue],
-                           [minutes intValue],
-                           [seconds intValue],
-                           filesizeString];
-        } else {
-            return NSLocalizedString(@"Untitled", @"");
-        }
     }
+
+    if (_media.title.length > 0) {
+        return _media.title;
+    }
+
+    NSString *filesizeString = nil;
+    if ([_media.filesize floatValue] > 1024) {
+        filesizeString = [NSString stringWithFormat:@"%.2f MB", ([_media.filesize floatValue]/1024)];
+    } else {
+        filesizeString = [NSString stringWithFormat:@"%.2f KB", [_media.filesize floatValue]];
+    }
+    
+    if (_media.mediaType == MediaTypeImage) {
+        return [NSString stringWithFormat:@"%dx%d %@", [_media.width intValue], [_media.height intValue], filesizeString];
+    } else if (_media.mediaType == MediaTypeVideo) {
+        NSNumber *valueForDisplay = [NSNumber numberWithDouble:[_media.length doubleValue]];
+        NSNumber *days = [NSNumber numberWithDouble:
+                          ([valueForDisplay doubleValue] / 86400)];
+        NSNumber *hours = [NSNumber numberWithDouble:
+                           (([valueForDisplay doubleValue] / 3600) -
+                            ([days intValue] * 24))];
+        NSNumber *minutes = [NSNumber numberWithDouble:
+                             (([valueForDisplay doubleValue] / 60) -
+                              ([days intValue] * 24 * 60) -
+                              ([hours intValue] * 60))];
+        NSNumber *seconds = [NSNumber numberWithInt:([valueForDisplay intValue] % 60)];
+        return [NSString stringWithFormat:
+                       @"%02d:%02d:%02d %@",
+                       [hours intValue],
+                       [minutes intValue],
+                       [seconds intValue],
+                       filesizeString];
+    }
+
+    return NSLocalizedString(@"Untitled", @"");
 }
 
 @end

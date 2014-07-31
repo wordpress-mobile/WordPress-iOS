@@ -108,9 +108,9 @@
     
     if (_leftViewImage) {
         return CGRectIntegral(CGRectMake(_textInsets.left, (CGRectGetHeight(bounds) - _leftViewImage.size.height) / 2.0, _leftViewImage.size.width, _leftViewImage.size.height));
-    } else {
-        return [super leftViewRectForBounds:bounds];
     }
+
+    return [super leftViewRectForBounds:bounds];
 }
 
 #pragma mark - Secure Text Entry

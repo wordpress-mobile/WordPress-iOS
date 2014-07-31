@@ -230,18 +230,20 @@
 
 - (BOOL)hasCategories
 {
-    if ([self.categories count] > 0)
+    if ([self.categories count] > 0) {
         return true;
-    else
-        return false;
+    }
+
+    return false;
 }
 
 - (BOOL)hasTags
 {
-    if ([[self.tags trim] length] > 0)
+    if ([[self.tags trim] length] > 0) {
         return true;
-    else
-        return false;
+    }
+
+    return false;
 }
 
 

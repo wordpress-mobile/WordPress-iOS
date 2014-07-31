@@ -72,9 +72,9 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
         return self.blogName;
     } else if ([self.authorDisplayName length] > 0) {
         return self.authorDisplayName;
-    } else {
-        return self.author;
     }
+    
+    return self.author;
 }
 
 - (NSString *)avatar {

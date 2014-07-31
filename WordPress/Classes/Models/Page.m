@@ -19,9 +19,9 @@
 + (NSString *)titleForRemoteStatus:(NSNumber *)remoteStatus {
     if ([remoteStatus intValue] == AbstractPostRemoteStatusSync) {
 		return NSLocalizedString(@"Pages", @"");
-    } else {
-		return [super titleForRemoteStatus:remoteStatus];
-	}
+    }
+
+    return [super titleForRemoteStatus:remoteStatus];
 }
 
 + (NSString *const)remoteUniqueIdentifier {

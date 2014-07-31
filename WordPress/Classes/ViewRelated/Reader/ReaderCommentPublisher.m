@@ -99,9 +99,9 @@
 - (NSString *)pathForContext {
 	if (self.comment != nil) {
 		return [NSString stringWithFormat:@"sites/%@/comments/%@/replies/new", self.post.siteID, self.comment.commentID];
-	} else {
-		return [NSString stringWithFormat:@"sites/%@/posts/%@/replies/new", self.post.siteID, self.post.postID];
 	}
+
+    return [NSString stringWithFormat:@"sites/%@/posts/%@/replies/new", self.post.siteID, self.post.postID];
 }
 
 // Attempt to publish the comment using the REST API
