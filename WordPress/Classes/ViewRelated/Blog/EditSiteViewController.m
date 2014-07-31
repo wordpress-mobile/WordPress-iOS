@@ -139,6 +139,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
             return 1;
         case 2:
             return 1;
+        default:
+            break;
 	}
     
 	return 0;
@@ -166,6 +168,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
             return NSLocalizedString(@"Settings", @"");
         case 2:
             return NSLocalizedString(@"Jetpack Stats", @"");
+        default:
+            break;
 	}
 	return nil;
 }

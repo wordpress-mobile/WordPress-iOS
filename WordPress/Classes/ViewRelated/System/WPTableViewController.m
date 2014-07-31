@@ -344,18 +344,15 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
         case NSFetchedResultsChangeInsert:
             [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
             break;
-            
         case NSFetchedResultsChangeDelete:
             [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:[self tableViewRowAnimation]];
             if ([_indexPathSelectedBeforeUpdates isEqual:indexPath]) {
                 [self.navigationController popToViewController:self animated:YES];
             }
             break;
-            
         case NSFetchedResultsChangeUpdate:
             [self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:newIndexPath];
             break;
-            
         case NSFetchedResultsChangeMove:
             [self.tableView deleteRowsAtIndexPaths:[NSArray
                                                        arrayWithObject:indexPath] withRowAnimation:[self tableViewRowAnimation]];
@@ -365,7 +362,9 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
                 _indexPathSelectedAfterUpdates = newIndexPath;
             }
             break;
-    }    
+        default:
+            break;
+    }
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
@@ -373,9 +372,10 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
         case NSFetchedResultsChangeInsert:
             [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:[self tableViewRowAnimation]];
             break;
-            
         case NSFetchedResultsChangeDelete:
             [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:[self tableViewRowAnimation]];
+            break;
+        default:
             break;
     }
 }

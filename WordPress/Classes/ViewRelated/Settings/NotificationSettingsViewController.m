@@ -239,6 +239,8 @@ BOOL hasChanges;
             return [_notificationPrefArray count];
         case 2:
             return [_mutedBlogsArray count];
+        default:
+            break;
     }
     
     return 0;
