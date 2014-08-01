@@ -26,10 +26,10 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
         if (!success) {
             return;
         }
-        NSDictionary *dict = (NSDictionary *)responseObject;
-        NSArray *arr = [dict arrayForKey:@"subscriptions"];
+        NSDictionary *response = (NSDictionary *)responseObject;
+        NSArray *subscriptions = [response arrayForKey:@"subscriptions"];
         NSMutableArray *sites = [NSMutableArray array];
-        for (NSDictionary *dict in arr) {
+        for (NSDictionary *dict in subscriptions) {
             RemoteReaderSite *site = [self normalizeSiteDictionary:dict];
             site.isSubscribed = YES;
             [sites addObject:site];
