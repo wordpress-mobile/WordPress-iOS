@@ -163,16 +163,17 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)updateApproveButton {
     if ([self.comment.status isEqualToString:@"approve"]) {
-        self.approveButton.tag = CommentViewUnapproveButtonTag;
+        [self.approveButton setTag:CommentViewUnapproveButtonTag];
         [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-unapprove"] forState:UIControlStateNormal];
         [self.approveButton setTitle:NSLocalizedString(@"Unapprove", @"Verb, unapprove a comment") forState:UIControlStateNormal];
-        self.approveButton.accessibilityLabel = NSLocalizedString(@"Approve", @"Spoken accessibility label.");
-    } else {
-        self.approveButton.tag = CommentViewApproveButtonTag;
-        [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-approve"] forState:UIControlStateNormal];
-        [self.approveButton setTitle:NSLocalizedString(@"Approve", @"Verb, approve a comment") forState:UIControlStateNormal];
-        self.approveButton.accessibilityLabel = NSLocalizedString(@"Unapprove", @"Spoken accessibility label.");
+        [self.approveButton setAccessibilityLabel:NSLocalizedString(@"Approve", @"Spoken accessibility label.")];
+        return;
     }
+    
+    [self.approveButton setTag:CommentViewApproveButtonTag];
+    [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-approve"] forState:UIControlStateNormal];
+    [self.approveButton setTitle:NSLocalizedString(@"Approve", @"Verb, approve a comment") forState:UIControlStateNormal];
+    [self.approveButton setAccessibilityLabel:NSLocalizedString(@"Unapprove", @"Spoken accessibility label.")];
 }
 
 - (void)showComment:(Comment *)comment {
