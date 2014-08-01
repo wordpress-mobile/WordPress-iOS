@@ -1,10 +1,10 @@
 #import <Foundation/Foundation.h>
 #import "LocalCoreDataService.h"
 
-typedef enum : NSUInteger {
+typedef NS_ENUM(NSUInteger, ReaderSiteServiceError) {
     ReaderSiteServiceErrorNotLoggedIn,
     ReaderSiteServiceErrorAlreadyFollowingSite
-} ReaderSiteServiceError;
+};
 
 extern NSString * const ReaderSiteServiceErrorDomain;
 
