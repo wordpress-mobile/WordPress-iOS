@@ -37,8 +37,11 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 @end
 
 
-@implementation NotificationsViewController
+#pragma mark ====================================================================================
+#pragma mark NotificationsViewController
+#pragma mark ====================================================================================
 
+@implementation NotificationsViewController
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
@@ -50,70 +53,11 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 {
     self = [super init];
     if (self) {
-        self.title = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
-    }
-    return self;
-}
+        self.title              = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
 
-- (NSString *)noResultsTitleText
-{
-    if ([self showJetpackConnectMessage]) {
-        return NSLocalizedString(@"Connect to Jetpack", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
-    } else {
-        return NSLocalizedString(@"No notifications yet", @"Displayed when the user pulls up the notifications view and they have no items");
     }
-}
-
-- (NSString *)noResultsMessageText
-{
-    if ([self showJetpackConnectMessage]) {
-        return NSLocalizedString(@"Jetpack supercharges your self-hosted WordPress site.", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
-    } else {
-        return nil;
-    }
-}
-
-- (NSString *)noResultsButtonText
-{
-    if ([self showJetpackConnectMessage]) {
-        return NSLocalizedString(@"Learn more", @"");
-    } else {
-        return nil;
-    }
-}
-
-- (UIView *)noResultsAccessoryView
-{
-    if ([self showJetpackConnectMessage]) {
-        return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-jetpack-gray"]];
-    } else {
-        return nil;
-    }
-}
-
-- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
-{
-    // Show Jetpack information screen
-    [WPAnalytics track:WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen withProperties:@{@"source": @"notifications"}];
     
-    WPWebViewController *webViewController  = [[WPWebViewController alloc] init];
-	webViewController.url                   = [NSURL URLWithString:WPNotificationsJetpackInformationURL];
-    [self.navigationController pushViewController:webViewController animated:YES];
-}
-
-- (BOOL)showJetpackConnectMessage
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount       = [accountService defaultWordPressComAccount];
-
-    return defaultAccount == nil;
-}
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [[UIApplication sharedApplication] removeObserver:self forKeyPath:NSStringFromSelector(@selector(applicationIconBadgeNumber))];
+    return self;
 }
 
 - (void)viewDidLoad
@@ -335,6 +279,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 
 }
 
+
 #pragma mark - WPTableViewController subclass methods
 
 - (NSString *)entityName
@@ -384,14 +329,62 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     success();
 }
 
-#pragma mark - DetailViewDelegate
 
-- (void)resetView
+#pragma mark - No Results Helpers
+
+- (NSString *)noResultsTitleText
 {
-    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
-    if (selectedIndexPath) {
-        [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:NO];
+    if ([self showJetpackConnectMessage]) {
+        return NSLocalizedString(@"Connect to Jetpack", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
+    } else {
+        return NSLocalizedString(@"No notifications yet", @"Displayed when the user pulls up the notifications view and they have no items");
     }
+}
+
+- (NSString *)noResultsMessageText
+{
+    if ([self showJetpackConnectMessage]) {
+        return NSLocalizedString(@"Jetpack supercharges your self-hosted WordPress site.", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
+    } else {
+        return nil;
+    }
+}
+
+- (NSString *)noResultsButtonText
+{
+    if ([self showJetpackConnectMessage]) {
+        return NSLocalizedString(@"Learn more", @"");
+    } else {
+        return nil;
+    }
+}
+
+- (UIView *)noResultsAccessoryView
+{
+    if ([self showJetpackConnectMessage]) {
+        return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-jetpack-gray"]];
+    } else {
+        return nil;
+    }
+}
+
+- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
+{
+    // Show Jetpack information screen
+    [WPAnalytics track:WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen withProperties:@{@"source": @"notifications"}];
+    
+    WPWebViewController *webViewController  = [[WPWebViewController alloc] init];
+	webViewController.url                   = [NSURL URLWithString:WPNotificationsJetpackInformationURL];
+    [self.navigationController pushViewController:webViewController animated:YES];
+}
+
+- (BOOL)showJetpackConnectMessage
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount       = [accountService defaultWordPressComAccount];
+    
+    return defaultAccount == nil;
 }
 
 @end
