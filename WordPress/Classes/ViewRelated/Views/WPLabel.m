@@ -33,9 +33,6 @@
 		case VerticalAlignmentBottom:
 			result = CGRectMake(bounds.origin.x, bounds.origin.y + (bounds.size.height - rect.size.height), rect.size.width, rect.size.height);
 			break;
-		default:
-			result = bounds;
-			break;
 	}
 
 	return result;
