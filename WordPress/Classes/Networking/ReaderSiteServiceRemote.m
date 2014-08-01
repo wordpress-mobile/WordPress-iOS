@@ -159,6 +159,9 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     site.siteID = [meta numberForKey:@"ID"];
     site.feedID = [meta numberForKey:@"feed_ID"];
     site.name = [meta stringForKey:@"name"];
+    if ([site.name length] == 0) {
+        site.name = site.path;
+    }
     site.icon = [meta stringForKeyPath:@"icon.img"];
 
     return site;
