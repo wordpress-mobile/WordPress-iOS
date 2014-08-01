@@ -1,9 +1,9 @@
 #import <Foundation/Foundation.h>
 
-typedef enum : NSUInteger {
+typedef NS_ENUM(NSUInteger, ReaderSiteServiceRemoteError) {
     ReaderSiteServiceRemoteInvalidHost,
     ReaderSiteServiceRemoteUnsuccessfulFollowSite
-} ReaderSiteServiceRemoteError;
+};
 
 extern NSString * const ReaderSiteServiceRemoteErrorDomain;
 
