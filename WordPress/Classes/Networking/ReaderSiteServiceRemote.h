@@ -103,7 +103,7 @@ extern NSString * const ReaderSiteServiceRemoteErrorDomain;
 /**
  Check whether a feed is already subscribed
 
- @param siteID The ID of the site.
+ @param siteURL the URL of the site.
  @param success block called on a successful check. A boolean is returned indicating if the feed is followed or not.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
