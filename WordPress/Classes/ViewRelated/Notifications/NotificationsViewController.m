@@ -32,7 +32,7 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-static NSTimeInterval NotificationPushMaxWait = 2;
+static NSTimeInterval NotificationPushMaxWait = 1;
 
 
 #pragma mark ====================================================================================
@@ -157,9 +157,9 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 {
     // Did the user tap on a push notification?
     if (changeType == SPBucketChangeInsert && [self.pushNotificationID isEqualToString:key]) {
-        
+
         // Show the details only if NotificationPushMaxWait hasn't elapsed
-        if (self.pushNotificationDate.timeIntervalSinceNow >= NotificationPushMaxWait) {
+        if (ABS(self.pushNotificationDate.timeIntervalSinceNow) <= NotificationPushMaxWait) {
             [self showDetailsForNoteWithID:key animated:YES];
         }
         
@@ -196,12 +196,12 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     Note *notification      = [notesBucket objectForKey:notificationID];
     
     if (notification) {
-        DDLogVerbose(@"Pushing Notification Details for: [%@]", notificationID);
+        DDLogInfo(@"Pushing Notification Details for: [%@]", notificationID);
         
         [self showDetailsForNote:notification animated:animated];
         
     } else {
-        DDLogVerbose(@"Notification Details for [%@] cannot be pushed right now. Waiting %f secs", notificationID, NotificationPushMaxWait);
+        DDLogInfo(@"Notification Details for [%@] cannot be pushed right now. Waiting %f secs", notificationID, NotificationPushMaxWait);
         
         self.pushNotificationID     = notificationID;
         self.pushNotificationDate   = [NSDate date];
