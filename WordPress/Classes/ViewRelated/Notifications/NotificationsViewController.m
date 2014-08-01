@@ -47,6 +47,11 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 {
     // We need to override the implementation in our superclass or else restoration fails - no blog!
     return [[self alloc] init];
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[UIApplication sharedApplication] removeObserver:self forKeyPath:NSStringFromSelector(@selector(applicationIconBadgeNumber))];
 }
 
 - (instancetype)init
@@ -55,6 +60,14 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     if (self) {
         self.title              = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
 
+        // Watch for application badge number changes
+        NSString *badgeKeyPath  = NSStringFromSelector(@selector(applicationIconBadgeNumber));
+        [[UIApplication sharedApplication] addObserver:self forKeyPath:badgeKeyPath options:NSKeyValueObservingOptionNew context:nil];
+        
+        // Watch for new Notifications
+        Simperium *simperium    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+        SPBucket *notesBucket   = [simperium bucketForName:self.entityName];
+        notesBucket.delegate    = self;
     }
     
     return self;
@@ -78,11 +91,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
         self.navigationItem.rightBarButtonItem = pushSettings;
     }
     
-    // Watch for application badge number changes
-    UIApplication *application  = [UIApplication sharedApplication];
-    NSString *badgeKeyPath      = NSStringFromSelector(@selector(applicationIconBadgeNumber));
-    [application addObserver:self forKeyPath:badgeKeyPath options:NSKeyValueObservingOptionNew context:nil];
-    
+    // Refresh Badge
     [self updateTabBarBadgeNumber];
 }
 
@@ -90,6 +99,12 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 {
     DDLogMethod();
     [super viewWillAppear:animated];
+
+    // Track Once
+    if (!self.viewHasAppeared) {
+        self.viewHasAppeared = YES;
+        [WPAnalytics track:WPAnalyticsStatNotificationsAccessed];
+    }
     
     // Reload!
     [self.tableView reloadData];
@@ -97,17 +112,8 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     // Listen to appDidBecomeActive Note
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(handleApplicationDidBecomeActiveNote:) name:UIApplicationDidBecomeActiveNotification object:nil];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-
-    if (!self.viewHasAppeared) {
-        self.viewHasAppeared = YES;
-        [WPAnalytics track:WPAnalyticsStatNotificationsAccessed];
-    }
     
+    // Badge + Metadata
     [self updateLastSeenTime];
     [self resetApplicationBadge];
 }
@@ -158,11 +164,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 - (void)updateTabBarBadgeNumber
 {
     NSInteger count         = [[UIApplication sharedApplication] applicationIconBadgeNumber];
-    NSString *countString   = nil;
-    
-    if (count > 0) {
-        countString = [NSString stringWithFormat:@"%d", count];
-    }
+    NSString *countString   = (count) ? [NSString stringWithFormat:@"%d", count] : nil;
     
     // Note: self.navigationViewController might be nil. Let's hit the UITabBarController instead
     UITabBarController *tabBarController    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] tabBarController];
@@ -253,7 +255,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 		[[ContextManager sharedInstance] saveContext:note.managedObjectContext];
 
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-
+        
         if (hasDetailView) {
             [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
@@ -276,7 +278,6 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
         DDLogError(@"[RestAPI] %@", error);
         block(NO, nil);
     }];
-
 }
 
 
