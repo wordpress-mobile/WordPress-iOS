@@ -45,12 +45,10 @@
 }
 
 - (NSArray *)availableStatuses {
-    return [NSArray arrayWithObjects:
-            NSLocalizedString(@"Draft", @""),
-            NSLocalizedString(@"Pending review", @""),
-            NSLocalizedString(@"Private", @""),
-            NSLocalizedString(@"Published", @""),
-            nil];
+    return @[NSLocalizedString(@"Draft", @""),
+             NSLocalizedString(@"Pending review", @""),
+             NSLocalizedString(@"Private", @""),
+             NSLocalizedString(@"Published", @"")];
 }
 
 - (BOOL)hasRemote {

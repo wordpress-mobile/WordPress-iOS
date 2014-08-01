@@ -54,13 +54,11 @@
 
     // setup the webview with a white background by default
     // prevents the default UIWebView shadow from showing on launch
-    [self setBackgroundColor:[NSDictionary dictionaryWithObjectsAndKeys:
-                              @1.0F, @"red",
-                              @1.0F, @"green",
-                              @1.0F, @"blue",
-                              @1.0F, @"alpha",
-                              nil]];
-    
+    [self setBackgroundColor:@{@"red": @1.0F,
+                               @"green": @1.0F,
+                               @"blue": @1.0F,
+                               @"alpha": @1.0F}];
+
     if (urlToLoad != nil) {
         [self loadURL:urlToLoad];
     }
