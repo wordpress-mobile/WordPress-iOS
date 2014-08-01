@@ -27,9 +27,23 @@
 #import "ContextManager.h"
 
 
-@interface NotificationsViewController ()
 
-@property (nonatomic, assign) BOOL  viewHasAppeared;
+#pragma mark ====================================================================================
+#pragma mark Constants
+#pragma mark ====================================================================================
+
+static NSTimeInterval NotificationPushMaxWait = 2;
+
+
+#pragma mark ====================================================================================
+#pragma mark Private
+#pragma mark ====================================================================================
+
+@interface NotificationsViewController () <SPBucketDelegate>
+
+@property (nonatomic, strong) NSString  *pushNotificationID;
+@property (nonatomic, strong) NSDate    *pushNotificationDate;
+@property (nonatomic, assign) BOOL      viewHasAppeared;
 
 typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 - (void)loadPostWithId:(NSNumber *)postID fromSite:(NSNumber *)siteID block:(NotificationsLoadPostBlock)block;
@@ -137,6 +151,25 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 }
 
 
+#pragma mark - SPBucketDelegate Methods
+
+- (void)bucket:(SPBucket *)bucket didChangeObjectForKey:(NSString *)key forChangeType:(SPBucketChangeType)changeType memberNames:(NSArray *)memberNames
+{
+    // Did the user tap on a push notification?
+    if (changeType == SPBucketChangeInsert && [self.pushNotificationID isEqualToString:key]) {
+        
+        // Show the details only if NotificationPushMaxWait hasn't elapsed
+        if (self.pushNotificationDate.timeIntervalSinceNow >= NotificationPushMaxWait) {
+            [self showDetailsForNoteWithID:key animated:YES];
+        }
+        
+        // Cleanup
+        self.pushNotificationID     = nil;
+        self.pushNotificationDate   = nil;
+    }
+}
+
+
 #pragma mark - NSNotification Helpers
 
 - (void)handleApplicationDidBecomeActiveNote:(NSNotification *)note
@@ -154,7 +187,29 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 }
 
 
-#pragma mark - Custom methods
+#pragma mark - Public Methods
+
+- (void)showDetailsForNoteWithID:(NSString *)notificationID animated:(BOOL)animated
+{
+    Simperium *simperium    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+    SPBucket *notesBucket   = [simperium bucketForName:self.entityName];
+    Note *notification      = [notesBucket objectForKey:notificationID];
+    
+    if (notification) {
+        DDLogVerbose(@"Pushing Notification Details for: [%@]", notificationID);
+        
+        [self showDetailsForNote:notification animated:animated];
+        
+    } else {
+        DDLogVerbose(@"Notification Details for [%@] cannot be pushed right now. Waiting %f secs", notificationID, NotificationPushMaxWait);
+        
+        self.pushNotificationID     = notificationID;
+        self.pushNotificationDate   = [NSDate date];
+    }
+}
+
+
+#pragma mark - Private Helpers
 
 - (void)resetApplicationBadge
 {
@@ -210,6 +265,41 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)showDetailsForNote:(Note *)note animated:(BOOL)animated
+{
+    [WPAnalytics track:WPAnalyticsStatNotificationsOpenedNotificationDetails];
+    
+    // Make sure there's nothing else on the stack
+    [self.navigationController popToRootViewControllerAnimated:NO];
+    
+    if (note.isComment) {
+        NotificationsCommentDetailViewController *commentDetailViewController = [[NotificationsCommentDetailViewController alloc] initWithNote:note];
+        [self.navigationController pushViewController:commentDetailViewController animated:animated];
+        
+    } else if ([note isMatcher] && [note metaPostID] && [note metaSiteID]) {
+        // Note: Don't worry. This is scheduled to be fixed/prettified in #2152
+        [self loadPostWithId:[note metaPostID] fromSite:[note metaSiteID] block:^(BOOL success, ReaderPost *post) {
+            if (!success || ![self.navigationController.topViewController isEqual:self]) {
+                if (self.tableView.indexPathForSelectedRow) {
+                    [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
+                }
+                return;
+            }
+            
+            ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post];
+            [self.navigationController pushViewController:controller animated:YES];
+        }];
+    } else if (note.templateType == WPNoteTemplateMultiLineList || note.templateType == WPNoteTemplateSingleLineList) {
+        NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNote:note];
+        [self.navigationController pushViewController:detailViewController animated:animated];
+        
+    } else if (note.templateType == WPNoteTemplateBigBadge) {
+        NotificationsBigBadgeDetailViewController *bigBadgeViewController = [[NotificationsBigBadgeDetailViewController alloc] initWithNote:note];
+        [self.navigationController pushViewController:bigBadgeViewController animated:animated];
+    }
+}
+
+
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -224,28 +314,8 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     
     BOOL hasDetailView = [self noteHasDetailView:note];
     if (hasDetailView) {
-        [WPAnalytics track:WPAnalyticsStatNotificationsOpenedNotificationDetails];
+        [self showDetailsForNote:note animated:YES];
         
-        if ([note isComment]) {
-            NotificationsCommentDetailViewController *commentDetailViewController = [[NotificationsCommentDetailViewController alloc] initWithNote:note];
-            [self.navigationController pushViewController:commentDetailViewController animated:YES];
-        } else if ([note isMatcher] && [note metaPostID] && [note metaSiteID]) {
-            [self loadPostWithId:[note metaPostID] fromSite:[note metaSiteID] block:^(BOOL success, ReaderPost *post) {
-                if (!success || ![self.navigationController.topViewController isEqual:self]) {
-                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-                    return;
-                }
-            
-                ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post];
-                [self.navigationController pushViewController:controller animated:YES];
-            }];
-        } else if ([note templateType] == WPNoteTemplateMultiLineList || [note templateType] == WPNoteTemplateSingleLineList) {
-            NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNote:note];
-            [self.navigationController pushViewController:detailViewController animated:YES];
-        } else if ([note templateType] == WPNoteTemplateBigBadge) {
-            NotificationsBigBadgeDetailViewController *bigBadgeViewController = [[NotificationsBigBadgeDetailViewController alloc] initWithNote: note];
-            [self.navigationController pushViewController:bigBadgeViewController animated:YES];
-        }
     } else {
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
