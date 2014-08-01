@@ -694,6 +694,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     post.tags = remotePost.tags;
     post.isSharingEnabled = remotePost.isSharingEnabled;
     post.isLikesEnabled = remotePost.isLikesEnabled;
+    post.primaryTag = remotePost.primaryTag;
 
     // Construct a summary if necessary.
     NSString *summary = [self formatSummary:remotePost.summary];

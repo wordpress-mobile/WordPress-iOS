@@ -261,7 +261,8 @@
     post.tags = [self tagsFromPostDictionary:dict];
     post.isSharingEnabled = [[dict numberForKey:@"sharing_enabled"] boolValue];
     post.isLikesEnabled = [[dict numberForKey:@"likes_enabled"] boolValue];
-
+    post.primaryTag = [self primaryTagFromPostDictionary:dict];
+    
     return post;
 }
 
@@ -349,12 +350,31 @@
  */
 - (NSString *)tagsFromPostDictionary:(NSDictionary *)dict {
     NSDictionary *tagsDict = [dict dictionaryForKey:@"tags"];
+
     NSArray *tagsList = [NSArray arrayWithArray:[tagsDict allKeys]];
     NSString *tags = [tagsList componentsJoinedByString:@", "];
     if (tags == nil) {
         tags = @"";
     }
     return tags;
+}
+
+/**
+ Get the tags assigned to a post and return primary tag (tag with highest post_count)
+ 
+ @param dict A dictionary representing a post object from REST API
+ @return tag with highest post_count which acts as primary tag, or empty string if no tags are found.
+ */
+- (NSString *)primaryTagFromPostDictionary:(NSDictionary *)dict {
+    NSDictionary *tagsDict = [dict dictionaryForKey:@"tags"];
+
+    NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"post_count"  ascending:NO];
+    NSArray *sortedTags = [[tagsDict allValues] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
+
+    if ([sortedTags count] == 0){
+        return @"";
+    }
+    return [[sortedTags objectAtIndex:0] stringForKey:@"name"];
 }
 
 /**

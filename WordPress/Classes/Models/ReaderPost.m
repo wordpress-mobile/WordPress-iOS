@@ -42,6 +42,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic globalID;
 @dynamic isLikesEnabled;
 @dynamic isSharingEnabled;
+@dynamic primaryTag;
 
 - (BOOL)isFollowable {
     // For now, anything in the reader is something that can be followed.

@@ -36,6 +36,7 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic, strong) ReaderTopic *topic;
 @property (nonatomic) BOOL isLikesEnabled;
 @property (nonatomic) BOOL isSharingEnabled;
+@property (nonatomic, strong) NSString *primaryTag;
 
 - (BOOL)isFollowable;
 
