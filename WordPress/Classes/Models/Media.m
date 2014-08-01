@@ -267,16 +267,12 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     switch ([remoteStatus intValue]) {
         case MediaRemoteStatusPushing:
             return NSLocalizedString(@"Uploading", @"");
-            break;
         case MediaRemoteStatusFailed:
             return NSLocalizedString(@"Failed", @"");
-            break;
         case MediaRemoteStatusSync:
             return NSLocalizedString(@"Uploaded", @"");
-            break;
         default:
             return NSLocalizedString(@"Pending", @"");
-            break;
     }
 }
 

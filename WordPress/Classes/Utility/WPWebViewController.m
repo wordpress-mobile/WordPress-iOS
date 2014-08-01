@@ -216,8 +216,6 @@
 
     NSString* permaLink = [self getDocumentPermalink];
     return ( permaLink != nil) ? permaLink : @"";
-    
-    return @"";
 }
 
 - (void)loadURL:(NSURL *)webURL {

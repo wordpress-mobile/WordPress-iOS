@@ -100,16 +100,12 @@
     switch ([remoteStatus intValue]) {
         case AbstractPostRemoteStatusPushing:
             return NSLocalizedString(@"Uploading", @"");
-            break;
         case AbstractPostRemoteStatusFailed:
             return NSLocalizedString(@"Failed", @"");
-            break;
         case AbstractPostRemoteStatusSync:
             return NSLocalizedString(@"Posts", @"");
-            break;
         default:
             return NSLocalizedString(@"Local", @"");
-            break;
     }
 }
 
