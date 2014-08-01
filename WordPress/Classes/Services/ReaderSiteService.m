@@ -253,12 +253,12 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 - (ReaderSite *)createOrReplaceFromRemoteSite:(RemoteReaderSite *)remoteSite
 {
     NSString *name = remoteSite.name;
-    if (name == nil || name.length == 0) {
+    if (name.length == 0) {
         return nil;
     }
 
     NSString *path = remoteSite.path;
-    if (path == nil || path.length == 0) {
+    if (path.length == 0) {
         return nil;
     }
 
