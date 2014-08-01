@@ -1,6 +1,7 @@
 @class Reachability;
 @class DDFileLogger;
 @class ReaderPostsViewController;
+@class NotificationsViewController;
 @class BlogListViewController;
 @class NotificationsViewController;
 @class AbstractPost;
