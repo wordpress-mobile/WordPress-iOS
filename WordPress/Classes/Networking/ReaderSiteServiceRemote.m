@@ -76,6 +76,16 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     NSString *path = [NSString stringWithFormat:@"read/following/mine/new?url=%@", siteURL];
     NSDictionary *params = @{@"url": siteURL};
     [self.api POST:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *dict = (NSDictionary *)responseObject;
+        BOOL subscribed = [[dict numberForKey:@"subscribed"] boolValue];
+        if (!subscribed) {
+            if (failure) {
+                DDLogError(@"Error following site at url: %@", siteURL);
+                NSError *error = [self errorForUnsuccessfulFollowSite];
+                failure(error);
+            }
+            return;
+        }
         if (success) {
             success();
         }
@@ -91,6 +101,16 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     NSString *path = [NSString stringWithFormat:@"read/following/mine/delete?url=%@", siteURL];
     NSDictionary *params = @{@"url": siteURL};
     [self.api POST:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *dict = (NSDictionary *)responseObject;
+        BOOL subscribed = [[dict numberForKey:@"subscribed"] boolValue];
+        if (subscribed) {
+            if (failure) {
+                DDLogError(@"Error unfollowing site at url: %@", siteURL);
+                NSError *error = [self errorForUnsuccessfulFollowSite];
+                failure(error);
+            }
+            return;
+        }
         if (success) {
             success();
         }
@@ -107,9 +127,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     if (!host) {
         // error;
         if (failure) {
-            NSString *description = NSLocalizedString(@"The URL is missing a valid host.", @"Error message describing a problem with a URL.");
-            NSDictionary *userInfo = @{NSLocalizedDescriptionKey:description};
-            NSError *error = [[NSError alloc] initWithDomain:ReaderSiteServiceRemoteErrorDomain code:ReaderSiteServiceRemoteInvalidHost userInfo:userInfo];
+            NSError *error = [self errorForInvalidHost];
             failure(error);
         }
         return;
@@ -145,6 +163,62 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     }];
 }
 
+- (void)checkSiteExistsAtURL:(NSURL *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
+{
+    // Just ping the URL and make sure we don't get back a 40x error.
+    [self.api HEAD:[siteURL absoluteString] parameters:nil success:^(AFHTTPRequestOperation *operation) {
+        if (success) {
+            success();
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+- (void)checkSubscribedToSiteByID:(NSUInteger)siteID success:(void (^)(BOOL follows))success failure:(void(^)(NSError *error))failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%d/follows/mine", siteID];
+    [self.api GET:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (!success) {
+            return;
+        }
+        NSDictionary *dict = (NSDictionary *)responseObject;
+        BOOL follows = [[dict numberForKey:@"is_following"] boolValue];
+        success(follows);
+
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+- (void)checkSubscribedToFeedByURL:(NSURL *)siteURL success:(void (^)(BOOL follows))success failure:(void(^)(NSError *error))failure
+{
+    NSString *path = @"read/following/mine";
+    [self.api GET:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (!success) {
+            return;
+        }
+
+        BOOL follows = NO;
+        NSString *responseString = [[operation responseString] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        if ([responseString rangeOfString:[siteURL absoluteString]].location != NSNotFound) {
+            follows = YES;
+        }
+        success(follows);
+
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+
+#pragma mark - Private Methods
 
 - (RemoteReaderSite *)normalizeSiteDictionary:(NSDictionary *)dict
 {
@@ -167,5 +241,28 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     return site;
 }
 
+- (NSError *)errorForInvalidHost
+{
+    NSString *description = NSLocalizedString(@"The URL is missing a valid host.", @"Error message describing a problem with a URL.");
+    NSDictionary *userInfo = @{NSLocalizedDescriptionKey:description};
+    NSError *error = [[NSError alloc] initWithDomain:ReaderSiteServiceRemoteErrorDomain code:ReaderSiteServiceRemoteInvalidHost userInfo:userInfo];
+    return error;
+}
+
+- (NSError *)errorForUnsuccessfulFollowSite
+{
+    NSString *description = NSLocalizedString(@"Could not follow the site at the address specified.", @"Error message informing the user that there was a problem subscribing to a site or feed.");
+    NSDictionary *userInfo = @{NSLocalizedDescriptionKey:description};
+    NSError *error = [[NSError alloc] initWithDomain:ReaderSiteServiceRemoteErrorDomain code:ReaderSiteServiceRemoteUnsuccessfulFollowSite userInfo:userInfo];
+    return error;
+}
+
+- (NSError *)errorForUnsuccessfulUnFollowSite
+{
+    NSString *description = NSLocalizedString(@"Could not unfollow the site at the address specified.", @"Error message informing the user that there was a problem unsubscribing to a site or feed.");
+    NSDictionary *userInfo = @{NSLocalizedDescriptionKey:description};
+    NSError *error = [[NSError alloc] initWithDomain:ReaderSiteServiceRemoteErrorDomain code:ReaderSiteServiceRemoteUnsuccessfulFollowSite userInfo:userInfo];
+    return error;
+}
 
 @end
