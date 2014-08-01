@@ -12,6 +12,7 @@ static NSString * const SiteCellIdentifier = @"SiteCellIdentifier";
 
 @interface FollowedSitesViewController ()<WPTableViewHandlerDelegate>
 
+@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
 @property (nonatomic, strong) WPNoResultsView *noResultsView;
 
@@ -27,8 +28,6 @@ static NSString * const SiteCellIdentifier = @"SiteCellIdentifier";
 
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-//    self.tableView.rowHeight = 54.0;
-//    self.tableView.estimatedRowHeight = 54.0;
     [self.view addSubview:self.tableView];
 
     if (IS_IPHONE) {
