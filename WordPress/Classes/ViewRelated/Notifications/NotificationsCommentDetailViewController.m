@@ -243,33 +243,42 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     [actions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSString *actionType = [obj valueForKey:@"type"];
         [indexedActions setObject:obj forKey:actionType];
-        [self updateActionButtonForType:actionType];
+        [self updateActionButtonForType:[self.note commentActionTypeForString:actionType]];
     }];
     
     self.commentActions = indexedActions;
 }
 
-- (void)updateActionButtonForType:(NSString*)actionType {
-    if ([actionType isEqualToString:@"approve-comment"]) {
-        self.approveButton.enabled = YES;
-        [self updateApproveButton:YES];
-    } else if ([actionType isEqualToString:@"unapprove-comment"]) {
-        self.approveButton.enabled = YES;
-        [self updateApproveButton:NO];
-    } else if ([actionType isEqualToString:@"spam-comment"]) {
-        self.spamButton.enabled = YES;
-        [self updateSpamButton:YES];
-    } else if ([actionType isEqualToString:@"unspam-comment"]) {
-        self.spamButton.enabled = YES;
-        [self updateSpamButton:NO];
-    } else if ([actionType isEqualToString:@"trash-comment"]) {
-        self.trashButton.enabled = YES;
-        [self updateTrashButton:YES];
-    } else if ([actionType isEqualToString:@"untrash-comment"]) {
-        self.trashButton.enabled = YES;
-        [self updateTrashButton:NO];
-    } else if ([actionType isEqualToString:@"replyto-comment"]) {
-        self.replyButton.enabled = YES;
+- (void)updateActionButtonForType:(WPNoteCommentActionType)actionType {
+    switch (actionType) {
+        case WPNoteCommentActionTypeApprove:
+            self.approveButton.enabled = YES;
+            [self updateApproveButton:YES];
+            break;
+        case WPNoteCommentActionTypeUnapprove:
+            self.approveButton.enabled = YES;
+            [self updateApproveButton:NO];
+            break;
+        case WPNoteCommentActionTypeSpam:
+            self.spamButton.enabled = YES;
+            [self updateSpamButton:NO];
+            break;
+        case WPNoteCommentActionTypeUnspam:
+            self.spamButton.enabled = YES;
+            [self updateSpamButton:NO];
+            break;
+        case WPNoteCommentActionTypeTrash:
+            self.trashButton.enabled = YES;
+            [self updateTrashButton:YES];
+            break;
+        case WPNoteCommentActionTypeUntrash:
+            self.trashButton.enabled = YES;
+            [self updateTrashButton:NO];
+            break;
+        case WPNoteCommentActionTypeReply:
+            self.replyButton.enabled = YES;
+        case WPNoteCommentActionTypeUnknown:
+            return;
     }
 }
 
