@@ -131,7 +131,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     NSString *sanitizedURL = siteURL;
     NSRange rng = [sanitizedURL rangeOfString:@"://"];
     if (rng.location != NSNotFound) {
-        sanitizedURL = [sanitizedURL substringFromIndex:(rng.location + rng.location)];
+        sanitizedURL = [sanitizedURL substringFromIndex:(rng.location + rng.length)];
     }
 
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
