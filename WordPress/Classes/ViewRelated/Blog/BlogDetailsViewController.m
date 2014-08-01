@@ -118,17 +118,13 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    switch (section) {
-        case TableViewSectionContentType:
-            return 3;
-            break;
-        case TableViewSectionAdminType:
-            return 4;
-            break;
-        default:
-            return 0;
-            break;
+    if (section == TableViewSectionContentType) {
+        return 3;
+    } else if (section == TableViewSectionAdminType) {
+        return 4;
     }
+    
+    return 0;
 }
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {

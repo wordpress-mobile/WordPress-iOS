@@ -176,19 +176,12 @@ static NSString *const GravatarBaseUrl = @"http://gravatar.com";
 {
     NSCache *cache;
 
-    switch (type) {
-        case WPAvatarSourceTypeGravatar:
-            cache = _gravatarCache;
-            break;
-
-        case WPAvatarSourceTypeBlavatar:
-            cache = _blavatarCache;
-            break;
-
-        default:
-            break;
+    if (type == WPAvatarSourceTypeGravatar) {
+        cache = _gravatarCache;
+    } else if (type == WPAvatarSourceTypeBlavatar) {
+        cache = _blavatarCache;
     }
-
+    
     return cache;
 }
 
@@ -217,17 +210,10 @@ static NSString *const GravatarBaseUrl = @"http://gravatar.com";
 {
     CGSize size = CGSizeZero;
 
-    switch (type) {
-        case WPAvatarSourceTypeGravatar:
-            size = GravatarMaxSize;
-            break;
-
-        case WPAvatarSourceTypeBlavatar:
-            size = BlavatarMaxSize;
-            break;
-
-        default:
-            break;
+    if (type == WPAvatarSourceTypeGravatar) {
+        size = GravatarMaxSize;
+    } else if (type == WPAvatarSourceTypeBlavatar) {
+        size = BlavatarMaxSize;
     }
 
     return size;
@@ -251,18 +237,10 @@ static NSString *const GravatarBaseUrl = @"http://gravatar.com";
     CGSize size = [self maxSizeForType:type];
     NSString *url = GravatarBaseUrl;
 
-    switch (type) {
-        case WPAvatarSourceTypeGravatar:
-            url = [url stringByAppendingString:@"/avatar/"];
-            break;
-
-        case WPAvatarSourceTypeBlavatar:
-            url = [url stringByAppendingString:@"/blavatar/"];
-            break;
-
-        default:
-            return nil;
-            break;
+    if (type == WPAvatarSourceTypeGravatar) {
+        url = [url stringByAppendingString:@"/avatar/"];
+    } else if (type == WPAvatarSourceTypeBlavatar) {
+        url = [url stringByAppendingString:@"/blavatar/"];
     }
 
     url = [url stringByAppendingFormat:@"%@?s=%d&d=identicon", hash, (int)(size.width * [[UIScreen mainScreen] scale])];

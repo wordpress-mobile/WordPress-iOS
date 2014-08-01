@@ -223,30 +223,23 @@ CGFloat const blavatarImageViewSize = 43.f;
     NSString *cellIdentifier = @"Cell";
     UITableViewCellStyle cellStyle = UITableViewCellStyleDefault;
     
-    switch (indexPath.section) {
-        case SettingsSectionWpcom: {
-            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-            WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-            if (defaultAccount && indexPath.row == 0) {
-                cellIdentifier = @"WpcomUsernameCell";
-                cellStyle = UITableViewCellStyleValue1;
-            } else {
-                cellIdentifier = @"WpcomCell";
-                cellStyle = UITableViewCellStyleDefault;
-            }
-            break;
-        }
-        case SettingsSectionMedia:
-            cellIdentifier = @"Media";
+    if (indexPath.section == SettingsSectionWpcom) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+        
+        if (defaultAccount && indexPath.row == 0) {
+            cellIdentifier = @"WpcomUsernameCell";
+            cellStyle = UITableViewCellStyleValue1;
+        } else {
+            cellIdentifier = @"WpcomCell";
             cellStyle = UITableViewCellStyleDefault;
-            break;
-            
-        default:
-            break;
+        }
+    } else if (indexPath.section == SettingsSectionMedia) {
+        cellIdentifier = @"Media";
+        cellStyle = UITableViewCellStyleDefault;
     }
-    
+        
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:cellStyle reuseIdentifier:cellIdentifier];
