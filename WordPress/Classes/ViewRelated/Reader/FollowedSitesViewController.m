@@ -9,6 +9,7 @@
 #import "WPNoResultsView.h"
 
 static NSString * const SiteCellIdentifier = @"SiteCellIdentifier";
+static CGFloat const FollowSitesRowHeight = 54.0;
 
 @interface FollowedSitesViewController ()<WPTableViewHandlerDelegate>
 
@@ -177,7 +178,7 @@ static NSString * const SiteCellIdentifier = @"SiteCellIdentifier";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 54.0;
+    return FollowSitesRowHeight;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
