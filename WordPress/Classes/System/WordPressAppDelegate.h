@@ -2,6 +2,7 @@
 @class DDFileLogger;
 @class ReaderPostsViewController;
 @class BlogListViewController;
+@class NotificationsViewController;
 @class AbstractPost;
 @class Simperium;
 @class Blog;
@@ -13,17 +14,18 @@ extern NSInteger const kMeTabIndex;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate>
 
-@property (nonatomic, strong) IBOutlet UIWindow *window;
-@property (nonatomic, strong) UINavigationController *navigationController;
-@property (nonatomic, strong) UITabBarController *tabBarController;
-@property (nonatomic, strong) ReaderPostsViewController *readerPostsViewController;
-@property (nonatomic, strong) BlogListViewController *blogListViewController;
-@property (nonatomic, strong) Reachability *internetReachability;
-@property (nonatomic, strong) Reachability *wpcomReachability;
-@property (nonatomic, assign) BOOL connectionAvailable;
-@property (nonatomic, assign) BOOL wpcomAvailable;
-@property (nonatomic, strong, readonly) DDFileLogger *fileLogger;
-@property (nonatomic, strong, readonly) Simperium *simperium;
+@property (nonatomic, strong, readwrite) IBOutlet UIWindow              *window;
+@property (nonatomic, strong,  readonly) UINavigationController         *navigationController;
+@property (nonatomic, strong,  readonly) UITabBarController             *tabBarController;
+@property (nonatomic, strong,  readonly) ReaderPostsViewController      *readerPostsViewController;
+@property (nonatomic, strong,  readonly) BlogListViewController         *blogListViewController;
+@property (nonatomic, strong,  readonly) NotificationsViewController    *notificationsViewController;
+@property (nonatomic, strong,  readonly) Reachability                   *internetReachability;
+@property (nonatomic, strong,  readonly) Reachability                   *wpcomReachability;
+@property (nonatomic, strong,  readonly) DDFileLogger                   *fileLogger;
+@property (nonatomic, strong,  readonly) Simperium                      *simperium;
+@property (nonatomic, assign,  readonly) BOOL                           connectionAvailable;
+@property (nonatomic, assign,  readonly) BOOL                           wpcomAvailable;
 
 + (WordPressAppDelegate *)sharedWordPressApplicationDelegate;
 
@@ -37,7 +39,7 @@ extern NSInteger const kMeTabIndex;
 ///-----------------------
 /// @name Tab bar controls
 ///-----------------------
-- (void)showTabForIndex: (NSInteger)tabIndex;
+- (void)showTabForIndex:(NSInteger)tabIndex;
 - (void)showPostTab;
 - (void)switchTabToPostsListForPost:(AbstractPost *)post;
 - (BOOL)isNavigatingMeTab;
