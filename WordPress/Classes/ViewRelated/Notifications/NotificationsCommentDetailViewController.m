@@ -278,31 +278,34 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-approve"] forState:UIControlStateNormal];
         [self.approveButton setTitle:NSLocalizedString(@"Approve", @"Verb, approve a comment") forState:UIControlStateNormal];
         self.approveButton.accessibilityLabel = NSLocalizedString(@"Approve", @"Spoken accessibility label.");
-    } else {
-        [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-unapprove"] forState:UIControlStateNormal];
-        [self.approveButton setTitle:NSLocalizedString(@"Unapprove", @"Verb, unapprove a comment") forState:UIControlStateNormal];
-        self.approveButton.accessibilityLabel = NSLocalizedString(@"Unapprove", @"Spoken accessibility label.");
+        return;
     }
+    
+    [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-unapprove"] forState:UIControlStateNormal];
+    [self.approveButton setTitle:NSLocalizedString(@"Unapprove", @"Verb, unapprove a comment") forState:UIControlStateNormal];
+    [self.approveButton setAccessibilityLabel:NSLocalizedString(@"Unapprove", @"Spoken accessibility label.")];
 }
 
 - (void)updateSpamButton:(BOOL)canBeSpammed {
     if (canBeSpammed) {
         [self.spamButton setTitle:NSLocalizedString(@"Spam", "Verb, mark a comment as spam") forState:UIControlStateNormal];
         self.spamButton.accessibilityLabel = NSLocalizedString(@"Spam", @"Spoken accessibility label.");
-    } else {
-        [self.spamButton setTitle:NSLocalizedString(@"Not Spam", "Mark a comment as not spam") forState:UIControlStateNormal];
-        self.spamButton.accessibilityLabel = NSLocalizedString(@"Not Spam", @"Spoken accessibility label.");
+        return;
     }
+    
+    [self.spamButton setTitle:NSLocalizedString(@"Not Spam", "Mark a comment as not spam") forState:UIControlStateNormal];
+    [self.spamButton setAccessibilityLabel:NSLocalizedString(@"Not Spam", @"Spoken accessibility label.")];
 }
 
 - (void)updateTrashButton:(BOOL)canBeTrashed {
     if (canBeTrashed) {
         [self.trashButton setTitle:NSLocalizedString(@"Trash", "Verb, move a comment to the trash") forState:UIControlStateNormal];
         self.trashButton.accessibilityLabel = NSLocalizedString(@"Trash", @"Spoken accessibility label.");
-    } else {
-        [self.trashButton setTitle:NSLocalizedString(@"Untrash", "Verb, remove a comment from the trash") forState:UIControlStateNormal];
-        self.trashButton.accessibilityLabel = NSLocalizedString(@"Not Spam", @"Spoken accessibility label.");
+        return;
     }
+    
+    [self.trashButton setTitle:NSLocalizedString(@"Untrash", "Verb, remove a comment from the trash") forState:UIControlStateNormal];
+    [self.trashButton setAccessibilityLabel:NSLocalizedString(@"Not Spam", @"Spoken accessibility label.")];
 }
 
 - (void)setAllActionButtonsEnabled:(BOOL)enabled {
