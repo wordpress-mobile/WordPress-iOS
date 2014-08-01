@@ -70,11 +70,9 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
 
 - (void)uploadMedia:(Media *)media withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     NSString *mimeType = (media.mediaType == MediaTypeVideo) ? @"video/mp4" : @"image/jpeg";
-    NSDictionary *object = [NSDictionary dictionaryWithObjectsAndKeys:
-                            mimeType, @"type",
-                            media.filename, @"name",
-                            [NSInputStream inputStreamWithFileAtPath:media.localURL], @"bits",
-                            nil];
+    NSDictionary *object = @{@"type": mimeType,
+                             @"name": media.filename,
+                             @"bits": [NSInputStream inputStreamWithFileAtPath:media.localURL]};
     NSArray *parameters = [media.blog getXMLRPCArgsWithExtra:object];
 
     media.remoteStatus = MediaRemoteStatusProcessing;

@@ -359,8 +359,11 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
                                  nil] autorelease];
 
 			NSDictionary *query = [[[NSDictionary alloc] initWithObjects: objects forKeys: keys] autorelease];
+            NSDictionary *attributesToUpdate = @{(NSString *)kSecValueData:
+                                                     [password dataUsingEncoding: NSUTF8StringEncoding]};
 
-			status = SecItemUpdate((CFDictionaryRef) query, (CFDictionaryRef) [NSDictionary dictionaryWithObject: [password dataUsingEncoding: NSUTF8StringEncoding] forKey: (NSString *) kSecValueData]);
+			status = SecItemUpdate((CFDictionaryRef) query,
+                                   (CFDictionaryRef) @{(NSString*)kSecValueData: attributesToUpdate});
 		}
 	}
 	else

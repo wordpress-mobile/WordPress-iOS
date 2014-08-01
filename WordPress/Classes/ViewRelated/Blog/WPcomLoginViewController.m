@@ -311,7 +311,8 @@
     if (isSigningIn) {
         return;
     }
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     __weak WPcomLoginViewController *loginController = self;
     NSString *username = loginCell.textField.text;
     NSString *password = passwordCell.textField.text;
@@ -330,8 +331,9 @@
                                     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
 
                                     WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken];
-                                    
-                                    [loginController.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
+
+                                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+                                    [loginController.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                                     if (loginController.delegate) {
                                         [loginController.delegate loginController:loginController didAuthenticateWithAccount:account];
                                     }

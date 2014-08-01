@@ -342,10 +342,10 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
     switch(type) {            
         case NSFetchedResultsChangeInsert:
-            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
+            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
             break;
         case NSFetchedResultsChangeDelete:
-            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:[self tableViewRowAnimation]];
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:[self tableViewRowAnimation]];
             if ([_indexPathSelectedBeforeUpdates isEqual:indexPath]) {
                 [self.navigationController popToViewController:self animated:YES];
             }
@@ -354,10 +354,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
             [self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:newIndexPath];
             break;
         case NSFetchedResultsChangeMove:
-            [self.tableView deleteRowsAtIndexPaths:[NSArray
-                                                       arrayWithObject:indexPath] withRowAnimation:[self tableViewRowAnimation]];
-            [self.tableView insertRowsAtIndexPaths:[NSArray
-                                                       arrayWithObject:newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:[self tableViewRowAnimation]];
+            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
             if ([_indexPathSelectedBeforeUpdates isEqual:indexPath] && _indexPathSelectedAfterUpdates == nil) {
                 _indexPathSelectedAfterUpdates = newIndexPath;
             }

@@ -182,7 +182,7 @@
 }
 
 - (WPXMLRPCRequestOperation *)operationForPostFormatsWithBlog:(Blog *)blog success:(PostFormatsHandler)success failure:(void (^)(NSError *error))failure {
-    NSDictionary *dict = [NSDictionary dictionaryWithObject:@"1" forKey:@"show-supported"];
+    NSDictionary *dict = @{@"show-supported": @"1"};
     NSArray *parameters = [blog getXMLRPCArgsWithExtra:dict];
 
     WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPostFormats" parameters:parameters];

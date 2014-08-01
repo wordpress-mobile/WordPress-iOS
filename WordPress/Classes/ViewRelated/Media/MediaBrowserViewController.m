@@ -934,15 +934,15 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         [self resetImagePicker];
         _picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         if (self.videoPressEnabled || ![self.blog isWPcom]) {
-            _picker.mediaTypes = [NSArray arrayWithObjects: (NSString *)kUTTypeMovie, (NSString *)kUTTypeImage, nil];
+            _picker.mediaTypes = @[(NSString *)kUTTypeMovie, (NSString *)kUTTypeImage];
         } else {
-            _picker.mediaTypes = [NSArray arrayWithObjects:(NSString *)kUTTypeImage, nil];
+            _picker.mediaTypes = @[(NSString *)kUTTypeImage];
         }
         _picker.videoQuality = UIImagePickerControllerQualityTypeMedium;
         _selectingDeviceFromLibrary = YES;
         
         if ([(UIView *)sender tag] == MediaTypeActionSheetVideo) {
-            _picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeMovie];
+            _picker.mediaTypes = @[(NSString *)kUTTypeMovie];
 			_picker.videoQuality = [self videoQualityPreference];
             _picker.modalPresentationStyle = UIModalPresentationCurrentContext;
         }
@@ -966,7 +966,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         [self resetImagePicker];
         _picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-		_picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
+		_picker.mediaTypes = @[(NSString *)kUTTypeImage];
         _picker.modalPresentationStyle = UIModalPresentationCurrentContext;
         if (IS_IPAD) {
             [WordPressAppDelegate sharedWordPressApplicationDelegate].tabBarController.tabBar.hidden = YES;
@@ -980,7 +980,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         [self resetImagePicker];
         _picker.sourceType =  UIImagePickerControllerSourceTypeCamera;
-        _picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeMovie];
+        _picker.mediaTypes = @[(NSString *)kUTTypeMovie];
         _picker.videoQuality = [self videoQualityPreference];
         _picker.modalPresentationStyle = UIModalPresentationCurrentContext;
         if (IS_IPAD) {
@@ -1057,12 +1057,10 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
                          */
                         CLLocationDegrees latitude = post.geolocation.latitude;
                         CLLocationDegrees longitude = post.geolocation.longitude;
-                        NSDictionary *gps = [NSDictionary dictionaryWithObjectsAndKeys:
-                                             [NSNumber numberWithDouble:fabs(latitude)], @"Latitude",
-                                             (latitude < 0.0) ? @"S" : @"N", @"LatitudeRef",
-                                             [NSNumber numberWithDouble:fabs(longitude)], @"Longitude",
-                                             (longitude < 0.0) ? @"W" : @"E", @"LongitudeRef",
-                                             nil];
+                        NSDictionary *gps = @{@"Latitude": [NSNumber numberWithDouble:fabs(latitude)],
+                                              @"LatitudeRef": (latitude < 0.0) ? @"S" : @"N",
+                                              @"Longitude": [NSNumber numberWithDouble:fabs(longitude)],
+                                              @"LongitudeRef": (longitude < 0.0) ? @"W" : @"E"};
                         [mutableMetadata setObject:gps forKey:@"{GPS}"];
                     }
                     [mutableMetadata removeObjectForKey:@"Orientation"];
@@ -1281,9 +1279,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     NSURL *contentURL = [NSURL fileURLWithPath:videoURL];
     
     AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:contentURL
-                                                options:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                         @YES, AVURLAssetPreferPreciseDurationAndTimingKey,
-                                                         nil]];
+                                                options:@{AVURLAssetPreferPreciseDurationAndTimingKey: @YES}];
     if (asset) {
         duration = CMTimeGetSeconds(asset.duration);
         AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:asset];

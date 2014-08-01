@@ -452,7 +452,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
                               [NSNumber numberWithInt:AbstractPostRemoteStatusSync], blog];
     [request setPredicate:predicate];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:YES];
-    [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    [request setSortDescriptors:@[sortDescriptor]];
     request.includesSubentities = NO;
     request.resultType = NSCountResultType;
     
@@ -565,7 +565,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
             for (NSString *key in supportedKeys) {
                 [supportedValues addObject:[allFormats objectForKey:key]];
             }
-            respDict = [NSDictionary dictionaryWithObjects:supportedValues forKeys:supportedKeys];
+            respDict = @{supportedValues: supportedKeys};
         }
         blog.postFormats = respDict;
 

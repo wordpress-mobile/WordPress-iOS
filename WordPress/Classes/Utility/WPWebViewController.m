@@ -109,9 +109,7 @@
         self.backButton.width = (self.toolbar.frame.size.width / 2.0f) - 10.0f;
         self.forwardButton.width = (self.toolbar.frame.size.width / 2.0f) - 10.0f;
         UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        NSArray *items = [NSArray arrayWithObjects:spacer,
-                          self.backButton, spacer,
-                          self.forwardButton, spacer, nil];
+        NSArray *items = @[spacer, self.backButton, spacer, self.forwardButton, spacer];
         self.toolbar.items = items;
     }
 }
