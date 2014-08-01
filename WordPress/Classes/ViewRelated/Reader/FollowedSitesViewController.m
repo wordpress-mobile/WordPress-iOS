@@ -210,6 +210,7 @@ static NSString * const SiteCellIdentifier = @"SiteCellIdentifier";
 
 - (void)tableViewDidChangeContent:(UITableView *)tableView
 {
+    [self.tableView reloadData];
     [self configureNoResultsView];
 }
 
