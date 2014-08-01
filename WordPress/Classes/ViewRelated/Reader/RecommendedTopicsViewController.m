@@ -9,6 +9,7 @@
 
 @interface RecommendedTopicsViewController ()<WPTableViewHandlerDelegate>
 
+@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
 
 @end
