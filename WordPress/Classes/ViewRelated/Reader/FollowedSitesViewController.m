@@ -27,8 +27,8 @@ static NSString * const SiteCellIdentifier = @"SiteCellIdentifier";
 
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.tableView.rowHeight = 54.0;
-    self.tableView.estimatedRowHeight = 54.0;
+//    self.tableView.rowHeight = 54.0;
+//    self.tableView.estimatedRowHeight = 54.0;
     [self.view addSubview:self.tableView];
 
     if (IS_IPHONE) {
@@ -140,15 +140,10 @@ static NSString * const SiteCellIdentifier = @"SiteCellIdentifier";
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    if ([cell.textLabel.text length] == 0) {
-        // The sizeToFit call in [WPStyleGuide configureTableViewCell:] seems to mess with the
-        // UI when cells are configured the first time round and the modal animation is playing.
-        // A work around is to only style the cells when not displaying text.
-        [WPStyleGuide configureTableViewSmallSubtitleCell:cell];
-    }
+    UIImage *defaultImage = [UIImage imageNamed:@"icon-feed"];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.accessoryType = UITableViewCellAccessoryNone;
-    cell.imageView.image = [UIImage imageNamed:@"icon-feed"];
+    cell.imageView.image = defaultImage;
     cell.imageView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 
     ReaderSite *site = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
@@ -156,10 +151,14 @@ static NSString * const SiteCellIdentifier = @"SiteCellIdentifier";
     cell.detailTextLabel.text = site.path;
     if (site.icon) {
         cell.imageView.backgroundColor = nil;
-        [cell.imageView setImageWithBlavatarUrl:site.icon];
+        [cell.imageView setImageWithBlavatarUrl:site.icon placeholderImage:defaultImage];
     }
 
     [WPStyleGuide configureTableViewSmallSubtitleCell:cell];
+
+    // The inital layout is a little off and reloading the view doesn't correct it.
+    // Forcing layout of the cell's subviews corrects the issue.
+    [cell layoutSubviews];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

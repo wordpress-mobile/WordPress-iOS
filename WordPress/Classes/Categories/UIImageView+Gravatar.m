@@ -56,6 +56,11 @@ NSString *const GravatarDefault = @"gravatar.png";
         placeholderImage = blavatarDefaultImageWPorg;
     }
 
+    [self setImageWithBlavatarUrl:blavatarUrl placeholderImage:placeholderImage];
+}
+
+- (void)setImageWithBlavatarUrl:(NSString *)blavatarUrl placeholderImage:(UIImage *)placeholderImage
+{
     if ([blavatarUrl rangeOfString:@"gravatar.com/blavatar"].location == NSNotFound) {
         [self setImageWithURL:[self blavatarURLForHost:blavatarUrl] placeholderImage:placeholderImage];
     } else {
