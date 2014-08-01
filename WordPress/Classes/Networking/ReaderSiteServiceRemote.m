@@ -257,7 +257,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     return error;
 }
 
-- (NSError *)errorForUnsuccessfulUnFollowSite
+- (NSError *)errorForUnsuccessfulUnfollowSite
 {
     NSString *description = NSLocalizedString(@"Could not unfollow the site at the address specified.", @"Error message informing the user that there was a problem unsubscribing to a site or feed.");
     NSDictionary *userInfo = @{NSLocalizedDescriptionKey:description};
