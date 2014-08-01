@@ -29,12 +29,12 @@
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(post = %@)", post];
     [request setPredicate:predicate];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];
-    [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    [request setSortDescriptors:@[sortDescriptor]];
     
     NSError *error = nil;
     NSArray *array = [context executeFetchRequest:request error:&error];
     if (array == nil) {
-        array = [NSArray array];
+        array = @[];
     }
     return array;
 }
@@ -46,12 +46,12 @@
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(post = %@) && (parentID != 0)", post];
     [request setPredicate:predicate];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];
-    [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    [request setSortDescriptors:@[sortDescriptor]];
     
     NSError *error = nil;
     NSArray *array = [context executeFetchRequest:request error:&error];
     if (array == nil) {
-        array = [NSArray array];
+        array = @[];
     }
     return array;
 }
@@ -63,12 +63,12 @@
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(post = %@) && (parentID = 0)", post];
     [request setPredicate:predicate];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];
-    [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    [request setSortDescriptors:@[sortDescriptor]];
     
     NSError *error = nil;
     NSArray *array = [context executeFetchRequest:request error:&error];
     if (array == nil) {
-        array = [NSArray array];
+        array = @[];
     }
     return array;
 }
@@ -94,7 +94,7 @@
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(post = %@) && (commentID = %@)", post, comment.parentID];
 		[request setPredicate:predicate];
 		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];
-		[request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+		[request setSortDescriptors:@[sortDescriptor]];
 		
 		NSError *error = nil;
 		NSArray *arr = [context executeFetchRequest:request error:&error];

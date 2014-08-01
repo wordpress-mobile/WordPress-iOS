@@ -323,11 +323,9 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
 
 - (void)xmlrpcUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     NSString *mimeType = (self.mediaType == MediaTypeVideo) ? @"video/mp4" : @"image/jpeg";
-    NSDictionary *object = [NSDictionary dictionaryWithObjectsAndKeys:
-                            mimeType, @"type",
-                            self.filename, @"name",
-                            [NSInputStream inputStreamWithFileAtPath:self.localURL], @"bits",
-                            nil];
+    NSDictionary *object = @{@"type": mimeType,
+                             @"name": self.filename,
+                             @"bits": [NSInputStream inputStreamWithFileAtPath:self.localURL]};
     NSArray *parameters = [self.blog getXMLRPCArgsWithExtra:object];
 
     self.remoteStatus = MediaRemoteStatusProcessing;

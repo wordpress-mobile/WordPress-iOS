@@ -86,8 +86,9 @@
     [self.blog.api callMethod:@"wp.newPage"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                          if ([self isDeleted] || self.managedObjectContext == nil)
+                          if ([self isDeleted] || self.managedObjectContext == nil) {
                               return;
+                          }
 
                           if ([responseObject respondsToSelector:@selector(numericValue)]) {
                               self.postID = [responseObject numericValue];
@@ -99,23 +100,26 @@
                               [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploaded" object:self];
                           } else if (failure) {
                               self.remoteStatus = AbstractPostRemoteStatusFailed;
-                              NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"Invalid value returned for new post: %@", responseObject] forKey:NSLocalizedDescriptionKey];
+                              NSDictionary *userInfo = @{NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Invalid value returned for new post: %@", responseObject]};
                               NSError *error = [NSError errorWithDomain:@"org.wordpress.iphone" code:0 userInfo:userInfo];
                               failure(error);
                               [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadFailed" object:self];
                           }
                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                          if ([self isDeleted] || self.managedObjectContext == nil)
+                          if ([self isDeleted] || self.managedObjectContext == nil) {
                               return;
+                          }
 
                           self.remoteStatus = AbstractPostRemoteStatusFailed;
-                          if (failure) failure(error);
+                          if (failure) {
+                              failure(error);
+                          }
                           [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadFailed" object:self];
                       }];    
 }
 
 - (void)getPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.postID, self.blog.username, self.blog.password, nil];
+    NSArray *parameters = @[self.blog.blogID, self.postID, self.blog.username, self.blog.password];
     [self.blog.api callMethod:@"wp.getPage"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -135,14 +139,14 @@
 - (void)editPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     if (self.postID == nil) {
         if (failure) {
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Can't edit a post if it's not in the server" forKey:NSLocalizedDescriptionKey];
+            NSDictionary *userInfo = @{NSLocalizedDescriptionKey: @"Can't edit a post if it's not in the server"};
             NSError *error = [NSError errorWithDomain:@"org.wordpress.iphone" code:0 userInfo:userInfo];
             failure(error);
         }
         return;
     }
     
-    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.postID, self.blog.username, self.blog.password, [self XMLRPCDictionary], nil];
+    NSArray *parameters = @[self.blog.blogID, self.postID, self.blog.username, self.blog.password, [self XMLRPCDictionary]];
     self.remoteStatus = AbstractPostRemoteStatusPushing;
     [self.blog.api callMethod:@"wp.editPage"
                    parameters:parameters
