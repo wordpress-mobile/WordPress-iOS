@@ -14,7 +14,7 @@
 
 - (BOOL)isFeed
 {
-    return [self.feedID integerValue] > 0 ? YES : NO;
+    return [self.siteID integerValue] == 0 ? YES : NO;
 }
 
 @end

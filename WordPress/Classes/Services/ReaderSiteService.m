@@ -65,15 +65,14 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     }
 
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithRemoteApi:api];
-    [service findSiteIDForURL:siteURL success:^(NSUInteger siteID) {
-        if (siteID) {
-            [self followSiteWithID:siteID success:success failure:failure];
-        } else {
-            [self followSiteAtURL:[siteURL absoluteString] success:success failure:failure];
-        }
+
+    // Make sure the URL provided leads to a visible site / does not 404.
+    [service checkSiteExistsAtURL:siteURL success:^{
+        [self followExistingSiteByURL:siteURL success:success failure:failure];
     } failure:^(NSError *error) {
-        DDLogInfo(@"Could not find site at URL: %@", siteURL);
-        [self followSiteAtURL:[siteURL absoluteString] success:success failure:failure];
+        if (failure) {
+            failure(error);
+        }
     }];
 }
 
@@ -88,7 +87,20 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     }
 
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithRemoteApi:api];
-    [service followSiteWithID:siteID success:success failure:failure];
+    [service checkSubscribedToSiteByID:siteID success:^(BOOL follows) {
+        if (follows) {
+            if (failure) {
+                failure([self errorForAlreadyFollowingSiteOrFeed]);
+            }
+            return;
+        }
+        [service followSiteWithID:siteID success:success failure:failure];
+
+    } failure:^(NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
 }
 
 - (void)unfollowSiteWithID:(NSUInteger)siteID success:(void(^)())success failure:(void(^)(NSError *error))failure
@@ -115,8 +127,27 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         return;
     }
 
+    // Omit any protocol included in the URL.
+    NSString *sanitizedURL = siteURL;
+    NSRange rng = [sanitizedURL rangeOfString:@"://"];
+    if (rng.location != NSNotFound) {
+        sanitizedURL = [sanitizedURL substringFromIndex:(rng.location + rng.location)];
+    }
+
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
-    [service followSiteAtURL:siteURL success:success failure:failure];
+    [service checkSubscribedToFeedByURL:[NSURL URLWithString:siteURL] success:^(BOOL follows) {
+        if (follows) {
+            if (failure) {
+                failure([self errorForAlreadyFollowingSiteOrFeed]);
+            }
+            return;
+        }
+        [service followSiteAtURL:sanitizedURL success:success failure:failure];
+    } failure:^(NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
 }
 
 - (void)unfollowSiteAtURL:(NSString *)siteURL success:(void(^)())success failure:(void(^)(NSError *error))failure
@@ -133,9 +164,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     [service unfollowSiteAtURL:siteURL success:success failure:failure];
 }
 
-- (void)unfollowSite:(ReaderSite *)site
-             success:(void(^)())success
-             failure:(void(^)(NSError *error))failure
+- (void)unfollowSite:(ReaderSite *)site success:(void(^)())success failure:(void(^)(NSError *error))failure
 {
     if ([site isFeed]) {
         [self unfollowSiteAtURL:site.path success:success failure:failure];
@@ -161,12 +190,23 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     return api;
 }
 
-- (NSError *)errorForNotLoggedIn
+/**
+ Called once a URL is confirmed to point at a valid site. Continues the following process.
+ */
+- (void)followExistingSiteByURL:(NSURL *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
 {
-    NSString *description = NSLocalizedString(@"You must be signed in to a WordPress.com account to perform this action.", @"Error message informing the user that being logged into a WordPress.com account is required.");
-    NSDictionary *userInfo = @{NSLocalizedDescriptionKey:description};
-    NSError *error = [[NSError alloc] initWithDomain:ReaderSiteServiceErrorDomain code:ReaderSiteServiceNotLoggedInError userInfo:userInfo];
-    return error;
+    WordPressComApi *api = [self apiForRequest];
+    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithRemoteApi:api];
+    [service findSiteIDForURL:siteURL success:^(NSUInteger siteID) {
+        if (siteID) {
+            [self followSiteWithID:siteID success:success failure:failure];
+        } else {
+            [self followSiteAtURL:[siteURL absoluteString] success:success failure:failure];
+        }
+    } failure:^(NSError *error) {
+        DDLogInfo(@"Could not find site at URL: %@", siteURL);
+        [self followSiteAtURL:[siteURL absoluteString] success:success failure:failure];
+    }];
 }
 
 /**
@@ -278,6 +318,24 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     }
 
     return results;
+}
+
+#pragma mark - Error messages
+
+- (NSError *)errorForNotLoggedIn
+{
+    NSString *description = NSLocalizedString(@"You must be signed in to a WordPress.com account to perform this action.", @"Error message informing the user that being logged into a WordPress.com account is required.");
+    NSDictionary *userInfo = @{NSLocalizedDescriptionKey:description};
+    NSError *error = [[NSError alloc] initWithDomain:ReaderSiteServiceErrorDomain code:ReaderSiteServiceErrorNotLoggedIn userInfo:userInfo];
+    return error;
+}
+
+- (NSError *)errorForAlreadyFollowingSiteOrFeed
+{
+    NSString *description = NSLocalizedString(@"You are already following that site.", @"Error message informing the user that they are already following a site in their reader.");
+    NSDictionary *userInfo = @{NSLocalizedDescriptionKey:description};
+    NSError *error = [[NSError alloc] initWithDomain:ReaderSiteServiceErrorDomain code:ReaderSiteServiceErrorAlreadyFollowingSite userInfo:userInfo];
+    return error;
 }
 
 @end

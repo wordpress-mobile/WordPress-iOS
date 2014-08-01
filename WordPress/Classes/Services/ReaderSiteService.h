@@ -2,7 +2,8 @@
 #import "LocalCoreDataService.h"
 
 typedef enum : NSUInteger {
-    ReaderSiteServiceNotLoggedInError
+    ReaderSiteServiceErrorNotLoggedIn,
+    ReaderSiteServiceErrorAlreadyFollowingSite
 } ReaderSiteServiceError;
 
 extern NSString * const ReaderSiteServiceErrorDomain;
