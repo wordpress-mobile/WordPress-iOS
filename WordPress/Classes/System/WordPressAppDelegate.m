@@ -199,7 +199,7 @@ NSInteger const kMeTabIndex = 2;
         returnValue = YES;
     }
 
-    if (url && [url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:@"wordpress://"]) {
+    if ([url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:@"wordpress://"]) {
         NSString *URLString = [url absoluteString];
         DDLogInfo(@"Application launched with URL: %@", URLString);
 

@@ -121,7 +121,7 @@ static NSString *const GravatarBaseUrl = @"http://gravatar.com";
     WPAvatarSourceType sourceType = WPAvatarSourceTypeUnknown;
 
     NSArray *components = [url pathComponents];
-    if (components && [components count] > 2) {
+    if ([components count] > 2) {
         NSString *type = components[1];
         NSString *hash = components[2];
         if ([hash length] == 32) {

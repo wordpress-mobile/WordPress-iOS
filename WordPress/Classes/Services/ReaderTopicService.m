@@ -327,7 +327,7 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
         }
     }
     
-    if (currentTopics && [currentTopics count] > 0) {
+    if ([currentTopics count] > 0) {
         for (ReaderTopic *topic in currentTopics) {
             if (![topicsToKeep containsObject:topic]) {
                 DDLogInfo(@"Deleting ReaderTopic: %@", topic);

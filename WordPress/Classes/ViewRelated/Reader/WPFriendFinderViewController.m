@@ -180,7 +180,7 @@ static NSString *const SourceFacebook = @"Facebook";
                 request.account = account;
                 [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
                     NSDictionary *response = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
-                    if (response && [response isKindOfClass:[NSDictionary class]]) {
+                    if ([response isKindOfClass:[NSDictionary class]]) {
                         NSArray *friends = response[@"data"];
                         if (friends != nil) {
                             dispatch_async(dispatch_get_main_queue(), ^{

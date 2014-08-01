@@ -447,7 +447,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         oldestDate = [DateUtils dateFromISOString:remotePost.sortDate];
     }
 
-    if (state.backfillBatchNumber > ReaderPostServiceMaxBatchesToBackfill || (oldestDate && (oldestDate == [oldestDate earlierDate:state.backfillDate]))) {
+    if (state.backfillBatchNumber > ReaderPostServiceMaxBatchesToBackfill || (oldestDate == [oldestDate earlierDate:state.backfillDate])) {
         // our work is done
         [self mergePosts:state.backfilledRemotePosts earlierThan:[NSDate date] forTopic:topicObjectID callingSuccess:success];
     } else {
