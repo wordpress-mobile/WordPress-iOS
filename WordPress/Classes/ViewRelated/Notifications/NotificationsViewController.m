@@ -29,9 +29,7 @@
 
 @interface NotificationsViewController ()
 
-@property (nonatomic, strong) id    authListener;
 @property (nonatomic, assign) BOOL  viewHasAppeared;
-@property (nonatomic, assign) BOOL  retrievingNotifications;
 
 typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 - (void)loadPostWithId:(NSNumber *)postID fromSite:(NSNumber *)siteID block:(NotificationsLoadPostBlock)block;
