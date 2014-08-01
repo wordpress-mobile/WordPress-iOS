@@ -530,10 +530,10 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         
         // If we asked for more and we got what we had, there are no more pages to load
         if (more && ([pages count] <= syncCount)) {
-            blog.hasOlderPages = [NSNumber numberWithBool:NO];
+            blog.hasOlderPages = @NO;
         } else if (!more) {
             //we should reset the flag otherwise when you refresh this blog you can't get more than 20 pages
-            blog.hasOlderPages = [NSNumber numberWithBool:YES];
+            blog.hasOlderPages = @YES;
         }
         
         [Page mergeNewPosts:pages forBlog:blog];
@@ -583,10 +583,10 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         
         // If we asked for more and we got what we had, there are no more posts to load
         if (more && ([posts count] <= [blog.posts count])) {
-            blog.hasOlderPosts = [NSNumber numberWithBool:NO];
+            blog.hasOlderPosts = @NO;
         } else if (!more) {
             //we should reset the flag otherwise when you refresh this blog you can't get more than 20 posts
-            blog.hasOlderPosts = [NSNumber numberWithBool:YES];
+            blog.hasOlderPosts = @YES;
         }
         
         [Post mergeNewPosts:posts forBlog:blog];

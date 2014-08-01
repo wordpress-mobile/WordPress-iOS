@@ -32,7 +32,7 @@
     Blog *blog = [self blogWithObjectID:blogObjectID];
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(categoryName like %@) AND (parentID = %@)", name,
-                              (parentId ? parentId : [NSNumber numberWithInt:0])];
+                              (parentId ? parentId : @0)];
     
     NSSet *items = [blog.categories filteredSetUsingPredicate:predicate];
     

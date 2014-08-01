@@ -799,10 +799,12 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 		NSNumber *width = [NSNumber numberWithInt:[overlayView.firstTextField.text intValue]];
 		NSNumber *height = [NSNumber numberWithInt:[overlayView.secondTextField.text intValue]];
 		
-		if([width intValue] < 10)
-			width = [NSNumber numberWithInt:10];
-		if([height intValue] < 10)
-			height = [NSNumber numberWithInt:10];
+		if ([width intValue] < 10) {
+			width = @10;
+        }
+		if ([height intValue] < 10) {
+			height = @10;
+        }
 		
 		overlayView.firstTextField.text = [NSString stringWithFormat:@"%@", width];
 		overlayView.secondTextField.text = [NSString stringWithFormat:@"%@", height];
@@ -1280,7 +1282,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     
     AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:contentURL
                                                 options:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                         [NSNumber numberWithBool:YES], AVURLAssetPreferPreciseDurationAndTimingKey,
+                                                         @YES, AVURLAssetPreferPreciseDurationAndTimingKey,
                                                          nil]];
     if (asset) {
         duration = CMTimeGetSeconds(asset.duration);
