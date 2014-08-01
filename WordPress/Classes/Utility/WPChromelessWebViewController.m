@@ -93,7 +93,7 @@
             }
         }
         
-        if (prevController && [prevController isKindOfClass:[self class]]) {
+        if ([prevController isKindOfClass:[self class]]) {
             WPChromelessWebViewController *controller = (WPChromelessWebViewController *)prevController;
 
             // Check the url parts individually. Comparing absoluteStrings can yield an incorrect result.
@@ -132,7 +132,7 @@
 
 - (void)webViewDidFinishLoad:(WPWebView *)wpWebView {
     NSString *title = [wpWebView stringByEvaluatingJavaScriptFromString:@"document.title;"];
-    if (title && [title length] > 0) {
+    if ([title length] > 0) {
         self.title = title;
     }
 }

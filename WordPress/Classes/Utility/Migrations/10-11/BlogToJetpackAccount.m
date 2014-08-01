@@ -85,7 +85,7 @@ static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
 
 - (BOOL)blogIsWpcom:(NSManagedObject *)blog {
     NSDictionary *options = [blog valueForKey:@"options"];
-    if (options && [options count] > 0) {
+    if ([options count] > 0) {
         NSDictionary *option = [options dictionaryForKey:@"wordpress.com"];
         if ([[option numberForKey:@"value"] boolValue]) {
             return YES;
