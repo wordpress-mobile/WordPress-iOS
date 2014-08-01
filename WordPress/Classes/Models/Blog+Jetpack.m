@@ -94,7 +94,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
 			return valid;
 		}]];
 
-		if (foundBlogs && [foundBlogs count] > 0) {
+		if ([foundBlogs count] > 0) {
 			[self saveJetpackUsername:username andPassword:password success:success failure:failure];
 		} else {
 			NSError *error = [NSError errorWithDomain:BlogJetpackErrorDomain
