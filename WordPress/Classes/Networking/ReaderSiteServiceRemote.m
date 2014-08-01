@@ -229,7 +229,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 
     RemoteReaderSite *site = [[RemoteReaderSite alloc] init];
     site.recordID = [dict numberForKey:@"ID"];
-    site.path = [dict stringForKey:@"URL"]; // Retrive from the parent dictionary due to a bug in the REST API that returns NULL in the feed dictionary in some cases.
+    site.path = [dict stringForKey:@"URL"]; // Retrieve from the parent dictionary due to a bug in the REST API that returns NULL in the feed dictionary in some cases.
     site.siteID = [meta numberForKey:@"ID"];
     site.feedID = [meta numberForKey:@"feed_ID"];
     site.name = [meta stringForKey:@"name"];
