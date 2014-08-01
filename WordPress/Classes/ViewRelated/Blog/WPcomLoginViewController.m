@@ -216,54 +216,46 @@
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tv deselectRowAtIndexPath:indexPath animated:YES];
 		
-	switch (indexPath.section) {
-		case 0:
-        {
-			UITableViewCell *cell = (UITableViewCell *)[tv cellForRowAtIndexPath:indexPath];
-			for(UIView *subview in cell.subviews) {
-				if([subview isKindOfClass:[UITextField class]] == YES) {
-					UITextField *tempTextField = (UITextField *)subview;
-					[tempTextField becomeFirstResponder];
-					break;
-				}
-			}
-			break;
+    if (indexPath.section == 0) {
+        UITableViewCell *cell = (UITableViewCell *)[tv cellForRowAtIndexPath:indexPath];
+        for (UIView *subview in cell.subviews) {
+            if ([subview isKindOfClass:[UITextField class]] == YES) {
+                UITextField *tempTextField = (UITextField *)subview;
+                [tempTextField becomeFirstResponder];
+                
+                break;
+            }
         }
-		case 1:
-			for(int i = 0; i < 2; i++) {
-				UITableViewCell *cell = (UITableViewCell *)[tv cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-				for(UIView *subview in cell.subviews) {
-					if([subview isKindOfClass:[UITextField class]] == YES) {
-						UITextField *tempTextField = (UITextField *)subview;
-						[self textFieldDidEndEditing:tempTextField];
-					}
-				}
-			}
-			if([loginCell.textField.text isEqualToString:@""]) {
-				self.footerText = NSLocalizedString(@"Username is required.", @"");
-				self.buttonText = NSLocalizedString(@"Sign In", @"");
-				[tv reloadData];
-			}
-			else if([passwordCell.textField.text isEqualToString:@""]) {
-				self.footerText = NSLocalizedString(@"Password is required.", @"");
-				self.buttonText = NSLocalizedString(@"Sign In", @"");
-				[tv reloadData];
-			}
-			else {
-                
-                if (![ReachabilityUtils isInternetReachable]) {
-                    [ReachabilityUtils showAlertNoInternetConnection];
-                    return;
+    } else if (indexPath.section == 1) {
+        for (int i = 0; i < 2; i++) {
+            UITableViewCell *cell = (UITableViewCell *)[tv cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+            for (UIView *subview in cell.subviews) {
+                if ([subview isKindOfClass:[UITextField class]] == YES) {
+                    UITextField *tempTextField = (UITextField *)subview;
+                    [self textFieldDidEndEditing:tempTextField];
                 }
-                
-				self.buttonText = NSLocalizedString(@"Signing in...", @"");
-				
-                [self signIn:self];
-			}
-			break;
-		default:
-			break;
-	}
+            }
+        }
+        if ([loginCell.textField.text isEqualToString:@""]) {
+            self.footerText = NSLocalizedString(@"Username is required.", @"");
+            self.buttonText = NSLocalizedString(@"Sign In", @"");
+            [tv reloadData];
+        } else if([passwordCell.textField.text isEqualToString:@""]) {
+            self.footerText = NSLocalizedString(@"Password is required.", @"");
+            self.buttonText = NSLocalizedString(@"Sign In", @"");
+            [tv reloadData];
+        } else {
+            
+            if (![ReachabilityUtils isInternetReachable]) {
+                [ReachabilityUtils showAlertNoInternetConnection];
+                return;
+            }
+            
+            self.buttonText = NSLocalizedString(@"Signing in...", @"");
+            
+            [self signIn:self];
+        }
+    }
 }
 
 
@@ -275,24 +267,20 @@
 	
 	UITableViewCell *cell = nil;
     UITextField *nextField = nil;
-    switch (textField.tag) {
-        case 0:
-            [textField endEditing:YES];
-            cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-            if(cell != nil) {
-                nextField = (UITextField*)[cell viewWithTag:1];
-                if(nextField != nil)
-                    [nextField becomeFirstResponder];
-            }
-            break;
-        case 1:
-            [self signIn:self];
-            break;
-        default:
-            break;
-	}
-
-	return YES;	
+    
+    if (textField.tag == 0) {
+        [textField endEditing:YES];
+        cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+        if(cell != nil) {
+            nextField = (UITextField*)[cell viewWithTag:1];
+            if(nextField != nil)
+                [nextField becomeFirstResponder];
+        }
+    } else if (textField.tag == 1) {
+        [self signIn:self];
+    }
+    
+	return YES;
 }
 
 
@@ -300,24 +288,18 @@
     UITableViewCell *cell = (UITableViewCell *)[textField superview];
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 	
-	switch (indexPath.row) {
-		case 0:
-			if((textField.text != nil) && ([textField.text isEqualToString:@""])) {
-				self.footerText = NSLocalizedString(@"Username is required.", @"");
-			}
-			else {
-				textField.text = [[textField.text stringByReplacingOccurrencesOfString:@" " withString:@""] lowercaseString];
-			}
-			break;
-		case 1:
-			if((textField.text != nil) && ([textField.text isEqualToString:@""])) {
-				self.footerText = NSLocalizedString(@"Password is required.", @"");
-			}
-			break;
-		default:
-			break;
-	}
-	
+    if (indexPath.row == 0) {
+        if ((textField.text != nil) && ([textField.text isEqualToString:@""])) {
+            self.footerText = NSLocalizedString(@"Username is required.", @"");
+        } else {
+            textField.text = [[textField.text stringByReplacingOccurrencesOfString:@" " withString:@""] lowercaseString];
+        }
+    } else if (indexPath.row == 1) {
+        if ((textField.text != nil) && ([textField.text isEqualToString:@""])) {
+            self.footerText = NSLocalizedString(@"Password is required.", @"");
+        }
+    }
+
 	[textField resignFirstResponder];
 }
 
