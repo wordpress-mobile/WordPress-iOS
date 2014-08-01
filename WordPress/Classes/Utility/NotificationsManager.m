@@ -128,7 +128,13 @@ NSString *const NotificationsDeviceToken            = @"apnsDeviceToken";
     
     switch (state) {
         case UIApplicationStateInactive:
-            [[WordPressAppDelegate sharedWordPressApplicationDelegate] showTabForIndex:kNotificationsTabIndex];
+            {
+                NSString *notificationID            = [[userInfo numberForKey:@"note_id"] stringValue];
+                WordPressAppDelegate *appdelegate   = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+                
+                [appdelegate showTabForIndex:kNotificationsTabIndex];
+                [appdelegate.notificationsViewController showDetailsForNoteWithID:notificationID animated:NO];
+            }
             break;
             
         case UIApplicationStateBackground:
