@@ -504,7 +504,6 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view {
     return NO;
-	return loading;
 }
 
 
