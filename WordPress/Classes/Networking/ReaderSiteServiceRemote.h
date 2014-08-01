@@ -1,7 +1,8 @@
 #import <Foundation/Foundation.h>
 
 typedef enum : NSUInteger {
-    ReaderSiteServiceRemoteInvalidHost
+    ReaderSiteServiceRemoteInvalidHost,
+    ReaderSiteServiceRemoteUnsuccessfulFollowSite
 } ReaderSiteServiceRemoteError;
 
 extern NSString * const ReaderSiteServiceRemoteErrorDomain;
@@ -76,5 +77,38 @@ extern NSString * const ReaderSiteServiceRemoteErrorDomain;
 - (void)findSiteIDForURL:(NSURL *)siteURL
                  success:(void(^)(NSUInteger siteID))success
                  failure:(void(^)(NSError *error))failure;
+
+/**
+ Test a URL to see if a site exists.
+ 
+ @param siteURL the URL of the site.
+ @param success block called on a successful request.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)checkSiteExistsAtURL:(NSURL *)siteURL
+                     success:(void (^)())success
+                     failure:(void(^)(NSError *error))failure;
+
+/**
+ Check whether a site is already subscribed
+
+ @param siteID The ID of the site.
+ @param success block called on a successful check. A boolean is returned indicating if the site is followed or not.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)checkSubscribedToSiteByID:(NSUInteger)siteID
+                          success:(void (^)(BOOL follows))success
+                          failure:(void(^)(NSError *error))failure;
+
+/**
+ Check whether a feed is already subscribed
+
+ @param siteID The ID of the site.
+ @param success block called on a successful check. A boolean is returned indicating if the feed is followed or not.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)checkSubscribedToFeedByURL:(NSURL *)siteURL
+                           success:(void (^)(BOOL follows))success
+                           failure:(void(^)(NSError *error))failure;
 
 @end
