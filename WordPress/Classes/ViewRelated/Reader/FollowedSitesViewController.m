@@ -205,7 +205,9 @@ static NSString * const SiteCellIdentifier = @"SiteCellIdentifier";
     if ([[self.tableViewHandler.resultsController fetchedObjects] count] > 0) {
         return NSLocalizedString(@"Sites", @"Section title for sites the user has followed.");
     }
-    return nil;
+    // Return an space instead of empty string or nil to preserve the section
+    // header's height if all items are removed and then one added back.
+    return @" ";
 }
 
 - (void)tableViewDidChangeContent:(UITableView *)tableView
