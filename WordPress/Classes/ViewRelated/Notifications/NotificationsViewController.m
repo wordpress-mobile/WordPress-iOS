@@ -39,6 +39,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 
 @implementation NotificationsViewController
 
+
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
     // We need to override the implementation in our superclass or else restoration fails - no blog!
@@ -94,16 +95,17 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 {
     // Show Jetpack information screen
     [WPAnalytics track:WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen withProperties:@{@"source": @"notifications"}];
-    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-	webViewController.url = [NSURL URLWithString:WPNotificationsJetpackInformationURL];
+    
+    WPWebViewController *webViewController  = [[WPWebViewController alloc] init];
+	webViewController.url                   = [NSURL URLWithString:WPNotificationsJetpackInformationURL];
     [self.navigationController pushViewController:webViewController animated:YES];
 }
 
 - (BOOL)showJetpackConnectMessage
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount       = [accountService defaultWordPressComAccount];
 
     return defaultAccount == nil;
 }
@@ -316,7 +318,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 
 - (BOOL)noteHasDetailView:(Note *)note
 {
-    return ((note.isComment) || ([note templateType] != WPNoteTemplateUnknown));
+    return (note.isComment || note.templateType != WPNoteTemplateUnknown);
 }
 
 - (void)loadPostWithId:(NSNumber *)postID fromSite:(NSNumber *)siteID block:(NotificationsLoadPostBlock)block
@@ -366,7 +368,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     BOOL hasDetailsView = [self noteHasDetailView:note];
     
     if (!hasDetailsView) {
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.accessoryType  = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
 }
