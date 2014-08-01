@@ -69,32 +69,32 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     self.replyButton = [VerticallyStackedButton buttonWithType:UIButtonTypeSystem];
     [self.replyButton setImage:[UIImage imageNamed:@"icon-comments-reply"] forState:UIControlStateNormal];
     [self.replyButton setTitle:NSLocalizedString(@"Reply", @"Verb, reply to a comment") forState:UIControlStateNormal];
-    self.replyButton.accessibilityLabel = NSLocalizedString(@"Reply", @"Spoken accessibility label.");
+    [self.replyButton setAccessibilityLabel: NSLocalizedString(@"Reply", @"Spoken accessibility label.")];
     [self.replyButton addTarget:self action:@selector(replyAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.commentView addCustomActionButton:self.replyButton];
     
     self.approveButton = [VerticallyStackedButton buttonWithType:UIButtonTypeSystem];
     [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-approve"] forState:UIControlStateNormal];
-    self.approveButton.accessibilityLabel = NSLocalizedString(@"Toggle approve or unapprove", @"Spoken accessibility label.");
+    [self.approveButton setAccessibilityLabel:NSLocalizedString(@"Toggle approve or unapprove", @"Spoken accessibility label.")];
     [self.approveButton addTarget:self action:@selector(approveOrUnapproveAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.commentView addCustomActionButton:self.approveButton];
 
     self.spamButton = [VerticallyStackedButton buttonWithType:UIButtonTypeSystem];
     [self.spamButton setImage:[UIImage imageNamed:@"icon-comments-spam"] forState:UIControlStateNormal];
     [self.spamButton setTitle:NSLocalizedString(@"Spam", @"Verb, mark a comment as spam") forState:UIControlStateNormal];
-    self.spamButton.accessibilityLabel = NSLocalizedString(@"Mark as spam", @"Spoken accessibility label.");
+    [self.spamButton setAccessibilityLabel:NSLocalizedString(@"Mark as spam", @"Spoken accessibility label.")];
     [self.spamButton addTarget:self action:@selector(spamAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.commentView addCustomActionButton:self.spamButton];
     
     self.trashButton = [VerticallyStackedButton buttonWithType:UIButtonTypeSystem];
     [self.trashButton setImage:[UIImage imageNamed:@"icon-comments-trash"] forState:UIControlStateNormal];
     [self.trashButton setTitle:NSLocalizedString(@"Trash", @"Verb, move a comment to the trash") forState:UIControlStateNormal];
-    self.trashButton.accessibilityLabel = NSLocalizedString(@"Move to trash", @"Spoken accessibility label.");
+    [self.trashButton setAccessibilityLabel:NSLocalizedString(@"Move to trash", @"Spoken accessibility label.")];
     [self.trashButton addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.commentView addCustomActionButton:self.trashButton];
 
     self.editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
-    self.editButton.accessibilityLabel = NSLocalizedString(@"Edit comment", @"Spoken accessibility label.");
+    [self.editButton setAccessibilityLabel:NSLocalizedString(@"Edit comment", @"Spoken accessibility label.")];
     self.navigationItem.rightBarButtonItem = self.editButton;
     
     [self.view addSubview:self.commentView];
