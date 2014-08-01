@@ -43,8 +43,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
-    // We need to override the implementation in our superclass or else restoration fails - no blog!
-    return [[self alloc] init];
+    return [[WordPressAppDelegate sharedWordPressApplicationDelegate] notificationsViewController];
 }
 
 - (instancetype)init
