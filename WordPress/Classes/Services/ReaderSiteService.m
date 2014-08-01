@@ -42,9 +42,6 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
         WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
         [self mergeSites:sites forAccount:defaultAccount];
-        [self.managedObjectContext performBlockAndWait:^{
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-        }];
 
         if (success) {
             success();
@@ -201,6 +198,10 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
             }
         }
     }
+
+    [self.managedObjectContext performBlockAndWait:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
 }
 
 /**
