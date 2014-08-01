@@ -474,8 +474,8 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 - (void)fetchNotificationsWithParameters:(NSDictionary *)parameters success:(void (^)(NSArray *notes))success failure:(WordPressComApiRestSuccessFailureBlock)failure {
     NSMutableDictionary *requestParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
     [requestParameters setObject:WordPressComApiNotificationFields forKey:@"fields"];
-    [requestParameters setObject:[NSNumber numberWithInt:20] forKey:@"number"];
-    [requestParameters setObject:[NSNumber numberWithInt:20] forKey:@"num_note_items"];
+    [requestParameters setObject:@20 forKey:@"number"];
+    [requestParameters setObject:@20 forKey:@"num_note_items"];
     
     [self GET:@"notifications/" parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject){
         if (success) {
