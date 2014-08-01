@@ -336,16 +336,13 @@ BOOL hasChanges;
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
-    switch (section) {
-        case 0:
-            return @"";
-        case 1:
-            return NSLocalizedString(@"Push Notifications", @"");
-        default:
-            break;
+    if (section == 0) {
+        return @"";
+    } else if (section == 1) {
+        return NSLocalizedString(@"Push Notifications", @"");
     }
     
-    return NSLocalizedString(@"Sites", @"");    
+    return NSLocalizedString(@"Sites", @"");
 }
 
 #pragma mark - Table view delegate

@@ -120,27 +120,21 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
         return;
     }
     
-    switch (state) {
-        case UIApplicationStateInactive:
-            [[WordPressAppDelegate sharedWordPressApplicationDelegate] showTabForIndex:kNotificationsTabIndex];
-            break;
-            
-        case UIApplicationStateBackground:
-            if (completionHandler) {
-                Simperium *simperium = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
-                [simperium backgroundFetchWithCompletion:^(UIBackgroundFetchResult result) {
-                    if (result == UIBackgroundFetchResultNewData) {
-                        DDLogVerbose(@"Background Fetch Completed with New Data!");
-                    } else {
-                        DDLogVerbose(@"Background Fetch Completed with No Data..");
-                    }
-                    completionHandler(result);
-                }];
-            }
-            break;
-        default:
-            break;
-    }
+    if (state == UIApplicationStateInactive) {
+        [[WordPressAppDelegate sharedWordPressApplicationDelegate] showTabForIndex:kNotificationsTabIndex];
+    } else if (state == UIApplicationStateBackground) {
+        if (completionHandler) {
+            Simperium *simperium = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+            [simperium backgroundFetchWithCompletion:^(UIBackgroundFetchResult result) {
+                if (result == UIBackgroundFetchResultNewData) {
+                    DDLogVerbose(@"Background Fetch Completed with New Data!");
+                } else {
+                    DDLogVerbose(@"Background Fetch Completed with No Data..");
+                }
+                completionHandler(result);
+            }];
+        }
+    }    
 }
 
 + (void)handleNotificationForApplicationLaunch:(NSDictionary *)launchOptions {
