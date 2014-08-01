@@ -235,7 +235,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 - (void)updateActionButtons {
     // disable the buttons until we can determine which ones can be used
     // with this note
-    [self setAllActionButtonsEnabled:NO];
+    [self updateStateOfActionButtons:NO];
     
     // figure out the actions available for the note
     NSArray *actions = self.note.bodyActions;
@@ -308,11 +308,15 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     [self.trashButton setAccessibilityLabel:NSLocalizedString(@"Not Spam", @"Spoken accessibility label.")];
 }
 
-- (void)setAllActionButtonsEnabled:(BOOL)enabled {
-    self.spamButton.enabled = enabled;
-    self.trashButton.enabled = enabled;
-    self.approveButton.enabled = enabled;
-    self.replyButton.enabled = enabled;
+- (void)updateStateOfActionButtons:(BOOL)state {
+    [self updateStateOfActionButton:self.spamButton toState:state];
+    [self updateStateOfActionButton:self.trashButton toState:state];
+    [self updateStateOfActionButton:self.approveButton toState:state];
+    [self updateStateOfActionButton:self.replyButton toState:state];
+}
+
+- (void)updateStateOfActionButton:(UIButton*)button toState:(BOOL)state {
+    button.enabled = state;
 }
 
 - (NSDictionary *)getActionByType:(NSString *)type {
@@ -416,7 +420,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 - (void)performCommentAction:(NSDictionary *)commentAction forButton:(UIButton*)button {
     NSString *path = [NSString stringWithFormat:@"/rest/v1%@", [commentAction valueForKeyPath:@"params.rest_path"]];
     
-    [self setAllActionButtonsEnabled:NO];
+    [self updateStateOfActionButtons:NO];
     
     // Show an activity indicator in place of the button until the operation completes
     UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -433,10 +437,10 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     [[defaultAccount restApi] POST:path parameters:[commentAction valueForKeyPath:@"params.rest_body"] success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // The Note will be automatically updated by Simperium
         [indicatorView removeFromSuperview];
-        [self setAllActionButtonsEnabled:YES];
+        [self updateStateOfActionButtons:YES];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [indicatorView removeFromSuperview];
-        [self setAllActionButtonsEnabled:YES];
+        [self updateStateOfActionButtons:YES];
         [WPError showAlertWithTitle:NSLocalizedString(@"Error", @"")
                             message:NSLocalizedString(@"The comment could not be moderated.", @"Error message when comment could not be moderated")];
         DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);

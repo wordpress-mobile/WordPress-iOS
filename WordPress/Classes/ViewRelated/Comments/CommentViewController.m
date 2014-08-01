@@ -227,11 +227,15 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     [self presentViewController:navController animated:animate completion:nil];
 }
 
-- (void)setAllActionButtonsEnabled:(BOOL)enabled {
-    self.spamButton.enabled = enabled;
-    self.trashButton.enabled = enabled;
-    self.approveButton.enabled = enabled;
-    self.replyButton.enabled = enabled;
+- (void)updateStateOfActionButtons:(BOOL)state {
+    [self updateStateOfActionButton:self.spamButton toState:state];
+    [self updateStateOfActionButton:self.trashButton toState:state];
+    [self updateStateOfActionButton:self.approveButton toState:state];
+    [self updateStateOfActionButton:self.replyButton toState:state];
+}
+
+- (void)updateStateOfActionButton:(UIButton*)button toState:(BOOL)state {
+    button.enabled = state;
 }
 
 #pragma mark - Actions
@@ -239,7 +243,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)approveOrUnapproveAction:(id)sender {
     UIButton *button = sender;
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    [self setAllActionButtonsEnabled:NO];
+    [self updateStateOfActionButtons:NO];
     
     // Show an activity indicator in place of the button until the operation completes
     UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -251,12 +255,12 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     if (button.tag == CommentViewApproveButtonTag) {
         [commentService approveComment:self.comment
                                success:^{
-                                   [self setAllActionButtonsEnabled:YES];
+                                   [self updateStateOfActionButtons:YES];
                                    [indicatorView removeFromSuperview];
                                }
                                failure:^(NSError *error) {
                                    self.comment.status = @"unapprove";
-                                   [self setAllActionButtonsEnabled:YES];
+                                   [self updateStateOfActionButtons:YES];
                                    [indicatorView removeFromSuperview];
                                    [WPError showAlertWithTitle:NSLocalizedString(@"Error", @"")
                                                        message:NSLocalizedString(@"The comment could not be moderated.", @"Error message when comment could not be moderated")];
@@ -264,12 +268,12 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     } else {
         [commentService unapproveComment:self.comment
                                  success:^{
-                                     [self setAllActionButtonsEnabled:YES];
+                                     [self updateStateOfActionButtons:YES];
                                      [indicatorView removeFromSuperview];
                                  }
                                  failure:^(NSError *error){
                                      self.comment.status = @"approve";
-                                     [self setAllActionButtonsEnabled:YES];
+                                     [self updateStateOfActionButtons:YES];
                                      [indicatorView removeFromSuperview];
                                      [WPError showAlertWithTitle:NSLocalizedString(@"Error", @"")
                                                          message:NSLocalizedString(@"The comment could not be moderated.", @"Error message when comment could not be moderated")];
