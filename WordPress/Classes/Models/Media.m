@@ -179,7 +179,6 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
             self.mediaTypeString = @"powerpoint";
             break;
         case MediaTypeDocument:
-        default:
             self.mediaTypeString = @"document";
             break;
     }
