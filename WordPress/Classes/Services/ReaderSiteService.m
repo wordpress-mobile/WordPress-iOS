@@ -230,7 +230,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         }
     }
 
-    if (currentSites && [currentSites count] > 0) {
+    if ([currentSites count] > 0) {
         for (ReaderSite *site in currentSites) {
             if (![sitesToKeep containsObject:site]) {
                 DDLogInfo(@"Deleting ReaderSite: %@", site);
