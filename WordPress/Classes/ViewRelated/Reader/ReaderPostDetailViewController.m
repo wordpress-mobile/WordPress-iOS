@@ -61,7 +61,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 @property (nonatomic, strong) ReaderCommentPublisher *commentPublisher;
 @property (nonatomic, strong) WPTableImageSource *featuredImageSource;
-@property (nonatomic, strong) WPNoResultsView *noResultsView;
 
 @end
 
