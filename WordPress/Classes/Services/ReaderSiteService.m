@@ -192,10 +192,13 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     if (!followedSites) {
         return;
     }
-
+    NSNumber *siteID = site.siteID;
+    if (!siteID) {
+        siteID = site.feedID;
+    }
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *postService = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [postService deletePostsWithSiteID:site.siteID andSiteURL:site.path fromTopic:followedSites];
+    [postService deletePostsWithSiteID:siteID andSiteURL:site.path fromTopic:followedSites];
 }
 
 - (void)syncPostsForFollowedSites
