@@ -216,8 +216,8 @@ NSInteger const kMeTabIndex = 2;
             NSDictionary *params = [[url query] dictionaryFromQueryString];
             
             if (params.count) {
-                NSUInteger blogId = [[params numberForKey:@"blogId"] integerValue];
-                NSUInteger postId = [[params numberForKey:@"postId"] integerValue];
+                NSNumber *blogId = [params numberForKey:@"blogId"];
+                NSNumber *postId = [params numberForKey:@"postId"];
                 
                 [self.readerPostsViewController.navigationController popToRootViewControllerAnimated:NO];
                 NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
