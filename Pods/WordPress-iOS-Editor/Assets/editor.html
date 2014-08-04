@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html contenteditable="true">
+<html>
   <head>
     <title>ZSSRichTextEditor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -798,5 +798,5 @@ function style_html(html_source, options) {
         img.zs_active {border: 2px dashed #000;}
     </style>
   </head>
-  <body onLoad="zss_editor.init();" onclick="void(0)" oninput="window.location='callback://user-triggered-change'" id="zss_editor_content"><!--content--></body>
+  <body contenteditable="true" onLoad="zss_editor.init();" onclick="void(0)" oninput="window.location='callback://user-triggered-change'" id="zss_editor_content"><!--content--></body>
 </html>
