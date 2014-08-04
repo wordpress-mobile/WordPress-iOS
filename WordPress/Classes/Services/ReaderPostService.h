@@ -106,6 +106,16 @@ extern NSString * const ReaderPostServiceErrorDomain;
  @param siteURL The URL of the site or feed.
  @param topic The `ReaderTopic` owning the posts.
  */
-- (void)deletePostsWithSiteID:(NSNumber *)siteID andSiteURL:(NSString *)siteURL fromTopic:(ReaderTopic *)topic;
+- (void)deletePostsWithSiteID:(NSNumber *)siteID
+                   andSiteURL:(NSString *)siteURL
+                    fromTopic:(ReaderTopic *)topic;
+
+/**
+ Delete posts from the specified site (not feed)
+
+ @param siteID The id of the site or feed.
+ */
+
+- (void)deletePostsFromSiteWithID:(NSNumber *)siteID;
 
 @end
