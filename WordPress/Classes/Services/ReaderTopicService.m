@@ -32,20 +32,25 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
 - (void)fetchReaderMenuWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    BOOL accountExists = (defaultAccount) ? YES : NO;
-
     WordPressComApi *api = [WordPressComApi anonymousApi];
-    if (accountExists && [[defaultAccount restApi] hasCredentials]) {
+
+    // If the account is not nil, and its api has credentials we'll use it.
+    if ([[defaultAccount restApi] hasCredentials]) {
          api = [defaultAccount restApi];
     }
 
+    // Keep a reference to the NSManagedObjectID (if it exists).
+    // We'll use it to verify that the account did not change while fetching topics.
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithRemoteApi:api];
     [remoteService fetchReaderMenuWithSuccess:^(NSArray *topics) {
-        // If an account exists reload it, otherwise let the topic account be nil.
-        WPAccount *reloadedAccount = nil;
-        if (accountExists) {
-            reloadedAccount = [accountService defaultWordPressComAccount];
+        // Make sure that we have the same account now that we did when we started.
+        WPAccount *reloadedAccount = [accountService defaultWordPressComAccount];;
+        if (defaultAccount != reloadedAccount) {
+            // Something changed so our results are invalid. Fetch them anew!
+            [self fetchReaderMenuWithSuccess:success failure:failure];
+             return;
         }
+
         [self mergeTopics:topics forAccount:reloadedAccount];
         [self.managedObjectContext performBlockAndWait:^{
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
