@@ -111,4 +111,15 @@ extern NSString * const ReaderSiteServiceRemoteErrorDomain;
                            success:(void (^)(BOOL follows))success
                            failure:(void(^)(NSError *error))failure;
 
+/**
+ Block a site from showing its posts in the reader
+
+ @param siteID The ID of the site (not feed).
+ @param success block called on a successful check.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)blockSiteWithID:(NSUInteger)siteID
+                success:(void(^)())success
+                failure:(void(^)(NSError *error))failure;
+
 @end

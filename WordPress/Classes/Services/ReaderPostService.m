@@ -365,6 +365,29 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     }];
 }
 
+- (void)deletePostsFromSiteWithID:(NSNumber *)siteID
+{
+    NSError *error;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
+    request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@ AND isWPCom = YES", siteID];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@, error deleting posts belonging to siteID %@: %@", NSStringFromSelector(_cmd), siteID, error);
+        return;
+    }
+
+    if ([results count] == 0) {
+        return;
+    }
+
+    for (ReaderPost *post in results) {
+        [self.managedObjectContext deleteObject:post];
+    }
+
+    [self.managedObjectContext performBlockAndWait:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
+}
 
 #pragma mark - Private Methods
 

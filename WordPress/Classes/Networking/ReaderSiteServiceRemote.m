@@ -221,6 +221,20 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     }];
 }
 
+- (void)blockSiteWithID:(NSUInteger)siteID success:(void(^)())success failure:(void(^)(NSError *error))failure
+{
+    NSString *path = [NSString stringWithFormat:@"me/block/sites/%d/new", siteID];
+    [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (success) {
+            success();
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
 
 #pragma mark - Private Methods
 
