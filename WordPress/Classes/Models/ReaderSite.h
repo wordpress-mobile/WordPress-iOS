@@ -15,5 +15,7 @@
 @property (nonatomic, strong) WPAccount *account;
 
 - (BOOL)isFeed;
+- (NSString *)nameForDisplay;
+- (NSString *)pathForDisplay;
 
 @end
