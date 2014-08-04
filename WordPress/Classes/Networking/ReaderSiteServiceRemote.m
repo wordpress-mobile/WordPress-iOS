@@ -152,12 +152,16 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 
     NSString *path = [NSString stringWithFormat:@"sites/%@", host];
     [self.api GET:path parameters:nil success:successBlock failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (![host hasPrefix:@"www."]) {
-            failureBlock(operation, error);
-            return;
+        NSString *newHost;
+        if ([host hasPrefix:@"www."]) {
+            // If the provided host includes a www. prefix, try again without it.
+            newHost = [host substringFromIndex:4];
+
+        } else {
+            // If the provided host includes a www. prefix, try again without it.
+            newHost = [NSString stringWithFormat:@"www.%@", host];
+
         }
-        // If the provided host includes a www. prefix, try again without it.
-        NSString *newHost = [host substringFromIndex:4];
         NSString *newPath = [NSString stringWithFormat:@"sites/%@", newHost];
         [self.api GET:newPath parameters:nil success:successBlock failure:failureBlock];
     }];
