@@ -9,10 +9,11 @@
 
 @class WPReaderDetailViewController;
 
-@interface WPWebViewController () <UIWebViewDelegate>
+@interface WPWebViewController () <UIWebViewDelegate, UIPopoverControllerDelegate>
 
 @property (weak, readonly) UIScrollView *scrollView;
 @property (nonatomic) BOOL isLoading, needsLogin, hasLoadedContent;
+@property (nonatomic, strong) UIPopoverController *popover;
 
 @end
 
@@ -421,7 +422,18 @@
             return;
         [WPActivityDefaults trackActivityType:activityType];
     };
-    [self presentViewController:activityViewController animated:YES completion:nil];
+
+    if (IS_IPAD) {
+        if (self.popover) {
+            [self dismissPopover];
+            return;
+        }
+        self.popover = [[UIPopoverController alloc] initWithContentViewController:activityViewController];
+        self.popover.delegate = self;
+        [self.popover presentPopoverFromBarButtonItem:self.optionsButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    } else {
+        [self presentViewController:activityViewController animated:YES completion:nil];
+    }
 }
 
 - (void)reload {
@@ -452,6 +464,23 @@
     }
     return scrollView;
 }
+
+- (void)dismissPopover
+{
+    if (self.popover) {
+        [self.popover dismissPopoverAnimated:YES];
+        self.popover = nil;
+    }
+}
+
+
+#pragma mark - UIPopover Delegate
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    self.popover = nil;
+}
+
 
 #pragma mark - UIWebViewDelegate
 
