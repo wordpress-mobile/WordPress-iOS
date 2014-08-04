@@ -43,12 +43,16 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
     // We'll use it to verify that the account did not change while fetching topics.
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithRemoteApi:api];
     [remoteService fetchReaderMenuWithSuccess:^(NSArray *topics) {
+
+        WPAccount *reloadedAccount = [accountService defaultWordPressComAccount];
+
         // Make sure that we have the same account now that we did when we started.
-        WPAccount *reloadedAccount = [accountService defaultWordPressComAccount];;
-        if (defaultAccount != reloadedAccount) {
-            // Something changed so our results are invalid. Fetch them anew!
+        if ((!defaultAccount && !reloadedAccount) || [defaultAccount.objectID isEqual:reloadedAccount.objectID]) {
+            // If both accounts are nil, or if both accounts exist and are identical we're good to go.
+        } else {
+            // The account changed so our results are invalid. Fetch them anew!
             [self fetchReaderMenuWithSuccess:success failure:failure];
-             return;
+            return;
         }
 
         [self mergeTopics:topics forAccount:reloadedAccount];
