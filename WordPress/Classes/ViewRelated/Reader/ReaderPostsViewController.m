@@ -464,22 +464,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self.inlineComposeView dismissComposer];
 }
 
-- (void)openPost:(NSUInteger *)postId onBlog:(NSUInteger)blogId
+- (void)openPost:(NSNumber *)postId onBlog:(NSNumber *)blogId
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service deletePostsWithNoTopic];
-    [service fetchPost:postId forSite:blogId success:^(ReaderPost *post) {
-        if (![self.navigationController.topViewController isEqual:self]) {
-            return;
-        }
-        
-        ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post];
-        [self.navigationController pushViewController:controller animated:YES];
-
-    } failure:^(NSError *error) {
-        DDLogError(@"%@, error fetching post for site", _cmd, error);
-    }];
+    ReaderPostDetailViewController *controller = [ReaderPostDetailViewController postDetailsWithPostID:postId siteID:blogId];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 
@@ -906,7 +894,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     // Pass the image forward
 	ReaderPost *post = [self.resultsController.fetchedObjects objectAtIndex:indexPath.row];
-	self.detailController = [[ReaderPostDetailViewController alloc] initWithPost:post];
+	self.detailController = [ReaderPostDetailViewController postDetailsWithPost:post];
     [self.navigationController pushViewController:self.detailController animated:YES];
     
     [WPAnalytics track:WPAnalyticsStatReaderOpenedArticle];
