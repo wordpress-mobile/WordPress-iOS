@@ -1,6 +1,7 @@
 @class Reachability;
 @class DDFileLogger;
 @class ReaderPostsViewController;
+@class NotificationsViewController;
 @class BlogListViewController;
 @class AbstractPost;
 @class Simperium;
@@ -17,6 +18,7 @@ extern NSInteger const kMeTabIndex;
 @property (nonatomic, strong) UINavigationController *navigationController;
 @property (nonatomic, strong) UITabBarController *tabBarController;
 @property (nonatomic, strong) ReaderPostsViewController *readerPostsViewController;
+@property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 @property (nonatomic, strong) BlogListViewController *blogListViewController;
 @property (nonatomic, strong) Reachability *internetReachability;
 @property (nonatomic, strong) Reachability *wpcomReachability;
