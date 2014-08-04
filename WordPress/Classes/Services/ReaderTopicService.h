@@ -3,11 +3,6 @@
 
 extern NSString * const ReaderTopicDidChangeViaUserInteractionNotification;
 extern NSString * const ReaderTopicDidChangeNotification;
-extern NSString * const ReaderTopicServiceErrorDomain;
-
-typedef enum : NSUInteger {
-    ReaderTopicServiceErrorNoAccount
-} ReaderTopicServiceError;
 
 @class ReaderTopic;
 
