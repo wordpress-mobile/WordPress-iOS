@@ -463,7 +463,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
 - (BOOL)isReplying
 {
-    return ([self.tableView indexPathForSelectedRow] != nil) ? YES : NO;
+    return [self.tableView indexPathForSelectedRow] != nil;
 }
 
 - (CGSize)tabBarSize
