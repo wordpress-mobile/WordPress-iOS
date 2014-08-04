@@ -20,7 +20,8 @@
 - (BOOL)myShouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     NSUInteger mask = [self mySupportedInterfaceOrientations];
     NSUInteger orientation = 1 << toInterfaceOrientation;
-    return (mask & orientation) ? YES : NO;
+    
+    return mask & orientation;
 }
 
 - (BOOL)myShouldAutoRotate {
