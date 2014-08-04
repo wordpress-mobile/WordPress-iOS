@@ -44,7 +44,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 		self.tableView.accessibilityIdentifier = @"Comments";  // required for UIAutomation for iOS 5
 	}
     
-    self.editButtonItem.enabled = [[self.resultsController fetchedObjects] count] > 0 ? YES : NO;
+    self.editButtonItem.enabled = [[self.resultsController fetchedObjects] count] > 0;
     
     // Do not show row dividers for empty cells.
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
