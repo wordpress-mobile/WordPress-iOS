@@ -214,6 +214,26 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     [postService fetchPostsForTopic:followedSites earlierThan:[NSDate date] success:nil failure:nil];
 }
 
+- (void)blockSiteWithID:(NSNumber *)siteID success:(void(^)())success failure:(void(^)(NSError *error))failure
+{
+    WordPressComApi *api = [self apiForRequest];
+    if (!api) {
+        if (failure) {
+            failure([self errorForNotLoggedIn]);
+        }
+        return;
+    }
+
+    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithRemoteApi:api];
+    [service blockSiteWithID:[siteID integerValue] success:^{
+        [self removePostsForSiteWithID:siteID];
+
+        if (success) {
+            success();
+        }
+    } failure:failure];
+}
+
 #pragma mark - Private Methods
 
 /**
@@ -248,6 +268,13 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         [self followSiteAtURL:[siteURL absoluteString] success:success failure:failure];
     }];
 }
+
+- (void)removePostsForSiteWithID:(NSNumber *)siteID
+{
+    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    [service deletePostsFromSiteWithID:siteID];
+}
+
 
 /**
  Saves the specified `ReaderSites`. Any `ReaderSites` not included in the passed
