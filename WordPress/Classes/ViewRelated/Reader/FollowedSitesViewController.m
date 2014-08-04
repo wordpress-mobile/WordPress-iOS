@@ -148,8 +148,8 @@ static CGFloat const FollowSitesRowHeight = 54.0;
     cell.imageView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 
     ReaderSite *site = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = [site.name capitalizedString];
-    cell.detailTextLabel.text = site.path;
+    cell.textLabel.text = [site nameForDisplay];
+    cell.detailTextLabel.text = [site pathForDisplay];;
     if (site.icon) {
         cell.imageView.backgroundColor = nil;
         [cell.imageView setImageWithBlavatarUrl:site.icon placeholderImage:defaultImage];
