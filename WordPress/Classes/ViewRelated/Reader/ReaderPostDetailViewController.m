@@ -89,9 +89,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
-
+    
     if (self.infiniteScrollEnabled) {
         [self enableInfiniteScrolling];
     }
@@ -99,6 +97,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     self.title = self.post.postTitle;
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:@"PostCell"];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
@@ -109,27 +108,24 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
     [self prepareComments];
 
+    // Don't show 'Reader' in the next-view back button
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
+    
+    UIToolbar *toolbar = self.navigationController.toolbar;
+    toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
+    toolbar.tintColor = [UIColor whiteColor];
+    toolbar.translucent = NO;
+    
+    self.tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
+    
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
     [self.inlineComposeView setButtonTitle:NSLocalizedString(@"Post", nil)];
-
-
-
-    self.tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                         action:@selector(dismissKeyboard:)];
-
-    // comment composer responds to the inline compose view to publish comments
-    self.commentPublisher = [[ReaderCommentPublisher alloc]
-                             initWithComposer:self.inlineComposeView
-                             andPost:self.post];
-
-    self.commentPublisher.delegate = self;
-
-    // Let pushed view controllers just show an arrow for the back button, not title.
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] init];
-    backButton.title = @"";
-    self.navigationItem.backBarButtonItem = backButton;
-
     [self.view addSubview:self.inlineComposeView];
+    
+    // Comment composer responds to the inline compose view to publish comments
+    self.commentPublisher = [[ReaderCommentPublisher alloc] initWithComposer:self.inlineComposeView];
+    self.commentPublisher.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -144,12 +140,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     }
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-
-    UIToolbar *toolbar = self.navigationController.toolbar;
-    toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
-    toolbar.tintColor = [UIColor whiteColor];
-    toolbar.translucent = NO;
-
     [self refreshHeightForTableHeaderView];
 }
 
@@ -587,6 +577,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 {
     [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
 
+    self.commentPublisher.post = self.post;
     self.commentPublisher.comment = nil;
     [self.inlineComposeView toggleComposer];
 }
@@ -882,6 +873,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
         return nil;
     }
 
+    self.commentPublisher.post = self.post;
     self.commentPublisher.comment = comment;
 
     if ([self canComment]) {
