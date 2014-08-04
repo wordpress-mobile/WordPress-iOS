@@ -134,6 +134,10 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
         self.navigationItem.rightBarButtonItem = pushSettings;
     }
     
+    // Don't show 'Notifications' in the next-view back button
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
+    
     // Watch for application badge number changes
     UIApplication *application  = [UIApplication sharedApplication];
     NSString *badgeKeyPath      = NSStringFromSelector(@selector(applicationIconBadgeNumber));
