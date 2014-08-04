@@ -192,9 +192,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
     // Optimistically update
     readerPost.isFollowing = follow;
-    [self.managedObjectContext performBlockAndWait:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    }];
+    [self setFollowing:follow forPostsFromSiteWithID:post.siteID andURL:post.blogURL];
 
     // Define success block
     void (^successBlock)() = ^void() {
@@ -207,15 +205,14 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
         // Revert changes on failure
         readerPost.isFollowing = oldValue;
-        [self.managedObjectContext performBlockAndWait:^{
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-        }];
+        [self setFollowing:oldValue forPostsFromSiteWithID:post.siteID andURL:post.blogURL];
+
         if (failure) {
             failure(error);
         }
     };
 
-    ReaderSiteService *siteService = [[ReaderSiteService alloc] init];
+    ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithManagedObjectContext:self.managedObjectContext];
     if (post.isWPCom) {
         if (follow) {
             [siteService followSiteWithID:[post.siteID integerValue] success:successBlock failure:failureBlock];
@@ -319,6 +316,55 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
+
+- (void)setFollowing:(BOOL)following forPostsFromSiteWithID:(NSNumber *)siteID andURL:(NSString *)siteURL
+{
+    // Fetch all the posts for the specified site ID and update its following status
+    NSError *error;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
+    request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@ AND blogURL = %@", siteID, siteURL];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@, error (un)following posts with siteID %@ and URL @%: %@", NSStringFromSelector(_cmd), siteID, siteURL, error);
+        return;
+    }
+    if ([results count] == 0) {
+        return;
+    }
+
+    for (ReaderPost *post in results) {
+        post.isFollowing = following;
+    }
+    [self.managedObjectContext performBlock:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
+}
+
+- (void)deletePostsWithSiteID:(NSNumber *)siteID andSiteURL:(NSString *)siteURL fromTopic:(ReaderTopic *)topic
+{
+    NSError *error;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
+    NSString *likeSiteURL = [NSString stringWithFormat:@"%@*", siteURL];
+    request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@ AND permaLink LIKE %@ AND topic = %@", siteID, likeSiteURL, topic];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@, error (un)following posts with siteID %@ and URL @%: %@", NSStringFromSelector(_cmd), siteID, siteURL, error);
+        return;
+    }
+
+    if ([results count] == 0) {
+        return;
+    }
+
+    for (ReaderPost *post in results) {
+        [self.managedObjectContext deleteObject:post];
+    }
+
+    [self.managedObjectContext performBlockAndWait:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
+}
+
 
 #pragma mark - Private Methods
 
@@ -490,7 +536,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
             [self deletePostsEarlierThan:date forTopic:readerTopic];
         } else {
             NSMutableArray *newPosts = [self makeNewPostsFromRemotePosts:posts forTopic:readerTopic];
-            [self deletePostsForTopic:readerTopic missingFromBatch:newPosts];
+            [self deletePostsForTopic:readerTopic missingFromBatch:newPosts withStartingDate:date];
         }
         [self deletePostsInExcessOfMaxAllowedForTopic:readerTopic];
         readerTopic.lastSynced = [NSDate date];
@@ -551,14 +597,15 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
  @param topic The ReaderTopic to delete posts from.
  @param posts The batch of posts to use as a filter.
+ @param startingDate The starting date of the batch of posts. May be earlier than the earliest post in the batch.
  */
-- (void)deletePostsForTopic:(ReaderTopic *)topic missingFromBatch:(NSArray *)posts
+- (void)deletePostsForTopic:(ReaderTopic *)topic missingFromBatch:(NSArray *)posts withStartingDate:(NSDate *)startingDate
 {
     // Don't trust the relationships on the topic to be current or correct.
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
 
-    NSDate *newestDate = ((ReaderPost *)[posts firstObject]).sortDate;
+    NSDate *newestDate = startingDate;
     NSDate *oldestDate = ((ReaderPost *)[posts lastObject]).sortDate;
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@ AND sortDate >= %@ AND sortDate <= %@", topic, oldestDate, newestDate];
 
