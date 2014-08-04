@@ -24,6 +24,7 @@
 #import "ReaderPostRichContentView.h"
 #import "CustomHighlightButton.h"
 #import "WPTableImageSource.h"
+#import "WPNoResultsView+AnimatedBox.h"
 
 static NSInteger const ReaderCommentsToSync = 100;
 static NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
@@ -60,6 +61,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 @property (nonatomic, strong) ReaderCommentPublisher *commentPublisher;
 @property (nonatomic, strong) WPTableImageSource *featuredImageSource;
+@property (nonatomic, strong) WPNoResultsView *noResultsView;
 
 @end
 
@@ -396,7 +398,9 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     ReaderPostService *service      = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     __weak __typeof(self) weakSelf  = self;
     
-#warning TODO: Spinner
+    [WPNoResultsView displayAnimatedBoxWithTitle:NSLocalizedString(@"Loading Post...", @"Text displayed while loading a post.")
+                                         message:nil
+                                            view:self.view];
     
     [service fetchPost:postID.integerValue forSite:siteID.integerValue success:^(ReaderPost *post) {
         
@@ -405,10 +409,14 @@ static CGFloat const SectionHeaderHeight = 25.0f;
         weakSelf.post = post;
         [weakSelf reloadData];
 
+        [WPNoResultsView removeFromView:weakSelf.view];
         
     } failure:^(NSError *error) {
         DDLogError(@"[RestAPI] %@", error);
-#warning TODO: Show Error
+
+        [WPNoResultsView displayAnimatedBoxWithTitle:NSLocalizedString(@"Error Loading Post", @"Text displayed when load post fails.")
+                                             message:nil
+                                                view:weakSelf.view];
         
     }];
 }
