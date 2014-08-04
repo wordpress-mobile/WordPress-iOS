@@ -463,7 +463,7 @@ NSInteger const WPLinkAlertViewTag = 92;
 {
     if (!self.editorPlaceholderText) {
         NSString *placeholderText = NSLocalizedString(@"Write your story here ...", @"Placeholder for the main body text.");
-        self.editorPlaceholderText = [NSString stringWithFormat:@"<div style=\"color:#c6c6c6;\">%@</div>", placeholderText];
+        self.editorPlaceholderText = [NSString stringWithFormat:@"<div style=\"color:#c6c6c6;\">%@<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div>", placeholderText];
     }
     
     CGFloat viewWidth = CGRectGetWidth(self.view.frame);
@@ -492,6 +492,7 @@ NSInteger const WPLinkAlertViewTag = 92;
         self.editorView = [[UIWebView alloc] initWithFrame:frame];
         self.editorView.delegate = self;
         self.editorView.hidesInputAccessoryView = YES;
+        self.editorView.autoresizesSubviews = YES;
         self.editorView.autoresizingMask = mask;
         self.editorView.scalesPageToFit = YES;
         self.editorView.dataDetectorTypes = UIDataDetectorTypeNone;
