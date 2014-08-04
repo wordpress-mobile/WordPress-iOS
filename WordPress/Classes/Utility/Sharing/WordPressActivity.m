@@ -57,7 +57,7 @@
     };
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
     navController.navigationBar.translucent = NO;
     navController.restorationIdentifier = WPEditorNavigationRestorationID;
     navController.restorationClass = [EditPostViewController class];
