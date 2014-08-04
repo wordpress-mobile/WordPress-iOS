@@ -33,9 +33,6 @@
 @property (nonatomic, assign) BOOL  viewHasAppeared;
 @property (nonatomic, assign) BOOL  retrievingNotifications;
 
-typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
-- (void)loadPostWithId:(NSNumber *)postID fromSite:(NSNumber *)siteID block:(NotificationsLoadPostBlock)block;
-
 @end
 
 
@@ -287,20 +284,16 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
         if ([note isComment]) {
             NotificationsCommentDetailViewController *commentDetailViewController = [[NotificationsCommentDetailViewController alloc] initWithNote:note];
             [self.navigationController pushViewController:commentDetailViewController animated:YES];
-        } else if ([note isMatcher] && [note metaPostID] && [note metaSiteID]) {
-            [self loadPostWithId:[note metaPostID] fromSite:[note metaSiteID] block:^(BOOL success, ReaderPost *post) {
-                if (!success || ![self.navigationController.topViewController isEqual:self]) {
-                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-                    return;
-                }
             
-                ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post];
-                [self.navigationController pushViewController:controller animated:YES];
-            }];
-        } else if ([note templateType] == WPNoteTemplateMultiLineList || [note templateType] == WPNoteTemplateSingleLineList) {
+        } else if (note.isMatcher && note.metaPostID && note.metaSiteID) {
+            ReaderPostDetailViewController *controller = [ReaderPostDetailViewController postDetailsWithPostID:note.metaPostID siteID:note.metaSiteID];
+            [self.navigationController pushViewController:controller animated:YES];
+            
+        } else if (note.templateType == WPNoteTemplateMultiLineList || note.templateType == WPNoteTemplateSingleLineList) {
             NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNote:note];
             [self.navigationController pushViewController:detailViewController animated:YES];
-        } else if ([note templateType] == WPNoteTemplateBigBadge) {
+            
+        } else if (note.templateType == WPNoteTemplateBigBadge) {
             NotificationsBigBadgeDetailViewController *bigBadgeViewController = [[NotificationsBigBadgeDetailViewController alloc] initWithNote: note];
             [self.navigationController pushViewController:bigBadgeViewController animated:YES];
         }
@@ -325,19 +318,6 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     return ((note.isComment) || ([note templateType] != WPNoteTemplateUnknown));
 }
 
-- (void)loadPostWithId:(NSNumber *)postID fromSite:(NSNumber *)siteID block:(NotificationsLoadPostBlock)block
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service fetchPost:postID.integerValue forSite:siteID.integerValue success:^(ReaderPost *post) {
-        [[ContextManager sharedInstance] saveContext:context];
-        block(YES, post);
-    } failure:^(NSError *error) {
-        DDLogError(@"[RestAPI] %@", error);
-        block(NO, nil);
-    }];
-
-}
 
 #pragma mark - WPTableViewController subclass methods
 
