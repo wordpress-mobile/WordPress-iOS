@@ -11,7 +11,7 @@
 NSString * const ReaderTopicDidChangeViaUserInteractionNotification = @"ReaderTopicDidChangeViaUserInteractionNotification";
 NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotification";
 NSString * const ReaderTopicServiceErrorDomain = @"ReaderTopicServiceErrorDomain";
-static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey";
+static NSString * const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey";
 
 @interface ReaderTopicService ()
 
@@ -219,6 +219,19 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
             failure(error);
         }
     }];
+}
+
+- (ReaderTopic *)topicForFollowedSites
+{
+    NSError *error;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderTopic"];
+    request.predicate = [NSPredicate predicateWithFormat:@"path LIKE %@", @"*/read/following"];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"Failed to fetch topic for sites I follow: %@", error);
+        return nil;
+    }
+    return (ReaderTopic *)[results firstObject];
 }
 
 
