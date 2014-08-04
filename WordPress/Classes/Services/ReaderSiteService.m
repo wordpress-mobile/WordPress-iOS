@@ -6,6 +6,9 @@
 #import "ContextManager.h"
 #import "ReaderSite.h"
 #import "RemoteReaderSite.h"
+#import "ReaderTopicService.h"
+#import "ReaderPostService.h"
+#import "ReaderPost.h"
 
 NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
@@ -51,7 +54,6 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
             failure(error);
         }
     }];
-
 }
 
 - (void)followSiteByURL:(NSURL *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
@@ -166,13 +168,48 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
 - (void)unfollowSite:(ReaderSite *)site success:(void(^)())success failure:(void(^)(NSError *error))failure
 {
+    NSString *path = site.path;
+    NSUInteger siteID = [site.siteID integerValue];
+
+    // Optimistically delete
+    [self deletePostsFromFollowedTopicForSite:site];
+    [self.managedObjectContext deleteObject:site];
+    [self.managedObjectContext performBlockAndWait:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
+
     if ([site isFeed]) {
-        [self unfollowSiteAtURL:site.path success:success failure:failure];
+        [self unfollowSiteAtURL:path success:success failure:failure];
     } else {
-        [self unfollowSiteWithID:[site.siteID integerValue] success:success failure:failure];
+        [self unfollowSiteWithID:siteID success:success failure:failure];
     }
 }
 
+- (void)deletePostsFromFollowedTopicForSite:(ReaderSite *)site
+{
+    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    ReaderTopic *followedSites = [topicService topicForFollowedSites];
+    if (!followedSites) {
+        return;
+    }
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    ReaderPostService *postService = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    [postService deletePostsWithSiteID:site.siteID andSiteURL:site.path fromTopic:followedSites];
+}
+
+- (void)syncPostsForFollowedSites
+{
+    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    ReaderTopic *followedSites = [topicService topicForFollowedSites];
+    if (!followedSites) {
+        return;
+    }
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    ReaderPostService *postService = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    [postService fetchPostsForTopic:followedSites earlierThan:[NSDate date] success:nil failure:nil];
+}
 
 #pragma mark - Private Methods
 

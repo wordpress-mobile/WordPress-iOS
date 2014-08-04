@@ -77,7 +77,7 @@ static CGFloat const FollowSitesRowHeight = 54.0;
     ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     [service unfollowSite:site success:^{
         [self syncSites];
-
+        [service syncPostsForFollowedSites];
     } failure:^(NSError *error) {
         DDLogError(@"Could not unfollow site: %@", error);
 
@@ -116,6 +116,7 @@ static CGFloat const FollowSitesRowHeight = 54.0;
                                                  buttonTitle:nil];
     return _noResultsView;
 }
+
 
 #pragma mark - TableView Handler Delegate Methods
 
@@ -213,7 +214,7 @@ static CGFloat const FollowSitesRowHeight = 54.0;
 
 - (void)tableViewDidChangeContent:(UITableView *)tableView
 {
-    [self.tableView reloadData];
+    [self.tableViewHandler updateTitleForSection:0];
     [self configureNoResultsView];
 }
 
