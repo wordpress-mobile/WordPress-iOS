@@ -89,4 +89,10 @@ extern NSString * const ReaderSiteServiceErrorDomain;
              success:(void(^)())success
              failure:(void(^)(NSError *error))failure;
 
+/**
+ Sync posts for the 'sites I follow endpoint if it exists. Maybe called whenever
+ a site/feed is followed or unfollowed.
+ */
+- (void)syncPostsForFollowedSites;
+
 @end

@@ -210,7 +210,7 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
         return nil;
     }
 
-    // if the string does not have a dot or protocol its not a URL
+    // if the string does not have either a dot or protocol its not a URL
     if ([str rangeOfString:@"."].location == NSNotFound && [str rangeOfString:@"://"].location == NSNotFound) {
         return nil;
     }
@@ -235,6 +235,7 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
         [self syncSites];
         [WPToast showToastWithMessage:NSLocalizedString(@"Followed", @"User followed a site.")
                              andImage:[UIImage imageNamed:@"action-icon-followed"]];
+        [service syncPostsForFollowedSites];
     } failure:^(NSError *error) {
         DDLogError(@"Could not follow site: %@", error);
 
