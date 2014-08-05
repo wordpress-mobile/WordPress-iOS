@@ -45,9 +45,6 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 @property (nonatomic, strong) NSDate    *pushNotificationDate;
 @property (nonatomic, assign) BOOL      viewHasAppeared;
 
-typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
-- (void)loadPostWithId:(NSNumber *)postID fromSite:(NSNumber *)siteID block:(NotificationsLoadPostBlock)block;
-
 @end
 
 
@@ -104,6 +101,10 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
                                                                         action:@selector(showNotificationSettings)];
         self.navigationItem.rightBarButtonItem = pushSettings;
     }
+    
+    // Don't show 'Notifications' in the next-view back button
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
     
     // Refresh Badge
     [self updateTabBarBadgeNumber];
@@ -273,26 +274,16 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     
     if (note.isComment) {
         NotificationsCommentDetailViewController *commentDetailViewController = [[NotificationsCommentDetailViewController alloc] initWithNote:note];
-        [self.navigationController pushViewController:commentDetailViewController animated:animated];
-    } else if ([note isMatcher] && [note metaPostID] && [note metaSiteID]) {
-        // Note: Don't worry. This is scheduled to be fixed/prettified in #2152
-        [self loadPostWithId:[note metaPostID] fromSite:[note metaSiteID] block:^(BOOL success, ReaderPost *post) {
-            if (!success || ![self.navigationController.topViewController isEqual:self]) {
-                if (self.tableView.indexPathForSelectedRow) {
-                    [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
-                }
-                return;
-            }
-            
-            ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post];
-            [self.navigationController pushViewController:controller animated:YES];
-        }];
+        [self.navigationController pushViewController:commentDetailViewController animated:YES];
+    } else if (note.isMatcher && note.metaPostID && note.metaSiteID) {
+        ReaderPostDetailViewController *controller = [ReaderPostDetailViewController detailControllerWithPostID:note.metaPostID siteID:note.metaSiteID];
+        [self.navigationController pushViewController:controller animated:YES];
     } else if (note.templateType == WPNoteTemplateMultiLineList || note.templateType == WPNoteTemplateSingleLineList) {
         NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNote:note];
-        [self.navigationController pushViewController:detailViewController animated:animated];
+        [self.navigationController pushViewController:detailViewController animated:YES];
     } else if (note.templateType == WPNoteTemplateBigBadge) {
-        NotificationsBigBadgeDetailViewController *bigBadgeViewController = [[NotificationsBigBadgeDetailViewController alloc] initWithNote:note];
-        [self.navigationController pushViewController:bigBadgeViewController animated:animated];
+        NotificationsBigBadgeDetailViewController *bigBadgeViewController = [[NotificationsBigBadgeDetailViewController alloc] initWithNote: note];
+        [self.navigationController pushViewController:bigBadgeViewController animated:YES];
     }
 }
 
@@ -312,7 +303,6 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     BOOL hasDetailView = [self noteHasDetailView:note];
     if (hasDetailView) {
         [self showDetailsForNote:note animated:YES];
-        
     } else {
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
@@ -332,19 +322,6 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 - (BOOL)noteHasDetailView:(Note *)note
 {
     return (note.isComment || note.templateType != WPNoteTemplateUnknown);
-}
-
-- (void)loadPostWithId:(NSNumber *)postID fromSite:(NSNumber *)siteID block:(NotificationsLoadPostBlock)block
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service fetchPost:postID.integerValue forSite:siteID.integerValue success:^(ReaderPost *post) {
-        [[ContextManager sharedInstance] saveContext:context];
-        block(YES, post);
-    } failure:^(NSError *error) {
-        DDLogError(@"[RestAPI] %@", error);
-        block(NO, nil);
-    }];
 }
 
 

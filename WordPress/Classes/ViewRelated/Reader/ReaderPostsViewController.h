@@ -4,6 +4,6 @@
 
 @interface ReaderPostsViewController : WPTableViewController<ReaderPostContentViewDelegate>
 
-- (void)openPost:(NSUInteger*)postId onBlog:(NSUInteger)blogId;
+- (void)openPost:(NSNumber *)postId onBlog:(NSNumber *)blogId;
 
 @end
