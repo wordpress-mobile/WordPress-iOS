@@ -199,7 +199,6 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
         DDLogInfo(@"Pushing Notification Details for: [%@]", notificationID);
         
         [self showDetailsForNote:notification animated:animated];
-        
     } else {
         DDLogInfo(@"Notification Details for [%@] cannot be pushed right now. Waiting %f secs", notificationID, NotificationPushMaxWait);
         
@@ -219,7 +218,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 - (void)updateTabBarBadgeNumber
 {
     NSInteger count         = [[UIApplication sharedApplication] applicationIconBadgeNumber];
-    NSString *countString   = (count) ? [NSString stringWithFormat:@"%d", count] : nil;
+    NSString *countString   = (count > 0) ? [NSString stringWithFormat:@"%d", count] : nil;
     
     // Note: self.navigationViewController might be nil. Let's hit the UITabBarController instead
     UITabBarController *tabBarController    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] tabBarController];
