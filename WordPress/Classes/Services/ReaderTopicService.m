@@ -10,7 +10,8 @@
 
 NSString * const ReaderTopicDidChangeViaUserInteractionNotification = @"ReaderTopicDidChangeViaUserInteractionNotification";
 NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotification";
-static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey";
+NSString * const ReaderTopicServiceErrorDomain = @"ReaderTopicServiceErrorDomain";
+static NSString * const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey";
 
 @interface ReaderTopicService ()
 
@@ -32,6 +33,11 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
 - (void)fetchReaderMenuWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    if (!defaultAccount) {
+        failure([self errorForMissingAccount]);
+        return;
+    }
+
     WordPressComApi *api = [defaultAccount restApi];
     if (![api hasCredentials]) {
         api = [WordPressComApi anonymousApi];
@@ -39,7 +45,12 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
     
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithRemoteApi:api];
     [remoteService fetchReaderMenuWithSuccess:^(NSArray *topics) {
-        [self mergeTopics:topics forAccount:defaultAccount];
+        WPAccount *reloadedAccount = (WPAccount *)[self.managedObjectContext existingObjectWithID:defaultAccount.objectID error:nil];
+        if (!reloadedAccount) {
+            failure([self errorForMissingAccount]);
+            return;
+        }
+        [self mergeTopics:topics forAccount:reloadedAccount];
         [self.managedObjectContext performBlockAndWait:^{
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }];
@@ -210,6 +221,19 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
     }];
 }
 
+- (ReaderTopic *)topicForFollowedSites
+{
+    NSError *error;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderTopic"];
+    request.predicate = [NSPredicate predicateWithFormat:@"path LIKE %@", @"*/read/following"];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"Failed to fetch topic for sites I follow: %@", error);
+        return nil;
+    }
+    return (ReaderTopic *)[results firstObject];
+}
+
 
 #pragma mark - Private Methods
 
@@ -329,7 +353,6 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
     }
 }
 
-
 /**
  Fetch all `ReaderTopics` currently in Core Data.
  
@@ -354,9 +377,21 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
  @param path The unique, cannonical path of the topic.
  @return A matching `ReaderTopic` or nil if there is no match.
  */
-- (ReaderTopic *)findWithPath:(NSString *)path {
+- (ReaderTopic *)findWithPath:(NSString *)path
+{
     NSArray *results = [[self allTopics] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"path == %@", [path lowercaseString]]];
     return [results firstObject];
+}
+
+/**
+ Standard error message for when syncing the menu when an account is missing or deleted.
+ */
+- (NSError *)errorForMissingAccount
+{
+    NSString *description = NSLocalizedString(@"Unable to fetch a list of topics because the default account was nil or deleted.", @"A message describing an error occuring when syncing the reader menu when the default WordPress.com account is missing or deleted.");
+    NSDictionary *userInfo = @{NSLocalizedDescriptionKey: description};
+    NSError *error = [NSError errorWithDomain:ReaderTopicServiceErrorDomain code:ReaderTopicServiceErrorNoAccount userInfo:userInfo];
+    return error;
 }
 
 @end

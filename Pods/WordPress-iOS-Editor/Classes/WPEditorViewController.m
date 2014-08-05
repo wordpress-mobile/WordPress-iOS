@@ -369,10 +369,10 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
 
 - (void)refreshUI
 {
-    if(self.titleText != nil || self.titleText != 0) {
+    if(self.titleText != nil || self.titleText.length != 0) {
         self.title = self.titleText;
     }
-    if(self.bodyText == nil || self.bodyText == 0) {
+    if(!self.bodyText || self.bodyText.length == 0) {
         self.tapToStartWritingLabel.hidden = NO;
         self.textView.text = @"";
     } else {
@@ -420,7 +420,7 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
     linkURL.keyboardAppearance = UIKeyboardAppearanceAlert;
     linkURL.keyboardType = UIKeyboardTypeURL;
     linkURL.autocorrectionType = UITextAutocorrectionTypeNo;
-    
+    __weak __typeof(self)weakSelf = self;
     self.alertView.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
         if (alertView.tag == 99) {
             if (buttonIndex == 1) {
@@ -436,32 +436,32 @@ CGFloat const EPVCTextViewTopPadding = 7.0f;
                     infoText.text = urlField.text;
                 }
                 
-                NSString *urlString = [self validateNewLinkInfo:[urlField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+                NSString *urlString = [weakSelf validateNewLinkInfo:[urlField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
                 NSString *aTagText = [NSString stringWithFormat:@"<a href=\"%@\">%@</a>", urlString, infoText.text];
-                NSRange range = self.textView.selectedRange;
-                NSString *oldText = self.textView.text;
-                NSRange oldRange = self.textView.selectedRange;
-                self.textView.scrollEnabled = NO;
-                self.textView.text = [self.textView.text stringByReplacingCharactersInRange:range withString:aTagText];
-                self.textView.scrollEnabled = YES;
+                NSRange range = weakSelf.textView.selectedRange;
+                NSString *oldText = weakSelf.textView.text;
+                NSRange oldRange = weakSelf.textView.selectedRange;
+                weakSelf.textView.scrollEnabled = NO;
+                weakSelf.textView.text = [weakSelf.textView.text stringByReplacingCharactersInRange:range withString:aTagText];
+                weakSelf.textView.scrollEnabled = YES;
                 
                 //reset selection back to nothing
                 range.length = 0;
                 range.location += [aTagText length]; // Place selection after the tag
-                self.textView.selectedRange = range;
+                weakSelf.textView.selectedRange = range;
                 
-                [[self.textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
-                [self.textView.undoManager setActionName:@"link"];
-                [self textViewDidChange:self.textView];
-                [self refreshTextView];
+                [[weakSelf.textView.undoManager prepareWithInvocationTarget:weakSelf] restoreText:oldText withRange:oldRange];
+                [weakSelf.textView.undoManager setActionName:@"link"];
+                [weakSelf textViewDidChange:self.textView];
+                [weakSelf refreshTextView];
                 
             }
             
             // Don't dismiss the keyboard
             // Hack from http://stackoverflow.com/a/7601631
             dispatch_async(dispatch_get_main_queue(), ^{
-                if([self.textView resignFirstResponder] || [self.titleTextField resignFirstResponder]){
-                    [self.textView becomeFirstResponder];
+                if([weakSelf.textView resignFirstResponder] || [weakSelf.titleTextField resignFirstResponder]){
+                    [weakSelf.textView becomeFirstResponder];
                 }
             });
         }
