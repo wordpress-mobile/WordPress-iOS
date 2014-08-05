@@ -127,7 +127,7 @@ static const NSUInteger kWPWebSnapshotterCacheTotalCostLimit = 20*1000*1000;
     
     UIView *cachedView = [self cachedSnapshotForRequest:request];
     if (cachedView) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
             request.callback(cachedView);
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 [self popSnapshotRequest:YES];
@@ -135,10 +135,12 @@ static const NSUInteger kWPWebSnapshotterCacheTotalCostLimit = 20*1000*1000;
         });
     } else {
         [self.worker startSnapshotWithRequest:request completionHandler:^(UIView *view, WPWebSnapshotRequest *returnedRequest) {
-            [self storeSnapshotView:view forRequest:returnedRequest];
-            request.callback(view);
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                [self popSnapshotRequest:YES];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self storeSnapshotView:view forRequest:returnedRequest];
+                request.callback(view);
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    [self popSnapshotRequest:YES];
+                });
             });
         }];
     }
