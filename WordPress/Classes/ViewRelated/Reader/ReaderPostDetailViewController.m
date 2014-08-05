@@ -117,7 +117,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:@"PostCell"];
 
     // Don't show 'Reader' in the next-view back button
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     
     UIToolbar *toolbar = self.navigationController.toolbar;
