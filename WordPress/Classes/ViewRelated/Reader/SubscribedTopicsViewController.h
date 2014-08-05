@@ -1,7 +1,5 @@
 #import <UIKit/UIKit.h>
+#import "ReaderEditableSubscriptionPage.h"
 
-@interface SubscribedTopicsViewController : UIViewController
-
-@property (nonatomic, strong) UITableView *tableView;
-
+@interface SubscribedTopicsViewController : UIViewController<ReaderEditableSubscriptionPage>
 @end
