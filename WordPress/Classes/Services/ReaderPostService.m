@@ -378,7 +378,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 }
 
 /**
- Private fetch method that is part of the backfill process. This is basically a 
+ Private fetch method that is part of the backfill process. This is basically a
  passthrough call to `fetchPostsFromEndpoint:count:before:success:failure:` that
  passes the results to `processBackfillPostsForTopic:posts:success:failure:`.
  This should only be called once the backfill date, array and batch count have
@@ -420,8 +420,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 }
 
 /**
- Processes a batch of backfilled posts. 
- When backfilling, the goal is to request up to three batches of post, or until 
+ Processes a batch of backfilled posts.
+ When backfilling, the goal is to request up to three batches of post, or until
  a fetched batch includes the newest posts currently in Core Data.
 
  @param topicObjectID The NSManagedObjectID of the Topic for which to request posts.
@@ -714,10 +714,10 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 #pragma mark - Content Formatting and Sanitization
 
 /**
- Formats the post content.  
+ Formats the post content.
  Removes transforms videopress markup into video tags, strips inline styles and tidys up paragraphs.
 
- @param content The post content as a string. 
+ @param content The post content as a string.
  @return The formatted content.
  */
 - (NSString *)formatContent:(NSString *)content
@@ -731,11 +731,11 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     return content;
 }
 
-/** 
+/**
  Formats a post's summary.  The excerpts provided by the REST API contain HTML and have some extra content appened to the end.
  HTML is stripped and the extra bit is removed.
 
- @param string The summary to format. 
+ @param string The summary to format.
  @return The formatted summary.
  */
 - (NSString *)formatSummary:(NSString *)summary
@@ -751,7 +751,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 /**
  Create a summary for the post based on the post's content.
 
- @param string The post's content string. This should be the formatted content string. 
+ @param string The post's content string. This should be the formatted content string.
  @return A summary for the post.
  */
 - (NSString *)createSummaryFromContent:(NSString *)string

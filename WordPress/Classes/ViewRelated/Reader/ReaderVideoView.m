@@ -194,7 +194,7 @@
                                                    }
                                                    NSString *url = [dict objectForKey:@"thumbnail_large_url"];
                                                    [selfRef setImageWithURL:[NSURL URLWithString:url]
-                                                           placeholderImage:nil 
+                                                           placeholderImage:nil
                                                                     success:success
                                                                     failure:failure];
 

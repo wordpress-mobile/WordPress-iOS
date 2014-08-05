@@ -11,7 +11,7 @@
 @end
 
 @implementation BasePost
-@dynamic author, content, date_created_gmt, postID, postTitle, status, password, remoteStatusNumber, permaLink, 
+@dynamic author, content, date_created_gmt, postID, postTitle, status, password, remoteStatusNumber, permaLink,
         mt_excerpt, mt_text_more, wp_slug, post_thumbnail;
 
 @synthesize isFeaturedImageChanged;
@@ -134,7 +134,7 @@
     NSMutableDictionary *postParams = [NSMutableDictionary dictionary];
 
     [postParams setValueIfNotNil:self.postTitle forKey:@"title"];
-    [postParams setValueIfNotNil:self.content forKey:@"description"];    
+    [postParams setValueIfNotNil:self.content forKey:@"description"];
     [postParams setValueIfNotNil:self.date_created_gmt forKey:@"date_created_gmt"];
     [postParams setValueIfNotNil:self.password forKey:@"wp_password"];
     [postParams setValueIfNotNil:self.permaLink forKey:@"permalink"];

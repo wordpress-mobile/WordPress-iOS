@@ -73,7 +73,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
     return tmpValue;
 }
 
-- (void)setGeolocationEnabled:(BOOL)value 
+- (void)setGeolocationEnabled:(BOOL)value
 {
     [self willChangeValueForKey:@"geolocationEnabled"];
     [self setPrimitiveValue:[NSNumber numberWithBool:value] forKey:@"geolocationEnabled"];
@@ -199,8 +199,8 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 -(NSArray *)sortedCategories
 {
-    NSSortDescriptor *sortNameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"categoryName" 
-                                                                        ascending:YES 
+    NSSortDescriptor *sortNameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"categoryName"
+                                                                        ascending:YES
                                                                          selector:@selector(caseInsensitiveCompare:)];
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortNameDescriptor, nil];
 

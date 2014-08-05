@@ -16,7 +16,7 @@
     frame = CGRectMake(cvf.size.height,
                        self.detailTextLabel.frame.origin.y,
                        cvf.size.width - cvf.size.height - 2*10,
-                       self.detailTextLabel.frame.size.height);   
+                       self.detailTextLabel.frame.size.height);
     self.detailTextLabel.frame = frame;
 }
 

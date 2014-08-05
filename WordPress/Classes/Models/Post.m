@@ -30,7 +30,7 @@
 
 #pragma mark -
 
-@implementation Post 
+@implementation Post
 
 @dynamic geolocation, tags, postFormat;
 @dynamic categories;

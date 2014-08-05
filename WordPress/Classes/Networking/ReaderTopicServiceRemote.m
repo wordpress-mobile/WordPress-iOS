@@ -123,11 +123,11 @@
 #pragma mark - Private Methods
 
 /**
- Formats the specified string for use as part of the URL path for the tags endpoints 
+ Formats the specified string for use as part of the URL path for the tags endpoints
  in the REST API. Spaces and periods are converted to dashes, ampersands and hashes are
  removed.
 
- @param topicName The string to be formatted. 
+ @param topicName The string to be formatted.
  @return The formatted string.
  */
 - (NSString *)sanitizeTopicNameForAPI:(NSString *)topicName

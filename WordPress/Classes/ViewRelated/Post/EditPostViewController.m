@@ -410,7 +410,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
 /*
  Sync the blog if desired info is missing.
 
- Always sync after a blog switch to ensure options are updated. Otherwise, 
+ Always sync after a blog switch to ensure options are updated. Otherwise,
  only sync for new posts when launched from the post tab vs the posts list.
  */
 - (void)syncOptionsIfNecessaryForBlog:(Blog *)blog afterBlogChanged:(BOOL)blogChanged

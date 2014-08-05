@@ -340,7 +340,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
         newIndexPath = indexPath;
     }
 
-    switch(type) {            
+    switch(type) {
         case NSFetchedResultsChangeInsert:
             [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
             break;

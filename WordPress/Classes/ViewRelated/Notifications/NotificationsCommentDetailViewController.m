@@ -283,7 +283,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         [webViewController setPassword:[defaultAccount password]];
         [webViewController setUrl:[url ensureSecureURL]];
     } else {
-        [webViewController setUrl:url];        
+        [webViewController setUrl:url];
     }
     [self.navigationController pushViewController:webViewController animated:YES];
 }

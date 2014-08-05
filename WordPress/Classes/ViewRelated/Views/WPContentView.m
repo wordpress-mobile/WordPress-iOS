@@ -205,7 +205,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 #pragma mark - Instance methods
 
-- (void)reset {    
+- (void)reset {
     _bylineLabel.text = nil;
     _titleLabel.text = nil;
     _snippetLabel.text = nil;
@@ -377,10 +377,10 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 - (void)imageLinkAction:(id)sender {
     if ([self.delegate respondsToSelector:@selector(contentView:didReceiveImageLinkAction:)]) {
         [self.delegate contentView:self didReceiveImageLinkAction:sender];
-    }   
+    }
 }
 
-- (void)videoLinkAction:(id)sender {    
+- (void)videoLinkAction:(id)sender {
     if ([self.delegate respondsToSelector:@selector(contentView:didReceiveVideoLinkAction:)]) {
         [self.delegate contentView:self didReceiveVideoLinkAction:sender];
     }
@@ -485,7 +485,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
     // The first time we're called we're in the middle of updating layout. Refreshing at
     // this point has no effect.  Dispatch async will let us refresh layout in a new loop
-    // and correctly update. 
+    // and correctly update.
     dispatch_async(dispatch_get_main_queue(), ^{
         [self refreshMediaLayout];
 

@@ -45,7 +45,7 @@ const CGFloat WPToastAnimationVisibleDuration = 0.35f;
     if (IS_IPHONE && UIInterfaceOrientationIsPortrait(parentViewController.interfaceOrientation))
         toastOffset = 125.0f;
     self.toastView.frame = CGRectMake((parentViewController.view.bounds.size.width / 2) - 95.0f, (parentViewController.view.bounds.size.height / 2) - toastOffset, 190.0f, 190.0f);
-    [UIView commitAnimations];    
+    [UIView commitAnimations];
 }
 
 - (void)animationDidStop:(NSString*)animationID finished:(BOOL)finished context:(void *)context {
