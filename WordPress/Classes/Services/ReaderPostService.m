@@ -266,7 +266,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         [self.managedObjectContext performBlockAndWait:^{
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }];
-        if(failure) {
+        if (failure) {
             failure(error);
         }
     };

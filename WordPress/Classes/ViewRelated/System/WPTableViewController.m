@@ -611,7 +611,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.editSiteViewController];
     navController.navigationBar.translucent = NO;
 
-    if(IS_IPAD) {
+    if (IS_IPAD) {
         navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         navController.modalPresentationStyle = UIModalPresentationFormSheet;
     }

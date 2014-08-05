@@ -299,7 +299,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 
-    if(!note.isRead) {
+    if (!note.isRead) {
         note.unread = @(0);
         [[ContextManager sharedInstance] saveContext:note.managedObjectContext];
 

@@ -141,7 +141,7 @@
         for (i = 0; i < count; i++) {
             Category *category = [categories objectAtIndex:i];
             catStr = [catStr stringByAppendingString:category.categoryName];
-            if(i < count-1) {
+            if (i < count-1) {
                 catStr = [catStr stringByAppendingString:@", "];
             }
         }
@@ -195,7 +195,7 @@
     } else if (link == nil) {
         [self showSimplePreview];
     } else {
-        if(needsLogin) {
+        if (needsLogin) {
             NSString *wpLoginURL = [self.apost.blog loginUrl];
             NSURL *url = [NSURL URLWithString:wpLoginURL];
             NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];

@@ -46,10 +46,10 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 @synthesize useWebViewLoading;
 
 - (void)dealloc {
-    if([self.scrollView observationInfo])
+    if ([self.scrollView observationInfo])
         [self.scrollView removeObserver:self forKeyPath:@"contentOffset"];
     webView.delegate = nil;
-    if([webView isLoading])
+    if ([webView isLoading])
         [webView stopLoading];
 }
 
@@ -82,13 +82,13 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if(![keyPath isEqualToString:@"contentOffset"])
+    if (![keyPath isEqualToString:@"contentOffset"])
         return;
 
     CGPoint newValue = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue];
     CGPoint oldValue = [[change objectForKey:NSKeyValueChangeOldKey] CGPointValue];
 
-    if(newValue.y == oldValue.y)
+    if (newValue.y == oldValue.y)
         return;
 }
 
@@ -108,7 +108,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     // User-Agent Header; see http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.43
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     NSString *userAgent = [appDelegate applicationUserAgent];
-    if(!userAgent){
+    if (!userAgent){
         userAgent = [NSString stringWithFormat:@"%@",[webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"]];
     }
     [self setDefaultHeader:@"User-Agent" value:userAgent];
@@ -204,7 +204,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 
 - (void)setCurrentHTTPRequestOperation:(AFHTTPRequestOperation *)newCurrentHTTPRequestOperation {
     if (currentHTTPRequestOperation){
-        if(currentHTTPRequestOperation.isExecuting) {
+        if (currentHTTPRequestOperation.isExecuting) {
             [currentHTTPRequestOperation cancel];
         }
          currentHTTPRequestOperation = nil;
@@ -284,7 +284,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
         // Check for a redirect.  Make sure the current URL reflects any redirects.
         NSURL *currURL = [[wpWebView currentRequest] URL];
         NSURL *respURL = [[operation response] URL];
-        if(![[currURL absoluteString] isEqualToString:[respURL absoluteString]]) {
+        if (![[currURL absoluteString] isEqualToString:[respURL absoluteString]]) {
             NSMutableURLRequest *mReq = [wpWebView.currentRequest mutableCopy];
             [mReq setURL:respURL];
             wpWebView.currentRequest = mReq;

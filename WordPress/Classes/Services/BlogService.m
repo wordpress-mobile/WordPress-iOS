@@ -136,7 +136,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         return nil;
     }
 
-    if([results count] == 0) {
+    if ([results count] == 0) {
         // Blog might have been removed from the app. Clear the key.
         [defaults removeObjectForKey:LastUsedBlogURLDefaultsKey];
         [defaults synchronize];
@@ -356,7 +356,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     WPXMLRPCRequest *request = [blog.api XMLRPCRequestWithMethod:@"wpcom.getFeatures" parameters:parameters];
     WPXMLRPCRequestOperation *operation = [blog.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         BOOL videoEnabled = YES;
-        if(([responseObject isKindOfClass:[NSDictionary class]]) && ([responseObject objectForKey:@"videopress_enabled"] != nil)) {
+        if (([responseObject isKindOfClass:[NSDictionary class]]) && ([responseObject objectForKey:@"videopress_enabled"] != nil)) {
             videoEnabled = [[responseObject objectForKey:@"videopress_enabled"] boolValue];
         } else {
             videoEnabled = YES;
@@ -436,7 +436,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
     NSError *err;
     NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&err];
-    if(count == NSNotFound) {
+    if (count == NSNotFound) {
         count = 0;
     }
     return count;

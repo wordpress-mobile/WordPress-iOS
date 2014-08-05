@@ -99,7 +99,7 @@
     [textView resignFirstResponder];
     if (IS_IPAD == NO) {
         UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
-        if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
+        if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
             self.isTransitioning = YES;
             UIViewController *garbageController = [[UIViewController alloc] init]; 
             [self.navigationController pushViewController:garbageController animated:NO];
@@ -142,7 +142,7 @@
 
 - (void)initiateSaveCommentReply:(id)sender {
     [self endTextEnteringButtonAction: sender];
-    if(self.hasChanges == NO) {
+    if (self.hasChanges == NO) {
         [commentViewController cancelView:self];
         return;
     }

@@ -97,7 +97,7 @@
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewWillAppear:animated];
 
-    if( self.detailContent == nil ) {
+    if ( self.detailContent == nil ) {
         [self setStatusTimer:[NSTimer timerWithTimeInterval:0.75 target:self selector:@selector(upgradeButtonsAndLabels:) userInfo:nil repeats:YES]];
         [[NSRunLoop currentRunLoop] addTimer:[self statusTimer] forMode:NSDefaultRunLoopMode];
     } else {
@@ -168,7 +168,7 @@
     self.forwardButton.enabled = self.webView.canGoForward;
     if (!_isLoading) {
         if (IS_IPAD) {
-            if(self.navigationController.navigationBarHidden == NO) {
+            if (self.navigationController.navigationBarHidden == NO) {
                 self.title = [self getDocumentTitle];
             } else {
                 [self.iPadNavBar.topItem setTitle:[self getDocumentTitle]];
@@ -334,7 +334,7 @@
             NSUInteger refreshButtonIndex = [newToolbarItems indexOfObject:self.refreshButton];
             if (loading && refreshButtonIndex != NSNotFound) {
                 [newToolbarItems replaceObjectAtIndex:refreshButtonIndex withObject:self.spinnerButton];
-            } else if(spinnerButtonIndex != NSNotFound) {
+            } else if (spinnerButtonIndex != NSNotFound) {
                 [newToolbarItems replaceObjectAtIndex:spinnerButtonIndex withObject:self.refreshButton];
             }
             self.toolbar.items = newToolbarItems;
@@ -356,7 +356,7 @@
             self.backButton.enabled = YES;
         self.forwardButton.enabled = YES;
         if (IS_IPAD) {
-            if(self.navigationController.navigationBarHidden == NO) {
+            if (self.navigationController.navigationBarHidden == NO) {
                 self.title = [self getDocumentTitle];
             } else {
                 [self.iPadNavBar.topItem setTitle:[self getDocumentTitle]];
@@ -531,7 +531,7 @@
         [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.show_article_details(%@);", self.detailContent]];
 
         if (IS_IPAD) {
-            if(self.navigationController.navigationBarHidden == NO) {
+            if (self.navigationController.navigationBarHidden == NO) {
                 self.title = [self getDocumentTitle];
             } else {
                 [self.iPadNavBar.topItem setTitle:[self getDocumentTitle]];

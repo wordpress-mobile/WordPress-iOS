@@ -241,7 +241,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
             return cell;
         }
-    } else if(indexPath.section == 1) {
+    } else if (indexPath.section == 1) {
         if (indexPath.row == 0) {
             UITableViewCell *geotaggingCell = [tableView dequeueReusableCellWithIdentifier:GeotaggingCellIdentifier];
             UISwitch *geotaggingSwitch = [[UISwitch alloc] init];
@@ -253,7 +253,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
             [WPStyleGuide configureTableViewCell:geotaggingCell];
             return geotaggingCell;
 
-        } else if(indexPath.row == 1) {
+        } else if (indexPath.row == 1) {
             UITableViewCell *pushCell = [tableView dequeueReusableCellWithIdentifier:PushNotificationsCellIdentifier];
             UISwitch *pushSwitch = [[UISwitch alloc] init];
             pushCell.textLabel.text = NSLocalizedString(@"Push Notifications", @"");
@@ -487,7 +487,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
             [self validationDidFail:error];
         } else if ([error.domain isEqual:WordPressXMLRPCApiErrorDomain]) {
             [self validationDidFail:error];
-        } else if([error.domain isEqual:AFURLRequestSerializationErrorDomain] || [error.domain isEqual:AFURLResponseSerializationErrorDomain]) {
+        } else if ([error.domain isEqual:AFURLRequestSerializationErrorDomain] || [error.domain isEqual:AFURLResponseSerializationErrorDomain]) {
             NSString *str = [NSString stringWithFormat:NSLocalizedString(@"There was a server error communicating with your site:\n%@\nTap 'Need Help?' to view the FAQ.", @""), [error localizedDescription]];
             NSDictionary *userInfo = @{NSLocalizedDescriptionKey: str};
             NSError *err = [NSError errorWithDomain:@"org.wordpress.iphone" code:NSURLErrorBadServerResponse userInfo:userInfo];

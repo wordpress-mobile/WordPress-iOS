@@ -40,7 +40,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
     self.tableView.accessibilityLabel = @"Comments";       // required for UIAutomation for iOS 4
-    if([self.tableView respondsToSelector:@selector(setAccessibilityIdentifier:)]){
+    if ([self.tableView respondsToSelector:@selector(setAccessibilityIdentifier:)]){
         self.tableView.accessibilityIdentifier = @"Comments";  // required for UIAutomation for iOS 5
     }
 
@@ -102,7 +102,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
         }
     }
 
-    if(comment) {
+    if (comment) {
         self.currentIndexPath = indexPath;
         self.lastSelectedCommentID = comment.commentID; //store the latest user selection
 

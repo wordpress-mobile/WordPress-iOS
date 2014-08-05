@@ -98,7 +98,7 @@
 - (void)hideBars:(BOOL)hide animated:(BOOL)animated {
     [super hideBars:hide animated:animated];
 
-    if(self.navigationController.navigationBarHidden != hide) {
+    if (self.navigationController.navigationBarHidden != hide) {
         [self.navigationController setNavigationBarHidden:hide animated:animated];
     }
 

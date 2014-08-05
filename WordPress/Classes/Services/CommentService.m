@@ -217,7 +217,7 @@
     if (existingComments.count > 0) {
         for (Comment *comment in existingComments) {
             // Don't delete unpublished comments
-            if(![commentsToKeep containsObject:comment] && comment.commentID != nil) {
+            if (![commentsToKeep containsObject:comment] && comment.commentID != nil) {
                 DDLogInfo(@"Deleting Comment: %@", comment);
                 [self.managedObjectContext deleteObject:comment];
             }

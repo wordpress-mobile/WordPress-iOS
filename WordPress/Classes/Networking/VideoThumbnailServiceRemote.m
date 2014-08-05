@@ -48,7 +48,7 @@
     if ([absolutePath rangeOfString:@"youtube.com/embed"].location != NSNotFound) {
         [self getYoutubeThumb:vidId success:success failure:failure];
 
-    } else if([absolutePath rangeOfString:@"videos.files.wordpress.com"].location != NSNotFound ||
+    } else if ([absolutePath rangeOfString:@"videos.files.wordpress.com"].location != NSNotFound ||
               [absolutePath rangeOfString:@"videos.videopress.com"].location != NSNotFound) {
         [self getVideoPressThumb:url success:success failure:failure];
 

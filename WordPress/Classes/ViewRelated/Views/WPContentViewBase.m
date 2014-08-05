@@ -234,12 +234,12 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     }
 
     // Remove the old constraint if necessary.
-    if([self.constraints indexOfObject:constraintToRemove] != NSNotFound) {
+    if ([self.constraints indexOfObject:constraintToRemove] != NSNotFound) {
         [self removeConstraint:constraintToRemove];
     }
 
     // Add the new constraint and update if necessary.
-    if([self.constraints indexOfObject:constraintToAdd] == NSNotFound) {
+    if ([self.constraints indexOfObject:constraintToAdd] == NSNotFound) {
         [self addConstraint:constraintToAdd];
         [self setNeedsUpdateConstraints];
     }

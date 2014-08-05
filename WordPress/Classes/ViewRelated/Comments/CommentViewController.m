@@ -257,7 +257,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     if (self.commentsViewController.blog.isSyncingComments) {
         [self showSyncInProgressAlert];
     } else {
-        if(self.inlineComposeView.isDisplayed) {
+        if (self.inlineComposeView.isDisplayed) {
             [self.inlineComposeView dismissComposer];
         } else {
             CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
@@ -273,7 +273,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)handleTap:(UITapGestureRecognizer *)gesture
 {
-    if(self.inlineComposeView.isDisplayed) {
+    if (self.inlineComposeView.isDisplayed) {
         [self.inlineComposeView dismissComposer];
     }
 }

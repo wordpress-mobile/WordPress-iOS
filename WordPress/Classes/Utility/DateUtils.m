@@ -7,7 +7,7 @@
     NSDate *date = nil;
     if ([dateString length] == 25) {
         NSRange rng = [dateString rangeOfString:@":" options:NSBackwardsSearch range:NSMakeRange(20, 5)];
-        if(rng.location != NSNotFound) {
+        if (rng.location != NSNotFound) {
             dateString = [dateString stringByReplacingCharactersInRange:rng withString:@""];
         }
     }
@@ -17,7 +17,7 @@
     for (NSString *dateFormat in formats) {
         [dateFormatter setDateFormat:dateFormat];
         date = [dateFormatter dateFromString:dateString];
-        if(date){
+        if (date){
             return date;
         }
     }
