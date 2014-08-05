@@ -45,9 +45,8 @@ static NSInteger RowIndexForDatePicker = 0;
 
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
 
-@interface PostSettingsViewController () <UITextFieldDelegate, WPTableImageSourceDelegate, WPPickerViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
+@interface PostSettingsViewController () <UITextFieldDelegate, WPTableImageSourceDelegate, WPPickerViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate> {
     WPMediaUploader *_mediaUploader;
-    UIPopoverController *_popover;
 }
 
 @property (nonatomic, strong) AbstractPost *apost;
@@ -60,6 +59,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 @property (nonatomic, strong) UIImage *featuredImage;
 @property (nonatomic, strong) PublishDatePickerView *datePicker;
 @property (assign) BOOL *textFieldDidHaveFocusBeforeOrientationChange;
+@property (nonatomic, strong) UIPopoverController *popover;
 
 @end
 
@@ -72,7 +72,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 }
 
 - (id)initWithPost:(AbstractPost *)aPost {
-    self = [super init];
+    self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.apost = aPost;
         _mediaUploader = [[WPMediaUploader alloc] init];
@@ -106,6 +106,9 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [self.tableView registerNib:[UINib nibWithNibName:@"WPTableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
     
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 44.0)]; // add some vertical padding
+    
+    // Compensate for the first section's height of 1.0f
+    self.tableView.contentInset = UIEdgeInsetsMake(-1.0f, 0, 0, 0);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -307,7 +310,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 - (NSString *)titleForHeaderInSection:(NSInteger)section {
     NSInteger sec = [[self.sections objectAtIndex:section] integerValue];
     if (sec == PostSettingsSectionTaxonomy) {
-        // No title
+        return NSLocalizedString(@"Taxonomy", @"Label for the Taxonomy area (categories, keywords, ...) in post settings.");
         
     } else if (sec == PostSettingsSectionMeta) {
         return NSLocalizedString(@"Publish", @"The grandiose Publish button in the Post Editor! Should use the same translation as core WP.");
@@ -336,8 +339,14 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     if (IS_IPAD && section == 0) {
         return WPTableViewTopMargin;
     }
+    
     NSString *title = [self titleForHeaderInSection:section];
     return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    // Remove extra padding caused by section footers in grouped table views
+    return 1.0f;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -824,9 +833,10 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     picker.navigationBar.barStyle = UIBarStyleBlack;
     
     if (IS_IPAD) {
-        _popover = [[UIPopoverController alloc] initWithContentViewController:picker];
+        self.popover = [[UIPopoverController alloc] initWithContentViewController:picker];
         CGRect frame = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]];
-        [_popover presentPopoverFromRect:frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        self.popover.delegate = self;
+        [self.popover presentPopoverFromRect:frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
         [self.navigationController presentViewController:picker animated:YES completion:nil];
     }
@@ -961,7 +971,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         }];
 
         if (IS_IPAD) {
-            [_popover dismissPopoverAnimated:YES];
+            [self.popover dismissPopoverAnimated:YES];
         } else {
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         }
@@ -970,6 +980,19 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     } failureBlock:^(NSError *error){
         DDLogError(@"can't get asset %@: %@", assetURL, [error localizedDescription]);
     }];
+}
+
+#pragma mark - UIPopoverControllerDelegate methods
+- (void)popoverController:(UIPopoverController *)popoverController willRepositionPopoverToRect:(inout CGRect *)rect inView:(inout UIView *__autoreleasing *)view
+{
+    *rect = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]];
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    // Reset delegate and nil popover property
+    self.popover.delegate = nil;
+    self.popover = nil;
 }
 
 @end

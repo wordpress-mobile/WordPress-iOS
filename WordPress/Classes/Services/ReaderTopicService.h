@@ -3,6 +3,11 @@
 
 extern NSString * const ReaderTopicDidChangeViaUserInteractionNotification;
 extern NSString * const ReaderTopicDidChangeNotification;
+extern NSString * const ReaderTopicServiceErrorDomain;
+
+typedef enum : NSUInteger {
+    ReaderTopicServiceErrorNoAccount
+} ReaderTopicServiceError;
 
 @class ReaderTopic;
 
@@ -61,5 +66,12 @@ extern NSString * const ReaderTopicDidChangeNotification;
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 - (void)followTopicNamed:(NSString *)topicName withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+
+/**
+ Fetch the topic for 'sites I follow' if it exists.
+
+ @return A `ReaderTopic` instance or nil.
+ */
+- (ReaderTopic *)topicForFollowedSites;
 
 @end
