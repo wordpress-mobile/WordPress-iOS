@@ -36,11 +36,20 @@
 
 
 #pragma mark ====================================================================================
+#pragma mark Constants
+#pragma mark ====================================================================================
+
+static NSTimeInterval NotificationPushMaxWait = 1;
+
+
+#pragma mark ====================================================================================
 #pragma mark Private Properties
 #pragma mark ====================================================================================
 
-@interface NotificationsViewController ()
-@property (nonatomic, assign) dispatch_once_t trackedViewDisplay;
+@interface NotificationsViewController () <SPBucketDelegate>
+@property (nonatomic, assign) dispatch_once_t   trackedViewDisplay;
+@property (nonatomic, strong) NSString          *pushNotificationID;
+@property (nonatomic, strong) NSDate            *pushNotificationDate;
 @end
 
 
@@ -60,11 +69,16 @@
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        self.title = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
+        self.title              = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
         
         // Watch for application badge number changes
-        NSString *keyPath = NSStringFromSelector(@selector(applicationIconBadgeNumber));
-        [[UIApplication sharedApplication] addObserver:self forKeyPath:keyPath options:NSKeyValueObservingOptionNew context:nil];
+        NSString *badgeKeyPath  = NSStringFromSelector(@selector(applicationIconBadgeNumber));
+        [[UIApplication sharedApplication] addObserver:self forKeyPath:badgeKeyPath options:NSKeyValueObservingOptionNew context:nil];
+        
+        // Watch for new Notifications
+        Simperium *simperium    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+        SPBucket *notesBucket   = [simperium bucketForName:self.entityName];
+        notesBucket.delegate    = self;
     }
     
     return self;
@@ -103,6 +117,7 @@
         [WPAnalytics track:WPAnalyticsStatNotificationsAccessed];
     });
     
+    // Badge + Metadata
     [self updateLastSeenTime];
     [self resetApplicationBadge];
 }
@@ -126,6 +141,25 @@
 }
 
 
+#pragma mark - SPBucketDelegate Methods
+
+- (void)bucket:(SPBucket *)bucket didChangeObjectForKey:(NSString *)key forChangeType:(SPBucketChangeType)changeType memberNames:(NSArray *)memberNames
+{
+    // Did the user tap on a push notification?
+    if (changeType == SPBucketChangeInsert && [self.pushNotificationID isEqualToString:key]) {
+
+        // Show the details only if NotificationPushMaxWait hasn't elapsed
+        if (ABS(self.pushNotificationDate.timeIntervalSinceNow) <= NotificationPushMaxWait) {
+            [self showDetailsForNoteWithID:key animated:YES];
+        }
+        
+        // Cleanup
+        self.pushNotificationID     = nil;
+        self.pushNotificationDate   = nil;
+    }
+}
+
+
 #pragma mark - NSNotification Helpers
 
 - (void)handleApplicationDidBecomeActiveNote:(NSNotification *)note
@@ -143,6 +177,27 @@
 }
 
 
+#pragma mark - Public Methods
+
+- (void)showDetailsForNoteWithID:(NSString *)notificationID animated:(BOOL)animated
+{
+    Simperium *simperium        = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+    SPBucket *notesBucket       = [simperium bucketForName:self.entityName];
+    Notification *notification  = [notesBucket objectForKey:notificationID];
+    
+    if (notification) {
+        DDLogInfo(@"Pushing Notification Details for: [%@]", notificationID);
+        
+        [self showDetailsForNotification:notification animated:animated];
+    } else {
+        DDLogInfo(@"Notification Details for [%@] cannot be pushed right now. Waiting %f secs", notificationID, NotificationPushMaxWait);
+        
+        self.pushNotificationID     = notificationID;
+        self.pushNotificationDate   = [NSDate date];
+    }
+}
+
+
 #pragma mark - Helper methods
 
 - (void)resetApplicationBadge
@@ -157,7 +212,7 @@
     UITabBarItem *tabBarItem                = tabBarController.tabBar.items[kNotificationsTabIndex];
  
     NSInteger count                         = [[UIApplication sharedApplication] applicationIconBadgeNumber];
-    NSString *countString                   = (count) ? [NSString stringWithFormat:@"%d", count] : nil;
+    NSString *countString                   = (count > 0) ? [NSString stringWithFormat:@"%d", count] : nil;
     tabBarItem.badgeValue                   = countString;
 }
 
@@ -208,6 +263,7 @@
 
 - (void)showReaderForNotification:(Notification *)note
 {
+#warning FIX ME
     // Failsafe
     if (note.metaPostID == nil || note.metaSiteID == nil) {
         [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
@@ -230,6 +286,7 @@
 
 - (void)showCommentForNotification:(Notification *)note
 {
+#warning FIX ME Please
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService        = [[BlogService alloc] initWithManagedObjectContext:context];
     Blog *blog                      = [blogService blogByBlogId:note.metaSiteID];
@@ -252,9 +309,29 @@
     }];
 }
 
-- (void)showDetailsForNotification:(Notification *)note
+- (void)showDetailsForNote:(Notification *)note
 {
     [self performSegueWithIdentifier:NSStringFromClass([NotificationDetailsViewController class]) sender:note];
+}
+
+- (void)showDetailsForNotification:(Notification *)note animated:(BOOL)animated
+{
+#warning TODO: FIXME: Segues don't have animated = NO
+    [WPAnalytics track:WPAnalyticsStatNotificationsOpenedNotificationDetails];
+    
+    // Make sure there's nothing else on the stack
+    [self.navigationController popToRootViewControllerAnimated:NO];
+    
+    
+    if (note.isMatcher) {
+        [self showReaderForNotification:note];
+        
+    } else if (note.isComment) {
+        [self showCommentForNotification:note];
+        
+    } else {
+        [self showDetailsForNote:note];
+    }
 }
 
 
@@ -304,7 +381,7 @@
         [self showCommentForNotification:note];
         
     } else {
-        [self showDetailsForNotification:note];
+        [self showDetailsForNote:note];
     }
 }
 
@@ -377,6 +454,9 @@
 	// No-Op. Handled by Simperium!
     success();
 }
+
+
+#pragma mark - No Results Helpers
 
 - (NSString *)noResultsTitleText
 {
