@@ -401,6 +401,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
                                          message:nil
                                             view:self.view];
     
+    [service deletePostsWithNoTopic];
     [service fetchPost:postID.integerValue forSite:siteID.integerValue success:^(ReaderPost *post) {
         
         [[ContextManager sharedInstance] saveContext:context];
