@@ -263,7 +263,7 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 
 - (void)showReaderForNotification:(Notification *)note
 {
-#warning FIX ME
+#warning TODO: FIX ME Please
     // Failsafe
     if (note.metaPostID == nil || note.metaSiteID == nil) {
         [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
@@ -286,7 +286,7 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 
 - (void)showCommentForNotification:(Notification *)note
 {
-#warning FIX ME Please
+#warning TODO: FIX ME Please
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService        = [[BlogService alloc] initWithManagedObjectContext:context];
     Blog *blog                      = [blogService blogByBlogId:note.metaSiteID];
@@ -370,6 +370,7 @@ static NSTimeInterval NotificationPushMaxWait = 1;
         cell.read = note.read;
     }
     
+#warning TODO: Nuke Duplicate Code
     // Tracker!
     [WPAnalytics track:WPAnalyticsStatNotificationsOpenedNotificationDetails];
     
