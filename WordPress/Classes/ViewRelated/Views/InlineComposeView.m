@@ -231,7 +231,7 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     // Focus the input field in the toolbar when we begin editing from the proxy
     if (textView == self.proxyTextView) {
-        if(self.toolbarTextView.editable){
+        if (self.toolbarTextView.editable){
             [self.toolbarTextView becomeFirstResponder];
         }
         self.toolbarTextView.editable = YES;

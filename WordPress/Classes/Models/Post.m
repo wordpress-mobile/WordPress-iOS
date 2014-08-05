@@ -170,7 +170,7 @@
     for (NSString *categoryName in categoryNames) {
         NSSet *results = [self.blog.categories filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"categoryName = %@", categoryName]];
         if (results && (results.count > 0)) {
-            if(categories == nil) {
+            if (categories == nil) {
                 categories = [NSMutableSet setWithSet:results];
             } else {
                 [categories unionSet:results];
@@ -465,7 +465,7 @@
     NSArray *parameters = @[self.postID, self.blog.username, self.blog.password, [self XMLRPCDictionary]];
     self.remoteStatus = AbstractPostRemoteStatusPushing;
 
-    if( self.isFeaturedImageChanged == NO ) {
+    if ( self.isFeaturedImageChanged == NO ) {
         NSMutableDictionary *xmlrpcDictionary = (NSMutableDictionary*) [parameters objectAtIndex:3] ;
         [xmlrpcDictionary removeObjectForKey:@"wp_post_thumbnail"];
     }

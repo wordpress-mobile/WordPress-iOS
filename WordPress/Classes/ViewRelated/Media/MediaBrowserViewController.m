@@ -751,14 +751,14 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
     // Check for previous width setting
     NSString *widthText = nil;
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"] != nil) {
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"] != nil) {
         widthText = [[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"];
     } else {
         widthText = [NSString stringWithFormat:@"%d", (int)_currentImage.size.width];
     }
 
     NSString *heightText = nil;
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"] != nil) {
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"] != nil) {
         heightText = [[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"];
     } else {
         heightText = [NSString stringWithFormat:@"%d", (int)_currentImage.size.height];
@@ -1012,7 +1012,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         [self performSelectorOnMainThread:@selector(processLibraryVideo) withObject:nil waitUntilDone:NO];
         }
     }
-    else if([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.image"]) {
+    else if ([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.image"]) {
         UIImage *image = [info valueForKey:@"UIImagePickerControllerOriginalImage"];
         if (picker.sourceType == UIImagePickerControllerSourceTypeCamera)
             UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
@@ -1068,7 +1068,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
         [nf setNumberStyle:NSNumberFormatterDecimalStyle];
         NSNumber *resizePreference = [NSNumber numberWithInt:-1];
-        if([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
             resizePreference = [nf numberFromString:[[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"]];
         BOOL showResizeActionSheet = NO;
         switch ([resizePreference intValue]) {
@@ -1128,12 +1128,12 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 - (void)processLibraryVideo {
     NSURL *videoURL = [_currentVideo valueForKey:UIImagePickerControllerMediaURL];
-    if(videoURL == nil) {
+    if (videoURL == nil) {
         videoURL = [_currentVideo valueForKey:UIImagePickerControllerReferenceURL];
     }
 
     if (videoURL != nil) {
-        if(IS_IPAD)
+        if (IS_IPAD)
             [_addPopover dismissPopoverAnimated:YES];
         else {
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -1194,7 +1194,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
             CFStringRef UTI = CGImageSourceGetType(source); //this is the type of image (e.g., public.jpeg)
             CGImageDestinationRef destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)dest_data,UTI,1,NULL);
 
-            if(destination) {
+            if (destination) {
                 //add the image contained in the image source to the destination, copying the old metadata
                 CGImageDestinationAddImageFromSource(destination,source,0, (__bridge CFDictionaryRef) self.currentImageMetadata);
 
@@ -1216,7 +1216,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
             DDLogWarn(@"***Could not create image source ***");
         }
 
-        if(!success) {
+        if (!success) {
             DDLogWarn(@"***Could not create data from image destination ***");
             //write the data without EXIF to disk
             NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -1301,16 +1301,16 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     NSString *filename = [NSString stringWithFormat:@"%@.mov", [self.dateFormatter stringFromDate:[NSDate date]]];
     NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
 
-    if(videoURL != nil) {
+    if (videoURL != nil) {
         // Copy the video from temp to blog directory
         NSError *error = nil;
         if ((attributes = [fileManager attributesOfItemAtPath:videoURL error:nil]) != nil) {
-            if([fileManager isReadableFileAtPath:videoURL])
+            if ([fileManager isReadableFileAtPath:videoURL])
                 copySuccess = [fileManager copyItemAtPath:videoURL toPath:filepath error:&error];
         }
     }
 
-    if(copySuccess) {
+    if (copySuccess) {
         videoMedia = [Media newMediaForBlog:self.blog];
 
         videoMedia.creationDate = [NSDate date];
@@ -1491,7 +1491,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 /* Used in Custom Dimensions Resize */
 - (UIImage *)resizeImage:(UIImage *)original width:(CGFloat)width height:(CGFloat)height {
     UIImage *resizedImage = original;
-    if(_currentImage.size.width > width || _currentImage.size.height > height) {
+    if (_currentImage.size.width > width || _currentImage.size.height > height) {
         // Resize the image using the selected dimensions
         resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
                                                       bounds:CGSizeMake(width, height)

@@ -1135,7 +1135,7 @@ NSInteger const kMeTabIndex = 2;
     if ([self noBlogsAndNoWordPressDotComAccount]) {
         // When there are no blogs in the app the settings screen is unavailable.
         // In this case, enable extra_debugging by default to help troubleshoot any issues.
-        if([[NSUserDefaults standardUserDefaults] objectForKey:@"orig_extra_debug"] != nil) {
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"orig_extra_debug"] != nil) {
             return; // Already saved. Don't save again or we could loose the original value.
         }
 
@@ -1146,7 +1146,7 @@ NSInteger const kMeTabIndex = 2;
         [NSUserDefaults resetStandardUserDefaults];
     } else {
         NSString *origExtraDebug = [[NSUserDefaults standardUserDefaults] stringForKey:@"orig_extra_debug"];
-        if(origExtraDebug == nil) {
+        if (origExtraDebug == nil) {
             return;
         }
 

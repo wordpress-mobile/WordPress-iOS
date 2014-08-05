@@ -83,7 +83,7 @@
 
     NSMutableArray *actionButtons = [NSMutableArray array];
 
-    if(self.post.isLikesEnabled){
+    if (self.post.isLikesEnabled){
         [actionButtons addObject:self.likeButton];
     }
 

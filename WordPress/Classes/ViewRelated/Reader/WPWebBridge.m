@@ -19,7 +19,7 @@ static NSString *const AuthorizedHybridHost = @"en.wordpress.com";
  so the HTML portion can authenticate when requesting to call native methods
  */
 - (NSURLRequest *)authorizeHybridRequest:(NSMutableURLRequest *)request {
-    if( [[self class] isValidHybridURL:request.URL] ){
+    if ( [[self class] isValidHybridURL:request.URL] ){
         // add the token
         request.URL = [[self class] authorizeHybridURL:request.URL];
         [request addValue:self.hybridAuthToken forHTTPHeaderField:@"X-WP-HYBRID-AUTH-TOKEN"];

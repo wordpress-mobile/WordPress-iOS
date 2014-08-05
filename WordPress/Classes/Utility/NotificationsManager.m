@@ -173,7 +173,7 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 
     //Check and send 'mute_until' value
     NSMutableDictionary *muteDictionary = [notificationPreferences objectForKey:@"mute_until"];
-    if(muteDictionary != nil  && [muteDictionary objectForKey:@"value"] != nil) {
+    if (muteDictionary != nil  && [muteDictionary objectForKey:@"value"] != nil) {
         [updatedSettings setValue:[muteDictionary objectForKey:@"value"] forKey:@"mute_until"];
     } else {
         [updatedSettings setValue:@"0" forKey:@"mute_until"];

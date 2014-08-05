@@ -169,7 +169,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
     if (_mediaUploadQueue.operationCount > 0) {
         self.navigationItem.titleView = self.uploadStatusView;
-    } else if(blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
+    } else if (blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
         self.navigationItem.title = [self editorTitle];
     } else {
         UIButton *titleButton = self.titleBarButton;
@@ -337,7 +337,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
 - (void)cancelEditing
 {
-    if(_currentActionSheet) return;
+    if (_currentActionSheet) return;
 
     [self stopEditing];
     [self.postSettingsViewController endEditingAction:nil];
@@ -396,7 +396,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
     if (self.post.blog.geolocationEnabled && ![LocationService sharedService].locationServicesDisabled) {
         [[LocationService sharedService] getCurrentLocationAndAddress:^(CLLocation *location, NSString *address, NSError *error) {
             if (location) {
-                if(self.post.isDeleted) {
+                if (self.post.isDeleted) {
                     return;
                 }
                 Coordinate *coord = [[Coordinate alloc] initWithCoordinate:location.coordinate];
@@ -459,7 +459,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
     // Right nav button: Publish Button
     NSString *buttonTitle;
-    if(![self.post hasRemote] || ![self.post.status isEqualToString:self.post.original.status]) {
+    if (![self.post hasRemote] || ![self.post.status isEqualToString:self.post.original.status]) {
         if ([self.post.status isEqualToString:@"publish"] && ([self.post.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
             buttonTitle = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
 
@@ -499,7 +499,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
     [self setupNavbar];
     self.titleText = self.post.postTitle;
 
-    if(self.post.content == nil || [self.post.content isEmpty]) {
+    if (self.post.content == nil || [self.post.content isEmpty]) {
         self.bodyText = @"";
     } else {
         if ((self.post.mt_text_more != nil) && ([self.post.mt_text_more length] > 0)) {
@@ -730,7 +730,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
     NSSet *mediaFiles = self.post.media;
     for (Media *media in mediaFiles) {
-        if(media.remoteStatus == MediaRemoteStatusFailed) {
+        if (media.remoteStatus == MediaRemoteStatusFailed) {
             hasFailedMedia = YES;
             break;
         }
@@ -747,7 +747,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
     NSSet *mediaFiles = self.post.media;
     for (Media *media in mediaFiles) {
-        if(media.remoteStatus == MediaRemoteStatusPushing) {
+        if (media.remoteStatus == MediaRemoteStatusPushing) {
             isMediaInUploading = YES;
             break;
         }
@@ -790,7 +790,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
 {
     NSString *prefix = @"<br /><br />";
 
-    if(self.post.content == nil || [self.post.content isEqualToString:@""]) {
+    if (self.post.content == nil || [self.post.content isEqualToString:@""]) {
         self.post.content = @"";
         prefix = @"";
     }

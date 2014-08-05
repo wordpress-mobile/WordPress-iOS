@@ -76,7 +76,7 @@
     }];
 
     NSError *error;
-    if(![context save:&error]){
+    if (![context save:&error]){
         DDLogError(@"Failed to sync ReaderComments: %@", error);
     }
 
@@ -101,7 +101,7 @@
         }
     }];
 
-    if(![context save:&error]){
+    if (![context save:&error]){
         DDLogError(@"Failed to set ReaderComment Relationships: %@", error);
     }
 
@@ -110,14 +110,14 @@
     __block void(__unsafe_unretained ^updateDepth)(NSArray *, NSNumber *) = ^void (NSArray *comments, NSNumber *depth) {
         for (ReaderComment *comment in comments) {
             comment.depth = depth;
-            if([comment.childComments count] > 0) {
+            if ([comment.childComments count] > 0) {
                 updateDepth([comment.childComments allObjects], [NSNumber numberWithInteger:([depth integerValue] + 1)]);
             }
         }
     };
     updateDepth(commentsArr, @0);
 
-    if(![context save:&error]){
+    if (![context save:&error]){
         DDLogError(@"Failed to set ReaderComment Depths: %@", error);
     }
 }
@@ -131,7 +131,7 @@
 
     NSError *error;
     NSArray *results = [context executeFetchRequest:request error:&error];
-    if(error != nil){
+    if (error != nil){
         DDLogError(@"Error finding ReaderPost: %@", error);
         return;
     }

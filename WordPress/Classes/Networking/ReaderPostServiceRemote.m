@@ -343,7 +343,7 @@
     NSString *authorEmail = [dict stringForKey:@"email"];
 
     // if 0 or less than minimum email length. a@a.aa
-    if([authorEmail isEqualToString:@"0"] || [authorEmail length] < 6) {
+    if ([authorEmail isEqualToString:@"0"] || [authorEmail length] < 6) {
         authorEmail = @"";
     }
 

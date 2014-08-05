@@ -52,7 +52,7 @@ const CGFloat WPToastAnimationVisibleDuration = 0.35f;
     UIViewController *parentViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
 
     UIView *toastView = (__bridge UIView *)context;
-    if([animationID isEqualToString:@"toast_zoom_in"]) {
+    if ([animationID isEqualToString:@"toast_zoom_in"]) {
         [UIView beginAnimations:@"content_fade_in" context:(__bridge void *)(toastView)];
         [UIView setAnimationDuration:WPToastAnimationFadeDuration];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];

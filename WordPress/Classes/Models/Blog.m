@@ -110,7 +110,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
     NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"http(s?)://" options:NSRegularExpressionCaseInsensitive error:&error];
     NSString *result = [NSString stringWithFormat:@"%@", [protocol stringByReplacingMatchesInString:url options:0 range:NSMakeRange(0, [url length]) withTemplate:@""]];
 
-    if([result hasSuffix:@"/"])
+    if ([result hasSuffix:@"/"])
         result = [result substringToIndex:[result length] - 1];
 
     return result;
@@ -143,7 +143,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
     // This can break reachibility (among other things) for the blog.
     // As a saftey net, make sure we drop any path component before returning the hostname.
     NSArray *parts = [hostname componentsSeparatedByString:@"/"];
-    if(parts.count) {
+    if (parts.count) {
         hostname = [parts firstObject];
     }
 

@@ -331,7 +331,7 @@ CGFloat const ReblogViewTextBottomInset = 30;
     CGSize size = CGSizeMake(width, height);
 
     UIImage *image = [self.featuredImageSource imageForURL:imageURL withSize:size];
-    if(image) {
+    if (image) {
         [self.postView setFeaturedImage:image];
     } else {
         [self.featuredImageSource fetchImageForURL:imageURL

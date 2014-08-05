@@ -675,12 +675,12 @@ static NSUInteger const AlertDiscardChanges = 500;
     }
 
     UIEdgeInsets anEdgeInset = { 0, 0, 0, 0};
-    if(scrollerBounds.size.width > innerFrame.size.width)
+    if (scrollerBounds.size.width > innerFrame.size.width)
     {
         anEdgeInset.left = (scrollerBounds.size.width - innerFrame.size.width) / 2;
         anEdgeInset.right = -anEdgeInset.left;
     }
-    if(scrollerBounds.size.height > innerFrame.size.height)
+    if (scrollerBounds.size.height > innerFrame.size.height)
     {
         anEdgeInset.top = (scrollerBounds.size.height - innerFrame.size.height) / 2;
         anEdgeInset.bottom = -anEdgeInset.top;

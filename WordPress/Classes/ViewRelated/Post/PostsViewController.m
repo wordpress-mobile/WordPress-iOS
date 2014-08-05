@@ -188,7 +188,7 @@
 - (void)deletePostAtIndexPath:(NSIndexPath *)indexPath{
     Post *post = [self.resultsController objectAtIndexPath:indexPath];
     [post deletePostWithSuccess:nil failure:^(NSError *error) {
-        if([error code] == 403) {
+        if ([error code] == 403) {
             [self promptForPassword];
         } else {
             [WPError showXMLRPCErrorAlert:error];
