@@ -35,7 +35,7 @@ const CGFloat RPVLineHeightMultiple = 1.03f;
 
 // Control buttons (Like, Reblog, ...)
 const CGFloat RPVControlButtonHeight = 48.0f;
-const CGFloat RPVControlButtonWidth = 48.0f;
+const CGFloat RPVControlButtonWidth = 58.0f;
 const CGFloat RPVControlButtonSpacing = 12.0f;
 const CGFloat RPVControlButtonBorderSize = 0.0f;
 
