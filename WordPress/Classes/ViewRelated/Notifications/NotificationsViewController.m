@@ -286,7 +286,7 @@
             [self.navigationController pushViewController:commentDetailViewController animated:YES];
             
         } else if (note.isMatcher && note.metaPostID && note.metaSiteID) {
-            ReaderPostDetailViewController *controller = [ReaderPostDetailViewController postDetailsWithPostID:note.metaPostID siteID:note.metaSiteID];
+            ReaderPostDetailViewController *controller = [ReaderPostDetailViewController detailControllerWithPostID:note.metaPostID siteID:note.metaSiteID];
             [self.navigationController pushViewController:controller animated:YES];
             
         } else if (note.templateType == WPNoteTemplateMultiLineList || note.templateType == WPNoteTemplateSingleLineList) {

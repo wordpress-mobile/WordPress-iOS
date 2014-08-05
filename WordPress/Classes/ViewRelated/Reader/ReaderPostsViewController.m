@@ -466,7 +466,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)openPost:(NSNumber *)postId onBlog:(NSNumber *)blogId
 {
-    ReaderPostDetailViewController *controller = [ReaderPostDetailViewController postDetailsWithPostID:postId siteID:blogId];
+    ReaderPostDetailViewController *controller = [ReaderPostDetailViewController detailControllerWithPostID:postId siteID:blogId];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -894,7 +894,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     // Pass the image forward
 	ReaderPost *post = [self.resultsController.fetchedObjects objectAtIndex:indexPath.row];
-	self.detailController = [ReaderPostDetailViewController postDetailsWithPost:post];
+	self.detailController = [ReaderPostDetailViewController detailControllerWithPost:post];
     [self.navigationController pushViewController:self.detailController animated:YES];
     
     [WPAnalytics track:WPAnalyticsStatReaderOpenedArticle];
