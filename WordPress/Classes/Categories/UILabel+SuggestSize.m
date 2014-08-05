@@ -6,7 +6,7 @@
     if (self.attributedText)
         return [self suggestSizeForAttributedString:self.attributedText width:width];
     
-	return [self suggestSizeForString:self.text width:width];
+    return [self suggestSizeForString:self.text width:width];
 }
 
 - (CGSize)suggestSizeForAttributedString:(NSAttributedString *)string width:(CGFloat)width {

@@ -424,7 +424,7 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
 }
 
 - (NSString *)html {
-	NSString *result = @"";
+    NSString *result = @"";
     if (self.mediaType == MediaTypeImage) {
         if (self.shortcode != nil) {
             result = self.shortcode;
@@ -494,7 +494,7 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
             DDLogVerbose(@"media.html: %@", result);
         }
     }
-	return result;
+    return result;
 }
 
 @end

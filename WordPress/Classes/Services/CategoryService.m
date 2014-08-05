@@ -84,8 +84,8 @@
     Category *parent = [self categoryWithObjectID:parentCategoryObjectID];
     Category *category = [self newCategoryForBlog:blog];
     category.categoryName = name;
-	if (parent.categoryID != nil)
-		category.parentID = parent.categoryID;
+    if (parent.categoryID != nil)
+        category.parentID = parent.categoryID;
     
     CategoryServiceRemote *remote = [CategoryServiceRemote new];
     [remote createCategoryWithName:name

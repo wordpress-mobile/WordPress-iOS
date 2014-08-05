@@ -56,7 +56,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
         
         self.url = self.blog.url;
         self.username = self.blog.username;
-		self.password = self.blog.password;
+        self.password = self.blog.password;
 
         self.startingUser = self.username;
         self.startingPwd = self.password;
@@ -123,14 +123,14 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
 - (NSInteger)tableView:(UITableView *)tv numberOfRowsInSection:(NSInteger)section {
     switch (section) {
-		case 0:
+        case 0:
             // URL, username, [password]
             if ([self.blog isWPcom]) {
                 return 2;
             }
 
             return 3;
-		case 1:
+        case 1:
             // Settings: Geolocation, [ Push Notifications ]
             if ([self canTogglePushNotifications]) {
                 return 2;
@@ -141,9 +141,9 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
             return 1;
         default:
             break;
-	}
+    }
     
-	return 0;
+    return 0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -161,17 +161,17 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 }
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section {
-	switch (section) {
-		case 0:
-			return self.blog.blogName;
+    switch (section) {
+        case 0:
+            return self.blog.blogName;
         case 1:
             return NSLocalizedString(@"Settings", @"");
         case 2:
             return NSLocalizedString(@"Jetpack Stats", @"");
         default:
             break;
-	}
-	return nil;
+    }
+    return nil;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -265,7 +265,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
             [WPStyleGuide configureTableViewCell:pushCell];
             return pushCell;
         }
-	} else if (indexPath.section == 2) {
+    } else if (indexPath.section == 2) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:JetpackConnectedCellIdentifier];
 
         cell.textLabel.text = NSLocalizedString(@"Configure", @"");
@@ -289,15 +289,15 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell *cell = [tv cellForRowAtIndexPath:indexPath];
-	if (indexPath.section == 0) {
+    UITableViewCell *cell = [tv cellForRowAtIndexPath:indexPath];
+    if (indexPath.section == 0) {
         for (UIView *subview in cell.subviews) {
             if (subview.class == [UITextField class]) {
                 [subview becomeFirstResponder];
                 break;
             }
         }
-	} 
+    } 
     [tv deselectRowAtIndexPath:indexPath animated:YES];
 
     if (indexPath.section == 2) {
@@ -327,7 +327,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     } else if (textField == self.passwordTextField) {
         [self.passwordTextField resignFirstResponder];
     }
-	return NO;
+    return NO;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -424,11 +424,11 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
 - (NSString *)getURLToValidate {
     NSString *urlToValidate = self.url;
-	
+    
     if (![urlToValidate hasPrefix:@"http"]) {
         urlToValidate = [NSString stringWithFormat:@"http://%@", urlToValidate];
     }
-	
+    
     NSError *error = nil;
     
     NSRegularExpression *wplogin = [NSRegularExpression regularExpressionWithPattern:@"/wp-login.php$" options:NSRegularExpressionCaseInsensitive error:&error];
@@ -473,8 +473,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 }
 
 - (void)checkURL {
-	NSString *urlToValidate = [self getURLToValidate];
-	
+    NSString *urlToValidate = [self getURLToValidate];
+    
     DDLogInfo(@"%@ %@ %@", self, NSStringFromSelector(_cmd), urlToValidate);
     
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Authenticating", @"") maskType:SVProgressHUDMaskTypeBlack];
@@ -484,13 +484,13 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
         [SVProgressHUD dismiss];
         if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
             [self validationDidFail:nil];
-		} else if ([error.domain isEqual:WPXMLRPCErrorDomain] && error.code == WPXMLRPCInvalidInputError) {
-			[self validationDidFail:error];
+        } else if ([error.domain isEqual:WPXMLRPCErrorDomain] && error.code == WPXMLRPCInvalidInputError) {
+            [self validationDidFail:error];
         } else if ([error.domain isEqual:WordPressXMLRPCApiErrorDomain]) {
             [self validationDidFail:error];
-		} else if([error.domain isEqual:AFURLRequestSerializationErrorDomain] || [error.domain isEqual:AFURLResponseSerializationErrorDomain]) {
-			NSString *str = [NSString stringWithFormat:NSLocalizedString(@"There was a server error communicating with your site:\n%@\nTap 'Need Help?' to view the FAQ.", @""), [error localizedDescription]];
-			NSDictionary *userInfo = @{NSLocalizedDescriptionKey: str};
+        } else if([error.domain isEqual:AFURLRequestSerializationErrorDomain] || [error.domain isEqual:AFURLResponseSerializationErrorDomain]) {
+            NSString *str = [NSString stringWithFormat:NSLocalizedString(@"There was a server error communicating with your site:\n%@\nTap 'Need Help?' to view the FAQ.", @""), [error localizedDescription]];
+            NSDictionary *userInfo = @{NSLocalizedDescriptionKey: str};
             NSError *err = [NSError errorWithDomain:@"org.wordpress.iphone" code:NSURLErrorBadServerResponse userInfo:userInfo];
             [self validationDidFail:err];
         } else {
@@ -502,8 +502,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 }
 
 - (void)validationSuccess:(NSString *)xmlrpc {
-	[self.savingIndicator stopAnimating];
-	[self.savingIndicator setHidden:YES];
+    [self.savingIndicator stopAnimating];
+    [self.savingIndicator setHidden:YES];
     self.blog.geolocationEnabled = self.geolocationEnabled;
     self.blog.account.password = self.password;
 
@@ -516,10 +516,10 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 }
 
 - (void)validationDidFail:(NSError *)error {
-	[self.savingIndicator stopAnimating];
-	[self.savingIndicator setHidden:YES];
+    [self.savingIndicator stopAnimating];
+    [self.savingIndicator setHidden:YES];
     self.saveButton.enabled = YES;
-	[self.navigationItem setHidesBackButton:NO animated:NO];
+    [self.navigationItem setHidesBackButton:NO animated:NO];
 
     if (error) {
         NSString *message;
@@ -594,24 +594,24 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
         
         [self.tableView setTableFooterView:aView];
     }
-	[self.savingIndicator setHidden:NO];
-	[self.savingIndicator startAnimating];
+    [self.savingIndicator setHidden:NO];
+    [self.savingIndicator startAnimating];
 
     if (self.blog) {
         self.blog.geolocationEnabled = self.geolocationEnabled;
         [self.blog dataSave];
-	}
+    }
     if (self.blog == nil || self.blog.username == nil) {
-		[self validateUrl];
-	} else {
-		if ([self.startingUser isEqualToString:self.usernameTextField.text] &&
+        [self validateUrl];
+    } else {
+        if ([self.startingUser isEqualToString:self.usernameTextField.text] &&
             [self.startingPwd isEqualToString:self.passwordTextField.text] &&
-			[self.startingUrl isEqualToString:self.urlTextField.text]) {
-			// No need to check if nothing changed
+            [self.startingUrl isEqualToString:self.urlTextField.text]) {
+            // No need to check if nothing changed
             [self cancel:nil];
-		} else {
-			[self validateUrl];
-		}
+        } else {
+            [self validateUrl];
+        }
     }
 }
 

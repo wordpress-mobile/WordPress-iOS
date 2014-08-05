@@ -378,7 +378,7 @@ BOOL hasChanges;
 #pragma mark -
 #pragma mark Action Sheet Delegate Methods
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
+    [actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
     
     DDLogInfo(@"Button Clicked: %d", buttonIndex);
     NSMutableDictionary *muteDictionary;

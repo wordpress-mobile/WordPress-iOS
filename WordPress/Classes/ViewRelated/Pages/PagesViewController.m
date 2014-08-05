@@ -83,25 +83,25 @@
 #pragma mark Syncs methods
 
 - (BOOL)isSyncing {
-	return self.blog.isSyncingPages;
+    return self.blog.isSyncingPages;
 }
 
 -(NSDate *) lastSyncDate {
-	return self.blog.lastPagesSync;
+    return self.blog.lastPagesSync;
 }
 
 - (BOOL) hasOlderItems {
-	return [self.blog.hasOlderPages boolValue];
+    return [self.blog.hasOlderPages boolValue];
 }
 
 - (BOOL)refreshRequired {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	if ([defaults boolForKey:@"refreshPagesRequired"]) { 
-		[defaults setBool:NO forKey:@"refreshPagesRequired"];
-		return YES;
-	}
-	
-	return NO;
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:@"refreshPagesRequired"]) { 
+        [defaults setBool:NO forKey:@"refreshPagesRequired"];
+        return YES;
+    }
+    
+    return NO;
 }
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {

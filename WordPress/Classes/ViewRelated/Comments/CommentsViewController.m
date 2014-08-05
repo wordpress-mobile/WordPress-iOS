@@ -23,7 +23,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 
 - (void)dealloc {
     DDLogMethod();
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (NSString *)noResultsTitleText
@@ -40,9 +40,9 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     self.tableView.accessibilityLabel = @"Comments";       // required for UIAutomation for iOS 4
-	if([self.tableView respondsToSelector:@selector(setAccessibilityIdentifier:)]){
-		self.tableView.accessibilityIdentifier = @"Comments";  // required for UIAutomation for iOS 5
-	}
+    if([self.tableView respondsToSelector:@selector(setAccessibilityIdentifier:)]){
+        self.tableView.accessibilityIdentifier = @"Comments";  // required for UIAutomation for iOS 5
+    }
     
     self.editButtonItem.enabled = [[self.resultsController fetchedObjects] count] > 0;
     
@@ -53,7 +53,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 - (void)viewWillAppear:(BOOL)animated {
     DDLogMethod();
 
-	[super viewWillAppear:animated];
+    [super viewWillAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -89,7 +89,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 
 - (void)showCommentAtIndexPath:(NSIndexPath *)indexPath {
     DDLogMethodParam(indexPath);
-	Comment *comment;
+    Comment *comment;
     if (indexPath) {
         @try {
             comment = [self.resultsController objectAtIndexPath:indexPath];
@@ -102,7 +102,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
         }
     }
     
-	if(comment) {
+    if(comment) {
         self.currentIndexPath = indexPath;
         self.lastSelectedCommentID = comment.commentID; //store the latest user selection
         
@@ -210,7 +210,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 }
 
 - (BOOL)isSyncing {
-	return self.blog.isSyncingComments;
+    return self.blog.isSyncingComments;
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {

@@ -339,7 +339,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         [self saveAction:nil];
     }
     
-	return YES;
+    return YES;
 }
 
 - (void)textFieldDidChangeNotificationReceived:(NSNotification *)notification {
@@ -427,8 +427,8 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 }
 
 - (void)updateSaveButton {
-	if (![self isViewLoaded]) return;
-	
+    if (![self isViewLoaded]) return;
+    
     _signInButton.enabled = [self saveEnabled];
 }
 
@@ -517,7 +517,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     NSAssert(password != nil, @"Can't login with a nil password");
     _usernameField.text = username;
     _passwordField.text = password;
-	
+    
     [self saveAction:nil];
 }
 

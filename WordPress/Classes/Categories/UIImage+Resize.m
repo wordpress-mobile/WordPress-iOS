@@ -111,10 +111,10 @@
     CGImageRef imageRef = self.CGImage;
     
     // Build a context that's the same dimensions as the new size
-	CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(imageRef);
-	if((bitmapInfo == kCGImageAlphaLast) || (bitmapInfo == kCGImageAlphaNone))
-		bitmapInfo = kCGImageAlphaNoneSkipLast;
-		
+    CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(imageRef);
+    if((bitmapInfo == kCGImageAlphaLast) || (bitmapInfo == kCGImageAlphaNone))
+        bitmapInfo = kCGImageAlphaNoneSkipLast;
+        
     CGContextRef bitmap = CGBitmapContextCreate(NULL,
                                                 newRect.size.width,
                                                 newRect.size.height,

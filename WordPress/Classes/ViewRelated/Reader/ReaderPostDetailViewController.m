@@ -95,7 +95,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     if (self.infiniteScrollEnabled) {
         [self enableInfiniteScrolling];
     }
-	
+    
     self.title = self.post.postTitle;
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -160,7 +160,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if (appDelegate.connectionAvailable == NO)
         return;
-	
+    
     NSDate *lastSynced = [self lastSyncDate];
     if ((lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > ReaderPostDetailViewControllerRefreshTimeout) && self.post.isWPCom) {
         [self syncWithUserInteraction:NO];
@@ -179,7 +179,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-	
+    
     if (IS_IPHONE) {
         self.savedScrollOffset = self.tableView.contentOffset;
     }
@@ -406,7 +406,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf.tableView reloadData];
         });
-	});
+    });
 }
 
 - (UIActivityViewController *)activityViewControllerForSharing
@@ -580,7 +580,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
         DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
         [postView updateActionButtons];
     }];
-	[postView updateActionButtons];
+    [postView updateActionButtons];
 }
 
 - (void)postView:(ReaderPostContentView *)postView didReceiveCommentAction:(id)sender
@@ -714,7 +714,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     if ([self.resultsController.fetchedObjects count] == 0) {
         return;
     }
-	
+    
     if (self.loadingMore) {
         return;
     }
@@ -765,7 +765,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     if (infiniteScrollEnabled == self.infiniteScrollEnabled) {
         return;
     }
-	
+    
     self.infiniteScrollEnabled = infiniteScrollEnabled;
     if (self.isViewLoaded) {
         if (self.infiniteScrollEnabled) {
@@ -986,7 +986,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     if (_resultsController != nil) {
         return _resultsController;
     }
-	
+    
     NSString *entityName = @"ReaderComment";
     NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
 
@@ -1003,7 +1003,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
                                                                         cacheName:nil];
     
     _resultsController.delegate = self;
-	
+    
     NSError *error = nil;
     if (![_resultsController performFetch:&error]) {
         DDLogError(@"%@ couldn't fetch %@: %@", self, entityName, [error localizedDescription]);

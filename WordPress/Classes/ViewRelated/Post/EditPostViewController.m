@@ -140,8 +140,8 @@ static NSInteger const MaximumNumberOfPictures = 4;
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:MediaShouldInsertBelowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:MediaShouldInsertBelowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];
     
     [self geotagNewPost];
     self.delegate = self;
@@ -327,7 +327,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
 - (void)showMediaOptions
 {
     CTAssetsPickerController *picker = [[CTAssetsPickerController alloc] init];
-	picker.delegate = self;
+    picker.delegate = self;
     
     // Only show photos for now (not videos)
     picker.assetsFilter = [ALAssetsFilter allPhotos];
@@ -343,10 +343,10 @@ static NSInteger const MaximumNumberOfPictures = 4;
     [self stopEditing];
     [self.postSettingsViewController endEditingAction:nil];
     
-	if ([self isMediaInUploading]) {
-		[self showMediaInUploadingAlert];
-		return;
-	}
+    if ([self isMediaInUploading]) {
+        [self showMediaInUploadingAlert];
+        return;
+    }
     
     if (![self hasChanges]) {
         [WPAnalytics track:WPAnalyticsStatEditorClosed];
@@ -354,14 +354,14 @@ static NSInteger const MaximumNumberOfPictures = 4;
         return;
     }
     
-	UIActionSheet *actionSheet;
-	if (![self.post.original.status isEqualToString:@"draft"] && self.editMode != EditPostViewControllerModeNewPost) {
+    UIActionSheet *actionSheet;
+    if (![self.post.original.status isEqualToString:@"draft"] && self.editMode != EditPostViewControllerModeNewPost) {
         // The post is already published in the server or it was intended to be and failed: Discard changes or keep editing
-		actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
-												  delegate:self
+        actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
+                                                  delegate:self
                                          cancelButtonTitle:NSLocalizedString(@"Keep Editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
                                     destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-										 otherButtonTitles:nil];
+                                         otherButtonTitles:nil];
     } else if (self.editMode == EditPostViewControllerModeNewPost) {
         // The post is a local draft or an autosaved draft: Discard or Save
         actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
@@ -464,10 +464,10 @@ static NSInteger const MaximumNumberOfPictures = 4;
         if ([self.post.status isEqualToString:@"publish"] && ([self.post.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
             buttonTitle = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
             
-		} else if ([self.post.status isEqualToString:@"publish"]){
+        } else if ([self.post.status isEqualToString:@"publish"]){
             buttonTitle = NSLocalizedString(@"Publish", @"Publish button label.");
             
-		} else {
+        } else {
             buttonTitle = NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).");
         }
     } else {
@@ -504,9 +504,9 @@ static NSInteger const MaximumNumberOfPictures = 4;
         self.bodyText = @"";
     } else {
         if ((self.post.mt_text_more != nil) && ([self.post.mt_text_more length] > 0)) {
-			self.bodyText = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", self.post.content, self.post.mt_text_more];
+            self.bodyText = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", self.post.content, self.post.mt_text_more];
         } else {
-			self.bodyText = self.post.content;
+            self.bodyText = self.post.content;
         }
     }
     [self refreshButtons];
@@ -596,9 +596,9 @@ static NSInteger const MaximumNumberOfPictures = 4;
     if (self.onClose) {
         self.onClose();
         self.onClose = nil;
-	} else{
-		[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-	}
+    } else{
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    }
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -609,17 +609,17 @@ static NSInteger const MaximumNumberOfPictures = 4;
         _currentActionSheet = nil;
     }
     
-	if ([self isMediaInUploading] ) {
-		[self showMediaInUploadingAlert];
-		return;
-	}
+    if ([self isMediaInUploading] ) {
+        [self showMediaInUploadingAlert];
+        return;
+    }
     
     if ([self hasFailedMedia]) {
         [self showFailedMediaAlert];
         return;
     }
     
-	[self savePost:YES];
+    [self savePost:YES];
 }
 
 - (void)savePost:(BOOL)upload
@@ -711,8 +711,8 @@ static NSInteger const MaximumNumberOfPictures = 4;
     self.navigationItem.title = [self editorTitle];
     
     self.post.content = self.bodyText;
-	if ([self.post.content rangeOfString:@"<!--more-->"].location != NSNotFound)
-		self.post.mt_text_more = @"";
+    if ([self.post.content rangeOfString:@"<!--more-->"].location != NSNotFound)
+        self.post.mt_text_more = @"";
     
     if ( self.post.original.password != nil ) { //original post was password protected
         if ( self.post.password == nil || [self.post.password isEqualToString:@""] ) { //removed the password
@@ -727,34 +727,34 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
 - (BOOL)hasFailedMedia
 {
-	BOOL hasFailedMedia = NO;
+    BOOL hasFailedMedia = NO;
     
-	NSSet *mediaFiles = self.post.media;
-	for (Media *media in mediaFiles) {
-		if(media.remoteStatus == MediaRemoteStatusFailed) {
-			hasFailedMedia = YES;
-			break;
-		}
-	}
-	mediaFiles = nil;
+    NSSet *mediaFiles = self.post.media;
+    for (Media *media in mediaFiles) {
+        if(media.remoteStatus == MediaRemoteStatusFailed) {
+            hasFailedMedia = YES;
+            break;
+        }
+    }
+    mediaFiles = nil;
     
-	return hasFailedMedia;
+    return hasFailedMedia;
 }
 
 //check if there are media in uploading status
 - (BOOL)isMediaInUploading
 {
-	BOOL isMediaInUploading = NO;
-	
-	NSSet *mediaFiles = self.post.media;
-	for (Media *media in mediaFiles) {
-		if(media.remoteStatus == MediaRemoteStatusPushing) {
-			isMediaInUploading = YES;
-			break;
-		}
-	}
-	mediaFiles = nil;
-	return isMediaInUploading;
+    BOOL isMediaInUploading = NO;
+    
+    NSSet *mediaFiles = self.post.media;
+    for (Media *media in mediaFiles) {
+        if(media.remoteStatus == MediaRemoteStatusPushing) {
+            isMediaInUploading = YES;
+            break;
+        }
+    }
+    mediaFiles = nil;
+    return isMediaInUploading;
 }
 
 - (void)showFailedMediaAlert
@@ -772,49 +772,49 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
 - (void)showMediaInUploadingAlert
 {
-	//the post is using the network connection and cannot be stoped, show a message to the user
-	UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info alert title")
-																  message:NSLocalizedString(@"A Media file is currently uploading. Please try later.", @"")
-																 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
-	[blogIsCurrentlyBusy show];
+    //the post is using the network connection and cannot be stoped, show a message to the user
+    UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info alert title")
+                                                                  message:NSLocalizedString(@"A Media file is currently uploading. Please try later.", @"")
+                                                                 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
+    [blogIsCurrentlyBusy show];
 }
 
 #pragma mark - Media Formatting
 
 - (void)insertMediaBelow:(NSNotification *)notification
 {
-	Media *media = (Media *)[notification object];
+    Media *media = (Media *)[notification object];
     [self insertMedia:media];
 }
 
 - (void)insertMedia:(Media *)media
 {
-	NSString *prefix = @"<br /><br />";
+    NSString *prefix = @"<br /><br />";
     
-	if(self.post.content == nil || [self.post.content isEqualToString:@""]) {
-		self.post.content = @"";
-		prefix = @"";
-	}
-	
-	NSMutableString *content = [[NSMutableString alloc] initWithString:self.post.content];
-	NSRange imgHTML = [content rangeOfString: media.html];
-	NSRange imgHTMLPre = [content rangeOfString:[NSString stringWithFormat:@"%@%@", @"<br /><br />", media.html]];
- 	NSRange imgHTMLPost = [content rangeOfString:[NSString stringWithFormat:@"%@%@", media.html, @"<br /><br />"]];
-	
-	if (imgHTMLPre.location == NSNotFound && imgHTMLPost.location == NSNotFound && imgHTML.location == NSNotFound) {
-		[content appendString:[NSString stringWithFormat:@"%@%@", prefix, media.html]];
+    if(self.post.content == nil || [self.post.content isEqualToString:@""]) {
+        self.post.content = @"";
+        prefix = @"";
+    }
+    
+    NSMutableString *content = [[NSMutableString alloc] initWithString:self.post.content];
+    NSRange imgHTML = [content rangeOfString: media.html];
+    NSRange imgHTMLPre = [content rangeOfString:[NSString stringWithFormat:@"%@%@", @"<br /><br />", media.html]];
+     NSRange imgHTMLPost = [content rangeOfString:[NSString stringWithFormat:@"%@%@", media.html, @"<br /><br />"]];
+    
+    if (imgHTMLPre.location == NSNotFound && imgHTMLPost.location == NSNotFound && imgHTML.location == NSNotFound) {
+        [content appendString:[NSString stringWithFormat:@"%@%@", prefix, media.html]];
         self.post.content = content;
-	}
-	else {
-		if (imgHTMLPre.location != NSNotFound)
-			[content replaceCharactersInRange:imgHTMLPre withString:@""];
-		else if (imgHTMLPost.location != NSNotFound)
-			[content replaceCharactersInRange:imgHTMLPost withString:@""];
-		else
-			[content replaceCharactersInRange:imgHTML withString:@""];
-		[content appendString:[NSString stringWithFormat:@"<br /><br />%@", media.html]];
-		self.post.content = content;
-	}
+    }
+    else {
+        if (imgHTMLPre.location != NSNotFound)
+            [content replaceCharactersInRange:imgHTMLPre withString:@""];
+        else if (imgHTMLPost.location != NSNotFound)
+            [content replaceCharactersInRange:imgHTMLPost withString:@""];
+        else
+            [content replaceCharactersInRange:imgHTML withString:@""];
+        [content appendString:[NSString stringWithFormat:@"<br /><br />%@", media.html]];
+        self.post.content = content;
+    }
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self refreshUIForCurrentPost];
@@ -824,8 +824,8 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
 - (void)removeMedia:(NSNotification *)notification
 {
-	//remove the html string for the media object
-	Media *media = (Media *)[notification object];
+    //remove the html string for the media object
+    Media *media = (Media *)[notification object];
     self.titleText = [self removeMedia:media fromString:self.titleText];
     [self autosaveContent];
     [self refreshUIForCurrentPost];
@@ -833,9 +833,9 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
 - (NSString *)removeMedia:(Media *)media fromString:(NSString *)string
 {
-	string = [string stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"<br /><br />%@", media.html] withString:@""];
-	string = [string stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@<br /><br />", media.html] withString:@""];
-	string = [string stringByReplacingOccurrencesOfString:media.html withString:@""];
+    string = [string stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"<br /><br />%@", media.html] withString:@""];
+    string = [string stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@<br /><br />", media.html] withString:@""];
+    string = [string stringByReplacingOccurrencesOfString:media.html withString:@""];
     
     return string;
 }
@@ -893,18 +893,18 @@ static NSInteger const MaximumNumberOfPictures = 4;
         
         if (buttonIndex == 1) {
             // Cancel / Keep editing
-			if ([actionSheet numberOfButtons] == 2) {
+            if ([actionSheet numberOfButtons] == 2) {
                 
-				[actionSheet dismissWithClickedButtonIndex:0 animated:YES];
+                [actionSheet dismissWithClickedButtonIndex:0 animated:YES];
                 // Save draft
-			} else {
+            } else {
                 // If you tapped on a button labeled "Save Draft", you probably expect the post to be saved as a draft
                 if (![self.post hasRemote] && [self.post.status isEqualToString:@"publish"]) {
                     self.post.status = @"draft";
                 }
                 DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
                 [self savePost:YES];
-			}
+            }
         }
     }
 }

@@ -105,11 +105,11 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     self.defaultHeaders = [NSMutableDictionary dictionary];
     
     // Accept-Encoding HTTP Header; see http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.3
-	[self setDefaultHeader:@"Accept-Encoding" value:@"gzip"];
-	
-	// Accept-Language HTTP Header; see http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4
-	NSString *preferredLanguageCodes = [[NSLocale preferredLanguages] componentsJoinedByString:@", "];
-	[self setDefaultHeader:@"Accept-Language" value:[NSString stringWithFormat:@"%@, en-us;q=0.8", preferredLanguageCodes]];
+    [self setDefaultHeader:@"Accept-Encoding" value:@"gzip"];
+    
+    // Accept-Language HTTP Header; see http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4
+    NSString *preferredLanguageCodes = [[NSLocale preferredLanguages] componentsJoinedByString:@", "];
+    [self setDefaultHeader:@"Accept-Language" value:[NSString stringWithFormat:@"%@, en-us;q=0.8", preferredLanguageCodes]];
     
     // User-Agent Header; see http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.43
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -161,13 +161,13 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     if (self.refreshHeaderView == nil) {
         scrollView.delegate = self;
         CGRect frm = CGRectMake(0.0f, 0.0f - scrollView.bounds.size.height, scrollView.frame.size.width, scrollView.bounds.size.height);
-		self.refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:frm];
-		refreshHeaderView.delegate = self;
-		[scrollView addSubview:refreshHeaderView];
-	}
+        self.refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:frm];
+        refreshHeaderView.delegate = self;
+        [scrollView addSubview:refreshHeaderView];
+    }
     self.lastWebViewRefreshDate = [NSDate date];
-	//  update the last update date
-	[refreshHeaderView refreshLastUpdatedDate];
+    //  update the last update date
+    [refreshHeaderView refreshLastUpdatedDate];
     
     [self.scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
 }
@@ -177,7 +177,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 #pragma mark Instance Methods
 
 - (void)setDefaultHeader:(NSString *)header value:(NSString *)value {
-	[defaultHeaders setValue:value forKey:header];
+    [defaultHeaders setValue:value forKey:header];
 }
 
 
@@ -508,7 +508,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 
 
 - (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view {
-	return lastWebViewRefreshDate;
+    return lastWebViewRefreshDate;
 }
 
 
@@ -534,12 +534,12 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 #pragma mark UIScrollViewDelegate Methods
 
 - (void)scrollViewDidScroll:(UIScrollView *)aScrollView {
-	[refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+    [refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
 }
 
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)aScrollView willDecelerate:(BOOL)decelerate {
-	[refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+    [refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
 }
 
 @end

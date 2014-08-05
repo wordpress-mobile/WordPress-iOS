@@ -13,7 +13,7 @@
 }
 
 - (NSString *)activityType {
-	return NSStringFromClass([self class]);
+    return NSStringFromClass([self class]);
 }
 
 - (BOOL)canPerformWithActivityItems:(NSArray *)activityItems {
@@ -26,18 +26,18 @@
 }
 
 - (void)performActivity {
-	BOOL completed = [[UIApplication sharedApplication] openURL:_URL];
+    BOOL completed = [[UIApplication sharedApplication] openURL:_URL];
 
-	[self activityDidFinish:completed];
+    [self activityDidFinish:completed];
 }
 
 - (NSURL *)URLFromActivityItems:(NSArray *)activityItems {
     NSURL *URL = nil;
     for (id activityItem in activityItems) {
-		if ([activityItem isKindOfClass:[NSURL class]]) {
+        if ([activityItem isKindOfClass:[NSURL class]]) {
             URL = [NSURL URLWithString:[NSString stringWithFormat:@"i%@", [activityItem absoluteString]]];
-		}
-	}
+        }
+    }
     return URL;
 }
 

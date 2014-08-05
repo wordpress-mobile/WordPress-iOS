@@ -96,7 +96,7 @@ CGFloat const WPContentCellDefaultOrigin                    = 15.0f;
     [super prepareForReuse];
     _gravatarImageView.image = nil;
     _unreadView.hidden = YES;
-	self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     self.selectionStyle = UITableViewCellSelectionStyleDefault;
 }
 

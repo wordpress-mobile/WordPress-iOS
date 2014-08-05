@@ -90,16 +90,16 @@ NSInteger const kMeTabIndex = 2;
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [WordPressAppDelegate fixKeychainAccess];
-	
-	// Simperium: Wire CoreData Stack
-	[self configureSimperium];
+    
+    // Simperium: Wire CoreData Stack
+    [self configureSimperium];
     
     // Crash reporting, logging
     [self configureLogging];
     [self configureHockeySDK];
     [self configureCrashlytics];
     
-	// Start Simperium
+    // Start Simperium
     [self loginSimperium];
 
     // Debugging
@@ -327,12 +327,12 @@ NSInteger const kMeTabIndex = 2;
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-	[NotificationsManager registerDeviceToken:deviceToken];
+    [NotificationsManager registerDeviceToken:deviceToken];
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
-	[NotificationsManager registrationDidFail:error];
+    [NotificationsManager registrationDidFail:error];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
@@ -618,15 +618,15 @@ NSInteger const kMeTabIndex = 2;
 - (void)changeCurrentDirectory
 {
     // Set current directory for WordPress app
-	NSFileManager *fileManager = [NSFileManager defaultManager];
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-	NSString *currentDirectoryPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"wordpress"];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *currentDirectoryPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"wordpress"];
     
-	BOOL isDir;
-	if (![fileManager fileExistsAtPath:currentDirectoryPath isDirectory:&isDir] || !isDir) {
-		[fileManager createDirectoryAtPath:currentDirectoryPath withIntermediateDirectories:YES attributes:nil error:nil];
+    BOOL isDir;
+    if (![fileManager fileExistsAtPath:currentDirectoryPath isDirectory:&isDir] || !isDir) {
+        [fileManager createDirectoryAtPath:currentDirectoryPath withIntermediateDirectories:YES attributes:nil error:nil];
     }
-	[fileManager changeCurrentDirectoryPath:currentDirectoryPath];
+    [fileManager changeCurrentDirectoryPath:currentDirectoryPath];
 }
 
 
@@ -914,16 +914,16 @@ NSInteger const kMeTabIndex = 2;
 - (void)configureSimperium
 {
     NSDictionary *bucketOverrides   = @{ @"NoteSimperium" : @"Note" };
-	ContextManager* manager         = [ContextManager sharedInstance];
+    ContextManager* manager         = [ContextManager sharedInstance];
     
-	self.simperium = [[Simperium alloc] initWithModel:manager.managedObjectModel
-											  context:manager.mainContext
-										  coordinator:manager.persistentStoreCoordinator
+    self.simperium = [[Simperium alloc] initWithModel:manager.managedObjectModel
+                                              context:manager.mainContext
+                                          coordinator:manager.persistentStoreCoordinator
                                                 label:[NSString string]
                                       bucketOverrides:bucketOverrides];
-	
+    
 #ifdef DEBUG
-	self.simperium.verboseLoggingEnabled = YES;
+    self.simperium.verboseLoggingEnabled = YES;
 #endif
 }
 
@@ -931,21 +931,21 @@ NSInteger const kMeTabIndex = 2;
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
-	WPAccount *account              = [accountService defaultWordPressComAccount];
-	NSString *apiKey                = [WordPressComApiCredentials simperiumAPIKey];
+    WPAccount *account              = [accountService defaultWordPressComAccount];
+    NSString *apiKey                = [WordPressComApiCredentials simperiumAPIKey];
 
-	if (!account.authToken.length || !apiKey.length) {
-		return;
-	}
-	
-	NSString *simperiumToken = [NSString stringWithFormat:@"WPCC/%@/%@", apiKey, account.authToken];
-	NSString *simperiumAppID = [WordPressComApiCredentials simperiumAppId];
-	[self.simperium authenticateWithAppID:simperiumAppID token:simperiumToken];
+    if (!account.authToken.length || !apiKey.length) {
+        return;
+    }
+    
+    NSString *simperiumToken = [NSString stringWithFormat:@"WPCC/%@/%@", apiKey, account.authToken];
+    NSString *simperiumAppID = [WordPressComApiCredentials simperiumAppId];
+    [self.simperium authenticateWithAppID:simperiumAppID token:simperiumToken];
 }
 
 - (void)logoutSimperiumAndResetNotifications
 {
-	[self.simperium signOutAndRemoveLocalData:YES completion:nil];
+    [self.simperium signOutAndRemoveLocalData:YES completion:nil];
 }
 
 
@@ -953,7 +953,7 @@ NSInteger const kMeTabIndex = 2;
 
 + (void)fixKeychainAccess
 {
-	NSDictionary *query = @{
+    NSDictionary *query = @{
                             (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
                             (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleWhenUnlocked,
                             (__bridge id)kSecReturnAttributes: @YES,
@@ -961,7 +961,7 @@ NSInteger const kMeTabIndex = 2;
                             };
     
     CFTypeRef result = NULL;
-	OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, &result);
+    OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, &result);
     if (status != errSecSuccess) {
         return;
     }
@@ -1017,7 +1017,7 @@ NSInteger const kMeTabIndex = 2;
     NSArray *blogs = [blogService blogsForAllAccounts];
     
     DDLogInfo(@"===========================================================================");
-	DDLogInfo(@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]);
+    DDLogInfo(@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]);
     DDLogInfo(@"Crash count:       %d", crashCount);
 #ifdef DEBUG
     DDLogInfo(@"Debug mode:  Debug");
@@ -1139,33 +1139,33 @@ NSInteger const kMeTabIndex = 2;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDefaultAccountChangedNotification:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
     }
     
-	if ([self noBlogsAndNoWordPressDotComAccount]) {
-		// When there are no blogs in the app the settings screen is unavailable.
-		// In this case, enable extra_debugging by default to help troubleshoot any issues.
-		if([[NSUserDefaults standardUserDefaults] objectForKey:@"orig_extra_debug"] != nil) {
-			return; // Already saved. Don't save again or we could loose the original value.
-		}
-		
-		NSString *origExtraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"] ? @"YES" : @"NO";
-		[[NSUserDefaults standardUserDefaults] setObject:origExtraDebug forKey:@"orig_extra_debug"];
-		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"extra_debug"];
+    if ([self noBlogsAndNoWordPressDotComAccount]) {
+        // When there are no blogs in the app the settings screen is unavailable.
+        // In this case, enable extra_debugging by default to help troubleshoot any issues.
+        if([[NSUserDefaults standardUserDefaults] objectForKey:@"orig_extra_debug"] != nil) {
+            return; // Already saved. Don't save again or we could loose the original value.
+        }
+        
+        NSString *origExtraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"] ? @"YES" : @"NO";
+        [[NSUserDefaults standardUserDefaults] setObject:origExtraDebug forKey:@"orig_extra_debug"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"extra_debug"];
         ddLogLevel = LOG_LEVEL_VERBOSE;
-		[NSUserDefaults resetStandardUserDefaults];
-	} else {
-		NSString *origExtraDebug = [[NSUserDefaults standardUserDefaults] stringForKey:@"orig_extra_debug"];
-		if(origExtraDebug == nil) {
-			return;
-		}
-		
-		// Restore the original setting and remove orig_extra_debug.
-		[[NSUserDefaults standardUserDefaults] setBool:[origExtraDebug boolValue] forKey:@"extra_debug"];
-		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"orig_extra_debug"];
-		[NSUserDefaults resetStandardUserDefaults];
+        [NSUserDefaults resetStandardUserDefaults];
+    } else {
+        NSString *origExtraDebug = [[NSUserDefaults standardUserDefaults] stringForKey:@"orig_extra_debug"];
+        if(origExtraDebug == nil) {
+            return;
+        }
+        
+        // Restore the original setting and remove orig_extra_debug.
+        [[NSUserDefaults standardUserDefaults] setBool:[origExtraDebug boolValue] forKey:@"extra_debug"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"orig_extra_debug"];
+        [NSUserDefaults resetStandardUserDefaults];
         
         if ([origExtraDebug boolValue]) {
             ddLogLevel = LOG_LEVEL_VERBOSE;
         }
-	}
+    }
 }
 
 
@@ -1173,7 +1173,7 @@ NSInteger const kMeTabIndex = 2;
 
 - (void)handleDefaultAccountChangedNotification:(NSNotification *)notification
 {
-	[self toggleExtraDebuggingIfNeeded];
+    [self toggleExtraDebuggingIfNeeded];
     
     // If the notification object is not nil, then it's a login
     if (notification.object) {

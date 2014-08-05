@@ -160,7 +160,7 @@ CGFloat const blavatarImageViewSize = 43.f;
 
     } else if (section == SettingsSectionMedia) {
         return NSLocalizedString(@"Media", @"Title label for the media settings section in the app settings");
-		
+        
     } else if (section == SettingsSectionInfo) {
         return NSLocalizedString(@"App Info", @"Title label for the application information section in the app settings");
     }
@@ -333,7 +333,7 @@ CGFloat const blavatarImageViewSize = 43.f;
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
 
-		[accountService removeDefaultWordPressComAccount];
+        [accountService removeDefaultWordPressComAccount];
         
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
     }

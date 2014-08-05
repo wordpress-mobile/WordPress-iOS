@@ -223,25 +223,25 @@ static NSString *_lastAuthedName = nil;
 - (void)initStats {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     
-	if ([blog isWPcom]) {
-		[self loadStats];
-		return;
-	}
+    if ([blog isWPcom]) {
+        [self loadStats];
+        return;
+    }
 
-	// Looking for a self-hosted blog with a jetpackClientId and good crednetials.
-	BOOL prompt = NO;
-	
-	if (![blog jetpackBlogID]) {
-		// needs latest jetpack
-		prompt = YES;
-		
-	} else {
-		// Check for credentials.
-		if (![blog.jetpackUsername length] || ![blog.jetpackPassword length]) {
-			prompt = YES;
-		}
-	}
-		
+    // Looking for a self-hosted blog with a jetpackClientId and good crednetials.
+    BOOL prompt = NO;
+    
+    if (![blog jetpackBlogID]) {
+        // needs latest jetpack
+        prompt = YES;
+        
+    } else {
+        // Check for credentials.
+        if (![blog.jetpackUsername length] || ![blog.jetpackPassword length]) {
+            prompt = YES;
+        }
+    }
+        
     if (prompt) {
         [self promptForCredentials];
     } else {
@@ -377,11 +377,11 @@ static NSString *_lastAuthedName = nil;
         return;
     }
     
-	NSNumber *blogID = [blog blogID];
-	if(![blog isWPcom]) {
-		blogID = [blog jetpackBlogID];
-	}
-	
+    NSNumber *blogID = [blog blogID];
+    if(![blog isWPcom]) {
+        blogID = [blog jetpackBlogID];
+    }
+    
     NSString *pathStr = [NSString stringWithFormat:@"https://wordpress.com/my-stats/?no-chrome&blog=%@&unit=1", blogID];
     NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
     [mRequest setURL:[NSURL URLWithString:pathStr]];

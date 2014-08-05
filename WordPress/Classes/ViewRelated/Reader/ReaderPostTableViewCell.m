@@ -15,9 +15,9 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
 + (ReaderPostTableViewCell *)cellForSubview:(UIView *)subview
 {
     UIView *view = subview;
-	while (![view isKindOfClass:self]) {
-		view = (UIView *)view.superview;
-	}
+    while (![view isKindOfClass:self]) {
+        view = (UIView *)view.superview;
+    }
     
     if (view == subview)
         return nil;
@@ -30,7 +30,7 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
 
 - (void)dealloc
 {
-	self.post = nil;
+    self.post = nil;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -40,7 +40,7 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
         _sideBorderView = [[UIView alloc] init];
         _sideBorderView.translatesAutoresizingMaskIntoConstraints = NO;
         _sideBorderView.backgroundColor = [UIColor colorWithRed:210.0/255.0 green:222.0/255.0 blue:238.0/255.0 alpha:1.0];
-		_sideBorderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        _sideBorderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [self.contentView addSubview:_sideBorderView];
 
         _postView = [[ReaderPostContentView alloc] init];
@@ -51,7 +51,7 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
 
         [self configureConstraints];
     }
-	
+    
     return self;
 }
 
@@ -150,7 +150,7 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
 
 - (void)prepareForReuse
 {
-	[super prepareForReuse];
+    [super prepareForReuse];
     
     [self.postView reset];
     [self setHighlightedEffect:NO animated:NO];
@@ -161,7 +161,7 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
 
 - (void)configureCell:(ReaderPost *)post
 {
-	self.post = post;
+    self.post = post;
     [self.postView configurePost:post];
 }
 

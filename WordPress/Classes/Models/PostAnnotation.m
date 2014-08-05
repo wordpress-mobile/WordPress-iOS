@@ -8,7 +8,7 @@
     if (self != nil) {
         _coordinate = c;
     }
-	return self;
+    return self;
 }
 
 @end

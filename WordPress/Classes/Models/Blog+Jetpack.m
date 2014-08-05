@@ -37,7 +37,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
 - (NSNumber *)jetpackBlogID {
     NSAssert(![self isWPcom], @"Blog+Jetpack doesn't support WordPress.com blogs");
 
-	return [self.options numberForKeyPath:@"jetpack_client_id.value"];
+    return [self.options numberForKeyPath:@"jetpack_client_id.value"];
 }
 
 - (NSString *)jetpackUsername {
@@ -65,55 +65,55 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
         }
     }
 
-	AFHTTPRequestOperationManager* operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:BlogJetpackApiBaseUrl]];
+    AFHTTPRequestOperationManager* operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:BlogJetpackApiBaseUrl]];
 
-	NSString* userAgent = [[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent];
+    NSString* userAgent = [[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent];
 
-	operationManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
-	[operationManager.requestSerializer setAuthorizationHeaderFieldWithUsername:username password:password];
-	[operationManager.requestSerializer setValue:userAgent forHTTPHeaderField:@"User-Agent"];
+    operationManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
+    [operationManager.requestSerializer setAuthorizationHeaderFieldWithUsername:username password:password];
+    [operationManager.requestSerializer setValue:userAgent forHTTPHeaderField:@"User-Agent"];
 
     [operationManager GET:BlogJetpackApiPath
-			   parameters:@{@"f": @"json"}
-				  success:^(AFHTTPRequestOperation *operation, id responseObject)
-	{
-		NSArray *blogs = [responseObject arrayForKeyPath:@"userinfo.blog"];
-		NSNumber *searchID = [self jetpackBlogID];
-		NSString *searchURL = self.url;
-		DDLogInfo(@"Available wp.com/jetpack sites for %@: %@", username, blogs);
-		NSArray *foundBlogs = [blogs filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-			BOOL valid = NO;
-			if (searchID && [[evaluatedObject numberForKey:@"id"] isEqualToNumber:searchID]) {
-				valid = YES;
-			} else if ([[evaluatedObject stringForKey:@"url"] isEqualToString:searchURL]) {
-				valid = YES;
-			}
-			if (valid) {
-				DDLogInfo(@"Found blog: %@", evaluatedObject);
-			}
-			return valid;
-		}]];
+               parameters:@{@"f": @"json"}
+                  success:^(AFHTTPRequestOperation *operation, id responseObject)
+    {
+        NSArray *blogs = [responseObject arrayForKeyPath:@"userinfo.blog"];
+        NSNumber *searchID = [self jetpackBlogID];
+        NSString *searchURL = self.url;
+        DDLogInfo(@"Available wp.com/jetpack sites for %@: %@", username, blogs);
+        NSArray *foundBlogs = [blogs filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+            BOOL valid = NO;
+            if (searchID && [[evaluatedObject numberForKey:@"id"] isEqualToNumber:searchID]) {
+                valid = YES;
+            } else if ([[evaluatedObject stringForKey:@"url"] isEqualToString:searchURL]) {
+                valid = YES;
+            }
+            if (valid) {
+                DDLogInfo(@"Found blog: %@", evaluatedObject);
+            }
+            return valid;
+        }]];
 
-		if ([foundBlogs count] > 0) {
-			[self saveJetpackUsername:username andPassword:password success:success failure:failure];
-		} else {
-			NSError *error = [NSError errorWithDomain:BlogJetpackErrorDomain
-												 code:BlogJetpackErrorCodeNoRecordForBlog
-											 userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"This site is not connected to that WordPress.com username", @"")}];
-			if (failure) failure(error);
-		}
-	} failure:^(AFHTTPRequestOperation *operation, NSError *error)
-	{
-		if (failure) {
-			NSError *jetpackError = error;
-			if (operation.response.statusCode == 401) {
-				jetpackError = [NSError errorWithDomain:BlogJetpackErrorDomain
-												   code:BlogJetpackErrorCodeInvalidCredentials
-											   userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Invalid username or password", @""), NSUnderlyingErrorKey: error}];
-			}
-			failure(jetpackError);
-		}
-	}];
+        if ([foundBlogs count] > 0) {
+            [self saveJetpackUsername:username andPassword:password success:success failure:failure];
+        } else {
+            NSError *error = [NSError errorWithDomain:BlogJetpackErrorDomain
+                                                 code:BlogJetpackErrorCodeNoRecordForBlog
+                                             userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"This site is not connected to that WordPress.com username", @"")}];
+            if (failure) failure(error);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error)
+    {
+        if (failure) {
+            NSError *jetpackError = error;
+            if (operation.response.statusCode == 401) {
+                jetpackError = [NSError errorWithDomain:BlogJetpackErrorDomain
+                                                   code:BlogJetpackErrorCodeInvalidCredentials
+                                               userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Invalid username or password", @""), NSUnderlyingErrorKey: error}];
+            }
+            failure(jetpackError);
+        }
+    }];
 }
 
 - (void)removeJetpackCredentials {

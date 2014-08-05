@@ -8,18 +8,18 @@ static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
 @implementation BlogToJetpackAccount
 
 - (BOOL)beginEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
-	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
-	return YES;
+    DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+    return YES;
 }
 
 - (BOOL)endEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
-	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
-	return YES;
+    DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+    return YES;
 }
 
 - (BOOL)performCustomValidationForEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
-	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
-	return YES;
+    DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+    return YES;
 }
 
 - (BOOL)createDestinationInstancesForSourceInstance:(NSManagedObject *)source
@@ -27,9 +27,9 @@ static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
                                             manager:(NSMigrationManager *)manager
                                               error:(NSError **)error
 {
-	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+    DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 
-	NSManagedObjectContext *destMOC = [manager destinationContext];
+    NSManagedObjectContext *destMOC = [manager destinationContext];
     BOOL isWpcom = [self blogIsWpcom:source];
     if (isWpcom) {
         return YES;
@@ -71,7 +71,7 @@ static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
                                           manager:(NSMigrationManager*)manager
                                             error:(NSError**)error
 {
-	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+    DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 
     NSArray *sourceBlogs = [manager sourceInstancesForEntityMappingNamed:@"BlogToJetpackAccount" destinationInstances:@[source]];
     NSArray *destBlogs = [manager destinationInstancesForEntityMappingNamed:@"BlogToBlog" sourceInstances:sourceBlogs];
@@ -92,7 +92,7 @@ static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
         }
     }
     NSRange range = [[blog valueForKey:@"xmlrpc"] rangeOfString:@"wordpress.com"];
-	return (range.location != NSNotFound);
+    return (range.location != NSNotFound);
 }
 
 - (NSString *)jetpackDefaultsKeyForBlog:(NSManagedObject *)blog {
