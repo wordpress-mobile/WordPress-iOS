@@ -230,7 +230,7 @@ static NSString* const ThemeDetailsViewControllerJavascriptResizeScript =
             self.livePreviewButton.enabled = YES;
             break;
         case ThemeDetailsViewControllerControlButtonStateViewSite:
-            [self.livePreviewButton setTitle:NSLocalizedString(@"View Site", nil) forState:UIControlStateNormal];
+            [self.livePreviewButton setTitle:NSLocalizedString(@"View Site", @"Action string for viewing a website, used in a button") forState:UIControlStateNormal];
             self.livePreviewButton.enabled = YES;
             break;
         default:
@@ -240,7 +240,7 @@ static NSString* const ThemeDetailsViewControllerJavascriptResizeScript =
 
 - (void)configureButtonForLivePreview
 {
-    [self.livePreviewButton setTitle:NSLocalizedString(@"Live Preview", nil) forState:UIControlStateNormal];
+    [self.livePreviewButton setTitle:NSLocalizedString(@"Live Preview", @"Action string for viewing the live preview of a website, used in a button") forState:UIControlStateNormal];
 }
 
 - (void)showViewSite {
