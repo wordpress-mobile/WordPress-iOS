@@ -14,6 +14,7 @@ static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.w
 
 @property (nonatomic, copy) NSString *oauth2Token;
 @property (nonatomic, strong) NSNumber *siteId;
+@property (nonatomic, strong) NSTimeZone *siteTimeZone;
 @property (nonatomic, copy) NSString *statsPathPrefix;
 
 @end
@@ -22,12 +23,17 @@ static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.w
 
 }
 
-- (instancetype)initWithOAuth2Token:(NSString *)oauth2Token andSiteId:(NSNumber *)siteId
+- (instancetype)initWithOAuth2Token:(NSString *)oauth2Token siteId:(NSNumber *)siteId andSiteTimeZone:(NSTimeZone *)timeZone
 {
+    NSAssert(oauth2Token.length > 0, @"OAuth2 token must not be empty.");
+    NSAssert(siteId != nil, @"Site ID must not be nil.");
+    NSAssert(timeZone != nil, @"Timezone must not be nil.");
+    
     self = [super init];
     if (self) {
         _oauth2Token = oauth2Token;
         _siteId = siteId;
+        _siteTimeZone = timeZone;
         _statsPathPrefix = [NSString stringWithFormat:@"/sites/%@/stats", _siteId];
     }
 
@@ -39,6 +45,7 @@ static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.w
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
     formatter.dateFormat = @"yyyy-MM-dd";
+    formatter.timeZone = self.siteTimeZone;
 
     NSString *todayString = [formatter stringFromDate:today];
     NSString *yesterdayString = [formatter stringFromDate:yesterday];

@@ -57,7 +57,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 @property (nonatomic, strong) UIButton *timeButton;
 @property (nonatomic, strong) UILabel *bylineLabel;
 @property (nonatomic, strong) UIButton *byButton;
-@property (nonatomic, assign) BOOL willRefreshMediaLayout;
+@property (nonatomic, assign) BOOL willRefreshMediaLayout, shouldShowDateInByView;
 
 @end
 
@@ -65,7 +65,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 }
 
 + (UIFont *)titleFont {
-    return (IS_IPAD ? [UIFont fontWithName:@"Merriweather-Bold" size:24.0f] : [UIFont fontWithName:@"Merriweather-Bold" size:19.0f]);
+    return (IS_IPAD ? [UIFont fontWithName:@"Merriweather-Bold" size:24.0f] : [UIFont fontWithName:@"Merriweather-Bold"
+                                                                                              size:19.0f]);
 }
 
 + (UIFont *)summaryFont {
@@ -90,9 +91,9 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         self.opaque = YES;
 
         _cellImageView = [[UIImageView alloc] init];
-		_cellImageView.backgroundColor = [WPStyleGuide readGrey];
-		_cellImageView.contentMode = UIViewContentModeScaleAspectFill;
-		_cellImageView.clipsToBounds = YES;
+        _cellImageView.backgroundColor = [WPStyleGuide readGrey];
+        _cellImageView.contentMode = UIViewContentModeScaleAspectFill;
+        _cellImageView.clipsToBounds = YES;
         _cellImageView.contentMode = UIViewContentModeScaleAspectFill;
         [self addSubview:_cellImageView];
 
@@ -145,7 +146,6 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         [_bottomView.layer addSublayer:_bottomBorder];
         
         _timeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _timeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         _timeButton.backgroundColor = [UIColor clearColor];
         _timeButton.titleLabel.font = [WPFontManager openSansRegularFontOfSize:12.0];
         [_timeButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPVSmallButtonLeftPadding, 0, 0)];
@@ -154,16 +154,27 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         [_timeButton setImage:[UIImage imageNamed:@"reader-postaction-time"] forState:UIControlStateDisabled];
         [_timeButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateDisabled];
         [_timeButton setEnabled:NO];
-        [_bottomView addSubview:_timeButton];
+        
+        if (_shouldShowDateInByView) {
+            _timeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+            _timeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+            [_byView addSubview:_timeButton];
+        } else {
+            _timeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+            [_bottomView addSubview:_timeButton];
+        }
         
         // Update the relative timestamp once per minute
-        _dateRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(refreshDate:) userInfo:nil repeats:YES];
+        _dateRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self
+                                                           selector:@selector(refreshDate:)
+                                                           userInfo:nil
+                                                            repeats:YES];
     }
     return self;
 }
 
 - (void)dealloc {
-	_contentProvider = nil;
+    _contentProvider = nil;
     _delegate = nil;
     _textContentView.delegate = nil;
     _mediaQueue.delegate = nil;
@@ -171,6 +182,10 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
     [_dateRefreshTimer invalidate];
     _dateRefreshTimer = nil;
+}
+
+- (void)setShouldShowDateInByView {
+    _shouldShowDateInByView = YES;
 }
 
 - (UIView *)viewForFullContent {
@@ -208,12 +223,12 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 #pragma mark - Instance methods
 
 - (void)reset {    
-	_bylineLabel.text = nil;
-	_titleLabel.text = nil;
-	_snippetLabel.text = nil;
+    _bylineLabel.text = nil;
+    _titleLabel.text = nil;
+    _snippetLabel.text = nil;
     
     [_cellImageView cancelImageRequestOperation];
-	_cellImageView.image = nil;
+    _cellImageView.image = nil;
 }
 
 - (BOOL)privateContent {
@@ -250,9 +265,9 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     
     [self refreshDate];
     
-	self.cellImageView.hidden = YES;
-	
-	[self updateActionButtons];
+    self.cellImageView.hidden = YES;
+    
+    [self updateActionButtons];
     
 }
 
@@ -276,11 +291,14 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     
     // Position the meta view and its subviews
     CGFloat bottomY = self.textContentView.frame.origin.y + self.textContentView.frame.size.height + RPVVerticalPadding;
-	self.bottomView.frame = CGRectMake(0, bottomY, contentWidth, RPVMetaViewHeight);
-    self.bottomBorder.frame = CGRectMake(RPVHorizontalInnerPadding, 0, contentWidth - RPVHorizontalInnerPadding * 2, RPVBorderHeight);
+    self.bottomView.frame = CGRectMake(0, bottomY, contentWidth, RPVMetaViewHeight);
+    self.bottomBorder.frame = CGRectMake(RPVHorizontalInnerPadding,
+                                         0,
+                                         contentWidth - RPVHorizontalInnerPadding * 2,
+                                         RPVBorderHeight);
     
     // Action buttons
-    CGFloat buttonX = self.bottomView.frame.size.width - RPVHorizontalInnerPadding; // minus two px so button text aligns
+    CGFloat buttonX = self.bottomView.frame.size.width - RPVHorizontalInnerPadding; // minus 2px so button text aligns
     CGFloat buttonY = RPVBorderHeight; // Just below the line
     NSArray* reversedActionButtons = [[self.actionButtons reverseObjectEnumerator] allObjects];
 
@@ -291,7 +309,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         if (actionButton.hidden)
             continue;
 
-        // Left most visible button needs a different size to aligh properly
+        // Left most visible button needs a different size to align properly
         if (buttonWidth == 0.0f) {
             [actionButton sizeToFit];
             buttonWidth = CGRectGetWidth(actionButton.frame);
@@ -318,8 +336,12 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         lastImageWidth = actionButton.imageView.image.size.width;
     }
 
-    CGFloat timeWidth = buttonX - RPVHorizontalInnerPadding;
-    self.timeButton.frame = CGRectMake(RPVHorizontalInnerPadding, RPVBorderHeight, timeWidth, RPVControlButtonHeight);
+    CGFloat timeWidth = _shouldShowDateInByView ? RPVControlButtonWidth + 10.0f : buttonX - RPVHorizontalInnerPadding;
+    CGFloat timeHeight = _shouldShowDateInByView ? _byView.frame.size.height : RPVControlButtonHeight;
+    CGFloat timeXPosition = _shouldShowDateInByView ? _byView.frame.size.width - timeWidth - RPVHorizontalInnerPadding
+                                                    : RPVHorizontalInnerPadding;
+    CGFloat timeYPosition = _shouldShowDateInByView ? 0.0f : RPVBorderHeight;
+    self.timeButton.frame = CGRectMake(timeXPosition, timeYPosition, timeWidth, timeHeight);
     
     // Update own frame
     CGRect ownFrame = self.frame;
@@ -338,8 +360,13 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     button.drawLabelBubble = YES;
     [self.bottomView addSubview:button];
     [self.actionButtons addObject:button];
-
+    
     return button;
+}
+
+- (void)addCustomActionButton:(UIButton*)actionButton {
+    [self.bottomView addSubview:actionButton];
+    [self.actionButtons addObject:actionButton];
 }
 
 - (void)removeActionButton:(UIButton *)button {
@@ -408,13 +435,13 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 }
 
 - (BOOL)isEmoji:(NSURL *)url {
-	return ([[url absoluteString] rangeOfString:@"wp.com/wp-includes/images/smilies"].location != NSNotFound);
+    return ([[url absoluteString] rangeOfString:@"wp.com/wp-includes/images/smilies"].location != NSNotFound);
 }
 
 - (void)handleMediaViewLoaded:(ReaderMediaView *)mediaView {
-	
-	BOOL frameChanged = [self updateMediaLayout:mediaView];
-	
+    
+    BOOL frameChanged = [self updateMediaLayout:mediaView];
+    
     if (frameChanged) {
         // need to reset the layouter because otherwise we get the old framesetter or cached layout frames
         self.textContentView.layouter = nil;
@@ -432,16 +459,16 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 - (BOOL)updateMediaLayout:(ReaderMediaView *)imageView {
     BOOL frameChanged = NO;
-	NSURL *url = imageView.contentURL;
-	
-	CGSize originalSize = imageView.frame.size;
-	CGSize imageSize = imageView.image.size;
-	
-	if ([self isEmoji:url]) {
-		CGFloat scale = [UIScreen mainScreen].scale;
-		imageSize.width *= scale;
-		imageSize.height *= scale;
-	} else {
+    NSURL *url = imageView.contentURL;
+    
+    CGSize originalSize = imageView.frame.size;
+    CGSize imageSize = imageView.image.size;
+    
+    if ([self isEmoji:url]) {
+        CGFloat scale = [UIScreen mainScreen].scale;
+        imageSize.width *= scale;
+        imageSize.height *= scale;
+    } else {
         if (imageView.image) {
             CGFloat ratio = imageSize.width / imageSize.height;
             CGFloat width = self.frame.size.width;
@@ -452,20 +479,20 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         } else {
             imageSize = CGSizeMake(0.0f, 0.0f);
         }
-	}
+    }
     
     // Widths should always match
     if (imageSize.height != originalSize.height) {
         frameChanged = YES;
     }
     
-	NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
-	
-	// update all attachments that matchin this URL (possibly multiple images with same size)
-	for (DTTextAttachment *attachment in [self.textContentView.layoutFrame textAttachmentsWithPredicate:pred]) {
-		attachment.originalSize = originalSize;
-		attachment.displaySize = imageSize;
-	}
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
+    
+    // update all attachments that matchin this URL (possibly multiple images with same size)
+    for (DTTextAttachment *attachment in [self.textContentView.layoutFrame textAttachmentsWithPredicate:pred]) {
+        attachment.originalSize = originalSize;
+        attachment.displaySize = imageSize;
+    }
     
     return frameChanged;
 }
@@ -538,35 +565,44 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 #pragma mark - DTCoreAttributedTextContentView Delegate Methods
 
-- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame {
-	NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:nil];
-	
-	NSURL *URL = [attributes objectForKey:DTLinkAttribute];
-	NSString *identifier = [attributes objectForKey:DTGUIDAttribute];
-	
-	DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
-	button.URL = URL;
-	button.minimumHitSize = CGSizeMake(25, 25); // adjusts it's bounds so that button is always large enough
-	button.GUID = identifier;
-	
-	// get image with normal link text
-	UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDefault];
-	[button setImage:normalImage forState:UIControlStateNormal];
-	
-	// get image for highlighted link text
-	UIImage *highlightImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDrawLinksHighlighted];
-	[button setImage:highlightImage forState:UIControlStateHighlighted];
-	
-	// use normal push action for opening URL
-	[button addTarget:self action:@selector(linkAction:) forControlEvents:UIControlEventTouchUpInside];
-	
-	return button;
+- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView
+              viewForAttributedString:(NSAttributedString *)string
+                                frame:(CGRect)frame
+{
+    NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:nil];
+    
+    NSURL *URL = [attributes objectForKey:DTLinkAttribute];
+    NSString *identifier = [attributes objectForKey:DTGUIDAttribute];
+    
+    DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
+    button.URL = URL;
+    button.minimumHitSize = CGSizeMake(25, 25); // adjusts it's bounds so that button is always large enough
+    button.GUID = identifier;
+    
+    // get image with normal link text
+    UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame
+                                                                     options:DTCoreTextLayoutFrameDrawingDefault];
+    [button setImage:normalImage forState:UIControlStateNormal];
+    
+    // get image for highlighted link text
+    UIImage *highlightImage = [attributedTextContentView contentImageWithBounds:frame
+                                                                        options:DTCoreTextLayoutFrameDrawingDrawLinksHighlighted];
+    [button setImage:highlightImage forState:UIControlStateHighlighted];
+    
+    // use normal push action for opening URL
+    [button addTarget:self action:@selector(linkAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    return button;
 }
 
 
-- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttachment:(DTTextAttachment *)attachment frame:(CGRect)frame {
-    if (!attachment.contentURL)
+- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView
+                    viewForAttachment:(DTTextAttachment *)attachment
+                                frame:(CGRect)frame
+{
+    if (!attachment.contentURL) {
         return nil;
+    }
     
     // The textContentView will render the first time with the original frame, and then update when media loads.
     // To avoid showing gaps in the layout due to the original attachment sizes, relayout the view after a brief delay.
@@ -575,21 +611,22 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     CGFloat width = _textContentView.frame.size.width;
     CGFloat availableWidth = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
     
-	// The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image itself to run out to the edges,
-	// so position it offset by the inverse of _textContentView's edgeInsets. Also add top padding so we don't bump into a line of text.
-	// Remeber to add an extra 10px to the frame to preserve aspect ratio.
-	UIEdgeInsets edgeInsets = _textContentView.edgeInsets;
-	edgeInsets.left = 0.0f - edgeInsets.left;
-	edgeInsets.top = 15.0f;
-	edgeInsets.right = 0.0f - edgeInsets.right;
-	edgeInsets.bottom = 0.0f;
-	
-	if ([attachment isKindOfClass:[DTImageTextAttachment class]]) {
-		if ([self isEmoji:attachment.contentURL]) {
-			// minimal frame to suppress drawing context errors with 0 height or width.
-			frame.size.width = MAX(frame.size.width, 1.0f);
-			frame.size.height = MAX(frame.size.height, 1.0f);
-			ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
+    // The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image
+    // itself to run out to the edges, so position it offset by the inverse of _textContentView's edgeInsets. Also
+    // add top padding so we don't bump into a line of text. Remeber to add an extra 10px to the frame to preserve
+    // aspect ratio.
+    UIEdgeInsets edgeInsets = _textContentView.edgeInsets;
+    edgeInsets.left = 0.0f - edgeInsets.left;
+    edgeInsets.top = 15.0f;
+    edgeInsets.right = 0.0f - edgeInsets.right;
+    edgeInsets.bottom = 0.0f;
+    
+    if ([attachment isKindOfClass:[DTImageTextAttachment class]]) {
+        if ([self isEmoji:attachment.contentURL]) {
+            // minimal frame to suppress drawing context errors with 0 height or width.
+            frame.size.width = MAX(frame.size.width, 1.0f);
+            frame.size.height = MAX(frame.size.height, 1.0f);
+            ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
             [_mediaArray addObject:imageView];
             [self.mediaQueue enqueueMedia:imageView
                                   withURL:attachment.contentURL
@@ -598,84 +635,81 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
                                 isPrivate:[self privateContent]
                                   success:nil
                                   failure:nil];
-			return imageView;
-		}
-		
+            return imageView;
+        }
+        
         DTImageTextAttachment *imageAttachment = (DTImageTextAttachment *)attachment;
-		
-		if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
-			UIImage *image = imageAttachment.image;
-			
+        
+        if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
+            UIImage *image = imageAttachment.image;
+            
             CGFloat ratio = image.size.width / image.size.height;
             frame.size.width = availableWidth;
             frame.size.height = roundf(width / ratio);
             
             // offset the top edge inset keeping the image from bumping the text above it.
             frame.size.height += edgeInsets.top;
-		} else {
+        } else {
             // minimal frame to suppress drawing context errors with 0 height or width.
             frame.size.width = 1.0f;
             frame.size.height = 1.0f;
-		}
+        }
         
-		ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
-		imageView.edgeInsets = edgeInsets;
+        ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
+        imageView.edgeInsets = edgeInsets;
         
-		[_mediaArray addObject:imageView];
-		imageView.linkURL = attachment.hyperLinkURL;
-		[imageView addTarget:self action:@selector(imageLinkAction:) forControlEvents:UIControlEventTouchUpInside];
-		
-		if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
-			[imageView setImage:imageAttachment.image];
-		} else {
-            
+        [_mediaArray addObject:imageView];
+        imageView.linkURL = attachment.hyperLinkURL;
+        [imageView addTarget:self action:@selector(imageLinkAction:) forControlEvents:UIControlEventTouchUpInside];
+        
+        if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
+            [imageView setImage:imageAttachment.image];
+        } else {
             [self.mediaQueue enqueueMedia:imageView
                                   withURL:attachment.contentURL
                          placeholderImage:nil
-                                     size:CGSizeMake(width, 0.0f) // Passing zero for height to get the correct aspect ratio
-                                isPrivate:[self privateContent]
+                                     size:CGSizeMake(width, 0.0f) // Passing zero for height to get the correct
+                                isPrivate:[self privateContent]   // aspect ratio
                                   success:nil
                                   failure:nil];
-		}
+        }
         
-		return imageView;
-		
-	} else {
-		
-		ReaderVideoContentType videoType;
-		
-		if ([attachment isKindOfClass:[DTVideoTextAttachment class]]) {
-			videoType = ReaderVideoContentTypeVideo;
-		} else if ([attachment isKindOfClass:[DTIframeTextAttachment class]]) {
-			videoType = ReaderVideoContentTypeIFrame;
-		} else if ([attachment isKindOfClass:[DTObjectTextAttachment class]]) {
-			videoType = ReaderVideoContentTypeEmbed;
-		} else {
-			return nil; // Can't handle whatever this is :P
-		}
-        
+        return imageView;
+    } else {
+        ReaderVideoContentType videoType;
+
+        if ([attachment isKindOfClass:[DTVideoTextAttachment class]]) {
+            videoType = ReaderVideoContentTypeVideo;
+        } else if ([attachment isKindOfClass:[DTIframeTextAttachment class]]) {
+            videoType = ReaderVideoContentTypeIFrame;
+        } else if ([attachment isKindOfClass:[DTObjectTextAttachment class]]) {
+            videoType = ReaderVideoContentTypeEmbed;
+        } else {
+            return nil; // Can't handle whatever this is :P
+        }
+
         // we won't show the vid until we've loaded its thumb.
         // minimal frame to suppress drawing context errors with 0 height or width.
         frame.size.width = 1.0f;
         frame.size.height = 1.0f;
+
+        ReaderVideoView *videoView = [[ReaderVideoView alloc] initWithFrame:frame];
+        videoView.edgeInsets = edgeInsets;
         
-		ReaderVideoView *videoView = [[ReaderVideoView alloc] initWithFrame:frame];
-		videoView.edgeInsets = edgeInsets;
-        
-		[_mediaArray addObject:videoView];
-		[videoView setContentURL:attachment.contentURL ofType:videoType success:^(id readerVideoView) {
-			[self handleMediaViewLoaded:readerVideoView];
-		} failure:^(id readerVideoView, NSError *error) {
+        [_mediaArray addObject:videoView];
+        [videoView setContentURL:attachment.contentURL ofType:videoType success:^(id readerVideoView) {
+            [self handleMediaViewLoaded:readerVideoView];
+        } failure:^(id readerVideoView, NSError *error) {
             // if the image is 404, just show a black image.
             ReaderVideoView *videoView = (ReaderVideoView *)readerVideoView;
             videoView.image = [UIImage imageWithColor:[UIColor blackColor] havingSize:CGSizeMake(2.0f, 1.0f)];
-			[self handleMediaViewLoaded:readerVideoView];
-		}];
-        
-		[videoView addTarget:self action:@selector(videoLinkAction:) forControlEvents:UIControlEventTouchUpInside];
-        
-		return videoView;
-	}
+            [self handleMediaViewLoaded:readerVideoView];
+        }];
+
+        [videoView addTarget:self action:@selector(videoLinkAction:) forControlEvents:UIControlEventTouchUpInside];
+
+        return videoView;
+    }
 }
 
 @end
