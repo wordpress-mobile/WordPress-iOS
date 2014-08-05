@@ -35,7 +35,7 @@ const CGFloat RPVLineHeightMultiple = 1.03f;
 
 // Control buttons (Like, Reblog, ...)
 const CGFloat RPVControlButtonHeight = 48.0f;
-const CGFloat RPVControlButtonWidth = 58.0f;
+const CGFloat RPVControlButtonWidth = 48.0f;
 const CGFloat RPVControlButtonSpacing = 12.0f;
 const CGFloat RPVControlButtonBorderSize = 0.0f;
 
@@ -336,7 +336,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         lastImageWidth = actionButton.imageView.image.size.width;
     }
 
-    CGFloat timeWidth = _shouldShowDateInByView ? RPVControlButtonWidth : buttonX - RPVHorizontalInnerPadding;
+    CGFloat timeWidth = _shouldShowDateInByView ? RPVControlButtonWidth + 10.0f : buttonX - RPVHorizontalInnerPadding;
     CGFloat timeHeight = _shouldShowDateInByView ? _byView.frame.size.height : RPVControlButtonHeight;
     CGFloat timeXPosition = _shouldShowDateInByView ? _byView.frame.size.width - timeWidth - RPVHorizontalInnerPadding
                                                     : RPVHorizontalInnerPadding;
