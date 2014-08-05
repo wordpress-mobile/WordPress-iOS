@@ -43,7 +43,7 @@ BOOL hasChanges;
     self.refreshHeaderView.delegate = self;
     [self.tableView addSubview:self.refreshHeaderView];
 
-    if(self.showCloseButton) {
+    if (self.showCloseButton) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
     }
 }
@@ -108,7 +108,7 @@ BOOL hasChanges;
             for ( ; i < [mutedBlogsArray count]; i++) {
                 NSDictionary *currentPreference = [mutedBlogsArray objectAtIndex:i];
                 NSNumber *muted = [currentPreference valueForKey:@"value"];
-                if([muted boolValue] == NO){
+                if ([muted boolValue] == NO){
                     muteAvailable = YES; //One blog is not muted
                     break;
                 }
@@ -116,7 +116,7 @@ BOOL hasChanges;
         }
     }
 
-    if( toolbarVisible == YES ) {
+    if ( toolbarVisible == YES ) {
 
         NSString *buttonLabel = muteAvailable ? NSLocalizedString(@"Mute all sites", @"") : NSLocalizedString(@"Unmute all sites", @"");
 
@@ -259,7 +259,7 @@ BOOL hasChanges;
 
         if (_notificationMutePreferences && [_notificationMutePreferences objectForKey:@"value"] != nil) {
             NSString *mute_value = [_notificationMutePreferences objectForKey:@"value"];
-            if([mute_value isEqualToString:@"forever"]){
+            if ([mute_value isEqualToString:@"forever"]){
                 cell.detailTextLabel.text = NSLocalizedString(@"Off", @"");
             } else {
                 //check the date before showing it in the cell. Date can be in the past and already expired.
@@ -347,7 +347,7 @@ BOOL hasChanges;
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.section == 0){
+    if (indexPath.section == 0){
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         UIActionSheet *actionSheet;        
         if ([_notificationMutePreferences objectForKey:@"value"] != nil) {
@@ -384,7 +384,7 @@ BOOL hasChanges;
     if (actionSheet.tag == 100 ) {
         //Notifications were muted.
         //buttonIndex == 0 -> Turn on, cancel otherwise.
-        if(buttonIndex == 0) {
+        if (buttonIndex == 0) {
             hasChanges = YES;
             muteDictionary = [NSMutableDictionary dictionary];
             [muteDictionary setObject:@"0" forKey:@"value"];
@@ -425,7 +425,7 @@ BOOL hasChanges;
                 NSInteger hour = [comps hour]; //Other usage: [comps minute] [comps hour] [comps day] [comps month];
 
                 comps = [[NSDateComponents alloc] init];
-                if(hour >= 8){ //add one day if 8AM is already passed
+                if (hour >= 8){ //add one day if 8AM is already passed
                     [comps setDay:+1];
                 }
 

@@ -267,7 +267,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
     NSURL *imageURL = [self.post featuredImageURLForDisplay];
     UIImage *image = [self.featuredImageSource imageForURL:imageURL withSize:size];
-    if(image) {
+    if (image) {
         [self.postView setFeaturedImage:image];
     } else {
         [self.featuredImageSource fetchImageForURL:imageURL

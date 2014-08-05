@@ -486,7 +486,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         cell = [self getWPTableViewDatePickerCell];
         [cell.contentView addSubview:self.datePicker];
 
-    } else if(indexPath.row == 1) {
+    } else if (indexPath.row == 1) {
         // Publish Status
         cell = [self getWPTableViewCell];
         cell.textLabel.text = NSLocalizedString(@"Status", @"The status of the post. Should be the same as in core WP.");
@@ -599,7 +599,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         Coordinate *coordinate = self.post.geolocation;
         CLLocation *postLocation = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
         NSString *address;
-        if([[LocationService sharedService] hasAddressForLocation:postLocation]) {
+        if ([[LocationService sharedService] hasAddressForLocation:postLocation]) {
             address = [LocationService sharedService].lastGeocodedAddress;
         } else {
             address = NSLocalizedString(@"Looking up address...", @"Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post.");

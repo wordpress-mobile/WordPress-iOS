@@ -102,7 +102,7 @@
                                 success(selfRef);
                             }
                         } failure:^(NSError *error) {
-                            if(failure) {
+                            if (failure) {
                                 failure(selfRef, error);
                             }
                         }];

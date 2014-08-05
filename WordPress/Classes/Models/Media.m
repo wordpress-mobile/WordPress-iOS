@@ -356,10 +356,10 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
                     failureBlock(operation, error);
                     return;
                 }
-                if([response objectForKey:@"videopress_shortcode"] != nil)
+                if ([response objectForKey:@"videopress_shortcode"] != nil)
                     self.shortcode = [response objectForKey:@"videopress_shortcode"];
 
-                if([response objectForKey:@"url"] != nil)
+                if ([response objectForKey:@"url"] != nil)
                     self.remoteURL = [response objectForKey:@"url"];
 
                 if ([response objectForKey:@"id"] != nil) {
@@ -426,9 +426,9 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     if (self.mediaType == MediaTypeImage) {
         if (self.shortcode != nil) {
             result = self.shortcode;
-        } else if(self.remoteURL != nil) {
+        } else if (self.remoteURL != nil) {
             NSString *linkType = nil;
-            if( [[self.blog getOptionValue:@"image_default_link_type"] isKindOfClass:[NSString class]] )
+            if ( [[self.blog getOptionValue:@"image_default_link_type"] isKindOfClass:[NSString class]] )
                 linkType = (NSString *)[self.blog getOptionValue:@"image_default_link_type"];
             else
                 linkType = @"";
@@ -451,7 +451,7 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
         if (([self.width intValue] > [self.height intValue]) && ([self.width intValue] > 640)) {
             embedWidth = @"640";
             embedHeight = @"360";
-        } else if(([self.height intValue] > [self.width intValue]) && ([self.height intValue] > 640)) {
+        } else if (([self.height intValue] > [self.width intValue]) && ([self.height intValue] > 640)) {
             embedHeight = @"640";
             embedWidth = @"360";
         }

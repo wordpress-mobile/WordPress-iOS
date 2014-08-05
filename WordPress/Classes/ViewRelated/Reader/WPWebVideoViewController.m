@@ -19,7 +19,7 @@
 
 - (id)initWithURL:(NSURL *)url {
     self = [self init];
-    if(self) {
+    if (self) {
         self.url = url;
     }
 
@@ -28,7 +28,7 @@
 
 - (id)initWithHTML:(NSString *)html {
     self = [self init];
-    if(self) {
+    if (self) {
         self.html = html;
     }
 

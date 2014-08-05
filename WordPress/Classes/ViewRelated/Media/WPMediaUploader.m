@@ -107,10 +107,10 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
                     failureBlock(operation, error);
                     return;
                 }
-                if([response objectForKey:@"videopress_shortcode"] != nil)
+                if ([response objectForKey:@"videopress_shortcode"] != nil)
                     media.shortcode = [response objectForKey:@"videopress_shortcode"];
 
-                if([response objectForKey:@"url"] != nil)
+                if ([response objectForKey:@"url"] != nil)
                     media.remoteURL = [response objectForKey:@"url"];
 
                 if ([response objectForKey:@"id"] != nil) {

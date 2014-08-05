@@ -335,7 +335,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 }
 
 - (void)replyAction:(id)sender {
-    if(self.inlineComposeView.isDisplayed) {
+    if (self.inlineComposeView.isDisplayed) {
         [self.inlineComposeView dismissComposer];
     } else {
         [self.inlineComposeView becomeFirstResponder];
@@ -418,7 +418,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
 - (void)handleTap:(UITapGestureRecognizer *)gesture
 {
-    if(self.inlineComposeView.isDisplayed) {
+    if (self.inlineComposeView.isDisplayed) {
         [self.inlineComposeView dismissComposer];
     }
 }

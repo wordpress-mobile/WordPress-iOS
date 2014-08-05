@@ -16,7 +16,7 @@
 
 - (id)initWithImage:(UIImage *)image {
     self = [self init];
-    if(self) {
+    if (self) {
         self.image = [image copy];
     }
 
@@ -25,7 +25,7 @@
 
 - (id)initWithURL:(NSURL *)url {
     self = [self init];
-    if(self) {
+    if (self) {
         self.url = url;
     }
 
@@ -77,13 +77,13 @@
         return;
     }
 
-    if(self.image != nil) {
+    if (self.image != nil) {
         _imageView.image = self.image;
         [_imageView sizeToFit];
         _scrollView.contentSize = _imageView.image.size;
         [self centerImage];
 
-    } else if(self.url) {
+    } else if (self.url) {
         self.isLoadingImage = YES;
 
         __weak UIImageView *imageViewRef = _imageView;

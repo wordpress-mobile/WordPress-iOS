@@ -106,7 +106,7 @@ static NSString *_lastAuthedName = nil;
     webView.useWebViewLoading = YES;
 
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    if( appDelegate.connectionAvailable == YES ) {
+    if ( appDelegate.connectionAvailable == YES ) {
         [self.webView showRefreshingState];
     }
 }
@@ -198,7 +198,7 @@ static NSString *_lastAuthedName = nil;
         DDLogInfo(@"Loading Stats for the following blog: %@", [blog url]);
 
         WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-        if( !appDelegate.connectionAvailable ) {
+        if ( !appDelegate.connectionAvailable ) {
             [webView hideRefreshingState];
             __weak StatsWebViewController *weakSelf = self;
             [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:^{
@@ -318,7 +318,7 @@ static NSString *_lastAuthedName = nil;
         NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"http://wordpress.com"]];
 
         for (NSHTTPCookie *cookie in cookies) {
-            if([cookie.name isEqualToString:@"wordpress_logged_in"]){
+            if ([cookie.name isEqualToString:@"wordpress_logged_in"]){
                 // We should be authed.
                 DDLogInfo(@"Authed. Loading stats.");
                 statsWebViewController.authed = YES;
@@ -332,7 +332,7 @@ static NSString *_lastAuthedName = nil;
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         // Just in case .com is ever edited to return a 401 on auth fail...
-        if(operation.response.statusCode == 401){
+        if (operation.response.statusCode == 401){
             // If we failed due to bad credentials...
             [statsWebViewController showAuthFailed];
 
@@ -353,7 +353,7 @@ static NSString *_lastAuthedName = nil;
     }
 
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    if( !appDelegate.connectionAvailable ) {
+    if ( !appDelegate.connectionAvailable ) {
         __weak StatsWebViewController *weakSelf = self;
         [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:^{
             [weakSelf loadStats];
@@ -367,7 +367,7 @@ static NSString *_lastAuthedName = nil;
     }
 
     NSNumber *blogID = [blog blogID];
-    if(![blog isWPcom]) {
+    if (![blog isWPcom]) {
         blogID = [blog jetpackBlogID];
     }
 

@@ -57,7 +57,7 @@ CGFloat const AboutViewPortraitButtonsY = 90.0f;
 
     self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.scrollView.frame), CGRectGetMaxY(self.viewWebsiteButton.frame));
 
-    if([self.navigationController.viewControllers count] == 1) {
+    if ([self.navigationController.viewControllers count] == 1) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
     }
 }

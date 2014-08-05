@@ -63,7 +63,7 @@
     CGRect headerFrame = CGRectMake(0, 0, 320, 70);
     CGRect logoFrame = CGRectMake(40, 20, 229, 43);
     NSString *logoFile = @"logo_wpcom.png";
-    if(IS_IPAD) {
+    if (IS_IPAD) {
         logoFile = @"logo_wpcom@2x.png";
         logoFrame = CGRectMake(150, 20, 229, 43);
     }
@@ -74,7 +74,7 @@
     [headerView addSubview:logo];
     self.tableView.tableHeaderView = headerView;
 
-    if(IS_IPAD)
+    if (IS_IPAD)
         self.tableView.backgroundView = nil;
 }
 
@@ -96,7 +96,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if(section == 0) {
+    if (section == 0) {
         return 2;
     }
 
@@ -104,7 +104,7 @@
 }
 
 - (NSString *)titleForFooterInSection:(NSInteger)section {
-    if(section == 0) {
+    if (section == 0) {
         return footerText;
     }
 
@@ -128,18 +128,18 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = nil;
 
-    if(indexPath.section == 1) {
+    if (indexPath.section == 1) {
         WPTableViewActivityCell *activityCell = nil;
         NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"WPTableViewActivityCell" owner:nil options:nil];
         for(id currentObject in topLevelObjects)
         {
-            if([currentObject isKindOfClass:[WPTableViewActivityCell class]])
+            if ([currentObject isKindOfClass:[WPTableViewActivityCell class]])
             {
                 activityCell = (WPTableViewActivityCell *)currentObject;
                 break;
             }
         }
-        if(isSigningIn) {
+        if (isSigningIn) {
             [activityCell.spinner startAnimating];
             self.buttonText = NSLocalizedString(@"Signing In...", @"");
         }
@@ -174,9 +174,9 @@
             loginCell.textField.returnKeyType = UIReturnKeyNext;
             loginCell.textField.tag = 0;
             loginCell.textField.delegate = self;
-            if( self.predefinedUsername )
+            if ( self.predefinedUsername )
                 loginCell.textField.text = self.predefinedUsername;
-            if(isSigningIn)
+            if (isSigningIn)
                 [loginCell.textField resignFirstResponder];
             [WPStyleGuide configureTableViewTextCell:loginCell];
             cell = loginCell;
@@ -192,7 +192,7 @@
             passwordCell.textField.secureTextEntry = YES;
             passwordCell.textField.tag = 1;
             passwordCell.textField.delegate = self;
-            if(isSigningIn)
+            if (isSigningIn)
                 [passwordCell.textField resignFirstResponder];
             [WPStyleGuide configureTableViewTextCell:passwordCell];
             cell = passwordCell;
@@ -232,7 +232,7 @@
             self.footerText = NSLocalizedString(@"Username is required.", @"");
             self.buttonText = NSLocalizedString(@"Sign In", @"");
             [tv reloadData];
-        } else if([passwordCell.textField.text isEqualToString:@""]) {
+        } else if ([passwordCell.textField.text isEqualToString:@""]) {
             self.footerText = NSLocalizedString(@"Password is required.", @"");
             self.buttonText = NSLocalizedString(@"Sign In", @"");
             [tv reloadData];
@@ -262,9 +262,9 @@
     if (textField.tag == 0) {
         [textField endEditing:YES];
         cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-        if(cell != nil) {
+        if (cell != nil) {
             nextField = (UITextField*)[cell viewWithTag:1];
-            if(nextField != nil)
+            if (nextField != nil)
                 [nextField becomeFirstResponder];
         }
     } else if (textField.tag == 1) {

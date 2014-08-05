@@ -693,7 +693,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     DDLogMethod();
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
 
-    if(!self.currentTopic) {
+    if (!self.currentTopic) {
         ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
         [topicService fetchReaderMenuWithSuccess:^{
             // Changing the topic means we need to also change the fetch request.
@@ -755,7 +755,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
             });
         }
     } failure:^(NSError *error) {
-        if(failure) {
+        if (failure) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 failure(error);
             });

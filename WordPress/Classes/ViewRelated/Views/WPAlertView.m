@@ -254,7 +254,7 @@ CGFloat const WPAlertViewDefaultTextFieldLabelWidth = 118.0f;
     if ([self.firstTextField isFirstResponder]) {
         rect = self.firstTextField.frame;
         rect = [self.scrollView convertRect:rect fromView:self.firstTextField];
-    } else if([self.secondTextField isFirstResponder]) {
+    } else if ([self.secondTextField isFirstResponder]) {
         rect = self.secondTextField.frame;
         rect = [self.scrollView convertRect:rect fromView:self.secondTextField];
     }

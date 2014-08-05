@@ -76,7 +76,7 @@
         UIViewController *prevController = nil;
         NSArray *controllers = [self.navigationController viewControllers];
         NSInteger len = [controllers count]; 
-        if(len > 0) {
+        if (len > 0) {
             for (NSInteger i = len; i > 0; i--) {
                 NSInteger idx = i-1;
                 UIViewController *controller = [controllers objectAtIndex:idx];
@@ -96,7 +96,7 @@
             NSURL *currURL = [controller currentURL];
             NSURL *reqURL = [request URL];
             if ([currURL.host isEqualToString:reqURL.host]) {
-                if([currURL.path isEqualToString:reqURL.path]) {
+                if ([currURL.path isEqualToString:reqURL.path]) {
                     if ([currURL.query isEqualToString:reqURL.query]) {
                         // if the detail controller is ourself disregard the click so we don't spam a series of the same page.
                         [self.navigationController popToViewController:prevController animated:YES];
