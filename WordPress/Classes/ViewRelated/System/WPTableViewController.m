@@ -42,39 +42,39 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     NSString *blogID = [coder decodeObjectForKey:WPBlogRestorationKey];
     if (!blogID)
         return nil;
-    
+
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:blogID]];
     if (!objectID)
         return nil;
-    
+
     NSError *error = nil;
     Blog *restoredBlog = (Blog *)[context existingObjectWithID:objectID error:&error];
     if (error || !restoredBlog) {
         return nil;
     }
-    
+
     WPTableViewController *viewController = [[self alloc] initWithStyle:UITableViewStyleGrouped];
     viewController.blog = restoredBlog;
-    
+
     return viewController;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:UITableViewStyleGrouped];
-    
+
     if (self) {
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
     }
-    
+
     return self;
 }
 
 - (void)dealloc {
     _resultsController.delegate = nil;
     _editSiteViewController.delegate = nil;
-    
+
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc removeObserver:self];
 }
@@ -94,7 +94,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     self.tableView.allowsSelectionDuringEditing = YES;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self.tableView registerClass:[self cellClass] forCellReuseIdentifier:DefaultCellIdentifier];
-    
+
     if (IS_IPHONE) {
         // Account for 1 pixel header height
         UIEdgeInsets tableInset = [self.tableView contentInset];
@@ -107,7 +107,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
 
     [self configureNoResultsView];
-    
+
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(automaticallyRefreshIfAppropriate) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
@@ -128,7 +128,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
+
     [self automaticallyRefreshIfAppropriate];
 }
 
@@ -224,7 +224,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     } else {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
-    
+
     [self configureCell:cell atIndexPath:indexPath];
 
     return cell;
@@ -235,7 +235,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     // Are we approaching the end of the table?
     if ((indexPath.section + 1 == [self numberOfSectionsInTableView:tableView]) && (indexPath.row + 4 >= [self tableView:tableView numberOfRowsInSection:indexPath.section]) && [self tableView:tableView numberOfRowsInSection:indexPath.section] > 10) {
         // Only 3 rows till the end of table
-        
+
         if ([self hasMoreContent] && !_isLoadingMore) {
             if (![self isSyncing] || self.incrementalLoadingSupported) {
                 [_activityFooter startAnimating];
@@ -297,13 +297,13 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
                                                                sectionNameKeyPath:[self sectionNameKeyPath]
                                                                         cacheName:nil];
     _resultsController.delegate = self;
-        
+
     NSError *error = nil;
     if (![_resultsController performFetch:&error]) {
         DDLogError(@"%@ couldn't fetch %@: %@", self, [self entityName], [error localizedDescription]);
         _resultsController = nil;
     }
-    
+
     return _resultsController;
 }
 
@@ -320,7 +320,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
         _indexPathSelectedBeforeUpdates = nil;
         _indexPathSelectedAfterUpdates = nil;
     }
-    
+
     [self configureNoResultsView];
 }
 
@@ -380,7 +380,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
         [self.refreshControl endRefreshing];
         return;
     }
-    
+
     _didTriggerRefresh = YES;
     [self.noResultsView removeFromSuperview];
     [self syncItemsViaUserInteraction];
@@ -406,7 +406,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+writing.php" options:NSRegularExpressionCaseInsensitive error:&error];
     NSString *msg = [alertView message];
     NSRange rng = [regex rangeOfFirstMatchInString:msg options:0 range:NSMakeRange(0, [msg length])];
-    
+
     if (rng.location == NSNotFound) {
         path = self.blog.url;
         if (![path hasPrefix:@"http"]) {
@@ -416,11 +416,11 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
         }
         path = [path stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
         path = [path stringByAppendingFormat:@"/wp-admin/options-writing.php"];
-        
+
     } else {
         path = [msg substringWithRange:rng];
     }
-    
+
     WPWebViewController *webViewController = [[WPWebViewController alloc] init];
     webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(dismissModal:)];
     [webViewController setUrl:[NSURL URLWithString:path]];
@@ -455,22 +455,22 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
         DDLogVerbose(@"View is not visible and will not check for auto refresh.");
         return;
     }
-    
+
     // Do not start auto-sync if connection is down
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if (appDelegate.connectionAvailable == NO) {
         return;
     }
-    
+
     // Don't try to refresh if we just canceled editing credentials
     if (_didPromptForCredentials) {
         return;
     }
-    
+
     if ([self userCanRefresh] == NO) {
         return;
     }
-    
+
     NSDate *lastSynced = [self lastSyncDate];
     if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > WPTableViewControllerRefreshTimeout) {
         // Update in the background
@@ -482,28 +482,28 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     if (!self.isViewLoaded) {
         return;
     }
-    
+
     [self.noResultsView removeFromSuperview];
     [self.noResultsActivityIndicator stopAnimating];
     [self.noResultsActivityIndicator removeFromSuperview];
-    
+
     if (self.resultsController.fetchedObjects.count) {
         return;
     }
-    
+
     if (self.isSyncing) {
         // Show activity indicator view when syncing is occuring and the fetched results controller has no objects
         [self.noResultsActivityIndicator startAnimating];
         self.noResultsActivityIndicator.center = [self.tableView convertPoint:self.tableView.center fromView:self.tableView.superview];
         [self.tableView addSubview:self.noResultsActivityIndicator];
-        
+
     } else {
         // Refresh the NoResultsView Properties
         self.noResultsView.titleText        = self.noResultsTitleText;
         self.noResultsView.messageText      = self.noResultsMessageText;
         self.noResultsView.accessoryView    = self.noResultsAccessoryView;
         self.noResultsView.buttonTitle      = self.noResultsButtonText;
-        
+
         // Show no results view if the fetched results controller has no objects and syncing is not happening.
         if (![self.noResultsView isDescendantOfView:self.tableView]) {
             [self.tableView addSubviewWithFadeAnimation:self.noResultsView];
@@ -514,24 +514,24 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 }
 
 - (WPNoResultsView *)noResultsView {
-    
+
     if (!_noResultsView) {
         _noResultsView = [WPNoResultsView new];
         _noResultsView.delegate = self;
     }
-    
+
     return _noResultsView;
 }
 
 - (UIActivityIndicatorView *)noResultsActivityIndicator {
-    
+
     if (!_noResultsActivityIndicator) {
         _noResultsActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         _noResultsActivityIndicator.hidesWhenStopped = YES;
         _noResultsActivityIndicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
         _noResultsActivityIndicator.center = [self.tableView convertPoint:self.tableView.center fromView:self.tableView.superview];
     }
-    
+
     return _noResultsActivityIndicator;
 }
 
@@ -603,22 +603,21 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
         message = NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"");
     }
     [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't Connect", @"") message:message];
-    
+
     // bad login/pass combination
     self.editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
     self.editSiteViewController.isCancellable = YES;
     self.editSiteViewController.delegate = self;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.editSiteViewController];
     navController.navigationBar.translucent = NO;
-    
+
     if(IS_IPAD) {
         navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         navController.modalPresentationStyle = UIModalPresentationFormSheet;
     }
-    
+
     [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
-
 
 #pragma mark - Infinite scrolling
 

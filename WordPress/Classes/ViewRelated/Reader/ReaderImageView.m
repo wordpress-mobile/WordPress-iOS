@@ -12,5 +12,4 @@
     [super setImageWithURL:url placeholderImage:image success:success failure:failure];
 }
 
-
 @end

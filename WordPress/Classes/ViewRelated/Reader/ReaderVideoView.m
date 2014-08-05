@@ -20,7 +20,6 @@
     return _sharedClient;
 }
 
-
 + (AFHTTPRequestOperationManager *)sharedVimeoClient {
     static AFHTTPRequestOperationManager *_sharedClient = nil;
     static dispatch_once_t oncePredicate;
@@ -30,7 +29,6 @@
     return _sharedClient;
 }
 
-
 + (AFHTTPRequestOperationManager *)sharedDailyMotionClient {
     static AFHTTPRequestOperationManager *_sharedClient = nil;
     static dispatch_once_t oncePredicate;
@@ -39,7 +37,6 @@
     });
     return _sharedClient;
 }
-
 
 #pragma mark - Lifecycle Methods
 
@@ -76,7 +73,7 @@
                ofType:(ReaderVideoContentType)type
               success:(void (^)(id videoView))success
               failure:(void (^)(id videoView, NSError *error))failure {
-    
+
     self.contentType = type;
     // Workaround for urls relative schemas (e.g. //youtube.com/embed/XXXXXXX)
     if ([url.absoluteString hasPrefix:@"//"]) {
@@ -88,7 +85,7 @@
     NSString *path = [self.contentURL path];
     NSRange rng = [path rangeOfString:@"/" options:NSBackwardsSearch];
     NSString *vidId = [path substringFromIndex:rng.location + 1];
-    
+
     if (NSNotFound != [[self.contentURL absoluteString] rangeOfString:@"youtube.com/embed"].location) {
         [self getYoutubeThumb:vidId success:success failure:failure];
     } else if (NSNotFound != [[self.contentURL absoluteString] rangeOfString:@"videos.files.wordpress.com"].location ||
@@ -102,11 +99,10 @@
 
 }
 
-
 - (void)getYoutubeThumb:(NSString *)vidId
                 success:(void (^)(id videoView))success
                 failure:(void (^)(id videoView, NSError *error))failure {
-    
+
     __weak ReaderVideoView *selfRef = self;
     NSString *path = [NSString stringWithFormat:@"/feeds/api/videos/%@?v=2&alt=json", vidId];
     [[ReaderVideoView sharedYoutubeClient] GET:path
@@ -119,9 +115,9 @@
                                                    dict = [NSJSONSerialization JSONObjectWithData:responseObject options:0 error:nil];
                                                }
                                                NSDictionary *mediaGroup = [[dict objectForKey:@"entry"] objectForKey:@"media$group"];
-                                               
+
                                                selfRef.title = [[mediaGroup objectForKey:@"media$title"] objectForKey:@"$t"];
-                                               
+
                                                NSArray *thumbs = [mediaGroup objectForKey:@"media$thumbnail"];
                                                NSDictionary *thumb = [thumbs objectAtIndex:3];
                                                NSString *url = [thumb objectForKey:@"url"];
@@ -129,7 +125,7 @@
                                                        placeholderImage:nil
                                                                 success:success
                                                                 failure:failure];
-                                               
+
                                            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                                if (failure) {
                                                    failure(selfRef, error);
@@ -138,11 +134,10 @@
 
 }
 
-
 - (void)getVideoPressThumb:(NSURL *)url
                 success:(void (^)(id videoView))success
                 failure:(void (^)(id videoView, NSError *error))failure {
-    
+
     NSString *path = [NSString stringWithFormat:@"http://i0.wp.com/%@%@", [url host], [[url path] stringByReplacingOccurrencesOfString:@".mp4" withString:@".original.jpg?w=640"]];
 
     url = [NSURL URLWithString:path];
@@ -151,7 +146,6 @@
                      success:success
                      failure:failure];
 }
-
 
 - (void)getVimeoThumb:(NSString *)vidId
               success:(void (^)(id videoView))success
@@ -175,7 +169,7 @@
                                                      placeholderImage:nil
                                                               success:success
                                                               failure:failure];
-                                             
+
                                          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                              if (failure) {
                                                  failure(selfRef, error);
@@ -183,11 +177,10 @@
                                          }];
 }
 
-
 - (void)getDailyMotionThumb:(NSString *)vidId
                     success:(void (^)(id videoView))success
                     failure:(void (^)(id videoView, NSError *error))failure {
-    
+
     __weak ReaderVideoView *selfRef = self;
     NSString *path = [NSString stringWithFormat:@"/video/%@?fields=thumbnail_large_url", vidId];
     [[ReaderVideoView sharedDailyMotionClient] GET:path
@@ -204,7 +197,7 @@
                                                            placeholderImage:nil 
                                                                     success:success
                                                                     failure:failure];
-                                                   
+
                                                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                                    if (failure) {
                                                        failure(selfRef, error);

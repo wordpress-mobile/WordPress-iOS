@@ -71,12 +71,12 @@
 
 - (void)setupLoadingView {
     if (!self.loadingView) {
-        
+
         CGRect frame = self.view.frame;
         CGFloat sides = 100.0f;
         CGFloat x = (frame.size.width - sides) / 2.0f;
         CGFloat y = (frame.size.height - sides) / 2.0f;
-        
+
         self.loadingView = [[UIView alloc] initWithFrame:CGRectMake(x, y, sides, sides)];
         self.loadingView.layer.cornerRadius = 10.0f;
         self.loadingView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.8f];
@@ -84,17 +84,17 @@
         UIViewAutoresizingFlexibleBottomMargin |
         UIViewAutoresizingFlexibleTopMargin |
         UIViewAutoresizingFlexibleRightMargin;
-        
+
         UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
         [activityView startAnimating];
-        
+
         frame = activityView.frame;
         frame.origin.x = (sides - frame.size.width) / 2.0f;
         frame.origin.y = (sides - frame.size.height) / 2.0f;
         activityView.frame = frame;
         [self.loadingView addSubview:activityView];
     }
-    
+
     [self.view addSubview:self.loadingView];
 }
 
@@ -110,14 +110,14 @@
     NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
     NSString *fpath = [NSString stringWithFormat:@"%@/defaultPostTemplate.html", resourcePath];
     NSString *str = [NSString stringWithContentsOfFile:fpath encoding:NSUTF8StringEncoding error:nil];
-    
+
     if ([str length]) {
-        
+
         //Title
         NSString *title = self.apost.postTitle;
         title = (title == nil || ([title length] == 0) ? NSLocalizedString(@"(no title)", @"") : title);
         str = [str stringByReplacingOccurrencesOfString:@"!$title$!" withString:title];
-        
+
         //Content
         NSString *desc = self.apost.content;
         if (!desc) {
@@ -127,13 +127,13 @@
         }
         desc = [NSString stringWithFormat:@"<p>%@</p><br />", desc];
         str = [str stringByReplacingOccurrencesOfString:@"!$text$!" withString:desc];
-        
+
         //Tags
         NSString *tags = self.post.tags;
         tags = (tags == nil ? @"" : tags);
         tags = [NSString stringWithFormat:NSLocalizedString(@"Tags: %@", @""), tags];
         str = [str stringByReplacingOccurrencesOfString:@"!$mt_keywords$!" withString:tags];
-        
+
         //Categories [selObjects count]
         NSArray *categories = [self.post.categories allObjects];
         NSString *catStr = @"";
@@ -151,7 +151,7 @@
     } else {
         str = @"";
     }
-        
+
     return str;
 }
 
@@ -185,7 +185,7 @@
     } else if ([laterDate isEqualToDate:postGMTDate]) {
         needsLogin = YES; // Scheduled post
     }
-    
+
     NSString *link = self.apost.original.permaLink;
 
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
@@ -246,11 +246,11 @@
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     DDLogMethodParam(error);
     self.loadingView.hidden = YES;
-    
+
     NSString *errorMessage = [NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>",
                               NSLocalizedString(@"There has been an error while trying to reach your site.", nil),
                               NSLocalizedString(@"A simple preview is shown below.", @"")];
-    
+
     [self showSimplePreviewWithMessage:errorMessage];
 }
 
@@ -277,6 +277,5 @@
     NSArray *comps = [surString componentsSeparatedByString:@"\n"];
     return [comps componentsJoinedByString:@"<br>"];
 }
-
 
 @end

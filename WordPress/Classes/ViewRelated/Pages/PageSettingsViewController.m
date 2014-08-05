@@ -17,7 +17,6 @@
     // No need to observe properties for page settings
 }
 
-
 - (void)configureSections {
     self.sections = [NSMutableArray array];
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionMeta]];

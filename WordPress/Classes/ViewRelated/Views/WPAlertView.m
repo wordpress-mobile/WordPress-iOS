@@ -35,7 +35,7 @@ CGFloat const WPAlertViewDefaultTextFieldLabelWidth = 118.0f;
 - (id)initWithFrame:(CGRect)frame
 {
     self = [self initWithFrame:frame andOverlayMode:WPAlertViewOverlayModeTwoTextFieldsTwoButtonMode];
-    
+
     return self;
 }
 
@@ -46,20 +46,20 @@ CGFloat const WPAlertViewDefaultTextFieldLabelWidth = 118.0f;
     {
         _overlayMode = overlayMode;
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        
+
         UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:frame];
         scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         _scrollView = scrollView;
         [self addSubview:scrollView];
-        
+
         UIView *backgroundView = nil;
-        
+
         if (_overlayMode == WPAlertViewOverlayModeTwoTextFieldsSideBySideTwoButtonMode) {
             backgroundView = [[NSBundle mainBundle] loadNibNamed:@"WPAlertViewSideBySide" owner:self options:nil][0];
         } else {
             backgroundView = [[NSBundle mainBundle] loadNibNamed:@"WPAlertView" owner:self options:nil][0];
         }
-        
+
         if (IS_IPAD) {
             CGFloat backgroundViewWidth = CGRectGetWidth(scrollView.frame) / 2.0f;
             CGFloat backgroundViewHeight = CGRectGetHeight(scrollView.frame) / 2.0f;
@@ -77,16 +77,16 @@ CGFloat const WPAlertViewDefaultTextFieldLabelWidth = 118.0f;
             backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth |
                                               UIViewAutoresizingFlexibleHeight;
         }
-        
+
         [self adjustTextFieldLabelWidths];
         [scrollView addSubview:backgroundView];
-        
+
         [self configureView];
         [self configureBackgroundColor];
         [self configureButtonVisibility];
         [self configureTextFieldVisibility];
         [self addGestureRecognizer];
-        
+
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
         [notificationCenter addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
         [notificationCenter addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
@@ -237,19 +237,19 @@ CGFloat const WPAlertViewDefaultTextFieldLabelWidth = 118.0f;
         self.scrollView.contentSize = self.backgroundView.bounds.size;
         return;
     }
-    
+
     // Make the scroll view scrollable when in landscape on the iPhone - the keyboard
     // covers up half of the view otherwise
     CGSize viewSize = self.backgroundView.bounds.size;
     CGRect buttonRect = [self convertRect:self.leftButton.frame fromView:self.leftButton];
     CGFloat buttonBottomY = buttonRect.origin.y + self.leftButton.frame.size.height;
-    
+
     if (buttonBottomY > viewSize.height - keyboardSize.height) {
         viewSize.height += buttonBottomY - (viewSize.height - keyboardSize.height);
     }
-    
+
     self.scrollView.contentSize = viewSize;
-    
+
     CGRect rect = CGRectZero;
     if ([self.firstTextField isFirstResponder]) {
         rect = self.firstTextField.frame;
@@ -258,22 +258,21 @@ CGFloat const WPAlertViewDefaultTextFieldLabelWidth = 118.0f;
         rect = self.secondTextField.frame;
         rect = [self.scrollView convertRect:rect fromView:self.secondTextField];
     }
-    
+
     [self.scrollView scrollRectToVisible:rect animated:YES];
 }
-
 
 - (void)hideTitleAndDescription:(BOOL)hide {
     if (hide == self.titleLabel.hidden) {
         return;
     }
-    
+
     self.titleLabel.hidden = hide;
     self.descriptionLabel.hidden = hide;
 
     NSArray *constraints = self.backgroundView.constraints;
     if (hide) {
-        
+
         for (NSLayoutConstraint *constraint in constraints) {
             if (constraint.firstAttribute == NSLayoutAttributeTop && [constraint.firstItem isEqual:self.firstTextField] && [constraint.secondItem isKindOfClass:[UIImageView class]]) {
                 self.originalFirstTextFieldConstraint = constraint;
@@ -290,9 +289,9 @@ CGFloat const WPAlertViewDefaultTextFieldLabelWidth = 118.0f;
                                                                         multiplier:self.originalFirstTextFieldConstraint.multiplier
                                                                           constant:self.originalFirstTextFieldConstraint.constant];
         [self.backgroundView addConstraint:newConstraint];
-        
+
     } else {
-        
+
         for (NSLayoutConstraint *constraint in constraints) {
             if (constraint.firstAttribute == NSLayoutAttributeTop && [constraint.firstItem isEqual:self.firstTextField] && [constraint.secondItem isEqual:self.backgroundView]) {
                 [self.backgroundView removeConstraint:constraint];
@@ -301,10 +300,9 @@ CGFloat const WPAlertViewDefaultTextFieldLabelWidth = 118.0f;
         }
         [self.backgroundView addConstraint:self.originalFirstTextFieldConstraint];
     }
-    
+
     [self setNeedsUpdateConstraints];
 }
-
 
 #pragma mark - IBAction Methods
 
@@ -405,18 +403,18 @@ CGFloat const WPAlertViewDefaultTextFieldLabelWidth = 118.0f;
 - (void)tappedOnView:(UITapGestureRecognizer *)gestureRecognizer
 {
     CGPoint touchPoint = [gestureRecognizer locationInView:self];
-    
+
     // To avoid accidentally dismissing the view when the user was trying to tap one of the buttons,
     // add some padding around the button frames.
     CGRect button1Frame = CGRectInset([self.leftButton convertRect:self.leftButton.frame toView:self], -2 * WPAlertViewStandardOffset, -WPAlertViewStandardOffset);
     CGRect button2Frame = CGRectInset([self.rightButton convertRect:self.rightButton.frame toView:self], -2 * WPAlertViewStandardOffset, -WPAlertViewStandardOffset);
-    
+
     BOOL touchedButton1 = CGRectContainsPoint(button1Frame, touchPoint);
     BOOL touchedButton2 = CGRectContainsPoint(button2Frame, touchPoint);
-    
+
     if (touchedButton1 || touchedButton2)
         return;
-    
+
     if ([self.firstTextField isFirstResponder]) {
         [self.firstTextField resignFirstResponder];
     }

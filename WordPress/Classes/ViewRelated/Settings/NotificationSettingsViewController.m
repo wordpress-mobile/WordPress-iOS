@@ -18,7 +18,6 @@
 
 @end
 
-
 @implementation NotificationSettingsViewController
 
 BOOL hasChanges;
@@ -33,17 +32,17 @@ BOOL hasChanges;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.tableView.backgroundView = nil;
     self.view.backgroundColor =  [WPStyleGuide itsEverywhereGrey];
     self.title = NSLocalizedString(@"Manage Notifications", @"");
-    
+
     CGRect refreshFrame = self.tableView.bounds;
     refreshFrame.origin.y = -refreshFrame.size.height;
     self.refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:refreshFrame];
     self.refreshHeaderView.delegate = self;
     [self.tableView addSubview:self.refreshHeaderView];
-    
+
     if(self.showCloseButton) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
     }
@@ -92,15 +91,15 @@ BOOL hasChanges;
 }
 
 - (void)setupToolbarButtons{
-    
+
     return; //Do not show the toolbar with 'mute blogs' option for now
-    
+
     bool toolbarVisible = NO;
     bool muteAvailable = NO;
-    
+
     //show the mute/unmute button only when there are 10+ blogs
     if (_notificationPrefArray && _mutedBlogsArray && [_mutedBlogsArray count] > 10){
-        
+
         if ([[_notificationPreferences allKeys] indexOfObject:@"muted_blogs"] != NSNotFound) {
             toolbarVisible = YES;
             NSDictionary *mutedBlogsDictionary = [_notificationPreferences objectForKey:@"muted_blogs"];
@@ -116,9 +115,9 @@ BOOL hasChanges;
             }
         }
     }
-    
+
     if( toolbarVisible == YES ) {
-        
+
         NSString *buttonLabel = muteAvailable ? NSLocalizedString(@"Mute all sites", @"") : NSLocalizedString(@"Unmute all sites", @"");
 
         self.muteUnmuteBarButton = [[UIBarButtonItem alloc] initWithTitle:buttonLabel
@@ -126,17 +125,17 @@ BOOL hasChanges;
                                                                    target:self
                                                                    action:@selector(muteUnmutedButtonClicked:)];
         self.muteUnmuteBarButton.tag = muteAvailable;
-        
+
         self.toolbarItems = @[self.muteUnmuteBarButton];
     }
-    
+
     self.navigationController.toolbarHidden = ! toolbarVisible;
 }
 
 - (void)muteUnmutedButtonClicked:(id)sender{
-    
+
     bool muted = self.muteUnmuteBarButton.tag;
-    
+
     if (_notificationPreferences) {
         _notificationPrefArray = [[_notificationPreferences allKeys] mutableCopy];
         if ([_notificationPrefArray indexOfObject:@"muted_blogs"] != NSNotFound) {
@@ -151,7 +150,7 @@ BOOL hasChanges;
             [mutedBlogsDictionary setValue:mutedBlogsArray forKey:@"value"];
             [_notificationPreferences setValue:mutedBlogsDictionary forKey:@"muted_blogs"];
         }
-        
+
         [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
         hasChanges = YES;
         [self reloadNotificationSettings];
@@ -161,11 +160,11 @@ BOOL hasChanges;
 - (void)notificationSettingChanged:(id)sender {
     hasChanges = YES;
     UISwitch *cellSwitch = (UISwitch *)sender;
-    
+
     NSMutableDictionary *updatedPreference = [[_notificationPreferences objectForKey:[_notificationPrefArray objectAtIndex:cellSwitch.tag]] mutableCopy];
-    
+
     [updatedPreference setValue:[NSNumber numberWithBool:cellSwitch.on] forKey:@"value"];
-    
+
     [_notificationPreferences setValue:updatedPreference forKey:[_notificationPrefArray objectAtIndex:cellSwitch.tag]];
     [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
 }
@@ -173,15 +172,15 @@ BOOL hasChanges;
 - (void)muteBlogSettingChanged:(id)sender {
     hasChanges = YES;
     UISwitch *cellSwitch = (UISwitch *)sender;
-    
+
     NSMutableDictionary *updatedPreference = [[_mutedBlogsArray objectAtIndex:cellSwitch.tag] mutableCopy];
     [updatedPreference setValue:[NSNumber numberWithBool:!cellSwitch.on] forKey:@"value"];
-    
+
     [_mutedBlogsArray setObject:updatedPreference atIndexedSubscript:cellSwitch.tag];
-    
+
     NSMutableDictionary *mutedBlogsDictionary = [[_notificationPreferences objectForKey:@"muted_blogs"] mutableCopy];
     [mutedBlogsDictionary setValue:_mutedBlogsArray forKey:@"value"];
-    
+
     [_notificationPreferences setValue:mutedBlogsDictionary forKey:@"muted_blogs"];
     [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
     [self setupToolbarButtons];
@@ -219,10 +218,10 @@ BOOL hasChanges;
         if (_mutedBlogsArray) {
             return 3;
         }
-        
+
         return 2;
     }
-    
+
     return 0;
 }
 
@@ -239,25 +238,25 @@ BOOL hasChanges;
         default:
             break;
     }
-    
+
     return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-   
+
     if (indexPath.section == 0) {
         static NSString *CellIdentifier = @"NotficationSettingsCellOnOff";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        
+
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
         }
-        
+
         cell.textLabel.text = NSLocalizedString(@"Notifications", @"");
-     
+
         DDLogInfo(@"muteDictionary: %@", _notificationMutePreferences);
-        
+
         if (_notificationMutePreferences && [_notificationMutePreferences objectForKey:@"value"] != nil) {
             NSString *mute_value = [_notificationMutePreferences objectForKey:@"value"];
             if([mute_value isEqualToString:@"forever"]){
@@ -266,7 +265,7 @@ BOOL hasChanges;
                 //check the date before showing it in the cell. Date can be in the past and already expired.
                 NSDate* mutedUntilValue = [NSDate dateWithTimeIntervalSince1970:[mute_value doubleValue]];
                 NSDate *currentDate = [NSDate date];
-                
+
                 if (mutedUntilValue == [mutedUntilValue laterDate:currentDate]){
                     NSDateFormatter *formatter = nil;
                     formatter = [[NSDateFormatter alloc] init];
@@ -288,25 +287,25 @@ BOOL hasChanges;
         [WPStyleGuide configureTableViewCell:cell];
         return cell;
     }
-    
+
     static NSString *CellIdentifier = @"NotficationSettingsCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
+
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
         UISwitch *cellSwitch = [[UISwitch alloc] initWithFrame:CGRectZero]; // Frame is ignored.
         cell.accessoryView = cellSwitch;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    
+
     UISwitch *cellSwitch = (UISwitch *)cell.accessoryView;
     cellSwitch.tag = indexPath.row;
     [cellSwitch removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
-    
+
     if (indexPath.section == 1) {
         [cellSwitch addTarget:self action:@selector(notificationSettingChanged:) forControlEvents:UIControlEventValueChanged];
         NSDictionary *notificationPreference = [_notificationPreferences objectForKey:[_notificationPrefArray objectAtIndex:indexPath.row]];
-        
+
         cell.textLabel.text = [[notificationPreference objectForKey:@"desc"] stringByDecodingXMLCharacters];
         cellSwitch.on = [[notificationPreference objectForKey:@"value"] boolValue];
     } else {
@@ -341,7 +340,7 @@ BOOL hasChanges;
     } else if (section == 1) {
         return NSLocalizedString(@"Push Notifications", @"");
     }
-    
+
     return NSLocalizedString(@"Sites", @"");
 }
 
@@ -367,22 +366,21 @@ BOOL hasChanges;
                                         destructiveButtonTitle:nil
                                              otherButtonTitles:NSLocalizedString(@"Turn Off", @""), NSLocalizedString(@"Turn Off for 1hr", @""), NSLocalizedString(@"Turn Off Until 8am", @""), nil ];
             actionSheet.tag = 101;
-            
+
         }
         [actionSheet showFromRect:cell.frame inView:self.view animated:YES];
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
     }
 }
 
-
 #pragma mark -
 #pragma mark Action Sheet Delegate Methods
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     [actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
-    
+
     DDLogInfo(@"Button Clicked: %d", buttonIndex);
     NSMutableDictionary *muteDictionary;
-    
+
     if (actionSheet.tag == 100 ) {
         //Notifications were muted.
         //buttonIndex == 0 -> Turn on, cancel otherwise.
@@ -420,7 +418,7 @@ BOOL hasChanges;
             case 2:{ //Turn off until 8am
                 NSDate *currentDate = [NSDate date];
                 NSCalendar *sysCalendar = [NSCalendar currentCalendar];
-                
+
                 //Get the hr from the current date and check if > 8AM
                 unsigned int unitFlags = NSHourCalendarUnit;//Other usage:  =(NSHourCalendarUnit | NSMinuteCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit);
                 NSDateComponents *comps = [sysCalendar components:unitFlags fromDate:currentDate];
@@ -430,14 +428,14 @@ BOOL hasChanges;
                 if(hour >= 8){ //add one day if 8AM is already passed
                     [comps setDay:+1];
                 }
-                
+
                 //calculate the new date
                 NSDate *eightAM = [sysCalendar dateByAddingComponents:comps toDate:currentDate options:0];
                 comps = [sysCalendar
                          components:NSDayCalendarUnit | NSYearCalendarUnit | NSMonthCalendarUnit
                          fromDate:eightAM];
                 [comps setHour:8];
-                
+
                 NSDate *todayOrTomorrow8AM = [sysCalendar dateFromComponents:comps];
                 int timestamp = [todayOrTomorrow8AM timeIntervalSince1970];
                 DDLogInfo(@"Time Stamp: %d", timestamp);
@@ -447,12 +445,12 @@ BOOL hasChanges;
             default:
                 return; //cancel
         }
-        
+
         hasChanges = YES;
         muteDictionary = [NSMutableDictionary dictionary];
         [muteDictionary setObject:mute_until_value forKey:@"value"];
     }
-    
+
     [_notificationPreferences setValue:muteDictionary forKey:@"mute_until"];
     [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
     [self reloadNotificationSettings];

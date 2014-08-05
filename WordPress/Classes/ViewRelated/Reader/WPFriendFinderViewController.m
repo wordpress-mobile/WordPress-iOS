@@ -23,14 +23,14 @@ static NSString *const SourceFacebook = @"Facebook";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [self loadURL:WPMobileReaderFFURL];
-    
+
     // register for a notification
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(facebookDidLogIn:) name:FacebookLoginNotificationName object:nil];
     [nc addObserver:self selector:@selector(facebookDidNotLogIn:) name:FacebookNoLoginNotificationName object:nil];
-    
+
     self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.activityView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin;
     CGRect f1 = self.activityView.frame;
@@ -38,7 +38,7 @@ static NSString *const SourceFacebook = @"Facebook";
     f1.origin.x = (f2.size.width / 2.0f) - (f1.size.width / 2.0f);
     f1.origin.y = (f2.size.height / 2.0f) - (f1.size.height / 2.0f);
     self.activityView.frame = f1;
-    
+
     [self.view addSubview:self.activityView];
 }
 
@@ -50,9 +50,9 @@ static NSString *const SourceFacebook = @"Facebook";
 - (void)configureFriendFinder:(id)config {
     NSDictionary *settings = (NSDictionary *)config;
     NSArray *sources = (NSArray *)[settings objectForKey:@"sources"];
-    
+
     NSMutableArray *available = [NSMutableArray arrayWithObjects:@"address-book", @"facebook", nil];
-    
+
     if ([sources containsObject:@"twitter"]){
         [available addObject:@"twitter"];
     }
@@ -117,9 +117,9 @@ static NSString *const SourceFacebook = @"Facebook";
     ACAccountStore *store = [[ACAccountStore alloc] init];
     ACAccountType *twitterAccountType = 
     [store accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-    
+
     [store requestAccessToAccountsWithType:twitterAccountType options:nil completion:^(BOOL granted, NSError *error) {
-        
+
         if (granted) {
             NSDictionary *params = @{@"stringify_ids": @"true",
                                      @"cursor": @"-1"};            

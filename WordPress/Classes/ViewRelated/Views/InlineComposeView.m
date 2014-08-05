@@ -29,7 +29,7 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
         _proxyTextView = [[UITextView alloc] initWithFrame:CGRectZero];
         _proxyTextView.delegate = self;
         _proxyTextView.inputAccessoryView = self.inputAccessoryView;
-        
+
         // Ensure scroll-to-top gesture is disabled so it still works in parent views
         _proxyTextView.scrollsToTop = NO;
         _toolbarTextView.scrollsToTop = NO;
@@ -330,6 +330,5 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 
     return YES;
 }
-
 
 @end

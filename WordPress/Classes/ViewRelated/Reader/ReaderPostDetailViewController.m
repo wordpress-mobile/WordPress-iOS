@@ -95,7 +95,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     if (self.infiniteScrollEnabled) {
         [self enableInfiniteScrolling];
     }
-    
+
     self.title = self.post.postTitle;
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -111,8 +111,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
     [self.inlineComposeView setButtonTitle:NSLocalizedString(@"Post", nil)];
-
-
 
     self.tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                          action:@selector(dismissKeyboard:)];
@@ -160,7 +158,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if (appDelegate.connectionAvailable == NO)
         return;
-    
+
     NSDate *lastSynced = [self lastSyncDate];
     if ((lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > ReaderPostDetailViewControllerRefreshTimeout) && self.post.isWPCom) {
         [self syncWithUserInteraction:NO];
@@ -179,7 +177,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    
+
     if (IS_IPHONE) {
         self.savedScrollOffset = self.tableView.contentOffset;
     }
@@ -207,7 +205,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     }
 }
 
-
 #pragma mark - Actions
 
 - (void)dismissKeyboard:(id)sender
@@ -217,10 +214,9 @@ static CGFloat const SectionHeaderHeight = 25.0f;
             [self.view removeGestureRecognizer:gesture];
         }
     }
-    
+
     [self.inlineComposeView dismissComposer];
 }
-
 
 #pragma mark - View getters/builders
 
@@ -349,17 +345,16 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     if (_activityFooter) {
         return _activityFooter;
     }
-    
+
     CGRect rect = CGRectMake(145.0f, 10.0f, 30.0f, 30.0f);
     _activityFooter = [[UIActivityIndicatorView alloc] initWithFrame:rect];
     _activityFooter.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
     _activityFooter.hidesWhenStopped = YES;
     _activityFooter.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     [_activityFooter stopAnimating];
-    
+
     return _activityFooter;
 }
-
 
 #pragma mark - Comments
 
@@ -472,7 +467,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     if ([self tabBarController]) {
         tabBarSize = [[[self tabBarController] tabBar] bounds].size;
     }
-    
+
     return tabBarSize;
 }
 
@@ -503,21 +498,20 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 {
     // Obtain the reason why the movie playback finished
     NSNumber *finishReason = [[notification userInfo] objectForKey:MPMoviePlayerPlaybackDidFinishReasonUserInfoKey];
-    
+
     // Dismiss the view controller ONLY when the reason is not "playback ended"
     if ([finishReason intValue] != MPMovieFinishReasonPlaybackEnded) {
         MPMoviePlayerController *moviePlayer = [notification object];
-        
+
         // Remove this class from the observers
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:MPMoviePlayerPlaybackDidFinishNotification
                                                       object:moviePlayer];
-        
+
         // Dismiss the view controller
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
-
 
 #pragma mark - ReaderPostView delegate methods
 
@@ -590,7 +584,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     self.commentPublisher.comment = nil;
     [self.inlineComposeView toggleComposer];
 }
-
 
 # pragma mark - Rich Text Delegate Methods
 
@@ -675,14 +668,12 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     [self refreshHeightForTableHeaderView];
 }
 
-
 #pragma mark - RebloggingViewController Delegate Methods
 
 - (void)postWasReblogged:(ReaderPost *)post
 {
     [self.postView updateActionButtons];
 }
-
 
 #pragma mark - Sync methods
 
@@ -714,7 +705,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     if ([self.resultsController.fetchedObjects count] == 0) {
         return;
     }
-    
+
     if (self.loadingMore) {
         return;
     }
@@ -757,7 +748,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     [self prepareComments];
 }
 
-
 #pragma mark - Infinite Scrolling
 
 - (void)setInfiniteScrollEnabled:(BOOL)infiniteScrollEnabled
@@ -765,7 +755,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     if (infiniteScrollEnabled == self.infiniteScrollEnabled) {
         return;
     }
-    
+
     self.infiniteScrollEnabled = infiniteScrollEnabled;
     if (self.isViewLoaded) {
         if (self.infiniteScrollEnabled) {
@@ -789,7 +779,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     self.tableView.tableFooterView = nil;
     self.activityFooter = nil;
 }
-
 
 #pragma mark - UITableView Delegate Methods
 
@@ -886,7 +875,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
     if ([self canComment]) {
         [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
-        
+
         [self.inlineComposeView displayComposer];
     }
 
@@ -948,7 +937,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     }
 }
 
-
 #pragma mark - UIScrollView Delegate Methods
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -986,7 +974,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     if (_resultsController != nil) {
         return _resultsController;
     }
-    
+
     NSString *entityName = @"ReaderComment";
     NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
 
@@ -996,20 +984,20 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     [fetchRequest setPredicate:predicate];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:YES];
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
-    
+
     _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                              managedObjectContext:moc
                                                                sectionNameKeyPath:nil
                                                                         cacheName:nil];
-    
+
     _resultsController.delegate = self;
-    
+
     NSError *error = nil;
     if (![_resultsController performFetch:&error]) {
         DDLogError(@"%@ couldn't fetch %@: %@", self, entityName, [error localizedDescription]);
         _resultsController = nil;
     }
-    
+
     return _resultsController;
 }
 
@@ -1032,7 +1020,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     // noop
 }
 
-
 #pragma mark - MFMailComposeViewControllerDelegate
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
@@ -1053,7 +1040,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
             [subview becomeFirstResponder];
             return YES;
         }
-        
+
         if ([subview.subviews count] > 0) {
             if ([self setMFMailFieldAsFirstResponder:subview mfMailField:field]){
                 //Field was found and made first responder in a subview
@@ -1061,11 +1048,10 @@ static CGFloat const SectionHeaderHeight = 25.0f;
             }
         }
     }
-    
+
     //field not found in this view.
     return NO;
 }
-
 
 #pragma mark - WPTableImageSource Delegate
 

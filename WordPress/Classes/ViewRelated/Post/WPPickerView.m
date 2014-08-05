@@ -51,7 +51,7 @@ static NSInteger WPPickerStartingWidth = 320.0f;
     picker.frame = CGRectMake(0.0f, CGRectGetMaxY(self.toolbar.frame), WPPickerStartingWidth, CGRectGetHeight(picker.frame));
 
     self.frame = CGRectMake(0.0f, 0.0f, WPPickerStartingWidth, CGRectGetMaxY(picker.frame));
-    
+
     [self addSubview:picker];
     [self addSubview:self.toolbar];
 }
@@ -59,18 +59,18 @@ static NSInteger WPPickerStartingWidth = 320.0f;
 - (void)configureToolbar {
     self.toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, WPPickerStartingWidth, WPPickerToolBarHeight)];
     self.toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    
+
     UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem *leftSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     leftSpacer.width = 0.0f; // Seems like the spacer is necessary for the right layout even if its width is 0.
     UIBarButtonItem *rightSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     rightSpacer.width = 6.0f;
-    
+
     NSArray *buttons = [self buttonsForToolbar];
     if ([buttons count] == 0) {
         return;
     }
-    
+
     NSMutableArray *items = [NSMutableArray array];
     [items addObject:leftSpacer];
     [items addObject:[buttons objectAtIndex:0]];
@@ -79,7 +79,7 @@ static NSInteger WPPickerStartingWidth = 320.0f;
         [items addObject:[buttons objectAtIndex:i]];
     }
     [items addObject:rightSpacer];
-    
+
     self.toolbar.items = items;
 }
 
@@ -89,7 +89,7 @@ static NSInteger WPPickerStartingWidth = 320.0f;
     NSString *title = NSLocalizedString(@"Reset", @"Title of the reset button");
     UIBarButtonItem *resetButton = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(reset)];
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(finished)];
-    
+
     return @[resetButton, doneButton];
 }
 
@@ -183,7 +183,7 @@ static NSInteger WPPickerStartingWidth = 320.0f;
 
 - (BOOL)setPickerStartingIndexes {
     BOOL changed = NO;
-    
+
     for (NSUInteger i = 0; i < [self.startingIndexes length]; i++) {
         NSUInteger index = [self.startingIndexes indexAtPosition:i];
         if (index != [self.pickerView selectedRowInComponent:i]) {
@@ -191,7 +191,7 @@ static NSInteger WPPickerStartingWidth = 320.0f;
         }
         [self.pickerView selectRow:index inComponent:i animated:YES];
     }
-    
+
     return changed;
 }
 

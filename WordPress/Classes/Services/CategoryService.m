@@ -17,7 +17,7 @@
     if (self) {
         _managedObjectContext = context;
     }
-    
+
     return self;
 }
 
@@ -30,12 +30,12 @@
 
 - (BOOL)existsName:(NSString *)name forBlogObjectID:(NSManagedObjectID *)blogObjectID withParentId:(NSNumber *)parentId {
     Blog *blog = [self blogWithObjectID:blogObjectID];
-    
+
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(categoryName like %@) AND (parentID = %@)", name,
                               (parentId ? parentId : @0)];
-    
+
     NSSet *items = [blog.categories filteredSetUsingPredicate:predicate];
-    
+
     if ((items != nil) && (items.count > 0)) {
         // Already exists
         return YES;
@@ -48,7 +48,7 @@
     Blog *blog = [self blogWithObjectID:blogObjectID];
 
     NSSet *results = [blog.categories filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"categoryID == %@",categoryID]];
-    
+
     if (results && (results.count > 0)) {
         return [[results allObjects] objectAtIndex:0];
     }
@@ -64,17 +64,17 @@
     if ([categoryInfo objectForKey:@"categoryName"] == nil) {
         return nil;
     }
-    
+
     Category *category = [self findWithBlogObjectID:blog.objectID andCategoryID:[[categoryInfo objectForKey:@"categoryId"] numericValue]];
-    
+
     if (category == nil) {
         category = [self newCategoryForBlog:blog];
     }
-    
+
     category.categoryID     = [[categoryInfo objectForKey:@"categoryId"] numericValue];
     category.categoryName   = [categoryInfo objectForKey:@"categoryName"];
     category.parentID       = [[categoryInfo objectForKey:@"parentId"] numericValue];
-    
+
     return category;
 }
 
@@ -86,7 +86,7 @@
     category.categoryName = name;
     if (parent.categoryID != nil)
         category.parentID = parent.categoryID;
-    
+
     CategoryServiceRemote *remote = [CategoryServiceRemote new];
     [remote createCategoryWithName:name
                   parentCategoryID:parent.categoryID
@@ -96,18 +96,18 @@
                                    category.categoryID = categoryID;
                                    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
                                }];
-                               
+
                                if (success) {
                                    success(category);
                                }
-                               
+
                            } failure:^(NSError *error) {
                                DDLogError(@"Error while saving remote Category: %@", error);
                                [self.managedObjectContext performBlockAndWait:^{
                                    [self.managedObjectContext deleteObject:category];
                                    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
                                }];
-                               
+
                                if (failure) {
                                    failure(error);
                                }
@@ -117,7 +117,7 @@
 - (void)mergeNewCategories:(NSArray *)newCategories forBlogObjectID:(NSManagedObjectID *)blogObjectID {
     NSMutableArray *categoriesToKeep = [NSMutableArray array];
     Blog *contextBlog = [self blogWithObjectID:blogObjectID];
-    
+
     for (NSDictionary *categoryInfo in newCategories) {
         // TODO :: This needs to be done on the current context
         Category *newCategory = [self createOrReplaceFromDictionary:categoryInfo forBlogObjectID:blogObjectID];
@@ -127,7 +127,7 @@
             DDLogInfo(@"-[Category createOrReplaceFromDictionary:forBlog:] returned a nil category: %@", categoryInfo);
         }
     }
-    
+
     NSSet *existingCategories = contextBlog.categories;
     if (existingCategories && (existingCategories.count > 0)) {
         for (Category *c in existingCategories) {
@@ -137,7 +137,7 @@
             }
         }
     }
-    
+
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
@@ -145,14 +145,14 @@
     if (objectID == nil) {
         return nil;
     }
-    
+
     NSError *error;
     Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:objectID error:&error];
     if (error) {
         DDLogError(@"Error when retrieving Blog by ID: %@", error);
         return nil;
     }
-    
+
     return blog;
 }
 
@@ -160,14 +160,14 @@
     if (objectID == nil) {
         return nil;
     }
-    
+
     NSError *error;
     Category *category = (Category *)[self.managedObjectContext existingObjectWithID:objectID error:&error];
     if (error) {
         DDLogError(@"Error when retrieving Category by ID: %@", error);
         return nil;
     }
-    
+
     return category;
 }
 

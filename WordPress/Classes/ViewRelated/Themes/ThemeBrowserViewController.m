@@ -43,26 +43,26 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
     [WPStyleGuide configureColorsForView:self.view collectionView:self.collectionView];
     [self.collectionView registerClass:[ThemeBrowserCell class] forCellWithReuseIdentifier:ThemeCellIdentifier];
     [self.collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:SearchHeaderIdentifier];
-    
+
     self.searchBar.delegate = self;
-    
+
     UIRefreshControl *refreshHeaderView = [[UIRefreshControl alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.collectionView.bounds.size.height, self.collectionView.frame.size.width, self.collectionView.bounds.size.height)];
     _refreshHeaderView = refreshHeaderView;
     [_refreshHeaderView addTarget:self action:@selector(refreshControlTriggered:) forControlEvents:UIControlEventValueChanged];
     _refreshHeaderView.tintColor = [WPStyleGuide whisperGrey];
     [self.collectionView addSubview:_refreshHeaderView];
-   
+
     UIBarButtonItem *sortButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-themes-sort"] style:UIBarButtonItemStylePlain target:self action:@selector(sortPressed)];
     self.navigationItem.rightBarButtonItem = sortButton;
-    
+
     [self syncThemesAndCurrentTheme];
-    
+
     [WPAnalytics track:WPAnalyticsStatThemesAccessedThemeBrowser];
 }
 
@@ -85,7 +85,7 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    
+
     self.allThemes = nil;
     self.filteredThemes = nil;
 }
@@ -103,7 +103,7 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
         _allThemes = _resultsController.fetchedObjects;
         self.filteredThemes = _allThemes;
     }
-    
+
     return _resultsController;
 }
 
@@ -170,7 +170,7 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
         current.theme = _currentTheme;
         return current;
     }
-    
+
     ThemeBrowserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ThemeCellIdentifier forIndexPath:indexPath];
     NSUInteger index = _currentTheme ? indexPath.item - 1 : indexPath.item;
     Theme *theme = self.filteredThemes[index];
@@ -186,7 +186,7 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
         NSUInteger index = _currentTheme ? indexPath.item - 1 : indexPath.item;
         theme = self.filteredThemes[index];
     }
-    
+
     ThemeDetailsViewController *details = [[ThemeDetailsViewController alloc] initWithTheme:theme];
     [self.navigationController pushViewController:details animated:YES];
 }
@@ -221,14 +221,13 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
     [self applyFilterWithSearchText:_currentSearchText];
 }
 
-
 #pragma mark - Setters
 
 - (void)setFilteredThemes:(NSArray *)filteredThemes {
     _filteredThemes = filteredThemes;
-    
+
     [self toggleNoThemesView:(_filteredThemes.count == 0 && !_currentTheme)];
-    
+
     [self currentThemeForBlog];
     [self removeCurrentThemeFromList];
     [self applyCurrentSort];
@@ -276,7 +275,6 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
     _currentSearchText = nil;
 }
 
-
 #pragma mark - UISearchBarDelegate
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
@@ -321,7 +319,6 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
         [self syncThemesAndCurrentTheme];
     }
 }
-
 
 #pragma mark - UIActionSheetDelegate
 

@@ -27,7 +27,7 @@ NSString *const GravatarDefault = @"gravatar.png";
 {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[self gravatarURLForEmail:emailAddress]];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    
+
     __weak UIImageView *weakSelf = self;
     [self setImageWithURLRequest:request placeholderImage:fallbackImage success:nil failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error){
         weakSelf.image = fallbackImage;
@@ -48,7 +48,7 @@ NSString *const GravatarDefault = @"gravatar.png";
     if (blavatarDefaultImageWPorg == nil) {
         blavatarDefaultImageWPorg = [UIImage imageNamed:BlavatarDefaultWporg];
     }
-    
+
     UIImage *placeholderImage;
     if (wpcom) {
         placeholderImage = blavatarDefaultImageWPcom;
@@ -100,7 +100,7 @@ NSString *const GravatarDefault = @"gravatar.png";
     }
 
     size *= [[UIScreen mainScreen] scale];
-    
+
     return size;
 }
 

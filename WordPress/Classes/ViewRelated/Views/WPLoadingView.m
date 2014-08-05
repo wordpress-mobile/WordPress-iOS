@@ -25,7 +25,7 @@
 }
 
 - (void)createLoadingView {
-    
+
     self.layer.cornerRadius = 10.0f;
     self.frame = CGRectMake(0, 0, _side, _side);
     self.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.8f];
@@ -33,7 +33,7 @@
     UIViewAutoresizingFlexibleBottomMargin |
     UIViewAutoresizingFlexibleTopMargin |
     UIViewAutoresizingFlexibleRightMargin;
-    
+
     UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     activityView.hidesWhenStopped = NO;
     activityView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin |
@@ -41,7 +41,7 @@
     UIViewAutoresizingFlexibleTopMargin |
     UIViewAutoresizingFlexibleRightMargin;
     [activityView startAnimating];
-    
+
     CGRect frm = activityView.frame;
     frm.origin.x = (_side / 2.0f) - (frm.size.width / 2.0f);
     frm.origin.y = (_side / 2.0f) - (frm.size.height / 2.0f);
@@ -61,7 +61,7 @@
         [self setHidden:YES];
     } completion:^(BOOL finished) {
     }];
-    
+
     [self setHidden:YES];
 }
 

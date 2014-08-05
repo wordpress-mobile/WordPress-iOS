@@ -26,7 +26,7 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
     if (self) {
         _managedObjectContext = context;
     }
-    
+
     return self;
 }
 
@@ -42,7 +42,7 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
     if (![api hasCredentials]) {
         api = [WordPressComApi anonymousApi];
     }
-    
+
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithRemoteApi:api];
     [remoteService fetchReaderMenuWithSuccess:^(NSArray *topics) {
         WPAccount *reloadedAccount = (WPAccount *)[self.managedObjectContext existingObjectWithID:defaultAccount.objectID error:nil];
@@ -54,11 +54,11 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
         [self.managedObjectContext performBlockAndWait:^{
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }];
-        
+
         if (success) {
             success();
         }
-        
+
     } failure:^(NSError *error) {
         if (failure) {
             failure(error);
@@ -221,7 +221,6 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
     }];
 }
 
-
 #pragma mark - Private Methods
 
 /**
@@ -249,7 +248,7 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
 
 /**
  Find an existing topic with the specified title. 
- 
+
  @param topicName The title of the topic to find in core data. 
  @return A matching `ReaderTopic` instance or nil.
  */
@@ -275,13 +274,13 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
 
 /**
  Create a new `ReaderTopic` or update an existing `ReaderTopic`.
- 
+
  @param dict A `RemoteReaderTopic` object.
  @return A new or updated, but unsaved, `ReaderTopic`.
  */
 - (ReaderTopic *)createOrReplaceFromRemoteTopic:(RemoteReaderTopic *)remoteTopic {
     NSString *path = remoteTopic.path;
-    
+
     if (path == nil || path.length == 0) {
         return nil;
     }
@@ -290,33 +289,33 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
     if (title == nil || title.length == 0) {
         return nil;
     }
-    
+
     ReaderTopic *topic = [self findWithPath:path];
     if (topic == nil) {
         topic = [NSEntityDescription insertNewObjectForEntityForName:@"ReaderTopic"
                                               inManagedObjectContext:self.managedObjectContext];
     }
-    
+
     topic.topicID = remoteTopic.topicID;
     topic.type = ([topic.topicID integerValue] == 0) ? ReaderTopicTypeList : ReaderTopicTypeTag;
     topic.title = [title stringByDecodingXMLCharacters];
     topic.path = [path lowercaseString];
     topic.isSubscribed = remoteTopic.isSubscribed;
     topic.isRecommended = remoteTopic.isRecommended;
-    
+
     return topic;
 }
 
 /**
  Saves the specified `ReaderTopics`. Any `ReaderTopics` not included in the passed
  array are removed from Core Data.
- 
+
  @param topics An array of `ReaderTopics` to save.
  */
 - (void)mergeTopics:(NSArray *)topics forAccount:(WPAccount *)account {
     NSArray *currentTopics = [self allTopics];
     NSMutableArray *topicsToKeep = [NSMutableArray array];
-    
+
     for (RemoteReaderTopic *remoteTopic in topics) {
         ReaderTopic *newTopic = [self createOrReplaceFromRemoteTopic:remoteTopic];
         newTopic.account = account;
@@ -326,7 +325,7 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
             DDLogInfo(@"%@ returned a nil topic: %@", NSStringFromSelector(_cmd), remoteTopic);
         }
     }
-    
+
     if ([currentTopics count] > 0) {
         for (ReaderTopic *topic in currentTopics) {
             if (![topicsToKeep containsObject:topic]) {
@@ -342,12 +341,12 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
 
 /**
  Fetch all `ReaderTopics` currently in Core Data.
- 
+
  @return An array of all `ReaderTopics` currently persisted in Core Data.
  */
 - (NSArray *)allTopics {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
-    
+
     NSError *error;
     NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
     if (error) {
@@ -360,7 +359,7 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
 
 /**
  Find a specific ReaderTopic by its `path` property.
- 
+
  @param path The unique, cannonical path of the topic.
  @return A matching `ReaderTopic` or nil if there is no match.
  */

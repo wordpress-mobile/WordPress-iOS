@@ -1,7 +1,6 @@
 #import "WPTableHeaderViewCell.h"
 #import "WPStyleGuide.h"
 
-
 static CGFloat const WPTableHeaderTextMaxWidth = 200.0f;
 
 @implementation WPTableHeaderViewCell
@@ -14,7 +13,7 @@ static CGFloat const WPTableHeaderTextMaxWidth = 200.0f;
         self.textLabel.textColor    = [WPStyleGuide newKidOnTheBlockBlue];
         self.backgroundColor        = [UIColor clearColor];
     }
-    
+
     return self;
 }
 
@@ -42,7 +41,7 @@ static CGFloat const WPTableHeaderTextMaxWidth = 200.0f;
                                          options:NSStringDrawingUsesLineFragmentOrigin
                                       attributes:attributes
                                          context:nil];
-    
+
     return ceil(rect.size.height);
 }
 

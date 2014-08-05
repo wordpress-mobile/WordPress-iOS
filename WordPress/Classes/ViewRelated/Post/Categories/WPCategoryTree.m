@@ -26,7 +26,6 @@
     }
 }
 
-
 - (NSArray *)getAllObjects {
     NSMutableArray *allObjects = [NSMutableArray array];
     NSUInteger count = [self.children count];
@@ -34,7 +33,7 @@
     if (self.parent) {
         [allObjects addObject:self.parent];
     }
-    
+
     for (NSUInteger i = 0; i < count; i++) {
         [allObjects addObjectsFromArray:[[self.children objectAtIndex:i] getAllObjects]];
     }

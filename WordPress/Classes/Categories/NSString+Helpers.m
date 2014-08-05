@@ -20,16 +20,15 @@ static NSString *const Ellipsis =  @"\u2026";
 {
     const char *cStr = [self UTF8String];
     unsigned char result[CC_MD5_DIGEST_LENGTH];
-    
+
     CC_MD5(cStr, (CC_LONG)strlen(cStr), result);
-    
+
     return [NSString stringWithFormat:
             @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
             result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7],
             result[8], result[9], result[10], result[11], result[12], result[13], result[14], result[15]
             ];
 }
-
 
 - (NSMutableDictionary *)dictionaryFromQueryString {
     if (!self)
@@ -113,7 +112,7 @@ static NSString *const Ellipsis =  @"\u2026";
         NSString *pattern = @"<script[^>]*>[\\w\\W]*</script>";
         regex = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:nil];
     });
-    
+
     // Cleanup
     NSRange range = NSMakeRange(0, [self length]);
     NSMutableString *mString = [self mutableCopy];
@@ -127,36 +126,36 @@ static NSString *const Ellipsis =  @"\u2026";
 // A method to truncate a string at a predetermined length and append ellipsis to the end
 
 - (NSString *)stringByEllipsizingWithMaxLength:(NSInteger)lengthlimit preserveWords:(BOOL)preserveWords{
-    
+
     NSInteger currentLength = [self length];
     NSString *result = @"";
     NSString *temp = @"";
-    
+
     if(currentLength <= lengthlimit){ //If the string is already within limits
         return self;
     }
     else if(lengthlimit > 0){ //If the string is longer than the limit, and the limit is larger than 0.
-        
+
         NSInteger newLimitWithoutEllipsis = lengthlimit - [Ellipsis length];
-        
+
         if(preserveWords){
-            
+
             NSArray *wordsSeperated = [self tokenize];
-            
+
             if([wordsSeperated count] == 1) //If this is a long, single word, then we disregard preserveWords property. 
             {
                 return [NSString stringWithFormat:@"%@%@", [self substringToIndex:newLimitWithoutEllipsis], Ellipsis];
             }
-            
+
             for(NSString *word in wordsSeperated){
-                
+
                 if([temp isEqualToString:@""]){
                     temp = word;
                 }
                 else{
                     temp = [NSString stringWithFormat:@"%@%@", temp, word];
                 }
-                
+
                 if([temp length] <= newLimitWithoutEllipsis){
                     result = [temp copy];
                 }
@@ -168,12 +167,12 @@ static NSString *const Ellipsis =  @"\u2026";
         else{
             return [NSString stringWithFormat:@"%@%@", [self substringToIndex:newLimitWithoutEllipsis], Ellipsis];
         }
-        
+
     }
     else{ //if the limit is 0.
         return @"";
     }
-    
+
     return self;
 }
 
@@ -181,19 +180,17 @@ static NSString *const Ellipsis =  @"\u2026";
 {
     CFLocaleRef locale = CFLocaleCopyCurrent();
     CFRange stringRange = CFRangeMake(0, [self length]);
-    
+
     CFStringTokenizerRef tokenizer = CFStringTokenizerCreate(kCFAllocatorDefault,
                                                              (CFStringRef)self,
                                                              stringRange,
                                                              kCFStringTokenizerUnitWordBoundary,
                                                              locale);
-    
+
     CFStringTokenizerTokenType tokenType = CFStringTokenizerAdvanceToNextToken(tokenizer);
-    
-    
+
     NSMutableArray *tokens = [NSMutableArray new];
 
-    
     while (tokenType != kCFStringTokenizerTokenNone)
     {
         stringRange = CFStringTokenizerGetCurrentTokenRange(tokenizer);
@@ -201,12 +198,11 @@ static NSString *const Ellipsis =  @"\u2026";
         [tokens addObject:token];
         tokenType = CFStringTokenizerAdvanceToNextToken(tokenizer);
     }
-    
+
     CFRelease(locale);
     CFRelease(tokenizer);
-    
+
     return tokens;
 }
 
 @end
-

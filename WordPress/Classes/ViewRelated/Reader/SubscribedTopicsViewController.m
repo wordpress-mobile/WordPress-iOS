@@ -13,7 +13,6 @@
 
 @end
 
-
 @implementation SubscribedTopicsViewController
 
 - (void)dealloc
@@ -56,7 +55,6 @@
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
 
 #pragma mark - Instance Methods
 
@@ -129,7 +127,6 @@
     }];
 }
 
-
 #pragma mark - TableView Handler Delegate Methods
 
 - (NSManagedObjectContext *)managedObjectContext
@@ -193,7 +190,7 @@
     if (section == 0) {
         return NSLocalizedString(@"Lists", @"Section title for the default reader lists");
     }
-    
+
     return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
 }
 

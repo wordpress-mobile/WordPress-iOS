@@ -40,7 +40,7 @@
 
 - (void)didTurnIntoFault {
     [super didTurnIntoFault];
-    
+
     self.specialType = nil;
 }
 
@@ -58,7 +58,7 @@
     } else {
       self.postID         = [postInfo objectForKey:@"postid"];
     }
-      
+
     self.content        = [postInfo objectForKey:@"description"];
     if ([[postInfo objectForKey:@"date_created_gmt"] isKindOfClass:[NSDate class]]) {
         self.date_created_gmt    = [postInfo objectForKey:@"date_created_gmt"];
@@ -88,7 +88,7 @@
     if (self.post_thumbnail != nil && [self.post_thumbnail intValue] == 0)
         self.post_thumbnail = nil;
     self.postFormat        = [postInfo objectForKey:@"wp_post_format"];
-    
+
     self.remoteStatus   = AbstractPostRemoteStatusSync;
     if ([postInfo objectForKey:@"categories"]) {
         [self setCategoriesFromNames:[postInfo objectForKey:@"categories"]];
@@ -97,7 +97,7 @@
     self.latitudeID = nil;
     self.longitudeID = nil;
     self.publicID = nil;
-    
+
     if ([postInfo objectForKey:@"custom_fields"]) {
         NSArray *customFields = [postInfo objectForKey:@"custom_fields"];
         NSString *geo_longitude = nil;
@@ -122,7 +122,7 @@
                 }
             }
         }
-        
+
         if (geo_latitude && geo_longitude) {
             CLLocationCoordinate2D coord;
             coord.latitude = [geo_latitude doubleValue];
@@ -166,7 +166,7 @@
 - (void)setCategoriesFromNames:(NSArray *)categoryNames {
     [self.categories removeAllObjects];
     NSMutableSet *categories = nil;
-    
+
     for (NSString *categoryName in categoryNames) {
         NSSet *results = [self.blog.categories filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"categoryName = %@", categoryName]];
         if (results && (results.count > 0)) {
@@ -177,7 +177,7 @@
             }
         }
     }
-    
+
     if (categories && (categories.count > 0)) {
         self.categories = categories;
     }
@@ -187,17 +187,17 @@
     if ([super hasChanged]) {
         return YES;
     }
-   
+
     Post *original = (Post *)self.original;
     if (!original) {
         return NO;
     }
-    
+
     if (([self.tags length] != [original.tags length])
         && (![self.tags isEqual:original.tags])) {
         return YES;
     }
-    
+
     if (self.hasRemote) {
         CLLocationCoordinate2D coord1 = self.geolocation.coordinate;
         CLLocationCoordinate2D coord2 = original.geolocation.coordinate;
@@ -205,7 +205,7 @@
             return YES;
         }
     }
-    
+
     return NO;
 }
 
@@ -213,18 +213,18 @@
     if ([super hasSiteSpecificChanges]) {
         return YES;
     }
-    
+
     Post *original = (Post *)self.original;
-    
+
     if ((self.postFormat != original.postFormat)
         && (![self.postFormat isEqual:original.postFormat])) {
         return YES;
     }
-    
+
     if (![self.categories isEqual:original.categories]) {
         return YES;
     }
-    
+
     return NO;
 }
 
@@ -246,7 +246,6 @@
     return false;
 }
 
-
 #pragma mark - QuickPhoto
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification {
     Media *media = (Media *)[notification object];
@@ -259,7 +258,7 @@
         self.content = [NSString stringWithFormat:@"%@\n\n%@", [media html], self.content];
         [self uploadWithSuccess:nil failure:nil];
     }
-    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -270,7 +269,7 @@
                                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                           otherButtonTitles:nil];
     [alert show];
-    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -317,7 +316,7 @@
 
 - (NSDictionary *)XMLRPCDictionary {
     NSMutableDictionary *postParams = [NSMutableDictionary dictionaryWithDictionary:[super XMLRPCDictionary]];
-    
+
     [postParams setValueIfNotNil:self.postFormat forKey:@"wp_post_format"];
     [postParams setValueIfNotNil:self.tags forKey:@"mt_keywords"];
 
@@ -369,15 +368,15 @@
     if ([publicField count] > 0) {
         [customFields addObject:publicField];
     }
-    
+
     if ([customFields count] > 0) {
         [postParams setObject:customFields forKey:@"custom_fields"];
     }
-    
+
     if (self.status == nil)
         self.status = @"publish";
     [postParams setObject:self.status forKey:@"post_status"];
-    
+
     return postParams;
 }
 
@@ -465,12 +464,12 @@
 
     NSArray *parameters = @[self.postID, self.blog.username, self.blog.password, [self XMLRPCDictionary]];
     self.remoteStatus = AbstractPostRemoteStatusPushing;
-    
+
     if( self.isFeaturedImageChanged == NO ) {
         NSMutableDictionary *xmlrpcDictionary = (NSMutableDictionary*) [parameters objectAtIndex:3] ;
         [xmlrpcDictionary removeObjectForKey:@"wp_post_thumbnail"];
     }
-    
+
     [self.blog.api callMethod:@"metaWeblog.editPost"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {

@@ -2,7 +2,6 @@
 #import "SFHFKeychainUtils.h"
 #import "WordPressComOAuthClient.h"
 
-
 @implementation WPAccount {
     WordPressComApi *_restApi;
     WordPressXMLRPCApi *_xmlrpcApi;
@@ -35,7 +34,7 @@
 
 - (void)didTurnIntoFault {
     [super didTurnIntoFault];
-    
+
     _restApi = nil;
     _xmlrpcApi = nil;
 }

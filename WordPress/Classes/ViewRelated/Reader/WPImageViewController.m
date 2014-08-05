@@ -12,7 +12,6 @@
 
 @implementation WPImageViewController
 
-
 #pragma mark - LifeCycle Methods
 
 - (id)initWithImage:(UIImage *)image {
@@ -20,20 +19,18 @@
     if(self) {
         self.image = [image copy];
     }
-    
+
     return self;
 }
-
 
 - (id)initWithURL:(NSURL *)url {
     self = [self init];
     if(self) {
         self.url = url;
     }
-    
+
     return self;
 }
-
 
 - (id)initWithImage:(UIImage *)image andURL:(NSURL *)url {
     self = [self init];
@@ -44,10 +41,9 @@
     return self;
 }
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     self.view.backgroundColor = [UIColor blackColor];
 
     CGRect frame = self.view.frame;
@@ -59,20 +55,20 @@
     _scrollView.scrollsToTop = NO;
     _scrollView.delegate = self;
     [self.view addSubview:_scrollView];
-    
+
     self.imageView = [[UIImageView alloc] initWithFrame:frame];
     _imageView.userInteractionEnabled = YES;
     [_scrollView addSubview:_imageView];
-    
+
     UITapGestureRecognizer *tgr2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleImageDoubleTapped:)];
     [tgr2 setNumberOfTapsRequired:2];
     [_imageView addGestureRecognizer:tgr2];
-    
+
     UITapGestureRecognizer *tgr1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleImageTapped:)];
     [tgr1 setNumberOfTapsRequired:1];
     [tgr1 requireGestureRecognizerToFail:tgr2];
     [_scrollView addGestureRecognizer:tgr1];
-    
+
     [self loadImage];
 }
 
@@ -80,16 +76,16 @@
     if (self.isLoadingImage) {
         return;
     }
-    
+
     if(self.image != nil) {
         _imageView.image = self.image;
         [_imageView sizeToFit];
         _scrollView.contentSize = _imageView.image.size;
         [self centerImage];
-        
+
     } else if(self.url) {
         self.isLoadingImage = YES;
-        
+
         __weak UIImageView *imageViewRef = _imageView;
         __weak UIScrollView *scrollViewRef = _scrollView;
         __weak WPImageViewController *selfRef = self;
@@ -125,7 +121,6 @@
     [self centerImage];
 }
 
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
@@ -133,9 +128,9 @@
 #pragma mark - Instance Methods
 
 - (void)hideBars:(BOOL)hide animated:(BOOL)animated {
-    
+
     [[UIApplication sharedApplication] setStatusBarHidden:hide withAnimation:(animated ? UIStatusBarAnimationFade : UIStatusBarAnimationNone)];
-    
+
 }
 
 - (void)centerImage {
@@ -148,11 +143,9 @@
     [self scrollViewDidZoom:_scrollView];
 }
 
-
 - (void)handleImageTapped:(UITapGestureRecognizer *)tgr {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
 
 - (void)handleImageDoubleTapped:(UITapGestureRecognizer *)tgr {
 
@@ -160,19 +153,18 @@
         [_scrollView setZoomScale:_scrollView.minimumZoomScale animated:YES];
         return;
     }
-    
+
     CGPoint point = [tgr locationInView:_imageView];
     CGSize size = _scrollView.frame.size;
-    
+
     CGFloat w = size.width / _scrollView.maximumZoomScale;
     CGFloat h = size.height / _scrollView.maximumZoomScale;
     CGFloat x = point.x - (w / 2.0f);
     CGFloat y = point.y - (h / 2.0f);
-    
+
     CGRect rect = CGRectMake(x, y, w, h);
     [_scrollView zoomToRect:rect animated:YES];
 }
-
 
 #pragma mark - UIScrollView Delegate
 
@@ -180,26 +172,24 @@
     return _imageView;
 }
 
-
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView {
 
     CGSize size = scrollView.frame.size;
     CGRect frame = _imageView.frame;
-    
+
     if (frame.size.width < size.width) {
         frame.origin.x = (size.width - frame.size.width) / 2;
     } else {
         frame.origin.x = 0;
     }
-    
+
     if (frame.size.height < size.height) {
         frame.origin.y = (size.height - frame.size.height) / 2;
     } else {
         frame.origin.y = 0;
     }
-    
+
     _imageView.frame = frame;
 }
-
 
 @end

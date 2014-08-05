@@ -1,6 +1,5 @@
 #import "DateUtils.h"
 
-
 @implementation DateUtils
 
 + (NSDate *)dateFromISOString:(NSString *)dateString {
@@ -24,7 +23,6 @@
     }
     return date;
 }
-
 
 + (NSString *)isoStringFromDate:(NSDate *)date {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];

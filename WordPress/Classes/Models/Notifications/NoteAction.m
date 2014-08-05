@@ -1,12 +1,9 @@
 #import "NoteAction.h"
 #import "NSDictionary+SafeExpectations.h"
 
-
-
 @interface NoteAction ()
 @property (nonatomic, strong) NSDictionary *rawAction;
 @end
-
 
 @implementation NoteAction
 
@@ -57,7 +54,7 @@
     NSMutableDictionary *updatedParams    = [self.parameters mutableCopy];
     updatedParams[@"is_following"]        = @(following);
     updatedAction[@"params"]            = updatedParams;
-    
+
     self.rawAction = updatedAction;
 }
 
