@@ -34,6 +34,11 @@
     return self;
 }
 
+- (void)dealloc
+{
+    _webView.delegate = nil;
+}
+
 - (void)startSnapshotWithRequest:(WPWebSnapshotRequest *)snapshotRequest completionHandler:(WPWebSnapshotWorkerCompletionHandler)completionHandler
 {
     if (self.status != WPWebSnapshotWorkerStatusReady) {
