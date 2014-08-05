@@ -27,17 +27,33 @@
 #import "ContextManager.h"
 
 
-@interface NotificationsViewController ()
 
-@property (nonatomic, strong) id    authListener;
-@property (nonatomic, assign) BOOL  viewHasAppeared;
-@property (nonatomic, assign) BOOL  retrievingNotifications;
+#pragma mark ====================================================================================
+#pragma mark Constants
+#pragma mark ====================================================================================
+
+static NSTimeInterval NotificationPushMaxWait = 1;
+
+
+#pragma mark ====================================================================================
+#pragma mark Private
+#pragma mark ====================================================================================
+
+@interface NotificationsViewController () <SPBucketDelegate>
+
+@property (nonatomic, strong) NSString  *pushNotificationID;
+@property (nonatomic, strong) NSDate    *pushNotificationDate;
+@property (nonatomic, assign) BOOL      viewHasAppeared;
 
 typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 - (void)loadPostWithId:(NSNumber *)postID fromSite:(NSNumber *)siteID block:(NotificationsLoadPostBlock)block;
 
 @end
 
+
+#pragma mark ====================================================================================
+#pragma mark NotificationsViewController
+#pragma mark ====================================================================================
 
 @implementation NotificationsViewController
 
@@ -46,73 +62,29 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     return [[WordPressAppDelegate sharedWordPressApplicationDelegate] notificationsViewController];
 }
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        self.title = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
-    }
-    return self;
-}
-
-- (NSString *)noResultsTitleText
-{
-    if ([self showJetpackConnectMessage]) {
-        return NSLocalizedString(@"Connect to Jetpack", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
-    } else {
-        return NSLocalizedString(@"No notifications yet", @"Displayed when the user pulls up the notifications view and they have no items");
-    }
-}
-
-- (NSString *)noResultsMessageText
-{
-    if ([self showJetpackConnectMessage]) {
-        return NSLocalizedString(@"Jetpack supercharges your self-hosted WordPress site.", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
-    } else {
-        return nil;
-    }
-}
-
-- (NSString *)noResultsButtonText
-{
-    if ([self showJetpackConnectMessage]) {
-        return NSLocalizedString(@"Learn more", @"");
-    } else {
-        return nil;
-    }
-}
-
-- (UIView *)noResultsAccessoryView
-{
-    if ([self showJetpackConnectMessage]) {
-        return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-jetpack-gray"]];
-    } else {
-        return nil;
-    }
-}
-
-- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
-{
-    // Show Jetpack information screen
-    [WPAnalytics track:WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen withProperties:@{@"source": @"notifications"}];
-    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-	webViewController.url = [NSURL URLWithString:WPNotificationsJetpackInformationURL];
-    [self.navigationController pushViewController:webViewController animated:YES];
-}
-
-- (BOOL)showJetpackConnectMessage
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    return defaultAccount == nil;
-}
-
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[UIApplication sharedApplication] removeObserver:self forKeyPath:NSStringFromSelector(@selector(applicationIconBadgeNumber))];
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.title              = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
+
+        // Watch for application badge number changes
+        NSString *badgeKeyPath  = NSStringFromSelector(@selector(applicationIconBadgeNumber));
+        [[UIApplication sharedApplication] addObserver:self forKeyPath:badgeKeyPath options:NSKeyValueObservingOptionNew context:nil];
+        
+        // Watch for new Notifications
+        Simperium *simperium    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+        SPBucket *notesBucket   = [simperium bucketForName:self.entityName];
+        notesBucket.delegate    = self;
+    }
+    
+    return self;
 }
 
 - (void)viewDidLoad
@@ -133,11 +105,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
         self.navigationItem.rightBarButtonItem = pushSettings;
     }
     
-    // Watch for application badge number changes
-    UIApplication *application  = [UIApplication sharedApplication];
-    NSString *badgeKeyPath      = NSStringFromSelector(@selector(applicationIconBadgeNumber));
-    [application addObserver:self forKeyPath:badgeKeyPath options:NSKeyValueObservingOptionNew context:nil];
-    
+    // Refresh Badge
     [self updateTabBarBadgeNumber];
 }
 
@@ -145,6 +113,12 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 {
     DDLogMethod();
     [super viewWillAppear:animated];
+
+    // Track Once
+    if (!self.viewHasAppeared) {
+        self.viewHasAppeared = YES;
+        [WPAnalytics track:WPAnalyticsStatNotificationsAccessed];
+    }
     
     // Reload!
     [self.tableView reloadData];
@@ -152,17 +126,8 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     // Listen to appDidBecomeActive Note
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(handleApplicationDidBecomeActiveNote:) name:UIApplicationDidBecomeActiveNotification object:nil];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-
-    if (!self.viewHasAppeared) {
-        self.viewHasAppeared = YES;
-        [WPAnalytics track:WPAnalyticsStatNotificationsAccessed];
-    }
     
+    // Badge + Metadata
     [self updateLastSeenTime];
     [self resetApplicationBadge];
 }
@@ -186,6 +151,25 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 }
 
 
+#pragma mark - SPBucketDelegate Methods
+
+- (void)bucket:(SPBucket *)bucket didChangeObjectForKey:(NSString *)key forChangeType:(SPBucketChangeType)changeType memberNames:(NSArray *)memberNames
+{
+    // Did the user tap on a push notification?
+    if (changeType == SPBucketChangeInsert && [self.pushNotificationID isEqualToString:key]) {
+
+        // Show the details only if NotificationPushMaxWait hasn't elapsed
+        if (ABS(self.pushNotificationDate.timeIntervalSinceNow) <= NotificationPushMaxWait) {
+            [self showDetailsForNoteWithID:key animated:YES];
+        }
+        
+        // Cleanup
+        self.pushNotificationID     = nil;
+        self.pushNotificationDate   = nil;
+    }
+}
+
+
 #pragma mark - NSNotification Helpers
 
 - (void)handleApplicationDidBecomeActiveNote:(NSNotification *)note
@@ -203,7 +187,28 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 }
 
 
-#pragma mark - Custom methods
+#pragma mark - Public Methods
+
+- (void)showDetailsForNoteWithID:(NSString *)notificationID animated:(BOOL)animated
+{
+    Simperium *simperium    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+    SPBucket *notesBucket   = [simperium bucketForName:self.entityName];
+    Note *notification      = [notesBucket objectForKey:notificationID];
+    
+    if (notification) {
+        DDLogInfo(@"Pushing Notification Details for: [%@]", notificationID);
+        
+        [self showDetailsForNote:notification animated:animated];
+    } else {
+        DDLogInfo(@"Notification Details for [%@] cannot be pushed right now. Waiting %f secs", notificationID, NotificationPushMaxWait);
+        
+        self.pushNotificationID     = notificationID;
+        self.pushNotificationDate   = [NSDate date];
+    }
+}
+
+
+#pragma mark - Private Helpers
 
 - (void)resetApplicationBadge
 {
@@ -213,11 +218,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 - (void)updateTabBarBadgeNumber
 {
     NSInteger count         = [[UIApplication sharedApplication] applicationIconBadgeNumber];
-    NSString *countString   = nil;
-    
-    if (count > 0) {
-        countString = [NSString stringWithFormat:@"%d", count];
-    }
+    NSString *countString   = (count > 0) ? [NSString stringWithFormat:@"%d", count] : nil;
     
     // Note: self.navigationViewController might be nil. Let's hit the UITabBarController instead
     UITabBarController *tabBarController    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] tabBarController];
@@ -263,6 +264,39 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)showDetailsForNote:(Note *)note animated:(BOOL)animated
+{
+    [WPAnalytics track:WPAnalyticsStatNotificationsOpenedNotificationDetails];
+    
+    // Make sure there's nothing else on the stack
+    [self.navigationController popToRootViewControllerAnimated:NO];
+    
+    if (note.isComment) {
+        NotificationsCommentDetailViewController *commentDetailViewController = [[NotificationsCommentDetailViewController alloc] initWithNote:note];
+        [self.navigationController pushViewController:commentDetailViewController animated:animated];
+    } else if ([note isMatcher] && [note metaPostID] && [note metaSiteID]) {
+        // Note: Don't worry. This is scheduled to be fixed/prettified in #2152
+        [self loadPostWithId:[note metaPostID] fromSite:[note metaSiteID] block:^(BOOL success, ReaderPost *post) {
+            if (!success || ![self.navigationController.topViewController isEqual:self]) {
+                if (self.tableView.indexPathForSelectedRow) {
+                    [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
+                }
+                return;
+            }
+            
+            ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post];
+            [self.navigationController pushViewController:controller animated:YES];
+        }];
+    } else if (note.templateType == WPNoteTemplateMultiLineList || note.templateType == WPNoteTemplateSingleLineList) {
+        NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNote:note];
+        [self.navigationController pushViewController:detailViewController animated:animated];
+    } else if (note.templateType == WPNoteTemplateBigBadge) {
+        NotificationsBigBadgeDetailViewController *bigBadgeViewController = [[NotificationsBigBadgeDetailViewController alloc] initWithNote:note];
+        [self.navigationController pushViewController:bigBadgeViewController animated:animated];
+    }
+}
+
+
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -277,28 +311,8 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     
     BOOL hasDetailView = [self noteHasDetailView:note];
     if (hasDetailView) {
-        [WPAnalytics track:WPAnalyticsStatNotificationsOpenedNotificationDetails];
+        [self showDetailsForNote:note animated:YES];
         
-        if ([note isComment]) {
-            NotificationsCommentDetailViewController *commentDetailViewController = [[NotificationsCommentDetailViewController alloc] initWithNote:note];
-            [self.navigationController pushViewController:commentDetailViewController animated:YES];
-        } else if ([note isMatcher] && [note metaPostID] && [note metaSiteID]) {
-            [self loadPostWithId:[note metaPostID] fromSite:[note metaSiteID] block:^(BOOL success, ReaderPost *post) {
-                if (!success || ![self.navigationController.topViewController isEqual:self]) {
-                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-                    return;
-                }
-            
-                ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post];
-                [self.navigationController pushViewController:controller animated:YES];
-            }];
-        } else if ([note templateType] == WPNoteTemplateMultiLineList || [note templateType] == WPNoteTemplateSingleLineList) {
-            NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNote:note];
-            [self.navigationController pushViewController:detailViewController animated:YES];
-        } else if ([note templateType] == WPNoteTemplateBigBadge) {
-            NotificationsBigBadgeDetailViewController *bigBadgeViewController = [[NotificationsBigBadgeDetailViewController alloc] initWithNote: note];
-            [self.navigationController pushViewController:bigBadgeViewController animated:YES];
-        }
     } else {
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
@@ -308,7 +322,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 		[[ContextManager sharedInstance] saveContext:note.managedObjectContext];
 
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-
+        
         if (hasDetailView) {
             [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
@@ -317,7 +331,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 
 - (BOOL)noteHasDetailView:(Note *)note
 {
-    return ((note.isComment) || ([note templateType] != WPNoteTemplateUnknown));
+    return (note.isComment || note.templateType != WPNoteTemplateUnknown);
 }
 
 - (void)loadPostWithId:(NSNumber *)postID fromSite:(NSNumber *)siteID block:(NotificationsLoadPostBlock)block
@@ -331,8 +345,8 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
         DDLogError(@"[RestAPI] %@", error);
         block(NO, nil);
     }];
-
 }
+
 
 #pragma mark - WPTableViewController subclass methods
 
@@ -367,7 +381,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     BOOL hasDetailsView = [self noteHasDetailView:note];
     
     if (!hasDetailsView) {
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.accessoryType  = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
 }
@@ -383,14 +397,62 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     success();
 }
 
-#pragma mark - DetailViewDelegate
 
-- (void)resetView
+#pragma mark - No Results Helpers
+
+- (NSString *)noResultsTitleText
 {
-    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
-    if (selectedIndexPath) {
-        [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:NO];
+    if ([self showJetpackConnectMessage]) {
+        return NSLocalizedString(@"Connect to Jetpack", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
+    } else {
+        return NSLocalizedString(@"No notifications yet", @"Displayed when the user pulls up the notifications view and they have no items");
     }
+}
+
+- (NSString *)noResultsMessageText
+{
+    if ([self showJetpackConnectMessage]) {
+        return NSLocalizedString(@"Jetpack supercharges your self-hosted WordPress site.", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
+    } else {
+        return nil;
+    }
+}
+
+- (NSString *)noResultsButtonText
+{
+    if ([self showJetpackConnectMessage]) {
+        return NSLocalizedString(@"Learn more", @"");
+    } else {
+        return nil;
+    }
+}
+
+- (UIView *)noResultsAccessoryView
+{
+    if ([self showJetpackConnectMessage]) {
+        return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-jetpack-gray"]];
+    } else {
+        return nil;
+    }
+}
+
+- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
+{
+    // Show Jetpack information screen
+    [WPAnalytics track:WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen withProperties:@{@"source": @"notifications"}];
+    
+    WPWebViewController *webViewController  = [[WPWebViewController alloc] init];
+    webViewController.url                   = [NSURL URLWithString:WPNotificationsJetpackInformationURL];
+    [self.navigationController pushViewController:webViewController animated:YES];
+}
+
+- (BOOL)showJetpackConnectMessage
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount       = [accountService defaultWordPressComAccount];
+    
+    return defaultAccount == nil;
 }
 
 @end
