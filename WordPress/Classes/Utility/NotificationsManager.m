@@ -130,10 +130,10 @@ NSString *const NotificationsDeviceToken            = @"apnsDeviceToken";
         case UIApplicationStateInactive:
             {
                 NSString *notificationID            = [[userInfo numberForKey:@"note_id"] stringValue];
-                WordPressAppDelegate *appdelegate   = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+                WordPressAppDelegate *appDelegate   = [WordPressAppDelegate sharedWordPressApplicationDelegate];
                 
-                [appdelegate showTabForIndex:kNotificationsTabIndex];
-                [appdelegate.notificationsViewController showDetailsForNoteWithID:notificationID animated:NO];
+                [appDelegate showTabForIndex:kNotificationsTabIndex];
+                [appDelegate.notificationsViewController showDetailsForNoteWithID:notificationID animated:NO];
             }
             break;
             
