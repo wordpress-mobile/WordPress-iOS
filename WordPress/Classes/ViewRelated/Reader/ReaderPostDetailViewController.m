@@ -66,6 +66,23 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
 @implementation ReaderPostDetailViewController
 
+#pragma mark - Static Helpers
+
++ (instancetype)detailControllerWithPost:(ReaderPost *)post
+{
+    ReaderPostDetailViewController *detailsViewController = [self new];
+    detailsViewController.post = post;
+    return detailsViewController;
+}
+
++ (instancetype)detailControllerWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID
+{
+    ReaderPostDetailViewController *detailsViewController = [self new];
+    [detailsViewController setupWithPostID:postID siteID:siteID];
+    return detailsViewController;
+}
+
+
 #pragma mark - LifeCycle Methods
 
 - (void)dealloc
@@ -1140,23 +1157,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 - (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath
 {
     [self.postView setFeaturedImage:image];
-}
-
-
-#pragma mark - Static Helpers
-
-+ (instancetype)detailControllerWithPost:(ReaderPost *)post
-{
-    ReaderPostDetailViewController *detailsViewController = [self new];
-    detailsViewController.post = post;
-    return detailsViewController;
-}
-
-+ (instancetype)detailControllerWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID
-{
-    ReaderPostDetailViewController *detailsViewController = [self new];
-    [detailsViewController setupWithPostID:postID siteID:siteID];
-    return detailsViewController;
 }
 
 @end
