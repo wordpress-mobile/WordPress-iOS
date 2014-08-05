@@ -3,9 +3,9 @@
 
 @interface WPWebSnapshotRequest : NSObject
 
-@property (nonatomic) NSURLRequest *urlRequest;
+@property (nonatomic, copy) NSURLRequest *urlRequest;
 @property (nonatomic) CGSize snapshotSize;
-@property (nonatomic) NSString *didFinishJavascript;
+@property (nonatomic, copy) NSString *didFinishJavascript;
 @property (nonatomic, copy) WPWebSnapshotterSnapshotCompletionHandler callback;
 
 + (instancetype)snapshotRequestWithURLRequest:(NSURLRequest *)urlRequest
