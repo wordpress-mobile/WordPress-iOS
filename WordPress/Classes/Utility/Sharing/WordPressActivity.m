@@ -30,7 +30,7 @@
             return YES;
         }
     }
-    
+
     return NO;
 }
 
@@ -55,7 +55,7 @@
     editPostViewController.onClose = ^(){
         [weakSelf activityDidFinish:YES];
     };
-    
+
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationFullScreen;
     navController.navigationBar.translucent = NO;

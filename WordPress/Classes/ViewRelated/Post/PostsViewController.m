@@ -55,7 +55,7 @@
 - (void)viewDidLoad {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
-    
+
     self.title = NSLocalizedString(@"Posts", @"");
 
     UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
@@ -67,9 +67,9 @@
     UIBarButtonItem *composeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
 
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:composeButtonItem forNavigationItem:self.navigationItem];
-    
+
     self.infiniteScrollEnabled = YES;
-    
+
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
@@ -88,7 +88,7 @@
             [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
         }
     }
-    
+
     // Scroll to the top of the UItableView to show the newly added post.
     if (_addingNewPost) {
         [self.tableView setContentOffset:CGPointZero animated:NO];
@@ -232,7 +232,7 @@
         [defaults setBool:NO forKey:@"refreshPostsRequired"];
         return YES;
     }
-    
+
     return NO;
 }
 
@@ -292,6 +292,5 @@
 - (BOOL)userCanCreateEntity {
     return YES;
 }
-
 
 @end

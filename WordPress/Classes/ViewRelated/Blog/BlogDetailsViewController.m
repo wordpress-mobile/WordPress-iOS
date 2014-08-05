@@ -55,18 +55,18 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     NSString *blogID = [coder decodeObjectForKey:WPBlogDetailsBlogKey];
     if (!blogID)
         return nil;
-    
+
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:blogID]];
     if (!objectID)
         return nil;
-    
+
     NSError *error = nil;
     Blog *restoredBlog = (Blog *)[context existingObjectWithID:objectID error:&error];
     if (error || !restoredBlog) {
         return nil;
     }
-    
+
     BlogDetailsViewController *viewController = [[self alloc] initWithStyle:UITableViewStyleGrouped];
     viewController.blog = restoredBlog;
 
@@ -89,10 +89,10 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
-    
+
     if (!_blog.options) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -123,7 +123,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     } else if (section == TableViewSectionAdminType) {
         return 4;
     }
-    
+
     return 0;
 }
 
@@ -184,7 +184,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+
     if (indexPath.section == TableViewSectionAdminType && indexPath.row == BlogDetailsRowEditSettings) {
         EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
         [self.navigationController pushViewController:editSiteViewController animated:YES];
@@ -224,14 +224,14 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
                 break;
         }
     }
-    
+
     // Check if the controller is already on the screen
     if ([self.navigationController.visibleViewController isMemberOfClass:controllerClass]) {
         if ([self.navigationController.visibleViewController respondsToSelector:@selector(setBlog:)]) {
             [self.navigationController.visibleViewController performSelector:@selector(setBlog:) withObject:self.blog];
         }
         [self.navigationController popToRootViewControllerAnimated:NO];
-    
+
         return;
     }
 
@@ -242,7 +242,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
         [viewController performSelector:@selector(setBlog:) withObject:self.blog];
         [self.navigationController pushViewController:viewController animated:YES];
     }
-    
+
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -264,7 +264,6 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     return nil;
 }
 
-
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     NSString *headingTitle = nil;
     if (section == TableViewSectionContentType) {
@@ -272,21 +271,21 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     } else if (section == TableViewSectionAdminType) {
         headingTitle = NSLocalizedString(@"Admin", @"");
     }
-    
+
     return headingTitle;
 }
 
 #pragma mark - Private methods
 - (void)showViewSiteForBlog:(Blog *)blog {
     [WPAnalytics track:WPAnalyticsStatOpenedViewSite];
-    
+
     NSString *blogURL = blog.homeURL;
     if (![blogURL hasPrefix:@"http"]) {
         blogURL = [NSString stringWithFormat:@"http://%@", blogURL];
     } else if ([blog isWPcom] && [blog.url rangeOfString:@"wordpress.com"].location == NSNotFound) {
         blogURL = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
     }
-    
+
     // Check if the same site already loaded
     if ([self.navigationController.visibleViewController isMemberOfClass:[WPWebViewController class]] &&
         [((WPWebViewController*)self.navigationController.visibleViewController).url.absoluteString isEqual:blogURL]) {
@@ -307,7 +306,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 - (void)showViewAdminForBlog:(Blog *)blog
 {
     [WPAnalytics track:WPAnalyticsStatOpenedViewAdmin];
-    
+
     NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
 }
@@ -362,6 +361,5 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     return YES;
 }
 */
-
 
 @end

@@ -14,7 +14,6 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 @end
 
-
 @implementation WPTableViewHandler
 
 #pragma mark - LifeCycle Methods
@@ -35,7 +34,6 @@ static CGFloat const DefaultCellHeight = 44.0;
     }
     return self;
 }
-
 
 #pragma mark - Required Delegate Methods
 
@@ -60,7 +58,6 @@ static CGFloat const DefaultCellHeight = 44.0;
 {
     [self.delegate tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
-
 
 #pragma mark - Optional Delegate Methods
 
@@ -144,7 +141,6 @@ static CGFloat const DefaultCellHeight = 44.0;
     return DefaultCellHeight;
 }
 
-
 #pragma mark - TableView Datasource Methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -164,7 +160,6 @@ static CGFloat const DefaultCellHeight = 44.0;
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
     return [sectionInfo name];
 }
-
 
 #pragma mark - TableView Delegate Methods
 
@@ -187,7 +182,6 @@ static CGFloat const DefaultCellHeight = 44.0;
     // remove footer height for all but last section
     return section == [[self.resultsController sections] count] - 1 ? UITableViewAutomaticDimension : 1.0;
 }
-
 
 #pragma mark - Fetched results controller
 

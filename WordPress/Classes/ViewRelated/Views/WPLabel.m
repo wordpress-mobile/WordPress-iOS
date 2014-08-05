@@ -1,6 +1,5 @@
 #import "WPLabel.h"
 
-
 @implementation WPLabel
 
 @synthesize verticalAlignment;
@@ -12,7 +11,6 @@
 
     return self;
 }
-
 
 - (void)setVerticalAlignment:(VerticalAlignment)value {
     verticalAlignment = value;

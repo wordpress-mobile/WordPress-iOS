@@ -427,16 +427,16 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
     NSDictionary *query = [[[NSDictionary alloc] initWithObjects: objects forKeys: keys] autorelease];
 
     OSStatus status = SecItemDelete((CFDictionaryRef) query);
-    
+
     if (status != noErr) 
     {
         if (error != nil) {
             *error = [NSError errorWithDomain: SFHFKeychainUtilsErrorDomain code: status userInfo: nil];
         }
-        
+
         return NO;
     }
-    
+
     return YES;
 }
 

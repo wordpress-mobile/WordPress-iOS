@@ -68,7 +68,7 @@ static CGFloat pickerViewHeight = 216.0f;
 - (void)filterDatesPressed {
     // Dismiss keyboard if search was active
     [self.searchBar resignFirstResponder];
-    
+
     if (_monthPickerView || _popover) {
         if (IS_IPAD) {
             [_popover dismissPopoverAnimated:YES];
@@ -79,7 +79,7 @@ static CGFloat pickerViewHeight = 216.0f;
         }
         return;
     }
-    
+
     UIPickerView *pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, self.delegate.collectionView.frame.size.height + pickerViewHeight, 320.0f, pickerViewHeight)];
     _monthPickerView = pickerView;
     _monthPickerView.delegate = self;
@@ -87,7 +87,7 @@ static CGFloat pickerViewHeight = 216.0f;
     _monthPickerView.showsSelectionIndicator = YES;
     _monthPickerView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     [_monthPickerView selectRow:_lastSelectedMonthFilter inComponent:0 animated:NO];
-    
+
     if (IS_IPAD) {
         UIViewController *popoverContent = [[UIViewController alloc] init];
         popoverContent.preferredContentSize = CGSizeMake(320.0f, pickerViewHeight);
@@ -139,7 +139,7 @@ static CGFloat pickerViewHeight = 216.0f;
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
     [searchBar setShowsCancelButton:YES animated:YES];
-    
+
     if (IS_IPHONE && _monthPickerView) {
         [self hideMonthPickerView];
     }
@@ -161,7 +161,6 @@ static CGFloat pickerViewHeight = 216.0f;
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [_delegate applyFilterWithSearchText:searchBar.text];
 }
-
 
 #pragma mark - UIPickerView delegate
 

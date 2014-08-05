@@ -181,7 +181,7 @@ static NSString *const GravatarBaseUrl = @"http://gravatar.com";
     } else if (type == WPAvatarSourceTypeBlavatar) {
         cache = _blavatarCache;
     }
-    
+
     return cache;
 }
 

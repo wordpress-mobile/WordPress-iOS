@@ -13,10 +13,10 @@ static const CGFloat CompressionQuality = 0.7;
     NSDictionary *metadata = representation.metadata;
     NSString *type = representation.UTI;
     NSData *optimizedData = [self dataWithImage:sourceImage compressionQuality:1.0  type:type andMetadata:metadata];
-    
+
     CGImageRelease(sourceImage);
     sourceImage = nil;
-    
+
     return optimizedData;
 }
 
@@ -26,10 +26,10 @@ static const CGFloat CompressionQuality = 0.7;
     NSDictionary *metadata = [self metadataFromRepresentation:representation];
     NSString *type = representation.UTI;
     NSData *optimizedData = [self dataWithImage:resizedImage compressionQuality:CompressionQuality type:type andMetadata:metadata];
-    
+
     CGImageRelease(sourceImage);
     sourceImage = nil;
-    
+
     return optimizedData;
 }
 

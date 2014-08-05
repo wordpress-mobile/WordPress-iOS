@@ -66,7 +66,6 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
     [self.textContentView relayoutText];
 }
 
-
 #pragma mark - Public methods
 
 - (CGSize)intrinsicContentSize
@@ -96,7 +95,6 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
     self.textContentView.attributedString = attributedString;
     [self relayoutTextContentView];
 }
-
 
 #pragma mark - Private Methods
 
@@ -160,7 +158,6 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
     return imageControl;
 }
 
-
 #pragma mark - Event Handlers
 
 - (void)linkAction:(DTLinkButton *)sender
@@ -183,7 +180,6 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
         [self.delegate richTextView:self didReceiveVideoLinkAction:sender];
     }
 }
-
 
 #pragma mark - DTAttributedTextContentView Layout Wrangling
 
@@ -305,7 +301,7 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
         attachment.originalSize = originalSize;
         attachment.displaySize = displaySize;
     }
-    
+
     return frameChanged;
 }
 
@@ -318,7 +314,6 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
     [self.textContentView relayoutText];
     [self invalidateIntrinsicContentSize];
 }
-
 
 #pragma mark - WPTableImageSource Delegate Methods
 
@@ -389,7 +384,6 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
     }
     [self checkPendingImageDownloads];
 }
-
 
 #pragma mark - DTCoreAttributedTextContentView Delegate Methods
 

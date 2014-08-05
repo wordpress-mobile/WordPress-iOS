@@ -24,8 +24,6 @@
 #pragma mark -
 #pragma mark Lifecycle Methods
 
-
-
 // Dictionary should be a PSMultiValueSpecifier from a settings bundle's plist.
 // matching the following format. (Type & Info are optional).
 /* 
@@ -63,7 +61,7 @@
         self.defaultValue = [dictionary objectForKey:@"DefaultValue"];
         self.currentValue = [[NSUserDefaults standardUserDefaults] objectForKey:key];
         self.info = [dictionary objectForKey:@"Info"];
-        
+
         if (self.currentValue == nil) {
             self.currentValue = self.defaultValue;
         }
@@ -71,18 +69,15 @@
     return self;
 }
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
-
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
-
 
 #pragma mark - 
 #pragma mark Table view data source
@@ -91,7 +86,6 @@
     // Return the number of sections.
     return 1;
 }
-
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
@@ -118,46 +112,45 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
-    
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];    
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
         [WPStyleGuide configureTableViewCell:cell];
     }
     cell.accessoryType = UITableViewCellAccessoryNone;
-    
+
     cell.textLabel.text = [titles objectAtIndex:indexPath.row];
 
     NSString *val = [values objectAtIndex:indexPath.row];
     if ([currentValue isEqual:val]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
-    
+
     return cell;
 }
 
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+
     NSIndexPath *previousIndexPath;
     if (self.currentValue) {
         NSUInteger index = [values indexOfObject:self.currentValue];
         previousIndexPath = [NSIndexPath indexPathForRow:index inSection:0];
-        
+
         if ([previousIndexPath compare:indexPath] == NSOrderedSame) {
             // Do nothing
             return;
         }
     }
-    
+
     NSString *val = [values objectAtIndex:indexPath.row];
     [[NSUserDefaults standardUserDefaults] setObject:val forKey:key];
     [NSUserDefaults resetStandardUserDefaults];
-    
+
     self.currentValue = val;
     [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
-    
+
     if (previousIndexPath) {
         [tableView reloadRowsAtIndexPaths:@[previousIndexPath] withRowAnimation:UITableViewRowAnimationNone];
     }

@@ -31,12 +31,12 @@
         self.contentView.layer.borderWidth = isRetina ? 0.5f : 1.0f;
         self.contentView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
         self.contentView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
-        
+
         UIImageView *thumbnail = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.bounds.size.width, IS_IPAD ? 200 : 145)];
         _thumbnail = thumbnail;
         [_thumbnail setContentMode:UIViewContentModeCenter];
         [self.contentView addSubview:_thumbnail];
-        
+
         // With enlarged touch area
         UIButton *checkbox = [[UIButton alloc] initWithFrame:CGRectMake(self.contentView.frame.size.width - 37.0f, 0, 37.0f, 37.0f)];
         _checkbox = checkbox;
@@ -44,11 +44,11 @@
         [_checkbox setImage:[UIImage imageNamed:@"media_checkbox_empty"] forState:UIControlStateNormal];
         [_checkbox setImage:[UIImage imageNamed:@"media_checkbox_filled"] forState:UIControlStateHighlighted];
         [self.contentView addSubview:_checkbox];
-        
+
         UIView *titleContainer = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.thumbnail.frame), self.contentView.bounds.size.width, 25.0f)];
         titleContainer.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
         [self.contentView addSubview:titleContainer];
-        
+
         UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, titleContainer.frame.size.width-10, titleContainer.frame.size.height)];
         _title = title;
         _title.backgroundColor = [UIColor clearColor]; 
@@ -70,7 +70,7 @@
 
 - (void)setIsSelected:(BOOL)isSelected {
     _isSelected = isSelected;
-    
+
     if (_isSelected) {
         [_checkbox setImage:[UIImage imageNamed:@"media_checkbox_filled"] forState:UIControlStateNormal];
     } else {
@@ -94,7 +94,7 @@
         _thumbnail.contentMode = UIViewContentModeCenter;
     }
     [_uploadStatusOverlay removeFromSuperview];
-    
+
     [self removeUploadStatusObservers];
 }
 
@@ -113,7 +113,7 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     _title.text = [self titleForMedia];
-    
+
     if ([keyPath isEqualToString:@"remoteStatus"]) {
         [self updateUploadStatusOverlay];
     }
@@ -121,9 +121,9 @@
 
 - (void)setMedia:(Media *)media {
     _media = media;
-    
+
     _title.text = [self titleForMedia];
-    
+
     _thumbnail.image = [UIImage imageNamed:[@"media_" stringByAppendingString:_media.mediaTypeString]];
 
     if (_media.thumbnail.length > 0) {
@@ -132,7 +132,7 @@
         }
         _thumbnail.contentMode = UIViewContentModeScaleAspectFit;
     }
-    
+
     [self addUploadStatusObservers];
 }
 
@@ -152,24 +152,24 @@
 
 - (void)updateUploadStatusOverlay {
     [_uploadStatusOverlay removeFromSuperview];
-    
+
     if (_media.remoteStatus == MediaRemoteStatusPushing || _media.remoteStatus == MediaRemoteStatusFailed) {
         UIView *statusOverlay = [[UIView alloc] initWithFrame:_thumbnail.bounds];
         _uploadStatusOverlay = statusOverlay;
         _uploadStatusOverlay.backgroundColor = [UIColor colorWithHue:0 saturation:0 brightness:0 alpha:0.6];
         [_thumbnail addSubview:_uploadStatusOverlay];
-        
+
         UIImageView *arrows = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"uploading_spin_blue"]];
         arrows.center = CGPointMake(_uploadStatusOverlay.center.x, _uploadStatusOverlay.center.y);
         [_uploadStatusOverlay addSubview:arrows];
-        
+
         UILabel *instruction = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(arrows.frame), _uploadStatusOverlay.frame.size.width, 30)];
         instruction.backgroundColor = [UIColor clearColor];
         instruction.font = [WPStyleGuide subtitleFont];
         instruction.textColor = [UIColor whiteColor];
         instruction.textAlignment = NSTextAlignmentCenter;
         [_uploadStatusOverlay addSubview:instruction];
-    
+
         if (_media.remoteStatus == MediaRemoteStatusFailed) {
             arrows.image = [UIImage imageNamed:@"uploading_spin_red"];
             instruction.text = [NSLocalizedString(@"Tap to retry", @"If a media upload fails, instruction to retry displayed") uppercaseString];
@@ -194,10 +194,10 @@
         return title;
     } else if (_media.remoteStatus == MediaRemoteStatusProcessing) {
         return NSLocalizedString(@"Preparing...", @"Uploading message when an image is about to be uploaded.");
-    
+
     } else if (_media.remoteStatus == MediaRemoteStatusFailed) {
         return NSLocalizedString(@"Upload failed.", @"Uploading message when a media upload has failed.");
-    
+
     }
 
     if (_media.title.length > 0) {
@@ -210,7 +210,7 @@
     } else {
         filesizeString = [NSString stringWithFormat:@"%.2f KB", [_media.filesize floatValue]];
     }
-    
+
     if (_media.mediaType == MediaTypeImage) {
         return [NSString stringWithFormat:@"%dx%d %@", [_media.width intValue], [_media.height intValue], filesizeString];
     } else if (_media.mediaType == MediaTypeVideo) {
@@ -254,12 +254,12 @@
             });
         });
     };
-    
+
     NSString *thumbnailUrl = media.remoteURL;
     if (media.blog.isWPcom) {
         thumbnailUrl = [thumbnailUrl stringByAppendingString:@"?w=145"];
     }
-    
+
     if (media.blog.isPrivate) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];

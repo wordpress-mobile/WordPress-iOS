@@ -23,7 +23,7 @@ static NSDateFormatter *dateFormatter;
 
 + (Theme *)createOrUpdateThemeFromDictionary:(NSDictionary *)themeInfo withBlog:(Blog*)blog withContext:(NSManagedObjectContext *)context {
     Blog *contextBlog = (Blog*)[context objectWithID:blog.objectID];
-    
+
     Theme *theme;
     NSSet *result = [contextBlog.themes filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"self.themeId == %@", themeInfo[@"id"]]];
     if (result.count > 1) {
@@ -44,13 +44,13 @@ static NSDateFormatter *dateFormatter;
     theme.premium = @([[themeInfo objectForKeyPath:@"cost.number"] integerValue] > 0);
     theme.tags = themeInfo[@"tags"];
     theme.previewUrl = themeInfo[@"preview_url"];
-    
+
     if (!dateFormatter) {
         dateFormatter = [[NSDateFormatter alloc] init];
         dateFormatter.dateFormat = @"YYYY-MM-dd";
     }
     theme.launchDate = [dateFormatter dateFromString:themeInfo[@"launch_date"]];
-    
+
     return theme;
 }
 
@@ -79,22 +79,22 @@ static NSDateFormatter *dateFormatter;
                 Theme *theme = [Theme createOrUpdateThemeFromDictionary:t withBlog:blog withContext:backgroundMOC];
                 [themesToKeep addObject:theme];
             }
-            
+
             NSSet *existingThemes = ((Blog *)[backgroundMOC objectWithID:blog.objectID]).themes;
             for (Theme *t in existingThemes) {
                 if (![themesToKeep containsObject:t]) {
                     [backgroundMOC deleteObject:t];
                 }
             }
-            
+
             [[ContextManager sharedInstance] saveDerivedContext:backgroundMOC];
-            
+
             dateFormatter = nil;
-            
+
             if (success) {
                 dispatch_async(dispatch_get_main_queue(), success);
             }
-            
+
         }];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {

@@ -18,13 +18,12 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
     while (![view isKindOfClass:self]) {
         view = (UIView *)view.superview;
     }
-    
+
     if (view == subview)
         return nil;
-    
+
     return (ReaderPostTableViewCell *)view;
 }
-
 
 #pragma mark - Lifecycle Methods
 
@@ -51,7 +50,7 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
 
         [self configureConstraints];
     }
-    
+
     return self;
 }
 
@@ -151,11 +150,10 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
 - (void)prepareForReuse
 {
     [super prepareForReuse];
-    
+
     [self.postView reset];
     [self setHighlightedEffect:NO animated:NO];
 }
-
 
 #pragma mark - Instance Methods
 

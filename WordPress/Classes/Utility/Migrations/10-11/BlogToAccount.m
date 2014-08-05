@@ -4,8 +4,6 @@
 #import "WPAccount.h"
 #import "Constants.h"
 
-
-
 @implementation BlogToAccount {
     NSString *_defaultWpcomUsername;
 }
@@ -165,6 +163,5 @@
 
     return result;
 }
-
 
 @end

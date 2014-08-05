@@ -19,10 +19,10 @@
         self.clipsToBounds = YES;
         self.showTopLineSeparator = NO;
         self.showSecureTextEntryToggle = NO;
-        
+
         self.secureTextEntryImageVisible = [UIImage imageNamed:@"icon-secure-text-visible"];
         self.secureTextEntryImageHidden = [UIImage imageNamed:@"icon-secure-text"];
-        
+
         self.secureTextEntryToggle = [UIButton buttonWithType:UIButtonTypeCustom];
         self.secureTextEntryToggle.frame = CGRectMake(0, 0, 40, 30);
         [self.secureTextEntryToggle addTarget:self action:@selector(secureTextEntryToggleAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -46,13 +46,13 @@
 }
 
 - (void)drawRect:(CGRect)rect {
-    
+
     // draw top border
-    
+
     if (_showTopLineSeparator) {
-        
+
         CGContextRef context = UIGraphicsGetCurrentContext();
-        
+
         UIBezierPath *path = [UIBezierPath bezierPath];
         [path moveToPoint:CGPointMake(CGRectGetMinX(rect) + _textInsets.left, CGRectGetMinY(rect))];
         [path addLineToPoint:CGPointMake(CGRectGetMaxX(rect), CGRectGetMinY(rect))];
@@ -64,9 +64,9 @@
 }
 
 - (void)layoutSubviews {
-    
+
     [super layoutSubviews];
-    
+
     self.secureTextEntryToggle.hidden = !self.showSecureTextEntryToggle;
     if (self.showSecureTextEntryToggle) {
         self.secureTextEntryToggle.frame = CGRectIntegral(CGRectMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(self.secureTextEntryToggle.frame), (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.secureTextEntryToggle.frame)) / 2.0, CGRectGetWidth(self.secureTextEntryToggle.frame), CGRectGetHeight(self.secureTextEntryToggle.frame)));
@@ -75,7 +75,7 @@
 }
 
 - (CGRect)calculateTextRectForBounds:(CGRect)bounds {
-    
+
     CGRect returnRect;
     if (_leftViewImage) {
         CGFloat leftViewWidth = _leftViewImage.size.width;
@@ -83,11 +83,11 @@
     } else {
         returnRect = CGRectMake(_textInsets.left, _textInsets.top, bounds.size.width - _textInsets.left - _textInsets.right, bounds.size.height - _textInsets.top - _textInsets.bottom);
     }
-    
+
     if (self.showSecureTextEntryToggle) {
         returnRect.size.width -= self.secureTextEntryToggle.frame.size.width;
     }
-    
+
     return CGRectIntegral(returnRect);
 }
 
@@ -105,7 +105,7 @@
 
 // left view position
 - (CGRect)leftViewRectForBounds:(CGRect)bounds {
-    
+
     if (_leftViewImage) {
         return CGRectIntegral(CGRectMake(_textInsets.left, (CGRectGetHeight(bounds) - _leftViewImage.size.height) / 2.0, _leftViewImage.size.width, _leftViewImage.size.height));
     }

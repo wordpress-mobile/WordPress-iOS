@@ -50,11 +50,11 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     self.commentView = [[CommentView alloc] initWithFrame:self.view.frame];
     self.commentView.contentProvider = self.comment;
     self.commentView.delegate = self;
-    
+
     WPFixedWidthScrollView *scrollView = [[WPFixedWidthScrollView alloc] initWithRootView:self.commentView];
     scrollView.alwaysBounceVertical = YES;
     if (IS_IPAD) {
@@ -64,11 +64,11 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     self.view = scrollView;
     self.view.backgroundColor = [UIColor whiteColor];
-    
+
     self.trashButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-trash"] selectedImage:[UIImage imageNamed:@"icon-comments-trash-active"]];
     self.trashButton.accessibilityLabel = NSLocalizedString(@"Move to trash", @"Spoken accessibility label.");
     [self.trashButton addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
-    
+
     self.approveButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-approve"] selectedImage:[UIImage imageNamed:@"icon-comments-approve-active"]];
     self.approveButton.accessibilityLabel = NSLocalizedString(@"Toggle approve or unapprove", @"Spoken accessibility label.");
     [self.approveButton addTarget:self action:@selector(approveOrUnapproveAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -80,11 +80,11 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     self.editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
     self.editButton.accessibilityLabel = NSLocalizedString(@"Edit comment", @"Spoken accessibility label.");
     self.navigationItem.rightBarButtonItem = self.editButton;
-    
+
     self.replyButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-comment-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-comment-active"]];
     self.replyButton.accessibilityLabel = NSLocalizedString(@"Reply", @"Spoken accessibility label.");
     [self.replyButton addTarget:self action:@selector(replyAction:) forControlEvents:UIControlEventTouchUpInside];
-    
+
     [self.view addSubview:self.commentView];
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
@@ -94,7 +94,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     if (self.comment) {
         [self showComment:self.comment];
    }
-    
+
     // For tapping to dismiss the keyboard
     self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
 }
@@ -142,7 +142,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     self.isShowingActionSheet = YES;
 }
 
-
 #pragma mark - Instance methods
 
 - (void)dismissEditViewController; {
@@ -170,7 +169,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (NSAttributedString *)postTitleString {
     NSString *postTitle;
-    
+
     if (self.comment.postTitle != nil) {
         postTitle = [[self.comment.postTitle stringByDecodingXMLCharacters] trim];
     } else {
@@ -181,14 +180,13 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     NSRange titleRange = [combinedString rangeOfString:postTitle];
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:combinedString];
     [attributedString addAttribute:NSForegroundColorAttributeName value:[WPStyleGuide newKidOnTheBlockBlue] range:titleRange];
-    
+
     return attributedString;
 }
 
 - (void)discard {
     [self dismissEditViewController];
 }
-
 
 #pragma mark - Comment moderation
 
@@ -206,14 +204,13 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     self.editCommentViewController.commentViewController = self;
     self.editCommentViewController.comment = self.comment;
     self.editCommentViewController.title = NSLocalizedString(@"Edit Comment", @"");
-    
+
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.editCommentViewController];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     navController.navigationBar.translucent = NO;
     [self presentViewController:navController animated:animate completion:nil];
 }
-
 
 #pragma mark - Actions
 
@@ -242,7 +239,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
         actionSheet.tag = CommentViewDeletePromptActionSheetTag;
         actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
         [actionSheet showFromToolbar:self.navigationController.toolbar];
-        
+
         self.isShowingActionSheet = YES;
     }
 }
@@ -304,7 +301,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     } else if (actionSheet.tag == CommentViewEditCommentViewControllerHasChangesActionSheetTag) {
         [self processEditCommentHasChangesActionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
     }
-    
+
     self.isShowingActionSheet = NO;
 }
 
@@ -321,7 +318,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     }
 }
 
-
 #pragma mark UIWebView delegate methods
 
 - (BOOL)webView:(UIWebView *)inWeb shouldStartLoadWithRequest:(NSURLRequest *)inRequest navigationType:(UIWebViewNavigationType)inType {
@@ -334,16 +330,16 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)openInAppWebView:(NSURL*)url {
     Blog *blog = [[self comment] blog];
-    
+
     if ([[url description] length] > 0) {
         WPWebViewController *webViewController = [[WPWebViewController alloc] init];
         webViewController.url = url;
-        
+
         if (blog.isPrivate && [blog isWPcom]) {
             webViewController.username = blog.username;
             webViewController.password = blog.password;
         }
-        
+
         [self.navigationController pushViewController:webViewController animated:YES];
     }
 }
@@ -353,12 +349,11 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     //the blog is using the network connection and cannot be stoped, show a message to the user
 }
 
-
 #pragma mark - InlineComposeViewDelegate methods
 
 - (void)composeView:(InlineComposeView *)view didSendText:(NSString *)text {
     self.reply.content = text;
-    
+
     // try to save it
     [[ContextManager sharedInstance] saveContext:self.reply.managedObjectContext];
 
@@ -368,18 +363,18 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:self.reply.managedObjectContext];
     [commentService uploadComment:self.reply success:^{
         self.reply.status = CommentStatusApproved;
-        
+
         [self.inlineComposeView clearText];
         self.inlineComposeView.enabled = YES;
         [self.inlineComposeView dismissComposer];
-        
+
         [WPToast showToastWithMessage:NSLocalizedString(@"Replied", @"User replied to a comment")
                              andImage:[UIImage imageNamed:@"action_icon_replied"]];
-        
+
     } failure:^(NSError *error) {
         // reset to draft status, AppDelegate automatically shows UIAlert when comment fails
         self.reply.status = CommentStatusDraft;
-        
+
         self.inlineComposeView.enabled = YES;
         [self.inlineComposeView displayComposer];
 
@@ -392,7 +387,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     self.reply.content = self.inlineComposeView.text;
     [[ContextManager sharedInstance] saveContext:self.reply.managedObjectContext];
 }
-
 
 #pragma mark - WPContentViewDelegate
 

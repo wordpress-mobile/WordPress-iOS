@@ -20,12 +20,11 @@
     self.scrollView.delegate = nil;
 }
 
-
 - (void)didReceiveMemoryWarning {
     DDLogMethod();
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
+
     // Release any cached data, images, etc that aren't in use.
 }
 
@@ -42,12 +41,12 @@
 - (void)viewDidLoad {
     DDLogMethod();
     [super viewDidLoad];
-    
+
     if (!self.webBridge) {
         self.webBridge = [WPWebBridge bridge];
         self.webBridge.delegate = self;
     }
-    
+
     if (shouldEnablePullToRefresh) {
         [self enablePullToRefresh];
     }
@@ -66,7 +65,7 @@
 
 // Find the Webview's UIScrollView backwards compatible
 - (UIScrollView *)scrollView {
-    
+
     UIScrollView *scrollView = nil;
     if ([self.webView respondsToSelector:@selector(scrollView)]) {
         scrollView = self.webView.scrollView;
@@ -78,9 +77,9 @@
             }
         }
     }
-    
+
     return scrollView;
-    
+
 }
 
 #pragma mark - Hybrid Helper Methods
@@ -91,7 +90,7 @@
         urlToLoad = url;
         return;
     }
-    
+
     NSHTTPCookieStorage *cookies = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
@@ -123,7 +122,7 @@
     NSNumber *red = [colorWithRedGreenBlueAlpha objectForKey:@"red"];
     NSNumber *green = [colorWithRedGreenBlueAlpha objectForKey:@"green"];
     NSNumber *blue = [colorWithRedGreenBlueAlpha objectForKey:@"blue"];
-    
+
     self.webView.backgroundColor = [UIColor colorWithRed:[red floatValue]
                                                    green:[green floatValue]
                                                     blue:[blue floatValue]
@@ -137,7 +136,7 @@
     NSNumber *red = [colorWithRedGreenBlueAlpha objectForKey:@"red"];
     NSNumber *green = [colorWithRedGreenBlueAlpha objectForKey:@"green"];
     NSNumber *blue = [colorWithRedGreenBlueAlpha objectForKey:@"blue"];
-    
+
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:[red floatValue]
                                                                         green:[green floatValue]
                                                                          blue:[blue floatValue]
@@ -147,7 +146,7 @@
 
 - (void)enableFastScrolling {
     self.scrollView.decelerationRate = 0.994;        
-    
+
 }
 
 - (void)enablePullToRefresh
@@ -167,14 +166,12 @@
     }
 }
 
-
 - (void)pullToRefreshComplete
 {
     self.lastWebViewRefreshDate = [NSDate date];
     [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:(UIScrollView * )_refreshHeaderView.superview];
     didTriggerRefresh = NO;
 }
-
 
 #pragma mark - UIWebViewDelegate
 
@@ -206,7 +203,7 @@
 
 - (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view {
     return self.lastWebViewRefreshDate;
-    
+
 }
 
 // provide a way for web apps to show the native pull to refresh loading indicator
@@ -233,6 +230,5 @@
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     [_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
 }
-
 
 @end

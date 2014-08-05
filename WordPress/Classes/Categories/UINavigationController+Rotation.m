@@ -3,14 +3,13 @@
 
 @implementation UINavigationController (Rotation)
 
-
 - (NSUInteger)mySupportedInterfaceOrientations {
-    
+
     // Respect the top child's orientation prefs.
     if ([self respondsToSelector:@selector(topViewController)] && self.topViewController && [self.topViewController respondsToSelector:@selector(supportedInterfaceOrientations)]) {
         return [self.topViewController supportedInterfaceOrientations];
     }
-    
+
     if (IS_IPHONE) {
         return UIInterfaceOrientationMaskAllButUpsideDown;
     }
@@ -20,7 +19,7 @@
 - (BOOL)myShouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     NSUInteger mask = [self mySupportedInterfaceOrientations];
     NSUInteger orientation = 1 << toInterfaceOrientation;
-    
+
     return mask & orientation;
 }
 
@@ -35,7 +34,7 @@
     Method origMethod = class_getInstanceMethod(self, @selector(supportedInterfaceOrientations));
     Method newMethod = class_getInstanceMethod(self, @selector(mySupportedInterfaceOrientations));
     method_exchangeImplementations(origMethod, newMethod);
-    
+
     origMethod = class_getInstanceMethod(self, @selector(shouldAutorotate));
     newMethod = class_getInstanceMethod(self, @selector(myShouldAutoRotate));
     method_exchangeImplementations(origMethod, newMethod);
@@ -44,6 +43,5 @@
     newMethod = class_getInstanceMethod(self, @selector(myShouldAutorotateToInterfaceOrientation:));
     method_exchangeImplementations(origMethod, newMethod);
 }
-
 
 @end

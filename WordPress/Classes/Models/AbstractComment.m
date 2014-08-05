@@ -19,7 +19,6 @@
 @dynamic status;
 @dynamic type;
 
-
 #pragma mark - WPContentViewProvider protocol
 
 - (NSString *)titleForDisplay {
@@ -45,7 +44,7 @@
     NSRegularExpression *removeNewlinesAfterHtmlTags = [NSRegularExpression regularExpressionWithPattern:@"(?<=\\>)\n\n" options:0 error:nil];
     commentContent = [removeNewlinesAfterHtmlTags stringByReplacingMatchesInString:commentContent options:0 range:NSMakeRange(0, [commentContent length]) withTemplate:@""];
     commentContent = [commentContent stringByReplacingOccurrencesOfString:@"\n" withString:@"<br />"];
-    
+
     return commentContent;
 }
 
@@ -64,6 +63,5 @@
 - (NSDate *)dateForDisplay {
     return self.dateCreated;
 }
-
 
 @end

@@ -31,13 +31,13 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    
+
 }
 
 - (void)setBlog:(Blog *)blog {
     _blog = blog;
     DDLogInfo(@"Loading Stats for the following blog: %@", [blog url]);
-    
+
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if (!appDelegate.connectionAvailable) {
         [self showNoResultsWithTitle:NSLocalizedString(@"No Connection", @"") message:NSLocalizedString(@"An active internet connection is required to view stats", @"")];
@@ -48,20 +48,20 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)initStats {
     if (self.blog.isWPcom) {
-        
+
         self.oauth2Token = self.blog.restApi.authToken;
         self.siteID = self.blog.blogID;
-        
+
         [super initStats];
         return;
     }
-    
+
     // Jetpack
     BOOL needsJetpackLogin = ![self.blog.jetpackAccount.restApi hasCredentials];
     if (!needsJetpackLogin && self.blog.jetpackBlogID && self.blog.jetpackAccount) {
         self.siteID = self.blog.jetpackBlogID;
         self.oauth2Token = self.blog.jetpackAccount.restApi.authToken;
-        
+
         [super initStats];
     } else {
         [self promptForJetpackCredentials];
@@ -87,7 +87,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
             [self initStats];
         }
     }];
-    
+
     self.tableView.scrollEnabled = NO;
     [self addChildViewController:controller];
     [self.tableView addSubview:controller.view];

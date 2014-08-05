@@ -1,6 +1,5 @@
 #import "Coordinate.h"
 
-
 @implementation Coordinate
 @synthesize coordinate = _coordinate;
 
@@ -32,7 +31,7 @@
         _coordinate.latitude = [decoder decodeDoubleForKey:@"latitude"];
         _coordinate.longitude = [decoder decodeDoubleForKey:@"longitude"];
     }
-    
+
     return self;
 }
 

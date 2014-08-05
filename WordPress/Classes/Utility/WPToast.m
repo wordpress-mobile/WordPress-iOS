@@ -28,10 +28,10 @@ const CGFloat WPToastAnimationVisibleDuration = 0.35f;
     [self.toastView setCenter:CGPointMake(CGRectGetMidX(parentView.bounds), CGRectGetMidY(parentView.bounds))];
     [self.toastView.layer setCornerRadius:20.0f];
     [parentViewController.view addSubview:self.toastView];
-    
+
     self.toastLabel.text = message;
     self.toastLabel.alpha = 0.0f;
-    
+
     self.toastIcon.image = image;
     self.toastIcon.alpha = 0.0f;
 

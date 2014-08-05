@@ -27,7 +27,7 @@
                                                                              style:UIBarButtonItemStylePlain
                                                                             target:self
                                                                             action:@selector(cancelView:)];
-    
+
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).")
                                                                               style:[WPStyleGuide barButtonStyleForDone]
                                                                              target:self
@@ -47,9 +47,9 @@
 - (void)viewWillAppear:(BOOL)animated {
     DDLogMethod();
     [super viewWillAppear:animated];
-    
+
     self.textView.text = self.comment.content;
-    
+
     //foo = textView.text;
     //so we can compare to set hasChanges correctly
     self.textViewText = [[NSString alloc] initWithString:self.textView.text];
@@ -150,7 +150,7 @@
     commentViewController.wasLastCommentPending = YES;
     [commentViewController showComment:comment];
     [self.navigationController popViewControllerAnimated:YES];
-    
+
     self.textView.editable = NO;
     self.navigationItem.rightBarButtonItem.enabled = NO;
     self.navigationItem.leftBarButtonItem.enabled = NO;

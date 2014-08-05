@@ -63,14 +63,13 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     return [theImage thumbnailImage:MediaDefaultThumbnailSize transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
 }
 
-
 + (Media *)createOrReplaceMediaFromJSON:(NSDictionary *)json forBlog:(Blog *)blog {
     NSSet *existing = [blog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"mediaID == %@", [json[@"attachment_id"] numericValue]]];
     if (existing.count > 0) {
         [existing.allObjects[0] updateFromDictionary:json];
         return existing.allObjects[0];
     }
-    
+
     Media *media = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:blog.managedObjectContext];
     [media updateFromDictionary:json];
     media.blog = blog;
@@ -81,7 +80,7 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     if ([blog isDeleted] || blog.managedObjectContext == nil) {
         return;
     }
-    
+
     NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] newDerivedContext];
     [backgroundMOC performBlock:^{
         Blog *contextBlog = (Blog *)[backgroundMOC objectWithID:blog.objectID];
@@ -99,7 +98,7 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
                 }
             }
         }
-        
+
         [[ContextManager sharedInstance] saveDerivedContext:backgroundMOC];
     }];
 }
@@ -114,7 +113,7 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     self.creationDate = json[@"date_created_gmt"];
     self.caption = [json stringForKey:@"caption"];
     self.desc = [json stringForKey:@"description"];
-    
+
     [self mediaTypeFromUrl:[[json stringForKey:@"link"] pathExtension]];
 }
 
@@ -128,7 +127,7 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     CFStringRef fileExt = (__bridge CFStringRef)ext;
     CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, fileExt, nil);
     CFStringRef ppt = (__bridge CFStringRef)@"public.presentation";
-    
+
     if (UTTypeConformsTo(fileUTI, kUTTypeImage)) {
         self.mediaTypeString = @"image";
     } else if (UTTypeConformsTo(fileUTI, kUTTypeVideo)) {
@@ -142,7 +141,7 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     } else {
         self.mediaTypeString = @"document";
     }
-    
+
     if (fileUTI) {
         CFRelease(fileUTI);
         fileUTI = nil;
@@ -221,7 +220,7 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
             }
             continue;
         }
-        
+
         [m xmlrpcDeleteWithSuccess:^{
             if (i == media.count-1) {
                 if (success) {
@@ -283,13 +282,12 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     [self cancelUpload];
     NSError *error = nil;
     [[NSFileManager defaultManager] removeItemAtPath:self.localURL error:&error];
-    
+
     [self.managedObjectContext performBlockAndWait:^{
         [self.managedObjectContext deleteObject:self];
         [self.managedObjectContext save:nil];
     }];
 }
-
 
 - (void)save {
     [self.managedObjectContext performBlock:^{
@@ -312,7 +310,7 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
 - (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     [self save];
     self.progress = 0.0f;
-    
+
     [self xmlrpcUploadWithSuccess:success failure:failure];
 }
 
@@ -363,7 +361,7 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
 
                 if([response objectForKey:@"url"] != nil)
                     self.remoteURL = [response objectForKey:@"url"];
-                
+
                 if ([response objectForKey:@"id"] != nil) {
                     self.mediaID = [[response objectForKey:@"id"] numericValue];
                 }
@@ -434,7 +432,7 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
                 linkType = (NSString *)[self.blog getOptionValue:@"image_default_link_type"];
             else
                 linkType = @"";
-            
+
             if ([linkType isEqualToString:@"none"]) {
                 result = [NSString stringWithFormat:
                           @"<img src=\"%@\" alt=\"%@\" class=\"alignnone size-full\" />",
@@ -448,7 +446,7 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     } else if (self.mediaType == MediaTypeVideo) {
         NSString *embedWidth = [NSString stringWithFormat:@"%@", self.width];
         NSString *embedHeight= [NSString stringWithFormat:@"%@", self.height];
-        
+
         // Check for landscape resize
         if (([self.width intValue] > [self.height intValue]) && ([self.width intValue] > 640)) {
             embedWidth = @"640";
@@ -457,7 +455,7 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
             embedHeight = @"640";
             embedWidth = @"360";
         }
-        
+
         if (self.shortcode != nil) {
             result = self.shortcode;
         } else if (self.remoteURL != nil) {
@@ -465,7 +463,7 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
             NSNumber *htmlPreference = [NSNumber numberWithInt:
                                         [[[NSUserDefaults standardUserDefaults] 
                                           objectForKey:@"video_html_preference"] intValue]];
-            
+
             if ([htmlPreference intValue] == 0) {
                 // Use HTML 5 <video> tag
                 result = [NSString stringWithFormat:
@@ -490,7 +488,7 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
                           "/></object>",
                           embedWidth, embedHeight, self.remoteURL, self.remoteURL, embedWidth, embedHeight];
             }
-            
+
             DDLogVerbose(@"media.html: %@", result);
         }
     }

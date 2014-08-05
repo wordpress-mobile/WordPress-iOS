@@ -31,10 +31,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero]; // Hide extra cell separators.
-    
+
     // Show the add category button if we're selecting categories for a post.
     if (self.selectionMode == CategoriesSelectionModePost ) {
         UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
@@ -42,31 +42,29 @@
         [button setImage:image forState:UIControlStateNormal];
         [button addTarget:self action:@selector(showAddNewCategory) forControlEvents:UIControlEventTouchUpInside];
         UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-        
+
         [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:rightBarButtonItem forNavigationItem:self.navigationItem];
     }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+
     [self configureCategories];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    
+
     // Save changes.
     self.post.categories = [NSMutableSet setWithArray:self.selectedCategories];
     [self.post save];
 }
 
-
 - (void)didReceiveMemoryWarning {
     DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 }
-
 
 #pragma mark - Instance Methods
 
@@ -89,10 +87,10 @@
     WPCategoryTree *tree = [[WPCategoryTree alloc] initWithParent:nil];
     [tree getChildrenFromObjects:[self.post.blog sortedCategories]];
     self.categories = [tree getAllObjects];
-    
+
     // Get the indentation level of each category.
     NSUInteger count = [self.categories count];
-    
+
     NSMutableDictionary *categoryDict = [NSMutableDictionary dictionary];
     for (NSInteger i = 0; i < count; i++) {
         Category *category = [self.categories objectAtIndex:i];
@@ -101,13 +99,13 @@
 
     for (NSInteger i = 0; i < count; i++) {
         Category *category = [self.categories objectAtIndex:i];
-        
+
         NSInteger indentationLevel = [self indentationLevelForCategory:category.parentID categoryCollection:categoryDict];
-        
+
         [self.categoryIndentationDict setValue:[NSNumber numberWithInteger:indentationLevel]
                                               forKey:[category.categoryID stringValue]];
     }
-    
+
     [self.tableView reloadData];
 }
 
@@ -119,7 +117,6 @@
     Category *category = [categoryDict objectForKey:parentID];
     return ([self indentationLevelForCategory:category.parentID categoryCollection:categoryDict]) + 1;
 }
-
 
 #pragma mark - UITableView Delegate & DataSource
 
@@ -137,13 +134,13 @@
     if (!cell) {
         cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:categoryCell];
     }
-    
+
     Category *category = self.categories[indexPath.row];
-    
+
     // Cell indentation
     NSInteger indentationLevel = [[self.categoryIndentationDict objectForKey:[category.categoryID stringValue]] integerValue];
     cell.indentationLevel = indentationLevel;
-    
+
     if (indentationLevel == 0) {
         cell.imageView.image = nil;
     } else {
@@ -189,6 +186,5 @@
         [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
     }
 }
-
 
 @end

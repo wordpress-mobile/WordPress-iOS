@@ -34,7 +34,7 @@
 - (void)viewDidLoad {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
-    
+
     if (IS_IPHONE)
         self.navigationItem.title = NSLocalizedString(@"Loading...", @"");
 
@@ -44,7 +44,7 @@
     self.backButton.accessibilityLabel = NSLocalizedString(@"Back", @"Spoken accessibility label");
     self.forwardButton.accessibilityLabel = NSLocalizedString(@"Forward", @"Spoken accessibility label");
     self.refreshButton.accessibilityLabel = NSLocalizedString(@"Refresh", @"Spoken accessibility label");
-    
+
     if (IS_IPHONE) {
         if (!self.hidesLinkOptions) {
             [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.optionsButton forNavigationItem:self.navigationItem];
@@ -60,7 +60,7 @@
         btn.autoresizingMask =  UIViewAutoresizingFlexibleHeight;
         [btn addTarget:self action:@selector(reload) forControlEvents:UIControlEventTouchUpInside];
         self.refreshButton.customView = btn;
-        
+
         if (self.navigationController && self.navigationController.navigationBarHidden == NO) {
             CGRect frame = self.webView.frame;
             frame.origin.y -= self.iPadNavBar.frame.size.height;
@@ -80,11 +80,11 @@
     self.toolbar.translucent = NO;
     self.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
     self.toolbar.tintColor = [UIColor whiteColor];
-    
+
     self.optionsButton.enabled = NO;
     self.webView.scalesPageToFit = YES;
     self.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
-    
+
     if (self.url) {
         [self refreshWebView];
     } else {
@@ -96,7 +96,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewWillAppear:animated];
-        
+
     if( self.detailContent == nil ) {
         [self setStatusTimer:[NSTimer timerWithTimeInterval:0.75 target:self selector:@selector(upgradeButtonsAndLabels:) userInfo:nil repeats:YES]];
         [[NSRunLoop currentRunLoop] addTimer:[self statusTimer] forMode:NSDefaultRunLoopMode];
@@ -105,7 +105,7 @@
         //change the arrows to up/down icons
         [self.backButton setImage:[UIImage imageNamed:@"previous.png"]];
         [self.forwardButton setImage:[UIImage imageNamed:@"next.png"]];
-        
+
         // Replace refresh button with options button
         self.backButton.width = (self.toolbar.frame.size.width / 2.0f) - 10.0f;
         self.forwardButton.width = (self.toolbar.frame.size.width / 2.0f) - 10.0f;
@@ -127,10 +127,10 @@
     CGRect customToolbarFrame = self.toolbar.frame;
     customToolbarFrame.size.height = height;
     customToolbarFrame.origin.y = self.toolbar.superview.bounds.size.height - height;
-        
+
     CGRect webFrame = self.webView.frame;
     webFrame.size.height = customToolbarFrame.origin.y;
-    
+
     [UIView animateWithDuration:duration animations:^{
         self.toolbar.frame = customToolbarFrame;
         self.webView.frame = webFrame;
@@ -153,7 +153,6 @@
     _optionsButton.accessibilityLabel = NSLocalizedString(@"Share", @"Spoken accessibility label");
     return _optionsButton;
 }
-
 
 #pragma mark - webView related methods
 
@@ -190,13 +189,13 @@
             NSURL *currentURL = [currentRequest URL];
             permaLink = currentURL.absoluteString;
         }
-        
+
         //make sure we are not sharing URL like this: http://en.wordpress.com/reader/mobile/?v=post-16841252-1828
         if ([permaLink rangeOfString:@"wordpress.com/reader/mobile/"].location != NSNotFound) { 
             permaLink = WPMobileReaderURL;                 
         } 
     }
-    
+
     return permaLink;
 }   
 
@@ -223,7 +222,7 @@
 
 - (void)refreshWebView {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    
+
     if (![ReachabilityUtils isInternetReachable]) {
         __weak WPWebViewController *weakSelf = self;
         [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:^{
@@ -234,13 +233,13 @@
         self.refreshButton.enabled = NO;
         return;
     }
-    
+
     if (!self.needsLogin && self.username && self.password && ![WPCookie hasCookieForURL:self.url andUsername:self.username]) {
         DDLogWarn(@"We have login credentials but no cookie, let's try login first");
         [self retryWithLogin];
         return;
     }
-    
+
     NSURL *webURL;
     if (self.needsLogin) {
         if (self.wpLoginURL != nil) {
@@ -256,19 +255,19 @@
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:webURL];
     request.cachePolicy = NSURLRequestReturnCacheDataElseLoad;
     [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
-    
+
     [request setCachePolicy:NSURLRequestReturnCacheDataElseLoad];
     if (self.needsLogin) {
         NSString *request_body = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=%@",
                                   [self.username stringByUrlEncoding],
                                   [self.password stringByUrlEncoding],
                                   [[self.url absoluteString] stringByUrlEncoding]];
-        
+
         if ( self.wpLoginURL != nil )
             [request setURL: self.wpLoginURL];
         else
              [request setURL:[[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"]];
-        
+
         [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
         [request setValue:[NSString stringWithFormat:@"%d", [request_body length]] forHTTPHeaderField:@"Content-Length"];
         [request addValue:@"*/*" forHTTPHeaderField:@"Accept"];
@@ -296,9 +295,9 @@
     if (_isLoading == loading) {
         return;
     }
-    
+
     self.optionsButton.enabled = !loading;
-    
+
     if (IS_IPAD) {
         CGRect frame = self.loadingView.frame;
         if (loading) {
@@ -308,11 +307,11 @@
             frame.origin.y += frame.size.height;
             [self.activityIndicator stopAnimating];
         }
-        
+
         [UIView animateWithDuration:0.2
                          animations:^{self.loadingView.frame = frame;}];
     }
-    
+
     if (self.refreshButton) {
         self.refreshButton.enabled = !loading;
         // If on iPhone (or iPod Touch) swap between spinner and refresh button
@@ -323,12 +322,12 @@
                                                     initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
                 UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 32.0f, 32.0f)];
                 [spinner setCenter:customView.center];
-                
+
                 [customView addSubview:spinner];
                 [spinner startAnimating];
-                
+
                 self.spinnerButton = [[UIBarButtonItem alloc] initWithCustomView:customView];
-                
+
             }
             NSMutableArray *newToolbarItems = [NSMutableArray arrayWithArray:self.toolbar.items];
             NSUInteger spinnerButtonIndex = [newToolbarItems indexOfObject:self.spinnerButton];
@@ -469,7 +468,6 @@
     }
 }
 
-
 #pragma mark - UIPopover Delegate
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
@@ -477,15 +475,14 @@
     self.popover = nil;
 }
 
-
 #pragma mark - UIWebViewDelegate
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     DDLogInfo(@"%@ %@: %@", self, NSStringFromSelector(_cmd), [[request URL] absoluteString]);
-    
+
     NSURL *requestedURL = [request URL];
     NSString *requestedURLAbsoluteString = [requestedURL absoluteString];
-    
+
     if (!self.needsLogin && [requestedURLAbsoluteString rangeOfString:@"wp-login.php"].location != NSNotFound) {
         if (self.username && self.password) {
             DDLogInfo(@"WP is asking for credentials, let's login first");
@@ -493,20 +490,20 @@
             return NO;
         }
     }
-    
+
     //the user clicked a link available in the detailsView, a new webView will be pushed into the stack
     if (![requestedURL isEqual:self.url] && 
         [requestedURLAbsoluteString rangeOfString:@"file://"].location == NSNotFound && 
         self.detailContent != nil &&
         navigationType == UIWebViewNavigationTypeLinkClicked
         ) { 
-        
+
         WPWebViewController *webViewController = [[WPWebViewController alloc] init];
         [webViewController setUrl:[request URL]];
         [self.navigationController pushViewController:webViewController animated:YES];
         return NO;
     }
-    
+
     [self setLoading:YES];        
     return YES;
 }
@@ -528,11 +525,11 @@
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [self setLoading:NO];
-    
+
     if (!self.hasLoadedContent && ([aWebView.request.URL.absoluteString rangeOfString:WPMobileReaderDetailURL].location == NSNotFound || self.detailContent)) {
         [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.set_loaded_items(%@);", self.readerAllItems]];
         [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.show_article_details(%@);", self.detailContent]];
-        
+
         if (IS_IPAD) {
             if(self.navigationController.navigationBarHidden == NO) {
                 self.title = [self getDocumentTitle];
@@ -542,21 +539,21 @@
         } else {
             self.navigationItem.title = [self getDocumentTitle];
         }
-        
+
         NSString *prevItemAvailable = [aWebView stringByEvaluatingJavaScriptFromString:@"Reader2.is_prev_item();"];
         if ([prevItemAvailable rangeOfString:@"true"].location == NSNotFound) {
             self.backButton.enabled = NO;
         } else {
             self.backButton.enabled = YES;
         }
-        
+
         NSString *nextItemAvailable = [aWebView stringByEvaluatingJavaScriptFromString:@"Reader2.is_next_item();"];
         if ([nextItemAvailable rangeOfString:@"true"].location == NSNotFound) {
             self.forwardButton.enabled = NO;
         } else {
             self.forwardButton.enabled = YES;
         }
-        
+
         self.hasLoadedContent = YES;
     }
     if (self.shouldScrollToBottom == YES) {
@@ -565,7 +562,6 @@
         [self.scrollView setContentOffset:bottomOffset animated:YES];
     }
 }
-
 
 #pragma mark - MFMailComposeViewControllerDelegate
 
@@ -580,14 +576,14 @@
 //passing in @"RecipientTextField"       as the value for field makes the to address field become first responder 
 - (BOOL) setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field{
     for (UIView *subview in view.subviews) {
-        
+
         NSString *className = [NSString stringWithFormat:@"%@", [subview class]];
         if ([className isEqualToString:field]) {
             //Found the sub view we need to set as first responder
             [subview becomeFirstResponder];
             return YES;
         }
-        
+
         if ([subview.subviews count] > 0) {
             if ([self setMFMailFieldAsFirstResponder:subview mfMailField:field]){
                 //Field was found and made first responder in a subview
@@ -595,7 +591,7 @@
             }
         }
     }
-    
+
     //field not found in this view.
     return NO;
 }

@@ -1,7 +1,6 @@
 #import "ReachabilityUtils.h"
 #import "WordPressAppDelegate.h"
 
-
 @interface ReachabilityAlert : NSObject <UIAlertViewDelegate>
 @property(nonatomic, copy) void (^retryBlock)();
 

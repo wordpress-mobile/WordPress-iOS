@@ -16,7 +16,6 @@ const CGFloat WPContentViewActionViewHeight = 48.0;
 const CGFloat WPContentViewBorderHeight = 1.0;
 const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
-
 @interface WPContentViewBase()<WPContentAttributionViewDelegate>
 // Stores a reference to the image height constraints for easy adjustment.
 @property (nonatomic, strong) NSLayoutConstraint *featuredImageZeroHeightConstraint;
@@ -33,7 +32,6 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 + (UIFont *)contentFont {
     return (IS_IPAD ? [WPFontManager openSansRegularFontOfSize:16.0] : [WPFontManager openSansRegularFontOfSize:14.0]);
 }
-
 
 #pragma mark - Lifecycle
 
@@ -130,7 +128,6 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     _alwaysHidesFeaturedImage = alwaysHides;
     [self configureFeaturedImageView];
 }
-
 
 #pragma mark - Private Methods
 
@@ -269,7 +266,6 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     [self addSubview:self.actionView];
 }
 
-
 #pragma mark - Subview factories
 
 - (WPContentAttributionView *)viewForAttributionView
@@ -338,7 +334,6 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     actionView.translatesAutoresizingMaskIntoConstraints = NO;
     return actionView;
 }
-
 
 #pragma mark - Configuration
 
@@ -434,7 +429,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
 /**
  Returns an attributed string for the specified `title`, formatted for the title view.
- 
+
  @param title The string to convert to an attriubted string.
  @return An attributed string formatted to display in the title view.
  */
@@ -477,13 +472,12 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     return attributedSummary;
 }
 
-
 #pragma mark - WPContentView Delegate Methods
 
 /**
  Receives the notification that the user has tapped the featured image, and informs 
  the delegate of the interaction.
- 
+
  @param sender A reference to the featured image.
  */
 - (void)featuredImageAction:(id)sender
@@ -492,7 +486,6 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
         [self.delegate contentView:self didReceiveFeaturedImageAction:sender];
     }
 }
-
 
 #pragma mark - authorLinkAction
 
@@ -506,6 +499,5 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
         [self.delegate contentView:self didReceiveAttributionLinkAction:sender];
     }
 }
-
 
 @end

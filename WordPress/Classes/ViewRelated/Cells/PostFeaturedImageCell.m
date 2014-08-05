@@ -26,7 +26,7 @@ CGFloat const PostFeaturedImageCellMargin = 15.0f;
     self.imageView.contentMode = UIViewContentModeScaleAspectFill;
     self.imageView.clipsToBounds = YES;
     [self.contentView addSubview:self.imageView];
-    
+
     self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     CGRect activityFrame = self.activityView.frame;
     CGFloat x = (contentFrame.size.width - activityFrame.size.width) / 2.0f;

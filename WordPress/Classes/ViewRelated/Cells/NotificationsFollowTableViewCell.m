@@ -14,12 +14,12 @@
         [actionButton setTitleEdgeInsets: UIEdgeInsetsMake(0, 2.0f, 0, 0)];
         [actionButton addTarget:self action:@selector(actionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:actionButton];
-        
+
         [self.textLabel setBackgroundColor:[UIColor clearColor]];
         [self.textLabel setTextColor:[WPStyleGuide littleEddieGrey]];
         [self.textLabel setFont:[WPStyleGuide postTitleFont]];
         [self.textLabel setFont:[WPStyleGuide tableviewSectionHeaderFont]];
-        
+
         [self.detailTextLabel setFont:[WPStyleGuide subtitleFont]];
         [self.detailTextLabel setTextColor:[WPStyleGuide baseDarkerBlue]];
         [self.detailTextLabel setBackgroundColor:[UIColor clearColor]];
@@ -27,7 +27,7 @@
         [self.detailTextLabel setAdjustsFontSizeToFitWidth:NO];
         [self.detailTextLabel setLineBreakMode:NSLineBreakByTruncatingTail];
     }
-    
+
     return self;
 }
 
