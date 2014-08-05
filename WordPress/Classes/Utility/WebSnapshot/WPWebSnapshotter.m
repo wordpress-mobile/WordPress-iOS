@@ -62,7 +62,7 @@ static const NSUInteger kWPWebSnapshotterCacheTotalCostLimit = 20*1000*1000;
     UIView *cachedView = [self cachedSnapshotForRequest:request];
     if (cachedView) {
         WPWebSnapshotterSnapshotCompletionHandler callback = [completionHandler copy];
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
             callback(cachedView);
         });
     } else {
