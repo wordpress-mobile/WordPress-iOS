@@ -65,7 +65,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 }
 
 + (UIFont *)titleFont {
-    return (IS_IPAD ? [UIFont fontWithName:@"Merriweather-Bold" size:24.0f] : [UIFont fontWithName:@"Merriweather-Bold" size:19.0f]);
+    return (IS_IPAD ? [UIFont fontWithName:@"Merriweather-Bold" size:24.0f] : [UIFont fontWithName:@"Merriweather-Bold"
+                                                                                              size:19.0f]);
 }
 
 + (UIFont *)summaryFont {
@@ -164,7 +165,10 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         }
         
         // Update the relative timestamp once per minute
-        _dateRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(refreshDate:) userInfo:nil repeats:YES];
+        _dateRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self
+                                                           selector:@selector(refreshDate:)
+                                                           userInfo:nil
+                                                            repeats:YES];
     }
     return self;
 }
@@ -288,10 +292,13 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     // Position the meta view and its subviews
     CGFloat bottomY = self.textContentView.frame.origin.y + self.textContentView.frame.size.height + RPVVerticalPadding;
 	self.bottomView.frame = CGRectMake(0, bottomY, contentWidth, RPVMetaViewHeight);
-    self.bottomBorder.frame = CGRectMake(RPVHorizontalInnerPadding, 0, contentWidth - RPVHorizontalInnerPadding * 2, RPVBorderHeight);
+    self.bottomBorder.frame = CGRectMake(RPVHorizontalInnerPadding,
+                                         0,
+                                         contentWidth - RPVHorizontalInnerPadding * 2,
+                                         RPVBorderHeight);
     
     // Action buttons
-    CGFloat buttonX = self.bottomView.frame.size.width - RPVHorizontalInnerPadding; // minus two px so button text aligns
+    CGFloat buttonX = self.bottomView.frame.size.width - RPVHorizontalInnerPadding; // minus 2px so button text aligns
     CGFloat buttonY = RPVBorderHeight; // Just below the line
     NSArray* reversedActionButtons = [[self.actionButtons reverseObjectEnumerator] allObjects];
 
@@ -331,7 +338,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
     CGFloat timeWidth = _shouldShowDateInByView ? RPVControlButtonWidth : buttonX - RPVHorizontalInnerPadding;
     CGFloat timeHeight = _shouldShowDateInByView ? _byView.frame.size.height : RPVControlButtonHeight;
-    CGFloat timeXPosition = _shouldShowDateInByView ? _byView.frame.size.width - timeWidth - RPVHorizontalInnerPadding : RPVHorizontalInnerPadding;
+    CGFloat timeXPosition = _shouldShowDateInByView ? _byView.frame.size.width - timeWidth - RPVHorizontalInnerPadding
+                                                    : RPVHorizontalInnerPadding;
     CGFloat timeYPosition = _shouldShowDateInByView ? 0.0f : RPVBorderHeight;
     self.timeButton.frame = CGRectMake(timeXPosition, timeYPosition, timeWidth, timeHeight);
     
@@ -557,7 +565,10 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 #pragma mark - DTCoreAttributedTextContentView Delegate Methods
 
-- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame {
+- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView
+              viewForAttributedString:(NSAttributedString *)string
+                                frame:(CGRect)frame
+{
 	NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:nil];
 	
 	NSURL *URL = [attributes objectForKey:DTLinkAttribute];
@@ -569,11 +580,13 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 	button.GUID = identifier;
 	
 	// get image with normal link text
-	UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDefault];
+	UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame
+                                                                     options:DTCoreTextLayoutFrameDrawingDefault];
 	[button setImage:normalImage forState:UIControlStateNormal];
 	
 	// get image for highlighted link text
-	UIImage *highlightImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDrawLinksHighlighted];
+	UIImage *highlightImage = [attributedTextContentView contentImageWithBounds:frame
+                                                                        options:DTCoreTextLayoutFrameDrawingDrawLinksHighlighted];
 	[button setImage:highlightImage forState:UIControlStateHighlighted];
 	
 	// use normal push action for opening URL
@@ -583,9 +596,13 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 }
 
 
-- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttachment:(DTTextAttachment *)attachment frame:(CGRect)frame {
-    if (!attachment.contentURL)
+- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView
+                    viewForAttachment:(DTTextAttachment *)attachment
+                                frame:(CGRect)frame
+{
+    if (!attachment.contentURL) {
         return nil;
+    }
     
     // The textContentView will render the first time with the original frame, and then update when media loads.
     // To avoid showing gaps in the layout due to the original attachment sizes, relayout the view after a brief delay.
@@ -594,9 +611,11 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     CGFloat width = _textContentView.frame.size.width;
     CGFloat availableWidth = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
     
-	// The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image itself to run out to the edges,
-	// so position it offset by the inverse of _textContentView's edgeInsets. Also add top padding so we don't bump into a line of text.
-	// Remeber to add an extra 10px to the frame to preserve aspect ratio.
+	// The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image
+    // itself to run out to the edges, so position it offset by the inverse of _textContentView's edgeInsets. Also
+    // add top padding so we don't bump into a line of text. Remeber to add an extra 10px to the frame to preserve
+    // aspect ratio.
+
 	UIEdgeInsets edgeInsets = _textContentView.edgeInsets;
 	edgeInsets.left = 0.0f - edgeInsets.left;
 	edgeInsets.top = 15.0f;
@@ -651,8 +670,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
             [self.mediaQueue enqueueMedia:imageView
                                   withURL:attachment.contentURL
                          placeholderImage:nil
-                                     size:CGSizeMake(width, 0.0f) // Passing zero for height to get the correct aspect ratio
-                                isPrivate:[self privateContent]
+                                     size:CGSizeMake(width, 0.0f) // Passing zero for height to get the correct
+                                isPrivate:[self privateContent]   // aspect ratio
                                   success:nil
                                   failure:nil];
 		}
