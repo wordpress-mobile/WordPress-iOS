@@ -7,7 +7,6 @@
 #import "WPAccount.h"
 #import "AccountService.h"
 
-
 @interface ReaderCommentPublisher ()
 
 @property (nonatomic, strong, readwrite) InlineComposeView *composeView;

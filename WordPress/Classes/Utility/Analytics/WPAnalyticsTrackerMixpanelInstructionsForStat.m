@@ -23,7 +23,7 @@
 {
     if ([_superPropertiesToFlag containsObject:property])
         return;
-    
+
     [_superPropertiesToFlag addObject:property];
 }
 
@@ -78,6 +78,5 @@
     NSParameterAssert(value != nil);
     _peoplePropertiesToAssign[property] = value;
 }
-
 
 @end

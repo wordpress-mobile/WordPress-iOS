@@ -37,10 +37,10 @@ static NSString *const AuthorizedHybridHost = @"en.wordpress.com";
     }else {
         // append the query with &
         newURL = [absoluteURL stringByAppendingFormat:@"&wpcom-hybrid-auth-token=%@", self.hybridAuthToken];
-        
+
     }
     return [NSURL URLWithString:newURL];
-    
+
 }
 
 + (BOOL) isValidHybridURL:(NSURL *)url {
@@ -48,9 +48,9 @@ static NSString *const AuthorizedHybridHost = @"en.wordpress.com";
 }
 
 - (BOOL)requestIsValidHybridRequest:(NSURLRequest *)request {
-    
+
     return [request.URL.host isEqualToString:AuthorizedHybridHost];
-    
+
 }
 
 - (NSString *)hybridAuthToken
@@ -75,7 +75,7 @@ static NSString *const AuthorizedHybridHost = @"en.wordpress.com";
         DDLogInfo(@"Generating new hybrid token: %@", token);
         [defaults setValue:token forKey:HybridTokenSetting];
         [defaults synchronize];
-        
+
     }
     return token;
 }
@@ -83,47 +83,46 @@ static NSString *const AuthorizedHybridHost = @"en.wordpress.com";
 #pragma mark - Hybrid Bridge
 
 - (BOOL)handlesRequest:(NSURLRequest *)request {
-    
-    
+
     if ( [request.URL.scheme isEqualToString:@"wpios"] && [request.URL.host isEqualToString:@"batch"] ){
         [self executeBatchFromRequest:request];
         return YES;
     }
-    
+
     return NO;
 
 }
 /*
- 
+
  Workhorse for the JavaScript to Obj-C bridge
  The payload QS variable is JSON that is url encoded.
- 
+
  This decodes and parses the JSON into a Obj-C object and
  uses the properties to create an NSInvocation that fires
  in the context of the controller.
- 
+
  */
 -(void)executeBatchFromRequest:(NSURLRequest *)request {
     if (self.delegate == nil) {
         return;
     }
     NSURL *url = request.URL;
-    
+
     NSArray *components = [url.query componentsSeparatedByString:@"&"];
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithCapacity:[components count]];
     [components enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSArray *pair = [obj componentsSeparatedByString:@"="];
         [params setValue:[pair objectAtIndex:1] forKey:[pair objectAtIndex:0]];
     }];
-    
+
     NSString *payload_data = [(NSString *)[params objectForKey:@"payload"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     if (![self.hybridAuthToken isEqualToString:[params objectForKey:@"wpcom-hybrid-auth-token"]]) {
         DDLogError(@"Invalid hybrid token received %@ (expected: %@)", [params objectForKey:@"wpcom-hybrid-auth-token"], self.hybridAuthToken);
         return;
     }
-    
+
     id payload = [NSJSONSerialization JSONObjectWithData:[payload_data dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
-    
+
     [payload enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSDictionary *action = (NSDictionary *)obj;
         NSArray *args = (NSArray *)[action objectForKey:@"args"];
@@ -141,7 +140,7 @@ static NSString *const AuthorizedHybridHost = @"en.wordpress.com";
                 [invocation setArgument:&obj atIndex:idx + 2];
             }];
         }
-        
+
         if (invocation && [self.delegate respondsToSelector:aSelector]) {
             @try {
                 [invocation invoke];
@@ -155,10 +154,9 @@ static NSString *const AuthorizedHybridHost = @"en.wordpress.com";
         } else {
             DDLogWarn(@"Hybrid controller doesn't know how to run method: %@ %@", self.delegate, methodName);
         }
-        
-    }];
-    
-}
 
+    }];
+
+}
 
 @end

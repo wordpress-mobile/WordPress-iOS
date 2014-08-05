@@ -26,7 +26,7 @@ const CGFloat CommentViewHeaderLabelVerticalInset = 10.0f;
         _headerLabel.edgeInsets = UIEdgeInsetsMake(CommentViewHeaderLabelVerticalInset, RPVHorizontalInnerPadding, CommentViewHeaderLabelVerticalInset, RPVHorizontalInnerPadding);
         _headerLabel.numberOfLines = 0;
         [self addSubview:_headerLabel];
-        
+
         UIView *contentView = [self viewForFullContent];
         [self addSubview:contentView];
     }
@@ -35,18 +35,18 @@ const CGFloat CommentViewHeaderLabelVerticalInset = 10.0f;
 
 - (void)configureContentView:(id<WPContentViewProvider>)contentProvider {
     [super configureContentView:contentProvider];
-    
+
     NSString *avatarEmail = [contentProvider gravatarEmailForDisplay];
     NSURL *avatarURL = [contentProvider avatarURLForDisplay];
     UIImage *avatarPlaceholderImage = [UIImage imageNamed:@"gravatar"];
-    
+
     // Use email if it exists, otherwise a direct URL
     if (avatarEmail) {
         [self.avatarImageView setImageWithGravatarEmail:avatarEmail fallbackImage:avatarPlaceholderImage];
     } else if (avatarURL) {
         [self.avatarImageView setImageWithURL:avatarURL placeholderImage:avatarPlaceholderImage];
     }
-    
+
     NSString *commentHtml = [contentProvider contentForDisplay];
     if ([commentHtml length] == 0) {
         return;
@@ -64,7 +64,7 @@ const CGFloat CommentViewHeaderLabelVerticalInset = 10.0f;
         [self.headerLabel setDelegate:self];
         NSAttributedString *noteContentAttributedString = [[NSAttributedString alloc] initWithHTMLData:[self.headerText dataUsingEncoding:NSUTF8StringEncoding] options:[WPStyleGuide defaultDTCoreTextOptions] documentAttributes:nil];
         [self.headerLabel setAttributedString:noteContentAttributedString];
-        
+
         // Calculate height of headerLabel frame
         DTCoreTextLayouter *layouter = [[DTCoreTextLayouter alloc] initWithAttributedString:noteContentAttributedString];
         CGRect maxRect = CGRectMake(0.0f, 0.0f, self.headerLabel.frame.size.width, CGFLOAT_HEIGHT_UNKNOWN);
@@ -75,7 +75,7 @@ const CGFloat CommentViewHeaderLabelVerticalInset = 10.0f;
         frame.size.height = sizeNeeded.height + (2 * CommentViewHeaderLabelVerticalInset);
         [self.headerLabel setFrame:frame];
     }
-    
+
     [super layoutSubviews];
 }
 

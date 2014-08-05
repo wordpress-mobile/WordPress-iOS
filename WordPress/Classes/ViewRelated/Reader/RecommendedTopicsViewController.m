@@ -38,7 +38,7 @@
         tableInset.top = -1;
         self.tableView.contentInset = tableInset;
     }
-    
+
     self.tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
     self.tableViewHandler.delegate = self;
 
@@ -56,7 +56,6 @@
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
 
 #pragma mark - Instance Methods
 
@@ -90,7 +89,6 @@
 {
     [self updateSelectedTopic];
 }
-
 
 #pragma mark - TableView Handler Delegate Methods
 

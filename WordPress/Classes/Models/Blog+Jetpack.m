@@ -24,7 +24,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
 {
     BOOL hasJetpack = [self hasJetpack];
     BOOL connectedToWPCom = [[self jetpackBlogID] doubleValue] > 0.0;
-    
+
     return hasJetpack && connectedToWPCom;
 }
 
@@ -137,7 +137,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
 
 - (void)saveJetpackUsername:(NSString *)username andPassword:(NSString *)password success:(void (^)())success failure:(void (^)(NSError *))failure {
     NSAssert(![self isWPcom], @"Blog+Jetpack doesn't support WordPress.com blogs");
-    
+
     WordPressComOAuthClient *client = [WordPressComOAuthClient client];
     [client authenticateWithUsername:username
                             password:password
@@ -152,24 +152,24 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                                  if ([accountService defaultWordPressComAccount] == nil) {
                                      [accountService setDefaultWordPressComAccount:account];
                                      [self dataSave];
-                                     
+
                                      // Sadly we don't care if this succeeds or not
                                      [accountService syncBlogsForAccount:account success:nil failure:nil];
                                  }
-                                 
+
                                  if (success) {
                                      success();
                                  }
                              } failure:^(NSError *error) {
                                  DDLogError(@"Error while obtaining OAuth2 token after enabling JetPack: %@", error);
-                                 
+
                                  // OAuth2 login failed - we can still create the WPAccount without the token
                                  // TODO: This is the behavior prior to 3.9 and could get removed
                                  AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
                                  WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username password:password authToken:nil];
                                  self.jetpackAccount = account;
                                  [self dataSave];
-                                 
+
                                  // If the default 3.9 behavior is removed above, this should call the failure block, not success
                                  if (success) {
                                      success();
@@ -179,7 +179,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
 
 /*
  Replacement method for `-[Blog remove]`
- 
+
  @warning Don't call this directly
  */
 - (void)removeWithoutJetpack {

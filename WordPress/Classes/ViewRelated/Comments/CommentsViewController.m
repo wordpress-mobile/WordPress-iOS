@@ -33,19 +33,19 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 
 - (void)viewDidLoad {
     DDLogMethod();
-    
+
     [super viewDidLoad];
-    
+
     self.title = NSLocalizedString(@"Comments", @"");
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    
+
     self.tableView.accessibilityLabel = @"Comments";       // required for UIAutomation for iOS 4
     if([self.tableView respondsToSelector:@selector(setAccessibilityIdentifier:)]){
         self.tableView.accessibilityIdentifier = @"Comments";  // required for UIAutomation for iOS 5
     }
-    
+
     self.editButtonItem.enabled = [[self.resultsController fetchedObjects] count] > 0;
-    
+
     // Do not show row dividers for empty cells.
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
@@ -58,7 +58,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 
 - (void)viewWillDisappear:(BOOL)animated {
     DDLogMethod();
-    
+
     [super viewWillDisappear:animated];    
 }
 
@@ -101,15 +101,15 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
             comment = nil;
         }
     }
-    
+
     if(comment) {
         self.currentIndexPath = indexPath;
         self.lastSelectedCommentID = comment.commentID; //store the latest user selection
-        
+
         CommentViewController *vc = [[CommentViewController alloc] init];
         vc.comment = comment;
         [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-        
+
         [self.navigationController pushViewController:vc animated:YES];
     } else {
         [self.navigationController popToViewController:self animated:YES];
@@ -138,7 +138,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 
 - (Comment *)commentWithId:(NSNumber *)commentId {
     Comment *comment = [[[self.resultsController fetchedObjects] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"commentID = %@", commentId]] lastObject];
-    
+
     return comment;
 }
 
@@ -157,7 +157,6 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 
 - (void)tableView:(UITableView *)tableView didCheckRowAtIndexPath:(NSIndexPath *)indexPath {
 }
-
 
 #pragma mark - Subclass methods
 
@@ -215,7 +214,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [super controllerDidChangeContent:controller];
-    
+
     if ([[self.resultsController fetchedObjects] count] > 0) {
         self.editButtonItem.enabled = YES;
     } else {

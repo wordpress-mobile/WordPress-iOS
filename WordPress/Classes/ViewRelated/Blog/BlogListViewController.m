@@ -47,7 +47,7 @@ CGFloat const blavatarImageSize = 50.f;
 - (NSString *)modelIdentifierForElementAtIndexPath:(NSIndexPath *)indexPath inView:(UIView *)view {
     if (!indexPath || !view)
         return nil;
-    
+
     // Preserve objectID
     NSManagedObject *managedObject = [self.resultsController objectAtIndexPath:indexPath];
     return [[managedObject.objectID URIRepresentation] absoluteString];
@@ -62,15 +62,15 @@ CGFloat const blavatarImageSize = 50.f;
     NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:identifier]];
     if (!objectID)
         return nil;
-    
+
     NSError *error = nil;
     NSManagedObject *managedObject = [context existingObjectWithID:objectID error:&error];
     if (error || !managedObject) {
         return nil;
     }
-    
+
     NSIndexPath *indexPath = [self.resultsController indexPathForObject:managedObject];
-    
+
     return indexPath;
 }
 
@@ -88,7 +88,7 @@ CGFloat const blavatarImageSize = 50.f;
         tableInset.top = -1;
         self.tableView.contentInset = tableInset;
     }
-    
+
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:AddSiteCellIdentifier];
@@ -147,7 +147,6 @@ CGFloat const blavatarImageSize = 50.f;
     [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 }
 
-
 #pragma mark - Notifications
 
 - (void)wordPressComApiDidLogin:(NSNotification *)notification {
@@ -158,21 +157,18 @@ CGFloat const blavatarImageSize = 50.f;
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
 }
 
-
 #pragma mark - Actions
 
 - (void)showSettings:(id)sender {
     [WPAnalytics track:WPAnalyticsStatOpenedSettings];
-    
+
     SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
     aNavigationController.navigationBar.translucent = NO;
     aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-    
+
     [self.navigationController presentViewController:aNavigationController animated:YES completion:nil];
 }
-
-
 
 #pragma mark - Table view data source
 
@@ -188,18 +184,18 @@ CGFloat const blavatarImageSize = 50.f;
         sectionInfo = [[self.resultsController sections] objectAtIndex:section];
         numberOfRows = sectionInfo.numberOfObjects;
     }
-    
+
     if (section == [self sectionForSelfHosted]) {
         // This is for the "Add a Site" row
         numberOfRows++;
     }
-    
+
     return numberOfRows;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+
     UITableViewCell *cell;
     if ([indexPath isEqual:[self indexPathForAddSite]]) {
         cell = [self.tableView dequeueReusableCellWithIdentifier:AddSiteCellIdentifier];
@@ -208,7 +204,7 @@ CGFloat const blavatarImageSize = 50.f;
     }
 
     [self configureCell:cell atIndexPath:indexPath];
-    
+
     if ([indexPath isEqual:[self indexPathForAddSite]]) {
         [WPStyleGuide configureTableViewActionCell:cell];
     } else {
@@ -234,11 +230,11 @@ CGFloat const blavatarImageSize = 50.f;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+
     if (indexPath.section == [self sectionForSelfHosted] && tableView.editing) {
         return UITableViewCellEditingStyleDelete;
     }
-    
+
     return UITableViewCellEditingStyleNone;
 }
 
@@ -252,7 +248,7 @@ CGFloat const blavatarImageSize = 50.f;
         } else {
             [blog remove];
         }
-        
+
         // Count won't be updated yet; if this is the last site (count 1), exit editing mode
         if ([self numSites] == 1) {
             // Update the UI in the next run loop after the resultsController has updated
@@ -264,7 +260,7 @@ CGFloat const blavatarImageSize = 50.f;
                 NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
                 AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
                 WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-                
+
                 if (!defaultAccount) {
                     [[WordPressAppDelegate sharedWordPressApplicationDelegate] showWelcomeScreenIfNeededAnimated:YES];
                 }
@@ -274,19 +270,19 @@ CGFloat const blavatarImageSize = 50.f;
 }
 
 - (NSInteger)sectionForDotCom {
-    
+
     if ([self.resultsController sections].count > 0) {
         id<NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:0];
         if ([[sectionInfo name] isEqualToString:@"1"]) {
             return 0;
         }
     }
-    
+
     return -1;
 }
 
 - (NSInteger)sectionForSelfHosted {
-    
+
     if ([self sectionForDotCom] >= 0) {
         return 1;
     }
@@ -319,7 +315,7 @@ CGFloat const blavatarImageSize = 50.f;
             cell.textLabel.text = [blog displayURL];
             cell.detailTextLabel.text = @"";
         }
-        
+
         [cell.imageView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
         if ([self.tableView isEditing] && blog.isWPcom) {
             UISwitch *visibilitySwitch = [UISwitch new];
@@ -327,12 +323,12 @@ CGFloat const blavatarImageSize = 50.f;
             visibilitySwitch.tag = indexPath.row;
             [visibilitySwitch addTarget:self action:@selector(visibilitySwitchAction:) forControlEvents:UIControlEventValueChanged];
             cell.accessoryView = visibilitySwitch;
-            
+
             // Make textLabel light gray if blog is not-visible
             if (!visibilitySwitch.on) {
                 [cell.textLabel setTextColor:[WPStyleGuide readGrey]];
             }
-            
+
         } else {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
@@ -365,11 +361,11 @@ CGFloat const blavatarImageSize = 50.f;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+
     if ([indexPath isEqual:[self indexPathForAddSite]]) {
         [self setEditing:NO animated:NO];
         LoginViewController *loginViewController = [[LoginViewController alloc] init];
-        
+
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
         WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
@@ -389,7 +385,7 @@ CGFloat const blavatarImageSize = 50.f;
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
         [blogService flagBlogAsLastUsed:blog];
-        
+
         BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
         blogDetailsViewController.blog = blog;
         [self.navigationController pushViewController:blogDetailsViewController animated:YES];
@@ -402,7 +398,7 @@ CGFloat const blavatarImageSize = 50.f;
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     [super setEditing:editing animated:animated];
-    
+
     // Animate view to editing mode
     __block UIView *snapshot;
     if (animated) {
@@ -410,10 +406,10 @@ CGFloat const blavatarImageSize = 50.f;
         snapshot.frame = [self.view convertRect:self.view.frame fromView:self.view.superview];
         [self.view addSubview:snapshot];
     }
-    
+
     // Update results controller to show hidden blogs
     [self updateFetchRequest];
-    
+
     if (animated) {
         [UIView animateWithDuration:0.2 animations:^{
             snapshot.alpha = 0.0;
@@ -439,19 +435,19 @@ CGFloat const blavatarImageSize = 50.f;
     if (_resultsController) {
         return _resultsController;
     }
-    
+
     NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
     [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"account.isWpcom" ascending:NO], [NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]]];
     [fetchRequest setPredicate:[self fetchRequestPredicate]];
-    
+
     _resultsController = [[NSFetchedResultsController alloc]
                           initWithFetchRequest:fetchRequest
                           managedObjectContext:moc
                           sectionNameKeyPath:@"isWPcom"
                           cacheName:nil];
     _resultsController.delegate = self;
-    
+
     NSError *error = nil;
     if (![_resultsController performFetch:&error]) {
         DDLogError(@"Couldn't fetch sites: %@", [error localizedDescription]);
@@ -470,12 +466,12 @@ CGFloat const blavatarImageSize = 50.f;
 
 - (void)updateFetchRequest {
     self.resultsController.fetchRequest.predicate = [self fetchRequestPredicate];
-    
+
     NSError *error = nil;
     if (![self.resultsController performFetch:&error]) {
         DDLogError(@"Couldn't fetch sites: %@", [error localizedDescription]);
     }
-    
+
     [self.tableView reloadData];
 }
 

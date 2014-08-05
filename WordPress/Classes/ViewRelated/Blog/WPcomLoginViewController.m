@@ -21,7 +21,6 @@
 - (void)signIn:(id)sender;
 @end
 
-
 @implementation WPcomLoginViewController
 
 @synthesize footerText, buttonText, isSigningIn, isCancellable, predefinedUsername;
@@ -47,11 +46,11 @@
     [super viewDidLoad];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    
+
     self.footerText = @" ";
     self.buttonText = NSLocalizedString(@"Sign In", @"");
     self.navigationItem.title = NSLocalizedString(@"Sign In", @"");
-    
+
     if (isCancellable) {
         UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil)
                                                                       style:UIBarButtonItemStylePlain
@@ -59,7 +58,7 @@
                                                                      action:@selector(cancel:)];
         self.navigationItem.leftBarButtonItem = barButton;
     }
-    
+
     // Setup WPcom table header
     CGRect headerFrame = CGRectMake(0, 0, 320, 70);
     CGRect logoFrame = CGRectMake(40, 20, 229, 43);
@@ -74,22 +73,19 @@
     logo.frame = logoFrame;
     [headerView addSubview:logo];
     self.tableView.tableHeaderView = headerView;
-        
+
     if(IS_IPAD)
         self.tableView.backgroundView = nil;
 }
-
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     isSigningIn = NO;
 }
 
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
-
 
 #pragma mark -
 #pragma mark Table view data source
@@ -99,15 +95,13 @@
     return 2;
 }
 
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(section == 0) {
         return 2;
     }
-    
+
     return 1;
 }
-
 
 - (NSString *)titleForFooterInSection:(NSInteger)section {
     if(section == 0) {
@@ -130,11 +124,10 @@
     return [WPTableViewSectionFooterView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
-
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = nil;
-    
+
     if(indexPath.section == 1) {
         WPTableViewActivityCell *activityCell = nil;
         NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"WPTableViewActivityCell" owner:nil options:nil];
@@ -154,7 +147,7 @@
             [activityCell.spinner stopAnimating];
             self.buttonText = NSLocalizedString(@"Sign In", @"");
         }
-        
+
         activityCell.textLabel.text = buttonText;
         if (isSigningIn) {
             activityCell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -168,7 +161,7 @@
             if (loginCell == nil) {
                 loginCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault 
                                                             reuseIdentifier:@"TextCell"];
-                
+
                 NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
                 AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
                 WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
@@ -209,20 +202,19 @@
     return cell;    
 }
 
-
 #pragma mark -
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tv deselectRowAtIndexPath:indexPath animated:YES];
-        
+
     if (indexPath.section == 0) {
         UITableViewCell *cell = (UITableViewCell *)[tv cellForRowAtIndexPath:indexPath];
         for (UIView *subview in cell.subviews) {
             if ([subview isKindOfClass:[UITextField class]] == YES) {
                 UITextField *tempTextField = (UITextField *)subview;
                 [tempTextField becomeFirstResponder];
-                
+
                 break;
             }
         }
@@ -245,29 +237,28 @@
             self.buttonText = NSLocalizedString(@"Sign In", @"");
             [tv reloadData];
         } else {
-            
+
             if (![ReachabilityUtils isInternetReachable]) {
                 [ReachabilityUtils showAlertNoInternetConnection];
                 return;
             }
-            
+
             self.buttonText = NSLocalizedString(@"Signing in...", @"");
-            
+
             [self signIn:self];
         }
     }
 }
-
 
 #pragma mark -
 #pragma mark UITextField delegate methods
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
-    
+
     UITableViewCell *cell = nil;
     UITextField *nextField = nil;
-    
+
     if (textField.tag == 0) {
         [textField endEditing:YES];
         cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
@@ -279,15 +270,14 @@
     } else if (textField.tag == 1) {
         [self signIn:self];
     }
-    
+
     return YES;
 }
-
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     UITableViewCell *cell = (UITableViewCell *)[textField superview];
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    
+
     if (indexPath.row == 0) {
         if ((textField.text != nil) && ([textField.text isEqualToString:@""])) {
             self.footerText = NSLocalizedString(@"Username is required.", @"");
@@ -302,7 +292,6 @@
 
     [textField resignFirstResponder];
 }
-
 
 #pragma mark -
 #pragma mark Custom methods
@@ -323,7 +312,7 @@
     } else {
         isSigningIn = YES;
         self.footerText = @" ";
-        
+
         WordPressComOAuthClient *client = [WordPressComOAuthClient client];
         [client authenticateWithUsername:username
                                 password:password success:^(NSString *authToken) {
@@ -350,7 +339,6 @@
     }
     [self.tableView reloadData];
 }
-
 
 - (IBAction)cancel:(id)sender {
     if (self.delegate) {

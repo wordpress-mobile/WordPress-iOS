@@ -35,19 +35,19 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     [self.view setBackgroundColor:[WPStyleGuide itsEverywhereGrey]];
-    
+
     _scrollView = [[UIScrollView alloc] init];
     [_scrollView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [_scrollView setScrollEnabled:YES];
-    
+
     // Create badge image view
     _badgeImageView = [[UIImageView alloc] init];
     [_badgeImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [_badgeImageView setContentMode: UIViewContentModeScaleAspectFit];
     [_scrollView addSubview:_badgeImageView];
-    
+
     // Set icon URL and start a wee animation to catch the eye
     NSURLRequest *urlRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_note.subjectIcon]];
     __weak UIImageView *weakBadgeImageView = _badgeImageView;
@@ -69,7 +69,7 @@
                                     }
                                     failure:nil
      ];
-    
+
     // Create note label
     _noteLabel = [[DTAttributedLabel alloc] initWithFrame:CGRectMake(0.0, 0.0, IS_IPAD ? 480.0f : 320.0f, 0.0f)];
     [_noteLabel setClipsToBounds:NO];
@@ -79,9 +79,9 @@
     [_noteLabel setBackgroundColor:[UIColor clearColor]];
     [_noteLabel setEdgeInsets:UIEdgeInsetsMake(0.0f, 20.0f, 0.0f, 20.0f)];
     [_noteLabel setNumberOfLines:0];
-    
+
     [_scrollView addSubview:_noteLabel];
-    
+
     // Set note label from HTML content
     NSString *noteBody = _note.bodyHtml;
     if (!noteBody) {
@@ -89,7 +89,7 @@
     }
     NSAttributedString *noteContentAttributedString = [[NSAttributedString alloc] initWithHTMLData:[noteBody dataUsingEncoding:NSUTF8StringEncoding] options:[WPStyleGuide defaultDTCoreTextOptions] documentAttributes:nil];
     [_noteLabel setAttributedString:noteContentAttributedString];
-    
+
     // Adjust height of noteLabel to match height of text content
     DTCoreTextLayouter *layouter = [[DTCoreTextLayouter alloc] initWithAttributedString:noteContentAttributedString];
     CGRect maxRect = CGRectMake(0.0f, 0.0f, _noteLabel.frame.size.width, CGFLOAT_HEIGHT_UNKNOWN);
@@ -99,9 +99,9 @@
     CGRect frame = _noteLabel.frame;
     frame.size.height = sizeNeeded.height;
     _noteLabel.frame = frame;
-    
+
     [self.view addSubview:_scrollView];
-    
+
     [self addLayoutConstraints];
 }
 
@@ -113,12 +113,12 @@
     NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(_scrollView, _badgeImageView, _noteLabel);
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_scrollView]|" options:0 metrics:0 views:viewsDictionary]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_scrollView]|" options:0 metrics:0 views:viewsDictionary]];
-    
+
     NSNumber *badgeSize = @(128);
     NSNumber *marginSize = @(20);
     NSDictionary *metricsDictionary = @{@"badgeSize" : badgeSize, @"marginSize" : marginSize};
     [_scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(>=marginSize)-[_badgeImageView(==badgeSize)]-marginSize-[_noteLabel]|" options:0 metrics:metricsDictionary views:viewsDictionary]];
-    
+
     // Set bottom of note label to bottom of scroll view
     [_scrollView addConstraint:[NSLayoutConstraint constraintWithItem:_noteLabel
                                                             attribute:NSLayoutAttributeBottom
@@ -127,12 +127,11 @@
                                                             attribute:NSLayoutAttributeBottom
                                                            multiplier:1.0
                                                              constant:0]];
-    
-    
+
     // Calculate how far to bring the y coordinate up in order to center both the badge and note label
     int badgeHeight = badgeSize.intValue / 2 - marginSize.intValue;
     int yPositionAdjustment = (badgeHeight + _noteLabel.frame.size.height) / 2;
-    
+
     // Apply center constraints
     [_scrollView addConstraint:[NSLayoutConstraint constraintWithItem:_badgeImageView
                                                             attribute:NSLayoutAttributeCenterY
@@ -141,7 +140,7 @@
                                                             attribute:NSLayoutAttributeCenterY
                                                            multiplier:1.0
                                                              constant:-yPositionAdjustment]];
-    
+
     [_scrollView addConstraint:[NSLayoutConstraint constraintWithItem:_badgeImageView
                                                             attribute:NSLayoutAttributeCenterX
                                                             relatedBy:NSLayoutRelationEqual
@@ -149,7 +148,7 @@
                                                             attribute:NSLayoutAttributeCenterX
                                                            multiplier:1.0
                                                              constant:0.0]];
-    
+
     [_scrollView addConstraint:[NSLayoutConstraint constraintWithItem:_noteLabel
                                                             attribute:NSLayoutAttributeCenterX
                                                             relatedBy:NSLayoutRelationEqual
@@ -161,26 +160,26 @@
 
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame {
     NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:nil];
-    
+
     NSURL *URL = [attributes objectForKey:DTLinkAttribute];
     NSString *identifier = [attributes objectForKey:DTGUIDAttribute];
-    
+
     DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
     button.URL = URL;
     button.minimumHitSize = CGSizeMake(25, 25); // adjusts it's bounds so that button is always large enough
     button.GUID = identifier;
-    
+
     // get image with normal link text
     UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDefault];
     [button setImage:normalImage forState:UIControlStateNormal];
-    
+
     // get image for highlighted link text
     UIImage *highlightImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDrawLinksHighlighted];
     [button setImage:highlightImage forState:UIControlStateHighlighted];
-    
+
     // use normal push action for opening URL
     [button addTarget:self action:@selector(linkAction:) forControlEvents:UIControlEventTouchUpInside];
-    
+
     return button;
 }
 
@@ -188,9 +187,9 @@
     if (![sender isKindOfClass:[DTLinkButton class]]) {
         return;
     }
-    
+
     id viewController;
-    
+
     if ([self.note statsEvent]) {
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.note.managedObjectContext];
         Blog *blog = nil;
@@ -203,7 +202,7 @@
             NSString *blogName = [[NSScanner scannerWithString:self.note.subjectText] scanQuotedText];
             blog = [blogService blogByBlogName:blogName];
         }
-        
+
         // On success, push the Stats VC
         if (blog) {
             StatsViewController *statsVC = [[StatsViewController alloc] init];
@@ -211,7 +210,7 @@
             viewController = statsVC;
         }
     }
-    
+
     if (!viewController) {
         DTLinkButton *button = (DTLinkButton *)sender;
         WPWebViewController *webViewController = [[WPWebViewController alloc] init];
@@ -219,7 +218,7 @@
 
         viewController = webViewController;
     }
-    
+
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

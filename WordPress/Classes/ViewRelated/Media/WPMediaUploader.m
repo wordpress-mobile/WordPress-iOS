@@ -29,9 +29,9 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
 {
     if ([mediaObjects count] == 0)
         return;
-    
+
     self.isUploadingMedia = YES;
-    
+
     _numberOfImagesToUpload += [mediaObjects count];
     for (Media *media in mediaObjects) {
         [self uploadMedia:media];
@@ -52,7 +52,7 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
             DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
             return;
         }
-        
+
         [WPError showAlertWithTitle:NSLocalizedString(@"Upload failed", nil) message:error.localizedDescription];
     }];
 }
@@ -112,7 +112,7 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
 
                 if([response objectForKey:@"url"] != nil)
                     media.remoteURL = [response objectForKey:@"url"];
-                
+
                 if ([response objectForKey:@"id"] != nil) {
                     media.mediaID = [[response objectForKey:@"id"] numericValue];
                 }
@@ -132,7 +132,7 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
                     media.progress = (float)totalBytesWritten / (float)totalBytesExpectedToWrite;
                 });
             }];
-            
+
             // Upload might have been canceled while processing
             if (media.remoteStatus == MediaRemoteStatusProcessing) {
                 media.remoteStatus = MediaRemoteStatusPushing;
@@ -149,7 +149,7 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
     if (self.uploadProgressBlock) {
         self.uploadProgressBlock(_numberOfImagesProcessed, _numberOfImagesToUpload);
     }
-    
+
     if (_numberOfImagesProcessed == _numberOfImagesToUpload && self.uploadsCompletedBlock) {
         self.isUploadingMedia = NO;
         self.uploadsCompletedBlock();

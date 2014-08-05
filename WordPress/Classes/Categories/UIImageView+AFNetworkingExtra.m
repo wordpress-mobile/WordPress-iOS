@@ -3,7 +3,6 @@
 
 @implementation UIImageView (AFNetworkingExtra)
 
-
 - (void)setImageWithURL:(NSURL *)url
        placeholderImage:(UIImage *)placeholderImage
                 success:(void (^)(UIImage *image))success
@@ -11,7 +10,7 @@
 {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    
+
     __block UIImageView *selfRef = self;
     [self setImageWithURLRequest:request
                 placeholderImage:placeholderImage
@@ -39,16 +38,16 @@
         cachedResponse.data.length == 0) {
         return nil;
     }
-    
+
     NSError *error = nil;
     id responseObject = [[AFImageResponseSerializer serializer] responseObjectForResponse:cachedResponse.response
                                                                                      data:cachedResponse.data
                                                                                     error:&error];
-    
+
     if (error || ![responseObject isKindOfClass:[UIImage class]]) {
         return nil;
     }
-    
+
     return responseObject;
 }
 

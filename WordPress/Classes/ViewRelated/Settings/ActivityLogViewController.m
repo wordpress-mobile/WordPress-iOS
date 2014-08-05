@@ -43,7 +43,7 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self loadLogFiles];
-    
+
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:ActivityLogCellIdentifier];
 }
 

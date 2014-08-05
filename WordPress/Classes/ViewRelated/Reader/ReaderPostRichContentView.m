@@ -8,7 +8,6 @@
 
 @end
 
-
 @implementation ReaderPostRichContentView
 
 #pragma mark - Life Cycle Methods
@@ -18,14 +17,12 @@
     ((WPRichTextView *)self.contentView).delegate = nil;
 }
 
-
 #pragma mark - Public Methods
 
 - (void)refreshMediaLayout
 {
     [self.richTextView refreshMediaLayout];
 }
-
 
 #pragma mark - Private Methods
 
@@ -72,7 +69,6 @@
 {
     return 0;
 }
-
 
 #pragma mark - Action Methods
 

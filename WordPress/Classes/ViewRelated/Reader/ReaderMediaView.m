@@ -18,10 +18,9 @@
     return self;
 }
 
-
 - (void)layoutSubviews {
     [super layoutSubviews];
-    
+
     CGRect frame = CGRectMake(0.0f, 0.0f, self.frame.size.width, self.frame.size.height);
     if (UIEdgeInsetsEqualToEdgeInsets(UIEdgeInsetsZero, _edgeInsets)) {
         _imageView.frame = frame;
@@ -33,7 +32,6 @@
     }
     _imageView.frame = frame;
 }
-
 
 #pragma mark - Instance Methods
 
@@ -51,22 +49,20 @@
     [self setNeedsLayout];
 }
 
-
 - (UIImage *)image {
     return _imageView.image;
 }
 
-
 - (void)setImage:(UIImage *)image {
-    
+
     BOOL imageIsAnimated = (image.images != nil);
-    
+
     if (imageIsAnimated)
     {
         _imageView.image = image.images[0];
         _imageView.animationImages = image.images;
         _imageView.animationDuration = image.duration;
-        
+
         // DRM: a delay before starting the animations is necessary.  For some reason calling
         // startAnimating right away seems to cause animations not to start at all.
         //
@@ -80,16 +76,14 @@
     {
         _imageView.image = image;
     }
-    
+
     self.isShowingPlaceholder = NO;
 }
-
 
 - (void)setPlaceholder:(UIImage *)image {
     _imageView.image = image;
     self.isShowingPlaceholder = YES;
 }
-
 
 - (void)setImageWithURL:(NSURL *)url
        placeholderImage:(UIImage *)image
@@ -113,6 +107,5 @@
                             }
                         }];
 }
-
 
 @end

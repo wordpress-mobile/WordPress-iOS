@@ -31,12 +31,12 @@ CGFloat const PostGeolocationCellMargin = 15.0f;
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    
+
     CGFloat x = PostGeolocationCellMargin;
     CGFloat y = PostGeolocationCellMargin;
     CGFloat w = CGRectGetWidth(self.contentView.frame) - (PostGeolocationCellMargin * 2);
     CGFloat h = CGRectGetHeight(self.contentView.frame) - (PostGeolocationCellMargin * 2);
-    
+
     self.geoView.frame = CGRectMake(x, y, w, h);
 }
 

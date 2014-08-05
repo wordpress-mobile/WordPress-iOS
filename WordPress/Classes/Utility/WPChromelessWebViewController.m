@@ -20,14 +20,13 @@
 
 - (void)loadView {
     [super loadView];
-    
+
     CGRect frame = self.view.bounds;
     self.webView = [[WPWebView alloc] initWithFrame:frame];
     webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     webView.delegate = self;
     [self.view addSubview:webView];
 }
-
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -47,7 +46,7 @@
         if ([self isViewLoaded]) {
             [webView loadPath:self.path];
         }
-        
+
     }
 }
 
@@ -55,16 +54,13 @@
     self.path = aPath;
 }
 
-
 - (NSURL *)currentURL {
     return [self.webView currentURL];
 }
 
-
 - (BOOL)expectsWidePanel {
     return YES;
 }
-
 
 #pragma mark -
 #pragma mark WPWebView Delegate Methods
@@ -92,7 +88,7 @@
                 }
             }
         }
-        
+
         if ([prevController isKindOfClass:[self class]]) {
             WPChromelessWebViewController *controller = (WPChromelessWebViewController *)prevController;
 
@@ -118,17 +114,16 @@
             [self.navigationController pushViewController:webViewController animated:YES];
             return NO;
         }
-        
+
         WPChromelessWebViewController *controller = [[WPChromelessWebViewController alloc] init];
         [controller loadPath:request.URL.absoluteString];        
         [self.navigationController pushViewController:controller animated:YES];
-        
+
         return NO;
     }
-    
+
     return YES;
 }
-
 
 - (void)webViewDidFinishLoad:(WPWebView *)wpWebView {
     NSString *title = [wpWebView stringByEvaluatingJavaScriptFromString:@"document.title;"];

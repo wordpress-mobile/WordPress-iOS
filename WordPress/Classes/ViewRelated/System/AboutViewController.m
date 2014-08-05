@@ -27,36 +27,36 @@ CGFloat const AboutViewPortraitButtonsY = 90.0f;
     self.navigationItem.title = NSLocalizedString(@"About", @"About this app (information page title)");
 
     self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    
+
     self.titleLabel.text = NSLocalizedString(@"WordPress for iOS", nil);
     self.titleLabel.font = [WPStyleGuide largePostTitleFont];
     self.titleLabel.textColor = [WPStyleGuide whisperGrey];
-    
+
     self.versionLabel.text = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     self.versionLabel.font = [WPStyleGuide postTitleFont];
     self.versionLabel.textColor = [WPStyleGuide whisperGrey];
 
     self.publisherLabel.font = [WPStyleGuide regularTextFont];
     self.publisherLabel.textColor = [WPStyleGuide whisperGrey];
-    
+
     self.viewWebsiteButton.titleLabel.font = [WPStyleGuide subtitleFont];
     self.viewWebsiteButton.titleLabel.textColor = [WPStyleGuide whisperGrey];
-    
+
     [self.tosButton setBackgroundImage:nil forState:UIControlStateNormal];
     [self.tosButton setBackgroundImage:nil forState:UIControlStateHighlighted];
     [self.tosButton setTitleColor:[WPStyleGuide buttonActionColor] forState:UIControlStateNormal];
     self.tosButton.titleLabel.font = [WPStyleGuide postTitleFont];
     [self.tosButton setTitle:NSLocalizedString(@"Terms of Service", nil) forState:UIControlStateNormal];
-    
+
     [self.privacyPolicyButton setBackgroundImage:nil forState:UIControlStateNormal];
     [self.privacyPolicyButton setBackgroundImage:nil forState:UIControlStateHighlighted];
     [self.privacyPolicyButton setTitleColor:[WPStyleGuide buttonActionColor] forState:UIControlStateNormal];
 
     [self.privacyPolicyButton setTitle:NSLocalizedString(@"Privacy Policy", nil) forState:UIControlStateNormal];
     self.privacyPolicyButton.titleLabel.font = [WPStyleGuide postTitleFont];
-    
+
     self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.scrollView.frame), CGRectGetMaxY(self.viewWebsiteButton.frame));
-    
+
     if([self.navigationController.viewControllers count] == 1) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
     }

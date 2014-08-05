@@ -63,7 +63,7 @@
         [self.managedObjectContext deleteObject:self];
         [self save];
     }];
-    
+
 }
 
 - (void)save {
@@ -77,7 +77,6 @@
 - (void)setStatusTitle:(NSString *)aTitle {
     self.status = [BasePost statusForTitle:aTitle];
 }
-
 
 - (BOOL)hasChanged {
     return NO;
@@ -119,22 +118,21 @@
     self.date_created_gmt = localDate;
 }
 
-
 - (void)findComments {
-    
+
 }
 
 - (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    
+
 }
 
 - (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    
+
 }
 
 - (NSDictionary *)XMLRPCDictionary {
     NSMutableDictionary *postParams = [NSMutableDictionary dictionary];
-    
+
     [postParams setValueIfNotNil:self.postTitle forKey:@"title"];
     [postParams setValueIfNotNil:self.content forKey:@"description"];    
     [postParams setValueIfNotNil:self.date_created_gmt forKey:@"date_created_gmt"];
@@ -153,13 +151,12 @@
     } else {
         [postParams setValue:self.post_thumbnail forKey:@"wp_post_thumbnail"];
     }
-    
+
     if (self.mt_text_more != nil && [self.mt_text_more length] > 0)
         [postParams setObject:self.mt_text_more forKey:@"mt_text_more"];
-    
+
     return postParams;
 }
-
 
 #pragma mark - WPContentViewProvider protocol
 
@@ -205,7 +202,7 @@
         } else if ([self.status isEqualToString:@"draft"]) {
             return self.statusTitle;
         }
-        
+
         return @"";
     }
 
@@ -219,6 +216,5 @@
     }
     return statusText;
 }
-
 
 @end

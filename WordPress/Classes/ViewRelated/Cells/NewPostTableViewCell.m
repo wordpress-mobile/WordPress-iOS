@@ -3,7 +3,6 @@
 
 @implementation NewPostTableViewCell
 
-
 + (BOOL)shortDateString {
     return NO;
 }
@@ -11,7 +10,7 @@
 + (UIColor *)statusColorForContentProvider:(id<WPContentViewProvider>)contentProvider
 {
     Post *post = (Post *)contentProvider;
-    
+
     if (post.remoteStatus == AbstractPostRemoteStatusSync) {
         if ([post.status isEqualToString:@"pending"]) {
             return [UIColor lightGrayColor];

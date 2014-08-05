@@ -60,7 +60,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     if (!self.storedComment) {
         return nil;
     }
-    
+
     NSArray *arr = [self.storedComment componentsSeparatedByString:@"|storedcomment|"];
     NSNumber *commentID = [[arr objectAtIndex:0] numericValue];
     NSString *commentText = [arr objectAtIndex:1];
@@ -73,7 +73,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     } else if ([self.authorDisplayName length] > 0) {
         return self.authorDisplayName;
     }
-    
+
     return self.author;
 }
 
@@ -157,7 +157,6 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 @end
 
-
 @implementation ReaderPost (WordPressComApi)
 
 + (void)getCommentsForPost:(NSUInteger)postID
@@ -165,9 +164,9 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
             withParameters:(NSDictionary*)params
                    success:(WordPressComApiRestSuccessResponseBlock)success
                    failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    
+
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%i/replies", siteID, postID];
-    
+
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];

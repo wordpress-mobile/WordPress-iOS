@@ -48,7 +48,7 @@
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     __block BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    
+
     [blogService syncPagesForBlog:self.blog
                           success:^{
                               blogService = nil;
@@ -100,7 +100,7 @@
         [defaults setBool:NO forKey:@"refreshPagesRequired"];
         return YES;
     }
-    
+
     return NO;
 }
 

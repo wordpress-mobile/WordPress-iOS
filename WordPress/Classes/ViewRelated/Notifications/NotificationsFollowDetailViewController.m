@@ -16,7 +16,6 @@
 #import "NoteBodyItem.h"
 #import "NoteAction.h"
 
-
 NSString *const WPNotificationFollowRestorationKey = @"WPNotificationFollowRestorationKey";
 NSString *const WPNotificationHeaderCellIdentifier = @"WPNotificationHeaderCellIdentifier";
 NSString *const WPNotificationFollowCellIdentifier = @"WPNotificationFollowCellIdentifier";
@@ -32,7 +31,6 @@ typedef NS_ENUM(NSInteger, WPNotificationSections) {
 CGFloat const WPNotificationsFollowPersonCellHeight = 80.0f;
 CGFloat const WPNotificationsFollowBottomCellHeight = 60.0f;
 
-
 @interface NotificationsFollowDetailViewController () <UITableViewDelegate, UITableViewDataSource, UIViewControllerRestoration>
 
 @property (nonatomic, weak) IBOutlet UITableView    *tableView;
@@ -44,8 +42,6 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 
 @end
 
-
-
 @implementation NotificationsFollowDetailViewController
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
@@ -54,19 +50,19 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
     if (!noteID) {
         return nil;
     }
-    
+
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:noteID]];
     if (!objectID) {
         return nil;
     }
-    
+
     NSError *error = nil;
     Note *restoredNote = (Note *)[context existingObjectWithID:objectID error:&error];
     if (error || !restoredNote) {
         return nil;
     }
-    
+
     return [[self alloc] initWithNote:restoredNote];
 }
 
@@ -87,23 +83,23 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
             }
         }
         self.filteredBodyItems = filtered;
-                        
+
         // Restoration Mechanism
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
     }
-    
+
     return self;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.title = NSLocalizedString(@"Details", @"NotificationFollow's ViewController Title");
-    
+
     NSAssert(self.tableView, @"Null Outlet!");
-    
+
     [self.tableView registerClass:[WPTableHeaderViewCell class] forCellReuseIdentifier:WPNotificationHeaderCellIdentifier];
     [self.tableView registerClass:[NotificationsFollowTableViewCell class] forCellReuseIdentifier:WPNotificationFollowCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:WPNotificationFooterCellIdentifier];
@@ -116,7 +112,7 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
     NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
     if (selectedIndexPath) {
         [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:animated];
@@ -138,7 +134,7 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
     if (_note.bodyFooterText.length == 0) {
         return WPNotificationSectionsCount - 1;
     }
-    
+
     return WPNotificationSectionsCount;
 }
 
@@ -159,7 +155,7 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
     } else if (indexPath.section == WPNotificationSectionsFollow) {
         return WPNotificationsFollowPersonCellHeight;
     }
-    
+
     return WPNotificationsFollowBottomCellHeight;
 }
 
@@ -168,7 +164,7 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
     if (indexPath.section == WPNotificationSectionsHeader) {
 
         UITableViewCell *cell            = [tableView dequeueReusableCellWithIdentifier:WPNotificationHeaderCellIdentifier];
-        
+
         cell.textLabel.text                = [NSString decodeXMLCharactersIn:_note.subjectText];
         cell.textLabel.numberOfLines    = 0;
         cell.textLabel.textColor        = [UIColor blackColor];
@@ -178,15 +174,15 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
         // Note that we're using this cell as a section header. Since 'didPressCellAtIndex:' method isn't gonna get called,
         // let's use a GestureRecognizer!
         cell.gestureRecognizers            = @[ [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewPostTitle:)] ];
-        
+
         return cell;
-        
+
     } else if (indexPath.section == WPNotificationSectionsFollow) {
-        
+
         NotificationsFollowTableViewCell *cell    = [tableView dequeueReusableCellWithIdentifier:WPNotificationFollowCellIdentifier];
         NoteBodyItem *noteItem                    = self.filteredBodyItems[indexPath.row];
         __weak __typeof(self) weakSelf            = self;
-        
+
         cell.textLabel.text            = @"";
         cell.detailTextLabel.text    = @"";
         cell.accessoryType            = UITableViewCellAccessoryNone;
@@ -199,12 +195,12 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
                 }
             }];
         };
-        
+
         // Follow action: anyone?
         if ([noteItem.action.type isEqualToString:@"follow"]) {
             cell.actionButton.hidden    = NO;
             cell.following                = noteItem.action.following;
-            
+
             if (noteItem.action.blogURL) {
                 cell.detailTextLabel.text        = [noteItem.action.blogURL.host stringByReplacingOccurrencesOfString:@"http://" withString:@""];
                 cell.detailTextLabel.textColor    = [WPStyleGuide newKidOnTheBlockBlue];
@@ -214,7 +210,7 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
         } else {
             cell.actionButton.hidden    = YES;
         }
-        
+
         cell.textLabel.text       = noteItem.headerText;
         cell.detailTextLabel.text = [noteItem.headerLink stringByReplacingOccurrencesOfString:@"http://" withString:@""];;
 
@@ -222,14 +218,14 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
         NSURL *iconURL = noteItem.iconURL;
         if (iconURL) {
             UIImage *placeholderImage        = [UIImage imageNamed:@"gravatar"];
-            
+
             NSMutableURLRequest *request    = [NSMutableURLRequest requestWithURL:iconURL];
             request.HTTPShouldHandleCookies = NO;
             [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-            
+
             [cell.imageView setImageWithURLRequest:request placeholderImage:placeholderImage success:nil failure:nil];
         }
-        
+
         return cell;
     }
 
@@ -241,7 +237,7 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
     cell.textLabel.textColor        = [WPStyleGuide newKidOnTheBlockBlue];
     cell.textLabel.font                = [WPStyleGuide regularTextFont];
     cell.textLabel.text                = _note.bodyFooterText;
-    
+
     return cell;
 }
 
@@ -251,25 +247,25 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
     if (!blogID) {
         return;
     }
-    
+
     BOOL isFollowing = item.action.following;
-       
+
     [WPAnalytics track:WPAnalyticsStatNotificationPerformedAction];
-    
+
     // Hit the Backend
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     WordPressComApi *restApi = [defaultAccount restApi];
-    
+
     // Instant-gratification toast message
     NSString *message    = isFollowing ? NSLocalizedString(@"Unfollowed", @"User unfollowed a blog") : NSLocalizedString(@"Followed", @"User followed a blog");
     NSString *imageName = [NSString stringWithFormat:@"action_icon_%@", (isFollowing) ? @"unfollowed" : @"followed"];
     [WPToast showToastWithMessage:message andImage:[UIImage imageNamed:imageName]];
 
     [restApi followBlog:blogID.integerValue isFollowing:isFollowing success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
+
         NSDictionary *followResponse = (NSDictionary *)responseObject;
         BOOL success = ([followResponse[@"success"] intValue] == 1);
         if (success) {
@@ -277,7 +273,7 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
             BOOL isFollowingNow = ([followResponse[@"is_following"] intValue] == 1);
             item.action.following = isFollowingNow;
         }
-        
+
         block(success);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         item.action.following = !isFollowing;
@@ -296,7 +292,7 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
     if (!url) {
         return;
     }
-    
+
     WPWebViewController *webViewController = [[WPWebViewController alloc] init];
     webViewController.url = [NSURL URLWithString:url];
     [self.navigationController pushViewController:webViewController animated:YES];

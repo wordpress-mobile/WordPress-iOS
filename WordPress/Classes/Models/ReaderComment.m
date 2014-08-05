@@ -7,7 +7,6 @@
 
 @end
 
-
 @implementation ReaderComment
 
 @dynamic depth;
@@ -19,7 +18,7 @@
 
 - (void)didTurnIntoFault {
     [super didTurnIntoFault];
-    
+
     self.attributedContent = nil;
 }
 
@@ -30,7 +29,7 @@
     [request setPredicate:predicate];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];
     [request setSortDescriptors:@[sortDescriptor]];
-    
+
     NSError *error = nil;
     NSArray *array = [context executeFetchRequest:request error:&error];
     if (array == nil) {
@@ -38,7 +37,6 @@
     }
     return array;
 }
-
 
 + (NSArray *)fetchChildCommentsForPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -47,7 +45,7 @@
     [request setPredicate:predicate];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];
     [request setSortDescriptors:@[sortDescriptor]];
-    
+
     NSError *error = nil;
     NSArray *array = [context executeFetchRequest:request error:&error];
     if (array == nil) {
@@ -55,7 +53,6 @@
     }
     return array;
 }
-
 
 + (NSArray *)fetchParentCommentsForPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -64,7 +61,7 @@
     [request setPredicate:predicate];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];
     [request setSortDescriptors:@[sortDescriptor]];
-    
+
     NSError *error = nil;
     NSArray *array = [context executeFetchRequest:request error:&error];
     if (array == nil) {
@@ -73,29 +70,28 @@
     return array;
 }
 
-
 + (void)syncAndThreadComments:(NSArray *)comments forPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context {
     [comments enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         [self createOrUpdateWithDictionary:obj forPost:post withContext:context];
     }];
-    
+
     NSError *error;
     if(![context save:&error]){
         DDLogError(@"Failed to sync ReaderComments: %@", error);
     }
-    
+
     // Thread relationships
     NSArray *commentsArr = [self fetchChildCommentsForPost:post withContext:context];
     [commentsArr enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         ReaderComment *comment = (ReaderComment *)obj;
-        
+
         NSFetchRequest *request = [[NSFetchRequest alloc] init];
         [request setEntity:[NSEntityDescription entityForName:@"ReaderComment" inManagedObjectContext:context]];
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(post = %@) && (commentID = %@)", post, comment.parentID];
         [request setPredicate:predicate];
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];
         [request setSortDescriptors:@[sortDescriptor]];
-        
+
         NSError *error = nil;
         NSArray *arr = [context executeFetchRequest:request error:&error];
         if ([arr count]) {
@@ -104,11 +100,11 @@
             [context deleteObject:comment]; // no parent found so we don't want to show this. 
         }
     }];
-    
+
     if(![context save:&error]){
         DDLogError(@"Failed to set ReaderComment Relationships: %@", error);
     }
-    
+
     // Update depths
     commentsArr = [self fetchParentCommentsForPost:post withContext:context];
     __block void(__unsafe_unretained ^updateDepth)(NSArray *, NSNumber *) = ^void (NSArray *comments, NSNumber *depth) {
@@ -120,12 +116,11 @@
         }
     };
     updateDepth(commentsArr, @0);
-    
+
     if(![context save:&error]){
         DDLogError(@"Failed to set ReaderComment Depths: %@", error);
     }
 }
-
 
 + (void)createOrUpdateWithDictionary:(NSDictionary *)dict forPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context {
 
@@ -133,7 +128,7 @@
     request.predicate = [NSPredicate predicateWithFormat:@"(commentID = %@) AND (post.globalID = %@)", [dict numberForKey:@"ID"], post.globalID];
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:YES]];
     request.fetchLimit = 1;
-    
+
     NSError *error;
     NSArray *results = [context executeFetchRequest:request error:&error];
     if(error != nil){
@@ -148,25 +143,24 @@
         comment.commentID = [dict numberForKey:@"ID"];
         comment.post = post;
     }
-    
+
     [comment updateFromDictionary:dict];
 
 }
 
-
 - (void)updateFromDictionary:(NSDictionary *)dict {
-    
+
     NSDictionary *author = [dict objectForKey:@"author"];
-    
+
     self.author = [[author stringForKey:@"name"] stringByDecodingXMLCharacters];
     self.author_email = [author stringForKey:@"email"];
     self.author_url = [author stringForKey:@"URL"];
     self.authorAvatarURL = [author stringForKey:@"avatar_URL"];
-    
+
     self.content = [dict stringForKey:@"content"];
     self.dateCreated = [DateUtils dateFromISOString:[dict objectForKey:@"date"]];
     self.link = [dict stringForKey:@"URL"];
-    
+
     id parent = [dict objectForKey:@"parent"];
     if ([parent isKindOfClass:[NSDictionary class]]) {
         parent = [parent numberForKey:@"ID"];
@@ -179,7 +173,6 @@
     self.type = [dict objectForKey:@"type"];
 
 }
-
 
 #pragma mark - WPContentViewProvider protocol
 

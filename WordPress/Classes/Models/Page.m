@@ -75,14 +75,14 @@
         self.status = @"publish";
 
     [postParams setObject:self.status forKey:@"page_status"];
-    
+
     return postParams;
 }
 
 - (void)postPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     NSArray *parameters = [self.blog getXMLRPCArgsWithExtra:[self XMLRPCDictionary]];
     self.remoteStatus = AbstractPostRemoteStatusPushing;
-    
+
     [self.blog.api callMethod:@"wp.newPage"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -145,7 +145,7 @@
         }
         return;
     }
-    
+
     NSArray *parameters = @[self.blog.blogID, self.postID, self.blog.username, self.blog.password, [self XMLRPCDictionary]];
     self.remoteStatus = AbstractPostRemoteStatusPushing;
     [self.blog.api callMethod:@"wp.editPage"

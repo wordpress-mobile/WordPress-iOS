@@ -86,7 +86,6 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-
 #pragma mark - Private Methods
 
 - (void)syncTopics
@@ -180,7 +179,6 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
         [alertView show];
     }];
 }
-
 
 #pragma mark - Configuration
 
@@ -326,7 +324,6 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     }
     return format;
 }
-
 
 #pragma mark - Accessors
 
@@ -491,7 +488,6 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     return _pageControl;
 }
 
-
 #pragma mark - Action Methods
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
@@ -526,7 +522,6 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     [self.searchBar resignFirstResponder];
 }
 
-
 #pragma mark - Search Bar Delegate Methods
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
@@ -542,7 +537,6 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     searchBar.text = nil;
     [searchBar resignFirstResponder];
 }
-
 
 #pragma mark - Pageview Controller Delegate Methods
 

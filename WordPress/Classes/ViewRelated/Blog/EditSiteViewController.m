@@ -48,12 +48,12 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 - (void)viewDidLoad {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
-    
+
     if (self.blog) {
         self.navigationItem.title = NSLocalizedString(@"Edit Site", @"");
 
         [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-        
+
         self.url = self.blog.url;
         self.username = self.blog.username;
         self.password = self.blog.password;
@@ -62,7 +62,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
         self.startingPwd = self.password;
         self.startingUrl = self.url;
         self.geolocationEnabled = self.blog.geolocationEnabled;
-        
+
         _notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
         if (!_notificationPreferences) {
             [NotificationsManager fetchNotificationSettingsWithSuccess:^{
@@ -72,7 +72,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
             }];
         }
     }
-    
+
     if (self.isCancellable) {
         UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil)
                                                                       style:UIBarButtonItemStylePlain
@@ -83,23 +83,23 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
     // Create the save button but don't show it until something changes
     self.saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).") style:[WPStyleGuide barButtonStyleForDone] target:self action:@selector(save:)];
-    
+
     if (!IS_IPAD) {
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(handleKeyboardDidShow:)
                                                      name:UIKeyboardDidShowNotification
                                                    object:nil];
-        
+
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(handleKeyboardWillHide:)
                                                      name:UIKeyboardWillHideNotification
                                                    object:nil];
     }
-    
+
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleViewTapped)];
     tgr.cancelsTouchesInView = NO;
     [self.tableView addGestureRecognizer:tgr];
-    
+
     [self.tableView registerClass:[UITableViewTextFieldCell class] forCellReuseIdentifier:TextFieldCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:GeotaggingCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:PushNotificationsCellIdentifier];
@@ -108,7 +108,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
+
     [self.tableView reloadData];
 }
 
@@ -142,21 +142,21 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
         default:
             break;
     }
-    
+
     return 0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
     header.title = [self titleForHeaderInSection:section];
-    
+
     return header;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     NSString *title = [self titleForHeaderInSection:section];
     CGFloat height = [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
-    
+
     return height;
 }
 
@@ -180,7 +180,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
             UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
             self.urlTextField = cell.textField;
             cell.textLabel.text = NSLocalizedString(@"URL", @"");
-            
+
             self.urlTextField.placeholder = NSLocalizedString(@"http://my-site-address (URL)", @"(placeholder) Help the user enter a URL into the field");
             self.urlTextField.keyboardType = UIKeyboardTypeURL;
             [self.urlTextField addTarget:self action:@selector(showSaveButton) forControlEvents:UIControlEventEditingChanged];
@@ -188,22 +188,21 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
             self.urlTextField.keyboardType = UIKeyboardTypeURL;
             if (self.blog.url != nil) {
                 self.urlTextField.text = self.blog.url;
-                
+
                 // Make a margin exception for URLs since they're so long
                 cell.minimumLabelWidth = 30;
             } else {
                 self.urlTextField.text = @"";
             }
-            
+
             self.urlTextField.enabled = [self canEditUsernameAndURL];
             [WPStyleGuide configureTableViewTextCell:cell];
-            
-            
+
             return cell;
         }
         else if (indexPath.row == 1) {
             UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
-            
+
             cell.textLabel.text = NSLocalizedString(@"Username", @"Label for entering username in the username field");
             self.usernameTextField = cell.textField;
             self.usernameTextField.placeholder = NSLocalizedString(@"Enter username", @"(placeholder) Help enter WordPress username");
@@ -217,7 +216,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
             self.usernameTextField.enabled = [self canEditUsernameAndURL];
             [WPStyleGuide configureTableViewTextCell:cell];
-            
+
             return cell;
         }
         else if (indexPath.row == 2) {
@@ -234,12 +233,12 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
                 self.passwordTextField.text = @"";
             }
             [WPStyleGuide configureTableViewTextCell:cell];
-            
+
             // If the other rows can't be edited, it looks better to align the password to the right as well
             if (![self canEditUsernameAndURL]) {
                 self.passwordTextField.textAlignment = NSTextAlignmentRight;
             }
-            
+
             return cell;
         }
     } else if(indexPath.section == 1) {
@@ -253,7 +252,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
             geotaggingCell.accessoryView = geotaggingSwitch;
             [WPStyleGuide configureTableViewCell:geotaggingCell];
             return geotaggingCell;
-            
+
         } else if(indexPath.row == 1) {
             UITableViewCell *pushCell = [tableView dequeueReusableCellWithIdentifier:PushNotificationsCellIdentifier];
             UISwitch *pushSwitch = [[UISwitch alloc] init];
@@ -278,10 +277,10 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         [WPStyleGuide configureTableViewCell:cell];
-        
+
         return cell;        
     }
-    
+
     // We shouldn't reach this point, but return an empty cell just in case
     return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"];
 }
@@ -338,24 +337,24 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
         UITableViewCell *cell = (id)[textField superview];
         while (![cell.class isSubclassOfClass:[UITableViewCell class]]) {
             cell = (id)cell.superview;
-            
+
             // This is a protection against a textfield not placed withing a
             // table view cell
             if ([cell.class isSubclassOfClass:[UITableView class]]) {
                 return YES;
             }
         }
-        
+
         NSMutableString *result = [NSMutableString stringWithString:textField.text];
         [result replaceCharactersInRange:range withString:string];
-        
+
         if ([result length] == 0) {
             cell.textLabel.textColor = [WPStyleGuide validationErrorRed];
         } else {
             cell.textLabel.textColor = [WPStyleGuide whisperGrey];
         }
     }
-    
+
     return YES;
 }
 
@@ -413,7 +412,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
                 [mutedBlogsDictionary setValue:mutedBlogsArray forKey:@"value"];
                 [_notificationPreferences setValue:mutedBlogsDictionary forKey:@"muted_blogs"];
                 [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
-                
+
                 // Send these settings optimistically since they're low-impact (not ideal but works for now)
                 [NotificationsManager saveNotificationSettings];
                 return;
@@ -424,21 +423,21 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
 - (NSString *)getURLToValidate {
     NSString *urlToValidate = self.url;
-    
+
     if (![urlToValidate hasPrefix:@"http"]) {
         urlToValidate = [NSString stringWithFormat:@"http://%@", urlToValidate];
     }
-    
+
     NSError *error = nil;
-    
+
     NSRegularExpression *wplogin = [NSRegularExpression regularExpressionWithPattern:@"/wp-login.php$" options:NSRegularExpressionCaseInsensitive error:&error];
     NSRegularExpression *wpadmin = [NSRegularExpression regularExpressionWithPattern:@"/wp-admin/?$" options:NSRegularExpressionCaseInsensitive error:&error];
     NSRegularExpression *trailingslash = [NSRegularExpression regularExpressionWithPattern:@"/?$" options:NSRegularExpressionCaseInsensitive error:&error];
-    
+
     urlToValidate = [wplogin stringByReplacingMatchesInString:urlToValidate options:0 range:NSMakeRange(0, [urlToValidate length]) withTemplate:@""];
     urlToValidate = [wpadmin stringByReplacingMatchesInString:urlToValidate options:0 range:NSMakeRange(0, [urlToValidate length]) withTemplate:@""];
     urlToValidate = [trailingslash stringByReplacingMatchesInString:urlToValidate options:0 range:NSMakeRange(0, [urlToValidate length]) withTemplate:@""];
-    
+
     return urlToValidate;
 }
 
@@ -474,9 +473,9 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
 - (void)checkURL {
     NSString *urlToValidate = [self getURLToValidate];
-    
+
     DDLogInfo(@"%@ %@ %@", self, NSStringFromSelector(_cmd), urlToValidate);
-    
+
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Authenticating", @"") maskType:SVProgressHUDMaskTypeBlack];
     [WordPressXMLRPCApi guessXMLRPCURLForSite:urlToValidate success:^(NSURL *xmlrpcURL) {
         [self validateXmlprcURL:xmlrpcURL];
@@ -532,7 +531,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
             [WPError showAlertWithTitle:NSLocalizedString(@"Sorry, can't log in", @"") message:message withSupportButton:YES okPressedBlock:^(UIAlertView *alertView) {
                 [self openSiteAdminFromAlert:alertView];
             }];
-            
+
         } else {
             [WPError showAlertWithTitle:NSLocalizedString(@"Sorry, can't log in", @"") message:message];
         }
@@ -545,7 +544,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+writing.php" options:NSRegularExpressionCaseInsensitive error:&error];
     NSString *msg = [alertView message];
     NSRange rng = [regex rangeOfFirstMatchInString:msg options:0 range:NSMakeRange(0, [msg length])];
-    
+
     if (rng.location == NSNotFound) {
         path = [self getURLToValidate];
         path = [path stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
@@ -553,7 +552,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     } else {
         path = [msg substringWithRange:rng];
     }
-    
+
     WPWebViewController *webViewController = [[WPWebViewController alloc] init];
     [webViewController setUrl:[NSURL URLWithString:path]];
     [webViewController setUsername:self.username];
@@ -582,7 +581,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     DDLogInfo(@"blog url: %@", self.url);
     self.username = self.usernameTextField.text;
     self.password = self.passwordTextField.text;
-    
+
     if (!self.savingIndicator) {
         self.savingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         self.savingIndicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
@@ -591,7 +590,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
         self.savingIndicator.frame = frm;
         UIView *aView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, frm.size.height)];
         [aView addSubview:self.savingIndicator];
-        
+
         [self.tableView setTableFooterView:aView];
     }
     [self.savingIndicator setHidden:NO];
@@ -621,7 +620,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     } else {
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
-    
+
     if (self.delegate) {
         // If sender is not nil then the user tapped the cancel button.
         BOOL wascancelled = (sender != nil);
@@ -631,7 +630,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
 - (void)showSaveButton {
     BOOL hasContent;
-    
+
     if ([self.urlTextField.text isEqualToString:@""] ||
          [self.usernameTextField.text isEqualToString:@""] ||
          [self.passwordTextField.text isEqualToString:@""]) {
@@ -639,7 +638,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     } else {
         hasContent = YES;
     }
-    
+
     self.navigationItem.rightBarButtonItem = hasContent ? self.saveButton : nil;
 }
 
@@ -672,11 +671,11 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 #pragma mark - Keyboard Related Methods
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification {
-    
+
     if (_isKeyboardVisible) {
         return;
     }
-    
+
     CGRect rect = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];    
     CGRect frame = self.view.frame;
 
@@ -693,13 +692,13 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     }
 
     self.view.frame = frame;
-    
+
     CGPoint point = [self.tableView convertPoint:self.lastTextField.frame.origin fromView:self.lastTextField];
     if (!CGRectContainsPoint(frame, point)) {
         NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:point];
         [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
     }
-    
+
     _isKeyboardVisible = YES;
 }
 
@@ -715,14 +714,12 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     [UIView animateWithDuration:0.3 animations:^{
         self.view.frame = frame;
     }];
-    
+
     _isKeyboardVisible = NO;
 }
-
 
 - (void)handleViewTapped {
     [self.lastTextField resignFirstResponder];
 }
-
 
 @end

@@ -12,7 +12,6 @@
     return _sharedClient;
 }
 
-
 + (AFHTTPRequestOperationManager *)sharedVimeoClient {
     static AFHTTPRequestOperationManager *_sharedClient = nil;
     static dispatch_once_t oncePredicate;
@@ -22,7 +21,6 @@
     return _sharedClient;
 }
 
-
 + (AFHTTPRequestOperationManager *)sharedDailyMotionClient {
     static AFHTTPRequestOperationManager *_sharedClient = nil;
     static dispatch_once_t oncePredicate;
@@ -31,7 +29,6 @@
     });
     return _sharedClient;
 }
-
 
 - (void)getThumbnailForVideoAtURL:(NSURL *)url
                           success:(void (^)(NSURL *thumbnailURL, NSString *title))success
@@ -67,7 +64,6 @@
     }
 }
 
-
 - (void)getYoutubeThumb:(NSString *)vidId
                 success:(void (^)(NSURL *thumbnailURL, NSString *title))success
                 failure:(void (^)(NSError *error))failure
@@ -98,9 +94,8 @@
                                             failure(error);
                                         }
                                     }];
-    
-}
 
+}
 
 - (void)getVideoPressThumb:(NSURL *)url
                    success:(void (^)(NSURL *thumbnailURL, NSString *title))success
@@ -114,7 +109,6 @@
     NSURL *thumbURL = [NSURL URLWithString:path];
     success(thumbURL, nil);
 }
-
 
 - (void)getVimeoThumb:(NSString *)vidId
               success:(void (^)(NSURL *thumbnailURL, NSString *title))success
@@ -142,7 +136,6 @@
                                       }
                                   }];
 }
-
 
 - (void)getDailyMotionThumb:(NSString *)vidId
                     success:(void (^)(NSURL *thumbnailURL, NSString *title))success

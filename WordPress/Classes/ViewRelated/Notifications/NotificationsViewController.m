@@ -26,7 +26,6 @@
 #import "ReaderPostDetailViewController.h"
 #import "ContextManager.h"
 
-
 @interface NotificationsViewController ()
 
 @property (nonatomic, strong) id    authListener;
@@ -37,7 +36,6 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 - (void)loadPostWithId:(NSNumber *)postID fromSite:(NSNumber *)siteID block:(NotificationsLoadPostBlock)block;
 
 @end
-
 
 @implementation NotificationsViewController
 
@@ -120,12 +118,12 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 {
     DDLogMethod();
     [super viewDidLoad];
-    
+
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    
+
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 25, 0, 0);
     self.infiniteScrollEnabled = NO;
-    
+
     if ([NotificationsManager deviceRegisteredForPushNotifications]) {
         UIBarButtonItem *pushSettings = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Manage", @"")
                                                                          style:UIBarButtonItemStylePlain
@@ -133,12 +131,12 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
                                                                         action:@selector(showNotificationSettings)];
         self.navigationItem.rightBarButtonItem = pushSettings;
     }
-    
+
     // Watch for application badge number changes
     UIApplication *application  = [UIApplication sharedApplication];
     NSString *badgeKeyPath      = NSStringFromSelector(@selector(applicationIconBadgeNumber));
     [application addObserver:self forKeyPath:badgeKeyPath options:NSKeyValueObservingOptionNew context:nil];
-    
+
     [self updateTabBarBadgeNumber];
 }
 
@@ -146,10 +144,10 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 {
     DDLogMethod();
     [super viewWillAppear:animated];
-    
+
     // Reload!
     [self.tableView reloadData];
-    
+
     // Listen to appDidBecomeActive Note
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(handleApplicationDidBecomeActiveNote:) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -163,7 +161,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
         self.viewHasAppeared = YES;
         [WPAnalytics track:WPAnalyticsStatNotificationsAccessed];
     }
-    
+
     [self updateLastSeenTime];
     [self resetApplicationBadge];
 }
@@ -176,7 +174,6 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-
 #pragma mark - NSObject(NSKeyValueObserving) Helpers
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -186,7 +183,6 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     }
 }
 
-
 #pragma mark - NSNotification Helpers
 
 - (void)handleApplicationDidBecomeActiveNote:(NSNotification *)note
@@ -195,14 +191,13 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     if (!self.isViewLoaded || !self.view.window) {
         return;
     }
-    
+
     // Reload
     [self.tableView reloadData];
-    
+
     // Reset the badge: the notifications are visible!
     [self resetApplicationBadge];
 }
-
 
 #pragma mark - Custom methods
 
@@ -215,15 +210,15 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 {
     NSInteger count         = [[UIApplication sharedApplication] applicationIconBadgeNumber];
     NSString *countString   = nil;
-    
+
     if (count > 0) {
         countString = [NSString stringWithFormat:@"%d", count];
     }
-    
+
     // Note: self.navigationViewController might be nil. Let's hit the UITabBarController instead
     UITabBarController *tabBarController    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] tabBarController];
     UITabBarItem *tabBarItem                = tabBarController.tabBar.items[kNotificationsTabIndex];
-    
+
     tabBarItem.badgeValue                   = countString;
 }
 
@@ -234,14 +229,14 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     if (!note) {
         return;
     }
-    
+
     NSString *bucketName    = NSStringFromClass([Meta class]);
     Simperium *simperium    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
     Meta *metadata          = [[simperium bucketForName:bucketName] objectForKey:[bucketName lowercaseString]];
     if (!metadata) {
         return;
     }
-    
+
     metadata.last_seen      = note.timestamp;
     [simperium save];
 }
@@ -252,10 +247,10 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:notificationSettingsViewController];
     navigationController.navigationBar.translucent = NO;
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-    
+
     UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeNotificationSettings)];
     notificationSettingsViewController.navigationItem.rightBarButtonItem = closeButton;
-    
+
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
@@ -275,11 +270,11 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Note *note = [self.resultsController objectAtIndexPath:indexPath];
-    
+
     BOOL hasDetailView = [self noteHasDetailView:note];
     if (hasDetailView) {
         [WPAnalytics track:WPAnalyticsStatNotificationsOpenedNotificationDetails];
-        
+
         if ([note isComment]) {
             NotificationsCommentDetailViewController *commentDetailViewController = [[NotificationsCommentDetailViewController alloc] initWithNote:note];
             [self.navigationController pushViewController:commentDetailViewController animated:YES];
@@ -289,7 +284,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
                     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
                     return;
                 }
-            
+
                 ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post];
                 [self.navigationController pushViewController:controller animated:YES];
             }];
@@ -303,7 +298,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     } else {
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
-    
+
     if(!note.isRead) {
         note.unread = @(0);
         [[ContextManager sharedInstance] saveContext:note.managedObjectContext];
@@ -363,10 +358,10 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 - (void)configureCell:(NewNotificationsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     cell.contentProvider = [self.resultsController objectAtIndexPath:indexPath];
-    
+
     Note *note = [self.resultsController objectAtIndexPath:indexPath];
     BOOL hasDetailsView = [self noteHasDetailView:note];
-    
+
     if (!hasDetailsView) {
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;

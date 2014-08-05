@@ -31,7 +31,6 @@
     [self fetchPostsFromEndpoint:endpoint withParameters:params success:success failure:failure];
 }
 
-
 - (void)fetchPostsFromEndpoint:(NSURL *)endpoint
                          count:(NSUInteger)count
                          after:(NSDate *)date
@@ -223,7 +222,7 @@
 
 /**
  Sanitizes a post object from the REST API.
- 
+
  @param dict A dictionary representing a post object from the REST API
  @return A `RemoteReaderPost` object
  */
@@ -269,7 +268,7 @@
 
 /**
  Checks the value of the string passed. If the string is nil, an empty string is returned.
- 
+
  @param str The string to check for nil.
  @ Returns the string passed if it was not nil, or an empty string if the value passed was nil.
  */
@@ -332,12 +331,11 @@
     return img;
 }
 
-
 #pragma mark - Data sanitization methods
 
 /**
  The v1 API result is inconsistent in that it will return a 0 when there is no author email.
- 
+
  @param dict The author dictionary.
  @return The author's email address or an empty string.
  */
@@ -365,7 +363,7 @@
 
 /**
  Get the tags assigned to a post and return them as a comma separated string.
- 
+
  @param dict A dictionary representing a post object from the REST API.
  @return A comma separated list of tags, or an empty string if no tags are found.
  */
@@ -435,7 +433,7 @@
 
 /**
  Search the passed string for an image that is a good candidate to feature.
- 
+
  @param content The content string to search.
  @return The url path for the image or an empty string.
  */

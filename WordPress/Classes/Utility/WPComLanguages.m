@@ -26,7 +26,7 @@
     if (currentLanguage == nil) {
         currentLanguage = [WPComLanguages languageDataForLocale:@"en"];
     }
-    
+
     return currentLanguage;
 }
 
@@ -38,12 +38,12 @@
 + (NSDictionary *)languageDataForLocale:(NSString *)locale
 {
     NSArray *languages = [self sharedInstance].languages;
-    
+
     for (NSDictionary *languageData in languages) {
         if ([[languageData objectForKey:@"slug"] isEqualToString:locale])
             return languageData;
     }
-    
+
     return nil;
 }
 
@@ -57,12 +57,12 @@
 + (WPComLanguages *)sharedInstance
 {
     static WPComLanguages *sharedInstance = nil;
-    
+
     static dispatch_once_t predicate;
     dispatch_once(&predicate, ^{
         sharedInstance = [[self alloc] init];
     });
-    
+
     return sharedInstance;
 }
 

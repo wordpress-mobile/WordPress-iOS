@@ -444,7 +444,6 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     [WPNUXUtility centerViews:controls withStartingView:_titleLabel andEndingView:_TOSLabel forHeight:viewHeight];
 }
 
-
 - (void)helpButtonAction
 {
     SupportViewController *supportVC = [[SupportViewController alloc] init];
@@ -710,7 +709,6 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
             [self setAuthenticating:NO];
             [self displayRemoteError:error];
         };
-
 
         WordPressComOAuthClient *client = [WordPressComOAuthClient client];
         [client authenticateWithUsername:_usernameField.text

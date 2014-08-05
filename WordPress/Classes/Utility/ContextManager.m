@@ -45,7 +45,6 @@ static ContextManager *instance;
     return _mainContext;
 }
 
-
 #pragma mark - Context Saving and Merging
 
 - (void)saveDerivedContext:(NSManagedObjectContext *)context {

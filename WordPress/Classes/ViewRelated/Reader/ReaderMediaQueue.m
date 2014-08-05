@@ -40,7 +40,6 @@ typedef void (^ReaderMediaViewFailureBlock)(ReaderMediaView *readerMediaView, NS
 
 @end
 
-
 @interface ReaderMediaQueue()<WPTableImageSourceDelegate>
 
 @property (nonatomic) NSInteger counter;
@@ -65,7 +64,6 @@ typedef void (^ReaderMediaViewFailureBlock)(ReaderMediaView *readerMediaView, NS
     return self;
 }
 
-
 - (id)initWithDelegate:(id<ReaderMediaQueueDelegate>)delegate {
     self = [self init];
     if (self) {
@@ -74,11 +72,9 @@ typedef void (^ReaderMediaViewFailureBlock)(ReaderMediaView *readerMediaView, NS
     return self;
 }
 
-
 - (void)setBatchSize:(NSInteger)batchSize {
     _batchSize = MAX(MIN(batchSize, 20), 1);
 }
-
 
 - (void)enqueueMedia:(ReaderMediaView *)mediaView
              withURL:(NSURL *)url
@@ -106,14 +102,12 @@ typedef void (^ReaderMediaViewFailureBlock)(ReaderMediaView *readerMediaView, NS
     }
 }
 
-
 - (void)addToActiveQueue:(ReaderMediaQueueItem *)item {
     [self.activeQueue addObject:item];
-    
+
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[self.activeQueue count]-1 inSection:0];
     [self.imageSource fetchImageForURL:item.url withSize:item.size indexPath:indexPath isPrivate:item.isPrivate];
 }
-
 
 - (void)addToHoldingQueue:(ReaderMediaQueueItem *)item {
     [self.holdingQueue addObject:item];
@@ -137,19 +131,19 @@ typedef void (^ReaderMediaViewFailureBlock)(ReaderMediaView *readerMediaView, NS
               imageReady:(UIImage *)image
             forIndexPath:(NSIndexPath *)indexPath {
     self.counter++;
-    
+
     ReaderMediaQueueItem *item = [self.activeQueue objectAtIndex:indexPath.row];
     item.image = image;
-    
+
     if ([self.delegate respondsToSelector:@selector(readerMediaQueue:didLoadMedia::)]) {
         [self.delegate readerMediaQueue:self didLoadMedia:item.mediaView];
     }
-    
+
     // Did we load everything in the active queue?
     if (self.counter < [self.activeQueue count]) {
         return;
     }
-    
+
     // Batch loaded
     NSMutableArray *mediaArray = [NSMutableArray array];
     for (NSInteger i = 0; i < [self.activeQueue count]; i++) {
@@ -174,11 +168,11 @@ typedef void (^ReaderMediaViewFailureBlock)(ReaderMediaView *readerMediaView, NS
     if ([self.delegate respondsToSelector:@selector(readerMediaQueue:didLoadBatch:)]) {
         [self.delegate readerMediaQueue:self didLoadBatch:mediaArray];
     }
-    
+
     // Reset for the next batch.
     self.counter = 0;
     [self.activeQueue removeAllObjects];
-    
+
     // Are there more to load?
     if ([self.holdingQueue count] == 0) {
         if ([self.delegate respondsToSelector:@selector(readerMediaQueueDidFinish:)]) {
@@ -186,7 +180,7 @@ typedef void (^ReaderMediaViewFailureBlock)(ReaderMediaView *readerMediaView, NS
         }
         return;
     }
-    
+
     NSInteger num = MIN(self.batchSize, [self.holdingQueue count]);
     for (NSInteger i = 0; i < num; i++) {
         [self addToActiveQueue:[self.holdingQueue objectAtIndex:0]];

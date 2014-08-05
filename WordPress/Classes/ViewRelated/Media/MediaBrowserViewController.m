@@ -93,51 +93,51 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     [self updateTitle];
-    
+
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
     self.collectionView.alwaysBounceVertical = YES;
     [self.collectionView registerClass:[MediaBrowserCell class] forCellWithReuseIdentifier:MediaCellIdentifier];
     [self.collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header"];
-    
+
     [self.collectionView addSubview:_filterHeaderView];
     _filterHeaderView.delegate = self;
-    
+
     UIRefreshControl *refreshHeaderView = [[UIRefreshControl alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.collectionView.bounds.size.height, self.collectionView.frame.size.width, self.collectionView.bounds.size.height)];
     _refreshHeaderView = refreshHeaderView;
     [_refreshHeaderView addTarget:self action:@selector(refreshControlTriggered:) forControlEvents:UIControlEventValueChanged];
     _refreshHeaderView.tintColor = [WPStyleGuide whisperGrey];
     [self.collectionView addSubview:_refreshHeaderView];
-    
+
     UIBarButtonItem *addMediaButton;
     UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
     CustomHighlightButton *button = [[CustomHighlightButton alloc] initWithFrame:CGRectMake(0.0, 0.0, image.size.width, image.size.height)];
     [button setImage:image forState:UIControlStateNormal];
     [button addTarget:self action:@selector(addMediaButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     addMediaButton = [[UIBarButtonItem alloc] initWithCustomView:button];
-    
+
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:addMediaButton forNavigationItem:self.navigationItem];
-    
+
     [self.view addSubview:self.multiselectToolbar];
-    
+
     self.multiselectToolbar.barTintColor = [WPStyleGuide littleEddieGrey];
     self.multiselectToolbar.translucent = NO;
-    
+
     self.multiselectToolbar.frame = (CGRect) {
         .origin = CGPointMake(self.multiselectToolbar.frame.origin.x, CGRectGetMaxY(self.collectionView.frame)),
         .size = self.multiselectToolbar.frame.size
     };
-    
+
     if (![self showAttachedMedia]) {
         self.resultsController.delegate = self;
         [self.resultsController performFetch:nil];
         self.filteredMedia = _allMedia = _resultsController.fetchedObjects;
     }
-    
+
     [self refresh];
-   
+
     [self checkVideoPressEnabled];
 }
 
@@ -153,19 +153,19 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+
     if ([self showAttachedMedia]) {
         _allMedia = self.post.media.allObjects;
         self.filteredMedia = _allMedia;
     }
-    
+
     [self applyMonthFilterForMonth:_currentFilterMonth];
     [self applyFilterWithSearchText:_currentSearchText];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    
+
     // Save context for all thumbnails downloaded
     if ([self.blog.managedObjectContext hasChanges]) {
         [self.blog.managedObjectContext save:nil];
@@ -175,7 +175,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    
+
     _selectedMedia = nil;
 }
 
@@ -185,7 +185,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     } else {
         self.title = NSLocalizedString(@"Media Library", @"");
     }
-    
+
     NSString *count = [NSString stringWithFormat:@" (%d)", _filteredMedia.count];
     self.title = [self.title stringByAppendingString:count];
 }
@@ -197,7 +197,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 - (void)refresh {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    
+
     [blogService syncMediaLibraryForBlog:self.blog success:^{
         [_refreshHeaderView endRefreshing];
         [self setUploadButtonEnabled:YES];
@@ -246,7 +246,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     if (_dateFormatter) {
         return _dateFormatter;
     }
-    
+
     _dateFormatter = [[NSDateFormatter alloc] init];
     _dateFormatter.locale = [NSLocale currentLocale];
     return _dateFormatter;
@@ -275,20 +275,18 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     [self addMediaButtonPressed];
 }
 
-
 #pragma mark - Setters
 
 - (void)setFilteredMedia:(NSArray *)filteredMedia {
     _filteredMedia = filteredMedia;
-    
+
     [self applyFilterForSelectedMedia];
-    
+
     [self toggleNoMediaView:(_filteredMedia.count == 0)];
-    
+
     [self updateTitle];
     [self.collectionView reloadData];
 }
-
 
 #pragma mark - MediaSearchFilterDelegate
 
@@ -307,7 +305,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         [self clearSearchFilter];
         return;
     }
-    
+
     NSArray *mediaToFilter = _currentFilterMonth ? _filteredMedia : _allMedia;
     _currentSearchText = searchText;
     self.filteredMedia = [mediaToFilter filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.title CONTAINS[cd] %@ OR self.caption CONTAINS[cd] %@ OR self.desc CONTAINS[cd] %@", searchText, searchText, searchText]];
@@ -320,7 +318,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }
     NSRange daysInMonth = [[NSCalendar currentCalendar] rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:month];
     NSDate *filterMonthEnd = [month dateByAddingTimeInterval:daysInMonth.length*24*60*60];
-    
+
     NSArray *mediaToFilter = _currentSearchText ? _filteredMedia : _allMedia;
     _currentFilterMonth = month;
     self.filteredMedia = [mediaToFilter filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(creationDate >= %@) AND (creationDate <= %@)", month, filterMonthEnd]];
@@ -347,7 +345,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     if (_generatedMonthFilters) {
         return _generatedMonthFilters;
     }
-    
+
     NSMutableOrderedSet *monthsYearsSet = [NSMutableOrderedSet orderedSet];
     NSArray *monthNames = [self.dateFormatter standaloneMonthSymbols];
     NSCalendar *calendar = [NSCalendar currentCalendar];
@@ -371,7 +369,6 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     [self applyMonthFilterForMonth:filterMonthStart];
 }
 
-
 #pragma mark - CollectionViewDelegate/DataSource
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -385,7 +382,6 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
     return CGSizeMake(collectionView.frame.size.width, 44.0f);
 }
-
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
@@ -401,11 +397,11 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     cell.media = self.filteredMedia[indexPath.item];
     cell.isSelected = ([_selectedMedia objectForKey:cell.media.mediaID] != nil);
     cell.delegate = self;
-    
+
     if (!_isScrollingFast) {
         [cell loadThumbnail];
     }
-    
+
     return cell;
 }
 
@@ -465,20 +461,19 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     return isLandscape ? UIEdgeInsetsMake(30, 35, 30, 35) : UIEdgeInsetsMake(7, 10, 7, 10);
 }
 
-
 #pragma mark - MediaCellSelectionDelegate
 
 - (void)mediaCellSelected:(Media *)media {
     if (!_selectedMedia) {
         _selectedMedia = [NSMutableDictionary dictionary];
     }
-    
+
     if (!_selectedMedia[media.mediaID]) {
         if (media.mediaID) {
             [_selectedMedia setObject:media forKey:media.mediaID];
         }
     }
-    
+
     [self showMultiselectOptions];
 }
 
@@ -524,40 +519,40 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
             [self showMultiselectOptions];
             return;
         }
-        
+
         // Disable interaction with other views/buttons
         for (id v in self.view.subviews) {
             if ([v respondsToSelector:@selector(setUserInteractionEnabled:)]) {
                 [v setUserInteractionEnabled:NO];
             }
         }
-       
+
         [self.view addSubview:self.loadingView];
         [self.loadingView show];
-        
+
         [Media bulkDeleteMedia:[_selectedMedia allValues] withSuccess:^() {
             [self.loadingView hide];
             [self.loadingView removeFromSuperview];
-            
+
             for (id subview in self.view.subviews) {
                 if ([subview respondsToSelector:@selector(setUserInteractionEnabled:)]) {
                     [subview setUserInteractionEnabled:YES];
                 }
             }
-            
+
         } failure:^(NSError *error, NSArray *failures) {
             DDLogError(@"Failed to delete media %@ with error %@", failures, error);
-            
+
             for (id subview in self.view.subviews) {
                 if ([subview respondsToSelector:@selector(setUserInteractionEnabled:)]) {
                     [subview setUserInteractionEnabled:YES];
                 }
             }
-            
+
             [self.loadingView hide];
             [self.loadingView removeFromSuperview];
         }];
-        
+
         [_selectedMedia removeAllObjects];
         [self showMultiselectOptions];
     }
@@ -633,13 +628,13 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 - (void)checkVideoPressEnabled {
     self.videoPressEnabled = self.blog.videoPressEnabled;
-    
+
     // Check IFF the blog doesn't already have it enabled
     // The blog's transient property will last only for an in-memory session
     if (!self.blog.videoPressEnabled) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-        
+
         [blogService checkVideoPressEnabledForBlog:self.blog success:^(BOOL enabled) {
             self.videoPressEnabled = enabled;
             self.blog.videoPressEnabled = enabled;
@@ -668,21 +663,21 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         if (_currentActionSheet) {
             return;
         }
-        
+
         UIActionSheet *addMediaActionSheet;
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
             if ([self deviceSupportsVideoAndVideoEnabled]) {
                 addMediaActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Add Photo From Library", nil), NSLocalizedString(@"Take Photo", nil), NSLocalizedString(@"Add Video from Library", @""), NSLocalizedString(@"Record Video", @""),nil];
-                
+
             } else {
                 addMediaActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Add Photo From Library", nil), NSLocalizedString(@"Take Photo", nil), nil];
             }
         } else {
             addMediaActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Add Photo From Library", nil), nil];
         }
-        
+
         _currentActionSheet = addMediaActionSheet;
-        
+
         if (IS_IPAD) {
             UIBarButtonItem *barButtonItem = self.navigationItem.rightBarButtonItems[1];
             [_currentActionSheet showFromBarButtonItem:barButtonItem animated:YES];
@@ -702,19 +697,19 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         _resizeActionSheet = nil;
         return;
     }
-    
+
     NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
-    
+
     if ([buttonTitle isEqualToString:NSLocalizedString(@"Add Photo From Library", nil)]) {
         [self pickMediaFromLibrary:actionSheet];
-    
+
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Take Photo", nil)]) {
        [self pickPhotoFromCamera:nil];
-    
+
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Add Video from Library", nil)]) {
        actionSheet.tag = MediaTypeActionSheetVideo;
        [self pickMediaFromLibrary:actionSheet];
-    
+
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Record Video", nil)]) {
        [self pickVideoFromCamera:actionSheet];
     }
@@ -724,7 +719,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     if (actionSheet.cancelButtonIndex == buttonIndex) {
         return;
     }
-    
+
     // 6 button: small, medium, large, original, custom, cancel
     // 5 buttons: small, medium, original, custom, cancel
     // 4 buttons: small, original, custom, cancel
@@ -753,7 +748,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         [self.customSizeAlert dismiss];
         self.customSizeAlert = nil;
     }
-    
+
     // Check for previous width setting
     NSString *widthText = nil;
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"] != nil) {
@@ -761,16 +756,16 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     } else {
         widthText = [NSString stringWithFormat:@"%d", (int)_currentImage.size.width];
     }
-    
+
     NSString *heightText = nil;
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"] != nil) {
         heightText = [[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"];
     } else {
         heightText = [NSString stringWithFormat:@"%d", (int)_currentImage.size.height];
     }
-    
+
     WPAlertView *alertView = [[WPAlertView alloc] initWithFrame:self.view.bounds andOverlayMode:WPAlertViewOverlayModeTwoTextFieldsSideBySideTwoButtonMode];
-    
+
     alertView.overlayTitle = NSLocalizedString(@"Custom Size", @"");
     alertView.overlayDescription = @"";
     alertView.footerDescription = nil;
@@ -780,14 +775,14 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     alertView.secondTextFieldValue = heightText;
     alertView.leftButtonText = NSLocalizedString(@"Cancel", @"Cancel button");
     alertView.rightButtonText = NSLocalizedString(@"OK", @"");
-    
+
     alertView.firstTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     alertView.secondTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     alertView.firstTextField.keyboardAppearance = UIKeyboardAppearanceAlert;
     alertView.secondTextField.keyboardAppearance = UIKeyboardAppearanceAlert;
     alertView.firstTextField.keyboardType = UIKeyboardTypeNumberPad;
     alertView.secondTextField.keyboardType = UIKeyboardTypeNumberPad;
-    
+
     alertView.button1CompletionBlock = ^(WPAlertView *overlayView){
         // Cancel
         [overlayView dismiss];
@@ -795,34 +790,34 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     };
     alertView.button2CompletionBlock = ^(WPAlertView *overlayView){
         [overlayView dismiss];
-        
+
         NSNumber *width = [NSNumber numberWithInt:[overlayView.firstTextField.text intValue]];
         NSNumber *height = [NSNumber numberWithInt:[overlayView.secondTextField.text intValue]];
-        
+
         if ([width intValue] < 10) {
             width = @10;
         }
         if ([height intValue] < 10) {
             height = @10;
         }
-        
+
         overlayView.firstTextField.text = [NSString stringWithFormat:@"%@", width];
         overlayView.secondTextField.text = [NSString stringWithFormat:@"%@", height];
-        
+
         [[NSUserDefaults standardUserDefaults] setObject:overlayView.firstTextField.text forKey:@"prefCustomImageWidth"];
         [[NSUserDefaults standardUserDefaults] setObject:overlayView.secondTextField.text forKey:@"prefCustomImageHeight"];
-        
+
         [self useImage:[self resizeImage:_currentImage width:[width floatValue] height:[height floatValue]]];
     };
-    
+
     alertView.alpha = 0.0;
-    
+
         [self.view addSubview:alertView];
-    
+
     [UIView animateWithDuration:0.2 animations:^{
         alertView.alpha = 1.0;
     }];
-    
+
     self.customSizeAlert = alertView;
 }
 
@@ -834,7 +829,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         CGSize mediumSize = [[predefDim objectForKey: @"mediumSize"] CGSizeValue];
         CGSize largeSize =  [[predefDim objectForKey: @"largeSize"] CGSizeValue];
         CGSize originalSize = CGSizeMake(_currentImage.size.width, _currentImage.size.height); //The dimensions of the image, taking orientation into account.
-        
+
         switch (_currentImage.imageOrientation) {
             case UIImageOrientationLeft:
             case UIImageOrientationLeftMirrored:
@@ -847,12 +842,12 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
             default:
                 break;
         }
-        
+
         NSString *resizeSmallStr = [NSString stringWithFormat:NSLocalizedString(@"Small (%@)", @"Small (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)smallSize.width, (int)smallSize.height]];
            NSString *resizeMediumStr = [NSString stringWithFormat:NSLocalizedString(@"Medium (%@)", @"Medium (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)mediumSize.width, (int)mediumSize.height]];
         NSString *resizeLargeStr = [NSString stringWithFormat:NSLocalizedString(@"Large (%@)", @"Large (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)largeSize.width, (int)largeSize.height]];
         NSString *originalSizeStr = [NSString stringWithFormat:NSLocalizedString(@"Original (%@)", @"Original (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)originalSize.width, (int)originalSize.height]];
-        
+
         UIActionSheet *resizeActionSheet;
         if (_currentImage.size.width > largeSize.width  && _currentImage.size.height > largeSize.height) {
             resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"")
@@ -860,14 +855,14 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                                               destructiveButtonTitle:nil
                                                    otherButtonTitles:resizeSmallStr, resizeMediumStr, resizeLargeStr, originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
-            
+
         } else if (_currentImage.size.width > mediumSize.width  && _currentImage.size.height > mediumSize.height) {
             resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"")
                                                             delegate:self
                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                                               destructiveButtonTitle:nil
                                                    otherButtonTitles:resizeSmallStr, resizeMediumStr, originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
-            
+
         } else if (_currentImage.size.width > smallSize.width  && _currentImage.size.height > smallSize.height) {
             resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"")
                                                             delegate:self
@@ -881,9 +876,9 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
                                               destructiveButtonTitle:nil
                                                    otherButtonTitles: originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
         }
-        
+
         _resizeActionSheet = resizeActionSheet;
-        
+
         if (IS_IPAD) {
             [resizeActionSheet showFromBarButtonItem:[self.navigationItem.rightBarButtonItems objectAtIndex:1] animated:YES];
         } else {
@@ -940,13 +935,13 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         }
         _picker.videoQuality = UIImagePickerControllerQualityTypeMedium;
         _selectingDeviceFromLibrary = YES;
-        
+
         if ([(UIView *)sender tag] == MediaTypeActionSheetVideo) {
             _picker.mediaTypes = @[(NSString *)kUTTypeMovie];
             _picker.videoQuality = [self videoQualityPreference];
             _picker.modalPresentationStyle = UIModalPresentationCurrentContext;
         }
-        
+
         if (IS_IPAD) {
             _picker.navigationBar.barStyle = UIBarStyleBlack;
             if (!_addPopover) {
@@ -1006,9 +1001,9 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    
+
     [WordPressAppDelegate sharedWordPressApplicationDelegate].tabBarController.tabBar.hidden = NO;
-    
+
      if ([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.movie"]) {
         self.currentVideo = [info mutableCopy];
         if (!self.selectingDeviceFromLibrary) {
@@ -1022,7 +1017,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         if (picker.sourceType == UIImagePickerControllerSourceTypeCamera)
             UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
         _currentImage = image;
-        
+
         //UIImagePickerControllerReferenceURL = "assets-library://asset/asset.JPG?id=1000000050&ext=JPG").
         NSURL *assetURL = nil;
         if (&UIImagePickerControllerReferenceURL != NULL) {
@@ -1069,7 +1064,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
                 }
             }
         }
-        
+
         NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
         [nf setNumberStyle:NSNumberFormatterDecimalStyle];
         NSNumber *resizePreference = [NSNumber numberWithInt:-1];
@@ -1109,7 +1104,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
                 break;
             }
         }
-        
+
         if (_addPopover) {
             [_addPopover dismissPopoverAnimated:YES];
             _addPopover = nil;
@@ -1121,12 +1116,12 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
                 }
             }];
         }
-        
+
         if (IS_IPAD){
             [_addPopover dismissPopoverAnimated:YES];
             _addPopover = nil;
         }
-        
+
         [self refresh];
     }
 }
@@ -1136,16 +1131,16 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     if(videoURL == nil) {
         videoURL = [_currentVideo valueForKey:UIImagePickerControllerReferenceURL];
     }
-    
+
     if (videoURL != nil) {
         if(IS_IPAD)
             [_addPopover dismissPopoverAnimated:YES];
         else {
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         }
-        
+
         [self.currentVideo setValue:[NSNumber numberWithInt:_currentOrientation] forKey:@"orientation"];
-        
+
         [self useVideo:[self videoPathFromVideoUrl:[videoURL absoluteString]]];
         self.currentVideo = nil;
         self.selectingDeviceFromLibrary = NO;
@@ -1154,7 +1149,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 - (void)processRecordedVideo {
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-    
+
     [self.currentVideo setValue:[NSNumber numberWithInt:_currentOrientation] forKey:@"orientation"];
     NSString *tempVideoPath = [(NSURL *)[_currentVideo valueForKey:UIImagePickerControllerMediaURL] absoluteString];
     tempVideoPath = [self videoPathFromVideoUrl:tempVideoPath];
@@ -1180,29 +1175,29 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     NSData *imageData = UIImageJPEGRepresentation(theImage, 0.90);
     UIImage *imageThumbnail = [self generateThumbnailFromImage:theImage andSize:CGSizeMake(75, 75)];
     [self.dateFormatter setDateFormat:@"yyyyMMdd-HHmmss"];
-    
+
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *filename = [NSString stringWithFormat:@"%@.jpg", [self.dateFormatter stringFromDate:[NSDate date]]];
     NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
-    
+
     if (self.currentImageMetadata != nil) {
         BOOL success = NO;
-        
+
         // This will be the data CGImageDestinationRef will write into
         NSMutableData *dest_data = [NSMutableData data];
-        
+
         // Write the EXIF data with the image data to disk
         CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, NULL);
-        
+
         if (source) {
             CFStringRef UTI = CGImageSourceGetType(source); //this is the type of image (e.g., public.jpeg)
             CGImageDestinationRef destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)dest_data,UTI,1,NULL);
-            
+
             if(destination) {
                 //add the image contained in the image source to the destination, copying the old metadata
                 CGImageDestinationAddImageFromSource(destination,source,0, (__bridge CFDictionaryRef) self.currentImageMetadata);
-                
+
                 //tell the destination to write the image data and metadata into our data object.
                 //It will return false if something goes wrong
                 success = CGImageDestinationFinalize(destination);
@@ -1213,14 +1208,14 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
             } else {
                 DDLogWarn(@"***Could not create image destination ***");
             }
-            
+
             // Cleanup
             CFRelease(source);
             source = nil;
         } else {
             DDLogWarn(@"***Could not create image source ***");
         }
-        
+
         if(!success) {
             DDLogWarn(@"***Could not create data from image destination ***");
             //write the data without EXIF to disk
@@ -1234,7 +1229,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         NSFileManager *fileManager = [NSFileManager defaultManager];
         [fileManager createFileAtPath:filepath contents:imageData attributes:nil];
     }
-    
+
     imageMedia.creationDate = [NSDate date];
     imageMedia.filename = filename;
     imageMedia.localURL = filepath;
@@ -1247,7 +1242,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     imageMedia.thumbnail = UIImageJPEGRepresentation(imageThumbnail, 0.90);
     imageMedia.width = [NSNumber numberWithInt:theImage.size.width];
     imageMedia.height = [NSNumber numberWithInt:theImage.size.height];
-    
+
     [imageMedia uploadWithSuccess:^{
         if ([imageMedia isDeleted]) {
             NSLog(@"Media deleted while uploading (%@)", imageMedia);
@@ -1264,11 +1259,10 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
             return;
         }
-        
+
         [WPError showAlertWithTitle:NSLocalizedString(@"Upload failed", nil) message:error.localizedDescription];
     }];
 }
-
 
 - (void)useVideo:(NSString *)videoURL {
     BOOL copySuccess = NO;
@@ -1277,28 +1271,28 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     UIImage *thumbnail = nil;
     NSTimeInterval duration = 0.0;
     NSURL *contentURL = [NSURL fileURLWithPath:videoURL];
-    
+
     AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:contentURL
                                                 options:@{AVURLAssetPreferPreciseDurationAndTimingKey: @YES}];
     if (asset) {
         duration = CMTimeGetSeconds(asset.duration);
         AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
         imageGenerator.appliesPreferredTrackTransform = YES;
-        
+
         CMTime midpoint = CMTimeMakeWithSeconds(duration/2.0, 600);
         NSError *error = nil;
         CMTime actualTime;
         CGImageRef halfWayImage = [imageGenerator copyCGImageAtTime:midpoint actualTime:&actualTime error:&error];
-        
+
         if (halfWayImage != NULL) {
             thumbnail = [UIImage imageWithCGImage:halfWayImage];
             // Do something interesting with the image.
             CGImageRelease(halfWayImage);
         }
     }
-    
+
     UIImage *videoThumbnail = [self generateThumbnailFromImage:thumbnail andSize:CGSizeMake(75, 75)];
-    
+
     // Save to local file
     [self.dateFormatter setDateFormat:@"yyyyMMdd-HHmmss"];
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -1306,7 +1300,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *filename = [NSString stringWithFormat:@"%@.mov", [self.dateFormatter stringFromDate:[NSDate date]]];
     NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
-    
+
     if(videoURL != nil) {
         // Copy the video from temp to blog directory
         NSError *error = nil;
@@ -1315,14 +1309,14 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
                 copySuccess = [fileManager copyItemAtPath:videoURL toPath:filepath error:&error];
         }
     }
-    
+
     if(copySuccess) {
         videoMedia = [Media newMediaForBlog:self.blog];
-        
+
         videoMedia.creationDate = [NSDate date];
         [videoMedia setFilename:filename];
         [videoMedia setLocalURL:filepath];
-        
+
         videoMedia.filesize = [NSNumber numberWithInt:([[attributes objectForKey: NSFileSize] intValue]/1024)];
         videoMedia.mediaType = MediaTypeVideo;
         videoMedia.thumbnail = UIImageJPEGRepresentation(videoThumbnail, 1.0);
@@ -1332,7 +1326,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         NSUInteger videoHeight = CGImageGetHeight(cgVideoThumbnail);
         videoMedia.width = @(videoWidth);
         videoMedia.height = @(videoHeight);
-        
+
         [videoMedia uploadWithSuccess:^{
             if ([videoMedia isDeleted]) {
                 NSLog(@"Media deleted while uploading (%@)", videoMedia);
@@ -1349,7 +1343,6 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }
 }
 
-
 /*
  * Take Asset URL and set imageJPEG property to NSData containing the
  * associated JPEG, including the metadata we're after.
@@ -1359,11 +1352,11 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     [assetslibrary assetForURL:url
                    resultBlock: ^(ALAsset *myasset) {
                        ALAssetRepresentation *rep = [myasset defaultRepresentation];
-                       
+
                        DDLogWarn(@"getJPEGFromAssetForURL: default asset representation for %@: uti: %@ size: %lld url: %@ orientation: %d scale: %f metadata: %@",
                              url, [rep UTI], [rep size], [rep url], [rep orientation],
                              [rep scale], [rep metadata]);
-                       
+
                        Byte *buf = malloc([rep size]);  // will be freed automatically when associated NSData is deallocated
                        NSError *err = nil;
                        NSUInteger bytes = [rep getBytes:buf fromOffset:0LL
@@ -1373,30 +1366,30 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
                            // error occurred which presumably means NSError is returned.
                            free(buf); // Free up memory so we don't leak.
                            DDLogError(@"error from getBytes: %@", err);
-                           
+
                            return;
                        }
                        NSData *imageJPEG = [NSData dataWithBytesNoCopy:buf length:[rep size]
                                                           freeWhenDone:YES];  // YES means free malloc'ed buf that backs this when deallocated
-                       
+
                        CGImageSourceRef  source ;
                        source = CGImageSourceCreateWithData((__bridge CFDataRef)imageJPEG, NULL);
-                       
+
                        NSDictionary *metadata = (NSDictionary *) CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(source,0,NULL));
-                       
+
                        //make the metadata dictionary mutable so we can remove properties to it
                        NSMutableDictionary *metadataAsMutable = [metadata mutableCopy];
-                       
+
                        if (!self.post.blog.geolocationEnabled) {
                            //we should remove the GPS info if the blog has the geolocation set to off
-                           
+
                            //get all the metadata in the image
                            [metadataAsMutable removeObjectForKey:@"{GPS}"];
                        }
                        [metadataAsMutable removeObjectForKey:@"Orientation"];
                        [metadataAsMutable removeObjectForKey:@"{TIFF}"];
                        self.currentImageMetadata = [NSDictionary dictionaryWithDictionary:metadataAsMutable];
-                       
+
                        CFRelease(source);
                    }
                   failureBlock: ^(NSError *err) {
@@ -1420,7 +1413,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
             result = MediaOrientationPortrait;
             break;
     }
-    
+
     return result;
 }
 
@@ -1429,7 +1422,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     // Determine the video's library path.
     // In iOS 6 this returns as file://localhost/private/var/mobile/Applications/73DCDAD0-397C-404D-9456-4C5A360ABE0D/tmp//trim.lmhYmN.MOV
     // In iOS 7 this returns as file:///private/var/mobile/Applications/9946F4C5-5B16-4EA5-850C-DDA701A47E61/tmp/trim.4F72621B-04AE-47F2-A551-068F62E8D16F.MOV
-    
+
     NSError *error;
     NSRegularExpression *regEx = [NSRegularExpression regularExpressionWithPattern:@"(/var.*$)" options:NSRegularExpressionCaseInsensitive error:&error];
     NSString *videoPath = videoUrl;
@@ -1440,7 +1433,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         NSRange videoUrlRange = [result rangeAtIndex:1];
         videoPath = [videoUrl substringWithRange:videoUrlRange];
     }
-    
+
     return videoPath;
 }
 
@@ -1467,13 +1460,13 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         default:
             break;
     }
-    
+
     CGSize originalSize = CGSizeMake(_currentImage.size.width, _currentImage.size.height);
-    
+
     // Resize the image using the selected dimensions
     UIImage *resizedImage = original;
     CGSize resizeToBounds = originalSize;
-    
+
     if (resize == MediaResizeSmall &&
         (_currentImage.size.width > smallSize.width  || _currentImage.size.height > smallSize.height)) {
         resizeToBounds = smallSize;
@@ -1486,7 +1479,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
                (_currentImage.size.width > largeSize.width || _currentImage.size.height > largeSize.height)) {
         resizeToBounds = largeSize;
     }
-    
+
     if (!CGSizeEqualToSize(originalSize, resizeToBounds)) {
         resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
                                                       bounds:resizeToBounds
@@ -1507,7 +1500,4 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     return resizedImage;
 }
 
-
 @end
-
-

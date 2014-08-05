@@ -1,7 +1,5 @@
 #import "XMLParserCollecter.h"
 
-
-
 @implementation XMLParserCollecter
 
 - (id)init {

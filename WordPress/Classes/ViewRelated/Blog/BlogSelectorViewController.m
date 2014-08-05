@@ -28,13 +28,13 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
                 selectedCompletion:(void (^)(NSManagedObjectID *))selected
                   cancelCompletion:(void (^)())cancel {
     self = [super initWithStyle:UITableViewStyleGrouped];
-    
+
     if (self) {
         _selectedObjectID = objectID;
         _selectedCompletionHandler = selected;
         _cancelCompletionHandler = cancel;
     }
-    
+
     return self;
 }
 
@@ -44,23 +44,23 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(wordPressComAccountChanged:)
                                                  name:WPAccountDefaultWordPressComAccountChangedNotification
                                                object:nil];
-    
+
     if (IS_IPHONE) {
         // Remove one-pixel gap resulting from a top-aligned grouped table view
         UIEdgeInsets tableInset = [self.tableView contentInset];
         tableInset.top = -1;
         self.tableView.contentInset = tableInset;
-        
+
         // Cancel button
         UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                           target:self
                                                                                           action:@selector(cancelButtonTapped:)];
-        
+
         self.navigationItem.leftBarButtonItem = cancelButtonItem;
     }
 
@@ -96,7 +96,6 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
     return ([[self.resultsController sections] count] > 1);
 }
 
-
 #pragma mark - Notifications
 
 - (void)wordPressComAccountChanged:(NSNotification *)note {
@@ -124,13 +123,13 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
         sectionInfo = [[self.resultsController sections] objectAtIndex:section];
         numberOfRows = sectionInfo.numberOfObjects;
     }
-    
+
     return numberOfRows;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:BlogCellIdentifier];
 
     [WPStyleGuide configureTableViewSmallSubtitleCell:cell];
@@ -147,19 +146,19 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
 }
 
 - (NSInteger)sectionForDotCom {
-    
+
     if ([self.resultsController sections].count > 0) {
         id<NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:0];
         if ([[sectionInfo name] isEqualToString:@"1"]) {
             return 0;
         }
     }
-    
+
     return -1;
 }
 
 - (NSInteger)sectionForSelfHosted {
-    
+
     if ([self sectionForDotCom] >= 0) {
         return 1;
     }
@@ -171,7 +170,7 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.accessoryView = nil;
-    
+
     Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
     if ([blog.blogName length] != 0) {
         cell.textLabel.text = blog.blogName;
@@ -179,7 +178,7 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
     } else {
         cell.textLabel.text = blog.url;
     }
-    
+
     [cell.imageView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
 
     cell.accessoryType = blog.objectID == self.selectedObjectID ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
@@ -209,7 +208,7 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
                 break;
             }
         }
-        
+
         if ([previousIndexPath compare:indexPath] == NSOrderedSame) {
             // User tapped the already selected item. Treat this as a cancel event
             // so the picker can be dismissed without changes.
@@ -217,11 +216,11 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
             return;
         }
     }
-    
+
     Blog *selectedBlog = [self.resultsController objectAtIndexPath:indexPath];
     self.selectedObjectID = selectedBlog.objectID;
     [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
-    
+
     if (previousIndexPath) {
         [tableView reloadRowsAtIndexPaths:@[previousIndexPath] withRowAnimation:UITableViewRowAnimationNone];
     }
@@ -246,19 +245,19 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
     if (_resultsController) {
         return _resultsController;
     }
-    
+
     NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
     [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"account.isWpcom" ascending:NO], [NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]]];
     [fetchRequest setPredicate:[self fetchRequestPredicate]];
-    
+
     _resultsController = [[NSFetchedResultsController alloc]
                           initWithFetchRequest:fetchRequest
                           managedObjectContext:moc
                           sectionNameKeyPath:@"isWPcom"
                           cacheName:nil];
     _resultsController.delegate = self;
-    
+
     NSError *error = nil;
     if (![_resultsController performFetch:&error]) {
         DDLogError(@"Couldn't fetch sites: %@", [error localizedDescription]);
