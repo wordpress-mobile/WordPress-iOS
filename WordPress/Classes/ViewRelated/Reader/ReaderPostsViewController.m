@@ -56,6 +56,11 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 #pragma mark - Life Cycle methods
 
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
+    return [[WordPressAppDelegate sharedWordPressApplicationDelegate] readerPostsViewController];
+}
+
 - (void)dealloc
 {
     self.featuredImageSource.delegate = nil;
