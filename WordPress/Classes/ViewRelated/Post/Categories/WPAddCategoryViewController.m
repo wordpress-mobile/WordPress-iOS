@@ -32,7 +32,7 @@
 
 - (void)viewDidLoad {
     DDLogMethod();
-	[super viewDidLoad];
+    [super viewDidLoad];
     
     self.title = NSLocalizedString(@"Add Category", @"The title on the add category screen");
     self.tableView.sectionFooterHeight = 0.0f;
@@ -69,7 +69,7 @@
 }
 
 - (void)removeProgressIndicator {
-	self.navigationItem.rightBarButtonItem = self.saveButtonItem;
+    self.navigationItem.rightBarButtonItem = self.saveButtonItem;
 }
 
 - (void)dismiss {

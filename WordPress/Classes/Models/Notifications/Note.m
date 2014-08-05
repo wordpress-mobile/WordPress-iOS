@@ -22,97 +22,97 @@
 @dynamic subject; 
 @dynamic body;
 @dynamic meta;
-@synthesize bodyItems	= _bodyItems;
-@synthesize date		= _date;
+@synthesize bodyItems    = _bodyItems;
+@synthesize date        = _date;
 
 
 #pragma mark - Derived Properties from subject / body dictionaries
 
 - (NSString *)subjectText
 {
-	NSString *subject = [self.subject stringForKey:@"text"] ?: [self.subject stringForKey:@"html"];
-	return [subject trim];
+    NSString *subject = [self.subject stringForKey:@"text"] ?: [self.subject stringForKey:@"html"];
+    return [subject trim];
 }
 
 - (NSString *)subjectIcon
 {
-	return [self.subject stringForKey:@"icon"];
+    return [self.subject stringForKey:@"icon"];
 }
 
 - (NSString *)bodyHtml
 {
-	return [self.body stringForKey:@"html"];
+    return [self.body stringForKey:@"html"];
 }
 
 - (NSArray *)bodyItems
 {
-	if (_bodyItems) {
-		return _bodyItems;
-	}
-	
-	NSArray *rawItems = [self.body arrayForKey:@"items"];
-	if (rawItems.count) {
-		_bodyItems = [NoteBodyItem parseItems:rawItems];
-	}
-	return _bodyItems;
+    if (_bodyItems) {
+        return _bodyItems;
+    }
+    
+    NSArray *rawItems = [self.body arrayForKey:@"items"];
+    if (rawItems.count) {
+        _bodyItems = [NoteBodyItem parseItems:rawItems];
+    }
+    return _bodyItems;
 }
 
 - (NSArray *)bodyActions
 {
-	return [self.body arrayForKey:@"actions"];
+    return [self.body arrayForKey:@"actions"];
 }
 
 - (NSString *)bodyTemplate
 {
-	return [self.body stringForKey:@"template"];	
+    return [self.body stringForKey:@"template"];    
 }
 
 - (NSString *)bodyHeaderText
 {
-	return [self.body stringForKey:@"header_text"];
+    return [self.body stringForKey:@"header_text"];
 }
 
 - (NSString *)bodyHeaderLink
 {
-	return [self.body stringForKey:@"header_link"];
+    return [self.body stringForKey:@"header_link"];
 }
 
 - (NSString *)bodyFooterText
 {
-	return [self.body stringForKey:@"footer_text"];
+    return [self.body stringForKey:@"footer_text"];
 }
 
 - (NSString *)bodyFooterLink
 {
-	return [self.body stringForKey:@"footer_link"];
+    return [self.body stringForKey:@"footer_link"];
 }
 
 - (NSString *)bodyCommentText
 {
     if (self.isComment == NO) {
-		return nil;
-	}
-	
-	NoteBodyItem *bodyItem	= [self.bodyItems lastObject];
-	NSString *comment		= bodyItem.bodyHtml;
-	if (comment == (id)[NSNull null] || comment.length == 0 ) {
-		return nil;
-	}
-	
-	// Sanitize the string: strips HTML Tags and converts html entites
-	comment = [comment stringByReplacingHTMLEmoticonsWithEmoji];
-	comment = [comment stringByStrippingHTML];
-	
-	NSString *xmlString				= [NSString stringWithFormat:@"<d>%@</d>", comment];
-	NSData *xml						= [xmlString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-	
-	// Parse please!
-	NSXMLParser *parser				= [[NSXMLParser alloc] initWithData:xml];
-	XMLParserCollecter *collector	= [XMLParserCollecter new];
-	parser.delegate					= collector;
-	[parser parse];
-	
-	return collector.result;
+        return nil;
+    }
+    
+    NoteBodyItem *bodyItem    = [self.bodyItems lastObject];
+    NSString *comment        = bodyItem.bodyHtml;
+    if (comment == (id)[NSNull null] || comment.length == 0 ) {
+        return nil;
+    }
+    
+    // Sanitize the string: strips HTML Tags and converts html entites
+    comment = [comment stringByReplacingHTMLEmoticonsWithEmoji];
+    comment = [comment stringByStrippingHTML];
+    
+    NSString *xmlString                = [NSString stringWithFormat:@"<d>%@</d>", comment];
+    NSData *xml                        = [xmlString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    
+    // Parse please!
+    NSXMLParser *parser                = [[NSXMLParser alloc] initWithData:xml];
+    XMLParserCollecter *collector    = [XMLParserCollecter new];
+    parser.delegate                    = collector;
+    [parser parse];
+    
+    return collector.result;
 }
 
 - (NSString *)bodyCommentHtml
@@ -212,7 +212,7 @@
             title = [title trim];
         }
     }
-	return [title stringByDecodingXMLCharacters] ?: @"";
+    return [title stringByDecodingXMLCharacters] ?: @"";
 }
 
 - (NSString *)authorForDisplay

@@ -18,7 +18,7 @@
 
 + (NSString *)titleForRemoteStatus:(NSNumber *)remoteStatus {
     if ([remoteStatus intValue] == AbstractPostRemoteStatusSync) {
-		return NSLocalizedString(@"Pages", @"");
+        return NSLocalizedString(@"Pages", @"");
     }
 
     return [super titleForRemoteStatus:remoteStatus];
@@ -29,7 +29,7 @@
 }
 
 - (void)updateFromDictionary:(NSDictionary *)postInfo {
-	self.postTitle      = [postInfo objectForKey:@"title"];
+    self.postTitle      = [postInfo objectForKey:@"title"];
     self.postID         = [[postInfo objectForKey:@"page_id"] numericValue];
     self.content        = [postInfo objectForKey:@"description"];
     self.date_created_gmt    = [postInfo objectForKey:@"date_created_gmt"];
@@ -44,11 +44,11 @@
     }
     self.password = password;
     self.remoteStatus   = AbstractPostRemoteStatusSync;
-	self.permaLink      = [postInfo objectForKey:@"permaLink"];
-	self.mt_excerpt		= [postInfo objectForKey:@"mt_excerpt"];
-	self.mt_text_more	= [postInfo objectForKey:@"text_more"];
-	self.wp_slug		= [postInfo objectForKey:@"wp_slug"];
-	self.post_thumbnail = [postInfo objectForKey:@"featured_image"];
+    self.permaLink      = [postInfo objectForKey:@"permaLink"];
+    self.mt_excerpt        = [postInfo objectForKey:@"mt_excerpt"];
+    self.mt_text_more    = [postInfo objectForKey:@"text_more"];
+    self.wp_slug        = [postInfo objectForKey:@"wp_slug"];
+    self.post_thumbnail = [postInfo objectForKey:@"featured_image"];
 }
 
 - (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {

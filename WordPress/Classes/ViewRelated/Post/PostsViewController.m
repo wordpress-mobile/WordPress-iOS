@@ -79,15 +79,15 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
+    [super viewWillAppear:animated];
 
-	if (IS_IPHONE) {
-		// iPhone table views should not appear selected
-		if ([self.tableView indexPathForSelectedRow]) {
-			[self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
-			[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
-		}
-	}
+    if (IS_IPHONE) {
+        // iPhone table views should not appear selected
+        if ([self.tableView indexPathForSelectedRow]) {
+            [self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+            [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
+        }
+    }
     
     // Scroll to the top of the UItableView to show the newly added post.
     if (_addingNewPost) {
@@ -110,15 +110,15 @@
 #pragma mark Syncs methods
 
 - (BOOL)isSyncing {
-	return self.blog.isSyncingPosts;
+    return self.blog.isSyncingPosts;
 }
 
 - (NSDate *)lastSyncDate {
-	return self.blog.lastPostsSync;
+    return self.blog.lastPostsSync;
 }
 
 - (BOOL)hasMoreContent {
-	return [self.blog.hasOlderPosts boolValue];
+    return [self.blog.hasOlderPosts boolValue];
 }
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
@@ -137,20 +137,20 @@
 - (void)configureCell:(NewPostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {    
     Post *apost = (Post*) [self.resultsController objectAtIndexPath:indexPath];
     cell.contentProvider = apost;
-	if (apost.remoteStatus == AbstractPostRemoteStatusPushing) {
-		cell.selectionStyle = UITableViewCellSelectionStyleNone;
-	} else {
-		cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-	}
+    if (apost.remoteStatus == AbstractPostRemoteStatusPushing) {
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    } else {
+        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    }
     cell.accessoryType = UITableViewCellAccessoryNone;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
-	if (post.remoteStatus == AbstractPostRemoteStatusPushing) {
-		// Don't allow editing while pushing changes
-		return;
-	}
+    AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
+    if (post.remoteStatus == AbstractPostRemoteStatusPushing) {
+        // Don't allow editing while pushing changes
+        return;
+    }
 
     [self editPost:post];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];    
@@ -188,11 +188,11 @@
 - (void)deletePostAtIndexPath:(NSIndexPath *)indexPath{
     Post *post = [self.resultsController objectAtIndexPath:indexPath];
     [post deletePostWithSuccess:nil failure:^(NSError *error) {
-		if([error code] == 403) {
-			[self promptForPassword];
-		} else {
+        if([error code] == 403) {
+            [self promptForPassword];
+        } else {
             [WPError showXMLRPCErrorAlert:error];
-		}
+        }
         [self syncItems];
     }];
 }
@@ -227,13 +227,13 @@
 }
 
 - (BOOL)refreshRequired {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	if ([defaults boolForKey:@"refreshPostsRequired"]) { 
-		[defaults setBool:NO forKey:@"refreshPostsRequired"];
-		return YES;
-	}
-	
-	return NO;
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:@"refreshPostsRequired"]) { 
+        [defaults setBool:NO forKey:@"refreshPostsRequired"];
+        return YES;
+    }
+    
+    return NO;
 }
 
 - (NSFetchRequest *)fetchRequest {
@@ -290,7 +290,7 @@
 }
 
 - (BOOL)userCanCreateEntity {
-	return YES;
+    return YES;
 }
 
 

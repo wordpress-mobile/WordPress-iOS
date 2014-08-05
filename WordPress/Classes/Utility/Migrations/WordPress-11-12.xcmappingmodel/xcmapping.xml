@@ -15,24 +15,24 @@
                     <dict>
                         <key>XDDevAttributeMapping</key>
                         <data>
-		0plcXXRN7XHKl5CcF+fwriFmUpON3ZtcI/AfK748aWc=
-		</data>
+        0plcXXRN7XHKl5CcF+fwriFmUpON3ZtcI/AfK748aWc=
+        </data>
                         <key>XDDevEntityMapping</key>
                         <data>
-		qeN1Ym3TkWN1G6dU9RfX6Kd2ccEvcDVWHpd3LpLgboI=
-		</data>
+        qeN1Ym3TkWN1G6dU9RfX6Kd2ccEvcDVWHpd3LpLgboI=
+        </data>
                         <key>XDDevMappingModel</key>
                         <data>
-		EqtMzvRnVZWkXwBHu4VeVGy8UyoOe+bi67KC79kphlQ=
-		</data>
+        EqtMzvRnVZWkXwBHu4VeVGy8UyoOe+bi67KC79kphlQ=
+        </data>
                         <key>XDDevPropertyMapping</key>
                         <data>
-		XN33V44TTGY4JETlMoOB5yyTKxB+u4slvDIinv0rtGA=
-		</data>
+        XN33V44TTGY4JETlMoOB5yyTKxB+u4slvDIinv0rtGA=
+        </data>
                         <key>XDDevRelationshipMapping</key>
                         <data>
-		akYY9LhehVA/mCb4ATLWuI9XGLcjpm14wWL1oEBtIcs=
-		</data>
+        akYY9LhehVA/mCb4ATLWuI9XGLcjpm14wWL1oEBtIcs=
+        </data>
                     </dict>
                     <key>NSStoreModelVersionHashesVersion</key>
                     <integer>3</integer>

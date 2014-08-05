@@ -139,7 +139,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         [self signInButtonAction:nil];
     }
     
-	return YES;
+    return YES;
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField

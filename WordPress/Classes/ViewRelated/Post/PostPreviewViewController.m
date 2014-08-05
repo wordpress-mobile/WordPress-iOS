@@ -20,8 +20,8 @@
 
 - (void)dealloc {
     [[WordPressAppDelegate sharedWordPressApplicationDelegate] useAppUserAgent];
-	[self.webView stopLoading];
-	self.webView.delegate = nil;
+    [self.webView stopLoading];
+    self.webView.delegate = nil;
 }
 
 - (instancetype)initWithPost:(AbstractPost *)aPost {
@@ -54,7 +54,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [[WordPressAppDelegate sharedWordPressApplicationDelegate] useAppUserAgent];
-	[self.webView stopLoading];
+    [self.webView stopLoading];
 }
 
 #pragma mark -
@@ -70,7 +70,7 @@
 }
 
 - (void)setupLoadingView {
-	if (!self.loadingView) {
+    if (!self.loadingView) {
         
         CGRect frame = self.view.frame;
         CGFloat sides = 100.0f;
@@ -107,52 +107,52 @@
 }
 
 - (NSString *)buildSimplePreview {
-	NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
-	NSString *fpath = [NSString stringWithFormat:@"%@/defaultPostTemplate.html", resourcePath];
-	NSString *str = [NSString stringWithContentsOfFile:fpath encoding:NSUTF8StringEncoding error:nil];
-	
-	if ([str length]) {
-		
-		//Title
-		NSString *title = self.apost.postTitle;
-		title = (title == nil || ([title length] == 0) ? NSLocalizedString(@"(no title)", @"") : title);
-		str = [str stringByReplacingOccurrencesOfString:@"!$title$!" withString:title];
-		
-		//Content
-		NSString *desc = self.apost.content;
-		if (!desc) {
-			desc = [NSString stringWithFormat:@"<h1>%@</h1>", NSLocalizedString(@"No Description available for this Post", @"")];
+    NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
+    NSString *fpath = [NSString stringWithFormat:@"%@/defaultPostTemplate.html", resourcePath];
+    NSString *str = [NSString stringWithContentsOfFile:fpath encoding:NSUTF8StringEncoding error:nil];
+    
+    if ([str length]) {
+        
+        //Title
+        NSString *title = self.apost.postTitle;
+        title = (title == nil || ([title length] == 0) ? NSLocalizedString(@"(no title)", @"") : title);
+        str = [str stringByReplacingOccurrencesOfString:@"!$title$!" withString:title];
+        
+        //Content
+        NSString *desc = self.apost.content;
+        if (!desc) {
+            desc = [NSString stringWithFormat:@"<h1>%@</h1>", NSLocalizedString(@"No Description available for this Post", @"")];
         } else {
             desc = [self stringReplacingNewlinesWithBR:desc];
         }
-		desc = [NSString stringWithFormat:@"<p>%@</p><br />", desc];
-		str = [str stringByReplacingOccurrencesOfString:@"!$text$!" withString:desc];
-		
-		//Tags
-		NSString *tags = self.post.tags;
-		tags = (tags == nil ? @"" : tags);
-		tags = [NSString stringWithFormat:NSLocalizedString(@"Tags: %@", @""), tags];
-		str = [str stringByReplacingOccurrencesOfString:@"!$mt_keywords$!" withString:tags];
-		
-		//Categories [selObjects count]
-		NSArray *categories = [self.post.categories allObjects];
-		NSString *catStr = @"";
-		NSUInteger i = 0, count = [categories count];
-		for (i = 0; i < count; i++) {
-			Category *category = [categories objectAtIndex:i];
-			catStr = [catStr stringByAppendingString:category.categoryName];
-			if(i < count-1) {
-				catStr = [catStr stringByAppendingString:@", "];
+        desc = [NSString stringWithFormat:@"<p>%@</p><br />", desc];
+        str = [str stringByReplacingOccurrencesOfString:@"!$text$!" withString:desc];
+        
+        //Tags
+        NSString *tags = self.post.tags;
+        tags = (tags == nil ? @"" : tags);
+        tags = [NSString stringWithFormat:NSLocalizedString(@"Tags: %@", @""), tags];
+        str = [str stringByReplacingOccurrencesOfString:@"!$mt_keywords$!" withString:tags];
+        
+        //Categories [selObjects count]
+        NSArray *categories = [self.post.categories allObjects];
+        NSString *catStr = @"";
+        NSUInteger i = 0, count = [categories count];
+        for (i = 0; i < count; i++) {
+            Category *category = [categories objectAtIndex:i];
+            catStr = [catStr stringByAppendingString:category.categoryName];
+            if(i < count-1) {
+                catStr = [catStr stringByAppendingString:@", "];
             }
-		}
-		catStr = [NSString stringWithFormat:NSLocalizedString(@"Categories: %@", @""), catStr];
-		str = [str stringByReplacingOccurrencesOfString:@"!$categories$!" withString:catStr];
+        }
+        catStr = [NSString stringWithFormat:NSLocalizedString(@"Categories: %@", @""), catStr];
+        str = [str stringByReplacingOccurrencesOfString:@"!$categories$!" withString:catStr];
 
-	} else {
-		str = @"";
-	}
-		
-	return str;
+    } else {
+        str = @"";
+    }
+        
+    return str;
 }
 
 - (void)showSimplePreviewWithMessage:(NSString *)message {
@@ -169,8 +169,8 @@
 }
 
 - (void)showRealPreview {
-	BOOL needsLogin = NO;
-	NSString *status = self.apost.original.status;
+    BOOL needsLogin = NO;
+    NSString *status = self.apost.original.status;
     NSDate *postGMTDate = self.apost.date_created_gmt;
     NSDate *laterDate = [self.apost.date_created_gmt laterDate:[NSDate date]];
 
@@ -223,14 +223,14 @@
 #pragma mark Webkit View Delegate Methods
 
 - (void)refreshWebView {
-	BOOL edited = [self.apost hasChanged];
+    BOOL edited = [self.apost hasChanged];
     self.loadingView.hidden = NO;
 
-	if (edited) {
+    if (edited) {
         [self showSimplePreview];
-	} else {
-		[self showRealPreview];
-	}
+    } else {
+        [self showRealPreview];
+    }
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {

@@ -127,7 +127,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
+    [super viewDidAppear:animated];
     
     [self automaticallyRefreshIfAppropriate];
 }
@@ -148,13 +148,13 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 - (NSString *)noResultsTitleText
 {
     NSString *ttl = NSLocalizedString(@"No %@ yet", @"A string format. The '%@' will be replaced by the relevant type of object, posts, pages or comments.");
-	ttl = [NSString stringWithFormat:ttl, [self.title lowercaseString]];
+    ttl = [NSString stringWithFormat:ttl, [self.title lowercaseString]];
     return ttl;
 }
 
 - (NSString *)noResultsMessageText
 {
-	return nil;
+    return nil;
 }
 
 - (UIView *)noResultsAccessoryView
@@ -220,8 +220,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:DefaultCellIdentifier];
 
     if (self.tableView.isEditing) {
-		cell.accessoryType = UITableViewCellAccessoryNone;
-	} else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    } else {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
@@ -283,7 +283,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 #pragma mark - Fetched results controller
 
 - (UITableViewRowAnimation)tableViewRowAnimation {
-	return UITableViewRowAnimationFade;
+    return UITableViewRowAnimationFade;
 }
 
 - (NSFetchedResultsController *)resultsController {
@@ -383,7 +383,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     
     _didTriggerRefresh = YES;
     [self.noResultsView removeFromSuperview];
-	[self syncItemsViaUserInteraction];
+    [self syncItemsViaUserInteraction];
 }
 
 - (BOOL)userCanRefresh {
@@ -514,13 +514,13 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 }
 
 - (WPNoResultsView *)noResultsView {
-	
+    
     if (!_noResultsView) {
         _noResultsView = [WPNoResultsView new];
         _noResultsView.delegate = self;
     }
     
-	return _noResultsView;
+    return _noResultsView;
 }
 
 - (UIActivityIndicatorView *)noResultsActivityIndicator {
@@ -532,7 +532,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
         _noResultsActivityIndicator.center = [self.tableView convertPoint:self.tableView.center fromView:self.tableView.superview];
     }
     
-	return _noResultsActivityIndicator;
+    return _noResultsActivityIndicator;
 }
 
 - (void)hideRefreshHeader {
@@ -603,19 +603,19 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
         message = NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"");
     }
     [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't Connect", @"") message:message];
-	
-	// bad login/pass combination
-	self.editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
-	self.editSiteViewController.isCancellable = YES;
-	self.editSiteViewController.delegate = self;
-	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.editSiteViewController];
+    
+    // bad login/pass combination
+    self.editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
+    self.editSiteViewController.isCancellable = YES;
+    self.editSiteViewController.delegate = self;
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.editSiteViewController];
     navController.navigationBar.translucent = NO;
-	
-	if(IS_IPAD) {
-		navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-	}
-	
+    
+    if(IS_IPAD) {
+        navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    }
+    
     [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
@@ -645,7 +645,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 #pragma mark - Subclass methods
 
 - (BOOL)userCanCreateEntity {
-	return NO;
+    return NO;
 }
 
 - (NSManagedObjectContext *)managedObjectContext {
@@ -700,8 +700,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 }
 
 - (void)resetResultsController {
-	_resultsController.delegate = nil;
-	_resultsController = nil;
+    _resultsController.delegate = nil;
+    _resultsController = nil;
 }
 
 @end

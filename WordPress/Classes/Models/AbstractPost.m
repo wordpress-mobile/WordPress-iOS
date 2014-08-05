@@ -11,7 +11,7 @@
     for (Media *media in self.media) {
         [media cancelUpload];
     }
-	[super remove];
+    [super remove];
 }
 
 - (void)awakeFromFetch {
@@ -155,7 +155,7 @@
         DDLogInfo(@"!!! Already have revision");
         return self.revision;
     }
-	
+    
     AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:self.managedObjectContext];
     [post cloneFrom:self];
     [post setValue:self forKey:@"original"];
@@ -216,7 +216,7 @@
     //first let's check if there's no post title or content (in case a cheeky user deleted them both)
     if ((self.postTitle == nil || [self.postTitle isEqualToString:@""]) && (self.content == nil || [self.content isEqualToString:@""]))
         return NO;
-	
+    
     // We need the extra check since [nil isEqual:nil] returns NO
     if ((self.postTitle != original.postTitle)
         && (![self.postTitle isEqual:original.postTitle]))
@@ -225,23 +225,23 @@
     if ((self.content != original.content)
         && (![self.content isEqual:original.content]))
         return YES;
-	
+    
     if ((self.status != original.status)
         && (![self.status isEqual:original.status]))
         return YES;
-	
+    
     if ((self.password != original.password)
         && (![self.password isEqual:original.password]))
         return YES;
-	
+    
     if ((self.dateCreated != original.dateCreated)
         && (![self.dateCreated isEqual:original.dateCreated]))
         return YES;
-	
-	if ((self.permaLink != original.permaLink)
+    
+    if ((self.permaLink != original.permaLink)
         && (![self.permaLink  isEqual:original.permaLink]))
         return YES;
-	
+    
     if (self.hasRemote == NO) {
         return YES;
     }
@@ -269,7 +269,7 @@
     if (![self.media isEqual:original.media]) {
         return YES;
     }
-	
+    
     return NO;
 }
 

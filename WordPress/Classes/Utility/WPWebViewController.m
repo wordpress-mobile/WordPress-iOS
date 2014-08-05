@@ -117,7 +117,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-	[self setStatusTimer:nil];
+    [self setStatusTimer:nil];
     [super viewWillDisappear:animated];
 }
 
@@ -158,10 +158,10 @@
 #pragma mark - webView related methods
 
 - (void)setStatusTimer:(NSTimer *)timer {
-	if (_statusTimer && timer != _statusTimer) {
-		[_statusTimer invalidate];
-	}
-	_statusTimer = timer;
+    if (_statusTimer && timer != _statusTimer) {
+        [_statusTimer invalidate];
+    }
+    _statusTimer = timer;
 }
 
 - (void)upgradeButtonsAndLabels:(NSTimer*)timer {
@@ -313,7 +313,7 @@
                          animations:^{self.loadingView.frame = frame;}];
     }
     
-	if (self.refreshButton) {
+    if (self.refreshButton) {
         self.refreshButton.enabled = !loading;
         // If on iPhone (or iPod Touch) swap between spinner and refresh button
         if (IS_IPHONE) {
@@ -340,7 +340,7 @@
             }
             self.toolbar.items = newToolbarItems;
         }
-	}
+    }
     _isLoading = loading;
 }
 

@@ -90,9 +90,9 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         self.opaque = YES;
 
         _cellImageView = [[UIImageView alloc] init];
-		_cellImageView.backgroundColor = [WPStyleGuide readGrey];
-		_cellImageView.contentMode = UIViewContentModeScaleAspectFill;
-		_cellImageView.clipsToBounds = YES;
+        _cellImageView.backgroundColor = [WPStyleGuide readGrey];
+        _cellImageView.contentMode = UIViewContentModeScaleAspectFill;
+        _cellImageView.clipsToBounds = YES;
         _cellImageView.contentMode = UIViewContentModeScaleAspectFill;
         [self addSubview:_cellImageView];
 
@@ -163,7 +163,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 }
 
 - (void)dealloc {
-	_contentProvider = nil;
+    _contentProvider = nil;
     _delegate = nil;
     _textContentView.delegate = nil;
     _mediaQueue.delegate = nil;
@@ -208,12 +208,12 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 #pragma mark - Instance methods
 
 - (void)reset {    
-	_bylineLabel.text = nil;
-	_titleLabel.text = nil;
-	_snippetLabel.text = nil;
+    _bylineLabel.text = nil;
+    _titleLabel.text = nil;
+    _snippetLabel.text = nil;
     
     [_cellImageView cancelImageRequestOperation];
-	_cellImageView.image = nil;
+    _cellImageView.image = nil;
 }
 
 - (BOOL)privateContent {
@@ -250,9 +250,9 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     
     [self refreshDate];
     
-	self.cellImageView.hidden = YES;
-	
-	[self updateActionButtons];
+    self.cellImageView.hidden = YES;
+    
+    [self updateActionButtons];
     
 }
 
@@ -276,7 +276,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     
     // Position the meta view and its subviews
     CGFloat bottomY = self.textContentView.frame.origin.y + self.textContentView.frame.size.height + RPVVerticalPadding;
-	self.bottomView.frame = CGRectMake(0, bottomY, contentWidth, RPVMetaViewHeight);
+    self.bottomView.frame = CGRectMake(0, bottomY, contentWidth, RPVMetaViewHeight);
     self.bottomBorder.frame = CGRectMake(RPVHorizontalInnerPadding, 0, contentWidth - RPVHorizontalInnerPadding * 2, RPVBorderHeight);
     
     // Action buttons
@@ -408,13 +408,13 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 }
 
 - (BOOL)isEmoji:(NSURL *)url {
-	return ([[url absoluteString] rangeOfString:@"wp.com/wp-includes/images/smilies"].location != NSNotFound);
+    return ([[url absoluteString] rangeOfString:@"wp.com/wp-includes/images/smilies"].location != NSNotFound);
 }
 
 - (void)handleMediaViewLoaded:(ReaderMediaView *)mediaView {
-	
-	BOOL frameChanged = [self updateMediaLayout:mediaView];
-	
+    
+    BOOL frameChanged = [self updateMediaLayout:mediaView];
+    
     if (frameChanged) {
         // need to reset the layouter because otherwise we get the old framesetter or cached layout frames
         self.textContentView.layouter = nil;
@@ -432,16 +432,16 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 - (BOOL)updateMediaLayout:(ReaderMediaView *)imageView {
     BOOL frameChanged = NO;
-	NSURL *url = imageView.contentURL;
-	
-	CGSize originalSize = imageView.frame.size;
-	CGSize imageSize = imageView.image.size;
-	
-	if ([self isEmoji:url]) {
-		CGFloat scale = [UIScreen mainScreen].scale;
-		imageSize.width *= scale;
-		imageSize.height *= scale;
-	} else {
+    NSURL *url = imageView.contentURL;
+    
+    CGSize originalSize = imageView.frame.size;
+    CGSize imageSize = imageView.image.size;
+    
+    if ([self isEmoji:url]) {
+        CGFloat scale = [UIScreen mainScreen].scale;
+        imageSize.width *= scale;
+        imageSize.height *= scale;
+    } else {
         if (imageView.image) {
             CGFloat ratio = imageSize.width / imageSize.height;
             CGFloat width = self.frame.size.width;
@@ -452,20 +452,20 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         } else {
             imageSize = CGSizeMake(0.0f, 0.0f);
         }
-	}
+    }
     
     // Widths should always match
     if (imageSize.height != originalSize.height) {
         frameChanged = YES;
     }
     
-	NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
-	
-	// update all attachments that matchin this URL (possibly multiple images with same size)
-	for (DTTextAttachment *attachment in [self.textContentView.layoutFrame textAttachmentsWithPredicate:pred]) {
-		attachment.originalSize = originalSize;
-		attachment.displaySize = imageSize;
-	}
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
+    
+    // update all attachments that matchin this URL (possibly multiple images with same size)
+    for (DTTextAttachment *attachment in [self.textContentView.layoutFrame textAttachmentsWithPredicate:pred]) {
+        attachment.originalSize = originalSize;
+        attachment.displaySize = imageSize;
+    }
     
     return frameChanged;
 }
@@ -539,28 +539,28 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 #pragma mark - DTCoreAttributedTextContentView Delegate Methods
 
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame {
-	NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:nil];
-	
-	NSURL *URL = [attributes objectForKey:DTLinkAttribute];
-	NSString *identifier = [attributes objectForKey:DTGUIDAttribute];
-	
-	DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
-	button.URL = URL;
-	button.minimumHitSize = CGSizeMake(25, 25); // adjusts it's bounds so that button is always large enough
-	button.GUID = identifier;
-	
-	// get image with normal link text
-	UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDefault];
-	[button setImage:normalImage forState:UIControlStateNormal];
-	
-	// get image for highlighted link text
-	UIImage *highlightImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDrawLinksHighlighted];
-	[button setImage:highlightImage forState:UIControlStateHighlighted];
-	
-	// use normal push action for opening URL
-	[button addTarget:self action:@selector(linkAction:) forControlEvents:UIControlEventTouchUpInside];
-	
-	return button;
+    NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:nil];
+    
+    NSURL *URL = [attributes objectForKey:DTLinkAttribute];
+    NSString *identifier = [attributes objectForKey:DTGUIDAttribute];
+    
+    DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
+    button.URL = URL;
+    button.minimumHitSize = CGSizeMake(25, 25); // adjusts it's bounds so that button is always large enough
+    button.GUID = identifier;
+    
+    // get image with normal link text
+    UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDefault];
+    [button setImage:normalImage forState:UIControlStateNormal];
+    
+    // get image for highlighted link text
+    UIImage *highlightImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDrawLinksHighlighted];
+    [button setImage:highlightImage forState:UIControlStateHighlighted];
+    
+    // use normal push action for opening URL
+    [button addTarget:self action:@selector(linkAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    return button;
 }
 
 
@@ -575,21 +575,21 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     CGFloat width = _textContentView.frame.size.width;
     CGFloat availableWidth = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
     
-	// The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image itself to run out to the edges,
-	// so position it offset by the inverse of _textContentView's edgeInsets. Also add top padding so we don't bump into a line of text.
-	// Remeber to add an extra 10px to the frame to preserve aspect ratio.
-	UIEdgeInsets edgeInsets = _textContentView.edgeInsets;
-	edgeInsets.left = 0.0f - edgeInsets.left;
-	edgeInsets.top = 15.0f;
-	edgeInsets.right = 0.0f - edgeInsets.right;
-	edgeInsets.bottom = 0.0f;
-	
-	if ([attachment isKindOfClass:[DTImageTextAttachment class]]) {
-		if ([self isEmoji:attachment.contentURL]) {
-			// minimal frame to suppress drawing context errors with 0 height or width.
-			frame.size.width = MAX(frame.size.width, 1.0f);
-			frame.size.height = MAX(frame.size.height, 1.0f);
-			ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
+    // The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image itself to run out to the edges,
+    // so position it offset by the inverse of _textContentView's edgeInsets. Also add top padding so we don't bump into a line of text.
+    // Remeber to add an extra 10px to the frame to preserve aspect ratio.
+    UIEdgeInsets edgeInsets = _textContentView.edgeInsets;
+    edgeInsets.left = 0.0f - edgeInsets.left;
+    edgeInsets.top = 15.0f;
+    edgeInsets.right = 0.0f - edgeInsets.right;
+    edgeInsets.bottom = 0.0f;
+    
+    if ([attachment isKindOfClass:[DTImageTextAttachment class]]) {
+        if ([self isEmoji:attachment.contentURL]) {
+            // minimal frame to suppress drawing context errors with 0 height or width.
+            frame.size.width = MAX(frame.size.width, 1.0f);
+            frame.size.height = MAX(frame.size.height, 1.0f);
+            ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
             [_mediaArray addObject:imageView];
             [self.mediaQueue enqueueMedia:imageView
                                   withURL:attachment.contentURL
@@ -598,36 +598,36 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
                                 isPrivate:[self privateContent]
                                   success:nil
                                   failure:nil];
-			return imageView;
-		}
-		
+            return imageView;
+        }
+        
         DTImageTextAttachment *imageAttachment = (DTImageTextAttachment *)attachment;
-		
-		if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
-			UIImage *image = imageAttachment.image;
-			
+        
+        if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
+            UIImage *image = imageAttachment.image;
+            
             CGFloat ratio = image.size.width / image.size.height;
             frame.size.width = availableWidth;
             frame.size.height = roundf(width / ratio);
             
             // offset the top edge inset keeping the image from bumping the text above it.
             frame.size.height += edgeInsets.top;
-		} else {
+        } else {
             // minimal frame to suppress drawing context errors with 0 height or width.
             frame.size.width = 1.0f;
             frame.size.height = 1.0f;
-		}
+        }
         
-		ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
-		imageView.edgeInsets = edgeInsets;
+        ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
+        imageView.edgeInsets = edgeInsets;
         
-		[_mediaArray addObject:imageView];
-		imageView.linkURL = attachment.hyperLinkURL;
-		[imageView addTarget:self action:@selector(imageLinkAction:) forControlEvents:UIControlEventTouchUpInside];
-		
-		if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
-			[imageView setImage:imageAttachment.image];
-		} else {
+        [_mediaArray addObject:imageView];
+        imageView.linkURL = attachment.hyperLinkURL;
+        [imageView addTarget:self action:@selector(imageLinkAction:) forControlEvents:UIControlEventTouchUpInside];
+        
+        if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
+            [imageView setImage:imageAttachment.image];
+        } else {
             
             [self.mediaQueue enqueueMedia:imageView
                                   withURL:attachment.contentURL
@@ -636,11 +636,11 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
                                 isPrivate:[self privateContent]
                                   success:nil
                                   failure:nil];
-		}
+        }
         
-		return imageView;
-		
-	}
+        return imageView;
+        
+    }
 
     ReaderVideoContentType videoType;
     

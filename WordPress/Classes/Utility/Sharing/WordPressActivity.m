@@ -30,7 +30,7 @@
             return YES;
         }
     }
-	
+    
     return NO;
 }
 
@@ -38,7 +38,7 @@
     for (id activityItem in activityItems) {
         if ([activityItem isKindOfClass:[NSURL class]]) {
             self.URL = activityItem;
-		}
+        }
         if ([activityItem isKindOfClass:[NSDictionary class]]) {
             self.title = activityItem[@"title"];
             self.summary = activityItem[@"summary"];

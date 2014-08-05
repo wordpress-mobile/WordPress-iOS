@@ -245,7 +245,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 - (void)syncPagesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more
 {
-	if (blog.isSyncingPages) {
+    if (blog.isSyncingPages) {
         DDLogWarn(@"Already syncing pages. Skip");
         return;
     }

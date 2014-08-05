@@ -29,7 +29,7 @@ NSString * const CommentStatusDraft = @"draft";
 }
 
 - (NSString *)postTitle {
-	NSString *title = nil;
+    NSString *title = nil;
     if (self.post) {
         title = self.post.postTitle;
     } else {
@@ -38,34 +38,34 @@ NSString * const CommentStatusDraft = @"draft";
         [self didAccessValueForKey:@"postTitle"];
     }
 
-	if (title == nil || [@"" isEqualToString:title]) {
-		title = NSLocalizedString(@"(no title)", @"the post has no title.");
-	}
-	return title;
+    if (title == nil || [@"" isEqualToString:title]) {
+        title = NSLocalizedString(@"(no title)", @"the post has no title.");
+    }
+    return title;
 
 }
 
 - (NSString *)author {
-	NSString *authorName = nil;
+    NSString *authorName = nil;
 
-	[self willAccessValueForKey:@"author"];
-	authorName = [self primitiveValueForKey:@"author"];
-	[self didAccessValueForKey:@"author"];
-	
-	if (authorName == nil || [@"" isEqualToString:authorName]) {
-		authorName = NSLocalizedString(@"Anonymous", @"the comment has an anonymous author.");
-	}
-	return authorName;
-	
+    [self willAccessValueForKey:@"author"];
+    authorName = [self primitiveValueForKey:@"author"];
+    [self didAccessValueForKey:@"author"];
+    
+    if (authorName == nil || [@"" isEqualToString:authorName]) {
+        authorName = NSLocalizedString(@"Anonymous", @"the comment has an anonymous author.");
+    }
+    return authorName;
+    
 }
 
 - (NSDate *)dateCreated {
-	NSDate *date = nil;
-	
-	[self willAccessValueForKey:@"dateCreated"];
-	date = [self primitiveValueForKey:@"dateCreated"];
-	[self didAccessValueForKey:@"dateCreated"];
-	
+    NSDate *date = nil;
+    
+    [self willAccessValueForKey:@"dateCreated"];
+    date = [self primitiveValueForKey:@"dateCreated"];
+    [self didAccessValueForKey:@"dateCreated"];
+    
     return date;
 }
 

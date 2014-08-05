@@ -326,18 +326,18 @@ static NSUInteger const AlertDiscardChanges = 500;
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[_media.remoteURL stringByReplacingOccurrencesOfString:@"http://" withString:@"https://"]]];
         [request addValue:[@"Bearer " stringByAppendingString:[accountService defaultWordPressComAccount].restApi.authToken] forHTTPHeaderField:@"Authorization"];
 
-		AFHTTPRequestOperationManager* operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"" ]];
-		[operationManager HTTPRequestOperationWithRequest:request
-												  success:^(AFHTTPRequestOperation *operation, id responseObject)
-		{
-			NSData *videoData = (NSData *)responseObject;
-			NSFileManager *f = [NSFileManager defaultManager];
-			// Save to a temporary file
-			NSString *path = [NSTemporaryDirectory() stringByAppendingFormat:@"%@.mov", _media.mediaID.stringValue];
-			[f createFileAtPath:path contents:videoData attributes:nil];
-			_media.localURL = path;
-			[self.videoPlayer prepareToPlay];
-		} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        AFHTTPRequestOperationManager* operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"" ]];
+        [operationManager HTTPRequestOperationWithRequest:request
+                                                  success:^(AFHTTPRequestOperation *operation, id responseObject)
+        {
+            NSData *videoData = (NSData *)responseObject;
+            NSFileManager *f = [NSFileManager defaultManager];
+            // Save to a temporary file
+            NSString *path = [NSTemporaryDirectory() stringByAppendingFormat:@"%@.mov", _media.mediaID.stringValue];
+            [f createFileAtPath:path contents:videoData attributes:nil];
+            _media.localURL = path;
+            [self.videoPlayer prepareToPlay];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             DDLogError(@"Authenticated media video failed to download: %@", error);
             [self hideLoadingSpinner];
             [self showDownloadError];
@@ -668,30 +668,30 @@ static NSUInteger const AlertDiscardChanges = 500;
 }
 
 - (void)scrollViewDidZoom:(UIScrollView *)pScrollView {
-	CGRect innerFrame = _mediaImageview.frame;
-	CGRect scrollerBounds = pScrollView.bounds;
-	
-	if ((innerFrame.size.width < scrollerBounds.size.width) || (innerFrame.size.height < scrollerBounds.size.height))
-	{
-		CGFloat tempx = _mediaImageview.center.x - ( scrollerBounds.size.width / 2 );
-		CGFloat tempy = _mediaImageview.center.y - ( scrollerBounds.size.height / 2 );
-		CGPoint myScrollViewOffset = CGPointMake( tempx, tempy);
-		
-		pScrollView.contentOffset = myScrollViewOffset;
-	}
-	
-	UIEdgeInsets anEdgeInset = { 0, 0, 0, 0};
-	if(scrollerBounds.size.width > innerFrame.size.width)
-	{
-		anEdgeInset.left = (scrollerBounds.size.width - innerFrame.size.width) / 2;
-		anEdgeInset.right = -anEdgeInset.left;
-	}
-	if(scrollerBounds.size.height > innerFrame.size.height)
-	{
-		anEdgeInset.top = (scrollerBounds.size.height - innerFrame.size.height) / 2;
-		anEdgeInset.bottom = -anEdgeInset.top;
-	}
-	pScrollView.contentInset = anEdgeInset;
+    CGRect innerFrame = _mediaImageview.frame;
+    CGRect scrollerBounds = pScrollView.bounds;
+    
+    if ((innerFrame.size.width < scrollerBounds.size.width) || (innerFrame.size.height < scrollerBounds.size.height))
+    {
+        CGFloat tempx = _mediaImageview.center.x - ( scrollerBounds.size.width / 2 );
+        CGFloat tempy = _mediaImageview.center.y - ( scrollerBounds.size.height / 2 );
+        CGPoint myScrollViewOffset = CGPointMake( tempx, tempy);
+        
+        pScrollView.contentOffset = myScrollViewOffset;
+    }
+    
+    UIEdgeInsets anEdgeInset = { 0, 0, 0, 0};
+    if(scrollerBounds.size.width > innerFrame.size.width)
+    {
+        anEdgeInset.left = (scrollerBounds.size.width - innerFrame.size.width) / 2;
+        anEdgeInset.right = -anEdgeInset.left;
+    }
+    if(scrollerBounds.size.height > innerFrame.size.height)
+    {
+        anEdgeInset.top = (scrollerBounds.size.height - innerFrame.size.height) / 2;
+        anEdgeInset.bottom = -anEdgeInset.top;
+    }
+    pScrollView.contentInset = anEdgeInset;
 }
 
 @end

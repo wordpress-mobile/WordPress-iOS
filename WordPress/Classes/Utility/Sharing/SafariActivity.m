@@ -5,39 +5,39 @@
 }
 
 - (UIImage *)activityImage {
-	return [UIImage imageNamed:@"Safari"];
+    return [UIImage imageNamed:@"Safari"];
 }
 
 - (NSString *)activityTitle {
-	return NSLocalizedString(@"Open in Safari", @"");
+    return NSLocalizedString(@"Open in Safari", @"");
 }
 
 - (NSString *)activityType {
-	return NSStringFromClass([self class]);
+    return NSStringFromClass([self class]);
 }
 
 - (BOOL)canPerformWithActivityItems:(NSArray *)activityItems {
-	for (id activityItem in activityItems) {
-		if ([activityItem isKindOfClass:[NSURL class]] && [[UIApplication sharedApplication] canOpenURL:activityItem]) {
-			return YES;
-		}
-	}
+    for (id activityItem in activityItems) {
+        if ([activityItem isKindOfClass:[NSURL class]] && [[UIApplication sharedApplication] canOpenURL:activityItem]) {
+            return YES;
+        }
+    }
 
-	return NO;
+    return NO;
 }
 
 - (void)prepareWithActivityItems:(NSArray *)activityItems {
-	for (id activityItem in activityItems) {
-		if ([activityItem isKindOfClass:[NSURL class]]) {
-			_URL = activityItem;
-		}
-	}
+    for (id activityItem in activityItems) {
+        if ([activityItem isKindOfClass:[NSURL class]]) {
+            _URL = activityItem;
+        }
+    }
 }
 
 - (void)performActivity {
-	BOOL completed = [[UIApplication sharedApplication] openURL:_URL];
+    BOOL completed = [[UIApplication sharedApplication] openURL:_URL];
 
-	[self activityDidFinish:completed];
+    [self activityDidFinish:completed];
 }
 
 @end

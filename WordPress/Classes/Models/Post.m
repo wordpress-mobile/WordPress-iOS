@@ -52,14 +52,14 @@
 
 - (void)updateFromDictionary:(NSDictionary *)postInfo {
     self.postTitle      = [postInfo objectForKey:@"title"];
-	//keep attention: getPosts and getPost returning IDs in different types
-	if ([[postInfo objectForKey:@"postid"] isKindOfClass:[NSString class]]) {
-	  self.postID         = [[postInfo objectForKey:@"postid"] numericValue];
-	} else {
-	  self.postID         = [postInfo objectForKey:@"postid"];
-	}
+    //keep attention: getPosts and getPost returning IDs in different types
+    if ([[postInfo objectForKey:@"postid"] isKindOfClass:[NSString class]]) {
+      self.postID         = [[postInfo objectForKey:@"postid"] numericValue];
+    } else {
+      self.postID         = [postInfo objectForKey:@"postid"];
+    }
       
-	self.content        = [postInfo objectForKey:@"description"];
+    self.content        = [postInfo objectForKey:@"description"];
     if ([[postInfo objectForKey:@"date_created_gmt"] isKindOfClass:[NSDate class]]) {
         self.date_created_gmt    = [postInfo objectForKey:@"date_created_gmt"];
     } else {
@@ -72,9 +72,9 @@
     }
     self.password = password;
     self.tags           = [postInfo objectForKey:@"mt_keywords"];
-	self.permaLink      = [postInfo objectForKey:@"permaLink"];
-	self.mt_excerpt		= [postInfo objectForKey:@"mt_excerpt"];
-	self.mt_text_more	= [postInfo objectForKey:@"mt_text_more"];
+    self.permaLink      = [postInfo objectForKey:@"permaLink"];
+    self.mt_excerpt        = [postInfo objectForKey:@"mt_excerpt"];
+    self.mt_text_more    = [postInfo objectForKey:@"mt_text_more"];
     NSString *wp_more_text = [postInfo objectForKey:@"wp_more_text"];
     if ([wp_more_text length] > 0) {
         wp_more_text = [@" " stringByAppendingString:wp_more_text]; // Give us a little padding.
@@ -83,57 +83,57 @@
         self.content = [NSString stringWithFormat:@"%@\n\n<!--more%@-->\n\n%@", self.content, wp_more_text, self.mt_text_more];
         self.mt_text_more = nil;
     }
-	self.wp_slug		= [postInfo objectForKey:@"wp_slug"];
-	self.post_thumbnail = [[postInfo objectForKey:@"wp_post_thumbnail"] numericValue];
+    self.wp_slug        = [postInfo objectForKey:@"wp_slug"];
+    self.post_thumbnail = [[postInfo objectForKey:@"wp_post_thumbnail"] numericValue];
     if (self.post_thumbnail != nil && [self.post_thumbnail intValue] == 0)
         self.post_thumbnail = nil;
-	self.postFormat		= [postInfo objectForKey:@"wp_post_format"];
-	
+    self.postFormat        = [postInfo objectForKey:@"wp_post_format"];
+    
     self.remoteStatus   = AbstractPostRemoteStatusSync;
     if ([postInfo objectForKey:@"categories"]) {
         [self setCategoriesFromNames:[postInfo objectForKey:@"categories"]];
     }
 
-	self.latitudeID = nil;
-	self.longitudeID = nil;
-	self.publicID = nil;
-	
-	if ([postInfo objectForKey:@"custom_fields"]) {
-		NSArray *customFields = [postInfo objectForKey:@"custom_fields"];
-		NSString *geo_longitude = nil;
-		NSString *geo_latitude = nil;
-		NSString *geo_longitude_id = nil;
-		NSString *geo_latitude_id = nil;
-		NSString *geo_public_id = nil;
-		for (NSDictionary *customField in customFields) {
-			NSString *ID = [customField objectForKey:@"id"];
-			NSString *key = [customField objectForKey:@"key"];
-			NSString *value = [customField objectForKey:@"value"];
+    self.latitudeID = nil;
+    self.longitudeID = nil;
+    self.publicID = nil;
+    
+    if ([postInfo objectForKey:@"custom_fields"]) {
+        NSArray *customFields = [postInfo objectForKey:@"custom_fields"];
+        NSString *geo_longitude = nil;
+        NSString *geo_latitude = nil;
+        NSString *geo_longitude_id = nil;
+        NSString *geo_latitude_id = nil;
+        NSString *geo_public_id = nil;
+        for (NSDictionary *customField in customFields) {
+            NSString *ID = [customField objectForKey:@"id"];
+            NSString *key = [customField objectForKey:@"key"];
+            NSString *value = [customField objectForKey:@"value"];
 
-			if (key) {
-				if ([key isEqualToString:@"geo_longitude"]) {
-					geo_longitude = value;
-					geo_longitude_id = ID;
-				} else if ([key isEqualToString:@"geo_latitude"]) {
-					geo_latitude = value;
-					geo_latitude_id = ID;
-				} else if ([key isEqualToString:@"geo_public"]) {
-					geo_public_id = ID;
-				}
-			}
-		}
-		
-		if (geo_latitude && geo_longitude) {
-			CLLocationCoordinate2D coord;
-			coord.latitude = [geo_latitude doubleValue];
-			coord.longitude = [geo_longitude doubleValue];
-			Coordinate *c = [[Coordinate alloc] initWithCoordinate:coord];
-			self.geolocation = c;
-			self.latitudeID = geo_latitude_id;
-			self.longitudeID = geo_longitude_id;
-			self.publicID = geo_public_id;
-		}
-	}
+            if (key) {
+                if ([key isEqualToString:@"geo_longitude"]) {
+                    geo_longitude = value;
+                    geo_longitude_id = ID;
+                } else if ([key isEqualToString:@"geo_latitude"]) {
+                    geo_latitude = value;
+                    geo_latitude_id = ID;
+                } else if ([key isEqualToString:@"geo_public"]) {
+                    geo_public_id = ID;
+                }
+            }
+        }
+        
+        if (geo_latitude && geo_longitude) {
+            CLLocationCoordinate2D coord;
+            coord.latitude = [geo_latitude doubleValue];
+            coord.longitude = [geo_longitude doubleValue];
+            Coordinate *c = [[Coordinate alloc] initWithCoordinate:coord];
+            self.geolocation = c;
+            self.latitudeID = geo_latitude_id;
+            self.longitudeID = geo_longitude_id;
+            self.publicID = geo_public_id;
+        }
+    }
 }
 
 - (NSString *)categoriesText {
@@ -165,22 +165,22 @@
 
 - (void)setCategoriesFromNames:(NSArray *)categoryNames {
     [self.categories removeAllObjects];
-	NSMutableSet *categories = nil;
-	
+    NSMutableSet *categories = nil;
+    
     for (NSString *categoryName in categoryNames) {
         NSSet *results = [self.blog.categories filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"categoryName = %@", categoryName]];
         if (results && (results.count > 0)) {
-			if(categories == nil) {
-				categories = [NSMutableSet setWithSet:results];
-			} else {
-				[categories unionSet:results];
-			}
-		}
+            if(categories == nil) {
+                categories = [NSMutableSet setWithSet:results];
+            } else {
+                [categories unionSet:results];
+            }
+        }
     }
-	
-	if (categories && (categories.count > 0)) {
-		self.categories = categories;
-	}
+    
+    if (categories && (categories.count > 0)) {
+        self.categories = categories;
+    }
 }
 
 - (BOOL)hasChanged {
@@ -373,7 +373,7 @@
     if ([customFields count] > 0) {
         [postParams setObject:customFields forKey:@"custom_fields"];
     }
-	
+    
     if (self.status == nil)
         self.status = @"publish";
     [postParams setObject:self.status forKey:@"post_status"];

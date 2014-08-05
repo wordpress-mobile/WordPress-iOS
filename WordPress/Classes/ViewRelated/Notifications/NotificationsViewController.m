@@ -97,7 +97,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     // Show Jetpack information screen
     [WPAnalytics track:WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen withProperties:@{@"source": @"notifications"}];
     WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-	webViewController.url = [NSURL URLWithString:WPNotificationsJetpackInformationURL];
+    webViewController.url = [NSURL URLWithString:WPNotificationsJetpackInformationURL];
     [self.navigationController pushViewController:webViewController animated:YES];
 }
 
@@ -303,10 +303,10 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     } else {
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
-	
+    
     if(!note.isRead) {
         note.unread = @(0);
-		[[ContextManager sharedInstance] saveContext:note.managedObjectContext];
+        [[ContextManager sharedInstance] saveContext:note.managedObjectContext];
 
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
@@ -375,12 +375,12 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
 
 - (void)syncItems
 {
-	// No-Op. Handled by Simperium!
+    // No-Op. Handled by Simperium!
 }
 
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure
 {
-	// No-Op. Handled by Simperium!
+    // No-Op. Handled by Simperium!
     success();
 }
 

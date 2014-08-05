@@ -26,25 +26,25 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
 @interface NotificationsCommentDetailViewController () <InlineComposeViewDelegate, WPContentViewDelegate, UIViewControllerRestoration>
 
-@property (nonatomic, assign) NSUInteger		followBlogID;
-@property (nonatomic, strong) NSDictionary		*commentActions;
-@property (nonatomic, strong) NSDictionary		*followDetails;
-@property (nonatomic, strong) NSDictionary		*comment;
-@property (nonatomic, strong) NSDictionary		*post;
-@property (nonatomic, strong) NSMutableArray	*commentThread;
-@property (nonatomic, strong) NSNumber			*siteID;
-@property (nonatomic, strong) NSDictionary		*followAction;
-@property (nonatomic, strong) NSURL				*headerURL;
-@property (nonatomic, assign) BOOL				hasScrollBackView;
+@property (nonatomic, assign) NSUInteger        followBlogID;
+@property (nonatomic, strong) NSDictionary        *commentActions;
+@property (nonatomic, strong) NSDictionary        *followDetails;
+@property (nonatomic, strong) NSDictionary        *comment;
+@property (nonatomic, strong) NSDictionary        *post;
+@property (nonatomic, strong) NSMutableArray    *commentThread;
+@property (nonatomic, strong) NSNumber            *siteID;
+@property (nonatomic, strong) NSDictionary        *followAction;
+@property (nonatomic, strong) NSURL                *headerURL;
+@property (nonatomic, assign) BOOL                hasScrollBackView;
 
-@property (nonatomic, strong) UIButton			*approveButton;
-@property (nonatomic, strong) UIButton			*trashButton;
-@property (nonatomic, strong) UIButton			*spamButton;
-@property (nonatomic, strong) UIButton			*replyButton;
+@property (nonatomic, strong) UIButton            *approveButton;
+@property (nonatomic, strong) UIButton            *trashButton;
+@property (nonatomic, strong) UIButton            *spamButton;
+@property (nonatomic, strong) UIButton            *replyButton;
 
 @property (nonatomic, weak) IBOutlet NoteCommentPostBanner *postBanner;
-@property (nonatomic, strong) CommentView		*commentView;
-@property (nonatomic, strong) Note				*note;
+@property (nonatomic, strong) CommentView        *commentView;
+@property (nonatomic, strong) Note                *note;
 
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 

@@ -390,10 +390,10 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_sent_to_google_plus"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_sent_item_to_google_plus"];
             break;
-		case WPAnalyticsStatSentItemToWordPress:
-			instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_sent_to_wordpress"];
+        case WPAnalyticsStatSentItemToWordPress:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_sent_to_wordpress"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_sent_item_to_wordpress"];
-			break;
+            break;
         case WPAnalyticsStatSharedItem:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_shared"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_shared_article"];
