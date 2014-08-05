@@ -101,7 +101,7 @@
         UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
         if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
             self.isTransitioning = YES;
-            UIViewController *garbageController = [[UIViewController alloc] init]; 
+            UIViewController *garbageController = [[UIViewController alloc] init];
             [self.navigationController pushViewController:garbageController animated:NO];
             [self.navigationController popViewControllerAnimated:NO];
             self.isTransitioning = NO;

@@ -115,14 +115,14 @@ static NSString *const SourceFacebook = @"Facebook";
 
 - (void)findTwitterFriends {
     ACAccountStore *store = [[ACAccountStore alloc] init];
-    ACAccountType *twitterAccountType = 
+    ACAccountType *twitterAccountType =
     [store accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
 
     [store requestAccessToAccountsWithType:twitterAccountType options:nil completion:^(BOOL granted, NSError *error) {
 
         if (granted) {
             NSDictionary *params = @{@"stringify_ids": @"true",
-                                     @"cursor": @"-1"};            
+                                     @"cursor": @"-1"};
             NSURL *followingURL = [NSURL URLWithString:@"https://api.twitter.com/1.1/friends/ids.json"];
             NSArray *twitterAccounts = [store accountsWithAccountType:twitterAccountType];
             if (twitterAccounts.count == 0) {

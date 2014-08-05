@@ -51,7 +51,7 @@
 
         UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, titleContainer.frame.size.width-10, titleContainer.frame.size.height)];
         _title = title;
-        _title.backgroundColor = [UIColor clearColor]; 
+        _title.backgroundColor = [UIColor clearColor];
         _title.textColor = [UIColor whiteColor];
         _title.lineBreakMode = NSLineBreakByTruncatingTail;
         _title.font = [WPStyleGuide subtitleFont];

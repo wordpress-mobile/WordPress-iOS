@@ -113,7 +113,7 @@
             view.alpha = 0.0;
             view.hidden = YES;
         }
-    }   
+    }
 }
 
 - (void)setBackgroundColor:(NSDictionary *)colorWithRedGreenBlueAlpha
@@ -145,7 +145,7 @@
 }
 
 - (void)enableFastScrolling {
-    self.scrollView.decelerationRate = 0.994;        
+    self.scrollView.decelerationRate = 0.994;
 
 }
 

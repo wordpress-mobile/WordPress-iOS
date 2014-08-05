@@ -193,7 +193,7 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
 
 #pragma mark - Collection view flow layout
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath { 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     return IS_IPAD ? CGSizeMake(300, 255) : CGSizeMake(272, 234);
 }
 

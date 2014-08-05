@@ -189,7 +189,7 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
 {
     // DTCoreText was performing this call in BG. Let's make sure UIKit gets handled on the main thread!
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self invalidateIntrinsicContentSize]; 
+        [self invalidateIntrinsicContentSize];
     });
 }
 

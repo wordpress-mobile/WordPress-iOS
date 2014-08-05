@@ -280,7 +280,7 @@
 }
 
 /**
- Format a featured image url into an expected format. 
+ Format a featured image url into an expected format.
 
  @param img The URL path to the featured image.
  @return A sanitized URL.

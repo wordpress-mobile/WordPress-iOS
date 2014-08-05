@@ -59,7 +59,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 - (void)viewWillDisappear:(BOOL)animated {
     DDLogMethod();
 
-    [super viewWillDisappear:animated];    
+    [super viewWillDisappear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

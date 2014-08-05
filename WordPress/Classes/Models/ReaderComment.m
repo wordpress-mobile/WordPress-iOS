@@ -97,7 +97,7 @@
         if ([arr count]) {
             comment.parentComment = [arr objectAtIndex:0];
         } else {
-            [context deleteObject:comment]; // no parent found so we don't want to show this. 
+            [context deleteObject:comment]; // no parent found so we don't want to show this.
         }
     }];
 

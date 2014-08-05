@@ -125,7 +125,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 #pragma mark - UITextField delegate methods
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {    
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField == _usernameText) {
         [_passwordText becomeFirstResponder];
     } else if (textField == _passwordText) {

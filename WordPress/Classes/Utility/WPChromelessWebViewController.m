@@ -71,11 +71,11 @@
     if (navigationType == UIWebViewNavigationTypeLinkClicked) {
 
         // Check the panelNavigationController's stack to see if the previous item was a chromeless webview controller.
-        // If so check to see if its displaying the same url that was just clicked. 
+        // If so check to see if its displaying the same url that was just clicked.
         // If so just pop ourself off the stack.
         UIViewController *prevController = nil;
         NSArray *controllers = [self.navigationController viewControllers];
-        NSInteger len = [controllers count]; 
+        NSInteger len = [controllers count];
         if (len > 0) {
             for (NSInteger i = len; i > 0; i--) {
                 NSInteger idx = i-1;
@@ -104,7 +104,7 @@
                     }
                 }
             }
-        }       
+        }
 
         // If the url points off-site we want to handle it differently.
         NSString *host = request.URL.host;
@@ -116,7 +116,7 @@
         }
 
         WPChromelessWebViewController *controller = [[WPChromelessWebViewController alloc] init];
-        [controller loadPath:request.URL.absoluteString];        
+        [controller loadPath:request.URL.absoluteString];
         [self.navigationController pushViewController:controller animated:YES];
 
         return NO;

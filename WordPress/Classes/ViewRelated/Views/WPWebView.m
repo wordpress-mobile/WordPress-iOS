@@ -265,7 +265,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     }
 
     self.baseURLFallback = [mRequest.URL baseURL];
-    if (!baseURLFallback) 
+    if (!baseURLFallback)
         self.baseURLFallback = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@/", mRequest.URL.scheme, mRequest.URL.host]];
 
     self.currentRequest = mRequest;
@@ -274,7 +274,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     // Webstats is a good example.
     if (useWebViewLoading) {
         [[self webView] loadRequest:mRequest];
-        return;        
+        return;
     }
 
     self.currentHTTPRequestOperation = [[AFHTTPRequestOperation alloc] initWithRequest:mRequest];
@@ -356,11 +356,11 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     return [webView stringByEvaluatingJavaScriptFromString:script];
 }
 
-#pragma mark - 
+#pragma mark -
 #pragma mark WebViewDelegate Methods
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)aRequest navigationType:(UIWebViewNavigationType)navigationType {
-    // applewebdata:// urls are a problem. Kill that request and substitute a better one. Assumes a GET request.    
+    // applewebdata:// urls are a problem. Kill that request and substitute a better one. Assumes a GET request.
     if ([@"applewebdata" isEqualToString:aRequest.URL.scheme]) {
         NSString *basepath = [self.baseURLFallback absoluteString];
         basepath = [basepath substringToIndex:[basepath length] - 1]; // remove the trailing slash.
@@ -386,13 +386,13 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     }
 
     // If we have a delegate listening to this method, let the delegate decide how to handle it.
-    // iFrames can trigger this, so we won't store the request. 
+    // iFrames can trigger this, so we won't store the request.
     if (delegate && [delegate respondsToSelector:@selector(wpWebView:shouldStartLoadWithRequest:navigationType:)]) {
         return [delegate wpWebView:self shouldStartLoadWithRequest:aRequest navigationType:navigationType];
     }
 
     // Check reachibility after the delegates have been checked. Delegates may have their own reachibility check and we don't
-    // want to conflict. 
+    // want to conflict.
     if (![[self reachability] isReachable]) {
         [ReachabilityUtils showAlertNoInternetConnection];
         return NO;
@@ -430,7 +430,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error loading page", nil)
                                                         message:NSLocalizedString(@"There was an error loading the page.", nil)
                                                        delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"Cancel", nil) 
+                                              cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                                               otherButtonTitles:NSLocalizedString(@"Retry?", nil), nil];
     [alertView show];
 }
@@ -449,7 +449,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view {
     if (![[self reachability] isReachable]) {
-        [ReachabilityUtils showAlertNoInternetConnection];        
+        [ReachabilityUtils showAlertNoInternetConnection];
         [self performSelector:@selector(hideRefreshingState) withObject:nil afterDelay:0.3];
         return;
     }

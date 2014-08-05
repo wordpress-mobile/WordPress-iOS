@@ -349,7 +349,7 @@ BOOL hasChanges;
 {
     if (indexPath.section == 0){
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        UIActionSheet *actionSheet;        
+        UIActionSheet *actionSheet;
         if ([_notificationMutePreferences objectForKey:@"value"] != nil) {
             //Notifications were muted
             actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Notifications", @"")

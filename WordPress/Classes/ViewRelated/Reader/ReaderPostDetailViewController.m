@@ -369,7 +369,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     [self.comments removeAllObjects];
 
     __block void(__unsafe_unretained ^flattenComments)(NSArray *) = ^void (NSArray *comments) {
-        // Ensure the array is correctly sorted. 
+        // Ensure the array is correctly sorted.
         comments = [comments sortedArrayUsingComparator: ^(id obj1, id obj2) {
             ReaderComment *a = obj1;
             ReaderComment *b = obj2;
