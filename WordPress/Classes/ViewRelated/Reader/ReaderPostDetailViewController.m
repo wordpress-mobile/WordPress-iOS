@@ -1144,14 +1144,14 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
 #pragma mark - Static Helpers
 
-+ (instancetype)postDetailsWithPost:(ReaderPost *)post
++ (instancetype)detailControllerWithPost:(ReaderPost *)post
 {
     ReaderPostDetailViewController *detailsViewController = [self new];
     detailsViewController.post = post;
     return detailsViewController;
 }
 
-+ (instancetype)postDetailsWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID
++ (instancetype)detailControllerWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID
 {
     ReaderPostDetailViewController *detailsViewController = [self new];
     [detailsViewController setupWithPostID:postID siteID:siteID];
