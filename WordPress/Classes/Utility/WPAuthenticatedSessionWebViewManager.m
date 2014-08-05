@@ -83,7 +83,7 @@
     NSURL *requestedURL = [request URL];
     NSString *requestedURLAbsoluteString = [requestedURL absoluteString];
     
-    if(!self.forceLogin && [requestedURLAbsoluteString rangeOfString:@"wp-login.php"].location != NSNotFound) {
+    if (!self.forceLogin && [requestedURLAbsoluteString rangeOfString:@"wp-login.php"].location != NSNotFound) {
         if (self.username && self.password) {
             DDLogInfo(@"WP is asking for credentials, let's login first");
             self.forceLogin = YES;
