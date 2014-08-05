@@ -65,7 +65,6 @@ NSInteger const kMeTabIndex = 2;
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
 @property (nonatomic, assign) BOOL listeningForBlogChanges;
-@property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 @property (nonatomic, assign) UIBackgroundTaskIdentifier bgTask;
 @property (nonatomic, strong) DDFileLogger *fileLogger;
 @property (nonatomic, strong) Simperium *simperium;

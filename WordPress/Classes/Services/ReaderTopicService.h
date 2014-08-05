@@ -62,4 +62,11 @@ extern NSString * const ReaderTopicDidChangeNotification;
  */
 - (void)followTopicNamed:(NSString *)topicName withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
+/**
+ Fetch the topic for 'sites I follow' if it exists.
+
+ @return A `ReaderTopic` instance or nil.
+ */
+- (ReaderTopic *)topicForFollowedSites;
+
 @end
