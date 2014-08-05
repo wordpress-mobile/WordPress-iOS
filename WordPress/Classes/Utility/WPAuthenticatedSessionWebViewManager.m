@@ -6,10 +6,10 @@
 @interface WPAuthenticatedSessionWebViewManager ()
 
 @property (nonatomic) BOOL forceLogin;
-@property (nonatomic) NSString *username;
-@property (nonatomic) NSString *password;
-@property (nonatomic) NSURL *destinationURL;
-@property (nonatomic) NSURL *loginURL;
+@property (nonatomic, copy) NSString *username;
+@property (nonatomic, copy) NSString *password;
+@property (nonatomic, copy) NSURL *destinationURL;
+@property (nonatomic, copy) NSURL *loginURL;
 
 @end
 
