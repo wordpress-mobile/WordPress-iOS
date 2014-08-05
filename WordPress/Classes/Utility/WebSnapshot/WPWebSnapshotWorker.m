@@ -77,6 +77,8 @@
 {
     self.numberOfCurrentLoads -= 1;
     
+    // A delay is implemented to account for the actual, final loading of all content.
+    // Most notably, this will account for any redirects in the page loaded.
     [self performSelector:@selector(finishRenderingIfPossible) withObject:nil afterDelay:0.05 inModes:@[NSRunLoopCommonModes]];
 }
 
