@@ -274,7 +274,6 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     if (note.isComment) {
         NotificationsCommentDetailViewController *commentDetailViewController = [[NotificationsCommentDetailViewController alloc] initWithNote:note];
         [self.navigationController pushViewController:commentDetailViewController animated:animated];
-        
     } else if ([note isMatcher] && [note metaPostID] && [note metaSiteID]) {
         // Note: Don't worry. This is scheduled to be fixed/prettified in #2152
         [self loadPostWithId:[note metaPostID] fromSite:[note metaSiteID] block:^(BOOL success, ReaderPost *post) {
@@ -291,7 +290,6 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     } else if (note.templateType == WPNoteTemplateMultiLineList || note.templateType == WPNoteTemplateSingleLineList) {
         NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNote:note];
         [self.navigationController pushViewController:detailViewController animated:animated];
-        
     } else if (note.templateType == WPNoteTemplateBigBadge) {
         NotificationsBigBadgeDetailViewController *bigBadgeViewController = [[NotificationsBigBadgeDetailViewController alloc] initWithNote:note];
         [self.navigationController pushViewController:bigBadgeViewController animated:animated];
