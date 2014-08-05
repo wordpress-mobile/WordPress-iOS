@@ -102,13 +102,13 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 
     // Get rid of any transient reply if popping the view
     // (ideally transient replies should be handled more cleanly)
@@ -119,27 +119,27 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 - (void)cancelView:(id)sender {
-	//there are no changes
-	if (!self.editCommentViewController.hasChanges) {
-		[self dismissEditViewController];
+    //there are no changes
+    if (!self.editCommentViewController.hasChanges) {
+        [self dismissEditViewController];
 
-		return;
-	}
+        return;
+    }
 
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"")
-															 delegate:self
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"")
+                                                             delegate:self
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-											   destructiveButtonTitle:NSLocalizedString(@"Discard", @"")
-													otherButtonTitles:nil];
+                                               destructiveButtonTitle:NSLocalizedString(@"Discard", @"")
+                                                    otherButtonTitles:nil];
 
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
 
-	if (self.editCommentViewController.hasChanges) {
-		actionSheet.tag = CommentViewEditCommentViewControllerHasChangesActionSheetTag;
+    if (self.editCommentViewController.hasChanges) {
+        actionSheet.tag = CommentViewEditCommentViewControllerHasChangesActionSheetTag;
         [actionSheet showInView:self.editCommentViewController.view];
     }
 
-	self.isShowingActionSheet = YES;
+    self.isShowingActionSheet = YES;
 }
 
 
@@ -186,7 +186,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 - (void)discard {
-	[self dismissEditViewController];
+    [self dismissEditViewController];
 }
 
 
@@ -200,12 +200,12 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 - (void)showEditCommentViewWithAnimation:(BOOL)animate {
-	self.editCommentViewController = [[EditCommentViewController alloc]
+    self.editCommentViewController = [[EditCommentViewController alloc]
                                   initWithNibName:@"EditCommentViewController"
                                   bundle:nil];
-	self.editCommentViewController.commentViewController = self;
-	self.editCommentViewController.comment = self.comment;
-	self.editCommentViewController.title = NSLocalizedString(@"Edit Comment", @"");
+    self.editCommentViewController.commentViewController = self;
+    self.editCommentViewController.comment = self.comment;
+    self.editCommentViewController.title = NSLocalizedString(@"Edit Comment", @"");
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.editCommentViewController];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -253,13 +253,13 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 - (void)editAction:(id)sender {
-	[self showEditCommentViewWithAnimation:YES];
+    [self showEditCommentViewWithAnimation:YES];
 }
 
 - (void)replyAction:(id)sender {
-	if (self.commentsViewController.blog.isSyncingComments) {
-		[self showSyncInProgressAlert];
-	} else {
+    if (self.commentsViewController.blog.isSyncingComments) {
+        [self showSyncInProgressAlert];
+    } else {
         if(self.inlineComposeView.isDisplayed) {
             [self.inlineComposeView dismissComposer];
         } else {
@@ -269,7 +269,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
             self.inlineComposeView.text = self.reply.content;
             [self.inlineComposeView displayComposer];
         }
-	}
+    }
 }
 
 #pragma mark - Gesture Actions
@@ -325,17 +325,17 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 #pragma mark UIWebView delegate methods
 
 - (BOOL)webView:(UIWebView *)inWeb shouldStartLoadWithRequest:(NSURLRequest *)inRequest navigationType:(UIWebViewNavigationType)inType {
-	if (inType == UIWebViewNavigationTypeLinkClicked) {
+    if (inType == UIWebViewNavigationTypeLinkClicked) {
         [self openInAppWebView:[inRequest URL]];
-		return NO;
-	}
-	return YES;
+        return NO;
+    }
+    return YES;
 }
 
 - (void)openInAppWebView:(NSURL*)url {
     Blog *blog = [[self comment] blog];
     
-	if ([[url description] length] > 0) {
+    if ([[url description] length] > 0) {
         WPWebViewController *webViewController = [[WPWebViewController alloc] init];
         webViewController.url = url;
         
@@ -345,12 +345,12 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
         }
         
         [self.navigationController pushViewController:webViewController animated:YES];
-	}
+    }
 }
 
 - (void)showSyncInProgressAlert {
     [WPError showAlertWithTitle:NSLocalizedString(@"Info", @"Info alert title") message:NSLocalizedString(@"The blog is syncing with the server. Please try later.", @"") withSupportButton:NO];
-	//the blog is using the network connection and cannot be stoped, show a message to the user
+    //the blog is using the network connection and cannot be stoped, show a message to the user
 }
 
 

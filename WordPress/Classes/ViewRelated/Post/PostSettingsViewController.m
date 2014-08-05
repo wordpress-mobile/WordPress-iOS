@@ -196,9 +196,9 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 }
 
 - (void)endEditingAction:(id)sender {
-	if (self.passwordTextField) {
+    if (self.passwordTextField) {
         [self.passwordTextField resignFirstResponder];
-	}
+    }
 }
 
 - (void)endEditingForTextFieldAction:(id)sender {
@@ -820,8 +820,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 {
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-	picker.delegate = self;
-	picker.allowsEditing = NO;
+    picker.delegate = self;
+    picker.allowsEditing = NO;
     picker.navigationBar.translucent = NO;
     picker.modalPresentationStyle = UIModalPresentationCurrentContext;
     picker.navigationBar.barStyle = UIBarStyleBlack;

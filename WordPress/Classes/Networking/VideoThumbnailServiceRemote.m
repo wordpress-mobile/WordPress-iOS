@@ -4,32 +4,32 @@
 @implementation VideoThumbnailServiceRemote
 
 + (AFHTTPRequestOperationManager *)sharedYoutubeClient {
-	static AFHTTPRequestOperationManager *_sharedClient = nil;
+    static AFHTTPRequestOperationManager *_sharedClient = nil;
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
-		_sharedClient = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://gdata.youtube.com"]];
-	});
-	return _sharedClient;
+        _sharedClient = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://gdata.youtube.com"]];
+    });
+    return _sharedClient;
 }
 
 
 + (AFHTTPRequestOperationManager *)sharedVimeoClient {
-	static AFHTTPRequestOperationManager *_sharedClient = nil;
+    static AFHTTPRequestOperationManager *_sharedClient = nil;
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
-		_sharedClient = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://vimeo.com"]];
-	});
-	return _sharedClient;
+        _sharedClient = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://vimeo.com"]];
+    });
+    return _sharedClient;
 }
 
 
 + (AFHTTPRequestOperationManager *)sharedDailyMotionClient {
-	static AFHTTPRequestOperationManager *_sharedClient = nil;
+    static AFHTTPRequestOperationManager *_sharedClient = nil;
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
-		_sharedClient = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://api.dailymotion.com"]];
-	});
-	return _sharedClient;
+        _sharedClient = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://api.dailymotion.com"]];
+    });
+    return _sharedClient;
 }
 
 
@@ -42,9 +42,9 @@
         url = [NSURL URLWithString:[NSString stringWithFormat:@"http:%@", url]];
     }
 
-	NSString *path = [url path];
-	NSRange rng = [path rangeOfString:@"/" options:NSBackwardsSearch];
-	NSString *vidId = [path substringFromIndex:rng.location + 1];
+    NSString *path = [url path];
+    NSRange rng = [path rangeOfString:@"/" options:NSBackwardsSearch];
+    NSString *vidId = [path substringFromIndex:rng.location + 1];
 
     NSString *absolutePath = [url absoluteString];
 
@@ -72,8 +72,8 @@
                 success:(void (^)(NSURL *thumbnailURL, NSString *title))success
                 failure:(void (^)(NSError *error))failure
 {
-	NSString *path = [NSString stringWithFormat:@"/feeds/api/videos/%@?v=2&alt=json", vidId];
-	[[[self class] sharedYoutubeClient] GET:path
+    NSString *path = [NSString stringWithFormat:@"/feeds/api/videos/%@?v=2&alt=json", vidId];
+    [[[self class] sharedYoutubeClient] GET:path
                                  parameters:nil
                                     success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                         if (!success) {
@@ -121,8 +121,8 @@
               failure:(void (^)(NSError *error))failure
 {
 
-	NSString *path = [NSString stringWithFormat:@"/api/v2/video/%@.json", vidId];
-	[[[self class] sharedVimeoClient] GET:path
+    NSString *path = [NSString stringWithFormat:@"/api/v2/video/%@.json", vidId];
+    [[[self class] sharedVimeoClient] GET:path
                                parameters:nil
                                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                       if (!success) {
@@ -148,8 +148,8 @@
                     success:(void (^)(NSURL *thumbnailURL, NSString *title))success
                     failure:(void (^)(NSError *error))failure
 {
-	NSString *path = [NSString stringWithFormat:@"/video/%@?fields=thumbnail_large_url", vidId];
-	[[[self class] sharedDailyMotionClient] GET:path
+    NSString *path = [NSString stringWithFormat:@"/video/%@?fields=thumbnail_large_url", vidId];
+    [[[self class] sharedDailyMotionClient] GET:path
                                      parameters:nil
                                         success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                             if (!success) {

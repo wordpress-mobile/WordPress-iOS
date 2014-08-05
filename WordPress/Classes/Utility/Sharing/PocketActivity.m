@@ -12,33 +12,33 @@
 }
 
 - (UIImage *)activityImage {
-	return [UIImage imageNamed:@"NNPocketActivity"];
+    return [UIImage imageNamed:@"NNPocketActivity"];
 }
 
 - (NSString *)activityTitle {
-	return @"Pocket";
+    return @"Pocket";
 }
 
 - (NSString *)activityType {
-	return NSStringFromClass([self class]);
+    return NSStringFromClass([self class]);
 }
 
 - (BOOL)canPerformWithActivityItems:(NSArray *)activityItems {
-	for (id activityItem in activityItems) {
-		if ([activityItem isKindOfClass:[NSURL class]] && [[UIApplication sharedApplication] canOpenURL:activityItem]) {
-			return YES;
-		}
-	}
+    for (id activityItem in activityItems) {
+        if ([activityItem isKindOfClass:[NSURL class]] && [[UIApplication sharedApplication] canOpenURL:activityItem]) {
+            return YES;
+        }
+    }
 
-	return NO;
+    return NO;
 }
 
 - (void)prepareWithActivityItems:(NSArray *)activityItems {
-	for (id activityItem in activityItems) {
-		if ([activityItem isKindOfClass:[NSURL class]]) {
-			_URL = activityItem;
-		}
-	}
+    for (id activityItem in activityItems) {
+        if ([activityItem isKindOfClass:[NSURL class]]) {
+            _URL = activityItem;
+        }
+    }
 }
 
 - (void)performActivity {

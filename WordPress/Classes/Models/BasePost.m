@@ -12,7 +12,7 @@
 
 @implementation BasePost
 @dynamic author, content, date_created_gmt, postID, postTitle, status, password, remoteStatusNumber, permaLink, 
-		mt_excerpt, mt_text_more, wp_slug, post_thumbnail;
+        mt_excerpt, mt_text_more, wp_slug, post_thumbnail;
 
 @synthesize isFeaturedImageChanged;
 
@@ -152,11 +152,11 @@
 
     } else {
         [postParams setValue:self.post_thumbnail forKey:@"wp_post_thumbnail"];
-	}
+    }
     
-	if (self.mt_text_more != nil && [self.mt_text_more length] > 0)
+    if (self.mt_text_more != nil && [self.mt_text_more length] > 0)
         [postParams setObject:self.mt_text_more forKey:@"mt_text_more"];
-	
+    
     return postParams;
 }
 

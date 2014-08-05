@@ -11,12 +11,12 @@
 }
 
 - (BOOL)beginEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
-	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
-	return YES;
+    DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+    return YES;
 }
 
 - (BOOL)endEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
-	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+    DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 
     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:WPComDefaultAccountUsernameKey];
     if (!username) {
@@ -56,12 +56,12 @@
     [[NSUserDefaults standardUserDefaults] setURL:accountURL forKey:WPComDefaultAccountUrlKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-	return YES;
+    return YES;
 }
 
 - (BOOL)performCustomValidationForEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
-	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
-	return YES;
+    DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+    return YES;
 }
 
 - (BOOL)createDestinationInstancesForSourceInstance:(NSManagedObject *)source
@@ -69,9 +69,9 @@
                                             manager:(NSMigrationManager *)manager
                                               error:(NSError **)error
 {
-	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+    DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 
-	NSManagedObjectContext *destMOC = [manager destinationContext];
+    NSManagedObjectContext *destMOC = [manager destinationContext];
     BOOL isWpcom = [self blogIsWpcom:source];
     NSString *xmlrpc = [source valueForKey:@"xmlrpc"];
     if (isWpcom) {
@@ -130,7 +130,7 @@
                                           manager:(NSMigrationManager*)manager
                                             error:(NSError**)error
 {
-	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+    DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 
     NSArray *sourceBlogs = [manager sourceInstancesForEntityMappingNamed:@"BlogToAccount" destinationInstances:@[source]];
     NSArray *destBlogs = [manager destinationInstancesForEntityMappingNamed:@"BlogToBlog" sourceInstances:sourceBlogs];
@@ -151,7 +151,7 @@
         }
     }
     NSRange range = [[blog valueForKey:@"xmlrpc"] rangeOfString:@"wordpress.com"];
-	return (range.location != NSNotFound);
+    return (range.location != NSNotFound);
 }
 
 - (NSString *)hostUrlForBlog:(NSManagedObject *)blog {

@@ -172,15 +172,15 @@
              withStatus:(NSString *)status
                 success:(void (^)())success
                 failure:(void (^)(NSError *error))failure {
-	NSString *prevStatus = comment.status;
-	if ([prevStatus isEqualToString:status]) {
+    NSString *prevStatus = comment.status;
+    if ([prevStatus isEqualToString:status]) {
         if (success) {
             success();
         }
         return;
     }
 
-	comment.status = status;
+    comment.status = status;
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     id <CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
     RemoteComment *remoteComment = [self remoteCommentWithComment:comment];

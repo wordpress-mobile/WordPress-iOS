@@ -12,33 +12,33 @@
 }
 
 - (UIImage *)activityImage {
-	return [UIImage imageNamed:@"NNGPlusActivity"];
+    return [UIImage imageNamed:@"NNGPlusActivity"];
 }
 
 - (NSString *)activityTitle {
-	return @"Google+";
+    return @"Google+";
 }
 
 - (NSString *)activityType {
-	return NSStringFromClass([self class]);
+    return NSStringFromClass([self class]);
 }
 
 - (BOOL)canPerformWithActivityItems:(NSArray *)activityItems {
-	for (id activityItem in activityItems) {
-		if ([activityItem isKindOfClass:[NSURL class]] && [[UIApplication sharedApplication] canOpenURL:activityItem]) {
-			return YES;
-		}
-	}
+    for (id activityItem in activityItems) {
+        if ([activityItem isKindOfClass:[NSURL class]] && [[UIApplication sharedApplication] canOpenURL:activityItem]) {
+            return YES;
+        }
+    }
 
-	return NO;
+    return NO;
 }
 
 - (void)prepareWithActivityItems:(NSArray *)activityItems {
-	for (id activityItem in activityItems) {
-		if ([activityItem isKindOfClass:[NSURL class]]) {
-			_URL = activityItem;
-		}
-	}
+    for (id activityItem in activityItems) {
+        if ([activityItem isKindOfClass:[NSURL class]]) {
+            _URL = activityItem;
+        }
+    }
 }
 
 - (void)performActivity {

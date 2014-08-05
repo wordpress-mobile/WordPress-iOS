@@ -87,12 +87,12 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 - (NSString *)blavatarUrl
 {
-	if (_blavatarUrl == nil) {
+    if (_blavatarUrl == nil) {
         NSString *hostUrl = [[NSURL URLWithString:self.xmlrpc] host];
         if (hostUrl == nil) {
             hostUrl = self.xmlrpc;
         }
-		
+        
         _blavatarUrl = hostUrl;
     }
 
@@ -201,12 +201,12 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 -(NSArray *)sortedCategories
 {
-	NSSortDescriptor *sortNameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"categoryName" 
-																		ascending:YES 
-																		 selector:@selector(caseInsensitiveCompare:)];
-	NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortNameDescriptor, nil];
-	
-	return [[self.categories allObjects] sortedArrayUsingDescriptors:sortDescriptors];
+    NSSortDescriptor *sortNameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"categoryName" 
+                                                                        ascending:YES 
+                                                                         selector:@selector(caseInsensitiveCompare:)];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortNameDescriptor, nil];
+    
+    return [[self.categories allObjects] sortedArrayUsingDescriptors:sortDescriptors];
 }
 
 - (NSArray *)sortedPostFormatNames
@@ -391,7 +391,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
         NSDictionary *currentOption = [self.options objectForKey:name];
         optionValue = currentOption[@"value"];
     }];
-	return optionValue;
+    return optionValue;
 }
 
 @end

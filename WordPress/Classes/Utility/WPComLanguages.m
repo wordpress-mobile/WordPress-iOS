@@ -69,7 +69,7 @@
 - (void)initializeLanguages
 {
     NSBundle* bundle = [NSBundle mainBundle];
-	NSString* plistPath = [bundle pathForResource:@"DotCom-Languages" ofType:@"plist"];
+    NSString* plistPath = [bundle pathForResource:@"DotCom-Languages" ofType:@"plist"];
     _languages = [[NSArray alloc] initWithContentsOfFile:plistPath];
 }
 

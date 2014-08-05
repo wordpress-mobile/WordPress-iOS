@@ -157,15 +157,15 @@
 
         UIImage *resizedImage = [self cachedImageForURL:url withSize:size];
 
-		if (!resizedImage) {
+        if (!resizedImage) {
             resizedImage = image;
 
-			if (!CGSizeEqualToSize(resizedImage.size, size)) {
-				resizedImage = [self resizeImage:image toSize:size];
-			}
+            if (!CGSizeEqualToSize(resizedImage.size, size)) {
+                resizedImage = [self resizeImage:image toSize:size];
+            }
 
-			[self setCachedImage:resizedImage forURL:url withSize:size];
-		}
+            [self setCachedImage:resizedImage forURL:url withSize:size];
+        }
 
         dispatch_sync(dispatch_get_main_queue(), ^{
             if (_lastInvalidationOfIndexPaths

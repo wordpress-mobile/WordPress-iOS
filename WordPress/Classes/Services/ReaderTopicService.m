@@ -91,7 +91,7 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
         NSArray *topics = [self.managedObjectContext executeFetchRequest:request error:&error];
         if (error) {
             DDLogError(@"%@ error fetching topic: %@", NSStringFromSelector(_cmd), error);
-			return nil;
+            return nil;
         }
         if ([topics count] > 0) {
             topic = [topics objectAtIndex:0];

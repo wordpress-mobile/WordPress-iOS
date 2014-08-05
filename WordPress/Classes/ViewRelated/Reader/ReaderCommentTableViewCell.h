@@ -17,9 +17,9 @@
 + (NSAttributedString *)convertHTMLToAttributedString:(NSString *)html withOptions:(NSDictionary *)options;
 
 + (CGFloat)heightForComment:(ReaderComment *)comment
-					  width:(CGFloat)width
-				 tableStyle:(UITableViewStyle)tableStyle
-			  accessoryType:(UITableViewCellAccessoryType *)accessoryType;
+                      width:(CGFloat)width
+                 tableStyle:(UITableViewStyle)tableStyle
+              accessoryType:(UITableViewCellAccessoryType *)accessoryType;
 
 - (void)configureCell:(ReaderComment *)comment;
 
