@@ -2,7 +2,7 @@
 
 @interface WPStatsServiceRemote : NSObject
 
-- (instancetype)initWithOAuth2Token:(NSString *)oauth2Token andSiteId:(NSNumber *)siteId;
+- (instancetype)initWithOAuth2Token:(NSString *)oauth2Token siteId:(NSNumber *)siteId andSiteTimeZone:(NSTimeZone *)timeZone;
 
 - (void)fetchStatsForTodayDate:(NSDate *)today andYesterdayDate:(NSDate *)yesterday withCompletionHandler:(StatsCompletion)completionHandler failureHandler:(void (^)(NSError *error))failureHandler;
 
