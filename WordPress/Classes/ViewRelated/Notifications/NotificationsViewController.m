@@ -442,7 +442,7 @@ typedef void (^NotificationsLoadPostBlock)(BOOL success, ReaderPost *post);
     [WPAnalytics track:WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen withProperties:@{@"source": @"notifications"}];
     
     WPWebViewController *webViewController  = [[WPWebViewController alloc] init];
-	webViewController.url                   = [NSURL URLWithString:WPNotificationsJetpackInformationURL];
+    webViewController.url                   = [NSURL URLWithString:WPNotificationsJetpackInformationURL];
     [self.navigationController pushViewController:webViewController animated:YES];
 }
 
