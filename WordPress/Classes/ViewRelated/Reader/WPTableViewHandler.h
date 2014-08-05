@@ -29,5 +29,6 @@
 @property (nonatomic, weak) id<WPTableViewHandlerDelegate> delegate;
 
 - (instancetype)initWithTableView:(UITableView *)tableView;
+- (void)updateTitleForSection:(NSUInteger)section;
 
 @end
