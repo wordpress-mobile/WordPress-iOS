@@ -134,7 +134,7 @@
     return nil;
 }
 
-- (void)configureCell:(NewPostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {    
+- (void)configureCell:(NewPostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     Post *apost = (Post*) [self.resultsController objectAtIndexPath:indexPath];
     cell.contentProvider = apost;
     if (apost.remoteStatus == AbstractPostRemoteStatusPushing) {
@@ -153,7 +153,7 @@
     }
 
     [self editPost:post];
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -228,7 +228,7 @@
 
 - (BOOL)refreshRequired {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults boolForKey:@"refreshPostsRequired"]) { 
+    if ([defaults boolForKey:@"refreshPostsRequired"]) {
         [defaults setBool:NO forKey:@"refreshPostsRequired"];
         return YES;
     }

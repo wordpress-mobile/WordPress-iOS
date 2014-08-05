@@ -237,7 +237,7 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
 }
 
 /**
- Finds an existing topic matching the specified name and, if found, makes it the 
+ Finds an existing topic matching the specified name and, if found, makes it the
  selected topic.
  */
 - (void)selectTopicNamed:(NSString *)topicName
@@ -247,9 +247,9 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
 }
 
 /**
- Find an existing topic with the specified title. 
+ Find an existing topic with the specified title.
 
- @param topicName The title of the topic to find in core data. 
+ @param topicName The title of the topic to find in core data.
  @return A matching `ReaderTopic` instance or nil.
  */
 - (ReaderTopic *)findTopicNamed:(NSString *)topicName

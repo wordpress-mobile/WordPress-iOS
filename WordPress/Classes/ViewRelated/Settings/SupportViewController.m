@@ -403,7 +403,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
             } else {
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ios.forums.wordpress.org"]];
             }
-        }        
+        }
     } else if (indexPath.section == SettingsSectionFeedback) {
         if ([MFMailComposeViewController canSendMail]) {
             MFMailComposeViewController *mailComposeViewController = [self feedbackMailViewController];

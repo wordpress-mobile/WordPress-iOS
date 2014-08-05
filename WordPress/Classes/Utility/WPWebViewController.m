@@ -89,7 +89,7 @@
         [self refreshWebView];
     } else {
         self.navigationItem.title = NSLocalizedString(@"Loading...", @"");
-        [self.webView loadHTMLString:self.detailHTML baseURL:[NSURL URLWithString:@"https://en.wordpress.com"]];     
+        [self.webView loadHTMLString:self.detailHTML baseURL:[NSURL URLWithString:@"https://en.wordpress.com"]];
     }
 }
 
@@ -191,13 +191,13 @@
         }
 
         //make sure we are not sharing URL like this: http://en.wordpress.com/reader/mobile/?v=post-16841252-1828
-        if ([permaLink rangeOfString:@"wordpress.com/reader/mobile/"].location != NSNotFound) { 
-            permaLink = WPMobileReaderURL;                 
-        } 
+        if ([permaLink rangeOfString:@"wordpress.com/reader/mobile/"].location != NSNotFound) {
+            permaLink = WPMobileReaderURL;
+        }
     }
 
     return permaLink;
-}   
+}
 
 - (NSString *)getDocumentTitle {
     NSString *title = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.get_article_title();"];
@@ -206,7 +206,7 @@
     }
 
     //load the title from the document
-    title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"]; 
+    title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
 
     if ( title != nil && [[title trim] isEqualToString:@""] == NO) {
         return title;
@@ -278,7 +278,7 @@
 
 - (void)retryWithLogin {
     self.needsLogin = YES;
-    [self refreshWebView];    
+    [self refreshWebView];
 }
 
 - (void)setUrl:(NSURL *)theURL {
@@ -352,7 +352,7 @@
         NSString *prevItemAvailable = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.show_prev_item();"];
         if ( [prevItemAvailable rangeOfString:@"true"].location == NSNotFound )
             self.backButton.enabled = NO;
-        else 
+        else
             self.backButton.enabled = YES;
         self.forwardButton.enabled = YES;
         if (IS_IPAD) {
@@ -492,11 +492,11 @@
     }
 
     //the user clicked a link available in the detailsView, a new webView will be pushed into the stack
-    if (![requestedURL isEqual:self.url] && 
-        [requestedURLAbsoluteString rangeOfString:@"file://"].location == NSNotFound && 
+    if (![requestedURL isEqual:self.url] &&
+        [requestedURLAbsoluteString rangeOfString:@"file://"].location == NSNotFound &&
         self.detailContent != nil &&
         navigationType == UIWebViewNavigationTypeLinkClicked
-        ) { 
+        ) {
 
         WPWebViewController *webViewController = [[WPWebViewController alloc] init];
         [webViewController setUrl:[request URL]];
@@ -504,7 +504,7 @@
         return NO;
     }
 
-    [self setLoading:YES];        
+    [self setLoading:YES];
     return YES;
 }
 
@@ -571,9 +571,9 @@
 
 #pragma mark - custom methods
 //Returns true if the ToAddress field was found any of the sub views and made first responder
-//passing in @"MFComposeSubjectView"     as the value for field makes the subject become first responder 
-//passing in @"MFComposeTextContentView" as the value for field makes the body become first responder 
-//passing in @"RecipientTextField"       as the value for field makes the to address field become first responder 
+//passing in @"MFComposeSubjectView"     as the value for field makes the subject become first responder
+//passing in @"MFComposeTextContentView" as the value for field makes the body become first responder
+//passing in @"RecipientTextField"       as the value for field makes the to address field become first responder
 - (BOOL) setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field{
     for (UIView *subview in view.subviews) {
 

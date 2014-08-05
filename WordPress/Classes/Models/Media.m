@@ -461,7 +461,7 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
         } else if (self.remoteURL != nil) {
             self.remoteURL = [self.remoteURL stringByReplacingOccurrencesOfString:@"\"" withString:@""];
             NSNumber *htmlPreference = [NSNumber numberWithInt:
-                                        [[[NSUserDefaults standardUserDefaults] 
+                                        [[[NSUserDefaults standardUserDefaults]
                                           objectForKey:@"video_html_preference"] intValue]];
 
             if ([htmlPreference intValue] == 0) {
@@ -470,8 +470,8 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
                           @"<video src=\"%@\" controls=\"controls\" width=\"%@\" height=\"%@\">"
                           "Your browser does not support the video tag"
                           "</video>",
-                          self.remoteURL, 
-                          embedWidth, 
+                          self.remoteURL,
+                          embedWidth,
                           embedHeight];
             } else {
                 // Use HTML 4 <object><embed> tags

@@ -278,7 +278,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         [WPStyleGuide configureTableViewCell:cell];
 
-        return cell;        
+        return cell;
     }
 
     // We shouldn't reach this point, but return an empty cell just in case
@@ -296,7 +296,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
                 break;
             }
         }
-    } 
+    }
     [tv deselectRowAtIndexPath:indexPath animated:YES];
 
     if (indexPath.section == 2) {
@@ -365,7 +365,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     textField.keyboardType = UIKeyboardTypeDefault;
     textField.autocorrectionType = UITextAutocorrectionTypeNo;
     textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    textField.delegate = self;   
+    textField.delegate = self;
     if (asPassword) {
         textField.secureTextEntry = YES;
         textField.returnKeyType = UIReturnKeyDone;
@@ -676,7 +676,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
         return;
     }
 
-    CGRect rect = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];    
+    CGRect rect = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGRect frame = self.view.frame;
 
     // Slight hack to account for tab bar; ditch this when we switch to a translucent tab bar

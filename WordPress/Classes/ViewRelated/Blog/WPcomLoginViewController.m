@@ -159,7 +159,7 @@
     } else {
         if ([indexPath row] == 0) {
             if (loginCell == nil) {
-                loginCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault 
+                loginCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault
                                                             reuseIdentifier:@"TextCell"];
 
                 NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -183,7 +183,7 @@
         }
         else {
             if (passwordCell == nil) {
-                passwordCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault 
+                passwordCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault
                                                                reuseIdentifier:@"TextCell"];
             }
             passwordCell.textLabel.text = NSLocalizedString(@"Password", @"");
@@ -199,7 +199,7 @@
         }
     }
 
-    return cell;    
+    return cell;
 }
 
 #pragma mark -

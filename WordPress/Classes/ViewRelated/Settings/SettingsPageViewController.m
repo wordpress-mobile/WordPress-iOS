@@ -26,7 +26,7 @@
 
 // Dictionary should be a PSMultiValueSpecifier from a settings bundle's plist.
 // matching the following format. (Type & Info are optional).
-/* 
+/*
 {
     DefaultValue = 0;
     Key = "media_resize_preference";
@@ -79,7 +79,7 @@
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
-#pragma mark - 
+#pragma mark -
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -113,7 +113,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
 
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
         [WPStyleGuide configureTableViewCell:cell];

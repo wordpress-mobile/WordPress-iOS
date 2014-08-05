@@ -475,7 +475,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 #pragma mark - WPContentView Delegate Methods
 
 /**
- Receives the notification that the user has tapped the featured image, and informs 
+ Receives the notification that the user has tapped the featured image, and informs
  the delegate of the interaction.
 
  @param sender A reference to the featured image.
@@ -490,7 +490,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 #pragma mark - authorLinkAction
 
 /**
- Receives the notification from the attribution view that its button was pressed and informs the 
+ Receives the notification from the attribution view that its button was pressed and informs the
  delegate of the interaction.
  */
 - (void)attributionView:(WPContentAttributionView *)attributionView didReceiveAttributionLinkAction:(id)sender

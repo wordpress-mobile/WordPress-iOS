@@ -30,7 +30,7 @@
     return YES;
 }
 
-+ (void)load {    
++ (void)load {
     Method origMethod = class_getInstanceMethod(self, @selector(supportedInterfaceOrientations));
     Method newMethod = class_getInstanceMethod(self, @selector(mySupportedInterfaceOrientations));
     method_exchangeImplementations(origMethod, newMethod);

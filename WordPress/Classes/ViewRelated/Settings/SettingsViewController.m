@@ -165,7 +165,7 @@ CGFloat const blavatarImageViewSize = 43.f;
     return nil;
 }
 
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {    
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     cell.accessoryType = UITableViewCellAccessoryNone;
 
@@ -288,8 +288,8 @@ CGFloat const blavatarImageViewSize = 43.f;
                 NSString *signOutTitle = NSLocalizedString(@"You are logged in as %@", @"");
                 signOutTitle = [NSString stringWithFormat:signOutTitle, [defaultAccount username]];
                 UIActionSheet *actionSheet;
-                actionSheet = [[UIActionSheet alloc] initWithTitle:signOutTitle 
-                                                          delegate:self 
+                actionSheet = [[UIActionSheet alloc] initWithTitle:signOutTitle
+                                                          delegate:self
                                                  cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
                                             destructiveButtonTitle:NSLocalizedString(@"Sign Out", @"")otherButtonTitles:nil, nil ];
                 actionSheet.actionSheetStyle = UIActionSheetStyleDefault;

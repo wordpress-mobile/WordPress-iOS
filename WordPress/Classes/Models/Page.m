@@ -115,7 +115,7 @@
                               failure(error);
                           }
                           [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadFailed" object:self];
-                      }];    
+                      }];
 }
 
 - (void)getPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {

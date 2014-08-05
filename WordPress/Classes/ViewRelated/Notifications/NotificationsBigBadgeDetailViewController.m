@@ -106,7 +106,7 @@
 }
 
 /**
- * Adds auto layout constraints to position views 
+ * Adds auto layout constraints to position views
  */
 - (void)addLayoutConstraints {
     // Match scrollView dimensions to the main view

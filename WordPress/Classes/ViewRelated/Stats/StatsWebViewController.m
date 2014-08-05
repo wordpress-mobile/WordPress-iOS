@@ -115,7 +115,7 @@ static NSString *_lastAuthedName = nil;
     [super viewDidAppear:animated];
     /*
     [self.webView stringByEvaluatingJavaScriptFromString:
-     [NSString stringWithFormat:@"%@", 
+     [NSString stringWithFormat:@"%@",
       @"window.onerror = function(errorMessage,url,lineNumber) { payload = 'url='+url; payload += '&message=' + errorMessage;  payload += '&line=' + lineNumber; var img = new Image();  img.src = 'http://192.168.1.103/errormonitor.php'+'?error=scriptruntime&'+payload; return true;}"]
      ];
      */
@@ -305,7 +305,7 @@ static NSString *_lastAuthedName = nil;
     [mRequest setHTTPMethod:@"POST"];
 
     // Clear cookies prior to auth so we don't get a false positive on the login cookie being correctly set in some cases.
-    [self clearCookies]; 
+    [self clearCookies];
     [[self class] setLastAuthedName:nil];
 
     self.authRequest = [[AFHTTPRequestOperation alloc] initWithRequest:mRequest];
@@ -410,7 +410,7 @@ static NSString *_lastAuthedName = nil;
 
     DDLogInfo(@"The following URL was requested: %@", [request.URL absoluteString]);
 
-    // On an ajax powered page like stats that manage state via the url hash, if we spawn a new controller when tapping on a link 
+    // On an ajax powered page like stats that manage state via the url hash, if we spawn a new controller when tapping on a link
     // (like we do in the WPChromelessWebViewController)
     // and then tap on the same link again, the second tap will not trigger the UIWebView delegate methods, and the new page will load
     // in the webview in which the link was tapped instead of spawning a new controller.

@@ -17,7 +17,7 @@
 @dynamic timestamp;
 @dynamic type;
 @dynamic unread;
-@dynamic subject; 
+@dynamic subject;
 @dynamic body;
 @dynamic meta;
 @synthesize bodyItems    = _bodyItems;
@@ -61,7 +61,7 @@
 
 - (NSString *)bodyTemplate
 {
-    return [self.body stringForKey:@"template"];    
+    return [self.body stringForKey:@"template"];
 }
 
 - (NSString *)bodyHeaderText

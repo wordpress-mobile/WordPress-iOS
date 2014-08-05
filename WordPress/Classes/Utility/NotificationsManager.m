@@ -133,7 +133,7 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
                 completionHandler(result);
             }];
         }
-    }    
+    }
 }
 
 + (void)handleNotificationForApplicationLaunch:(NSDictionary *)launchOptions {

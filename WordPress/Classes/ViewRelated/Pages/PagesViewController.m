@@ -96,7 +96,7 @@
 
 - (BOOL)refreshRequired {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults boolForKey:@"refreshPagesRequired"]) { 
+    if ([defaults boolForKey:@"refreshPagesRequired"]) {
         [defaults setBool:NO forKey:@"refreshPagesRequired"];
         return YES;
     }
