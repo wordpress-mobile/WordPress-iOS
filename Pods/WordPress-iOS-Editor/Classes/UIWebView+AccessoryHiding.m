@@ -3,10 +3,10 @@
 
 @implementation UIWebView (AccessoryHiding)
 
-static const char * const hackishFixClassName = "UIWebBrowserViewMinusAccessoryView";
-static Class hackishFixClass = Nil;
+static const char * const fixedClassName = "UIWebBrowserViewMinusAccessoryView";
+static Class fixClass = Nil;
 
-- (UIView *)hackishlyFoundBrowserView
+- (UIView *)foundBrowserView
 {
     UIScrollView *scrollView = self.scrollView;
     
@@ -25,35 +25,35 @@ static Class hackishFixClass = Nil;
     return nil;
 }
 
-- (void)ensureHackishSubclassExistsOfBrowserViewClass:(Class)browserViewClass
+- (void)ensureFixedSubclassExistsOfBrowserViewClass:(Class)browserViewClass
 {
-    if (!hackishFixClass) {
-        Class newClass = objc_allocateClassPair(browserViewClass, hackishFixClassName, 0);
-        newClass = objc_allocateClassPair(browserViewClass, hackishFixClassName, 0);
+    if (!fixClass) {
+        Class newClass = objc_allocateClassPair(browserViewClass, fixedClassName, 0);
+        newClass = objc_allocateClassPair(browserViewClass, fixedClassName, 0);
         IMP nilImp = [self methodForSelector:@selector(methodReturningNil)];
         class_addMethod(newClass, @selector(inputAccessoryView), nilImp, "@@:");
         objc_registerClassPair(newClass);
         
-        hackishFixClass = newClass;
+        fixClass = newClass;
     }
 }
 
 - (BOOL) hidesInputAccessoryView
 {
-    UIView *browserView = [self hackishlyFoundBrowserView];
-    return [browserView class] == hackishFixClass;
+    UIView *browserView = [self foundBrowserView];
+    return [browserView class] == fixClass;
 }
 
 - (void) setHidesInputAccessoryView:(BOOL)value
 {
-    UIView *browserView = [self hackishlyFoundBrowserView];
+    UIView *browserView = [self foundBrowserView];
     if (browserView == nil) {
         return;
     }
-    [self ensureHackishSubclassExistsOfBrowserViewClass:[browserView class]];
+    [self ensureFixedSubclassExistsOfBrowserViewClass:[browserView class]];
 	
     if (value) {
-        object_setClass(browserView, hackishFixClass);
+        object_setClass(browserView, fixClass);
     }
     else {
         Class normalClass = objc_getClass("UIWebBrowserView");

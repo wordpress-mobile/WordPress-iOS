@@ -658,6 +658,7 @@ NSInteger const WPLinkAlertViewTag = 92;
 
 #pragma mark - Editor Interaction
 
+// Sets the HTML for the entire editor
 - (void)setHtml:(NSString *)html
 {
     if (!self.resourcesLoaded) {
@@ -679,6 +680,14 @@ NSInteger const WPLinkAlertViewTag = 92;
 	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
 }
 
+// Inserts HTML at the caret position
+- (void)insertHTML:(NSString *)html
+{
+    NSString *cleanedHTML = [self removeQuotesFromHTML:html];
+    NSString *trigger = [NSString stringWithFormat:@"zss_editor.insertHTML(\"%@\");", cleanedHTML];
+    [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
+}
+
 - (NSString *)getHTML
 {
     NSString *html = [self.editorView stringByEvaluatingJavaScriptFromString:@"zss_editor.getHTML();"];
@@ -692,11 +701,6 @@ NSInteger const WPLinkAlertViewTag = 92;
     [self.editorView stringByEvaluatingJavaScriptFromString:@"document.activeElement.blur()"];
     [self.sourceView resignFirstResponder];
     [self.view endEditing:YES];
-}
-
-- (void)focus
-{
-    [self.editorView stringByEvaluatingJavaScriptFromString:@"document.activeElement.focus()"];
 }
 
 - (void)showHTMLSource:(ZSSBarButtonItem *)barButtonItem
