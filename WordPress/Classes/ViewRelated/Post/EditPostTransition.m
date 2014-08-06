@@ -1,7 +1,7 @@
 #import "EditPostTransition.h"
 
 const CGFloat EDITPOST_ANIMATION_PRESENT_DURATION = .33f;
-const CGFloat EDITPOST_ANIMATION_DISMISS_DURATION = .25f;
+const CGFloat EDITPOST_ANIMATION_DISMISS_DURATION = .33f;
 
 @implementation EditPostTransition
 
@@ -47,10 +47,11 @@ const CGFloat EDITPOST_ANIMATION_DISMISS_DURATION = .25f;
                           duration:EDITPOST_ANIMATION_DISMISS_DURATION
                            options:UIViewAnimationOptionTransitionCrossDissolve
                         animations:^{
-                            fromVC.view.alpha = 0.0;
                             toVC.view.alpha = 1.0;
                         }
                         completion:^(BOOL finished){
+                            toVC.view.alpha = 1.0;
+                            fromVC.view.alpha = 0.0;
                             fromVC.view.frame = [self rectForDismissedState:transitionContext];
                             [fromVC.view removeFromSuperview];
                             [transitionContext completeTransition:YES];
