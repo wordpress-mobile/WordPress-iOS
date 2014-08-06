@@ -41,7 +41,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @property (nonatomic, assign) CGFloat lastOffset;
 @property (nonatomic, strong) WPAnimatedBox *animatedBox;
 @property (nonatomic, strong) UIGestureRecognizer *tapOffKeyboardGesture;
-@property (nonatomic, strong) ReaderPostDetailViewController *detailController;
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 @property (nonatomic, strong) ReaderCommentPublisher *commentPublisher;
 @property (nonatomic, readonly) ReaderTopic *currentTopic;
@@ -889,11 +888,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 
-    // Pass the image forward
 	ReaderPost *post = [self.resultsController.fetchedObjects objectAtIndex:indexPath.row];
-	self.detailController = [ReaderPostDetailViewController detailControllerWithPost:post];
-    [self.navigationController pushViewController:self.detailController animated:YES];
-    
+	UIViewController *detailController = [ReaderPostDetailViewController detailControllerWithPost:post];
+    [self.navigationController pushViewController:detailController animated:YES];
+
     [WPAnalytics track:WPAnalyticsStatReaderOpenedArticle];
 }
 
