@@ -914,7 +914,6 @@
 		E14D65C717E09663007E3EA4 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		E15051C916CA5DDB00D3DDDC /* Blog+Jetpack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Blog+Jetpack.h"; sourceTree = "<group>"; };
 		E15051CA16CA5DDB00D3DDDC /* Blog+Jetpack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Blog+Jetpack.m"; sourceTree = "<group>"; };
-		E150520A16CAC5C400D3DDDC /* BlogJetpackTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogJetpackTest.h; sourceTree = "<group>"; };
 		E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogJetpackTest.m; sourceTree = "<group>"; };
 		E150520D16CAC75A00D3DDDC /* CoreDataTestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataTestHelper.h; sourceTree = "<group>"; };
 		E150520E16CAC75A00D3DDDC /* CoreDataTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataTestHelper.m; sourceTree = "<group>"; };
@@ -2017,7 +2016,6 @@
 		E1239B7B176A2E0F00D37220 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				E150520A16CAC5C400D3DDDC /* BlogJetpackTest.h */,
 				E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */,
 				C5CFDC29184F962B00097B05 /* CoreDataConcurrencyTest.m */,
 				852CD8AE190E0D04006C9AED /* Media */,
