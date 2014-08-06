@@ -1347,7 +1347,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
  * Take Asset URL and set imageJPEG property to NSData containing the
  * associated JPEG, including the metadata we're after.
  */
--(void)getMetadataFromAssetForURL:(NSURL *)url {
+- (void)getMetadataFromAssetForURL:(NSURL *)url {
     ALAssetsLibrary* assetslibrary = [[ALAssetsLibrary alloc] init];
     [assetslibrary assetForURL:url
                    resultBlock: ^(ALAsset *myasset) {

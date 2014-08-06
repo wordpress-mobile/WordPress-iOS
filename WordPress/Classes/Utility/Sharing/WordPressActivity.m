@@ -47,7 +47,7 @@
     }
 }
 
--(UIViewController *)activityViewController{
+- (UIViewController *)activityViewController{
     NSString * content = [self.summary stringByAppendingString:[NSString stringWithFormat:@"\n\n <a href=\"%@\">%@</a>", self.URL, self.URL]];
 
     __weak __typeof(self) weakSelf = self;
