@@ -32,7 +32,6 @@ zss_editor.init = function() {
 	
 	// Main editor div
 	var editor = $('#zss_editor_content');
-	editor.trigger('touchstart');
 	
 	// Bind an event so we always know what styles are applied
 	editor.bind('touchend', function(e) {
