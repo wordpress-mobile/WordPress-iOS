@@ -1,5 +1,8 @@
 #import "EditPostViewController.h"
 #import "EditPostViewController_Internal.h"
+#import <AssetsLibrary/AssetsLibrary.h>
+#import <WordPress-iOS-Shared/UIImage+Util.h>
+#import <WordPress-iOS-Shared/WPFontManager.h>
 #import "ContextManager.h"
 #import "Post.h"
 #import "WPTableViewCell.h"
@@ -10,9 +13,7 @@
 #import "MediaService.h"
 #import "WPMediaUploader.h"
 #import "WPUploadStatusView.h"
-#import <AssetsLibrary/AssetsLibrary.h>
-#import <WordPress-iOS-Shared/UIImage+Util.h>
-#import <WordPress-iOS-Shared/WPFontManager.h>
+
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
@@ -81,6 +82,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
     if (self) {
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
+        self.modalTransitionStyle = UIModalPresentationCustom;
         Post *post = (Post *)self.post;
         post.postTitle = title;
         post.content = content;
@@ -153,6 +155,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
 - (void)viewDidAppear:(BOOL)animated
 {
     [self refreshButtons];
+    [self focusTextEditor];
 }
 
 #pragma mark - View Setup
