@@ -285,8 +285,9 @@ CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     BOOL touchedButton1 = CGRectContainsPoint(button1Frame, touchPoint);
     BOOL touchedButton2 = CGRectContainsPoint(button2Frame, touchPoint);
 
-    if (touchedButton1 || touchedButton2)
+    if (touchedButton1 || touchedButton2) {
         return;
+    }
 
     if (gestureRecognizer.numberOfTapsRequired == 1) {
         if (self.dismissCompletionBlock) {

@@ -107,8 +107,9 @@ typedef void (^ExecutionBlock)(WPAsyncBlockOperation *);
     for (NSOperation *operation in self.dependencies) {
         if ([operation isKindOfClass:[WPAsyncBlockOperation class]]) {
             WPAsyncBlockOperation *asyncBlockOperation = (WPAsyncBlockOperation *)operation;
-            if (asyncBlockOperation.failed)
+            if (asyncBlockOperation.failed) {
                 return YES;
+            }
         }
     }
 

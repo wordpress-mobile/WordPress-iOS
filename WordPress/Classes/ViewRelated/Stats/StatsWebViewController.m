@@ -34,13 +34,15 @@ static NSString *_lastAuthedName = nil;
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
     NSString *blogID = [coder decodeObjectForKey:WPStatsWebBlogKey];
-    if (!blogID)
+    if (!blogID) {
         return nil;
+    }
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:blogID]];
-    if (!objectID)
+    if (!objectID) {
         return nil;
+    }
 
     NSError *error = nil;
     Blog *restoredBlog = (Blog *)[context existingObjectWithID:objectID error:&error];
@@ -253,8 +255,9 @@ static NSString *_lastAuthedName = nil;
 }
 
 - (void)showRetryAlertView:(StatsWebViewController *)statsWebViewController {
-    if (retryAlertView)
+    if (retryAlertView) {
         return;
+    }
 
     retryAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
                                                         message:NSLocalizedString(@"There was a problem connecting to your stats. Would you like to retry?", @"")

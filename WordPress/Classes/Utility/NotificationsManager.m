@@ -156,8 +156,9 @@ NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
     }
 
     NSDictionary *notificationPreferences = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsPreferencesKey];
-    if (!notificationPreferences)
+    if (!notificationPreferences) {
         return nil;
+    }
 
     NSMutableArray *notificationPrefArray = [[notificationPreferences allKeys] mutableCopy];
     if ([notificationPrefArray indexOfObject:@"muted_blogs"] != NSNotFound) {

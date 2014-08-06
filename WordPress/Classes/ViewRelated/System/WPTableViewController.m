@@ -40,13 +40,15 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
     NSString *blogID = [coder decodeObjectForKey:WPBlogRestorationKey];
-    if (!blogID)
+    if (!blogID) {
         return nil;
+    }
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:blogID]];
-    if (!objectID)
+    if (!objectID) {
         return nil;
+    }
 
     NSError *error = nil;
     Blog *restoredBlog = (Blog *)[context existingObjectWithID:objectID error:&error];

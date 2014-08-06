@@ -52,8 +52,9 @@
 }
 
 - (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    if ([self.password isEmpty])
+    if ([self.password isEmpty]) {
         self.password = nil;
+    }
 
     [self save];
 
@@ -71,8 +72,9 @@
 - (NSDictionary *)XMLRPCDictionary {
     NSMutableDictionary *postParams = [NSMutableDictionary dictionaryWithDictionary:[super XMLRPCDictionary]];
 
-    if (self.status == nil)
+    if (self.status == nil) {
         self.status = @"publish";
+    }
 
     [postParams setObject:self.status forKey:@"page_status"];
 
@@ -123,8 +125,9 @@
     [self.blog.api callMethod:@"wp.getPage"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                          if ([self isDeleted] || self.managedObjectContext == nil)
+                          if ([self isDeleted] || self.managedObjectContext == nil) {
                               return;
+                          }
 
                           [self updateFromDictionary:responseObject];
                           [self save];
@@ -151,16 +154,18 @@
     [self.blog.api callMethod:@"wp.editPage"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                          if ([self isDeleted] || self.managedObjectContext == nil)
+                          if ([self isDeleted] || self.managedObjectContext == nil) {
                               return;
+                          }
 
                           self.remoteStatus = AbstractPostRemoteStatusSync;
                           [self getPostWithSuccess:nil failure:nil];
                           if (success) success();
                           [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploaded" object:self];
                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                          if ([self isDeleted] || self.managedObjectContext == nil)
+                          if ([self isDeleted] || self.managedObjectContext == nil) {
                               return;
+                          }
 
                           self.remoteStatus = AbstractPostRemoteStatusFailed;
                           if (failure) failure(error);

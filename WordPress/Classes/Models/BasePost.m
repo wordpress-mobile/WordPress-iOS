@@ -152,8 +152,9 @@
         [postParams setValue:self.post_thumbnail forKey:@"wp_post_thumbnail"];
     }
 
-    if (self.mt_text_more != nil && [self.mt_text_more length] > 0)
+    if (self.mt_text_more != nil && [self.mt_text_more length] > 0) {
         [postParams setObject:self.mt_text_more forKey:@"mt_text_more"];
+    }
 
     return postParams;
 }

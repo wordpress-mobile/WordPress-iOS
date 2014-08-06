@@ -3,8 +3,9 @@
 @implementation UILabel (SuggestSize)
 
 - (CGSize)suggestedSizeForWidth:(CGFloat)width {
-    if (self.attributedText)
+    if (self.attributedText) {
         return [self suggestSizeForAttributedString:self.attributedText width:width];
+    }
 
     return [self suggestSizeForString:self.text width:width];
 }

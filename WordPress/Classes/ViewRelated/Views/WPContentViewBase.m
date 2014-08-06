@@ -62,8 +62,9 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
 - (void)setContentProvider:(id<WPContentViewProvider>)contentProvider
 {
-    if (_contentProvider == contentProvider)
+    if (_contentProvider == contentProvider) {
         return;
+    }
 
     _contentProvider = contentProvider;
     [self configureView];
@@ -223,8 +224,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     NSLayoutConstraint *constraintToAdd;
     NSLayoutConstraint *constraintToRemove;
 
-    if (self.featuredImageView.hidden)
-    {
+    if (self.featuredImageView.hidden) {
         constraintToRemove = self.featuredImagePercentageHeightConstraint;
         constraintToAdd = self.featuredImageZeroHeightConstraint;
     } else {

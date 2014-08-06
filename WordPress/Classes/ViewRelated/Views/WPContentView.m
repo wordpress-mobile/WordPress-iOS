@@ -173,8 +173,9 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 }
 
 - (UIView *)viewForFullContent {
-    if (_textContentView)
+    if (_textContentView) {
         return _textContentView;
+    }
 
     [DTAttributedTextContentView setLayerClass:[DTTiledLayerWithoutFade class]];
 
@@ -190,8 +191,9 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 }
 
 - (UIView *)viewForContentPreview {
-    if (_snippetLabel)
+    if (_snippetLabel) {
         return _snippetLabel;
+    }
 
     _snippetLabel = [[UILabel alloc] init];
     _snippetLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -220,8 +222,9 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 }
 
 - (void)setContentProvider:(id<WPContentViewProvider>)contentProvider {
-    if (_contentProvider == contentProvider)
+    if (_contentProvider == contentProvider) {
         return;
+    }
 
     _contentProvider = contentProvider;
     [self configureContentView:_contentProvider];
@@ -286,8 +289,9 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     CGFloat buttonWidth = 0.0f;
     for (UIButton *actionButton in reversedActionButtons) {
         // Button order from right-to-left, ignoring hidden buttons
-        if (actionButton.hidden)
+        if (actionButton.hidden) {
             continue;
+        }
 
         // Left most visible button needs a different size to aligh properly
         if (buttonWidth == 0.0f) {
@@ -559,8 +563,9 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 }
 
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttachment:(DTTextAttachment *)attachment frame:(CGRect)frame {
-    if (!attachment.contentURL)
+    if (!attachment.contentURL) {
         return nil;
+    }
 
     // The textContentView will render the first time with the original frame, and then update when media loads.
     // To avoid showing gaps in the layout due to the original attachment sizes, relayout the view after a brief delay.

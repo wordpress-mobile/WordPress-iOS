@@ -101,8 +101,9 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
-    if (IS_IPHONE)
+    if (IS_IPHONE) {
         return UIInterfaceOrientationMaskPortrait;
+    }
 
     return UIInterfaceOrientationMaskAll;
 }

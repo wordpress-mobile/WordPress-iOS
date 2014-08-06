@@ -253,8 +253,7 @@ NSInteger const kMeTabIndex = 2;
         // Synchronize the cleanup call on the main thread in case
         // the task actually finishes at around the same time.
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (_bgTask != UIBackgroundTaskInvalid)
-            {
+            if (_bgTask != UIBackgroundTaskInvalid) {
                 [app endBackgroundTask:_bgTask];
                 _bgTask = UIBackgroundTaskInvalid;
             }
