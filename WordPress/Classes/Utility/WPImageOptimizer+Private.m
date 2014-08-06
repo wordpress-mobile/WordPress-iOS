@@ -45,12 +45,10 @@ static const CGFloat CompressionQuality = 0.7;
     if (adjustmentXMPData) {
         filters = [CIFilter filterArrayFromSerializedXMP:adjustmentXMPData inputImageExtent:extend error:&error];
     }
-    if (filters)
-    {
+    if (filters) {
         CIImage *image = [CIImage imageWithCGImage:fullResolutionImage];
         CIContext *context = [CIContext contextWithOptions:nil];
-        for (CIFilter *filter in filters)
-        {
+        for (CIFilter *filter in filters) {
             [filter setValue:image forKey:kCIInputImageKey];
             image = [filter outputImage];
         }

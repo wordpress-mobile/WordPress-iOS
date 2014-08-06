@@ -156,8 +156,9 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
     // Do not start auto-sync if connection is down
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    if (appDelegate.connectionAvailable == NO)
+    if (appDelegate.connectionAvailable == NO) {
         return;
+    }
 
     NSDate *lastSynced = [self lastSyncDate];
     if ((lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > ReaderPostDetailViewControllerRefreshTimeout) && self.post.isWPCom) {

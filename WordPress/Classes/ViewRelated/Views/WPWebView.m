@@ -46,11 +46,15 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 @synthesize useWebViewLoading;
 
 - (void)dealloc {
-    if ([self.scrollView observationInfo])
+    if ([self.scrollView observationInfo]) {
         [self.scrollView removeObserver:self forKeyPath:@"contentOffset"];
+    }
+
     webView.delegate = nil;
-    if ([webView isLoading])
+
+    if ([webView isLoading]) {
         [webView stopLoading];
+    }
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
@@ -82,14 +86,16 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if (![keyPath isEqualToString:@"contentOffset"])
+    if (![keyPath isEqualToString:@"contentOffset"]) {
         return;
+    }
 
     CGPoint newValue = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue];
     CGPoint oldValue = [[change objectForKey:NSKeyValueChangeOldKey] CGPointValue];
 
-    if (newValue.y == oldValue.y)
+    if (newValue.y == oldValue.y) {
         return;
+    }
 }
 
 #pragma mark -
@@ -265,8 +271,9 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     }
 
     self.baseURLFallback = [mRequest.URL baseURL];
-    if (!baseURLFallback)
+    if (!baseURLFallback) {
         self.baseURLFallback = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@/", mRequest.URL.scheme, mRequest.URL.host]];
+    }
 
     self.currentRequest = mRequest;
 

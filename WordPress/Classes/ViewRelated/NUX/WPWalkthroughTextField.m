@@ -12,8 +12,7 @@
 - (id)init
 {
     self = [super init];
-    if (self)
-    {
+    if (self) {
         self.textInsets = UIEdgeInsetsMake(7, 10, 7, 10);
         self.layer.cornerRadius = 1.0;
         self.clipsToBounds = YES;
@@ -36,8 +35,7 @@
 - (instancetype)initWithLeftViewImage:(UIImage *)image
 {
     self = [self init];
-    if (self)
-    {
+    if (self) {
         self.leftViewImage = image;
         self.leftView = [[UIImageView alloc] initWithImage:image];
         self.leftViewMode = UITextFieldViewModeAlways;

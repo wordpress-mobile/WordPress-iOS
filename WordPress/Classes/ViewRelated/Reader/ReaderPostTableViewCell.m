@@ -19,8 +19,9 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
         view = (UIView *)view.superview;
     }
 
-    if (view == subview)
+    if (view == subview) {
         return nil;
+    }
 
     return (ReaderPostTableViewCell *)view;
 }
@@ -127,8 +128,9 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
     BOOL previouslyHighlighted = self.highlighted;
     [super setHighlighted:highlighted animated:animated];
 
-    if (previouslyHighlighted == highlighted)
+    if (previouslyHighlighted == highlighted) {
         return;
+    }
 
     if (highlighted) {
         [self setHighlightedEffect:highlighted animated:animated];

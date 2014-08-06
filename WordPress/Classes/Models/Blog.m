@@ -110,8 +110,9 @@ static NSInteger const ImageSizeLargeHeight = 480;
     NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"http(s?)://" options:NSRegularExpressionCaseInsensitive error:&error];
     NSString *result = [NSString stringWithFormat:@"%@", [protocol stringByReplacingMatchesInString:url options:0 range:NSMakeRange(0, [url length]) withTemplate:@""]];
 
-    if ([result hasSuffix:@"/"])
+    if ([result hasSuffix:@"/"]) {
         result = [result substringToIndex:[result length] - 1];
+    }
 
     return result;
 }
@@ -189,8 +190,9 @@ static NSInteger const ImageSizeLargeHeight = 480;
         pendingComments = [self.managedObjectContext countForFetchRequest:request error:&error];
     } else {
         for (Comment *element in self.comments) {
-            if ( [@"hold" isEqualToString: element.status] )
+            if ( [@"hold" isEqualToString: element.status] ) {
                 pendingComments++;
+            }
         }
     }
 

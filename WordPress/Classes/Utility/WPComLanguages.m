@@ -40,8 +40,9 @@
     NSArray *languages = [self sharedInstance].languages;
 
     for (NSDictionary *languageData in languages) {
-        if ([[languageData objectForKey:@"slug"] isEqualToString:locale])
+        if ([[languageData objectForKey:@"slug"] isEqualToString:locale]) {
             return languageData;
+        }
     }
 
     return nil;

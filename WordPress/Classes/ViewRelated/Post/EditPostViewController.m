@@ -463,7 +463,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
         if ([self.post.status isEqualToString:@"publish"] && ([self.post.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
             buttonTitle = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
 
-        } else if ([self.post.status isEqualToString:@"publish"]){
+        } else if ([self.post.status isEqualToString:@"publish"]) {
             buttonTitle = NSLocalizedString(@"Publish", @"Publish button label.");
 
         } else {
@@ -710,8 +710,9 @@ static NSInteger const MaximumNumberOfPictures = 4;
     self.navigationItem.title = [self editorTitle];
 
     self.post.content = self.bodyText;
-    if ([self.post.content rangeOfString:@"<!--more-->"].location != NSNotFound)
+    if ([self.post.content rangeOfString:@"<!--more-->"].location != NSNotFound) {
         self.post.mt_text_more = @"";
+    }
 
     if ( self.post.original.password != nil ) { //original post was password protected
         if ( self.post.password == nil || [self.post.password isEqualToString:@""] ) { //removed the password
@@ -758,8 +759,10 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
 - (void)showFailedMediaAlert
 {
-    if (_failedMediaAlertView)
+    if (_failedMediaAlertView) {
         return;
+    }
+
     _failedMediaAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Pending media", @"Title for alert when trying to publish a post with failed media items")
                                                        message:NSLocalizedString(@"There are media items in this post that aren't uploaded to the server. Do you want to continue?", @"")
                                                       delegate:self
@@ -803,14 +806,15 @@ static NSInteger const MaximumNumberOfPictures = 4;
     if (imgHTMLPre.location == NSNotFound && imgHTMLPost.location == NSNotFound && imgHTML.location == NSNotFound) {
         [content appendString:[NSString stringWithFormat:@"%@%@", prefix, media.html]];
         self.post.content = content;
-    }
-    else {
-        if (imgHTMLPre.location != NSNotFound)
+    } else {
+        if (imgHTMLPre.location != NSNotFound) {
             [content replaceCharactersInRange:imgHTMLPre withString:@""];
-        else if (imgHTMLPost.location != NSNotFound)
+        } else if (imgHTMLPost.location != NSNotFound) {
             [content replaceCharactersInRange:imgHTMLPost withString:@""];
-        else
+        } else {
             [content replaceCharactersInRange:imgHTML withString:@""];
+        }
+
         [content appendString:[NSString stringWithFormat:@"<br /><br />%@", media.html]];
         self.post.content = content;
     }

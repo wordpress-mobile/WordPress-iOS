@@ -57,8 +57,7 @@
 
     BOOL imageIsAnimated = (image.images != nil);
 
-    if (imageIsAnimated)
-    {
+    if (imageIsAnimated) {
         _imageView.image = image.images[0];
         _imageView.animationImages = image.images;
         _imageView.animationDuration = image.duration;
@@ -71,9 +70,7 @@
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             [_imageView startAnimating];
         });
-    }
-    else
-    {
+    } else {
         _imageView.image = image;
     }
 

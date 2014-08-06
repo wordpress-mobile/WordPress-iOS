@@ -45,8 +45,9 @@ CGFloat const blavatarImageSize = 50.f;
 }
 
 - (NSString *)modelIdentifierForElementAtIndexPath:(NSIndexPath *)indexPath inView:(UIView *)view {
-    if (!indexPath || !view)
+    if (!indexPath || !view) {
         return nil;
+    }
 
     // Preserve objectID
     NSManagedObject *managedObject = [self.resultsController objectAtIndexPath:indexPath];
@@ -54,14 +55,16 @@ CGFloat const blavatarImageSize = 50.f;
 }
 
 - (NSIndexPath *)indexPathForElementWithModelIdentifier:(NSString *)identifier inView:(UIView *)view {
-    if (!identifier || !view)
+    if (!identifier || !view) {
         return nil;
+    }
 
     // Map objectID back to indexPath
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:identifier]];
-    if (!objectID)
+    if (!objectID) {
         return nil;
+    }
 
     NSError *error = nil;
     NSManagedObject *managedObject = [context existingObjectWithID:objectID error:&error];
@@ -380,7 +383,7 @@ CGFloat const blavatarImageSize = 50.f;
         [self presentViewController:loginNavigationController animated:YES completion:nil];
     } else if (self.tableView.isEditing) {
         return;
-    }else {
+    } else {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];

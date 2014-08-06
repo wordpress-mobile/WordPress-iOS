@@ -312,8 +312,9 @@ BOOL hasChanges;
         [cellSwitch addTarget:self action:@selector(muteBlogSettingChanged:) forControlEvents:UIControlEventValueChanged];
         NSDictionary *muteBlogSetting = [_mutedBlogsArray objectAtIndex:indexPath.row];
         NSString *blogName = [muteBlogSetting objectForKey:@"blog_name"];
-        if ([blogName length] == 0)
+        if ([blogName length] == 0) {
             blogName = [muteBlogSetting objectForKey:@"url"];
+        }
         cell.textLabel.text = [blogName stringByDecodingXMLCharacters];
         cellSwitch.on = ![[muteBlogSetting objectForKey:@"value"] boolValue];
     }
@@ -482,8 +483,7 @@ BOOL hasChanges;
     [self.refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
     if (!error) {
         [self reloadNotificationSettings];
-    }
-    else {
+    } else {
         [WPError showAlertWithTitle:(NSLocalizedString(@"Error", @"")) message:error.localizedDescription];
     }
 }

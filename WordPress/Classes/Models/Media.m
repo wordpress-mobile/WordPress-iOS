@@ -346,8 +346,9 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
                 }
             };
             AFHTTPRequestOperation *operation = [self.blog.api HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                if ([self isDeleted] || self.managedObjectContext == nil)
+                if ([self isDeleted] || self.managedObjectContext == nil) {
                     return;
+                }
 
                 NSDictionary *response = (NSDictionary *)responseObject;
 
@@ -356,11 +357,13 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
                     failureBlock(operation, error);
                     return;
                 }
-                if ([response objectForKey:@"videopress_shortcode"] != nil)
+                if ([response objectForKey:@"videopress_shortcode"] != nil) {
                     self.shortcode = [response objectForKey:@"videopress_shortcode"];
+                }
 
-                if ([response objectForKey:@"url"] != nil)
+                if ([response objectForKey:@"url"] != nil) {
                     self.remoteURL = [response objectForKey:@"url"];
+                }
 
                 if ([response objectForKey:@"id"] != nil) {
                     self.mediaID = [[response objectForKey:@"id"] numericValue];
@@ -374,8 +377,9 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
             } failure:failureBlock];
             [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
                 dispatch_async(dispatch_get_main_queue(), ^(void) {
-                    if ([self isDeleted] || self.managedObjectContext == nil)
+                    if ([self isDeleted] || self.managedObjectContext == nil) {
                         return;
+                    }
                     self.progress = (float)totalBytesWritten / (float)totalBytesExpectedToWrite;
                 });
             }];
@@ -428,10 +432,11 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
             result = self.shortcode;
         } else if (self.remoteURL != nil) {
             NSString *linkType = nil;
-            if ( [[self.blog getOptionValue:@"image_default_link_type"] isKindOfClass:[NSString class]] )
+            if ( [[self.blog getOptionValue:@"image_default_link_type"] isKindOfClass:[NSString class]] ) {
                 linkType = (NSString *)[self.blog getOptionValue:@"image_default_link_type"];
-            else
+            } else {
                 linkType = @"";
+            }
 
             if ([linkType isEqualToString:@"none"]) {
                 result = [NSString stringWithFormat:

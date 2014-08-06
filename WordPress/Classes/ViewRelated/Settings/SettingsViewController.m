@@ -197,7 +197,7 @@ CGFloat const blavatarImageViewSize = 43.f;
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         }
 
-    } else if (indexPath.section == SettingsSectionMedia){
+    } else if (indexPath.section == SettingsSectionMedia) {
         cell.textLabel.text = NSLocalizedString(@"Optimize Images", nil);
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         UISwitch *aSwitch = (UISwitch *)cell.accessoryView;

@@ -53,13 +53,15 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
     NSString *blogID = [coder decodeObjectForKey:WPBlogDetailsBlogKey];
-    if (!blogID)
+    if (!blogID) {
         return nil;
+    }
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:blogID]];
-    if (!objectID)
+    if (!objectID) {
         return nil;
+    }
 
     NSError *error = nil;
     Blog *restoredBlog = (Blog *)[context existingObjectWithID:objectID error:&error];
@@ -339,8 +341,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
+    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }
 }

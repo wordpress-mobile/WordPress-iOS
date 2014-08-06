@@ -111,8 +111,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
-    if (IS_IPHONE)
+    if (IS_IPHONE) {
         return UIInterfaceOrientationMaskPortrait;
+    }
 
     return UIInterfaceOrientationMaskAll;
 }

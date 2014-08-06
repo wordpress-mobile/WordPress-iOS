@@ -142,8 +142,9 @@
 
     // The UTI can be converted to a mime type:
     NSString *mimeType = (__bridge_transfer NSString *)UTTypeCopyPreferredTagWithClass(type, kUTTagClassMIMEType);
-    if (type != NULL)
+    if (type != NULL) {
         CFRelease(type);
+    }
 
     return mimeType;
 }

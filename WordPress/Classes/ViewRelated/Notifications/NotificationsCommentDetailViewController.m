@@ -54,13 +54,15 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
     NSString *noteID = [coder decodeObjectForKey:WPNotificationCommentRestorationKey];
-    if (!noteID)
+    if (!noteID) {
         return nil;
+    }
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:noteID]];
-    if (!objectID)
+    if (!objectID) {
         return nil;
+    }
 
     NSError *error = nil;
     Note *restoredNote = (Note *)[context existingObjectWithID:objectID error:&error];
@@ -187,8 +189,9 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         [[defaultAccount restApi] GET:postPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             self.post = responseObject;
             NSString *postTitle = [[self.post valueForKeyPath:@"title"] stringByDecodingXMLCharacters];
-            if (!postTitle || [postTitle isEqualToString:@""])
+            if (!postTitle || [postTitle isEqualToString:@""]) {
                 postTitle = NSLocalizedString(@"Untitled Post", @"Used when a post has no title");
+            }
             self.postBanner.titleLabel.text = postTitle;
             id authorAvatarURL = [self.post valueForKeyPath:@"author.avatar_URL"];
             if ([authorAvatarURL isKindOfClass:[NSString class]]) {

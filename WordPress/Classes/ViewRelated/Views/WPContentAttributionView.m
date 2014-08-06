@@ -40,8 +40,9 @@ const CGFloat WPContentAttributionLabelHeight = 18.0;
 
 - (void)setContentProvider:(id<WPContentViewProvider>)contentProvider
 {
-    if (_contentProvider == contentProvider)
+    if (_contentProvider == contentProvider) {
         return;
+    }
 
     _contentProvider = contentProvider;
     [self configureView];

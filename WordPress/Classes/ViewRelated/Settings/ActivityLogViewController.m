@@ -78,8 +78,9 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0)
+    if (section == 0) {
         return self.logFiles.count;
+    }
 
     return 1;
 }
@@ -153,8 +154,9 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
         [self.navigationController pushViewController:detailViewController animated:YES];
     } else {
         for (DDLogFileInfo *logFileInfo in self.logFiles) {
-            if (logFileInfo.isArchived)
+            if (logFileInfo.isArchived) {
                 [[NSFileManager defaultManager] removeItemAtPath:logFileInfo.filePath error:nil];
+            }
         }
 
         DDLogWarn(@"All archived log files erased.");

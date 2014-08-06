@@ -67,7 +67,7 @@ static NSString *const SourceFacebook = @"Facebook";
         [self findEmails];
     } else if ([source isEqualToString:@"twitter"]) {
         [self findTwitterFriends];
-    } else if ([source isEqualToString:@"facebook"]){
+    } else if ([source isEqualToString:@"facebook"]) {
         [self findFacebookFriends];
     }
 }

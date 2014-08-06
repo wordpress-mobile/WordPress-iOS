@@ -65,8 +65,7 @@
 + (NSArray *)parseItems:(NSArray *)rawItems
 {
     NSMutableArray *parsed = [NSMutableArray array];
-    for (NSDictionary *rawItem in rawItems)
-    {
+    for (NSDictionary *rawItem in rawItems) {
         NoteBodyItem *item = [NoteBodyItem new];
         item.rawItem = rawItem;
         [parsed addObject:item];

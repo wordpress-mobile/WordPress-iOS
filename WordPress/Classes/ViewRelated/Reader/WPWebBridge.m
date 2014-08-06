@@ -34,7 +34,7 @@ static NSString *const AuthorizedHybridHost = @"en.wordpress.com";
     if ( [absoluteURL rangeOfString:@"?"].location == NSNotFound ){
         // append the query with ?
         newURL = [absoluteURL stringByAppendingFormat:@"?wpcom-hybrid-auth-token=%@", self.hybridAuthToken];
-    }else {
+    } else {
         // append the query with &
         newURL = [absoluteURL stringByAppendingFormat:@"&wpcom-hybrid-auth-token=%@", self.hybridAuthToken];
 
@@ -62,21 +62,22 @@ static NSString *const AuthorizedHybridHost = @"en.wordpress.com";
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *token = [defaults stringForKey:HybridTokenSetting];
-    if (token == nil)
-    {
+
+    if (token == nil) {
         NSString *concat = [NSString stringWithFormat:@"%@--%d", [[UIDevice currentDevice] wordpressIdentifier], arc4random()];
         const char *concat_str = [concat UTF8String];
         unsigned char result[CC_MD5_DIGEST_LENGTH];
         CC_MD5(concat_str, (CC_LONG)strlen(concat_str), result);
         NSMutableString *hash = [NSMutableString string];
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < 16; i++) {
             [hash appendFormat:@"%02X", result[i]];
+        }
         token = [hash lowercaseString];
         DDLogInfo(@"Generating new hybrid token: %@", token);
         [defaults setValue:token forKey:HybridTokenSetting];
         [defaults synchronize];
-
     }
+
     return token;
 }
 
