@@ -103,7 +103,7 @@ static NSString *const AuthorizedHybridHost = @"en.wordpress.com";
  in the context of the controller.
 
  */
--(void)executeBatchFromRequest:(NSURLRequest *)request {
+- (void)executeBatchFromRequest:(NSURLRequest *)request {
     if (self.delegate == nil) {
         return;
     }
