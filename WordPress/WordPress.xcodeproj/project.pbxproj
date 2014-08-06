@@ -2014,6 +2014,7 @@
 			isa = PBXGroup;
 			children = (
 				E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */,
+				930FD0A519882742000CC81D /* BlogServiceTest.m */,
 				C5CFDC29184F962B00097B05 /* CoreDataConcurrencyTest.m */,
 				852CD8AE190E0D04006C9AED /* Media */,
 				F1564E5A18946087009F8F97 /* NSStringHelpersTest.m */,
@@ -2022,7 +2023,6 @@
 				E1E4CE0C177439D100430844 /* WPAvatarSourceTest.m */,
 				5DA3EE191925111700294E0B /* WPImageOptimizerTest.m */,
 				5D2BEB4819758102005425F7 /* WPTableImageSourceTest.m */,
-				930FD0A519882742000CC81D /* BlogServiceTest.m */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
