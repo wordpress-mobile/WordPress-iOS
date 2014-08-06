@@ -942,6 +942,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     self.hasMoreContent = YES;
 
     [self.tableView setContentOffset:CGPointMake(0, 0) animated:NO];
+    [self.cachedRowHeights removeAllObjects];
     [self resetResultsController];
     [self.tableView reloadData];
     [self syncItems];
