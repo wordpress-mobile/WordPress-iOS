@@ -29,8 +29,7 @@
     NSScanner *scanner = [NSScanner scannerWithString:title];
     NSString *tmp;
 
-    while ([scanner isAtEnd] == NO)
-    {
+    while ([scanner isAtEnd] == NO) {
         [scanner scanUpToString:@"\"" intoString:NULL];
         [scanner scanString:@"\"" intoString:NULL];
         [scanner scanUpToString:@"\"" intoString:&tmp];

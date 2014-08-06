@@ -10,8 +10,9 @@
     NSNumber *resizePreferenceNumber = @(0);
     NSString *resizePreferenceString = [[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"];
 
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil) {
         resizePreferenceNumber = [numberFormatter numberFromString:resizePreferenceString];
+    }
 
     NSInteger resizePreferenceIndex = [resizePreferenceNumber integerValue];
 

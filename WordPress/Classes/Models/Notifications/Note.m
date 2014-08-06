@@ -140,12 +140,13 @@
     if (noteBody) {
         NSString *noteTypeName = noteBody[@"template"];
 
-        if ([noteTypeName isEqualToString:@"single-line-list"])
+        if ([noteTypeName isEqualToString:@"single-line-list"]) {
             return WPNoteTemplateSingleLineList;
-        else if ([noteTypeName isEqualToString:@"multi-line-list"])
+        } else if ([noteTypeName isEqualToString:@"multi-line-list"]) {
             return WPNoteTemplateMultiLineList;
-        else if ([noteTypeName isEqualToString:@"big-badge"])
+        } else if ([noteTypeName isEqualToString:@"big-badge"]) {
             return WPNoteTemplateBigBadge;
+        }
     }
 
     return WPNoteTemplateUnknown;

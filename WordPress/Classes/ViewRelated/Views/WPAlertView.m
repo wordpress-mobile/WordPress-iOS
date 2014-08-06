@@ -42,8 +42,7 @@ CGFloat const WPAlertViewDefaultTextFieldLabelWidth = 118.0f;
 - (id)initWithFrame:(CGRect)frame andOverlayMode:(WPAlertViewOverlayMode)overlayMode
 {
     self = [super initWithFrame:frame];
-    if (self)
-    {
+    if (self) {
         _overlayMode = overlayMode;
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
@@ -412,8 +411,9 @@ CGFloat const WPAlertViewDefaultTextFieldLabelWidth = 118.0f;
     BOOL touchedButton1 = CGRectContainsPoint(button1Frame, touchPoint);
     BOOL touchedButton2 = CGRectContainsPoint(button2Frame, touchPoint);
 
-    if (touchedButton1 || touchedButton2)
+    if (touchedButton1 || touchedButton2) {
         return;
+    }
 
     if ([self.firstTextField isFirstResponder]) {
         [self.firstTextField resignFirstResponder];

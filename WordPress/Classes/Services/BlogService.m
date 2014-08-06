@@ -465,8 +465,9 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 - (CategoriesHandler)categoriesHandlerWithBlog:(Blog *)blog completionHandler:(void (^)(void))completion
 {
     return ^void(NSArray *categories) {
-        if ([blog isDeleted] || blog.managedObjectContext == nil)
+        if ([blog isDeleted] || blog.managedObjectContext == nil) {
             return;
+        }
 
         [self.managedObjectContext performBlockAndWait:^{
             CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
@@ -494,8 +495,9 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 - (OptionsHandler)optionsHandlerWithBlog:(Blog *)blog completionHandler:(void (^)(void))completion
 {
     return ^void(NSDictionary *options) {
-        if ([blog isDeleted] || blog.managedObjectContext == nil)
+        if ([blog isDeleted] || blog.managedObjectContext == nil) {
             return;
+        }
 
         blog.options = [NSDictionary dictionaryWithDictionary:options];
         NSString *minimumVersion = @"3.6";
@@ -522,8 +524,9 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 - (PagesHandler)pagesHandlerWithBlog:(Blog *)blog loadMore:(BOOL)more syncCount:(NSUInteger)syncCount completionHandler:(void (^)(void))completion
 {
     return ^void(NSArray *pages) {
-        if ([blog isDeleted] || blog.managedObjectContext == nil)
+        if ([blog isDeleted] || blog.managedObjectContext == nil) {
             return;
+        }
 
         // If we asked for more and we got what we had, there are no more pages to load
         if (more && ([pages count] <= syncCount)) {
@@ -546,8 +549,9 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 - (PostFormatsHandler)postFormatsHandlerWithBlog:(Blog *)blog completionHandler:(void (^)(void))completion
 {
     return ^void(NSDictionary *postFormats) {
-        if ([blog isDeleted] || blog.managedObjectContext == nil)
+        if ([blog isDeleted] || blog.managedObjectContext == nil) {
             return;
+        }
 
         NSDictionary *respDict = postFormats;
         if ([respDict objectForKey:@"supported"] && [[respDict objectForKey:@"supported"] isKindOfClass:[NSArray class]]) {
@@ -575,8 +579,9 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 - (PostsHandler)postsHandlerWithBlog:(Blog *)blog loadMore:(BOOL)more completionHandler:(void (^)(void))completion
 {
     return ^void(NSArray *posts) {
-        if ([blog isDeleted] || blog.managedObjectContext == nil)
+        if ([blog isDeleted] || blog.managedObjectContext == nil) {
             return;
+        }
 
         // If we asked for more and we got what we had, there are no more posts to load
         if (more && ([posts count] <= [blog.posts count])) {

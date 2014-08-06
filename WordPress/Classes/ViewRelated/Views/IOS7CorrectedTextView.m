@@ -51,8 +51,7 @@
 {
     [super scrollRangeToVisible:range];
 
-    if (self.layoutManager.extraLineFragmentTextContainer != nil && self.selectedRange.location == range.location)
-    {
+    if (self.layoutManager.extraLineFragmentTextContainer != nil && self.selectedRange.location == range.location) {
         CGRect caretRect = [self caretRectForPosition:self.selectedTextRange.start];
         [self scrollRectToVisible:caretRect animated:YES];
     }

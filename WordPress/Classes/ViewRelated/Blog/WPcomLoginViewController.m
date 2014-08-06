@@ -74,8 +74,9 @@
     [headerView addSubview:logo];
     self.tableView.tableHeaderView = headerView;
 
-    if (IS_IPAD)
+    if (IS_IPAD) {
         self.tableView.backgroundView = nil;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -131,10 +132,8 @@
     if (indexPath.section == 1) {
         WPTableViewActivityCell *activityCell = nil;
         NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"WPTableViewActivityCell" owner:nil options:nil];
-        for(id currentObject in topLevelObjects)
-        {
-            if ([currentObject isKindOfClass:[WPTableViewActivityCell class]])
-            {
+        for(id currentObject in topLevelObjects) {
+            if ([currentObject isKindOfClass:[WPTableViewActivityCell class]]) {
                 activityCell = (WPTableViewActivityCell *)currentObject;
                 break;
             }
@@ -142,8 +141,7 @@
         if (isSigningIn) {
             [activityCell.spinner startAnimating];
             self.buttonText = NSLocalizedString(@"Signing In...", @"");
-        }
-        else {
+        } else {
             [activityCell.spinner stopAnimating];
             self.buttonText = NSLocalizedString(@"Sign In", @"");
         }
@@ -174,14 +172,15 @@
             loginCell.textField.returnKeyType = UIReturnKeyNext;
             loginCell.textField.tag = 0;
             loginCell.textField.delegate = self;
-            if ( self.predefinedUsername )
+            if ( self.predefinedUsername ) {
                 loginCell.textField.text = self.predefinedUsername;
-            if (isSigningIn)
+            }
+            if (isSigningIn) {
                 [loginCell.textField resignFirstResponder];
+            }
             [WPStyleGuide configureTableViewTextCell:loginCell];
             cell = loginCell;
-        }
-        else {
+        } else {
             if (passwordCell == nil) {
                 passwordCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault
                                                                reuseIdentifier:@"TextCell"];
@@ -192,8 +191,9 @@
             passwordCell.textField.secureTextEntry = YES;
             passwordCell.textField.tag = 1;
             passwordCell.textField.delegate = self;
-            if (isSigningIn)
+            if (isSigningIn) {
                 [passwordCell.textField resignFirstResponder];
+            }
             [WPStyleGuide configureTableViewTextCell:passwordCell];
             cell = passwordCell;
         }
@@ -264,8 +264,9 @@
         cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
         if (cell != nil) {
             nextField = (UITextField*)[cell viewWithTag:1];
-            if (nextField != nil)
+            if (nextField != nil) {
                 [nextField becomeFirstResponder];
+            }
         }
     } else if (textField.tag == 1) {
         [self signIn:self];

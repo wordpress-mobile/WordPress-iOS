@@ -949,8 +949,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
             }
             UIBarButtonItem *barButtonItem = self.navigationItem.rightBarButtonItems[1];
             [_addPopover presentPopoverFromBarButtonItem:barButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        }
-        else {
+        } else {
             [self.navigationController presentViewController:_picker animated:YES completion:nil];
         }
     }
@@ -1011,11 +1010,11 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         } else {
         [self performSelectorOnMainThread:@selector(processLibraryVideo) withObject:nil waitUntilDone:NO];
         }
-    }
-    else if ([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.image"]) {
+    } else if ([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.image"]) {
         UIImage *image = [info valueForKey:@"UIImagePickerControllerOriginalImage"];
-        if (picker.sourceType == UIImagePickerControllerSourceTypeCamera)
+        if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
             UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+        }
         _currentImage = image;
 
         //UIImagePickerControllerReferenceURL = "assets-library://asset/asset.JPG?id=1000000050&ext=JPG").
@@ -1068,8 +1067,9 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
         [nf setNumberStyle:NSNumberFormatterDecimalStyle];
         NSNumber *resizePreference = [NSNumber numberWithInt:-1];
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil) {
             resizePreference = [nf numberFromString:[[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"]];
+        }
         BOOL showResizeActionSheet = NO;
         switch ([resizePreference intValue]) {
             case 0:
@@ -1133,9 +1133,9 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }
 
     if (videoURL != nil) {
-        if (IS_IPAD)
+        if (IS_IPAD) {
             [_addPopover dismissPopoverAnimated:YES];
-        else {
+        } else {
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         }
 
@@ -1305,8 +1305,9 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         // Copy the video from temp to blog directory
         NSError *error = nil;
         if ((attributes = [fileManager attributesOfItemAtPath:videoURL error:nil]) != nil) {
-            if ([fileManager isReadableFileAtPath:videoURL])
+            if ([fileManager isReadableFileAtPath:videoURL]) {
                 copySuccess = [fileManager copyItemAtPath:videoURL toPath:filepath error:&error];
+            }
         }
     }
 
@@ -1337,8 +1338,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         } failure:^(NSError *error) {
             [WPError showAlertWithTitle:NSLocalizedString(@"Upload failed", nil) message:error.localizedDescription];
         }];
-    }
-    else {
+    } else {
         [WPError showAlertWithTitle:NSLocalizedString(@"Error Copying Video", nil) message:NSLocalizedString(@"There was an error copying the video for upload. Please try again.", nil)];
     }
 }
@@ -1428,8 +1428,9 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     NSString *videoPath = videoUrl;
     NSArray *matches = [regEx matchesInString:videoUrl options:0 range:NSMakeRange(0, [videoUrl length])];
     for (NSTextCheckingResult *result in matches) {
-        if ([result numberOfRanges] < 2)
+        if ([result numberOfRanges] < 2) {
             continue;
+        }
         NSRange videoUrlRange = [result rangeAtIndex:1];
         videoPath = [videoUrl substringWithRange:videoUrlRange];
     }
@@ -1470,12 +1471,10 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     if (resize == MediaResizeSmall &&
         (_currentImage.size.width > smallSize.width  || _currentImage.size.height > smallSize.height)) {
         resizeToBounds = smallSize;
-    }
-    else if (resize == MediaResizeMedium &&
+    } else if (resize == MediaResizeMedium &&
                (_currentImage.size.width > mediumSize.width || _currentImage.size.height > mediumSize.height)) {
         resizeToBounds = mediumSize;
-    }
-    else if (resize == MediaResizeLarge &&
+    } else if (resize == MediaResizeLarge &&
                (_currentImage.size.width > largeSize.width || _currentImage.size.height > largeSize.height)) {
         resizeToBounds = largeSize;
     }

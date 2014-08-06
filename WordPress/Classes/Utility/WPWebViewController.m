@@ -35,8 +35,9 @@
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
 
-    if (IS_IPHONE)
+    if (IS_IPHONE) {
         self.navigationItem.title = NSLocalizedString(@"Loading...", @"");
+    }
 
     [self setLoading:NO];
     self.backButton.enabled = NO;
@@ -173,8 +174,7 @@
             } else {
                 [self.iPadNavBar.topItem setTitle:[self getDocumentTitle]];
             }
-        }
-        else {
+        } else {
             self.title = [self getDocumentTitle];
         }
     }
@@ -263,10 +263,11 @@
                                   [self.password stringByUrlEncoding],
                                   [[self.url absoluteString] stringByUrlEncoding]];
 
-        if ( self.wpLoginURL != nil )
+        if ( self.wpLoginURL != nil ) {
             [request setURL: self.wpLoginURL];
-        else
+        } else {
              [request setURL:[[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"]];
+         }
 
         [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
         [request setValue:[NSString stringWithFormat:@"%d", [request_body length]] forHTTPHeaderField:@"Content-Length"];
@@ -350,11 +351,14 @@
 - (void)goBack {
     if (self.detailContent != nil) {
         NSString *prevItemAvailable = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.show_prev_item();"];
-        if ( [prevItemAvailable rangeOfString:@"true"].location == NSNotFound )
+        if ( [prevItemAvailable rangeOfString:@"true"].location == NSNotFound ) {
             self.backButton.enabled = NO;
-        else
+        } else {
             self.backButton.enabled = YES;
+        }
+
         self.forwardButton.enabled = YES;
+
         if (IS_IPAD) {
             if (self.navigationController.navigationBarHidden == NO) {
                 self.title = [self getDocumentTitle];
@@ -413,8 +417,9 @@
         [activityViewController setValue:title forKey:@"subject"];
     }
     activityViewController.completionHandler = ^(NSString *activityType, BOOL completed) {
-        if (!completed)
+        if (!completed) {
             return;
+        }
         [WPActivityDefaults trackActivityType:activityType];
     };
 

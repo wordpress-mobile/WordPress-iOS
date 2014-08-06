@@ -85,8 +85,9 @@
     }
     self.wp_slug        = [postInfo objectForKey:@"wp_slug"];
     self.post_thumbnail = [[postInfo objectForKey:@"wp_post_thumbnail"] numericValue];
-    if (self.post_thumbnail != nil && [self.post_thumbnail intValue] == 0)
+    if (self.post_thumbnail != nil && [self.post_thumbnail intValue] == 0) {
         self.post_thumbnail = nil;
+    }
     self.postFormat        = [postInfo objectForKey:@"wp_post_format"];
 
     self.remoteStatus   = AbstractPostRemoteStatusSync;
@@ -193,8 +194,7 @@
         return NO;
     }
 
-    if (([self.tags length] != [original.tags length])
-        && (![self.tags isEqual:original.tags])) {
+    if (([self.tags length] != [original.tags length]) && (![self.tags isEqual:original.tags])) {
         return YES;
     }
 
@@ -216,8 +216,7 @@
 
     Post *original = (Post *)self.original;
 
-    if ((self.postFormat != original.postFormat)
-        && (![self.postFormat isEqual:original.postFormat])) {
+    if ((self.postFormat != original.postFormat) && (![self.postFormat isEqual:original.postFormat])) {
         return YES;
     }
 
@@ -373,8 +372,9 @@
         [postParams setObject:customFields forKey:@"custom_fields"];
     }
 
-    if (self.status == nil)
+    if (self.status == nil) {
         self.status = @"publish";
+    }
     [postParams setObject:self.status forKey:@"post_status"];
 
     return postParams;
@@ -420,8 +420,9 @@
                                                                                    }
 
                                                                                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                                                                   if ([self isDeleted] || self.managedObjectContext == nil)
+                                                                                   if ([self isDeleted] || self.managedObjectContext == nil) {
                                                                                        return;
+                                                                                   }
 
                                                                                    self.remoteStatus = AbstractPostRemoteStatusFailed;
                                                                                    if (failure) failure(error);
@@ -436,8 +437,9 @@
     [self.blog.api callMethod:@"metaWeblog.getPost"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                          if ([self isDeleted] || self.managedObjectContext == nil)
+                          if ([self isDeleted] || self.managedObjectContext == nil) {
                               return;
+                          }
 
                           [self updateFromDictionary:responseObject];
                           [self save];
@@ -473,15 +475,17 @@
     [self.blog.api callMethod:@"metaWeblog.editPost"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                          if ([self isDeleted] || self.managedObjectContext == nil)
+                          if ([self isDeleted] || self.managedObjectContext == nil) {
                               return;
+                          }
 
                           self.remoteStatus = AbstractPostRemoteStatusSync;
                           [self getPostWithSuccess:success failure:failure];
                           [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploaded" object:self];
                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                          if ([self isDeleted] || self.managedObjectContext == nil)
+                          if ([self isDeleted] || self.managedObjectContext == nil) {
                               return;
+                          }
 
                           self.remoteStatus = AbstractPostRemoteStatusFailed;
                           if (failure) failure(error);

@@ -21,8 +21,9 @@
 
 - (void)addSuperPropertyToFlag:(NSString *)property
 {
-    if ([_superPropertiesToFlag containsObject:property])
+    if ([_superPropertiesToFlag containsObject:property]) {
         return;
+    }
 
     [_superPropertiesToFlag addObject:property];
 }

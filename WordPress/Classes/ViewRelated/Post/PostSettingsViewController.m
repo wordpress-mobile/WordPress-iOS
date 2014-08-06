@@ -497,6 +497,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         } else {
             cell.detailTextLabel.text = self.apost.statusTitle;
         }
+
         if ([self.apost.status isEqualToString:@"private"]) {
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         } else {

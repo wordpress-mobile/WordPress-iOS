@@ -644,8 +644,9 @@ static NSUInteger const AlertDiscardChanges = 500;
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     [textView textViewDidBeginEditing:textView];
-    if (!IS_IPAD)
+    if (!IS_IPAD) {
         _editFieldsScrollView.contentOffset = CGPointMake(0, CGRectGetMinY(textView.frame));
+    }
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
@@ -665,8 +666,7 @@ static NSUInteger const AlertDiscardChanges = 500;
     CGRect innerFrame = _mediaImageview.frame;
     CGRect scrollerBounds = pScrollView.bounds;
 
-    if ((innerFrame.size.width < scrollerBounds.size.width) || (innerFrame.size.height < scrollerBounds.size.height))
-    {
+    if ((innerFrame.size.width < scrollerBounds.size.width) || (innerFrame.size.height < scrollerBounds.size.height)) {
         CGFloat tempx = _mediaImageview.center.x - ( scrollerBounds.size.width / 2 );
         CGFloat tempy = _mediaImageview.center.y - ( scrollerBounds.size.height / 2 );
         CGPoint myScrollViewOffset = CGPointMake( tempx, tempy);
@@ -675,13 +675,11 @@ static NSUInteger const AlertDiscardChanges = 500;
     }
 
     UIEdgeInsets anEdgeInset = { 0, 0, 0, 0};
-    if (scrollerBounds.size.width > innerFrame.size.width)
-    {
+    if (scrollerBounds.size.width > innerFrame.size.width) {
         anEdgeInset.left = (scrollerBounds.size.width - innerFrame.size.width) / 2;
         anEdgeInset.right = -anEdgeInset.left;
     }
-    if (scrollerBounds.size.height > innerFrame.size.height)
-    {
+    if (scrollerBounds.size.height > innerFrame.size.height) {
         anEdgeInset.top = (scrollerBounds.size.height - innerFrame.size.height) / 2;
         anEdgeInset.bottom = -anEdgeInset.top;
     }

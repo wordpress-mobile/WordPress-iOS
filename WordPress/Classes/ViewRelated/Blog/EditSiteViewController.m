@@ -199,8 +199,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
             [WPStyleGuide configureTableViewTextCell:cell];
 
             return cell;
-        }
-        else if (indexPath.row == 1) {
+        } else if (indexPath.row == 1) {
             UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
 
             cell.textLabel.text = NSLocalizedString(@"Username", @"Label for entering username in the username field");
@@ -218,8 +217,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
             [WPStyleGuide configureTableViewTextCell:cell];
 
             return cell;
-        }
-        else if (indexPath.row == 2) {
+        } else if (indexPath.row == 2) {
             UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
 
             cell.textLabel.text = NSLocalizedString(@"Password", @"Label for entering password in password field");

@@ -158,8 +158,9 @@
     NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"http(s?)://" options:NSRegularExpressionCaseInsensitive error:&error];
     NSString *result = [NSString stringWithFormat:@"%@", [protocol stringByReplacingMatchesInString:[NSURL IDNDecodedHostname:url] options:0 range:NSMakeRange(0, [[NSURL IDNDecodedHostname:url] length]) withTemplate:@""]];
 
-    if ([result hasSuffix:@"/"])
+    if ([result hasSuffix:@"/"]) {
         result = [result substringToIndex:[result length] - 1];
+    }
 
     return result;
 }
