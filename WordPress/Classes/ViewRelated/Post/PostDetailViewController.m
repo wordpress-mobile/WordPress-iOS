@@ -1,15 +1,17 @@
 #import "PostDetailViewController.h"
+#import <WordPress-iOS-Shared/WPStyleGuide.h>
+#import <WordPress-iOS-Shared/NSString+Util.h>
 #import "AbstractPost.h"
 #import "Post.h"
 #import "EditPostViewController.h"
 #import "NSString+Helpers.h"
-#import <WordPress-iOS-Shared/WPStyleGuide.h>
-#import <WordPress-iOS-Shared/NSString+Util.h>
+#import "EditPostTransition.h"
+
 
 
 NSString *const WPPostDetailNavigationRestorationID = @"WPPostDetailNavigationRestorationID";
 
-@interface PostDetailViewController()
+@interface PostDetailViewController() <UIViewControllerTransitioningDelegate>
 
 @property (nonatomic, strong) AbstractPost *aPost;
 @property (weak, nonatomic) IBOutlet UIWebView *previewWebView;
@@ -87,10 +89,27 @@ NSString *const WPPostDetailNavigationRestorationID = @"WPPostDetailNavigationRe
     EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:self.aPost];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
-    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    navController.modalPresentationStyle = UIModalPresentationCustom;
+    navController.transitioningDelegate = self;
     navController.restorationIdentifier = WPEditorNavigationRestorationID;
     navController.restorationClass = [EditPostViewController class];
     [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
+}
+
+#pragma mark - UIViewControllerTransitioningDelegate
+
+- (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
+{
+    EditPostTransition *transition = [[EditPostTransition alloc] init];
+    transition.mode = EditPostTransitionModePresent;
+    return transition;
+}
+
+- (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+{
+    EditPostTransition *transition = [[EditPostTransition alloc] init];
+    transition.mode = EditPostTransitionModeDismiss;
+    return transition;
 }
 
 #pragma mark - Instance Methods
