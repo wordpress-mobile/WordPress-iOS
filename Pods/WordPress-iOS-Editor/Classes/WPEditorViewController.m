@@ -1349,7 +1349,7 @@ NSInteger const WPLinkAlertViewTag = 92;
             [self setHtml:@""];
         }
         
-        if ([self shouldNavbarWhileTyping]) {
+        if ([self shouldHideNavbarWhileTyping]) {
             [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
             [self.navigationController setNavigationBarHidden:YES animated:YES];
         }
@@ -1381,7 +1381,6 @@ NSInteger const WPLinkAlertViewTag = 92;
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
         [self.navigationController setNavigationBarHidden:NO animated:YES];
         [self.navigationController setToolbarHidden:NO animated:NO];
-        [self.navigationController setToolbarHidden:NO animated:NO];
         
 		[UIView animateWithDuration:duration delay:0 options:animationOptions animations:^{
             CGRect frame = self.toolbarHolder.frame;
@@ -1409,7 +1408,7 @@ NSInteger const WPLinkAlertViewTag = 92;
 	}
 }
 
-- (BOOL)shouldNavbarWhileTyping
+- (BOOL)shouldHideNavbarWhileTyping
 {
     /*
      Never hide for the iPad.
@@ -1418,12 +1417,6 @@ NSInteger const WPLinkAlertViewTag = 92;
     if (IS_IPAD) {
         return NO;
     }
-    
-    BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
-    if (!isLandscape) {
-        return NO;
-    }
-    
     return YES;
 }
 
