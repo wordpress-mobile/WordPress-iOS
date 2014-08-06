@@ -1,6 +1,7 @@
 #import "WPTableViewControllerSubclass.h"
 #import "PostsViewController.h"
 #import "EditPostViewController.h"
+#import "PostDetailViewController.h"
 #import "NewPostTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
@@ -152,7 +153,7 @@
 		return;
 	}
 
-    [self editPost:post];
+    [self viewPost:post];    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];    
 }
 
@@ -197,6 +198,7 @@
     }];
 }
 
+
 - (void)showAddPostView {
     [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"posts_view" }];
 
@@ -205,7 +207,8 @@
     [self editPost:post];
 }
 
-- (void)editPost:(AbstractPost *)apost {
+- (void)editPost:(AbstractPost *)apost
+{
     EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:apost];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
@@ -213,6 +216,13 @@
     navController.restorationIdentifier = WPEditorNavigationRestorationID;
     navController.restorationClass = [EditPostViewController class];
     [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)viewPost:(AbstractPost *)apost
+{
+    PostDetailViewController *postDetailViewController = [[PostDetailViewController alloc] initWithPost:apost];
+    postDetailViewController.restorationIdentifier = WPPostDetailNavigationRestorationID;
+    [self.navigationController pushViewController:postDetailViewController animated:YES];
 }
 
 - (void)setBlog:(Blog *)blog {
