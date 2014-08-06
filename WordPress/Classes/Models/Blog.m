@@ -199,7 +199,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
     return pendingComments;
 }
 
--(NSArray *)sortedCategories
+- (NSArray *)sortedCategories
 {
     NSSortDescriptor *sortNameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"categoryName"
                                                                         ascending:YES

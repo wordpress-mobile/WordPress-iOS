@@ -86,7 +86,7 @@
     return self.blog.isSyncingPages;
 }
 
--(NSDate *) lastSyncDate {
+- (NSDate *) lastSyncDate {
     return self.blog.lastPagesSync;
 }
 
