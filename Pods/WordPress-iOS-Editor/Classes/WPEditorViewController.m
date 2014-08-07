@@ -53,7 +53,8 @@ NSInteger const WPLinkAlertViewTag = 92;
     //Only enable a few buttons by default
     self.enabledToolbarItems = ZSSRichTextEditorToolbarBold | ZSSRichTextEditorToolbarItalic |
                                ZSSRichTextEditorToolbarUnderline | ZSSRichTextEditorToolbarBlockQuote |
-                               ZSSRichTextEditorToolbarInsertLink | ZSSRichTextEditorToolbarUnorderedList;
+                               ZSSRichTextEditorToolbarInsertLink | ZSSRichTextEditorToolbarUnorderedList |
+                               ZSSRichTextEditorToolbarViewSource | ZSSRichTextEditorToolbarRemoveLink;
     
     [self buildTextViews];
     [self buildToolbar];
