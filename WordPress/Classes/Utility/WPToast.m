@@ -49,7 +49,8 @@ const CGFloat WPToastAnimationVisibleDuration = 0.35f;
     [UIView commitAnimations];
 }
 
-- (void)animationDidStop:(NSString*)animationID finished:(BOOL)finished context:(void *)context {
+- (void)animationDidStop:(NSString*)animationID finished:(BOOL)finished context:(void *)context
+{
     UIViewController *parentViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
 
     UIView *toastView = (__bridge UIView *)context;

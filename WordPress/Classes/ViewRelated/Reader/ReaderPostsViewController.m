@@ -481,7 +481,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 #pragma mark - WPTableViewSublass methods
 
-- (void)configureNoResultsView {
+- (void)configureNoResultsView
+{
     if (!self.isViewLoaded) {
         return;
     }
@@ -819,7 +820,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 #pragma mark - TableView Methods
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     UITableViewCell *cell;
     ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
     if ([post featuredImageURLForDisplay]) {

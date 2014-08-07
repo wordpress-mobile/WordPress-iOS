@@ -37,15 +37,18 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 #pragma mark - Required Delegate Methods
 
-- (NSManagedObjectContext *)managedObjectContext {
+- (NSManagedObjectContext *)managedObjectContext
+{
     return [self.delegate managedObjectContext];
 }
 
-- (NSString *)entityName {
+- (NSString *)entityName
+{
     return [self.delegate entityName];
 }
 
-- (NSFetchRequest *)fetchRequest {
+- (NSFetchRequest *)fetchRequest
+{
     return [self.delegate fetchRequest];
 }
 
@@ -61,7 +64,8 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 #pragma mark - Optional Delegate Methods
 
-- (NSString *)sectionNameKeyPath {
+- (NSString *)sectionNameKeyPath
+{
     if ([self.delegate respondsToSelector:@selector(sectionNameKeyPath)]) {
         return [self.delegate sectionNameKeyPath];
     }

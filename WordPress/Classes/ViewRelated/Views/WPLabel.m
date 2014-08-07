@@ -4,7 +4,8 @@
 
 @synthesize verticalAlignment;
 
-- (id)initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(CGRect)frame
+{
     if (self = [super initWithFrame:frame]) {
         verticalAlignment = VerticalAlignmentTop;
     }
@@ -12,12 +13,14 @@
     return self;
 }
 
-- (void)setVerticalAlignment:(VerticalAlignment)value {
+- (void)setVerticalAlignment:(VerticalAlignment)value
+{
     verticalAlignment = value;
     [self setNeedsDisplay];
 }
 
-- (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(NSInteger)numberOfLines {
+- (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(NSInteger)numberOfLines
+{
     CGRect rect = [super textRectForBounds:bounds limitedToNumberOfLines:numberOfLines];
     CGRect result;
 
@@ -36,7 +39,8 @@
     return result;
 }
 
-- (void)drawTextInRect:(CGRect)rect {
+- (void)drawTextInRect:(CGRect)rect
+{
     CGRect r = [self textRectForBounds:rect limitedToNumberOfLines:self.numberOfLines];
     [super drawTextInRect:r];
 }

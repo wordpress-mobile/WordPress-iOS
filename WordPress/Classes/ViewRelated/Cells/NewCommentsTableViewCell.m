@@ -4,7 +4,8 @@
 
 @implementation NewCommentsTableViewCell
 
-+ (BOOL)showGravatarImage {
++ (BOOL)showGravatarImage
+{
     return YES;
 }
 

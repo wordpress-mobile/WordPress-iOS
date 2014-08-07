@@ -2,7 +2,8 @@
 
 @implementation UILabel (SuggestSize)
 
-- (CGSize)suggestedSizeForWidth:(CGFloat)width {
+- (CGSize)suggestedSizeForWidth:(CGFloat)width
+{
     if (self.attributedText) {
         return [self suggestSizeForAttributedString:self.attributedText width:width];
     }
@@ -10,14 +11,16 @@
     return [self suggestSizeForString:self.text width:width];
 }
 
-- (CGSize)suggestSizeForAttributedString:(NSAttributedString *)string width:(CGFloat)width {
+- (CGSize)suggestSizeForAttributedString:(NSAttributedString *)string width:(CGFloat)width
+{
     if (!string) {
         return CGSizeZero;
     }
     return [string boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil].size;
 }
 
-- (CGSize)suggestSizeForString:(NSString *)string width:(CGFloat)width {
+- (CGSize)suggestSizeForString:(NSString *)string width:(CGFloat)width
+{
     if (!string) {
         return CGSizeZero;
     }

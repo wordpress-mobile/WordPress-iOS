@@ -16,7 +16,8 @@ static NSInteger WPPickerStartingWidth = 320.0f;
 
 @implementation WPPickerView
 
-- (id)initWithDataSource:(NSArray *)dataSource andStartingIndexes:(NSIndexPath *)startingIndexes {
+- (id)initWithDataSource:(NSArray *)dataSource andStartingIndexes:(NSIndexPath *)startingIndexes
+{
     self = [self init];
     if (self) {
         if (!startingIndexes) {
@@ -32,7 +33,8 @@ static NSInteger WPPickerStartingWidth = 320.0f;
     return self;
 }
 
-- (id)initWithDate:(NSDate *)date {
+- (id)initWithDate:(NSDate *)date
+{
     self = [self init];
     if (self) {
         if (!date) {
@@ -44,7 +46,8 @@ static NSInteger WPPickerStartingWidth = 320.0f;
     return self;
 }
 
-- (void)configureView {
+- (void)configureView
+{
     [self configureToolbar];
 
     UIView *picker = [self viewForPicker];
@@ -56,7 +59,8 @@ static NSInteger WPPickerStartingWidth = 320.0f;
     [self addSubview:self.toolbar];
 }
 
-- (void)configureToolbar {
+- (void)configureToolbar
+{
     self.toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, WPPickerStartingWidth, WPPickerToolBarHeight)];
     self.toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 
@@ -85,7 +89,8 @@ static NSInteger WPPickerStartingWidth = 320.0f;
 
 #pragma mark - Instance Methods
 
-- (NSArray *)buttonsForToolbar {
+- (NSArray *)buttonsForToolbar
+{
     NSString *title = NSLocalizedString(@"Reset", @"Title of the reset button");
     UIBarButtonItem *resetButton = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(reset)];
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(finished)];
@@ -93,14 +98,16 @@ static NSInteger WPPickerStartingWidth = 320.0f;
     return @[resetButton, doneButton];
 }
 
-- (UIView *)viewForPicker {
+- (UIView *)viewForPicker
+{
     if ([self isDateMode]) {
         return self.datePickerView;
     }
     return self.pickerView;
 }
 
-- (id)currentValue {
+- (id)currentValue
+{
     if ([self isDateMode]) {
         return self.datePickerView.date;
     }
@@ -112,24 +119,28 @@ static NSInteger WPPickerStartingWidth = 320.0f;
     return path;
 }
 
-- (id)startingValue {
+- (id)startingValue
+{
     if ([self isDateMode]) {
         return self.startingDate;
     }
     return self.startingIndexes;
 }
 
-- (void)pickerValueChanged {
+- (void)pickerValueChanged
+{
     if (self.delegate && [self.delegate respondsToSelector:@selector(pickerView:didChangeValue:)]) {
         [self.delegate pickerView:self didChangeValue:[self currentValue]];
     }
 }
 
-- (BOOL)isDateMode {
+- (BOOL)isDateMode
+{
     return (self.startingDate != nil);
 }
 
-- (void)reset {
+- (void)reset
+{
     if ([self isDateMode]) {
         [self resetDatePicker];
     } else {
@@ -137,7 +148,8 @@ static NSInteger WPPickerStartingWidth = 320.0f;
     }
 }
 
-- (void)finished {
+- (void)finished
+{
     if (self.delegate && [self.delegate respondsToSelector:@selector(pickerView:didFinishWithValue:)]) {
         [self.delegate pickerView:self didFinishWithValue:[self currentValue]];
     }
@@ -145,7 +157,8 @@ static NSInteger WPPickerStartingWidth = 320.0f;
 
 #pragma mark - Date Mode Methods
 
-- (UIDatePicker *)datePickerView {
+- (UIDatePicker *)datePickerView
+{
     if (!_datePickerView) {
         UIDatePicker *picker = [[UIDatePicker alloc] init];
         picker.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -158,7 +171,8 @@ static NSInteger WPPickerStartingWidth = 320.0f;
     return _datePickerView;
 }
 
-- (void)resetDatePicker {
+- (void)resetDatePicker
+{
     if ([self.datePickerView.date isEqualToDate:self.startingDate]) {
         return;
     }
@@ -168,7 +182,8 @@ static NSInteger WPPickerStartingWidth = 320.0f;
 
 #pragma mark - Picker Mode Methods
 
-- (UIPickerView *)pickerView {
+- (UIPickerView *)pickerView
+{
     if (!_pickerView) {
         UIPickerView *picker = [[UIPickerView alloc] init];
         picker.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -181,7 +196,8 @@ static NSInteger WPPickerStartingWidth = 320.0f;
     return _pickerView;
 }
 
-- (BOOL)setPickerStartingIndexes {
+- (BOOL)setPickerStartingIndexes
+{
     BOOL changed = NO;
 
     for (NSUInteger i = 0; i < [self.startingIndexes length]; i++) {
@@ -195,11 +211,13 @@ static NSInteger WPPickerStartingWidth = 320.0f;
     return changed;
 }
 
-- (NSArray *)arrayForComponent:(NSInteger)component {
+- (NSArray *)arrayForComponent:(NSInteger)component
+{
     return [self.dataSource objectAtIndex:component];
 }
 
-- (void)resetPicker {
+- (void)resetPicker
+{
     BOOL changed = [self setPickerStartingIndexes];
     if (changed) {
         [self pickerValueChanged];
@@ -208,19 +226,23 @@ static NSInteger WPPickerStartingWidth = 320.0f;
 
 #pragma mark - UIPickerView Delegate Methods
 
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
     return [self.dataSource count];
 }
 
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
     return [[self arrayForComponent:component] count];
 }
 
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
     return [[self arrayForComponent:component] objectAtIndex:row];
 }
 
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
     [self pickerValueChanged];
 }
 

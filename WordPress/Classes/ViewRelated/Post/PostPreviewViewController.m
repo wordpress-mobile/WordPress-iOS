@@ -18,13 +18,15 @@
 #pragma mark -
 #pragma mark Lifecycle Methods
 
-- (void)dealloc {
+- (void)dealloc
+{
     [[WordPressAppDelegate sharedWordPressApplicationDelegate] useAppUserAgent];
     [self.webView stopLoading];
     self.webView.delegate = nil;
 }
 
-- (instancetype)initWithPost:(AbstractPost *)aPost {
+- (instancetype)initWithPost:(AbstractPost *)aPost
+{
     self = [super init];
     if (self) {
         self.apost = aPost;
@@ -33,25 +35,29 @@
     return self;
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning];
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [self setupWebView];
     [self setupLoadingView];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     [[WordPressAppDelegate sharedWordPressApplicationDelegate] useDefaultUserAgent];
     [self refreshWebView];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     [super viewWillDisappear:animated];
     [[WordPressAppDelegate sharedWordPressApplicationDelegate] useAppUserAgent];
     [self.webView stopLoading];
@@ -60,7 +66,8 @@
 #pragma mark -
 #pragma mark Instance Methods
 
-- (void)setupWebView {
+- (void)setupWebView
+{
     if (!self.webView) {
         self.webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
         self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -69,7 +76,8 @@
     [self.view addSubview:self.webView];
 }
 
-- (void)setupLoadingView {
+- (void)setupLoadingView
+{
     if (!self.loadingView) {
 
         CGRect frame = self.view.frame;
@@ -98,7 +106,8 @@
     [self.view addSubview:self.loadingView];
 }
 
-- (Post *)post {
+- (Post *)post
+{
     if ([self.apost isKindOfClass:[Post class]]) {
         return (Post *)self.apost;
     }
@@ -106,7 +115,8 @@
     return nil;
 }
 
-- (NSString *)buildSimplePreview {
+- (NSString *)buildSimplePreview
+{
     NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
     NSString *fpath = [NSString stringWithFormat:@"%@/defaultPostTemplate.html", resourcePath];
     NSString *str = [NSString stringWithContentsOfFile:fpath encoding:NSUTF8StringEncoding error:nil];
@@ -155,7 +165,8 @@
     return str;
 }
 
-- (void)showSimplePreviewWithMessage:(NSString *)message {
+- (void)showSimplePreviewWithMessage:(NSString *)message
+{
     DDLogMethod();
     NSString *previewPageHTML = [self buildSimplePreview];
     if (message) {
@@ -164,11 +175,13 @@
     [self.webView loadHTMLString:previewPageHTML baseURL:nil];
 }
 
-- (void)showSimplePreview {
+- (void)showSimplePreview
+{
     [self showSimplePreviewWithMessage:nil];
 }
 
-- (void)showRealPreview {
+- (void)showRealPreview
+{
     BOOL needsLogin = NO;
     NSString *status = self.apost.original.status;
     NSDate *postGMTDate = self.apost.date_created_gmt;
@@ -222,7 +235,8 @@
 #pragma mark -
 #pragma mark Webkit View Delegate Methods
 
-- (void)refreshWebView {
+- (void)refreshWebView
+{
     BOOL edited = [self.apost hasChanged];
     self.loadingView.hidden = NO;
 
@@ -233,17 +247,20 @@
     }
 }
 
-- (void)webViewDidStartLoad:(UIWebView *)webView {
+- (void)webViewDidStartLoad:(UIWebView *)webView
+{
     DDLogMethod();
     self.loadingView.hidden = NO;
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)awebView {
+- (void)webViewDidFinishLoad:(UIWebView *)awebView
+{
     DDLogMethod();
     self.loadingView.hidden = YES;
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
     DDLogMethodParam(error);
     self.loadingView.hidden = YES;
 
@@ -254,7 +271,10 @@
     [self showSimplePreviewWithMessage:errorMessage];
 }
 
-- (BOOL)webView:(UIWebView *)awebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+- (BOOL)webView:(UIWebView *)awebView
+        shouldStartLoadWithRequest:(NSURLRequest *)request
+        navigationType:(UIWebViewNavigationType)navigationType
+{
     if ([[[request URL] query] isEqualToString:@"action=postpass"]) {
         // Password-protected post, user entered password
         return YES;
@@ -273,7 +293,8 @@
 
 #pragma mark -
 
-- (NSString *)stringReplacingNewlinesWithBR:(NSString *)surString {
+- (NSString *)stringReplacingNewlinesWithBR:(NSString *)surString
+{
     NSArray *comps = [surString componentsSeparatedByString:@"\n"];
     return [comps componentsJoinedByString:@"<br>"];
 }

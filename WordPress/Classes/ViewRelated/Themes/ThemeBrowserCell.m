@@ -52,12 +52,14 @@
     return self;
 }
 
-- (void)prepareForReuse {
+- (void)prepareForReuse
+{
     self.screenshot.image = nil;
     self.statusIcon.image = nil;
 }
 
-- (void)setTheme:(Theme *)theme {
+- (void)setTheme:(Theme *)theme
+{
     _theme = theme;
     self.title.text = _theme.name;
 
@@ -82,7 +84,11 @@
 @implementation WPImageSource (Theme)
 
 // Save the themeId to avoid the scenario where the cell has already been reused and the theme is now different
-- (void)downloadThemeScreenshotForURL:(NSURL *)url themeId:(NSString*)themeId success:(void (^)(UIImage *image, NSString *themeId))success failure:(void (^)(NSError *))failure {
+- (void)downloadThemeScreenshotForURL:(NSURL *)url
+                              themeId:(NSString*)themeId
+                              success:(void (^)(UIImage *image, NSString *themeId))success
+                              failure:(void (^)(NSError *))failure
+{
     [self downloadImageForURL:url withSuccess:^(UIImage *image) {
         success(image, themeId);
     } failure:failure];

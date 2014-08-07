@@ -14,7 +14,8 @@ const CGFloat GeoViewMinHeight = 130.0f;
 
 @implementation PostGeolocationView
 
-- (id)initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(CGRect)frame
+{
     self = [super initWithFrame:frame];
     if (self) {
         [self setupSubviews];
@@ -23,7 +24,8 @@ const CGFloat GeoViewMinHeight = 130.0f;
     return self;
 }
 
-- (void)setupSubviews {
+- (void)setupSubviews
+{
     self.mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.frame.size.width, self.frame.size.height)];
     self.mapView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
     [self addSubview:self.mapView];
@@ -40,7 +42,8 @@ const CGFloat GeoViewMinHeight = 130.0f;
     [self addSubview:self.addressLabel];
 }
 
-- (void)layoutSubviews {
+- (void)layoutSubviews
+{
     [super layoutSubviews];
 
     CGFloat availableHeight = MAX(CGRectGetHeight(self.frame), GeoViewMinHeight);
@@ -55,12 +58,14 @@ const CGFloat GeoViewMinHeight = 130.0f;
     self.addressLabel.frame = CGRectMake(labelX, mapHeight, labelWidth, addressLabelHeight);
 }
 
-- (void)setAddress:(NSString *)address {
+- (void)setAddress:(NSString *)address
+{
     _address = address;
     [self updateAddressLabel];
 }
 
-- (void)setCoordinate:(Coordinate *)coordinate {
+- (void)setCoordinate:(Coordinate *)coordinate
+{
     if ([coordinate isEqual:_coordinate]) {
         return;
     }
@@ -82,7 +87,8 @@ const CGFloat GeoViewMinHeight = 130.0f;
     [self updateAddressLabel];
 }
 
-- (void)updateAddressLabel {
+- (void)updateAddressLabel
+{
     NSString *coordText = @"";
     CLLocationDegrees latitude = self.coordinate.latitude;
     CLLocationDegrees longitude = self.coordinate.longitude;
@@ -104,11 +110,13 @@ const CGFloat GeoViewMinHeight = 130.0f;
     self.addressLabel.text = [NSString stringWithFormat:@"%@\n%@", self.address, coordText];
 }
 
-- (BOOL)scrollEnabled {
+- (BOOL)scrollEnabled
+{
     return self.mapView.scrollEnabled;
 }
 
-- (void)setScrollEnabled:(BOOL)scrollEnabled {
+- (void)setScrollEnabled:(BOOL)scrollEnabled
+{
     self.mapView.scrollEnabled = scrollEnabled;
 }
 

@@ -7,17 +7,20 @@ static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
 
 @implementation BlogToJetpackAccount
 
-- (BOOL)beginEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
+- (BOOL)beginEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error
+{
     DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
     return YES;
 }
 
-- (BOOL)endEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
+- (BOOL)endEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error
+{
     DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
     return YES;
 }
 
-- (BOOL)performCustomValidationForEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
+- (BOOL)performCustomValidationForEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error
+{
     DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
     return YES;
 }
@@ -83,7 +86,8 @@ static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
 
 #pragma mark - Helpers
 
-- (BOOL)blogIsWpcom:(NSManagedObject *)blog {
+- (BOOL)blogIsWpcom:(NSManagedObject *)blog
+{
     NSDictionary *options = [blog valueForKey:@"options"];
     if ([options count] > 0) {
         NSDictionary *option = [options dictionaryForKey:@"wordpress.com"];
@@ -95,15 +99,18 @@ static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
     return (range.location != NSNotFound);
 }
 
-- (NSString *)jetpackDefaultsKeyForBlog:(NSManagedObject *)blog {
+- (NSString *)jetpackDefaultsKeyForBlog:(NSManagedObject *)blog
+{
     return [NSString stringWithFormat:@"%@%@", BlogJetpackKeychainPrefix, [blog valueForKey:@"url"]];
 }
 
-- (NSString *)jetpackUsernameForBlog:(NSManagedObject *)blog {
+- (NSString *)jetpackUsernameForBlog:(NSManagedObject *)blog
+{
     return [[NSUserDefaults standardUserDefaults] stringForKey:[self jetpackDefaultsKeyForBlog:blog]];
 }
 
-- (NSString *)jetpackPasswordForBlog:(NSManagedObject *)blog {
+- (NSString *)jetpackPasswordForBlog:(NSManagedObject *)blog
+{
     NSError *error = nil;
     return [SFHFKeychainUtils getPasswordForUsername:[self jetpackUsernameForBlog:blog] andServiceName:@"WordPress.com" error:&error];
 }

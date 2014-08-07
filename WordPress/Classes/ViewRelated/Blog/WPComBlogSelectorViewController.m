@@ -2,7 +2,8 @@
 
 @implementation WPComBlogSelectorViewController
 
-- (NSPredicate *)fetchRequestPredicate {
+- (NSPredicate *)fetchRequestPredicate
+{
     if ([self.tableView isEditing]) {
         return [NSPredicate predicateWithFormat:@"account.isWpcom = YES"];
     }

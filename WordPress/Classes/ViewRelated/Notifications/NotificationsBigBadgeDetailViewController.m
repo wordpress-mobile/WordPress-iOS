@@ -19,7 +19,8 @@
 
 @implementation NotificationsBigBadgeDetailViewController
 
-- (id)initWithNote:(Note *)note {
+- (id)initWithNote:(Note *)note
+{
     self = [super init];
     if (self) {
         _note = note;
@@ -108,7 +109,8 @@
 /**
  * Adds auto layout constraints to position views
  */
-- (void)addLayoutConstraints {
+- (void)addLayoutConstraints
+{
     // Match scrollView dimensions to the main view
     NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(_scrollView, _badgeImageView, _noteLabel);
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_scrollView]|" options:0 metrics:0 views:viewsDictionary]];
@@ -158,7 +160,8 @@
                                                              constant:0.0]];
 }
 
-- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame {
+- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame
+{
     NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:nil];
 
     NSURL *URL = [attributes objectForKey:DTLinkAttribute];
@@ -183,7 +186,8 @@
     return button;
 }
 
-- (void)linkAction:(id)sender {
+- (void)linkAction:(id)sender
+{
     if (![sender isKindOfClass:[DTLinkButton class]]) {
         return;
     }

@@ -63,7 +63,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     self.collectionView.delegate = nil;
 }
 
-- (id)initWithPost:(AbstractPost *)post {
+- (id)initWithPost:(AbstractPost *)post
+{
     self = [super init];
     if (self) {
         _post = post;
@@ -74,7 +75,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     return self;
 }
 
-- (id)initWithPost:(AbstractPost *)post selectingMediaForPost:(BOOL)selectingMediaForPost {
+- (id)initWithPost:(AbstractPost *)post selectingMediaForPost:(BOOL)selectingMediaForPost
+{
     self = [self initWithPost:post];
     if (self) {
         _selectingMediaForPost = selectingMediaForPost;
@@ -82,7 +84,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     return self;
 }
 
-- (id)initWithPost:(AbstractPost *)post selectingFeaturedImage:(BOOL)selectingFeaturedImage {
+- (id)initWithPost:(AbstractPost *)post selectingFeaturedImage:(BOOL)selectingFeaturedImage
+{
     self = [self initWithPost:post];
     if (self) {
         _selectingFeaturedImage = selectingFeaturedImage;
@@ -141,7 +144,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     [self checkVideoPressEnabled];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     [super viewWillDisappear:animated];
     if (_currentActionSheet) {
         [_currentActionSheet dismissWithClickedButtonIndex:_currentActionSheet.cancelButtonIndex animated:YES];
@@ -151,7 +155,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
 
     if ([self showAttachedMedia]) {
@@ -163,7 +168,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     [self applyFilterWithSearchText:_currentSearchText];
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
+- (void)viewDidDisappear:(BOOL)animated
+{
     [super viewDidDisappear:animated];
 
     // Save context for all thumbnails downloaded
@@ -179,7 +185,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     _selectedMedia = nil;
 }
 
-- (void)updateTitle {
+- (void)updateTitle
+{
     if ([self showAttachedMedia]) {
         self.title = NSLocalizedString(@"Post Media", @"");
     } else {
@@ -190,11 +197,13 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     self.title = [self.title stringByAppendingString:count];
 }
 
-- (BOOL)showAttachedMedia {
+- (BOOL)showAttachedMedia
+{
     return self.post && !_selectingFeaturedImage && !_selectingMediaForPost;
 }
 
-- (void)refresh {
+- (void)refresh
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
@@ -211,11 +220,13 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }];
 }
 
-- (void)setUploadButtonEnabled:(BOOL)enabled {
+- (void)setUploadButtonEnabled:(BOOL)enabled
+{
     ((UIButton*)[self.navigationItem.rightBarButtonItems[1] customView]).enabled = enabled;
 }
 
-- (NSFetchedResultsController *)resultsController {
+- (NSFetchedResultsController *)resultsController
+{
     if (!_resultsController) {
         NSManagedObjectContext *context = self.blog.managedObjectContext;
         NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Media class])];
@@ -232,7 +243,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     return _resultsController;
 }
 
-- (UIView *)loadingView {
+- (UIView *)loadingView
+{
     if (!_loadingView) {
         CGFloat side = 100.0f;
         WPLoadingView *loadingView = [[WPLoadingView alloc] initWithSide:side];
@@ -242,7 +254,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     return _loadingView;
 }
 
-- (NSDateFormatter *)dateFormatter {
+- (NSDateFormatter *)dateFormatter
+{
     if (_dateFormatter) {
         return _dateFormatter;
     }
@@ -252,7 +265,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     return _dateFormatter;
 }
 
-- (void)toggleNoMediaView:(BOOL)show {
+- (void)toggleNoMediaView:(BOOL)show
+{
     if (!show) {
         [_noMediaView removeFromSuperview];
     }
@@ -271,13 +285,15 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }
 }
 
-- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView {
+- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
+{
     [self addMediaButtonPressed];
 }
 
 #pragma mark - Setters
 
-- (void)setFilteredMedia:(NSArray *)filteredMedia {
+- (void)setFilteredMedia:(NSArray *)filteredMedia
+{
     _filteredMedia = filteredMedia;
 
     [self applyFilterForSelectedMedia];
@@ -290,7 +306,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 #pragma mark - MediaSearchFilterDelegate
 
-- (void)applyFilterForSelectedMedia {
+- (void)applyFilterForSelectedMedia
+{
     if (_selectedMedia.count > 0) {
         NSMutableArray *mediaToRemove = [NSMutableArray arrayWithArray:_allMedia];
         [mediaToRemove removeObjectsInArray:_filteredMedia];
@@ -300,7 +317,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }
 }
 
-- (void)applyFilterWithSearchText:(NSString *)searchText {
+- (void)applyFilterWithSearchText:(NSString *)searchText
+{
     if (!searchText) {
         [self clearSearchFilter];
         return;
@@ -311,7 +329,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     self.filteredMedia = [mediaToFilter filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.title CONTAINS[cd] %@ OR self.caption CONTAINS[cd] %@ OR self.desc CONTAINS[cd] %@", searchText, searchText, searchText]];
 }
 
-- (void)applyMonthFilterForMonth:(NSDate *)month {
+- (void)applyMonthFilterForMonth:(NSDate *)month
+{
     if (!month) {
         [self clearMonthFilter];
         return;
@@ -324,7 +343,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     self.filteredMedia = [mediaToFilter filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(creationDate >= %@) AND (creationDate <= %@)", month, filterMonthEnd]];
 }
 
-- (void)clearSearchFilter {
+- (void)clearSearchFilter
+{
     _currentSearchText = nil;
     self.filteredMedia = _allMedia;
     if (_currentFilterMonth) {
@@ -332,7 +352,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }
 }
 
-- (void)clearMonthFilter {
+- (void)clearMonthFilter
+{
     _currentFilterMonth = nil;
     [self.filterHeaderView resetFilters];
     self.filteredMedia = _allMedia;
@@ -341,7 +362,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }
 }
 
-- (NSArray *)possibleMonthsAndYears {
+- (NSArray *)possibleMonthsAndYears
+{
     if (_generatedMonthFilters) {
         return _generatedMonthFilters;
     }
@@ -358,11 +380,13 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     return _generatedMonthFilters;
 }
 
-- (void)clearGeneratedMonthFilters {
+- (void)clearGeneratedMonthFilters
+{
     _generatedMonthFilters = nil;
 }
 
-- (void)selectedMonthPickerIndex:(NSInteger)index {
+- (void)selectedMonthPickerIndex:(NSInteger)index
+{
     self.dateFormatter.dateFormat = @"MMMM yyyy";
     self.dateFormatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
     NSDate *filterMonthStart = [self.dateFormatter dateFromString:_generatedMonthFilters[index]];
@@ -371,19 +395,27 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 #pragma mark - CollectionViewDelegate/DataSource
 
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
     return [self showAttachedMedia] ? 1 : [self.resultsController sections].count;
 }
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
     return _filteredMedia.count;
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewLayout *)collectionViewLayout
+          referenceSizeForHeaderInSection:(NSInteger)section
+{
     return CGSizeMake(collectionView.frame.size.width, 44.0f);
 }
 
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView
+           viewForSupplementaryElementOfKind:(NSString *)kind
+                                 atIndexPath:(NSIndexPath *)indexPath
+{
     if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
         UICollectionReusableView *header = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"header" forIndexPath:indexPath];
         return header;
@@ -391,7 +423,9 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     return nil;
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
+                  cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
     MediaBrowserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:MediaCellIdentifier forIndexPath:indexPath];
     cell.hideCheckbox = _selectingFeaturedImage || _selectingMediaForPost;
     cell.media = self.filteredMedia[indexPath.item];
@@ -405,7 +439,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     return cell;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
     MediaBrowserCell *cell = (MediaBrowserCell*)[collectionView cellForItemAtIndexPath:indexPath];
     if (cell.media.remoteStatus == MediaRemoteStatusFailed) {
         cell.media.remoteStatus = MediaRemoteStatusPushing;
@@ -440,19 +475,31 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 #pragma mark - Collection view layout
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewLayout *)collectionViewLayout
+  sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
     return IS_IPAD ? CGSizeMake(200, 225) : CGSizeMake(145, 170);
 }
 
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+- (CGFloat)collectionView:(UICollectionView *)collectionView
+                   layout:(UICollectionViewLayout *)collectionViewLayout
+           minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+{
     return IS_IPAD ? 20.0f : 10.0f;
 }
 
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+- (CGFloat)collectionView:(UICollectionView *)collectionView
+                   layout:(UICollectionViewLayout *)collectionViewLayout
+           minimumLineSpacingForSectionAtIndex:(NSInteger)section
+{
     return IS_IPAD ? 20.0f : 10.0f;
 }
 
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
+                        layout:(UICollectionViewLayout *)collectionViewLayout
+        insetForSectionAtIndex:(NSInteger)section
+{
     BOOL isLandscape = UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]);
     CGFloat iPadInset = isLandscape ? 35.0f : 60.0f;
     if (IS_IPAD) {
@@ -463,7 +510,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 #pragma mark - MediaCellSelectionDelegate
 
-- (void)mediaCellSelected:(Media *)media {
+- (void)mediaCellSelected:(Media *)media
+{
     if (!_selectedMedia) {
         _selectedMedia = [NSMutableDictionary dictionary];
     }
@@ -477,7 +525,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     [self showMultiselectOptions];
 }
 
-- (void)mediaCellDeselected:(Media *)media {
+- (void)mediaCellDeselected:(Media *)media
+{
     if (media.mediaID) {
         [_selectedMedia removeObjectForKey:media.mediaID];
     }
@@ -486,7 +535,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 #pragma mark - Multiselect options
 
-- (IBAction)multiselectDeletePressed:(id)sender {
+- (IBAction)multiselectDeletePressed:(id)sender
+{
     NSString *message, *destructiveButtonTitle;
     if ([self showAttachedMedia]) {
         message = NSLocalizedString(@"Are you sure you wish to remove these items from the post?", nil);
@@ -499,12 +549,14 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     [confirmation show];
 }
 
-- (IBAction)multiselectDeselectAllPressed:(id)sender {
+- (IBAction)multiselectDeselectAllPressed:(id)sender
+{
     [_selectedMedia removeAllObjects];
     [self showMultiselectOptions];
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
     if (buttonIndex == 1) {
         // Remove items from post only, in attached media state
         if ([self showAttachedMedia]) {
@@ -558,7 +610,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }
 }
 
-- (void)showMultiselectOptions {
+- (void)showMultiselectOptions
+{
     if (_selectedMedia.count == 0) {
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             self.multiselectToolbar.frame = (CGRect) {
@@ -578,7 +631,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 #pragma mark - Refresh
 
-- (void)refreshControlTriggered:(UIRefreshControl*)refreshControl {
+- (void)refreshControlTriggered:(UIRefreshControl*)refreshControl
+{
     if (refreshControl.isRefreshing) {
         [self refresh];
     }
@@ -586,21 +640,28 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 #pragma mark - UIScrollViewDelegate
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
     _isScrollingFast = NO;
     [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(MediaBrowserCell *obj, NSUInteger idx, BOOL *stop) {
         [obj loadThumbnail];
     }];
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
     _isScrollingFast = fabsf(self.collectionView.contentOffset.y - _lastScrollOffset) > ScrollingVelocityThreshold;
     _lastScrollOffset = self.collectionView.contentOffset.y;
 }
 
 #pragma mark - FetchedResultsController
 
-- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath
+{
     _shouldUpdateFromContextChange = (type == NSFetchedResultsChangeDelete || type == NSFetchedResultsChangeInsert || type == NSFetchedResultsChangeMove);
     if (type == NSFetchedResultsChangeDelete || type == NSFetchedResultsChangeInsert) {
         [self clearGeneratedMonthFilters];
@@ -608,7 +669,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     _mediaInserted = (type == NSFetchedResultsChangeInsert);
 }
 
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
     // Apply the filters IFF we didn't insert. Having a filter selected for
     // a month other than the current, results in no visual for the upload
     if (_shouldUpdateFromContextChange) {
@@ -626,7 +688,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 #pragma mark - Add Media
 
-- (void)checkVideoPressEnabled {
+- (void)checkVideoPressEnabled
+{
     self.videoPressEnabled = self.blog.videoPressEnabled;
 
     // Check IFF the blog doesn't already have it enabled
@@ -646,16 +709,19 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }
 }
 
-- (BOOL)deviceSupportsVideo {
+- (BOOL)deviceSupportsVideo
+{
     return (([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) &&
             ([[UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera] containsObject:(NSString *)kUTTypeMovie]));
 }
 
-- (BOOL)deviceSupportsVideoAndVideoEnabled {
+- (BOOL)deviceSupportsVideoAndVideoEnabled
+{
     return ([self deviceSupportsVideo] && (self.videoPressEnabled || !self.blog.isWPcom));
 }
 
-- (IBAction)addMediaButtonPressed {
+- (IBAction)addMediaButtonPressed
+{
     if ([self showAttachedMedia]) {
         MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:self.post selectingMediaForPost:YES];
         [self.navigationController pushViewController:vc animated:YES];
@@ -691,7 +757,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
     if (_resizeActionSheet) {
         [self processResizeSelection:buttonIndex actionSheet:actionSheet];
         _resizeActionSheet = nil;
@@ -715,7 +782,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }
 }
 
-- (void)processResizeSelection:(NSUInteger)buttonIndex actionSheet:(UIActionSheet*)actionSheet {
+- (void)processResizeSelection:(NSUInteger)buttonIndex actionSheet:(UIActionSheet*)actionSheet
+{
     if (actionSheet.cancelButtonIndex == buttonIndex) {
         return;
     }
@@ -743,7 +811,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }
 }
 
-- (void)showCustomSizeAlert {
+- (void)showCustomSizeAlert
+{
     if (self.customSizeAlert) {
         [self.customSizeAlert dismiss];
         self.customSizeAlert = nil;
@@ -821,7 +890,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     self.customSizeAlert = alertView;
 }
 
-- (void)showResizeActionSheet {
+- (void)showResizeActionSheet
+{
     if (!_resizeActionSheet) {
         Blog *currentBlog = self.blog;
         NSDictionary* predefDim = [currentBlog getImageResizeDimensions];
@@ -891,7 +961,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }
 }
 
-- (UIImagePickerController *)resetImagePicker {
+- (UIImagePickerController *)resetImagePicker
+{
     _picker = [[UIImagePickerController alloc] init];
     _picker.delegate = nil;
     _picker.navigationBar.translucent = NO;
@@ -900,7 +971,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     return _picker;
 }
 
-- (UIImagePickerControllerQualityType)videoQualityPreference {
+- (UIImagePickerControllerQualityType)videoQualityPreference
+{
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"video_quality_preference"]) {
         NSString *quality = [[NSUserDefaults standardUserDefaults] objectForKey:@"video_quality_preference"];
         switch ([quality intValue]) {
@@ -924,7 +996,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     return UIImagePickerControllerQualityTypeMedium;
 }
 
-- (void)pickMediaFromLibrary:(id)sender {
+- (void)pickMediaFromLibrary:(id)sender
+{
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
         [self resetImagePicker];
         _picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
@@ -955,7 +1028,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }
 }
 
-- (void)pickPhotoFromCamera:(id)sender {
+- (void)pickPhotoFromCamera:(id)sender
+{
     self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         [self resetImagePicker];
@@ -969,7 +1043,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }
 }
 
-- (void)pickVideoFromCamera:(id)sender {
+- (void)pickVideoFromCamera:(id)sender
+{
     self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         [self resetImagePicker];
@@ -984,7 +1059,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }
 }
 
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
     [WordPressAppDelegate sharedWordPressApplicationDelegate].tabBarController.tabBar.hidden = NO;
     if (_addPopover) {
         [_addPopover dismissPopoverAnimated:YES];
@@ -993,14 +1069,17 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }
 }
 
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+- (void)navigationController:(UINavigationController *)navigationController
+      willShowViewController:(UIViewController *)viewController
+                    animated:(BOOL)animated
+{
     // Keep the status bar consistent during photo library usage...
     // iOS7 beta 6 + bug
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
     [WordPressAppDelegate sharedWordPressApplicationDelegate].tabBarController.tabBar.hidden = NO;
 
      if ([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.movie"]) {
@@ -1126,7 +1205,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }
 }
 
-- (void)processLibraryVideo {
+- (void)processLibraryVideo
+{
     NSURL *videoURL = [_currentVideo valueForKey:UIImagePickerControllerMediaURL];
     if (videoURL == nil) {
         videoURL = [_currentVideo valueForKey:UIImagePickerControllerReferenceURL];
@@ -1147,7 +1227,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }
 }
 
-- (void)processRecordedVideo {
+- (void)processRecordedVideo
+{
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 
     [self.currentVideo setValue:[NSNumber numberWithInt:_currentOrientation] forKey:@"orientation"];
@@ -1158,12 +1239,14 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }
 }
 
-- (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(NSString *)contextInfo {
+- (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(NSString *)contextInfo
+{
     _currentVideo = nil;
     [self useVideo:videoPath];
 }
 
-- (void)useImage:(UIImage *)theImage {
+- (void)useImage:(UIImage *)theImage
+{
     [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
 
     Media *imageMedia;
@@ -1264,7 +1347,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }];
 }
 
-- (void)useVideo:(NSString *)videoURL {
+- (void)useVideo:(NSString *)videoURL
+{
     BOOL copySuccess = NO;
     Media *videoMedia;
     NSDictionary *attributes;
@@ -1347,7 +1431,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
  * Take Asset URL and set imageJPEG property to NSData containing the
  * associated JPEG, including the metadata we're after.
  */
-- (void)getMetadataFromAssetForURL:(NSURL *)url {
+- (void)getMetadataFromAssetForURL:(NSURL *)url
+{
     ALAssetsLibrary* assetslibrary = [[ALAssetsLibrary alloc] init];
     [assetslibrary assetForURL:url
                    resultBlock: ^(ALAsset *myasset) {
@@ -1398,7 +1483,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
                   }];
 }
 
-- (MediaOrientation)interpretOrientation:(UIDeviceOrientation)theOrientation {
+- (MediaOrientation)interpretOrientation:(UIDeviceOrientation)theOrientation
+{
     MediaOrientation result = MediaOrientationPortrait;
     switch (theOrientation) {
         case UIDeviceOrientationLandscapeLeft:
@@ -1440,11 +1526,13 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 #pragma mark - Image Methods
 
-- (UIImage *)generateThumbnailFromImage:(UIImage *)theImage andSize:(CGSize)targetSize {
+- (UIImage *)generateThumbnailFromImage:(UIImage *)theImage andSize:(CGSize)targetSize
+{
     return [theImage thumbnailImage:75 transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
 }
 
-- (UIImage *)resizeImage:(UIImage *)original toSize:(MediaResize)resize {
+- (UIImage *)resizeImage:(UIImage *)original toSize:(MediaResize)resize
+{
     NSDictionary *predefDim = [self.blog getImageResizeDimensions];
     CGSize smallSize =  [[predefDim objectForKey: @"smallSize"] CGSizeValue];
     CGSize mediumSize = [[predefDim objectForKey: @"mediumSize"] CGSizeValue];
@@ -1488,7 +1576,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 }
 
 /* Used in Custom Dimensions Resize */
-- (UIImage *)resizeImage:(UIImage *)original width:(CGFloat)width height:(CGFloat)height {
+- (UIImage *)resizeImage:(UIImage *)original width:(CGFloat)width height:(CGFloat)height
+{
     UIImage *resizedImage = original;
     if (_currentImage.size.width > width || _currentImage.size.height > height) {
         // Resize the image using the selected dimensions

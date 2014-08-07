@@ -26,7 +26,8 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
 
 #pragma mark - LifeCycle Methods
 
-+ (void)initialize {
++ (void)initialize
+{
     // DTCoreText will cache font descriptors on a background thread. However, because the font cache
     // updated synchronously, the detail view controller ends up waiting for the fonts to load anyway
     // (at least for the first time). We'll have DTCoreText prime its font cache here so things are ready

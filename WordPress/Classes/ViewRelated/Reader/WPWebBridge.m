@@ -9,7 +9,8 @@ static NSString *const AuthorizedHybridHost = @"en.wordpress.com";
 
 @synthesize delegate;
 
-+ (WPWebBridge *)bridge {
++ (WPWebBridge *)bridge
+{
     WPWebBridge *bridge = [[WPWebBridge alloc] init];
     return bridge;
 }
@@ -18,7 +19,8 @@ static NSString *const AuthorizedHybridHost = @"en.wordpress.com";
  Adds a token to the querystring of the request and to a request header
  so the HTML portion can authenticate when requesting to call native methods
  */
-- (NSURLRequest *)authorizeHybridRequest:(NSMutableURLRequest *)request {
+- (NSURLRequest *)authorizeHybridRequest:(NSMutableURLRequest *)request
+{
     if ( [[self class] isValidHybridURL:request.URL] ){
         // add the token
         request.URL = [[self class] authorizeHybridURL:request.URL];
@@ -43,14 +45,14 @@ static NSString *const AuthorizedHybridHost = @"en.wordpress.com";
 
 }
 
-+ (BOOL) isValidHybridURL:(NSURL *)url {
++ (BOOL) isValidHybridURL:(NSURL *)url
+{
     return [url.host isEqualToString:AuthorizedHybridHost];
 }
 
-- (BOOL)requestIsValidHybridRequest:(NSURLRequest *)request {
-
+- (BOOL)requestIsValidHybridRequest:(NSURLRequest *)request
+{
     return [request.URL.host isEqualToString:AuthorizedHybridHost];
-
 }
 
 - (NSString *)hybridAuthToken
@@ -83,15 +85,14 @@ static NSString *const AuthorizedHybridHost = @"en.wordpress.com";
 
 #pragma mark - Hybrid Bridge
 
-- (BOOL)handlesRequest:(NSURLRequest *)request {
-
+- (BOOL)handlesRequest:(NSURLRequest *)request
+{
     if ( [request.URL.scheme isEqualToString:@"wpios"] && [request.URL.host isEqualToString:@"batch"] ){
         [self executeBatchFromRequest:request];
         return YES;
     }
 
     return NO;
-
 }
 /*
 
@@ -103,7 +104,8 @@ static NSString *const AuthorizedHybridHost = @"en.wordpress.com";
  in the context of the controller.
 
  */
-- (void)executeBatchFromRequest:(NSURLRequest *)request {
+- (void)executeBatchFromRequest:(NSURLRequest *)request
+{
     if (self.delegate == nil) {
         return;
     }
@@ -157,7 +159,6 @@ static NSString *const AuthorizedHybridHost = @"en.wordpress.com";
         }
 
     }];
-
 }
 
 @end

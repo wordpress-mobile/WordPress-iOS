@@ -21,7 +21,8 @@
 
 @implementation PostGeolocationViewController
 
-- (id)initWithPost:(Post *)post {
+- (id)initWithPost:(Post *)post
+{
     self = [super init];
     if (self) {
         self.post = post;
@@ -29,7 +30,8 @@
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 
@@ -49,7 +51,8 @@
     [self.view addSubview:self.geoView];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
 
     if (self.navigationController.toolbarHidden) {
@@ -69,7 +72,8 @@
 
 #pragma mark - Appearance Related Methods
 
-- (void)setupToolbar {
+- (void)setupToolbar
+{
     UIToolbar *toolbar = self.navigationController.toolbar;
     toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
     toolbar.translucent = NO;
@@ -90,12 +94,14 @@
     self.activityItem = [[UIBarButtonItem alloc] initWithCustomView:activityView];
 }
 
-- (void)removeGeolocation {
+- (void)removeGeolocation
+{
     self.post.geolocation = nil;
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)updateLocation {
+- (void)updateLocation
+{
     if ([[LocationService sharedService] locationServicesDisabled]) {
         [WPError showAlertWithTitle:NSLocalizedString(@"Location Unavailable", @"Title of an alert view stating that the user's location is unavailable.")
                             message:NSLocalizedString(@"Location Services are turned off. \nTo add or update this post's location, please enable Location Services in the Settings app.", @"Message of an alert explaining that location services need to be enabled.")
@@ -128,7 +134,8 @@
     [self refreshView];
 }
 
-- (void)refreshView {
+- (void)refreshView
+{
     [self refreshToolbar];
 
     if ([[LocationService sharedService] locationServiceRunning]) {
@@ -145,7 +152,8 @@
     }
 }
 
-- (void)refreshToolbar {
+- (void)refreshToolbar
+{
     UIBarButtonItem *leftFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     UIBarButtonItem *rightFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     UIBarButtonItem *centerFlexSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];

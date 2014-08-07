@@ -100,7 +100,8 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     [self layoutControls];
 }
 
-- (NSUInteger)supportedInterfaceOrientations {
+- (NSUInteger)supportedInterfaceOrientations
+{
     if (IS_IPHONE) {
         return UIInterfaceOrientationMaskPortrait;
     }
@@ -109,7 +110,8 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-                                         duration:(NSTimeInterval)duration {
+                                         duration:(NSTimeInterval)duration
+{
     [self layoutControls];
 }
 
@@ -132,7 +134,8 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range
-                                                       replacementString:(NSString *)string {
+                                                       replacementString:(NSString *)string
+{
     NSArray *fields = @[_emailField, _usernameField, _passwordField, _siteAddressField];
 
     NSMutableString *updatedString = [[NSMutableString alloc] initWithString:textField.text];
@@ -148,7 +151,8 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     return YES;
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField {
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
     if ([textField isEqual:_usernameField]) {
         if ([[_siteAddressField.text trim] length] == 0 || !_userDefinedSiteAddress) {
             _siteAddressField.text = _defaultSiteUrl = _usernameField.text;
@@ -595,7 +599,8 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     return [self fieldsFilled] && [self isUsernameUnderFiftyCharacters];
 }
 
-- (NSString *)generateSiteTitleFromUsername:(NSString *)username {
+- (NSString *)generateSiteTitleFromUsername:(NSString *)username
+{
     // Currently, we set the title of a new site to the username of the account.
     // Another possibility would be to name the site "username's blog", which is
     // why this has been placed in a separate method.

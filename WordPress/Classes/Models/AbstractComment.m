@@ -21,23 +21,28 @@
 
 #pragma mark - WPContentViewProvider protocol
 
-- (NSString *)titleForDisplay {
+- (NSString *)titleForDisplay
+{
     return [self.postTitle stringByDecodingXMLCharacters];
 }
 
-- (NSString *)authorForDisplay {
+- (NSString *)authorForDisplay
+{
     return [self.author length] > 0 ? [[self.author stringByDecodingXMLCharacters] trim] : [self.author_email trim];
 }
 
-- (NSString *)blogNameForDisplay {
+- (NSString *)blogNameForDisplay
+{
     return nil;
 }
 
-- (NSString *)statusForDisplay {
+- (NSString *)statusForDisplay
+{
     return self.status;
 }
 
-- (NSString *)contentForDisplay {
+- (NSString *)contentForDisplay
+{
     // Unescape HTML characters and add <br /> tags
     NSString *commentContent = [[self.content stringByDecodingXMLCharacters] trim];
     // Don't add <br /> tags after an HTML tag, as DTCoreText will handle that spacing for us
@@ -48,19 +53,23 @@
     return commentContent;
 }
 
-- (NSString *)contentPreviewForDisplay {
+- (NSString *)contentPreviewForDisplay
+{
     return [[[self.content stringByDecodingXMLCharacters] stringByStrippingHTML] stringByNormalizingWhitespace];
 }
 
-- (NSURL *)avatarURLForDisplay {
+- (NSURL *)avatarURLForDisplay
+{
     return nil;
 }
 
-- (NSString *)gravatarEmailForDisplay {
+- (NSString *)gravatarEmailForDisplay
+{
     return [self.author_email trim];
 }
 
-- (NSDate *)dateForDisplay {
+- (NSDate *)dateForDisplay
+{
     return self.dateCreated;
 }
 

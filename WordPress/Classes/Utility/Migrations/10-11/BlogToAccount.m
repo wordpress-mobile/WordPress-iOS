@@ -8,12 +8,14 @@
     NSString *_defaultWpcomUsername;
 }
 
-- (BOOL)beginEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
+- (BOOL)beginEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error
+{
     DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
     return YES;
 }
 
-- (BOOL)endEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
+- (BOOL)endEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error
+{
     DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 
     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:WPComDefaultAccountUsernameKey];
@@ -41,7 +43,8 @@
         NSError *error;
         NSString *password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:oldKey error:&error];
         if (password) {
-            if ([SFHFKeychainUtils storeUsername:username andPassword:password forServiceName:newKey updateExisting:YES error:&error]) {
+            if ([SFHFKeychainUtils storeUsername:username andPassword:password 
+                                  forServiceName:newKey updateExisting:YES error:&error]) {
                 [SFHFKeychainUtils deleteItemForUsername:username andServiceName:oldKey error:&error];
             }
         }
@@ -57,7 +60,10 @@
     return YES;
 }
 
-- (BOOL)performCustomValidationForEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
+- (BOOL)performCustomValidationForEntityMapping:(NSEntityMapping *)mapping
+                                        manager:(NSMigrationManager *)manager
+                                          error:(NSError **)error
+{
     DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
     return YES;
 }
@@ -140,7 +146,8 @@
 
 #pragma mark - Helpers
 
-- (BOOL)blogIsWpcom:(NSManagedObject *)blog {
+- (BOOL)blogIsWpcom:(NSManagedObject *)blog
+{
     NSDictionary *options = [blog valueForKey:@"options"];
     if ([options count] > 0) {
         NSDictionary *option = [options dictionaryForKey:@"wordpress.com"];
@@ -152,7 +159,8 @@
     return (range.location != NSNotFound);
 }
 
-- (NSString *)hostUrlForBlog:(NSManagedObject *)blog {
+- (NSString *)hostUrlForBlog:(NSManagedObject *)blog
+{
     NSString *url = [blog valueForKey:@"url"];
     NSError *error = nil;
     NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"http(s?)://" options:NSRegularExpressionCaseInsensitive error:&error];

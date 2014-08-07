@@ -64,21 +64,25 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 @implementation WPContentView {
 }
 
-+ (UIFont *)titleFont {
++ (UIFont *)titleFont
+{
     return (IS_IPAD ? [UIFont fontWithName:@"Merriweather-Bold" size:24.0f] : [UIFont fontWithName:@"Merriweather-Bold" size:19.0f]);
 }
 
-+ (UIFont *)summaryFont {
++ (UIFont *)summaryFont
+{
     return (IS_IPAD ? [WPFontManager openSansRegularFontOfSize:16.0] : [WPFontManager openSansRegularFontOfSize:14.0]);
 }
 
-+ (UIFont *)moreContentFont {
++ (UIFont *)moreContentFont
+{
     return [WPFontManager openSansRegularFontOfSize:12.0];
 }
 
 #pragma mark - Lifecycle Methods
 
-- (id)initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(CGRect)frame
+{
     self = [super initWithFrame:frame];
     if (self) {
         _mediaArray = [NSMutableArray array];
@@ -161,7 +165,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     return self;
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     _contentProvider = nil;
     _delegate = nil;
     _textContentView.delegate = nil;
@@ -172,7 +177,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     _dateRefreshTimer = nil;
 }
 
-- (UIView *)viewForFullContent {
+- (UIView *)viewForFullContent
+{
     if (_textContentView) {
         return _textContentView;
     }
@@ -190,7 +196,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     return _textContentView;
 }
 
-- (UIView *)viewForContentPreview {
+- (UIView *)viewForContentPreview
+{
     if (_snippetLabel) {
         return _snippetLabel;
     }
@@ -207,7 +214,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 #pragma mark - Instance methods
 
-- (void)reset {
+- (void)reset
+{
     _bylineLabel.text = nil;
     _titleLabel.text = nil;
     _snippetLabel.text = nil;
@@ -216,12 +224,14 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     _cellImageView.image = nil;
 }
 
-- (BOOL)privateContent {
+- (BOOL)privateContent
+{
     // TODO: figure out how/if this applies to subclasses
     return NO;
 }
 
-- (void)setContentProvider:(id<WPContentViewProvider>)contentProvider {
+- (void)setContentProvider:(id<WPContentViewProvider>)contentProvider
+{
     if (_contentProvider == contentProvider) {
         return;
     }
@@ -230,14 +240,16 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     [self configureContentView:_contentProvider];
 }
 
-- (void)setAuthorDisplayName:(NSString *)authorName authorLink:(NSString *)authorLink {
+- (void)setAuthorDisplayName:(NSString *)authorName authorLink:(NSString *)authorLink
+{
     self.bylineLabel.text = authorName;
     [self.byButton setTitle:authorLink forState:UIControlStateNormal];
     [self.byButton setEnabled:YES];
     [self.byButton setHidden:NO];
 }
 
-- (void)configureContentView:(id<WPContentViewProvider>)contentProvider {
+- (void)configureContentView:(id<WPContentViewProvider>)contentProvider
+{
     self.bylineLabel.text = [contentProvider authorForDisplay];
 
     if ([[contentProvider blogNameForDisplay] length] > 0) {
@@ -257,7 +269,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 }
 
-- (void)layoutSubviews {
+- (void)layoutSubviews
+{
     [super layoutSubviews];
 
     CGFloat contentWidth = self.frame.size.width;
@@ -329,7 +342,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     self.frame = ownFrame;
 }
 
-- (UIButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage {
+- (UIButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage
+{
     ContentActionButton *button = [ContentActionButton buttonWithType:UIButtonTypeCustom];
     button.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
     [button setImage:buttonImage forState:UIControlStateNormal];
@@ -344,7 +358,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     return button;
 }
 
-- (void)removeActionButton:(UIButton *)button {
+- (void)removeActionButton:(UIButton *)button
+{
     [button removeFromSuperview];
     [self.actionButtons removeObject:button];
 }
@@ -354,43 +369,50 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 // Forward the actions to the delegate; do it this way instead of exposing buttons as properties
 // because the view can have dynamically generated buttons (e.g. links)
 
-- (void)featuredImageAction:(id)sender {
+- (void)featuredImageAction:(id)sender
+{
     if ([self.delegate respondsToSelector:@selector(contentView:didReceiveFeaturedImageAction:)]) {
         [self.delegate contentView:self didReceiveFeaturedImageAction:sender];
     }
 }
 
-- (void)followAction:(id)sender {
+- (void)followAction:(id)sender
+{
     if ([self.delegate respondsToSelector:@selector(contentView:didReceiveFollowAction:)]) {
         [self.delegate contentView:self didReceiveFollowAction:sender];
     }
 }
 
-- (void)tagAction:(id)sender {
+- (void)tagAction:(id)sender
+{
     if ([self.delegate respondsToSelector:@selector(contentView:didReceiveTagAction:)]) {
         [self.delegate contentView:self didReceiveTagAction:sender];
     }
 }
 
-- (void)linkAction:(id)sender {
+- (void)linkAction:(id)sender
+{
     if ([self.delegate respondsToSelector:@selector(contentView:didReceiveLinkAction:)]) {
         [self.delegate contentView:self didReceiveLinkAction:sender];
     }
 }
 
-- (void)imageLinkAction:(id)sender {
+- (void)imageLinkAction:(id)sender
+{
     if ([self.delegate respondsToSelector:@selector(contentView:didReceiveImageLinkAction:)]) {
         [self.delegate contentView:self didReceiveImageLinkAction:sender];
     }
 }
 
-- (void)videoLinkAction:(id)sender {
+- (void)videoLinkAction:(id)sender
+{
     if ([self.delegate respondsToSelector:@selector(contentView:didReceiveVideoLinkAction:)]) {
         [self.delegate contentView:self didReceiveVideoLinkAction:sender];
     }
 }
 
-- (void)authorLinkAction:(id)sender {
+- (void)authorLinkAction:(id)sender
+{
     if ([self.delegate respondsToSelector:@selector(contentView:didReceiveAuthorLinkAction:)]) {
         [self.delegate contentView:self didReceiveAuthorLinkAction:sender];
     }
@@ -398,21 +420,24 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 #pragma mark - Helper methods
 
-- (void)setFeaturedImage:(UIImage *)image {
+- (void)setFeaturedImage:(UIImage *)image
+{
     self.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.cellImageView.image = image;
 }
 
-- (void)updateActionButtons {
+- (void)updateActionButtons
+{
     // Implemented by subclasses
 }
 
-- (BOOL)isEmoji:(NSURL *)url {
+- (BOOL)isEmoji:(NSURL *)url
+{
     return ([[url absoluteString] rangeOfString:@"wp.com/wp-includes/images/smilies"].location != NSNotFound);
 }
 
-- (void)handleMediaViewLoaded:(ReaderMediaView *)mediaView {
-
+- (void)handleMediaViewLoaded:(ReaderMediaView *)mediaView
+{
     BOOL frameChanged = [self updateMediaLayout:mediaView];
 
     if (frameChanged) {
@@ -426,11 +451,13 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 }
 
 // Subclasses can override this to provide margin at the top of the view. See CommentView.
-- (CGFloat)topMarginHeight {
+- (CGFloat)topMarginHeight
+{
     return 0.0f;
 }
 
-- (BOOL)updateMediaLayout:(ReaderMediaView *)imageView {
+- (BOOL)updateMediaLayout:(ReaderMediaView *)imageView
+{
     BOOL frameChanged = NO;
     NSURL *url = imageView.contentURL;
 
@@ -470,18 +497,21 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     return frameChanged;
 }
 
-- (void)refreshDate:(NSTimer *)timer {
+- (void)refreshDate:(NSTimer *)timer
+{
     NSString *title = [self.contentProvider.dateForDisplay shortString];
     [self.timeButton setTitle:title forState:UIControlStateNormal | UIControlStateDisabled];
 }
 
-- (void)refreshDate {
+- (void)refreshDate
+{
     [self refreshDate:nil];
 }
 
 // Relayout the textContentView after a brief delay.  Used to make sure there are no
 // gaps in text due to outdated media frames.
-- (void)refreshLayoutAfterDelay {
+- (void)refreshLayoutAfterDelay
+{
     if (self.willRefreshMediaLayout) {
         return;
     }
@@ -499,11 +529,13 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     });
 }
 
-- (void)refreshMediaLayout {
+- (void)refreshMediaLayout
+{
     [self refreshMediaLayoutInArray:self.mediaArray];
 }
 
-- (void)refreshMediaLayoutInArray:(NSArray *)mediaArray {
+- (void)refreshMediaLayoutInArray:(NSArray *)mediaArray
+{
     BOOL frameChanged = NO;
 
     for (ReaderMediaView *mediaView in mediaArray) {
@@ -517,7 +549,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     }
 }
 
-- (void)relayoutTextContentView {
+- (void)relayoutTextContentView
+{
     // need to reset the layouter because otherwise we get the old framesetter or
     self.textContentView.layouter = nil;
 
@@ -528,7 +561,8 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 #pragma mark ReaderMediaQueueDelegate methods
 
-- (void)readerMediaQueue:(ReaderMediaQueue *)mediaQueue didLoadBatch:(NSArray *)batch {
+- (void)readerMediaQueue:(ReaderMediaQueue *)mediaQueue didLoadBatch:(NSArray *)batch
+{
     [self refreshMediaLayoutInArray:batch];
     if ([self.delegate respondsToSelector:@selector(contentViewDidLoadAllMedia:)]) {
         [self.delegate contentViewDidLoadAllMedia:self];
@@ -537,7 +571,10 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 #pragma mark - DTCoreAttributedTextContentView Delegate Methods
 
-- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame {
+- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView
+              viewForAttributedString:(NSAttributedString *)string
+                                frame:(CGRect)frame
+{
     NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:nil];
 
     NSURL *URL = [attributes objectForKey:DTLinkAttribute];
@@ -562,7 +599,10 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     return button;
 }
 
-- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttachment:(DTTextAttachment *)attachment frame:(CGRect)frame {
+- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView
+                    viewForAttachment:(DTTextAttachment *)attachment
+                                frame:(CGRect)frame
+{
     if (!attachment.contentURL) {
         return nil;
     }

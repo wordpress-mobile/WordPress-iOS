@@ -25,11 +25,13 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
 @implementation WPContentViewBase
 
-+ (UIFont *)titleFont {
++ (UIFont *)titleFont
+{
     return (IS_IPAD ? [UIFont fontWithName:@"Merriweather-Bold" size:24.0f] : [UIFont fontWithName:@"Merriweather-Bold" size:19.0f]);
 }
 
-+ (UIFont *)contentFont {
++ (UIFont *)contentFont
+{
     return (IS_IPAD ? [WPFontManager openSansRegularFontOfSize:16.0] : [WPFontManager openSansRegularFontOfSize:14.0]);
 }
 

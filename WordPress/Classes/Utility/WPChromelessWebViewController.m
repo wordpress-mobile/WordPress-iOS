@@ -13,12 +13,14 @@
 #pragma mark -
 #pragma mark Lifecycle Methods
 
-- (void)dealloc {
+- (void)dealloc
+{
     self.path = nil;
     webView.delegate = nil;
 }
 
-- (void)loadView {
+- (void)loadView
+{
     [super loadView];
 
     CGRect frame = self.view.bounds;
@@ -28,7 +30,8 @@
     [self.view addSubview:webView];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated
+{
     [super viewDidAppear:animated];
 
     if (self.path != nil) {
@@ -39,7 +42,8 @@
 #pragma mark -
 #pragma mark Instance Methods
 
-- (void)setPath:(NSString *)path {
+- (void)setPath:(NSString *)path
+{
     if (![_path isEqualToString:path]) {
         _path = path;
         DDLogInfo(@"Path is: %@", self.path);
@@ -50,22 +54,28 @@
     }
 }
 
-- (void)loadPath:(NSString *)aPath {
+- (void)loadPath:(NSString *)aPath
+{
     self.path = aPath;
 }
 
-- (NSURL *)currentURL {
+- (NSURL *)currentURL
+{
     return [self.webView currentURL];
 }
 
-- (BOOL)expectsWidePanel {
+- (BOOL)expectsWidePanel
+{
     return YES;
 }
 
 #pragma mark -
 #pragma mark WPWebView Delegate Methods
 
-- (BOOL)wpWebView:(WPWebView *)wpWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+- (BOOL)wpWebView:(WPWebView *)wpWebView
+   shouldStartLoadWithRequest:(NSURLRequest *)request
+   navigationType:(UIWebViewNavigationType)navigationType
+{
     // If a link to a new URL is clicked we want to open in a new window.
     // This method is also triggered when loading html from a string so we need to handle that case as well.
     if (navigationType == UIWebViewNavigationTypeLinkClicked) {
@@ -125,7 +135,8 @@
     return YES;
 }
 
-- (void)webViewDidFinishLoad:(WPWebView *)wpWebView {
+- (void)webViewDidFinishLoad:(WPWebView *)wpWebView
+{
     NSString *title = [wpWebView stringByEvaluatingJavaScriptFromString:@"document.title;"];
     if ([title length] > 0) {
         self.title = title;

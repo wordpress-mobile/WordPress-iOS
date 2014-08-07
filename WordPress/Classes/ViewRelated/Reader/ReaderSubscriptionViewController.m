@@ -475,7 +475,8 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     return _titleLabel;
 }
 
-- (UIPageControl *)pageControl {
+- (UIPageControl *)pageControl
+{
     if (_pageControl) {
         return _pageControl;
     }

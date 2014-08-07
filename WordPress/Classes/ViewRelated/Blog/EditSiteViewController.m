@@ -33,7 +33,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
 @implementation EditSiteViewController
 
-- (id)initWithBlog:(Blog *)blog {
+- (id)initWithBlog:(Blog *)blog
+{
     self = [super init];
     if (self) {
         _blog = blog;
@@ -41,11 +42,13 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     return self;
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     self.delegate = nil;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
 
@@ -106,7 +109,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:JetpackConnectedCellIdentifier];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated
+{
     [super viewDidAppear:animated];
 
     [self.tableView reloadData];
@@ -114,14 +118,16 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
 #pragma mark - UITableView
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tv {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tv
+{
     if (self.blog && ![self.blog isWPcom]) {
         return 3;
     }
     return 2;
 }
 
-- (NSInteger)tableView:(UITableView *)tv numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tv numberOfRowsInSection:(NSInteger)section
+{
     switch (section) {
         case 0:
             // URL, username, [password]
@@ -146,21 +152,24 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     return 0;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
     WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
     header.title = [self titleForHeaderInSection:section];
 
     return header;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
     NSString *title = [self titleForHeaderInSection:section];
     CGFloat height = [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 
     return height;
 }
 
-- (NSString *)titleForHeaderInSection:(NSInteger)section {
+- (NSString *)titleForHeaderInSection:(NSInteger)section
+{
     switch (section) {
         case 0:
             return self.blog.blogName;
@@ -174,7 +183,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     return nil;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     if ([indexPath section] == 0) {
         if (indexPath.row == 0) {
             UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
@@ -285,7 +295,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
 #pragma mark - Table view delegate
 
-- (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     UITableViewCell *cell = [tv cellForRowAtIndexPath:indexPath];
     if (indexPath.section == 0) {
         for (UIView *subview in cell.subviews) {
@@ -309,14 +320,16 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
 #pragma mark - UITextField methods
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
     if (self.lastTextField) {
         self.lastTextField = nil;
     }
     self.lastTextField = textField;
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
     if (textField == self.urlTextField) {
         [self.usernameTextField becomeFirstResponder];
     } else if (textField == self.usernameTextField) {
@@ -327,7 +340,10 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     return NO;
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+- (BOOL)textField:(UITextField *)textField
+    shouldChangeCharactersInRange:(NSRange)range
+    replacementString:(NSString *)string
+{
     // Adjust the text color of the containing cell's textLabel if
     // the entered information is invalid.
     if ([textField isDescendantOfView:self.tableView]) {
@@ -359,7 +375,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 #pragma mark -
 #pragma mark Custom methods
 
-- (void)configureTextField:(UITextField *)textField asPassword:(BOOL)asPassword {
+- (void)configureTextField:(UITextField *)textField asPassword:(BOOL)asPassword
+{
     textField.keyboardType = UIKeyboardTypeDefault;
     textField.autocorrectionType = UITextAutocorrectionTypeNo;
     textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -372,7 +389,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     }
 }
 
-- (BOOL)canTogglePushNotifications {
+- (BOOL)canTogglePushNotifications
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
@@ -383,7 +401,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
         [NotificationsManager deviceRegisteredForPushNotifications];
 }
 
-- (void)toggleGeolocation:(id)sender {
+- (void)toggleGeolocation:(id)sender
+{
     UISwitch *geolocationSwitch = (UISwitch *)sender;
     self.geolocationEnabled = geolocationSwitch.on;
 
@@ -392,7 +411,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     [self.blog dataSave];
 }
 
-- (void)togglePushNotifications:(id)sender {
+- (void)togglePushNotifications:(id)sender
+{
     UISwitch *pushSwitch = (UISwitch *)sender;
     BOOL muted = !pushSwitch.on;
     if (_notificationPreferences) {
@@ -419,7 +439,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     }
 }
 
-- (NSString *)getURLToValidate {
+- (NSString *)getURLToValidate
+{
     NSString *urlToValidate = self.url;
 
     if (![urlToValidate hasPrefix:@"http"]) {
@@ -439,7 +460,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     return urlToValidate;
 }
 
-- (void)validateXmlprcURL:(NSURL *)xmlRpcURL {
+- (void)validateXmlprcURL:(NSURL *)xmlRpcURL
+{
     WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:self.usernameTextField.text password:self.passwordTextField.text];
 
     [api getBlogOptionsWithSuccess:^(id options){
@@ -457,7 +479,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     }];
 }
 
-- (void)loginForSiteWithXmlRpcUrl:(NSURL *)xmlRpcURL {
+- (void)loginForSiteWithXmlRpcUrl:(NSURL *)xmlRpcURL
+{
     WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:self.usernameTextField.text password:self.passwordTextField.text];
     [api getBlogsWithSuccess:^(NSArray *blogs) {
         [SVProgressHUD dismiss];
@@ -469,7 +492,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     }];
 }
 
-- (void)checkURL {
+- (void)checkURL
+{
     NSString *urlToValidate = [self getURLToValidate];
 
     DDLogInfo(@"%@ %@ %@", self, NSStringFromSelector(_cmd), urlToValidate);
@@ -498,7 +522,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     }];
 }
 
-- (void)validationSuccess:(NSString *)xmlrpc {
+- (void)validationSuccess:(NSString *)xmlrpc
+{
     [self.savingIndicator stopAnimating];
     [self.savingIndicator setHidden:YES];
     self.blog.geolocationEnabled = self.geolocationEnabled;
@@ -512,7 +537,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
 }
 
-- (void)validationDidFail:(NSError *)error {
+- (void)validationDidFail:(NSError *)error
+{
     [self.savingIndicator stopAnimating];
     [self.savingIndicator setHidden:YES];
     self.saveButton.enabled = YES;
@@ -536,7 +562,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     }
 }
 
-- (void)openSiteAdminFromAlert:(UIAlertView *)alertView {
+- (void)openSiteAdminFromAlert:(UIAlertView *)alertView
+{
     NSString *path = nil;
     NSError *error = nil;
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+writing.php" options:NSRegularExpressionCaseInsensitive error:&error];
@@ -560,7 +587,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     [self.navigationController pushViewController:webViewController animated:YES];
 }
 
-- (void)validateUrl {
+- (void)validateUrl
+{
     if (self.blog) {
         // If we are editing an existing blog, use the known XML-RPC URL
         // We don't allow editing URL on existing blogs, so XML-RPC shouldn't change
@@ -570,7 +598,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     }
 }
 
-- (void)save:(id)sender {
+- (void)save:(id)sender
+{
     [self.urlTextField resignFirstResponder];
     [self.usernameTextField resignFirstResponder];
     [self.passwordTextField resignFirstResponder];
@@ -612,7 +641,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     }
 }
 
-- (IBAction)cancel:(id)sender {
+- (IBAction)cancel:(id)sender
+{
     if (self.isCancellable) {
         [self dismissViewControllerAnimated:YES completion:nil];
     } else {
@@ -626,7 +656,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     }
 }
 
-- (void)showSaveButton {
+- (void)showSaveButton
+{
     BOOL hasContent;
 
     if ([self.urlTextField.text isEqualToString:@""] ||
@@ -640,14 +671,16 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     self.navigationItem.rightBarButtonItem = hasContent ? self.saveButton : nil;
 }
 
-- (void)reloadNotificationSettings {
+- (void)reloadNotificationSettings
+{
     self.notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
     if (self.notificationPreferences) {
         [self.tableView reloadData];
     }
 }
 
-- (BOOL)getBlogPushNotificationsSetting {
+- (BOOL)getBlogPushNotificationsSetting
+{
     if (self.notificationPreferences) {
         NSDictionary *mutedBlogsDictionary = [self.notificationPreferences objectForKey:@"muted_blogs"];
         NSArray *mutedBlogsArray = [mutedBlogsDictionary objectForKey:@"value"];
@@ -662,13 +695,15 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     return YES;
 }
 
-- (BOOL)canEditUsernameAndURL {
+- (BOOL)canEditUsernameAndURL
+{
     return NO;
 }
 
 #pragma mark - Keyboard Related Methods
 
-- (void)handleKeyboardDidShow:(NSNotification *)notification {
+- (void)handleKeyboardDidShow:(NSNotification *)notification
+{
 
     if (_isKeyboardVisible) {
         return;
@@ -700,7 +735,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     _isKeyboardVisible = YES;
 }
 
-- (void)handleKeyboardWillHide:(NSNotification *)notification {
+- (void)handleKeyboardWillHide:(NSNotification *)notification
+{
     CGRect rect = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGRect frame = self.view.frame;
     if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
@@ -716,7 +752,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     _isKeyboardVisible = NO;
 }
 
-- (void)handleViewTapped {
+- (void)handleViewTapped
+{
     [self.lastTextField resignFirstResponder];
 }
 

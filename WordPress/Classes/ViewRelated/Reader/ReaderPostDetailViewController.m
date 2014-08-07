@@ -151,7 +151,8 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     [self refreshHeightForTableHeaderView];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated
+{
     [super viewDidAppear:animated];
 
     // Do not start auto-sync if connection is down
@@ -176,7 +177,8 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     [self.tableView reloadData];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     [super viewWillDisappear:animated];
 
     if (IS_IPHONE) {

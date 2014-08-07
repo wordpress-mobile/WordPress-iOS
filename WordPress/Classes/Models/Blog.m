@@ -50,7 +50,8 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 #pragma mark - NSManagedObject subclass methods
 
-- (void)didTurnIntoFault {
+- (void)didTurnIntoFault
+{
     [super didTurnIntoFault];
 
     // Clean up instance variables

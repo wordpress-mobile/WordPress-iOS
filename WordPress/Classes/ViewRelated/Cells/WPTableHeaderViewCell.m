@@ -17,7 +17,8 @@ static CGFloat const WPTableHeaderTextMaxWidth = 200.0f;
     return self;
 }
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
     [super touchesBegan:touches withEvent:event];
     self.backgroundColor = [WPStyleGuide notificationsDarkGrey];
 }

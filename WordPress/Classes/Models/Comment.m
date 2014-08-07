@@ -18,7 +18,8 @@ NSString * const CommentStatusDraft = @"draft";
 
 #pragma mark - Helper methods
 
-+ (NSString *)titleForStatus:(NSString *)status {
++ (NSString *)titleForStatus:(NSString *)status
+{
     if ([status isEqualToString:@"hold"]) {
         return NSLocalizedString(@"Pending moderation", @"");
     } else if ([status isEqualToString:@"approve"]) {
@@ -28,7 +29,8 @@ NSString * const CommentStatusDraft = @"draft";
     return status;
 }
 
-- (NSString *)postTitle {
+- (NSString *)postTitle
+{
     NSString *title = nil;
     if (self.post) {
         title = self.post.postTitle;
@@ -45,7 +47,8 @@ NSString * const CommentStatusDraft = @"draft";
 
 }
 
-- (NSString *)author {
+- (NSString *)author
+{
     NSString *authorName = nil;
 
     [self willAccessValueForKey:@"author"];
@@ -59,7 +62,8 @@ NSString * const CommentStatusDraft = @"draft";
 
 }
 
-- (NSDate *)dateCreated {
+- (NSDate *)dateCreated
+{
     NSDate *date = nil;
 
     [self willAccessValueForKey:@"dateCreated"];
@@ -71,11 +75,13 @@ NSString * const CommentStatusDraft = @"draft";
 
 #pragma mark - WPContentViewProvider protocol
 
-- (NSString *)blogNameForDisplay {
+- (NSString *)blogNameForDisplay
+{
     return self.author_url;
 }
 
-- (NSString *)statusForDisplay {
+- (NSString *)statusForDisplay
+{
     NSString *status = [[self class] titleForStatus:self.status];
     if ([status isEqualToString:NSLocalizedString(@"Comments", @"")]) {
         status = nil;

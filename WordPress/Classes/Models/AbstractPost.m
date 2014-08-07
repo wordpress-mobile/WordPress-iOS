@@ -7,14 +7,16 @@
 @dynamic blog, media;
 @dynamic comments;
 
-- (void)remove {
+- (void)remove
+{
     for (Media *media in self.media) {
         [media cancelUpload];
     }
     [super remove];
 }
 
-- (void)awakeFromFetch {
+- (void)awakeFromFetch
+{
     [super awakeFromFetch];
 
     if (!self.isDeleted && self.remoteStatus == AbstractPostRemoteStatusPushing) {
@@ -25,22 +27,26 @@
 
 }
 
-+ (NSString *const)remoteUniqueIdentifier {
++ (NSString *const)remoteUniqueIdentifier
+{
     return @"";
 }
 
-- (void)markRemoteStatusFailed {
+- (void)markRemoteStatusFailed
+{
     self.remoteStatus = AbstractPostRemoteStatusFailed;
     [self save];
 }
 
-+ (AbstractPost *)newPostForBlog:(Blog *)blog {
++ (AbstractPost *)newPostForBlog:(Blog *)blog
+{
     AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self) inManagedObjectContext:blog.managedObjectContext];
     post.blog = blog;
     return post;
 }
 
-+ (AbstractPost *)newDraftForBlog:(Blog *)blog {
++ (AbstractPost *)newDraftForBlog:(Blog *)blog
+{
     AbstractPost *post = [self newPostForBlog:blog];
     post.remoteStatus = AbstractPostRemoteStatusLocal;
     post.status = @"publish";
@@ -48,7 +54,8 @@
     return post;
 }
 
-+ (NSArray *)existingPostsForBlog:(Blog *)blog inContext:(NSManagedObjectContext *)context {
++ (NSArray *)existingPostsForBlog:(Blog *)blog inContext:(NSManagedObjectContext *)context
+{
     NSFetchRequest *existingFetch = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass(self)];
     existingFetch.predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL) AND (blog == %@)",
                                [NSNumber numberWithInt:AbstractPostRemoteStatusSync], blog];
@@ -66,7 +73,8 @@
     return existing;
 }
 
-+ (void)mergeNewPosts:(NSArray *)newObjects forBlog:(Blog *)blog {
++ (void)mergeNewPosts:(NSArray *)newObjects forBlog:(Blog *)blog
+{
     NSManagedObjectContext *backgroundContext = [[ContextManager sharedInstance] newDerivedContext];
     [backgroundContext performBlock:^{
         NSMutableArray *objectsToKeep = [NSMutableArray array];
@@ -117,14 +125,16 @@
     }];
 }
 
-- (void)updateFromDictionary:(NSDictionary *)postInfo {
+- (void)updateFromDictionary:(NSDictionary *)postInfo
+{
     AssertSubclassMethod();
 }
 
 #pragma mark -
 #pragma mark Revision management
 
-- (void)cloneFrom:(AbstractPost *)source {
+- (void)cloneFrom:(AbstractPost *)source
+{
     for (NSString *key in [[[source entity] attributesByName] allKeys]) {
         if ([key isEqualToString:@"permalink"]) {
             DDLogInfo(@"Skipping %@", key);
@@ -146,7 +156,8 @@
     }
 }
 
-- (AbstractPost *)createRevision {
+- (AbstractPost *)createRevision
+{
     if ([self isRevision]) {
         DDLogInfo(@"!!! Attempted to create a revision of a revision");
         return self;
@@ -164,7 +175,8 @@
     return post;
 }
 
-- (void)deleteRevision {
+- (void)deleteRevision
+{
     if (self.revision) {
         [self.managedObjectContext performBlock:^{
             [self.managedObjectContext deleteObject:self.revision];
@@ -173,37 +185,44 @@
     }
 }
 
-- (void)applyRevision {
+- (void)applyRevision
+{
     if ([self isOriginal]) {
         [self cloneFrom:self.revision];
         self.isFeaturedImageChanged = self.revision.isFeaturedImageChanged;
     }
 }
 
-- (void)updateRevision {
+- (void)updateRevision
+{
     if ([self isRevision]) {
         [self cloneFrom:self.original];
         self.isFeaturedImageChanged = self.original.isFeaturedImageChanged;
     }
 }
 
-- (BOOL)isRevision {
+- (BOOL)isRevision
+{
     return (![self isOriginal]);
 }
 
-- (BOOL)isOriginal {
+- (BOOL)isOriginal
+{
     return ([self original] == nil);
 }
 
-- (AbstractPost *)revision {
+- (AbstractPost *)revision
+{
     return [self primitiveValueForKey:@"revision"];
 }
 
-- (AbstractPost *)original {
+- (AbstractPost *)original
+{
     return [self primitiveValueForKey:@"original"];
 }
 
-- (BOOL)hasChanged {
+- (BOOL)hasChanged
+{
     if (![self isRevision]) {
         return NO;
     }
@@ -251,7 +270,8 @@
     return NO;
 }
 
-- (BOOL)hasSiteSpecificChanges {
+- (BOOL)hasSiteSpecificChanges
+{
     if (![self isRevision]) {
         return NO;
     }
@@ -319,7 +339,8 @@
     return NO;
 }
 
-- (void)findComments {
+- (void)findComments
+{
     NSSet *comments = [self.blog.comments filteredSetUsingPredicate:
                        [NSPredicate predicateWithFormat:@"(postID == %@) AND (post == NULL)", self.postID]];
     if ([comments count] > 0) {
@@ -327,22 +348,26 @@
     }
 }
 
-- (void)setFeaturedImage:(Media *)featuredImage {
+- (void)setFeaturedImage:(Media *)featuredImage
+{
     // Implement in subclasses.
 }
 
-- (Media *)featuredImage {
+- (Media *)featuredImage
+{
     // Imlplement in subclasses
     return nil;
 }
 
 #pragma mark - WPContentViewProvider protocol
 
-- (NSString *)blogNameForDisplay {
+- (NSString *)blogNameForDisplay
+{
     return self.blog.blogName;
 }
 
-- (NSURL *)avatarURLForDisplay {
+- (NSURL *)avatarURLForDisplay
+{
     return [NSURL URLWithString:self.blog.blavatarUrl];
 }
 

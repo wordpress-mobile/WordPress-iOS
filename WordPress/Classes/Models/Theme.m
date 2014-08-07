@@ -21,7 +21,10 @@ static NSDateFormatter *dateFormatter;
 @dynamic previewUrl;
 @dynamic blog;
 
-+ (Theme *)createOrUpdateThemeFromDictionary:(NSDictionary *)themeInfo withBlog:(Blog*)blog withContext:(NSManagedObjectContext *)context {
++ (Theme *)createOrUpdateThemeFromDictionary:(NSDictionary *)themeInfo
+                                    withBlog:(Blog*)blog
+                                 withContext:(NSManagedObjectContext *)context
+{
     Blog *contextBlog = (Blog*)[context objectWithID:blog.objectID];
 
     Theme *theme;
@@ -54,11 +57,13 @@ static NSDateFormatter *dateFormatter;
     return theme;
 }
 
-- (BOOL)isCurrentTheme {
+- (BOOL)isCurrentTheme
+{
     return [self.blog.currentThemeId isEqualToString:self.themeId];
 }
 
-- (BOOL)isPremium {
+- (BOOL)isPremium
+{
     return [self.premium isEqualToNumber:@1];
 }
 
@@ -66,7 +71,8 @@ static NSDateFormatter *dateFormatter;
 
 @implementation Theme (PublicAPI)
 
-+ (void)fetchAndInsertThemesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure {
++ (void)fetchAndInsertThemesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
@@ -103,7 +109,8 @@ static NSDateFormatter *dateFormatter;
     }];
 }
 
-+ (void)fetchCurrentThemeForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure {
++ (void)fetchCurrentThemeForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
@@ -123,7 +130,8 @@ static NSDateFormatter *dateFormatter;
     }];
 }
 
-- (void)activateThemeWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)activateThemeWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 

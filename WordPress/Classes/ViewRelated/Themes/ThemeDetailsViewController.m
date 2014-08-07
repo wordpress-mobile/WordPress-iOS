@@ -28,7 +28,8 @@
 
 @implementation ThemeDetailsViewController
 
-- (id)initWithTheme:(Theme *)theme {
+- (id)initWithTheme:(Theme *)theme
+{
     self = [super init];
     if (self) {
         _theme = theme;
@@ -83,7 +84,8 @@
     } failure:nil];
 }
 
-- (void)viewDidLayoutSubviews {
+- (void)viewDidLayoutSubviews
+{
     self.livePreviewButton.frame = (CGRect) {
         .origin = CGPointMake(_livePreviewButton.frame.origin.x, CGRectGetMaxY(_screenshot.frame) + 7.0f),
         .size = _livePreviewButton.frame.size
@@ -107,7 +109,8 @@
     ((UIScrollView*)self.view).contentSize = CGSizeMake(self.view.frame.size.width, CGRectGetMaxY(_infoView.frame));
 }
 
-- (void)setupInfoView {
+- (void)setupInfoView
+{
     UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake(IS_IPAD ? 0 : 10, CGRectGetMaxY(_themeControlsView.frame), _themeControlsView.frame.size.width - (IS_IPAD ? 0 : 20), 0)];
     _infoView = infoView;
 
@@ -155,7 +158,8 @@
     [self.view addSubview:_infoView];
 }
 
-- (NSString *)formattedTags {
+- (NSString *)formattedTags
+{
     NSMutableArray *formattedTags = [NSMutableArray array];
     [self.theme.tags enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL *stop) {
         obj = [obj stringByReplacingOccurrencesOfString:@"-" withString:@" "];
@@ -173,14 +177,16 @@
     self.screenshot.image = nil;
 }
 
-- (void)showViewSite {
+- (void)showViewSite
+{
     // Remove activate theme button, and live preview becomes the 'View Site' button
     [self.livePreviewButton setTitle:NSLocalizedString(@"View Site", @"") forState:UIControlStateNormal];
     self.livePreviewButton.center = CGPointMake(self.screenshot.center.x, self.livePreviewButton.center.y);
     self.activateButton.alpha = 0;
 }
 
-- (void)showAsCurrentTheme {
+- (void)showAsCurrentTheme
+{
     UILabel *currentTheme = [[UILabel alloc] init];
     _currentTheme = currentTheme;
     _currentTheme.text = NSLocalizedString(@"Current Theme", @"Denote a theme as the current");
@@ -204,7 +210,8 @@
     [self showViewSite];
 }
 
-- (void)showAsPremiumTheme {
+- (void)showAsPremiumTheme
+{
     UIImageView *premiumIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"theme-browse-premium"]];
     premiumIcon.frame = (CGRect) {
         .origin = CGPointMake(_screenshot.frame.size.width - premiumIcon.frame.size.width, 0),
@@ -213,7 +220,8 @@
     [_screenshot addSubview:premiumIcon];
 }
 
-- (IBAction)livePreviewPressed:(id)sender {
+- (IBAction)livePreviewPressed:(id)sender
+{
     // Live preview URL yields the same result as 'view current site'.
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
@@ -227,7 +235,8 @@
     [self.navigationController pushViewController:livePreviewController animated:YES];
 }
 
-- (IBAction)activatePressed:(id)sender {
+- (IBAction)activatePressed:(id)sender
+{
     __block UIActivityIndicatorView *loading = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [loading startAnimating];
     loading.center = CGPointMake(self.activateButton.bounds.size.width/2, self.activateButton.bounds.size.height/2);

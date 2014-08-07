@@ -30,7 +30,8 @@ static NSString *const Ellipsis =  @"\u2026";
             ];
 }
 
-- (NSMutableDictionary *)dictionaryFromQueryString {
+- (NSMutableDictionary *)dictionaryFromQueryString
+{
     if (!self) {
         return nil;
     }
@@ -56,7 +57,8 @@ static NSString *const Ellipsis =  @"\u2026";
     return result;
 }
 
-- (NSString *)stringByReplacingHTMLEmoticonsWithEmoji {
+- (NSString *)stringByReplacingHTMLEmoticonsWithEmoji
+{
     NSMutableString *result = [NSMutableString stringWithString:self];
 
     NSDictionary *replacements = @{
@@ -101,11 +103,13 @@ static NSString *const Ellipsis =  @"\u2026";
 /*
  * Uses a RegEx to strip all HTML tags from a string and unencode entites
  */
-- (NSString *)stringByStrippingHTML {
+- (NSString *)stringByStrippingHTML
+{
     return [self stringByReplacingOccurrencesOfString:@"<[^>]+>" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, self.length)];
 }
 
-- (NSString *)stringByRemovingScriptsAndStrippingHTML {
+- (NSString *)stringByRemovingScriptsAndStrippingHTML
+{
     // Let's Cache the RegEx
     static NSRegularExpression *regex;
     static dispatch_once_t onceToken;
@@ -126,8 +130,8 @@ static NSString *const Ellipsis =  @"\u2026";
 
 // A method to truncate a string at a predetermined length and append ellipsis to the end
 
-- (NSString *)stringByEllipsizingWithMaxLength:(NSInteger)lengthlimit preserveWords:(BOOL)preserveWords{
-
+- (NSString *)stringByEllipsizingWithMaxLength:(NSInteger)lengthlimit preserveWords:(BOOL)preserveWords
+{
     NSInteger currentLength = [self length];
     NSString *result = @"";
     NSString *temp = @"";

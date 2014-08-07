@@ -60,15 +60,18 @@
     return self;
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     [self removeUploadStatusObservers];
 }
 
-- (void)setHideCheckbox:(BOOL)hideCheckbox {
+- (void)setHideCheckbox:(BOOL)hideCheckbox
+{
     _checkbox.hidden = hideCheckbox;
 }
 
-- (void)setIsSelected:(BOOL)isSelected {
+- (void)setIsSelected:(BOOL)isSelected
+{
     _isSelected = isSelected;
 
     if (_isSelected) {
@@ -78,7 +81,8 @@
     }
 }
 
-- (void)checkboxPressed {
+- (void)checkboxPressed
+{
     self.isSelected = !_isSelected;
     if (_isSelected) {
         [_delegate mediaCellSelected:self.media];
@@ -87,7 +91,8 @@
     }
 }
 
-- (void)prepareForReuse {
+- (void)prepareForReuse
+{
     self.thumbnail.image = nil;
     self.isSelected = NO;
     if (!_thumbnail.image) {
@@ -100,18 +105,24 @@
 
 #pragma mark - KVO
 
-- (void)addUploadStatusObservers {
+- (void)addUploadStatusObservers
+{
     [self updateUploadStatusOverlay];
     [_media addObserver:self forKeyPath:@"progress" options:NSKeyValueObservingOptionNew context:0];
     [_media addObserver:self forKeyPath:@"remoteStatus" options:NSKeyValueObservingOptionNew context:0];
 }
 
-- (void)removeUploadStatusObservers {
+- (void)removeUploadStatusObservers
+{
     [_media removeObserver:self forKeyPath:@"progress"];
     [_media removeObserver:self forKeyPath:@"remoteStatus"];
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
+{
     _title.text = [self titleForMedia];
 
     if ([keyPath isEqualToString:@"remoteStatus"]) {
@@ -119,7 +130,8 @@
     }
 }
 
-- (void)setMedia:(Media *)media {
+- (void)setMedia:(Media *)media
+{
     _media = media;
 
     _title.text = [self titleForMedia];
@@ -136,7 +148,8 @@
     [self addUploadStatusObservers];
 }
 
-- (void)loadThumbnail {
+- (void)loadThumbnail
+{
     // TODO: Video thumbnails are not available from the API.
     if (_media.mediaType == MediaTypeImage && _media.remoteURL && _media.thumbnail.length == 0) {
         [[WPImageSource sharedSource] downloadThumbnailForMedia:_media success:^(NSNumber *mediaId){
@@ -150,7 +163,8 @@
     }
 }
 
-- (void)updateUploadStatusOverlay {
+- (void)updateUploadStatusOverlay
+{
     [_uploadStatusOverlay removeFromSuperview];
 
     if (_media.remoteStatus == MediaRemoteStatusPushing || _media.remoteStatus == MediaRemoteStatusFailed) {
@@ -185,7 +199,8 @@
     }
 }
 
-- (NSString *)titleForMedia {
+- (NSString *)titleForMedia
+{
     if (_media.remoteStatus == MediaRemoteStatusPushing) {
         NSString *title = NSLocalizedString(@"Processing...", @"Uploading message displayed when an image has finished uploading.");
         if (_media.progress < 1.0f) {
@@ -240,7 +255,10 @@
 
 @implementation WPImageSource (Media)
 
-- (void)downloadThumbnailForMedia:(Media *)media success:(void (^)(NSNumber *mediaId))success failure:(void (^)(NSError *))failure {
+- (void)downloadThumbnailForMedia:(Media *)media
+                          success:(void (^)(NSNumber *mediaId))success
+                          failure:(void (^)(NSError *))failure
+{
     void (^thumbDownloadedSuccess)(UIImage *) = ^(UIImage *image) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             UIImage *thumbnail = image;

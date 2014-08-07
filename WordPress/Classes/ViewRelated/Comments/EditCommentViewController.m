@@ -14,12 +14,14 @@
 
 @synthesize commentViewController, comment, hasChanges, textViewText, textView, isTransitioning, isEditing;
 
-- (void)dealloc {
+- (void)dealloc
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
 
@@ -44,7 +46,8 @@
     self.hasChanges = NO;
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     DDLogMethod();
     [super viewWillAppear:animated];
 
@@ -58,19 +61,22 @@
     self.isEditing = YES;
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     DDLogMethod();
     [super viewWillDisappear:animated];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
 #pragma mark -
 #pragma mark KeyboardNotification Methods
 
-- (void)handleKeyboardDidShow:(NSNotification *)notification {
+- (void)handleKeyboardDidShow:(NSNotification *)notification
+{
     NSDictionary *info = notification.userInfo;
     _keyboardFrame = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     _keyboardFrame = [self.view convertRect:_keyboardFrame fromView:self.view.window];
@@ -82,7 +88,8 @@
     }];
 }
 
-- (void)handleKeyboardWillHide:(NSNotification *)notification {
+- (void)handleKeyboardWillHide:(NSNotification *)notification
+{
     NSDictionary *info = notification.userInfo;
     float animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     [UIView animateWithDuration:animationDuration animations:^{
@@ -95,7 +102,8 @@
 #pragma mark -
 #pragma mark Helper Methods
 
-- (void)endTextEnteringButtonAction:(id)sender {
+- (void)endTextEnteringButtonAction:(id)sender
+{
     [textView resignFirstResponder];
     if (IS_IPAD == NO) {
         UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
@@ -114,7 +122,8 @@
 #pragma mark -
 #pragma mark Text View Delegate Methods
 
-- (void)textViewDidBeginEditing:(UITextView *)aTextView {
+- (void)textViewDidBeginEditing:(UITextView *)aTextView
+{
     if (IS_IPAD == NO) {
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"")
                                                                                  style:[WPStyleGuide barButtonStyleForDone]
@@ -124,7 +133,8 @@
     self.isEditing = YES;
 }
 
-- (void)textViewDidEndEditing:(UITextView *)aTextView {
+- (void)textViewDidEndEditing:(UITextView *)aTextView
+{
     if (![self.textView.text isEqualToString:textViewText]) {
         self.hasChanges = YES;
     }
@@ -140,7 +150,8 @@
 #pragma mark -
 #pragma mark Comment Handling Methods
 
-- (void)initiateSaveCommentReply:(id)sender {
+- (void)initiateSaveCommentReply:(id)sender
+{
     [self endTextEnteringButtonAction: sender];
     if (self.hasChanges == NO) {
         [commentViewController cancelView:self];
@@ -168,7 +179,8 @@
 #pragma mark -
 #pragma mark Button Override Methods
 
-- (void)cancelView:(id)sender {
+- (void)cancelView:(id)sender
+{
     if (![self.textView.text isEqualToString:self.textViewText]) {
         self.hasChanges = YES;
     }
