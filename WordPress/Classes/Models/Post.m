@@ -38,7 +38,8 @@
 
 #pragma mark - NSManagedObject subclass methods
 
-- (void)didTurnIntoFault {
+- (void)didTurnIntoFault
+{
     [super didTurnIntoFault];
 
     self.specialType = nil;
@@ -46,11 +47,13 @@
 
 #pragma mark -
 
-+ (NSString *const)remoteUniqueIdentifier {
++ (NSString *const)remoteUniqueIdentifier
+{
     return @"postid";
 }
 
-- (void)updateFromDictionary:(NSDictionary *)postInfo {
+- (void)updateFromDictionary:(NSDictionary *)postInfo
+{
     self.postTitle      = [postInfo objectForKey:@"title"];
     //keep attention: getPosts and getPost returning IDs in different types
     if ([[postInfo objectForKey:@"postid"] isKindOfClass:[NSString class]]) {
@@ -137,11 +140,13 @@
     }
 }
 
-- (NSString *)categoriesText {
+- (NSString *)categoriesText
+{
     return [[[self.categories valueForKey:@"categoryName"] allObjects] componentsJoinedByString:@", "];
 }
 
-- (NSString *)postFormatText {
+- (NSString *)postFormatText
+{
     NSDictionary *allFormats = self.blog.postFormats;
     NSString *formatText = self.postFormat;
     if ([allFormats objectForKey:self.postFormat]) {
@@ -153,7 +158,8 @@
     return formatText;
 }
 
-- (void)setPostFormatText:(NSString *)postFormatText {
+- (void)setPostFormatText:(NSString *)postFormatText
+{
     __block NSString *format = nil;
     [self.blog.postFormats enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         if ([obj isEqual:postFormatText]) {
@@ -164,7 +170,8 @@
     self.postFormat = format;
 }
 
-- (void)setCategoriesFromNames:(NSArray *)categoryNames {
+- (void)setCategoriesFromNames:(NSArray *)categoryNames
+{
     [self.categories removeAllObjects];
     NSMutableSet *categories = nil;
 
@@ -184,7 +191,8 @@
     }
 }
 
-- (BOOL)hasChanged {
+- (BOOL)hasChanged
+{
     if ([super hasChanged]) {
         return YES;
     }
@@ -209,7 +217,8 @@
     return NO;
 }
 
-- (BOOL)hasSiteSpecificChanges {
+- (BOOL)hasSiteSpecificChanges
+{
     if ([super hasSiteSpecificChanges]) {
         return YES;
     }
@@ -246,7 +255,8 @@
 }
 
 #pragma mark - QuickPhoto
-- (void)mediaDidUploadSuccessfully:(NSNotification *)notification {
+- (void)mediaDidUploadSuccessfully:(NSNotification *)notification
+{
     Media *media = (Media *)[notification object];
     [media save];
 
@@ -261,7 +271,8 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)mediaUploadFailed:(NSNotification *)notification {
+- (void)mediaUploadFailed:(NSNotification *)notification
+{
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick Photo Failed", @"")
                                                     message:NSLocalizedString(@"Sorry, the photo upload failed. The post has been saved as a Local Draft.", @"")
                                                    delegate:self
@@ -272,7 +283,8 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     if ([self hasRemote]) {
         [self editPostWithSuccess:success failure:failure];
     } else {
@@ -280,7 +292,8 @@
     }
 }
 
-- (Media *)featuredImage {
+- (Media *)featuredImage
+{
     if (!self.post_thumbnail) {
         return nil;
     }
@@ -305,7 +318,8 @@
     return [arr objectAtIndex:index];
 }
 
-- (void)setFeaturedImage:(Media *)featuredImage {
+- (void)setFeaturedImage:(Media *)featuredImage
+{
     self.post_thumbnail = featuredImage.mediaID;
 }
 
@@ -313,7 +327,8 @@
 
 @implementation Post (WordPressApi)
 
-- (NSDictionary *)XMLRPCDictionary {
+- (NSDictionary *)XMLRPCDictionary
+{
     NSMutableDictionary *postParams = [NSMutableDictionary dictionaryWithDictionary:[super XMLRPCDictionary]];
 
     [postParams setValueIfNotNil:self.postFormat forKey:@"wp_post_format"];
@@ -380,7 +395,8 @@
     return postParams;
 }
 
-- (void)postPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)postPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     DDLogMethod();
     // XML-RPC doesn't like empty post thumbnail ID's for new posts, but it's required to delete them on edit. see #1395 and #1507
     NSMutableDictionary *xmlrpcDictionary = [NSMutableDictionary dictionaryWithDictionary:[self XMLRPCDictionary]];
@@ -431,7 +447,8 @@
     [self.blog.api enqueueHTTPRequestOperation:operation];
 }
 
-- (void)getPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)getPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     DDLogMethod();
     NSArray *parameters = @[self.postID, self.blog.username, self.blog.password];
     [self.blog.api callMethod:@"metaWeblog.getPost"
@@ -451,7 +468,8 @@
                       }];
 }
 
-- (void)editPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)editPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     DDLogMethod();
     if (self.postID == nil) {
         if (failure) {
@@ -493,7 +511,8 @@
                       }];
 }
 
-- (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     BOOL remote = [self hasRemote];
     if (remote) {
         NSArray *parameters = @[@"unused", self.postID, self.blog.username, self.blog.password];

@@ -32,7 +32,8 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
 static NSString *_lastAuthedName = nil;
 
-+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
     NSString *blogID = [coder decodeObjectForKey:WPStatsWebBlogKey];
     if (!blogID) {
         return nil;
@@ -56,11 +57,13 @@ static NSString *_lastAuthedName = nil;
     return viewController;
 }
 
-+ (void)load {
++ (void)load
+{
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAccountChangeNotification:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 }
 
-+ (void)handleAccountChangeNotification:(NSNotification *)notification {
++ (void)handleAccountChangeNotification:(NSNotification *)notification
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
@@ -68,15 +71,18 @@ static NSString *_lastAuthedName = nil;
     [self setLastAuthedName:[defaultAccount username]];
 }
 
-+ (NSString *)lastAuthedName {
++ (NSString *)lastAuthedName
+{
     return _lastAuthedName;
 }
 
-+ (void)setLastAuthedName:(NSString *)str {
++ (void)setLastAuthedName:(NSString *)str
+{
     _lastAuthedName = [str copy];
 }
 
-- (id)init {
+- (id)init
+{
     self = [super init];
 
     if (self) {
@@ -87,7 +93,8 @@ static NSString *_lastAuthedName = nil;
     return self;
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     DDLogMethod();
     if (authRequest && [authRequest isExecuting]) {
         [authRequest cancel];
@@ -95,12 +102,14 @@ static NSString *_lastAuthedName = nil;
     retryAlertView.delegate = nil;
 }
 
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
+{
     [coder encodeObject:[[self.blog.objectID URIRepresentation] absoluteString] forKey:WPStatsWebBlogKey];
     [super encodeRestorableStateWithCoder:coder];
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = NSLocalizedString(@"Stats", nil);
 
@@ -113,7 +122,8 @@ static NSString *_lastAuthedName = nil;
     }
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated
+{
     [super viewDidAppear:animated];
     /*
     [self.webView stringByEvaluatingJavaScriptFromString:
@@ -135,14 +145,16 @@ static NSString *_lastAuthedName = nil;
 #pragma mark -
 #pragma mark Instance Methods
 
-- (void)clearCookies {
+- (void)clearCookies
+{
     NSArray *arr = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"http://wordpress.com"]];
     for(NSHTTPCookie *cookie in arr){
         [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
     }
 }
 
-- (void)showAuthFailed {
+- (void)showAuthFailed
+{
     DDLogError(@"Auth Failed, showing login screen");
     [self showBlogSettings];
     NSString *title;
@@ -157,7 +169,8 @@ static NSString *_lastAuthedName = nil;
     [WPError showAlertWithTitle:title message:message];
 }
 
-- (void)showBlogSettings {
+- (void)showBlogSettings
+{
     [self.webView hideRefreshingState];
 
     UINavigationController *navController = nil;
@@ -190,7 +203,8 @@ static NSString *_lastAuthedName = nil;
     }
 }
 
-- (void)setBlog:(Blog *)aBlog {
+- (void)setBlog:(Blog *)aBlog
+{
     if ([blog isEqual:aBlog]) {
         return;
     }
@@ -216,7 +230,8 @@ static NSString *_lastAuthedName = nil;
     }
 }
 
-- (void)initStats {
+- (void)initStats
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
     if ([blog isWPcom]) {
@@ -245,7 +260,8 @@ static NSString *_lastAuthedName = nil;
     }
 }
 
-- (void)promptForCredentials {
+- (void)promptForCredentials
+{
     if (!self.view.window) {
         promptCredentialsWhenViewAppears = YES;
         return;
@@ -254,7 +270,8 @@ static NSString *_lastAuthedName = nil;
     [self showBlogSettings];
 }
 
-- (void)showRetryAlertView:(StatsWebViewController *)statsWebViewController {
+- (void)showRetryAlertView:(StatsWebViewController *)statsWebViewController
+{
     if (retryAlertView) {
         return;
     }
@@ -267,7 +284,8 @@ static NSString *_lastAuthedName = nil;
     [retryAlertView show];
 }
 
-- (void)authStats {
+- (void)authStats
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     if (authed) {
         [self loadStats];
@@ -348,7 +366,8 @@ static NSString *_lastAuthedName = nil;
     [webView showRefreshingState];
 }
 
-- (void)loadStats {
+- (void)loadStats
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     if (!self.isViewLoaded || !self.view.window) {
         loadStatsWhenViewAppears = YES;
@@ -384,14 +403,16 @@ static NSString *_lastAuthedName = nil;
     [webView loadRequest:mRequest];
 }
 
-- (void)handleRefreshedWithOutValidRequest:(NSNotification *)notification {
+- (void)handleRefreshedWithOutValidRequest:(NSNotification *)notification
+{
     [self initStats];
 }
 
 #pragma mark -
 #pragma mark UIAlertView Delegate Methods
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
     if (buttonIndex > 0) { // retry
         [self loadStats];
     }
@@ -400,7 +421,8 @@ static NSString *_lastAuthedName = nil;
 #pragma mark -
 #pragma mark JetpackSettingsViewController Delegate Methods
 
-- (void)controllerDidDismiss:(JetpackSettingsViewController *)controller cancelled:(BOOL)cancelled {
+- (void)controllerDidDismiss:(JetpackSettingsViewController *)controller cancelled:(BOOL)cancelled
+{
     if (!cancelled) {
         [self performSelector:@selector(initStats) withObject:nil afterDelay:0.5f];
     }
@@ -409,8 +431,10 @@ static NSString *_lastAuthedName = nil;
 #pragma mark -
 #pragma mark WPWebView Delegate Methods
 
-- (BOOL)wpWebView:(WPWebView *)wpWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-
+- (BOOL)wpWebView:(WPWebView *)wpWebView
+        shouldStartLoadWithRequest:(NSURLRequest *)request
+    navigationType:(UIWebViewNavigationType)navigationType
+{
     DDLogInfo(@"The following URL was requested: %@", [request.URL absoluteString]);
 
     // On an ajax powered page like stats that manage state via the url hash, if we spawn a new controller when tapping on a link
@@ -439,14 +463,16 @@ static NSString *_lastAuthedName = nil;
     return YES;
 }
 
-- (void)webViewDidFinishLoad:(WPWebView *)wpWebView {
+- (void)webViewDidFinishLoad:(WPWebView *)wpWebView
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
     // Override super so we do not change our title.
     self.title = @"Stats";
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
     DDLogInfo(@"%@ %@: %@", self, NSStringFromSelector(_cmd), error);
     if (([error code] != -999) && [error code] != 102) {
         [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:error.localizedDescription];

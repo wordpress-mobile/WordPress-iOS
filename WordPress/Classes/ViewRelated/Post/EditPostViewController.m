@@ -153,7 +153,8 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
 #pragma mark - View Setup
 
-- (void)setupNavbar {
+- (void)setupNavbar
+{
     if (self.navigationItem.leftBarButtonItem == nil) {
         UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"Label for the button to close the post editor.") style:UIBarButtonItemStylePlain target:self action:@selector(cancelEditing)];
         self.navigationItem.leftBarButtonItem = cancelButton;
@@ -388,7 +389,8 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
 #pragma mark - Instance Methods
 
-- (void)geotagNewPost {
+- (void)geotagNewPost
+{
     if (EditPostViewControllerModeNewPost != self.editMode) {
         return;
     }
@@ -845,7 +847,10 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
 #pragma mark - UIPopoverControllerDelegate methods
 
-- (void)popoverController:(UIPopoverController *)popoverController willRepositionPopoverToRect:(inout CGRect *)rect inView:(inout UIView **)view {
+- (void)popoverController:(UIPopoverController *)popoverController
+    willRepositionPopoverToRect:(inout CGRect *)rect
+                   inView:(inout UIView **)view
+{
     if (popoverController == self.blogSelectorPopover) {
         CGRect titleRect = self.navigationItem.titleView.frame;
         titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
@@ -857,7 +862,8 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
 #pragma mark - AlertView Delegate Methods
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
     if (alertView.tag == EditPostViewControllerAlertTagFailedMedia) {
         if (buttonIndex == 1) {
             DDLogInfo(@"Saving post even after some media failed to upload");
@@ -878,15 +884,18 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
 #pragma mark - ActionSheet Delegate Methods
 
-- (void)willPresentActionSheet:(UIActionSheet *)actionSheet {
+- (void)willPresentActionSheet:(UIActionSheet *)actionSheet
+{
     _currentActionSheet = actionSheet;
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
     _currentActionSheet = nil;
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
     if ([actionSheet tag] == 201) {
         // Discard
         if (buttonIndex == 0) {
@@ -991,7 +1000,11 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
 #pragma mark - KVO
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
+{
     if ([object isEqual:_mediaUploadQueue]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self setupNavbar];

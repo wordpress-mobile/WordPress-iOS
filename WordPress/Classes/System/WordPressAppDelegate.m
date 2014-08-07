@@ -387,7 +387,8 @@ NSInteger const kMeTabIndex = 2;
     return blogCount == 0 && !defaultAccount;
 }
 
-- (void)customizeAppearance {
+- (void)customizeAppearance
+{
     UIColor *defaultTintColor = self.window.tintColor;
     self.window.tintColor = [WPStyleGuide wordPressBlue];
 
@@ -489,7 +490,8 @@ NSInteger const kMeTabIndex = 2;
     return _tabBarController;
 }
 
-- (void)showTabForIndex: (NSInteger)tabIndex {
+- (void)showTabForIndex: (NSInteger)tabIndex
+{
     [self.tabBarController setSelectedIndex:tabIndex];
 }
 
@@ -780,7 +782,8 @@ NSInteger const kMeTabIndex = 2;
     }];
 }
 
-- (void)setupImageResizeSettings {
+- (void)setupImageResizeSettings
+{
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
     NSString *oldKey = @"media_resize_preference";

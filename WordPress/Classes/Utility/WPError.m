@@ -16,7 +16,8 @@ NSInteger const SupportButtonIndex = 0;
 
 @implementation WPError
 
-+ (instancetype)internalInstance {
++ (instancetype)internalInstance
+{
     static WPError *instance;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -25,11 +26,13 @@ NSInteger const SupportButtonIndex = 0;
     return instance;
 }
 
-+ (void)showNetworkingAlertWithError:(NSError *)error {
++ (void)showNetworkingAlertWithError:(NSError *)error
+{
     [self showNetworkingAlertWithError:error title:nil];
 }
 
-+ (void)showNetworkingAlertWithError:(NSError *)error title:(NSString *)title {
++ (void)showNetworkingAlertWithError:(NSError *)error title:(NSString *)title
+{
     NSString *message = nil;
     NSString *customTitle = nil;
 
@@ -100,7 +103,8 @@ NSInteger const SupportButtonIndex = 0;
     [self showAlertWithTitle:title message:message];
 }
 
-+ (void)showXMLRPCErrorAlert:(NSError *)error {
++ (void)showXMLRPCErrorAlert:(NSError *)error
+{
     NSString *cleanedErrorMsg = [error localizedDescription];
 
     //org.wordpress.iphone --> XML-RPC errors
@@ -121,15 +125,18 @@ NSInteger const SupportButtonIndex = 0;
     [self showAlertWithTitle:NSLocalizedString(@"Error", @"Generic popup title for any type of error.") message:cleanedErrorMsg];
 }
 
-+ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message {
++ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message
+{
     [self showAlertWithTitle:title message:message withSupportButton:YES okPressedBlock:nil];
 }
 
-+ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message withSupportButton:(BOOL)showSupport {
++ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message withSupportButton:(BOOL)showSupport
+{
     [self showAlertWithTitle:title message:message withSupportButton:showSupport okPressedBlock:nil];
 }
 
-+ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message withSupportButton:(BOOL)showSupport okPressedBlock:(void (^)(UIAlertView *))okBlock {
++ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message withSupportButton:(BOOL)showSupport okPressedBlock:(void (^)(UIAlertView *))okBlock
+{
     if ([WPError internalInstance].alertShowing) {
         return;
     }
@@ -148,7 +155,8 @@ NSInteger const SupportButtonIndex = 0;
 
 #pragma mark - UIAlertViewDelegate
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
     if (alertView.cancelButtonIndex == buttonIndex) {
         [SupportViewController showFromTabBar];
     } else if (_okPressedBlock) {

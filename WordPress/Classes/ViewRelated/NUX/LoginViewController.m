@@ -110,7 +110,8 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     [self layoutControls];
 }
 
-- (NSUInteger)supportedInterfaceOrientations {
+- (NSUInteger)supportedInterfaceOrientations
+{
     if (IS_IPHONE) {
         return UIInterfaceOrientationMaskPortrait;
     }
@@ -126,7 +127,8 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 #pragma mark - UITextField delegate methods
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
     if (textField == _usernameText) {
         [_passwordText becomeFirstResponder];
     } else if (textField == _passwordText) {
@@ -333,7 +335,8 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     [self signIn];
 }
 
-- (void)toggleSignInFormAction:(id)sender {
+- (void)toggleSignInFormAction:(id)sender
+{
     _userIsDotCom = !_userIsDotCom;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
@@ -346,13 +349,15 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
                      }];
 }
 
-- (void)cancelButtonAction:(id)sender {
+- (void)cancelButtonAction:(id)sender
+{
     if (self.dismissBlock) {
         self.dismissBlock();
     }
 }
 
-- (void)forgotPassword:(id)sender {
+- (void)forgotPassword:(id)sender
+{
     NSString *baseUrl = ForgotPasswordDotComBaseUrl;
     if (!_userIsDotCom) {
         baseUrl = [self getSiteUrl];
@@ -807,7 +812,8 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     [WPError showAlertWithTitle:NSLocalizedString(@"Self-hosted site?", nil) message:NSLocalizedString(@"Please enter the URL of your WordPress site.", nil) withSupportButton:NO];
 }
 
-- (void)setAuthenticating:(BOOL)authenticating withStatusMessage:(NSString *)status {
+- (void)setAuthenticating:(BOOL)authenticating withStatusMessage:(NSString *)status
+{
 
     _statusLabel.hidden = !(status.length > 0);
     _statusLabel.text = status;
@@ -882,7 +888,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
                              }];
 }
 
-- (void)createWordPressComAccountForUsername:(NSString *)username password:(NSString *)password authToken:(NSString *)authToken
+- (void)createWordPressComAccountForUsername:(NSString *)username
+                                    password:(NSString *)password
+                                   authToken:(NSString *)authToken
 {
     [self setAuthenticating:YES withStatusMessage:NSLocalizedString(@"Getting account information", nil)];
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -903,7 +911,10 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
                                 }];
 }
 
-- (void)createSelfHostedAccountAndBlogWithUsername:(NSString *)username password:(NSString *)password xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options
+- (void)createSelfHostedAccountAndBlogWithUsername:(NSString *)username
+                                          password:(NSString *)password
+                                            xmlrpc:(NSString *)xmlrpc
+                                           options:(NSDictionary *)options
 {
     [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSite];
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -965,7 +976,8 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     }
 }
 
-- (void)displayRemoteError:(NSError *)error {
+- (void)displayRemoteError:(NSError *)error
+{
     DDLogError(@"%@", error);
     NSString *message = [error localizedDescription];
     if (![[error domain] isEqualToString:WPXMLRPCFaultErrorDomain]) {
@@ -1052,11 +1064,13 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     }];
 }
 
-- (NSArray *)controlsToMoveForTextEntry {
-
+- (NSArray *)controlsToMoveForTextEntry
+{
     return @[_icon, _usernameText, _passwordText, _siteUrlText, _signInButton, _statusLabel];
 }
-- (NSArray *)controlsToHideForTextEntry {
+
+- (NSArray *)controlsToHideForTextEntry
+{
 
     NSArray *controlsToHide = @[_helpButton, _helpBadge];
 
@@ -1070,7 +1084,8 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 #pragma mark - Helpshift Delegate
 
-- (void)didReceiveNotificationCount:(NSInteger)count {
+- (void)didReceiveNotificationCount:(NSInteger)count
+{
     dispatch_async(dispatch_get_main_queue(), ^{
         if (count > 0) {
             _helpBadge.text = [NSString stringWithFormat:@"%d", count];

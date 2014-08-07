@@ -46,7 +46,8 @@
     [actionButton setFrame:CGRectMake(78.0f, 22.0f, 100.0f, 30.0f)];
 }
 
-- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
+{
     [super setHighlighted:highlighted animated:animated];
     actionButton.highlighted = NO;
 }

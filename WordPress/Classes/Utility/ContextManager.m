@@ -13,7 +13,8 @@ static ContextManager *instance;
 
 @implementation ContextManager
 
-+ (instancetype)sharedInstance {
++ (instancetype)sharedInstance
+{
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         instance = [[ContextManager alloc] init];
@@ -21,13 +22,15 @@ static ContextManager *instance;
     return instance;
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Contexts
 
-- (NSManagedObjectContext *const)newDerivedContext {
+- (NSManagedObjectContext *const)newDerivedContext
+{
     NSManagedObjectContext *derived = [[NSManagedObjectContext alloc]
                                        initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     derived.parentContext = self.mainContext;
@@ -36,7 +39,8 @@ static ContextManager *instance;
     return derived;
 }
 
-- (NSManagedObjectContext *const)mainContext {
+- (NSManagedObjectContext *const)mainContext
+{
     if (_mainContext) {
         return _mainContext;
     }
@@ -47,11 +51,13 @@ static ContextManager *instance;
 
 #pragma mark - Context Saving and Merging
 
-- (void)saveDerivedContext:(NSManagedObjectContext *)context {
+- (void)saveDerivedContext:(NSManagedObjectContext *)context
+{
     [self saveDerivedContext:context withCompletionBlock:nil];
 }
 
-- (void)saveDerivedContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock {
+- (void)saveDerivedContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock
+{
     [context performBlock:^{
         NSError *error;
         if (![context obtainPermanentIDsForObjects:context.insertedObjects.allObjects error:&error]) {
@@ -75,11 +81,13 @@ static ContextManager *instance;
     }];
 }
 
-- (void)saveContext:(NSManagedObjectContext *)context {
+- (void)saveContext:(NSManagedObjectContext *)context
+{
     [self saveContext:context withCompletionBlock:nil];
 }
 
-- (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock {
+- (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock
+{
     // Save derived contexts a little differently
     // TODO - When the service refactor is complete, remove this - calling methods to Services should know
     //        what kind of context it is and call the saveDerivedContext at the end of the work
@@ -107,7 +115,8 @@ static ContextManager *instance;
     }];
 }
 
-- (BOOL)obtainPermanentIDForObject:(NSManagedObject *)managedObject {
+- (BOOL)obtainPermanentIDForObject:(NSManagedObject *)managedObject
+{
     // Failsafe
     if (!managedObject) {
         return NO;
@@ -128,7 +137,8 @@ static ContextManager *instance;
 
 #pragma mark - Setup
 
-- (NSManagedObjectModel *)managedObjectModel {
+- (NSManagedObjectModel *)managedObjectModel
+{
     if (_managedObjectModel) {
         return _managedObjectModel;
     }
@@ -138,7 +148,8 @@ static ContextManager *instance;
     return _managedObjectModel;
 }
 
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
+- (NSPersistentStoreCoordinator *)persistentStoreCoordinator
+{
     if (_persistentStoreCoordinator) {
         return _persistentStoreCoordinator;
     }

@@ -69,7 +69,8 @@
     self.peoplePropertyToIncrement = property;
 }
 
-- (void)setCurrentDateForPeopleProperty:(NSString *)property{
+- (void)setCurrentDateForPeopleProperty:(NSString *)property
+{
     [self setPeopleProperty:property toValue:[NSDate date]];
 }
 

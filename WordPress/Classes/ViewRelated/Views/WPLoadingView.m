@@ -24,8 +24,8 @@
     return self;
 }
 
-- (void)createLoadingView {
-
+- (void)createLoadingView
+{
     self.layer.cornerRadius = 10.0f;
     self.frame = CGRectMake(0, 0, _side, _side);
     self.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.8f];
@@ -49,14 +49,16 @@
     [self addSubview:activityView];
 }
 
-- (void)show {
+- (void)show
+{
     [UIView animateWithDuration:0.3f animations:^{
         [self setHidden:NO];
     } completion:^(BOOL finished) {
     }];
 }
 
-- (void)hide {
+- (void)hide
+{
     [UIView animateWithDuration:0.3f animations:^{
         [self setHidden:YES];
     } completion:^(BOOL finished) {

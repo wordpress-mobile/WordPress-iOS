@@ -27,7 +27,8 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
 
 @implementation ThemeBrowserViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.title = NSLocalizedString(@"Themes", @"Title for Themes browser");
@@ -66,7 +67,8 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
     [WPAnalytics track:WPAnalyticsStatThemesAccessedThemeBrowser];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
 
     if (![_currentTheme.themeId isEqualToString:self.blog.currentThemeId]) {
@@ -76,21 +78,24 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
     }
 }
 
-- (void)viewDidLayoutSubviews {
+- (void)viewDidLayoutSubviews
+{
     self.searchBar.frame = (CGRect) {
         .origin = self.searchBar.frame.origin,
         .size = CGSizeMake(self.view.bounds.size.width, self.searchBar.bounds.size.height)
     };
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 
     self.allThemes = nil;
     self.filteredThemes = nil;
 }
 
-- (NSFetchedResultsController *)resultsController {
+- (NSFetchedResultsController *)resultsController
+{
     if (!_resultsController) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Theme class])];
@@ -107,7 +112,8 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
     return _resultsController;
 }
 
-- (void)currentThemeForBlog {
+- (void)currentThemeForBlog
+{
     NSArray *currentThemeResults = [_allThemes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.themeId == %@", self.blog.currentThemeId]];
     if (currentThemeResults.count == 1) {
         _currentTheme = currentThemeResults[0];
@@ -116,7 +122,8 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
     }
 }
 
-- (void)syncThemesAndCurrentTheme {
+- (void)syncThemesAndCurrentTheme
+{
     void (^failureBlock)(NSError *) = ^(NSError *error) {
         [WPError showNetworkingAlertWithError:error];
         [_refreshHeaderView endRefreshing];
@@ -130,7 +137,8 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
     } failure:failureBlock];
 }
 
-- (void)toggleNoThemesView:(BOOL)show {
+- (void)toggleNoThemesView:(BOOL)show
+{
     if (!show) {
         [_noThemesView removeFromSuperview];
         return;
@@ -142,21 +150,27 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
     }
 }
 
-- (void)removeCurrentThemeFromList {
+- (void)removeCurrentThemeFromList
+{
     _filteredThemes = [_filteredThemes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self != %@", _currentTheme]];
 }
 
 #pragma mark - UICollectionViewDelegate/DataSource
 
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
     return [self.resultsController sections].count;
 }
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
     return _filteredThemes.count + (_currentTheme ? 1 : 0);
 }
 
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView
+           viewForSupplementaryElementOfKind:(NSString *)kind
+                                 atIndexPath:(NSIndexPath *)indexPath
+{
     UICollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:SearchHeaderIdentifier forIndexPath:indexPath];
     if (![self.searchBar isDescendantOfView:view]) {
         [view addSubview:self.searchBar];
@@ -164,7 +178,9 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
     return view;
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
+                  cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
     if (indexPath.item == 0 && _currentTheme) {
         ThemeBrowserCell *current = [collectionView dequeueReusableCellWithReuseIdentifier:ThemeCellIdentifier forIndexPath:indexPath];
         current.theme = _currentTheme;
@@ -178,7 +194,8 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
     return cell;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
     Theme *theme;
     if (indexPath.item == 0 && _currentTheme) {
         theme = _currentTheme;
@@ -193,37 +210,52 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
 
 #pragma mark - Collection view flow layout
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewLayout *)collectionViewLayout
+  sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
     return IS_IPAD ? CGSizeMake(300, 255) : CGSizeMake(272, 234);
 }
 
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+- (CGFloat)collectionView:(UICollectionView *)collectionView
+                   layout:(UICollectionViewLayout *)collectionViewLayout
+           minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+{
     return IS_IPAD ? 20.0f : 7.0f;
 }
 
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+- (CGFloat)collectionView:(UICollectionView *)collectionView
+                   layout:(UICollectionViewLayout *)collectionViewLayout
+           minimumLineSpacingForSectionAtIndex:(NSInteger)section
+{
     return IS_IPAD ? 25.0f : 10.0f;
 }
 
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
+                        layout:(UICollectionViewLayout *)collectionViewLayout
+        insetForSectionAtIndex:(NSInteger)section
+{
     CGFloat iPadInset = UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]) ? 35.0f : 70.0f;
     return IS_IPAD ? UIEdgeInsetsMake(30, iPadInset, 30, iPadInset) : UIEdgeInsetsMake(7, 7, 7, 7);
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
     [self.collectionView performBatchUpdates:nil completion:nil];
 }
 
 #pragma mark - FetchedResultsController
 
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
     _allThemes = controller.fetchedObjects;
     [self applyFilterWithSearchText:_currentSearchText];
 }
 
 #pragma mark - Setters
 
-- (void)setFilteredThemes:(NSArray *)filteredThemes {
+- (void)setFilteredThemes:(NSArray *)filteredThemes
+{
     _filteredThemes = filteredThemes;
 
     [self toggleNoThemesView:(_filteredThemes.count == 0 && !_currentTheme)];
@@ -233,14 +265,16 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
     [self applyCurrentSort];
 }
 
-- (void)applyCurrentSort {
+- (void)applyCurrentSort
+{
     NSString *key = [@"self." stringByAppendingString:_currentResultsSort];
     BOOL ascending = ![_currentResultsSort isEqualToString:_resultSortAttributes[1]];
     _filteredThemes = [_filteredThemes sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:key ascending:ascending]]];
     [self.collectionView reloadData];
 }
 
-- (void)sortPressed {
+- (void)sortPressed
+{
     if (_showingSortOptions) {
         return;
     }
@@ -253,12 +287,14 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
     _showingSortOptions = YES;
 }
 
-- (void)selectedSortIndex:(NSUInteger)sortIndex {
+- (void)selectedSortIndex:(NSUInteger)sortIndex
+{
     _currentResultsSort = _resultSortAttributes[sortIndex];
     [self applyCurrentSort];
 }
 
-- (void)applyFilterWithSearchText:(NSString *)searchText {
+- (void)applyFilterWithSearchText:(NSString *)searchText
+{
     if ([_currentSearchText isEqualToString:searchText]) {
         return;
     }
@@ -270,14 +306,16 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
     _currentSearchText = searchText;
 }
 
-- (void)clearSearchFilter {
+- (void)clearSearchFilter
+{
     self.filteredThemes = _allThemes;
     _currentSearchText = nil;
 }
 
 #pragma mark - UISearchBarDelegate
 
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
     [searchBar setShowsCancelButton:YES animated:YES];
     UIButton *cancelTapArea = [UIButton buttonWithType:UIButtonTypeCustom];
     cancelTapArea.frame = CGRectMake(0, CGRectGetMaxY(searchBar.frame), self.view.frame.size.width, self.view.bounds.size.height - CGRectGetMaxY(searchBar.frame));
@@ -287,34 +325,39 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
     [self.view addSubview:cancelTapArea];
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
     [self applyFilterWithSearchText:searchBar.text];
     [searchBar setShowsCancelButton:(searchBar.text.length > 0) animated:YES];
     [self closeSearch];
 }
 
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+{
     if (searchBar.text.length == 0) {
         [searchBar setShowsCancelButton:NO animated:YES];
         [self clearSearchFilter];
     }
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
     [self clearSearchFilter];
     searchBar.text = nil;
     [searchBar setShowsCancelButton:NO animated:YES];
     [self closeSearch];
 }
 
-- (void)closeSearch {
+- (void)closeSearch
+{
     [self.searchBar resignFirstResponder];
     [[self.view viewWithTag:10] removeFromSuperview];
 }
 
 #pragma mark - UIRefreshControl
 
-- (void)refreshControlTriggered:(UIRefreshControl*)refreshControl {
+- (void)refreshControlTriggered:(UIRefreshControl*)refreshControl
+{
     if (refreshControl.isRefreshing) {
         [self syncThemesAndCurrentTheme];
     }
@@ -322,7 +365,8 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
 
 #pragma mark - UIActionSheetDelegate
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
     if (buttonIndex < _sortingOptions.count) {
         [self selectedSortIndex:buttonIndex];
     }

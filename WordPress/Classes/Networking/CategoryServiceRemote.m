@@ -3,7 +3,12 @@
 
 @implementation CategoryServiceRemote
 
-- (void)createCategoryWithName:(NSString *)name parentCategoryID:(NSNumber *)parentCategoryID forBlog:(Blog *)blog success:(void (^)(NSNumber *))success failure:(void (^)(NSError *))failure {
+- (void)createCategoryWithName:(NSString *)name
+              parentCategoryID:(NSNumber *)parentCategoryID
+                       forBlog:(Blog *)blog
+                       success:(void (^)(NSNumber *))success
+                       failure:(void (^)(NSError *))failure
+{
     NSDictionary *parameters = @{ @"name" : name ?: [NSNull null],
                                   @"parent_id" : parentCategoryID ?: @0};
 

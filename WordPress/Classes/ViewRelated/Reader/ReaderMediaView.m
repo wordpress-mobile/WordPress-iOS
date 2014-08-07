@@ -5,7 +5,8 @@
 
 #pragma mark - LifeCycle Methods
 
-- (id)initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(CGRect)frame
+{
     self = [super initWithFrame:frame];
     if (self) {
         self.edgeInsets = UIEdgeInsetsZero;
@@ -18,7 +19,8 @@
     return self;
 }
 
-- (void)layoutSubviews {
+- (void)layoutSubviews
+{
     [super layoutSubviews];
 
     CGRect frame = CGRectMake(0.0f, 0.0f, self.frame.size.width, self.frame.size.height);
@@ -35,26 +37,30 @@
 
 #pragma mark - Instance Methods
 
-- (void)setBackgroundColor:(UIColor *)backgroundColor {
+- (void)setBackgroundColor:(UIColor *)backgroundColor
+{
     [_imageView setBackgroundColor:backgroundColor];
 }
 
-- (void)setContentMode:(UIViewContentMode)contentMode {
+- (void)setContentMode:(UIViewContentMode)contentMode
+{
     [super setContentMode:contentMode];
     _imageView.contentMode = contentMode;
 }
 
-- (void)setEdgeInsets:(UIEdgeInsets)edgeInsets {
+- (void)setEdgeInsets:(UIEdgeInsets)edgeInsets
+{
     _edgeInsets = edgeInsets;
     [self setNeedsLayout];
 }
 
-- (UIImage *)image {
+- (UIImage *)image
+{
     return _imageView.image;
 }
 
-- (void)setImage:(UIImage *)image {
-
+- (void)setImage:(UIImage *)image
+{
     BOOL imageIsAnimated = (image.images != nil);
 
     if (imageIsAnimated) {
@@ -77,7 +83,8 @@
     self.isShowingPlaceholder = NO;
 }
 
-- (void)setPlaceholder:(UIImage *)image {
+- (void)setPlaceholder:(UIImage *)image
+{
     _imageView.image = image;
     self.isShowingPlaceholder = YES;
 }
@@ -85,7 +92,8 @@
 - (void)setImageWithURL:(NSURL *)url
        placeholderImage:(UIImage *)image
                 success:(void (^)(ReaderMediaView *))success
-                failure:(void (^)(ReaderMediaView *, NSError *))failure {
+                failure:(void (^)(ReaderMediaView *, NSError *))failure
+{
     if (image) {
         [self setPlaceholder:image];
     }

@@ -3,7 +3,8 @@
 
 @implementation BlogsTableViewCell
 
-- (void) layoutSubviews {
+- (void) layoutSubviews
+{
     [super layoutSubviews];
     CGRect cvf = self.contentView.frame;
 

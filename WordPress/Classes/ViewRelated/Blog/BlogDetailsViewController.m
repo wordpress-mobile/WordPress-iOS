@@ -51,7 +51,8 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 @implementation BlogDetailsViewController
 @synthesize blog = _blog;
 
-+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
     NSString *blogID = [coder decodeObjectForKey:WPBlogDetailsBlogKey];
     if (!blogID) {
         return nil;
@@ -75,7 +76,8 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     return viewController;
 }
 
-- (id)initWithStyle:(UITableViewStyle)style {
+- (id)initWithStyle:(UITableViewStyle)style
+{
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.restorationIdentifier = WPBlogDetailsRestorationID;
@@ -84,12 +86,14 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     return self;
 }
 
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
+{
     [coder encodeObject:[[self.blog.objectID URIRepresentation] absoluteString] forKey:WPBlogDetailsBlogKey];
     [super encodeRestorableStateWithCoder:coder];
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
@@ -103,23 +107,27 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     [self.tableView reloadData];
 }
 
-- (void)setBlog:(Blog *)blog {
+- (void)setBlog:(Blog *)blog
+{
     _blog = blog;
     self.title = blog.blogName;
 }
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 2;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     if (section == TableViewSectionContentType) {
         return 3;
     } else if (section == TableViewSectionAdminType) {
@@ -129,7 +137,8 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     return 0;
 }
 
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
     if (indexPath.section == TableViewSectionContentType) {
         switch (indexPath.row) {
             case BlogDetailsRowPosts:
@@ -175,7 +184,8 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     }
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsCellIdentifier];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     [self configureCell:cell atIndexPath:indexPath];
@@ -184,7 +194,8 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     if (indexPath.section == TableViewSectionAdminType && indexPath.row == BlogDetailsRowEditSettings) {
@@ -247,16 +258,19 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     return 48;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
     NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
     return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
     NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
     if (title.length > 0) {
         WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
@@ -266,7 +280,8 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     return nil;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
     NSString *headingTitle = nil;
     if (section == TableViewSectionContentType) {
         headingTitle = NSLocalizedString(@"Content", @"");
@@ -278,7 +293,8 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 }
 
 #pragma mark - Private methods
-- (void)showViewSiteForBlog:(Blog *)blog {
+- (void)showViewSiteForBlog:(Blog *)blog
+{
     [WPAnalytics track:WPAnalyticsStatOpenedViewSite];
 
     NSString *blogURL = blog.homeURL;
@@ -313,15 +329,18 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
 }
 
-- (BOOL)isRowForViewSite:(NSUInteger)index {
+- (BOOL)isRowForViewSite:(NSUInteger)index
+{
     return index == BlogDetailsRowViewSite;
 }
 
-- (BOOL)isRowForViewAdmin:(NSUInteger)index {
+- (BOOL)isRowForViewAdmin:(NSUInteger)index
+{
     return index == BlogDetailsRowViewAdmin;
 }
 
-- (BOOL)isRowForEditBlog:(NSUInteger)index {
+- (BOOL)isRowForEditBlog:(NSUInteger)index
+{
     return index == BlogDetailsRowEditSettings;
 }
 

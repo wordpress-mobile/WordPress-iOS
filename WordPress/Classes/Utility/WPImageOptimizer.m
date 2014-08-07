@@ -5,18 +5,21 @@ static NSString * const DisableImageOptimizationDefaultsKey = @"WPDisableImageOp
 
 @implementation WPImageOptimizer
 
-+ (BOOL)shouldOptimizeImages {
++ (BOOL)shouldOptimizeImages
+{
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     return ![defaults boolForKey:DisableImageOptimizationDefaultsKey];
 }
 
-+ (void)setShouldOptimizeImages:(BOOL)optimize {
++ (void)setShouldOptimizeImages:(BOOL)optimize
+{
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setBool:!optimize forKey:DisableImageOptimizationDefaultsKey];
     [defaults synchronize];
 }
 
-- (NSData *)optimizedDataFromAsset:(ALAsset *)asset {
+- (NSData *)optimizedDataFromAsset:(ALAsset *)asset
+{
     ALAssetRepresentation *representation = asset.defaultRepresentation;
     // Can't optimize videos, so only try if asset is a photo
     BOOL isImage = [[asset valueForProperty:ALAssetPropertyType] isEqual:ALAssetTypePhoto];

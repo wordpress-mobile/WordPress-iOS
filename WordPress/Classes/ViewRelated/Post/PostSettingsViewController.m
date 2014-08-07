@@ -65,13 +65,15 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 @implementation PostSettingsViewController
 
-- (void)dealloc {
+- (void)dealloc
+{
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self removePostPropertiesObserver];
 }
 
-- (id)initWithPost:(AbstractPost *)aPost {
+- (id)initWithPost:(AbstractPost *)aPost
+{
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.apost = aPost;
@@ -80,7 +82,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 
     self.title = NSLocalizedString(@"Options", nil);
@@ -111,14 +114,16 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     self.tableView.contentInset = UIEdgeInsetsMake(-1.0f, 0, 0, 0);
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
 
     [self.navigationController setToolbarHidden:YES];
     [self reloadData];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     [super viewWillDisappear:animated];
 
     [self.apost.managedObjectContext performBlock:^{
@@ -128,12 +133,14 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [self hideDatePicker];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning];
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+                                duration:(NSTimeInterval)duration
 {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     if ([self.passwordTextField isFirstResponder] || [self.tagsTextField isFirstResponder]) {
@@ -149,7 +156,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 #pragma mark - KVO
 
-- (void)addPostPropertiesObserver {
+- (void)addPostPropertiesObserver
+{
     [self.post addObserver:self
              forKeyPath:@"post_thumbnail"
                 options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
@@ -161,13 +169,17 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
                 context:nil];
 }
 
-- (void)removePostPropertiesObserver {
-
+- (void)removePostPropertiesObserver
+{
     [self.post removeObserver:self forKeyPath:@"post_thumbnail"];
     [self.post removeObserver:self forKeyPath:@"geolocation"];
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
+{
     if ([@"post_thumbnail" isEqualToString:keyPath]) {
         self.featuredImage = nil;
     }
@@ -176,7 +188,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 #pragma mark - Instance Methods
 
-- (void)setApost:(AbstractPost *)apost {
+- (void)setApost:(AbstractPost *)apost
+{
     if ([apost isEqual:_apost]) {
         return;
     }
@@ -187,7 +200,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [self addPostPropertiesObserver];
 }
 
-- (Post *)post {
+- (Post *)post
+{
     if ([self.apost isKindOfClass:[Post class]]) {
         return (Post *)self.apost;
     }
@@ -195,23 +209,27 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     return nil;
 }
 
-- (void)endEditingAction:(id)sender {
+- (void)endEditingAction:(id)sender
+{
     if (self.passwordTextField) {
         [self.passwordTextField resignFirstResponder];
     }
 }
 
-- (void)endEditingForTextFieldAction:(id)sender {
+- (void)endEditingForTextFieldAction:(id)sender
+{
     [self.passwordTextField endEditing:YES];
 }
 
-- (void)reloadData {
+- (void)reloadData
+{
     self.passwordTextField.text = self.apost.password;
 
     [self.tableView reloadData];
 }
 
-- (void)datePickerChanged:(NSDate *)date {
+- (void)datePickerChanged:(NSDate *)date
+{
     self.apost.dateCreated = date;
 
     // Try to match behavior in wp-admin.
@@ -241,7 +259,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     return YES;
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField {
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
     if (textField == self.passwordTextField) {
         self.apost.password = textField.text;
     } else if (textField == self.tagsTextField) {
@@ -249,12 +268,16 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     }
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
     [textField resignFirstResponder];
     return YES;
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+- (BOOL)textField:(UITextField *)textField
+        shouldChangeCharactersInRange:(NSRange)range
+        replacementString:(NSString *)string
+{
     if (textField == self.tagsTextField) {
         self.post.tags = [self.tagsTextField.text stringByReplacingCharactersInRange:range withString:string];
     }
@@ -263,7 +286,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 #pragma mark - UITableView Delegate
 
-- (void)configureSections {
+- (void)configureSections
+{
     self.sections = [NSMutableArray array];
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionTaxonomy]];
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionMeta]];
@@ -276,14 +300,16 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     }
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     if (!self.sections) {
         [self configureSections];
     }
     return [self.sections count];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     NSInteger sec = [[self.sections objectAtIndex:section] integerValue];
     if (sec == PostSettingsSectionTaxonomy) {
         return 2;
@@ -307,7 +333,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     return 0;
 }
 
-- (NSString *)titleForHeaderInSection:(NSInteger)section {
+- (NSString *)titleForHeaderInSection:(NSInteger)section
+{
     NSInteger sec = [[self.sections objectAtIndex:section] integerValue];
     if (sec == PostSettingsSectionTaxonomy) {
         return NSLocalizedString(@"Taxonomy", @"Label for the Taxonomy area (categories, keywords, ...) in post settings.");
@@ -328,14 +355,16 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     return @"";
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
     WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.bounds), 0.0f)];
     header.title = [self titleForHeaderInSection:section];
     header.backgroundColor = self.tableView.backgroundColor;
     return header;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
     if (IS_IPAD && section == 0) {
         return WPTableViewTopMargin;
     }
@@ -344,12 +373,14 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
     // Remove extra padding caused by section footers in grouped table views
     return 1.0f;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.frame);
     NSInteger sectionId = [[self.sections objectAtIndex:indexPath.section] integerValue];
 
@@ -377,23 +408,20 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     return CellHeight;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     NSInteger sec = [[self.sections objectAtIndex:indexPath.section] integerValue];
 
     UITableViewCell *cell;
 
     if (sec == PostSettingsSectionTaxonomy) {
         cell = [self configureTaxonomyCellForIndexPath:indexPath];
-
     } else if (sec == PostSettingsSectionMeta) {
         cell = [self configureMetaPostMetaCellForIndexPath:indexPath];
-
     } else if (sec == PostSettingsSectionFormat) {
         cell = [self configurePostFormatCellForIndexPath:indexPath];
-
     } else if (sec == PostSettingsSectionFeaturedImage) {
         cell = [self configureFeaturedImageCellForIndexPath:indexPath];
-
     } else if (sec == PostSettingsSectionGeolocation) {
         cell = [self configureGeolocationCellForIndexPath:indexPath];
     }
@@ -401,38 +429,33 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     [tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 
     if (cell.tag == PostSettingsRowCategories) {
         [self showCategoriesSelection];
-
     } else if (cell.tag == PostSettingsRowPublishDate && !self.datePicker) {
         [self configureAndShowDatePicker];
-
     } else if (cell.tag ==  PostSettingsRowStatus) {
         [self showPostStatusSelector];
-
     } else if (cell.tag == PostSettingsRowVisibility) {
         [self showPostVisibilitySelector];
-
     } else if (cell.tag == PostSettingsRowFormat) {
         [self showPostFormatSelector];
-
     } else if (cell.tag == PostSettingsRowFeaturedImage) {
         [self showFeaturedImageSelector];
-
     } else if (cell.tag == PostSettingsRowFeaturedImageAdd) {
         [self showFeaturedImageSelector];
-
     } else if (cell.tag == PostSettingsRowGeolocationAdd || cell.tag == PostSettingsRowGeolocationMap) {
         [self showPostGeolocationSelector];
     }
 }
 
-- (UITableViewCell *)configureTaxonomyCellForIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)configureTaxonomyCellForIndexPath:(NSIndexPath *)indexPath
+{
     UITableViewCell *cell;
 
     if (indexPath.row == PostSettingsRowCategories) {
@@ -459,7 +482,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     return cell;
 }
 
-- (UITableViewCell *)configureMetaPostMetaCellForIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)configureMetaPostMetaCellForIndexPath:(NSIndexPath *)indexPath
+{
     UITableViewCell *cell;
     if (indexPath.row == 0 && !self.datePicker) {
         // Publish date
@@ -531,7 +555,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     return cell;
 }
 
-- (UITableViewCell *)configurePostFormatCellForIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)configurePostFormatCellForIndexPath:(NSIndexPath *)indexPath
+{
     UITableViewCell *cell = [self getWPTableViewCell];
 
     cell.textLabel.text = NSLocalizedString(@"Post Format", @"The post formats available for the post. Should be the same as in core WP.");
@@ -541,7 +566,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     return cell;
 }
 
-- (UITableViewCell *)configureFeaturedImageCellForIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)configureFeaturedImageCellForIndexPath:(NSIndexPath *)indexPath
+{
     UITableViewCell *cell;
 
     if (!self.post.post_thumbnail && !_mediaUploader.isUploadingMedia) {
@@ -573,7 +599,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     return cell;
 }
 
-- (UITableViewCell *)configureGeolocationCellForIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)configureGeolocationCellForIndexPath:(NSIndexPath *)indexPath
+{
     WPTableViewCell *cell;
     if (self.post.geolocation == nil) {
         WPTableViewActivityCell *actCell = [self getWPActivityTableViewCell];
@@ -618,7 +645,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     return cell;
 }
 
-- (WPTableViewCell *)getWPTableViewCell {
+- (WPTableViewCell *)getWPTableViewCell
+{
     static NSString *wpTableViewCellIdentifier = @"wpTableViewCellIdentifier";
     WPTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:wpTableViewCellIdentifier];
     if (!cell) {
@@ -630,7 +658,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     return cell;
 }
 
-- (WPTableViewCell *)getWPTableViewDatePickerCell {
+- (WPTableViewCell *)getWPTableViewDatePickerCell
+{
     static NSString *wpTableViewCellIdentifier = @"wpTableViewDatePickerCellIdentifier";
     WPTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:wpTableViewCellIdentifier];
     if (!cell) {
@@ -643,7 +672,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     return cell;
 }
 
-- (WPTableViewActivityCell *)getWPActivityTableViewCell {
+- (WPTableViewActivityCell *)getWPActivityTableViewCell
+{
     WPTableViewActivityCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TableViewActivityCellIdentifier];
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
@@ -653,7 +683,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     return cell;
 }
 
-- (UITableViewTextFieldCell *)getTextFieldCell {
+- (UITableViewTextFieldCell *)getTextFieldCell
+{
     static NSString *textFieldCellIdentifier = @"textFieldCellIdentifier";
     UITableViewTextFieldCell *cell = [self.tableView dequeueReusableCellWithIdentifier:textFieldCellIdentifier];
     if (!cell) {
@@ -667,7 +698,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     return cell;
 }
 
-- (void)hideDatePicker {
+- (void)hideDatePicker
+{
     if (!self.datePicker) {
         return;
     }
@@ -678,7 +710,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
 }
 
-- (void)configureAndShowDatePicker {
+- (void)configureAndShowDatePicker
+{
     NSDate *date;
     if (self.apost.dateCreated) {
         date = self.apost.dateCreated;
@@ -702,7 +735,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
-- (void)showPostStatusSelector {
+- (void)showPostStatusSelector
+{
     if ([self.apost.status isEqualToString:@"private"]) {
         return;
     }
@@ -727,7 +761,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)showPostVisibilitySelector {
+- (void)showPostVisibilitySelector
+{
     NSArray *titles = @[
                         NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
                         NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP."),
@@ -773,7 +808,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)showPostFormatSelector {
+- (void)showPostFormatSelector
+{
     Post *post      = self.post;
     NSArray *titles = post.blog.sortedPostFormatNames;
 
@@ -800,12 +836,14 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)showPostGeolocationSelector {
+- (void)showPostGeolocationSelector
+{
     PostGeolocationViewController *controller = [[PostGeolocationViewController alloc] initWithPost:self.post];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)showFeaturedImageSelector {
+- (void)showFeaturedImageSelector
+{
     if (self.post.post_thumbnail) {
         // Check if the featured image is set, otherwise we don't want to do anything while it's still loading.
         if (self.featuredImage) {
@@ -837,18 +875,21 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     }
 }
 
-- (void)showCategoriesSelection {
+- (void)showCategoriesSelection
+{
     CategoriesViewController *controller = [[CategoriesViewController alloc] initWithPost:[self post] selectionMode:CategoriesSelectionModePost];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)showMediaLibrary {
+- (void)showMediaLibrary
+{
     self.navigationItem.title = NSLocalizedString(@"Back", nil);
     MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:self.post];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)loadFeaturedImage:(NSIndexPath *)indexPath {
+- (void)loadFeaturedImage:(NSIndexPath *)indexPath
+{
     NSURL *url = [NSURL URLWithString:self.post.featuredImage.remoteURL];
     if (url) {
         CGFloat width = CGRectGetWidth(self.view.frame);
@@ -867,7 +908,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     }
 }
 
-- (WPTableImageSource *)imageSource {
+- (WPTableImageSource *)imageSource
+{
     if (!_imageSource) {
         CGFloat width = CGRectGetWidth(self.view.frame);
         if (IS_IPAD) {
@@ -884,19 +926,26 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 #pragma mark - WPTableImageSourceDelegate
 
-- (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath {
+- (void)tableImageSource:(WPTableImageSource *)tableImageSource
+              imageReady:(UIImage *)image
+            forIndexPath:(NSIndexPath *)indexPath
+{
     self.featuredImage = image;
     [self.tableView reloadData];
 }
 
-- (void)tableImageSource:(WPTableImageSource *)tableImageSource imageFailedforIndexPath:(NSIndexPath *)indexPath error:(NSError *)error {
+- (void)tableImageSource:(WPTableImageSource *)tableImageSource
+ imageFailedforIndexPath:(NSIndexPath *)indexPath
+                   error:(NSError *)error
+{
     DDLogError(@"Error loading featured image: %@", error);
     PostFeaturedImageCell *cell = (PostFeaturedImageCell *)[self.tableView cellForRowAtIndexPath:indexPath];
     [cell showLoadingSpinner:NO];
     cell.textLabel.text = NSLocalizedString(@"Featured Image did not load", @"");
 }
 
-- (NSString *)titleForVisibility {
+- (NSString *)titleForVisibility
+{
     if (self.apost.password) {
         return NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP.");
     } else if ([self.apost.status isEqualToString:@"private"]) {
@@ -906,7 +955,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     return NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.");
 }
 
-- (void)dismissTagsKeyboardIfAppropriate:(UITapGestureRecognizer *)gestureRecognizer {
+- (void)dismissTagsKeyboardIfAppropriate:(UITapGestureRecognizer *)gestureRecognizer
+{
     CGPoint touchPoint = [gestureRecognizer locationInView:self.tableView];
     if (!CGRectContainsPoint(self.tagsTextField.frame, touchPoint) && [self.tagsTextField isFirstResponder]) {
         [self.tagsTextField resignFirstResponder];

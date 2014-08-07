@@ -43,7 +43,8 @@
     return self;
 }
 
-- (void)drawRect:(CGRect)rect {
+- (void)drawRect:(CGRect)rect
+{
 
     // draw top border
 
@@ -61,7 +62,8 @@
     }
 }
 
-- (void)layoutSubviews {
+- (void)layoutSubviews
+{
 
     [super layoutSubviews];
 
@@ -72,7 +74,8 @@
     }
 }
 
-- (CGRect)calculateTextRectForBounds:(CGRect)bounds {
+- (CGRect)calculateTextRectForBounds:(CGRect)bounds
+{
 
     CGRect returnRect;
     if (_leftViewImage) {
@@ -102,7 +105,8 @@
 }
 
 // left view position
-- (CGRect)leftViewRectForBounds:(CGRect)bounds {
+- (CGRect)leftViewRectForBounds:(CGRect)bounds
+{
 
     if (_leftViewImage) {
         return CGRectIntegral(CGRectMake(_textInsets.left, (CGRectGetHeight(bounds) - _leftViewImage.size.height) / 2.0, _leftViewImage.size.width, _leftViewImage.size.height));
@@ -113,18 +117,21 @@
 
 #pragma mark - Secure Text Entry
 
-- (void)setSecureTextEntry:(BOOL)secureTextEntry {
+- (void)setSecureTextEntry:(BOOL)secureTextEntry
+{
     [super setSecureTextEntry:secureTextEntry];
     [self updateSecureTextEntryToggleImage];
 }
 
-- (void)secureTextEntryToggleAction:(id)sender {
+- (void)secureTextEntryToggleAction:(id)sender
+{
     [self setSecureTextEntry:!self.isSecureTextEntry];
     self.text = self.text; // Fixes cursor position after toggling
     [self setNeedsDisplay];
 }
 
-- (void)updateSecureTextEntryToggleImage {
+- (void)updateSecureTextEntryToggleImage
+{
     UIImage *image = self.isSecureTextEntry ? self.secureTextEntryImageHidden : self.secureTextEntryImageVisible;
     [self.secureTextEntryToggle setImage:image forState:UIControlStateNormal];
 }

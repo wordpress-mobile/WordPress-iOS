@@ -12,7 +12,8 @@
 
 @implementation CategoryService
 
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context {
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context
+{
     self = [super init];
     if (self) {
         _managedObjectContext = context;
@@ -21,14 +22,16 @@
     return self;
 }
 
-- (Category *)newCategoryForBlog:(Blog *)blog {
+- (Category *)newCategoryForBlog:(Blog *)blog
+{
     Category *category = [NSEntityDescription insertNewObjectForEntityForName:@"Category"
                                                        inManagedObjectContext:self.managedObjectContext];
     category.blog = blog;
     return category;
 }
 
-- (BOOL)existsName:(NSString *)name forBlogObjectID:(NSManagedObjectID *)blogObjectID withParentId:(NSNumber *)parentId {
+- (BOOL)existsName:(NSString *)name forBlogObjectID:(NSManagedObjectID *)blogObjectID withParentId:(NSNumber *)parentId
+{
     Blog *blog = [self blogWithObjectID:blogObjectID];
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(categoryName like %@) AND (parentID = %@)", name,
@@ -44,7 +47,8 @@
     return NO;
 }
 
-- (Category *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID andCategoryID:(NSNumber *)categoryID {
+- (Category *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID andCategoryID:(NSNumber *)categoryID
+{
     Blog *blog = [self blogWithObjectID:blogObjectID];
 
     NSSet *results = [blog.categories filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"categoryID == %@",categoryID]];
@@ -55,7 +59,9 @@
     return nil;
 }
 
-- (Category *)createOrReplaceFromDictionary:(NSDictionary *)categoryInfo forBlogObjectID:(NSManagedObjectID *)blogObjectID {
+- (Category *)createOrReplaceFromDictionary:(NSDictionary *)categoryInfo
+                            forBlogObjectID:(NSManagedObjectID *)blogObjectID
+{
     Blog *blog = [self blogWithObjectID:blogObjectID];
 
     if ([categoryInfo objectForKey:@"categoryId"] == nil) {
@@ -78,7 +84,12 @@
     return category;
 }
 
-- (void)createCategoryWithName:(NSString *)name parentCategoryObjectID:(NSManagedObjectID *)parentCategoryObjectID forBlogObjectID:(NSManagedObjectID *)blogObjectID success:(void (^)(Category *category))success failure:(void (^)(NSError *error))failure {
+- (void)createCategoryWithName:(NSString *)name
+        parentCategoryObjectID:(NSManagedObjectID *)parentCategoryObjectID
+               forBlogObjectID:(NSManagedObjectID *)blogObjectID
+                       success:(void (^)(Category *category))success
+                       failure:(void (^)(NSError *error))failure
+{
     Blog *blog = [self blogWithObjectID:blogObjectID];
 
     Category *parent = [self categoryWithObjectID:parentCategoryObjectID];
@@ -115,7 +126,8 @@
                            }];
 }
 
-- (void)mergeNewCategories:(NSArray *)newCategories forBlogObjectID:(NSManagedObjectID *)blogObjectID {
+- (void)mergeNewCategories:(NSArray *)newCategories forBlogObjectID:(NSManagedObjectID *)blogObjectID
+{
     NSMutableArray *categoriesToKeep = [NSMutableArray array];
     Blog *contextBlog = [self blogWithObjectID:blogObjectID];
 
@@ -142,7 +154,8 @@
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
-- (Blog *)blogWithObjectID:(NSManagedObjectID *)objectID {
+- (Blog *)blogWithObjectID:(NSManagedObjectID *)objectID
+{
     if (objectID == nil) {
         return nil;
     }
@@ -157,7 +170,8 @@
     return blog;
 }
 
-- (Category *)categoryWithObjectID:(NSManagedObjectID *)objectID {
+- (Category *)categoryWithObjectID:(NSManagedObjectID *)objectID
+{
     if (objectID == nil) {
         return nil;
     }

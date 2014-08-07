@@ -48,7 +48,8 @@ BOOL hasChanges;
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     hasChanges = NO;
     _notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
@@ -63,7 +64,8 @@ BOOL hasChanges;
     }
 }
 
-- (void)getNotificationSettings {
+- (void)getNotificationSettings
+{
     [NotificationsManager fetchNotificationSettingsWithSuccess:^{
         [self notificationsDidFinishRefreshingWithError:nil];
     } failure:^(NSError *error) {
@@ -71,7 +73,8 @@ BOOL hasChanges;
     }];
 }
 
-- (void)reloadNotificationSettings {
+- (void)reloadNotificationSettings
+{
     _notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
     if (_notificationPreferences) {
         _notificationPrefArray = [[_notificationPreferences allKeys] mutableCopy];
@@ -90,8 +93,8 @@ BOOL hasChanges;
     [self setupToolbarButtons];
 }
 
-- (void)setupToolbarButtons{
-
+- (void)setupToolbarButtons
+{
     return; //Do not show the toolbar with 'mute blogs' option for now
 
     bool toolbarVisible = NO;
@@ -132,8 +135,8 @@ BOOL hasChanges;
     self.navigationController.toolbarHidden = ! toolbarVisible;
 }
 
-- (void)muteUnmutedButtonClicked:(id)sender{
-
+- (void)muteUnmutedButtonClicked:(id)sender
+{
     bool muted = self.muteUnmuteBarButton.tag;
 
     if (_notificationPreferences) {
@@ -157,7 +160,8 @@ BOOL hasChanges;
     }
 }
 
-- (void)notificationSettingChanged:(id)sender {
+- (void)notificationSettingChanged:(id)sender
+{
     hasChanges = YES;
     UISwitch *cellSwitch = (UISwitch *)sender;
 
@@ -169,7 +173,8 @@ BOOL hasChanges;
     [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
 }
 
-- (void)muteBlogSettingChanged:(id)sender {
+- (void)muteBlogSettingChanged:(id)sender
+{
     hasChanges = YES;
     UISwitch *cellSwitch = (UISwitch *)sender;
 
@@ -186,11 +191,13 @@ BOOL hasChanges;
     [self setupToolbarButtons];
 }
 
-- (void)dismiss {
+- (void)dismiss
+{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     self.navigationController.toolbarHidden = YES;
     if (hasChanges){
         [NotificationsManager saveNotificationSettings];
@@ -322,7 +329,8 @@ BOOL hasChanges;
     return cell;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
     WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
     header.title = [self titleForHeaderInSection:section];
     return header;
@@ -376,7 +384,8 @@ BOOL hasChanges;
 
 #pragma mark -
 #pragma mark Action Sheet Delegate Methods
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
     [actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
 
     DDLogInfo(@"Button Clicked: %d", buttonIndex);
@@ -459,27 +468,33 @@ BOOL hasChanges;
 
 #pragma mark - Pull to Refresh delegate
 
-- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view {
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view
+{
     return self.isRefreshing;
 }
 
-- (NSDate *)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView *)view {
+- (NSDate *)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView *)view
+{
     return self.lastRefreshDate;
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
     [self.refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
 }
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
     [self.refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
 }
 
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view {
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view
+{
     [self getNotificationSettings];
 }
 
-- (void)notificationsDidFinishRefreshingWithError:(NSError *)error {
+- (void)notificationsDidFinishRefreshingWithError:(NSError *)error
+{
     [self.refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
     if (!error) {
         [self reloadNotificationSettings];

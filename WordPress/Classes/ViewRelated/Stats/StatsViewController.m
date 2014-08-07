@@ -15,7 +15,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 @implementation StatsViewController
 
-- (id)init {
+- (id)init
+{
     self = [super init];
     if (self) {
         self.statsDelegate = self;
@@ -34,7 +35,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 }
 
-- (void)setBlog:(Blog *)blog {
+- (void)setBlog:(Blog *)blog
+{
     _blog = blog;
     DDLogInfo(@"Loading Stats for the following blog: %@", [blog url]);
 
@@ -46,7 +48,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     }
 }
 
-- (void)initStats {
+- (void)initStats
+{
     if (self.blog.isWPcom) {
 
         self.oauth2Token = self.blog.restApi.authToken;
@@ -68,7 +71,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     }
 }
 
-- (void)promptForJetpackCredentials {
+- (void)promptForJetpackCredentials
+{
     if (self.showingJetpackLogin) {
         return;
     }
@@ -109,7 +113,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     [super encodeRestorableStateWithCoder:coder];
 }
 
-+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
     NSURL *blogObjectURL = [coder decodeObjectForKey:StatsBlogObjectURLRestorationKey];
     if (!blogObjectURL) {
         return nil;

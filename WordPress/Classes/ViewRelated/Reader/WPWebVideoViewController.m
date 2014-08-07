@@ -17,7 +17,8 @@
 
 #pragma mark - LifeCycle Methods
 
-- (id)initWithURL:(NSURL *)url {
+- (id)initWithURL:(NSURL *)url
+{
     self = [self init];
     if (self) {
         self.url = url;
@@ -26,7 +27,8 @@
     return self;
 }
 
-- (id)initWithHTML:(NSString *)html {
+- (id)initWithHTML:(NSString *)html
+{
     self = [self init];
     if (self) {
         self.html = html;
@@ -35,7 +37,8 @@
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
@@ -91,33 +94,39 @@
     }
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
 #pragma mark - Instance Methods
 
-- (void)setTitle:(NSString *)title {
+- (void)setTitle:(NSString *)title
+{
     [super setTitle:title];
     _titleLabel.text = title;
 }
 
-- (void)handleCloseTapped:(id)sender {
+- (void)handleCloseTapped:(id)sender
+{
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UIWebView Delegate Methods
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
     DDLogMethodParam(error);
     // TODO: Show a nice content can't be displayed message if there is a problem loading or the content is bogus.
 }
 
-- (void)webViewDidStartLoad:(UIWebView *)webView {
+- (void)webViewDidStartLoad:(UIWebView *)webView
+{
     [_activityView startAnimating];
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
     [_activityView stopAnimating];
 }
 

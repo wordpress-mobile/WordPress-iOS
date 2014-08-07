@@ -261,7 +261,8 @@ CGFloat const WPAlertViewDefaultTextFieldLabelWidth = 118.0f;
     [self.scrollView scrollRectToVisible:rect animated:YES];
 }
 
-- (void)hideTitleAndDescription:(BOOL)hide {
+- (void)hideTitleAndDescription:(BOOL)hide
+{
     if (hide == self.titleLabel.hidden) {
         return;
     }
@@ -391,7 +392,8 @@ CGFloat const WPAlertViewDefaultTextFieldLabelWidth = 118.0f;
     }
 }
 
-- (void)adjustTextFieldLabelWidths {
+- (void)adjustTextFieldLabelWidths
+{
     if (_firstTextFieldLabel.text.length == 0 && _secondTextFieldLabel.text.length == 0) {
         _firstTextFieldLabelWidthConstraint.constant = 0.0f;
     } else {
@@ -449,7 +451,8 @@ CGFloat const WPAlertViewDefaultTextFieldLabelWidth = 118.0f;
 
 #pragma mark - UITextField Delegate Methods
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
     if ([textField isEqual:self.firstTextField]) {
         [self.secondTextField becomeFirstResponder];
     } else {

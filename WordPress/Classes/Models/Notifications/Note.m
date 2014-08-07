@@ -188,7 +188,8 @@
 
 #pragma mark - NSManagedObject methods
 
-- (void)didTurnIntoFault {
+- (void)didTurnIntoFault
+{
     [super didTurnIntoFault];
 
     self.date = nil;

@@ -43,7 +43,8 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     SettingsSectionActivityLog,
 };
 
-+ (void)checkIfFeedbackShouldBeEnabled {
++ (void)checkIfFeedbackShouldBeEnabled
+{
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{UserDefaultsFeedbackEnabled: @YES}];
     NSURL *url = [NSURL URLWithString:FeedbackCheckUrl];
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
@@ -74,7 +75,8 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     [operation start];
 }
 
-+ (void)checkIfHelpshiftShouldBeEnabled {
++ (void)checkIfHelpshiftShouldBeEnabled
+{
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults registerDefaults:@{UserDefaultsHelpshiftEnabled:@NO}];
 
@@ -101,7 +103,8 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     }}];
 }
 
-+ (void)showFromTabBar {
++ (void)showFromTabBar
+{
     SupportViewController *supportViewController = [[SupportViewController alloc] init];
     UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:supportViewController];
     aNavigationController.navigationBar.translucent = NO;
@@ -148,7 +151,8 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
 
     _helpshiftEnabled = [[self class] isHelpshiftEnabled];
@@ -163,7 +167,8 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     return [[NSUserDefaults standardUserDefaults] boolForKey:UserDefaultsHelpshiftEnabled];
 }
 
-- (void)showLoadingSpinner {
+- (void)showLoadingSpinner
+{
     UIActivityIndicatorView *loading = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     loading.tag = kActivitySpinnerTag;
     loading.center = self.view.center;
@@ -172,11 +177,13 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     [loading startAnimating];
 }
 
-- (void)hideLoadingSpinner {
+- (void)hideLoadingSpinner
+{
     [[self.view viewWithTag:kActivitySpinnerTag] removeFromSuperview];
 }
 
-- (void)prepareAndDisplayHelpshiftWindowOfType:(int)helpshiftType {
+- (void)prepareAndDisplayHelpshiftWindowOfType:(int)helpshiftType
+{
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setBool:YES forKey:UserDefaultsHelpshiftWasUsed];
 
@@ -226,7 +233,11 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     }
 }
 
-- (void)displayHelpshiftWindowOfType:(int)helpshiftType withUsername:(NSString*)username andEmail:(NSString*)email andMetadata:(NSDictionary*)metaData {
+- (void)displayHelpshiftWindowOfType:(int)helpshiftType
+                        withUsername:(NSString*)username
+                            andEmail:(NSString*)email
+                         andMetadata:(NSDictionary*)metaData
+{
     [Helpshift setName:username andEmail:email];
 
     if (helpshiftType == kHelpshiftWindowTypeFAQs) {
@@ -364,18 +375,21 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     }
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
     WPTableViewSectionFooterView *header = [[WPTableViewSectionFooterView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
     header.title = [self titleForFooterInSection:section];
     return header;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
     NSString *title = [self titleForFooterInSection:section];
     return [WPTableViewSectionFooterView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
-- (NSString *)titleForFooterInSection:(NSInteger)section {
+- (NSString *)titleForFooterInSection:(NSInteger)section
+{
     if (section == SettingsSectionFAQForums) {
         return NSLocalizedString(@"Visit the Help Center to get answers to common questions, or visit the Forums to ask new ones.", @"");
     } else if (section == SettingsSectionActivityLog) {
@@ -419,7 +433,8 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
 #pragma mark - SupportViewController methods
 
-- (void)handleCellSwitchChanged:(id)sender {
+- (void)handleCellSwitchChanged:(id)sender
+{
     UISwitch *aSwitch = (UISwitch *)sender;
     NSString *key = (aSwitch.tag == 1) ? kExtraDebugDefaultsKey : kUsageTrackingDefaultsKey;
 
@@ -474,7 +489,8 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     return mailComposeViewController;
 }
 
-- (void)dismiss {
+- (void)dismiss
+{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -497,7 +513,8 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
 #pragma mark - Helpshift Delegate
 
-- (void)didReceiveNotificationCount:(NSInteger)count {
+- (void)didReceiveNotificationCount:(NSInteger)count
+{
     dispatch_async(dispatch_get_main_queue(), ^{
         self.helpshiftUnreadCount = count;
 

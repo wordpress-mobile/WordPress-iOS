@@ -19,7 +19,8 @@
 
 @implementation WPWebViewController
 
-- (void)dealloc {
+- (void)dealloc
+{
     _webView.delegate = nil;
     if ([_webView isLoading]) {
         [_webView stopLoading];
@@ -27,11 +28,13 @@
     _statusTimer = nil;
 }
 
-- (BOOL)hidesBottomBarWhenPushed {
+- (BOOL)hidesBottomBarWhenPushed
+{
     return YES;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
 
@@ -94,7 +97,8 @@
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewWillAppear:animated];
 
@@ -116,13 +120,15 @@
     }
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [self setStatusTimer:nil];
     [super viewWillDisappear:animated];
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+                                         duration:(NSTimeInterval)duration
 {
     CGFloat height = self.navigationController.navigationBar.frame.size.height;
     CGRect customToolbarFrame = self.toolbar.frame;
@@ -138,11 +144,13 @@
     }];
 }
 
-- (BOOL)expectsWidePanel {
+- (BOOL)expectsWidePanel
+{
     return YES;
 }
 
-- (UIBarButtonItem *)optionsButton {
+- (UIBarButtonItem *)optionsButton
+{
     if (_optionsButton) {
         return _optionsButton;
     }
@@ -157,14 +165,16 @@
 
 #pragma mark - webView related methods
 
-- (void)setStatusTimer:(NSTimer *)timer {
+- (void)setStatusTimer:(NSTimer *)timer
+{
     if (_statusTimer && timer != _statusTimer) {
         [_statusTimer invalidate];
     }
     _statusTimer = timer;
 }
 
-- (void)upgradeButtonsAndLabels:(NSTimer*)timer {
+- (void)upgradeButtonsAndLabels:(NSTimer*)timer
+{
     self.backButton.enabled = self.webView.canGoBack;
     self.forwardButton.enabled = self.webView.canGoForward;
     if (!_isLoading) {
@@ -180,7 +190,8 @@
     }
 }
 
-- (NSString *)getDocumentPermalink {
+- (NSString *)getDocumentPermalink
+{
     NSString *permaLink = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.get_article_permalink();"];
     if ( permaLink == nil || [[permaLink trim] isEqualToString:@""]) {
         // try to get the loaded URL within the webView
@@ -199,7 +210,8 @@
     return permaLink;
 }
 
-- (NSString *)getDocumentTitle {
+- (NSString *)getDocumentTitle
+{
     NSString *title = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.get_article_title();"];
     if (title != nil && [[title trim] isEqualToString:@""] == NO) {
         return [title trim];
@@ -216,11 +228,13 @@
     return ( permaLink != nil) ? permaLink : @"";
 }
 
-- (void)loadURL:(NSURL *)webURL {
+- (void)loadURL:(NSURL *)webURL
+{
     // Subclass
 }
 
-- (void)refreshWebView {
+- (void)refreshWebView
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
     if (![ReachabilityUtils isInternetReachable]) {
@@ -277,12 +291,14 @@
     [self.webView loadRequest:request];
 }
 
-- (void)retryWithLogin {
+- (void)retryWithLogin
+{
     self.needsLogin = YES;
     [self refreshWebView];
 }
 
-- (void)setUrl:(NSURL *)theURL {
+- (void)setUrl:(NSURL *)theURL
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     if (_url != theURL) {
         _url = theURL;
@@ -292,7 +308,8 @@
     }
 }
 
-- (void)setLoading:(BOOL)loading {
+- (void)setLoading:(BOOL)loading
+{
     if (_isLoading == loading) {
         return;
     }
@@ -344,11 +361,13 @@
     _isLoading = loading;
 }
 
-- (void)dismiss {
+- (void)dismiss
+{
     [self.navigationController popViewControllerAnimated:NO];
 }
 
-- (void)goBack {
+- (void)goBack
+{
     if (self.detailContent != nil) {
         NSString *prevItemAvailable = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.show_prev_item();"];
         if ( [prevItemAvailable rangeOfString:@"true"].location == NSNotFound ) {
@@ -376,7 +395,8 @@
     }
 }
 
-- (void)goForward {
+- (void)goForward
+{
     if (self.detailContent != nil) {
         NSString *nextItemAvailable = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.show_next_item();"];
         if ([nextItemAvailable rangeOfString:@"true"].location == NSNotFound) {
@@ -402,7 +422,8 @@
     }
 }
 
-- (void)showLinkOptions{
+- (void)showLinkOptions
+{
     NSString* permaLink = [self getDocumentPermalink];
 
     NSString *title = [self getDocumentTitle];
@@ -436,7 +457,8 @@
     }
 }
 
-- (void)reload {
+- (void)reload
+{
     if (![ReachabilityUtils isInternetReachable]) {
         __weak WPWebViewController *weakSelf = self;
         [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:^{
@@ -451,7 +473,8 @@
 }
 
 // Find the Webview's UIScrollView backwards compatible
-- (UIScrollView *)scrollView {
+- (UIScrollView *)scrollView
+{
     UIScrollView *scrollView = nil;
     if ([self.webView respondsToSelector:@selector(scrollView)]) {
         scrollView = self.webView.scrollView;
@@ -482,7 +505,10 @@
 
 #pragma mark - UIWebViewDelegate
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+- (BOOL)webView:(UIWebView *)webView
+    shouldStartLoadWithRequest:(NSURLRequest *)request 
+    navigationType:(UIWebViewNavigationType)navigationType
+{
     DDLogInfo(@"%@ %@: %@", self, NSStringFromSelector(_cmd), [[request URL] absoluteString]);
 
     NSURL *requestedURL = [request URL];
@@ -513,7 +539,8 @@
     return YES;
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
     DDLogInfo(@"%@ %@: %@", self, NSStringFromSelector(_cmd), error);
     // -999: Canceled AJAX request
     // 102:  Frame load interrupted: canceled wp-login redirect to make the POST
@@ -523,11 +550,13 @@
     [self setLoading:NO];
 }
 
-- (void)webViewDidStartLoad:(UIWebView *)aWebView {
+- (void)webViewDidStartLoad:(UIWebView *)aWebView
+{
     DDLogInfo(@"%@ %@%@", self, NSStringFromSelector(_cmd), aWebView.request.URL);
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)aWebView {
+- (void)webViewDidFinishLoad:(UIWebView *)aWebView
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [self setLoading:NO];
 
@@ -570,7 +599,10 @@
 
 #pragma mark - MFMailComposeViewControllerDelegate
 
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
+- (void)mailComposeController:(MFMailComposeViewController*)controller
+          didFinishWithResult:(MFMailComposeResult)result
+                        error:(NSError*)error
+{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -579,7 +611,8 @@
 //passing in @"MFComposeSubjectView"     as the value for field makes the subject become first responder
 //passing in @"MFComposeTextContentView" as the value for field makes the body become first responder
 //passing in @"RecipientTextField"       as the value for field makes the to address field become first responder
-- (BOOL) setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field{
+- (BOOL) setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field
+{
     for (UIView *subview in view.subviews) {
 
         NSString *className = [NSString stringWithFormat:@"%@", [subview class]];
@@ -601,7 +634,8 @@
     return NO;
 }
 
-- (void)showCloseButton {
+- (void)showCloseButton
+{
     if (IS_IPAD) {
         if (self.navigationController.navigationBarHidden) {
             UINavigationItem *topItem = self.iPadNavBar.topItem;

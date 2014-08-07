@@ -13,7 +13,8 @@
     return self;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
     self = [super initWithCoder:aDecoder];
     if (self) {
         [self setupShadow];
@@ -21,7 +22,8 @@
     return self;
 }
 
-- (void)setupShadow{
+- (void)setupShadow
+{
     UIImage *shadowImage = [[UIImage imageNamed:@"note_header_shadow"] resizableImageWithCapInsets:UIEdgeInsetsMake(5.f, 0.f, 0.f, 0.f)];
     UIImageView *image = [[UIImageView alloc] initWithImage:shadowImage];
     image.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -42,16 +44,19 @@
 }
 */
 
-- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+{
     self.backgroundColor = [UIColor colorWithWhite:0.8f alpha:1.f];
     return YES;
 }
 
-- (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+- (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+{
     self.backgroundColor = [UIColor whiteColor];
 }
 
-- (void)setAvatarURL:(NSURL *)avatarURL {
+- (void)setAvatarURL:(NSURL *)avatarURL
+{
     CGFloat gravatarSize = self.avatarImageView.frame.size.width * [[UIScreen mainScreen] scale];
     NSURL *resizedURL = [NSURL URLWithString:[[avatarURL absoluteString] stringByReplacingOccurrencesOfString:@"s=96" withString:[NSString stringWithFormat:@"s=%d", (int)gravatarSize]]];
     [self.avatarImageView setImageWithURL:resizedURL placeholderImage:[UIImage imageNamed:@"gravatar"]];

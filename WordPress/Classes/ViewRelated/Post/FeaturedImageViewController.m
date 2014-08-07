@@ -15,11 +15,13 @@
 
 #pragma mark - Life Cycle Methods
 
-- (void)dealloc {
+- (void)dealloc
+{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id)initWithPost:(Post *)post {
+- (id)initWithPost:(Post *)post
+{
     self = [super init];
     if (self) {
         self.title = NSLocalizedString(@"Featured Image", @"");
@@ -31,7 +33,8 @@
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 
     self.view.backgroundColor = [UIColor whiteColor];
@@ -39,7 +42,8 @@
     [self setupToolbar];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
 
     if (self.navigationController.toolbarHidden) {
@@ -64,7 +68,8 @@
     [self loadImage];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     [super viewWillDisappear:animated];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -74,7 +79,8 @@
 
 #pragma mark - Appearance Related Methods
 
-- (void)setupToolbar {
+- (void)setupToolbar
+{
     UIToolbar *toolbar = self.navigationController.toolbar;
     toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
     toolbar.translucent = NO;
@@ -95,7 +101,8 @@
     [self showActivityView:NO];
 }
 
-- (void)hideBars:(BOOL)hide animated:(BOOL)animated {
+- (void)hideBars:(BOOL)hide animated:(BOOL)animated
+{
     [super hideBars:hide animated:animated];
 
     if (self.navigationController.navigationBarHidden != hide) {
@@ -116,7 +123,8 @@
     }];
 }
 
-- (void)showActivityView:(BOOL)show {
+- (void)showActivityView:(BOOL)show
+{
     UIBarButtonItem *leftFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     UIBarButtonItem *rightFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     UIBarButtonItem *centerFlexSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -133,12 +141,14 @@
 
 #pragma mark - Action Methods
 
-- (void)handleImageTapped:(UITapGestureRecognizer *)tgr {
+- (void)handleImageTapped:(UITapGestureRecognizer *)tgr
+{
     BOOL hide = !self.navigationController.navigationBarHidden;
     [self hideBars:hide animated:YES];
 }
 
-- (void)removeFeaturedImage {
+- (void)removeFeaturedImage
+{
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Remove this Featured Image?", @"Prompt when removing a featured image from a post")
                                                              delegate:self
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", "Cancel a prompt")
@@ -149,7 +159,8 @@
 
 #pragma mark - UIActionSheetDelegate
 
-- (void)actionSheet:(UIActionSheet *)acSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)acSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
     if (buttonIndex == 0) {
         [self.post setFeaturedImage:nil];
         [self.navigationController popViewControllerAnimated:YES];

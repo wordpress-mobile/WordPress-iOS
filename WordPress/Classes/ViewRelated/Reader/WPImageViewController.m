@@ -14,7 +14,8 @@
 
 #pragma mark - LifeCycle Methods
 
-- (id)initWithImage:(UIImage *)image {
+- (id)initWithImage:(UIImage *)image
+{
     self = [self init];
     if (self) {
         self.image = [image copy];
@@ -23,7 +24,8 @@
     return self;
 }
 
-- (id)initWithURL:(NSURL *)url {
+- (id)initWithURL:(NSURL *)url
+{
     self = [self init];
     if (self) {
         self.url = url;
@@ -32,7 +34,8 @@
     return self;
 }
 
-- (id)initWithImage:(UIImage *)image andURL:(NSURL *)url {
+- (id)initWithImage:(UIImage *)image andURL:(NSURL *)url
+{
     self = [self init];
     if (self) {
         self.image = [image copy];
@@ -41,7 +44,8 @@
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 
     self.view.backgroundColor = [UIColor blackColor];
@@ -72,7 +76,8 @@
     [self loadImage];
 }
 
-- (void)loadImage {
+- (void)loadImage
+{
     if (self.isLoadingImage) {
         return;
     }
@@ -104,36 +109,42 @@
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
 
     [self hideBars:YES animated:animated];
     [self centerImage];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     [super viewWillDisappear:animated];
     [self hideBars:NO animated:animated];
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
     [self centerImage];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
 #pragma mark - Instance Methods
 
-- (void)hideBars:(BOOL)hide animated:(BOOL)animated {
+- (void)hideBars:(BOOL)hide animated:(BOOL)animated
+{
 
     [[UIApplication sharedApplication] setStatusBarHidden:hide withAnimation:(animated ? UIStatusBarAnimationFade : UIStatusBarAnimationNone)];
 
 }
 
-- (void)centerImage {
+- (void)centerImage
+{
     CGFloat scaleWidth = _scrollView.frame.size.width / _imageView.image.size.width;
     CGFloat scaleHeight = _scrollView.frame.size.height / _imageView.image.size.height;
 
@@ -143,12 +154,13 @@
     [self scrollViewDidZoom:_scrollView];
 }
 
-- (void)handleImageTapped:(UITapGestureRecognizer *)tgr {
+- (void)handleImageTapped:(UITapGestureRecognizer *)tgr
+{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)handleImageDoubleTapped:(UITapGestureRecognizer *)tgr {
-
+- (void)handleImageDoubleTapped:(UITapGestureRecognizer *)tgr
+{
     if (_scrollView.zoomScale > _scrollView.minimumZoomScale) {
         [_scrollView setZoomScale:_scrollView.minimumZoomScale animated:YES];
         return;
@@ -168,12 +180,13 @@
 
 #pragma mark - UIScrollView Delegate
 
-- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+{
     return _imageView;
 }
 
-- (void)scrollViewDidZoom:(UIScrollView *)scrollView {
-
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView
+{
     CGSize size = scrollView.frame.size;
     CGRect frame = _imageView.frame;
 

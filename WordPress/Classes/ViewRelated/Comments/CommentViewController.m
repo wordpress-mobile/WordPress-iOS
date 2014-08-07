@@ -40,7 +40,8 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 @implementation CommentViewController
 
-- (void)dealloc {
+- (void)dealloc
+{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
     _reply = nil;
@@ -48,7 +49,8 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     _inlineComposeView = nil;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 
     self.commentView = [[CommentView alloc] initWithFrame:self.view.frame];
@@ -99,13 +101,15 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
@@ -118,7 +122,8 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     }
 }
 
-- (void)cancelView:(id)sender {
+- (void)cancelView:(id)sender
+{
     //there are no changes
     if (!self.editCommentViewController.hasChanges) {
         [self dismissEditViewController];
@@ -144,11 +149,13 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 #pragma mark - Instance methods
 
-- (void)dismissEditViewController; {
+- (void)dismissEditViewController
+{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)updateApproveButton {
+- (void)updateApproveButton
+{
     if ([self.comment.status isEqualToString:@"approve"]) {
         [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-unapprove"] forState:UIControlStateNormal];
         [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-unapprove-active"] forState:UIControlStateSelected];
@@ -162,12 +169,14 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     }
 }
 
-- (void)showComment:(Comment *)comment {
+- (void)showComment:(Comment *)comment
+{
     self.comment = comment;
     [self updateApproveButton];
 }
 
-- (NSAttributedString *)postTitleString {
+- (NSAttributedString *)postTitleString
+{
     NSString *postTitle;
 
     if (self.comment.postTitle != nil) {
@@ -184,20 +193,23 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     return attributedString;
 }
 
-- (void)discard {
+- (void)discard
+{
     [self dismissEditViewController];
 }
 
 #pragma mark - Comment moderation
 
-- (void)deleteComment {
+- (void)deleteComment
+{
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [commentService deleteComment:self.comment success:nil failure:nil];
 
     // Note: the parent class of CommentsViewController will pop this as a result of NSFetchedResultsChangeDelete
 }
 
-- (void)showEditCommentViewWithAnimation:(BOOL)animate {
+- (void)showEditCommentViewWithAnimation:(BOOL)animate
+{
     self.editCommentViewController = [[EditCommentViewController alloc]
                                   initWithNibName:@"EditCommentViewController"
                                   bundle:nil];
@@ -214,7 +226,8 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 #pragma mark - Actions
 
-- (void)approveOrUnapproveAction:(id)sender {
+- (void)approveOrUnapproveAction:(id)sender
+{
     UIBarButtonItem *barButton = sender;
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     if (barButton.tag == CommentViewApproveButtonTag) {
@@ -225,11 +238,13 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     [self updateApproveButton];
 }
 
-- (void)postTitleAction:(id)sender {
+- (void)postTitleAction:(id)sender
+{
     [self openInAppWebView:[NSURL URLWithString:self.comment.link]];
 }
 
-- (void)deleteAction:(id)sender {
+- (void)deleteAction:(id)sender
+{
     if (!self.isShowingActionSheet) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you sure you want to delete this comment?", @"")
                                                                  delegate:self
@@ -244,16 +259,19 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     }
 }
 
-- (void)spamAction:(id)sender {
+- (void)spamAction:(id)sender
+{
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [commentService spamComment:self.comment success:nil failure:nil];
 }
 
-- (void)editAction:(id)sender {
+- (void)editAction:(id)sender
+{
     [self showEditCommentViewWithAnimation:YES];
 }
 
-- (void)replyAction:(id)sender {
+- (void)replyAction:(id)sender
+{
     if (self.commentsViewController.blog.isSyncingComments) {
         [self showSyncInProgressAlert];
     } else {
@@ -280,14 +298,16 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 #pragma mark - Notification Handlers
 
-- (void)handleKeyboardDidShow:(NSNotification *)notification {
+- (void)handleKeyboardDidShow:(NSNotification *)notification
+{
     CGRect keyboardRect = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     UIScrollView *scrollView = (UIScrollView *)self.view;
     scrollView.contentInset = UIEdgeInsetsMake(0.f, 0.f, CGRectGetHeight(keyboardRect), 0.f);
     [self.view addGestureRecognizer:self.tapGesture];
 }
 
-- (void)handleKeyboardWillHide:(NSNotification *)notification {
+- (void)handleKeyboardWillHide:(NSNotification *)notification
+{
     UIScrollView *scrollView = (UIScrollView *)self.view;
     scrollView.contentInset = UIEdgeInsetsMake(0.f, 0.f, 0.f, 0.f);
     [self.view removeGestureRecognizer:self.tapGesture];
@@ -295,7 +315,8 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 #pragma mark - UIActionSheet delegate methods
 
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
     if (actionSheet.tag == CommentViewDeletePromptActionSheetTag) {
         [self processDeletePromptActionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
     } else if (actionSheet.tag == CommentViewEditCommentViewControllerHasChangesActionSheetTag) {
@@ -305,13 +326,16 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     self.isShowingActionSheet = NO;
 }
 
-- (void)processDeletePromptActionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+- (void)processDeletePromptActionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
     if (buttonIndex == 0) {
         [self deleteComment];
     }
 }
 
-- (void)processEditCommentHasChangesActionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+- (void)processEditCommentHasChangesActionSheet:(UIActionSheet *)actionSheet
+                      didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
     if (buttonIndex == 0) {
         self.editCommentViewController.hasChanges = NO;
         [self discard];
@@ -320,7 +344,10 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 #pragma mark UIWebView delegate methods
 
-- (BOOL)webView:(UIWebView *)inWeb shouldStartLoadWithRequest:(NSURLRequest *)inRequest navigationType:(UIWebViewNavigationType)inType {
+- (BOOL)webView:(UIWebView *)inWeb
+    shouldStartLoadWithRequest:(NSURLRequest *)inRequest
+    navigationType:(UIWebViewNavigationType)inType
+{
     if (inType == UIWebViewNavigationTypeLinkClicked) {
         [self openInAppWebView:[inRequest URL]];
         return NO;
@@ -328,7 +355,8 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     return YES;
 }
 
-- (void)openInAppWebView:(NSURL*)url {
+- (void)openInAppWebView:(NSURL*)url
+{
     Blog *blog = [[self comment] blog];
 
     if ([[url description] length] > 0) {
@@ -344,14 +372,16 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     }
 }
 
-- (void)showSyncInProgressAlert {
+- (void)showSyncInProgressAlert
+{
     [WPError showAlertWithTitle:NSLocalizedString(@"Info", @"Info alert title") message:NSLocalizedString(@"The blog is syncing with the server. Please try later.", @"") withSupportButton:NO];
     //the blog is using the network connection and cannot be stoped, show a message to the user
 }
 
 #pragma mark - InlineComposeViewDelegate methods
 
-- (void)composeView:(InlineComposeView *)view didSendText:(NSString *)text {
+- (void)composeView:(InlineComposeView *)view didSendText:(NSString *)text
+{
     self.reply.content = text;
 
     // try to save it
@@ -383,19 +413,22 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 }
 
 // when the reply changes, save it to the comment
-- (void)textViewDidChange:(UITextView *)textView {
+- (void)textViewDidChange:(UITextView *)textView
+{
     self.reply.content = self.inlineComposeView.text;
     [[ContextManager sharedInstance] saveContext:self.reply.managedObjectContext];
 }
 
 #pragma mark - WPContentViewDelegate
 
-- (void)contentView:(WPContentView *)contentView didReceiveAuthorLinkAction:(id)sender {
+- (void)contentView:(WPContentView *)contentView didReceiveAuthorLinkAction:(id)sender
+{
     NSURL *url = [NSURL URLWithString:self.comment.author_url];
     [self openInAppWebView:url];
 }
 
-- (void)contentView:(WPContentView *)contentView didReceiveLinkAction:(id)sender {
+- (void)contentView:(WPContentView *)contentView didReceiveLinkAction:(id)sender
+{
     [self openInAppWebView:((DTLinkButton *)sender).URL];
 }
 

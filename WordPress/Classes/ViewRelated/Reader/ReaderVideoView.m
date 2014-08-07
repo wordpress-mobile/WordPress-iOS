@@ -11,7 +11,8 @@
     UIImageView *_playView;
 }
 
-+ (AFHTTPRequestOperationManager *)sharedYoutubeClient {
++ (AFHTTPRequestOperationManager *)sharedYoutubeClient
+{
     static AFHTTPRequestOperationManager *_sharedClient = nil;
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
@@ -20,7 +21,8 @@
     return _sharedClient;
 }
 
-+ (AFHTTPRequestOperationManager *)sharedVimeoClient {
++ (AFHTTPRequestOperationManager *)sharedVimeoClient
+{
     static AFHTTPRequestOperationManager *_sharedClient = nil;
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
@@ -29,7 +31,8 @@
     return _sharedClient;
 }
 
-+ (AFHTTPRequestOperationManager *)sharedDailyMotionClient {
++ (AFHTTPRequestOperationManager *)sharedDailyMotionClient
+{
     static AFHTTPRequestOperationManager *_sharedClient = nil;
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
@@ -40,7 +43,8 @@
 
 #pragma mark - Lifecycle Methods
 
-- (id)initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(CGRect)frame
+{
     self = [super initWithFrame:frame];
     if (self) {
         [self.imageView setImage:[UIImage imageNamed:@"wp_vid_placeholder"]];
@@ -52,13 +56,15 @@
     return self;
 }
 
-- (void)layoutSubviews {
+- (void)layoutSubviews
+{
     [super layoutSubviews];
 
     _playView.center = CGPointMake(round(CGRectGetMidX(self.bounds)), round(CGRectGetMidY(self.bounds)));
 }
 
-- (void)setHighlighted:(BOOL)highlighted {
+- (void)setHighlighted:(BOOL)highlighted
+{
     [super setHighlighted:highlighted];
     if (highlighted) {
         self.alpha = .8f;
@@ -72,8 +78,8 @@
 - (void)setContentURL:(NSURL *)url
                ofType:(ReaderVideoContentType)type
               success:(void (^)(id videoView))success
-              failure:(void (^)(id videoView, NSError *error))failure {
-
+              failure:(void (^)(id videoView, NSError *error))failure
+{
     self.contentType = type;
     // Workaround for urls relative schemas (e.g. //youtube.com/embed/XXXXXXX)
     if ([url.absoluteString hasPrefix:@"//"]) {
@@ -101,8 +107,8 @@
 
 - (void)getYoutubeThumb:(NSString *)vidId
                 success:(void (^)(id videoView))success
-                failure:(void (^)(id videoView, NSError *error))failure {
-
+                failure:(void (^)(id videoView, NSError *error))failure
+{
     __weak ReaderVideoView *selfRef = self;
     NSString *path = [NSString stringWithFormat:@"/feeds/api/videos/%@?v=2&alt=json", vidId];
     [[ReaderVideoView sharedYoutubeClient] GET:path
@@ -136,8 +142,8 @@
 
 - (void)getVideoPressThumb:(NSURL *)url
                 success:(void (^)(id videoView))success
-                failure:(void (^)(id videoView, NSError *error))failure {
-
+                failure:(void (^)(id videoView, NSError *error))failure
+{
     NSString *path = [NSString stringWithFormat:@"http://i0.wp.com/%@%@", [url host], [[url path] stringByReplacingOccurrencesOfString:@".mp4" withString:@".original.jpg?w=640"]];
 
     url = [NSURL URLWithString:path];
@@ -149,8 +155,8 @@
 
 - (void)getVimeoThumb:(NSString *)vidId
               success:(void (^)(id videoView))success
-              failure:(void (^)(id videoView, NSError *error))failure {
-
+              failure:(void (^)(id videoView, NSError *error))failure
+{
     __weak ReaderVideoView *selfRef = self;
     NSString *path = [NSString stringWithFormat:@"/api/v2/video/%@.json", vidId];
     [[ReaderVideoView sharedVimeoClient] GET:path
@@ -179,8 +185,8 @@
 
 - (void)getDailyMotionThumb:(NSString *)vidId
                     success:(void (^)(id videoView))success
-                    failure:(void (^)(id videoView, NSError *error))failure {
-
+                    failure:(void (^)(id videoView, NSError *error))failure
+{
     __weak ReaderVideoView *selfRef = self;
     NSString *path = [NSString stringWithFormat:@"/video/%@?fields=thumbnail_large_url", vidId];
     [[ReaderVideoView sharedDailyMotionClient] GET:path

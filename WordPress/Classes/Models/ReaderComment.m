@@ -16,13 +16,15 @@
 @dynamic parentComment;
 @synthesize attributedContent;
 
-- (void)didTurnIntoFault {
+- (void)didTurnIntoFault
+{
     [super didTurnIntoFault];
 
     self.attributedContent = nil;
 }
 
-+ (NSArray *)fetchCommentsForPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context {
++ (NSArray *)fetchCommentsForPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context
+{
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"ReaderComment" inManagedObjectContext:context]];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(post = %@)", post];
@@ -38,7 +40,8 @@
     return array;
 }
 
-+ (NSArray *)fetchChildCommentsForPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context {
++ (NSArray *)fetchChildCommentsForPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context
+{
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"ReaderComment" inManagedObjectContext:context]];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(post = %@) && (parentID != 0)", post];
@@ -54,7 +57,8 @@
     return array;
 }
 
-+ (NSArray *)fetchParentCommentsForPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context {
++ (NSArray *)fetchParentCommentsForPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context
+{
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"ReaderComment" inManagedObjectContext:context]];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(post = %@) && (parentID = 0)", post];
@@ -70,7 +74,10 @@
     return array;
 }
 
-+ (void)syncAndThreadComments:(NSArray *)comments forPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context {
++ (void)syncAndThreadComments:(NSArray *)comments
+                      forPost:(ReaderPost *)post
+                  withContext:(NSManagedObjectContext *)context
+{
     [comments enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         [self createOrUpdateWithDictionary:obj forPost:post withContext:context];
     }];
@@ -122,8 +129,10 @@
     }
 }
 
-+ (void)createOrUpdateWithDictionary:(NSDictionary *)dict forPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context {
-
++ (void)createOrUpdateWithDictionary:(NSDictionary *)dict
+                             forPost:(ReaderPost *)post
+                         withContext:(NSManagedObjectContext *)context
+{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderComment"];
     request.predicate = [NSPredicate predicateWithFormat:@"(commentID = %@) AND (post.globalID = %@)", [dict numberForKey:@"ID"], post.globalID];
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:YES]];
@@ -148,8 +157,8 @@
 
 }
 
-- (void)updateFromDictionary:(NSDictionary *)dict {
-
+- (void)updateFromDictionary:(NSDictionary *)dict
+{
     NSDictionary *author = [dict objectForKey:@"author"];
 
     self.author = [[author stringForKey:@"name"] stringByDecodingXMLCharacters];
@@ -176,7 +185,8 @@
 
 #pragma mark - WPContentViewProvider protocol
 
-- (NSURL *)avatarURLForDisplay {
+- (NSURL *)avatarURLForDisplay
+{
     return [NSURL URLWithString:self.authorAvatarURL];
 }
 

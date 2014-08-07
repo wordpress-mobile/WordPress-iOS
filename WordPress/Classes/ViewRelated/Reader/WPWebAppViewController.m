@@ -11,7 +11,8 @@
 
 #pragma mark - View lifecycle
 
-- (void)dealloc {
+- (void)dealloc
+{
     DDLogMethod();
 
     [self.webView stopLoading];
@@ -20,7 +21,8 @@
     self.scrollView.delegate = nil;
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     DDLogMethod();
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
@@ -28,7 +30,8 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
-- (void)loadView {
+- (void)loadView
+{
     UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
     view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.webView = [[UIWebView alloc] initWithFrame:CGRectZero];
@@ -38,7 +41,8 @@
     [self setView:view];
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     DDLogMethod();
     [super viewDidLoad];
 
@@ -64,8 +68,8 @@
 }
 
 // Find the Webview's UIScrollView backwards compatible
-- (UIScrollView *)scrollView {
-
+- (UIScrollView *)scrollView
+{
     UIScrollView *scrollView = nil;
     if ([self.webView respondsToSelector:@selector(scrollView)]) {
         scrollView = self.webView.scrollView;
@@ -144,7 +148,8 @@
 
 }
 
-- (void)enableFastScrolling {
+- (void)enableFastScrolling
+{
     self.scrollView.decelerationRate = 0.994;
 
 }
@@ -175,7 +180,9 @@
 
 #pragma mark - UIWebViewDelegate
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+- (BOOL)webView:(UIWebView *)webView
+        shouldStartLoadWithRequest:(NSURLRequest *)request
+ navigationType:(UIWebViewNavigationType)navigationType
 {
     if ([self.webBridge handlesRequest:request]) {
         return NO;
@@ -186,7 +193,8 @@
 #pragma mark -
 #pragma mark EGORefreshTableHeaderDelegate Methods
 
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view {
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view
+{
     if (![ReachabilityUtils isInternetReachable]) {
         [ReachabilityUtils showAlertNoInternetConnection];
         [self performSelector:@selector(hideRefreshingState) withObject:nil afterDelay:0.3];
@@ -197,24 +205,28 @@
 
 }
 
-- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view {
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view
+{
     return self.loading;
 }
 
-- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view {
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view
+{
     return self.lastWebViewRefreshDate;
 
 }
 
 // provide a way for web apps to show the native pull to refresh loading indicator
-- (void)showRefreshingState {
+- (void)showRefreshingState
+{
     CGPoint offset = self.scrollView.contentOffset;
     offset.y = - 65.0f;
     [self.scrollView setContentOffset:offset];
     [_refreshHeaderView egoRefreshScrollViewDidEndDragging:self.scrollView];
 }
 
-- (void)hideRefreshingState {
+- (void)hideRefreshingState
+{
     self.lastWebViewRefreshDate = [NSDate date];
     [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.scrollView];
     didTriggerRefresh = NO;
@@ -223,11 +235,13 @@
 #pragma mark -
 #pragma mark UIScrollViewDelegate Methods
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
     [_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
 }
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
     [_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
 }
 
