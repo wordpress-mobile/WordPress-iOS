@@ -381,6 +381,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     }
 
     for (ReaderPost *post in results) {
+        DDLogInfo(@"Deleting post: %@", post);
         [self.managedObjectContext deleteObject:post];
     }
 
