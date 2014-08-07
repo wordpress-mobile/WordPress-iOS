@@ -29,12 +29,16 @@
 - (void)setUp
 {
     [super setUp];
+    
 }
 
 - (void)tearDown
 {
+    // Put teardown code here; it will be run once, after the last test case.
     [super tearDown];
+    
     [[CoreDataTestHelper sharedHelper] reset];
+    [CoreDataTestHelper sharedHelper].testExpectation = nil;
 }
 
 
