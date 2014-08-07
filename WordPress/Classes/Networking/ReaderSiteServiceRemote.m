@@ -225,6 +225,11 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 {
     NSString *path = [NSString stringWithFormat:@"me/block/sites/%d/new", siteID];
     [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *dict = (NSDictionary *)responseObject;
+        if (![[dict numberForKey:@"success"] boolValue]) {
+            failure([self errorForUnsuccessfulBlockSite]);
+            return;
+        }
         if (success) {
             success();
         }
@@ -279,7 +284,15 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 {
     NSString *description = NSLocalizedString(@"Could not unfollow the site at the address specified.", @"Error message informing the user that there was a problem unsubscribing to a site or feed.");
     NSDictionary *userInfo = @{NSLocalizedDescriptionKey:description};
-    NSError *error = [[NSError alloc] initWithDomain:ReaderSiteServiceRemoteErrorDomain code:ReaderSiteServiceRemoteUnsuccessfulFollowSite userInfo:userInfo];
+    NSError *error = [[NSError alloc] initWithDomain:ReaderSiteServiceRemoteErrorDomain code:ReaderSiteServiceRemoteUnsuccessfulUnfollowSite userInfo:userInfo];
+    return error;
+}
+
+- (NSError *)errorForUnsuccessfulBlockSite
+{
+    NSString *description = NSLocalizedString(@"There was a problem blocking posts from the specified site.", @"Error message informing the user that there was a problem blocking posts from a site from their reader.");
+    NSDictionary *userInfo = @{NSLocalizedDescriptionKey:description};
+    NSError *error = [[NSError alloc] initWithDomain:ReaderSiteServiceRemoteErrorDomain code:ReaderSiteSErviceRemoteUnsuccessfulBlockSite userInfo:userInfo];
     return error;
 }
 
