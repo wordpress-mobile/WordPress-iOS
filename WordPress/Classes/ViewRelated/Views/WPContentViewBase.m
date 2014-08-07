@@ -494,7 +494,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 }
 
 
-#pragma mark - authorLinkAction
+#pragma mark - Attribution Delegate Methods
 
 /**
  Receives the notification from the attribution view that its button was pressed and informs the 
@@ -507,5 +507,15 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     }
 }
 
+/**
+ Receives the notification from the attribution view that its menu button was pressed and informs the
+ delegate of the interaction.
+ */
+- (void)attributionView:(WPContentAttributionView *)attributionView didReceiveAttributionMenuAction:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(contentView:didReceiveAttributionMenuAction:)]) {
+        [self.delegate contentView:self didReceiveAttributionLinkAction:sender];
+    }
+}
 
 @end
