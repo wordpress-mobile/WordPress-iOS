@@ -93,7 +93,7 @@ const CGFloat WPContentAttributionMenuSize = 30.0;
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-40-[_attributionLinkButton][_attributionMenuButton]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-40-[_attributionLinkButton(>=100)]-(>=10)-[_attributionMenuButton]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];

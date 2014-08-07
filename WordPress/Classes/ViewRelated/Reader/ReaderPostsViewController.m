@@ -22,6 +22,7 @@
 #import "CustomHighlightButton.h"
 #import "UIView+Subviews.h"
 #import "BlogService.h"
+#import "ReaderSiteService.h"
 
 static CGFloat const RPVCHeaderHeightPhone = 10.0;
 static CGFloat const RPVCEstimatedRowHeightIPhone = 400.0;
@@ -31,7 +32,7 @@ NSString * const FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
 NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier";
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
-@interface ReaderPostsViewController ()<WPTableImageSourceDelegate, ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate>
+@interface ReaderPostsViewController ()<WPTableImageSourceDelegate, ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, assign) BOOL hasMoreContent;
 @property (nonatomic, assign) BOOL loadingMore;
@@ -49,7 +50,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @property (nonatomic, strong) NSLayoutConstraint *cellForLayoutWidthConstraint;
 @property (nonatomic) BOOL infiniteScrollEnabled;
 @property (nonatomic, strong) NSMutableDictionary *cachedRowHeights;
-
+@property (nonatomic, strong) NSNumber *siteIDToBlock;
 @end
 
 @implementation ReaderPostsViewController
@@ -334,6 +335,37 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	view.frame = frame;
 }
 
+- (ReaderPost *)postFromCellSubview:(UIView *)subview
+{
+    ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:subview];
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
+    return post;
+}
+
+- (void)blockSite
+{
+    if (!self.siteIDToBlock) {
+        return;
+    }
+
+    NSNumber *siteIDToBlock = self.siteIDToBlock;
+    self.siteIDToBlock = nil;
+
+    NSManagedObjectContext *derivedContext = [[ContextManager sharedInstance] newDerivedContext];
+    ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:derivedContext];
+    [service blockSiteWithID:siteIDToBlock success:^{
+        // nothing to do.
+    } failure:^(NSError *error) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Blocking Site", @"Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader.")
+                                                            message:[error localizedDescription]
+                                                           delegate:nil
+                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"Text for an alert's dismissal button.")
+                                                  otherButtonTitles:nil, nil];
+        [alertView show];
+    }];
+}
+
 
 #pragma mark - ReaderPostContentView delegate methods
 
@@ -375,10 +407,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)contentView:(UIView *)contentView didReceiveAttributionLinkAction:(id)sender
 {
     UIButton *followButton = (UIButton *)sender;
-    ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
-    
+
+    ReaderPost *post = [self postFromCellSubview:followButton];
     if (![post isFollowable]) {
         return;
     }
@@ -397,6 +427,25 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 		DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
 		[followButton setSelected:post.isFollowing];
     }];
+}
+
+- (void)contentView:(UIView *)contentView didReceiveAttributionMenuAction:(id)sender
+{
+    ReaderPost *post = [self postFromCellSubview:sender];
+    self.siteIDToBlock = post.siteID;
+
+    NSString *title = NSLocalizedString(@"Block posts from '%@'?", @"Informs the user they are about to block the specified site. The characters '%@' in the string are replaced with the title of the site.");
+    title = [NSString stringWithFormat:title, post.blogName];
+    NSString *cancel = NSLocalizedString(@"Cancel", @"The title of a cancel button.");
+    NSString *blockSite = NSLocalizedString(@"Block This Site", @"The title of a button that triggers blocking a site from the user's reader.");
+
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title
+                                                             delegate:self
+                                                    cancelButtonTitle:cancel
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:blockSite, nil];
+
+    [actionSheet showFromTabBar:self.tabBarController.tabBar];
 }
 
 - (void)postView:(ReaderPostContentView *)postView didReceiveCommentAction:(id)sender
@@ -592,12 +641,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
 
+    cell.postView.shouldShowAttributionMenu = YES;
     [cell configureCell:post];
     [self setImageForPost:post forCell:cell indexPath:indexPath];
     [self setAvatarForPost:post forCell:cell indexPath:indexPath];
 
     cell.postView.delegate = self;
-    cell.postView.shouldShowActions = post.isWPCom;
 }
 
 - (CGSize)sizeForFeaturedImage
@@ -844,9 +893,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     [self configureCell:cell atIndexPath:indexPath];
-    if (!cell) {
-        NSLog(@"NO CELL!");
-    }
 
     return cell;
 }
@@ -1024,6 +1070,18 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     [cell.postView setFeaturedImage:image];
+}
+
+
+#pragma mark - ActionSheet Delegate methods
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == actionSheet.cancelButtonIndex) {
+        self.siteIDToBlock = nil;
+        return;
+    }
+    [self blockSite];
 }
 
 @end
