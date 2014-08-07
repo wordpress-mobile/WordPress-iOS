@@ -243,14 +243,21 @@
     self.loadingView.hidden = YES;
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
     DDLogMethodParam(error);
-    self.loadingView.hidden = YES;
     
+    // Watch for NSURLErrorCancelled (aka NSURLErrorDomain error -999). This error is returned
+    // when an asynchronous load is canceled. For example, a link is tapped (or some other
+    // action that causes a new page to load) before the current page has completed loading.
+    // It should be safe to ignore.
+    if([error code] == NSURLErrorCancelled)
+        return;
+    
+    self.loadingView.hidden = YES;
     NSString *errorMessage = [NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>",
                               NSLocalizedString(@"There has been an error while trying to reach your site.", nil),
                               NSLocalizedString(@"A simple preview is shown below.", @"")];
-    
     [self showSimplePreviewWithMessage:errorMessage];
 }
 
