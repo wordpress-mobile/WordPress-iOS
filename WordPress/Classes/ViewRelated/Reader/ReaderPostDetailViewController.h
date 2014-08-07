@@ -4,8 +4,9 @@
 
 @interface ReaderPostDetailViewController : UITableViewController
 
-@property (nonatomic, strong) ReaderPost *post;
+@property (nonatomic, strong, readonly) ReaderPost *post;
 
-- (instancetype)initWithPost:(ReaderPost *)post;
++ (instancetype)detailControllerWithPost:(ReaderPost *)post;
++ (instancetype)detailControllerWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID;
 
 @end
