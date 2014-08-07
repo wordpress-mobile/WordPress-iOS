@@ -2,7 +2,9 @@
 
 typedef NS_ENUM(NSUInteger, ReaderSiteServiceRemoteError) {
     ReaderSiteServiceRemoteInvalidHost,
-    ReaderSiteServiceRemoteUnsuccessfulFollowSite
+    ReaderSiteServiceRemoteUnsuccessfulFollowSite,
+    ReaderSiteServiceRemoteUnsuccessfulUnfollowSite,
+    ReaderSiteSErviceRemoteUnsuccessfulBlockSite
 };
 
 extern NSString * const ReaderSiteServiceRemoteErrorDomain;
