@@ -445,8 +445,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
                                                     cancelButtonTitle:cancel
                                                destructiveButtonTitle:nil
                                                     otherButtonTitles:blockSite, nil];
-
-    [actionSheet showFromTabBar:self.tabBarController.tabBar];
+    if (IS_IPHONE) {
+        [actionSheet showFromTabBar:self.tabBarController.tabBar];
+    } else {
+        UIView *view = (UIView *)sender;
+        [actionSheet showFromRect:view.bounds inView:view animated:YES];
+    }
 }
 
 - (void)postView:(ReaderPostContentView *)postView didReceiveCommentAction:(id)sender
