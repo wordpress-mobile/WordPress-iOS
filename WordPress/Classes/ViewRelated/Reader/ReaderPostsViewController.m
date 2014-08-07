@@ -435,7 +435,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     ReaderPost *post = [self postFromCellSubview:sender];
     self.siteIDToBlock = post.siteID;
 
-    NSString *title = NSLocalizedString(@"Block posts from '%@'?", @"Informs the user they are about to block the specified site. The characters '%@' in the string are replaced with the title of the site.");
+    NSString *title = NSLocalizedString(@"Block posts from %@?", @"Informs the user they are about to block the specified site. The characters '%@' in the string are replaced with the title of the site.");
     title = [NSString stringWithFormat:title, post.blogName];
     NSString *cancel = NSLocalizedString(@"Cancel", @"The title of a cancel button.");
     NSString *blockSite = NSLocalizedString(@"Block This Site", @"The title of a button that triggers blocking a site from the user's reader.");
@@ -443,8 +443,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title
                                                              delegate:self
                                                     cancelButtonTitle:cancel
-                                               destructiveButtonTitle:nil
-                                                    otherButtonTitles:blockSite, nil];
+                                               destructiveButtonTitle:blockSite
+                                                    otherButtonTitles:nil, nil];
     if (IS_IPHONE) {
         [actionSheet showFromTabBar:self.tabBarController.tabBar];
     } else {
@@ -634,7 +634,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
 
-    cell.postView.shouldShowAttributionMenu = YES;
+    BOOL shouldShowAttributionMenu = ([self isCurrentTopicFreshlyPressed] || (self.currentTopic.type != ReaderTopicTypeList)) ? YES : NO;
+    cell.postView.shouldShowAttributionMenu = shouldShowAttributionMenu;
     [cell configureCell:post];
     [self setImageForPost:post forCell:cell indexPath:indexPath];
     [self setAvatarForPost:post forCell:cell indexPath:indexPath];
@@ -995,7 +996,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self syncItems];
 
     [WPAnalytics track:WPAnalyticsStatReaderLoadedTag withProperties:[self tagPropertyForStats]];
-    if ([self isCurrentTagFreshlyPressed]) {
+    if ([self isCurrentTopicFreshlyPressed]) {
         [WPAnalytics track:WPAnalyticsStatReaderLoadedFreshlyPressed];
     }
 }
@@ -1021,9 +1022,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 #pragma mark - Utility
 
-- (BOOL)isCurrentTagFreshlyPressed
+- (BOOL)isCurrentTopicFreshlyPressed
 {
-    return [self.currentTopic.title rangeOfString:@"freshly-pressed"].location != NSNotFound;
+    return [self.currentTopic.path rangeOfString:@"freshly-pressed"].location != NSNotFound;
 }
 
 - (NSDictionary *)tagPropertyForStats
