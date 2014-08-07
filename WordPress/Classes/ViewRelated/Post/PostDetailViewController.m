@@ -42,9 +42,11 @@ NSString *const WPPostDetailNavigationRestorationID = @"WPPostDetailNavigationRe
 {
     [super viewDidLoad];
     [self setupNavbar];
-    self.navigationItem.title = self.aPost.titleForDisplay;
-    [self setupPreviewView];
-    [self setupTagsView];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self refreshDisplay];
 }
 
 - (void)didReceiveMemoryWarning
@@ -107,6 +109,9 @@ NSString *const WPPostDetailNavigationRestorationID = @"WPPostDetailNavigationRe
 
 - (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
 {
+    //Need to refresh the post on this screen before the transition
+    [self refreshDisplay];
+    
     EditPostTransition *transition = [[EditPostTransition alloc] init];
     transition.mode = EditPostTransitionModeDismiss;
     return transition;
@@ -120,6 +125,13 @@ NSString *const WPPostDetailNavigationRestorationID = @"WPPostDetailNavigationRe
     } else {
         return nil;
     }
+}
+
+- (void)refreshDisplay
+{
+    self.navigationItem.title = self.aPost.titleForDisplay;
+    [self setupTagsView];
+    [self setupPreviewView];
 }
 
 @end
