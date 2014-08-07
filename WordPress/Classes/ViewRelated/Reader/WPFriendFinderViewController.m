@@ -21,7 +21,8 @@ static NSString *const SourceFacebook = @"Facebook";
 
 @implementation WPFriendFinderViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 
     [self loadURL:WPMobileReaderFFURL];
@@ -42,12 +43,14 @@ static NSString *const SourceFacebook = @"Facebook";
     [self.view addSubview:self.activityView];
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     self.activityView = nil;
 }
 
-- (void)configureFriendFinder:(id)config {
+- (void)configureFriendFinder:(id)config
+{
     NSDictionary *settings = (NSDictionary *)config;
     NSArray *sources = (NSArray *)[settings objectForKey:@"sources"];
 
@@ -62,7 +65,8 @@ static NSString *const SourceFacebook = @"Facebook";
     [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.enableSources(%@)", json]];
 }
 
-- (void)authorizeSource:(NSString *)source {
+- (void)authorizeSource:(NSString *)source
+{
     if ([source isEqualToString:@"address-book"]) {
         [self findEmails];
     } else if ([source isEqualToString:@"twitter"]) {
@@ -72,7 +76,8 @@ static NSString *const SourceFacebook = @"Facebook";
     }
 }
 
-- (void)findEmails {
+- (void)findEmails
+{
     ABAddressBookRef addressBookForAccessCheck = ABAddressBookCreateWithOptions(NULL, NULL);
     if (addressBookForAccessCheck) {
         addressBookForAccessCheck = CFAutorelease(addressBookForAccessCheck);
@@ -113,7 +118,8 @@ static NSString *const SourceFacebook = @"Facebook";
     }
 }
 
-- (void)findTwitterFriends {
+- (void)findTwitterFriends
+{
     ACAccountStore *store = [[ACAccountStore alloc] init];
     ACAccountType *twitterAccountType =
     [store accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
@@ -149,15 +155,18 @@ static NSString *const SourceFacebook = @"Facebook";
     }];
 }
 
-- (void)facebookDidLogIn:(NSNotification *)notification {
+- (void)facebookDidLogIn:(NSNotification *)notification
+{
     [self findFacebookFriends];
 }
 
-- (void)facebookDidNotLogIn:(NSNotification *)notification {
+- (void)facebookDidNotLogIn:(NSNotification *)notification
+{
     [self.webView stringByEvaluatingJavaScriptFromString:@"FriendFinder.findByFacebookID()"];
 }
 
-- (void)findFacebookFriends {
+- (void)findFacebookFriends
+{
     ACAccountStore *store = [[ACAccountStore alloc] init];
 
     NSDictionary *options = @{
@@ -246,17 +255,20 @@ static NSString *const SourceFacebook = @"Facebook";
 
 #pragma mark - UIWebView Delegate Methods
 
-- (void)webViewDidStartLoad:(UIWebView *)webView {
+- (void)webViewDidStartLoad:(UIWebView *)webView
+{
     if ([[[webView stringByEvaluatingJavaScriptFromString:@"document.body.innerHTML.length"] numericValue] integerValue] == 0) {
         [self.activityView startAnimating];
     }
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
     [self.activityView stopAnimating];
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
     [self.activityView stopAnimating];
 }
 

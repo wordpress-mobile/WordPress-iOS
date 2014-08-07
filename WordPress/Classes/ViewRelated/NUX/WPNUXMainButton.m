@@ -23,7 +23,8 @@
     return self;
 }
 
-- (void)layoutSubviews {
+- (void)layoutSubviews
+{
 
     [super layoutSubviews];
     if ([activityIndicator isAnimating]) {
@@ -48,8 +49,8 @@
     [self addSubview:activityIndicator];
 }
 
-- (void)showActivityIndicator:(BOOL)show {
-
+- (void)showActivityIndicator:(BOOL)show
+{
     if (show) {
         [activityIndicator startAnimating];
     } else {
@@ -58,8 +59,8 @@
     [self setNeedsLayout];
 }
 
-- (void)setColor:(UIColor *)color {
-
+- (void)setColor:(UIColor *)color
+{
     CGRect fillRect = CGRectMake(0, 0, 11.0, 40.0);
     UIEdgeInsets capInsets = UIEdgeInsetsMake(4, 4, 4, 4);
     UIImage *mainImage;

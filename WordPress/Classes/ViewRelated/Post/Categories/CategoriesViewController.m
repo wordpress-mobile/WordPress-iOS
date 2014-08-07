@@ -20,7 +20,8 @@
 
 @implementation CategoriesViewController
 
-- (id)initWithPost:(Post *)post selectionMode:(CategoriesSelectionMode)selectionMode {
+- (id)initWithPost:(Post *)post selectionMode:(CategoriesSelectionMode)selectionMode
+{
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         self.selectionMode = selectionMode;
@@ -29,7 +30,8 @@
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
@@ -47,13 +49,15 @@
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
 
     [self configureCategories];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     [super viewWillDisappear:animated];
 
     // Save changes.
@@ -61,24 +65,28 @@
     [self.post save];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 }
 
 #pragma mark - Instance Methods
 
-- (BOOL)hasChanges {
+- (BOOL)hasChanges
+{
     return [self.originalSelection isEqualToArray:self.selectedCategories];
 }
 
-- (void)showAddNewCategory {
+- (void)showAddNewCategory
+{
     DDLogMethod();
     WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithPost:self.post];
     [self.navigationController pushViewController:addCategoryViewController animated:YES];
 }
 
-- (void)configureCategories {
+- (void)configureCategories
+{
     self.selectedCategories = [NSMutableArray arrayWithArray:[self.post.categories allObjects]];
     self.originalSelection = [self.selectedCategories copy];
     self.categoryIndentationDict = [NSMutableDictionary dictionary];
@@ -109,7 +117,8 @@
     [self.tableView reloadData];
 }
 
-- (NSInteger)indentationLevelForCategory:(NSNumber *)parentID categoryCollection:(NSMutableDictionary *)categoryDict {
+- (NSInteger)indentationLevelForCategory:(NSNumber *)parentID categoryCollection:(NSMutableDictionary *)categoryDict
+{
     if ([parentID intValue] == 0) {
         return 0;
     }
@@ -120,15 +129,18 @@
 
 #pragma mark - UITableView Delegate & DataSource
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section
+{
     return [self.categories count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     static NSString *categoryCell = @"categoryCell";
     WPTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:categoryCell];
     if (!cell) {
@@ -163,7 +175,8 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
 
     Category *category = self.categories[indexPath.row];

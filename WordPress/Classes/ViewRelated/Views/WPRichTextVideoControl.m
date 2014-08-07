@@ -18,12 +18,14 @@
     return self;
 }
 
-- (void)layoutSubviews {
+- (void)layoutSubviews
+{
     [super layoutSubviews];
     _playView.center = CGPointMake(round(CGRectGetMidX(self.bounds)), round(CGRectGetMidY(self.bounds)));
 }
 
-- (void)setHighlighted:(BOOL)highlighted {
+- (void)setHighlighted:(BOOL)highlighted
+{
     [super setHighlighted:highlighted];
     if (highlighted) {
         self.alpha = 0.8;

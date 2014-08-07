@@ -2,8 +2,8 @@
 
 @implementation WPFixedWidthScrollView
 
-- (instancetype)initWithRootView:(UIView *)view {
-
+- (instancetype)initWithRootView:(UIView *)view
+{
     self = [self initWithFrame:CGRectZero];
     if (self) {
         self.rootView = view;
@@ -12,8 +12,8 @@
     return self;
 }
 
-- (void)layoutSubviews {
-
+- (void)layoutSubviews
+{
     [super layoutSubviews];
 
     CGFloat viewWidth = CGRectGetWidth(self.bounds);

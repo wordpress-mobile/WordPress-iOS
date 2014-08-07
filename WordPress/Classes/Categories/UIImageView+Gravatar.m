@@ -14,7 +14,8 @@ NSString *const GravatarDefault = @"gravatar.png";
 
 @implementation UIImageView (Gravatar)
 
-- (void)setImageWithGravatarEmail:(NSString *)emailAddress {
+- (void)setImageWithGravatarEmail:(NSString *)emailAddress
+{
     static UIImage *gravatarDefaultImage;
     if (gravatarDefaultImage == nil) {
         gravatarDefaultImage = [UIImage imageNamed:GravatarDefault];
@@ -34,12 +35,14 @@ NSString *const GravatarDefault = @"gravatar.png";
     }];
 }
 
-- (void)setImageWithBlavatarUrl:(NSString *)blavatarUrl {
+- (void)setImageWithBlavatarUrl:(NSString *)blavatarUrl
+{
     BOOL wpcom = ([blavatarUrl rangeOfString:@".wordpress.com"].location != NSNotFound);
     [self setImageWithBlavatarUrl:blavatarUrl isWPcom:wpcom];
 }
 
-- (void)setImageWithBlavatarUrl:(NSString *)blavatarUrl isWPcom:(BOOL)wpcom {
+- (void)setImageWithBlavatarUrl:(NSString *)blavatarUrl isWPcom:(BOOL)wpcom
+{
     static UIImage *blavatarDefaultImageWPcom;
     static UIImage *blavatarDefaultImageWPorg;
     if (blavatarDefaultImageWPcom == nil) {

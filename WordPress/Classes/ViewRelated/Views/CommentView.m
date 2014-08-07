@@ -33,7 +33,8 @@ const CGFloat CommentViewHeaderLabelVerticalInset = 10.0f;
     return self;
 }
 
-- (void)configureContentView:(id<WPContentViewProvider>)contentProvider {
+- (void)configureContentView:(id<WPContentViewProvider>)contentProvider
+{
     [super configureContentView:contentProvider];
 
     NSString *avatarEmail = [contentProvider gravatarEmailForDisplay];
@@ -59,7 +60,8 @@ const CGFloat CommentViewHeaderLabelVerticalInset = 10.0f;
     [self.textContentView relayoutText];
 }
 
-- (void)layoutSubviews {
+- (void)layoutSubviews
+{
     if ([self.headerText length] > 0) {
         [self.headerLabel setDelegate:self];
         NSAttributedString *noteContentAttributedString = [[NSAttributedString alloc] initWithHTMLData:[self.headerText dataUsingEncoding:NSUTF8StringEncoding] options:[WPStyleGuide defaultDTCoreTextOptions] documentAttributes:nil];
@@ -79,7 +81,8 @@ const CGFloat CommentViewHeaderLabelVerticalInset = 10.0f;
     [super layoutSubviews];
 }
 
-- (CGFloat)topMarginHeight {
+- (CGFloat)topMarginHeight
+{
     return _headerLabel.frame.size.height;
 }
 

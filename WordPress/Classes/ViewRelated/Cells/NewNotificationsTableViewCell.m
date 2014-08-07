@@ -3,11 +3,13 @@
 
 @implementation NewNotificationsTableViewCell
 
-+ (BOOL)showGravatarImage {
++ (BOOL)showGravatarImage
+{
     return YES;
 }
 
-+ (BOOL)supportsUnreadStatus {
++ (BOOL)supportsUnreadStatus
+{
     return YES;
 }
 

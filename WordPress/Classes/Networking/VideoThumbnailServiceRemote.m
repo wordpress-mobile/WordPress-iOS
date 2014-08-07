@@ -3,7 +3,8 @@
 
 @implementation VideoThumbnailServiceRemote
 
-+ (AFHTTPRequestOperationManager *)sharedYoutubeClient {
++ (AFHTTPRequestOperationManager *)sharedYoutubeClient
+{
     static AFHTTPRequestOperationManager *_sharedClient = nil;
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
@@ -12,7 +13,8 @@
     return _sharedClient;
 }
 
-+ (AFHTTPRequestOperationManager *)sharedVimeoClient {
++ (AFHTTPRequestOperationManager *)sharedVimeoClient
+{
     static AFHTTPRequestOperationManager *_sharedClient = nil;
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
@@ -21,7 +23,8 @@
     return _sharedClient;
 }
 
-+ (AFHTTPRequestOperationManager *)sharedDailyMotionClient {
++ (AFHTTPRequestOperationManager *)sharedDailyMotionClient
+{
     static AFHTTPRequestOperationManager *_sharedClient = nil;
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
@@ -101,7 +104,6 @@
                    success:(void (^)(NSURL *thumbnailURL, NSString *title))success
                    failure:(void (^)(NSError *error))failure
 {
-
     NSString *urlHost = [url host];
     NSString *urlPath = [[url path] stringByReplacingOccurrencesOfString:@".mp4" withString:@".original.jpg?w=640"];
     NSString *path = [NSString stringWithFormat:@"http://i0.wp.com/%@%@", urlHost, urlPath];
@@ -114,7 +116,6 @@
               success:(void (^)(NSURL *thumbnailURL, NSString *title))success
               failure:(void (^)(NSError *error))failure
 {
-
     NSString *path = [NSString stringWithFormat:@"/api/v2/video/%@.json", vidId];
     [[[self class] sharedVimeoClient] GET:path
                                parameters:nil

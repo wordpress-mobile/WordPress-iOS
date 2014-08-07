@@ -16,7 +16,8 @@
 @implementation Page
 @dynamic parentID;
 
-+ (NSString *)titleForRemoteStatus:(NSNumber *)remoteStatus {
++ (NSString *)titleForRemoteStatus:(NSNumber *)remoteStatus
+{
     if ([remoteStatus intValue] == AbstractPostRemoteStatusSync) {
         return NSLocalizedString(@"Pages", @"");
     }
@@ -24,11 +25,13 @@
     return [super titleForRemoteStatus:remoteStatus];
 }
 
-+ (NSString *const)remoteUniqueIdentifier {
++ (NSString *const)remoteUniqueIdentifier
+{
     return @"page_id";
 }
 
-- (void)updateFromDictionary:(NSDictionary *)postInfo {
+- (void)updateFromDictionary:(NSDictionary *)postInfo
+{
     self.postTitle      = [postInfo objectForKey:@"title"];
     self.postID         = [[postInfo objectForKey:@"page_id"] numericValue];
     self.content        = [postInfo objectForKey:@"description"];
@@ -51,7 +54,8 @@
     self.post_thumbnail = [postInfo objectForKey:@"featured_image"];
 }
 
-- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     if ([self.password isEmpty]) {
         self.password = nil;
     }
@@ -69,7 +73,8 @@
 
 @implementation Page (WordPressApi)
 
-- (NSDictionary *)XMLRPCDictionary {
+- (NSDictionary *)XMLRPCDictionary
+{
     NSMutableDictionary *postParams = [NSMutableDictionary dictionaryWithDictionary:[super XMLRPCDictionary]];
 
     if (self.status == nil) {
@@ -81,7 +86,8 @@
     return postParams;
 }
 
-- (void)postPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)postPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     NSArray *parameters = [self.blog getXMLRPCArgsWithExtra:[self XMLRPCDictionary]];
     self.remoteStatus = AbstractPostRemoteStatusPushing;
 
@@ -120,7 +126,8 @@
                       }];
 }
 
-- (void)getPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)getPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     NSArray *parameters = @[self.blog.blogID, self.postID, self.blog.username, self.blog.password];
     [self.blog.api callMethod:@"wp.getPage"
                    parameters:parameters
@@ -139,7 +146,8 @@
                       }];
 }
 
-- (void)editPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)editPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     if (self.postID == nil) {
         if (failure) {
             NSDictionary *userInfo = @{NSLocalizedDescriptionKey: @"Can't edit a post if it's not in the server"};
@@ -173,7 +181,8 @@
                       }];
 }
 
-- (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     DDLogMethod();
     BOOL remote = [self hasRemote];
     if (remote) {

@@ -21,7 +21,8 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
 
 @implementation ReaderTopicService
 
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context {
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context
+{
     self = [super init];
     if (self) {
         _managedObjectContext = context;
@@ -30,7 +31,8 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
     return self;
 }
 
-- (void)fetchReaderMenuWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)fetchReaderMenuWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
     if (!defaultAccount) {
@@ -66,7 +68,8 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
     }];
 }
 
-- (ReaderTopic *)currentTopic {
+- (ReaderTopic *)currentTopic
+{
     ReaderTopic *topic;
     NSError *error;
     NSString *topicURIString = [[NSUserDefaults standardUserDefaults] stringForKey:ReaderTopicCurrentTopicURIKey];
@@ -118,7 +121,8 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
     }
 }
 
-- (NSUInteger)numberOfSubscribedTopics {
+- (NSUInteger)numberOfSubscribedTopics
+{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
     request.predicate = [NSPredicate predicateWithFormat:@"isSubscribed == YES AND type == %@", ReaderTopicTypeTag];
     NSError *error;
@@ -130,7 +134,8 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
     return count;
 }
 
-- (void)deleteAllTopics {
+- (void)deleteAllTopics
+{
     [self setCurrentTopic:nil];
     NSArray *currentTopics = [self allTopics];
     for (ReaderTopic *topic in currentTopics) {
@@ -226,7 +231,8 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
 /**
  Get the api to use for the request.
  */
-- (WordPressComApi *)apiForRequest {
+- (WordPressComApi *)apiForRequest
+{
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
     WordPressComApi *api = [defaultAccount restApi];
@@ -278,7 +284,8 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
  @param dict A `RemoteReaderTopic` object.
  @return A new or updated, but unsaved, `ReaderTopic`.
  */
-- (ReaderTopic *)createOrReplaceFromRemoteTopic:(RemoteReaderTopic *)remoteTopic {
+- (ReaderTopic *)createOrReplaceFromRemoteTopic:(RemoteReaderTopic *)remoteTopic
+{
     NSString *path = remoteTopic.path;
 
     if (path == nil || path.length == 0) {
@@ -312,7 +319,8 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
 
  @param topics An array of `ReaderTopics` to save.
  */
-- (void)mergeTopics:(NSArray *)topics forAccount:(WPAccount *)account {
+- (void)mergeTopics:(NSArray *)topics forAccount:(WPAccount *)account
+{
     NSArray *currentTopics = [self allTopics];
     NSMutableArray *topicsToKeep = [NSMutableArray array];
 
@@ -344,7 +352,8 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
 
  @return An array of all `ReaderTopics` currently persisted in Core Data.
  */
-- (NSArray *)allTopics {
+- (NSArray *)allTopics
+{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
 
     NSError *error;
@@ -363,7 +372,8 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
  @param path The unique, cannonical path of the topic.
  @return A matching `ReaderTopic` or nil if there is no match.
  */
-- (ReaderTopic *)findWithPath:(NSString *)path {
+- (ReaderTopic *)findWithPath:(NSString *)path
+{
     NSArray *results = [[self allTopics] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"path == %@", [path lowercaseString]]];
     return [results firstObject];
 }

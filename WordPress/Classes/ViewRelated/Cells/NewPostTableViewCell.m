@@ -3,7 +3,8 @@
 
 @implementation NewPostTableViewCell
 
-+ (BOOL)shortDateString {
++ (BOOL)shortDateString
+{
     return NO;
 }
 

@@ -2,7 +2,8 @@
 
 @implementation DateUtils
 
-+ (NSDate *)dateFromISOString:(NSString *)dateString {
++ (NSDate *)dateFromISOString:(NSString *)dateString
+{
     NSArray *formats = @[@"yyyy-MM-dd'T'HH:mm:ssZZZZZ", @"yyyy-MM-dd HH:mm:ss"];
     NSDate *date = nil;
     if ([dateString length] == 25) {
@@ -24,7 +25,8 @@
     return date;
 }
 
-+ (NSString *)isoStringFromDate:(NSDate *)date {
++ (NSString *)isoStringFromDate:(NSDate *)date
+{
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
     dateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"GMT"];

@@ -22,7 +22,8 @@
 
 @implementation WPAddCategoryViewController
 
-- (id)initWithPost:(Post *)post {
+- (id)initWithPost:(Post *)post
+{
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.post = post;
@@ -30,7 +31,8 @@
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     DDLogMethod();
     [super viewDidLoad];
 
@@ -46,7 +48,8 @@
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 }
@@ -54,12 +57,14 @@
 #pragma mark -
 #pragma mark Instance Methods
 
-- (void)clearUI {
+- (void)clearUI
+{
     self.createCatNameField.text = @"";
     self.parentCatNameField.text = @"";
 }
 
-- (void)addProgressIndicator {
+- (void)addProgressIndicator
+{
     UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activityView];
     [activityView startAnimating];
@@ -67,16 +72,19 @@
     self.navigationItem.rightBarButtonItem = activityButtonItem;
 }
 
-- (void)removeProgressIndicator {
+- (void)removeProgressIndicator
+{
     self.navigationItem.rightBarButtonItem = self.saveButtonItem;
 }
 
-- (void)dismiss {
+- (void)dismiss
+{
     DDLogMethod();
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)saveAddCategory:(id)sender {
+- (void)saveAddCategory:(id)sender
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:context];
     NSString *catName = [self.createCatNameField.text trim];
@@ -134,7 +142,8 @@
 
 #pragma mark - functional methods
 
-- (void)showParentCategorySelector {
+- (void)showParentCategorySelector
+{
     CategoriesViewController *controller = [[CategoriesViewController alloc] initWithPost:self.post selectionMode:CategoriesSelectionModeParent];
     controller.delegate = self;
     [self.navigationController pushViewController:controller animated:YES];
@@ -142,15 +151,18 @@
 
 #pragma mark - tableviewDelegates/datasources
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 2;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     return 1;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     WPTableViewCell *cell;
     if (indexPath.section == 0) {
         cell = [self cellForNewCategory];
@@ -160,7 +172,8 @@
     return cell;
 }
 
-- (WPTableViewCell *)cellForNewCategory {
+- (WPTableViewCell *)cellForNewCategory
+{
     WPTableViewCell *cell;
 
     static NSString *newCategoryCellIdentifier = @"newCategoryCellIdentifier";
@@ -184,7 +197,8 @@
     return cell;
 }
 
-- (WPTableViewCell *)cellForParentCategory {
+- (WPTableViewCell *)cellForParentCategory
+{
     WPTableViewCell *cell;
     static NSString *parentCategoryCellIdentifier = @"parentCategoryCellIdentifier";
     cell = (WPTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:parentCategoryCellIdentifier];
@@ -209,7 +223,8 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
 
     if (indexPath.section == 1) {
@@ -219,14 +234,16 @@
 
 #pragma mark textfied deletage
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
     [textField resignFirstResponder];
     return YES;
 }
 
 #pragma mark - CategoriesViewControllerDelegate methods
 
-- (void)categoriesViewController:(CategoriesViewController *)controller didSelectCategory:(Category *)category {
+- (void)categoriesViewController:(CategoriesViewController *)controller didSelectCategory:(Category *)category
+{
     self.parentCategory = category;
     [self.tableView reloadData];
 }

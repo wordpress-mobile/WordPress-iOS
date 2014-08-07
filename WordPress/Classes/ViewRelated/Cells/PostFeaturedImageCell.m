@@ -12,7 +12,8 @@ CGFloat const PostFeaturedImageCellMargin = 15.0f;
 
 @implementation PostFeaturedImageCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         [self configureSubviews];
@@ -20,7 +21,8 @@ CGFloat const PostFeaturedImageCellMargin = 15.0f;
     return self;
 }
 
-- (void)configureSubviews {
+- (void)configureSubviews
+{
     CGRect contentFrame = self.contentView.frame;
     self.imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.imageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -38,7 +40,8 @@ CGFloat const PostFeaturedImageCellMargin = 15.0f;
     [self.contentView addSubview:self.activityView];
 }
 
-- (void)layoutSubviews {
+- (void)layoutSubviews
+{
     [super layoutSubviews];
     if (!self.imageView.hidden) {
         CGFloat x = PostFeaturedImageCellMargin;
@@ -49,12 +52,14 @@ CGFloat const PostFeaturedImageCellMargin = 15.0f;
     }
 }
 
-- (void)setImage:(UIImage *)image {
+- (void)setImage:(UIImage *)image
+{
     [self.imageView setImage:image];
     [self showLoadingSpinner:NO];
 }
 
-- (void)showLoadingSpinner:(BOOL)showSpinner {
+- (void)showLoadingSpinner:(BOOL)showSpinner
+{
     if (showSpinner) {
         [self.activityView startAnimating];
     } else {

@@ -43,7 +43,8 @@
 NSUInteger const MediaDefaultThumbnailSize = 75;
 CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
 
-+ (Media *)newMediaForPost:(AbstractPost *)post {
++ (Media *)newMediaForPost:(AbstractPost *)post
+{
     Media *media = [NSEntityDescription insertNewObjectForEntityForName:@"Media" inManagedObjectContext:post.managedObjectContext];
     media.blog = post.blog;
     media.posts = [NSMutableSet setWithObject:post];
@@ -51,7 +52,8 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     return media;
 }
 
-+ (Media *)newMediaForBlog:(Blog *)blog {
++ (Media *)newMediaForBlog:(Blog *)blog
+{
     Media *media = [NSEntityDescription insertNewObjectForEntityForName:@"Media" inManagedObjectContext:blog.managedObjectContext];
     media.blog = blog;
     media.mediaID = @0;
@@ -63,7 +65,8 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     return [theImage thumbnailImage:MediaDefaultThumbnailSize transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
 }
 
-+ (Media *)createOrReplaceMediaFromJSON:(NSDictionary *)json forBlog:(Blog *)blog {
++ (Media *)createOrReplaceMediaFromJSON:(NSDictionary *)json forBlog:(Blog *)blog
+{
     NSSet *existing = [blog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"mediaID == %@", [json[@"attachment_id"] numericValue]]];
     if (existing.count > 0) {
         [existing.allObjects[0] updateFromDictionary:json];
@@ -76,7 +79,8 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     return media;
 }
 
-+ (void)mergeNewMedia:(NSArray *)media forBlog:(Blog *)blog {
++ (void)mergeNewMedia:(NSArray *)media forBlog:(Blog *)blog
+{
     if ([blog isDeleted] || blog.managedObjectContext == nil) {
         return;
     }
@@ -103,7 +107,8 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     }];
 }
 
-- (void)updateFromDictionary:(NSDictionary*)json {
+- (void)updateFromDictionary:(NSDictionary*)json
+{
     self.remoteURL = [json stringForKey:@"link"];
     self.title = [json stringForKey:@"title"];
     self.width = [json numberForKeyPath:@"metadata.width"];
@@ -117,13 +122,15 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     [self mediaTypeFromUrl:[[json stringForKey:@"link"] pathExtension]];
 }
 
-- (NSDictionary*)XMLRPCDictionaryForUpdate {
+- (NSDictionary*)XMLRPCDictionaryForUpdate
+{
     return @{@"post_title": self.title ? self.title : @"",
              @"post_content": self.desc ? self.desc : @"",
              @"post_excerpt": self.caption ? self.caption : @""};
 }
 
-- (void)mediaTypeFromUrl:(NSString *)ext {
+- (void)mediaTypeFromUrl:(NSString *)ext
+{
     CFStringRef fileExt = (__bridge CFStringRef)ext;
     CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, fileExt, nil);
     CFStringRef ppt = (__bridge CFStringRef)@"public.presentation";
@@ -148,7 +155,8 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     }
 }
 
-- (MediaType)mediaType {
+- (MediaType)mediaType
+{
     if ([self.mediaTypeString isEqualToString:@"image"]) {
         return MediaTypeImage;
     } else if ([self.mediaTypeString isEqualToString:@"video"]) {
@@ -163,7 +171,8 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     return MediaTypeDocument;
 }
 
-- (void)setMediaType:(MediaType)mediaType {
+- (void)setMediaType:(MediaType)mediaType
+{
     switch (mediaType) {
         case MediaTypeImage:
             self.mediaTypeString = @"image";
@@ -183,7 +192,8 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     }
 }
 
-- (NSString *)mediaTypeName {
+- (NSString *)mediaTypeName
+{
     if (self.mediaType == MediaTypeImage) {
         return NSLocalizedString(@"Image", @"");
     } else if (self.mediaType == MediaTypeVideo) {
@@ -193,19 +203,23 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     return self.mediaTypeString;
 }
 
-- (BOOL)featured {
+- (BOOL)featured
+{
     return self.mediaType == MediaTypeFeatured;
 }
 
-- (void)setFeatured:(BOOL)featured {
+- (void)setFeatured:(BOOL)featured
+{
     self.mediaType = featured ? MediaTypeFeatured : MediaTypeImage;
 }
 
-+ (NSString *)mediaTypeForFeaturedImage {
++ (NSString *)mediaTypeForFeaturedImage
+{
     return @"image";
 }
 
-+ (void)bulkDeleteMedia:(NSArray *)media withSuccess:(void(^)())success failure:(void (^)(NSError *error, NSArray *failures))failure {
++ (void)bulkDeleteMedia:(NSArray *)media withSuccess:(void(^)())success failure:(void (^)(NSError *error, NSArray *failures))failure
+{
     __block NSMutableArray *failedDeletes = [NSMutableArray array];
     for (NSUInteger i = 0; i < media.count; i++) {
         Media *m = media[i];
@@ -240,28 +254,33 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
 
 #pragma mark -
 
-- (CGFloat)progress {
+- (CGFloat)progress
+{
     [self willAccessValueForKey:@"progress"];
     NSNumber *result = [self primitiveValueForKey:@"progress"];
     [self didAccessValueForKey:@"progress"];
     return [result floatValue];
 }
 
-- (void)setProgress:(CGFloat)progress {
+- (void)setProgress:(CGFloat)progress
+{
     [self willChangeValueForKey:@"progress"];
     [self setPrimitiveValue:[NSNumber numberWithFloat:progress] forKey:@"progress"];
     [self didChangeValueForKey:@"progress"];
 }
 
-- (MediaRemoteStatus)remoteStatus {
+- (MediaRemoteStatus)remoteStatus
+{
     return (MediaRemoteStatus)[[self remoteStatusNumber] intValue];
 }
 
-- (void)setRemoteStatus:(MediaRemoteStatus)aStatus {
+- (void)setRemoteStatus:(MediaRemoteStatus)aStatus
+{
     [self setRemoteStatusNumber:[NSNumber numberWithInt:aStatus]];
 }
 
-+ (NSString *)titleForRemoteStatus:(NSNumber *)remoteStatus {
++ (NSString *)titleForRemoteStatus:(NSNumber *)remoteStatus
+{
     switch ([remoteStatus intValue]) {
         case MediaRemoteStatusPushing:
             return NSLocalizedString(@"Uploading", @"");
@@ -274,11 +293,13 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     }
 }
 
-- (NSString *)remoteStatusText {
+- (NSString *)remoteStatusText
+{
     return [Media titleForRemoteStatus:self.remoteStatusNumber];
 }
 
-- (void)remove {
+- (void)remove
+{
     [self cancelUpload];
     NSError *error = nil;
     [[NSFileManager defaultManager] removeItemAtPath:self.localURL error:&error];
@@ -289,17 +310,20 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     }];
 }
 
-- (void)save {
+- (void)save
+{
     [self.managedObjectContext performBlock:^{
         [self.managedObjectContext save:nil];
     }];
 }
 
-- (BOOL)unattached {
+- (BOOL)unattached
+{
     return self.posts.count == 0;
 }
 
-- (void)cancelUpload {
+- (void)cancelUpload
+{
     if ((self.remoteStatus == MediaRemoteStatusPushing || self.remoteStatus == MediaRemoteStatusProcessing) && self.progress < 1.0f) {
         [_uploadOperation cancel];
         _uploadOperation = nil;
@@ -307,19 +331,22 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     }
 }
 
-- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     [self save];
     self.progress = 0.0f;
 
     [self xmlrpcUploadWithSuccess:success failure:failure];
 }
 
-- (void)remoteUpdateWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)remoteUpdateWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure
+{
     [self save];
     [self xmlrpcUpdateWithSuccess:success failure:failure];
 }
 
-- (void)xmlrpcUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)xmlrpcUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     NSString *mimeType = (self.mediaType == MediaTypeVideo) ? @"video/mp4" : @"image/jpeg";
     NSDictionary *object = @{@"type": mimeType,
                              @"name": self.filename,
@@ -394,7 +421,8 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     });
 }
 
-- (void)xmlrpcDeleteWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)xmlrpcDeleteWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure
+{
     WPXMLRPCRequest *deleteRequest = [self.blog.api XMLRPCRequestWithMethod:@"wp.deletePost" parameters:[self.blog getXMLRPCArgsWithExtra:self.mediaID]];
     WPXMLRPCRequestOperation *deleteOperation = [self.blog.api XMLRPCRequestOperationWithRequest:deleteRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self.managedObjectContext deleteObject:self];
@@ -410,7 +438,8 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     [self.blog.api enqueueXMLRPCRequestOperation:deleteOperation];
 }
 
-- (void)xmlrpcUpdateWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)xmlrpcUpdateWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure
+{
     NSArray *params = [self.blog getXMLRPCArgsWithExtra:@[self.mediaID, [self XMLRPCDictionaryForUpdate]]];
     WPXMLRPCRequest *updateRequest = [self.blog.api XMLRPCRequestWithMethod:@"wp.editPost" parameters:params];
     WPXMLRPCRequestOperation *update = [self.blog.api XMLRPCRequestOperationWithRequest:updateRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -425,7 +454,8 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     [self.blog.api enqueueXMLRPCRequestOperation:update];
 }
 
-- (NSString *)html {
+- (NSString *)html
+{
     NSString *result = @"";
     if (self.mediaType == MediaTypeImage) {
         if (self.shortcode != nil) {

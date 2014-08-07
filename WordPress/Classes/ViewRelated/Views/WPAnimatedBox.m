@@ -17,14 +17,15 @@
 static CGFloat const WPAnimatedBoxSideLength = 86.0;
 static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
 
-+ (id)new {
++ (id)new
+{
     WPAnimatedBox *animatedBox = [[WPAnimatedBox alloc] init];
     [animatedBox setupView];
     return animatedBox;
 }
 
-- (void)setupView {
-
+- (void)setupView
+{
     _container = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"animatedBox"]];
     [_container sizeToFit];
 
@@ -57,8 +58,8 @@ static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
     self.clipsToBounds = YES;
 }
 
-- (void)prepareAnimation:(BOOL)animated {
-
+- (void)prepareAnimation:(BOOL)animated
+{
     if (_isPreparedToAnimate) {
         return;
     }
@@ -76,8 +77,8 @@ static CGFloat const WPAnimatedBoxAnimationTolerance = 5.0;
     _isPreparedToAnimate = YES;
 }
 
-- (void)animate {
-
+- (void)animate
+{
     _isPreparedToAnimate = NO;
 
     [UIView animateWithDuration:1.4 delay:0.1 usingSpringWithDamping:0.5 initialSpringVelocity:0.1 options:UIViewAnimationOptionCurveEaseOut animations:^{

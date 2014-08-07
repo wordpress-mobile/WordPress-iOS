@@ -38,7 +38,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
 @implementation WPTableViewController
 
-+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
     NSString *blogID = [coder decodeObjectForKey:WPBlogRestorationKey];
     if (!blogID) {
         return nil;
@@ -62,7 +63,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     return viewController;
 }
 
-- (id)initWithStyle:(UITableViewStyle)style {
+- (id)initWithStyle:(UITableViewStyle)style
+{
     self = [super initWithStyle:UITableViewStyleGrouped];
 
     if (self) {
@@ -73,7 +75,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     return self;
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     _resultsController.delegate = nil;
     _editSiteViewController.delegate = nil;
 
@@ -81,12 +84,14 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     [nc removeObserver:self];
 }
 
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
+{
     [coder encodeObject:[[self.blog.objectID URIRepresentation] absoluteString] forKey:WPBlogRestorationKey];
     [super encodeRestorableStateWithCoder:coder];
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
@@ -114,7 +119,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     [nc addObserver:self selector:@selector(automaticallyRefreshIfAppropriate) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     CGSize contentSize = self.tableView.contentSize;
     if (contentSize.height > _savedScrollOffset.y) {
@@ -128,20 +134,23 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     [self configureNoResultsView];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated
+{
     [super viewDidAppear:animated];
 
     [self automaticallyRefreshIfAppropriate];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     [super viewWillDisappear:animated];
     if (IS_IPHONE) {
         _savedScrollOffset = self.tableView.contentOffset;
     }
 }
 
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
+{
     [super setEditing:editing animated:animated];
 }
 
@@ -171,7 +180,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
 #pragma mark - Property accessors
 
-- (void)setBlog:(Blog *)blog {
+- (void)setBlog:(Blog *)blog
+{
     if (_blog == blog) {
         return;
     }
@@ -186,7 +196,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
 }
 
-- (void)setInfiniteScrollEnabled:(BOOL)infiniteScrollEnabled {
+- (void)setInfiniteScrollEnabled:(BOOL)infiniteScrollEnabled
+{
     if (infiniteScrollEnabled == _infiniteScrollEnabled) {
         return;
     }
@@ -203,22 +214,26 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return [[self.resultsController sections] count];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
     return [sectionInfo name];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     id <NSFetchedResultsSectionInfo> sectionInfo = nil;
     sectionInfo = [[self.resultsController sections] objectAtIndex:section];
     return [sectionInfo numberOfObjects];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:DefaultCellIdentifier];
 
     if (self.tableView.isEditing) {
@@ -232,8 +247,10 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-
+- (void)tableView:(UITableView *)tableView
+        willDisplayCell:(UITableViewCell *)cell
+        forRowAtIndexPath:(NSIndexPath *)indexPath
+{
     // Are we approaching the end of the table?
     if ((indexPath.section + 1 == [self numberOfSectionsInTableView:tableView]) && (indexPath.row + 4 >= [self tableView:tableView numberOfRowsInSection:indexPath.section]) && [self tableView:tableView numberOfRowsInSection:indexPath.section] > 10) {
         // Only 3 rows till the end of table
@@ -254,11 +271,13 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     return CellHeight;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
     // Don't show section headers if there are no named sections, or if this is the first (and has no name)
     NSString *sectionTitle = [self tableView:tableView titleForHeaderInSection:section];
     BOOL firstTitleAndNoName = section == 0 && [sectionTitle length] == 0;
@@ -269,26 +288,31 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     return SectionHeaderHeight;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
     // remove footer height for all but last section
     return section == [[self.resultsController sections] count] - 1 ? UITableViewAutomaticDimension : 1.0;
 }
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     return UITableViewCellEditingStyleNone;
 }
 
-- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
     return NO;
 }
 
 #pragma mark - Fetched results controller
 
-- (UITableViewRowAnimation)tableViewRowAnimation {
+- (UITableViewRowAnimation)tableViewRowAnimation
+{
     return UITableViewRowAnimationFade;
 }
 
-- (NSFetchedResultsController *)resultsController {
+- (NSFetchedResultsController *)resultsController
+{
     if (_resultsController != nil) {
         return _resultsController;
     }
@@ -309,12 +333,14 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     return _resultsController;
 }
 
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
     _indexPathSelectedBeforeUpdates = [self.tableView indexPathForSelectedRow];
     [self.tableView beginUpdates];
 }
 
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
     [self.tableView endUpdates];
     if (_indexPathSelectedAfterUpdates) {
         [self.tableView selectRowAtIndexPath:_indexPathSelectedAfterUpdates animated:NO scrollPosition:UITableViewScrollPositionNone];
@@ -330,8 +356,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
    didChangeObject:(id)anObject
        atIndexPath:(NSIndexPath *)indexPath
      forChangeType:(NSFetchedResultsChangeType)type
-      newIndexPath:(NSIndexPath *)newIndexPath {
-
+      newIndexPath:(NSIndexPath *)newIndexPath
+{
     if (NSFetchedResultsChangeUpdate == type && newIndexPath && ![newIndexPath isEqual:indexPath]) {
         // Seriously, Apple?
         // http://developer.apple.com/library/ios/#releasenotes/iPhone/NSFetchedResultsChangeMoveReportedAsNSFetchedResultsChangeUpdate/_index.html
@@ -367,7 +393,11 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
 }
 
-- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+- (void)controller:(NSFetchedResultsController *)controller
+        didChangeSection:(id )sectionInfo
+        atIndex:(NSUInteger)sectionIndex
+        forChangeType:(NSFetchedResultsChangeType)type
+{
     if (type == NSFetchedResultsChangeInsert) {
         [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:[self tableViewRowAnimation]];
     } else if (type == NSFetchedResultsChangeDelete) {
@@ -377,7 +407,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
 #pragma mark - UIRefreshControl Methods
 
-- (void)refresh {
+- (void)refresh
+{
     if (![self userCanRefresh]) {
         [self.refreshControl endRefreshing];
         return;
@@ -388,21 +419,25 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     [self syncItemsViaUserInteraction];
 }
 
-- (BOOL)userCanRefresh {
+- (BOOL)userCanRefresh
+{
     return YES;
 }
 
 #pragma mark - UIScrollViewDelegate Methods
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
     _isScrolling = YES;
 }
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
     _isScrolling = NO;
 }
 
-- (void)sendUserToXMLOptionsFromAlert:(UIAlertView *)alertView {
+- (void)sendUserToXMLOptionsFromAlert:(UIAlertView *)alertView
+{
     NSString *path = nil;
     NSError *error = NULL;
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+writing.php" options:NSRegularExpressionCaseInsensitive error:&error];
@@ -442,7 +477,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
 #pragma mark - SettingsViewControllerDelegate
 
-- (void)controllerDidDismiss:(UIViewController *)controller cancelled:(BOOL)cancelled {
+- (void)controllerDidDismiss:(UIViewController *)controller cancelled:(BOOL)cancelled
+{
     if (self.editSiteViewController == controller) {
         _didPromptForCredentials = cancelled;
         self.editSiteViewController = nil;
@@ -451,7 +487,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
 #pragma mark - Private Methods
 
-- (void)automaticallyRefreshIfAppropriate {
+- (void)automaticallyRefreshIfAppropriate
+{
     // Only automatically refresh if the view is loaded and visible on the screen
     if (self.isViewLoaded == NO || self.view.window == nil) {
         DDLogVerbose(@"View is not visible and will not check for auto refresh.");
@@ -480,7 +517,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
 }
 
-- (void)configureNoResultsView {
+- (void)configureNoResultsView
+{
     if (!self.isViewLoaded) {
         return;
     }
@@ -515,8 +553,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
 }
 
-- (WPNoResultsView *)noResultsView {
-
+- (WPNoResultsView *)noResultsView
+{
     if (!_noResultsView) {
         _noResultsView = [WPNoResultsView new];
         _noResultsView.delegate = self;
@@ -525,8 +563,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     return _noResultsView;
 }
 
-- (UIActivityIndicatorView *)noResultsActivityIndicator {
-
+- (UIActivityIndicatorView *)noResultsActivityIndicator
+{
     if (!_noResultsActivityIndicator) {
         _noResultsActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         _noResultsActivityIndicator.hidesWhenStopped = YES;
@@ -537,24 +575,29 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     return _noResultsActivityIndicator;
 }
 
-- (void)hideRefreshHeader {
+- (void)hideRefreshHeader
+{
     [self.refreshControl endRefreshing];
     _didTriggerRefresh = NO;
 }
 
-- (void)dismissModal:(id)sender {
+- (void)dismissModal:(id)sender
+{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)syncItems {
+- (void)syncItems
+{
     [self syncItemsViaUserInteraction:NO];
 }
 
-- (void)syncItemsViaUserInteraction {
+- (void)syncItemsViaUserInteraction
+{
     [self syncItemsViaUserInteraction:YES];
 }
 
-- (void)syncItemsViaUserInteraction:(BOOL)userInteraction {
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction
+{
     if ([self isSyncing]) {
         return;
     }
@@ -596,11 +639,13 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }];
 }
 
-- (void)promptForPassword {
+- (void)promptForPassword
+{
     [self promptForPasswordWithMessage:nil];
 }
 
-- (void)promptForPasswordWithMessage:(NSString *)message {
+- (void)promptForPasswordWithMessage:(NSString *)message
+{
     if (message == nil) {
         message = NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"");
     }
@@ -623,7 +668,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
 #pragma mark - Infinite scrolling
 
-- (void)enableInfiniteScrolling {
+- (void)enableInfiniteScrolling
+{
     if (_activityFooter == nil) {
         CGRect rect = CGRectMake(145.0, 10.0, 30.0, 30.0);
         _activityFooter = [[UIActivityIndicatorView alloc] initWithFrame:rect];
@@ -638,18 +684,21 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     self.tableView.tableFooterView = footerView;
 }
 
-- (void)disableInfiniteScrolling {
+- (void)disableInfiniteScrolling
+{
     self.tableView.tableFooterView = nil;
     _activityFooter = nil;
 }
 
 #pragma mark - Subclass methods
 
-- (BOOL)userCanCreateEntity {
+- (BOOL)userCanCreateEntity
+{
     return NO;
 }
 
-- (NSManagedObjectContext *)managedObjectContext {
+- (NSManagedObjectContext *)managedObjectContext
+{
     return [[ContextManager sharedInstance] mainContext];
 }
 
@@ -658,49 +707,62 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wreturn-type"
 
-- (NSString *)entityName {
+- (NSString *)entityName
+{
     AssertSubclassMethod();
 }
 
-- (NSDate *)lastSyncDate {
+- (NSDate *)lastSyncDate
+{
     AssertSubclassMethod();
 }
 
-- (NSFetchRequest *)fetchRequest {
+- (NSFetchRequest *)fetchRequest
+{
     AssertNoBlogSubclassMethod();
 }
 
 #pragma clang diagnostic pop
 
-- (NSString *)sectionNameKeyPath {
+- (NSString *)sectionNameKeyPath
+{
     return nil;
 }
 
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
     AssertSubclassMethod();
 }
 
-- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction
+                            success:(void (^)())success
+                            failure:(void (^)(NSError *))failure
+{
     AssertSubclassMethod();
 }
 
-- (BOOL)isSyncing {
+- (BOOL)isSyncing
+{
     return _isSyncing;
 }
 
-- (Class)cellClass {
+- (Class)cellClass
+{
     return [UITableViewCell class];
 }
 
-- (BOOL)hasMoreContent {
+- (BOOL)hasMoreContent
+{
     return NO;
 }
 
-- (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     AssertSubclassMethod();
 }
 
-- (void)resetResultsController {
+- (void)resetResultsController
+{
     _resultsController.delegate = nil;
     _resultsController = nil;
 }

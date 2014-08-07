@@ -16,7 +16,8 @@
 
 @synthesize isFeaturedImageChanged;
 
-+ (NSString *)titleForStatus:(NSString *)status {
++ (NSString *)titleForStatus:(NSString *)status
+{
     if ([status isEqualToString:@"draft"]) {
         return NSLocalizedString(@"Draft", @"");
     } else if ([status isEqualToString:@"pending"]) {
@@ -30,7 +31,8 @@
     return status;
 }
 
-+ (NSString *)statusForTitle:(NSString *)title {
++ (NSString *)statusForTitle:(NSString *)title
+{
     if ([title isEqualToString:NSLocalizedString(@"Draft", @"")]) {
         return @"draft";
     } else if ([title isEqualToString:NSLocalizedString(@"Pending review", @"")]) {
@@ -44,18 +46,21 @@
     return title;
 }
 
-- (NSArray *)availableStatuses {
+- (NSArray *)availableStatuses
+{
     return @[NSLocalizedString(@"Draft", @""),
              NSLocalizedString(@"Pending review", @""),
              NSLocalizedString(@"Private", @""),
              NSLocalizedString(@"Published", @"")];
 }
 
-- (BOOL)hasRemote {
+- (BOOL)hasRemote
+{
     return ((self.postID != nil) && ([self.postID longLongValue] > 0));
 }
 
-- (void)remove {
+- (void)remove
+{
     if (self.remoteStatus == AbstractPostRemoteStatusPushing || self.remoteStatus == AbstractPostRemoteStatusLocal) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadCancelled" object:self];
     }
@@ -66,34 +71,42 @@
 
 }
 
-- (void)save {
+- (void)save
+{
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
-- (NSString *)statusTitle {
+- (NSString *)statusTitle
+{
     return [BasePost titleForStatus:self.status];
 }
 
-- (void)setStatusTitle:(NSString *)aTitle {
+- (void)setStatusTitle:(NSString *)aTitle
+{
     self.status = [BasePost statusForTitle:aTitle];
 }
 
-- (BOOL)hasChanged {
+- (BOOL)hasChanged
+{
     return NO;
 }
 
-- (AbstractPostRemoteStatus)remoteStatus {
+- (AbstractPostRemoteStatus)remoteStatus
+{
     return (AbstractPostRemoteStatus)[[self remoteStatusNumber] intValue];
 }
 
-- (void)setRemoteStatus:(AbstractPostRemoteStatus)aStatus {
+- (void)setRemoteStatus:(AbstractPostRemoteStatus)aStatus
+{
     [self setRemoteStatusNumber:[NSNumber numberWithInt:aStatus]];
 }
 
-- (void)upload {
+- (void)upload
+{
 }
 
-+ (NSString *)titleForRemoteStatus:(NSNumber *)remoteStatus {
++ (NSString *)titleForRemoteStatus:(NSNumber *)remoteStatus
+{
     switch ([remoteStatus intValue]) {
         case AbstractPostRemoteStatusPushing:
             return NSLocalizedString(@"Uploading", @"");
@@ -106,31 +119,35 @@
     }
 }
 
-- (NSString *)remoteStatusText {
+- (NSString *)remoteStatusText
+{
     return [BasePost titleForRemoteStatus:self.remoteStatusNumber];
 }
 
-- (NSDate *)dateCreated {
+- (NSDate *)dateCreated
+{
     return self.date_created_gmt;
 }
 
-- (void)setDateCreated:(NSDate *)localDate {
+- (void)setDateCreated:(NSDate *)localDate
+{
     self.date_created_gmt = localDate;
 }
 
-- (void)findComments {
-
+- (void)findComments
+{
 }
 
-- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-
+- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
 }
 
-- (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-
+- (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
 }
 
-- (NSDictionary *)XMLRPCDictionary {
+- (NSDictionary *)XMLRPCDictionary
+{
     NSMutableDictionary *postParams = [NSMutableDictionary dictionary];
 
     [postParams setValueIfNotNil:self.postTitle forKey:@"title"];
@@ -161,42 +178,51 @@
 
 #pragma mark - WPContentViewProvider protocol
 
-- (NSString *)titleForDisplay {
+- (NSString *)titleForDisplay
+{
     NSString *title = [self.postTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if (title == nil || ([title length] == 0)) {
         title = NSLocalizedString(@"(no title)", @"");
     }
     return [title stringByDecodingXMLCharacters];}
 
-- (NSString *)authorForDisplay {
+- (NSString *)authorForDisplay
+{
     return self.author;
 }
 
-- (NSString *)blogNameForDisplay {
+- (NSString *)blogNameForDisplay
+{
     return @"";
 }
 
-- (NSString *)contentForDisplay {
+- (NSString *)contentForDisplay
+{
     return self.content;
 }
 
-- (NSString *)contentPreviewForDisplay {
+- (NSString *)contentPreviewForDisplay
+{
     return self.content;
 }
 
-- (NSString *)gravatarEmailForDisplay {
+- (NSString *)gravatarEmailForDisplay
+{
     return nil;
 }
 
-- (NSURL *)avatarURLForDisplay {
+- (NSURL *)avatarURLForDisplay
+{
     return nil;
 }
 
-- (NSDate *)dateForDisplay {
+- (NSDate *)dateForDisplay
+{
     return [self dateCreated];
 }
 
-- (NSString *)statusForDisplay {
+- (NSString *)statusForDisplay
+{
     if (self.remoteStatus == AbstractPostRemoteStatusSync) {
         if ([self.status isEqualToString:@"pending"]) {
             return NSLocalizedString(@"Pending", @"");

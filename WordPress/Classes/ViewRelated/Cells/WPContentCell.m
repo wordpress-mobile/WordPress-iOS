@@ -91,7 +91,8 @@ CGFloat const WPContentCellDefaultOrigin                    = 15.0f;
     return self;
 }
 
-- (void)prepareForReuse{
+- (void)prepareForReuse
+{
     [super prepareForReuse];
     _gravatarImageView.image = nil;
     _unreadView.hidden = YES;
@@ -174,8 +175,8 @@ CGFloat const WPContentCellDefaultOrigin                    = 15.0f;
     }
 }
 
-- (void)setGravatarImageForContentProvider:(id<WPContentViewProvider>)contentProvider {
-
+- (void)setGravatarImageForContentProvider:(id<WPContentViewProvider>)contentProvider
+{
     if (![[self class] showGravatarImage]) {
         return;
     }
@@ -194,15 +195,18 @@ CGFloat const WPContentCellDefaultOrigin                    = 15.0f;
     }
 }
 
-+ (BOOL)shortDateString {
++ (BOOL)shortDateString
+{
     return YES;
 }
 
-+ (BOOL)showGravatarImage {
++ (BOOL)showGravatarImage
+{
     return NO;
 }
 
-+ (BOOL)supportsUnreadStatus {
++ (BOOL)supportsUnreadStatus
+{
     return NO;
 }
 
@@ -290,21 +294,24 @@ CGFloat const WPContentCellDefaultOrigin                    = 15.0f;
 
 #pragma mark - Private Methods
 
-+ (CGFloat)textWidth:(CGFloat)maxWidth {
++ (CGFloat)textWidth:(CGFloat)maxWidth
+{
     CGFloat padding = 0.0;
     padding += [[self class] textXOrigin];  // left padding
     padding += WPContentCellStandardOffset + WPContentCellAccessoryViewOffset; // right padding
     return maxWidth - padding;
 }
 
-+ (CGFloat)contentXOrigin {
++ (CGFloat)contentXOrigin
+{
     CGFloat x = 15.0;
     x += ([[self class] supportsUnreadStatus] ? 10.0 : 0.0);
     x += IS_RETINA ? -0.5 : 0.0;
     return x;
 }
 
-+ (CGFloat)textXOrigin {
++ (CGFloat)textXOrigin
+{
     if ([[self class] showGravatarImage]) {
         return ([[self class] gravatarXOrigin] + WPContentCellImageWidth + WPContentCellStandardOffset);
     }
@@ -312,11 +319,13 @@ CGFloat const WPContentCellDefaultOrigin                    = 15.0f;
     return WPContentCellDefaultOrigin;
 }
 
-+ (CGFloat)gravatarXOrigin {
++ (CGFloat)gravatarXOrigin
+{
     return [[self class] contentXOrigin];
 }
 
-+ (CGRect)gravatarImageViewFrame {
++ (CGRect)gravatarImageViewFrame
+{
     return [[self class] showGravatarImage] ? CGRectMake([[self class] gravatarXOrigin], WPContentCellStandardOffset, WPContentCellImageWidth, WPContentCellImageWidth) : CGRectZero;
 }
 
@@ -363,7 +372,8 @@ CGFloat const WPContentCellDefaultOrigin                    = 15.0f;
     return CGRectIntegral(CGRectMake([[self class] textXOrigin] + WPContentCellDateImageSide, CGRectGetMaxY(previousFrame) + offset, size.width, size.height));
 }
 
-+ (CGRect)unreadFrameForHeight:(CGFloat)height {
++ (CGRect)unreadFrameForHeight:(CGFloat)height
+{
     CGFloat side = WPContentCellUnreadViewSide;
     return CGRectMake(([[self class] gravatarXOrigin] - side) / 2.0, (height - side) / 2.0 , side, side);
 }

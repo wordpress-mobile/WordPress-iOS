@@ -53,11 +53,13 @@ CGFloat const blavatarImageViewSize = 43.f;
 
 @implementation SettingsViewController
 
-- (void)dealloc {
+- (void)dealloc
+{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 
     self.title = NSLocalizedString(@"Settings", @"App Settings");
@@ -69,7 +71,8 @@ CGFloat const blavatarImageViewSize = 43.f;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     [self.tableView reloadData];
@@ -77,7 +80,8 @@ CGFloat const blavatarImageViewSize = 43.f;
 
 #pragma mark - Notifications
 
-- (void)defaultAccountDidChange:(NSNotification *)notification {
+- (void)defaultAccountDidChange:(NSNotification *)notification
+{
     NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
     [sections addIndex:SettingsSectionWpcom];
     [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
@@ -85,23 +89,27 @@ CGFloat const blavatarImageViewSize = 43.f;
 
 #pragma mark - Custom Getter
 
-- (void)handleOptimizeImagesChanged:(id)sender {
+- (void)handleOptimizeImagesChanged:(id)sender
+{
     UISwitch *aSwitch = (UISwitch *)sender;
     [WPImageOptimizer setShouldOptimizeImages:aSwitch.on];
 }
 
-- (void)dismiss {
+- (void)dismiss
+{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return [self.tableView isEditing] ? 1 : SettingsSectionCount;
 }
 
 // The Sign Out row in Wpcom section can change, so identify it dynamically
-- (NSInteger)rowForSignOut {
+- (NSInteger)rowForSignOut
+{
     NSInteger rowForSignOut = 1;
     if ([NotificationsManager deviceRegisteredForPushNotifications]) {
         rowForSignOut += 1;
@@ -109,14 +117,16 @@ CGFloat const blavatarImageViewSize = 43.f;
     return rowForSignOut;
 }
 
-- (NSInteger)rowForNotifications {
+- (NSInteger)rowForNotifications
+{
     if ([NotificationsManager deviceRegisteredForPushNotifications]) {
         return 1;
     }
     return -1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     switch (section) {
         case SettingsSectionWpcom: {
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -139,19 +149,22 @@ CGFloat const blavatarImageViewSize = 43.f;
     }
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
     WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
     header.fixedWidth = 0.0;
     header.title = [self titleForHeaderInSection:section];
     return header;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
     NSString *title = [self titleForHeaderInSection:section];
     return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
-- (NSString *)titleForHeaderInSection:(NSInteger)section {
+- (NSString *)titleForHeaderInSection:(NSInteger)section
+{
     if (section == SettingsSectionWpcom) {
         return NSLocalizedString(@"WordPress.com", @"");
 
@@ -165,7 +178,8 @@ CGFloat const blavatarImageViewSize = 43.f;
     return nil;
 }
 
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     cell.accessoryType = UITableViewCellAccessoryNone;
 
@@ -215,7 +229,8 @@ CGFloat const blavatarImageViewSize = 43.f;
     }
 }
 
-- (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath
+{
     NSString *cellIdentifier = @"Cell";
     UITableViewCellStyle cellStyle = UITableViewCellStyleDefault;
 
@@ -250,7 +265,8 @@ CGFloat const blavatarImageViewSize = 43.f;
     return cell;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     UITableViewCell *cell = [self cellForIndexPath:indexPath];
     [WPStyleGuide configureTableViewCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
@@ -274,7 +290,8 @@ CGFloat const blavatarImageViewSize = 43.f;
 
 #pragma mark - Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     if (indexPath.section == SettingsSectionWpcom) {
@@ -322,7 +339,8 @@ CGFloat const blavatarImageViewSize = 43.f;
 #pragma mark -
 #pragma mark Action Sheet Delegate Methods
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
     if (buttonIndex == 0) {
         // Sign out
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
