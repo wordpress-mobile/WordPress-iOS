@@ -103,7 +103,6 @@ NSInteger const WPLinkAlertViewTag = 92;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -115,7 +114,16 @@ NSInteger const WPLinkAlertViewTag = 92;
     [super didMoveToParentViewController:parent];
 }
 
-#pragma - Toolbar
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (toInterfaceOrientation == UIInterfaceOrientationMaskLandscape) {
+        //noop
+    } else {
+        self.toolbarHolder.frame = CGRectMake(0, self.view.frame.size.width, self.view.frame.size.width, 44);
+    }
+}
+
+#pragma mark - Toolbar
 
 - (void)setEnabledToolbarItems:(ZSSRichTextEditorToolbar)enabledToolbarItems
 {
@@ -1363,7 +1371,7 @@ NSInteger const WPLinkAlertViewTag = 92;
             
             // Editor View
             CGRect editorFrame = self.editorView.frame;
-            editorFrame.size.height = (self.view.frame.size.height - keyboardHeight) - sizeOfToolbar;
+            editorFrame.size.height = (self.view.frame.size.height - keyboardHeight - sizeOfToolbar - sizeOfToolbar);
             self.editorView.frame = editorFrame;
             self.editorViewFrame = self.editorView.frame;
             self.editorView.scrollView.contentInset = UIEdgeInsetsZero;
@@ -1389,7 +1397,7 @@ NSInteger const WPLinkAlertViewTag = 92;
             
             // Editor View
             CGRect editorFrame = self.editorView.frame;
-            editorFrame.size.height = self.view.frame.size.height;
+            editorFrame.size.height = self.view.frame.size.height - sizeOfToolbar;
             self.editorView.frame = editorFrame;
             self.editorViewFrame = self.editorView.frame;
             self.editorView.scrollView.contentInset = UIEdgeInsetsZero;
