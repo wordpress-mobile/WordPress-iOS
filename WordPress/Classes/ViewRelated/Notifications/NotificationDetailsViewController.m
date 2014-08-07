@@ -369,8 +369,9 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
         statsViewController.blog = (Blog *)sender;
         
     } else if([segue.identifier isEqualToString:readerSegueID] && [sender isKindOfClass:[ReaderPost class]]) {
-        ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
-        readerViewController.post = (ReaderPost *)sender;
+#warning TODO: Fixme
+//        ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
+//        readerViewController.post = (ReaderPost *)sender;
     }
 }
 

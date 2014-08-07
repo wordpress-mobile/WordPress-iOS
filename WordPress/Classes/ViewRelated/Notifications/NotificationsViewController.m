@@ -96,7 +96,11 @@ static NSTimeInterval NotificationPushMaxWait = 1;
     
     self.infiniteScrollEnabled = NO;
     
-    [self showManageButtonIfNeeded];
+    // Don't show 'Notifications' in the next-view back button
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
+    
+    // Refresh Badge + Attach Manage Button
     [self updateTabBarBadgeNumber];
 }
 
@@ -120,6 +124,7 @@ static NSTimeInterval NotificationPushMaxWait = 1;
     // Badge + Metadata
     [self updateLastSeenTime];
     [self resetApplicationBadge];
+    [self showManageButtonIfNeeded];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -317,6 +322,7 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 - (void)showDetailsForNotification:(Notification *)note animated:(BOOL)animated
 {
 #warning TODO: FIXME: Segues don't have animated = NO
+#warning TODO: Reader is expected to break this way
     [WPAnalytics track:WPAnalyticsStatNotificationsOpenedNotificationDetails];
     
     // Make sure there's nothing else on the stack
@@ -404,8 +410,9 @@ static NSTimeInterval NotificationPushMaxWait = 1;
         commentsViewController.comment = sender;
     
     } else if([segue.identifier isEqualToString:readerSegueID]) {
-        ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
-        readerViewController.post = sender;
+//        ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
+#warning TODO: Fixme
+//        readerViewController.post = sender;
     }
 }
 
