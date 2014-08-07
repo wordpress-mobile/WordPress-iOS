@@ -514,7 +514,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 - (void)attributionView:(WPContentAttributionView *)attributionView didReceiveAttributionMenuAction:(id)sender
 {
     if ([self.delegate respondsToSelector:@selector(contentView:didReceiveAttributionMenuAction:)]) {
-        [self.delegate contentView:self didReceiveAttributionLinkAction:sender];
+        [self.delegate contentView:self didReceiveAttributionMenuAction:sender];
     }
 }
 
