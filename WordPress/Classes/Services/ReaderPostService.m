@@ -650,7 +650,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     // Specifying a fetchOffset to just get the posts in range doesn't seem to work very well.
     // Just perform the fetch and remove the excess.
     NSUInteger count = [self.managedObjectContext countForFetchRequest:fetchRequest error:&error];
-    if (count < ReaderPostServiceMaxPosts) {
+    if (count <= ReaderPostServiceMaxPosts) {
         return;
     }
 
@@ -660,8 +660,9 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         return;
     }
 
-    for (NSUInteger i = ReaderPostServiceMaxPosts; i < count; i++) {
-        ReaderPost *post = [posts objectAtIndex:i];
+    NSRange range = NSMakeRange(ReaderPostServiceMaxPosts, [posts count] - ReaderPostServiceMaxPosts);
+    NSArray *postsToDelete = [posts subarrayWithRange:range];
+    for (ReaderPost *post in postsToDelete) {
         DDLogInfo(@"Deleting ReaderPost: %@", post.postTitle);
         [self.managedObjectContext deleteObject:post];
     }
