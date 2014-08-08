@@ -10,6 +10,7 @@
 #import <Simperium/Simperium.h>
 #import <Helpshift/Helpshift.h>
 #import <Taplytics/Taplytics.h>
+#import <WordPress-iOS-Shared/WPFontManager.h>
 
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
@@ -43,29 +44,40 @@
 #import "WPAnalyticsTrackerMixpanel.h"
 #import "WPAnalyticsTrackerWPCom.h"
 
+#import "Reachability.h"
+
 #if DEBUG
 #import "DDTTYLogger.h"
 #import "DDASLLogger.h"
 #endif
 
-int ddLogLevel = LOG_LEVEL_INFO;
-static NSString * const WPTabBarRestorationID = @"WPTabBarID";
-static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
-static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
-static NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
-static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
-NSInteger const kReaderTabIndex = 0;
-NSInteger const kNotificationsTabIndex = 1;
-NSInteger const kMeTabIndex = 2;
+int ddLogLevel                                                  = LOG_LEVEL_INFO;
+static NSString * const WPTabBarRestorationID                   = @"WPTabBarID";
+static NSString * const WPBlogListNavigationRestorationID       = @"WPBlogListNavigationID";
+static NSString * const WPReaderNavigationRestorationID         = @"WPReaderNavigationID";
+static NSString * const WPNotificationsNavigationRestorationID  = @"WPNotificationsNavigationID";
+static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracking_enabled";
+
+NSInteger const kReaderTabIndex                                 = 0;
+NSInteger const kNotificationsTabIndex                          = 1;
+NSInteger const kMeTabIndex                                     = 2;
 
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
-@property (nonatomic, assign) BOOL listeningForBlogChanges;
-@property (nonatomic, strong) NotificationsViewController *notificationsViewController;
-@property (nonatomic, assign) UIBackgroundTaskIdentifier bgTask;
-@property (nonatomic, strong) DDFileLogger *fileLogger;
-@property (nonatomic, strong) Simperium *simperium;
+@property (nonatomic, strong, readwrite) UINavigationController         *navigationController;
+@property (nonatomic, strong, readwrite) UITabBarController             *tabBarController;
+@property (nonatomic, strong, readwrite) ReaderPostsViewController      *readerPostsViewController;
+@property (nonatomic, strong, readwrite) BlogListViewController         *blogListViewController;
+@property (nonatomic, strong, readwrite) NotificationsViewController    *notificationsViewController;
+@property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
+@property (nonatomic, strong, readwrite) Reachability                   *wpcomReachability;
+@property (nonatomic, strong, readwrite) DDFileLogger                   *fileLogger;
+@property (nonatomic, strong, readwrite) Simperium                      *simperium;
+@property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
+@property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
+@property (nonatomic, assign, readwrite) BOOL                           wpcomAvailable;
+@property (nonatomic, assign, readwrite) BOOL                           listeningForBlogChanges;
 
 @end
 
@@ -105,8 +117,7 @@ NSInteger const kMeTabIndex = 2;
     [self removeCredentialsForDebug];
     
     // Stats and feedback
-    [Taplytics startTaplyticsAPIKey:[WordPressComApiCredentials taplyticsAPIKey]
-                            options:@{@"shakeMenu":@NO}];
+    [Taplytics startTaplyticsAPIKey:[WordPressComApiCredentials taplyticsAPIKey]];
     [SupportViewController checkIfFeedbackShouldBeEnabled];
 
     [Helpshift installForApiKey:[WordPressComApiCredentials helpshiftAPIKey] domainName:[WordPressComApiCredentials helpshiftDomainName] appID:[WordPressComApiCredentials helpshiftAppId]];
@@ -163,13 +174,7 @@ NSInteger const kMeTabIndex = 2;
 {
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
     
-    // Launched by tapping a notification
-    if (application.applicationState == UIApplicationStateActive) {
-        [NotificationsManager handleNotificationForApplicationLaunch:launchOptions];
-    }
-
     [self.window makeKeyAndVisible];
-    
     [self showWelcomeScreenIfNeededAnimated:NO];
     
     return YES;
@@ -214,8 +219,8 @@ NSInteger const kMeTabIndex = 2;
             NSDictionary *params = [[url query] dictionaryFromQueryString];
             
             if (params.count) {
-                NSUInteger blogId = [[params numberForKey:@"blogId"] integerValue];
-                NSUInteger postId = [[params numberForKey:@"postId"] integerValue];
+                NSNumber *blogId = [params numberForKey:@"blogId"];
+                NSNumber *postId = [params numberForKey:@"postId"];
                 
                 [self.readerPostsViewController.navigationController popToRootViewControllerAnimated:NO];
                 NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
@@ -239,7 +244,7 @@ NSInteger const kMeTabIndex = 2;
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
-    [WPAnalytics track:WPAnalyticsStatApplicationClosed];
+    [WPAnalytics track:WPAnalyticsStatApplicationClosed withProperties:@{@"last_visible_screen": [self currentlySelectedScreen]}];
     [WPAnalytics endSession];
     
     // Let the app finish any uploads that are in progress
@@ -260,6 +265,36 @@ NSInteger const kMeTabIndex = 2;
             }
         });
     }];
+}
+
+- (NSString *)currentlySelectedScreen
+{
+    // Check if the post editor or login view is up
+    UIViewController *rootViewController = self.window.rootViewController;
+    if ([rootViewController.presentedViewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *navController = (UINavigationController *)rootViewController.presentedViewController;
+        UIViewController *firstViewController = [navController.viewControllers firstObject];
+        if ([firstViewController isKindOfClass:[EditPostViewController class]]) {
+            return @"Post Editor";
+        } else if ([firstViewController isKindOfClass:[LoginViewController class]]) {
+            return @"Login View";
+        }
+    }
+   
+    // Check which tab is currently selected
+    NSString *currentlySelectedScreen = @"";
+    switch (self.tabBarController.selectedIndex) {
+        case kReaderTabIndex:
+            currentlySelectedScreen = @"Reader";
+            break;
+        case kNotificationsTabIndex:
+            currentlySelectedScreen = @"Notifications";
+            break;
+        case kMeTabIndex:
+            currentlySelectedScreen = @"Blog List";
+            break;
+    }
+    return currentlySelectedScreen;
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -367,7 +402,7 @@ NSInteger const kMeTabIndex = 2;
     [[UITabBar appearance] setShadowImage:[UIImage imageWithColor:[UIColor colorWithRed:210.0/255.0 green:222.0/255.0 blue:230.0/255.0 alpha:1.0]]];
     [[UITabBar appearance] setTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
 
-    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [UIFont fontWithName:@"OpenSans-Bold" size:16.0]} ];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [WPFontManager openSansBoldFontOfSize:16.0]} ];
 // temporarily removed to fix transparent UINavigationBar within Helpshift
 //    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"transparent-point"] forBarMetrics:UIBarMetricsDefault];
 //    [[UINavigationBar appearance] setShadowImage:[UIImage imageNamed:@"transparent-point"]];
@@ -376,7 +411,7 @@ NSInteger const kMeTabIndex = 2;
     [[UIToolbar appearance] setBarTintColor:[WPStyleGuide wordPressBlue]];
     [[UISwitch appearance] setOnTintColor:[WPStyleGuide wordPressBlue]];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    [[UITabBarItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"OpenSans" size:10.0]} forState:UIControlStateNormal];
+    [[UITabBarItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPFontManager openSansRegularFontOfSize:10.0]} forState:UIControlStateNormal];
 
     [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[WPStyleGuide wordPressBlue]];
@@ -403,15 +438,7 @@ NSInteger const kMeTabIndex = 2;
 
     // Create a background
     // (not strictly needed when white, but left here for possible customization)
-    UIColor *backgroundColor = [UIColor whiteColor];
-    CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
-    UIGraphicsBeginImageContext(rect.size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context, [backgroundColor CGColor]);
-    CGContextFillRect(context, rect);
-    UIImage *tabBackgroundImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    _tabBarController.tabBar.backgroundImage = tabBackgroundImage;
+    _tabBarController.tabBar.backgroundImage = [UIImage imageWithColor:[UIColor whiteColor]];
     
     self.readerPostsViewController = [[ReaderPostsViewController alloc] init];
     UINavigationController *readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerPostsViewController];
@@ -466,7 +493,8 @@ NSInteger const kMeTabIndex = 2;
     return _tabBarController;
 }
 
-- (void)showTabForIndex: (NSInteger)tabIndex {
+- (void)showTabForIndex:(NSInteger)tabIndex
+{
     [self.tabBarController setSelectedIndex:tabIndex];
 }
 
@@ -703,49 +731,56 @@ NSInteger const kMeTabIndex = 2;
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     [context performBlock:^{
-        NSError *error;
-        NSMutableArray *mediaToKeep = [NSMutableArray array];
         
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        [fetchRequest setEntity:[NSEntityDescription entityForName:@"Media" inManagedObjectContext:context]];
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ANY posts.blog != NULL AND remoteStatusNumber <> %@", @(MediaRemoteStatusSync)];
-        [fetchRequest setPredicate:predicate];
-        NSArray *mediaObjectsToKeep = [context executeFetchRequest:fetchRequest error:&error];
-        if (error != nil) {
-            DDLogError(@"Error cleaning up tmp files: %@", [error localizedDescription]);
+        // Fetch Media URL's and return them as Dictionary Results:
+        // This way we'll avoid any CoreData Faulting Exception due to deletions performed on another context
+        NSString *localUrlProperty      = NSStringFromSelector(@selector(localURL));
+        
+        NSFetchRequest *fetchRequest    = [[NSFetchRequest alloc] init];
+        fetchRequest.entity             = [NSEntityDescription entityForName:NSStringFromClass([Media class]) inManagedObjectContext:context];
+        fetchRequest.predicate          = [NSPredicate predicateWithFormat:@"ANY posts.blog != NULL AND remoteStatusNumber <> %@", @(MediaRemoteStatusSync)];
+        
+        fetchRequest.propertiesToFetch  = @[ localUrlProperty ];
+        fetchRequest.resultType         = NSDictionaryResultType;
+
+        NSError *error = nil;
+        NSArray *mediaObjectsToKeep     = [context executeFetchRequest:fetchRequest error:&error];
+        
+        if (error) {
+            DDLogError(@"Error cleaning up tmp files: %@", error.localizedDescription);
+            return;
         }
-        //get a references to media files linked in a post
-        DDLogInfo(@"%i media items to check for cleanup", [mediaObjectsToKeep count]);
-        for (Media *media in mediaObjectsToKeep) {
-            if (media.localURL) {
-                [mediaToKeep addObject:media.localURL];
+        
+        // Get a references to media files linked in a post
+        DDLogInfo(@"%i media items to check for cleanup", mediaObjectsToKeep.count);
+        
+        NSMutableSet *pathsToKeep       = [NSMutableSet set];
+        for (NSDictionary *mediaDict in mediaObjectsToKeep) {
+            NSString *path = mediaDict[localUrlProperty];
+            if (path) {
+                [pathsToKeep addObject:path];
             }
         }
         
-        //searches for jpg files within the app temp file
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths objectAtIndex:0];
-        NSArray *contentsOfDir = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:NULL];
+        // Search for [JPG || JPEG || PNG || GIF] files within the Documents Folder
+        NSString *documentsDirectory    = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+        NSArray *contentsOfDir          = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:nil];
         
-        NSError *regexpError = NULL;
-        NSRegularExpression *jpeg = [NSRegularExpression regularExpressionWithPattern:@".jpg$" options:NSRegularExpressionCaseInsensitive error:&regexpError];
+        NSSet *mediaExtensions          = [NSSet setWithObjects:@"jpg", @"jpeg", @"png", @"gif", nil];
         
         for (NSString *currentPath in contentsOfDir) {
-            if([jpeg numberOfMatchesInString:currentPath options:0 range:NSMakeRange(0, [currentPath length])] > 0) {
-                NSString *filepath = [documentsDirectory stringByAppendingPathComponent:currentPath];
-                
-                BOOL keep = NO;
-                //if the file is not referenced in any post we can delete it
-                for (NSString *currentMediaToKeepPath in mediaToKeep) {
-                    if([currentMediaToKeepPath isEqualToString:filepath]) {
-                        keep = YES;
-                        break;
-                    }
-                }
-                
-                if(keep == NO) {
-                    [fileManager removeItemAtPath:filepath error:NULL];
+            NSString *extension = currentPath.pathExtension.lowercaseString;
+            if (![mediaExtensions containsObject:extension]) {
+                continue;
+            }
+
+            // If the file is not referenced in any post we can delete it
+            NSString *filepath = [documentsDirectory stringByAppendingPathComponent:currentPath];
+
+            if (![pathsToKeep containsObject:filepath]) {
+                NSError *nukeError = nil;
+                if ([[NSFileManager defaultManager] removeItemAtPath:filepath error:&nukeError] == NO) {
+                    DDLogError(@"Error [%@] while nuking Unused Media at path [%@]", nukeError.localizedDescription, filepath);
                 }
             }
         }

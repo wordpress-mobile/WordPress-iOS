@@ -61,6 +61,14 @@ _How do I, as a developer, start using Taplytics?_
     }
     ```
 
+## Taplytics Launch Options
+
+On the first launch of your app Taplytics will show your launch image for a maximum of two seconds, this gives Taplytics time to download your experiment's configuration and display the experiment's changes. In subsequent launches of your app Taplytics will use the experiment's configuration from disk, and not show your launch image. If you do not want this behavior, use:
+
+    ```objective-c
+    [Taplytics startTaplyticsAPIKey:@"API_KEY" options:@{@"delayLoad":@0}];
+    ```
+
 ## Questions or Need Help?
 
 _The taplytics team is available 24/7 to answer any questions you have. Just email help@taplytics.com or visit http://help.taplytics.com for more detailed installation and usage information._

@@ -6,6 +6,7 @@
 #import "UIImageView+Gravatar.h"
 #import "NSDate+StringFormatting.h"
 #import "NSString+Util.h"
+#import <WordPress-iOS-Shared/WPFontManager.h>
 
 @interface WPContentCell() {
     UIImageView *_gravatarImageView;
@@ -26,7 +27,8 @@ CGFloat const WPContentCellLabelAndTitleHorizontalOffset    = -0.5;
 CGFloat const WPContentCellAccessoryViewOffset              = 25.0;
 CGFloat const WPContentCellImageWidth                       = 70.0;
 CGFloat const WPContentCellTitleNumberOfLines               = 3;
-CGFloat const WPContentCellUnreadViewSide                   = 8.0;
+CGFloat const WPContentCellUnreadViewSide                   = 10.0;
+CGFloat const WPContentCellUnreadDotSize                    = 8.0;
 CGFloat const WPContentCellDateImageSide                    = 16.0;
 CGFloat const WPContentCellDefaultOrigin                    = 15.0f;
 
@@ -77,7 +79,8 @@ CGFloat const WPContentCellDefaultOrigin                    = 15.0f;
             // create circular image
             UIGraphicsBeginImageContextWithOptions(CGSizeMake(WPContentCellUnreadViewSide, WPContentCellUnreadViewSide), NO, 0);
             CGContextRef context = UIGraphicsGetCurrentContext();
-            CGContextAddPath(context, [[UIBezierPath bezierPathWithOvalInRect:CGRectMake(0, 0, WPContentCellUnreadViewSide, WPContentCellUnreadViewSide)] CGPath]);
+            CGContextAddPath(context, [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0,0, WPContentCellUnreadDotSize, WPContentCellUnreadDotSize) cornerRadius:3.0].CGPath);
+            
             CGContextSetFillColorWithColor(context, [WPStyleGuide newKidOnTheBlockBlue].CGColor);
             CGContextFillPath(context);
             _unreadView.image = UIGraphicsGetImageFromCurrentImageContext();
@@ -226,12 +229,12 @@ CGFloat const WPContentCellDefaultOrigin                    = 15.0f;
 
 + (UIFont *)titleFont
 {
-    return [UIFont fontWithName:@"OpenSans" size:14.0];
+    return [WPFontManager openSansRegularFontOfSize:14.0];
 }
 
 + (UIFont *)titleFontBold
 {
-    return [UIFont fontWithName:@"OpenSans-Bold" size:14.0];
+    return [WPFontManager openSansBoldFontOfSize:14.0];
 }
 
 + (NSDictionary *)titleAttributes

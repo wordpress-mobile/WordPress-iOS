@@ -1,4 +1,5 @@
 #import "WPNUXBackButton.h"
+#import <WordPress-iOS-Shared/WPFontManager.h>
 
 @implementation WPNUXBackButton
 
@@ -44,7 +45,7 @@ CGFloat const WPNUXBackButtonExtraHorizontalWidthForSpace = 30;
 
 - (void)configureButton
 {
-    self.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:16.0];
+    self.titleLabel.font = [WPFontManager openSansRegularFontOfSize:16.0];
     [self setTitleEdgeInsets:UIEdgeInsetsMake(0.0, 6.0, 0, 10.0)];
     [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.8] forState:UIControlStateNormal];
     [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.5] forState:UIControlStateHighlighted];

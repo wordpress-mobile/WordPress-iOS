@@ -2,6 +2,7 @@
 #import "ContentActionButton.h"
 #import "WPContentAttributionView.h"
 #import "WPContentActionView.h"
+#import <WordPress-iOS-Shared/WPFontManager.h>
 
 const CGFloat WPContentViewHorizontalInnerPadding = 12.0;
 const CGFloat WPContentViewOuterMargin = 8.0;
@@ -30,7 +31,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 }
 
 + (UIFont *)contentFont {
-    return (IS_IPAD ? [UIFont fontWithName:@"OpenSans" size:16.0f] : [UIFont fontWithName:@"OpenSans" size:14.0f]);
+    return (IS_IPAD ? [WPFontManager openSansRegularFontOfSize:16.0] : [WPFontManager openSansRegularFontOfSize:14.0]);
 }
 
 
