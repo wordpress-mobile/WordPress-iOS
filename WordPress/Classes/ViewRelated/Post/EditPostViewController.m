@@ -171,6 +171,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
     if (_mediaUploadQueue.operationCount > 0) {
         self.navigationItem.titleView = self.uploadStatusView;
     } else if (blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
+        self.navigationItem.titleView = nil;
         self.navigationItem.title = [self editorTitle];
     } else {
         UIButton *titleButton = self.titleBarButton;

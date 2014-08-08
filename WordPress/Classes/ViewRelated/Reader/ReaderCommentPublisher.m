@@ -15,14 +15,12 @@
 
 @implementation ReaderCommentPublisher
 
-- (id)initWithComposer:(InlineComposeView *)composeView andPost:(ReaderPost *)post
+- (id)initWithComposer:(InlineComposeView *)composeView
 {
     self = [super init];
     if (self) {
         _composeView = composeView;
         _composeView.delegate = self;
-
-        _post = post;
     }
     return self;
 }

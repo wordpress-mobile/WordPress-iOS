@@ -11,6 +11,7 @@ static CGFloat const DefaultCellHeight = 44.0;
 @property (nonatomic, strong, readwrite) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) NSIndexPath *indexPathSelectedBeforeUpdates;
 @property (nonatomic, strong) NSIndexPath *indexPathSelectedAfterUpdates;
+@property (nonatomic, strong) NSMutableArray *sectionHeaders;
 
 @end
 
@@ -30,9 +31,17 @@ static CGFloat const DefaultCellHeight = 44.0;
         _tableView = tableView;
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        _sectionHeaders = [NSMutableArray array];
         [_tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:DefaultCellIdentifier];
     }
     return self;
+}
+
+#pragma mark - Public Methods
+- (void)updateTitleForSection:(NSUInteger)section
+{
+    WPTableViewSectionHeaderView *sectionHeaderView = (WPTableViewSectionHeaderView *)[self tableView:self.tableView viewForHeaderInSection:section];
+    sectionHeaderView.title = [self titleForHeaderInSection:section];
 }
 
 #pragma mark - Required Delegate Methods
@@ -140,7 +149,7 @@ static CGFloat const DefaultCellHeight = 44.0;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([self.delegate respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)]) {
-        [self.delegate tableView:tableView heightForRowAtIndexPath:indexPath];
+        return [self.delegate tableView:tableView heightForRowAtIndexPath:indexPath];
     }
     return DefaultCellHeight;
 }
@@ -169,9 +178,13 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    if ([self.sectionHeaders count] > section) {
+        return [self.sectionHeaders objectAtIndex:section];
+    }
     CGRect frame = CGRectMake(0.0, 0.0, CGRectGetWidth(self.tableView.bounds), 0.0);
     WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:frame];
     header.title = [self titleForHeaderInSection:section];
+    [self.sectionHeaders addObject:header];
     return header;
 }
 
