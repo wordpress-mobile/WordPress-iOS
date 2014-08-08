@@ -149,9 +149,6 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         _timeButton.backgroundColor = [UIColor clearColor];
         _timeButton.titleLabel.font = [WPFontManager openSansRegularFontOfSize:12.0];
         [_timeButton addTarget:self action:@selector(timeLinkAction:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [_timeButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPVSmallButtonLeftPadding, 0, 0)];
-
         [_timeButton setImage:[UIImage imageNamed:@"reader-postaction-time"] forState:UIControlStateNormal];
         [_timeButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateNormal];
         
