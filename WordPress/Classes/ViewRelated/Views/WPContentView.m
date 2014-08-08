@@ -57,16 +57,16 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 @property (nonatomic, strong) UIButton *timeButton;
 @property (nonatomic, strong) UILabel *bylineLabel;
 @property (nonatomic, strong) UIButton *byButton;
-@property (nonatomic, assign) BOOL willRefreshMediaLayout;
+@property (nonatomic, assign) BOOL willRefreshMediaLayout, shouldShowDateInByView;
 
 @end
 
 @implementation WPContentView {
 }
 
-+ (UIFont *)titleFont
-{
-    return (IS_IPAD ? [UIFont fontWithName:@"Merriweather-Bold" size:24.0f] : [UIFont fontWithName:@"Merriweather-Bold" size:19.0f]);
++ (UIFont *)titleFont {
+    return (IS_IPAD ? [UIFont fontWithName:@"Merriweather-Bold" size:24.0f] : [UIFont fontWithName:@"Merriweather-Bold"
+                                                                                              size:19.0f]);
 }
 
 + (UIFont *)summaryFont
@@ -148,7 +148,6 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         [_bottomView.layer addSublayer:_bottomBorder];
 
         _timeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _timeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         _timeButton.backgroundColor = [UIColor clearColor];
         _timeButton.titleLabel.font = [WPFontManager openSansRegularFontOfSize:12.0];
         [_timeButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPVSmallButtonLeftPadding, 0, 0)];
@@ -157,10 +156,21 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         [_timeButton setImage:[UIImage imageNamed:@"reader-postaction-time"] forState:UIControlStateDisabled];
         [_timeButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateDisabled];
         [_timeButton setEnabled:NO];
-        [_bottomView addSubview:_timeButton];
+        
+        if (_shouldShowDateInByView) {
+            _timeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+            _timeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+            [_byView addSubview:_timeButton];
+        } else {
+            _timeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+            [_bottomView addSubview:_timeButton];
+        }
 
         // Update the relative timestamp once per minute
-        _dateRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(refreshDate:) userInfo:nil repeats:YES];
+        _dateRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self
+                                                           selector:@selector(refreshDate:)
+                                                           userInfo:nil
+                                                            repeats:YES];
     }
     return self;
 }
@@ -175,6 +185,10 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
     [_dateRefreshTimer invalidate];
     _dateRefreshTimer = nil;
+}
+
+- (void)setShouldShowDateInByView {
+    _shouldShowDateInByView = YES;
 }
 
 - (UIView *)viewForFullContent
@@ -291,10 +305,13 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     // Position the meta view and its subviews
     CGFloat bottomY = self.textContentView.frame.origin.y + self.textContentView.frame.size.height + RPVVerticalPadding;
     self.bottomView.frame = CGRectMake(0, bottomY, contentWidth, RPVMetaViewHeight);
-    self.bottomBorder.frame = CGRectMake(RPVHorizontalInnerPadding, 0, contentWidth - RPVHorizontalInnerPadding * 2, RPVBorderHeight);
+    self.bottomBorder.frame = CGRectMake(RPVHorizontalInnerPadding,
+                                         0,
+                                         contentWidth - RPVHorizontalInnerPadding * 2,
+                                         RPVBorderHeight);
 
     // Action buttons
-    CGFloat buttonX = self.bottomView.frame.size.width - RPVHorizontalInnerPadding; // minus two px so button text aligns
+    CGFloat buttonX = self.bottomView.frame.size.width - RPVHorizontalInnerPadding; // minus 2px so button text aligns
     CGFloat buttonY = RPVBorderHeight; // Just below the line
     NSArray* reversedActionButtons = [[self.actionButtons reverseObjectEnumerator] allObjects];
 
@@ -306,7 +323,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
             continue;
         }
 
-        // Left most visible button needs a different size to aligh properly
+        // Left most visible button needs a different size to align properly
         if (buttonWidth == 0.0f) {
             [actionButton sizeToFit];
             buttonWidth = CGRectGetWidth(actionButton.frame);
@@ -333,9 +350,13 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         lastImageWidth = actionButton.imageView.image.size.width;
     }
 
-    CGFloat timeWidth = buttonX - RPVHorizontalInnerPadding;
-    self.timeButton.frame = CGRectMake(RPVHorizontalInnerPadding, RPVBorderHeight, timeWidth, RPVControlButtonHeight);
-
+    CGFloat timeWidth = _shouldShowDateInByView ? RPVControlButtonWidth + 10.0f : buttonX - RPVHorizontalInnerPadding;
+    CGFloat timeHeight = _shouldShowDateInByView ? _byView.frame.size.height : RPVControlButtonHeight;
+    CGFloat timeXPosition = _shouldShowDateInByView ? _byView.frame.size.width - timeWidth - RPVHorizontalInnerPadding
+                                                    : RPVHorizontalInnerPadding;
+    CGFloat timeYPosition = _shouldShowDateInByView ? 0.0f : RPVBorderHeight;
+    self.timeButton.frame = CGRectMake(timeXPosition, timeYPosition, timeWidth, timeHeight);
+    
     // Update own frame
     CGRect ownFrame = self.frame;
     ownFrame.size.height = self.bottomView.frame.origin.y + self.bottomView.frame.size.height;
@@ -354,8 +375,13 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     button.drawLabelBubble = YES;
     [self.bottomView addSubview:button];
     [self.actionButtons addObject:button];
-
+    
     return button;
+}
+
+- (void)addCustomActionButton:(UIButton*)actionButton {
+    [self.bottomView addSubview:actionButton];
+    [self.actionButtons addObject:actionButton];
 }
 
 - (void)removeActionButton:(UIButton *)button
@@ -439,7 +465,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 - (void)handleMediaViewLoaded:(ReaderMediaView *)mediaView
 {
     BOOL frameChanged = [self updateMediaLayout:mediaView];
-
+    
     if (frameChanged) {
         // need to reset the layouter because otherwise we get the old framesetter or cached layout frames
         self.textContentView.layouter = nil;
@@ -586,16 +612,18 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     button.GUID = identifier;
 
     // get image with normal link text
-    UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDefault];
+    UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame
+                                                                     options:DTCoreTextLayoutFrameDrawingDefault];
     [button setImage:normalImage forState:UIControlStateNormal];
 
     // get image for highlighted link text
-    UIImage *highlightImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDrawLinksHighlighted];
+    UIImage *highlightImage = [attributedTextContentView contentImageWithBounds:frame
+                                                                        options:DTCoreTextLayoutFrameDrawingDrawLinksHighlighted];
     [button setImage:highlightImage forState:UIControlStateHighlighted];
 
     // use normal push action for opening URL
     [button addTarget:self action:@selector(linkAction:) forControlEvents:UIControlEventTouchUpInside];
-
+    
     return button;
 }
 
@@ -613,10 +641,11 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
     CGFloat width = _textContentView.frame.size.width;
     CGFloat availableWidth = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
-
-    // The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image itself to run out to the edges,
-    // so position it offset by the inverse of _textContentView's edgeInsets. Also add top padding so we don't bump into a line of text.
-    // Remeber to add an extra 10px to the frame to preserve aspect ratio.
+    
+    // The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image
+    // itself to run out to the edges, so position it offset by the inverse of _textContentView's edgeInsets. Also
+    // add top padding so we don't bump into a line of text. Remeber to add an extra 10px to the frame to preserve
+    // aspect ratio.
     UIEdgeInsets edgeInsets = _textContentView.edgeInsets;
     edgeInsets.left = 0.0f - edgeInsets.left;
     edgeInsets.top = 15.0f;
@@ -671,14 +700,13 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
             [self.mediaQueue enqueueMedia:imageView
                                   withURL:attachment.contentURL
                          placeholderImage:nil
-                                     size:CGSizeMake(width, 0.0f) // Passing zero for height to get the correct aspect ratio
-                                isPrivate:[self privateContent]
+                                     size:CGSizeMake(width, 0.0f) // Passing zero for height to get the correct
+                                isPrivate:[self privateContent]   // aspect ratio
                                   success:nil
                                   failure:nil];
         }
 
         return imageView;
-
     }
 
     ReaderVideoContentType videoType;
@@ -693,14 +721,11 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         return nil; // Can't handle whatever this is :P
     }
 
-    // we won't show the vid until we've loaded its thumb.
+    ReaderVideoView *videoView = [[ReaderVideoView alloc] initWithFrame:frame];
     // minimal frame to suppress drawing context errors with 0 height or width.
     frame.size.width = 1.0f;
-    frame.size.height = 1.0f;
-
-    ReaderVideoView *videoView = [[ReaderVideoView alloc] initWithFrame:frame];
     videoView.edgeInsets = edgeInsets;
-
+        
     [_mediaArray addObject:videoView];
     [videoView setContentURL:attachment.contentURL ofType:videoType success:^(id readerVideoView) {
         [self handleMediaViewLoaded:readerVideoView];

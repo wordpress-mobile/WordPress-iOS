@@ -9,6 +9,7 @@
 
 @interface RecommendedTopicsViewController ()<WPTableViewHandlerDelegate>
 
+@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
 
 @end
@@ -164,10 +165,6 @@
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return NSLocalizedString(@"Lists", @"Section title for the default reader lists");
-    }
-
     return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
 }
 

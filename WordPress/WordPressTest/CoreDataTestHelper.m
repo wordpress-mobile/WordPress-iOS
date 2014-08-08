@@ -2,7 +2,6 @@
 #import "WordPressAppDelegate.h"
 #import <objc/runtime.h>
 #import "ContextManager.h"
-#import "AsyncTestHelper.h"
 
 @interface ContextManager (TestHelper)
 
@@ -162,10 +161,11 @@ static void *const testPSCKey = "testPSCKey";
 
 - (void)testSaveContext:(NSManagedObjectContext *)context {
 	[self saveContext:context withCompletionBlock:^() {
-        if (ATHSemaphore) {
-            ATHNotify();
+        if ([CoreDataTestHelper sharedHelper].testExpectation) {
+            [[CoreDataTestHelper sharedHelper].testExpectation fulfill];
+            [CoreDataTestHelper sharedHelper].testExpectation = nil;
         } else {
-            NSLog(@"No semaphore present for notify");
+            NSLog(@"No test expectation present for context save");
         }
     }];
 }
