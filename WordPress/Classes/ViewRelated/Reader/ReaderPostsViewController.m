@@ -976,7 +976,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (BOOL)isCurrentTagFreshlyPressed
 {
-    return [self.currentTopic.title rangeOfString:@"freshly-pressed"].location != NSNotFound;
+    return [self.currentTopic.path rangeOfString:@"freshly-pressed"].location != NSNotFound;
 }
 
 - (NSDictionary *)tagPropertyForStats
