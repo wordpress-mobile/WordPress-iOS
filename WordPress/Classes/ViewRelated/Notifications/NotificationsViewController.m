@@ -266,29 +266,6 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 
 #pragma mark - Segue Helpers
 
-- (void)showReaderForNotification:(Notification *)note
-{
-#warning TODO: FIX ME Please
-    // Failsafe
-    if (note.metaPostID == nil || note.metaSiteID == nil) {
-        [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
-        return;
-    }
-    
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    ReaderPostService *service      = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    __weak __typeof(self)weakSelf   = self;
-    
-    [service fetchPost:note.metaPostID.integerValue forSite:note.metaSiteID.integerValue success:^(ReaderPost *post) {
-        if ([weakSelf.navigationController.topViewController isEqual:weakSelf]) {
-            [weakSelf performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:post];
-        }
-        
-    } failure:^(NSError *error) {
-        [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
-    }];
-}
-
 - (void)showCommentForNotification:(Notification *)note
 {
 #warning TODO: FIX ME Please
@@ -299,7 +276,7 @@ static NSTimeInterval NotificationPushMaxWait = 1;
     
     // If we don't have the blog, fall back to the reader
     if (!blog || !note.metaCommentID) {
-        [self showReaderForNotification:note];
+//        [self showReaderForNotification:note];
         return;
     }
     
@@ -314,29 +291,22 @@ static NSTimeInterval NotificationPushMaxWait = 1;
     }];
 }
 
-- (void)showDetailsForNote:(Notification *)note
-{
-    [self performSegueWithIdentifier:NSStringFromClass([NotificationDetailsViewController class]) sender:note];
-}
-
 - (void)showDetailsForNotification:(Notification *)note animated:(BOOL)animated
 {
 #warning TODO: FIXME: Segues don't have animated = NO
-#warning TODO: Reader is expected to break this way
     [WPAnalytics track:WPAnalyticsStatNotificationsOpenedNotificationDetails];
     
     // Make sure there's nothing else on the stack
     [self.navigationController popToRootViewControllerAnimated:NO];
     
-    
-    if (note.isMatcher) {
-        [self showReaderForNotification:note];
+    if (note.isMatcher && note.metaPostID && note.metaSiteID) {
+        [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:note];
         
     } else if (note.isComment) {
         [self showCommentForNotification:note];
         
     } else {
-        [self showDetailsForNote:note];
+        [self performSegueWithIdentifier:NSStringFromClass([NotificationDetailsViewController class]) sender:note];
     }
 }
 
@@ -376,20 +346,8 @@ static NSTimeInterval NotificationPushMaxWait = 1;
         cell.read = note.read;
     }
     
-#warning TODO: Nuke Duplicate Code
-    // Tracker!
-    [WPAnalytics track:WPAnalyticsStatNotificationsOpenedNotificationDetails];
-    
     // At last, push the details
-    if (note.isMatcher) {
-        [self showReaderForNotification:note];
-
-    } else if (note.isComment) {
-        [self showCommentForNotification:note];
-        
-    } else {
-        [self showDetailsForNote:note];
-    }
+    [self showDetailsForNotification:note animated:YES];
 }
 
 
@@ -400,19 +358,19 @@ static NSTimeInterval NotificationPushMaxWait = 1;
     NSString *detailsSegueID    = NSStringFromClass([NotificationDetailsViewController class]);
     NSString *commentSegueID    = NSStringFromClass([CommentViewController class]);
     NSString *readerSegueID     = NSStringFromClass([ReaderPostDetailViewController class]);
+    Notification *note          = sender;
     
     if([segue.identifier isEqualToString:detailsSegueID]) {
         NotificationDetailsViewController *detailsViewController = segue.destinationViewController;
-        detailsViewController.note  = sender;
+        detailsViewController.note = note;
 
     } else if ([segue.identifier isEqualToString:commentSegueID]) {
         CommentViewController *commentsViewController = segue.destinationViewController;
         commentsViewController.comment = sender;
     
     } else if([segue.identifier isEqualToString:readerSegueID]) {
-//        ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
-#warning TODO: Fixme
-//        readerViewController.post = sender;
+        ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
+        [readerViewController setupWithPostID:note.metaPostID siteID:note.metaSiteID];
     }
 }
 
@@ -468,7 +426,7 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 
 - (NSString *)noResultsTitleText
 {
-    if ([self showJetpackConnectMessage]) {
+    if (self.showJetpackConnectMessage) {
         return NSLocalizedString(@"Connect to Jetpack", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
     } else {
         return NSLocalizedString(@"No notifications yet", @"Displayed when the user pulls up the notifications view and they have no items");
@@ -477,7 +435,7 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 
 - (NSString *)noResultsMessageText
 {
-    if ([self showJetpackConnectMessage]) {
+    if (self.showJetpackConnectMessage) {
         return NSLocalizedString(@"Jetpack supercharges your self-hosted WordPress site.", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
     } else {
         return nil;
@@ -486,7 +444,7 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 
 - (NSString *)noResultsButtonText
 {
-    if ([self showJetpackConnectMessage]) {
+    if (self.showJetpackConnectMessage) {
         return NSLocalizedString(@"Learn more", @"");
     } else {
         return nil;
@@ -495,7 +453,7 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 
 - (UIView *)noResultsAccessoryView
 {
-    if ([self showJetpackConnectMessage]) {
+    if (self.showJetpackConnectMessage) {
         return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-jetpack-gray"]];
     } else {
         return nil;

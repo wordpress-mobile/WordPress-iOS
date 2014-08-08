@@ -247,16 +247,24 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
 }
 
 
-
 #pragma mark - Helpers
 
 - (void)handleNotificationURL:(NotificationURL *)notificationURL
 {
+    Blog *blog = nil;
+    
+    NSNumber *siteID = _note.metaSiteID;
+    if (siteID) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
+        blog                            = [service blogByBlogId:siteID];
+    }
+    
     if ([notificationURL.type isEqual:NoteLinkTypePost] && _note.metaPostID && _note.metaSiteID) {
-        [self openReaderWithPostID:self.note.metaPostID siteID:self.note.metaSiteID];
+        [self openReaderWithNote:self.note];
         
-    } else if (_note.isStatsEvent && _note.metaSiteID){
-        [self openStatsForSiteID:_note.metaSiteID fallbackURL:notificationURL.url];
+    } else if (_note.isStatsEvent && blog.isWPcom){
+        [self openStatsForBlog:blog];
         
     } else if (notificationURL.url) {
         [self openURL:notificationURL.url];
@@ -269,38 +277,14 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
 
 #pragma mark - Action Handlers
 
-- (void)openReaderWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID
+- (void)openReaderWithNote:(Notification *)note
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    ReaderPostService *service      = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    __weak __typeof(self)weakSelf   = self;
-    
-    [service fetchPost:postID.integerValue forSite:siteID.integerValue success:^(ReaderPost *post) {
-        if ([weakSelf.navigationController.topViewController isEqual:weakSelf]) {
-            [weakSelf performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:post];
-        }
-        
-    } failure:^(NSError *error) {
-        [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
-        
-    }];
+    [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:note];
 }
 
-- (void)openStatsForSiteID:(NSNumber *)siteID fallbackURL:(NSURL *)fallbackURL
+- (void)openStatsForBlog:(Blog *)blog
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blog                      = [service blogByBlogId:siteID];
-    
-    if (blog.isWPcom) {
-        [self performSegueWithIdentifier:NSStringFromClass([StatsViewController class]) sender:blog];
-
-    } else if (fallbackURL) {
-        [self openURL:fallbackURL];
-        
-    } else {
-        [self.tableView deselectSelectedRowWithAnimation:YES];
-    }
+    [self performSegueWithIdentifier:NSStringFromClass([StatsViewController class]) sender:blog];
 }
 
 - (void)openURL:(NSURL *)url
@@ -368,10 +352,10 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
         StatsViewController *statsViewController = segue.destinationViewController;
         statsViewController.blog = (Blog *)sender;
         
-    } else if([segue.identifier isEqualToString:readerSegueID] && [sender isKindOfClass:[ReaderPost class]]) {
-#warning TODO: Fixme
-//        ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
-//        readerViewController.post = (ReaderPost *)sender;
+    } else if([segue.identifier isEqualToString:readerSegueID] && [sender isKindOfClass:[Notification class]]) {
+        Notification *note = sender;
+        ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
+        [readerViewController setupWithPostID:note.metaPostID siteID:note.metaSiteID];
     }
 }
 
