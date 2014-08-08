@@ -176,6 +176,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         _passwordField.delegate = self;
         _passwordField.secureTextEntry = YES;
         _passwordField.text = _blog.jetpackPassword;
+        _passwordField.showSecureTextEntryToggle = NO;
         _passwordField.clearsOnBeginEditing = YES;
         _passwordField.showTopLineSeparator = YES;
         [self.view addSubview:_passwordField];
@@ -346,6 +347,14 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     [self updateSaveButton];
 }
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    
+    if (textField == _passwordField) {
+        _passwordField.showSecureTextEntryToggle = YES;
+    }
+
+}
+
 - (void)keyboardWillShow:(NSNotification *)notification {
     NSDictionary *keyboardInfo = notification.userInfo;
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
@@ -415,7 +424,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 
 
 - (BOOL)saveEnabled {
-    return (!_authenticating && _usernameField.text.length && _passwordField.text.length);
+    return (!_authenticating && _usernameField.text.length && _passwordField.text.length && _passwordField.showSecureTextEntryToggle);
 }
 
 - (void)setAuthenticating:(BOOL)authenticating {
@@ -428,7 +437,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 
 - (void)updateSaveButton {
 	if (![self isViewLoaded]) return;
-	
+
     _signInButton.enabled = [self saveEnabled];
 }
 

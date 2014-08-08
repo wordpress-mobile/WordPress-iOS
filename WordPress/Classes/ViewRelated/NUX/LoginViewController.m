@@ -653,6 +653,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 {
     [self setAuthenticating:NO withStatusMessage:nil];
     JetpackSettingsViewController *jetpackSettingsViewController = [[JetpackSettingsViewController alloc] initWithBlog:_blog];
+    
     jetpackSettingsViewController.canBeSkipped = YES;
     [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
         if (didAuthenticate) {
