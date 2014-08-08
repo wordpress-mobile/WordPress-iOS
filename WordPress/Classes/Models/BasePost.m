@@ -204,6 +204,10 @@
     return [self dateCreated];
 }
 
+- (NSString *)primaryTagForDisplay {
+    return nil;
+}
+
 - (NSString *)statusForDisplay {
     if (self.remoteStatus == AbstractPostRemoteStatusSync) {
         if ([self.status isEqualToString:@"pending"]) {

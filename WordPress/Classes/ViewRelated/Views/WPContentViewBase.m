@@ -103,11 +103,12 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     }
     height += [self.titleLabel sizeThatFits:innerSize].height;
     height += [self sizeThatFitsContent:innerSize].height;
+    height += [self.primaryTagView sizeThatFits:innerSize].height;
 
     height += WPContentViewOuterMargin;
     height += WPContentViewAttributionVerticalPadding;
     height += WPContentViewTitleContentPadding;
-    height += (WPContentViewVerticalPadding * 2);
+    height += (WPContentViewVerticalPadding * 4);
 
     return CGSizeMake(size.width, ceil(height));
 }
@@ -150,7 +151,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 - (void)configureConstraints
 {
     CGFloat contentViewOuterMargin = [self horizontalMarginForContent];
-    NSDictionary *views = NSDictionaryOfVariableBindings(_attributionView, _attributionBorderView, _featuredImageView, _titleLabel, _contentView, _actionView);
+    NSDictionary *views = NSDictionaryOfVariableBindings(_attributionView, _attributionBorderView, _featuredImageView, _titleLabel, _contentView, _primaryTagView, _actionView);
     NSDictionary *metrics = @{@"outerMargin": @(WPContentViewOuterMargin),
                               @"contentViewOuterMargin": @(contentViewOuterMargin),
                               @"verticalPadding": @(WPContentViewVerticalPadding),
@@ -175,6 +176,11 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
                                                                  metrics:metrics
                                                                    views:views]];
 
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(outerMargin)-[_primaryTagView]-(outerMargin)-|"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(outerMargin)-[_actionView]-(outerMargin)-|"
                                                                  options:0
                                                                  metrics:metrics
@@ -190,7 +196,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
                                                                  metrics:metrics
                                                                    views:views]];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(outerMargin@priority)-[_attributionView]-(attributionVerticalPadding@priority)-[_featuredImageView]-(verticalPadding@priority)-[_titleLabel]-(titleContentPadding@priority)-[_contentView]-(verticalPadding@priority)-[_actionView]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(outerMargin@priority)-[_attributionView]-(attributionVerticalPadding@priority)-[_featuredImageView]-(verticalPadding@priority)-[_titleLabel]-(titleContentPadding@priority)-[_contentView]-[_primaryTagView]-[_actionView]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
@@ -264,6 +270,9 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
     self.contentView = [self viewForContent];
     [self addSubview:self.contentView];
+    
+    self.primaryTagView = [self viewForPrimaryTag];
+    [self addSubview:self.primaryTagView];
 
     self.actionView = [self viewForActionView];
     [self addSubview:self.actionView];
@@ -332,6 +341,24 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     return contentLabel;
 }
 
+- (UIView *)viewForPrimaryTag
+{
+    UIButton *tagButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    tagButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    tagButton.backgroundColor = [UIColor clearColor];
+    tagButton.titleLabel.font = [WPFontManager openSansRegularFontOfSize:12.0];
+    [tagButton setTitleEdgeInsets: UIEdgeInsetsMake(0, 2, 0, 0)];
+    tagButton.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    // Disable it for now (could be used for permalinks in the future)
+    [tagButton setImage:[UIImage imageNamed:@"reader-postaction-tag"] forState:UIControlStateDisabled];
+    [tagButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateDisabled];
+    [tagButton setEnabled:NO];
+    
+    return tagButton;
+    
+}
+
 - (WPContentActionView *)viewForActionView
 {
     WPContentActionView *actionView = [[WPContentActionView alloc] init];
@@ -348,6 +375,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     [self configureFeaturedImageView];
     [self configureTitleView];
     [self configureContentView];
+    [self configurePrimaryTagView];
     [self configureActionView];
     [self configureActionButtons];
     [self setAvatarImage:nil];
@@ -385,6 +413,13 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     label.attributedText = [self attributedStringForContent:[self.contentProvider contentPreviewForDisplay]];
     // Reassign line break mode after setting attributed text, else we never see an ellipsis.
     label.lineBreakMode = NSLineBreakByTruncatingTail;
+}
+
+- (void)configurePrimaryTagView
+{
+    UIButton *tagButton = (UIButton *)self.primaryTagView;
+    tagButton.hidden = [self.contentProvider primaryTagForDisplay].length == 0;
+    [tagButton setTitle:[self.contentProvider primaryTagForDisplay] forState:UIControlStateDisabled];
 }
 
 - (void)configureActionView

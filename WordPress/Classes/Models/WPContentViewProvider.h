@@ -10,6 +10,7 @@
 - (NSURL *)avatarURLForDisplay; // Some providers use a hardcoded URL or blavatar URL
 - (NSString *)gravatarEmailForDisplay;
 - (NSDate *)dateForDisplay;
+- (NSString *)primaryTagForDisplay;
 @optional
 - (BOOL)unreadStatusForDisplay;
 - (NSURL *)featuredImageURLForDisplay;

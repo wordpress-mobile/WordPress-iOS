@@ -65,5 +65,9 @@
     return self.dateCreated;
 }
 
+- (NSString *)primaryTagForDisplay {
+    return nil;
+}
+
 
 @end

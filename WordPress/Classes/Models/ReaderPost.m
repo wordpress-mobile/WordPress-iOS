@@ -156,6 +156,11 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     return [self featuredImageURL];
 }
 
+- (NSString *)primaryTagForDisplay
+{
+    return [self.primaryTag capitalizedString];
+}
+
 @end
 
 

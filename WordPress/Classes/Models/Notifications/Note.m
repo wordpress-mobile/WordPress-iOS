@@ -276,6 +276,11 @@
     return _date;
 }
 
+- (NSString *)primaryTagForDisplay
+{
+    return nil;
+}
+
 - (BOOL)unreadStatusForDisplay
 {
     return !self.isRead;
