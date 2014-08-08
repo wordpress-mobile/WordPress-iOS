@@ -41,7 +41,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @property (nonatomic, assign) CGFloat lastOffset;
 @property (nonatomic, strong) WPAnimatedBox *animatedBox;
 @property (nonatomic, strong) UIGestureRecognizer *tapOffKeyboardGesture;
-@property (nonatomic, strong) ReaderPostDetailViewController *detailController;
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 @property (nonatomic, strong) ReaderCommentPublisher *commentPublisher;
 @property (nonatomic, readonly) ReaderTopic *currentTopic;
@@ -55,6 +54,11 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @implementation ReaderPostsViewController
 
 #pragma mark - Life Cycle methods
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
+    return [[WordPressAppDelegate sharedWordPressApplicationDelegate] readerPostsViewController];
+}
 
 - (void)dealloc
 {
@@ -126,10 +130,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
     [self.inlineComposeView setButtonTitle:NSLocalizedString(@"Post", nil)];
-
-    self.commentPublisher = [[ReaderCommentPublisher alloc]
-                             initWithComposer:self.inlineComposeView
-                             andPost:nil];
+    self.commentPublisher = [[ReaderCommentPublisher alloc] initWithComposer:self.inlineComposeView];
 
     self.commentPublisher.delegate = self;
 
@@ -461,22 +462,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self.inlineComposeView dismissComposer];
 }
 
-- (void)openPost:(NSUInteger *)postId onBlog:(NSUInteger)blogId
+- (void)openPost:(NSNumber *)postId onBlog:(NSNumber *)blogId
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service deletePostsWithNoTopic];
-    [service fetchPost:postId forSite:blogId success:^(ReaderPost *post) {
-        if (![self.navigationController.topViewController isEqual:self]) {
-            return;
-        }
-
-        ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post];
-        [self.navigationController pushViewController:controller animated:YES];
-
-    } failure:^(NSError *error) {
-        DDLogError(@"%@, error fetching post for site", _cmd, error);
-    }];
+    ReaderPostDetailViewController *controller = [ReaderPostDetailViewController detailControllerWithPostID:postId siteID:blogId];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark - WPTableViewSublass methods
@@ -702,15 +691,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
             [self updateTitle];
             [self syncReaderItemsWithSuccess:success failure:failure];
         } failure:^(NSError *error) {
-            if (error.code == ReaderTopicServiceErrorNoAccount) {
-                // Fetching the menu should be invisible to the user.
-                // If the failure is not a network error we probably don't want to show
-                // the user. In this case, the user likely logged out and an error message
-                // would be in appropriate.
-                failure(nil);
-            } else {
-                failure(error);
-            }
+            failure(error);
         }];
         return;
     }
@@ -900,10 +881,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 
-    // Pass the image forward
     ReaderPost *post = [self.resultsController.fetchedObjects objectAtIndex:indexPath.row];
-    self.detailController = [[ReaderPostDetailViewController alloc] initWithPost:post];
-    [self.navigationController pushViewController:self.detailController animated:YES];
+    UIViewController *detailController = [ReaderPostDetailViewController detailControllerWithPost:post];
+    [self.navigationController pushViewController:detailController animated:YES];
 
     [WPAnalytics track:WPAnalyticsStatReaderOpenedArticle];
 }

@@ -10,8 +10,7 @@
 
 NSString * const ReaderTopicDidChangeViaUserInteractionNotification = @"ReaderTopicDidChangeViaUserInteractionNotification";
 NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotification";
-NSString * const ReaderTopicServiceErrorDomain = @"ReaderTopicServiceErrorDomain";
-static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey";
+static NSString * const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey";
 
 @interface ReaderTopicService ()
 
@@ -35,23 +34,29 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
 {
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    if (!defaultAccount) {
-        failure([self errorForMissingAccount]);
-        return;
+    WordPressComApi *api = [WordPressComApi anonymousApi];
+
+    // If the account is not nil, and its api has credentials we'll use it.
+    if ([[defaultAccount restApi] hasCredentials]) {
+         api = [defaultAccount restApi];
     }
 
-    WordPressComApi *api = [defaultAccount restApi];
-    if (![api hasCredentials]) {
-        api = [WordPressComApi anonymousApi];
-    }
-
+    // Keep a reference to the NSManagedObjectID (if it exists).
+    // We'll use it to verify that the account did not change while fetching topics.
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithRemoteApi:api];
     [remoteService fetchReaderMenuWithSuccess:^(NSArray *topics) {
-        WPAccount *reloadedAccount = (WPAccount *)[self.managedObjectContext existingObjectWithID:defaultAccount.objectID error:nil];
-        if (!reloadedAccount) {
-            failure([self errorForMissingAccount]);
+
+        WPAccount *reloadedAccount = [accountService defaultWordPressComAccount];
+
+        // Make sure that we have the same account now that we did when we started.
+        if ((!defaultAccount && !reloadedAccount) || [defaultAccount.objectID isEqual:reloadedAccount.objectID]) {
+            // If both accounts are nil, or if both accounts exist and are identical we're good to go.
+        } else {
+            // The account changed so our results are invalid. Fetch them anew!
+            [self fetchReaderMenuWithSuccess:success failure:failure];
             return;
         }
+
         [self mergeTopics:topics forAccount:reloadedAccount];
         [self.managedObjectContext performBlockAndWait:^{
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -226,6 +231,20 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
     }];
 }
 
+- (ReaderTopic *)topicForFollowedSites
+{
+    NSError *error;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderTopic"];
+    request.predicate = [NSPredicate predicateWithFormat:@"path LIKE %@", @"*/read/following"];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"Failed to fetch topic for sites I follow: %@", error);
+        return nil;
+    }
+    return (ReaderTopic *)[results firstObject];
+}
+
+
 #pragma mark - Private Methods
 
 /**
@@ -376,17 +395,6 @@ static NSString *const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopic
 {
     NSArray *results = [[self allTopics] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"path == %@", [path lowercaseString]]];
     return [results firstObject];
-}
-
-/**
- Standard error message for when syncing the menu when an account is missing or deleted.
- */
-- (NSError *)errorForMissingAccount
-{
-    NSString *description = NSLocalizedString(@"Unable to fetch a list of topics because the default account was nil or deleted.", @"A message describing an error occuring when syncing the reader menu when the default WordPress.com account is missing or deleted.");
-    NSDictionary *userInfo = @{NSLocalizedDescriptionKey: description};
-    NSError *error = [NSError errorWithDomain:ReaderTopicServiceErrorDomain code:ReaderTopicServiceErrorNoAccount userInfo:userInfo];
-    return error;
 }
 
 @end

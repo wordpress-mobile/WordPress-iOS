@@ -28,7 +28,7 @@ CGFloat const blavatarImageSize = 50.f;
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
-    return [[self alloc] initWithStyle:UITableViewStyleGrouped];
+    return [[WordPressAppDelegate sharedWordPressApplicationDelegate] blogListViewController];
 }
 
 - (void)dealloc
