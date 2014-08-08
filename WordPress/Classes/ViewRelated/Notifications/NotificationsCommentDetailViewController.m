@@ -261,7 +261,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
             break;
         case WPNoteCommentActionTypeSpam:
             self.spamButton.enabled = YES;
-            [self updateSpamButton:NO];
+            [self updateSpamButton:YES];
             break;
         case WPNoteCommentActionTypeUnspam:
             self.spamButton.enabled = YES;
