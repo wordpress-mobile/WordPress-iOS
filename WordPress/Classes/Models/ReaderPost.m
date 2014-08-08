@@ -135,6 +135,15 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 #pragma mark - WPContentViewProvider protocol
 
+- (NSString *)titleForDisplay
+{
+    NSString *title = [[self.postTitle trim] stringByDecodingXMLCharacters];
+    if (!title) {
+        title = @"";
+    }
+    return title;
+}
+
 - (NSString *)authorForDisplay
 {
     return [self authorString];
