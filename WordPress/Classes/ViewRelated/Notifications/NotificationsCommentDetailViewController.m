@@ -361,7 +361,6 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         [webViewController setUrl:url];        
     }
     [self.navigationController pushViewController:webViewController animated:YES];
-     
 }
 
 - (void)approveOrUnapproveAction:(id)sender {
