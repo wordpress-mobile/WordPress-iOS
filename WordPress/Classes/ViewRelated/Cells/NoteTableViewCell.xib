@@ -13,14 +13,6 @@
                 <rect key="frame" x="0.0" y="0.0" width="287" height="78"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rm2-VG-zBy" userLabel="ReadView">
-                        <rect key="frame" x="9" y="35" width="8" height="8"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="8" id="Ocy-lG-j0u"/>
-                            <constraint firstAttribute="height" constant="8" id="ZFI-Wd-EXZ"/>
-                        </constraints>
-                    </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oG5-cv-THc" userLabel="IconImageView">
                         <rect key="frame" x="25" y="12" width="45" height="45"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -71,7 +63,6 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Rm2-VG-zBy" firstAttribute="leading" secondItem="BJe-XV-fKH" secondAttribute="leading" constant="9" id="5Ed-ik-mpG"/>
                     <constraint firstItem="0sy-03-WMI" firstAttribute="top" secondItem="BJe-XV-fKH" secondAttribute="top" constant="12" id="B81-fR-rn5"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="oG5-cv-THc" secondAttribute="bottom" constant="12" id="VM1-jn-VTw"/>
                     <constraint firstItem="sgG-UC-16I" firstAttribute="top" secondItem="BJe-XV-fKH" secondAttribute="top" constant="42" id="VlW-Df-pNu"/>
@@ -81,9 +72,8 @@
                     <constraint firstItem="sgG-UC-16I" firstAttribute="leading" secondItem="BJe-XV-fKH" secondAttribute="leading" constant="55" id="j0d-7A-AoQ"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="0sy-03-WMI" secondAttribute="bottom" constant="12" id="m3T-et-8kr"/>
                     <constraint firstItem="oG5-cv-THc" firstAttribute="top" secondItem="BJe-XV-fKH" secondAttribute="top" constant="12" id="mfm-5B-f7J"/>
+                    <constraint firstItem="oG5-cv-THc" firstAttribute="leading" secondItem="BJe-XV-fKH" secondAttribute="leading" constant="25" id="sIr-1K-09t"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="sgG-UC-16I" secondAttribute="bottom" constant="8" id="u8v-VC-p2s"/>
-                    <constraint firstItem="oG5-cv-THc" firstAttribute="leading" secondItem="Rm2-VG-zBy" secondAttribute="trailing" constant="8" id="wub-j8-Ngc"/>
-                    <constraint firstAttribute="centerY" secondItem="Rm2-VG-zBy" secondAttribute="centerY" id="xS7-I2-C1g"/>
                     <constraint firstAttribute="trailing" secondItem="LCr-NO-BeV" secondAttribute="trailing" id="z7S-Fq-vOl"/>
                 </constraints>
             </tableViewCellContentView>
