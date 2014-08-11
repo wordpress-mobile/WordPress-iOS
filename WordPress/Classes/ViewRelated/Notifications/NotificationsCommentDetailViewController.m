@@ -582,7 +582,17 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 }
 
 - (void)contentView:(WPContentView *)contentView didReceiveLinkAction:(id)sender {
-    [self pushToURL:((DTLinkButton *)sender).URL];
+    NSURL *url = ((DTLinkButton *)sender).URL;
+    
+    // Putting the link into format that will not be discarded by WebViewController
+    NSString *correctUrl = [NSString stringWithFormat:
+                            @"%@://%@%@/#%@",
+                            url.scheme,
+                            url.host,
+                            url.path,
+                            url.fragment];
+
+    [self pushToURL:[NSURL URLWithString:correctUrl]];
 }
 
 
