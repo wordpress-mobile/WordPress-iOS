@@ -31,7 +31,6 @@ const CGFloat WPContentAttributionLabelHeight = 18.0;
     return self;
 }
 
-
 #pragma mark - Public Methods
 
 - (CGSize)intrinsicContentSize
@@ -41,8 +40,9 @@ const CGFloat WPContentAttributionLabelHeight = 18.0;
 
 - (void)setContentProvider:(id<WPContentViewProvider>)contentProvider
 {
-    if (_contentProvider == contentProvider)
+    if (_contentProvider == contentProvider) {
         return;
+    }
 
     _contentProvider = contentProvider;
     [self configureView];
@@ -62,7 +62,6 @@ const CGFloat WPContentAttributionLabelHeight = 18.0;
 {
     [self.attributionLinkButton setSelected:select];
 }
-
 
 #pragma mark - Private Methods
 
@@ -107,7 +106,6 @@ const CGFloat WPContentAttributionLabelHeight = 18.0;
     [self.attributionLinkButton setTitle:[self.contentProvider blogNameForDisplay] forState:UIControlStateHighlighted];
 }
 
-
 #pragma mark - Subview factories
 
 - (UILabel *)labelForAttributionName
@@ -151,7 +149,6 @@ const CGFloat WPContentAttributionLabelHeight = 18.0;
     borderView.backgroundColor = [UIColor colorWithRed:241.0/255.0 green:241.0/255.0 blue:241.0/255.0 alpha:1.0];
     return borderView;
 }
-
 
 #pragma mark - Actions
 

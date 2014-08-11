@@ -16,7 +16,8 @@
 
 @implementation MediaService
 
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context {
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context
+{
     self = [super init];
     if (self) {
         _managedObjectContext = context;
@@ -25,7 +26,10 @@
     return self;
 }
 
-- (void)createMediaWithAsset:(ALAsset *)asset forPostObjectID:(NSManagedObjectID *)postObjectID completion:(void (^)(Media *media))completion {
+- (void)createMediaWithAsset:(ALAsset *)asset
+             forPostObjectID:(NSManagedObjectID *)postObjectID
+                  completion:(void (^)(Media *media))completion
+{
     WPImageOptimizer *optimizer = [WPImageOptimizer new];
     NSData *optimizedImageData = [optimizer optimizedDataFromAsset:asset];
     NSData *thumbnailData = [self thumbnailDataFromAsset:asset];
@@ -51,7 +55,10 @@
     }];
 }
 
-- (AFHTTPRequestOperation *)operationToUploadMedia:(Media *)media withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (AFHTTPRequestOperation *)operationToUploadMedia:(Media *)media
+                                       withSuccess:(void (^)())success
+                                           failure:(void (^)(NSError *error))failure
+{
     media.remoteStatus = MediaRemoteStatusPushing;
     id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
     return [remote operationToUploadFile:media.localURL
@@ -82,7 +89,8 @@
 
 #pragma mark - Media Creation
 
-- (Media *)newMedia {
+- (Media *)newMedia
+{
     Media *media = [NSEntityDescription insertNewObjectForEntityForName:@"Media" inManagedObjectContext:self.managedObjectContext];
     media.creationDate = [NSDate date];
     media.mediaID = @0;
@@ -91,13 +99,15 @@
     return media;
 }
 
-- (Media *)newMediaForBlog:(Blog *)blog {
+- (Media *)newMediaForBlog:(Blog *)blog
+{
     Media *media = [self newMedia];
     media.blog = blog;
     return media;
 }
 
-- (Media *)newMediaForPost:(AbstractPost *)post {
+- (Media *)newMediaForPost:(AbstractPost *)post
+{
     Media *media = [self newMediaForBlog:post.blog];
     [media.posts addObject:post];
     return media;
@@ -105,7 +115,8 @@
 
 #pragma mark - Media helpers
 
-- (NSString *)pathForAsset:(ALAsset *)asset {
+- (NSString *)pathForAsset:(ALAsset *)asset
+{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = paths[0];
     NSString *filename = asset.defaultRepresentation.filename;
@@ -123,18 +134,21 @@
     return path;
 }
 
-- (BOOL)writeData:(NSData *)data toPath:(NSString *)path {
+- (BOOL)writeData:(NSData *)data toPath:(NSString *)path
+{
     NSFileManager *fileManager = [NSFileManager defaultManager];
     return [fileManager createFileAtPath:path contents:data attributes:@{NSFileProtectionKey: NSFileProtectionComplete}];
 }
 
-- (NSData *)thumbnailDataFromAsset:(ALAsset *)asset {
+- (NSData *)thumbnailDataFromAsset:(ALAsset *)asset
+{
     UIImage *thumbnail = [UIImage imageWithCGImage:asset.thumbnail];
     NSData *thumbnailJPEGData = UIImageJPEGRepresentation(thumbnail, 1.0);
     return thumbnailJPEGData;
 }
 
-- (NSString *)mimeTypeForFilename:(NSString *)filename {
+- (NSString *)mimeTypeForFilename:(NSString *)filename
+{
     // Get the UTI from the file's extension:
     CFStringRef pathExtension = (__bridge_retained CFStringRef)[filename pathExtension];
     CFStringRef type = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension, NULL);
@@ -142,13 +156,15 @@
 
     // The UTI can be converted to a mime type:
     NSString *mimeType = (__bridge_transfer NSString *)UTTypeCopyPreferredTagWithClass(type, kUTTagClassMIMEType);
-    if (type != NULL)
+    if (type != NULL) {
         CFRelease(type);
+    }
 
     return mimeType;
 }
 
-- (id<MediaServiceRemote>)remoteForBlog:(Blog *)blog {
+- (id<MediaServiceRemote>)remoteForBlog:(Blog *)blog
+{
     id <MediaServiceRemote> remote;
     if (blog.restApi) {
         remote = [[MediaServiceRemoteREST alloc] initWithApi:blog.restApi];

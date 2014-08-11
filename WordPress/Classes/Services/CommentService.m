@@ -14,7 +14,8 @@
 
 @implementation CommentService
 
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context {
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context
+{
     self = [super init];
     if (self) {
         _managedObjectContext = context;
@@ -24,14 +25,16 @@
 }
 
 // Create comment
-- (Comment *)createCommentForBlog:(Blog *)blog {
+- (Comment *)createCommentForBlog:(Blog *)blog
+{
     Comment *comment = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Comment class]) inManagedObjectContext:blog.managedObjectContext];
     comment.blog = blog;
     return comment;
 }
 
 // Create reply
-- (Comment *)createReplyForComment:(Comment *)comment {
+- (Comment *)createReplyForComment:(Comment *)comment
+{
     Comment *reply = [self createCommentForBlog:comment.blog];
     reply.postID = comment.postID;
     reply.post = comment.post;
@@ -41,7 +44,8 @@
 }
 
 // Restore draft reply
-- (Comment *)restoreReplyForComment:(Comment *)comment {
+- (Comment *)restoreReplyForComment:(Comment *)comment
+{
     NSFetchRequest *existingReply = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Comment class])];
     existingReply.predicate = [NSPredicate predicateWithFormat:@"status == %@ AND parentID == %@", CommentStatusDraft, comment.commentID];
     existingReply.fetchLimit = 1;
@@ -66,7 +70,8 @@
 // Sync comments
 - (void)syncCommentsForBlog:(Blog *)blog
                     success:(void (^)())success
-                    failure:(void (^)(NSError *error))failure {
+                    failure:(void (^)(NSError *error))failure
+{
     id<CommentServiceRemote> remote = [self remoteForBlog:blog];
     [remote getCommentsForBlog:blog
                        success:^(NSArray *comments) {
@@ -85,7 +90,8 @@
 // Upload comment
 - (void)uploadComment:(Comment *)comment
               success:(void (^)())success
-              failure:(void (^)(NSError *error))failure {
+              failure:(void (^)(NSError *error))failure
+{
     id<CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
     RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
 
@@ -119,7 +125,8 @@
 // Approve
 - (void)approveComment:(Comment *)comment
                success:(void (^)())success
-               failure:(void (^)(NSError *error))failure {
+               failure:(void (^)(NSError *error))failure
+{
     [self moderateComment:comment
                withStatus:@"approve"
                   success:success
@@ -129,7 +136,8 @@
 // Unapprove
 - (void)unapproveComment:(Comment *)comment
                  success:(void (^)())success
-                 failure:(void (^)(NSError *error))failure {
+                 failure:(void (^)(NSError *error))failure
+{
     [self moderateComment:comment
                withStatus:@"hold"
                   success:success
@@ -139,7 +147,8 @@
 // Spam
 - (void)spamComment:(Comment *)comment
             success:(void (^)())success
-            failure:(void (^)(NSError *error))failure {
+            failure:(void (^)(NSError *error))failure
+{
     [self moderateComment:comment
                withStatus:@"spam"
                   success:^{
@@ -154,7 +163,8 @@
 // Delete comment
 - (void)deleteComment:(Comment *)comment
               success:(void (^)())success
-              failure:(void (^)(NSError *error))failure {
+              failure:(void (^)(NSError *error))failure
+{
     NSNumber *commentID = comment.commentID;
     if (commentID) {
         RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
@@ -171,16 +181,17 @@
 - (void)moderateComment:(Comment *)comment
              withStatus:(NSString *)status
                 success:(void (^)())success
-                failure:(void (^)(NSError *error))failure {
-	NSString *prevStatus = comment.status;
-	if ([prevStatus isEqualToString:status]) {
+                failure:(void (^)(NSError *error))failure
+{
+    NSString *prevStatus = comment.status;
+    if ([prevStatus isEqualToString:status]) {
         if (success) {
             success();
         }
         return;
     }
 
-	comment.status = status;
+    comment.status = status;
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     id <CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
     RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
@@ -202,7 +213,8 @@
                     }];
 }
 
-- (void)mergeComments:(NSArray *)comments forBlog:(Blog *)blog completionHandler:(void (^)(void))completion {
+- (void)mergeComments:(NSArray *)comments forBlog:(Blog *)blog completionHandler:(void (^)(void))completion
+{
     NSMutableArray *commentsToKeep = [NSMutableArray array];
     for (RemoteComment *remoteComment in comments) {
         Comment *comment = [self findCommentWithID:remoteComment.commentID inBlog:blog];
@@ -217,7 +229,7 @@
     if (existingComments.count > 0) {
         for (Comment *comment in existingComments) {
             // Don't delete unpublished comments
-            if(![commentsToKeep containsObject:comment] && comment.commentID != nil) {
+            if (![commentsToKeep containsObject:comment] && comment.commentID != nil) {
                 DDLogInfo(@"Deleting Comment: %@", comment);
                 [self.managedObjectContext deleteObject:comment];
             }
@@ -231,12 +243,14 @@
     }
 }
 
-- (Comment *)findCommentWithID:(NSNumber *)commentID inBlog:(Blog *)blog {
+- (Comment *)findCommentWithID:(NSNumber *)commentID inBlog:(Blog *)blog
+{
     NSSet *comments = [blog.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"commentID = %@", commentID]];
     return [comments anyObject];
 }
 
-- (void)updateComment:(Comment *)comment withRemoteComment:(RemoteComment *)remoteComment {
+- (void)updateComment:(Comment *)comment withRemoteComment:(RemoteComment *)remoteComment
+{
     comment.commentID = remoteComment.commentID;
     comment.author = remoteComment.author;
     comment.author_email = remoteComment.authorEmail;
@@ -251,7 +265,8 @@
     comment.type = remoteComment.type;
 }
 
-- (RemoteComment *)remoteCommentWithComment:(Comment *)comment {
+- (RemoteComment *)remoteCommentWithComment:(Comment *)comment
+{
     RemoteComment *remoteComment = [RemoteComment new];
     remoteComment.commentID = comment.commentID;
     remoteComment.author = comment.author;
@@ -268,7 +283,8 @@
     return remoteComment;
 }
 
-- (id<CommentServiceRemote>)remoteForBlog:(Blog *)blog {
+- (id<CommentServiceRemote>)remoteForBlog:(Blog *)blog
+{
     id<CommentServiceRemote>remote;
     // TODO: refactor API creation so it's not part of the model
     if (blog.restApi) {
