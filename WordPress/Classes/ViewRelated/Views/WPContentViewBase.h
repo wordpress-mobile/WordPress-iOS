@@ -50,6 +50,7 @@ extern const CGFloat WPContentViewLineHeightMultiple;
     - An optional featured image
     - A title
     - A small block of plain text
+    - Primary tag
     - A short date.
  */
 @interface WPContentViewBase : UIView
@@ -105,12 +106,14 @@ The object specifying the content (text, images, etc.) to display.
 @property (nonatomic, strong) UIView *attributionBorderView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIView *contentView;
+@property (nonatomic, strong) UIView *primaryTagView;
 @property (nonatomic, strong) WPContentActionView *actionView;
 
 /* Factory methos for subviews */
 - (WPContentAttributionView *)viewForAttributionView;
 - (UILabel *)viewForTitle;
 - (UIView *)viewForContent;
+- (UIView *)viewForPrimaryTag;
 - (WPContentActionView *)viewForActionView;
 
 /**
