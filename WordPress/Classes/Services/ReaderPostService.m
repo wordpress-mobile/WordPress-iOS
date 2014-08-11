@@ -492,7 +492,10 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         oldestDate = [DateUtils dateFromISOString:remotePost.sortDate];
     }
 
-    if (state.backfillBatchNumber > ReaderPostServiceMaxBatchesToBackfill || (oldestDate == [oldestDate earlierDate:state.backfillDate])) {
+    // TODO: can this condional be cleaned up at all?  OCLint is picking up the OR statement as a reduntant nil check
+    if (state.backfillBatchNumber > ReaderPostServiceMaxBatchesToBackfill ||
+        (oldestDate && (oldestDate == [oldestDate earlierDate:state.backfillDate])))
+    {
         // our work is done
         [self mergePosts:state.backfilledRemotePosts earlierThan:[NSDate date] forTopic:topicObjectID callingSuccess:success];
     } else {
