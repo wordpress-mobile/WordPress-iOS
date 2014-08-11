@@ -33,6 +33,9 @@
 #import <Simperium/SPBucket.h>
 
 
+#warning TODO: Comment Actions
+
+
 
 #pragma mark ==========================================================================================
 #pragma mark Constants
@@ -220,11 +223,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
         
         cell.attributedText                 = block.attributedText;
         cell.onUrlClick                     = ^(NSURL *url){
-            for (NotificationURL *noteURL in block.urls) {
-                if ([noteURL.url isEqual:url]) {
-                    [weakSelf handleNotificationURL:noteURL];
-                }
-            }
+            [weakSelf openURL:url];
         };
         
         return cell;
@@ -237,60 +236,72 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
     
     // When tapping a User's cell, let's push the associated blog. If any!
     if (block.type == NoteBlockTypesUser) {
-        NSURL *blogURL = [[block.urls firstObject] url];
-        if (blogURL) {
-            [self openURL:blogURL];
-        } else {
-            [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        }
+        NotificationURL *noteURL = [block.urls firstObject];
+        [self openURL:noteURL.url];
     }
 }
 
 
 #pragma mark - Helpers
 
-- (void)handleNotificationURL:(NotificationURL *)notificationURL
+- (void)openURL:(NSURL *)url
 {
-    Blog *blog = nil;
-    
-    NSNumber *siteID = _note.metaSiteID;
-    if (siteID) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
-        blog                            = [service blogByBlogId:siteID];
+    // Reader:
+    if ([self shouldPushNativeReaderForURL:url]) {
+        [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:self.note];
+        return;
     }
+
+    // Load the Blog
+    Blog *blog = [self loadBlogWithID:_note.metaSiteID];
     
-    if ([notificationURL.type isEqual:NoteLinkTypePost] && _note.metaPostID && _note.metaSiteID) {
-        [self openReaderWithNote:self.note];
+    // Stats
+    if (_note.isStatsEvent && blog.isWPcom){
+        [self performSegueWithIdentifier:NSStringFromClass([StatsViewController class]) sender:blog];
         
-    } else if (_note.isStatsEvent && blog.isWPcom){
-        [self openStatsForBlog:blog];
+    // WebView
+    } else if (url) {
+        [self performSegueWithIdentifier:NSStringFromClass([WPWebViewController class]) sender:url];
         
-    } else if (notificationURL.url) {
-        [self openURL:notificationURL.url];
-        
+    // Failure
     } else {
         [self.tableView deselectSelectedRowWithAnimation:YES];
     }
 }
 
+- (BOOL)shouldPushNativeReaderForURL:(NSURL *)url
+{
+    // Find the associated NotificationURL, if any
+    NotificationURL *notificationURL = nil;
+    for (NotificationBlock *block in self.note.bodyBlocks) {
+        for (NotificationURL *noteURL in block.urls) {
+            if ([noteURL.url isEqual:url]) {
+                notificationURL = noteURL;
+            }
+        }
+    }
+    
+    // Only the following URL Types should be mapped to the reader
+    NSArray *readerMappedTypes = @[NoteLinkTypePost, NoteLinkTypeComment];
+
+    return [readerMappedTypes containsObject:notificationURL.type] && self.note.metaPostID && self.note.metaSiteID;
+}
+
+- (Blog *)loadBlogWithID:(NSNumber *)blogID
+{
+    if (!blogID) {
+        return nil;
+    }
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
+    Blog *blog                      = [service blogByBlogId:blogID];
+    
+    return blog;
+}
+
 
 #pragma mark - Action Handlers
-
-- (void)openReaderWithNote:(Notification *)note
-{
-    [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:note];
-}
-
-- (void)openStatsForBlog:(Blog *)blog
-{
-    [self performSegueWithIdentifier:NSStringFromClass([StatsViewController class]) sender:blog];
-}
-
-- (void)openURL:(NSURL *)url
-{
-    [self performSegueWithIdentifier:NSStringFromClass([WPWebViewController class]) sender:url];
-}
 
 - (void)toggleFollowWithBlock:(NotificationBlock *)block
 {
