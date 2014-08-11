@@ -15,7 +15,6 @@
 #pragma mark ====================================================================================
 
 static NSInteger const NoteCellNumberOfLines            = 5;
-static CGFloat const NoteCellUnreadRadius               = 4.0f;
 static CGFloat const NoteCellNoticonRadius              = 10.0f;
 static NSString * const NoteCellPlaceholderImageName    = @"gravatar";
 
@@ -25,7 +24,6 @@ static NSString * const NoteCellPlaceholderImageName    = @"gravatar";
 #pragma mark ====================================================================================
 
 @interface NoteTableViewCell ()
-@property (nonatomic, weak, readwrite) IBOutlet UIView      *unreadView;
 @property (nonatomic, weak, readwrite) IBOutlet UIImageView *iconImageView;
 @property (nonatomic, weak, readwrite) IBOutlet UILabel     *noticonLabel;
 @property (nonatomic, weak, readwrite) IBOutlet UIView      *noticonView;
@@ -44,11 +42,11 @@ static NSString * const NoteCellPlaceholderImageName    = @"gravatar";
 {
     [super awakeFromNib];
 
+    NSAssert(self.noticonView, nil);
+    NSAssert(self.noticonLabel, nil);
     NSAssert(self.subjectLabel, nil);
+    NSAssert(self.timestampLabel, nil);
     
-    self.unreadView.backgroundColor         = [WPStyleGuide newKidOnTheBlockBlue];
-    self.unreadView.layer.cornerRadius      = NoteCellUnreadRadius;
-
     self.noticonView.layer.cornerRadius     = NoteCellNoticonRadius;
     self.noticonView.backgroundColor        = [WPStyleGuide notificationIconColor];
     self.noticonLabel.font                  = [WPStyleGuide notificationIconFont];
@@ -67,12 +65,6 @@ static NSString * const NoteCellPlaceholderImageName    = @"gravatar";
     self.timestampLabel.textColor           = [WPStyleGuide notificationTimestampTextColor];
 }
 
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    self.unreadView.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
-}
-
 
 #pragma mark - Properties
 
@@ -89,7 +81,6 @@ static NSString * const NoteCellPlaceholderImageName    = @"gravatar";
 
 - (void)setRead:(BOOL)read
 {
-    self.unreadView.hidden = read;
     [self refreshBackgrounds];
     _read = read;
 }
