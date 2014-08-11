@@ -67,6 +67,17 @@
         [theString addAttribute:NSForegroundColorAttributeName value:[WPStyleGuide baseLighterBlue] range:url.range];
     }
 
+    // Manually Detect Links!
+    NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
+    [detector enumerateMatchesInString:self.text
+                               options:kNilOptions
+                                 range:NSMakeRange(0, self.text.length)
+                            usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+                                [theString addAttribute:DTLinkAttribute value:result.URL range:result.range];
+                                [theString addAttribute:NSForegroundColorAttributeName value:[WPStyleGuide baseLighterBlue] range:result.range];
+                                
+     }];
+    
     return theString;
 }
 
