@@ -44,7 +44,6 @@ static NSString * const NoteCellPlaceholderImageName    = @"gravatar";
 {
     [super awakeFromNib];
 
-    NSAssert(self.unreadView, nil);
     NSAssert(self.subjectLabel, nil);
     
     self.unreadView.backgroundColor         = [WPStyleGuide newKidOnTheBlockBlue];
@@ -88,14 +87,11 @@ static NSString * const NoteCellPlaceholderImageName    = @"gravatar";
     [self setNeedsLayout];
 }
 
-- (BOOL)read
-{
-    return self.unreadView.hidden;
-}
-
 - (void)setRead:(BOOL)read
 {
     self.unreadView.hidden = read;
+    [self refreshBackgrounds];
+    _read = read;
 }
 
 - (void)setNoticon:(NSString *)noticon
@@ -127,13 +123,13 @@ static NSString * const NoteCellPlaceholderImageName    = @"gravatar";
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
     [super setHighlighted:highlighted animated:animated];
-    self.noticonView.backgroundColor = [WPStyleGuide notificationIconColor];
+    [self refreshBackgrounds];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animate
 {
     [super setSelected:selected animated:animate];
-    self.noticonView.backgroundColor = [WPStyleGuide notificationIconColor];
+    [self refreshBackgrounds];
 }
 
 - (void)setTimestamp:(NSDate *)timestamp
@@ -141,6 +137,20 @@ static NSString * const NoteCellPlaceholderImageName    = @"gravatar";
     self.timestampLabel.text = [timestamp shortString];
     _timestamp = timestamp;
 }
+
+#pragma mark - Private Helpers
+
+- (void)refreshBackgrounds
+{
+    if (_read) {
+        self.noticonView.backgroundColor    = [WPStyleGuide notificationIconReadColor];
+        self.backgroundColor                = [WPStyleGuide notificationBackgroundReadColor];
+    } else {
+        self.noticonView.backgroundColor    = [WPStyleGuide notificationIconUnreadColor];
+        self.backgroundColor                = [WPStyleGuide notificationBackgroundUnreadColor];
+    }
+}
+
 
 #pragma mark - Static Helpers
 
@@ -151,7 +161,7 @@ static NSString * const NoteCellPlaceholderImageName    = @"gravatar";
 
 + (NSString *)layoutIdentifier
 {
-    return @"layoutIdentifier";
+    return [NSString stringWithFormat:@"%@-layout", NSStringFromClass([self class])];
 }
 
 @end

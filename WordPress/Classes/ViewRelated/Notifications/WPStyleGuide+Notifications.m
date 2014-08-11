@@ -15,6 +15,30 @@
     return [UIColor colorWithRed:0xA4/255.0 green:0xB9/255.0 blue:0xC9/255.0 alpha:0xFF/255.0];
 }
 
++ (UIColor *)notificationIconReadColor
+{
+    return [self notificationIconColor];/* 809EB3FF */
+}
+
++ (UIColor *)notificationIconUnreadColor
+{
+    return [UIColor colorWithRed:0x25/255.0 green:0x9C/255.0 blue:0xCF/255.0 alpha:0xFF/255.0]/* 259CCFFF */;
+}
+
+
+
++ (UIColor *)notificationBackgroundReadColor
+{
+    return [UIColor whiteColor];
+}
+
++ (UIColor *)notificationBackgroundUnreadColor
+{
+    return [UIColor colorWithRed:0xF1/255.0 green:0xF6/255.0 blue:0xF9/255.0 alpha:0xFF/255.0];/* F1F6F9FF */
+}
+
+
+
 + (UIColor *)notificationTimestampTextColor
 {
     return [UIColor colorWithRed:0xB7/255.0 green:0xC9/255.0 blue:0xD5/255.0 alpha:0xFF/255.0]; /* B7C9D5FF */
