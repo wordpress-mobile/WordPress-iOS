@@ -21,7 +21,7 @@
 #import "AccountService.h"
 #import <Simperium/Simperium.h>
 #import "VerticallyStackedButton.h"
-
+#import "SuggestionsTableViewController.h"
 
 const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight = 64.f;
 NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRestorationKey";
@@ -572,6 +572,21 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     [self publishReply:text];
 }
 
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range
+                                                replacementText:(NSString *)text {
+    if ( [text isEqualToString: @"@"] ) {
+        SuggestionsTableViewController *suggestionsController = [[SuggestionsTableViewController alloc] init];
+        [self.navigationController pushViewController:suggestionsController animated:YES];
+        
+        // @todo if they cancel out of the suggestionController, we need to come back to the textview open still
+        // @todo try [self presentViewController:suggestionsController animated:YES completion:nil];
+        // @todo tell the suggestion controller the blog id and what kind of suggestions we want
+        
+        return NO;
+    }
+    
+    return YES;
+}
 
 #pragma mark - WPContentViewDelegate
 
