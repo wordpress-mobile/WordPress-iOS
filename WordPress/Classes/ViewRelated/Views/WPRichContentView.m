@@ -17,7 +17,6 @@
     ((WPRichTextView *)self.contentView).delegate = nil;
 }
 
-
 #pragma mark - Private Methods
 
 - (UIView *)viewForContent
@@ -52,7 +51,6 @@
 {
     return 0;
 }
-
 
 #pragma mark - WPRichText View Methods
 

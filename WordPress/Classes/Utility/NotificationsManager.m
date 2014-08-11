@@ -43,7 +43,7 @@ NSString *const NotificationsDeviceToken            = @"apnsDeviceToken";
     // We want to register Helpshift regardless so that way if a user isn't logged in
     // they can still get push notifications that we replied to their support ticket.
     [[Helpshift sharedInstance] registerDeviceToken:deviceToken];
-    
+
     [[Mixpanel sharedInstance].people addPushDeviceToken:deviceToken];
 
     // Don't bother registering for WordPress anything if the user isn't logged in
@@ -52,13 +52,13 @@ NSString *const NotificationsDeviceToken            = @"apnsDeviceToken";
     if (![accountService defaultWordPressComAccount]) {
         return;
     }
-    
+
     NSString *newToken  = [deviceToken.description stringByReplacingOccurrencesOfString: @"<" withString: @""];
     newToken            = [newToken stringByReplacingOccurrencesOfString: @">" withString: @""];
     newToken            = [newToken stringByReplacingOccurrencesOfString: @" " withString: @""];
     
     DDLogInfo(@"Device token received in didRegisterForRemoteNotificationsWithDeviceToken: %@", newToken);
-    
+
     // Store the token
     NSUserDefaults *userDefaults    = [NSUserDefaults standardUserDefaults];
     NSString *previousToken         = [userDefaults objectForKey:NotificationsDeviceToken];
@@ -107,53 +107,43 @@ NSString *const NotificationsDeviceToken            = @"apnsDeviceToken";
 + (void)handleNotification:(NSDictionary *)userInfo forState:(UIApplicationState)state completionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
     DDLogVerbose(@"Received push notification:\nPayload: %@\nCurrent Application state: %d", userInfo, state);
-    
+
     // Try to pull the badge number from the notification object
     // Badge count does not normally update when the app is active, and this forces KVO to be fired
     NSNumber *badgeCount = [[userInfo dictionaryForKey:@"aps"] numberForKey:@"badge"];
     if (badgeCount) {
         [UIApplication sharedApplication].applicationIconBadgeNumber = badgeCount.intValue;
     }
-    
+
     // Check if it is the badge reset PN
     if ([[userInfo stringForKey:@"type"] isEqualToString:@"badge-reset"]) {
         return;
     }
-    
+
     if ([[userInfo stringForKey:@"origin"] isEqualToString:@"helpshift"]) {
         UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
         [[Helpshift sharedInstance] handleRemoteNotification:userInfo withController:rootViewController];
         return;
     }
-    
-    switch (state) {
-        case UIApplicationStateInactive:
-            {
-                NSString *notificationID            = [[userInfo numberForKey:@"note_id"] stringValue];
-                WordPressAppDelegate *appDelegate   = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-                
-                [appDelegate showTabForIndex:kNotificationsTabIndex];
-                [appDelegate.notificationsViewController showDetailsForNoteWithID:notificationID animated:NO];
-            }
-            break;
-            
-        case UIApplicationStateBackground:
-            {
-                if (completionHandler) {
-                    Simperium *simperium = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
-                    [simperium backgroundFetchWithCompletion:^(UIBackgroundFetchResult result) {
-                        if (result == UIBackgroundFetchResultNewData) {
-                            DDLogVerbose(@"Background Fetch Completed with New Data!");
-                        } else {
-                            DDLogVerbose(@"Background Fetch Completed with No Data..");
+
+    if (state == UIApplicationStateInactive) {
+        NSString *notificationID            = [[userInfo numberForKey:@"note_id"] stringValue];
+        WordPressAppDelegate *appDelegate   = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+        
+        [appDelegate showTabForIndex:kNotificationsTabIndex];
+        [appDelegate.notificationsViewController showDetailsForNoteWithID:notificationID animated:NO];
+    } else if (state == UIApplicationStateBackground) {
+        if (completionHandler) {
+            Simperium *simperium = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+            [simperium backgroundFetchWithCompletion:^(UIBackgroundFetchResult result) {
+                if (result == UIBackgroundFetchResultNewData) {
+                    DDLogVerbose(@"Background Fetch Completed with New Data!");
+                } else {
+                    DDLogVerbose(@"Background Fetch Completed with No Data..");
                         }
                         completionHandler(result);
-                    }];
-                }
-            }
-            break;
-        default:
-            break;
+            }];
+        }
     }
 }
 
@@ -166,7 +156,6 @@ NSString *const NotificationsDeviceToken            = @"apnsDeviceToken";
     }
 }
 
-
 #pragma mark - WordPress.com XML RPC API
 
 + (NSDictionary *)notificationSettingsDictionary
@@ -178,32 +167,32 @@ NSString *const NotificationsDeviceToken            = @"apnsDeviceToken";
     if (![[defaultAccount restApi] hasCredentials]) {
         return nil;
     }
-    
+
     NSDictionary *notificationPreferences = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsPreferencesKey];
     if (!notificationPreferences) {
         return nil;
     }
-    
+
     NSMutableArray *notificationPrefArray = [[notificationPreferences allKeys] mutableCopy];
     if ([notificationPrefArray indexOfObject:@"muted_blogs"] != NSNotFound) {
         [notificationPrefArray removeObjectAtIndex:[notificationPrefArray indexOfObject:@"muted_blogs"]];
     }
-    
+
     // Build the dictionary to send in the API call
     NSMutableDictionary *updatedSettings = [[NSMutableDictionary alloc] init];
     for (int i = 0; i < [notificationPrefArray count]; i++) {
         NSDictionary *updatedSetting = [notificationPreferences objectForKey:[notificationPrefArray objectAtIndex:i]];
         [updatedSettings setValue:[updatedSetting objectForKey:@"value"] forKey:[notificationPrefArray objectAtIndex:i]];
     }
-    
+
     //Check and send 'mute_until' value
     NSMutableDictionary *muteDictionary = [notificationPreferences objectForKey:@"mute_until"];
-    if(muteDictionary != nil  && [muteDictionary objectForKey:@"value"] != nil) {
+    if (muteDictionary != nil  && [muteDictionary objectForKey:@"value"] != nil) {
         [updatedSettings setValue:[muteDictionary objectForKey:@"value"] forKey:@"mute_until"];
     } else {
         [updatedSettings setValue:@"0" forKey:@"mute_until"];
     }
-    
+
     NSArray *blogsArray = [[notificationPreferences objectForKey:@"muted_blogs"] objectForKey:@"value"];
     NSMutableArray *mutedBlogsArray = [[NSMutableArray alloc] init];
     for (int i=0; i < [blogsArray count]; i++) {
@@ -212,15 +201,15 @@ NSString *const NotificationsDeviceToken            = @"apnsDeviceToken";
             [mutedBlogsArray addObject:userBlog];
         }
     }
-    
+
     if ([mutedBlogsArray count] > 0) {
         [updatedSettings setValue:mutedBlogsArray forKey:@"muted_blogs"];
     }
-    
+
     if ([updatedSettings count] == 0) {
         return nil;
     }
-    
+
     return updatedSettings;
 }
 
@@ -276,7 +265,7 @@ NSString *const NotificationsDeviceToken            = @"apnsDeviceToken";
     [[defaultAccount restApi] syncPushNotificationInfoWithDeviceToken:token
                                          success:^(NSString *deviceId, NSDictionary *settings) {
                                              DDLogVerbose(@"Synced push notification token and received device ID %@ with settings:\n %@", deviceId, settings);
-                                             
+
                                              NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                                              [defaults setObject:deviceId forKey:NotificationsDeviceIdKey];
                                              [defaults setObject:settings forKey:NotificationsPreferencesKey];
