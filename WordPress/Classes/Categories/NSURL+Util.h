@@ -4,5 +4,6 @@
 
 - (BOOL)isWordPressDotComUrl;
 - (NSURL *)ensureSecureURL;
+- (NSDictionary*)queryDictionary;
 
 @end

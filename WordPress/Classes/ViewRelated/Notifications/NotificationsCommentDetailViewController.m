@@ -341,7 +341,8 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 #pragma mark - Actions
 
 - (void)visitPostURL:(id)sender {
-    [self pushToURL:self.headerURL];
+    NSLog(@"%@", self.note.body);
+    //[self pushToURL:self.headerURL];
 }
 
 - (void)pushToURL:(NSURL *)url {
@@ -601,7 +602,8 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 - (void)contentView:(WPContentView *)contentView didReceiveTimeLinkAction:(id)sender {
     NoteComment *comment = [self.commentThread objectAtIndex:0];
     NSURL *url = [[NSURL alloc] initWithString:[comment.commentData valueForKey:@"URL"]];
-    [self pushToURL:url];
+    NSLog(@"%@", comment.commentData);
+    //[self pushToURL:url];
 }
 
 
