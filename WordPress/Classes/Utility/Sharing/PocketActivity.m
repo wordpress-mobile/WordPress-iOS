@@ -3,45 +3,53 @@
 #import "PocketActivity.h"
 #import "PocketAPI.h"
 
-@implementation PocketActivity {
+@implementation PocketActivity
+{
     NSURL *_URL;
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     [self removeNotificationObserver];
 }
 
-- (UIImage *)activityImage {
-	return [UIImage imageNamed:@"NNPocketActivity"];
+- (UIImage *)activityImage
+{
+    return [UIImage imageNamed:@"NNPocketActivity"];
 }
 
-- (NSString *)activityTitle {
-	return @"Pocket";
+- (NSString *)activityTitle
+{
+    return @"Pocket";
 }
 
-- (NSString *)activityType {
-	return NSStringFromClass([self class]);
+- (NSString *)activityType
+{
+    return NSStringFromClass([self class]);
 }
 
-- (BOOL)canPerformWithActivityItems:(NSArray *)activityItems {
-	for (id activityItem in activityItems) {
-		if ([activityItem isKindOfClass:[NSURL class]] && [[UIApplication sharedApplication] canOpenURL:activityItem]) {
-			return YES;
-		}
-	}
+- (BOOL)canPerformWithActivityItems:(NSArray *)activityItems
+{
+    for (id activityItem in activityItems) {
+        if ([activityItem isKindOfClass:[NSURL class]] && [[UIApplication sharedApplication] canOpenURL:activityItem]) {
+            return YES;
+        }
+    }
 
-	return NO;
+    return NO;
 }
 
-- (void)prepareWithActivityItems:(NSArray *)activityItems {
-	for (id activityItem in activityItems) {
-		if ([activityItem isKindOfClass:[NSURL class]]) {
-			_URL = activityItem;
-		}
-	}
+- (void)prepareWithActivityItems:(NSArray *)activityItems
+{
+    for (id activityItem in activityItems) {
+        if ([activityItem isKindOfClass:[NSURL class]]) {
+            _URL = activityItem;
+        }
+    }
 }
 
-- (void)performActivity {
+- (void)performActivity
+{
     [SVProgressHUD show];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
     [[PocketAPI sharedAPI] saveURL:_URL handler:^(PocketAPI *api, NSURL *url, NSError *error) {
@@ -57,12 +65,14 @@
     }];
 }
 
-- (void)didEnterBackground:(NSNotification *)notification {
+- (void)didEnterBackground:(NSNotification *)notification
+{
     [SVProgressHUD dismiss];
     [self removeNotificationObserver];
 }
 
-- (void)removeNotificationObserver {
+- (void)removeNotificationObserver
+{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
