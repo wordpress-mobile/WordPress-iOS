@@ -21,19 +21,15 @@
 #import "ReaderPostService.h"
 #import "ContextManager.h"
 #import "StatsViewController.h"
-
 #import "ReaderPost.h"
 #import "ReaderPostDetailViewController.h"
 #import "ContextManager.h"
-
-
 
 #pragma mark ====================================================================================
 #pragma mark Constants
 #pragma mark ====================================================================================
 
 static NSTimeInterval NotificationPushMaxWait = 1;
-
 
 #pragma mark ====================================================================================
 #pragma mark Private
@@ -46,7 +42,6 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 @property (nonatomic, assign) BOOL      viewHasAppeared;
 
 @end
-
 
 #pragma mark ====================================================================================
 #pragma mark NotificationsViewController
@@ -88,12 +83,12 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 {
     DDLogMethod();
     [super viewDidLoad];
-    
+
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    
+
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 25, 0, 0);
     self.infiniteScrollEnabled = NO;
-    
+
     if ([NotificationsManager deviceRegisteredForPushNotifications]) {
         UIBarButtonItem *pushSettings = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Manage", @"")
                                                                          style:UIBarButtonItemStylePlain
@@ -123,14 +118,14 @@ static NSTimeInterval NotificationPushMaxWait = 1;
     
     // Reload!
     [self.tableView reloadData];
-    
+
     // Listen to appDidBecomeActive Note
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(handleApplicationDidBecomeActiveNote:) name:UIApplicationDidBecomeActiveNotification object:nil];
-    
+
     // Badge + Metadata
-    [self updateLastSeenTime];
-    [self resetApplicationBadge];
+        self.viewHasAppeared = YES;
+        [WPAnalytics track:WPAnalyticsStatNotificationsAccessed];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -140,7 +135,6 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
 
 #pragma mark - NSObject(NSKeyValueObserving) Helpers
 
@@ -170,7 +164,6 @@ static NSTimeInterval NotificationPushMaxWait = 1;
     }
 }
 
-
 #pragma mark - NSNotification Helpers
 
 - (void)handleApplicationDidBecomeActiveNote:(NSNotification *)note
@@ -179,14 +172,13 @@ static NSTimeInterval NotificationPushMaxWait = 1;
     if (!self.isViewLoaded || !self.view.window) {
         return;
     }
-    
+
     // Reload
     [self.tableView reloadData];
-    
+
     // Reset the badge: the notifications are visible!
     [self resetApplicationBadge];
 }
-
 
 #pragma mark - Public Methods
 
@@ -221,10 +213,11 @@ static NSTimeInterval NotificationPushMaxWait = 1;
     NSInteger count         = [[UIApplication sharedApplication] applicationIconBadgeNumber];
     NSString *countString   = (count > 0) ? [NSString stringWithFormat:@"%d", count] : nil;
     
+
     // Note: self.navigationViewController might be nil. Let's hit the UITabBarController instead
     UITabBarController *tabBarController    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] tabBarController];
     UITabBarItem *tabBarItem                = tabBarController.tabBar.items[kNotificationsTabIndex];
-    
+
     tabBarItem.badgeValue                   = countString;
 }
 
@@ -235,14 +228,14 @@ static NSTimeInterval NotificationPushMaxWait = 1;
     if (!note) {
         return;
     }
-    
+
     NSString *bucketName    = NSStringFromClass([Meta class]);
     Simperium *simperium    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
     Meta *metadata          = [[simperium bucketForName:bucketName] objectForKey:[bucketName lowercaseString]];
     if (!metadata) {
         return;
     }
-    
+
     metadata.last_seen      = note.timestamp;
     [simperium save];
 }
@@ -253,10 +246,10 @@ static NSTimeInterval NotificationPushMaxWait = 1;
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:notificationSettingsViewController];
     navigationController.navigationBar.translucent = NO;
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-    
+
     UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeNotificationSettings)];
     notificationSettingsViewController.navigationItem.rightBarButtonItem = closeButton;
-    
+
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
@@ -299,17 +292,17 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Note *note = [self.resultsController objectAtIndexPath:indexPath];
-    
+
     BOOL hasDetailView = [self noteHasDetailView:note];
     if (hasDetailView) {
         [self showDetailsForNote:note animated:YES];
     } else {
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
-	
-    if(!note.isRead) {
+
+    if (!note.isRead) {
         note.unread = @(0);
-		[[ContextManager sharedInstance] saveContext:note.managedObjectContext];
+        [[ContextManager sharedInstance] saveContext:note.managedObjectContext];
 
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
         
@@ -323,7 +316,6 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 {
     return (note.isComment || note.templateType != WPNoteTemplateUnknown);
 }
-
 
 #pragma mark - WPTableViewController subclass methods
 
@@ -353,10 +345,10 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 - (void)configureCell:(NewNotificationsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     cell.contentProvider = [self.resultsController objectAtIndexPath:indexPath];
-    
+
     Note *note = [self.resultsController objectAtIndexPath:indexPath];
     BOOL hasDetailsView = [self noteHasDetailView:note];
-    
+
     if (!hasDetailsView) {
         cell.accessoryType  = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -365,12 +357,12 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 
 - (void)syncItems
 {
-	// No-Op. Handled by Simperium!
+    // No-Op. Handled by Simperium!
 }
 
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure
 {
-	// No-Op. Handled by Simperium!
+    // No-Op. Handled by Simperium!
     success();
 }
 

@@ -23,12 +23,13 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 
 @implementation AccountService
 
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context {
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context
+{
     self = [super init];
     if (self) {
         _managedObjectContext = context;
     }
-    
+
     return self;
 }
 
@@ -38,9 +39,9 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 
 /**
  Returns the default WordPress.com account
- 
+
  The default WordPress.com account is the one used for Reader and Notifications
- 
+
  @return the default WordPress.com account
  @see setDefaultWordPressComAccount:
  @see removeDefaultWordPressComAccount
@@ -51,24 +52,24 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     if (!accountURL) {
         return nil;
     }
-    
+
     NSManagedObjectID *objectID = [[self.managedObjectContext persistentStoreCoordinator] managedObjectIDForURIRepresentation:accountURL];
     if (!objectID) {
         return nil;
     }
-    
+
     WPAccount *account = (WPAccount *)[self.managedObjectContext existingObjectWithID:objectID error:nil];
     if (!account) {
         // The stored Account reference is invalid, so let's remove it to avoid wasting time querying for it
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
     }
-    
+
     return account;
 }
 
 /**
  Sets the default WordPress.com account
- 
+
  @param account the account to set as default for WordPress.com
  @see defaultWordPressComAccount
  @see removeDefaultWordPressComAccount
@@ -77,7 +78,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 {
     NSAssert(account.isWpcom, @"account should be a wordpress.com account");
     NSAssert(account.authToken.length > 0, @"Account should have an authToken for WP.com");
-    
+
     // When the account object hasn't been saved yet, its objectID is temporary
     // If we store a reference to that objectID it will be invalid the next time we launch
     if ([[account objectID] isTemporaryID]) {
@@ -86,7 +87,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     NSURL *accountURL = [[account objectID] URIRepresentation];
     [[NSUserDefaults standardUserDefaults] setURL:accountURL forKey:DefaultDotcomAccountDefaultsKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
         [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:account];
 
@@ -96,7 +97,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 
 /**
  Removes the default WordPress.com account
- 
+
  @see defaultWordPressComAccount
  @see setDefaultWordPressComAccount:
  */
@@ -107,7 +108,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     dispatch_async(dispatch_get_main_queue(), ^{
         [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
     });
-    
+
     WPAccount *account = [self defaultWordPressComAccount];
     [self.managedObjectContext deleteObject:account];
 
@@ -123,16 +124,16 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
         }
     }
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
-    
+
     [WPAnalyticsTrackerMixpanel resetEmailRetrievalCheck];
-    
+
     // Remove defaults
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_blogs"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_prefered_blog_id"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
+
 }
 
 ///-----------------------
@@ -141,11 +142,11 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 
 /**
  Creates a new WordPress.com account or updates the password if there is a matching account
- 
+
  There can only be one WordPress.com account per username, so if one already exists for the given `username` its password is updated
- 
+
  Uses a background managed object context.
- 
+
  @param username the WordPress.com account's username
  @param password the WordPress.com account's password
  @param authToken the OAuth2 token returned by signIntoWordPressDotComWithUsername:password:success:failure:
@@ -162,15 +163,15 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
     [self setDefaultWordPressComAccount:account];
-    
+
     return account;
 }
 
 /**
  Creates a new self hosted account or updates the password if there is a matching account
- 
+
  There can only be one account per XML-RPC endpoint and username, so if one already exists its password is updated
- 
+
  @param xmlrpc the account XML-RPC endpoint
  @param username the account's username
  @param password the account's password
@@ -184,7 +185,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
     [request setPredicate:[NSPredicate predicateWithFormat:@"xmlrpc like %@ AND username like %@", xmlrpc, username]];
     [request setIncludesPendingChanges:YES];
-    
+
     WPAccount *account;
 
     NSArray *results = [self.managedObjectContext executeFetchRequest:request error:nil];
@@ -196,7 +197,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
         account.username = username;
     }
     account.password = password;
-    
+
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
     return account;
@@ -246,7 +247,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 - (void)syncBlogsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     DDLogMethod();
-    
+
     id<AccountServiceRemote> remote = [self remoteForAccount:account];
     [remote getBlogsWithSuccess:^(NSArray *blogs) {
         [self.managedObjectContext performBlock:^{
@@ -263,12 +264,13 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 
 #pragma mark - Private methods
 
-- (void)mergeBlogs:(NSArray *)blogs withAccount:(WPAccount *)account completion:(void (^)())completion {
+- (void)mergeBlogs:(NSArray *)blogs withAccount:(WPAccount *)account completion:(void (^)())completion
+{
     NSSet *remoteSet = [NSSet setWithArray:[blogs valueForKey:@"xmlrpc"]];
     NSSet *localSet = [account.blogs valueForKey:@"xmlrpc"];
     NSMutableSet *toDelete = [localSet mutableCopy];
     [toDelete minusSet:remoteSet];
-    
+
     if ([toDelete count] > 0) {
         for (Blog *blog in account.blogs) {
             if ([toDelete containsObject:blog.xmlrpc]) {
@@ -276,7 +278,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
             }
         }
     }
-    
+
     // Go through each remote incoming blog and make sure we're up to date with titles, etc.
     // Also adds any blogs we don't have
     for (RemoteBlog *remoteBlog in blogs) {
@@ -289,9 +291,9 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
         blog.blogName = [remoteBlog.title stringByDecodingXMLCharacters];
         blog.blogID = remoteBlog.ID;
     }
-    
+
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    
+
     if (completion != nil) {
         dispatch_async(dispatch_get_main_queue(), completion);
     }
@@ -301,9 +303,9 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 {
     if (account.restApi) {
         return [[AccountServiceRemoteREST alloc] initWithApi:account.restApi];
-    } else {
-        return [[AccountServiceRemoteXMLRPC alloc] initWithApi:account.xmlrpcApi];
     }
+
+    return [[AccountServiceRemoteXMLRPC alloc] initWithApi:account.xmlrpcApi];
 }
 
 - (NSUInteger)numberOfAccounts

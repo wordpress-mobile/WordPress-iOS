@@ -4,7 +4,7 @@
 @class CommentViewController, IOS7CorrectedTextView;
 
 @interface EditCommentViewController : UIViewController <UIActionSheetDelegate>
-	
+    
 @property (nonatomic, strong) Comment *comment;
 @property (nonatomic, strong) UIBarButtonItem *saveButton;
 @property (nonatomic, strong) UIBarButtonItem *doneButton;

@@ -37,16 +37,17 @@
 }
 */
 
-- (id)initWithDictionary:(NSDictionary *)dictionary {
+- (id)initWithDictionary:(NSDictionary *)dictionary
+{
     self = [self initWithStyle:UITableViewStyleGrouped];
-    
+
     if (self) {
         self.title = [dictionary objectForKey:@"Title"];
         self.titles = [dictionary objectForKey:@"Titles"];
         self.values = [dictionary objectForKey:@"Values"];
         self.defaultValue = [dictionary objectForKey:@"DefaultValue"];
         self.currentValue = [dictionary objectForKey:@"CurrentValue"];
-        
+
         if (self.currentValue == nil) {
             self.currentValue = self.defaultValue;
         }
@@ -54,7 +55,8 @@
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
@@ -62,46 +64,48 @@
 #pragma mark -
 #pragma mark Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     // Return the number of sections.
     return 1;
 }
 
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     // Return the number of rows in the section.
     return [self.titles count];
 }
 
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     static NSString *CellIdentifier = @"Cell";
-    
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
     cell.accessoryType = UITableViewCellAccessoryNone;
-    
+
     cell.textLabel.text = [NSString decodeXMLCharactersIn:[self.titles objectAtIndex:indexPath.row]];
-    
+
     NSString *val = [self.values objectAtIndex:indexPath.row];
     if ([self.currentValue isEqual:val]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
-    
+
     [WPStyleGuide configureTableViewCell:cell];
-    
+
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+
     NSString *val = [self.values objectAtIndex:indexPath.row];
     self.currentValue = val;
     [self.tableView reloadData];
-    
+
     if (self.onItemSelected != nil) {
         self.onItemSelected(val);
     }
