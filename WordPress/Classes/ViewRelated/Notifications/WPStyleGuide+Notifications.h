@@ -7,7 +7,13 @@
 + (UIFont *)notificationIconFont;
 + (UIColor *)notificationIconColor;
 
++ (UIColor *)notificationIconReadColor;
++ (UIColor *)notificationIconUnreadColor;
++ (UIColor *)notificationBackgroundReadColor;
++ (UIColor *)notificationBackgroundUnreadColor;
+
 + (UIColor *)notificationTimestampTextColor;
+
 + (UIColor *)notificationSubjectTextColor;
 + (UIColor *)notificationSubjectBackgroundColor;
 + (UIFont *)notificationSubjectFont;
