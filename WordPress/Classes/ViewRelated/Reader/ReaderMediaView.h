@@ -12,7 +12,7 @@
 - (NSURL *)contentURL;
 - (void)setPlaceholder:(UIImage *)image;
 - (void)setImageWithURL:(NSURL *)url
-	   placeholderImage:(UIImage *)image
-				success:(void (^)(ReaderMediaView *readerMediaView))success
-				failure:(void (^)(ReaderMediaView *readerMediaView, NSError *error))failure;
+       placeholderImage:(UIImage *)image
+                success:(void (^)(ReaderMediaView *readerMediaView))success
+                failure:(void (^)(ReaderMediaView *readerMediaView, NSError *error))failure;
 @end

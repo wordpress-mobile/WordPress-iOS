@@ -4,7 +4,8 @@
 
 @implementation BlogServiceRemoteProxy
 
-- (id)initWithXMLRPCRemote:(BlogServiceRemoteXMLRPC *)xmlrpcRemote RESTRemote:(BlogServiceRemoteREST *)restRemote {
+- (id)initWithXMLRPCRemote:(BlogServiceRemoteXMLRPC *)xmlrpcRemote RESTRemote:(BlogServiceRemoteREST *)restRemote
+{
     NSParameterAssert(xmlrpcRemote != nil);
     self = [super init];
     if (self) {
@@ -14,7 +15,8 @@
     return self;
 }
 
-- (void)forwardInvocation:(NSInvocation *)anInvocation {
+- (void)forwardInvocation:(NSInvocation *)anInvocation
+{
     SEL selector = [anInvocation selector];
     if (self.restRemote && [self.restRemote respondsToSelector:selector]) {
         [anInvocation invokeWithTarget:self.restRemote];

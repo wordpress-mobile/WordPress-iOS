@@ -173,8 +173,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    
+
     // The first time the activity view controller is loaded, there is a bit of
     // processing that happens under the hood. This can cause a stutter
     // if the user taps the share button while scrolling. A work around is to
@@ -187,7 +186,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-	
+
     if (IS_IPHONE) {
         self.savedScrollOffset = self.tableView.contentOffset;
     }
@@ -215,7 +214,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     }
 }
 
-
 #pragma mark - Actions
 
 - (void)dismissKeyboard:(id)sender
@@ -225,10 +223,9 @@ static CGFloat const SectionHeaderHeight = 25.0f;
             [self.view removeGestureRecognizer:gesture];
         }
     }
-    
+
     [self.inlineComposeView dismissComposer];
 }
-
 
 #pragma mark - View getters/builders
 
@@ -301,7 +298,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     if (_activityFooter) {
         return _activityFooter;
     }
-    
+
     CGRect rect = CGRectMake(145.0f, 10.0f, 30.0f, 30.0f);
     _activityFooter = [[UIActivityIndicatorView alloc] initWithFrame:rect];
     _activityFooter.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
@@ -455,7 +452,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     return (self.post != nil);
 }
 
-
 #pragma mark - Comments
 
 - (BOOL)canComment
@@ -469,7 +465,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     [self.comments removeAllObjects];
 
     __block void(__unsafe_unretained ^flattenComments)(NSArray *) = ^void (NSArray *comments) {
-        // Ensure the array is correctly sorted. 
+        // Ensure the array is correctly sorted.
         comments = [comments sortedArrayUsingComparator: ^(id obj1, id obj2) {
             ReaderComment *a = obj1;
             ReaderComment *b = obj2;
@@ -501,7 +497,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf.tableView reloadData];
         });
-	});
+    });
 }
 
 - (UIActivityViewController *)activityViewControllerForSharing
@@ -558,7 +554,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
 - (BOOL)isReplying
 {
-    return ([self.tableView indexPathForSelectedRow] != nil) ? YES : NO;
+    return [self.tableView indexPathForSelectedRow] != nil;
 }
 
 - (CGSize)tabBarSize
@@ -567,7 +563,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     if ([self tabBarController]) {
         tabBarSize = [[[self tabBarController] tabBar] bounds].size;
     }
-    
+
     return tabBarSize;
 }
 
@@ -598,21 +594,20 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 {
     // Obtain the reason why the movie playback finished
     NSNumber *finishReason = [[notification userInfo] objectForKey:MPMoviePlayerPlaybackDidFinishReasonUserInfoKey];
-    
+
     // Dismiss the view controller ONLY when the reason is not "playback ended"
     if ([finishReason intValue] != MPMovieFinishReasonPlaybackEnded) {
         MPMoviePlayerController *moviePlayer = [notification object];
-        
+
         // Remove this class from the observers
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:MPMoviePlayerPlaybackDidFinishNotification
                                                       object:moviePlayer];
-        
+
         // Dismiss the view controller
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
-
 
 #pragma mark - ReaderPostView delegate methods
 
@@ -675,7 +670,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
         DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
         [postView updateActionButtons];
     }];
-	[postView updateActionButtons];
+    [postView updateActionButtons];
 }
 
 - (void)postView:(ReaderPostContentView *)postView didReceiveCommentAction:(id)sender
@@ -686,7 +681,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     self.commentPublisher.comment = nil;
     [self.inlineComposeView toggleComposer];
 }
-
 
 # pragma mark - Rich Text Delegate Methods
 
@@ -771,14 +765,12 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     [self refreshHeightForTableHeaderView];
 }
 
-
 #pragma mark - RebloggingViewController Delegate Methods
 
 - (void)postWasReblogged:(ReaderPost *)post
 {
     [self.postView updateActionButtons];
 }
-
 
 #pragma mark - Sync methods
 
@@ -810,7 +802,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     if ([self.resultsController.fetchedObjects count] == 0) {
         return;
     }
-	
+
     if (self.loadingMore) {
         return;
     }
@@ -853,7 +845,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     [self prepareComments];
 }
 
-
 #pragma mark - Infinite Scrolling
 
 - (void)setInfiniteScrollEnabled:(BOOL)infiniteScrollEnabled
@@ -861,7 +852,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     if (infiniteScrollEnabled == self.infiniteScrollEnabled) {
         return;
     }
-	
+
     self.infiniteScrollEnabled = infiniteScrollEnabled;
     if (self.isViewLoaded) {
         if (self.infiniteScrollEnabled) {
@@ -885,7 +876,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     self.tableView.tableFooterView = nil;
     self.activityFooter = nil;
 }
-
 
 #pragma mark - UITableView Delegate Methods
 
@@ -983,7 +973,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     
     if ([self canComment]) {
         [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
-        
+
         [self.inlineComposeView displayComposer];
     }
 
@@ -1045,7 +1035,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     }
 }
 
-
 #pragma mark - UIScrollView Delegate Methods
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -1083,7 +1072,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     if (_resultsController != nil) {
         return _resultsController;
     }
-	
+
     NSString *entityName = @"ReaderComment";
     NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
 
@@ -1092,21 +1081,21 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(post = %@) && (parentID = 0)", self.post];
     [fetchRequest setPredicate:predicate];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:YES];
-    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-    
+    [fetchRequest setSortDescriptors:@[sortDescriptor]];
+
     _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                              managedObjectContext:moc
                                                                sectionNameKeyPath:nil
                                                                         cacheName:nil];
-    
+
     _resultsController.delegate = self;
-	
+
     NSError *error = nil;
     if (![_resultsController performFetch:&error]) {
         DDLogError(@"%@ couldn't fetch %@: %@", self, entityName, [error localizedDescription]);
         _resultsController = nil;
     }
-    
+
     return _resultsController;
 }
 
@@ -1129,7 +1118,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     // noop
 }
 
-
 #pragma mark - MFMailComposeViewControllerDelegate
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
@@ -1150,7 +1138,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
             [subview becomeFirstResponder];
             return YES;
         }
-        
+
         if ([subview.subviews count] > 0) {
             if ([self setMFMailFieldAsFirstResponder:subview mfMailField:field]){
                 //Field was found and made first responder in a subview
@@ -1158,11 +1146,10 @@ static CGFloat const SectionHeaderHeight = 25.0f;
             }
         }
     }
-    
+
     //field not found in this view.
     return NO;
 }
-
 
 #pragma mark - WPTableImageSource Delegate
 

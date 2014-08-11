@@ -28,14 +28,11 @@
 
 #import "BlogService.h"
 
-
-
 #pragma mark ====================================================================================
 #pragma mark Constants
 #pragma mark ====================================================================================
 
 static NSTimeInterval NotificationPushMaxWait   = 1;
-
 
 #pragma mark ====================================================================================
 #pragma mark Private Properties
@@ -48,7 +45,6 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
 @property (nonatomic, strong) UINib             *tableViewCellNib;
 @property (nonatomic, strong) NoteTableViewCell *layoutTableViewCell;
 @end
-
 
 #pragma mark ====================================================================================
 #pragma mark NotificationsViewController
@@ -113,7 +109,7 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
     
     // Reload!
     [self.tableView reloadData];
-    
+
     // Listen to appDidBecomeActive Note
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(handleApplicationDidBecomeActiveNote:) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -136,7 +132,6 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
 
 #pragma mark - NSObject(NSKeyValueObserving) Helpers
 
@@ -166,7 +161,6 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
     }
 }
 
-
 #pragma mark - NSNotification Helpers
 
 - (void)handleApplicationDidBecomeActiveNote:(NSNotification *)note
@@ -175,14 +169,13 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
     if (!self.isViewLoaded || !self.view.window) {
         return;
     }
-    
+
     // Reload
     [self.tableView reloadData];
-    
+
     // Reset the badge: the notifications are visible!
     [self resetApplicationBadge];
 }
-
 
 #pragma mark - Public Methods
 
@@ -220,6 +213,7 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
  
     NSInteger count                         = [[UIApplication sharedApplication] applicationIconBadgeNumber];
     NSString *countString                   = (count > 0) ? [NSString stringWithFormat:@"%d", count] : nil;
+
     tabBarItem.badgeValue                   = countString;
 }
 
@@ -229,7 +223,7 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
     if (!note) {
         return;
     }
-    
+
     NSString *bucketName    = NSStringFromClass([Meta class]);
     Simperium *simperium    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
     Meta *metadata          = [[simperium bucketForName:bucketName] objectForKey:bucketName.lowercaseString];
@@ -261,7 +255,7 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
     UINavigationController *navigationController    = [[UINavigationController alloc] initWithRootViewController:vc];
     navigationController.navigationBar.translucent  = NO;
     navigationController.modalPresentationStyle     = UIModalPresentationFormSheet;
-    
+
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
@@ -352,7 +346,6 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
     }
 }
 
-
 #pragma mark - WPTableViewController subclass methods
 
 - (NSString *)entityName
@@ -391,12 +384,12 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
 
 - (void)syncItems
 {
-	// No-Op. Handled by Simperium!
+    // No-Op. Handled by Simperium!
 }
 
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure
 {
-	// No-Op. Handled by Simperium!
+    // No-Op. Handled by Simperium!
     success();
 }
 
