@@ -61,7 +61,9 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     if (IS_IPAD) {
         scrollView.contentInset = UIEdgeInsetsMake(WPTableViewTopMargin, 0, WPTableViewTopMargin, 0);
         scrollView.contentWidth = WPTableViewFixedWidth;
-    };
+    } else {
+        scrollView.contentInset = UIEdgeInsetsMake(0, 0, WPTableViewTopMargin, 0);
+    }
     scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     self.view = scrollView;
     self.view.backgroundColor = [UIColor whiteColor];
@@ -248,8 +250,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     // Show an activity indicator in place of the button until the operation completes
     UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [indicatorView setBackgroundColor:[UIColor whiteColor]];
-    CGFloat indicatorPadding = 10.0f;
-    indicatorView.frame = CGRectMake(-5.0f, 0, button.frame.size.width + indicatorPadding, button.frame.size.height);
+    indicatorView.frame = CGRectMake(-5.0f, 1.0f, button.frame.size.width + 10.0f, button.frame.size.height - 1.0f);
     [button addSubview:indicatorView];
     [indicatorView startAnimating];
     if (button.tag == CommentViewApproveButtonTag) {
