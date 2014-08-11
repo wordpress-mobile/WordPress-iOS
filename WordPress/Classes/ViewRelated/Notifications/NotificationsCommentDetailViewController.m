@@ -436,7 +436,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     // Show an activity indicator in place of the button until the operation completes
     UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     indicatorView.backgroundColor = [UIColor whiteColor];
-    indicatorView.frame = CGRectMake(0.0f, -5.0f, button.frame.size.width, button.frame.size.height + button.titleLabel.frame.size.height);
+    indicatorView.frame = CGRectMake(-5.0f, 1.0f, button.frame.size.width + 10.0f, button.frame.size.height - 1.0f);
     [button addSubview:indicatorView];
     [indicatorView startAnimating];
     
