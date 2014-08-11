@@ -12,7 +12,7 @@
 @property (nonatomic, strong) NSString              *noticon;
 @property (nonatomic, strong) NSDate                *timestamp;
 
-+ (CGFloat)calculateHeightForNote:(Notification *)note;
 + (NSString *)reuseIdentifier;
++ (NSString *)layoutIdentifier;
 
 @end

@@ -39,7 +39,7 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-static NSTimeInterval NotificationPushMaxWait = 1;
+static NSTimeInterval NotificationPushMaxWait   = 1;
 
 
 #pragma mark ====================================================================================
@@ -50,6 +50,8 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 @property (nonatomic, assign) dispatch_once_t   trackedViewDisplay;
 @property (nonatomic, strong) NSString          *pushNotificationID;
 @property (nonatomic, strong) NSDate            *pushNotificationDate;
+@property (nonatomic, strong) UINib             *tableViewCellNib;
+@property (nonatomic, strong) NoteTableViewCell *layoutTableViewCell;
 @end
 
 
@@ -100,8 +102,13 @@ static NSTimeInterval NotificationPushMaxWait = 1;
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     
-    // Refresh Badge + Attach Manage Button
+    // Refresh Badge
     [self updateTabBarBadgeNumber];
+    
+    // Register the cells
+    self.tableViewCellNib   = [UINib nibWithNibName:NSStringFromClass([NoteTableViewCell class]) bundle:[NSBundle mainBundle]];
+    [self.tableView registerNib:_tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell layoutIdentifier]];
+    [self.tableView registerNib:_tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell reuseIdentifier]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -317,7 +324,7 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 {
     NoteTableViewCell *cell = (NoteTableViewCell *)[tableView dequeueReusableCellWithIdentifier:[NoteTableViewCell reuseIdentifier]];
     NSAssert([cell isKindOfClass:[NoteTableViewCell class]], nil);
-    
+
     [self configureCell:cell atIndexPath:indexPath];
     
     return cell;
@@ -325,8 +332,18 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Notification *note = [self.resultsController objectAtIndexPath:indexPath];
-    return [NoteTableViewCell calculateHeightForNote:note];
+    // There is an ugly bug where the calculated height might be off by 1px, thus, clipping the text
+    static CGFloat const NoteCellHeightPadding = 1;
+    
+    if (!self.layoutTableViewCell) {
+        self.layoutTableViewCell = (NoteTableViewCell *)[tableView dequeueReusableCellWithIdentifier:[NoteTableViewCell layoutIdentifier]];
+    }
+    [self configureCell:self.layoutTableViewCell atIndexPath:indexPath];
+
+    CGFloat width   = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
+    CGSize size     = [self.layoutTableViewCell.contentView systemLayoutSizeFittingSize:CGSizeMake(width, 0.0f)];
+    
+    return ceil(size.height) + NoteCellHeightPadding;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
