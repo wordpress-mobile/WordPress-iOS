@@ -344,19 +344,17 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 - (UIView *)viewForPrimaryTag
 {
     UIButton *tagButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    tagButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    tagButton.backgroundColor = [UIColor clearColor];
-    tagButton.titleLabel.font = [WPFontManager openSansRegularFontOfSize:12.0];
-    [tagButton setTitleEdgeInsets: UIEdgeInsetsMake(0, 2, 0, 0)];
     tagButton.translatesAutoresizingMaskIntoConstraints = NO;
-    
+    tagButton.titleLabel.font = [[self class] contentFont];
+    tagButton.backgroundColor = [UIColor whiteColor];
+    tagButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+
     // Disable it for now (could be used for permalinks in the future)
     [tagButton setImage:[UIImage imageNamed:@"reader-postaction-tag"] forState:UIControlStateDisabled];
     [tagButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateDisabled];
     [tagButton setEnabled:NO];
     
     return tagButton;
-    
 }
 
 - (WPContentActionView *)viewForActionView
