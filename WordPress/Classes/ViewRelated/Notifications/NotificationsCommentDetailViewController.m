@@ -341,7 +341,8 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 #pragma mark - Actions
 
 - (void)visitPostURL:(id)sender {
-    [self pushToURL:self.headerURL];
+    NSLog(@"%@", self.note.body);
+    //[self pushToURL:self.headerURL];
 }
 
 - (void)pushToURL:(NSURL *)url {
@@ -582,7 +583,27 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 }
 
 - (void)contentView:(WPContentView *)contentView didReceiveLinkAction:(id)sender {
-    [self pushToURL:((DTLinkButton *)sender).URL];
+    
+    // Fix the url format from http://.../some-name#comment-1 to http://.../some-name/#comment-1 to jump in correct position in web browser
+    NSString *urlText = [((DTLinkButton *)sender).URL absoluteString];
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"(\\w)+#comment-(\\d)*"
+                                                                           options:NSRegularExpressionCaseInsensitive
+                                                                             error:NULL];
+    
+    if ([regex numberOfMatchesInString:urlText options:0 range:NSMakeRange(0, [urlText length])] > 0){
+        NSString *newUrlText = [urlText stringByReplacingOccurrencesOfString:@"#comment-" withString:@"/#comment-"];
+        urlText = newUrlText;
+    }
+    
+    NSURL *url = [[NSURL alloc] initWithString:urlText];
+    [self pushToURL:url];
+}
+
+- (void)contentView:(WPContentView *)contentView didReceiveTimeLinkAction:(id)sender {
+    NoteComment *comment = [self.commentThread objectAtIndex:0];
+    NSURL *url = [[NSURL alloc] initWithString:[comment.commentData valueForKey:@"URL"]];
+    NSLog(@"%@", comment.commentData);
+    //[self pushToURL:url];
 }
 
 

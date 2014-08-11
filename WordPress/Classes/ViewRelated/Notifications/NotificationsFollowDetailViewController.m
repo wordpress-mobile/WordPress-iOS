@@ -288,6 +288,9 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 
 - (IBAction)viewPostTitle:(id)sender
 {
+    //NoteBodyItem *bItems = [_note.bodyItems objectAtIndex:0];
+    //NSLog(@"%@", _note.body);
+    //[self loadWebViewWithURL:@"http://dejv.wordpress.com/2014/07/08/just-random-text-blog-post/#comment-2"];
     [self loadWebViewWithURL:_note.bodyHeaderLink];
 }
 
@@ -297,8 +300,23 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
         return;
 	}
     
+    NSURL *theurl = [NSURL URLWithString:url];
+    
+    NSString* reducedUrl = [NSString stringWithFormat:
+                            @"%@://%@%@/#%@",
+                            theurl.scheme,
+                            theurl.host,
+                            theurl.path,
+                            theurl.fragment];
+    
+    NSLog(@"%@", reducedUrl);
+    //NSLog(@":::::::: %@", _note.body);
+    
+    //http://dejv.wordpress.com/2014/07/08/just-random-text-blog-post/#comment-2
+    //http://dejv.wordpress.com//2014/07/08/just-random-text-blog-post/#comment-2
+    
 	WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-	webViewController.url = [NSURL URLWithString:url];
+	webViewController.url = [NSURL URLWithString:reducedUrl];
 	[self.navigationController pushViewController:webViewController animated:YES];
 }
 
