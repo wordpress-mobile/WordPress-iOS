@@ -10,6 +10,7 @@
 @property (nonatomic, strong) NSAttributedString    *attributedSubject;
 @property (nonatomic, strong) NSURL                 *iconURL;
 @property (nonatomic, strong) NSString              *noticon;
+@property (nonatomic, strong) NSDate                *timestamp;
 
 + (CGFloat)calculateHeightForNote:(Notification *)note;
 + (NSString *)reuseIdentifier;

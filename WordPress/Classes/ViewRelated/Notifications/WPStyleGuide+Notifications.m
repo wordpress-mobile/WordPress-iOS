@@ -15,6 +15,11 @@
     return [UIColor colorWithRed:0xA4/255.0 green:0xB9/255.0 blue:0xC9/255.0 alpha:0xFF/255.0];
 }
 
++ (UIColor *)notificationTimestampTextColor
+{
+    return [UIColor colorWithRed:0xB7/255.0 green:0xC9/255.0 blue:0xD5/255.0 alpha:0xFF/255.0]; /* B7C9D5FF */
+}
+
 + (UIColor *)notificationSubjectTextColor
 {
     return [[self class] notificationIconColor];

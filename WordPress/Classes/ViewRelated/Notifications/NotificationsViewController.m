@@ -405,9 +405,10 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 {
     Notification *note      = [self.resultsController objectAtIndexPath:indexPath];
     cell.attributedSubject  = note.subjectBlock.attributedSubject;
-    cell.read               = [note.read boolValue];
+    cell.read               = note.read.boolValue;
     cell.iconURL            = note.iconURL;
     cell.noticon            = note.noticon;
+    cell.timestamp          = note.timestampAsDate;
 }
 
 - (void)syncItems

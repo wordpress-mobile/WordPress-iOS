@@ -29,15 +29,15 @@
                                             </constraints>
                                         </view>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="R7q-Mu-Mc6" userLabel="IconImageView">
-                                            <rect key="frame" x="25" y="10" width="70" height="70"/>
+                                            <rect key="frame" x="25" y="12" width="45" height="45"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="70" id="5a6-bb-hBN"/>
-                                                <constraint firstAttribute="height" constant="70" id="pUF-ZJ-yUx"/>
+                                                <constraint firstAttribute="width" constant="45" id="5a6-bb-hBN"/>
+                                                <constraint firstAttribute="height" constant="45" id="pUF-ZJ-yUx"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="184" translatesAutoresizingMaskIntoConstraints="NO" id="Hsr-sO-JhT" userLabel="SubjectLabel">
-                                            <rect key="frame" x="103" y="34" width="184" height="21"/>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="204" translatesAutoresizingMaskIntoConstraints="NO" id="Hsr-sO-JhT" userLabel="SubjectLabel">
+                                            <rect key="frame" x="83" y="12" width="204" height="21"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -45,25 +45,31 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2q7-LL-bBc" userLabel="NoticonView">
-                                            <rect key="frame" x="74" y="60" width="24" height="24"/>
+                                            <rect key="frame" x="54" y="41" width="20" height="20"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nl9-dn-cL7" userLabel="NoticonLabel">
-                                                    <rect key="frame" x="3" y="5" width="18" height="18"/>
+                                                    <rect key="frame" x="2" y="5" width="16" height="14"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                         </view>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xfw-Ts-HmD">
+                                            <rect key="frame" x="25" y="65" width="45" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="R7q-Mu-Mc6" firstAttribute="leading" secondItem="LJE-oV-90i" secondAttribute="trailing" constant="8" id="C5w-85-GgC"/>
                                         <constraint firstAttribute="trailing" secondItem="Hsr-sO-JhT" secondAttribute="trailing" id="CeS-ci-Vfj"/>
-                                        <constraint firstItem="Hsr-sO-JhT" firstAttribute="top" relation="greaterThanOrEqual" secondItem="FJF-yg-kdX" secondAttribute="top" constant="7" id="GGc-0O-g5M"/>
+                                        <constraint firstItem="Hsr-sO-JhT" firstAttribute="top" secondItem="FJF-yg-kdX" secondAttribute="top" constant="12" id="GGc-0O-g5M"/>
                                         <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Hsr-sO-JhT" secondAttribute="bottom" constant="7" id="Htl-qV-e2h"/>
-                                        <constraint firstItem="Hsr-sO-JhT" firstAttribute="leading" secondItem="R7q-Mu-Mc6" secondAttribute="trailing" constant="8" id="UI3-Qp-kw5"/>
-                                        <constraint firstAttribute="centerY" secondItem="Hsr-sO-JhT" secondAttribute="centerY" id="YSs-uM-ZNd"/>
-                                        <constraint firstAttribute="centerY" secondItem="R7q-Mu-Mc6" secondAttribute="centerY" id="ftn-29-pev"/>
+                                        <constraint firstItem="Hsr-sO-JhT" firstAttribute="leading" secondItem="R7q-Mu-Mc6" secondAttribute="trailing" constant="13" id="UI3-Qp-kw5"/>
+                                        <constraint firstItem="R7q-Mu-Mc6" firstAttribute="top" secondItem="FJF-yg-kdX" secondAttribute="top" constant="12" id="rDc-bp-eYV"/>
+                                        <constraint firstItem="R7q-Mu-Mc6" firstAttribute="leading" secondItem="LJE-oV-90i" secondAttribute="trailing" constant="8" id="vXd-KA-m2n"/>
                                         <constraint firstAttribute="centerY" secondItem="LJE-oV-90i" secondAttribute="centerY" id="zNd-Ol-MYz"/>
                                         <constraint firstItem="LJE-oV-90i" firstAttribute="leading" secondItem="FJF-yg-kdX" secondAttribute="leading" constant="9" id="zS7-yk-cxX"/>
                                     </constraints>
@@ -74,6 +80,7 @@
                                     <outlet property="noticonLabel" destination="nl9-dn-cL7" id="zCB-5g-PGM"/>
                                     <outlet property="noticonView" destination="2q7-LL-bBc" id="OR5-ud-JY3"/>
                                     <outlet property="subjectLabel" destination="Hsr-sO-JhT" id="qsD-Pj-NX4"/>
+                                    <outlet property="timestampLabel" destination="xfw-Ts-HmD" id="WS3-h3-4ON"/>
                                     <outlet property="unreadView" destination="LJE-oV-90i" id="zdU-JA-YBj"/>
                                 </connections>
                             </tableViewCell>
@@ -279,6 +286,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="bzs-Og-i8b"/>
+        <segue reference="4ec-Ni-5a5"/>
     </inferredMetricsTieBreakers>
 </document>

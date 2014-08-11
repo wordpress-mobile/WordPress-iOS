@@ -7,6 +7,7 @@
 + (UIFont *)notificationIconFont;
 + (UIColor *)notificationIconColor;
 
++ (UIColor *)notificationTimestampTextColor;
 + (UIColor *)notificationSubjectTextColor;
 + (UIColor *)notificationSubjectBackgroundColor;
 + (UIFont *)notificationSubjectFont;
