@@ -14,10 +14,9 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-static CGFloat const NoteCellHeight                     = 108.0f; //90.0f;
+static NSInteger const NoteCellNumberOfLines            = 5;
 static CGFloat const NoteCellUnreadRadius               = 4.0f;
 static CGFloat const NoteCellNoticonRadius              = 10.0f;
-static NSInteger const NoteCellNumberOfLines            = 0;
 static NSString * const NoteCellPlaceholderImageName    = @"gravatar";
 
 
@@ -56,15 +55,15 @@ static NSString * const NoteCellPlaceholderImageName    = @"gravatar";
     self.noticonLabel.font                  = [WPStyleGuide notificationIconFont];
     self.noticonLabel.textColor             = [UIColor whiteColor];
     
+    self.subjectLabel.numberOfLines         = NoteCellNumberOfLines;
     self.subjectLabel.backgroundColor       = [UIColor clearColor];
     self.subjectLabel.textAlignment         = NSTextAlignmentLeft;
-    self.subjectLabel.numberOfLines         = NoteCellNumberOfLines;
     self.subjectLabel.lineBreakMode         = NSLineBreakByWordWrapping;
     self.subjectLabel.shadowOffset          = CGSizeZero;
     self.subjectLabel.font                  = [WPStyleGuide notificationSubjectFont];
     self.subjectLabel.textColor             = [WPStyleGuide littleEddieGrey];
     
-    self.timestampLabel.textAlignment       = NSTextAlignmentCenter;
+    self.timestampLabel.textAlignment       = NSTextAlignmentRight;
     self.timestampLabel.font                = [WPStyleGuide notificationSubjectFont];
     self.timestampLabel.textColor           = [WPStyleGuide notificationTimestampTextColor];
 }
@@ -145,14 +144,14 @@ static NSString * const NoteCellPlaceholderImageName    = @"gravatar";
 
 #pragma mark - Static Helpers
 
-+ (CGFloat)calculateHeightForNote:(Notification *)note
-{
-    return NoteCellHeight;
-}
-
 + (NSString *)reuseIdentifier
 {
     return NSStringFromClass([self class]);
+}
+
++ (NSString *)layoutIdentifier
+{
+    return @"layoutIdentifier";
 }
 
 @end
