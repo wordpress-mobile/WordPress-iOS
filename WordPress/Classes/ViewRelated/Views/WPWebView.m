@@ -421,6 +421,9 @@ textEncodingName:(NSString *)encodingName
             if (should) {
                 // YES! Let the loading begin!
                 [self performSelector:@selector(loadRequest:) withObject:modRequest afterDelay:0.1];
+            } else {
+                // NOOP - the delegate does not want the webview to load this request so do nothing now and
+                // return NO in a moment.
             }
         } else {
             // No delegate or the it doesn't implement the method so load the modified url and return no.
