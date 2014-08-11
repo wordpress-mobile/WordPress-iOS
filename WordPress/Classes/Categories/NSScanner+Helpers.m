@@ -7,7 +7,7 @@
 - (NSArray *)scanQuotedText
 {
     NSMutableArray *scanned = [NSMutableArray array];
-    NSString *quote = nil;
+    NSString *quote         = nil;
     
     while ([self isAtEnd] == NO) {
         [self scanUpToString:@"\""  intoString:nil];
@@ -19,7 +19,7 @@
             [scanned addObject:quote];
         }
     }
-    
+
     return scanned;
 }
 

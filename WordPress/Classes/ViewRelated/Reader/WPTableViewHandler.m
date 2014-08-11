@@ -15,7 +15,6 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 @end
 
-
 @implementation WPTableViewHandler
 
 #pragma mark - LifeCycle Methods
@@ -72,10 +71,10 @@ static CGFloat const DefaultCellHeight = 44.0;
     [self.delegate tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 
-
 #pragma mark - Optional Delegate Methods
 
-- (NSString *)sectionNameKeyPath {
+- (NSString *)sectionNameKeyPath
+{
     if ([self.delegate respondsToSelector:@selector(sectionNameKeyPath)]) {
         return [self.delegate sectionNameKeyPath];
     }
@@ -155,7 +154,6 @@ static CGFloat const DefaultCellHeight = 44.0;
     return DefaultCellHeight;
 }
 
-
 #pragma mark - TableView Datasource Methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -175,7 +173,6 @@ static CGFloat const DefaultCellHeight = 44.0;
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
     return [sectionInfo name];
 }
-
 
 #pragma mark - TableView Delegate Methods
 
@@ -202,7 +199,6 @@ static CGFloat const DefaultCellHeight = 44.0;
     // remove footer height for all but last section
     return section == [[self.resultsController sections] count] - 1 ? UITableViewAutomaticDimension : 1.0;
 }
-
 
 #pragma mark - Fetched results controller
 
@@ -275,18 +271,15 @@ static CGFloat const DefaultCellHeight = 44.0;
         case NSFetchedResultsChangeInsert:
             [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
             break;
-
         case NSFetchedResultsChangeDelete:
             [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:[self tableViewRowAnimation]];
             if ([_indexPathSelectedBeforeUpdates isEqual:indexPath]) {
                 [self deletingSelectedRowAtIndexPath:indexPath];
             }
             break;
-
         case NSFetchedResultsChangeUpdate:
             [self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:newIndexPath];
             break;
-
         case NSFetchedResultsChangeMove:
             [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:[self tableViewRowAnimation]];
             [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
@@ -294,19 +287,17 @@ static CGFloat const DefaultCellHeight = 44.0;
                 _indexPathSelectedAfterUpdates = newIndexPath;
             }
             break;
+        default:
+            break;
     }
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
 {
-    switch(type) {
-        case NSFetchedResultsChangeInsert:
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:[self tableViewRowAnimation]];
-            break;
-
-        case NSFetchedResultsChangeDelete:
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:[self tableViewRowAnimation]];
-            break;
+    if (type == NSFetchedResultsChangeInsert) {
+        [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:[self tableViewRowAnimation]];
+    } else if (type == NSFetchedResultsChangeDelete) {
+        [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:[self tableViewRowAnimation]];
     }
 }
 

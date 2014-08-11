@@ -92,7 +92,6 @@ CGFloat const ReblogViewTextBottomInset = 30;
     [self layoutViews];
 }
 
-
 #pragma mark - Appearance and Layout
 
 - (void)configureNavbar
@@ -332,7 +331,7 @@ CGFloat const ReblogViewTextBottomInset = 30;
     CGSize size = CGSizeMake(width, height);
 
     UIImage *image = [self.featuredImageSource imageForURL:imageURL withSize:size];
-    if(image) {
+    if (image) {
         [self.postView setFeaturedImage:image];
     } else {
         [self.featuredImageSource fetchImageForURL:imageURL
@@ -443,14 +442,12 @@ CGFloat const ReblogViewTextBottomInset = 30;
     }
 }
 
-
 #pragma mark Gesture Recognizer
 
 - (void)handlePostViewTapped:(id)sender
 {
     [self.view endEditing:YES];
 }
-
 
 #pragma mark Keyboard Notifications
 
@@ -467,7 +464,6 @@ CGFloat const ReblogViewTextBottomInset = 30;
     [self resizeTextView:notification];
 }
 
-
 #pragma mark UITextView Delegate Methods
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
@@ -481,7 +477,6 @@ CGFloat const ReblogViewTextBottomInset = 30;
         self.textPromptLabel.hidden = NO;
     }
 }
-
 
 #pragma mark - WPTableImageSource Delegate
 

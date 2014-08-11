@@ -11,23 +11,23 @@ typedef NS_ENUM(NSUInteger, MediaRemoteStatus) {
 };
 
 typedef NS_ENUM(NSUInteger, MediaType) {
-	MediaTypeImage,
+    MediaTypeImage,
     MediaTypeFeatured,
-	MediaTypeVideo,
+    MediaTypeVideo,
     MediaTypeDocument,
     MediaTypePowerpoint
 };
 
 typedef NS_ENUM(NSUInteger, MediaResize) {
-	MediaResizeSmall,
-	MediaResizeMedium,
-	MediaResizeLarge,
-	MediaResizeOriginal
+    MediaResizeSmall,
+    MediaResizeMedium,
+    MediaResizeLarge,
+    MediaResizeOriginal
 };
 
 typedef NS_ENUM(NSUInteger, MediaOrientation) {
-	MediaOrientationPortrait,
-	MediaOrientationLandscape
+    MediaOrientationPortrait,
+    MediaOrientationLandscape
 };
 
 @interface Media :  NSManagedObject

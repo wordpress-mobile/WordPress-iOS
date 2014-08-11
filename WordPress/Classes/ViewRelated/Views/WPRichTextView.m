@@ -26,7 +26,8 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
 
 #pragma mark - LifeCycle Methods
 
-+ (void)initialize {
++ (void)initialize
+{
     // DTCoreText will cache font descriptors on a background thread. However, because the font cache
     // updated synchronously, the detail view controller ends up waiting for the fonts to load anyway
     // (at least for the first time). We'll have DTCoreText prime its font cache here so things are ready
@@ -66,7 +67,6 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
     [self.textContentView relayoutText];
 }
 
-
 #pragma mark - Public methods
 
 - (CGSize)intrinsicContentSize
@@ -96,7 +96,6 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
     self.textContentView.attributedString = attributedString;
     [self relayoutTextContentView];
 }
-
 
 #pragma mark - Private Methods
 
@@ -160,7 +159,6 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
     return imageControl;
 }
 
-
 #pragma mark - Event Handlers
 
 - (void)linkAction:(DTLinkButton *)sender
@@ -184,7 +182,6 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
     }
 }
 
-
 #pragma mark - DTAttributedTextContentView Layout Wrangling
 
 - (void)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView
@@ -193,7 +190,7 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
 {
     // DTCoreText was performing this call in BG. Let's make sure UIKit gets handled on the main thread!
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self invalidateIntrinsicContentSize]; 
+        [self invalidateIntrinsicContentSize];
     });
 }
 
@@ -305,7 +302,7 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
         attachment.originalSize = originalSize;
         attachment.displaySize = displaySize;
     }
-    
+
     return frameChanged;
 }
 
@@ -318,7 +315,6 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
     [self.textContentView relayoutText];
     [self invalidateIntrinsicContentSize];
 }
-
 
 #pragma mark - WPTableImageSource Delegate Methods
 
@@ -390,7 +386,6 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
     [self checkPendingImageDownloads];
 }
 
-
 #pragma mark - DTCoreAttributedTextContentView Delegate Methods
 
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame
@@ -453,47 +448,46 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
 
         return imageControl;
 
-    } else {
-
-        WPRichTextVideoControl *videoControl = [[WPRichTextVideoControl alloc] initWithFrame:CGRectMake(0.0, 0.0, 1.0, 1.0)];
-
-        if ([attachment isKindOfClass:[DTVideoTextAttachment class]]) {
-            videoControl.isHTMLContent = NO;
-        } else if ([attachment isKindOfClass:[DTIframeTextAttachment class]]) {
-            videoControl.isHTMLContent = YES;
-        } else if ([attachment isKindOfClass:[DTObjectTextAttachment class]]) {
-            videoControl.isHTMLContent = YES;
-        } else {
-            return nil; // Can't handle whatever this is :P
-        }
-
-        videoControl.contentURL = attachment.contentURL;
-        [videoControl addTarget:self action:@selector(videoLinkAction:) forControlEvents:UIControlEventTouchUpInside];
-
-        [self.mediaArray addObject:videoControl];
-        NSUInteger index = [self.mediaArray count] - 1;
-        NSIndexPath *indexPath = [NSIndexPath indexPathWithIndex:index];
-
-        VideoThumbnailServiceRemote *service = [[VideoThumbnailServiceRemote alloc] init];
-        [service getThumbnailForVideoAtURL:videoControl.contentURL
-                                   success:^(NSURL *thumbnailURL, NSString *title) {
-                                       videoControl.title = title;
-                                       [self.mediaIndexPathsPendingDownload addObject:indexPath];
-                                       [self.imageSource fetchImageForURL:thumbnailURL
-                                                                 withSize:[self maxImageDisplaySize]
-                                                                indexPath:indexPath
-                                                                isPrivate:NO];
-                                   }
-                                   failure:^(NSError *error) {
-                                       DDLogError(@"Error retriving video thumbnail: %@", error);
-                                       CGFloat side = 200.0;
-                                       UIImage *blankImage = [UIImage imageWithColor:[UIColor blackColor] havingSize:CGSizeMake(side, side)];
-                                       videoControl.imageView.image = blankImage;
-                                       [self updateLayoutForMediaItem:videoControl];
-                                   }];
-
-        return videoControl;
     }
+
+    WPRichTextVideoControl *videoControl = [[WPRichTextVideoControl alloc] initWithFrame:CGRectMake(0.0, 0.0, 1.0, 1.0)];
+
+    if ([attachment isKindOfClass:[DTVideoTextAttachment class]]) {
+        videoControl.isHTMLContent = NO;
+    } else if ([attachment isKindOfClass:[DTIframeTextAttachment class]]) {
+        videoControl.isHTMLContent = YES;
+    } else if ([attachment isKindOfClass:[DTObjectTextAttachment class]]) {
+        videoControl.isHTMLContent = YES;
+    } else {
+        return nil; // Can't handle whatever this is :P
+    }
+
+    videoControl.contentURL = attachment.contentURL;
+    [videoControl addTarget:self action:@selector(videoLinkAction:) forControlEvents:UIControlEventTouchUpInside];
+
+    [self.mediaArray addObject:videoControl];
+    NSUInteger index = [self.mediaArray count] - 1;
+    NSIndexPath *indexPath = [NSIndexPath indexPathWithIndex:index];
+
+    VideoThumbnailServiceRemote *service = [[VideoThumbnailServiceRemote alloc] init];
+    [service getThumbnailForVideoAtURL:videoControl.contentURL
+                               success:^(NSURL *thumbnailURL, NSString *title) {
+                                   videoControl.title = title;
+                                   [self.mediaIndexPathsPendingDownload addObject:indexPath];
+                                   [self.imageSource fetchImageForURL:thumbnailURL
+                                                             withSize:[self maxImageDisplaySize]
+                                                            indexPath:indexPath
+                                                            isPrivate:NO];
+                               }
+                               failure:^(NSError *error) {
+                                   DDLogError(@"Error retriving video thumbnail: %@", error);
+                                   CGFloat side = 200.0;
+                                   UIImage *blankImage = [UIImage imageWithColor:[UIColor blackColor] havingSize:CGSizeMake(side, side)];
+                                   videoControl.imageView.image = blankImage;
+                                   [self updateLayoutForMediaItem:videoControl];
+                               }];
+
+    return videoControl;
 }
 
 @end

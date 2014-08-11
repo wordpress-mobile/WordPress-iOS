@@ -14,12 +14,14 @@
 
 @synthesize commentViewController, comment, hasChanges, textViewText, textView, isTransitioning, isEditing;
 
-- (void)dealloc {
+- (void)dealloc
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
 
@@ -27,7 +29,7 @@
                                                                              style:UIBarButtonItemStylePlain
                                                                             target:self
                                                                             action:@selector(cancelView:)];
-    
+
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).")
                                                                               style:[WPStyleGuide barButtonStyleForDone]
                                                                              target:self
@@ -44,33 +46,37 @@
     self.hasChanges = NO;
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     DDLogMethod();
-	[super viewWillAppear:animated];
-	
-	self.textView.text = self.comment.content;
-    
-	//foo = textView.text;
-    //so we can compare to set hasChanges correctly
-	self.textViewText = [[NSString alloc] initWithString:self.textView.text];
-	[self.textView becomeFirstResponder];
+    [super viewWillAppear:animated];
 
-	self.isEditing = YES;
+    self.textView.text = self.comment.content;
+
+    //foo = textView.text;
+    //so we can compare to set hasChanges correctly
+    self.textViewText = [[NSString alloc] initWithString:self.textView.text];
+    [self.textView becomeFirstResponder];
+
+    self.isEditing = YES;
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     DDLogMethod();
     [super viewWillDisappear:animated];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
 #pragma mark -
 #pragma mark KeyboardNotification Methods
 
-- (void)handleKeyboardDidShow:(NSNotification *)notification {
+- (void)handleKeyboardDidShow:(NSNotification *)notification
+{
     NSDictionary *info = notification.userInfo;
     _keyboardFrame = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     _keyboardFrame = [self.view convertRect:_keyboardFrame fromView:self.view.window];
@@ -82,7 +88,8 @@
     }];
 }
 
-- (void)handleKeyboardWillHide:(NSNotification *)notification {
+- (void)handleKeyboardWillHide:(NSNotification *)notification
+{
     NSDictionary *info = notification.userInfo;
     float animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     [UIView animateWithDuration:animationDuration animations:^{
@@ -95,61 +102,65 @@
 #pragma mark -
 #pragma mark Helper Methods
 
-- (void)endTextEnteringButtonAction:(id)sender {
+- (void)endTextEnteringButtonAction:(id)sender
+{
     [textView resignFirstResponder];
-	if (IS_IPAD == NO) {
-		UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
-		if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
-			self.isTransitioning = YES;
-			UIViewController *garbageController = [[UIViewController alloc] init]; 
-			[self.navigationController pushViewController:garbageController animated:NO];
-			[self.navigationController popViewControllerAnimated:NO];
-			self.isTransitioning = NO;
-			[textView resignFirstResponder];
-		}
-	}
-	self.isEditing = NO;
+    if (IS_IPAD == NO) {
+        UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
+        if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
+            self.isTransitioning = YES;
+            UIViewController *garbageController = [[UIViewController alloc] init];
+            [self.navigationController pushViewController:garbageController animated:NO];
+            [self.navigationController popViewControllerAnimated:NO];
+            self.isTransitioning = NO;
+            [textView resignFirstResponder];
+        }
+    }
+    self.isEditing = NO;
 }
 
 #pragma mark -
 #pragma mark Text View Delegate Methods
 
-- (void)textViewDidBeginEditing:(UITextView *)aTextView {
-	if (IS_IPAD == NO) {
+- (void)textViewDidBeginEditing:(UITextView *)aTextView
+{
+    if (IS_IPAD == NO) {
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"")
                                                                                  style:[WPStyleGuide barButtonStyleForDone]
                                                                                 target:self
                                                                                 action:@selector(endTextEnteringButtonAction:)];
-	}
-	self.isEditing = YES;
+    }
+    self.isEditing = YES;
 }
 
-- (void)textViewDidEndEditing:(UITextView *)aTextView {
-	if (![self.textView.text isEqualToString:textViewText]) {
-		self.hasChanges = YES;
-	}
-	self.isEditing = NO;
-	if (IS_IPAD == NO) {
-		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"")
+- (void)textViewDidEndEditing:(UITextView *)aTextView
+{
+    if (![self.textView.text isEqualToString:textViewText]) {
+        self.hasChanges = YES;
+    }
+    self.isEditing = NO;
+    if (IS_IPAD == NO) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"")
                                                                                  style:[WPStyleGuide barButtonStyleForBordered]
                                                                                 target:self
                                                                                 action:@selector(cancelView:)];
-	}
+    }
 }
 
 #pragma mark -
 #pragma mark Comment Handling Methods
 
-- (void)initiateSaveCommentReply:(id)sender {
-	[self endTextEnteringButtonAction: sender];
-	if(self.hasChanges == NO) {
+- (void)initiateSaveCommentReply:(id)sender
+{
+    [self endTextEnteringButtonAction: sender];
+    if (self.hasChanges == NO) {
         [commentViewController cancelView:self];
-		return;
-	}
-	self.comment.content = self.textView.text;
-	[commentViewController showComment:comment];
-	[self.navigationController popViewControllerAnimated:YES];
-	
+        return;
+    }
+    self.comment.content = self.textView.text;
+    [commentViewController showComment:comment];
+    [self.navigationController popViewControllerAnimated:YES];
+
     self.textView.editable = NO;
     self.navigationItem.rightBarButtonItem.enabled = NO;
     self.navigationItem.leftBarButtonItem.enabled = NO;
@@ -167,10 +178,11 @@
 #pragma mark -
 #pragma mark Button Override Methods
 
-- (void)cancelView:(id)sender {
+- (void)cancelView:(id)sender
+{
     if (![self.textView.text isEqualToString:self.textViewText]) {
-		self.hasChanges = YES;
-	}
+        self.hasChanges = YES;
+    }
     [commentViewController cancelView:sender];
 }
 

@@ -11,7 +11,8 @@
 
 @implementation CommentServiceRemoteREST
 
-- (id)initWithApi:(WordPressComApi *)api {
+- (id)initWithApi:(WordPressComApi *)api
+{
     self = [super init];
     if (self) {
         _api = api;
@@ -42,7 +43,8 @@
 
 - (void)getCommentsForBlog:(Blog *)blog
                    success:(void (^)(NSArray *))success
-                   failure:(void (^)(NSError *))failure {
+                   failure:(void (^)(NSError *))failure
+{
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments", blog.dotComID];
     NSDictionary *parameters = @{
                                  @"status": @"all",
@@ -64,7 +66,8 @@
 - (void)createComment:(RemoteComment *)comment
               forBlog:(Blog *)blog
               success:(void (^)(RemoteComment *comment))success
-              failure:(void (^)(NSError *))failure {
+              failure:(void (^)(NSError *))failure
+{
     NSString *path;
     if (comment.parentID) {
         path = [NSString stringWithFormat:@"sites/%@/comments/%@/replies/new", blog.dotComID, comment.parentID];
@@ -93,7 +96,8 @@
 - (void)updateComment:(RemoteComment *)comment
               forBlog:(Blog *)blog
               success:(void (^)(RemoteComment *comment))success
-              failure:(void (^)(NSError *))failure {
+              failure:(void (^)(NSError *))failure
+{
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", blog.dotComID, comment.commentID];
     NSDictionary *parameters = @{
                                  @"content": comment.content,
@@ -117,7 +121,8 @@
 - (void)moderateComment:(RemoteComment *)comment
                 forBlog:(Blog *)blog
                 success:(void (^)(RemoteComment *))success
-                failure:(void (^)(NSError *))failure {
+                failure:(void (^)(NSError *))failure
+{
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", blog.dotComID, comment.commentID];
     NSDictionary *parameters = @{
                                  @"status": [self remoteStatusWithStatus:comment.status],
@@ -141,7 +146,8 @@
 - (void)trashComment:(RemoteComment *)comment
              forBlog:(Blog *)blog
              success:(void (^)())success
-             failure:(void (^)(NSError *error))failure {
+             failure:(void (^)(NSError *error))failure
+{
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@/delete", blog.dotComID, comment.commentID];
     [self.api POST:path
         parameters:nil
@@ -158,7 +164,8 @@
 
 #pragma mark - Private methods
 
-- (NSArray *)remoteCommentsFromJSONArray:(NSArray *)jsonComments {
+- (NSArray *)remoteCommentsFromJSONArray:(NSArray *)jsonComments
+{
     NSMutableArray *comments = [NSMutableArray arrayWithCapacity:jsonComments.count];
     for (NSDictionary *jsonComment in jsonComments) {
         [comments addObject:[self remoteCommentFromJSONDictionary:jsonComment]];
@@ -167,7 +174,8 @@
 
 }
 
-- (RemoteComment *)remoteCommentFromJSONDictionary:(NSDictionary *)jsonDictionary {
+- (RemoteComment *)remoteCommentFromJSONDictionary:(NSDictionary *)jsonDictionary
+{
     RemoteComment *comment = [RemoteComment new];
 
     comment.author = jsonDictionary[@"author"][@"name"];
@@ -187,7 +195,8 @@
     return comment;
 }
 
-- (NSString *)statusWithRemoteStatus:(NSString *)remoteStatus {
+- (NSString *)statusWithRemoteStatus:(NSString *)remoteStatus
+{
     NSString *status = remoteStatus;
     if ([status isEqualToString:@"unapproved"]) {
         status = @"hold";
@@ -197,7 +206,8 @@
     return status;
 }
 
-- (NSString *)remoteStatusWithStatus:(NSString *)status {
+- (NSString *)remoteStatusWithStatus:(NSString *)status
+{
     NSString *remoteStatus = status;
     if ([remoteStatus isEqualToString:@"hold"]) {
         remoteStatus = @"unapproved";

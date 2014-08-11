@@ -1,7 +1,7 @@
 /*
- 
+
  Settings contents:
- 
+
  - Blogs list
     - Add blog
     - Edit/Delete
@@ -53,58 +53,63 @@ CGFloat const blavatarImageViewSize = 43.f;
 
 @implementation SettingsViewController
 
-- (void)dealloc {
+- (void)dealloc
+{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    
+
     self.title = NSLocalizedString(@"Settings", @"App Settings");
     self.doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
     self.navigationItem.rightBarButtonItem = self.doneButton;
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultAccountDidChange:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     [self.tableView reloadData];
 }
 
-
 #pragma mark - Notifications
 
-- (void)defaultAccountDidChange:(NSNotification *)notification {
+- (void)defaultAccountDidChange:(NSNotification *)notification
+{
     NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
     [sections addIndex:SettingsSectionWpcom];
     [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
 }
 
-
 #pragma mark - Custom Getter
 
-- (void)handleOptimizeImagesChanged:(id)sender {
+- (void)handleOptimizeImagesChanged:(id)sender
+{
     UISwitch *aSwitch = (UISwitch *)sender;
     [WPImageOptimizer setShouldOptimizeImages:aSwitch.on];
 }
 
-- (void)dismiss {
+- (void)dismiss
+{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return [self.tableView isEditing] ? 1 : SettingsSectionCount;
 }
 
 // The Sign Out row in Wpcom section can change, so identify it dynamically
-- (NSInteger)rowForSignOut {
+- (NSInteger)rowForSignOut
+{
     NSInteger rowForSignOut = 1;
     if ([NotificationsManager deviceRegisteredForPushNotifications]) {
         rowForSignOut += 1;
@@ -112,66 +117,69 @@ CGFloat const blavatarImageViewSize = 43.f;
     return rowForSignOut;
 }
 
-- (NSInteger)rowForNotifications {
+- (NSInteger)rowForNotifications
+{
     if ([NotificationsManager deviceRegisteredForPushNotifications]) {
         return 1;
     }
     return -1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     switch (section) {
         case SettingsSectionWpcom: {
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
             AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
             WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    
+
             if (defaultAccount) {
                 return [self rowForSignOut] + 1;
-            } else {
-                return 1;
             }
+
+            return 1;
         }
 
         case SettingsSectionMedia:
             return 1;
-
         case SettingsSectionInfo:
             return 2;
-            
         default:
             return 0;
     }
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
     WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
     header.fixedWidth = 0.0;
     header.title = [self titleForHeaderInSection:section];
     return header;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
     NSString *title = [self titleForHeaderInSection:section];
     return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
-- (NSString *)titleForHeaderInSection:(NSInteger)section {
+- (NSString *)titleForHeaderInSection:(NSInteger)section
+{
     if (section == SettingsSectionWpcom) {
         return NSLocalizedString(@"WordPress.com", @"");
 
     } else if (section == SettingsSectionMedia) {
         return NSLocalizedString(@"Media", @"Title label for the media settings section in the app settings");
-		
+
     } else if (section == SettingsSectionInfo) {
         return NSLocalizedString(@"App Info", @"Title label for the application information section in the app settings");
     }
-    
+
     return nil;
 }
 
-
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {    
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     cell.accessoryType = UITableViewCellAccessoryNone;
 
@@ -202,8 +210,8 @@ CGFloat const blavatarImageViewSize = 43.f;
             cell.accessibilityIdentifier = @"wpcom-sign-in";
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         }
-        
-    } else if (indexPath.section == SettingsSectionMedia){
+
+    } else if (indexPath.section == SettingsSectionMedia) {
         cell.textLabel.text = NSLocalizedString(@"Optimize Images", nil);
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
@@ -221,34 +229,28 @@ CGFloat const blavatarImageViewSize = 43.f;
     }
 }
 
-- (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath
+{
     NSString *cellIdentifier = @"Cell";
     UITableViewCellStyle cellStyle = UITableViewCellStyleDefault;
-    
-    switch (indexPath.section) {
-        case SettingsSectionWpcom: {
-            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-            WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-            if (defaultAccount && indexPath.row == 0) {
-                cellIdentifier = @"WpcomUsernameCell";
-                cellStyle = UITableViewCellStyleValue1;
-            } else {
-                cellIdentifier = @"WpcomCell";
-                cellStyle = UITableViewCellStyleDefault;
-            }
-            break;
-        }
-        case SettingsSectionMedia:
-            cellIdentifier = @"Media";
+    if (indexPath.section == SettingsSectionWpcom) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+        if (defaultAccount && indexPath.row == 0) {
+            cellIdentifier = @"WpcomUsernameCell";
+            cellStyle = UITableViewCellStyleValue1;
+        } else {
+            cellIdentifier = @"WpcomCell";
             cellStyle = UITableViewCellStyleDefault;
-            break;
-            
-        default:
-            break;
+        }
+    } else if (indexPath.section == SettingsSectionMedia) {
+        cellIdentifier = @"Media";
+        cellStyle = UITableViewCellStyleDefault;
     }
-    
+
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:cellStyle reuseIdentifier:cellIdentifier];
@@ -263,11 +265,12 @@ CGFloat const blavatarImageViewSize = 43.f;
     return cell;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     UITableViewCell *cell = [self cellForIndexPath:indexPath];
     [WPStyleGuide configureTableViewCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
-    
+
     BOOL isSignInCell = NO;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
@@ -276,21 +279,21 @@ CGFloat const blavatarImageViewSize = 43.f;
     if (![[defaultAccount restApi] hasCredentials]) {
         isSignInCell = indexPath.section == SettingsSectionWpcom && indexPath.row == 0;
     }
-    
+
     BOOL isSignOutCell = indexPath.section == SettingsSectionWpcom && indexPath.row == [self rowForSignOut];
     if (isSignOutCell || isSignInCell) {
         [WPStyleGuide configureTableViewActionCell:cell];
     }
-    
+
     return cell;
 }
 
-
 #pragma mark - Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+
     if (indexPath.section == SettingsSectionWpcom) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
@@ -302,8 +305,8 @@ CGFloat const blavatarImageViewSize = 43.f;
                 NSString *signOutTitle = NSLocalizedString(@"You are logged in as %@", @"");
                 signOutTitle = [NSString stringWithFormat:signOutTitle, [defaultAccount username]];
                 UIActionSheet *actionSheet;
-                actionSheet = [[UIActionSheet alloc] initWithTitle:signOutTitle 
-                                                          delegate:self 
+                actionSheet = [[UIActionSheet alloc] initWithTitle:signOutTitle
+                                                          delegate:self
                                                  cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
                                             destructiveButtonTitle:NSLocalizedString(@"Sign Out", @"")otherButtonTitles:nil, nil ];
                 actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
@@ -320,7 +323,7 @@ CGFloat const blavatarImageViewSize = 43.f;
             };
             [self.navigationController pushViewController:loginViewController animated:YES];
         }
-        
+
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 0) {
             AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
@@ -336,14 +339,15 @@ CGFloat const blavatarImageViewSize = 43.f;
 #pragma mark -
 #pragma mark Action Sheet Delegate Methods
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
     if (buttonIndex == 0) {
         // Sign out
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
 
-		[accountService removeDefaultWordPressComAccount];
-        
+        [accountService removeDefaultWordPressComAccount];
+
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
     }
 }

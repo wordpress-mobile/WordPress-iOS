@@ -27,11 +27,12 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
 
 - (void)uploadMediaObjects:(NSArray *)mediaObjects
 {
-    if ([mediaObjects count] == 0)
+    if ([mediaObjects count] == 0) {
         return;
-    
+    }
+
     self.isUploadingMedia = YES;
-    
+
     _numberOfImagesToUpload += [mediaObjects count];
     for (Media *media in mediaObjects) {
         [self uploadMedia:media];
@@ -52,7 +53,7 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
             DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
             return;
         }
-        
+
         [WPError showAlertWithTitle:NSLocalizedString(@"Upload failed", nil) message:error.localizedDescription];
     }];
 }
@@ -68,13 +69,12 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
     self.isUploadingMedia = NO;
 }
 
-- (void)uploadMedia:(Media *)media withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)uploadMedia:(Media *)media withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     NSString *mimeType = (media.mediaType == MediaTypeVideo) ? @"video/mp4" : @"image/jpeg";
-    NSDictionary *object = [NSDictionary dictionaryWithObjectsAndKeys:
-                            mimeType, @"type",
-                            media.filename, @"name",
-                            [NSInputStream inputStreamWithFileAtPath:media.localURL], @"bits",
-                            nil];
+    NSDictionary *object = @{@"type": mimeType,
+                             @"name": media.filename,
+                             @"bits": [NSInputStream inputStreamWithFileAtPath:media.localURL]};
     NSArray *parameters = [media.blog getXMLRPCArgsWithExtra:object];
 
     media.remoteStatus = MediaRemoteStatusProcessing;
@@ -99,8 +99,9 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
                 }
             };
             AFHTTPRequestOperation *operation = [media.blog.api HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                if ([media isDeleted] || media.managedObjectContext == nil)
+                if ([media isDeleted] || media.managedObjectContext == nil) {
                     return;
+                }
 
                 NSDictionary *response = (NSDictionary *)responseObject;
 
@@ -109,12 +110,14 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
                     failureBlock(operation, error);
                     return;
                 }
-                if([response objectForKey:@"videopress_shortcode"] != nil)
+                if ([response objectForKey:@"videopress_shortcode"] != nil) {
                     media.shortcode = [response objectForKey:@"videopress_shortcode"];
+                }
 
-                if([response objectForKey:@"url"] != nil)
+                if ([response objectForKey:@"url"] != nil) {
                     media.remoteURL = [response objectForKey:@"url"];
-                
+                }
+
                 if ([response objectForKey:@"id"] != nil) {
                     media.mediaID = [[response objectForKey:@"id"] numericValue];
                 }
@@ -129,12 +132,13 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
             } failure:failureBlock];
             [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
                 dispatch_async(dispatch_get_main_queue(), ^(void) {
-                    if ([media isDeleted] || media.managedObjectContext == nil)
+                    if ([media isDeleted] || media.managedObjectContext == nil) {
                         return;
+                    }
                     media.progress = (float)totalBytesWritten / (float)totalBytesExpectedToWrite;
                 });
             }];
-            
+
             // Upload might have been canceled while processing
             if (media.remoteStatus == MediaRemoteStatusProcessing) {
                 media.remoteStatus = MediaRemoteStatusPushing;
@@ -151,7 +155,7 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
     if (self.uploadProgressBlock) {
         self.uploadProgressBlock(_numberOfImagesProcessed, _numberOfImagesToUpload);
     }
-    
+
     if (_numberOfImagesProcessed == _numberOfImagesToUpload && self.uploadsCompletedBlock) {
         self.isUploadingMedia = NO;
         self.uploadsCompletedBlock();
