@@ -295,11 +295,20 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 {
     if (!url) {
         return;
-	}
+    }
     
-	WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-	webViewController.url = [NSURL URLWithString:url];
-	[self.navigationController pushViewController:webViewController animated:YES];
+    // Putting the link into format that will not be discarded by WebViewController
+    NSURL *theUrl = [NSURL URLWithString:url];
+    NSString *reducedUrl = [NSString stringWithFormat:
+                            @"%@://%@%@/#%@",
+                            theUrl.scheme,
+                            theUrl.host,
+                            theUrl.path,
+                            theUrl.fragment];
+    
+    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+    webViewController.url = [NSURL URLWithString:reducedUrl];
+    [self.navigationController pushViewController:webViewController animated:YES];
 }
 
 #pragma mark - Table view delegate
