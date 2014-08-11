@@ -5,7 +5,7 @@
 
 @interface NotificationsViewController : WPTableViewController
 
-#warning TODO: Verify if this in New Model
+#warning TODO: Verify this in New Model
 - (void)showDetailsForNoteWithID:(NSString *)notificationID animated:(BOOL)animated;
 
 @end

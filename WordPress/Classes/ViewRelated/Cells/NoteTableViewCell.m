@@ -14,10 +14,10 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-static CGFloat const NoteCellHeight                     = 90.0f;
+static CGFloat const NoteCellHeight                     = 108.0f; //90.0f;
 static CGFloat const NoteCellUnreadRadius               = 4.0f;
-static CGFloat const NoteCellNoticonRadius              = 12.0f;
-static NSInteger const NoteCellNumberOfLines            = 3;
+static CGFloat const NoteCellNoticonRadius              = 10.0f;
+static NSInteger const NoteCellNumberOfLines            = 0;
 static NSString * const NoteCellPlaceholderImageName    = @"gravatar";
 
 
@@ -31,6 +31,7 @@ static NSString * const NoteCellPlaceholderImageName    = @"gravatar";
 @property (nonatomic, weak, readwrite) IBOutlet UILabel     *noticonLabel;
 @property (nonatomic, weak, readwrite) IBOutlet UIView      *noticonView;
 @property (nonatomic, weak, readwrite) IBOutlet UILabel     *subjectLabel;
+@property (nonatomic, weak, readwrite) IBOutlet UILabel     *timestampLabel;
 @end
 
 
@@ -62,6 +63,10 @@ static NSString * const NoteCellPlaceholderImageName    = @"gravatar";
     self.subjectLabel.shadowOffset          = CGSizeZero;
     self.subjectLabel.font                  = [WPStyleGuide notificationSubjectFont];
     self.subjectLabel.textColor             = [WPStyleGuide littleEddieGrey];
+    
+    self.timestampLabel.textAlignment       = NSTextAlignmentCenter;
+    self.timestampLabel.font                = [WPStyleGuide notificationSubjectFont];
+    self.timestampLabel.textColor           = [WPStyleGuide notificationTimestampTextColor];
 }
 
 - (void)layoutSubviews
@@ -132,6 +137,11 @@ static NSString * const NoteCellPlaceholderImageName    = @"gravatar";
     self.noticonView.backgroundColor = [WPStyleGuide notificationIconColor];
 }
 
+- (void)setTimestamp:(NSDate *)timestamp
+{
+    self.timestampLabel.text = [timestamp shortString];
+    _timestamp = timestamp;
+}
 
 #pragma mark - Static Helpers
 
