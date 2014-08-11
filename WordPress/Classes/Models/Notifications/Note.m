@@ -154,6 +154,30 @@
     return WPNoteTemplateUnknown;
 }
 
+- (WPNoteCommentActionType) commentActionTypeForString:(NSString*)action {
+    if (!action) {
+        return WPNoteCommentActionTypeUnknown;
+    }
+    
+    if ([action isEqualToString:@"approve-comment"]) {
+        return WPNoteCommentActionTypeApprove;
+    } else if ([action isEqualToString:@"unapprove-comment"]) {
+        return WPNoteCommentActionTypeUnapprove;
+    } else if ([action isEqualToString:@"spam-comment"]) {
+        return WPNoteCommentActionTypeSpam;
+    } else if ([action isEqualToString:@"unspam-comment"]) {
+        return WPNoteCommentActionTypeUnspam;
+    } else if ([action isEqualToString:@"trash-comment"]) {
+        return WPNoteCommentActionTypeTrash;
+    } else if ([action isEqualToString:@"untrash-comment"]) {
+        return WPNoteCommentActionTypeUntrash;
+    } else if ([action isEqualToString:@"replyto-comment"]) {
+        return WPNoteCommentActionTypeReply;
+    }
+    
+    return WPNoteCommentActionTypeUnknown;
+}
+
 #pragma mark - Public Methods
 
 - (BOOL)isMatcher
