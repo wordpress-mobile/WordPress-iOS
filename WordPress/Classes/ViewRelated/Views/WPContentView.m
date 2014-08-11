@@ -279,8 +279,12 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
     self.byView.frame = CGRectMake(0, [self topMarginHeight], contentWidth, RPVAuthorViewHeight + RPVAuthorPadding * 2);
     CGFloat bylineX = RPVAvatarSize + RPVAuthorPadding + RPVHorizontalInnerPadding;
-    self.bylineLabel.frame = CGRectMake(bylineX, RPVAuthorPadding - 2, contentWidth - bylineX, 18);
-    self.byButton.frame = CGRectMake(bylineX, self.bylineLabel.frame.origin.y + 18, contentWidth - bylineX, 18);
+    CGFloat byLineWidth = contentWidth - bylineX;
+    if (self.shouldShowDateInByView) {
+        byLineWidth -= RPVControlButtonWidth;
+    }
+    self.bylineLabel.frame = CGRectMake(bylineX, RPVAuthorPadding - 2, byLineWidth, 18);
+    self.byButton.frame = CGRectMake(bylineX, self.bylineLabel.frame.origin.y + 18, byLineWidth, 18);
     
     [self.textContentView relayoutText];
     CGFloat height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
@@ -299,7 +303,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
                                          RPVBorderHeight);
     
     // Action buttons
-    if (_shouldShowDateInByView) {
+    if (self.shouldShowDateInByView) {
         [self layoutActionButtonsWithEvenSpacing];
     } else {
         [self layoutActionButtonsRightToLeft];
@@ -421,7 +425,6 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 }
 
 - (void)addCustomActionButton:(UIButton*)actionButton {
-    
     if (!self.bottomContainerView) {
         self.bottomContainerView = [[UIView alloc] init];
         self.bottomContainerView.translatesAutoresizingMaskIntoConstraints = NO;
