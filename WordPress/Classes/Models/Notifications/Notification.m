@@ -16,6 +16,7 @@ NSString const *NoteActionTrashKey      = @"trash-comment";
 
 NSString const *NoteLinkTypeUser        = @"user";
 NSString const *NoteLinkTypePost        = @"post";
+NSString const *NoteLinkTypeComment     = @"comment";
 
 NSString const *NoteMetaKey             = @"meta";
 NSString const *NoteMediaKey            = @"media";

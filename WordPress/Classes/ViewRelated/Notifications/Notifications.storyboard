@@ -21,7 +21,6 @@
                     <connections>
                         <segue destination="sRf-Tq-HI3" kind="push" identifier="NotificationDetailsViewController" id="4WF-8r-gCq"/>
                         <segue destination="xj3-6N-2Jy" kind="push" identifier="ReaderPostDetailViewController" id="4ec-Ni-5a5"/>
-                        <segue destination="Jal-xa-Rh7" kind="push" identifier="CommentViewController" id="Nfy-M9-3lL"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tfv-il-pov" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -172,25 +171,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fEj-cd-uMn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1573" y="-372"/>
-        </scene>
-        <!--Comment View Controller-->
-        <scene sceneID="y6B-1E-XRI">
-            <objects>
-                <viewController storyboardIdentifier="CommentViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Jal-xa-Rh7" customClass="CommentViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="xYS-yX-g0N"/>
-                        <viewControllerLayoutGuide type="bottom" id="TTR-85-LXw"/>
-                    </layoutGuides>
-                    <view key="view" autoresizesSubviews="NO" contentMode="scaleToFill" id="tRp-aP-jzw">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="nqC-dH-HJz"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qLX-Om-Xrs" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1027" y="501"/>
         </scene>
         <!--Stats View Controller-->
         <scene sceneID="iWL-VB-TOS">

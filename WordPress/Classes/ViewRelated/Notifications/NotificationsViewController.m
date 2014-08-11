@@ -13,11 +13,10 @@
 #import "Notification+UI.h"
 #import "Meta.h"
 
-#import "NotificationSettingsViewController.h"
-
 #import "NoteTableViewCell.h"
 #import "NotificationsManager.h"
 #import "NotificationDetailsViewController.h"
+#import "NotificationSettingsViewController.h"
 
 #import "WPAccount.h"
 
@@ -28,10 +27,6 @@
 #import "ReaderPostDetailViewController.h"
 
 #import "BlogService.h"
-
-#import "Comment.h"
-#import "CommentService.h"
-#import "CommentViewController.h"
 
 
 
@@ -273,31 +268,6 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
 
 #pragma mark - Segue Helpers
 
-- (void)showCommentForNotification:(Notification *)note
-{
-#warning TODO: FIX ME Please
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService        = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blog                      = [blogService blogByBlogId:note.metaSiteID];
-    __weak __typeof(self)weakSelf   = self;
-    
-    // If we don't have the blog, fall back to the reader
-    if (!blog || !note.metaCommentID) {
-//        [self showReaderForNotification:note];
-        return;
-    }
-    
-    CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
-    [commentService loadCommentWithID:note.metaCommentID fromBlog:blog success:^(Comment *comment) {
-        if ([weakSelf.navigationController.topViewController isEqual:weakSelf]) {
-            [weakSelf performSegueWithIdentifier:NSStringFromClass([CommentViewController class]) sender:comment];
-        }
-        
-    } failure:^(NSError *error) {
-        [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
-    }];
-}
-
 - (void)showDetailsForNotification:(Notification *)note animated:(BOOL)animated
 {
 #warning TODO: FIXME: Segues don't have animated = NO
@@ -308,10 +278,6 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
     
     if (note.isMatcher && note.metaPostID && note.metaSiteID) {
         [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:note];
-        
-    } else if (note.isComment) {
-        [self showCommentForNotification:note];
-        
     } else {
         [self performSegueWithIdentifier:NSStringFromClass([NotificationDetailsViewController class]) sender:note];
     }
@@ -373,17 +339,12 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     NSString *detailsSegueID    = NSStringFromClass([NotificationDetailsViewController class]);
-    NSString *commentSegueID    = NSStringFromClass([CommentViewController class]);
     NSString *readerSegueID     = NSStringFromClass([ReaderPostDetailViewController class]);
     Notification *note          = sender;
     
     if([segue.identifier isEqualToString:detailsSegueID]) {
         NotificationDetailsViewController *detailsViewController = segue.destinationViewController;
         detailsViewController.note = note;
-
-    } else if ([segue.identifier isEqualToString:commentSegueID]) {
-        CommentViewController *commentsViewController = segue.destinationViewController;
-        commentsViewController.comment = sender;
     
     } else if([segue.identifier isEqualToString:readerSegueID]) {
         ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
