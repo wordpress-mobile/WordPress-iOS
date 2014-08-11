@@ -50,6 +50,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 @property (nonatomic, strong) UILabel *snippetLabel;
 @property (nonatomic, strong) DTAttributedTextContentView *textContentView;
 @property (nonatomic, strong) UIView *bottomView;
+@property (nonatomic, strong) UIView *bottomContainerView;
 @property (nonatomic, strong) CALayer *bottomBorder;
 @property (nonatomic, strong) CALayer *titleBorder;
 @property (nonatomic, strong) UIView *byView;
@@ -298,17 +299,78 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
                                          RPVBorderHeight);
     
     // Action buttons
+    if (_shouldShowDateInByView) {
+        [self layoutActionButtonsWithEvenSpacing];
+    } else {
+        [self layoutActionButtonsRightToLeft];
+    }
+    
+    // Update own frame
+    CGRect ownFrame = self.frame;
+    ownFrame.size.height = self.bottomView.frame.origin.y + self.bottomView.frame.size.height;
+    self.frame = ownFrame;
+}
+
+- (void)layoutActionButtonsWithEvenSpacing {
+    if (self.actionButtons.count == 0 || !self.bottomContainerView) {
+        return;
+    }
+    
+    // Match up the action button horizontal position with the application tabs
+    CGFloat buttonMargin = IS_IPAD ? 62.0f : 32.0f;
+    if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation) && !IS_IPAD) {
+        buttonMargin = 94.0f;
+    }
+    
+    // Space action buttons evenly using auto layout
+    UIButton *previousButton = nil;
+    NSDictionary *metrics = @{@"spacing":@(buttonMargin)};
+    NSString *visualFormat = nil;
+    [self.bottomContainerView removeConstraints:self.bottomContainerView.constraints];
+    NSMutableArray *constraints = [NSMutableArray array];
+    for (UIButton *button in self.actionButtons) {
+        button.translatesAutoresizingMaskIntoConstraints = NO;
+        visualFormat = nil;
+        NSDictionary *views = nil;
+        if (previousButton) {
+            visualFormat = @"H:[previousButton(==button)]-spacing-[button]";
+            views = NSDictionaryOfVariableBindings(previousButton,button);
+        } else {
+            visualFormat = @"|[button(<=48)]";
+            views = NSDictionaryOfVariableBindings(button);
+        }
+        
+        // Constrain height to bottomContainerView
+        NSArray *heightConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[button]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(button)];
+        [self.bottomContainerView addConstraints:heightConstraints];
+        
+        [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:visualFormat options:nil metrics:metrics views:views]];
+        previousButton = button;
+    }
+    
+    visualFormat = @"H:[previousButton]|";
+    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:visualFormat options:nil metrics:metrics views:NSDictionaryOfVariableBindings(previousButton)]];
+    [self.bottomContainerView addConstraints:constraints];
+    
+    CGFloat timeWidth = RPVControlButtonWidth + 10.0f;
+    CGFloat timeHeight = _byView.frame.size.height;
+    CGFloat timeXPosition = _byView.frame.size.width - timeWidth - RPVHorizontalInnerPadding;
+    CGFloat timeYPosition = 0.0f;
+    self.timeButton.frame = CGRectMake(timeXPosition, timeYPosition, timeWidth, timeHeight);
+}
+
+- (void)layoutActionButtonsRightToLeft {
     CGFloat buttonX = self.bottomView.frame.size.width - RPVHorizontalInnerPadding; // minus 2px so button text aligns
     CGFloat buttonY = RPVBorderHeight; // Just below the line
     NSArray* reversedActionButtons = [[self.actionButtons reverseObjectEnumerator] allObjects];
-
+    
     CGFloat lastImageWidth = 0.0f;
     CGFloat buttonWidth = 0.0f;
     for (UIButton *actionButton in reversedActionButtons) {
         // Button order from right-to-left, ignoring hidden buttons
         if (actionButton.hidden)
             continue;
-
+        
         // Left most visible button needs a different size to align properly
         if (buttonWidth == 0.0f) {
             [actionButton sizeToFit];
@@ -316,7 +378,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
         } else {
             buttonWidth = RPVControlButtonWidth;
         }
-
+        
         // The x value needs to be adjusted to account for differences in the width between
         // the current button's image, and the previous image. Otherwise, even though the
         // UIButtons are spaced equally based on their frame, the difference in image size will
@@ -328,25 +390,19 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
             CGFloat diff = width - lastImageWidth;
             buttonX -= diff;
         }
-
+        
         buttonX -= buttonWidth;
         actionButton.frame = CGRectMake(buttonX, buttonY, buttonWidth, RPVControlButtonHeight);
         buttonX -= RPVControlButtonSpacing; // add the padding for the next button in advance.
-
+        
         lastImageWidth = actionButton.imageView.image.size.width;
     }
-
-    CGFloat timeWidth = _shouldShowDateInByView ? RPVControlButtonWidth + 10.0f : buttonX - RPVHorizontalInnerPadding;
-    CGFloat timeHeight = _shouldShowDateInByView ? _byView.frame.size.height : RPVControlButtonHeight;
-    CGFloat timeXPosition = _shouldShowDateInByView ? _byView.frame.size.width - timeWidth - RPVHorizontalInnerPadding
-                                                    : RPVHorizontalInnerPadding;
-    CGFloat timeYPosition = _shouldShowDateInByView ? 0.0f : RPVBorderHeight;
-    self.timeButton.frame = CGRectMake(timeXPosition, timeYPosition, timeWidth, timeHeight);
     
-    // Update own frame
-    CGRect ownFrame = self.frame;
-    ownFrame.size.height = self.bottomView.frame.origin.y + self.bottomView.frame.size.height;
-    self.frame = ownFrame;
+    CGFloat timeWidth = buttonX - RPVHorizontalInnerPadding;
+    CGFloat timeHeight = RPVControlButtonHeight;
+    CGFloat timeXPosition = RPVHorizontalInnerPadding;
+    CGFloat timeYPosition = RPVBorderHeight;
+    self.timeButton.frame = CGRectMake(timeXPosition, timeYPosition, timeWidth, timeHeight);
 }
 
 - (UIButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage {
@@ -365,7 +421,19 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 }
 
 - (void)addCustomActionButton:(UIButton*)actionButton {
-    [self.bottomView addSubview:actionButton];
+    
+    if (!self.bottomContainerView) {
+        self.bottomContainerView = [[UIView alloc] init];
+        self.bottomContainerView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.bottomView addSubview:self.bottomContainerView];
+        [self.bottomView addConstraint:[NSLayoutConstraint constraintWithItem:self.bottomContainerView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.bottomView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
+        NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_bottomContainerView);
+        NSArray *heightConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_bottomContainerView]|" options:0 metrics:nil views:viewsDict];
+        [self.bottomView addConstraints:heightConstraints];
+    }
+    
+    [self.bottomContainerView addSubview:actionButton];
+    
     [self.actionButtons addObject:actionButton];
 }
 
