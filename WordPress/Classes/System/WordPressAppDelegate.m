@@ -925,7 +925,7 @@ NSInteger const kMeTabIndex                                     = 2;
                                       bucketOverrides:bucketOverrides];
 
 #ifdef DEBUG
-	self.simperium.verboseLoggingEnabled = YES;
+	self.simperium.verboseLoggingEnabled = NO;
 #endif
 }
 
