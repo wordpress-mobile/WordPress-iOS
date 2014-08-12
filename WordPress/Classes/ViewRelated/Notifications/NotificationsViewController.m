@@ -28,6 +28,8 @@
 
 #import "BlogService.h"
 
+
+
 #pragma mark ====================================================================================
 #pragma mark Constants
 #pragma mark ====================================================================================
@@ -39,11 +41,12 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
 #pragma mark ====================================================================================
 
 @interface NotificationsViewController () <SPBucketDelegate>
-@property (nonatomic, assign) dispatch_once_t   trackedViewDisplay;
-@property (nonatomic, strong) NSString          *pushNotificationID;
-@property (nonatomic, strong) NSDate            *pushNotificationDate;
-@property (nonatomic, strong) UINib             *tableViewCellNib;
-@property (nonatomic, strong) NoteTableViewCell *layoutTableViewCell;
+@property (nonatomic, assign) dispatch_once_t       trackedViewDisplay;
+@property (nonatomic, strong) NSString              *pushNotificationID;
+@property (nonatomic, strong) NSDate                *pushNotificationDate;
+@property (nonatomic, strong) UINib                 *tableViewCellNib;
+@property (nonatomic, strong) NoteTableViewCell     *layoutTableViewCell;
+@property (nonatomic, strong) NSMutableDictionary   *cachedRowHeights;
 @end
 
 #pragma mark ====================================================================================
@@ -67,6 +70,9 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
         // Watch for application badge number changes
         NSString *badgeKeyPath  = NSStringFromSelector(@selector(applicationIconBadgeNumber));
         [[UIApplication sharedApplication] addObserver:self forKeyPath:badgeKeyPath options:NSKeyValueObservingOptionNew context:nil];
+        
+        // Cache Row Heights!
+        self.cachedRowHeights   = [NSMutableDictionary dictionary];
         
         // Watch for new Notifications
         Simperium *simperium    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
@@ -133,6 +139,12 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self.cachedRowHeights removeAllObjects];
+}
+
+
 #pragma mark - NSObject(NSKeyValueObserving) Helpers
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -159,6 +171,9 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
         self.pushNotificationID     = nil;
         self.pushNotificationDate   = nil;
     }
+    
+    // Always nuke the cellHeight Cache's
+    [self.cachedRowHeights removeAllObjects];
 }
 
 #pragma mark - NSNotification Helpers
@@ -284,26 +299,43 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
 {
     NoteTableViewCell *cell = (NoteTableViewCell *)[tableView dequeueReusableCellWithIdentifier:[NoteTableViewCell reuseIdentifier]];
     NSAssert([cell isKindOfClass:[NoteTableViewCell class]], nil);
-
-    [self configureCell:cell atIndexPath:indexPath];
     
+    [self configureCell:cell atIndexPath:indexPath];
+
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // There is an ugly bug where the calculated height might be off by 1px, thus, clipping the text
-    static CGFloat const NoteCellHeightPadding = 1;
+    // Hit the cache first
+    NSNumber *rowCacheKey   = @(indexPath.row);
+    NSNumber *rowCacheValue = self.cachedRowHeights[rowCacheKey];
+    if (rowCacheValue) {
+        return rowCacheValue.floatValue;
+    }
     
+    // Lazy-load the cell + Handle current orientation
     if (!self.layoutTableViewCell) {
         self.layoutTableViewCell = (NoteTableViewCell *)[tableView dequeueReusableCellWithIdentifier:[NoteTableViewCell layoutIdentifier]];
     }
-    [self configureCell:self.layoutTableViewCell atIndexPath:indexPath];
 
+    self.layoutTableViewCell.bounds = CGRectMake(0.0f, 0.0f, CGRectGetWidth(tableView.bounds), CGRectGetHeight(_layoutTableViewCell.bounds));
+
+    // Setup the cell
+    [self configureCell:self.layoutTableViewCell atIndexPath:indexPath];
+    [self.layoutTableViewCell layoutIfNeeded];
+
+    // Calculate the height: There is an ugly bug where the calculated height might be off by 1px, thus, clipping the text
+    CGFloat const NoteCellHeightPadding = 1;
+    
     CGFloat width   = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
     CGSize size     = [self.layoutTableViewCell.contentView systemLayoutSizeFittingSize:CGSizeMake(width, 0.0f)];
+    CGFloat height  = ceil(size.height) + NoteCellHeightPadding;
     
-    return ceil(size.height) + NoteCellHeightPadding;
+    // Cache
+    self.cachedRowHeights[rowCacheKey] = @(height);
+    
+    return height;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
