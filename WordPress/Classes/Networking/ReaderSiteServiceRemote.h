@@ -114,14 +114,16 @@ extern NSString * const ReaderSiteServiceRemoteErrorDomain;
                            failure:(void(^)(NSError *error))failure;
 
 /**
- Block a site from showing its posts in the reader
+ Block/unblock a site from showing its posts in the reader
 
  @param siteID The ID of the site (not feed).
+ @param blocked Boolean value. Yes if the site should be blocked. NO if the site should be unblocked. 
  @param success block called on a successful check.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)blockSiteWithID:(NSUInteger)siteID
-                success:(void(^)())success
-                failure:(void(^)(NSError *error))failure;
+- (void)flagSiteWithID:(NSUInteger)siteID
+             asBlocked:(BOOL)blocked
+               success:(void(^)())success
+               failure:(void(^)(NSError *error))failure;
 
 @end

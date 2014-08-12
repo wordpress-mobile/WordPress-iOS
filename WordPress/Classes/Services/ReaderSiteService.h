@@ -96,14 +96,16 @@ extern NSString * const ReaderSiteServiceErrorDomain;
 - (void)syncPostsForFollowedSites;
 
 /**
- Block the specified site from appearing in the user's reader
+ Block/unblock the specified site from appearing in the user's reader
  
  @param siteID The ID of the site.
+ @param blocked Boolean value. YES to block a site. NO to unblock a site.
  @param success block called on a successful block.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)blockSiteWithID:(NSNumber *)siteID
-                success:(void(^)())success
-                failure:(void(^)(NSError *error))failure;
+- (void)flagSiteWithID:(NSNumber *)siteID
+             asBlocked:(BOOL)blocked
+               success:(void(^)())success
+               failure:(void(^)(NSError *error))failure;
 
 @end

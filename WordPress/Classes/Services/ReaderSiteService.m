@@ -214,7 +214,8 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     [postService fetchPostsForTopic:followedSites earlierThan:[NSDate date] success:nil failure:nil];
 }
 
-- (void)blockSiteWithID:(NSNumber *)siteID success:(void(^)())success failure:(void(^)(NSError *error))failure
+
+- (void)flagSiteWithID:(NSNumber *)siteID asBlocked:(BOOL)blocked success:(void(^)())success failure:(void(^)(NSError *error))failure
 {
     WordPressComApi *api = [self apiForRequest];
     if (!api) {
@@ -224,14 +225,22 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         return;
     }
 
-    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithRemoteApi:api];
-    [service blockSiteWithID:[siteID integerValue] success:^{
-        [self removePostsForSiteWithID:siteID];
+    // Optimistically flag the posts from the site being blocked.
+    [self flagPostsFromSite:siteID asBlocked:blocked];
 
+    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithRemoteApi:api];
+    [service flagSiteWithID:[siteID integerValue] asBlocked:blocked success:^{
         if (success) {
             success();
         }
-    } failure:failure];
+    } failure:^(NSError *error) {
+        // Undo the changes
+        [self flagPostsFromSite:siteID asBlocked:!blocked];
+
+        if (failure) {
+            failure(error);
+        }
+    }];
 }
 
 #pragma mark - Private Methods
@@ -269,10 +278,10 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     }];
 }
 
-- (void)removePostsForSiteWithID:(NSNumber *)siteID
+- (void)flagPostsFromSite:(NSNumber *)siteID asBlocked:(BOOL)blocked
 {
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    [service deletePostsFromSiteWithID:siteID];
+    [service flagPostsFromSite:siteID asBlocked:blocked];
 }
 
 
