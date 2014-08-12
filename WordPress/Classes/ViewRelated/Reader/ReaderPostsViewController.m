@@ -53,6 +53,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @property (nonatomic) BOOL infiniteScrollEnabled;
 @property (nonatomic, strong) NSMutableDictionary *cachedRowHeights;
 @property (nonatomic, strong) NSNumber *siteIDToBlock;
+@property (nonatomic, strong) UIActionSheet *actionSheet;
+
 @end
 
 @implementation ReaderPostsViewController
@@ -471,6 +473,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         UIView *view = (UIView *)sender;
         [actionSheet showFromRect:view.bounds inView:view animated:YES];
     }
+
+    self.actionSheet = actionSheet;
 }
 
 - (void)postView:(ReaderPostContentView *)postView didReceiveCommentAction:(id)sender
@@ -1021,6 +1025,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     // Index paths may have changed. We don't want callbacks for stale paths.
+    if (self.actionSheet) {
+        // Dismiss the action sheet when content changes since the post that was tapped may have scrolled out of view or been removed.
+        [self.actionSheet dismissWithClickedButtonIndex:[self.actionSheet cancelButtonIndex] animated:YES];
+    }
     [self.featuredImageSource invalidateIndexPaths];
     [self.tableView reloadData];
     [self configureNoResultsView];
@@ -1124,7 +1132,14 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         self.siteIDToBlock = nil;
         return;
     }
+
     [self blockSite];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    self.actionSheet = nil;
+    actionSheet.delegate = nil;
 }
 
 @end
