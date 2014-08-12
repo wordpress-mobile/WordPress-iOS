@@ -144,7 +144,6 @@
 		7485CCFB198FE5DE00790CC6 /* PostDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7485CCFA198FE5DE00790CC6 /* PostDetailViewController.m */; };
 		74C1C306199170930077A7DC /* PostDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74C1C305199170930077A7DC /* PostDetailViewController.xib */; };
 		74C1C30E199170EA0077A7DC /* PostDetailViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74C1C30D199170EA0077A7DC /* PostDetailViewController~ipad.xib */; };
-		74F9A4E2199029420054DF52 /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74F9A4E1199029420054DF52 /* Reveal.framework */; };
 		83043E55126FA31400EC9953 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83043E54126FA31400EC9953 /* MessageUI.framework */; };
 		8333FE0E11FF6EF200A495C1 /* EditSiteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8333FE0D11FF6EF200A495C1 /* EditSiteViewController.xib */; };
 		83418AAA11C9FA6E00ACF00C /* Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = 83418AA911C9FA6E00ACF00C /* Comment.m */; };
@@ -624,7 +623,6 @@
 		7485CCFA198FE5DE00790CC6 /* PostDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostDetailViewController.m; sourceTree = "<group>"; };
 		74C1C305199170930077A7DC /* PostDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PostDetailViewController.xib; path = Resources/PostDetailViewController.xib; sourceTree = "<group>"; };
 		74C1C30D199170EA0077A7DC /* PostDetailViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "PostDetailViewController~ipad.xib"; path = "Resources-iPad/PostDetailViewController~ipad.xib"; sourceTree = "<group>"; };
-		74F9A4E1199029420054DF52 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Reveal.framework; path = "../../../../../Applications/Reveal.app/Contents/SharedSupport/iOS-Libraries/Reveal.framework"; sourceTree = "<group>"; };
 		83043E54126FA31400EC9953 /* MessageUI.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		8333FE0D11FF6EF200A495C1 /* EditSiteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditSiteViewController.xib; path = Resources/EditSiteViewController.xib; sourceTree = "<group>"; };
 		833AF259114575A50016DE8F /* PostAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostAnnotation.h; sourceTree = "<group>"; };
@@ -1017,7 +1015,6 @@
 				93A3F7DE1843F6F00082FEEA /* CoreTelephony.framework in Frameworks */,
 				E14D65C817E09664007E3EA4 /* Social.framework in Frameworks */,
 				8355D67E11D13EAD00A61362 /* MobileCoreServices.framework in Frameworks */,
-				74F9A4E2199029420054DF52 /* Reveal.framework in Frameworks */,
 				A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */,
 				374CB16215B93C0800DD0EBC /* AudioToolbox.framework in Frameworks */,
 				E10B3655158F2D7800419A93 /* CoreGraphics.framework in Frameworks */,
@@ -1218,7 +1215,6 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				74F9A4E1199029420054DF52 /* Reveal.framework */,
 				E10675C9183FA78E00E5CE5C /* XCTest.framework */,
 				93A3F7DD1843F6F00082FEEA /* CoreTelephony.framework */,
 				E14D65C717E09663007E3EA4 /* Social.framework */,
@@ -2763,7 +2759,6 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes\"",
 					"$(SRCROOT)",
-					"$(SYSTEM_APPS_DIR)/Reveal.app/Contents/SharedSupport/iOS-Libraries",
 				);
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2801,7 +2796,6 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes\"",
 					"$(SRCROOT)",
-					"$(SYSTEM_APPS_DIR)/Reveal.app/Contents/SharedSupport/iOS-Libraries",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
@@ -2862,7 +2856,6 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes\"",
 					"$(SRCROOT)",
-					"$(SYSTEM_APPS_DIR)/Reveal.app/Contents/SharedSupport/iOS-Libraries",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
@@ -2918,7 +2911,6 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes\"",
 					"$(SRCROOT)",
-					"$(SYSTEM_APPS_DIR)/Reveal.app/Contents/SharedSupport/iOS-Libraries",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
