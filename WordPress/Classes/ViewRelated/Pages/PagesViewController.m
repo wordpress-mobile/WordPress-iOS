@@ -13,7 +13,8 @@
 
 @implementation PagesViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = NSLocalizedString(@"Pages", @"");
 }
@@ -23,11 +24,13 @@
     return NSLocalizedString(@"You haven't created any pages yet", @"Displayed when the user pulls up the pages view and they have no pages");
 }
 
-- (NSString *)noResultsMessageText {
+- (NSString *)noResultsMessageText
+{
     return NSLocalizedString(@"Would you like to create your first page?",  @"Displayed when the user pulls up the pages view and they have no pages");
 }
 
-- (UIView *)noResultsAccessoryView {
+- (UIView *)noResultsAccessoryView
+{
     return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"penandink"]];
 }
 
@@ -41,14 +44,18 @@
     [self showAddPostView];
 }
 
-- (NSString *)newPostAccessibilityLabel {
+- (NSString *)newPostAccessibilityLabel
+{
     return NSLocalizedString(@"New Page", @"The accessibility value of the new page button.");
 }
 
-- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction
+                            success:(void (^)())success
+                            failure:(void (^)(NSError *))failure
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     __block BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    
+
     [blogService syncPagesForBlog:self.blog
                           success:^{
                               blogService = nil;
@@ -60,7 +67,8 @@
 }
 
 // For iPhone
-- (void)editPost:(AbstractPost *)apost {
+- (void)editPost:(AbstractPost *)apost
+{
     EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:apost];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     [navController setToolbarHidden:NO]; // Fixes wrong toolbar icon animation.
@@ -70,41 +78,48 @@
     [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
-- (void)showAddPostView {
+- (void)showAddPostView
+{
     Page *post = [Page newDraftForBlog:self.blog];
     [self editPost:post];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
     return nil;
 }
 
 #pragma mark -
 #pragma mark Syncs methods
 
-- (BOOL)isSyncing {
-	return self.blog.isSyncingPages;
+- (BOOL)isSyncing
+{
+    return self.blog.isSyncingPages;
 }
 
--(NSDate *) lastSyncDate {
-	return self.blog.lastPagesSync;
+- (NSDate *) lastSyncDate
+{
+    return self.blog.lastPagesSync;
 }
 
-- (BOOL) hasOlderItems {
-	return [self.blog.hasOlderPages boolValue];
+- (BOOL) hasOlderItems
+{
+    return [self.blog.hasOlderPages boolValue];
 }
 
-- (BOOL)refreshRequired {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	if ([defaults boolForKey:@"refreshPagesRequired"]) { 
-		[defaults setBool:NO forKey:@"refreshPagesRequired"];
-		return YES;
-	}
-	
-	return NO;
+- (BOOL)refreshRequired
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:@"refreshPagesRequired"]) {
+        [defaults setBool:NO forKey:@"refreshPagesRequired"];
+        return YES;
+    }
+
+    return NO;
 }
 
-- (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     [blogService syncPagesForBlog:self.blog
@@ -116,7 +131,8 @@
 #pragma mark -
 #pragma mark Fetched results controller
 
-- (NSString *)entityName {
+- (NSString *)entityName
+{
     return @"Page";
 }
 

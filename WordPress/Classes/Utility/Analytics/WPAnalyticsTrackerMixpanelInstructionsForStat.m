@@ -21,9 +21,10 @@
 
 - (void)addSuperPropertyToFlag:(NSString *)property
 {
-    if ([_superPropertiesToFlag containsObject:property])
+    if ([_superPropertiesToFlag containsObject:property]) {
         return;
-    
+    }
+
     [_superPropertiesToFlag addObject:property];
 }
 
@@ -68,7 +69,8 @@
     self.peoplePropertyToIncrement = property;
 }
 
-- (void)setCurrentDateForPeopleProperty:(NSString *)property{
+- (void)setCurrentDateForPeopleProperty:(NSString *)property
+{
     [self setPeopleProperty:property toValue:[NSDate date]];
 }
 
@@ -78,6 +80,5 @@
     NSParameterAssert(value != nil);
     _peoplePropertiesToAssign[property] = value;
 }
-
 
 @end
