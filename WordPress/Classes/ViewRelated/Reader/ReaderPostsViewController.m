@@ -458,7 +458,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     self.siteIDToBlock = post.siteID;
 
     NSString *cancel = NSLocalizedString(@"Cancel", @"The title of a cancel button.");
-    NSString *blockSite = NSLocalizedString(@"Block", @"The title of a button that triggers blocking a site from the user's reader.");
+    NSString *blockSite = NSLocalizedString(@"Block This Site", @"The title of a button that triggers blocking a site from the user's reader.");
 
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:self
@@ -650,14 +650,15 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
     if (post.isSiteBlocked) {
-        ReaderBlockedTableViewCell *cell = (ReaderBlockedTableViewCell *)aCell;
-        NSString *str = NSLocalizedString(@"The site %@ will no longer appear in your reader. Tap to undo.", @"");
-        [cell setLabelText:[NSString stringWithFormat:str, post.blogName]];
-        return;
+        [self configureBlockedCell:(ReaderBlockedTableViewCell *)aCell atIndexPath:indexPath];
+    } else {
+        [self configurePostCell:(ReaderPostTableViewCell *)aCell atIndexPath:indexPath];
     }
+}
 
-    ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)aCell;
-
+- (void)configurePostCell:(ReaderPostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
+    ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
     BOOL shouldShowAttributionMenu = ([self isCurrentTopicFreshlyPressed] || (self.currentTopic.type != ReaderTopicTypeList)) ? YES : NO;
     cell.postView.shouldShowAttributionMenu = shouldShowAttributionMenu;
     [cell configureCell:post];
@@ -666,6 +667,24 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     cell.postView.delegate = self;
 }
+
+- (void)configureBlockedCell:(ReaderBlockedTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
+    ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
+
+    NSString *str = NSLocalizedString(@"The site %@ will no longer appear in your reader. Tap to undo.", @"Message expliaining that the specified site will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the site.");
+    NSString *formattedString = [NSString stringWithFormat:str, post.blogName];
+    NSRange range = [formattedString rangeOfString:post.blogName];
+
+    NSDictionary *labelAttributes = [WPStyleGuide subtitleAttributes];
+    NSDictionary *boldLabelAttributes = [WPStyleGuide subtitleAttributesBold];
+
+    NSMutableAttributedString *attributedStr = [[NSMutableAttributedString alloc]initWithString:formattedString attributes:labelAttributes];
+    [attributedStr setAttributes:boldLabelAttributes range:range];
+
+    [cell setLabelAttributedText:attributedStr];
+}
+
 
 - (CGSize)sizeForFeaturedImage
 {

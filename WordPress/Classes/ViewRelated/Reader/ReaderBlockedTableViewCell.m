@@ -99,4 +99,9 @@ static const CGFloat RBTVCHorizontalInnerPadding = 8.0f;
     self.label.text = string;
 }
 
+- (void)setLabelAttributedText:(NSAttributedString *)attrString
+{
+    self.label.attributedText = attrString;
+}
+
 @end
