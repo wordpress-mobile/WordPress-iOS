@@ -130,7 +130,7 @@ NSString *const NotificationsDeviceToken            = @"apnsDeviceToken";
         WordPressAppDelegate *appDelegate   = [WordPressAppDelegate sharedWordPressApplicationDelegate];
         
         [appDelegate showTabForIndex:kNotificationsTabIndex];
-        [appDelegate.notificationsViewController showDetailsForNoteWithID:notificationID animated:NO];
+        [appDelegate.notificationsViewController showDetailsForNoteWithID:notificationID];
     } else if (state == UIApplicationStateBackground) {
         if (completionHandler) {
             Simperium *simperium = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
