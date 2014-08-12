@@ -9,13 +9,12 @@
 
 @implementation SuggestionsTableViewController
 
-@synthesize suggestions;
-
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
     if (self) {
-        // Initialize stuff here
+        self.delegate = nil;
+        self.suggestions = nil;
     }
     return self;
 }
@@ -25,40 +24,42 @@
     [super viewDidLoad];
     
     // create a new Search Bar and add it to the table view
-    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectZero];
-    [searchBar sizeToFit];
-    self.tableView.tableHeaderView = searchBar;
-    searchBar.delegate = self;
+    self.viewSearchBar = [[UISearchBar alloc] initWithFrame:CGRectZero];
+    [self.viewSearchBar sizeToFit];
+    self.tableView.tableHeaderView = self.viewSearchBar;
+    self.viewSearchBar.delegate = self;
     
-    // Get Suggestions
-    // @todo get this from cache/REST API
-    suggestions = [[NSMutableArray alloc] initWithObjects:
-                   [Suggestion suggestionWithSlug:@"@alans19231"
-                                      description:@"Alan Shephard"
-                                      avatarEmail:@"alans19231@domain.com"],
-                   [Suggestion suggestionWithSlug:@"@dekes19241"
-                                      description:@"Deke Slayton"
-                                      avatarEmail:@"dekes19241@domain.com"],
-                   [Suggestion suggestionWithSlug:@"@gordonc19271"
-                                      description:@"Gordon Cooper"
-                                      avatarEmail:@"gordonc19271@domain.com"],
-                   [Suggestion suggestionWithSlug:@"@gusg19261"
-                                      description:@"Gus Grissom"
-                                      avatarEmail:@"gusg19261@domain.com"],
-                   [Suggestion suggestionWithSlug:@"@johng19211"
-                                      description:@"John Glenn"
-                                      avatarEmail:@"johng19211@domain.com"],
-                   [Suggestion suggestionWithSlug:@"@scottc19251"
-                                      description:@"Scott Carpenter"
-                                      avatarEmail:@"scottc19251@domain.com"],
-                   [Suggestion suggestionWithSlug:@"@wallys19231"
-                                      description:@"Wally Schirra"
-                                      avatarEmail:@"wallys19231@domain.com"],
-                   nil];
-    
-    // @todo define separate NIBs for each kind of suggestions table view cell we need (i.e. not just mentions)
+    self.viewSearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.viewSearchBar contentsController:self];
+    [self.viewSearchDisplayController setDelegate:self];
+    [self.viewSearchDisplayController setSearchResultsDelegate:self];
+    [self.viewSearchDisplayController setSearchResultsDataSource:self];
+        
     UINib *nib = [UINib nibWithNibName:@"SuggestionsTableViewCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:@"SuggestionsTableViewCell"];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.viewSearchBar becomeFirstResponder];
+    [self.viewSearchBar setText:@"@"];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    SEL suggestionSelector = @selector(suggestionViewDidDisappear:);
+    if ( [self.delegate respondsToSelector:suggestionSelector] )
+    {
+        [self.delegate suggestionViewDidDisappear:self];
+    }
+}
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    self.viewSearchDisplayController = nil;
+    self.viewSearchBar = nil;
+    self.delegate = nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -75,16 +76,26 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [suggestions count];
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        return [self.searchResults count];
+        
+    } else {
+        return [self.suggestions count];
+    }
 }
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SuggestionsTableViewCell *cell = [ tableView dequeueReusableCellWithIdentifier:@"SuggestionsTableViewCell"
+    SuggestionsTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"SuggestionsTableViewCell"
                                                                       forIndexPath:indexPath];
     
-    Suggestion *suggestion = [self.suggestions objectAtIndex:indexPath.row];
+    Suggestion *suggestion = nil;
+    
+    if ( tableView == self.viewSearchDisplayController.searchResultsTableView ) {
+        suggestion = [self.searchResults objectAtIndex:indexPath.row];
+    } else {
+        suggestion = [self.suggestions objectAtIndex:indexPath.row];
+    }
     cell.username.text = suggestion.slug;
     cell.displayName.text = suggestion.description;
     cell.avatar.image = [UIImage imageNamed:@"gravatar"];
@@ -93,6 +104,51 @@
     [cell.avatar setImageWithGravatarEmail:suggestion.avatarEmail fallbackImage:avatarPlaceholderImage];
     
     return cell;
+}
+
+- (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope
+{
+    // strip any leading @ from searchText before searching
+    if ( 0 < searchText.length ) {
+        if ( [[searchText substringToIndex:1] isEqualToString:@"@"] ) {
+            searchText = [searchText substringFromIndex:1];
+        }
+    }
+    
+    if ( 0 < searchText.length ) {
+        NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"(description contains[c] %@) OR (slug contains[c] %@)",   searchText, searchText];
+        self.searchResults = [[self.suggestions filteredArrayUsingPredicate:resultPredicate] mutableCopy];
+    } else {
+        self.searchResults = [self.suggestions mutableCopy];
+    }
+}
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
+{
+    [self filterContentForSearchText:searchString
+                               scope:[[self.searchDisplayController.searchBar scopeButtonTitles]
+                                      objectAtIndex:[self.searchDisplayController.searchBar
+                                                     selectedScopeButtonIndex]]];
+    
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    SEL suggestionSelector = @selector(suggestionViewDidSelect:selectionString:);
+    if ( [self.delegate respondsToSelector:suggestionSelector] )
+    {
+        Suggestion *suggestion = nil;
+        
+        if ( tableView == self.viewSearchDisplayController.searchResultsTableView ) {
+            suggestion = [self.searchResults objectAtIndex:indexPath.row];
+        } else {
+            suggestion = [self.suggestions objectAtIndex:indexPath.row];
+        }
+        
+        [self.viewSearchDisplayController setActive:NO animated:NO];
+        [self.delegate suggestionViewDidSelect:self selectionString:suggestion.slug ];
+    }
 }
 
 @end

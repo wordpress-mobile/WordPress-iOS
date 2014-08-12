@@ -26,7 +26,7 @@
 const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight = 64.f;
 NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRestorationKey";
 
-@interface NotificationsCommentDetailViewController () <InlineComposeViewDelegate, WPContentViewDelegate, UIViewControllerRestoration, UIActionSheetDelegate, SPBucketDelegate>
+@interface NotificationsCommentDetailViewController () <InlineComposeViewDelegate, WPContentViewDelegate, UIViewControllerRestoration, UIActionSheetDelegate, SPBucketDelegate, SuggestionsTableViewDelegate>
 
 @property (nonatomic, assign) NSUInteger		followBlogID;
 @property (nonatomic, strong) NSDictionary		*commentActions;
@@ -576,16 +576,52 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
                                                 replacementText:(NSString *)text {
     if ( [text isEqualToString: @"@"] ) {
         SuggestionsTableViewController *suggestionsController = [[SuggestionsTableViewController alloc] init];
-        [self.navigationController pushViewController:suggestionsController animated:YES];
+        // @todo - get from rest api
+        suggestionsController.suggestions = [[NSMutableArray alloc] initWithObjects:
+                                                [Suggestion suggestionWithSlug:@"@alans19231"
+                                                                   description:@"Alan Shephard"
+                                                                   avatarEmail:@"alans19231@domain.com"],
+                                                [Suggestion suggestionWithSlug:@"@dekes19241"
+                                                                   description:@"Deke Slayton"
+                                                                   avatarEmail:@"dekes19241@domain.com"],
+                                                [Suggestion suggestionWithSlug:@"@gordonc19271"
+                                                                   description:@"Gordon Cooper"
+                                                                   avatarEmail:@"gordonc19271@domain.com"],
+                                                [Suggestion suggestionWithSlug:@"@gusg19261"
+                                                                   description:@"Gus Grissom"
+                                                                   avatarEmail:@"gusg19261@domain.com"],
+                                                [Suggestion suggestionWithSlug:@"@johng19211"
+                                                                   description:@"John Glenn"
+                                                                   avatarEmail:@"johng19211@domain.com"],
+                                                [Suggestion suggestionWithSlug:@"@scottc19251"
+                                                                   description:@"Scott Carpenter"
+                                                                   avatarEmail:@"scottc19251@domain.com"],
+                                                [Suggestion suggestionWithSlug:@"@wallys19231"
+                                                                   description:@"Wally Schirra"
+                                                                   avatarEmail:@"wallys19231@domain.com"],
+                                                nil];
         
-        // @todo if they cancel out of the suggestionController, we need to come back to the textview open still
-        // @todo try [self presentViewController:suggestionsController animated:YES completion:nil];
-        // @todo tell the suggestion controller the blog id and what kind of suggestions we want
+        [self.navigationController pushViewController:suggestionsController animated:YES];
+        suggestionsController.delegate = self;
         
         return NO;
     }
     
     return YES;
+}
+
+#pragma mark - SuggestionsTableViewDelegate
+
+- (void)suggestionViewDidSelect:(SuggestionsTableViewController *)suggestionsController
+                  selectionString:(NSString *)selectionString
+{
+    self.inlineComposeView.text = [self.inlineComposeView.text stringByAppendingString:selectionString];
+    [self.navigationController popViewControllerAnimated:YES]; // Close the suggestions controller
+}
+
+- (void)suggestionViewDidDisappear:(SuggestionsTableViewController *)suggestionsController
+{
+    [self.inlineComposeView becomeFirstResponder];    
 }
 
 #pragma mark - WPContentViewDelegate
