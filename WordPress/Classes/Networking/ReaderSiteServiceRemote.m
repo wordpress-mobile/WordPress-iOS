@@ -221,18 +221,30 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     }];
 }
 
-- (void)blockSiteWithID:(NSUInteger)siteID success:(void(^)())success failure:(void(^)(NSError *error))failure
+- (void)flagSiteWithID:(NSUInteger)siteID asBlocked:(BOOL)blocked success:(void(^)())success failure:(void(^)(NSError *error))failure
 {
-    NSString *path = [NSString stringWithFormat:@"me/block/sites/%d/new", siteID];
+    NSString *path;
+    if (blocked) {
+        path = [NSString stringWithFormat:@"me/block/sites/%d/new", siteID];
+    } else {
+        path = [NSString stringWithFormat:@"me/block/sites/%d/delete", siteID];
+    }
+
     [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *dict = (NSDictionary *)responseObject;
         if (![[dict numberForKey:@"success"] boolValue]) {
-            failure([self errorForUnsuccessfulBlockSite]);
+            if (blocked) {
+                failure([self errorForUnsuccessfulBlockSite]);
+            } else {
+                failure([self errorForUnsuccessfulUnblockSite]);
+            }
             return;
         }
+
         if (success) {
             success();
         }
+
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
             failure(error);
@@ -291,6 +303,14 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 - (NSError *)errorForUnsuccessfulBlockSite
 {
     NSString *description = NSLocalizedString(@"There was a problem blocking posts from the specified site.", @"Error message informing the user that there was a problem blocking posts from a site from their reader.");
+    NSDictionary *userInfo = @{NSLocalizedDescriptionKey:description};
+    NSError *error = [[NSError alloc] initWithDomain:ReaderSiteServiceRemoteErrorDomain code:ReaderSiteSErviceRemoteUnsuccessfulBlockSite userInfo:userInfo];
+    return error;
+}
+
+- (NSError *)errorForUnsuccessfulUnblockSite
+{
+    NSString *description = NSLocalizedString(@"There was a problem removing the block for specified site.", @"Error message informing the user that there was a problem clearing the block on site preventing its posts from displaying in the reader.");
     NSDictionary *userInfo = @{NSLocalizedDescriptionKey:description};
     NSError *error = [[NSError alloc] initWithDomain:ReaderSiteServiceRemoteErrorDomain code:ReaderSiteSErviceRemoteUnsuccessfulBlockSite userInfo:userInfo];
     return error;

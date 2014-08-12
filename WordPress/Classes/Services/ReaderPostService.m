@@ -390,6 +390,31 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     }];
 }
 
+- (void)flagPostsFromSite:(NSNumber *)siteID asBlocked:(BOOL)blocked
+{
+    NSError *error;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
+    request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@ AND isWPCom = YES", siteID];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@, error deleting posts belonging to siteID %@: %@", NSStringFromSelector(_cmd), siteID, error);
+        return;
+    }
+
+    if ([results count] == 0) {
+        return;
+    }
+
+    for (ReaderPost *post in results) {
+        post.isSiteBlocked = blocked;
+    }
+
+    [self.managedObjectContext performBlockAndWait:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
+}
+
+
 #pragma mark - Private Methods
 
 /**
@@ -563,6 +588,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
             [self deletePostsForTopic:readerTopic missingFromBatch:newPosts withStartingDate:date];
         }
         [self deletePostsInExcessOfMaxAllowedForTopic:readerTopic];
+        [self deletePostsFromBlockedSites];
         readerTopic.lastSynced = [NSDate date];
 
         // performBlockAndWait here so we know our objects are saved before we call success.
@@ -687,6 +713,32 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     for (NSUInteger i = ReaderPostServiceMaxPosts; i < count; i++) {
         ReaderPost *post = [posts objectAtIndex:i];
         DDLogInfo(@"Deleting ReaderPost: %@", post.postTitle);
+        [self.managedObjectContext deleteObject:post];
+    }
+}
+
+/**
+ Delete posts that are flagged as belonging to a blocked site.
+ 
+ The managed object context is not saved.
+ */
+- (void)deletePostsFromBlockedSites
+{
+    NSError *error;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
+    request.predicate = [NSPredicate predicateWithFormat:@"isSiteBlocked = YES"];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@, error deleting deleting posts from blocked sites: %@", NSStringFromSelector(_cmd), error);
+        return;
+    }
+
+    if ([results count] == 0) {
+        return;
+    }
+
+    for (ReaderPost *post in results) {
+        DDLogInfo(@"Deleting post: %@", post);
         [self.managedObjectContext deleteObject:post];
     }
 }
