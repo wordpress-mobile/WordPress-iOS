@@ -2,7 +2,7 @@
 #import <CoreLocation/CoreLocation.h>
 
 @interface Coordinate : NSObject <NSCoding> {
-	CLLocationCoordinate2D _coordinate;
+    CLLocationCoordinate2D _coordinate;
 }
 
 @property (readonly) CLLocationDegrees latitude;

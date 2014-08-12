@@ -3,10 +3,15 @@
 
 @implementation CategoryServiceRemote
 
-- (void)createCategoryWithName:(NSString *)name parentCategoryID:(NSNumber *)parentCategoryID forBlog:(Blog *)blog success:(void (^)(NSNumber *))success failure:(void (^)(NSError *))failure {
+- (void)createCategoryWithName:(NSString *)name
+              parentCategoryID:(NSNumber *)parentCategoryID
+                       forBlog:(Blog *)blog
+                       success:(void (^)(NSNumber *))success
+                       failure:(void (^)(NSError *))failure
+{
     NSDictionary *parameters = @{ @"name" : name ?: [NSNull null],
                                   @"parent_id" : parentCategoryID ?: @0};
-    
+
     // TODO - Get the API for a Blog without needing the Blog object
     [blog.api callMethod:@"wp.newCategory"
               parameters:[blog getXMLRPCArgsWithExtra:parameters]
@@ -14,7 +19,7 @@
                      NSNumber *categoryID = @([responseObject integerValue]);
                      int newID = [categoryID intValue];
                      if (newID > 0) {
-                         
+
                          if (success) {
                              success(categoryID);
                          }

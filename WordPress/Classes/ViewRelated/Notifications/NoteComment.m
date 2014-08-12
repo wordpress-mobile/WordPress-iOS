@@ -2,7 +2,8 @@
 
 @implementation NoteComment
 
-- (id)initWithCommentID:(NSString *)commentID {
+- (id)initWithCommentID:(NSString *)commentID
+{
     self = [super init];
     if (self != nil) {
         self.commentID = commentID;
@@ -12,11 +13,13 @@
     return self;
 }
 
-- (BOOL)needsData{
+- (BOOL)needsData
+{
     return self.commentData == nil && self.loading == NO;
 }
 
-- (BOOL)isLoaded {
+- (BOOL)isLoaded
+{
     return self.commentData != nil;
 }
 

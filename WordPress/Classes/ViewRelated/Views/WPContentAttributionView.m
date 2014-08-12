@@ -36,7 +36,6 @@ const CGFloat WPContentAttributionMenuSize = 30.0;
     return self;
 }
 
-
 #pragma mark - Public Methods
 
 - (CGSize)intrinsicContentSize
@@ -46,8 +45,9 @@ const CGFloat WPContentAttributionMenuSize = 30.0;
 
 - (void)setContentProvider:(id<WPContentViewProvider>)contentProvider
 {
-    if (_contentProvider == contentProvider)
+    if (_contentProvider == contentProvider) {
         return;
+    }
 
     _contentProvider = contentProvider;
     [self configureView];
@@ -72,6 +72,7 @@ const CGFloat WPContentAttributionMenuSize = 30.0;
 {
     self.attributionMenuButton.hidden = hide;
 }
+
 
 #pragma mark - Private Methods
 
@@ -120,7 +121,6 @@ const CGFloat WPContentAttributionMenuSize = 30.0;
     [self.attributionLinkButton setTitle:[self.contentProvider blogNameForDisplay] forState:UIControlStateNormal];
     [self.attributionLinkButton setTitle:[self.contentProvider blogNameForDisplay] forState:UIControlStateHighlighted];
 }
-
 
 #pragma mark - Subview factories
 
@@ -177,7 +177,6 @@ const CGFloat WPContentAttributionMenuSize = 30.0;
     borderView.backgroundColor = [UIColor colorWithRed:241.0/255.0 green:241.0/255.0 blue:241.0/255.0 alpha:1.0];
     return borderView;
 }
-
 
 #pragma mark - Actions
 

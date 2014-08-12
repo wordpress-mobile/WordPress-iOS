@@ -44,45 +44,52 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic isSharingEnabled;
 @dynamic isSiteBlocked;
 
-- (BOOL)isFollowable {
+- (BOOL)isFollowable
+{
     // For now, anything in the reader is something that can be followed.
     return YES;
 }
 
-- (BOOL)isPrivate {
+- (BOOL)isPrivate
+{
     return self.isBlogPrivate;
 }
 
-- (void)storeComment:(NSNumber *)commentID comment:(NSString *)comment {
+- (void)storeComment:(NSNumber *)commentID comment:(NSString *)comment
+{
     self.storedComment = [NSString stringWithFormat:@"%i|storedcomment|%@", [commentID integerValue], comment];
 }
 
-- (NSDictionary *)getStoredComment {
+- (NSDictionary *)getStoredComment
+{
     if (!self.storedComment) {
         return nil;
     }
-    
+
     NSArray *arr = [self.storedComment componentsSeparatedByString:@"|storedcomment|"];
     NSNumber *commentID = [[arr objectAtIndex:0] numericValue];
     NSString *commentText = [arr objectAtIndex:1];
     return @{ReaderPostStoredCommentIDKey:commentID, ReaderPostStoredCommentTextKey:commentText};
 }
 
-- (NSString *)authorString {
+- (NSString *)authorString
+{
     if ([self.blogName length] > 0) {
         return self.blogName;
     } else if ([self.authorDisplayName length] > 0) {
         return self.authorDisplayName;
-    } else {
-        return self.author;
     }
+
+    return self.author;
 }
 
-- (NSString *)avatar {
+- (NSString *)avatar
+{
     return self.authorAvatarURL;
 }
 
-- (UIImage *)cachedAvatarWithSize:(CGSize)size {
+- (UIImage *)cachedAvatarWithSize:(CGSize)size
+{
     NSString *hash;
     WPAvatarSourceType type = [self avatarSourceTypeWithHash:&hash];
     if (!hash) {
@@ -91,7 +98,8 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     return [[WPAvatarSource sharedSource] cachedImageForAvatarHash:hash ofType:type withSize:size];
 }
 
-- (void)fetchAvatarWithSize:(CGSize)size success:(void (^)(UIImage *image))success {
+- (void)fetchAvatarWithSize:(CGSize)size success:(void (^)(UIImage *image))success
+{
     NSString *hash;
     WPAvatarSourceType type = [self avatarSourceTypeWithHash:&hash];
 
@@ -102,7 +110,8 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     }
 }
 
-- (WPAvatarSourceType)avatarSourceTypeWithHash:(NSString **)hash {
+- (WPAvatarSourceType)avatarSourceTypeWithHash:(NSString **)hash
+{
     if (self.authorAvatarURL) {
         NSURL *avatarURL = [NSURL URLWithString:self.authorAvatarURL];
         if (avatarURL) {
@@ -116,7 +125,8 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     return WPAvatarSourceTypeUnknown;
 }
 
-- (NSURL *)featuredImageURL {
+- (NSURL *)featuredImageURL
+{
     if (self.featuredImage && [self.featuredImage length] > 0) {
         return [NSURL URLWithString:self.featuredImage];
     }
@@ -124,7 +134,8 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     return nil;
 }
 
-- (NSString *)featuredImageForWidth:(NSUInteger)width height:(NSUInteger)height {
+- (NSString *)featuredImageForWidth:(NSUInteger)width height:(NSUInteger)height
+{
     NSString *fmt = nil;
     if ([self.featuredImage rangeOfString:@"mshots/"].location == NSNotFound) {
         fmt = @"https://i0.wp.com/%@?resize=%i,%i";
@@ -158,17 +169,16 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 @end
 
-
 @implementation ReaderPost (WordPressComApi)
 
 + (void)getCommentsForPost:(NSUInteger)postID
                   fromSite:(NSString *)siteID
             withParameters:(NSDictionary*)params
                    success:(WordPressComApiRestSuccessResponseBlock)success
-                   failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    
+                   failure:(WordPressComApiRestSuccessFailureBlock)failure
+{
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%i/replies", siteID, postID];
-    
+
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
