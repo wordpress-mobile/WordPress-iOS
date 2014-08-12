@@ -41,7 +41,8 @@ NSString const *NoteHeightKey           = @"height";
 
 - (instancetype)initWithDictionary:(NSDictionary *)rawURL
 {
-	if ((self = [super init]))
+    self = [super init];
+	if (self)
 	{
 		NSArray *indices	= [rawURL arrayForKey:NoteIndicesKey];
 		NSInteger location	= [indices.firstObject intValue];
@@ -66,7 +67,8 @@ NSString const *NoteHeightKey           = @"height";
 
 - (instancetype)initWithDictionary:(NSDictionary *)rawMedia
 {
-	if ((self = [super init]))
+    self = [super init];
+	if (self)
 	{
 		// Parse Indices
 		NSArray *indices	= [rawMedia arrayForKey:NoteIndicesKey];
@@ -108,13 +110,14 @@ NSString const *NoteHeightKey           = @"height";
 
 - (instancetype)initWithDictionary:(NSDictionary *)rawBlock
 {
-	if ((self = [super init]))
+    self = [super init];
+	if (self)
 	{
         NSArray *rawUrls            = [rawBlock arrayForKey:NoteIdsKey];
         NSArray *rawMedia           = [rawBlock arrayForKey:NoteMediaKey];
         
 		_text                       = [rawBlock stringForKey:NoteTextKey];
-		_urls                       = [[self class] parseObjectsOfKind:[NotificationURL class] fromArray:rawUrls];
+		_urls                       = [[self class] parseObjectsOfKind:[NotificationURL class]   fromArray:rawUrls];
 		_media                      = [[self class] parseObjectsOfKind:[NotificationMedia class] fromArray:rawMedia];
         _meta                       = [rawBlock dictionaryForKey:NoteMetaKey];
         _actions                    = [rawBlock dictionaryForKey:NoteActionsKey];
@@ -232,7 +235,7 @@ NSString const *NoteHeightKey           = @"height";
 
 - (BOOL)isStatsEvent
 {
-    NSArray *events = @[ @"_milestone_", @"traffic_", @"best_", @"most_"];
+    NSArray *events = @[@"_milestone_", @"traffic_", @"best_", @"most_"];
     
     for (NSString *event in events) {
         if ([self.type rangeOfString:event].length) {

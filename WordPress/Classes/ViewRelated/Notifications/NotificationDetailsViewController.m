@@ -305,7 +305,6 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
 
 - (void)toggleFollowWithBlock:(NotificationBlock *)block
 {
-    BOOL isFollowing = [[block actionForKey:NoteActionFollowKey] boolValue];
     NSNumber *siteID = block.metaSiteID;
     if (!siteID) {
 		return;
@@ -314,7 +313,9 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
     // Stats please!
     [WPAnalytics track:WPAnalyticsStatNotificationPerformedAction];
 
-    // Display a Toast    
+    // Display a Toast
+    BOOL isFollowing = [[block actionForKey:NoteActionFollowKey] boolValue];
+    
     if (isFollowing) {
         [WPToast showToastWithMessage:NSLocalizedString(@"Unfollowed", @"User unfollowed a blog")
                              andImage:[UIImage imageNamed:NotificationActionUnfollowIcon]];
