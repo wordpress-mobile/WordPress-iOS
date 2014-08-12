@@ -603,8 +603,6 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         
         [self.navigationController pushViewController:suggestionsController animated:YES];
         suggestionsController.delegate = self;
-        
-        return NO;
     }
     
     return YES;
