@@ -118,4 +118,6 @@ extern NSString * const ReaderPostServiceErrorDomain;
 
 - (void)deletePostsFromSiteWithID:(NSNumber *)siteID;
 
+- (void)flagPostsFromSite:(NSNumber *)siteID asBlocked:(BOOL)blocked;
+
 @end

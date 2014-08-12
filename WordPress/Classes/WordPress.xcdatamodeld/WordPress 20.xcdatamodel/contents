@@ -326,6 +326,7 @@
         <attribute name="isLikesEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isReblogged" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isSharingEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isSiteBlocked" optional="YES" attributeType="Boolean" indexed="YES" syncable="YES"/>
         <attribute name="isWPCom" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="likeCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="postAvatar" optional="YES" attributeType="String" syncable="YES"/>
@@ -387,9 +388,9 @@
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="150"/>
         <element name="ReaderComment" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="463"/>
+        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="480"/>
+        <element name="ReaderSite" positionX="9" positionY="153" width="128" height="163"/>
         <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="180"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
-        <element name="ReaderSite" positionX="9" positionY="153" width="128" height="163"/>
     </elements>
 </model>
