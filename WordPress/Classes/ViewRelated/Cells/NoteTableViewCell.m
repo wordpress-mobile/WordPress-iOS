@@ -14,7 +14,7 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-static NSInteger const NoteCellNumberOfLines            = 5;
+static NSInteger const NoteCellNumberOfLines            = 0;
 static CGFloat const NoteCellNoticonRadius              = 10.0f;
 static NSString * const NoteCellPlaceholderImageName    = @"gravatar";
 
@@ -65,6 +65,19 @@ static NSString * const NoteCellPlaceholderImageName    = @"gravatar";
     self.timestampLabel.textColor           = [WPStyleGuide notificationTimestampTextColor];
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self.contentView layoutIfNeeded];
+    [self refreshLabelPreferredMaxLayoutWidth];
+}
+
+- (void)refreshLabelPreferredMaxLayoutWidth
+{
+    CGFloat width = CGRectGetMinX(self.timestampLabel.frame) - 2 - CGRectGetMinX(self.subjectLabel.frame);
+    self.subjectLabel.preferredMaxLayoutWidth = width;
+}
+
 
 #pragma mark - Properties
 
@@ -81,8 +94,8 @@ static NSString * const NoteCellPlaceholderImageName    = @"gravatar";
 
 - (void)setRead:(BOOL)read
 {
-    [self refreshBackgrounds];
     _read = read;
+    [self refreshBackgrounds];
 }
 
 - (void)setNoticon:(NSString *)noticon
@@ -128,6 +141,7 @@ static NSString * const NoteCellPlaceholderImageName    = @"gravatar";
     self.timestampLabel.text = [timestamp shortString];
     _timestamp = timestamp;
 }
+
 
 #pragma mark - Private Helpers
 
