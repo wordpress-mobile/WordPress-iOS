@@ -34,7 +34,7 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-static NSTimeInterval NotificationPushMaxWait   = 1;
+static NSTimeInterval NotificationPushMaxWait = 1;
 
 #pragma mark ====================================================================================
 #pragma mark Private Properties
@@ -164,7 +164,7 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
 
         // Show the details only if NotificationPushMaxWait hasn't elapsed
         if (ABS(self.pushNotificationDate.timeIntervalSinceNow) <= NotificationPushMaxWait) {
-            [self showDetailsForNoteWithID:key animated:YES];
+            [self showDetailsForNoteWithID:key];
         }
         
         // Cleanup
@@ -175,6 +175,7 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
     // Always nuke the cellHeight Cache's
     [self.cachedRowHeights removeAllObjects];
 }
+
 
 #pragma mark - NSNotification Helpers
 
@@ -192,9 +193,10 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
     [self resetApplicationBadge];
 }
 
+
 #pragma mark - Public Methods
 
-- (void)showDetailsForNoteWithID:(NSString *)notificationID animated:(BOOL)animated
+- (void)showDetailsForNoteWithID:(NSString *)notificationID
 {
     Simperium *simperium        = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
     SPBucket *notesBucket       = [simperium bucketForName:self.entityName];
@@ -203,7 +205,7 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
     if (notification) {
         DDLogInfo(@"Pushing Notification Details for: [%@]", notificationID);
         
-        [self showDetailsForNotification:notification animated:animated];
+        [self showDetailsForNotification:notification];
     } else {
         DDLogInfo(@"Notification Details for [%@] cannot be pushed right now. Waiting %f secs", notificationID, NotificationPushMaxWait);
         
@@ -277,13 +279,13 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
 
 #pragma mark - Segue Helpers
 
-- (void)showDetailsForNotification:(Notification *)note animated:(BOOL)animated
+- (void)showDetailsForNotification:(Notification *)note
 {
-#warning TODO: FIXME: Segues don't have animated = NO
     [WPAnalytics track:WPAnalyticsStatNotificationsOpenedNotificationDetails];
     
-    // Make sure there's nothing else on the stack
-    [self.navigationController popToRootViewControllerAnimated:NO];
+    if (self.navigationController.visibleViewController != self) {
+        [self.navigationController popToRootViewControllerAnimated:NO];
+    }
     
     if (note.isMatcher && note.metaPostID && note.metaSiteID) {
         [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:note];
@@ -319,18 +321,10 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
         self.layoutTableViewCell = (NoteTableViewCell *)[tableView dequeueReusableCellWithIdentifier:[NoteTableViewCell layoutIdentifier]];
     }
 
-    self.layoutTableViewCell.bounds = CGRectMake(0.0f, 0.0f, CGRectGetWidth(tableView.bounds), CGRectGetHeight(_layoutTableViewCell.bounds));
-
     // Setup the cell
     [self configureCell:self.layoutTableViewCell atIndexPath:indexPath];
-    [self.layoutTableViewCell layoutIfNeeded];
-
-    // Calculate the height: There is an ugly bug where the calculated height might be off by 1px, thus, clipping the text
-    CGFloat const NoteCellHeightPadding = 1;
     
-    CGFloat width   = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
-    CGSize size     = [self.layoutTableViewCell.contentView systemLayoutSizeFittingSize:CGSizeMake(width, 0.0f)];
-    CGFloat height  = ceil(size.height) + NoteCellHeightPadding;
+    CGFloat height = [self.layoutTableViewCell heightForWidth:CGRectGetWidth(self.tableView.bounds)];
     
     // Cache
     self.cachedRowHeights[rowCacheKey] = @(height);
@@ -342,6 +336,7 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
 {
     Notification *note = [self.resultsController objectAtIndexPath:indexPath];
     if (!note) {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
         return;
     }
     
@@ -356,7 +351,7 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
     }
     
     // At last, push the details
-    [self showDetailsForNotification:note animated:YES];
+    [self showDetailsForNotification:note];
 }
 
 
@@ -377,6 +372,7 @@ static NSTimeInterval NotificationPushMaxWait   = 1;
         [readerViewController setupWithPostID:note.metaPostID siteID:note.metaSiteID];
     }
 }
+
 
 #pragma mark - WPTableViewController subclass methods
 
