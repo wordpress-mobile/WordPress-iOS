@@ -12,6 +12,8 @@
 @property (nonatomic, strong) NSString              *noticon;
 @property (nonatomic, strong) NSDate                *timestamp;
 
+- (CGFloat)heightForWidth:(CGFloat)width;
+
 + (NSString *)reuseIdentifier;
 + (NSString *)layoutIdentifier;
 

@@ -5,6 +5,6 @@
 
 @interface NotificationsViewController : WPTableViewController
 
-- (void)showDetailsForNoteWithID:(NSString *)notificationID animated:(BOOL)animated;
+- (void)showDetailsForNoteWithID:(NSString *)notificationID;
 
 @end
