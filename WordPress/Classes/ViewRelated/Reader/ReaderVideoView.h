@@ -13,8 +13,8 @@ typedef enum {
 @property (nonatomic, strong) NSString *title;
 
 - (void)setContentURL:(NSURL *)url
-			   ofType:(ReaderVideoContentType)type
-			  success:(void (^)(id videoView))success
-			  failure:(void (^)(id videoView, NSError *error))failure;
+               ofType:(ReaderVideoContentType)type
+              success:(void (^)(id videoView))success
+              failure:(void (^)(id videoView, NSError *error))failure;
 
 @end

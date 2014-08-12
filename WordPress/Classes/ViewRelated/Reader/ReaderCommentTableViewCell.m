@@ -61,6 +61,8 @@
             break;
         case UITableViewCellAccessoryNone:
             break;
+        default:
+            break;
     }
 
     // reduce width for grouped table views
@@ -77,11 +79,10 @@
     return desiredHeight;
 }
 
-
 + (NSAttributedString *)convertHTMLToAttributedString:(NSString *)html withOptions:(NSDictionary *)options
 {
     NSAssert(html != nil, @"Can't convert nil to AttributedString");
-    
+
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[WPStyleGuide defaultDTCoreTextOptions]];
     [dict setObject:[WPStyleGuide whisperGrey] forKey:DTDefaultTextColor];
     html = [html stringByReplacingHTMLEmoticonsWithEmoji];
@@ -89,10 +90,9 @@
     if (options) {
         [dict addEntriesFromDictionary:options];
     }
-    
+
     return [[NSAttributedString alloc] initWithHTMLData:[html dataUsingEncoding:NSUTF8StringEncoding] options:dict documentAttributes:nil];
 }
-
 
 #pragma mark - Lifecycle Methods
 
@@ -153,14 +153,14 @@
         // Make sure the text view doesn't overlap any of the other views.
         [self.contentView sendSubviewToBack:self.textContentView];
     }
-    
+
     return self;
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
+
     // We have to manually update the indentation of the content view? wtf.
     CGRect frame = self.contentView.frame;
     CGFloat indent = self.indentationWidth * self.indentationLevel;
@@ -199,7 +199,7 @@
 - (void)prepareForReuse
 {
     [super prepareForReuse];
-    
+
     self.textContentView.attributedString = nil;
     [self.bylineButton setTitle:@"" forState:UIControlStateNormal];
     [self.bylineButton setTitle:@"" forState:UIControlStateSelected];
@@ -207,13 +207,12 @@
     [self.timeButton setTitle:@"" forState:UIControlStateSelected];
 }
 
-
 #pragma mark - Instance Methods
 
 - (void)configureCell:(ReaderComment *)comment
 {
     self.comment = comment;
-    
+
     self.indentationWidth = RCTVCIndentationWidth;
     self.indentationLevel = MIN(RCTVCMaxIndentationLevel, [comment.depth integerValue]);
 
@@ -262,7 +261,7 @@
     if (URL == nil) {
         return nil;
     }
-    
+
     NSString *identifier = [attributes objectForKey:DTGUIDAttribute];
 
     DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
@@ -284,7 +283,7 @@
 
     [button setImage:normalImage forState:UIControlStateNormal];
     [button setImage:highlightImage forState:UIControlStateHighlighted];
-    
+
     // use normal push action for opening URL
     [button addTarget:self action:@selector(handleLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
 

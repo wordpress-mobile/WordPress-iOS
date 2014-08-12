@@ -10,7 +10,8 @@
 
 @implementation BlogServiceRemoteREST
 
-- (id)initWithApi:(WordPressComApi *)api {
+- (id)initWithApi:(WordPressComApi *)api
+{
     self = [super init];
     if (self) {
         _api = api;
@@ -40,7 +41,8 @@
 
 #pragma mark - Mapping methods
 
-- (NSDictionary *)mapOptionsFromResponse:(NSDictionary *)response {
+- (NSDictionary *)mapOptionsFromResponse:(NSDictionary *)response
+{
     NSMutableDictionary *options = [NSMutableDictionary dictionary];
     options[@"home_url"] = response[@"URL"];
     options[@"post_thumbnail"] = [response valueForKeyPath:@"options.featured_images_enabled"];

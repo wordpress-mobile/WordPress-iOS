@@ -11,7 +11,6 @@
 #import "BlogServiceRemoteREST.h"
 #import "BlogServiceRemoteProxy.h"
 
-
 @interface BlogService ()
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
@@ -19,8 +18,6 @@
 @end
 
 NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
-
-
 
 @implementation BlogService
 
@@ -30,7 +27,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     if (self) {
         _managedObjectContext = context;
     }
-    
+
     return self;
 }
 
@@ -38,17 +35,17 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Blog"];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blogID == %@", blogID];
-    
+
     fetchRequest.predicate = predicate;
-    
+
     NSError *error = nil;
     NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    
+
     if (error) {
         DDLogError(@"Error while fetching Blog by blogID: %@", error);
         return nil;
     }
-    
+
     return [results firstObject];
 }
 
@@ -57,24 +54,24 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     if (!blogName) {
         return nil;
     }
-    
+
     NSPredicate *subjectPredicate       = [NSPredicate predicateWithFormat:@"self.blogName CONTAINS[cd] %@", blogName];
     NSPredicate *wpcomPredicate         = [NSPredicate predicateWithFormat:@"self.account.isWpcom == YES"];
     NSPredicate *jetpackPredicate       = [NSPredicate predicateWithFormat:@"self.jetpackAccount != nil"];
     NSPredicate *statsBlogsPredicate    = [NSCompoundPredicate orPredicateWithSubpredicates:@[wpcomPredicate, jetpackPredicate]];
     NSPredicate *combinedPredicate      = [NSCompoundPredicate andPredicateWithSubpredicates:@[subjectPredicate, statsBlogsPredicate]];
-    
+
     NSFetchRequest *fetchRequest        = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Blog class])];
     fetchRequest.predicate              = combinedPredicate;
-    
+
     NSError *error = nil;
     NSArray *blogs = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    
+
     if (error) {
         DDLogError(@"Error while retrieving blog named %d: %@", blogName, error);
         return nil;
     }
-    
+
     return [blogs firstObject];
 }
 
@@ -88,11 +85,11 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 - (Blog *)lastUsedOrFirstBlog
 {
     Blog *blog = [self lastUsedBlog];
-    
+
     if (!blog) {
         blog = [self firstBlog];
     }
-    
+
     return blog;
 }
 
@@ -123,11 +120,11 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
             [defaults synchronize];
         }
     }
-    
+
     if (!url) {
         return nil;
     }
-    
+
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = YES AND url = %@", url];
     [fetchRequest setPredicate:predicate];
@@ -138,14 +135,14 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         DDLogError(@"Couldn't fetch blogs: %@", error);
         return nil;
     }
-    
-    if([results count] == 0) {
+
+    if ([results count] == 0) {
         // Blog might have been removed from the app. Clear the key.
         [defaults removeObjectForKey:LastUsedBlogURLDefaultsKey];
         [defaults synchronize];
         return nil;
     }
-    
+
     return [results firstObject];
 }
 
@@ -157,12 +154,12 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
     NSError *error = nil;
     NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    
+
     if (error) {
         DDLogError(@"Couldn't fetch blogs: %@", error);
         return nil;
     }
-    
+
     return [results firstObject];
 }
 
@@ -195,7 +192,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
                              [self.managedObjectContext performBlockAndWait:^{
                                  [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
                              }];
-                             
+
                              if (success) {
                                  success();
                              }
@@ -204,7 +201,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
                                     blog.isSyncingMedia = NO;
                                     blog.isSyncingPages = NO;
                                     blog.isSyncingPosts = NO;
-                                    
+
                                     if (failure) {
                                         failure(error);
                                     }
@@ -218,7 +215,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         return;
     }
     blog.isSyncingPosts = YES;
-    
+
     // TODO :: Push batch size into remote since it's not a local constraint and could be remote implementation dependent
     NSUInteger postBatchSize = 40;
     NSUInteger postsToRequest = postBatchSize;
@@ -228,7 +225,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
             postsToRequest += postBatchSize;
         }
     }
-    
+
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncPostsForBlog:blog
                    batchSize:postsToRequest
@@ -236,7 +233,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
                      success:[self postsHandlerWithBlog:blog loadMore:more completionHandler:success]
                      failure:^(NSError *error) {
                          blog.isSyncingPosts = NO;
-                         
+
                          if (failure) {
                              failure(error);
                          }
@@ -245,12 +242,12 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 - (void)syncPagesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more
 {
-	if (blog.isSyncingPages) {
+    if (blog.isSyncingPages) {
         DDLogWarn(@"Already syncing pages. Skip");
         return;
     }
     blog.isSyncingPages = YES;
-    
+
     // TODO :: Push batch size into remote since it's not a local constraint and could be remote implementation dependent
     NSUInteger pageBatchSize = 40;
     NSUInteger pagesToRequest = pageBatchSize;
@@ -261,7 +258,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
             pagesToRequest += pageBatchSize;
         }
     }
-    
+
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncPagesForBlog:blog
                    batchSize:pagesToRequest
@@ -269,7 +266,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
                      success:[self pagesHandlerWithBlog:blog loadMore:more syncCount:syncCount completionHandler:success]
                      failure:^(NSError *error) {
                          blog.isSyncingPages = NO;
-                         
+
                          if (failure) {
                              failure(error);
                          }
@@ -295,13 +292,13 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         return;
     }
     blog.isSyncingMedia = YES;
-    
+
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncMediaLibraryForBlog:blog
                             success:[self mediaHandlerWithBlog:blog completionHandler:success]
                             failure:^(NSError *error) {
                                 blog.isSyncingMedia = NO;
-                                
+
                                 if (failure) {
                                     failure(error);
                                 }
@@ -337,7 +334,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
                                    blog.isSyncingMedia = NO;
                                    blog.isSyncingPages = NO;
                                    blog.isSyncingPosts = NO;
-                                   
+
                                    if (failure) {
                                        failure(error);
                                    }
@@ -359,18 +356,18 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     WPXMLRPCRequest *request = [blog.api XMLRPCRequestWithMethod:@"wpcom.getFeatures" parameters:parameters];
     WPXMLRPCRequestOperation *operation = [blog.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         BOOL videoEnabled = YES;
-        if(([responseObject isKindOfClass:[NSDictionary class]]) && ([responseObject objectForKey:@"videopress_enabled"] != nil)) {
+        if (([responseObject isKindOfClass:[NSDictionary class]]) && ([responseObject objectForKey:@"videopress_enabled"] != nil)) {
             videoEnabled = [[responseObject objectForKey:@"videopress_enabled"] boolValue];
         } else {
             videoEnabled = YES;
         }
-        
+
         if (success) {
             success(videoEnabled);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         DDLogError(@"Error while checking if VideoPress is enabled: %@", error);
-        
+
         if (failure) {
             failure(error);
         }
@@ -398,11 +395,11 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 - (NSArray *)blogsForAllAccounts
 {
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES];
-    
+
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:self.managedObjectContext]];
     [request setSortDescriptors:@[sortDescriptor]];
-    
+
     NSError *error;
     NSArray *blogs = [self.managedObjectContext executeFetchRequest:request error:&error];
 
@@ -410,13 +407,14 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         DDLogError(@"Error while retrieving all blogs");
         return nil;
     }
-    
+
     return blogs;
 }
 
 #pragma mark - Private methods
 
-- (id<BlogServiceRemote>)remoteForBlog:(Blog *)blog {
+- (id<BlogServiceRemote>)remoteForBlog:(Blog *)blog
+{
     BlogServiceRemoteXMLRPC *xmlrpcRemote = [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.api];
     BlogServiceRemoteREST *restRemote = nil;
     if (blog.restApi) {
@@ -432,30 +430,31 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:self.managedObjectContext]];
     [request setIncludesSubentities:NO];
-    
+
     if (predicate) {
         [request setPredicate:predicate];
     }
-    
+
     NSError *err;
     NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&err];
-    if(count == NSNotFound) {
+    if (count == NSNotFound) {
         count = 0;
     }
     return count;
 }
 
-- (NSUInteger)countForSyncedPostsWithEntityName:(NSString *)entityName forBlog:(Blog *)blog {
+- (NSUInteger)countForSyncedPostsWithEntityName:(NSString *)entityName forBlog:(Blog *)blog
+{
     __block NSUInteger count = 0;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber == %@) AND (postID != NULL) AND (original == NULL) AND (blog == %@)",
                               [NSNumber numberWithInt:AbstractPostRemoteStatusSync], blog];
     [request setPredicate:predicate];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:YES];
-    [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    [request setSortDescriptors:@[sortDescriptor]];
     request.includesSubentities = NO;
     request.resultType = NSCountResultType;
-    
+
     [self.managedObjectContext performBlockAndWait:^{
         NSError *error = nil;
         count = [self.managedObjectContext countForFetchRequest:request error:&error];
@@ -468,9 +467,10 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 - (CategoriesHandler)categoriesHandlerWithBlog:(Blog *)blog completionHandler:(void (^)(void))completion
 {
     return ^void(NSArray *categories) {
-        if ([blog isDeleted] || blog.managedObjectContext == nil)
+        if ([blog isDeleted] || blog.managedObjectContext == nil) {
             return;
-        
+        }
+
         [self.managedObjectContext performBlockAndWait:^{
             CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
             [categoryService mergeNewCategories:categories forBlogObjectID:blog.objectID];
@@ -487,7 +487,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     return ^void(NSArray *media) {
         [Media mergeNewMedia:media forBlog:blog];
         blog.isSyncingMedia = NO;
-        
+
         if (completion) {
             completion();
         }
@@ -497,9 +497,10 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 - (OptionsHandler)optionsHandlerWithBlog:(Blog *)blog completionHandler:(void (^)(void))completion
 {
     return ^void(NSDictionary *options) {
-        if ([blog isDeleted] || blog.managedObjectContext == nil)
+        if ([blog isDeleted] || blog.managedObjectContext == nil) {
             return;
-        
+        }
+
         blog.options = [NSDictionary dictionaryWithDictionary:options];
         NSString *minimumVersion = @"3.6";
         float version = [[blog version] floatValue];
@@ -511,7 +512,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
                 blog.lastUpdateWarning = minimumVersion;
             }
         }
-        
+
         [self.managedObjectContext performBlockAndWait:^{
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }];
@@ -525,21 +526,22 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 - (PagesHandler)pagesHandlerWithBlog:(Blog *)blog loadMore:(BOOL)more syncCount:(NSUInteger)syncCount completionHandler:(void (^)(void))completion
 {
     return ^void(NSArray *pages) {
-        if ([blog isDeleted] || blog.managedObjectContext == nil)
+        if ([blog isDeleted] || blog.managedObjectContext == nil) {
             return;
-        
+        }
+
         // If we asked for more and we got what we had, there are no more pages to load
         if (more && ([pages count] <= syncCount)) {
-            blog.hasOlderPages = [NSNumber numberWithBool:NO];
+            blog.hasOlderPages = @NO;
         } else if (!more) {
             //we should reset the flag otherwise when you refresh this blog you can't get more than 20 pages
-            blog.hasOlderPages = [NSNumber numberWithBool:YES];
+            blog.hasOlderPages = @YES;
         }
-        
+
         [Page mergeNewPosts:pages forBlog:blog];
         blog.lastPagesSync = [NSDate date];
         blog.isSyncingPages = NO;
-        
+
         if (completion) {
             completion();
         }
@@ -549,9 +551,10 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 - (PostFormatsHandler)postFormatsHandlerWithBlog:(Blog *)blog completionHandler:(void (^)(void))completion
 {
     return ^void(NSDictionary *postFormats) {
-        if ([blog isDeleted] || blog.managedObjectContext == nil)
+        if ([blog isDeleted] || blog.managedObjectContext == nil) {
             return;
-        
+        }
+
         NSDictionary *respDict = postFormats;
         if ([respDict objectForKey:@"supported"] && [[respDict objectForKey:@"supported"] isKindOfClass:[NSArray class]]) {
             NSMutableArray *supportedKeys = [NSMutableArray arrayWithArray:[respDict objectForKey:@"supported"]];
@@ -559,13 +562,13 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
             if (![supportedKeys containsObject:@"standard"]) {
                 [supportedKeys addObject:@"standard"];
             }
-            
+
             NSDictionary *allFormats = [respDict objectForKey:@"all"];
             NSMutableArray *supportedValues = [NSMutableArray array];
             for (NSString *key in supportedKeys) {
                 [supportedValues addObject:[allFormats objectForKey:key]];
             }
-            respDict = [NSDictionary dictionaryWithObjects:supportedValues forKeys:supportedKeys];
+            respDict = @{supportedValues: supportedKeys};
         }
         blog.postFormats = respDict;
 
@@ -578,22 +581,23 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 - (PostsHandler)postsHandlerWithBlog:(Blog *)blog loadMore:(BOOL)more completionHandler:(void (^)(void))completion
 {
     return ^void(NSArray *posts) {
-        if ([blog isDeleted] || blog.managedObjectContext == nil)
+        if ([blog isDeleted] || blog.managedObjectContext == nil) {
             return;
-        
+        }
+
         // If we asked for more and we got what we had, there are no more posts to load
         if (more && ([posts count] <= [blog.posts count])) {
-            blog.hasOlderPosts = [NSNumber numberWithBool:NO];
+            blog.hasOlderPosts = @NO;
         } else if (!more) {
             //we should reset the flag otherwise when you refresh this blog you can't get more than 20 posts
-            blog.hasOlderPosts = [NSNumber numberWithBool:YES];
+            blog.hasOlderPosts = @YES;
         }
-        
+
         [Post mergeNewPosts:posts forBlog:blog];
-        
+
         blog.lastPostsSync = [NSDate date];
         blog.isSyncingPosts = NO;
-        
+
         if (completion) {
             completion();
         }

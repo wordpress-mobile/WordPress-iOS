@@ -22,31 +22,32 @@
 #import <Simperium/Simperium.h>
 #import "VerticallyStackedButton.h"
 
-
 const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight = 64.f;
 NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRestorationKey";
 
-@interface NotificationsCommentDetailViewController () <InlineComposeViewDelegate, WPContentViewDelegate, UIViewControllerRestoration, UIActionSheetDelegate, SPBucketDelegate>
+@interface NotificationsCommentDetailViewController () <InlineComposeViewDelegate, WPContentViewDelegate,
+                                                        UIViewControllerRestoration, UIActionSheetDelegate,
+                                                        SPBucketDelegate>
 
-@property (nonatomic, assign) NSUInteger		followBlogID;
-@property (nonatomic, strong) NSDictionary		*commentActions;
-@property (nonatomic, strong) NSDictionary		*followDetails;
-@property (nonatomic, strong) NSDictionary		*comment;
-@property (nonatomic, strong) NSDictionary		*post;
-@property (nonatomic, strong) NSMutableArray	*commentThread;
-@property (nonatomic, strong) NSNumber			*siteID;
-@property (nonatomic, strong) NSDictionary		*followAction;
-@property (nonatomic, strong) NSURL				*headerURL;
-@property (nonatomic, assign) BOOL				hasScrollBackView;
+@property (nonatomic, assign) NSUInteger        followBlogID;
+@property (nonatomic, strong) NSDictionary        *commentActions;
+@property (nonatomic, strong) NSDictionary        *followDetails;
+@property (nonatomic, strong) NSDictionary        *comment;
+@property (nonatomic, strong) NSDictionary        *post;
+@property (nonatomic, strong) NSMutableArray    *commentThread;
+@property (nonatomic, strong) NSNumber            *siteID;
+@property (nonatomic, strong) NSDictionary        *followAction;
+@property (nonatomic, strong) NSURL                *headerURL;
+@property (nonatomic, assign) BOOL                hasScrollBackView;
 
-@property (nonatomic, strong) UIButton			*approveButton;
-@property (nonatomic, strong) UIButton			*trashButton;
-@property (nonatomic, strong) UIButton			*spamButton;
-@property (nonatomic, strong) UIButton			*replyButton;
+@property (nonatomic, strong) UIButton            *approveButton;
+@property (nonatomic, strong) UIButton            *trashButton;
+@property (nonatomic, strong) UIButton            *spamButton;
+@property (nonatomic, strong) UIButton            *replyButton;
 
 @property (nonatomic, weak) IBOutlet NoteCommentPostBanner *postBanner;
-@property (nonatomic, strong) CommentView		*commentView;
-@property (nonatomic, strong) Note				*note;
+@property (nonatomic, strong) CommentView        *commentView;
+@property (nonatomic, strong) Note                *note;
 
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 
@@ -56,33 +57,37 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
 @implementation NotificationsCommentDetailViewController
 
-
-+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
     NSString *noteID = [coder decodeObjectForKey:WPNotificationCommentRestorationKey];
-    if (!noteID)
+    if (!noteID) {
         return nil;
-    
+    }
+
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:noteID]];
-    if (!objectID)
+    if (!objectID) {
         return nil;
-    
+    }
+
     NSError *error = nil;
     Note *restoredNote = (Note *)[context existingObjectWithID:objectID error:&error];
     if (error || !restoredNote) {
         return nil;
     }
-    
+
     return [[self alloc] initWithNote:restoredNote];
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     _inlineComposeView.delegate = nil;
     _inlineComposeView = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id)initWithNote:(Note *)note {
+- (id)initWithNote:(Note *)note
+{
     self = [super init];
     if (self) {
         self.title = NSLocalizedString(@"Notification", @"Title for notification detail view");
@@ -98,7 +103,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 {
     [super viewDidLoad];
     self.commentThread = [[NSMutableArray alloc] initWithCapacity:1];
-    
+
     self.commentView = [[CommentView alloc] initWithFrame:self.view.frame];
     self.commentView.contentProvider = self.note;
     self.commentView.delegate = self;
@@ -111,33 +116,33 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
             self.commentView.headerText = [NSString stringWithFormat: @"%@:<p>\"%@\"</p>", noteBodyItem.headerHtml, noteBodyItem.bodyHtml];
         }
     }
-    
+
     WPFixedWidthScrollView *scrollView = [[WPFixedWidthScrollView alloc] initWithRootView:self.commentView];
     scrollView.alwaysBounceVertical = YES;
     if (IS_IPAD) {
         scrollView.contentInset = UIEdgeInsetsMake(WPTableViewTopMargin, 0, WPTableViewTopMargin, 0);
         scrollView.contentWidth = WPTableViewFixedWidth;
-    };
+    }
 
     scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
 
     self.view = scrollView;
     self.view.backgroundColor = [UIColor whiteColor];
-    
+
     self.replyButton = [VerticallyStackedButton buttonWithType:UIButtonTypeSystem];
     [self.replyButton setImage:[UIImage imageNamed:@"icon-comments-reply"] forState:UIControlStateNormal];
     [self.replyButton setTitle:NSLocalizedString(@"Reply", @"Verb, reply to a comment") forState:UIControlStateNormal];
     [self.replyButton setAccessibilityLabel:NSLocalizedString(@"Reply", @"Spoken accessibility label.")];
     [self.replyButton addTarget:self action:@selector(replyAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.commentView addCustomActionButton:self.replyButton];
-    
+
     self.approveButton = [VerticallyStackedButton buttonWithType:UIButtonTypeSystem];
     [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-approve"] forState:UIControlStateNormal];
     [self.approveButton setTitle:NSLocalizedString(@"Approve", @"Verb, approve a comment") forState:UIControlStateNormal];
     [self.approveButton setAccessibilityLabel:NSLocalizedString(@"Toggle approve or unapprove", @"Spoken accessibility label.")];
     [self.approveButton addTarget:self action:@selector(approveOrUnapproveAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.commentView addCustomActionButton:self.approveButton];
-    
+
     self.spamButton = [VerticallyStackedButton buttonWithType:UIButtonTypeSystem];
     [self.spamButton setImage:[UIImage imageNamed:@"icon-comments-spam"] forState:UIControlStateNormal];
     [self.spamButton setTitle:NSLocalizedString(@"Spam", @"Verb, spam comment") forState:UIControlStateNormal];
@@ -153,19 +158,18 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     [self.commentView addCustomActionButton:self.trashButton];
     
     [self.view addSubview:self.commentView];
-    
+
     self.title = NSLocalizedString(@"Comment", @"Title for detail view of a comment notification");
 
     [self displayNote];
-    
+
     // start fetching the thread
     [self updateCommentThread];
-
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
     self.inlineComposeView.delegate = self;
     [self.view addSubview:self.inlineComposeView];
-    
+
     self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -181,15 +185,16 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     Simperium *simperium = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
     SPBucket *noteBucket = [simperium bucketForName:@"NoteSimperium"];
     noteBucket.delegate = self;
-
 }
 
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
+{
     [coder encodeObject:[[self.note.objectID URIRepresentation] absoluteString] forKey:WPNotificationCommentRestorationKey];
     [super encodeRestorableStateWithCoder:coder];
 }
 
-- (void)displayNote {
+- (void)displayNote
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
@@ -198,32 +203,33 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     NSArray *actions = self.note.bodyActions;
     NSDictionary *action = [actions firstObject];
     self.siteID = [action valueForKeyPath:@"params.site_id"];
-    
+
     NoteComment *comment = [[NoteComment alloc] initWithCommentID:[action valueForKeyPath:@"params.comment_id"]];
     [self.commentThread addObject:comment];
-    
+
     NSString *postPath = [NSString stringWithFormat:@"sites/%@/posts/%@", [action valueForKeyPath:@"params.site_id"], [action valueForKeyPath:@"params.post_id"]];
-    
+
     // if we don't have post information fetch it from the api
     if (self.post == nil) {
         [[defaultAccount restApi] GET:postPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             self.post = responseObject;
             NSString *postTitle = [[self.post valueForKeyPath:@"title"] stringByDecodingXMLCharacters];
-            if (!postTitle || [postTitle isEqualToString:@""])
+            if (!postTitle || [postTitle isEqualToString:@""]) {
                 postTitle = NSLocalizedString(@"Untitled Post", @"Used when a post has no title");
+            }
             self.postBanner.titleLabel.text = postTitle;
             id authorAvatarURL = [self.post valueForKeyPath:@"author.avatar_URL"];
             if ([authorAvatarURL isKindOfClass:[NSString class]]) {
                 [self.postBanner setAvatarURL:[NSURL URLWithString:authorAvatarURL]];
             }
-            
+
             NSString *headerUrl = [self.post objectForKey:@"URL"];
             if (headerUrl != nil) {
                 self.headerURL = [NSURL URLWithString:headerUrl];
             }
-            
+
             self.postBanner.userInteractionEnabled = YES;
-            
+
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
         }];
@@ -328,7 +334,8 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     button.enabled = state;
 }
 
-- (NSDictionary *)getActionByType:(NSString *)type {
+- (NSDictionary *)getActionByType:(NSString *)type
+{
     NSArray *actions = [self.note bodyActions];
     for (NSDictionary *action in actions) {
         if ([[action valueForKey:@"type"] isEqualToString:type]) {
@@ -340,11 +347,13 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
 #pragma mark - Actions
 
-- (void)visitPostURL:(id)sender {
+- (void)visitPostURL:(id)sender
+{
     [self pushToURL:self.headerURL];
 }
 
-- (void)pushToURL:(NSURL *)url {
+- (void)pushToURL:(NSURL *)url
+{
     if (IS_IPHONE) {
         [self.inlineComposeView resignFirstResponder];
     }
@@ -353,17 +362,18 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
         WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-        
+
         [webViewController setUsername:[defaultAccount username]];
         [webViewController setPassword:[defaultAccount password]];
         [webViewController setUrl:[url ensureSecureURL]];
     } else {
-        [webViewController setUrl:url];        
+        [webViewController setUrl:url];
     }
     [self.navigationController pushViewController:webViewController animated:YES];
 }
 
-- (void)approveOrUnapproveAction:(id)sender {
+- (void)approveOrUnapproveAction:(id)sender
+{
     NSDictionary *approveAction = [self.commentActions objectForKey:@"approve-comment"];
     NSDictionary *unapproveAction = [self.commentActions objectForKey:@"unapprove-comment"];
 
@@ -378,14 +388,15 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         [self updateApproveButton:YES];
         [self performCommentAction:unapproveAction forButton:sender];
     }
-    
+
     [WPAnalytics track:WPAnalyticsStatNotificationPerformedAction];
 }
 
-- (void)deleteAction:(id)sender {
+- (void)deleteAction:(id)sender
+{
     NSDictionary *trashAction = [self.commentActions objectForKey:@"trash-comment"];
     NSDictionary *untrashAction = [self.commentActions objectForKey:@"untrash-comment"];
-    
+
     if (trashAction) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you sure you want to delete this comment?", @"")
                                                                  delegate:self
@@ -398,14 +409,15 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         [self updateTrashButton:YES];
         [self performCommentAction:untrashAction forButton:sender];
     }
-    
+
     [WPAnalytics track:WPAnalyticsStatNotificationPerformedAction];
 }
 
-- (void)spamAction:(id)sender {
+- (void)spamAction:(id)sender
+{
     NSDictionary *spamAction = [self.commentActions objectForKey:@"spam-comment"];
     NSDictionary *unspamAction = [self.commentActions objectForKey:@"unspam-comment"];
-    
+
     if (spamAction) {
         [self updateSpamButton:NO];
         [WPAnalytics track:WPAnalyticsStatNotificationFlaggedAsSpam];
@@ -414,23 +426,25 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         [self updateSpamButton:YES];
         [self performCommentAction:unspamAction forButton:sender];
     }
-    
+
     [WPAnalytics track:WPAnalyticsStatNotificationPerformedAction];
 }
 
-- (void)replyAction:(id)sender {
-    if(self.inlineComposeView.isDisplayed) {
+- (void)replyAction:(id)sender
+{
+    if (self.inlineComposeView.isDisplayed) {
         [self.inlineComposeView dismissComposer];
     } else {
         [self.inlineComposeView becomeFirstResponder];
     }
 }
 
-- (void)performCommentAction:(NSDictionary *)commentAction forButton:(UIButton*)button {
+- (void)performCommentAction:(NSDictionary *)commentAction forButton:(UIButton*)button
+{
     NSString *path = [NSString stringWithFormat:@"/rest/v1%@", [commentAction valueForKeyPath:@"params.rest_path"]];
-    
+
     [self updateStateOfActionButtons:NO];
-    
+
     // Show an activity indicator in place of the button until the operation completes
     UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     indicatorView.backgroundColor = [UIColor whiteColor];
@@ -438,7 +452,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     indicatorView.frame = CGRectMake(-5.0f, 0, button.frame.size.width + indicatorPadding, button.frame.size.height);
     [button addSubview:indicatorView];
     [indicatorView startAnimating];
-    
+
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
@@ -454,12 +468,12 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
                             message:NSLocalizedString(@"The comment could not be moderated.", @"Error message when comment could not be moderated")];
         DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
     }];
-
 }
 
-- (void)publishReply:(NSString *)replyText {
+- (void)publishReply:(NSString *)replyText
+{
     NSDictionary *action = [self.commentActions objectForKey:@"replyto-comment"];
-    
+
     if (action) {
         self.inlineComposeView.enabled = NO;
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -506,11 +520,13 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
 }
 
-- (IBAction)highlightHeader:(id)sender {
+- (IBAction)highlightHeader:(id)sender
+{
     [_postBanner setBackgroundColor:[UIColor UIColorFromHex:0xE3E3E3]];
 }
 
-- (IBAction)resetHeader:(id)sender {
+- (IBAction)resetHeader:(id)sender
+{
     [_postBanner setBackgroundColor:[UIColor UIColorFromHex:0xF2F2F2]];
 }
 
@@ -518,21 +534,22 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
 - (void)handleTap:(UITapGestureRecognizer *)gesture
 {
-    if(self.inlineComposeView.isDisplayed) {
+    if (self.inlineComposeView.isDisplayed) {
         [self.inlineComposeView dismissComposer];
     }
 }
 
 #pragma mark - REST API
 
-- (void)updateCommentThread {
+- (void)updateCommentThread
+{
     // take the comment off the top of the thread
     NoteComment *comment = [self.commentThread objectAtIndex:0];
     // did we fetch the comment off the API yet?
     if (comment.needsData) {
         NSString *commentPath = [NSString stringWithFormat:@"sites/%@/comments/%@", self.siteID, comment.commentID];
         comment.loading = YES;
-        
+
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
         WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
@@ -551,51 +568,56 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         } failure:^(AFHTTPRequestOperation *operation, NSError *error){
             DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
         }];
-        
+
     }
 }
 
-- (void)performNoteAction:(NSDictionary *)action success:(WordPressComApiRestSuccessFailureBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+- (void)performNoteAction:(NSDictionary *)action
+                  success:(WordPressComApiRestSuccessFailureBlock)success
+                  failure:(WordPressComApiRestSuccessFailureBlock)failure
+{
     NSDictionary *params = [action objectForKey:@"params"];
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", [params objectForKey:@"site_id"], [params objectForKey:@"comment_id"]];
-    
+
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
     [[defaultAccount restApi] POST:path parameters:[params objectForKey:@"rest_body"] success:success failure:failure];
 }
 
-
 #pragma mark - InlineComposeViewDelegate
 
-- (void)composeView:(InlineComposeView *)view didSendText:(NSString *)text {
+- (void)composeView:(InlineComposeView *)view didSendText:(NSString *)text
+{
     [self publishReply:text];
 }
 
-
 #pragma mark - WPContentViewDelegate
 
-- (void)contentView:(WPContentView *)contentView didReceiveAuthorLinkAction:(id)sender {
+- (void)contentView:(WPContentView *)contentView didReceiveAuthorLinkAction:(id)sender
+{
     NoteComment *comment = [self.commentThread objectAtIndex:0];
     NSURL *url = [[NSURL alloc] initWithString:[comment.commentData valueForKeyPath:@"author.URL"]];
     [self pushToURL:url];
 }
 
-- (void)contentView:(WPContentView *)contentView didReceiveLinkAction:(id)sender {
+- (void)contentView:(WPContentView *)contentView didReceiveLinkAction:(id)sender
+{
     [self pushToURL:((DTLinkButton *)sender).URL];
 }
 
-
 #pragma mark - UIKeyboard notifications
 
-- (void)onShowKeyboard:(NSNotification *)notification {
+- (void)onShowKeyboard:(NSNotification *)notification
+{
     CGRect keyboardRect = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     UIScrollView *scrollView = (UIScrollView *)self.view;
     scrollView.contentInset = UIEdgeInsetsMake(0.f, 0.f, CGRectGetHeight(keyboardRect), 0.f);
     [self.view addGestureRecognizer:self.tapGesture];
 }
 
-- (void)onHideKeyboard:(NSNotification *)notification {
+- (void)onHideKeyboard:(NSNotification *)notification
+{
     UIScrollView *scrollView = (UIScrollView *)self.view;
     scrollView.contentInset = UIEdgeInsetsMake(0.f, 0.f, 0.f, 0.f);
     [self.view removeGestureRecognizer:self.tapGesture];
@@ -622,6 +644,5 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         [self updateActionButtons];
     }
 }
-
 
 @end

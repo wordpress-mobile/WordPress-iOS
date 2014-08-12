@@ -19,24 +19,28 @@ static CGFloat pickerViewHeight = 216.0f;
 
 @implementation MediaSearchFilterHeaderView
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     _lastSelectedMonthFilter = 0;
 }
 
-- (void)layoutSubviews {
+- (void)layoutSubviews
+{
     if (_popover) {
         // Re-present for rotation changes
         [_popover presentPopoverFromRect:_filterDatesButton.frame inView:self permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     }
 }
 
-- (void)setDelegate:(MediaBrowserViewController *)delegate {
+- (void)setDelegate:(MediaBrowserViewController *)delegate
+{
     _delegate = delegate;
     [_delegate.collectionView addSubview:self.searchBar];
     [_delegate.collectionView addSubview:self.filterDatesButton];
 }
 
-- (UIButton *)filterDatesButton {
+- (UIButton *)filterDatesButton
+{
     UIButton *filterDate = [UIButton buttonWithType:UIButtonTypeCustom];
     _filterDatesButton = filterDate;
     [_filterDatesButton setBackgroundColor:[WPStyleGuide allTAllShadeGrey]];
@@ -49,7 +53,8 @@ static CGFloat pickerViewHeight = 216.0f;
     return _filterDatesButton;
 }
 
-- (UISearchBar *)searchBar {
+- (UISearchBar *)searchBar
+{
     if (_searchBar) {
         return _searchBar;
     }
@@ -65,10 +70,11 @@ static CGFloat pickerViewHeight = 216.0f;
     return _searchBar;
 }
 
-- (void)filterDatesPressed {
+- (void)filterDatesPressed
+{
     // Dismiss keyboard if search was active
     [self.searchBar resignFirstResponder];
-    
+
     if (_monthPickerView || _popover) {
         if (IS_IPAD) {
             [_popover dismissPopoverAnimated:YES];
@@ -79,7 +85,7 @@ static CGFloat pickerViewHeight = 216.0f;
         }
         return;
     }
-    
+
     UIPickerView *pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, self.delegate.collectionView.frame.size.height + pickerViewHeight, 320.0f, pickerViewHeight)];
     _monthPickerView = pickerView;
     _monthPickerView.delegate = self;
@@ -87,7 +93,7 @@ static CGFloat pickerViewHeight = 216.0f;
     _monthPickerView.showsSelectionIndicator = YES;
     _monthPickerView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     [_monthPickerView selectRow:_lastSelectedMonthFilter inComponent:0 animated:NO];
-    
+
     if (IS_IPAD) {
         UIViewController *popoverContent = [[UIViewController alloc] init];
         popoverContent.preferredContentSize = CGSizeMake(320.0f, pickerViewHeight);
@@ -111,7 +117,8 @@ static CGFloat pickerViewHeight = 216.0f;
     }
 }
 
-- (void)hideMonthPickerView {
+- (void)hideMonthPickerView
+{
     [UIView animateWithDuration:0.4 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         _monthPickerView.frame = (CGRect) {
             .origin = CGPointMake(0, self.delegate.collectionView.frame.size.height + pickerViewHeight),
@@ -123,64 +130,73 @@ static CGFloat pickerViewHeight = 216.0f;
     }];
 }
 
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
     _popover = nil;
     _monthPickerView = nil;
 }
 
 #pragma mark - UISearchBarDelegate
 
-- (void)resetFilters {
+- (void)resetFilters
+{
     [self searchBarCancelButtonClicked:_searchBar];
     [self hideMonthPickerView];
     _lastSelectedMonthFilter = 0;
     [_filterDatesButton setImage:[UIImage imageNamed:@"date_picker_unselected"] forState:UIControlStateNormal];
 }
 
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
     [searchBar setShowsCancelButton:YES animated:YES];
-    
+
     if (IS_IPHONE && _monthPickerView) {
         [self hideMonthPickerView];
     }
 }
 
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+{
     if (!searchBar.text || [searchBar.text isEqualToString:@""]) {
         [_delegate clearSearchFilter];
     }
     [searchBar setShowsCancelButton:NO animated:YES];
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
     [_delegate clearSearchFilter];
     searchBar.text = @"";
     [searchBar setShowsCancelButton:NO animated:YES];
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
     [_delegate applyFilterWithSearchText:searchBar.text];
 }
 
-
 #pragma mark - UIPickerView delegate
 
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
     return 1;
 }
 
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
     return [self.delegate possibleMonthsAndYears].count + 1;
 }
 
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
     if (row == 0) {
         return NSLocalizedString(@"All Media Items", nil);
     }
     return [self.delegate possibleMonthsAndYears][row-1];
 }
 
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
     _lastSelectedMonthFilter = row;
     if (row == 0) {
         [self.delegate clearMonthFilter];
@@ -192,11 +208,13 @@ static CGFloat pickerViewHeight = 216.0f;
     [self hideMonthPickerView];
 }
 
-- (NSString *)pickerView:(UIPickerView *)pickerView accessibilityLabelForComponent:(NSInteger)component {
+- (NSString *)pickerView:(UIPickerView *)pickerView accessibilityLabelForComponent:(NSInteger)component
+{
     return NSLocalizedString(@"Month and year to filter media items by", @"Accessibility label for filtering media by month");
 }
 
-- (NSString *)pickerView:(UIPickerView *)pickerView accessibilityHintForComponent:(NSInteger)component {
+- (NSString *)pickerView:(UIPickerView *)pickerView accessibilityHintForComponent:(NSInteger)component
+{
     return NSLocalizedString(@"Selecting an option shows media items only from that month and year.", @"Accessibility hint for filtering media by month");
 }
 

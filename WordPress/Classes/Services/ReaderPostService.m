@@ -19,7 +19,6 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
 NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
 NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
-
 /**
  ReaderPostServiceBackfillState A simple state object used to keep track of backfilling posts.
  */
@@ -33,7 +32,6 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
 @implementation ReaderPostServiceBackfillState
 @end
-
 
 @interface ReaderPostService()
 
@@ -266,7 +264,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         [self.managedObjectContext performBlockAndWait:^{
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }];
-        if(failure) {
+        if (failure) {
             failure(error);
         }
     };
@@ -447,7 +445,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
 /**
  Retrieve the newest post for the specified topic
- 
+
  @param topicObjectID The `NSManagedObjectID` of the ReaderTopic for the post
  @return The newest post in Core Data for the topic, or nil.
  */
@@ -476,12 +474,12 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 }
 
 /**
- Private fetch method that is part of the backfill process. This is basically a 
+ Private fetch method that is part of the backfill process. This is basically a
  passthrough call to `fetchPostsFromEndpoint:count:before:success:failure:` that
  passes the results to `processBackfillPostsForTopic:posts:success:failure:`.
  This should only be called once the backfill date, array and batch count have
  been initialized as in `fetchPostsToBackfillTopic:success:failure:`.
- 
+
  @param topicObjectID The NSManagedObjectID of the Topic for which to request posts.
  @param date The date to get posts earlier than.
  @param state The current `ReaderPostServiceBackfillState`
@@ -518,10 +516,10 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 }
 
 /**
- Processes a batch of backfilled posts. 
- When backfilling, the goal is to request up to three batches of post, or until 
+ Processes a batch of backfilled posts.
+ When backfilling, the goal is to request up to three batches of post, or until
  a fetched batch includes the newest posts currently in Core Data.
- 
+
  @param topicObjectID The NSManagedObjectID of the Topic for which to request posts.
  @param posts An array of fetched posts.
  @param state The current `ReaderPostServiceBackfillState`
@@ -543,7 +541,10 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         oldestDate = [DateUtils dateFromISOString:remotePost.sortDate];
     }
 
-    if (state.backfillBatchNumber > ReaderPostServiceMaxBatchesToBackfill || (oldestDate && (oldestDate == [oldestDate earlierDate:state.backfillDate]))) {
+    // TODO: can this condional be cleaned up at all?  OCLint is picking up the OR statement as a reduntant nil check
+    if (state.backfillBatchNumber > ReaderPostServiceMaxBatchesToBackfill ||
+        (oldestDate && (oldestDate == [oldestDate earlierDate:state.backfillDate])))
+    {
         // our work is done
         [self mergePosts:state.backfilledRemotePosts earlierThan:[NSDate date] forTopic:topicObjectID callingSuccess:success];
     } else {
@@ -682,7 +683,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  Delete all `ReaderPosts` beyond the max number to be retained.
 
  The managed object context is not saved.
- 
+
  @param topic the `ReaderTopic` to delete posts from.
  */
 - (void)deletePostsInExcessOfMaxAllowedForTopic:(ReaderTopic *)topic
@@ -746,7 +747,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 /**
  Accepts an array of `RemoteReaderPost` objects and creates model objects
  for each one.
- 
+
  @param posts An array of `RemoteReaderPost` objects.
  @param topic The `ReaderTopic` to assign to the created posts.
  @return An array of `ReaderPost` objects
@@ -767,7 +768,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
 /**
  Create a `ReaderPost` model object from the specified dictionary.
- 
+
  @param dict A `RemoteReaderPost` object.
  @param topic The `ReaderTopic` to assign to the created post.
  @return A `ReaderPost` model object whose properties are populated with the values from the passed dictionary.
@@ -840,10 +841,10 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 #pragma mark - Content Formatting and Sanitization
 
 /**
- Formats the post content.  
+ Formats the post content.
  Removes transforms videopress markup into video tags, strips inline styles and tidys up paragraphs.
- 
- @param content The post content as a string. 
+
+ @param content The post content as a string.
  @return The formatted content.
  */
 - (NSString *)formatContent:(NSString *)content
@@ -857,11 +858,11 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     return content;
 }
 
-/** 
+/**
  Formats a post's summary.  The excerpts provided by the REST API contain HTML and have some extra content appened to the end.
  HTML is stripped and the extra bit is removed.
- 
- @param string The summary to format. 
+
+ @param string The summary to format.
  @return The formatted summary.
  */
 - (NSString *)formatSummary:(NSString *)summary
@@ -876,8 +877,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
 /**
  Create a summary for the post based on the post's content.
- 
- @param string The post's content string. This should be the formatted content string. 
+
+ @param string The post's content string. This should be the formatted content string.
  @return A summary for the post.
  */
 - (NSString *)createSummaryFromContent:(NSString *)string
@@ -889,7 +890,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
 /**
  Transforms the specified string to plain text.  HTML markup is removed and HTML entities are decoded.
- 
+
  @param string The string to transform.
  @return The transformed string.
  */
@@ -900,7 +901,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
 /**
  Clean up paragraphs and in an HTML string. Removes duplicate paragraph tags and unnecessary DIVs.
- 
+
  @param string The string to normalize.
  @return A string with normalized paragraphs.
  */
@@ -959,7 +960,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
 /**
  Check the specified string for occurances of videopress videos.
- 
+
  @param string The string to search.
  @return YES if a match was found, else returns NO.
  */
@@ -1027,7 +1028,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
 /**
  Creates a title for the post from the post's summary.
- 
+
  @param summary The already formatted post summary.
  @return A title for the post that is a snippet of the summary.
  */

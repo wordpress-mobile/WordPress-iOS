@@ -62,7 +62,6 @@ NSInteger const kReaderTabIndex                                 = 0;
 NSInteger const kNotificationsTabIndex                          = 1;
 NSInteger const kMeTabIndex                                     = 2;
 
-
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
 @property (nonatomic, strong, readwrite) UINavigationController         *navigationController;
@@ -93,56 +92,55 @@ NSInteger const kMeTabIndex                                     = 2;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-
 #pragma mark - UIApplicationDelegate
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [WordPressAppDelegate fixKeychainAccess];
-	
-	// Simperium: Wire CoreData Stack
-	[self configureSimperium];
-    
+
+    // Simperium: Wire CoreData Stack
+    [self configureSimperium];
+
     // Crash reporting, logging
     [self configureLogging];
     [self configureHockeySDK];
     [self configureCrashlytics];
-    
-	// Start Simperium
+
+    // Start Simperium
     [self loginSimperium];
 
     // Debugging
     [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
     [self toggleExtraDebuggingIfNeeded];
     [self removeCredentialsForDebug];
-    
+
     // Stats and feedback
     [Taplytics startTaplyticsAPIKey:[WordPressComApiCredentials taplyticsAPIKey]];
     [SupportViewController checkIfFeedbackShouldBeEnabled];
 
     [Helpshift installForApiKey:[WordPressComApiCredentials helpshiftAPIKey] domainName:[WordPressComApiCredentials helpshiftDomainName] appID:[WordPressComApiCredentials helpshiftAppId]];
     [SupportViewController checkIfHelpshiftShouldBeEnabled];
-    
+
     NSNumber *usage_tracking = [[NSUserDefaults standardUserDefaults] valueForKey:kUsageTrackingDefaultsKey];
     if (usage_tracking == nil) {
         // check if usage_tracking bool is set
         // default to YES
-        
+
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kUsageTrackingDefaultsKey];
         [NSUserDefaults resetStandardUserDefaults];
     }
-    
+
     [WPAnalytics registerTracker:[[WPAnalyticsTrackerMixpanel alloc] init]];
     [WPAnalytics registerTracker:[[WPAnalyticsTrackerWPCom alloc] init]];
-    
+
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kUsageTrackingDefaultsKey]) {
         DDLogInfo(@"WPAnalytics session started");
 
         [WPAnalytics beginSession];
     }
-    
+
     [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
-    
+
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [self setupReachability];
@@ -160,30 +158,35 @@ NSInteger const kMeTabIndex                                     = 2;
         [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
         [self cleanUnusedMediaFileFromTmpDir];
     });
-    
+
     CGRect bounds = [[UIScreen mainScreen] bounds];
     [self.window setFrame:bounds];
     [self.window setBounds:bounds]; // for good measure.
     self.window.backgroundColor = [UIColor blackColor];
     self.window.rootViewController = self.tabBarController;
-    
+
     return YES;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
-    
+
+    // Launched by tapping a notification
+    if (application.applicationState == UIApplicationStateActive) {
+        [NotificationsManager handleNotificationForApplicationLaunch:launchOptions];
+    }
+
     [self.window makeKeyAndVisible];
     [self showWelcomeScreenIfNeededAnimated:NO];
-    
+
     return YES;
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
     BOOL returnValue = NO;
-    
+
     if ([[BITHockeyManager sharedHockeyManager].authenticator handleOpenURL:url
                                                           sourceApplication:sourceApplication
                                                                  annotation:annotation]) {
@@ -202,7 +205,7 @@ NSInteger const kMeTabIndex                                     = 2;
         returnValue = YES;
     }
 
-    if (url && [url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:@"wordpress://"]) {
+    if ([url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:@"wordpress://"]) {
         NSString *URLString = [url absoluteString];
         DDLogInfo(@"Application launched with URL: %@", URLString);
 
@@ -217,7 +220,7 @@ NSInteger const kMeTabIndex                                     = 2;
         } else if ([URLString rangeOfString:@"viewpost"].length) {
             // View the post specified by the shared blog ID and post ID
             NSDictionary *params = [[url query] dictionaryFromQueryString];
-            
+
             if (params.count) {
                 NSNumber *blogId = [params numberForKey:@"blogId"];
                 NSNumber *postId = [params numberForKey:@"postId"];
@@ -226,7 +229,7 @@ NSInteger const kMeTabIndex                                     = 2;
                 NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
                 [self.tabBarController setSelectedIndex:readerTabIndex];
                 [self.readerPostsViewController openPost:postId onBlog:blogId];
-                
+
                 returnValue = YES;
             }
         }
@@ -246,20 +249,19 @@ NSInteger const kMeTabIndex                                     = 2;
 
     [WPAnalytics track:WPAnalyticsStatApplicationClosed withProperties:@{@"last_visible_screen": [self currentlySelectedScreen]}];
     [WPAnalytics endSession];
-    
+
     // Let the app finish any uploads that are in progress
     UIApplication *app = [UIApplication sharedApplication];
     if (_bgTask != UIBackgroundTaskInvalid) {
         [app endBackgroundTask:_bgTask];
         _bgTask = UIBackgroundTaskInvalid;
     }
-    
+
     _bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
         // Synchronize the cleanup call on the main thread in case
         // the task actually finishes at around the same time.
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (_bgTask != UIBackgroundTaskInvalid)
-            {
+            if (_bgTask != UIBackgroundTaskInvalid) {
                 [app endBackgroundTask:_bgTask];
                 _bgTask = UIBackgroundTaskInvalid;
             }
@@ -280,7 +282,7 @@ NSInteger const kMeTabIndex                                     = 2;
             return @"Login View";
         }
     }
-   
+
     // Check which tab is currently selected
     NSString *currentlySelectedScreen = @"";
     switch (self.tabBarController.selectedIndex) {
@@ -293,7 +295,10 @@ NSInteger const kMeTabIndex                                     = 2;
         case kMeTabIndex:
             currentlySelectedScreen = @"Blog List";
             break;
+        default:
+            break;
     }
+
     return currentlySelectedScreen;
 }
 
@@ -327,25 +332,25 @@ NSInteger const kMeTabIndex                                     = 2;
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-	[NotificationsManager registerDeviceToken:deviceToken];
+    [NotificationsManager registerDeviceToken:deviceToken];
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
-	[NotificationsManager registrationDidFail:error];
+    [NotificationsManager registrationDidFail:error];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     DDLogMethod();
-    
+
     [NotificationsManager handleNotification:userInfo forState:application.applicationState completionHandler:nil];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
     DDLogMethod();
-    
+
     [NotificationsManager handleNotification:userInfo forState:[UIApplication sharedApplication].applicationState completionHandler:completionHandler];
 }
 
@@ -372,7 +377,7 @@ NSInteger const kMeTabIndex                                     = 2;
         };
         loginViewController.showEditorAfterAddingSites = YES;
     }
-    
+
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
     navigationController.navigationBar.translucent = NO;
 
@@ -390,10 +395,11 @@ NSInteger const kMeTabIndex                                     = 2;
     return blogCount == 0 && !defaultAccount;
 }
 
-- (void)customizeAppearance {
+- (void)customizeAppearance
+{
     UIColor *defaultTintColor = self.window.tintColor;
     self.window.tintColor = [WPStyleGuide wordPressBlue];
-    
+
     [[UINavigationBar appearance] setBarTintColor:[WPStyleGuide wordPressBlue]];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearanceWhenContainedIn:[MFMailComposeViewController class], nil] setBarTintColor:[UIColor whiteColor]];
@@ -425,7 +431,7 @@ NSInteger const kMeTabIndex                                     = 2;
     if (_tabBarController) {
         return _tabBarController;
     }
-    
+
     UIOffset tabBarTitleOffset = UIOffsetMake(0, 0);
     if ( IS_IPHONE ) {
         tabBarTitleOffset = UIOffsetMake(0, -2);
@@ -435,11 +441,10 @@ NSInteger const kMeTabIndex                                     = 2;
     _tabBarController.restorationIdentifier = WPTabBarRestorationID;
     [_tabBarController.tabBar setTranslucent:NO];
 
-
     // Create a background
     // (not strictly needed when white, but left here for possible customization)
     _tabBarController.tabBar.backgroundImage = [UIImage imageWithColor:[UIColor whiteColor]];
-    
+
     self.readerPostsViewController = [[ReaderPostsViewController alloc] init];
     UINavigationController *readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerPostsViewController];
     readerNavigationController.navigationBar.translucent = NO;
@@ -448,7 +453,7 @@ NSInteger const kMeTabIndex                                     = 2;
     readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
     self.readerPostsViewController.title = NSLocalizedString(@"Reader", nil);
     [readerNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
-    
+
     self.notificationsViewController = [[NotificationsViewController alloc] init];
     UINavigationController *notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
     notificationsNavigationController.navigationBar.translucent = NO;
@@ -457,7 +462,7 @@ NSInteger const kMeTabIndex                                     = 2;
     notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
     self.notificationsViewController.title = NSLocalizedString(@"Notifications", @"");
     [notificationsNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
-    
+
     self.blogListViewController = [[BlogListViewController alloc] init];
     UINavigationController *blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
     blogListNavigationController.navigationBar.translucent = NO;
@@ -466,7 +471,7 @@ NSInteger const kMeTabIndex                                     = 2;
     blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
     self.blogListViewController.title = NSLocalizedString(@"Me", @"");
     [blogListNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
-  
+
     UIImage *image = [UIImage imageNamed:@"icon-tab-newpost"];
     image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     UIViewController *postsViewController = [[UIViewController alloc] init];
@@ -489,7 +494,7 @@ NSInteger const kMeTabIndex                                     = 2;
     _tabBarController.viewControllers = @[readerNavigationController, notificationsNavigationController, blogListNavigationController, postsViewController];
 
     [_tabBarController setSelectedViewController:readerNavigationController];
-    
+
     return _tabBarController;
 }
 
@@ -509,7 +514,7 @@ NSInteger const kMeTabIndex                                     = 2;
     if (presenter.presentedViewController) {
         [presenter dismissViewControllerAnimated:NO completion:nil];
     }
-    
+
     EditPostViewController *editPostViewController;
     if (!options) {
         [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
@@ -545,16 +550,16 @@ NSInteger const kMeTabIndex                                     = 2;
             return;
         }
     }
-    
+
     // Build and set the navigation heirarchy for the Me tab.
     BlogListViewController *blogListViewController = [blogListNavController.viewControllers objectAtIndex:0];
-    
+
     BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
     blogDetailsViewController.blog = post.blog;
 
     PostsViewController *postsViewController = [[PostsViewController alloc] init];
     [postsViewController setBlog:post.blog];
-    
+
     [blogListNavController setViewControllers:@[blogListViewController, blogDetailsViewController, postsViewController]];
 }
 
@@ -595,7 +600,7 @@ NSInteger const kMeTabIndex                                     = 2;
             }
         }
     }
-    
+
     // If the current view controller is selected already and it's at its root then scroll to the top
     if (tabBarController.selectedViewController == viewController) {
         if ([viewController isKindOfClass:[UINavigationController class]]) {
@@ -603,14 +608,14 @@ NSInteger const kMeTabIndex                                     = 2;
             if ([navController topViewController] == [[navController viewControllers] firstObject] &&
                 [[[navController topViewController] view] isKindOfClass:[UITableView class]]) {
                 UITableView *tableView = (UITableView *)[[navController topViewController] view];
-                
+
                 if ([tableView numberOfSections] > 0 && [tableView numberOfRowsInSection:0] > 0) {
                     [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
                 }
             }
         }
     }
-    
+
     return YES;
 }
 
@@ -619,17 +624,16 @@ NSInteger const kMeTabIndex                                     = 2;
 - (void)changeCurrentDirectory
 {
     // Set current directory for WordPress app
-	NSFileManager *fileManager = [NSFileManager defaultManager];
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-	NSString *currentDirectoryPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"wordpress"];
-    
-	BOOL isDir;
-	if (![fileManager fileExistsAtPath:currentDirectoryPath isDirectory:&isDir] || !isDir) {
-		[fileManager createDirectoryAtPath:currentDirectoryPath withIntermediateDirectories:YES attributes:nil error:nil];
-    }
-	[fileManager changeCurrentDirectoryPath:currentDirectoryPath];
-}
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *currentDirectoryPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"wordpress"];
 
+    BOOL isDir;
+    if (![fileManager fileExistsAtPath:currentDirectoryPath isDirectory:&isDir] || !isDir) {
+        [fileManager createDirectoryAtPath:currentDirectoryPath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    [fileManager changeCurrentDirectoryPath:currentDirectoryPath];
+}
 
 #pragma mark - Notifications
 
@@ -643,7 +647,6 @@ NSInteger const kMeTabIndex                                     = 2;
     [self setCommonCrashlyticsParameters];
 }
 
-
 #pragma mark - Crash reporting
 
 - (void)configureCrashlytics
@@ -654,21 +657,21 @@ NSInteger const kMeTabIndex                                     = 2;
 #ifdef INTERNAL_BUILD
     return;
 #endif
-    
+
     if ([[WordPressComApiCredentials crashlyticsApiKey] length] == 0) {
         return;
     }
-    
+
     [Crashlytics startWithAPIKey:[WordPressComApiCredentials crashlyticsApiKey]];
     [[Crashlytics sharedInstance] setDelegate:self];
-    
+
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     BOOL hasCredentials = (defaultAccount != nil);
     [self setCommonCrashlyticsParameters];
-    
+
     if (hasCredentials && [defaultAccount username] != nil) {
         [Crashlytics setUserName:[defaultAccount username]];
     }
@@ -718,9 +721,9 @@ NSInteger const kMeTabIndex                                     = 2;
     NSString *description = [self getLogFilesContentWithMaxSize:5000]; // 5000 bytes should be enough!
     if ([description length] == 0) {
         return nil;
-    } else {
-        return description;
     }
+
+    return description;
 }
 
 #pragma mark - Media cleanup
@@ -731,29 +734,29 @@ NSInteger const kMeTabIndex                                     = 2;
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     [context performBlock:^{
-        
+
         // Fetch Media URL's and return them as Dictionary Results:
         // This way we'll avoid any CoreData Faulting Exception due to deletions performed on another context
         NSString *localUrlProperty      = NSStringFromSelector(@selector(localURL));
-        
+
         NSFetchRequest *fetchRequest    = [[NSFetchRequest alloc] init];
         fetchRequest.entity             = [NSEntityDescription entityForName:NSStringFromClass([Media class]) inManagedObjectContext:context];
         fetchRequest.predicate          = [NSPredicate predicateWithFormat:@"ANY posts.blog != NULL AND remoteStatusNumber <> %@", @(MediaRemoteStatusSync)];
-        
+
         fetchRequest.propertiesToFetch  = @[ localUrlProperty ];
         fetchRequest.resultType         = NSDictionaryResultType;
 
         NSError *error = nil;
         NSArray *mediaObjectsToKeep     = [context executeFetchRequest:fetchRequest error:&error];
-        
+
         if (error) {
             DDLogError(@"Error cleaning up tmp files: %@", error.localizedDescription);
             return;
         }
-        
+
         // Get a references to media files linked in a post
         DDLogInfo(@"%i media items to check for cleanup", mediaObjectsToKeep.count);
-        
+
         NSMutableSet *pathsToKeep       = [NSMutableSet set];
         for (NSDictionary *mediaDict in mediaObjectsToKeep) {
             NSString *path = mediaDict[localUrlProperty];
@@ -761,13 +764,13 @@ NSInteger const kMeTabIndex                                     = 2;
                 [pathsToKeep addObject:path];
             }
         }
-        
+
         // Search for [JPG || JPEG || PNG || GIF] files within the Documents Folder
         NSString *documentsDirectory    = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
         NSArray *contentsOfDir          = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:nil];
-        
+
         NSSet *mediaExtensions          = [NSSet setWithObjects:@"jpg", @"jpeg", @"png", @"gif", nil];
-        
+
         for (NSString *currentPath in contentsOfDir) {
             NSString *extension = currentPath.pathExtension.lowercaseString;
             if (![mediaExtensions containsObject:extension]) {
@@ -787,7 +790,8 @@ NSInteger const kMeTabIndex                                     = 2;
     }];
 }
 
-- (void)setupImageResizeSettings {
+- (void)setupImageResizeSettings
+{
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
     NSString *oldKey = @"media_resize_preference";
@@ -805,7 +809,7 @@ NSInteger const kMeTabIndex                                     = 2;
     // Keep a copy of the original userAgent for use with certain webviews in the app.
     UIWebView *webView = [[UIWebView alloc] init];
     NSString *defaultUA = [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
-    
+
     NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     [[NSUserDefaults standardUserDefaults] setObject:appVersion forKey:@"version_preference"];
     NSString *appUA = [NSString stringWithFormat:@"wp-iphone/%@ (%@ %@, %@) Mobile",
@@ -833,7 +837,7 @@ NSInteger const kMeTabIndex                                     = 2;
     NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:ua, @"UserAgent", nil];
     // We have to call registerDefaults else the change isn't picked up by UIWebViews.
     [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
-    
+
     DDLogVerbose(@"User-Agent set to: %@", ua);
 }
 
@@ -862,25 +866,25 @@ NSInteger const kMeTabIndex                                     = 2;
     self.wpcomAvailable = YES;
     // Same for general internet connection
     self.connectionAvailable = YES;
-    
+
     // allocate the internet reachability object
     self.internetReachability = [Reachability reachabilityForInternetConnection];
-    
+
     // set the blocks
     void (^internetReachabilityBlock)(Reachability *) = ^(Reachability *reach) {
         NSString *wifi = reach.isReachableViaWiFi ? @"Y" : @"N";
         NSString *wwan = reach.isReachableViaWWAN ? @"Y" : @"N";
-        
+
         DDLogInfo(@"Reachability - Internet - WiFi: %@  WWAN: %@", wifi, wwan);
         self.connectionAvailable = reach.isReachable;
     };
     self.internetReachability.reachableBlock = internetReachabilityBlock;
     self.internetReachability.unreachableBlock = internetReachabilityBlock;
-    
+
     // start the notifier which will cause the reachability object to retain itself!
     [self.internetReachability startNotifier];
     self.connectionAvailable = [self.internetReachability isReachable];
-    
+
     // allocate the WP.com reachability object
     self.wpcomReachability = [Reachability reachabilityWithHostname:@"wordpress.com"];
 
@@ -898,7 +902,7 @@ NSInteger const kMeTabIndex                                     = 2;
         if (carrier) {
             carrierName = [NSString stringWithFormat:@"%@ [%@/%@/%@]", carrier.carrierName, [carrier.isoCountryCode uppercaseString], carrier.mobileCountryCode, carrier.mobileNetworkCode];
         }
-        
+
         DDLogInfo(@"Reachability - WordPress.com - WiFi: %@  WWAN: %@  Carrier: %@  Type: %@", wifi, wwan, carrierName, type);
         self.wpcomAvailable = reach.isReachable;
     };
@@ -915,16 +919,16 @@ NSInteger const kMeTabIndex                                     = 2;
 - (void)configureSimperium
 {
     NSDictionary *bucketOverrides   = @{ @"NoteSimperium" : @"Note" };
-	ContextManager* manager         = [ContextManager sharedInstance];
-    
-	self.simperium = [[Simperium alloc] initWithModel:manager.managedObjectModel
-											  context:manager.mainContext
-										  coordinator:manager.persistentStoreCoordinator
+    ContextManager* manager         = [ContextManager sharedInstance];
+
+    self.simperium = [[Simperium alloc] initWithModel:manager.managedObjectModel
+                                              context:manager.mainContext
+                                          coordinator:manager.persistentStoreCoordinator
                                                 label:[NSString string]
                                       bucketOverrides:bucketOverrides];
-	
+
 #ifdef DEBUG
-	self.simperium.verboseLoggingEnabled = YES;
+    self.simperium.verboseLoggingEnabled = YES;
 #endif
 }
 
@@ -932,37 +936,36 @@ NSInteger const kMeTabIndex                                     = 2;
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
-	WPAccount *account              = [accountService defaultWordPressComAccount];
-	NSString *apiKey                = [WordPressComApiCredentials simperiumAPIKey];
+    WPAccount *account              = [accountService defaultWordPressComAccount];
+    NSString *apiKey                = [WordPressComApiCredentials simperiumAPIKey];
 
-	if (!account.authToken.length || !apiKey.length) {
-		return;
-	}
-	
-	NSString *simperiumToken = [NSString stringWithFormat:@"WPCC/%@/%@", apiKey, account.authToken];
-	NSString *simperiumAppID = [WordPressComApiCredentials simperiumAppId];
-	[self.simperium authenticateWithAppID:simperiumAppID token:simperiumToken];
+    if (!account.authToken.length || !apiKey.length) {
+        return;
+    }
+
+    NSString *simperiumToken = [NSString stringWithFormat:@"WPCC/%@/%@", apiKey, account.authToken];
+    NSString *simperiumAppID = [WordPressComApiCredentials simperiumAppId];
+    [self.simperium authenticateWithAppID:simperiumAppID token:simperiumToken];
 }
 
 - (void)logoutSimperiumAndResetNotifications
 {
-	[self.simperium signOutAndRemoveLocalData:YES completion:nil];
+    [self.simperium signOutAndRemoveLocalData:YES completion:nil];
 }
-
 
 #pragma mark - Keychain
 
 + (void)fixKeychainAccess
 {
-	NSDictionary *query = @{
+    NSDictionary *query = @{
                             (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
                             (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleWhenUnlocked,
                             (__bridge id)kSecReturnAttributes: @YES,
                             (__bridge id)kSecMatchLimit: (__bridge id)kSecMatchLimitAll
                             };
-    
+
     CFTypeRef result = NULL;
-	OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, &result);
+    OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, &result);
     if (status != errSecSuccess) {
         return;
     }
@@ -976,7 +979,7 @@ NSInteger const kMeTabIndex                                     = 2;
                                     (__bridge id)kSecReturnAttributes: @YES,
                                     (__bridge id)kSecReturnData: @YES,
                                     };
-        
+
         CFTypeRef itemResult = NULL;
         status = SecItemCopyMatching((__bridge CFDictionaryRef)itemQuery, &itemResult);
         if (status == errSecSuccess) {
@@ -1004,7 +1007,6 @@ NSInteger const kMeTabIndex                                     = 2;
     DDLogVerbose(@"End keychain fixing");
 }
 
-
 #pragma mark - Debugging and logging
 
 - (void)printDebugLaunchInfoWithLaunchOptions:(NSDictionary *)launchOptions
@@ -1016,9 +1018,9 @@ NSInteger const kMeTabIndex                                     = 2;
     BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     NSArray *blogs = [blogService blogsForAllAccounts];
-    
+
     DDLogInfo(@"===========================================================================");
-	DDLogInfo(@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]);
+    DDLogInfo(@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]);
     DDLogInfo(@"Crash count:       %d", crashCount);
 #ifdef DEBUG
     DDLogInfo(@"Debug mode:  Debug");
@@ -1032,7 +1034,7 @@ NSInteger const kMeTabIndex                                     = 2;
     DDLogInfo(@"UDID:      %@", [device wordpressIdentifier]);
     DDLogInfo(@"APN token: %@", [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken]);
     DDLogInfo(@"Launch options: %@", launchOptions);
-    
+
     if (blogs.count > 0) {
         DDLogInfo(@"All blogs on device:");
         for (Blog *blog in blogs) {
@@ -1041,7 +1043,7 @@ NSInteger const kMeTabIndex                                     = 2;
     } else {
         DDLogInfo(@"No blogs configured on device.");
     }
-    
+
     DDLogInfo(@"===========================================================================");
 }
 
@@ -1069,23 +1071,23 @@ NSInteger const kMeTabIndex                                     = 2;
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"wordpress.log"];
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    
+
     if ([fileManager fileExistsAtPath:filePath]) {
         [fileManager removeItemAtPath:filePath error:nil];
     }
-    
+
     // Sets up the CocoaLumberjack logging; debug output to console and file
 #ifdef DEBUG
     [DDLog addLogger:[DDASLLogger sharedInstance]];
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
 #endif
-    
+
 #ifndef INTERNAL_BUILD
     [DDLog addLogger:[CrashlyticsLogger sharedInstance]];
 #endif
-    
+
     [DDLog addLogger:self.fileLogger];
-    
+
     BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
     if (extraDebug) {
         ddLogLevel = LOG_LEVEL_VERBOSE;
@@ -1100,7 +1102,7 @@ NSInteger const kMeTabIndex                                     = 2;
     _fileLogger = [[DDFileLogger alloc] init];
     _fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
     _fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
-    
+
     return _fileLogger;
 }
 
@@ -1108,28 +1110,28 @@ NSInteger const kMeTabIndex                                     = 2;
 - (NSString *)getLogFilesContentWithMaxSize:(NSInteger)maxSize
 {
     NSMutableString *description = [NSMutableString string];
-    
+
     NSArray *sortedLogFileInfos = [[self.fileLogger logFileManager] sortedLogFileInfos];
     NSInteger count = [sortedLogFileInfos count];
-    
+
     // we start from the last one
     for (NSInteger index = 0; index < count; index++) {
         DDLogFileInfo *logFileInfo = [sortedLogFileInfos objectAtIndex:index];
-        
+
         NSData *logData = [[NSFileManager defaultManager] contentsAtPath:[logFileInfo filePath]];
         if ([logData length] > 0) {
             NSString *result = [[NSString alloc] initWithBytes:[logData bytes]
                                                         length:[logData length]
                                                       encoding: NSUTF8StringEncoding];
-            
+
             [description appendString:result];
         }
     }
-    
+
     if ([description length] > maxSize) {
         description = (NSMutableString *)[description substringWithRange:NSMakeRange(0, maxSize)];
     }
-    
+
     return description;
 }
 
@@ -1139,43 +1141,42 @@ NSInteger const kMeTabIndex                                     = 2;
         _listeningForBlogChanges = YES;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDefaultAccountChangedNotification:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
     }
-    
-	if ([self noBlogsAndNoWordPressDotComAccount]) {
-		// When there are no blogs in the app the settings screen is unavailable.
-		// In this case, enable extra_debugging by default to help troubleshoot any issues.
-		if([[NSUserDefaults standardUserDefaults] objectForKey:@"orig_extra_debug"] != nil) {
-			return; // Already saved. Don't save again or we could loose the original value.
-		}
-		
-		NSString *origExtraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"] ? @"YES" : @"NO";
-		[[NSUserDefaults standardUserDefaults] setObject:origExtraDebug forKey:@"orig_extra_debug"];
-		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"extra_debug"];
+
+    if ([self noBlogsAndNoWordPressDotComAccount]) {
+        // When there are no blogs in the app the settings screen is unavailable.
+        // In this case, enable extra_debugging by default to help troubleshoot any issues.
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"orig_extra_debug"] != nil) {
+            return; // Already saved. Don't save again or we could loose the original value.
+        }
+
+        NSString *origExtraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"] ? @"YES" : @"NO";
+        [[NSUserDefaults standardUserDefaults] setObject:origExtraDebug forKey:@"orig_extra_debug"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"extra_debug"];
         ddLogLevel = LOG_LEVEL_VERBOSE;
-		[NSUserDefaults resetStandardUserDefaults];
-	} else {
-		NSString *origExtraDebug = [[NSUserDefaults standardUserDefaults] stringForKey:@"orig_extra_debug"];
-		if(origExtraDebug == nil) {
-			return;
-		}
-		
-		// Restore the original setting and remove orig_extra_debug.
-		[[NSUserDefaults standardUserDefaults] setBool:[origExtraDebug boolValue] forKey:@"extra_debug"];
-		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"orig_extra_debug"];
-		[NSUserDefaults resetStandardUserDefaults];
-        
+        [NSUserDefaults resetStandardUserDefaults];
+    } else {
+        NSString *origExtraDebug = [[NSUserDefaults standardUserDefaults] stringForKey:@"orig_extra_debug"];
+        if (origExtraDebug == nil) {
+            return;
+        }
+
+        // Restore the original setting and remove orig_extra_debug.
+        [[NSUserDefaults standardUserDefaults] setBool:[origExtraDebug boolValue] forKey:@"extra_debug"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"orig_extra_debug"];
+        [NSUserDefaults resetStandardUserDefaults];
+
         if ([origExtraDebug boolValue]) {
             ddLogLevel = LOG_LEVEL_VERBOSE;
         }
-	}
+    }
 }
-
 
 #pragma mark - Notifications
 
 - (void)handleDefaultAccountChangedNotification:(NSNotification *)notification
 {
-	[self toggleExtraDebuggingIfNeeded];
-    
+    [self toggleExtraDebuggingIfNeeded];
+
     // If the notification object is not nil, then it's a login
     if (notification.object) {
         [self loginSimperium];
