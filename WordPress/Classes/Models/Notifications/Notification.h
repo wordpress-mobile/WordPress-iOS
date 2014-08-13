@@ -4,15 +4,25 @@
 
 @class NotificationBlock;
 
+
+#pragma mark ====================================================================================
+#pragma mark Constants
+#pragma mark ====================================================================================
+
 extern NSString * NoteActionFollowKey;
 extern NSString * NoteActionReplyKey;
 extern NSString * NoteActionApproveKey;
 extern NSString * NoteActionSpamKey;
 extern NSString * NoteActionTrashKey;
 
-extern NSString * NoteLinkTypeUser;
-extern NSString * NoteLinkTypePost;
-extern NSString * NoteLinkTypeComment;
+typedef NS_ENUM(NSInteger, NoteBlockTypes)
+{
+    NoteBlockTypesText,
+    NoteBlockTypesComment,
+    NoteBlockTypesQuote,
+    NoteBlockTypesImage,
+    NoteBlockTypesUser
+};
 
 
 #pragma mark ====================================================================================
@@ -42,11 +52,9 @@ extern NSString * NoteLinkTypeComment;
 @property (nonatomic, strong,  readonly) NSNumber           *metaCommentID;
 @property (nonatomic, strong,  readonly) NSURL              *iconURL;
 @property (nonatomic, strong,  readonly) NSDate             *timestampAsDate;
-
-// Helpers
-@property (nonatomic, assign, readonly) BOOL                isMatcher;
-@property (nonatomic, assign, readonly) BOOL                isStatsEvent;
-@property (nonatomic, assign, readonly) BOOL                isComment;
+@property (nonatomic, assign,  readonly) BOOL               isMatcher;
+@property (nonatomic, assign,  readonly) BOOL               isStatsEvent;
+@property (nonatomic, assign,  readonly) BOOL               isComment;
 
 @end
 
@@ -54,13 +62,6 @@ extern NSString * NoteLinkTypeComment;
 #pragma mark ====================================================================================
 #pragma mark NotificationBlock
 #pragma mark ====================================================================================
-
-typedef NS_ENUM(NSInteger, NoteBlockTypes)
-{
-    NoteBlockTypesText,
-    NoteBlockTypesImage,
-    NoteBlockTypesUser
-};
 
 @interface NotificationBlock : NSObject
 
@@ -73,6 +74,7 @@ typedef NS_ENUM(NSInteger, NoteBlockTypes)
 // Derived Properties
 @property (nonatomic, assign, readonly) NoteBlockTypes      type;
 @property (nonatomic, strong, readonly) NSNumber            *metaSiteID;
+@property (nonatomic, strong,  readonly) NSNumber           *metaCommentID;
 
 - (BOOL)hasActions;
 - (void)setActionOverrideValue:(id)obj forKey:(NSString *)key;
@@ -91,6 +93,11 @@ typedef NS_ENUM(NSInteger, NoteBlockTypes)
 @property (nonatomic, strong, readonly) NSString            *type;
 @property (nonatomic, strong, readonly) NSURL               *url;
 @property (nonatomic, assign, readonly) NSRange             range;
+
+// Derived Properties
+@property (nonatomic, assign, readonly) BOOL                isUser;
+@property (nonatomic, assign, readonly) BOOL                isPost;
+@property (nonatomic, assign, readonly) BOOL                isComment;
 
 @end
 
