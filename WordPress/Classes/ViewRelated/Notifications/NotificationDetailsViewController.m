@@ -5,6 +5,7 @@
 #import "NotificationHeaderView.h"
 
 #import "NoteBlockTextTableViewCell.h"
+#import "NoteBlockQuoteTableViewCell.h"
 #import "NoteBlockImageTableViewCell.h"
 #import "NoteBlockUserTableViewCell.h"
 
@@ -176,6 +177,9 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
     } else if (block.type == NoteBlockTypesImage) {
         return [NoteBlockImageTableViewCell heightWithText:block.text];
         
+    } else if (block.type == NoteBlockTypesQuote) {
+        return [NoteBlockQuoteTableViewCell heightWithText:block.text];
+        
     } else {
         return [NoteBlockTextTableViewCell heightWithText:block.text];
     }
@@ -205,6 +209,23 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
         };
         
         return cell;
+
+    } else if (block.type == NoteBlockTypesQuote) {
+
+        NSString *reuseIdentifier           = [NoteBlockQuoteTableViewCell reuseIdentifier];
+        NoteBlockQuoteTableViewCell *cell   = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
+
+        cell.attributedText                 = block.attributedTextQuoted;
+        
+        return cell;
+        
+    } else if (block.type == NoteBlockTypesComment) {
+        
+#warning TODO: Implement Me
+        NSString *reuseIdentifier           = [NoteBlockTextTableViewCell reuseIdentifier];
+        NoteBlockTextTableViewCell *cell    = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
+        
+        return cell;
         
     } else if (block.type == NoteBlockTypesImage) {
         NSString *reuseIdentifier           = [NoteBlockImageTableViewCell reuseIdentifier];
@@ -219,7 +240,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
         NSString *reuseIdentifier           = [NoteBlockTextTableViewCell reuseIdentifier];
         NoteBlockTextTableViewCell *cell    = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
         
-        cell.attributedText                 = block.attributedText;
+        cell.attributedText                 = block.attributedTextRegular;
         cell.onUrlClick                     = ^(NSURL *url){
             [weakSelf openURL:url];
         };
@@ -279,10 +300,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
         }
     }
     
-    // Only the following URL Types should be mapped to the reader
-    NSArray *readerMappedTypes = @[NoteLinkTypePost, NoteLinkTypeComment];
-
-    return [readerMappedTypes containsObject:notificationURL.type] && self.note.metaPostID && self.note.metaSiteID;
+    return (notificationURL.isPost || notificationURL.isComment) && self.note.metaPostID && self.note.metaSiteID;
 }
 
 - (Blog *)loadBlogWithID:(NSNumber *)blogID

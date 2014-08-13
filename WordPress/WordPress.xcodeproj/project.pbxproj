@@ -231,6 +231,7 @@
 		B50EC90919896B3C00416D6E /* NotificationHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = B50EC90819896B3C00416D6E /* NotificationHeaderView.m */; };
 		B51D9A7E19634D4400CA857B /* Noticons-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = B55853F419630AF900FAF6C3 /* Noticons-Regular.otf */; };
 		B53F306719780D810019FA34 /* NSDate+ISO8601.m in Sources */ = {isa = PBXBuildFile; fileRef = B53F306619780D810019FA34 /* NSDate+ISO8601.m */; };
+		B541CA5A199BEC9900A16E0D /* NoteBlockQuoteTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B541CA59199BEC9900A16E0D /* NoteBlockQuoteTableViewCell.m */; };
 		B55853F31962337500FAF6C3 /* NSScanner+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B55853F21962337500FAF6C3 /* NSScanner+Helpers.m */; };
 		B55853F719630D5400FAF6C3 /* NSAttributedString+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = B55853F619630D5400FAF6C3 /* NSAttributedString+Util.m */; };
 		B55853FC19630E7900FAF6C3 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = B55853F919630E7900FAF6C3 /* Notification.m */; };
@@ -791,6 +792,8 @@
 		B50EC90819896B3C00416D6E /* NotificationHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationHeaderView.m; sourceTree = "<group>"; };
 		B53F306519780D810019FA34 /* NSDate+ISO8601.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+ISO8601.h"; sourceTree = "<group>"; };
 		B53F306619780D810019FA34 /* NSDate+ISO8601.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+ISO8601.m"; sourceTree = "<group>"; };
+		B541CA58199BEC9900A16E0D /* NoteBlockQuoteTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteBlockQuoteTableViewCell.h; sourceTree = "<group>"; };
+		B541CA59199BEC9900A16E0D /* NoteBlockQuoteTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteBlockQuoteTableViewCell.m; sourceTree = "<group>"; };
 		B55853F11962337500FAF6C3 /* NSScanner+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScanner+Helpers.h"; sourceTree = "<group>"; };
 		B55853F21962337500FAF6C3 /* NSScanner+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScanner+Helpers.m"; sourceTree = "<group>"; };
 		B55853F419630AF900FAF6C3 /* Noticons-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Noticons-Regular.otf"; sourceTree = "<group>"; };
@@ -1581,6 +1584,8 @@
 				B55854011963197200FAF6C3 /* NoteBlockImageTableViewCell.m */,
 				B55854031963197200FAF6C3 /* NoteBlockTextTableViewCell.h */,
 				B55854041963197200FAF6C3 /* NoteBlockTextTableViewCell.m */,
+				B541CA58199BEC9900A16E0D /* NoteBlockQuoteTableViewCell.h */,
+				B541CA59199BEC9900A16E0D /* NoteBlockQuoteTableViewCell.m */,
 				B55854051963197200FAF6C3 /* NoteBlockUserTableViewCell.h */,
 				B55854061963197200FAF6C3 /* NoteBlockUserTableViewCell.m */,
 				B5CA52F2199902B400095723 /* NoteTableViewCell.xib */,
@@ -2550,6 +2555,7 @@
 				E1B4A9E112FC8B1000EB3F67 /* EGORefreshTableHeaderView.m in Sources */,
 				5DF94E521962BAEB00359241 /* ReaderPostRichContentView.m in Sources */,
 				5DA3EE12192508F700294E0B /* WPImageOptimizer.m in Sources */,
+				B541CA5A199BEC9900A16E0D /* NoteBlockQuoteTableViewCell.m in Sources */,
 				E1D458691309589C00BF0235 /* Coordinate.m in Sources */,
 				375D090D133B94C3000CC9CD /* BlogsTableViewCell.m in Sources */,
 				859CFD46190E3198005FB217 /* WPMediaUploader.m in Sources */,
