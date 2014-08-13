@@ -5,6 +5,5 @@
 @interface NSMutableAttributedString (Util)
 
 - (void)applyAttributesToQuotes:(NSDictionary *)attributes;
-- (void)applyAttributes:(NSDictionary *)attributes untilKeywords:(NSArray *)keywords;
 
 @end
