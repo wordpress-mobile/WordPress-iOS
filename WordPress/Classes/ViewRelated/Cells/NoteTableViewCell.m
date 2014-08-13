@@ -48,7 +48,6 @@ static NSString * const NoteCellPlaceholderImageName    = @"gravatar";
     NSAssert(self.timestampLabel, nil);
     
     self.noticonView.layer.cornerRadius     = NoteCellNoticonRadius;
-    self.noticonView.backgroundColor        = [WPStyleGuide notificationIconColor];
     self.noticonLabel.font                  = [WPStyleGuide notificationIconFont];
     self.noticonLabel.textColor             = [UIColor whiteColor];
     
@@ -57,11 +56,10 @@ static NSString * const NoteCellPlaceholderImageName    = @"gravatar";
     self.subjectLabel.textAlignment         = NSTextAlignmentLeft;
     self.subjectLabel.lineBreakMode         = NSLineBreakByWordWrapping;
     self.subjectLabel.shadowOffset          = CGSizeZero;
-    self.subjectLabel.font                  = [WPStyleGuide notificationSubjectFont];
     self.subjectLabel.textColor             = [WPStyleGuide littleEddieGrey];
     
     self.timestampLabel.textAlignment       = NSTextAlignmentRight;
-    self.timestampLabel.font                = [WPStyleGuide notificationSubjectFont];
+    self.timestampLabel.font                = [WPStyleGuide notificationTimestampFont];
     self.timestampLabel.textColor           = [WPStyleGuide notificationTimestampTextColor];
 }
 

@@ -3,21 +3,22 @@
 
 
 
+#pragma mark ====================================================================================
+#pragma mark WPStyleGuide+Notifications
+#pragma mark ====================================================================================
+
 @implementation WPStyleGuide (Notifications)
 
+// Noticon Styles
+//
 + (UIFont *)notificationIconFont
 {
     return [UIFont fontWithName:@"Noticons" size:16.0];
 }
 
-+ (UIColor *)notificationIconColor
-{
-    return [UIColor colorWithRed:0xA4/255.0 green:0xB9/255.0 blue:0xC9/255.0 alpha:0xFF/255.0];
-}
-
 + (UIColor *)notificationIconReadColor
 {
-    return [self notificationIconColor];/* 809EB3FF */
+    return [UIColor colorWithRed:0xA4/255.0 green:0xB9/255.0 blue:0xC9/255.0 alpha:0xFF/255.0];
 }
 
 + (UIColor *)notificationIconUnreadColor
@@ -26,7 +27,8 @@
 }
 
 
-
+// Notification Cell
+//
 + (UIColor *)notificationBackgroundReadColor
 {
     return [UIColor whiteColor];
@@ -38,23 +40,23 @@
 }
 
 
+// Notification Timestamp
+//
++ (UIFont *)notificationTimestampFont
+{
+    return [WPFontManager openSansRegularFontOfSize:14.0f];
+}
 
 + (UIColor *)notificationTimestampTextColor
 {
     return [UIColor colorWithRed:0xB7/255.0 green:0xC9/255.0 blue:0xD5/255.0 alpha:0xFF/255.0]; /* B7C9D5FF */
 }
 
-+ (UIColor *)notificationSubjectTextColor
-{
-    return [[self class] notificationIconColor];
-}
 
-+ (UIColor *)notificationSubjectBackgroundColor
-{
-    return [UIColor whiteColor];
-}
 
-+ (UIFont *)notificationSubjectFont
+// Notification Subject
+//
++ (UIFont *)notificationSubjectFontRegular
 {
     return [WPFontManager openSansRegularFontOfSize:14.0f];
 }
@@ -77,11 +79,11 @@
     return paragraphStyle;
 }
 
-+ (NSDictionary *)notificationSubjectAttributes
++ (NSDictionary *)notificationSubjectAttributesRegular
 {
     return @{
         NSParagraphStyleAttributeName   : [self notificationSubjectParagraphStyle],
-        NSFontAttributeName             : [self notificationSubjectFont]
+        NSFontAttributeName             : [self notificationSubjectFontRegular]
     };
 }
 
@@ -103,22 +105,33 @@
 
 
 
-+ (UIFont *)notificationBlockIconFont
+// Notification Header styles
+//
++ (UIColor *)notificationHeaderTextColor
+{
+    return [self notificationIconReadColor];
+}
+
++ (UIColor *)notificationHeaderBackgroundColor
+{
+    return [UIColor whiteColor];
+}
+
++ (UIFont *)notificationHeaderIconFont
 {
     return [UIFont fontWithName:@"Noticons" size:20.0];
 }
 
-+ (UIColor *)notificationBlockIconColor
-{
-    return [self notificationIconColor];
-}
 
+
+// Notification Block: Regular
+//
 + (UIColor *)notificationBlockBackgroundColor
 {
     return [UIColor clearColor];
 }
 
-+ (UIFont *)notificationBlockFont
++ (UIFont *)notificationBlockFontRegular
 {
     CGFloat size = (IS_IPAD ? 18.0f : 16.0f);
     return [WPFontManager openSansRegularFontOfSize:size];
@@ -136,27 +149,27 @@
     return [WPFontManager openSansItalicFontOfSize:size];
 }
 
-+ (NSDictionary *)notificationBlockAttributes
++ (NSParagraphStyle *)notificationBlockParagraphStyle
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.minimumLineHeight        = 24;
-    paragraphStyle.maximumLineHeight        = 24;
-    
+    paragraphStyle.minimumLineHeight = 24;
+    paragraphStyle.maximumLineHeight = 24;
+    return paragraphStyle;
+}
+
++ (NSDictionary *)notificationBlockAttributesRegular
+{
     return @{
-        NSParagraphStyleAttributeName   : paragraphStyle,
-        NSFontAttributeName             : [WPStyleGuide notificationBlockFont],
+        NSParagraphStyleAttributeName   : [self notificationBlockParagraphStyle],
+        NSFontAttributeName             : [WPStyleGuide notificationBlockFontRegular],
         NSForegroundColorAttributeName  : [WPStyleGuide littleEddieGrey],
     };
 }
 
 + (NSDictionary *)notificationBlockAttributesBold
 {
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.minimumLineHeight        = 24;
-    paragraphStyle.maximumLineHeight        = 24;
-    
     return @{
-        NSParagraphStyleAttributeName   : paragraphStyle,
+        NSParagraphStyleAttributeName   : [self notificationBlockParagraphStyle],
         NSFontAttributeName             : [WPStyleGuide notificationBlockFontBold],
         NSForegroundColorAttributeName  : [WPStyleGuide littleEddieGrey],
     };
@@ -164,14 +177,23 @@
 
 + (NSDictionary *)notificationBlockAttributesItalics
 {
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.minimumLineHeight        = 24;
-    paragraphStyle.maximumLineHeight        = 24;
-    
     return @{
-             NSParagraphStyleAttributeName   : paragraphStyle,
-             NSFontAttributeName             : [WPStyleGuide notificationBlockFontItalics],
-             NSForegroundColorAttributeName  : [WPStyleGuide littleEddieGrey],
+        NSParagraphStyleAttributeName   : [self notificationBlockParagraphStyle],
+        NSFontAttributeName             : [WPStyleGuide notificationBlockFontItalics],
+        NSForegroundColorAttributeName  : [WPStyleGuide littleEddieGrey],
+    };
+}
+
+
+
+// Notification Block: Quoted
+//
++ (NSDictionary *)notificationQuotedAttributesItalics
+{
+    return @{
+        NSParagraphStyleAttributeName   : [self notificationBlockParagraphStyle],
+        NSFontAttributeName             : [WPStyleGuide notificationBlockFontItalics],
+        NSForegroundColorAttributeName  : [WPStyleGuide allTAllShadeGrey],
     };
 }
 
