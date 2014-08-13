@@ -36,6 +36,9 @@
         
     UINib *nib = [UINib nibWithNibName:@"SuggestionsTableViewCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:@"SuggestionsTableViewCell"];
+    
+    // suppress display of blank rows
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (void)viewDidAppear:(BOOL)animated
