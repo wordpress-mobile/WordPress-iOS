@@ -162,7 +162,7 @@ const CGFloat WPContentAttributionMenuSize = 30.0;
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
-    [button setImage:[UIImage imageNamed:@"icon-expand"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"icon-menu-ellipsis"] forState:UIControlStateNormal];
     button.hidden = YES; // Hidden by default.
 
     [button addTarget:self action:@selector(attributionMenuAction:) forControlEvents:UIControlEventTouchUpInside];
