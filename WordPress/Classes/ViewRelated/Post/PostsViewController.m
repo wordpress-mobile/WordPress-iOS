@@ -1,6 +1,6 @@
 #import "WPTableViewControllerSubclass.h"
 #import "PostsViewController.h"
-#import "EditPostViewController.h"
+#import "WPPostViewController.h"
 #import "PostDetailViewController.h"
 #import "NewPostTableViewCell.h"
 #import "WordPressAppDelegate.h"
@@ -209,20 +209,25 @@
 
 - (void)editPost:(AbstractPost *)apost
 {
-    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:apost];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+    WPPostViewController *postViewController = [[WPPostViewController alloc] initWithPost:apost
+																					 mode:kWPPostViewControllerModeEdit];
+	
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:postViewController];
+	
     [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
     navController.restorationIdentifier = WPEditorNavigationRestorationID;
-    navController.restorationClass = [EditPostViewController class];
-    [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
+    navController.restorationClass = [WPPostViewController class];
+    
+	[self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)viewPost:(AbstractPost *)apost
 {
-    PostDetailViewController *postDetailViewController = [[PostDetailViewController alloc] initWithPost:apost];
-    postDetailViewController.restorationIdentifier = WPPostDetailNavigationRestorationID;
-    [self.navigationController pushViewController:postDetailViewController animated:YES];
+    WPPostViewController *postViewController = [[WPPostViewController alloc] initWithPost:apost
+																					 mode:kWPPostViewControllerModePreview];
+	postViewController.restorationIdentifier = WPEditorNavigationRestorationID;
+	[self.navigationController pushViewController:postViewController animated:YES];
 }
 
 - (void)setBlog:(Blog *)blog {

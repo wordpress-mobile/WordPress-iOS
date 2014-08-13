@@ -1,5 +1,5 @@
 #import "WordPressActivity.h"
-#import "EditPostViewController.h"
+#import "WPPostViewController.h"
 
 @interface WordPressActivity () <WPEditorViewControllerDelegate>
 
@@ -51,7 +51,7 @@
     NSString * content = [self.summary stringByAppendingString:[NSString stringWithFormat:@"\n\n <a href=\"%@\">%@</a>", self.URL, self.URL]];
 
     __weak __typeof(self) weakSelf = self;
-    EditPostViewController * editPostViewController = [[EditPostViewController alloc] initWithTitle:self.title andContent:content andTags:self.tags andImage:nil];
+    WPPostViewController * editPostViewController = [[WPPostViewController alloc] initWithTitle:self.title andContent:content andTags:self.tags andImage:nil];
     editPostViewController.onClose = ^(){
         [weakSelf activityDidFinish:YES];
     };
@@ -60,7 +60,7 @@
     navController.modalPresentationStyle = UIModalPresentationFullScreen;
     navController.navigationBar.translucent = NO;
     navController.restorationIdentifier = WPEditorNavigationRestorationID;
-    navController.restorationClass = [EditPostViewController class];
+    navController.restorationClass = [WPPostViewController class];
 
     return navController;
 }

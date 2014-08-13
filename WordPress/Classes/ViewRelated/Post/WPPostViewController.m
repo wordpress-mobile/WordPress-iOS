@@ -1,5 +1,5 @@
-#import "EditPostViewController.h"
-#import "EditPostViewController_Internal.h"
+#import "WPPostViewController.h"
+#import "WPPostViewController_Internal.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
@@ -19,7 +19,7 @@ NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestoratio
 NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 static NSInteger const MaximumNumberOfPictures = 4;
 
-@interface EditPostViewController ()<UIPopoverControllerDelegate> {
+@interface WPPostViewController ()<UIPopoverControllerDelegate> {
     NSOperationQueue *_mediaUploadQueue;
 }
 
@@ -31,11 +31,92 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
 @end
 
-@implementation EditPostViewController
+@implementation WPPostViewController
 
-+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+#pragma mark - Initializers & dealloc
+
+- (void)dealloc
 {
-    
+    _failedMediaAlertView.delegate = nil;
+    [_mediaUploadQueue removeObserver:self forKeyPath:@"operationCount"];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (id)initWithDraftForLastUsedBlog
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+	
+    Blog *blog = [blogService lastUsedOrFirstBlog];
+	Post *post = [Post newDraftForBlog:blog];
+	
+    return [self initWithPost:post
+						 mode:kWPPostViewControllerModeEdit];
+}
+
+- (id)initWithPost:(AbstractPost *)post
+			  mode:(WPPostViewControllerMode)mode
+{
+    self = [super initWithMode:mode];
+	
+    if (self) {
+        self.restorationIdentifier = NSStringFromClass([self class]);
+        self.restorationClass = [self class];
+
+        _post = post;
+		
+        [self configureMediaUploadQueue];
+		
+        if (_post.remoteStatus == AbstractPostRemoteStatusLocal) {
+            _editMode = EditPostViewControllerModeNewPost;
+        } else {
+            _editMode = EditPostViewControllerModeEditPost;
+        }
+    }
+	
+    return self;
+}
+
+- (id)initWithTitle:(NSString *)title
+		 andContent:(NSString *)content
+			andTags:(NSString *)tags
+		   andImage:(NSString *)image
+{
+    self = [self initWithDraftForLastUsedBlog];
+	
+    if (self) {
+        self.restorationIdentifier = NSStringFromClass([self class]);
+        self.restorationClass = [self class];
+        self.modalTransitionStyle = UIModalPresentationCustom;
+        Post *post = (Post *)self.post;
+        post.postTitle = title;
+        post.content = content;
+        post.tags = tags;
+        
+        if (image) {
+            NSURL *imageURL = [NSURL URLWithString:image];
+			
+            if (imageURL) {
+				static NSString* const kFormat = @"<a href=\"%@\"><img src=\"%@\"></a>";
+				
+                NSString *aimg = [NSString stringWithFormat:kFormat, [imageURL absoluteString], [imageURL absoluteString]];
+                content = [NSString stringWithFormat:@"%@\n%@", aimg, content];
+                post.content = content;
+            } else {
+                // Assume image as base64 encoded string.
+                // TODO: Wrangle a base64 encoded image.
+            }
+        }
+    }
+	
+    return self;
+}
+
+#pragma mark - UIViewControllerRestoration
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents
+															coder:(NSCoder *)coder
+{
     if ([[identifierComponents lastObject] isEqualToString:WPEditorNavigationRestorationID]) {
         UINavigationController *navController = [[UINavigationController alloc] init];
         navController.restorationIdentifier = WPEditorNavigationRestorationID;
@@ -68,67 +149,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
     [super encodeRestorableStateWithCoder:coder];
 }
 
-
-- (void)dealloc
-{
-    _failedMediaAlertView.delegate = nil;
-    [_mediaUploadQueue removeObserver:self forKeyPath:@"operationCount"];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (id)initWithTitle:(NSString *)title andContent:(NSString *)content andTags:(NSString *)tags andImage:(NSString *)image
-{
-    self = [self initWithDraftForLastUsedBlog];
-    if (self) {
-        self.restorationIdentifier = NSStringFromClass([self class]);
-        self.restorationClass = [self class];
-        self.modalTransitionStyle = UIModalPresentationCustom;
-        Post *post = (Post *)self.post;
-        post.postTitle = title;
-        post.content = content;
-        post.tags = tags;
-        
-        if (image) {
-            NSURL *imageURL = [NSURL URLWithString:image];
-            if (imageURL) {
-                NSString *aimg = [NSString stringWithFormat:@"<a href=\"%@\"><img src=\"%@\"></a>", [imageURL absoluteString], [imageURL absoluteString]];
-                content = [NSString stringWithFormat:@"%@\n%@", aimg, content];
-                post.content = content;
-            } else {
-                // Assume image as base64 encoded string.
-                // TODO: Wrangle a base64 encoded image.
-            }
-        }
-    }
-    return self;
-}
-
-- (id)initWithDraftForLastUsedBlog
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-
-    Blog *blog = [blogService lastUsedOrFirstBlog];
-    return [self initWithPost:[Post newDraftForBlog:blog]];
-}
-
-- (id)initWithPost:(AbstractPost *)post
-{
-    self = [super init];
-    if (self) {
-        self.restorationIdentifier = NSStringFromClass([self class]);
-        self.restorationClass = [self class];
-        _post = post;
-        [self configureMediaUploadQueue];
-
-        if (_post.remoteStatus == AbstractPostRemoteStatusLocal) {
-            _editMode = EditPostViewControllerModeNewPost;
-        } else {
-            _editMode = EditPostViewControllerModeEditPost;
-        }
-    }
-    return self;
-}
+#pragma mark - Media upload configuration
 
 - (void)configureMediaUploadQueue
 {
@@ -136,6 +157,8 @@ static NSInteger const MaximumNumberOfPictures = 4;
     _mediaUploadQueue.maxConcurrentOperationCount = 4;
     [_mediaUploadQueue addObserver:self forKeyPath:@"operationCount" options:NSKeyValueObservingOptionNew context:nil];
 }
+
+#pragma mark - View lifecycle
 
 - (void)viewDidLoad
 {
@@ -145,7 +168,8 @@ static NSInteger const MaximumNumberOfPictures = 4;
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:MediaShouldInsertBelowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:)
+name:MediaShouldInsertBelowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];
     
     [self geotagNewPost];
@@ -155,7 +179,6 @@ static NSInteger const MaximumNumberOfPictures = 4;
 - (void)viewDidAppear:(BOOL)animated
 {
     [self refreshButtons];
-    [self focusTextEditor];
 }
 
 #pragma mark - View Setup

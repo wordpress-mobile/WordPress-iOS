@@ -1,7 +1,7 @@
 #import "PostPreviewViewController.h"
 #import "WordPressAppDelegate.h"
 #import "NSString+Helpers.h"
-#import "EditPostViewController_Internal.h"
+#import "WPPostViewController_Internal.h"
 #import "Post.h"
 
 @interface PostPreviewViewController ()
