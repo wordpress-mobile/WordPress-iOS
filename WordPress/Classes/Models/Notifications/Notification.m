@@ -18,6 +18,18 @@ NSString const *NoteLinkTypeUser        = @"user";
 NSString const *NoteLinkTypePost        = @"post";
 NSString const *NoteLinkTypeComment     = @"comment";
 
+NSString const *NoteMediaTypeImage      = @"image";
+
+NSString const *NoteBlockTypeUser       = @"user";
+NSString const *NoteBlockTypeComment    = @"comment";
+
+NSString const *NoteTypeComment         = @"comment";
+NSString const *NoteTypeMatcher         = @"automattcher";
+NSString const *NoteTypeMilestoneInfix  = @"_milestone_";
+NSString const *NoteTypeTrafficPrefix   = @"traffic_";
+NSString const *NoteTypeBestPrefix      = @"best_";
+NSString const *NoteTypeMostPrefix      = @"most_";
+
 NSString const *NoteMetaKey             = @"meta";
 NSString const *NoteMediaKey            = @"media";
 NSString const *NoteActionsKey          = @"actions";
@@ -56,6 +68,33 @@ NSString const *NoteHeightKey           = @"height";
 	return self;
 }
 
+- (BOOL)isUser
+{
+    return [self.type isEqual:NoteLinkTypeUser];
+}
+
+- (BOOL)isPost
+{
+    return [self.type isEqual:NoteLinkTypePost];
+}
+
+- (BOOL)isComment
+{
+    return [self.type isEqual:NoteLinkTypeComment];
+}
+
++ (NSArray *)urlsFromArray:(NSArray *)rawURL
+{
+	NSMutableArray *parsed = [NSMutableArray array];
+	for (NSDictionary *rawDict in rawURL) {
+        if ([rawDict isKindOfClass:[NSDictionary class]]) {
+            [parsed addObject:[[[self class] alloc] initWithDictionary:rawDict]];
+        }
+	}
+	
+	return parsed;
+}
+
 @end
 
 
@@ -89,7 +128,19 @@ NSString const *NoteHeightKey           = @"height";
 
 - (BOOL)isImage
 {
-    return [self.type isEqualToString:@"image"];
+    return [self.type isEqual:NoteMediaTypeImage];
+}
+
++ (NSArray *)mediaFromArray:(NSArray *)rawMedia
+{
+	NSMutableArray *parsed = [NSMutableArray array];
+	for (NSDictionary *rawDict in rawMedia) {
+        if ([rawDict isKindOfClass:[NSDictionary class]]) {
+            [parsed addObject:[[[self class] alloc] initWithDictionary:rawDict]];
+        }
+	}
+	
+	return parsed;
 }
 
 @end
@@ -117,22 +168,10 @@ NSString const *NoteHeightKey           = @"height";
         NSArray *rawMedia           = [rawBlock arrayForKey:NoteMediaKey];
         
 		_text                       = [rawBlock stringForKey:NoteTextKey];
-		_urls                       = [[self class] parseObjectsOfKind:[NotificationURL class]   fromArray:rawUrls];
-		_media                      = [[self class] parseObjectsOfKind:[NotificationMedia class] fromArray:rawMedia];
+		_urls                       = [NotificationURL urlsFromArray:rawUrls];
+		_media                      = [NotificationMedia mediaFromArray:rawMedia];
         _meta                       = [rawBlock dictionaryForKey:NoteMetaKey];
         _actions                    = [rawBlock dictionaryForKey:NoteActionsKey];
-        
-        // Parse the Type!
-        NotificationMedia *media    = [_media firstObject];
-        BOOL isImage                = media.isImage;
-        
-        if ([[rawBlock stringForKey:NoteTypeKey] isEqualToString:@"user"]) {
-            _type = NoteBlockTypesUser;
-        } else if (isImage) {
-            _type = NoteBlockTypesImage;
-        } else {
-            _type = NoteBlockTypesText;
-        }
 	}
 	
 	return self;
@@ -141,6 +180,11 @@ NSString const *NoteHeightKey           = @"height";
 - (NSNumber *)metaSiteID
 {
     return [[self.meta dictionaryForKey:NoteIdsKey] numberForKey:NoteSiteKey];
+}
+
+- (NSNumber *)metaCommentID
+{
+    return [[self.meta dictionaryForKey:NoteIdsKey] numberForKey:NoteCommentKey];
 }
 
 - (void)setActionOverrideValue:(id)obj forKey:(NSString *)key
@@ -167,24 +211,51 @@ NSString const *NoteHeightKey           = @"height";
     return self.actionsOverride[key] ?: self.actions[key];
 }
 
-+ (NSArray *)parseBlocksFromArray:(NSArray *)rawBlocks
++ (NSArray *)blocksFromArray:(NSArray *)rawBlocks notification:(Notification *)notification
 {
-    return [self parseObjectsOfKind:[self class] fromArray:rawBlocks];
-}
-
-+ (NSArray *)parseObjectsOfKind:(Class)kind fromArray:(NSArray *)rawArray
-{
-    if (![rawArray isKindOfClass:[NSArray class]]) {
+    if (![rawBlocks isKindOfClass:[NSArray class]]) {
         return nil;
     }
     
-	NSMutableArray *parsed = [NSMutableArray array];
-	for (NSDictionary *rawDict in rawArray) {
-        if ([rawDict isKindOfClass:[NSDictionary class]]) {
-            [parsed addObject:[[kind alloc] initWithDictionary:rawDict]];
+	NSMutableArray *parsed  = [NSMutableArray array];
+    
+	for (NSDictionary *rawDict in rawBlocks) {
+        if (![rawDict isKindOfClass:[NSDictionary class]]) {
+            continue;
         }
+        
+        NotificationBlock *block    = [[[self class] alloc] initWithDictionary:rawDict];
+        
+        //  Duck Typing code below:
+        //  Infer block type based on... stuff. (Sorry)
+        //
+        NotificationMedia *media    = [block.media firstObject];
+        
+        //  User
+        if ([rawDict[NoteTypeKey] isEqual:NoteBlockTypeUser]) {
+            block.type = NoteBlockTypesUser;
+            
+        //  Comments
+        } else if ([block.metaCommentID isEqual:notification.metaCommentID]) {
+            block.type = NoteBlockTypesComment;
+
+        //  Quotes: Another comment that doesn't match with the note comment
+        } else if (block.metaCommentID != nil) {
+            block.type = NoteBlockTypesQuote;
+            
+        //  Images
+        } else if (media.isImage) {
+            block.type = NoteBlockTypesImage;
+          
+        //  Text
+        } else {
+            block.type = NoteBlockTypesText;
+        }
+
+        
+        [parsed addObject:block];
 	}
-	
+    
 	return parsed;
 }
 
@@ -223,27 +294,14 @@ NSString const *NoteHeightKey           = @"height";
 @synthesize bodyBlocks      = _bodyBlocks;
 
 
-- (BOOL)isComment
-{
-    return [self.type isEqualToString:@"comment"];
-}
+#pragma mark - NSManagedObject Overriden Methods
 
-- (BOOL)isMatcher
+- (void)didTurnIntoFault
 {
-    return [self.type isEqualToString:@"automattcher"];
-}
-
-- (BOOL)isStatsEvent
-{
-    NSArray *events = @[@"_milestone_", @"traffic_", @"best_", @"most_"];
-    
-    for (NSString *event in events) {
-        if ([self.type rangeOfString:event].length) {
-            return YES;
-        }
-    }
-    
-    return NO;
+    _date           = nil;
+    _iconURL        = nil;
+    _subjectBlock   = nil;
+    _bodyBlocks     = nil;
 }
 
 
@@ -278,7 +336,7 @@ NSString const *NoteHeightKey           = @"height";
 - (NSArray *)bodyBlocks
 {
     if (!_bodyBlocks) {
-        _bodyBlocks = [NotificationBlock parseBlocksFromArray:self.body];
+        _bodyBlocks = [NotificationBlock blocksFromArray:self.body notification:self];
     }
     
     return _bodyBlocks;
@@ -299,15 +357,27 @@ NSString const *NoteHeightKey           = @"height";
     return [[self.meta dictionaryForKey:NoteIdsKey] numberForKey:NoteCommentKey];
 }
 
-
-#pragma mark - Helpers
-
-- (void)didTurnIntoFault
+- (BOOL)isComment
 {
-    _date           = nil;
-    _iconURL        = nil;
-    _subjectBlock   = nil;
-    _bodyBlocks     = nil;
+    return [self.type isEqual:NoteTypeComment];
+}
+
+- (BOOL)isMatcher
+{
+    return [self.type isEqual:NoteTypeMatcher];
+}
+
+- (BOOL)isStatsEvent
+{
+    NSArray *events = @[NoteTypeMilestoneInfix, NoteTypeTrafficPrefix, NoteTypeBestPrefix, NoteTypeMostPrefix];
+    
+    for (NSString *event in events) {
+        if ([self.type rangeOfString:event].length) {
+            return YES;
+        }
+    }
+    
+    return NO;
 }
 
 @end
