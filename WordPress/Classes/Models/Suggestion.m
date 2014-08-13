@@ -2,19 +2,15 @@
 
 @implementation Suggestion
 
-@synthesize slug;
-@synthesize description;
-@synthesize avatarEmail;
-
-+ (id)suggestionWithSlug:(NSString *)_slug
-             description:(NSString *)_description
-             avatarEmail:(NSString *)_avatarEmail
++ (id)suggestionWithUserLogin:(NSString *)_userLogin
+                  displayName:(NSString *)_displayName
+                     imageURL:(NSURL *)_imageURL
 {    
     Suggestion *newSuggestion = [[self alloc] init];
     
-    newSuggestion.slug = _slug;
-    newSuggestion.description = _description;
-    newSuggestion.avatarEmail = _avatarEmail;
+    newSuggestion.userLogin = _userLogin;
+    newSuggestion.displayName = _displayName;
+    newSuggestion.imageURL = _imageURL;
     
     return newSuggestion;
 }

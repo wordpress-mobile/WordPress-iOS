@@ -578,28 +578,28 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         SuggestionsTableViewController *suggestionsController = [[SuggestionsTableViewController alloc] init];
         // @todo - get from rest api
         suggestionsController.suggestions = [[NSMutableArray alloc] initWithObjects:
-                                                [Suggestion suggestionWithSlug:@"@alans19231"
-                                                                   description:@"Alan Shephard"
-                                                                   avatarEmail:@"alans19231@domain.com"],
-                                                [Suggestion suggestionWithSlug:@"@dekes19241"
-                                                                   description:@"Deke Slayton"
-                                                                   avatarEmail:@"dekes19241@domain.com"],
-                                                [Suggestion suggestionWithSlug:@"@gordonc19271"
-                                                                   description:@"Gordon Cooper"
-                                                                   avatarEmail:@"gordonc19271@domain.com"],
-                                                [Suggestion suggestionWithSlug:@"@gusg19261"
-                                                                   description:@"Gus Grissom"
-                                                                   avatarEmail:@"gusg19261@domain.com"],
-                                                [Suggestion suggestionWithSlug:@"@johng19211"
-                                                                   description:@"John Glenn"
-                                                                   avatarEmail:@"johng19211@domain.com"],
-                                                [Suggestion suggestionWithSlug:@"@scottc19251"
-                                                                   description:@"Scott Carpenter"
-                                                                   avatarEmail:@"scottc19251@domain.com"],
-                                                [Suggestion suggestionWithSlug:@"@wallys19231"
-                                                                   description:@"Wally Schirra"
-                                                                   avatarEmail:@"wallys19231@domain.com"],
-                                                nil];
+                                             [Suggestion suggestionWithUserLogin:@"alans19231"
+                                                                     displayName:@"Alan Shephard"
+                                                                        imageURL:[NSURL URLWithString:@"http://s.gravatar.com/avatar/31bebfb2e302d673a7ada29e4d449b78"]],
+                                             [Suggestion suggestionWithUserLogin:@"dekes19241"
+                                                                     displayName:@"Deke Slayton"
+                                                                        imageURL:[NSURL URLWithString:@"http://s.gravatar.com/avatar/d2b4119ddf895bd7e9eb2fad53396eec"]],
+                                             [Suggestion suggestionWithUserLogin:@"gordonc19271"
+                                                                     displayName:@"Gordon Cooper"
+                                                                        imageURL:[NSURL URLWithString:@"http://s.gravatar.com/avatar/9d7158527cccb23c82f065f7f572d49d"]],
+                                             [Suggestion suggestionWithUserLogin:@"gusg19261"
+                                                                     displayName:@"Gus Grissom"
+                                                                        imageURL:[NSURL URLWithString:@"http://s.gravatar.com/avatar/f02eda5a5457466a1c09008d11000a08"]],
+                                             [Suggestion suggestionWithUserLogin:@"johng19211"
+                                                                     displayName:@"John Glenn"
+                                                                        imageURL:[NSURL URLWithString:@"http://s.gravatar.com/avatar/31bebfb2e302d673a7ada29e4d449b78"]],
+                                             [Suggestion suggestionWithUserLogin:@"scottc19251"
+                                                                     displayName:@"Scott Carpenter"
+                                                                        imageURL:[NSURL URLWithString:@"http://s.gravatar.com/avatar/d2b4119ddf895bd7e9eb2fad53396eec"]],
+                                             [Suggestion suggestionWithUserLogin:@"wallys19231"
+                                                                     displayName:@"Wally Schirra"
+                                                                        imageURL:[NSURL URLWithString:@"http://s.gravatar.com/avatar/9d7158527cccb23c82f065f7f572d49d"]],
+                                             nil];
         
         [self.navigationController pushViewController:suggestionsController animated:YES];
         suggestionsController.delegate = self;

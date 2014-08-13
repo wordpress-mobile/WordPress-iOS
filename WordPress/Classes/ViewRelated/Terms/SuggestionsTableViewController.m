@@ -1,7 +1,7 @@
 #import "SuggestionsTableViewController.h"
 #import "SuggestionsTableViewCell.h"
 #import "Suggestion.h"
-#import "UIImageView+Gravatar.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface SuggestionsTableViewController ()
 
@@ -29,7 +29,8 @@
     self.tableView.tableHeaderView = self.viewSearchBar;
     self.viewSearchBar.delegate = self;
     
-    self.viewSearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.viewSearchBar contentsController:self];
+    self.viewSearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.viewSearchBar
+                                                                         contentsController:self];
     [self.viewSearchDisplayController setDelegate:self];
     [self.viewSearchDisplayController setSearchResultsDelegate:self];
     [self.viewSearchDisplayController setSearchResultsDataSource:self];
@@ -99,12 +100,12 @@
     } else {
         suggestion = [self.suggestions objectAtIndex:indexPath.row];
     }
-    cell.username.text = suggestion.slug;
-    cell.displayName.text = suggestion.description;
-    cell.avatar.image = [UIImage imageNamed:@"gravatar"];
+    cell.username.text = @"@";
+    cell.username.text = [cell.username.text stringByAppendingString:suggestion.userLogin];
+    cell.displayName.text = suggestion.displayName;
     
     UIImage *avatarPlaceholderImage = [UIImage imageNamed:@"gravatar"];
-    [cell.avatar setImageWithGravatarEmail:suggestion.avatarEmail fallbackImage:avatarPlaceholderImage];
+    [cell.avatar setImageWithURL:suggestion.imageURL placeholderImage:avatarPlaceholderImage];
     
     return cell;
 }
@@ -119,7 +120,8 @@
     }
     
     if ( 0 < searchText.length ) {
-        NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"(description contains[c] %@) OR (slug contains[c] %@)",   searchText, searchText];
+        NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"(displayName contains[c] %@) OR (userLogin contains[c] %@)",
+                                        searchText, searchText];
         self.searchResults = [[self.suggestions filteredArrayUsingPredicate:resultPredicate] mutableCopy];
     } else {
         self.searchResults = [self.suggestions mutableCopy];
@@ -150,7 +152,7 @@
         }
         
         [self.viewSearchDisplayController setActive:NO animated:NO];
-        [self.delegate suggestionViewDidSelect:self selectionString:suggestion.slug ];
+        [self.delegate suggestionViewDidSelect:self selectionString:suggestion.userLogin ];
     }
 }
 

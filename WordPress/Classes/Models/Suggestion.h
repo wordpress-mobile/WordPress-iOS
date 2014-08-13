@@ -2,12 +2,12 @@
 
 @interface Suggestion : NSObject
 
-@property (nonatomic, strong) NSString *slug;
-@property (nonatomic, strong) NSString *description;
-@property (nonatomic, strong) NSString *avatarEmail;
+@property (nonatomic, strong) NSString *userLogin;
+@property (nonatomic, strong) NSString *displayName;
+@property (nonatomic, strong) NSURL *imageURL;
 
-+ (id)suggestionWithSlug:(NSString*)_slug
-            description:(NSString *)_description
-            avatarEmail:(NSString *)_avatarEmail;
++ (id)suggestionWithUserLogin:(NSString*)_userLogin
+                  displayName:(NSString *)_displayName
+                     imageURL:(NSURL *)_imageURL;
 
 @end
