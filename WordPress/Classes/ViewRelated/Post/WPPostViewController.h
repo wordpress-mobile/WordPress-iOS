@@ -4,9 +4,16 @@
 
 @class AbstractPost;
 
+typedef enum
+{
+	kWPPostViewControllerModePreview = kWPEditorViewControllerModePreview,
+	kWPPostViewControllerModeEdit = kWPEditorViewControllerModeEdit,
+}
+WPPostViewControllerMode;
+
 extern NSString *const WPEditorNavigationRestorationID;
 
-@interface EditPostViewController : WPEditorViewController <UINavigationControllerDelegate, CTAssetsPickerControllerDelegate, WPEditorViewControllerDelegate>
+@interface WPPostViewController : WPEditorViewController <UINavigationControllerDelegate, CTAssetsPickerControllerDelegate, WPEditorViewControllerDelegate>
 
 /*
  EditPostViewController instance will execute the onClose callback, if provided, whenever the UI is dismissed.
@@ -15,15 +22,20 @@ typedef void (^EditPostCompletionHandler)(void);
 @property (nonatomic, copy, readwrite) EditPostCompletionHandler onClose;
 
 /*
- Initialize the editor with the specified post.
- @param post The post to edit.
- */
-- (id)initWithPost:(AbstractPost *)post;
-
-/*
  Compose a new post with the last used blog.
  */
 - (id)initWithDraftForLastUsedBlog;
+
+/*
+ Initialize the editor with the specified post.
+ 
+ @param		post		The post to edit.  Cannot be nil.
+ @param		mode		The mode this VC will open in.
+ 
+ @returns	The initialized object.
+ */
+- (id)initWithPost:(AbstractPost *)post
+			  mode:(WPPostViewControllerMode)mode;
 
 /*
  Compose a new post with the specified properties.

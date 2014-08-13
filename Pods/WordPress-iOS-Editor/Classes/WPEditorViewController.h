@@ -5,6 +5,13 @@
 
 @protocol WPEditorViewControllerDelegate <NSObject>
 
+typedef enum
+{
+	kWPEditorViewControllerModePreview = 0,
+	kWPEditorViewControllerModeEdit
+}
+WPEditorViewControllerMode;
+
 @optional
 
 - (BOOL)editorShouldBeginEditing:(WPEditorViewController *)editorController;
@@ -27,10 +34,25 @@
 @property (nonatomic, copy) NSString *bodyText;
 @property (nonatomic) BOOL isShowingKeyboard;
 
+#pragma mark - Initializers
+
+/**
+ *	@brief		Initializes the VC with the specified mode.
+ *
+ *	@param		mode	The mode to initialize the VC in.
+ *
+ *	@returns	The initialized object.
+ */
+- (instancetype)initWithMode:(WPEditorViewControllerMode)mode;
+
+#pragma mark - Editing
+
 /**
  *  Stop all editing activities.
  */
 - (void)stopEditing;
+
+#pragma mark - Override these in subclasses
 
 /**
  *  Gets called when the insert URL picker button is tapped in an alertView
