@@ -190,6 +190,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
     NotificationBlock *block        = [self blockForIndexPath:indexPath];
     __weak __typeof(self) weakSelf  = self;
 
+    //  NoteBlockTypesUser
     if (block.type == NoteBlockTypesUser) {
         NSString *reuseIdentifier           = [NoteBlockUserTableViewCell reuseIdentifier];
         NoteBlockUserTableViewCell *cell    = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
@@ -210,6 +211,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
         
         return cell;
 
+    //  NoteBlockTypesQuote
     } else if (block.type == NoteBlockTypesQuote) {
 
         NSString *reuseIdentifier           = [NoteBlockQuoteTableViewCell reuseIdentifier];
@@ -219,14 +221,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
         
         return cell;
         
-    } else if (block.type == NoteBlockTypesComment) {
-        
-#warning TODO: Implement Me
-        NSString *reuseIdentifier           = [NoteBlockTextTableViewCell reuseIdentifier];
-        NoteBlockTextTableViewCell *cell    = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
-        
-        return cell;
-        
+    //  NoteBlockTypesImage
     } else if (block.type == NoteBlockTypesImage) {
         NSString *reuseIdentifier           = [NoteBlockImageTableViewCell reuseIdentifier];
         NoteBlockImageTableViewCell *cell   = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
@@ -236,6 +231,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
 
         return cell;
         
+    //  NoteBlockTypesText + NoteBlockTypesComment
     } else {
         NSString *reuseIdentifier           = [NoteBlockTextTableViewCell reuseIdentifier];
         NoteBlockTextTableViewCell *cell    = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
