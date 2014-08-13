@@ -309,6 +309,11 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSNumber *rowCacheValue = self.cachedRowHeights[@(indexPath.row)];
+    if (rowCacheValue) {
+        return rowCacheValue.floatValue;
+    }
+    
     CGFloat const NoteEstimatedHeight = 80;
     return NoteEstimatedHeight;
 }
