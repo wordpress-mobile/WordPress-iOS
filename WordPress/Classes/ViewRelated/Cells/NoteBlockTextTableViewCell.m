@@ -4,8 +4,6 @@
 
 #import "WPStyleGuide+Notifications.h"
 
-#import <DTCoreText/DTCoreText.h>
-
 
 
 #pragma mark ====================================================================================
@@ -22,7 +20,7 @@ static UIEdgeInsets const NoteBlockLabelPadding = {4.0f, 0.0f, 4.0f, 0.0f};
 #pragma mark ====================================================================================
 
 @interface NoteBlockTextTableViewCell () <DTAttributedTextContentViewDelegate>
-@property (nonatomic, weak) IBOutlet DTAttributedLabel  *attributedLabel;
+
 @end
 
 

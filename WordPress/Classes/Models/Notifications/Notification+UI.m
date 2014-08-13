@@ -19,18 +19,18 @@
         return [NSAttributedString new];
     }
     
-    NSDictionary *attributes                = [WPStyleGuide notificationSubjectAttributes];
+    NSDictionary *attributesRegular         = [WPStyleGuide notificationSubjectAttributesRegular];
     NSDictionary *attributesBold            = [WPStyleGuide notificationSubjectAttributesBold];
     NSDictionary *attributesItalics         = [WPStyleGuide notificationSubjectAttributesItalics];
-    NSMutableAttributedString *theString    = [[NSMutableAttributedString alloc] initWithString:self.text attributes:attributes];
+    NSMutableAttributedString *theString    = [[NSMutableAttributedString alloc] initWithString:self.text attributes:attributesRegular];
     
     // Bold text up until "liked", "commented", "matched" or "followed"
     [theString applyAttributesToQuotes:attributesItalics];
     
     for (NotificationURL *url in self.urls) {
-        if ([url.type isEqual:NoteLinkTypeUser]) {
+        if (url.isUser) {
             [theString addAttributes:attributesBold range:url.range];
-        } else if ( [url.type isEqual:NoteLinkTypePost]) {
+        } else if (url.isPost) {
             [theString addAttributes:attributesItalics range:url.range];
         }
     }
@@ -38,16 +38,16 @@
     return theString;
 }
 
-- (NSAttributedString *)attributedText
+- (NSAttributedString *)attributedTextRegular
 {
     if (!self.text) {
         return [NSAttributedString new];
     }
     
-    NSDictionary *attributes                = [WPStyleGuide notificationBlockAttributes];
+    NSDictionary *attributesRegular         = [WPStyleGuide notificationBlockAttributesRegular];
     NSDictionary *attributesBold            = [WPStyleGuide notificationBlockAttributesBold];
     NSDictionary *attributesItalics         = [WPStyleGuide notificationBlockAttributesItalics];
-    NSMutableAttributedString *theString    = [[NSMutableAttributedString alloc] initWithString:self.text attributes:attributes];
+    NSMutableAttributedString *theString    = [[NSMutableAttributedString alloc] initWithString:self.text attributes:attributesRegular];
     
     [theString applyAttributesToQuotes:attributesBold];
     
@@ -55,7 +55,7 @@
     //  DTLinkAttribute     = @"NSLinkAttributeName"
     //  NSLinkAttributeName = @"NSLink"
     for (NotificationURL *url in self.urls) {
-        if ([url.type isEqual:NoteLinkTypePost]) {
+        if (url.isPost) {
             [theString addAttributes:attributesItalics range:url.range];
         }
         
@@ -77,6 +77,18 @@
                                 [theString addAttribute:NSForegroundColorAttributeName value:[WPStyleGuide baseLighterBlue] range:result.range];
                                 
      }];
+    
+    return theString;
+}
+
+- (NSAttributedString *)attributedTextQuoted
+{
+    if (!self.text) {
+        return [NSAttributedString new];
+    }
+    
+    NSDictionary *attributes                = [WPStyleGuide notificationQuotedAttributesItalics];
+    NSMutableAttributedString *theString    = [[NSMutableAttributedString alloc] initWithString:self.text attributes:attributes];
     
     return theString;
 }
