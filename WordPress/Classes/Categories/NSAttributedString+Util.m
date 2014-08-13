@@ -19,17 +19,4 @@
     }
 }
 
-- (void)applyAttributes:(NSDictionary *)attributes untilKeywords:(NSArray *)keywords
-{
-    NSString *rawText = self.string;
-    
-    for (NSString *keyword in keywords) {
-        NSRange keywordRange = [rawText rangeOfString:keyword];
-        if (keywordRange.location != NSNotFound) {
-            [self addAttributes:attributes range:NSMakeRange(0, keywordRange.location)];
-            break;
-        }
-    }
-}
-
 @end
