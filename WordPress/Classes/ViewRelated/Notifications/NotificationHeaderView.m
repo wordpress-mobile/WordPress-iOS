@@ -67,25 +67,25 @@ static CGFloat const NotificationHeaderSpaceTrailing    = 20;
 - (void)setupSubviews
 {
     UILabel *noticonLabel           = [UILabel new];
-    noticonLabel.font               = [WPStyleGuide notificationBlockIconFont];
+    noticonLabel.font               = [WPStyleGuide notificationHeaderIconFont];
     noticonLabel.textColor          = [UIColor whiteColor];
     noticonLabel.textAlignment      = NSTextAlignmentCenter;
     self.noticonLabel               = noticonLabel;
     
     UIView *noticonView             = [UIView new];
     noticonView.layer.cornerRadius  = NotificationHeaderNoticonRadius;
-    noticonView.backgroundColor     = [WPStyleGuide notificationIconColor];
+    noticonView.backgroundColor     = [WPStyleGuide notificationIconReadColor];
     self.noticonView                = noticonView;
     
     UILabel *headerLabel            = [UILabel new];
     headerLabel.font                = [WPStyleGuide regularTextFont];
-    headerLabel.textColor           = [WPStyleGuide notificationSubjectTextColor];
+    headerLabel.textColor           = [WPStyleGuide notificationHeaderTextColor];
     headerLabel.textAlignment       = NSTextAlignmentLeft;
     headerLabel.numberOfLines       = 0;
     self.headerLabel                = headerLabel;
     
     UIView *containerView           = [UIView new];
-    containerView.backgroundColor   = [WPStyleGuide notificationSubjectBackgroundColor];
+    containerView.backgroundColor   = [WPStyleGuide notificationHeaderBackgroundColor];
     self.containerView              = containerView;
     
     // Arrange the Hierarchy

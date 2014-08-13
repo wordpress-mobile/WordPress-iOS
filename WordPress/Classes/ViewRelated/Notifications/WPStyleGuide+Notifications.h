@@ -2,35 +2,48 @@
 
 
 
+#pragma mark ====================================================================================
+#pragma mark WPStyleGuide+Notifications
+#pragma mark ====================================================================================
+
 @interface WPStyleGuide (Notifications)
 
+// Notification Icon
 + (UIFont *)notificationIconFont;
-+ (UIColor *)notificationIconColor;
-
 + (UIColor *)notificationIconReadColor;
 + (UIColor *)notificationIconUnreadColor;
+
+// Notification Cell
 + (UIColor *)notificationBackgroundReadColor;
 + (UIColor *)notificationBackgroundUnreadColor;
 
+// Notification Timestamp
++ (UIFont *)notificationTimestampFont;
 + (UIColor *)notificationTimestampTextColor;
 
-+ (UIColor *)notificationSubjectTextColor;
-+ (UIColor *)notificationSubjectBackgroundColor;
-+ (UIFont *)notificationSubjectFont;
+// Notification Subject
++ (UIFont *)notificationSubjectFontRegular;
 + (UIFont *)notificationSubjectFontBold;
 + (UIFont *)notificationSubjectFontItalics;
-+ (NSDictionary *)notificationSubjectAttributes;
++ (NSDictionary *)notificationSubjectAttributesRegular;
 + (NSDictionary *)notificationSubjectAttributesBold;
 + (NSDictionary *)notificationSubjectAttributesItalics;
 
-+ (UIFont *)notificationBlockIconFont;
-+ (UIColor *)notificationBlockIconColor;
+// Notification Header
++ (UIColor *)notificationHeaderTextColor;
++ (UIColor *)notificationHeaderBackgroundColor;
++ (UIFont *)notificationHeaderIconFont;
+
+// Notification Blocks: Regular
 + (UIColor *)notificationBlockBackgroundColor;
-+ (UIFont *)notificationBlockFont;
++ (UIFont *)notificationBlockFontRegular;
 + (UIFont *)notificationBlockFontBold;
 + (UIFont *)notificationBlockFontItalics;
-+ (NSDictionary *)notificationBlockAttributes;
++ (NSDictionary *)notificationBlockAttributesRegular;
 + (NSDictionary *)notificationBlockAttributesBold;
 + (NSDictionary *)notificationBlockAttributesItalics;
+
+// Notification Blocks: Quoted
++ (NSDictionary *)notificationQuotedAttributesItalics;
 
 @end

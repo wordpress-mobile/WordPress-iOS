@@ -98,7 +98,7 @@ static UIEdgeInsets const NoteBlockLabelPadding = {4.0f, 0.0f, 4.0f, 0.0f};
     bounds.size.width                       = IS_IPAD ? NoteBlockLabelWidthPad : NoteBlockLabelWidthPhone;
     bounds.size.height                      = CGFLOAT_HEIGHT_UNKNOWN;
 
-    NSDictionary *attributes                = [WPStyleGuide notificationBlockAttributes];
+    NSDictionary *attributes                = [WPStyleGuide notificationBlockAttributesRegular];
     NSAttributedString *attributedString    = [[NSAttributedString alloc] initWithString:text attributes:attributes];
     
     DTCoreTextLayouter *layouter            = [[DTCoreTextLayouter alloc] initWithAttributedString:attributedString];
