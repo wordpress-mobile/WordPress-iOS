@@ -1,5 +1,5 @@
 #import "EditPageViewController.h"
-#import "EditPostViewController_Internal.h"
+#import "WPPostViewController_Internal.h"
 #import "AbstractPost.h"
 #import "PageSettingsViewController.h"
 

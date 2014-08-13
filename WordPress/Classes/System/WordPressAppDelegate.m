@@ -32,7 +32,7 @@
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
 #import "PostsViewController.h"
-#import "EditPostViewController.h"
+#import "WPPostViewController.h"
 #import "LoginViewController.h"
 #import "NotificationsViewController.h"
 #import "ReaderPostsViewController.h"
@@ -271,7 +271,7 @@ NSInteger const kMeTabIndex = 2;
     if ([rootViewController.presentedViewController isKindOfClass:[UINavigationController class]]) {
         UINavigationController *navController = (UINavigationController *)rootViewController.presentedViewController;
         UIViewController *firstViewController = [navController.viewControllers firstObject];
-        if ([firstViewController isKindOfClass:[EditPostViewController class]]) {
+        if ([firstViewController isKindOfClass:[WPPostViewController class]]) {
             return @"Post Editor";
         } else if ([firstViewController isKindOfClass:[LoginViewController class]]) {
             return @"Login View";
@@ -508,12 +508,12 @@ NSInteger const kMeTabIndex = 2;
         [presenter dismissViewControllerAnimated:NO completion:nil];
     }
     
-    EditPostViewController *editPostViewController;
+    WPPostViewController *editPostViewController;
     if (!options) {
         [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
-        editPostViewController = [[EditPostViewController alloc] initWithDraftForLastUsedBlog];
+        editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlog];
     } else {
-        editPostViewController = [[EditPostViewController alloc] initWithTitle:[options stringForKey:@"title"]
+        editPostViewController = [[WPPostViewController alloc] initWithTitle:[options stringForKey:@"title"]
                                                                     andContent:[options stringForKey:@"content"]
                                                                        andTags:[options stringForKey:@"tags"]
                                                                       andImage:[options stringForKey:@"image"]];
@@ -522,7 +522,7 @@ NSInteger const kMeTabIndex = 2;
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
     navController.navigationBar.translucent = NO;
     navController.restorationIdentifier = WPEditorNavigationRestorationID;
-    navController.restorationClass = [EditPostViewController class];
+    navController.restorationClass = [WPPostViewController class];
     [navController setToolbarHidden:NO]; // Make the toolbar visible here to avoid a weird left/right transition when the VC appears.
     [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }

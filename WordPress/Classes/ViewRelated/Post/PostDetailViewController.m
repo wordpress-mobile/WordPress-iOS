@@ -3,11 +3,9 @@
 #import <WordPress-iOS-Shared/NSString+Util.h>
 #import "AbstractPost.h"
 #import "Post.h"
-#import "EditPostViewController.h"
+#import "WPPostViewController.h"
 #import "NSString+Helpers.h"
 #import "EditPostTransition.h"
-
-
 
 NSString *const WPPostDetailNavigationRestorationID = @"WPPostDetailNavigationRestorationID";
 
@@ -88,13 +86,13 @@ NSString *const WPPostDetailNavigationRestorationID = @"WPPostDetailNavigationRe
 
 - (void)editPost
 {
-    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:self.aPost];
+    WPPostViewController *editPostViewController = [[WPPostViewController alloc] initWithPost:self.aPost];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
     navController.modalPresentationStyle = UIModalPresentationCustom;
     navController.transitioningDelegate = self;
     navController.restorationIdentifier = WPEditorNavigationRestorationID;
-    navController.restorationClass = [EditPostViewController class];
+    navController.restorationClass = [WPPostViewController class];
     [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }
 

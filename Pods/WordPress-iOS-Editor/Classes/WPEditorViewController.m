@@ -41,9 +41,27 @@ NSInteger const WPLinkAlertViewTag = 92;
 @property (nonatomic, strong) UIView *optionsView;
 @property (nonatomic) BOOL didFinishLoadingEditor;
 
+#pragma mark - Properties: Editor Mode
+@property (nonatomic, assign, readwrite) WPEditorViewControllerMode mode;
+
 @end
 
 @implementation WPEditorViewController
+
+#pragma mark - Initializers
+
+- (instancetype)initWithMode:(WPEditorViewControllerMode)mode
+{
+	self = [super init];
+	
+	if (self) {
+		_mode = mode;
+	}
+	
+	return self;
+}
+
+#pragma mark - UIViewController
 
 - (void)viewDidLoad
 {
@@ -102,17 +120,6 @@ NSInteger const WPLinkAlertViewTag = 92;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)didMoveToParentViewController:(UIViewController *)parent
-{
-    [super didMoveToParentViewController:parent];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -1319,11 +1326,13 @@ NSInteger const WPLinkAlertViewTag = 92;
 - (void)showInsertURLAlternatePicker
 {
     // Blank method. User should implement this in their subclass
+	NSAssert(NO, @"Blank method. User should implement this in their subclass");
 }
 
 - (void)showInsertImageAlternatePicker
 {
     // Blank method. User should implement this in their subclass
+	NSAssert(NO, @"Blank method. User should implement this in their subclass");
 }
 
 

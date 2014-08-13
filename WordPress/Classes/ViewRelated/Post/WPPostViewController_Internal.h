@@ -1,4 +1,4 @@
-#import "EditPostViewController.h"
+#import "WPPostViewController.h"
 #import <WordPress-iOS-Editor/WPEditorViewController_Internal.h>
 #import "PostSettingsViewController.h"
 #import "MediaBrowserViewController.h"
@@ -18,7 +18,7 @@ typedef NS_ENUM(NSUInteger, EditPostViewControllerMode) {
 	EditPostViewControllerModeEditPost
 };
 
-@interface EditPostViewController () <UIActionSheetDelegate, UITextFieldDelegate, UITextViewDelegate, UIViewControllerRestoration>
+@interface WPPostViewController () <UIActionSheetDelegate, UITextFieldDelegate, UITextViewDelegate, UIViewControllerRestoration>
 
 @property (nonatomic, strong) PostSettingsViewController *postSettingsViewController;
 @property (nonatomic, assign) EditPostViewControllerMode editMode;

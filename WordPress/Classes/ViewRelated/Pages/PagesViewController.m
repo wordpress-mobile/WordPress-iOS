@@ -61,12 +61,13 @@
 
 // For iPhone
 - (void)editPost:(AbstractPost *)apost {
-    EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:apost];
+    EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:apost
+																							 mode:kWPPostViewControllerModeEdit];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     [navController setToolbarHidden:NO]; // Fixes wrong toolbar icon animation.
     navController.modalPresentationStyle = UIModalPresentationFullScreen;
     navController.restorationIdentifier = WPEditorNavigationRestorationID;
-    navController.restorationClass = [EditPostViewController class];
+    navController.restorationClass = [WPPostViewController class];
     [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
