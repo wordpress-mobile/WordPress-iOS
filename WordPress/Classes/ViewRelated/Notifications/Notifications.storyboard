@@ -36,7 +36,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockTextTableViewCell" id="jmW-dd-Cbx" customClass="NoteBlockTextTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockTextTableViewCell" id="jmW-dd-Cbx" userLabel="Text TableViewCell" customClass="NoteBlockTextTableViewCell">
                                 <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jmW-dd-Cbx" id="giy-cd-Nqj">
@@ -61,8 +61,33 @@
                                     <outlet property="attributedLabel" destination="xQl-T8-nxx" id="TGD-Ae-77C"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockImageTableViewCell" rowHeight="200" id="haN-FG-i9H" customClass="NoteBlockImageTableViewCell">
-                                <rect key="frame" x="0.0" y="66" width="320" height="200"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockQuoteTableViewCell" id="iyh-u1-L6U" userLabel="Quote TableViewCell" customClass="NoteBlockQuoteTableViewCell">
+                                <rect key="frame" x="0.0" y="66" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iyh-u1-L6U" id="DNi-Ol-Dh9">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sbX-f5-Gcj" customClass="DTAttributedLabel">
+                                            <rect key="frame" x="46" y="4" width="254" height="35"/>
+                                            <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="centerX" secondItem="sbX-f5-Gcj" secondAttribute="centerX" constant="-13" id="3mX-KV-85L"/>
+                                        <constraint firstAttribute="centerY" secondItem="sbX-f5-Gcj" secondAttribute="centerY" id="5Hu-B3-v4C"/>
+                                        <constraint firstItem="sbX-f5-Gcj" firstAttribute="top" secondItem="DNi-Ol-Dh9" secondAttribute="top" constant="4" id="9P2-eE-xHH"/>
+                                        <constraint firstAttribute="trailing" secondItem="sbX-f5-Gcj" secondAttribute="trailing" constant="20" id="D7q-T0-sPM"/>
+                                        <constraint firstAttribute="bottom" secondItem="sbX-f5-Gcj" secondAttribute="bottom" constant="4" id="Rsx-2A-3jr"/>
+                                        <constraint firstItem="sbX-f5-Gcj" firstAttribute="leading" secondItem="DNi-Ol-Dh9" secondAttribute="leading" constant="46" id="VA4-Iu-WUh"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="attributedLabel" destination="sbX-f5-Gcj" id="TAG-xA-x9m"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockImageTableViewCell" rowHeight="200" id="haN-FG-i9H" userLabel="Image TableViewCell" customClass="NoteBlockImageTableViewCell">
+                                <rect key="frame" x="0.0" y="110" width="320" height="200"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="haN-FG-i9H" id="jcD-Sy-kp4">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="199"/>
@@ -86,8 +111,8 @@
                                     <outlet property="blockImageView" destination="uTP-8C-n1f" id="0XB-7F-Ajd"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockUserTableViewCell" rowHeight="80" id="5xE-rP-cOl" customClass="NoteBlockUserTableViewCell">
-                                <rect key="frame" x="0.0" y="266" width="320" height="80"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockUserTableViewCell" rowHeight="80" id="5xE-rP-cOl" userLabel="User TableViewCell" customClass="NoteBlockUserTableViewCell">
+                                <rect key="frame" x="0.0" y="310" width="320" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5xE-rP-cOl" id="cu5-vz-Y42">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="79"/>
@@ -193,6 +218,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="4ec-Ni-5a5"/>
+        <segue reference="bzs-Og-i8b"/>
     </inferredMetricsTieBreakers>
 </document>
