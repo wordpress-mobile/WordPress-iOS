@@ -326,7 +326,7 @@
         <attribute name="isLikesEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isReblogged" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isSharingEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="isSiteBlocked" optional="YES" attributeType="Boolean" indexed="YES" syncable="YES"/>
+        <attribute name="isSiteBlocked" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="isWPCom" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="likeCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="postAvatar" optional="YES" attributeType="String" syncable="YES"/>
