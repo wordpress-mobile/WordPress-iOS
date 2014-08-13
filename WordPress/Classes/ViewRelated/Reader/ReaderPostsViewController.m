@@ -53,6 +53,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @property (nonatomic) BOOL infiniteScrollEnabled;
 @property (nonatomic, strong) NSMutableDictionary *cachedRowHeights;
 @property (nonatomic, strong) NSNumber *siteIDToBlock;
+@property (nonatomic, strong) NSNumber *postIDThatInitiatedBlock;
 @property (nonatomic, strong) UIActionSheet *actionSheet;
 
 @end
@@ -363,6 +364,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [service flagSiteWithID:siteIDToBlock asBlocked:YES success:^{
         // Nothing to do.
     } failure:^(NSError *error) {
+        self.postIDThatInitiatedBlock = nil;
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Blocking Site", @"Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader.")
                                                             message:[error localizedDescription]
                                                            delegate:nil
@@ -379,6 +381,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:derivedContext];
     [service flagSiteWithID:post.siteID asBlocked:NO success:^{
         // Nothing to do.
+        self.postIDThatInitiatedBlock = nil;
     } failure:^(NSError *error) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Unblocking Site", @"Title of a prompt letting the user know there was an error trying to unblock a site from appearing in the reader.")
                                                             message:[error localizedDescription]
@@ -387,6 +390,24 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
                                                   otherButtonTitles:nil, nil];
         [alertView show];
     }];
+}
+
+- (void)setPostIDThatInitiatedBlock:(NSNumber *)postIDThatInitiatedBlock
+{
+    // Comparing integer values is a valid check even if both values are nil, where an isEqual check would fail.
+    if ([_postIDThatInitiatedBlock integerValue] == [postIDThatInitiatedBlock integerValue]) {
+        return;
+    }
+
+    _postIDThatInitiatedBlock = postIDThatInitiatedBlock;
+
+    [self.cachedRowHeights removeAllObjects];
+    NSError *error;
+    [self.resultsController.fetchRequest setPredicate:[self predicateForFetchRequest]];
+    [self.resultsController performFetch:&error];
+    if (error) {
+        DDLogError(@"Error fetching posts after updating the fetch request predicate: %@", error);
+    }
 }
 
 
@@ -457,6 +478,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
     ReaderPost *post = [self postFromCellSubview:sender];
     self.siteIDToBlock = post.siteID;
+    self.postIDThatInitiatedBlock = post.postID;
 
     NSString *cancel = NSLocalizedString(@"Cancel", @"The title of a cancel button.");
     NSString *blockSite = NSLocalizedString(@"Block This Site", @"The title of a button that triggers blocking a site from the user's reader.");
@@ -621,10 +643,24 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     return self.currentTopic.lastSynced;
 }
 
+- (NSPredicate *)predicateForFetchRequest
+{
+    NSPredicate *predicate;
+
+    if (self.postIDThatInitiatedBlock) {
+        predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND (isSiteBlocked = NO OR postID = %@)", self.currentTopic, self.postIDThatInitiatedBlock];
+    } else {
+        predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND isSiteBlocked = NO", self.currentTopic];
+    }
+
+    return predicate;
+}
+
 - (NSFetchRequest *)fetchRequest
 {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(topic == %@)", self.currentTopic];
+    fetchRequest.predicate = [self predicateForFetchRequest];
+
     NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"sortDate" ascending:NO];
     fetchRequest.sortDescriptors = @[sortDescriptorDate];
     fetchRequest.fetchBatchSize = 20;
@@ -813,11 +849,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [service backfillPostsForTopic:self.currentTopic success:^(BOOL hasMore) {
-        if (success) {
-            dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.postIDThatInitiatedBlock = nil;
+            if (success) {
                 success();
-            });
-        }
+            }
+        });
     } failure:^(NSError *error) {
         if (failure) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -834,11 +871,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [service fetchPostsForTopic:self.currentTopic earlierThan:[NSDate date] success:^(BOOL hasMore) {
-        if (success) {
-            dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.postIDThatInitiatedBlock = nil;
+            if (success) {
                 success();
-            });
-        }
+            }
+        });
     } failure:^(NSError *error) {
         if (failure) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -1122,6 +1160,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
     if (buttonIndex == actionSheet.cancelButtonIndex) {
         self.siteIDToBlock = nil;
+        self.postIDThatInitiatedBlock = nil;
         return;
     }
 
