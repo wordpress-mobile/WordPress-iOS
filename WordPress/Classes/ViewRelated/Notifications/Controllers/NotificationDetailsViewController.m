@@ -2,13 +2,8 @@
 #import "Notification.h"
 #import "Notification+UI.h"
 
+#import "WordPress-Swift.h"
 #import "NotificationHeaderView.h"
-
-#import "NoteBlockTextTableViewCell.h"
-#import "NoteBlockQuoteTableViewCell.h"
-#import "NoteBlockImageTableViewCell.h"
-#import "NoteBlockUserTableViewCell.h"
-#import "NoteBlockCommentTableViewCell.h"
 
 #import "NSURL+Util.h"
 #import "NSScanner+Helpers.h"
@@ -33,7 +28,6 @@
 #import "WordPressAppDelegate.h"
 #import <Simperium/Simperium.h>
 #import <Simperium/SPBucket.h>
-
 
 
 
@@ -210,7 +204,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
     
     [self setupCell:tableViewCell block:block];
 
-    CGFloat height = [tableViewCell heightForWidth:CGRectGetWidth(self.tableView.bounds)];
+    CGFloat height = [tableViewCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
     
     return height;
 }
@@ -262,47 +256,64 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
 
 - (void)setupUserCell:(NoteBlockUserTableViewCell *)cell block:(NotificationBlock *)block
 {
-    NotificationURL *blogURL            = [block.urls firstObject];
-    NotificationMedia *gravatarMedia    = [block.media firstObject];
-    NSNumber *following                 = [block actionForKey:NoteActionFollowKey];
-    __weak __typeof(self) weakSelf      = self;
+    NotificationURL *blogURL        = [block.urls firstObject];
+    NotificationMedia *media        = [block.media firstObject];
+    NSNumber *following             = [block actionForKey:NoteActionFollowKey];
+    __weak __typeof(self) weakSelf  = self;
     
-    cell.name                           = block.text;
-    cell.blogURL                        = blogURL.url;
-    cell.gravatarURL                    = gravatarMedia.mediaURL;
-    cell.following                      = following.boolValue;
-    cell.actionEnabled                  = following != nil;
+    cell.name                       = block.text;
+    cell.blogURL                    = blogURL.url;
+    cell.gravatarURL                = media.mediaURL;
+    cell.following                  = following.boolValue;
+    cell.actionEnabled              = following != nil;
     
-    cell.onFollowClick                  = ^() {
+    cell.onFollowClick              = ^() {
         [weakSelf toggleFollowWithBlock:block];
     };
 }
 
 - (void)setupCommentCell:(NoteBlockCommentTableViewCell *)cell block:(NotificationBlock *)block
 {
-    __weak __typeof(self) weakSelf      = self;
-    cell.attributedText                 = block.attributedTextRegular;
-    cell.onUrlClick                     = ^(NSURL *url){
+    __weak __typeof(self) weakSelf  = self;
+    cell.attributedText             = block.attributedTextRegular;
+    
+    cell.onUrlClick                 = ^(NSURL *url){
         [weakSelf openURL:url];
+    };
+    cell.onLikeClick                = ^(){
+#warning TODO: Implement Likes
+        NSLog(@"Like");
+    };
+    cell.onSpamClick                = ^(){
+#warning TODO: Implement Spam
+        NSLog(@"Spam");
+    };
+    cell.onTrashClick               = ^(){
+#warning TODO: Implement Trash
+        NSLog(@"Trash");
+    };
+    cell.onMoreClick                = ^(){
+#warning TODO: Implement More
+        NSLog(@"More");
     };
 }
 
 - (void)setupQuoteCell:(NoteBlockQuoteTableViewCell *)cell block:(NotificationBlock *)block
 {
-    cell.attributedText                 = block.attributedTextQuoted;
+    cell.attributedText             = block.attributedTextQuoted;
 }
 
 - (void)setupImageCell:(NoteBlockImageTableViewCell *)cell block:(NotificationBlock *)block
 {
-    NotificationMedia *media            = [block.media firstObject];
-    cell.imageURL                       = media.mediaURL;
+    NotificationMedia *media        = [block.media firstObject];
+    cell.imageURL                   = media.mediaURL;
 }
 
 - (void)setupTextCell:(NoteBlockTextTableViewCell *)cell block:(NotificationBlock *)block
 {
-    __weak __typeof(self) weakSelf      = self;
-    cell.attributedText                 = block.attributedTextRegular;
-    cell.onUrlClick                     = ^(NSURL *url){
+    __weak __typeof(self) weakSelf  = self;
+    cell.attributedText             = block.attributedTextRegular;
+    cell.onUrlClick                 = ^(NSURL *url){
         [weakSelf openURL:url];
     };
 }
