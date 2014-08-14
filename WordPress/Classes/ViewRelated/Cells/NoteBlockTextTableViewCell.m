@@ -7,20 +7,11 @@
 
 
 #pragma mark ====================================================================================
-#pragma mark Constants
-#pragma mark ====================================================================================
-
-static CGFloat const NoteBlockLabelWidthPad     = 560.0f;
-static CGFloat const NoteBlockLabelWidthPhone   = 280.0f;
-static UIEdgeInsets const NoteBlockLabelPadding = {4.0f, 0.0f, 4.0f, 0.0f};
-
-
-#pragma mark ====================================================================================
 #pragma mark Private
 #pragma mark ====================================================================================
 
 @interface NoteBlockTextTableViewCell () <DTAttributedTextContentViewDelegate>
-
+@property (nonatomic, weak) IBOutlet DTAttributedLabel *attributedLabel;
 @end
 
 
@@ -40,26 +31,47 @@ static UIEdgeInsets const NoteBlockLabelPadding = {4.0f, 0.0f, 4.0f, 0.0f};
     self.selectionStyle                    = UITableViewCellSelectionStyleNone;
     
     self.attributedLabel.backgroundColor   = [UIColor clearColor];
-    self.attributedLabel.numberOfLines     = 0;
+    self.attributedLabel.numberOfLines     = self.numberOfLines;
     self.attributedLabel.delegate          = self;
+    self.attributedLabel.layoutFrameHeightIsConstrainedByBounds = NO;
 }
+
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    // Manually update DTAttributedLabel's size
+    CGRect frame                = _attributedLabel.frame;
+    CGFloat perferredLabelWidth = self.labelPreferredMaxLayoutWidth;
+    CGSize newSize              = [_attributedLabel suggestedFrameSizeToFitEntireStringConstraintedToWidth:perferredLabelWidth];
+    frame.size                  = newSize;
+    _attributedLabel.frame      = frame;
+}
+
+
+#pragma mark - Helper Methods: Override if needed
+
+- (NSInteger)numberOfLines
+{
+    return 0;
+}
+
+- (CGFloat)labelPreferredMaxLayoutWidth
+{
+    UIEdgeInsets const NoteBlockLabelInsets = {0.0f, 20.0f, 0.0f, 20.0f};
+    return CGRectGetWidth(self.bounds) - NoteBlockLabelInsets.left - NoteBlockLabelInsets.right;
+}
+
+
+#pragma mark - Properties
 
 - (void)setAttributedText:(NSAttributedString *)text
 {
-    // Force Layout: We need the right attributedLabel's width
-    [self layoutIfNeeded];
-    
-    _attributedLabel.attributedString = text;
+    _attributedText                                         = text;
+    _attributedLabel.attributedString                       = text;
     _attributedLabel.layoutFrameHeightIsConstrainedByBounds = NO;
-    
-    // Manually update DTAttributedLabel's size
-    CGRect frame            = _attributedLabel.frame;
-    CGSize newSize          = [_attributedLabel suggestedFrameSizeToFitEntireStringConstraintedToWidth:CGRectGetWidth(frame)];
-    frame.size              = newSize;
-    _attributedLabel.frame  = frame;
-    
-    // Keep a reference!
-    _attributedText         = text;
+    [self setNeedsLayout];
 }
 
 
@@ -85,30 +97,6 @@ static UIEdgeInsets const NoteBlockLabelPadding = {4.0f, 0.0f, 4.0f, 0.0f};
     }
     
     self.onUrlClick(sender.URL);
-}
-
-
-#pragma mark - NoteBlockTableViewCell Methods
-
-+ (CGFloat)heightWithText:(NSString *)text
-{
-    CGRect bounds                           = CGRectZero;
-    bounds.size.width                       = IS_IPAD ? NoteBlockLabelWidthPad : NoteBlockLabelWidthPhone;
-    bounds.size.height                      = CGFLOAT_HEIGHT_UNKNOWN;
-
-    NSDictionary *attributes                = [WPStyleGuide notificationBlockAttributesRegular];
-    NSAttributedString *attributedString    = [[NSAttributedString alloc] initWithString:text attributes:attributes];
-    
-    DTCoreTextLayouter *layouter            = [[DTCoreTextLayouter alloc] initWithAttributedString:attributedString];
-	DTCoreTextLayoutFrame *tmpLayoutFrame   = [layouter layoutFrameWithRect:bounds range:NSMakeRange(0, 0)];
-    CGFloat height                          = CGRectGetMaxY(tmpLayoutFrame.frame) + NoteBlockLabelPadding.top + NoteBlockLabelPadding.bottom;
-
-    return height;
-}
-
-+ (NSString *)reuseIdentifier
-{
-    return NSStringFromClass([self class]);
 }
 
 @end

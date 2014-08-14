@@ -4,7 +4,7 @@
 
 
 
-@interface NoteBlockImageTableViewCell : WPTableViewCell <NoteBlockTableViewCell>
+@interface NoteBlockImageTableViewCell : NoteBlockTableViewCell
 
 @property (nonatomic, strong) NSURL *imageURL;
 

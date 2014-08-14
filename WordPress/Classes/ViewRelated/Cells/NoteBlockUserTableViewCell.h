@@ -1,12 +1,11 @@
 #import <UIKit/UIKit.h>
-#import "WPTableViewCell.h"
 #import "NoteBlockTableViewCell.h"
 
 
 
 typedef void (^NotificationFollowHandler)();
 
-@interface NoteBlockUserTableViewCell : WPTableViewCell <NoteBlockTableViewCell>
+@interface NoteBlockUserTableViewCell : NoteBlockTableViewCell
 
 @property (nonatomic, strong) NSString                  *name;
 @property (nonatomic, strong) NSURL                     *blogURL;
