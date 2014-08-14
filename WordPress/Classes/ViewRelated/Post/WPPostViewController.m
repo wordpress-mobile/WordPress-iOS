@@ -328,11 +328,21 @@ name:MediaShouldInsertBelowNotification object:nil];
     picker.navigationBar.translucent = NO;
 }
 
+#pragma mark - Editing
+
+- (void)startEditing
+{
+	[self enableEditing];
+	[self focusTextEditor];
+	
+	[self refreshNavigationBar];
+}
+
 - (void)cancelEditing
 {
     if(_currentActionSheet) return;
     
-    [self stopEditing];
+	[self disableEditing];
     [self.postSettingsViewController endEditingAction:nil];
     
 	if ([self isMediaInUploading]) {
@@ -377,6 +387,8 @@ name:MediaShouldInsertBelowNotification object:nil];
     } else {
         [actionSheet showFromToolbar:self.navigationController.toolbar];
     }
+	
+	[self refreshNavigationBar];
 }
 
 #pragma mark - Instance Methods
@@ -477,55 +489,13 @@ name:MediaShouldInsertBelowNotification object:nil];
 - (void)refreshNavigationBarButtons
 {
     [self refreshNavigationBarLeftButton];
-    
-    // Right nav button: Publish Button
-    NSString *buttonTitle;
-    if(![self.post hasRemote] || ![self.post.status isEqualToString:self.post.original.status]) {
-        if ([self.post.status isEqualToString:@"publish"] && ([self.post.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
-            buttonTitle = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
-            
-		} else if ([self.post.status isEqualToString:@"publish"]){
-            buttonTitle = NSLocalizedString(@"Publish", @"Publish button label.");
-            
-		} else {
-            buttonTitle = NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).");
-        }
-    } else {
-        buttonTitle = NSLocalizedString(@"Update", @"Update button label (saving content, ex: Post, Page, Comment).");
-    }
-    
-    if (self.navigationItem.rightBarButtonItem == nil) {
-        UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
-                                                                       style:[WPStyleGuide barButtonStyleForDone]
-                                                                      target:self
-                                                                      action:@selector(saveAction)];
-        self.navigationItem.rightBarButtonItem = saveButton;
-    } else {
-        self.navigationItem.rightBarButtonItem.title = buttonTitle;
-    }
-    
-    BOOL updateEnabled = self.hasChanges || self.post.remoteStatus == AbstractPostRemoteStatusFailed;
-    [self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];
-    
-    // Seems to be a bug with UIBarButtonItem respecting the UIControlStateDisabled text color
-    NSDictionary *titleTextAttributes;
-    UIColor *color = updateEnabled ? [UIColor whiteColor] : [UIColor colorWithWhite:1.0 alpha:0.5];
-    UIControlState controlState = updateEnabled ? UIControlStateNormal : UIControlStateDisabled;
-    titleTextAttributes = @{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName : color};
-    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:titleTextAttributes forState:controlState];
+    [self refreshNavigationBarRightButton];
 }
 
 - (void)refreshNavigationBarLeftButton
 {
 	if ([self isEditing]) {
-		NSString* buttonTitle = NSLocalizedString(@"Cancel",
-												  @"Label for the button to cancel editing of current post.");
-		
-        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
-																		 style:UIBarButtonItemStylePlain
-																		target:self
-																		action:@selector(cancelEditing)];
-        self.navigationItem.leftBarButtonItem = cancelButton;
+        self.navigationItem.leftBarButtonItem = [self cancelBarButtonItem];
 	} else {
 		self.navigationItem.leftBarButtonItem = self.navigationItem.backBarButtonItem;
 	}
@@ -534,23 +504,44 @@ name:MediaShouldInsertBelowNotification object:nil];
 - (void)refreshNavigationBarRightButton
 {
 	if ([self isEditing]) {
-		NSString* buttonTitle = NSLocalizedString(@"Done",
-												  @"Label for the button to submit editing of current post.");
 		
-        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
-																   style:UIBarButtonItemStylePlain
-																  target:self
-																  action:@selector(cancelEditing)];
-        self.navigationItem.rightBarButtonItem = button;
+		NSString *buttonTitle;
+		
+		if(![self.post hasRemote] || ![self.post.status isEqualToString:self.post.original.status]) {
+			if ([self.post.status isEqualToString:@"publish"] && ([self.post.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
+				buttonTitle = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
+				
+			} else if ([self.post.status isEqualToString:@"publish"]){
+				buttonTitle = NSLocalizedString(@"Publish", @"Publish button label.");
+				
+			} else {
+				buttonTitle = NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).");
+			}
+		} else {
+			buttonTitle = NSLocalizedString(@"Update", @"Update button label (saving content, ex: Post, Page, Comment).");
+		}
+		
+		if (self.navigationItem.rightBarButtonItem == nil) {
+			UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
+																		   style:[WPStyleGuide barButtonStyleForDone]
+																		  target:self
+																		  action:@selector(saveAction)];
+			self.navigationItem.rightBarButtonItem = saveButton;
+		} else {
+			self.navigationItem.rightBarButtonItem.title = buttonTitle;
+		}
+		
+		BOOL updateEnabled = self.hasChanges || self.post.remoteStatus == AbstractPostRemoteStatusFailed;
+		[self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];
+		
+		// Seems to be a bug with UIBarButtonItem respecting the UIControlStateDisabled text color
+		NSDictionary *titleTextAttributes;
+		UIColor *color = updateEnabled ? [UIColor whiteColor] : [UIColor colorWithWhite:1.0 alpha:0.5];
+		UIControlState controlState = updateEnabled ? UIControlStateNormal : UIControlStateDisabled;
+		titleTextAttributes = @{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName : color};
+		[self.navigationItem.rightBarButtonItem setTitleTextAttributes:titleTextAttributes forState:controlState];
 	} else {
-		NSString* buttonTitle = NSLocalizedString(@"Edit",
-												  @"Label for the button to edit the current post.");
-		
-        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
-																   style:UIBarButtonItemStylePlain
-																  target:self
-																  action:@selector(cancelEditing)];
-        self.navigationItem.rightBarButtonItem = button;
+		self.navigationItem.rightBarButtonItem = [self editBarButtonItem];
 	}
 }
 
@@ -567,6 +558,34 @@ name:MediaShouldInsertBelowNotification object:nil];
 			self.bodyText = self.post.content;
         }
     }
+}
+
+#pragma mark - Custom UI elements
+
+- (UIBarButtonItem*)cancelBarButtonItem
+{
+	NSString* buttonTitle = NSLocalizedString(@"Cancel",
+											  @"Label for the button to cancel editing of current post.");
+	
+	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
+															   style:UIBarButtonItemStylePlain
+															  target:self
+															  action:@selector(cancelEditing)];
+	
+	return button;
+}
+
+- (UIBarButtonItem *)editBarButtonItem
+{
+	NSString* buttonTitle = NSLocalizedString(@"Edit",
+											  @"Label for the button to edit the current post.");
+	
+	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
+															   style:UIBarButtonItemStylePlain
+															  target:self
+															  action:@selector(startEditing)];
+	
+	return button;
 }
 
 - (UIButton *)titleBarButton
