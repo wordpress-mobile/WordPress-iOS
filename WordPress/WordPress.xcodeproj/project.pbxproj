@@ -232,6 +232,8 @@
 		B51D9A7E19634D4400CA857B /* Noticons-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = B55853F419630AF900FAF6C3 /* Noticons-Regular.otf */; };
 		B53F306719780D810019FA34 /* NSDate+ISO8601.m in Sources */ = {isa = PBXBuildFile; fileRef = B53F306619780D810019FA34 /* NSDate+ISO8601.m */; };
 		B541CA5A199BEC9900A16E0D /* NoteBlockQuoteTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B541CA59199BEC9900A16E0D /* NoteBlockQuoteTableViewCell.m */; };
+		B541CA5D199CEAA000A16E0D /* NoteBlockCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B541CA5C199CEAA000A16E0D /* NoteBlockCommentTableViewCell.m */; };
+		B541CA5F199CF87700A16E0D /* NoteBlockTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B541CA5E199CF87700A16E0D /* NoteBlockTableViewCell.m */; };
 		B55853F31962337500FAF6C3 /* NSScanner+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B55853F21962337500FAF6C3 /* NSScanner+Helpers.m */; };
 		B55853F719630D5400FAF6C3 /* NSAttributedString+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = B55853F619630D5400FAF6C3 /* NSAttributedString+Util.m */; };
 		B55853FC19630E7900FAF6C3 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = B55853F919630E7900FAF6C3 /* Notification.m */; };
@@ -794,6 +796,9 @@
 		B53F306619780D810019FA34 /* NSDate+ISO8601.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+ISO8601.m"; sourceTree = "<group>"; };
 		B541CA58199BEC9900A16E0D /* NoteBlockQuoteTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteBlockQuoteTableViewCell.h; sourceTree = "<group>"; };
 		B541CA59199BEC9900A16E0D /* NoteBlockQuoteTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteBlockQuoteTableViewCell.m; sourceTree = "<group>"; };
+		B541CA5B199CEAA000A16E0D /* NoteBlockCommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteBlockCommentTableViewCell.h; sourceTree = "<group>"; };
+		B541CA5C199CEAA000A16E0D /* NoteBlockCommentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteBlockCommentTableViewCell.m; sourceTree = "<group>"; };
+		B541CA5E199CF87700A16E0D /* NoteBlockTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteBlockTableViewCell.m; sourceTree = "<group>"; };
 		B55853F11962337500FAF6C3 /* NSScanner+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScanner+Helpers.h"; sourceTree = "<group>"; };
 		B55853F21962337500FAF6C3 /* NSScanner+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScanner+Helpers.m"; sourceTree = "<group>"; };
 		B55853F419630AF900FAF6C3 /* Noticons-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Noticons-Regular.otf"; sourceTree = "<group>"; };
@@ -1579,16 +1584,19 @@
 				5D839AAA187F0D8000811F4A /* PostGeolocationCell.m */,
 				B55854071963197200FAF6C3 /* NoteTableViewCell.h */,
 				B55854081963197200FAF6C3 /* NoteTableViewCell.m */,
+				B5CA52F2199902B400095723 /* NoteTableViewCell.xib */,
 				B55854021963197200FAF6C3 /* NoteBlockTableViewCell.h */,
+				B541CA5E199CF87700A16E0D /* NoteBlockTableViewCell.m */,
 				B55854001963197200FAF6C3 /* NoteBlockImageTableViewCell.h */,
 				B55854011963197200FAF6C3 /* NoteBlockImageTableViewCell.m */,
 				B55854031963197200FAF6C3 /* NoteBlockTextTableViewCell.h */,
 				B55854041963197200FAF6C3 /* NoteBlockTextTableViewCell.m */,
 				B541CA58199BEC9900A16E0D /* NoteBlockQuoteTableViewCell.h */,
 				B541CA59199BEC9900A16E0D /* NoteBlockQuoteTableViewCell.m */,
+				B541CA5B199CEAA000A16E0D /* NoteBlockCommentTableViewCell.h */,
+				B541CA5C199CEAA000A16E0D /* NoteBlockCommentTableViewCell.m */,
 				B55854051963197200FAF6C3 /* NoteBlockUserTableViewCell.h */,
 				B55854061963197200FAF6C3 /* NoteBlockUserTableViewCell.m */,
-				B5CA52F2199902B400095723 /* NoteTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -2505,6 +2513,7 @@
 				B55853F719630D5400FAF6C3 /* NSAttributedString+Util.m in Sources */,
 				ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */,
 				ACBAB6860E1247F700F38795 /* PostPreviewViewController.m in Sources */,
+				B541CA5D199CEAA000A16E0D /* NoteBlockCommentTableViewCell.m in Sources */,
 				B558541519631A1000FAF6C3 /* WPStyleGuide+Notifications.m in Sources */,
 				C58349C51806F95100B64089 /* IOS7CorrectedTextView.m in Sources */,
 				C56636E91868D0CE00226AAB /* StatsViewController.m in Sources */,
@@ -2616,6 +2625,7 @@
 				5D3D559718F88C3500782892 /* ReaderPostService.m in Sources */,
 				93FA59DD18D88C1C001446BC /* CategoryService.m in Sources */,
 				8516972C169D42F4006C5DED /* WPToast.m in Sources */,
+				B541CA5F199CF87700A16E0D /* NoteBlockTableViewCell.m in Sources */,
 				93C4864F181043D700A24725 /* ActivityLogDetailViewController.m in Sources */,
 				CC70165E185BB97A007B37DB /* ReaderCommentPublisher.m in Sources */,
 				5D11E3261979E76D00E70992 /* VideoThumbnailServiceRemote.m in Sources */,

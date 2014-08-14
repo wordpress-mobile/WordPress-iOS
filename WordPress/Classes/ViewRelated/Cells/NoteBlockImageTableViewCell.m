@@ -18,8 +18,6 @@ static CGFloat const NotificationAnimationVelocity          = 0.5f;
 static CGFloat NotificationAnimationInitialScale            = 0.0f;
 static CGFloat NotificationAnimationFinalScale              = 1.0f;
 
-static CGFloat NotificationImageBlockHeight                 = 200.0f;
-
 
 #pragma mark ====================================================================================
 #pragma mark Private
@@ -99,18 +97,6 @@ static CGFloat NotificationImageBlockHeight                 = 200.0f;
                      }
                      completion:nil
      ];
-}
-
-#pragma mark - NoteBlockTableViewCell Methods
-
-+ (CGFloat)heightWithText:(NSString *)text
-{
-    return NotificationImageBlockHeight;
-}
-
-+ (NSString *)reuseIdentifier
-{
-    return NSStringFromClass([self class]);
 }
 
 @end
