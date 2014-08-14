@@ -72,7 +72,8 @@ static NSString * const NoteCellPlaceholderImageName    = @"gravatar";
 
 - (void)refreshLabelPreferredMaxLayoutWidth
 {
-    CGFloat width = CGRectGetMinX(self.timestampLabel.frame) - 2 - CGRectGetMinX(self.subjectLabel.frame);
+    CGFloat const PaddingRight = 2;
+    CGFloat width = CGRectGetMinX(self.timestampLabel.frame) - PaddingRight - CGRectGetMinX(self.subjectLabel.frame);
     self.subjectLabel.preferredMaxLayoutWidth = width;
 }
 

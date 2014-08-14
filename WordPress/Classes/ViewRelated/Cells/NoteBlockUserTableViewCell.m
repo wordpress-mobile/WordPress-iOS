@@ -11,7 +11,6 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-static CGFloat NotificationBlockFollowCellHeight                = 80.0f;
 static NSTimeInterval const NotificationAnimationDuration       = 0.3f;
 static NSTimeInterval const NotificationAnimationAlphaInitial   = 0.5f;
 static NSTimeInterval const NotificationAnimationAlphaFinal     = 1.0f;
@@ -145,19 +144,6 @@ static NSString *NotificationPlaceholderImageName               = @"gravatar";
     
     self.following = !_following;
     self.onFollowClick();
-}
-
-
-#pragma mark - NoteBlockTableViewCell Methods
-
-+ (CGFloat)heightWithText:(NSString *)text
-{
-    return NotificationBlockFollowCellHeight;
-}
-
-+ (NSString *)reuseIdentifier
-{
-    return NSStringFromClass([self class]);
 }
 
 @end

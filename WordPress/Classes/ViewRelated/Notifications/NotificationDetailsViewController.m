@@ -8,6 +8,7 @@
 #import "NoteBlockQuoteTableViewCell.h"
 #import "NoteBlockImageTableViewCell.h"
 #import "NoteBlockUserTableViewCell.h"
+#import "NoteBlockCommentTableViewCell.h"
 
 #import "NSURL+Util.h"
 #import "NSScanner+Helpers.h"
@@ -55,6 +56,8 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
 #pragma mark ==========================================================================================
 
 @interface NotificationDetailsViewController () <SPBucketDelegate>
+@property (nonatomic, strong) NSDictionary *layoutCellMap;
+@property (nonatomic, strong) NSDictionary *reuseIdentifierMap;
 @end
 
 
@@ -68,13 +71,21 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
 {
     [super viewDidLoad];
     
+    self.title                      = NSLocalizedString(@"Details", @"Notification Details Section Title");
+    self.restorationClass           = [self class];
+    
     self.tableView.contentInset     = IS_IPAD ? NotificationTableInsetsPad : NotificationTableInsetsPhone;
     self.tableView.backgroundColor  = [WPStyleGuide itsEverywhereGrey];
     self.tableView.separatorColor   = [WPStyleGuide readGrey];
     self.tableView.separatorStyle   = UITableViewCellSeparatorStyleNone;
     
-    self.title                      = NSLocalizedString(@"Details", @"Notification Details Section Title");
-    self.restorationClass           = [self class];
+    self.reuseIdentifierMap = @{
+        @(NoteBlockTypesText)       : NoteBlockTextTableViewCell.reuseIdentifier,
+        @(NoteBlockTypesComment)    : NoteBlockCommentTableViewCell.reuseIdentifier,
+        @(NoteBlockTypesQuote)      : NoteBlockQuoteTableViewCell.reuseIdentifier,
+        @(NoteBlockTypesImage)      : NoteBlockImageTableViewCell.reuseIdentifier,
+        @(NoteBlockTypesUser)       : NoteBlockUserTableViewCell.reuseIdentifier
+    };
     
     NotificationHeaderView *header  = [NotificationHeaderView headerWithWidth:CGRectGetWidth(self.view.bounds)];
     header.noticon                  = self.note.noticon;
@@ -91,6 +102,31 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
 {
     // Note: we do this to force layout!
     [self.tableView reloadData];
+}
+
+
+#pragma mark - Autolayout Helpers
+
+- (NSDictionary *)layoutCellMap
+{
+    if (_layoutCellMap) {
+        return _layoutCellMap;
+    }
+    
+    NSString *storyboardID  = NSStringFromClass([self class]);
+    NotificationDetailsViewController *detailsViewController = [self.storyboard instantiateViewControllerWithIdentifier:storyboardID];
+    
+    UITableView *tableView  = detailsViewController.tableView;
+    
+    _layoutCellMap = @{
+        @(NoteBlockTypesText)       : [tableView dequeueReusableCellWithIdentifier:NoteBlockTextTableViewCell.reuseIdentifier],
+        @(NoteBlockTypesComment)    : [tableView dequeueReusableCellWithIdentifier:NoteBlockCommentTableViewCell.reuseIdentifier],
+        @(NoteBlockTypesQuote)      : [tableView dequeueReusableCellWithIdentifier:NoteBlockQuoteTableViewCell.reuseIdentifier],
+        @(NoteBlockTypesImage)      : [tableView dequeueReusableCellWithIdentifier:NoteBlockImageTableViewCell.reuseIdentifier],
+        @(NoteBlockTypesUser)       : [tableView dequeueReusableCellWithIdentifier:NoteBlockUserTableViewCell.reuseIdentifier]
+    };
+    
+    return _layoutCellMap;
 }
 
 
@@ -169,80 +205,25 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NotificationBlock *block = [self blockForIndexPath:indexPath];
+    NotificationBlock *block                = [self blockForIndexPath:indexPath];
+    NoteBlockTableViewCell *tableViewCell   = self.layoutCellMap[@(block.type)] ?: self.layoutCellMap[@(NoteBlockTypesText)];
+    
+    [self setupCell:tableViewCell block:block];
 
-    if (block.type == NoteBlockTypesUser) {
-        return [NoteBlockUserTableViewCell heightWithText:block.text];
-        
-    } else if (block.type == NoteBlockTypesImage) {
-        return [NoteBlockImageTableViewCell heightWithText:block.text];
-        
-    } else if (block.type == NoteBlockTypesQuote) {
-        return [NoteBlockQuoteTableViewCell heightWithText:block.text];
-        
-    } else {
-        return [NoteBlockTextTableViewCell heightWithText:block.text];
-    }
+    CGFloat height = [tableViewCell heightForWidth:CGRectGetWidth(self.tableView.bounds)];
+    
+    return height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NotificationBlock *block        = [self blockForIndexPath:indexPath];
-    __weak __typeof(self) weakSelf  = self;
-
-    //  NoteBlockTypesUser
-    if (block.type == NoteBlockTypesUser) {
-        NSString *reuseIdentifier           = [NoteBlockUserTableViewCell reuseIdentifier];
-        NoteBlockUserTableViewCell *cell    = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
-
-        NotificationURL *blogURL            = [block.urls firstObject];
-        NotificationMedia *gravatarMedia    = [block.media firstObject];
-        NSNumber *following                 = [block actionForKey:NoteActionFollowKey];
-        
-        cell.name                           = block.text;
-        cell.blogURL                        = blogURL.url;
-        cell.gravatarURL                    = gravatarMedia.mediaURL;
-        cell.following                      = following.boolValue;
-        cell.actionEnabled                  = following != nil;
-        
-        cell.onFollowClick                  = ^() {
-            [weakSelf toggleFollowWithBlock:block];
-        };
-        
-        return cell;
-
-    //  NoteBlockTypesQuote
-    } else if (block.type == NoteBlockTypesQuote) {
-
-        NSString *reuseIdentifier           = [NoteBlockQuoteTableViewCell reuseIdentifier];
-        NoteBlockQuoteTableViewCell *cell   = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
-
-        cell.attributedText                 = block.attributedTextQuoted;
-        
-        return cell;
-        
-    //  NoteBlockTypesImage
-    } else if (block.type == NoteBlockTypesImage) {
-        NSString *reuseIdentifier           = [NoteBlockImageTableViewCell reuseIdentifier];
-        NoteBlockImageTableViewCell *cell   = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
-        
-        NotificationMedia *media            = [block.media firstObject];
-        cell.imageURL                       = media.mediaURL;
-
-        return cell;
-        
-    //  NoteBlockTypesText + NoteBlockTypesComment
-    } else {
-        NSString *reuseIdentifier           = [NoteBlockTextTableViewCell reuseIdentifier];
-        NoteBlockTextTableViewCell *cell    = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
-        
-        cell.attributedText                 = block.attributedTextRegular;
-        cell.onUrlClick                     = ^(NSURL *url){
-            [weakSelf openURL:url];
-        };
-        
-        return cell;
-    }
+    NSString *reuseIdentifier       = self.reuseIdentifierMap[@(block.type)] ?: self.reuseIdentifierMap[@(NoteBlockTypesText)];
+    NoteBlockTableViewCell *cell    = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
+    
+    [self setupCell:cell block:block];
+    
+    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -254,6 +235,76 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
         NotificationURL *noteURL = [block.urls firstObject];
         [self openURL:noteURL.url];
     }
+}
+
+
+#pragma mark - NoteBlockTableViewCell Helpers
+
+- (void)setupCell:(NoteBlockTableViewCell *)cell block:(NotificationBlock *)block
+{
+    // Note: This is gonna look awesome in Swift
+    if (block.type == NoteBlockTypesUser) {
+        [self setupUserCell:(NoteBlockUserTableViewCell *)cell block:block];
+        
+    } else if (block.type == NoteBlockTypesQuote) {
+        [self setupQuoteCell:(NoteBlockQuoteTableViewCell *)cell block:block];
+        
+    } else if (block.type == NoteBlockTypesComment){
+        [self setupCommentCell:(NoteBlockCommentTableViewCell *)cell block:block];
+        
+    } else if (block.type == NoteBlockTypesImage) {
+        [self setupImageCell:(NoteBlockImageTableViewCell *)cell block:block];
+        
+    } else {
+        [self setupTextCell:(NoteBlockTextTableViewCell *)cell block:block];
+    }
+}
+
+- (void)setupUserCell:(NoteBlockUserTableViewCell *)cell block:(NotificationBlock *)block
+{
+    NotificationURL *blogURL            = [block.urls firstObject];
+    NotificationMedia *gravatarMedia    = [block.media firstObject];
+    NSNumber *following                 = [block actionForKey:NoteActionFollowKey];
+    __weak __typeof(self) weakSelf      = self;
+    
+    cell.name                           = block.text;
+    cell.blogURL                        = blogURL.url;
+    cell.gravatarURL                    = gravatarMedia.mediaURL;
+    cell.following                      = following.boolValue;
+    cell.actionEnabled                  = following != nil;
+    
+    cell.onFollowClick                  = ^() {
+        [weakSelf toggleFollowWithBlock:block];
+    };
+}
+
+- (void)setupCommentCell:(NoteBlockCommentTableViewCell *)cell block:(NotificationBlock *)block
+{
+    __weak __typeof(self) weakSelf      = self;
+    cell.attributedText                 = block.attributedTextRegular;
+    cell.onUrlClick                     = ^(NSURL *url){
+        [weakSelf openURL:url];
+    };
+}
+
+- (void)setupQuoteCell:(NoteBlockQuoteTableViewCell *)cell block:(NotificationBlock *)block
+{
+    cell.attributedText                 = block.attributedTextQuoted;
+}
+
+- (void)setupImageCell:(NoteBlockImageTableViewCell *)cell block:(NotificationBlock *)block
+{
+    NotificationMedia *media            = [block.media firstObject];
+    cell.imageURL                       = media.mediaURL;
+}
+
+- (void)setupTextCell:(NoteBlockTextTableViewCell *)cell block:(NotificationBlock *)block
+{
+    __weak __typeof(self) weakSelf      = self;
+    cell.attributedText                 = block.attributedTextRegular;
+    cell.onUrlClick                     = ^(NSURL *url){
+        [weakSelf openURL:url];
+    };
 }
 
 

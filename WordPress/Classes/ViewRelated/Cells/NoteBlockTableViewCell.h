@@ -1,12 +1,14 @@
 #import <Foundation/Foundation.h>
+#import "WPTableViewCell.h"
 
 
 
 typedef void (^NotificationUrlHandler)(NSURL *url);
 
-@protocol NoteBlockTableViewCell <NSObject>
+@interface NoteBlockTableViewCell : WPTableViewCell
 
-+ (CGFloat)heightWithText:(NSString *)text;
+- (CGFloat)heightForWidth:(CGFloat)width;
+
 + (NSString *)reuseIdentifier;
 
 @end
