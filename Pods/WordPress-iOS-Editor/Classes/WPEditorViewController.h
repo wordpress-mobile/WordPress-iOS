@@ -14,7 +14,8 @@ WPEditorViewControllerMode;
 
 @optional
 
-- (BOOL)editorShouldBeginEditing:(WPEditorViewController *)editorController;
+- (void)editorDidBeginEditing:(WPEditorViewController *)editorController;
+- (void)editorDidEndEditing:(WPEditorViewController *)editorController;
 
 - (void)editorTitleDidChange:(WPEditorViewController *)editorController;
 - (void)editorTextDidChange:(WPEditorViewController *)editorController;
@@ -34,6 +35,7 @@ WPEditorViewControllerMode;
 @property (nonatomic, copy) NSString *bodyText;
 @property (nonatomic) BOOL isShowingKeyboard;
 
+
 #pragma mark - Initializers
 
 /**
@@ -46,6 +48,21 @@ WPEditorViewControllerMode;
 - (instancetype)initWithMode:(WPEditorViewControllerMode)mode;
 
 #pragma mark - Editing
+
+/**
+ *	@brief		Use this method to know if the user is currently editing the content.
+ */
+- (BOOL)isEditing;
+
+/**
+ *	@brief		Enables editing.
+ */
+- (void)enableEditing;
+
+/**
+ *	@brief		Disables editing.
+ */
+- (void)disableEditing;
 
 /**
  *  Stop all editing activities.

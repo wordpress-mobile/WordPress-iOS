@@ -1,8 +1,12 @@
 #import "WPPostViewController.h"
 #import "WPPostViewController_Internal.h"
+
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <WordPress-iOS-Shared/NSString+Util.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
+#import <WordPress-iOS-Shared/WPStyleGuide.h>
+#import <WordPressCom-Analytics-iOS/WPAnalytics.h>
 #import "ContextManager.h"
 #import "Post.h"
 #import "WPTableViewCell.h"
@@ -163,7 +167,6 @@ static NSInteger const MaximumNumberOfPictures = 4;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self setupNavbar];
     [self createRevisionOfPost];
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
     
@@ -174,49 +177,8 @@ name:MediaShouldInsertBelowNotification object:nil];
     
     [self geotagNewPost];
     self.delegate = self;
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [self refreshButtons];
-}
-
-#pragma mark - View Setup
-
-- (void)setupNavbar {
-    if (self.navigationItem.leftBarButtonItem == nil) {
-        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"Label for the button to cancel editing of current post.") style:UIBarButtonItemStylePlain target:self action:@selector(cancelEditing)];
-        self.navigationItem.leftBarButtonItem = cancelButton;
-    }
-    self.navigationItem.backBarButtonItem.title = [self editorTitle];
-    self.title = [self editorTitle];
-    
-    // Configure the custom title view, or just set the navigationItem title.
-    // Only show the blog selector in the nav title view if we're editing a new post
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    NSInteger blogCount = [blogService blogCountForAllAccounts];
-    
-    if (_mediaUploadQueue.operationCount > 0) {
-        self.navigationItem.titleView = self.uploadStatusView;
-    } else if(blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
-        self.navigationItem.title = [self editorTitle];
-        self.navigationItem.titleView = nil;
-    } else {
-        UIButton *titleButton = self.titleBarButton;
-        self.navigationItem.titleView = titleButton;
-        NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", [self editorTitle]]
-                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
-        
-        NSString *subtext = [self.post.blog.blogName length] == 0 ? self.post.blog.url : self.post.blog.blogName;
-        NSDictionary *subtextAttributes = @{ NSFontAttributeName: [WPFontManager openSansRegularFontOfSize:10.0] };
-        NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:subtext
-                                                                                         attributes:subtextAttributes];
-        [titleText appendAttributedString:titleSubtext];
-        [titleButton setAttributedTitle:titleText forState:UIControlStateNormal];
-        
-        [titleButton sizeToFit];
-    }
+	
+	[self refreshNavigationBar];
 }
 
 #pragma mark - Actions
@@ -480,13 +442,41 @@ name:MediaShouldInsertBelowNotification object:nil];
 
 #pragma mark - UI Manipulation
 
-- (void)refreshButtons
-{
-    // Left nav button: Cancel Button
-    if (self.navigationItem.leftBarButtonItem == nil) {
-        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelEditing)];
-        self.navigationItem.leftBarButtonItem = cancelButton;
+- (void)refreshNavigationBar {
+	
+	[self refreshNavigationBarButtons];
+	
+    // Configure the custom title view, or just set the navigationItem title.
+    // Only show the blog selector in the nav title view if we're editing a new post
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    NSInteger blogCount = [blogService blogCountForAllAccounts];
+    
+    if (_mediaUploadQueue.operationCount > 0) {
+        self.navigationItem.titleView = self.uploadStatusView;
+    } else if(blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
+        //self.navigationItem.title = [self editorTitle];
+        self.navigationItem.titleView = nil;
+    } else {
+        UIButton *titleButton = self.titleBarButton;
+        self.navigationItem.titleView = titleButton;
+        NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", [self editorTitle]]
+                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
+        
+        NSString *subtext = [self.post.blog.blogName length] == 0 ? self.post.blog.url : self.post.blog.blogName;
+        NSDictionary *subtextAttributes = @{ NSFontAttributeName: [WPFontManager openSansRegularFontOfSize:10.0] };
+        NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:subtext
+                                                                                         attributes:subtextAttributes];
+        [titleText appendAttributedString:titleSubtext];
+        [titleButton setAttributedTitle:titleText forState:UIControlStateNormal];
+        
+        [titleButton sizeToFit];
     }
+}
+
+- (void)refreshNavigationBarButtons
+{
+    [self refreshNavigationBarLeftButton];
     
     // Right nav button: Publish Button
     NSString *buttonTitle;
@@ -525,9 +515,47 @@ name:MediaShouldInsertBelowNotification object:nil];
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:titleTextAttributes forState:controlState];
 }
 
+- (void)refreshNavigationBarLeftButton
+{
+	if ([self isEditing]) {
+		NSString* buttonTitle = NSLocalizedString(@"Cancel",
+												  @"Label for the button to cancel editing of current post.");
+		
+        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
+																		 style:UIBarButtonItemStylePlain
+																		target:self
+																		action:@selector(cancelEditing)];
+        self.navigationItem.leftBarButtonItem = cancelButton;
+	} else {
+		self.navigationItem.leftBarButtonItem = self.navigationItem.backBarButtonItem;
+	}
+}
+
+- (void)refreshNavigationBarRightButton
+{
+	if ([self isEditing]) {
+		NSString* buttonTitle = NSLocalizedString(@"Done",
+												  @"Label for the button to submit editing of current post.");
+		
+        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
+																   style:UIBarButtonItemStylePlain
+																  target:self
+																  action:@selector(cancelEditing)];
+        self.navigationItem.rightBarButtonItem = button;
+	} else {
+		NSString* buttonTitle = NSLocalizedString(@"Edit",
+												  @"Label for the button to edit the current post.");
+		
+        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
+																   style:UIBarButtonItemStylePlain
+																  target:self
+																  action:@selector(cancelEditing)];
+        self.navigationItem.rightBarButtonItem = button;
+	}
+}
+
 - (void)refreshUIForCurrentPost
 {
-    [self setupNavbar];
     self.titleText = self.post.postTitle;
     
     if(self.post.content == nil || [self.post.content isEmpty]) {
@@ -539,7 +567,6 @@ name:MediaShouldInsertBelowNotification object:nil];
 			self.bodyText = self.post.content;
         }
     }
-    [self refreshButtons];
 }
 
 - (UIButton *)titleBarButton
@@ -941,25 +968,28 @@ name:MediaShouldInsertBelowNotification object:nil];
 
 #pragma mark - WPEditorViewControllerDelegate delegate
 
-- (BOOL)editorShouldBeginEditing:(WPEditorViewController *)editorController
+- (void)editorDidBeginEditing:(WPEditorViewController *)editorController
 {
     self.post.postTitle = self.titleText;
     self.navigationItem.title = [self editorTitle];
     
-    [self refreshButtons];
-    return YES;
+    [self refreshNavigationBarButtons];
+}
+
+- (void)editorDidEndEditing:(WPEditorViewController *)editorController
+{
 }
 
 - (void)editorTitleDidChange:(WPEditorViewController *)editorController
 {
     [self autosaveContent];
-    [self refreshButtons];
+    [self refreshNavigationBarButtons];
 }
 
 - (void)editorTextDidChange:(WPEditorViewController *)editorController
 {
     [self autosaveContent];
-    [self refreshButtons];
+    [self refreshNavigationBarButtons];
 }
 
 - (void)editorDidPressSettings:(WPEditorViewController *)editorController
@@ -1023,7 +1053,7 @@ name:MediaShouldInsertBelowNotification object:nil];
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([object isEqual:_mediaUploadQueue]) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self setupNavbar];
+            [self refreshNavigationBar];
         });
     }
 }
