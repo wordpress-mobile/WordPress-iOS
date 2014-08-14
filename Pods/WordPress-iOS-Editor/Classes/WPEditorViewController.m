@@ -23,7 +23,6 @@ NSInteger const WPLinkAlertViewTag = 92;
 @property (nonatomic, strong) UIView *toolbarHolder;
 @property (nonatomic, strong) NSString *htmlString;
 @property (nonatomic, strong) WPInsetTextField *titleTextField;
-@property (nonatomic, strong) UIWebView *editorView;
 @property (nonatomic, strong) ZSSTextView *sourceView;
 @property (nonatomic) CGRect editorViewFrame;
 @property (assign) BOOL resourcesLoaded;
@@ -42,7 +41,12 @@ NSInteger const WPLinkAlertViewTag = 92;
 @property (nonatomic) BOOL didFinishLoadingEditor;
 
 #pragma mark - Properties: Editor Mode
+@property (nonatomic, assign, readwrite, getter=isEditingDisabled) BOOL editingDisabled;
 @property (nonatomic, assign, readwrite) WPEditorViewControllerMode mode;
+
+#pragma mark - Properties: Editor View
+@property (nonatomic, strong, readwrite) UIWebView *editorView;
+@property (nonatomic, assign, readwrite) BOOL editorViewIsEditing;
 
 @end
 
@@ -620,23 +624,46 @@ NSInteger const WPLinkAlertViewTag = 92;
     }
 }
 
+#pragma mark - UI Refreshing
+
+- (void)refreshUI
+{
+    if (self.didFinishLoadingEditor) {
+		
+		if ([self isBodyTextEmpty]) {
+			[self setHtml:self.editorPlaceholderText];
+		}
+		
+		[self refreshUIEditMode];
+    }
+}
+
+/**
+ *	@brief		This method simply refreshes the UI according to the current edit mode.
+ *	@details	If the editor has not been completely loaded yet, this method does nothing.
+ */
+- (void)refreshUIEditMode
+{
+    if (self.didFinishLoadingEditor) {
+		if (self.mode == kWPEditorViewControllerModeEdit) {
+			[self enableEditing];
+		}
+		else {
+			[self disableEditing];
+		}
+	}
+}
+
 #pragma mark - Editor and Misc Methods
 
 - (void)stopEditing
 {
     [self dismissKeyboard];
     [self.view endEditing:YES];
-}
-
-- (void)refreshUI
-{
-    if(self.titleText != nil || self.titleText.length != 0) {
-        self.title = self.titleText;
-    }
-    
-    if (self.didFinishLoadingEditor && [self isBodyTextEmpty]) {
-        [self setHtml:self.editorPlaceholderText];
-    }
+	
+	if ([self.delegate respondsToSelector:@selector(editorDidEndEditing:)]) {
+		[self.delegate editorDidEndEditing:self];
+	}
 }
 
 - (BOOL)isBodyTextEmpty
@@ -657,6 +684,31 @@ NSInteger const WPLinkAlertViewTag = 92;
         return YES;
     }
     return NO;
+}
+
+#pragma mark - Editing
+
+- (BOOL)isEditing
+{
+	return !self.isEditingDisabled && (self.titleTextField.isEditing || self.editorViewIsEditing);
+}
+
+- (void)enableEditing
+{
+	self.editingDisabled = NO;
+	
+	NSString *js = [NSString stringWithFormat:@"zss_editor.enableEditing();"];
+    [self.editorView stringByEvaluatingJavaScriptFromString:js];
+}
+
+- (void)disableEditing
+{
+	self.editingDisabled = YES;
+	
+	[self stopEditing];
+	
+	NSString *js = [NSString stringWithFormat:@"zss_editor.disableEditing();"];
+    [self.editorView stringByEvaluatingJavaScriptFromString:js];
 }
 
 - (void)focusTextEditor
@@ -1254,14 +1306,23 @@ NSInteger const WPLinkAlertViewTag = 92;
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    if (textField == self.titleTextField) {
-        [self enableToolbarItems:NO shouldShowSourceButton:NO];
-        if ([self.delegate respondsToSelector: @selector(editorShouldBeginEditing:)]) {
-            return [self.delegate editorShouldBeginEditing:self];
-        }
-        [self refreshUI];
-    }
-    return YES;
+	BOOL result = NO;
+	
+	if (!self.isEditingDisabled)
+	{
+		if (textField == self.titleTextField) {
+			
+			[self enableToolbarItems:NO shouldShowSourceButton:NO];
+			
+			if ([self.delegate respondsToSelector: @selector(editorDidBeginEditing:)]) {
+				[self.delegate editorDidBeginEditing:self];
+			}
+			
+			[self refreshUI];
+		}
+	}
+	
+    return result;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
@@ -1300,25 +1361,55 @@ NSInteger const WPLinkAlertViewTag = 92;
     [self refreshUI];
 }
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+-            (BOOL)webView:(UIWebView *)webView
+shouldStartLoadWithRequest:(NSURLRequest *)request
+			navigationType:(UIWebViewNavigationType)navigationType
 {
-    NSString *urlString = [[request URL] absoluteString];
+	static NSString* const kCallbackScheme = @"callback";
+	BOOL result = NO;
+	
     if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-		return NO;
-	} else if ([urlString rangeOfString:@"callback://"].location != NSNotFound) {        
-        // We recieved a callback
-        if([[[request URL] absoluteString] isEqualToString:@"callback://user-triggered-change"]) {
-            if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-                [self.delegate editorTextDidChange:self];
-            }
-        } else {
-            NSString *className = [urlString stringByReplacingOccurrencesOfString:@"callback://" withString:@""];
-            [self updateToolBarWithButtonName:className];
-        }
-        return NO;
+		result = NO;
+	} else {
+		NSURL *url = [request URL];
+		BOOL isCallbackURL = [[url scheme] isEqualToString:kCallbackScheme];
+		
+		if (isCallbackURL) {
+			[self handleWebViewCallbackURL:url];
+		}
+		
+		// DRM: We don't want any default handling for callbacks, even if we won't handle some.
+		result = YES;
     }
     
-    return YES;
+    return result;
+}
+
+#pragma mark - UIWebView Delegate helpers
+
+- (void)handleWebViewCallbackURL:(NSURL*)url
+{
+	NSAssert([url isKindOfClass:[NSURL class]],
+			 @"Expected param url to be a non-nil, NSURL object.");
+	
+	NSString* resourceSpecifier = [[url resourceSpecifier] stringByReplacingOccurrencesOfString:@"//" withString:@""];
+	
+	static NSString* kUserTriggeredChangeSpecifier = @"user-triggered-change";
+	static NSString* kFocusInSpecifier = @"focusin";
+	static NSString* kFocusOutSpecifier = @"focusout";
+	
+	if ([resourceSpecifier isEqualToString:kUserTriggeredChangeSpecifier]) {
+		if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
+			[self.delegate editorTextDidChange:self];
+		}
+	} else if ([resourceSpecifier isEqualToString:kFocusInSpecifier]){
+		self.editorViewIsEditing = YES;
+	} else if ([resourceSpecifier isEqualToString:kFocusOutSpecifier]){
+		self.editorViewIsEditing = NO;
+	} else {
+		NSString *className = resourceSpecifier;
+		[self updateToolBarWithButtonName:className];
+	}
 }
 
 #pragma mark - Asset Picker
