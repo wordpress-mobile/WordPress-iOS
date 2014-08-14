@@ -41,6 +41,22 @@ zss_editor.init = function() {
 			$('img').removeClass('zs_active');
 		}
 	});
+	
+	editor.bind('focusin', function(e) {
+		if (zss_editor.isUsingiOS) {
+			window.location = "callback://focusin";
+		} else {
+			console.log("callback://focusin");
+		}
+	});
+	
+	editor.bind('focusout', function(e) {
+		if (zss_editor.isUsingiOS) {
+			window.location = "callback://focusout";
+		} else {
+			console.log("callback://focusout");
+		}
+	});
 }//end
 
 zss_editor.backuprange = function(){
@@ -334,7 +350,7 @@ zss_editor.isCommandEnabled = function(commandName) {
 }
 
 zss_editor.enabledEditingItems = function(e) {
-	
+
 	var items = [];
 	if (zss_editor.isCommandEnabled('bold')) {
 		items.push('bold');
@@ -431,7 +447,6 @@ zss_editor.enabledEditingItems = function(e) {
         } else {
             zss_editor.currentEditingImage = null;
         }
-			
 	}
 	
 	if (items.length > 0) {
@@ -447,7 +462,6 @@ zss_editor.enabledEditingItems = function(e) {
 			console.log("callback://");
 		}
 	}
-	
 }
 
 zss_editor.focusEditor = function() {
@@ -456,4 +470,12 @@ zss_editor.focusEditor = function() {
 
 zss_editor.blurEditor = function() {
     $('#zss_editor_content').blur();
+}
+
+zss_editor.enableEditing = function () {
+	document.body.contentEditable = true;
+}
+
+zss_editor.disableEditing = function () {
+	document.body.contentEditable = false;
 }
