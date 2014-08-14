@@ -229,6 +229,12 @@
 		ACC156CC0E10E67600D6E1A0 /* EditPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC156CB0E10E67600D6E1A0 /* EditPostViewController.m */; };
 		ADF544C2195A0F620092213D /* CustomHighlightButton.m in Sources */ = {isa = PBXBuildFile; fileRef = ADF544C1195A0F620092213D /* CustomHighlightButton.m */; };
 		B51D9A7E19634D4400CA857B /* Noticons-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = B55853F419630AF900FAF6C3 /* Noticons-Regular.otf */; };
+		B52C4C7D199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52C4C7C199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift */; };
+		B532D4E9199D4357006E4DF6 /* NoteBlockCommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B532D4E5199D4357006E4DF6 /* NoteBlockCommentTableViewCell.swift */; };
+		B532D4EA199D4357006E4DF6 /* NoteBlockQuoteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B532D4E6199D4357006E4DF6 /* NoteBlockQuoteTableViewCell.swift */; };
+		B532D4EB199D4357006E4DF6 /* NoteBlockTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B532D4E7199D4357006E4DF6 /* NoteBlockTableViewCell.swift */; };
+		B532D4EC199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B532D4E8199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift */; };
+		B532D4EE199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B532D4ED199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift */; };
 		B53F306719780D810019FA34 /* NSDate+ISO8601.m in Sources */ = {isa = PBXBuildFile; fileRef = B53F306619780D810019FA34 /* NSDate+ISO8601.m */; };
 		B55853F31962337500FAF6C3 /* NSScanner+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B55853F21962337500FAF6C3 /* NSScanner+Helpers.m */; };
 		B55853F719630D5400FAF6C3 /* NSAttributedString+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = B55853F619630D5400FAF6C3 /* NSAttributedString+Util.m */; };
@@ -242,12 +248,6 @@
 		B5CC05F91962186D00975CAC /* Meta.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F81962186D00975CAC /* Meta.m */; };
 		B5CC05FC196218E100975CAC /* XMLParserCollecter.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05FB196218E100975CAC /* XMLParserCollecter.m */; };
 		B5F015CB195DFD7600F6ECF2 /* WordPressActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = B5F015CA195DFD7600F6ECF2 /* WordPressActivity.m */; };
-		B5FD4535199D0F1100286FBB /* NoteBlockCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B5FD4525199D0F1100286FBB /* NoteBlockCommentTableViewCell.m */; };
-		B5FD4536199D0F1100286FBB /* NoteBlockImageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B5FD4527199D0F1100286FBB /* NoteBlockImageTableViewCell.m */; };
-		B5FD4537199D0F1100286FBB /* NoteBlockQuoteTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B5FD4529199D0F1100286FBB /* NoteBlockQuoteTableViewCell.m */; };
-		B5FD4538199D0F1100286FBB /* NoteBlockTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B5FD452B199D0F1100286FBB /* NoteBlockTableViewCell.m */; };
-		B5FD4539199D0F1100286FBB /* NoteBlockTextTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B5FD452D199D0F1100286FBB /* NoteBlockTextTableViewCell.m */; };
-		B5FD453A199D0F1100286FBB /* NoteBlockUserTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B5FD452F199D0F1100286FBB /* NoteBlockUserTableViewCell.m */; };
 		B5FD453B199D0F1100286FBB /* NoteTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B5FD4531199D0F1100286FBB /* NoteTableViewCell.m */; };
 		B5FD453C199D0F1100286FBB /* NoteTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5FD4532199D0F1100286FBB /* NoteTableViewCell.xib */; };
 		B5FD453D199D0F1100286FBB /* NotificationHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = B5FD4534199D0F1100286FBB /* NotificationHeaderView.m */; };
@@ -790,6 +790,12 @@
 		ACC156CB0E10E67600D6E1A0 /* EditPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditPostViewController.m; sourceTree = "<group>"; };
 		ADF544C0195A0F620092213D /* CustomHighlightButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomHighlightButton.h; sourceTree = "<group>"; };
 		ADF544C1195A0F620092213D /* CustomHighlightButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomHighlightButton.m; sourceTree = "<group>"; };
+		B52C4C7C199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteBlockUserTableViewCell.swift; sourceTree = "<group>"; };
+		B532D4E5199D4357006E4DF6 /* NoteBlockCommentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteBlockCommentTableViewCell.swift; sourceTree = "<group>"; };
+		B532D4E6199D4357006E4DF6 /* NoteBlockQuoteTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteBlockQuoteTableViewCell.swift; sourceTree = "<group>"; };
+		B532D4E7199D4357006E4DF6 /* NoteBlockTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteBlockTableViewCell.swift; sourceTree = "<group>"; };
+		B532D4E8199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteBlockTextTableViewCell.swift; sourceTree = "<group>"; };
+		B532D4ED199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteBlockImageTableViewCell.swift; sourceTree = "<group>"; };
 		B53F306519780D810019FA34 /* NSDate+ISO8601.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+ISO8601.h"; sourceTree = "<group>"; };
 		B53F306619780D810019FA34 /* NSDate+ISO8601.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+ISO8601.m"; sourceTree = "<group>"; };
 		B55853F11962337500FAF6C3 /* NSScanner+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScanner+Helpers.h"; sourceTree = "<group>"; };
@@ -816,18 +822,6 @@
 		B5F015C9195DFD7600F6ECF2 /* WordPressActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressActivity.h; sourceTree = "<group>"; };
 		B5F015CA195DFD7600F6ECF2 /* WordPressActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressActivity.m; sourceTree = "<group>"; };
 		B5FD4520199D0C9A00286FBB /* WordPress-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WordPress-Bridging-Header.h"; sourceTree = "<group>"; };
-		B5FD4524199D0F1100286FBB /* NoteBlockCommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteBlockCommentTableViewCell.h; sourceTree = "<group>"; };
-		B5FD4525199D0F1100286FBB /* NoteBlockCommentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteBlockCommentTableViewCell.m; sourceTree = "<group>"; };
-		B5FD4526199D0F1100286FBB /* NoteBlockImageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteBlockImageTableViewCell.h; sourceTree = "<group>"; };
-		B5FD4527199D0F1100286FBB /* NoteBlockImageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteBlockImageTableViewCell.m; sourceTree = "<group>"; };
-		B5FD4528199D0F1100286FBB /* NoteBlockQuoteTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteBlockQuoteTableViewCell.h; sourceTree = "<group>"; };
-		B5FD4529199D0F1100286FBB /* NoteBlockQuoteTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteBlockQuoteTableViewCell.m; sourceTree = "<group>"; };
-		B5FD452A199D0F1100286FBB /* NoteBlockTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteBlockTableViewCell.h; sourceTree = "<group>"; };
-		B5FD452B199D0F1100286FBB /* NoteBlockTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteBlockTableViewCell.m; sourceTree = "<group>"; };
-		B5FD452C199D0F1100286FBB /* NoteBlockTextTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteBlockTextTableViewCell.h; sourceTree = "<group>"; };
-		B5FD452D199D0F1100286FBB /* NoteBlockTextTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteBlockTextTableViewCell.m; sourceTree = "<group>"; };
-		B5FD452E199D0F1100286FBB /* NoteBlockUserTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteBlockUserTableViewCell.h; sourceTree = "<group>"; };
-		B5FD452F199D0F1100286FBB /* NoteBlockUserTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteBlockUserTableViewCell.m; sourceTree = "<group>"; };
 		B5FD4530199D0F1100286FBB /* NoteTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteTableViewCell.h; sourceTree = "<group>"; };
 		B5FD4531199D0F1100286FBB /* NoteTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteTableViewCell.m; sourceTree = "<group>"; };
 		B5FD4532199D0F1100286FBB /* NoteTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteTableViewCell.xib; sourceTree = "<group>"; };
@@ -1905,23 +1899,17 @@
 		B5FD4523199D0F1100286FBB /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B5FD4524199D0F1100286FBB /* NoteBlockCommentTableViewCell.h */,
-				B5FD4525199D0F1100286FBB /* NoteBlockCommentTableViewCell.m */,
-				B5FD4526199D0F1100286FBB /* NoteBlockImageTableViewCell.h */,
-				B5FD4527199D0F1100286FBB /* NoteBlockImageTableViewCell.m */,
-				B5FD4528199D0F1100286FBB /* NoteBlockQuoteTableViewCell.h */,
-				B5FD4529199D0F1100286FBB /* NoteBlockQuoteTableViewCell.m */,
-				B5FD452A199D0F1100286FBB /* NoteBlockTableViewCell.h */,
-				B5FD452B199D0F1100286FBB /* NoteBlockTableViewCell.m */,
-				B5FD452C199D0F1100286FBB /* NoteBlockTextTableViewCell.h */,
-				B5FD452D199D0F1100286FBB /* NoteBlockTextTableViewCell.m */,
-				B5FD452E199D0F1100286FBB /* NoteBlockUserTableViewCell.h */,
-				B5FD452F199D0F1100286FBB /* NoteBlockUserTableViewCell.m */,
+				B5FD4533199D0F1100286FBB /* NotificationHeaderView.h */,
+				B5FD4534199D0F1100286FBB /* NotificationHeaderView.m */,
 				B5FD4530199D0F1100286FBB /* NoteTableViewCell.h */,
 				B5FD4531199D0F1100286FBB /* NoteTableViewCell.m */,
 				B5FD4532199D0F1100286FBB /* NoteTableViewCell.xib */,
-				B5FD4533199D0F1100286FBB /* NotificationHeaderView.h */,
-				B5FD4534199D0F1100286FBB /* NotificationHeaderView.m */,
+				B532D4E7199D4357006E4DF6 /* NoteBlockTableViewCell.swift */,
+				B532D4E8199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift */,
+				B532D4E5199D4357006E4DF6 /* NoteBlockCommentTableViewCell.swift */,
+				B532D4E6199D4357006E4DF6 /* NoteBlockQuoteTableViewCell.swift */,
+				B532D4ED199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift */,
+				B52C4C7C199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1929,10 +1917,10 @@
 		B5FD453E199D0F2800286FBB /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				B5FD453F199D0F2800286FBB /* NotificationDetailsViewController.h */,
-				B5FD4540199D0F2800286FBB /* NotificationDetailsViewController.m */,
 				B5FD4541199D0F2800286FBB /* NotificationsViewController.h */,
 				B5FD4542199D0F2800286FBB /* NotificationsViewController.m */,
+				B5FD453F199D0F2800286FBB /* NotificationDetailsViewController.h */,
+				B5FD4540199D0F2800286FBB /* NotificationDetailsViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -2520,7 +2508,6 @@
 			files = (
 				37022D931981C19000F322B7 /* VerticallyStackedButton.m in Sources */,
 				5D1D9C50198837D0009D13B7 /* RemoteReaderPost.m in Sources */,
-				B5FD4539199D0F1100286FBB /* NoteBlockTextTableViewCell.m in Sources */,
 				5D1D9C51198837D0009D13B7 /* RemoteReaderSite.m in Sources */,
 				5D1D9C52198837D0009D13B7 /* RemoteReaderTopic.m in Sources */,
 				C545E0A21811B9880020844C /* ContextManager.m in Sources */,
@@ -2546,6 +2533,7 @@
 				A0E293F10E21027E00C6919C /* WPAddCategoryViewController.m in Sources */,
 				B5AB733D19901F85005F5044 /* WPNoResultsView+AnimatedBox.m in Sources */,
 				C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */,
+				B532D4EC199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift in Sources */,
 				CC701659185A7513007B37DB /* InlineComposeView.m in Sources */,
 				59379AA4191904C200B49251 /* AnimatedGIFImageSerialization.m in Sources */,
 				E149D65119349E69006A843D /* MediaServiceRemoteXMLRPC.m in Sources */,
@@ -2564,8 +2552,10 @@
 				296526FE105810E100597FA3 /* NSString+Helpers.m in Sources */,
 				5DA5BF4418E32DCF005F11F9 /* Theme.m in Sources */,
 				ADF544C2195A0F620092213D /* CustomHighlightButton.m in Sources */,
+				B52C4C7D199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift in Sources */,
 				2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */,
 				B5FD453D199D0F1100286FBB /* NotificationHeaderView.m in Sources */,
+				B532D4EB199D4357006E4DF6 /* NoteBlockTableViewCell.swift in Sources */,
 				5DA5BF4018E32DCF005F11F9 /* MediaBrowserCell.m in Sources */,
 				83418AAA11C9FA6E00ACF00C /* Comment.m in Sources */,
 				E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */,
@@ -2618,7 +2608,6 @@
 				B5FD453B199D0F1100286FBB /* NoteTableViewCell.m in Sources */,
 				B55853F31962337500FAF6C3 /* NSScanner+Helpers.m in Sources */,
 				5D1945651979E091003EDDAD /* WPRichTextVideoControl.m in Sources */,
-				B5FD4535199D0F1100286FBB /* NoteBlockCommentTableViewCell.m in Sources */,
 				5DEB61B8156FCD5200242C35 /* WPChromelessWebViewController.m in Sources */,
 				CC24E5EF1577D1EA00A6D5B5 /* WPFriendFinderViewController.m in Sources */,
 				E1AB07AD1578D34300D6AD64 /* SettingsViewController.m in Sources */,
@@ -2633,6 +2622,7 @@
 				5D3E334E15EEBB6B005FC6F2 /* ReachabilityUtils.m in Sources */,
 				5D87E10C15F5120C0012C595 /* SettingsPageViewController.m in Sources */,
 				5DC3A44D1610B9BC00A890BE /* UINavigationController+Rotation.m in Sources */,
+				B532D4E9199D4357006E4DF6 /* NoteBlockCommentTableViewCell.swift in Sources */,
 				E1A0FAE7162F11CF0063B098 /* UIDevice+WordPressIdentifier.m in Sources */,
 				5D44EB351986D695008B7175 /* ReaderSiteServiceRemote.m in Sources */,
 				5DA5BF4318E32DCF005F11F9 /* MediaSearchFilterHeaderView.m in Sources */,
@@ -2648,6 +2638,7 @@
 				E1756E651694A99400D9EC00 /* WordPressComApiCredentials.m in Sources */,
 				5D8D53F119250412003C8859 /* BlogSelectorViewController.m in Sources */,
 				5D3D559718F88C3500782892 /* ReaderPostService.m in Sources */,
+				B532D4EE199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift in Sources */,
 				93FA59DD18D88C1C001446BC /* CategoryService.m in Sources */,
 				8516972C169D42F4006C5DED /* WPToast.m in Sources */,
 				93C4864F181043D700A24725 /* ActivityLogDetailViewController.m in Sources */,
@@ -2710,16 +2701,13 @@
 				5D42A3F9175E75EE005CFF05 /* ReaderMediaView.m in Sources */,
 				85D2275918F1EB8A001DA8DA /* WPAnalyticsTrackerMixpanel.m in Sources */,
 				E149D64F19349E69006A843D /* AccountServiceRemoteXMLRPC.m in Sources */,
-				B5FD4536199D0F1100286FBB /* NoteBlockImageTableViewCell.m in Sources */,
 				5DF94E461962BAA700359241 /* WPRichTextView.m in Sources */,
 				5D42A3FB175E75EE005CFF05 /* ReaderPostDetailViewController.m in Sources */,
-				B5FD4537199D0F1100286FBB /* NoteBlockQuoteTableViewCell.m in Sources */,
 				E18EE94E19349EBA00B0A40C /* BlogServiceRemote.m in Sources */,
 				5D42A3FC175E75EE005CFF05 /* ReaderPostsViewController.m in Sources */,
 				E1556CF2193F6FE900FC52EA /* CommentService.m in Sources */,
 				5D42A3FD175E75EE005CFF05 /* ReaderPostTableViewCell.m in Sources */,
 				5DB3BA0518D0E7B600F3F3E9 /* WPPickerView.m in Sources */,
-				B5FD453A199D0F1100286FBB /* NoteBlockUserTableViewCell.m in Sources */,
 				5D42A400175E75EE005CFF05 /* ReaderVideoView.m in Sources */,
 				5D42A405175E76A7005CFF05 /* WPImageViewController.m in Sources */,
 				5DA3EE161925090A00294E0B /* MediaService.m in Sources */,
@@ -2731,7 +2719,6 @@
 				5D577D361891360900B964C3 /* PostGeolocationView.m in Sources */,
 				5DA5BF4118E32DCF005F11F9 /* MediaBrowserViewController.m in Sources */,
 				B5FD4543199D0F2800286FBB /* NotificationDetailsViewController.m in Sources */,
-				B5FD4538199D0F1100286FBB /* NoteBlockTableViewCell.m in Sources */,
 				E174F6E6172A73960004F23A /* WPAccount.m in Sources */,
 				E100C6BB1741473000AE48D8 /* WordPress-11-12.xcmappingmodel in Sources */,
 				E1A03EE217422DCF0085D192 /* BlogToAccount.m in Sources */,
@@ -2754,6 +2741,7 @@
 				E1D086E2194214C600F0CC19 /* NSDate+WordPressJSON.m in Sources */,
 				5D839AAB187F0D8000811F4A /* PostGeolocationCell.m in Sources */,
 				A2DC5B1A1953451B009584C3 /* WPNUXHelpBadgeLabel.m in Sources */,
+				B532D4EA199D4357006E4DF6 /* NoteBlockQuoteTableViewCell.swift in Sources */,
 				E1AC282D18282423004D394C /* SFHFKeychainUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2854,11 +2842,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_MODULES = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
 				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
+				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes\"",
@@ -2894,11 +2883,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_MODULES = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc. (PZYM8XX95Q)";
 				COPY_PHASE_STRIP = YES;
+				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes\"",
@@ -2955,12 +2945,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_MODULES = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc. (PZYM8XX95Q)";
 				COPY_PHASE_STRIP = YES;
+				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes\"",
@@ -3013,11 +3004,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Internal";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_MODULES = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
 				COPY_PHASE_STRIP = YES;
+				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes\"",

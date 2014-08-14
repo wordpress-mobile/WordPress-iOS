@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MbC-cA-c9S">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6205" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MbC-cA-c9S">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6198"/>
     </dependencies>
     <scenes>
         <!--Notifications View Controller-->
@@ -36,7 +36,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockTextTableViewCell" id="jmW-dd-Cbx" userLabel="Text TableViewCell" customClass="NoteBlockTextTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockTextTableViewCell" id="jmW-dd-Cbx" userLabel="Text TableViewCell" customClass="NoteBlockTextTableViewCell" customModule="WordPress">
                                 <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jmW-dd-Cbx" id="giy-cd-Nqj">
@@ -61,7 +61,7 @@
                                     <outlet property="attributedLabel" destination="xQl-T8-nxx" id="TGD-Ae-77C"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockCommentTableViewCell" rowHeight="134" id="oku-4A-odK" userLabel="Comment TableViewCell" customClass="NoteBlockTextTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockCommentTableViewCell" rowHeight="85" id="oku-4A-odK" userLabel="Comment TableViewCell" customClass="NoteBlockCommentTableViewCell" customModule="WordPress">
                                 <rect key="frame" x="0.0" y="66" width="320" height="134"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oku-4A-odK" id="cG4-pT-v6A">
@@ -69,31 +69,78 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rgW-kf-700" customClass="DTAttributedLabel">
-                                            <rect key="frame" x="20" y="4" width="280" height="91"/>
+                                            <rect key="frame" x="20" y="4" width="280" height="20"/>
                                             <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h5e-hC-AQ3">
-                                            <rect key="frame" x="254" y="99" width="46" height="30"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <state key="normal" title="Button">
+                                            <rect key="frame" x="264" y="44" width="36" height="30"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="30" id="kN3-2w-Mt2"/>
+                                            </constraints>
+                                            <state key="normal" title="More">
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
+                                            <connections>
+                                                <action selector="moreWasPressed:" destination="oku-4A-odK" eventType="touchUpInside" id="xR2-1Q-wR5"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="etA-iD-79F">
+                                            <rect key="frame" x="207" y="44" width="37" height="30"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="30" id="U7g-U2-03k"/>
+                                            </constraints>
+                                            <state key="normal" title="Trash">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="trashWasPressed:" destination="oku-4A-odK" eventType="touchUpInside" id="cGd-SP-J4P"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8zl-sO-yf4">
+                                            <rect key="frame" x="146" y="44" width="41" height="30"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="30" id="MJF-d4-6Jm"/>
+                                            </constraints>
+                                            <state key="normal" title="Spam">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="spamWasPressed:" destination="oku-4A-odK" eventType="touchUpInside" id="Lbw-i9-Mvd"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vto-lH-7Lj">
+                                            <rect key="frame" x="96" y="44.5" width="30" height="30"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="30" id="3HY-fa-UE8"/>
+                                            </constraints>
+                                            <state key="normal" title="Like">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="likeWasPressed:" destination="oku-4A-odK" eventType="touchUpInside" id="DYL-In-5zL"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="h5e-hC-AQ3" secondAttribute="bottom" constant="4" id="3Kb-RX-hNr"/>
-                                        <constraint firstItem="h5e-hC-AQ3" firstAttribute="top" secondItem="rgW-kf-700" secondAttribute="bottom" constant="4" id="4OS-6a-zVx"/>
-                                        <constraint firstAttribute="trailing" secondItem="h5e-hC-AQ3" secondAttribute="trailing" constant="20" id="G23-b6-g5z"/>
+                                        <constraint firstItem="etA-iD-79F" firstAttribute="leading" secondItem="8zl-sO-yf4" secondAttribute="trailing" constant="20" id="2Mp-rh-erz"/>
+                                        <constraint firstAttribute="bottom" secondItem="8zl-sO-yf4" secondAttribute="bottom" constant="10" id="C8l-Y6-AgZ"/>
                                         <constraint firstItem="rgW-kf-700" firstAttribute="leading" secondItem="cG4-pT-v6A" secondAttribute="leading" constant="20" id="JOA-8B-yWV"/>
+                                        <constraint firstItem="h5e-hC-AQ3" firstAttribute="leading" secondItem="etA-iD-79F" secondAttribute="trailing" constant="20" id="Kth-U4-J9R"/>
+                                        <constraint firstAttribute="trailing" secondItem="h5e-hC-AQ3" secondAttribute="trailing" constant="20" id="MMF-gg-Z8u"/>
+                                        <constraint firstAttribute="bottom" secondItem="etA-iD-79F" secondAttribute="bottom" constant="10" id="PML-yo-QB4"/>
                                         <constraint firstAttribute="trailing" secondItem="rgW-kf-700" secondAttribute="trailing" constant="20" id="U9a-ao-zsZ"/>
+                                        <constraint firstItem="8zl-sO-yf4" firstAttribute="leading" secondItem="vto-lH-7Lj" secondAttribute="trailing" constant="20" id="YMi-es-n2e"/>
+                                        <constraint firstAttribute="bottom" secondItem="h5e-hC-AQ3" secondAttribute="bottom" constant="10" id="cUB-3k-lRe"/>
                                         <constraint firstItem="rgW-kf-700" firstAttribute="top" secondItem="cG4-pT-v6A" secondAttribute="top" constant="4" id="eua-xv-Aej"/>
+                                        <constraint firstAttribute="bottom" secondItem="vto-lH-7Lj" secondAttribute="bottom" constant="10" id="jET-CI-PkH"/>
+                                        <constraint firstItem="8zl-sO-yf4" firstAttribute="top" secondItem="rgW-kf-700" secondAttribute="bottom" constant="20" id="xbI-ib-BJY"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="attributedLabel" destination="rgW-kf-700" id="vEY-2c-Mff"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockQuoteTableViewCell" id="iyh-u1-L6U" userLabel="Quote TableViewCell" customClass="NoteBlockQuoteTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockQuoteTableViewCell" id="iyh-u1-L6U" userLabel="Quote TableViewCell" customClass="NoteBlockQuoteTableViewCell" customModule="WordPress">
                                 <rect key="frame" x="0.0" y="200" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iyh-u1-L6U" id="DNi-Ol-Dh9">
@@ -118,7 +165,7 @@
                                     <outlet property="attributedLabel" destination="sbX-f5-Gcj" id="TAG-xA-x9m"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockImageTableViewCell" rowHeight="200" id="haN-FG-i9H" userLabel="Image TableViewCell" customClass="NoteBlockImageTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockImageTableViewCell" rowHeight="200" id="haN-FG-i9H" userLabel="Image TableViewCell" customClass="NoteBlockImageTableViewCell" customModule="WordPress">
                                 <rect key="frame" x="0.0" y="244" width="320" height="200"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="haN-FG-i9H" id="jcD-Sy-kp4">
@@ -143,7 +190,7 @@
                                     <outlet property="blockImageView" destination="uTP-8C-n1f" id="0XB-7F-Ajd"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockUserTableViewCell" rowHeight="80" id="5xE-rP-cOl" userLabel="User TableViewCell" customClass="NoteBlockUserTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockUserTableViewCell" rowHeight="80" id="5xE-rP-cOl" userLabel="User TableViewCell" customClass="NoteBlockUserTableViewCell" customModule="WordPress">
                                 <rect key="frame" x="0.0" y="444" width="320" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5xE-rP-cOl" id="cu5-vz-Y42">
@@ -256,7 +303,10 @@
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
+        <simulatedScreenMetrics key="destination" type="retina4">
+            <size key="portraitSize" width="320" height="568"/>
+            <size key="landscapeSize" width="568" height="320"/>
+        </simulatedScreenMetrics>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="bzs-Og-i8b"/>
