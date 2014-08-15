@@ -467,7 +467,6 @@ name:MediaShouldInsertBelowNotification object:nil];
     if (_mediaUploadQueue.operationCount > 0) {
         self.navigationItem.titleView = self.uploadStatusView;
     } else if(blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
-        //self.navigationItem.title = [self editorTitle];
         self.navigationItem.titleView = nil;
     } else {
         UIButton *titleButton = self.titleBarButton;
@@ -784,7 +783,6 @@ name:MediaShouldInsertBelowNotification object:nil];
 - (void)autosaveContent
 {
     self.post.postTitle = self.titleText;
-    self.navigationItem.title = [self editorTitle];
     
     self.post.content = self.bodyText;
 	if ([self.post.content rangeOfString:@"<!--more-->"].location != NSNotFound)
@@ -990,7 +988,6 @@ name:MediaShouldInsertBelowNotification object:nil];
 - (void)editorDidBeginEditing:(WPEditorViewController *)editorController
 {
     self.post.postTitle = self.titleText;
-    self.navigationItem.title = [self editorTitle];
     
     [self refreshNavigationBarButtons];
 }

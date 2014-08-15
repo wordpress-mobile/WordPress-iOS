@@ -21,9 +21,16 @@ static Class fixClass = Nil;
     return browserView;
 }
 
-- (id)methodReturningCustomInpuAccessoryView
+- (id)methodReturningCustomInputAccessoryView
 {
-    return [(UIWebView*)self.superview.superview customInputAccessoryView];
+	UIView* parentWebView = self.superview;
+	
+	while (parentWebView && ![parentWebView isKindOfClass:[UIWebView class]])
+	{
+		parentWebView = parentWebView.superview;
+	}
+	
+    return [(UIWebView*)parentWebView customInputAccessoryView];
 }
 
 - (void)ensureFixedSubclassExistsOfBrowserViewClass:(Class)browserViewClass
@@ -31,7 +38,7 @@ static Class fixClass = Nil;
     if (!fixClass) {
         Class newClass = objc_allocateClassPair(browserViewClass, fixedClassName, 0);
         //newClass = objc_allocateClassPair(browserViewClass, fixedClassName, 0);
-        IMP newImp = [self methodForSelector:@selector(methodReturningCustomInpuAccessoryView)];
+        IMP newImp = [self methodForSelector:@selector(methodReturningCustomInputAccessoryView)];
         class_addMethod(newClass, @selector(inputAccessoryView), newImp, "@@:");
         objc_registerClassPair(newClass);
         
@@ -70,12 +77,6 @@ static Class fixClass = Nil;
 
 - (void)setCustomInputAccessoryView:(UIView*)view
 {
-	if (view) {
-		[self setUsesCustomInputAccessoryView:YES];
-	} else {
-		[self setUsesCustomInputAccessoryView:NO];
-	}
-	
 	objc_setAssociatedObject(self,
 							 kCustomInputAccessoryView,
 							 view,
