@@ -7,7 +7,11 @@
 #import "Notification.h"
 #import "Notification+UI.h"
 
-#import "WPStyleGuide+Notifications.h"
+#import "WPStyleGuide.h"
+#import "WPFontManager.h"
+
+#import "NSDate+StringFormatting.h"
+#import "NSURL+Util.h"
 
 #import "WPTableViewCell.h"
 
