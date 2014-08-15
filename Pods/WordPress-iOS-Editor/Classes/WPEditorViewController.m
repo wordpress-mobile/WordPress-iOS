@@ -636,25 +636,7 @@ NSInteger const WPLinkAlertViewTag = 92;
 		if ([self isBodyTextEmpty]) {
 			[self setHtml:self.editorPlaceholderText];
 		}
-		
-		[self refreshUIEditMode];
     }
-}
-
-/**
- *	@brief		This method simply refreshes the UI according to the current edit mode.
- *	@details	If the editor has not been completely loaded yet, this method does nothing.
- */
-- (void)refreshUIEditMode
-{
-    if (self.didFinishLoadingEditor) {
-		if (self.mode == kWPEditorViewControllerModeEdit) {
-			[self enableEditing];
-		}
-		else {
-			[self disableEditing];
-		}
-	}
 }
 
 #pragma mark - Editor and Misc Methods
@@ -1461,7 +1443,10 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
     // Correct Curve
     UIViewAnimationOptions animationOptions = curve;
     
-	if ([notification.name isEqualToString:UIKeyboardWillShowNotification]) {
+	// DRM: WORKAROUND: for some weird reason, we are receiving multiple UIKeyboardWillShow notifications.
+	// We will simply ignore repeated notifications.
+	//
+	if ([notification.name isEqualToString:UIKeyboardWillShowNotification] && !self.isShowingKeyboard) {
         
         self.isShowingKeyboard = YES;
         
@@ -1475,11 +1460,15 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
             [self.navigationController setNavigationBarHidden:YES animated:YES];
         }
         [self.navigationController setToolbarHidden:YES animated:NO];
-        
+		
+		CGRect localizedKeyboardEnd = [self.view convertRect:keyboardEnd fromView:nil];
+		CGPoint keyboardOrigin = localizedKeyboardEnd.origin;
+		CGFloat vOffset = self.view.frame.size.height - keyboardOrigin.y;
+		
         [UIView animateWithDuration:duration delay:0 options:animationOptions animations:^{
             // Editor View
             CGRect editorFrame = self.editorView.frame;
-            editorFrame.size.height = (self.view.frame.size.height - keyboardHeight - toolbarHeight - toolbarHeight);
+            editorFrame.size.height -= vOffset;
             self.editorView.frame = editorFrame;
             self.editorView.scrollView.contentInset = UIEdgeInsetsZero;
             self.editorView.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
@@ -1489,7 +1478,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
             sourceFrame.size.height = (self.view.frame.size.height - keyboardHeight) - toolbarHeight;
             self.sourceView.frame = sourceFrame;
         } completion:nil];
-	} else {
+	} else if ([notification.name isEqualToString:UIKeyboardWillHideNotification] && self.isShowingKeyboard) {
         self.isShowingKeyboard = NO;
         [self refreshUI];
         
