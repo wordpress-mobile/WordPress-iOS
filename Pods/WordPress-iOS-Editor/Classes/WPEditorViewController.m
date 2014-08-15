@@ -22,7 +22,6 @@ NSInteger const WPLinkAlertViewTag = 92;
 @property (nonatomic, strong) UIToolbar *toolbar;
 @property (nonatomic, strong) UIView *toolbarHolder;
 @property (nonatomic, strong) NSString *htmlString;
-@property (nonatomic, strong) WPInsetTextField *titleTextField;
 @property (nonatomic, strong) ZSSTextView *sourceView;
 @property (assign) BOOL resourcesLoaded;
 @property (nonatomic, strong) NSString *editorPlaceholderText;
@@ -42,10 +41,14 @@ NSInteger const WPLinkAlertViewTag = 92;
 #pragma mark - Properties: Editor Mode
 @property (nonatomic, assign, readwrite, getter=isEditingDisabled) BOOL editingDisabled;
 @property (nonatomic, assign, readwrite) WPEditorViewControllerMode mode;
+@property (nonatomic, assign, readwrite) BOOL wasEditing;
 
 #pragma mark - Properties: Editor View
 @property (nonatomic, strong, readwrite) UIWebView *editorView;
 @property (nonatomic, assign, readwrite) BOOL editorViewIsEditing;
+
+#pragma mark - Properties: Title Text View
+@property (nonatomic, strong) WPInsetTextField *titleTextField;
 
 @end
 
@@ -108,8 +111,12 @@ NSInteger const WPLinkAlertViewTag = 92;
         [view setExclusiveTouch:YES];
     }
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowOrHide:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowOrHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(keyboardWillShow:)
+												 name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(keyboardWillHide:)
+												 name:UIKeyboardWillHideNotification object:nil];
     
     [self refreshUI];
 }
@@ -452,8 +459,9 @@ NSInteger const WPLinkAlertViewTag = 92;
         line.alpha = 0.7f;
         [toolbarCropper addSubview:line];
     }
-    //[self.view addSubview:self.toolbarHolder];
+	self.editorView.usesCustomInputAccessoryView = YES;
 	self.editorView.customInputAccessoryView = self.toolbarHolder;
+	self.titleTextField.inputAccessoryView = self.toolbarHolder;
     
     // Check to see if we have any toolbar items, if not, add them all
     NSArray *items = [self itemsForToolbar];
@@ -514,7 +522,6 @@ NSInteger const WPLinkAlertViewTag = 92;
     if (!self.editorView) {
         self.editorView = [[UIWebView alloc] initWithFrame:frame];
         self.editorView.delegate = self;
-        self.editorView.usesCustomInputAccessoryView = YES;
         self.editorView.autoresizesSubviews = YES;
         self.editorView.autoresizingMask = mask;
         self.editorView.scalesPageToFit = YES;
@@ -633,7 +640,7 @@ NSInteger const WPLinkAlertViewTag = 92;
 {
     if (self.didFinishLoadingEditor) {
 		
-		if ([self isBodyTextEmpty]) {
+		if (!self.isEditing && [self isBodyTextEmpty]) {
 			[self setHtml:self.editorPlaceholderText];
 		}
     }
@@ -1292,8 +1299,7 @@ NSInteger const WPLinkAlertViewTag = 92;
         } else {
             item.tintColor = [self barButtonItemDefaultColor];
         }
-    }//end
-    
+    }
 }
 
 #pragma mark - UITextField Delegate
@@ -1304,16 +1310,7 @@ NSInteger const WPLinkAlertViewTag = 92;
 	
 	if (!self.isEditingDisabled)
 	{
-		if (textField == self.titleTextField) {
-			
-			[self enableToolbarItems:NO shouldShowSourceButton:NO];
-			
-			if ([self.delegate respondsToSelector: @selector(editorDidBeginEditing:)]) {
-				[self.delegate editorDidBeginEditing:self];
-			}
-			
-			[self refreshUI];
-		}
+		result = YES;
 	}
 	
     return result;
@@ -1321,9 +1318,13 @@ NSInteger const WPLinkAlertViewTag = 92;
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    if (textField == self.titleTextField) {
-        [self refreshUI];
-    }
+	if (textField == self.titleTextField) {
+		
+		[self enableToolbarItems:NO shouldShowSourceButton:NO];
+		
+		[self tellOurDelegateEditingChangedIfNecessary];
+		[self refreshUI];
+	}
 }
     
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -1339,7 +1340,10 @@ NSInteger const WPLinkAlertViewTag = 92;
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    [self refreshUI];
+	if (textField == self.titleTextField) {
+		[self tellOurDelegateEditingChangedIfNecessary];
+		[self refreshUI];
+	}
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -1360,7 +1364,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 			navigationType:(UIWebViewNavigationType)navigationType
 {
 	static NSString* const kCallbackScheme = @"callback";
-	BOOL result = NO;
+	BOOL result = YES;
 	
     if (navigationType == UIWebViewNavigationTypeLinkClicked) {
 		result = NO;
@@ -1369,11 +1373,8 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 		BOOL isCallbackURL = [[url scheme] isEqualToString:kCallbackScheme];
 		
 		if (isCallbackURL) {
-			[self handleWebViewCallbackURL:url];
+			result = ![self handleWebViewCallbackURL:url];
 		}
-		
-		// DRM: We don't want any default handling for callbacks, even if we won't handle some.
-		result = YES;
     }
     
     return result;
@@ -1381,10 +1382,19 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 
 #pragma mark - UIWebView Delegate helpers
 
-- (void)handleWebViewCallbackURL:(NSURL*)url
+/**
+ *	@brief		Handles UIWebView callbacks.
+ *
+ *	@param		url		The url for the callback.  Cannot be nil.
+ *
+ *	@returns	YES if the callback was handled, NO otherwise.
+ */
+- (BOOL)handleWebViewCallbackURL:(NSURL*)url
 {
 	NSAssert([url isKindOfClass:[NSURL class]],
 			 @"Expected param url to be a non-nil, NSURL object.");
+	
+	BOOL result = NO;
 	
 	NSString* resourceSpecifier = [[url resourceSpecifier] stringByReplacingOccurrencesOfString:@"//" withString:@""];
 	
@@ -1396,14 +1406,28 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 		if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
 			[self.delegate editorTextDidChange:self];
 		}
+		
+		result = YES;
 	} else if ([resourceSpecifier isEqualToString:kFocusInSpecifier]){
 		self.editorViewIsEditing = YES;
+		
+		[self tellOurDelegateEditingChangedIfNecessary];
+		[self enableToolbarItems:YES shouldShowSourceButton:NO];
+		
+		result = YES;
 	} else if ([resourceSpecifier isEqualToString:kFocusOutSpecifier]){
 		self.editorViewIsEditing = NO;
+		
+		[self tellOurDelegateEditingChangedIfNecessary];
+		result = YES;
 	} else {
 		NSString *className = resourceSpecifier;
 		[self updateToolBarWithButtonName:className];
+		
+		result = YES;
 	}
+	
+	return result;
 }
 
 #pragma mark - Asset Picker
@@ -1423,62 +1447,75 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 
 #pragma mark - Keyboard status
 
-- (void)keyboardWillShowOrHide:(NSNotification *)notification
+- (void)keyboardWillShow:(NSNotification *)notification
 {
-    // Orientation
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
 	
-    // User Info
     NSDictionary *info = notification.userInfo;
     CGFloat duration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     NSUInteger curve = [[info objectForKey:UIKeyboardAnimationCurveUserInfoKey] unsignedIntegerValue];
     CGRect keyboardEnd = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     
-    // Toolbar Sizes
     CGFloat toolbarHeight = self.toolbarHolder.frame.size.height;
-    
-    // Keyboard Size
     CGFloat keyboardHeight = UIInterfaceOrientationIsLandscape(orientation) ? keyboardEnd.size.width : keyboardEnd.size.height;
-    
-    // Correct Curve
     UIViewAnimationOptions animationOptions = curve;
-    
+	
 	// DRM: WORKAROUND: for some weird reason, we are receiving multiple UIKeyboardWillShow notifications.
 	// We will simply ignore repeated notifications.
 	//
-	if ([notification.name isEqualToString:UIKeyboardWillShowNotification] && !self.isShowingKeyboard) {
-        
-        self.isShowingKeyboard = YES;
-        
-        // Hide the placeholder if visible before editing
-        if (!self.titleTextField.isFirstResponder && [self isEditorPlaceholderTextVisible]) {
-            [self setHtml:@""];
-        }
-        
-        if ([self shouldHideNavbarWhileTyping]) {
-            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-            [self.navigationController setNavigationBarHidden:YES animated:YES];
-        }
-        [self.navigationController setToolbarHidden:YES animated:NO];
+	if (self.isShowingKeyboard) {
+		
+		self.isShowingKeyboard = YES;
+		
+		// Hide the placeholder if visible before editing
+		if (!self.titleTextField.isFirstResponder && [self isEditorPlaceholderTextVisible]) {
+			[self setHtml:@""];
+		}
+		
+		if ([self shouldHideNavbarWhileTyping]) {
+			[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+			[self.navigationController setNavigationBarHidden:YES animated:YES];
+		}
+		[self.navigationController setToolbarHidden:YES animated:NO];
 		
 		CGRect localizedKeyboardEnd = [self.view convertRect:keyboardEnd fromView:nil];
 		CGPoint keyboardOrigin = localizedKeyboardEnd.origin;
 		CGFloat vOffset = self.view.frame.size.height - keyboardOrigin.y;
 		
-        [UIView animateWithDuration:duration delay:0 options:animationOptions animations:^{
-            // Editor View
-            CGRect editorFrame = self.editorView.frame;
-            editorFrame.size.height -= vOffset;
-            self.editorView.frame = editorFrame;
-            self.editorView.scrollView.contentInset = UIEdgeInsetsZero;
-            self.editorView.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
-            
-            // Source View
-            CGRect sourceFrame = self.sourceView.frame;
-            sourceFrame.size.height = (self.view.frame.size.height - keyboardHeight) - toolbarHeight;
-            self.sourceView.frame = sourceFrame;
-        } completion:nil];
-	} else if ([notification.name isEqualToString:UIKeyboardWillHideNotification] && self.isShowingKeyboard) {
+		[UIView animateWithDuration:duration delay:0 options:animationOptions animations:^{
+			// Editor View
+			CGRect editorFrame = self.editorView.frame;
+			editorFrame.size.height -= vOffset;
+			self.editorView.frame = editorFrame;
+			self.editorView.scrollView.contentInset = UIEdgeInsetsZero;
+			self.editorView.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
+			
+			// Source View
+			CGRect sourceFrame = self.sourceView.frame;
+			sourceFrame.size.height = (self.view.frame.size.height - keyboardHeight) - toolbarHeight;
+			self.sourceView.frame = sourceFrame;
+		} completion:nil];
+	}
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+	
+    NSDictionary *info = notification.userInfo;
+    CGFloat duration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    NSUInteger curve = [[info objectForKey:UIKeyboardAnimationCurveUserInfoKey] unsignedIntegerValue];
+    CGRect keyboardEnd = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+    CGFloat toolbarHeight = self.toolbarHolder.frame.size.height;
+    
+    UIViewAnimationOptions animationOptions = curve;
+	
+	// DRM: WORKAROUND: for some weird reason, we are receiving multiple UIKeyboardWillHide notifications.
+	// We will simply ignore repeated notifications.
+	//
+	if (self.isShowingKeyboard) {
+		
         self.isShowingKeyboard = NO;
         [self refreshUI];
         
@@ -1498,12 +1535,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
             CGRect sourceFrame = self.sourceView.frame;
             sourceFrame.size.height = self.view.frame.size.height;
             self.sourceView.frame = sourceFrame;
-        } completion:^(BOOL finished) {
-            if (self.sourceView.hidden) {
-                //Turn the source icon back "on"
-                [self enableToolbarItems:YES shouldShowSourceButton:YES];
-            }
-        }];
+        } completion:nil];
 	}
 }
 
@@ -1568,6 +1600,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 - (void)enableToolbarItems:(BOOL)enable shouldShowSourceButton:(BOOL)showSource
 {
     NSArray *items = self.toolbar.items;
+	
     for (ZSSBarButtonItem *item in items) {
         if ([item.label isEqualToString:@"source"]) {
             item.enabled = showSource;
@@ -1575,6 +1608,47 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
             item.enabled = enable;
         }
     }
+}
+
+#pragma mark - Delegate calls
+
+/**
+ *	@brief		If editing starts or finishes, this method will tell our delegate.
+ */
+- (void)tellOurDelegateEditingChangedIfNecessary
+{
+	BOOL isEditing = [self isEditing];
+	BOOL editingChanged = (self.wasEditing != isEditing);
+	
+	if (editingChanged) {
+		if (isEditing) {
+			[self tellOurDelegateEditingDidBegin];
+		} else {
+			[self tellOurDelegateEditingDidEnd];
+		}
+	
+		self.wasEditing = isEditing;
+	}
+}
+
+- (void)tellOurDelegateEditingDidBegin
+{
+	NSAssert([self isEditing],
+			 @"Can't call this delegate method if not editing.");
+	
+	if ([self.delegate respondsToSelector: @selector(editorDidBeginEditing:)]) {
+		[self.delegate editorDidBeginEditing:self];
+	}
+}
+
+- (void)tellOurDelegateEditingDidEnd
+{
+	NSAssert(![self isEditing],
+			 @"Can't call this delegate method if editing.");
+	
+	if ([self.delegate respondsToSelector: @selector(editorDidEndEditing:)]) {
+		[self.delegate editorDidEndEditing:self];
+	}
 }
 
 
