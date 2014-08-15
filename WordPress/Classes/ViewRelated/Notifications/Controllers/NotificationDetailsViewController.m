@@ -1,6 +1,5 @@
 #import "NotificationDetailsViewController.h"
 #import "Notification.h"
-#import "Notification+UI.h"
 
 #import "WordPress-Swift.h"
 
