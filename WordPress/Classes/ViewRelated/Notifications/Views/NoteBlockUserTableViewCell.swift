@@ -53,7 +53,7 @@ import Foundation
         super.awakeFromNib()
         WPStyleGuide.configureFollowButton(followButton)
 
-        backgroundColor                     = WPStyleGuide.notificationBlockBackgroundColor()
+        backgroundColor                     = WPStyleGuide.Notifications.blockBackgroundColor()
         nameLabel.textColor                 = WPStyleGuide.littleEddieGrey();
         nameLabel.font                      = WPStyleGuide.tableviewSectionHeaderFont();
         
@@ -84,7 +84,7 @@ import Foundation
             request,
             placeholderImage: placeholder,
             success: {
-//  TODO: Uncomment when the compiler is fixed
+// FIXME: Uncomment when the compiler is fixed
 //                [weak self]
                 (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) -> Void in
                 self.displayImage(image)
@@ -101,7 +101,7 @@ import Foundation
         gravatarImageView.alpha    = Animation.alphaInitial
 
         UIView.animateWithDuration(Animation.duration) {
-//  TODO: Uncomment when the compiler is fixed
+// FIXME: Uncomment when the compiler is fixed
 //                [weak self]
             () -> (Void) in
             self.gravatarImageView.alpha = Animation.alphaFinal
