@@ -344,6 +344,8 @@ name:MediaShouldInsertBelowNotification object:nil];
     
 	[self disableEditing];
     [self.postSettingsViewController endEditingAction:nil];
+	
+	[self refreshNavigationBar];
     
 	if ([self isMediaInUploading]) {
 		[self showMediaInUploadingAlert];
@@ -387,8 +389,6 @@ name:MediaShouldInsertBelowNotification object:nil];
     } else {
         [actionSheet showFromToolbar:self.navigationController.toolbar];
     }
-	
-	[self refreshNavigationBar];
 }
 
 #pragma mark - Instance Methods
