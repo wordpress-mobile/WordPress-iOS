@@ -19,12 +19,6 @@
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure;
 
-// Load a comment
-- (void)loadCommentWithID:(NSNumber *)commentID
-                 fromBlog:(Blog *)blog
-                  success:(void (^)(Comment *comment))success
-                  failure:(void (^)(NSError *error))failure;
-
 // Upload comment
 - (void)uploadComment:(Comment *)comment
               success:(void (^)())success

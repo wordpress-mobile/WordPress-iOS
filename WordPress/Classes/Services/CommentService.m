@@ -64,7 +64,6 @@
     reply.status = CommentStatusDraft;
 
     return reply;
-
 }
 
 // Sync comments
@@ -85,35 +84,6 @@
                                }];
                            }
                        }];
-}
-
-// Load a comment
-
-- (void)loadCommentWithID:(NSNumber *)commentID
-                 fromBlog:(Blog *)blog
-                  success:(void (^)(Comment *comment))success
-                  failure:(void (^)(NSError *error))failure {
-    
-    void (^successBlock)(RemoteComment *remoteComment) = ^(RemoteComment *remoteComment) {
-        [self.managedObjectContext performBlock:^{
-            Comment *comment = [self findCommentWithID:commentID inBlog:blog];
-            if (!comment) {
-                comment = [self createCommentForBlog:blog];
-            }
-            [self updateComment:comment withRemoteComment:remoteComment];
-            
-            [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext];
-            
-            if (success) {
-                dispatch_async(dispatch_get_main_queue(), ^(){
-                    success(comment);
-                });
-            }
-        }];
-    };
-    
-    id<CommentServiceRemote> remote = [self remoteForBlog:blog];
-    [remote getCommentWithID:commentID forBlog:blog success:successBlock failure:failure];
 }
 
 // Upload comment
