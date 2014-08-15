@@ -28,8 +28,4 @@ extension UITableViewCell
             return name
         }
     }
-    
-    public class func layoutIdentifier() -> String {
-        return reuseIdentifier() + "-layout"
-    }
 }
