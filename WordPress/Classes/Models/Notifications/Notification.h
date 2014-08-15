@@ -57,6 +57,10 @@ typedef NS_ENUM(NSInteger, NoteBlockTypes)
 @property (nonatomic, assign,  readonly) BOOL               isStatsEvent;
 @property (nonatomic, assign,  readonly) BOOL               isComment;
 
+// Helpers
+- (NotificationBlock *)findUserBlock;
+- (NotificationBlock *)findCommentBlock;
+
 @end
 
 
@@ -75,12 +79,13 @@ typedef NS_ENUM(NSInteger, NoteBlockTypes)
 // Derived Properties
 @property (nonatomic, assign, readonly) NoteBlockTypes      type;
 @property (nonatomic, strong, readonly) NSNumber            *metaSiteID;
-@property (nonatomic, strong,  readonly) NSNumber           *metaCommentID;
+@property (nonatomic, strong, readonly) NSNumber            *metaCommentID;
+@property (nonatomic, strong, readonly) NSString            *metaLinksHome;
 
 - (BOOL)hasActions;
-- (void)setActionOverrideValue:(id)obj forKey:(NSString *)key;
+- (void)setActionOverrideValue:(NSNumber *)obj forKey:(NSString *)key;
 - (void)removeActionOverrideForKey:(NSString *)key;
-- (id)actionForKey:(NSString *)key;
+- (NSNumber *)actionForKey:(NSString *)key;
 
 @end
 
