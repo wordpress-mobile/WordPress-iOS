@@ -53,8 +53,8 @@ import Foundation
         super.awakeFromNib()
         WPStyleGuide.configureFollowButton(followButton)
 
-        backgroundColor                     = WPStyleGuide.Notifications.blockBackgroundColor()
-        nameLabel.textColor                 = WPStyleGuide.littleEddieGrey();
+        backgroundColor                     = NotificationColors.blockBackground
+        nameLabel.textColor                 = NotificationColors.blockText
         nameLabel.font                      = WPStyleGuide.tableviewSectionHeaderFont();
         
         blogLabel.font                      = WPStyleGuide.subtitleFont();

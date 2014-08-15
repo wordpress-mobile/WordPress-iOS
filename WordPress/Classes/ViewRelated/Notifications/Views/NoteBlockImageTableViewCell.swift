@@ -33,7 +33,7 @@ import Foundation
     public override func awakeFromNib() {
         assert(self.blockImageView)
         selectionStyle  = .None
-        backgroundColor = WPStyleGuide.Notifications.blockBackgroundColor()
+        backgroundColor = NotificationColors.blockBackground
     }
     
     private func reloadImage() {
