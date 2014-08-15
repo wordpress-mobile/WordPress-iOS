@@ -34,8 +34,10 @@ NSString const *NoteTypeMostPrefix      = @"most_";
 NSString const *NoteMetaKey             = @"meta";
 NSString const *NoteMediaKey            = @"media";
 NSString const *NoteActionsKey          = @"actions";
+NSString const *NoteLinksKey            = @"links";
 NSString const *NoteIdsKey              = @"ids";
 NSString const *NoteSiteKey             = @"site";
+NSString const *NoteHomeKey             = @"home";
 NSString const *NoteCommentKey          = @"comment";
 NSString const *NotePostKey             = @"post";
 NSString const *NoteTextKey             = @"text";
@@ -188,13 +190,18 @@ NSString const *NoteHeightKey           = @"height";
     return [[self.meta dictionaryForKey:NoteIdsKey] numberForKey:NoteCommentKey];
 }
 
-- (void)setActionOverrideValue:(id)obj forKey:(NSString *)key
+- (NSString *)metaLinksHome
+{
+    return [[self.meta dictionaryForKey:NoteLinksKey] stringForKey:NoteHomeKey];
+}
+
+- (void)setActionOverrideValue:(NSNumber *)value forKey:(NSString *)key
 {
     if (!_actionsOverride) {
         _actionsOverride = [NSMutableDictionary dictionary];
     }
     
-    _actionsOverride[key] = obj;
+    _actionsOverride[key] = value;
 }
 
 - (void)removeActionOverrideForKey:(NSString *)key
@@ -207,9 +214,9 @@ NSString const *NoteHeightKey           = @"height";
     return self.actions.count;
 }
 
-- (id)actionForKey:(NSString *)key
+- (NSNumber *)actionForKey:(NSString *)key
 {
-    return self.actionsOverride[key] ?: self.actions[key];
+    return [self.actionsOverride numberForKey:key] ?: [self.actions numberForKey:key];
 }
 
 + (NSArray *)blocksFromArray:(NSArray *)rawBlocks notification:(Notification *)notification
@@ -379,6 +386,30 @@ NSString const *NoteHeightKey           = @"height";
     }
     
     return NO;
+}
+
+
+#pragma mark - Comment Helpers
+
+- (NotificationBlock *)findCommentBlock
+{
+    for (NotificationBlock *block in self.bodyBlocks) {
+        if (block.type == NoteBlockTypesComment && [block.metaCommentID isEqual:self.metaCommentID]) {
+            return block;
+        }
+    }
+    return nil;
+}
+
+- (NotificationBlock *)findUserBlock
+{
+    for (NotificationBlock *block in self.bodyBlocks) {
+        if (block.type == NoteBlockTypesUser) {
+            return block;
+        }
+    }
+    return nil;
+    
 }
 
 @end
