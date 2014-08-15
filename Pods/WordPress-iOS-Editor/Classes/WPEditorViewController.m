@@ -38,9 +38,8 @@ NSInteger const WPLinkAlertViewTag = 92;
 @property (nonatomic, strong) UIView *optionsView;
 @property (nonatomic) BOOL didFinishLoadingEditor;
 
-#pragma mark - Properties: Editor Mode
+#pragma mark - Properties: Editability
 @property (nonatomic, assign, readwrite, getter=isEditingDisabled) BOOL editingDisabled;
-@property (nonatomic, assign, readwrite) WPEditorViewControllerMode mode;
 @property (nonatomic, assign, readwrite) BOOL wasEditing;
 
 #pragma mark - Properties: Editor View
@@ -61,7 +60,11 @@ NSInteger const WPLinkAlertViewTag = 92;
 	self = [super init];
 	
 	if (self) {
-		_mode = mode;
+		if (mode == kWPEditorViewControllerModePreview) {
+			_editingDisabled = YES;
+		} else {
+			_editingDisabled = NO;
+		}
 	}
 	
 	return self;
@@ -113,10 +116,12 @@ NSInteger const WPLinkAlertViewTag = 92;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(keyboardWillShow:)
-												 name:UIKeyboardWillShowNotification object:nil];
+												 name:UIKeyboardWillShowNotification
+											   object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(keyboardWillHide:)
-												 name:UIKeyboardWillHideNotification object:nil];
+												 name:UIKeyboardWillHideNotification
+											   object:nil];
     
     [self refreshUI];
 }
@@ -130,15 +135,6 @@ NSInteger const WPLinkAlertViewTag = 92;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    if (toInterfaceOrientation == UIInterfaceOrientationMaskLandscape) {
-        //noop
-    } else {
-        self.toolbarHolder.frame = CGRectMake(0, self.view.frame.size.width, self.view.frame.size.width, 44);
-    }
 }
 
 #pragma mark - Toolbar
@@ -459,7 +455,12 @@ NSInteger const WPLinkAlertViewTag = 92;
         line.alpha = 0.7f;
         [toolbarCropper addSubview:line];
     }
-	self.editorView.usesCustomInputAccessoryView = YES;
+	
+	// DRM: WORKAROUND: setting this property to NO prevents a bug on UIWebView that shows the
+	// input accessory view sometimes even if the keyboard is not shown.  We will set this property
+	// to YES when editing starts.
+	//
+	self.editorView.usesCustomInputAccessoryView = NO;
 	self.editorView.customInputAccessoryView = self.toolbarHolder;
 	self.titleTextField.inputAccessoryView = self.toolbarHolder;
     
@@ -650,15 +651,11 @@ NSInteger const WPLinkAlertViewTag = 92;
 
 - (void)startEditing
 {
-	self.mode = kWPEditorViewControllerModeEdit;
-	
 	[self focusTextEditor];
 }
 
 - (void)stopEditing
 {
-	self.mode = kWPEditorViewControllerModePreview;
-	
     [self dismissKeyboard];
     [self.view endEditing:YES];
 	
@@ -698,8 +695,19 @@ NSInteger const WPLinkAlertViewTag = 92;
 {
 	self.editingDisabled = NO;
 	
+	if (self.didFinishLoadingEditor)
+	{
+		[self enableEditingInHTMLEditor];
+	}
+}
+
+- (void)enableEditingInHTMLEditor
+{
+	NSAssert(self.editingDisabled == NO,
+			 @"This method should not be called directly, unless you know editingDisabled is configured already.");
+	
 	NSString *js = [NSString stringWithFormat:@"zss_editor.enableEditing();"];
-    [self.editorView stringByEvaluatingJavaScriptFromString:js];
+	[self.editorView stringByEvaluatingJavaScriptFromString:js];
 }
 
 - (void)disableEditing
@@ -708,8 +716,19 @@ NSInteger const WPLinkAlertViewTag = 92;
 	
 	[self stopEditing];
 	
+	if (self.didFinishLoadingEditor)
+	{
+		[self disableEditingInHTMLEditor];
+	}
+}
+
+- (void)disableEditingInHTMLEditor
+{
+	NSAssert(self.editingDisabled,
+			 @"This method should not be called directly, unless you know editingDisabled is configured already.");
+	
 	NSString *js = [NSString stringWithFormat:@"zss_editor.disableEditing();"];
-    [self.editorView stringByEvaluatingJavaScriptFromString:js];
+	[self.editorView stringByEvaluatingJavaScriptFromString:js];
 }
 
 - (void)focusTextEditor
@@ -1356,6 +1375,13 @@ NSInteger const WPLinkAlertViewTag = 92;
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
     self.didFinishLoadingEditor = YES;
+	
+	if (self.editingDisabled) {
+		[self disableEditingInHTMLEditor];
+	} else {
+		[self enableEditingInHTMLEditor];
+	}
+	
     [self refreshUI];
 }
 
@@ -1409,6 +1435,11 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 		
 		result = YES;
 	} else if ([resourceSpecifier isEqualToString:kFocusInSpecifier]){
+		
+		// DRM: WORKAROUND: UIWebView seems to display the keyboard's input access view sometimes even
+		// if the keyboard is not shown.
+		//
+		self.editorView.usesCustomInputAccessoryView = YES;
 		self.editorViewIsEditing = YES;
 		
 		[self tellOurDelegateEditingChangedIfNecessary];
@@ -1416,6 +1447,11 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 		
 		result = YES;
 	} else if ([resourceSpecifier isEqualToString:kFocusOutSpecifier]){
+		
+		// DRM: WORKAROUND: UIWebView seems to display the keyboard's input access view sometimes even
+		// if the keyboard is not shown.
+		//
+		self.editorView.usesCustomInputAccessoryView = NO;
 		self.editorViewIsEditing = NO;
 		
 		[self tellOurDelegateEditingChangedIfNecessary];
@@ -1463,7 +1499,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 	// DRM: WORKAROUND: for some weird reason, we are receiving multiple UIKeyboardWillShow notifications.
 	// We will simply ignore repeated notifications.
 	//
-	if (self.isShowingKeyboard) {
+	if (!self.isShowingKeyboard) {
 		
 		self.isShowingKeyboard = YES;
 		
