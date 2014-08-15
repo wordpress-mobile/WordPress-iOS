@@ -30,7 +30,7 @@ import Foundation
         assert(attributedLabel)
         super.awakeFromNib()
         
-        backgroundColor                   = NotificationColors.blockBackground
+        backgroundColor                   = Notification.Colors.blockBackground
         selectionStyle                    = .None
         
         attributedLabel.backgroundColor   = UIColor.clearColor()
