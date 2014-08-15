@@ -13,7 +13,6 @@
 #import "Notification+UI.h"
 #import "Meta.h"
 
-#import "NoteTableViewCell.h"
 #import "NotificationsManager.h"
 #import "NotificationDetailsViewController.h"
 #import "NotificationSettingsViewController.h"
@@ -27,6 +26,8 @@
 #import "ReaderPostDetailViewController.h"
 
 #import "BlogService.h"
+
+#import "WordPress-Swift.h"
 
 
 
@@ -103,7 +104,7 @@ static NSTimeInterval NotificationPushMaxWait = 1;
     [self updateTabBarBadgeNumber];
     
     // Register the cells
-    self.tableViewCellNib   = [UINib nibWithNibName:NSStringFromClass([NoteTableViewCell class]) bundle:[NSBundle mainBundle]];
+    self.tableViewCellNib   = [UINib nibWithNibName:[NoteTableViewCell reuseIdentifier] bundle:[NSBundle mainBundle]];
     [self.tableView registerNib:_tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell layoutIdentifier]];
     [self.tableView registerNib:_tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell reuseIdentifier]];
 }
@@ -335,7 +336,7 @@ static NSTimeInterval NotificationPushMaxWait = 1;
     // Setup the cell
     [self configureCell:self.layoutTableViewCell atIndexPath:indexPath];
     
-    CGFloat height = [self.layoutTableViewCell heightForWidth:CGRectGetWidth(self.tableView.bounds)];
+    CGFloat height = [self.layoutTableViewCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
     
     // Cache
     self.cachedRowHeights[rowCacheKey] = @(height);
