@@ -5,11 +5,11 @@
 #import <AFNetworking/UIKit+AFNetworking.h>
 
 #import "Notification.h"
-#import "Notification+UI.h"
 
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
 
+#import "NSAttributedString+Util.h"
 #import "NSDate+StringFormatting.h"
 #import "NSURL+Util.h"
 
