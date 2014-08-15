@@ -235,7 +235,7 @@ NSInteger const kMeTabIndex                                     = 2;
         } else if ([URLString rangeOfString:@"debugging"].length) {
             NSDictionary *params = [[url query] dictionaryFromQueryString];
 
-            if (params.count) {
+            if (params.count > 0) {
                 NSString *debugType = [params stringForKey:@"type"];
                 NSString *debugKey = [params stringForKey:@"key"];
 
