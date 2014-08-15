@@ -232,6 +232,19 @@ NSInteger const kMeTabIndex                                     = 2;
 
                 returnValue = YES;
             }
+        } else if ([URLString rangeOfString:@"debugging"].length) {
+            NSDictionary *params = [[url query] dictionaryFromQueryString];
+
+            if (params.count) {
+                NSString *debugType = [params stringForKey:@"type"];
+                NSString *debugKey = [params stringForKey:@"key"];
+
+                if ([debugKey isEqualToString:[WordPressComApiCredentials debuggingKey]]) {
+                    if ([debugType isEqualToString:@"crashlytics_crash"]) {
+                        [[Crashlytics sharedInstance] crash];
+                    }
+                }
+            }
         }
     }
 
