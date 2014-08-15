@@ -5,10 +5,11 @@ import Foundation
 {
     public typealias EventHandler = (() -> Void)
     
-    public var onLikeClick:  EventHandler?
-    public var onSpamClick:  EventHandler?
-    public var onTrashClick: EventHandler?
-    public var onMoreClick:  EventHandler?
+    public var onLikeClick:     EventHandler?
+    public var onUnlikeClick:   EventHandler?
+    public var onSpamClick:     EventHandler?
+    public var onTrashClick:    EventHandler?
+    public var onMoreClick:     EventHandler?
     
     @IBAction public func likeWasPressed(sender: AnyObject) {
         hitEventHandler(onLikeClick)
