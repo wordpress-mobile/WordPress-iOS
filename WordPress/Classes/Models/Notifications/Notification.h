@@ -14,6 +14,7 @@ extern NSString * NoteActionReplyKey;
 extern NSString * NoteActionApproveKey;
 extern NSString * NoteActionSpamKey;
 extern NSString * NoteActionTrashKey;
+extern NSString * NoteActionLikeKey;
 
 typedef NS_ENUM(NSInteger, NoteBlockTypes)
 {
