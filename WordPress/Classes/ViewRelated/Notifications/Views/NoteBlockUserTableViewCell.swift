@@ -26,7 +26,7 @@ import Foundation
     
     public var blogURL: NSURL! {
         willSet {
-            blogLabel.text  = newValue.host
+            blogLabel.text  = newValue ? newValue.host : String()
             accessoryType   = newValue ? .DisclosureIndicator : .None
         }
     }
