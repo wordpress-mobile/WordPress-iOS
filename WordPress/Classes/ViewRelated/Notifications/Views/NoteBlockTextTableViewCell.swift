@@ -30,7 +30,7 @@ import Foundation
         assert(attributedLabel)
         super.awakeFromNib()
         
-        backgroundColor                   = WPStyleGuide.Notifications.blockBackgroundColor()
+        backgroundColor                   = NotificationColors.blockBackground
         selectionStyle                    = .None
         
         attributedLabel.backgroundColor   = UIColor.clearColor()
