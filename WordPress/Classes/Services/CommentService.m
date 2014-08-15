@@ -66,7 +66,6 @@
     reply.status = CommentStatusDraft;
 
     return reply;
-
 }
 
 // Sync comments
