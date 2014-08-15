@@ -5,8 +5,6 @@
 #import "ContextManager.h"
 #import "Constants.h"
 
-#import "UITableView+Helpers.h"
-
 #import "WPTableViewControllerSubclass.h"
 #import "WPWebViewController.h"
 #import "Notification.h"
