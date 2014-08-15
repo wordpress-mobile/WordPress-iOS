@@ -64,7 +64,7 @@ import Foundation
         assert(timestampLabel)
         
         noticonView.layer.cornerRadius     = NoticonRadius
-        noticonLabel.font                  = WPStyleGuide.Notifications.iconFont()
+        noticonLabel.font                  = NotificationFonts.noticon
         noticonLabel.textColor             = UIColor.whiteColor()
         
         subjectLabel.numberOfLines         = NumberOfLines
@@ -75,8 +75,8 @@ import Foundation
         subjectLabel.textColor             = WPStyleGuide.littleEddieGrey()
         
         timestampLabel.textAlignment       = .Right;
-        timestampLabel.font                = WPStyleGuide.Notifications.timestampFont()
-        timestampLabel.textColor           = WPStyleGuide.Notifications.timestampTextColor()
+        timestampLabel.font                = NotificationFonts.timestamp
+        timestampLabel.textColor           = NotificationColors.timestamp
     }
     
     public override func layoutSubviews() {
@@ -104,11 +104,11 @@ import Foundation
     
     private func refreshBackgrounds() {
         if read {
-            noticonView.backgroundColor = WPStyleGuide.Notifications.iconReadColor()
-            backgroundColor             = WPStyleGuide.Notifications.backgroundReadColor()
+            noticonView.backgroundColor = NotificationColors.iconRead
+            backgroundColor             = NotificationColors.backgroundRead
         } else {
-            noticonView.backgroundColor = WPStyleGuide.Notifications.iconUnreadColor()
-            backgroundColor             = WPStyleGuide.Notifications.backgroundUnreadColor()
+            noticonView.backgroundColor = NotificationColors.iconUnread
+            backgroundColor             = NotificationColors.backgroundUnread
         }
     }
     
