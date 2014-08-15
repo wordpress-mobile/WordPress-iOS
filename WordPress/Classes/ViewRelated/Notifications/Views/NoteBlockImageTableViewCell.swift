@@ -33,7 +33,7 @@ import Foundation
     public override func awakeFromNib() {
         assert(self.blockImageView)
         selectionStyle  = .None
-        backgroundColor = NotificationColors.blockBackground
+        backgroundColor = Notification.Colors.blockBackground
     }
     
     private func reloadImage() {
