@@ -141,6 +141,94 @@
            }];
 }
 
+
+#pragma mark - Public Methods
+
+- (void)moderateCommentWithID:(NSNumber *)commentID
+                       blogID:(NSNumber *)blogID
+                       status:(NSString *)status
+                      success:(void (^)())success
+                      failure:(void (^)(NSError *error))failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", blogID, commentID];
+    NSDictionary *parameters = @{
+        @"status"   : status,
+        @"context"  : @"edit",
+    };
+    
+    [self.api POST:path
+        parameters:parameters
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               if (success) {
+                   success();
+               }
+           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
+}
+
+- (void)trashCommentWithID:(NSNumber *)commentID
+                    blogID:(NSNumber *)blogID
+                   success:(void (^)())success
+                   failure:(void (^)(NSError *error))failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@/delete", blogID, commentID];
+    [self.api POST:path
+        parameters:nil
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               if (success) {
+                   success();
+               }
+           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
+}
+
+- (void)likeCommentWithID:(NSNumber *)commentID
+                   blogID:(NSNumber *)blogID
+                  success:(void (^)())success
+                  failure:(void (^)(NSError *error))failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@/likes/new", blogID, commentID];
+    
+    [self.api POST:path
+        parameters:nil
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               if (success) {
+                   success();
+               }
+           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
+}
+
+- (void)unlikeCommentWithID:(NSNumber *)commentID
+                     blogID:(NSNumber *)blogID
+                    success:(void (^)())success
+                    failure:(void (^)(NSError *error))failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@/likes/mine/delete", blogID, commentID];
+    
+    [self.api POST:path
+        parameters:nil
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               if (success) {
+                   success();
+               }
+           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
+}
+
+
 #pragma mark - Private methods
 
 - (NSArray *)remoteCommentsFromJSONArray:(NSArray *)jsonComments
