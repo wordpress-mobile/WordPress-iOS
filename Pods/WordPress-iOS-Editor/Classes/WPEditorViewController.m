@@ -8,7 +8,7 @@
 #import "ZSSBarButtonItem.h"
 #import "HRColorUtil.h"
 #import "ZSSTextView.h"
-#import "UIWebView+AccessoryHiding.h"
+#import "UIWebView+CustomInputAccessoryView.h"
 #import "WPInsetTextField.h"
 
 CGFloat const EPVCTextfieldHeight = 44.0f;
@@ -24,7 +24,6 @@ NSInteger const WPLinkAlertViewTag = 92;
 @property (nonatomic, strong) NSString *htmlString;
 @property (nonatomic, strong) WPInsetTextField *titleTextField;
 @property (nonatomic, strong) ZSSTextView *sourceView;
-@property (nonatomic) CGRect editorViewFrame;
 @property (assign) BOOL resourcesLoaded;
 @property (nonatomic, strong) NSString *editorPlaceholderText;
 @property (nonatomic, strong) NSArray *editorItemsEnabled;
@@ -438,12 +437,14 @@ NSInteger const WPLinkAlertViewTag = 92;
         toolbarCropper.clipsToBounds = YES;
         
         // Use a toolbar so that we can tint
-        UIToolbar *keyboardToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(-13, -1, 55, 44)];
+        UIToolbar *keyboardToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
         [toolbarCropper addSubview:keyboardToolbar];
         
         self.keyboardItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_format_keyboard"] style:UIBarButtonItemStylePlain target:self action:@selector(dismissKeyboard)];
+		self.keyboardItem.imageInsets = UIEdgeInsetsMake(0, -22, 0, 0);
         self.keyboardItem.tintColor = self.barButtonItemSelectedDefaultColor;
         keyboardToolbar.items = @[self.keyboardItem];
+		keyboardToolbar.barTintColor = [WPStyleGuide itsEverywhereGrey];
         [self.toolbarHolder addSubview:toolbarCropper];
         
         UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0.6f, 44)];
@@ -451,7 +452,8 @@ NSInteger const WPLinkAlertViewTag = 92;
         line.alpha = 0.7f;
         [toolbarCropper addSubview:line];
     }
-    [self.view addSubview:self.toolbarHolder];
+    //[self.view addSubview:self.toolbarHolder];
+	self.editorView.customInputAccessoryView = self.toolbarHolder;
     
     // Check to see if we have any toolbar items, if not, add them all
     NSArray *items = [self itemsForToolbar];
@@ -476,6 +478,7 @@ NSInteger const WPLinkAlertViewTag = 92;
     }
     self.toolbar.items = items;
     self.toolbar.frame = CGRectMake(0, 0, toolbarWidth, 44);
+	self.toolbar.barTintColor = [WPStyleGuide itsEverywhereGrey];
     self.toolBarScroll.contentSize = CGSizeMake(self.toolbar.frame.size.width, 44);
 }
 
@@ -511,7 +514,7 @@ NSInteger const WPLinkAlertViewTag = 92;
     if (!self.editorView) {
         self.editorView = [[UIWebView alloc] initWithFrame:frame];
         self.editorView.delegate = self;
-        self.editorView.hidesInputAccessoryView = YES;
+        self.editorView.usesCustomInputAccessoryView = YES;
         self.editorView.autoresizesSubviews = YES;
         self.editorView.autoresizingMask = mask;
         self.editorView.scalesPageToFit = YES;
@@ -656,8 +659,17 @@ NSInteger const WPLinkAlertViewTag = 92;
 
 #pragma mark - Editor and Misc Methods
 
+- (void)startEditing
+{
+	self.mode = kWPEditorViewControllerModeEdit;
+	
+	[self focusTextEditor];
+}
+
 - (void)stopEditing
 {
+	self.mode = kWPEditorViewControllerModePreview;
+	
     [self dismissKeyboard];
     [self.view endEditing:YES];
 	
@@ -1437,17 +1449,17 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
     // User Info
     NSDictionary *info = notification.userInfo;
     CGFloat duration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
-    int curve = [[info objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
+    NSUInteger curve = [[info objectForKey:UIKeyboardAnimationCurveUserInfoKey] unsignedIntegerValue];
     CGRect keyboardEnd = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     
     // Toolbar Sizes
-    CGFloat sizeOfToolbar = self.toolbarHolder.frame.size.height;
+    CGFloat toolbarHeight = self.toolbarHolder.frame.size.height;
     
     // Keyboard Size
     CGFloat keyboardHeight = UIInterfaceOrientationIsLandscape(orientation) ? keyboardEnd.size.width : keyboardEnd.size.height;
     
     // Correct Curve
-    UIViewAnimationOptions animationOptions = curve << 16;
+    UIViewAnimationOptions animationOptions = curve;
     
 	if ([notification.name isEqualToString:UIKeyboardWillShowNotification]) {
         
@@ -1465,22 +1477,16 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
         [self.navigationController setToolbarHidden:YES animated:NO];
         
         [UIView animateWithDuration:duration delay:0 options:animationOptions animations:^{
-            // Toolbar
-            CGRect frame = self.toolbarHolder.frame;
-            frame.origin.y = self.view.frame.size.height - (keyboardHeight + sizeOfToolbar);
-            self.toolbarHolder.frame = frame;
-            
             // Editor View
             CGRect editorFrame = self.editorView.frame;
-            editorFrame.size.height = (self.view.frame.size.height - keyboardHeight - sizeOfToolbar - sizeOfToolbar);
+            editorFrame.size.height = (self.view.frame.size.height - keyboardHeight - toolbarHeight - toolbarHeight);
             self.editorView.frame = editorFrame;
-            self.editorViewFrame = self.editorView.frame;
             self.editorView.scrollView.contentInset = UIEdgeInsetsZero;
             self.editorView.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
             
             // Source View
             CGRect sourceFrame = self.sourceView.frame;
-            sourceFrame.size.height = (self.view.frame.size.height - keyboardHeight) - sizeOfToolbar;
+            sourceFrame.size.height = (self.view.frame.size.height - keyboardHeight) - toolbarHeight;
             self.sourceView.frame = sourceFrame;
         } completion:nil];
 	} else {
@@ -1492,15 +1498,10 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
         [self.navigationController setToolbarHidden:NO animated:NO];
         
 		[UIView animateWithDuration:duration delay:0 options:animationOptions animations:^{
-            CGRect frame = self.toolbarHolder.frame;
-            frame.origin.y = self.view.frame.size.height + keyboardHeight;
-            self.toolbarHolder.frame = frame;
-            
             // Editor View
             CGRect editorFrame = self.editorView.frame;
-            editorFrame.size.height = self.view.frame.size.height - sizeOfToolbar;
+            editorFrame.size.height = self.view.frame.size.height - toolbarHeight;
             self.editorView.frame = editorFrame;
-            self.editorViewFrame = self.editorView.frame;
             self.editorView.scrollView.contentInset = UIEdgeInsetsZero;
             self.editorView.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
             

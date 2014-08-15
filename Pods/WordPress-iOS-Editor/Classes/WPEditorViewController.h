@@ -65,7 +65,12 @@ WPEditorViewControllerMode;
 - (void)disableEditing;
 
 /**
- *  Stop all editing activities.
+ *	@brief		Starts editing.
+ */
+- (void)startEditing;
+
+/**
+ *  @brief		Stop all editing activities.
  */
 - (void)stopEditing;
 
