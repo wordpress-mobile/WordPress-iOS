@@ -362,7 +362,7 @@
     NSDictionary *featured_media = [dict dictionaryForKey:@"featured_media"];
     if ([featuredImage length] == 0) {
         featuredImage = [dict stringForKey:@"featured_image"];
-    } else if (featured_media && [[featured_media stringForKey:@"type"] isEqualToString:@"image"]) {
+    } else if ([[featured_media stringForKey:@"type"] isEqualToString:@"image"]) {
         featuredImage = [self stringOrEmptyString:[featured_media stringForKey:@"uri"]];
     }
 
