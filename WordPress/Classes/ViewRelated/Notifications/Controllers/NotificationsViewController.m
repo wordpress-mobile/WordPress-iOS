@@ -10,7 +10,6 @@
 #import "WPTableViewControllerSubclass.h"
 #import "WPWebViewController.h"
 #import "Notification.h"
-#import "Notification+UI.h"
 #import "Meta.h"
 
 #import "NotificationsManager.h"
@@ -45,7 +44,6 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 @property (nonatomic, assign) dispatch_once_t       trackedViewDisplay;
 @property (nonatomic, strong) NSString              *pushNotificationID;
 @property (nonatomic, strong) NSDate                *pushNotificationDate;
-@property (nonatomic, strong) UINib                 *tableViewCellNib;
 @property (nonatomic, strong) NoteTableViewCell     *layoutTableViewCell;
 @property (nonatomic, strong) NSMutableDictionary   *cachedRowHeights;
 @end
@@ -102,11 +100,6 @@ static NSTimeInterval NotificationPushMaxWait = 1;
     
     // Refresh Badge
     [self updateTabBarBadgeNumber];
-    
-    // Register the cells
-    self.tableViewCellNib   = [UINib nibWithNibName:[NoteTableViewCell reuseIdentifier] bundle:[NSBundle mainBundle]];
-    [self.tableView registerNib:_tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell layoutIdentifier]];
-    [self.tableView registerNib:_tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell reuseIdentifier]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -143,6 +136,23 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [self.cachedRowHeights removeAllObjects];
+}
+
+
+
+#pragma mark - Autolayout Helpers
+
+- (NoteTableViewCell *)layoutTableViewCell
+{
+    if (_layoutTableViewCell) {
+        return _layoutTableViewCell;
+    }
+    
+    NSString *storyboardID  = NSStringFromClass([self class]);
+    NotificationDetailsViewController *detailsViewController = [self.storyboard instantiateViewControllerWithIdentifier:storyboardID];
+    _layoutTableViewCell = [detailsViewController.tableView dequeueReusableCellWithIdentifier:NoteTableViewCell.reuseIdentifier];
+    
+    return _layoutTableViewCell;
 }
 
 
@@ -326,11 +336,6 @@ static NSTimeInterval NotificationPushMaxWait = 1;
     NSNumber *rowCacheValue = self.cachedRowHeights[rowCacheKey];
     if (rowCacheValue) {
         return rowCacheValue.floatValue;
-    }
-    
-    // Lazy-load the cell + Handle current orientation
-    if (!self.layoutTableViewCell) {
-        self.layoutTableViewCell = (NoteTableViewCell *)[tableView dequeueReusableCellWithIdentifier:[NoteTableViewCell layoutIdentifier]];
     }
 
     // Setup the cell
