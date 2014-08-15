@@ -3,7 +3,6 @@
 #import "Notification+UI.h"
 
 #import "WordPress-Swift.h"
-#import "NotificationHeaderView.h"
 
 #import "NSURL+Util.h"
 #import "NSScanner+Helpers.h"
@@ -81,21 +80,9 @@ static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f
         @(NoteBlockTypesUser)       : NoteBlockUserTableViewCell.reuseIdentifier
     };
     
-    NotificationHeaderView *header  = [NotificationHeaderView headerWithWidth:CGRectGetWidth(self.view.bounds)];
-    header.noticon                  = self.note.noticon;
-    header.attributedText           = self.note.subjectBlock.attributedSubject;
-    [header layoutIfNeeded];
-    self.tableView.tableHeaderView  = header;
-    
     Simperium *simperium            = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
     SPBucket *notificationsBucket   = [simperium bucketForName:NSStringFromClass([Notification class])];
     notificationsBucket.delegate    = self;
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    // Note: we do this to force layout!
-    [self.tableView reloadData];
 }
 
 
