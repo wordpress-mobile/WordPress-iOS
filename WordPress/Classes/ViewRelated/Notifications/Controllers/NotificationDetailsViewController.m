@@ -1,30 +1,27 @@
 #import "NotificationDetailsViewController.h"
+
+#import "WordPressAppDelegate.h"
+#import <Simperium/Simperium.h>
+
+#import "Blog.h"
 #import "Notification.h"
+
+#import "ContextManager.h"
+
+#import "BlogService.h"
+#import "CommentService.h"
+#import "ReaderSiteService.h"
+
+#import "WPWebViewController.h"
+#import "ReaderPostDetailViewController.h"
+#import "StatsViewController.h"
 
 #import "WordPress-Swift.h"
 
 #import "NSURL+Util.h"
 #import "NSScanner+Helpers.h"
 
-#import "WPWebViewController.h"
-
-#import "ContextManager.h"
-#import "AccountService.h"
-#import "WPAccount.h"
-
-#import "Blog.h"
-#import "BlogService.h"
-#import "StatsViewController.h"
-
-#import "ReaderPost.h"
-#import "ReaderPostService.h"
-#import "ReaderPostDetailViewController.h"
-
 #import "WPToast.h"
-
-#import "WordPressAppDelegate.h"
-#import <Simperium/Simperium.h>
-#import <Simperium/SPBucket.h>
 
 
 
@@ -36,10 +33,9 @@ static NSUInteger NotificationDetailSectionsCount   = 1;
 
 static NSString *NotificationActionUnfollowIcon     = @"action_icon_unfollowed";
 static NSString *NotificationActionFollowIcon       = @"action_icon_followed";
-static NSString *NotificationRestFollowingKey       = @"is_following";
 
-static UIEdgeInsets NotificationTableInsetsPhone    = { 0.0f, 0.0f, 20.0f, 0.0f };
-static UIEdgeInsets NotificationTableInsetsPad      = { 40.0f, 0.0f, 20.0f, 0.0f };
+static UIEdgeInsets NotificationTableInsetsPhone    = {0.0f,  0.0f, 20.0f, 0.0f};
+static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f};
 
 
 #pragma mark ==========================================================================================
