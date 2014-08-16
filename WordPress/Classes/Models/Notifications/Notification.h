@@ -3,18 +3,18 @@
 
 
 @class NotificationBlock;
-
+@class NotificationURL;
 
 #pragma mark ====================================================================================
 #pragma mark Constants
 #pragma mark ====================================================================================
 
 extern NSString * NoteActionFollowKey;
-extern NSString * NoteActionReplyKey;
-extern NSString * NoteActionApproveKey;
+extern NSString * NoteActionLikeKey;
 extern NSString * NoteActionSpamKey;
 extern NSString * NoteActionTrashKey;
-extern NSString * NoteActionLikeKey;
+extern NSString * NoteActionReplyKey;
+extern NSString * NoteActionApproveKey;
 
 typedef NS_ENUM(NSInteger, NoteBlockTypes)
 {
@@ -60,6 +60,7 @@ typedef NS_ENUM(NSInteger, NoteBlockTypes)
 // Helpers
 - (NotificationBlock *)findUserBlock;
 - (NotificationBlock *)findCommentBlock;
+- (NotificationURL *)findNotificationUrlWithUrl:(NSURL *)url;
 
 @end
 
