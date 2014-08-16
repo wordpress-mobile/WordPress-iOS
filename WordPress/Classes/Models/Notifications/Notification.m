@@ -412,4 +412,16 @@ NSString const *NoteHeightKey           = @"height";
     
 }
 
+- (NotificationURL *)findNotificationUrlWithUrl:(NSURL *)url
+{
+    for (NotificationBlock *block in self.bodyBlocks) {
+        for (NotificationURL *noteURL in block.urls) {
+            if ([noteURL.url isEqual:url]) {
+                return noteURL;
+            }
+        }
+    }
+    return nil;
+}
+
 @end
