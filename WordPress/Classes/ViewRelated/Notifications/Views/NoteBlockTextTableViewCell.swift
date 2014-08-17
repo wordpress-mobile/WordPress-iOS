@@ -12,11 +12,9 @@ import Foundation
         }
     }
     public var numberOfLines: Int {
-        let lines = 0
-        return lines
+        return maxNumberOfLines
     }
     public var labelInsets: UIEdgeInsets {
-        let insets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         return insets
     }
     
@@ -64,6 +62,10 @@ import Foundation
             listener(sender.URL)
         }
     }
+    
+    // MARK: - Private
+    private let insets = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
+    private let maxNumberOfLines = 0
     
     // MARK: - IBOutlets
     @IBOutlet private weak var attributedLabel: DTAttributedLabel!
