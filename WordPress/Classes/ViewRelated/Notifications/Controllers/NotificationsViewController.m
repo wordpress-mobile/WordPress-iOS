@@ -5,6 +5,7 @@
 #import "ContextManager.h"
 #import "Constants.h"
 
+#import "WPTableViewSectionHeaderView.h"
 #import "WPTableViewControllerSubclass.h"
 #import "WPWebViewController.h"
 #import "Notification.h"
@@ -22,8 +23,6 @@
 #import "ReaderPostService.h"
 #import "ReaderPostDetailViewController.h"
 
-#import "BlogService.h"
-
 #import "WordPress-Swift.h"
 
 
@@ -32,7 +31,9 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-static NSTimeInterval NotificationPushMaxWait = 1;
+static NSTimeInterval const NotificationPushMaxWait = 1;
+static CGFloat const NoteEstimatedHeight            = 80;
+
 
 #pragma mark ====================================================================================
 #pragma mark Private Properties
@@ -42,8 +43,8 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 @property (nonatomic, assign) dispatch_once_t       trackedViewDisplay;
 @property (nonatomic, strong) NSString              *pushNotificationID;
 @property (nonatomic, strong) NSDate                *pushNotificationDate;
-@property (nonatomic, strong) NoteTableViewCell     *layoutTableViewCell;
 @property (nonatomic, strong) NSMutableDictionary   *cachedRowHeights;
+@property (nonatomic, strong) UINib                 *tableViewCellNib;
 @end
 
 #pragma mark ====================================================================================
@@ -91,6 +92,12 @@ static NSTimeInterval NotificationPushMaxWait = 1;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     self.infiniteScrollEnabled = NO;
+
+    // Register the cells
+    NSString *nibName           = [NoteTableViewCell reuseIdentifier];
+    self.tableViewCellNib       = [UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]];
+    [self.tableView registerNib:_tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell layoutIdentifier]];
+    [self.tableView registerNib:_tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell reuseIdentifier]];
     
     // Don't show 'Notifications' in the next-view back button
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -102,7 +109,6 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    DDLogMethod();
     [super viewWillAppear:animated];
     
     // Reload!
@@ -125,7 +131,6 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    DDLogMethod();
     [super viewWillDisappear:animated];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -134,23 +139,6 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [self.cachedRowHeights removeAllObjects];
-}
-
-
-
-#pragma mark - Autolayout Helpers
-
-- (NoteTableViewCell *)layoutTableViewCell
-{
-    if (_layoutTableViewCell) {
-        return _layoutTableViewCell;
-    }
-    
-    NSString *storyboardID  = NSStringFromClass([self class]);
-    NotificationDetailsViewController *detailsViewController = [self.storyboard instantiateViewControllerWithIdentifier:storyboardID];
-    _layoutTableViewCell = [detailsViewController.tableView dequeueReusableCellWithIdentifier:NoteTableViewCell.reuseIdentifier];
-    
-    return _layoutTableViewCell;
 }
 
 
@@ -306,6 +294,31 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 
 #pragma mark - UITableViewDelegate
 
+#warning TODO: Implement Header View
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
+    return [Notification descriptionForSectionIdentifier:sectionInfo.name];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
+    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
+    if (title.length) {
+        WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+        header.title = title;
+        return header;
+    }
+    return nil;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NoteTableViewCell *cell = (NoteTableViewCell *)[tableView dequeueReusableCellWithIdentifier:[NoteTableViewCell reuseIdentifier]];
@@ -323,7 +336,6 @@ static NSTimeInterval NotificationPushMaxWait = 1;
         return rowCacheValue.floatValue;
     }
     
-    CGFloat const NoteEstimatedHeight = 80;
     return NoteEstimatedHeight;
 }
 
@@ -334,11 +346,12 @@ static NSTimeInterval NotificationPushMaxWait = 1;
     if (rowCacheValue) {
         return rowCacheValue.floatValue;
     }
-
-    // Setup the cell
-    [self configureCell:self.layoutTableViewCell atIndexPath:indexPath];
     
-    CGFloat height = [self.layoutTableViewCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
+    // Setup the cell
+    NoteTableViewCell *layoutCell = [tableView dequeueReusableCellWithIdentifier:[NoteTableViewCell layoutIdentifier]];
+    [self configureCell:layoutCell atIndexPath:indexPath];
+    
+    CGFloat height = [layoutCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
     
     // Cache
     self.cachedRowHeights[indexPath] = @(height);
