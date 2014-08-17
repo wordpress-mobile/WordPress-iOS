@@ -239,6 +239,7 @@
 		B532D4EC199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B532D4E8199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift */; };
 		B532D4EE199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B532D4ED199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift */; };
 		B54D257619A017E000C6FDA2 /* UIImageView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D257519A017E000C6FDA2 /* UIImageView+Helpers.swift */; };
+		B54D257A19A1084F00C6FDA2 /* NoteTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B54D257919A1084F00C6FDA2 /* NoteTableViewCell.xib */; };
 		B55853F31962337500FAF6C3 /* NSScanner+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B55853F21962337500FAF6C3 /* NSScanner+Helpers.m */; };
 		B55853F719630D5400FAF6C3 /* NSAttributedString+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = B55853F619630D5400FAF6C3 /* NSAttributedString+Util.m */; };
 		B55853FC19630E7900FAF6C3 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = B55853F919630E7900FAF6C3 /* Notification.m */; };
@@ -802,6 +803,7 @@
 		B532D4E8199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteBlockTextTableViewCell.swift; sourceTree = "<group>"; };
 		B532D4ED199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteBlockImageTableViewCell.swift; sourceTree = "<group>"; };
 		B54D257519A017E000C6FDA2 /* UIImageView+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Helpers.swift"; sourceTree = "<group>"; };
+		B54D257919A1084F00C6FDA2 /* NoteTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteTableViewCell.xib; sourceTree = "<group>"; };
 		B55853F11962337500FAF6C3 /* NSScanner+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScanner+Helpers.h"; sourceTree = "<group>"; };
 		B55853F21962337500FAF6C3 /* NSScanner+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScanner+Helpers.m"; sourceTree = "<group>"; };
 		B55853F419630AF900FAF6C3 /* Noticons-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Noticons-Regular.otf"; sourceTree = "<group>"; };
@@ -2015,6 +2017,7 @@
 				B5FD453E199D0F2800286FBB /* Controllers */,
 				B5FD4523199D0F1100286FBB /* Views */,
 				B558541019631A1000FAF6C3 /* Notifications.storyboard */,
+				B54D257919A1084F00C6FDA2 /* NoteTableViewCell.xib */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
@@ -2369,6 +2372,7 @@
 				5DC02A3918E4C5BD009A1765 /* ThemeDetailsViewController~ipad.xib in Resources */,
 				30AF6CF513C2289600A29C00 /* AboutViewController.xib in Resources */,
 				E1FC3DB413C7788700F6B60F /* WPWebViewController~ipad.xib in Resources */,
+				B54D257A19A1084F00C6FDA2 /* NoteTableViewCell.xib in Resources */,
 				37245ADC13FC23FF006CDBE3 /* WPWebViewController.xib in Resources */,
 				4645AFC51961E1FB005F7509 /* AppImages.xcassets in Resources */,
 				E18165FD14E4428B006CE885 /* loader.html in Resources */,
