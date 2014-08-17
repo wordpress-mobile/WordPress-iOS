@@ -3,33 +3,27 @@ import Foundation
 
 @objc public class NoteBlockImageTableViewCell : NoteBlockTableViewCell
 {
-    // Mark - Public Methods
+    // MARK: - Public Methods
     public func downloadImageWithURL(url: NSURL?) {
         if url == imageURL {
             return
         }
 
         if let unwrappedURL = url {
-            blockImageView.downloadImage(unwrappedURL,
-                placeholderImage: nil,
-                success: displayImageWithAnimation,
-                failure: nil
-            )
-        } else {
-            blockImageView.image = nil
+            blockImageView.downloadImage(unwrappedURL, placeholderImage: nil, success: displayImageWithAnimation, failure: nil)
         }
         
         imageURL = url
     }
     
-    // MARK - View Methods
+    // MARK: - View Methods
     public override func awakeFromNib() {
         assert(blockImageView)
         selectionStyle  = .None
         backgroundColor = Notification.Colors.blockBackground
     }
     
-    // MARK - Private Methods
+    // MARK: - Private Methods
     private func displayImageWithAnimation(image: UIImage) {
         blockImageView.image        = image
         blockImageView.hidden       = false
@@ -49,7 +43,7 @@ import Foundation
         )
     }
     
-    // MARK - Private
+    // MARK: - Private
     private struct Animation {
         static let duration     = 0.5
         static let delay        = 0.2
