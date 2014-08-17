@@ -3,62 +3,61 @@ import Foundation
 
 @objc public class NoteBlockUserTableViewCell : NoteBlockTableViewCell
 {
-    // MARK: IBOutlets
-    @IBOutlet private weak var nameLabel:           UILabel!
-    @IBOutlet private weak var blogLabel:           UILabel!
-    @IBOutlet private weak var gravatarImageView:   UIImageView!
-    @IBOutlet private weak var followButton:        UIButton!
-    
-    // MARK: Private
-    private struct Animation {
-        static let duration:                        NSTimeInterval  = 0.3
-        static let alphaInitial:                    CGFloat         = 0.5
-        static let alphaFinal:                      CGFloat         = 1.0
-        static let placeholderName:                 String          = "gravatar"
-    }
-    
-    // MARK: Public Properties
-    public var name: String! {
-        willSet {
-            self.nameLabel.text = newValue
+    // MARK: - Public Properties
+    public var name: String? {
+        didSet {
+            nameLabel.text  = name ?? String()
         }
     }
-    
-    public var blogURL: NSURL! {
-        willSet {
-            blogLabel.text  = newValue ? newValue.host : String()
-            accessoryType   = newValue ? .DisclosureIndicator : .None
-        }
-    }
-    public var gravatarURL: NSURL! {
-        willSet {
-            downloadImage(newValue)
+    public var blogURL: NSURL? {
+        didSet {
+            blogLabel.text  = blogURL?.host ?? String()
+            accessoryType   = blogURL != nil ? .DisclosureIndicator : .None
         }
     }
     public var actionEnabled: Bool = false {
-        willSet {
-            followButton.hidden = !newValue
+        didSet {
+            followButton.hidden = !actionEnabled
         }
     }
     public var following: Bool = false {
-        willSet {
-            followButton.selected = newValue
+        didSet {
+            followButton.selected = following
         }
     }
-    public var onFollowClick: (() -> Void)?
-
+    public var onFollowClick:   (() -> Void)?
+    public var onUnfollowClick: (() -> Void)?
     
-    // MARK: Overriden Methods
+    // MARK - Public Methods
+    public func downloadGravatarWithURL(url: NSURL?) {
+        if url == gravatarURL {
+            return
+        }
+    
+        if let unwrappedURL = url {
+            let placeholderImage = UIImage(named: Animation.placeholderName)
+            
+            gravatarImageView.downloadImage(unwrappedURL,
+                placeholderImage: placeholderImage,
+                success: displayImageWithAnimation,
+                failure: nil
+            )
+        }
+        
+        gravatarURL = url
+    }
+    
+    // MARK: - View Methods
     public override func awakeFromNib() {
         super.awakeFromNib()
         WPStyleGuide.configureFollowButton(followButton)
 
         backgroundColor                     = Notification.Colors.blockBackground
-        nameLabel.textColor                 = Notification.Colors.blockText
-        nameLabel.font                      = WPStyleGuide.tableviewSectionHeaderFont();
+        nameLabel.textColor                 = Notification.Colors.blockHeader
+        nameLabel.font                      = Notification.Fonts.blockHeader
         
-        blogLabel.font                      = WPStyleGuide.subtitleFont();
-        blogLabel.textColor                 = WPStyleGuide.baseDarkerBlue();
+        blogLabel.font                      = Notification.Fonts.blockSubtitle
+        blogLabel.textColor                 = Notification.Colors.blockSubtitle
         blogLabel.adjustsFontSizeToFitWidth = false;
     }
     
@@ -72,47 +71,37 @@ import Foundation
         followButton.highlighted = false
     }
     
-    // MARK: Private Helpers
-    private func downloadImage(url: NSURL!) {
-        let request                     = NSMutableURLRequest(URL: url)
-        request.HTTPShouldHandleCookies = false
-        request.addValue("image/*", forHTTPHeaderField: "Accept")
-        
-        let placeholder = UIImage(named: Animation.placeholderName)
-        
-        gravatarImageView.setImageWithURLRequest(
-            request,
-            placeholderImage: placeholder,
-            success: {
-// FIXME: Uncomment when the compiler is fixed
-//                [weak self]
-                (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) -> Void in
-                self.displayImage(image)
-            },
-            failure: nil)
-    }
-    
-    private func displayImage(image: UIImage!) {
-        if !image {
-            return;
-        }
-        
+    // MARK: - Private Helpers
+    private func displayImageWithAnimation(image: UIImage) {
         gravatarImageView.image    = image;
         gravatarImageView.alpha    = Animation.alphaInitial
-
-        UIView.animateWithDuration(Animation.duration) {
-// FIXME: Uncomment when the compiler is fixed
-//                [weak self]
-            () -> (Void) in
-            self.gravatarImageView.alpha = Animation.alphaFinal
+        
+        UIView.animateWithDuration(Animation.duration) { [weak self] in
+            if let imageView = self?.gravatarImageView {
+                imageView.alpha = Animation.alphaFinal
+            }
         }
     }
 
-    
-    // MARK: Button Delegates
+    // MARK: - Button Delegates
     @IBAction public func followWasPressed(sender: DTLinkButton) {
         if let listener = onFollowClick {
             listener()
         }
     }
+    
+    // MARK: - Private
+    private struct Animation {
+        static let duration         = 0.3
+        static let alphaInitial     = CGFloat(0.5)
+        static let alphaFinal       = CGFloat(1.0)
+        static let placeholderName  = "gravatar"
+    }
+    private var gravatarURL: NSURL?
+    
+    // MARK: - IBOutlets
+    @IBOutlet private weak var nameLabel:           UILabel!
+    @IBOutlet private weak var blogLabel:           UILabel!
+    @IBOutlet private weak var gravatarImageView:   UIImageView!
+    @IBOutlet private weak var followButton:        UIButton!
 }

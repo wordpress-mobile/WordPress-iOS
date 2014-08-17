@@ -5,7 +5,7 @@ extension UITableViewCell
 {
     public func layoutHeightWithWidth(width: CGFloat) -> CGFloat {
         // Layout: Setup the cell with the given width
-        bounds = CGRect(x: 0, y: 0, width: width, height: CGRectGetHeight(self.bounds))
+        bounds = CGRect(x: 0, y: 0, width: width, height: self.bounds.height)
         layoutIfNeeded()
         
         // iPad: Limit the width
