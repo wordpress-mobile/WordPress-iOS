@@ -3,53 +3,44 @@ import Foundation
 
 @objc public class NoteBlockTextTableViewCell : NoteBlockTableViewCell, DTAttributedTextContentViewDelegate
 {
-    // MARK: - Private Properties
-    @IBOutlet private weak var attributedLabel: DTAttributedLabel!
-    private let LabelInsets:                    UIEdgeInsets        = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
-    
-    // MARK: - Public Properties
+    // MARK - Public Properties
     public var onUrlClick: ((NSURL) -> Void)?
-    public var attributedText: NSAttributedString! {
-        willSet {
-            attributedLabel.attributedString = newValue
+    public var attributedText: NSAttributedString? {
+        didSet {
+            attributedLabel.attributedString = attributedText ?? NSAttributedString()
             setNeedsLayout()
         }
     }
+    public let numberOfLines    = 0
+    public let labelInsets      = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
     
-    // MARK: - Helper Methods: Override if needed
-    public func numberOfLines() -> Int {
-        return 0
-    }
-
-    public func labelPreferredMaxLayoutWidth() -> CGFloat {
-        return CGRectGetWidth(bounds) - LabelInsets.left - LabelInsets.right
-    }
-    
-    // MARK: - Setup Methods
+    // MARK - View Methods
     public override func awakeFromNib() {
-        assert(attributedLabel)
         super.awakeFromNib()
+        
+        assert(attributedLabel)
         
         backgroundColor                   = Notification.Colors.blockBackground
         selectionStyle                    = .None
         
         attributedLabel.backgroundColor   = UIColor.clearColor()
-        attributedLabel.numberOfLines     = numberOfLines()
+        attributedLabel.numberOfLines     = numberOfLines
         attributedLabel.delegate          = self
     }
     
     public override func layoutSubviews() {
         super.layoutSubviews()
         
-        // Just in case
+        // Manually update DTAttributedLabel's size
         attributedLabel.layoutFrameHeightIsConstrainedByBounds = false
         
-        // Manually update DTAttributedLabel's size
-        let width = labelPreferredMaxLayoutWidth();
-        attributedLabel.frame.size = attributedLabel.suggestedFrameSizeToFitEntireStringConstraintedToWidth(width)
+        let width   = bounds.width - labelInsets.left - labelInsets.right
+        let size    = attributedLabel.suggestedFrameSizeToFitEntireStringConstraintedToWidth(width)
+        
+        attributedLabel.frame.size = size
     }
     
-    // MARK: - DTAttributedTextContentViewDelegate
+    // MARK - DTAttributedTextContentViewDelegate
     public func attributedTextContentView(attributedTextContentView: DTAttributedTextContentView!, viewForLink url: NSURL!, identifier: String!, frame: CGRect) -> UIView! {
         let linkButton                          = DTLinkButton(frame: frame)
         
@@ -61,10 +52,13 @@ import Foundation
         return linkButton
     }
     
-    // MARK: - IBActions
+    // MARK - IBActions
     @IBAction public func buttonWasPressed(sender: DTLinkButton) {
         if let listener = onUrlClick {
             listener(sender.URL)
         }
     }
+    
+    // MARK - IBOutlets
+    @IBOutlet private weak var attributedLabel: DTAttributedLabel!
 }

@@ -3,69 +3,39 @@ import Foundation
 
 @objc public class NoteBlockImageTableViewCell : NoteBlockTableViewCell
 {
-    // MARK: IBOutlets
-    @IBOutlet weak var blockImageView:  UIImageView!
-    
-    // MARK: Private
-    private struct Animation {
-        static let duration:            NSTimeInterval  = 0.5
-        static let delay:               NSTimeInterval  = 0.2
-        static let damping:             CGFloat         = 0.7
-        static let velocity:            CGFloat         = 0.5
-        static let scaleInitial:        CGFloat         = 0.0
-        static let scaleFinal:          CGFloat         = 1.0
-        
-        static var transformInitial: CGAffineTransform {
-            return CGAffineTransformMakeScale(scaleInitial, scaleInitial)
+    // Mark - Public Methods
+    public func downloadImageWithURL(url: NSURL?) {
+        if url == imageURL {
+            return
+        }
+
+        if let unwrappedURL = url {
+            blockImageView.downloadImage(unwrappedURL,
+                placeholderImage: nil,
+                success: displayImageWithAnimation,
+                failure: nil
+            )
+        } else {
+            blockImageView.image = nil
         }
         
-        static var transformFinal: CGAffineTransform {
-            return CGAffineTransformMakeScale(scaleFinal, scaleFinal)
-        }
+        imageURL = url
     }
     
-    public var imageURL: NSURL? {
-        didSet {
-            self.reloadImage()
-        }
-    }
-    
+    // MARK - View Methods
     public override func awakeFromNib() {
-        assert(self.blockImageView)
+        assert(blockImageView)
         selectionStyle  = .None
         backgroundColor = Notification.Colors.blockBackground
     }
     
-    private func reloadImage() {
-        if let url = imageURL {
-            downloadImage(url)
-        } else {
-            blockImageView.image = nil
-        }
-    }
-    
-    private func downloadImage(url: NSURL) {
-        blockImageView.setImageWithURLRequest(
-            NSURLRequest(URL: url),
-            placeholderImage: nil,
-            success: {
-            // TODO: Uncomment when the compiler is fixed
-            //                [unowned self]
-                (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) -> Void in
-                if image {
-                    self.animateImage(image)
-                }
-            },
-            failure: nil)
-    }
-    
-    private func animateImage(image: UIImage) {
+    // MARK - Private Methods
+    private func displayImageWithAnimation(image: UIImage) {
         blockImageView.image        = image
         blockImageView.hidden       = false
         blockImageView.transform    = Animation.transformInitial
         
         var animations = {
-            () -> Void in
             self.blockImageView.transform = Animation.transformFinal
         }
         
@@ -78,4 +48,26 @@ import Foundation
             completion:             nil
         )
     }
+    
+    // MARK - Private
+    private struct Animation {
+        static let duration     = 0.5
+        static let delay        = 0.2
+        static let damping      = CGFloat(0.7)
+        static let velocity     = CGFloat(0.5)
+        static let scaleInitial = CGFloat(0.0)
+        static let scaleFinal   = CGFloat(1.0)
+        
+        static var transformInitial: CGAffineTransform {
+        return CGAffineTransformMakeScale(scaleInitial, scaleInitial)
+        }
+        
+        static var transformFinal: CGAffineTransform {
+        return CGAffineTransformMakeScale(scaleFinal, scaleFinal)
+        }
+    }
+    private var imageURL:               NSURL?
+    
+    // MARK: - IBOutlets
+    @IBOutlet weak var blockImageView:  UIImageView!
 }

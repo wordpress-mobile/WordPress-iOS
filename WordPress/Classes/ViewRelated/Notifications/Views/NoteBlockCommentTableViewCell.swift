@@ -1,10 +1,11 @@
 import Foundation
 
-
+// FIXME: Implement!
 @objc public class NoteBlockCommentTableViewCell : NoteBlockTextTableViewCell
 {
     public typealias EventHandler = (() -> Void)
     
+    public var actionsEnabled:  Bool            = false
     public var onLikeClick:     EventHandler?
     public var onUnlikeClick:   EventHandler?
     public var onSpamClick:     EventHandler?
