@@ -205,6 +205,8 @@
     [self.bylineButton setTitle:@"" forState:UIControlStateSelected];
     [self.timeButton setTitle:@"" forState:UIControlStateNormal];
     [self.timeButton setTitle:@"" forState:UIControlStateSelected];
+    [self.bylineButton setTitleColor:[WPStyleGuide buttonActionColor] forState:UIControlStateNormal];
+    [self.bylineButton setTitleColor:[WPStyleGuide whisperGrey] forState:UIControlStateDisabled];
 }
 
 #pragma mark - Instance Methods
@@ -222,6 +224,12 @@
     [self.bylineButton setTitle:[comment authorForDisplay] forState:UIControlStateNormal];
     NSString *authorUrl = comment.author_url;
     self.bylineButton.enabled = ([authorUrl length] > 0);
+
+    // Highlighting the author of the post
+    if ([authorUrl isEqualToString:comment.post.authorURL]) {
+        [self.bylineButton setTitleColor:[WPStyleGuide jazzyOrange] forState:UIControlStateNormal];
+        [self.bylineButton setTitleColor:[WPStyleGuide jazzyOrange] forState:UIControlStateDisabled];
+    }
 
     if (!comment.attributedContent) {
         comment.attributedContent = [[self class] convertHTMLToAttributedString:comment.content withOptions:nil];
