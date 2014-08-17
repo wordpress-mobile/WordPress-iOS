@@ -244,38 +244,50 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     
     cell.name                       = block.text;
     cell.blogURL                    = blogURL.url;
-    cell.gravatarURL                = media.mediaURL;
+    cell.actionEnabled              = following != nil && block.metaSiteID != nil;
     cell.following                  = following.boolValue;
-    cell.actionEnabled              = following != nil;
+    
+    [cell downloadGravatarWithURL:media.mediaURL];
     
     cell.onFollowClick              = ^() {
-        [weakSelf toggleFollowWithBlock:block];
+        [weakSelf followSiteWithBlock:block];
+    };
+    
+    cell.onUnfollowClick            = ^() {
+        [weakSelf unfollowSiteWithBlock:block];
     };
 }
 
 - (void)setupCommentCell:(NoteBlockCommentTableViewCell *)cell block:(NotificationBlock *)block
 {
     __weak __typeof(self) weakSelf  = self;
+
     cell.attributedText             = block.attributedTextRegular;
+    
+    cell.actionsEnabled             = block.metaCommentID != nil && block.metaSiteID != nil;
     
     cell.onUrlClick                 = ^(NSURL *url){
         [weakSelf openURL:url];
     };
+    
     cell.onLikeClick                = ^(){
-#warning TODO: Implement Likes
-        NSLog(@"Like");
+        [weakSelf likeCommentWithBlock:block];
     };
+    
+    cell.onUnlikeClick              = ^(){
+        [weakSelf unlikeCommentWithBlock:block];
+    };
+    
     cell.onSpamClick                = ^(){
-#warning TODO: Implement Spam
-        NSLog(@"Spam");
+        [weakSelf spamCommentWithBlock:block];
     };
+    
     cell.onTrashClick               = ^(){
-#warning TODO: Implement Trash
-        NSLog(@"Trash");
+        [weakSelf trashCommentWithBlock:block];
     };
+    
     cell.onMoreClick                = ^(){
 #warning TODO: Implement More
-        NSLog(@"More");
     };
 }
 
@@ -287,7 +299,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 - (void)setupImageCell:(NoteBlockImageTableViewCell *)cell block:(NotificationBlock *)block
 {
     NotificationMedia *media        = [block.media firstObject];
-    cell.imageURL                   = media.mediaURL;
+    [cell downloadImageWithURL:media.mediaURL];
 }
 
 - (void)setupTextCell:(NoteBlockTextTableViewCell *)cell block:(NotificationBlock *)block
@@ -304,124 +316,193 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 
 - (void)openURL:(NSURL *)url
 {
-    // Reader:
-    if ([self shouldPushNativeReaderForURL:url]) {
-        [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:self.note];
+    if ([self displayReaderWithURL:url]) {
         return;
     }
-
-    // Load the Blog
-    Blog *blog = [self loadBlogWithID:_note.metaSiteID];
     
-    // Stats
-    if (_note.isStatsEvent && blog.isWPcom){
-        [self performSegueWithIdentifier:NSStringFromClass([StatsViewController class]) sender:blog];
-        
-    // WebView
-    } else if (url) {
-        [self performSegueWithIdentifier:NSStringFromClass([WPWebViewController class]) sender:url];
-        
-    // Failure
-    } else {
-        [self.tableView deselectSelectedRowWithAnimation:YES];
-    }
-}
-
-- (BOOL)shouldPushNativeReaderForURL:(NSURL *)url
-{
-    // Find the associated NotificationURL, if any
-    NotificationURL *notificationURL = nil;
-    for (NotificationBlock *block in self.note.bodyBlocks) {
-        for (NotificationURL *noteURL in block.urls) {
-            if ([noteURL.url isEqual:url]) {
-                notificationURL = noteURL;
-            }
-        }
+    if ([self displayStatsWithURL:url]) {
+        return;
     }
     
-    return (notificationURL.isPost || notificationURL.isComment) && self.note.metaPostID && self.note.metaSiteID;
+    if ([self displayWebViewWithURL:url]) {
+        return;
+    }
+    
+    [self.tableView deselectSelectedRowWithAnimation:YES];
 }
 
-- (Blog *)loadBlogWithID:(NSNumber *)blogID
+- (BOOL)displayReaderWithURL:(NSURL *)url
 {
-    if (!blogID) {
-        return nil;
+    NotificationURL *notificationURL = [self.note findNotificationUrlWithUrl:url];
+    
+    BOOL success = ((notificationURL.isPost || notificationURL.isComment) && _note.metaPostID && _note.metaSiteID);
+    if (success) {
+        [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:_note];
+    }
+    return success;
+}
+
+- (BOOL)displayStatsWithURL:(NSURL *)url
+{
+    if (!_note.isStatsEvent || !_note.metaSiteID) {
+        return false;
     }
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blog                      = [service blogByBlogId:blogID];
+    Blog *blog                      = [service blogByBlogId:_note.metaSiteID];
     
-    return blog;
+    BOOL success = blog.isWPcom;
+    if (success) {
+        [self performSegueWithIdentifier:NSStringFromClass([StatsViewController class]) sender:blog];
+    }
+    return success;
+}
+
+- (BOOL)displayWebViewWithURL:(NSURL *)url
+{
+    BOOL success = url != nil;
+    if (success) {
+        [self performSegueWithIdentifier:NSStringFromClass([WPWebViewController class]) sender:url];
+    }
+    return success;
 }
 
 
 #pragma mark - Action Handlers
 
-- (void)toggleFollowWithBlock:(NotificationBlock *)block
+- (void)followSiteWithBlock:(NotificationBlock *)block
 {
-    NSNumber *siteID = block.metaSiteID;
-    if (!siteID) {
-		return;
-	}
-    
-    // Stats please!
     [WPAnalytics track:WPAnalyticsStatNotificationPerformedAction];
-
-    // Display a Toast
-    BOOL isFollowing = [[block actionForKey:NoteActionFollowKey] boolValue];
     
-    if (isFollowing) {
-        [WPToast showToastWithMessage:NSLocalizedString(@"Unfollowed", @"User unfollowed a blog")
-                             andImage:[UIImage imageNamed:NotificationActionUnfollowIcon]];
-    } else {
-        [WPToast showToastWithMessage:NSLocalizedString(@"Followed", @"User followed a blog")
-                             andImage:[UIImage imageNamed:NotificationActionFollowIcon]];
-    }
+    [WPToast showToastWithMessage:NSLocalizedString(@"Followed", @"Followed a blog")
+                    andImageNamed:NotificationActionFollowIcon];
     
-	// Hit the Backend
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
-	WordPressComApi *restApi        = [accountService.defaultWordPressComAccount restApi];
-    __weak __typeof(self)weakSelf   = self;
+    ReaderSiteService *service      = [[ReaderSiteService alloc] initWithManagedObjectContext:context];
+    __typeof(self) __weak weakSelf  = self;
     
-	[restApi followBlog:siteID.integerValue isFollowing:isFollowing success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        NSNumber* isFollowingNow = [(NSDictionary *)responseObject numberForKey:NotificationRestFollowingKey];
-        [block setActionOverrideValue:isFollowingNow forKey:NoteActionFollowKey];
-        
-	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-		DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
-        
-        [block removeActionOverrideForKey:NotificationRestFollowingKey];
+    [service followSiteWithID:block.metaSiteID.integerValue success:nil failure:^(NSError *error) {
+        [block removeActionOverrideForKey:NoteActionFollowKey];
         [weakSelf.tableView reloadData];
-	}];
+    }];
     
-    // Set an Override: Simperium will update the real object anytime, but let's fake it until we make it!
-    [block setActionOverrideValue:@(!isFollowing) forKey:NoteActionFollowKey];
+    [block setActionOverrideValue:@(true) forKey:NoteActionFollowKey];
+}
+
+- (void)unfollowSiteWithBlock:(NotificationBlock *)block
+{
+    [WPAnalytics track:WPAnalyticsStatNotificationPerformedAction];
+    
+    [WPToast showToastWithMessage:NSLocalizedString(@"Unfollowed", @"Unfollowed a blog")
+                    andImageNamed:NotificationActionUnfollowIcon];
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    ReaderSiteService *service      = [[ReaderSiteService alloc] initWithManagedObjectContext:context];
+    __typeof(self) __weak weakSelf  = self;
+    
+    [service unfollowSiteWithID:block.metaSiteID.integerValue success:nil failure:^(NSError *error) {
+        [block removeActionOverrideForKey:NoteActionFollowKey];
+        [weakSelf.tableView reloadData];
+    }];
+    
+    [block setActionOverrideValue:@(false) forKey:NoteActionFollowKey];
+}
+
+- (void)likeCommentWithBlock:(NotificationBlock *)block
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
+    __typeof(self) __weak weakSelf  = self;
+    
+    [service likeCommentWithID:block.metaCommentID blogID:block.metaSiteID success:nil failure:^(NSError *error) {
+        [block removeActionOverrideForKey:NoteActionLikeKey];
+        [weakSelf.tableView reloadData];
+    }];
+    
+    [block setActionOverrideValue:@(true) forKey:NoteActionLikeKey];
+}
+
+- (void)unlikeCommentWithBlock:(NotificationBlock *)block
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
+    __typeof(self) __weak weakSelf  = self;
+    
+    [service unlikeCommentWithID:block.metaCommentID blogID:block.metaSiteID success:nil failure:^(NSError *error) {
+        [block removeActionOverrideForKey:NoteActionLikeKey];
+        [weakSelf.tableView reloadData];
+    }];
+    
+    [block setActionOverrideValue:@(false) forKey:NoteActionLikeKey];
+}
+
+- (void)approveCommentWithBlock:(NotificationBlock *)block
+{
+    [WPAnalytics track:WPAnalyticsStatNotificationApproved];
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
+    __typeof(self) __weak weakSelf  = self;
+    
+    [service approveCommentWithID:block.metaCommentID blogID:block.metaSiteID success:nil failure:^(NSError *error) {
+        [block removeActionOverrideForKey:NoteActionApproveKey];
+        [weakSelf.tableView reloadData];
+    }];
+    
+    [block setActionOverrideValue:@(true) forKey:NoteActionApproveKey];
+}
+
+- (void)unapproveCommentWithBlock:(NotificationBlock *)block
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
+    __typeof(self) __weak weakSelf  = self;
+    
+    [service unapproveCommentWithID:block.metaCommentID blogID:block.metaSiteID success:nil failure:^(NSError *error) {
+        [block removeActionOverrideForKey:NoteActionApproveKey];
+        [weakSelf.tableView reloadData];
+    }];
+    
+    [block setActionOverrideValue:@(false) forKey:NoteActionApproveKey];
+}
+
+- (void)spamCommentWithBlock:(NotificationBlock *)block
+{
+    [WPAnalytics track:WPAnalyticsStatNotificationFlaggedAsSpam];
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
+    
+    [service spamCommentWithID:block.metaCommentID blogID:block.metaSiteID success:nil failure:nil];
+}
+
+- (void)trashCommentWithBlock:(NotificationBlock *)block
+{
+    [WPAnalytics track:WPAnalyticsStatNotificationTrashed];
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
+    
+    [service deleteCommentWithID:block.metaCommentID blogID:block.metaSiteID success:nil failure:nil];
 }
 
 
 #pragma mark - Storyboard Helpers
 
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    NSString *webViewSegueID    = NSStringFromClass([WPWebViewController class]);
-    NSString *statsSegueID      = NSStringFromClass([StatsViewController class]);
-    NSString *readerSegueID     = NSStringFromClass([ReaderPostDetailViewController class]);
-    
-    if ([segue.identifier isEqualToString:webViewSegueID] && [sender isKindOfClass:[NSURL class]]) {
+    if ([segue.identifier isEqualToString:NSStringFromClass([WPWebViewController class])]) {
         WPWebViewController *webViewController = segue.destinationViewController;
         webViewController.url = (NSURL *)sender;
         
-    } else if([segue.identifier isEqualToString:statsSegueID] && [sender isKindOfClass:[Blog class]]) {
+    } else if([segue.identifier isEqualToString:NSStringFromClass([StatsViewController class])]) {
         StatsViewController *statsViewController = segue.destinationViewController;
         statsViewController.blog = (Blog *)sender;
         
-    } else if([segue.identifier isEqualToString:readerSegueID] && [sender isKindOfClass:[Notification class]]) {
-        Notification *note = sender;
+    } else if([segue.identifier isEqualToString:NSStringFromClass([ReaderPostDetailViewController class])]) {
         ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
+        Notification *note = (Notification *)sender;
         [readerViewController setupWithPostID:note.metaPostID siteID:note.metaSiteID];
     }
 }
