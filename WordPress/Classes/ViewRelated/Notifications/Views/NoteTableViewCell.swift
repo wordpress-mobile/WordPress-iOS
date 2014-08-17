@@ -3,57 +3,47 @@ import Foundation
 
 @objc public class NoteTableViewCell : WPTableViewCell
 {
-    @IBOutlet private var iconImageView:    UIImageView!
-    @IBOutlet private var noticonLabel:     UILabel!
-    @IBOutlet private var noticonView:      UIView!
-    @IBOutlet private var subjectLabel:     UILabel!
-    @IBOutlet private var timestampLabel:   UILabel!
+    // MARK - Public Properties
+    public var read: Bool = false {
+        didSet {
+            backgroundColor = read ? Notification.Colors.backgroundRead : Notification.Colors.backgroundUnread
+        }
+    }
+    public var attributedSubject: NSAttributedString? {
+        didSet {
+            subjectLabel.attributedText = attributedSubject ?? NSAttributedString()
+            setNeedsLayout()
+        }
+    }
+    public var noticon: NSString? {
+        didSet {
+            noticonLabel.text = noticon ?? String()
+        }
+    }
+    public var timestamp: NSDate? {
+        didSet {
+            timestampLabel.text = timestamp?.shortString() ?? String()
+        }
+    }
     
-// FIXME: Cleanup
-    private let SubjectPaddingRight:        CGFloat     = 2
-    private let NumberOfLines:              NSInteger   = 0
-    private let NoticonRadius:              CGFloat     = 10
-    private let PlaceholderImageName                    = "gravatar"
-    
-    
-    public var read:                Bool                = false {
-        didSet {
-            self.refreshBackgrounds()
+    // MARK - Public Methods
+    public func downloadGravatarWithURL(url: NSURL?) {
+        if url == gravatarURL {
+            return
         }
-    }
-    public var attributedSubject:   NSAttributedString! {
-        didSet {
-            subjectLabel.attributedText = attributedSubject
-            self.setNeedsLayout()
+        
+        if let unrawppedURL = url {
+            let size                = iconImageView.frame.width * UIScreen.mainScreen().scale
+            let scaledURL           = unrawppedURL.patchGravatarUrlWithSize(size)
+            let placeholderImage    = UIImage(named: placeholderName)
+            iconImageView.setImageWithURL(scaledURL, placeholderImage: placeholderImage)
         }
-    }
-    public var iconURL:             NSURL! {
-        didSet {
-            if !iconURL {
-                return;
-            }
-            
-            // If needed, patch gravatar URL's with the required size. This will help us minimize bandwith usage
-            let size: CGFloat            = CGRectGetWidth(self.iconImageView.frame) * UIScreen.mainScreen().scale
-            let scaledURL: NSURL        = iconURL.patchGravatarUrlWithSize(size)
-            let placeholder: UIImage    = UIImage(named: PlaceholderImageName)
-            iconImageView.setImageWithURL(scaledURL, placeholderImage: placeholder)
-        }
-    }
-    public var noticon:             NSString! {
-        didSet {
-            noticonLabel.text = noticon
-        }
-    }
-    public var timestamp:           NSDate! {
-        didSet {
-            timestampLabel.text = timestamp.shortString()
-        }
+        
+        gravatarURL = url
     }
  
-    
+    // MARK - View Methods
     public override func awakeFromNib() {
-        
         super.awakeFromNib()
         
         assert(iconImageView)
@@ -62,20 +52,20 @@ import Foundation
         assert(subjectLabel)
         assert(timestampLabel)
         
-        noticonView.layer.cornerRadius     = NoticonRadius
-        noticonLabel.font                  = Notification.Fonts.noticon
-        noticonLabel.textColor             = UIColor.whiteColor()
+        noticonView.layer.cornerRadius  = noticonRadius
+        noticonLabel.font               = Notification.Fonts.noticon
+        noticonLabel.textColor          = UIColor.whiteColor()
         
-        subjectLabel.numberOfLines         = NumberOfLines
-        subjectLabel.backgroundColor       = UIColor.clearColor()
-        subjectLabel.textAlignment         = .Left
-        subjectLabel.lineBreakMode         = .ByWordWrapping
-        subjectLabel.shadowOffset          = CGSizeZero
-        subjectLabel.textColor             = WPStyleGuide.littleEddieGrey()
+        subjectLabel.numberOfLines      = numberOfLines
+        subjectLabel.backgroundColor    = UIColor.clearColor()
+        subjectLabel.textAlignment      = .Left
+        subjectLabel.lineBreakMode      = .ByWordWrapping
+        subjectLabel.shadowOffset       = CGSizeZero
+        subjectLabel.textColor          = Notification.Colors.blockText
         
-        timestampLabel.textAlignment       = .Right;
-        timestampLabel.font                = Notification.Fonts.timestamp
-        timestampLabel.textColor           = Notification.Colors.timestamp
+        timestampLabel.textAlignment    = .Right;
+        timestampLabel.font             = Notification.Fonts.timestamp
+        timestampLabel.textColor        = Notification.Colors.timestamp
     }
     
     public override func layoutSubviews() {
@@ -84,12 +74,6 @@ import Foundation
         refreshLabelPreferredMaxLayoutWidth()
     }
 
-    private func refreshLabelPreferredMaxLayoutWidth() {
-        let width = CGRectGetMinX(timestampLabel.frame) - SubjectPaddingRight - CGRectGetMinX(subjectLabel.frame);
-        subjectLabel.preferredMaxLayoutWidth = width;
-    }
-
-    
     public override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         refreshBackgrounds()
@@ -100,14 +84,26 @@ import Foundation
         refreshBackgrounds()
     }
     
+    // MARK - Private Methods
+    private func refreshLabelPreferredMaxLayoutWidth() {
+        subjectLabel.preferredMaxLayoutWidth = timestampLabel.frame.minX - timestampPaddingLeft - subjectLabel.frame.minX;
+    }
     
     private func refreshBackgrounds() {
-        if read {
-            noticonView.backgroundColor = Notification.Colors.iconRead
-            backgroundColor             = Notification.Colors.backgroundRead
-        } else {
-            noticonView.backgroundColor = Notification.Colors.iconUnread
-            backgroundColor             = Notification.Colors.backgroundUnread
-        }
+        noticonView.backgroundColor = read ? Notification.Colors.iconRead : Notification.Colors.iconUnread
     }
+    
+    // MARK - Private Properties
+    private let timestampPaddingLeft:           CGFloat     = 2
+    private let numberOfLines:                  Int         = 0
+    private let noticonRadius:                  CGFloat     = 10
+    private let placeholderName:                String      = "gravatar"
+    private var gravatarURL:                    NSURL?
+    
+    // MARK - IBOutlets
+    @IBOutlet private weak var iconImageView:   UIImageView!
+    @IBOutlet private weak var noticonLabel:    UILabel!
+    @IBOutlet private weak var noticonView:     UIView!
+    @IBOutlet private weak var subjectLabel:    UILabel!
+    @IBOutlet private weak var timestampLabel:  UILabel!
 }
