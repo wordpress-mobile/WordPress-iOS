@@ -20,11 +20,6 @@ import Foundation
             noticonLabel.text = noticon ?? String()
         }
     }
-    public var timestamp: NSDate? {
-        didSet {
-            timestampLabel.text = timestamp?.shortString() ?? String()
-        }
-    }
     
     // MARK: - Public Methods
     public func downloadGravatarWithURL(url: NSURL?) {
@@ -52,7 +47,8 @@ import Foundation
         assert(noticonLabel)
         assert(noticonView)
         assert(subjectLabel)
-        assert(timestampLabel)
+        
+        iconImageView.image             = UIImage(named: placeholderName)
         
         noticonView.layer.cornerRadius  = noticonRadius
         noticonLabel.font               = Notification.Fonts.noticon
@@ -64,10 +60,6 @@ import Foundation
         subjectLabel.lineBreakMode      = .ByWordWrapping
         subjectLabel.shadowOffset       = CGSizeZero
         subjectLabel.textColor          = Notification.Colors.blockText
-        
-        timestampLabel.textAlignment    = .Right;
-        timestampLabel.font             = Notification.Fonts.timestamp
-        timestampLabel.textColor        = Notification.Colors.timestamp
     }
     
     public override func layoutSubviews() {
@@ -88,7 +80,7 @@ import Foundation
     
     // MARK: - Private Methods
     private func refreshLabelPreferredMaxLayoutWidth() {
-        subjectLabel.preferredMaxLayoutWidth = timestampLabel.frame.minX - timestampPaddingLeft - subjectLabel.frame.minX;
+        subjectLabel.preferredMaxLayoutWidth = bounds.width - subjectPaddingRight - subjectLabel.frame.minX;
     }
     
     private func refreshBackgrounds() {
@@ -96,7 +88,7 @@ import Foundation
     }
     
     // MARK: - Private Properties
-    private let timestampPaddingLeft:           CGFloat     = 2
+    private let subjectPaddingRight:            CGFloat     = 12
     private let numberOfLines:                  Int         = 0
     private let noticonRadius:                  CGFloat     = 10
     private var placeholderName:                String      = "gravatar"
