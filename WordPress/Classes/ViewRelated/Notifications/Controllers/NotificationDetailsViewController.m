@@ -207,8 +207,8 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     
     // When tapping a User's cell, let's push the associated blog. If any!
     if (block.type == NoteBlockTypesUser) {
-        NotificationURL *noteURL = [block.urls firstObject];
-        [self openURL:noteURL.url];
+        NSURL *linkHome = [NSURL URLWithString:block.metaLinksHome];
+        [self openURL:linkHome];
     }
 }
 
@@ -248,7 +248,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     cell.following                  = following.boolValue;
     
     [cell downloadGravatarWithURL:media.mediaURL];
-    
+#warning TODO: Implement Toggle
     cell.onFollowClick              = ^() {
         [weakSelf followSiteWithBlock:block];
     };
