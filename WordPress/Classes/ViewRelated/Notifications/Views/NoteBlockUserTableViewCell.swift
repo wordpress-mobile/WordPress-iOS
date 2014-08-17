@@ -9,9 +9,9 @@ import Foundation
             nameLabel.text  = name ?? String()
         }
     }
-    public var blogURL: NSURL? {
+    public var blogURL: String? {
         didSet {
-            blogLabel.text  = blogURL?.host ?? String()
+            blogLabel.text  = blogURL ?? String()
             accessoryType   = blogURL != nil ? .DisclosureIndicator : .None
         }
     }
