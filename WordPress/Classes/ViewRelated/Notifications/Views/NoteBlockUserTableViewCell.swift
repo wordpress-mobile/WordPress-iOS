@@ -12,21 +12,8 @@ import Foundation
     public var blogURL: String? {
         didSet {
             blogLabel.text  = blogURL ?? String()
-            accessoryType   = blogURL != nil ? .DisclosureIndicator : .None
         }
     }
-    public var actionEnabled: Bool = false {
-        didSet {
-            followButton.hidden = !actionEnabled
-        }
-    }
-    public var following: Bool = false {
-        didSet {
-            followButton.selected = following
-        }
-    }
-    public var onFollowClick:   (() -> Void)?
-    public var onUnfollowClick: (() -> Void)?
     
     // MARK: - Public Methods
     public func downloadGravatarWithURL(url: NSURL?) {
@@ -47,25 +34,19 @@ import Foundation
     // MARK: - View Methods
     public override func awakeFromNib() {
         super.awakeFromNib()
-        WPStyleGuide.configureFollowButton(followButton)
 
         backgroundColor                     = Notification.Colors.blockBackground
+        accessoryType                       = .None
+        
         nameLabel.textColor                 = Notification.Colors.blockHeader
         nameLabel.font                      = Notification.Fonts.blockHeader
+        
+        taglineLabel.font                   = Notification.Fonts.blockHeader
+        taglineLabel.textColor              = Notification.Colors.blockHeader
         
         blogLabel.font                      = Notification.Fonts.blockSubtitle
         blogLabel.textColor                 = Notification.Colors.blockSubtitle
         blogLabel.adjustsFontSizeToFitWidth = false;
-    }
-    
-    public override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        followButton.highlighted = false
-    }
-
-    public override func setHighlighted(highlighted: Bool, animated: Bool) {
-        super.setHighlighted(highlighted, animated: animated)
-        followButton.highlighted = false
     }
     
     // MARK: - Private Helpers
@@ -77,13 +58,6 @@ import Foundation
             if let imageView = self?.gravatarImageView {
                 imageView.alpha = Animation.alphaFinal
             }
-        }
-    }
-
-    // MARK: - Button Delegates
-    @IBAction public func followWasPressed(sender: DTLinkButton) {
-        if let listener = onFollowClick {
-            listener()
         }
     }
     
@@ -98,7 +72,7 @@ import Foundation
     
     // MARK: - IBOutlets
     @IBOutlet private weak var nameLabel:           UILabel!
+    @IBOutlet private weak var taglineLabel:        UILabel!
     @IBOutlet private weak var blogLabel:           UILabel!
     @IBOutlet private weak var gravatarImageView:   UIImageView!
-    @IBOutlet private weak var followButton:        UIButton!
 }
