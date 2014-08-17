@@ -11,12 +11,11 @@ import Foundation
             setNeedsLayout()
         }
     }
-    public func numberOfLines() -> Int {
+    public var numberOfLines: Int {
         let lines = 0
         return lines
     }
-    
-    public func labelInsets() -> UIEdgeInsets {
+    public var labelInsets: UIEdgeInsets {
         let insets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         return insets
     }
@@ -29,9 +28,9 @@ import Foundation
         
         backgroundColor                   = Notification.Colors.blockBackground
         selectionStyle                    = .None
-        
+
         attributedLabel.backgroundColor   = UIColor.clearColor()
-        attributedLabel.numberOfLines     = numberOfLines()
+        attributedLabel.numberOfLines     = numberOfLines
         attributedLabel.delegate          = self
     }
     
@@ -41,7 +40,7 @@ import Foundation
         // Manually update DTAttributedLabel's size
         attributedLabel.layoutFrameHeightIsConstrainedByBounds = false
         
-        let insets  = labelInsets()
+        let insets  = labelInsets
         let width   = bounds.width - insets.left - insets.right
         let size    = attributedLabel.suggestedFrameSizeToFitEntireStringConstraintedToWidth(width)
         attributedLabel.frame.size = size
