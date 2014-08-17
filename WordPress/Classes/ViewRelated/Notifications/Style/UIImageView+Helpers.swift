@@ -3,12 +3,18 @@ import Foundation
 
 extension UIImageView
 {
-    public func downloadImage(url: NSURL, placeholderImage: UIImage!, success: ((UIImage) -> ())?, failure: ((NSError!) -> ())?) {
-        let urlRequest                     = NSMutableURLRequest(URL: url)
-        urlRequest.HTTPShouldHandleCookies = false
-        urlRequest.addValue("image/*", forHTTPHeaderField: "Accept")
+    public func downloadImage(url: NSURL, placeholderImage: UIImage?) {
 
-        setImageWithURLRequest(urlRequest,
+        downloadImage(url, placeholderImage: placeholderImage, success: nil, failure: nil)
+    }
+        
+    public func downloadImage(url: NSURL, placeholderImage: UIImage?, success: ((UIImage) -> ())?, failure: ((NSError!) -> ())?) {
+        
+        let request                     = NSMutableURLRequest(URL: url)
+        request.HTTPShouldHandleCookies = false
+        request.addValue("image/*", forHTTPHeaderField: "Accept")
+
+        setImageWithURLRequest(request,
             placeholderImage: placeholderImage,
             success: {
                 [weak self]

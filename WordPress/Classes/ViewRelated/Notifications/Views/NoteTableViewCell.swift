@@ -3,7 +3,7 @@ import Foundation
 
 @objc public class NoteTableViewCell : WPTableViewCell
 {
-    // MARK - Public Properties
+    // MARK: - Public Properties
     public var read: Bool = false {
         didSet {
             backgroundColor = read ? Notification.Colors.backgroundRead : Notification.Colors.backgroundUnread
@@ -26,23 +26,25 @@ import Foundation
         }
     }
     
-    // MARK - Public Methods
+    // MARK: - Public Methods
     public func downloadGravatarWithURL(url: NSURL?) {
         if url == gravatarURL {
             return
         }
-        
+
+        let placeholderImage = UIImage(named: placeholderName)
         if let unrawppedURL = url {
             let size                = iconImageView.frame.width * UIScreen.mainScreen().scale
             let scaledURL           = unrawppedURL.patchGravatarUrlWithSize(size)
-            let placeholderImage    = UIImage(named: placeholderName)
-            iconImageView.setImageWithURL(scaledURL, placeholderImage: placeholderImage)
+            iconImageView.downloadImage(scaledURL, placeholderImage: placeholderImage)
+        } else {
+            iconImageView.image = placeholderImage
         }
         
         gravatarURL = url
     }
  
-    // MARK - View Methods
+    // MARK: - View Methods
     public override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -84,7 +86,7 @@ import Foundation
         refreshBackgrounds()
     }
     
-    // MARK - Private Methods
+    // MARK: - Private Methods
     private func refreshLabelPreferredMaxLayoutWidth() {
         subjectLabel.preferredMaxLayoutWidth = timestampLabel.frame.minX - timestampPaddingLeft - subjectLabel.frame.minX;
     }
@@ -93,14 +95,14 @@ import Foundation
         noticonView.backgroundColor = read ? Notification.Colors.iconRead : Notification.Colors.iconUnread
     }
     
-    // MARK - Private Properties
+    // MARK: - Private Properties
     private let timestampPaddingLeft:           CGFloat     = 2
     private let numberOfLines:                  Int         = 0
     private let noticonRadius:                  CGFloat     = 10
-    private let placeholderName:                String      = "gravatar"
+    private var placeholderName:                String      = "gravatar"
     private var gravatarURL:                    NSURL?
     
-    // MARK - IBOutlets
+    // MARK: - IBOutlets
     @IBOutlet private weak var iconImageView:   UIImageView!
     @IBOutlet private weak var noticonLabel:    UILabel!
     @IBOutlet private weak var noticonView:     UIView!

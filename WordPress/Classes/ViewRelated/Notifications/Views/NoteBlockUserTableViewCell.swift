@@ -28,20 +28,17 @@ import Foundation
     public var onFollowClick:   (() -> Void)?
     public var onUnfollowClick: (() -> Void)?
     
-    // MARK - Public Methods
+    // MARK: - Public Methods
     public func downloadGravatarWithURL(url: NSURL?) {
         if url == gravatarURL {
             return
         }
     
+        let placeholderImage = UIImage(named: Animation.placeholderName)
         if let unwrappedURL = url {
-            let placeholderImage = UIImage(named: Animation.placeholderName)
-            
-            gravatarImageView.downloadImage(unwrappedURL,
-                placeholderImage: placeholderImage,
-                success: displayImageWithAnimation,
-                failure: nil
-            )
+            gravatarImageView.downloadImage(unwrappedURL, placeholderImage: placeholderImage, success: displayImageWithAnimation, failure: nil)
+        } else {
+            gravatarImageView.image = placeholderImage
         }
         
         gravatarURL = url

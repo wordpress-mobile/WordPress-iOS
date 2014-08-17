@@ -1,5 +1,6 @@
 import Foundation
 
+
 // FIXME: Implement!
 @objc public class NoteBlockCommentTableViewCell : NoteBlockTextTableViewCell
 {
