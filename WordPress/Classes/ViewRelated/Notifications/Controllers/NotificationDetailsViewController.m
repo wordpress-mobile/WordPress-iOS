@@ -247,25 +247,12 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 - (void)setupUserCell:(NoteBlockUserTableViewCell *)cell block:(NotificationBlock *)block
 {
     NotificationMedia *media        = [block.media firstObject];
-    NSNumber *following             = [block actionForKey:NoteActionFollowKey];
     NSURL *blogURL                  = [NSURL URLWithString:block.metaLinksHome];
-    __weak __typeof(self) weakSelf  = self;
     
     cell.name                       = block.text;
     cell.blogURL                    = blogURL.host;
-    cell.actionEnabled              = following != nil && block.metaSiteID != nil;
-    cell.following                  = following.boolValue;
     
     [cell downloadGravatarWithURL:media.mediaURL];
-    
-#warning TODO: Implement Toggle
-    cell.onFollowClick              = ^() {
-        [weakSelf followSiteWithBlock:block];
-    };
-    
-    cell.onUnfollowClick            = ^() {
-        [weakSelf unfollowSiteWithBlock:block];
-    };
 }
 
 - (void)setupCommentCell:(NoteBlockCommentTableViewCell *)cell block:(NotificationBlock *)block
