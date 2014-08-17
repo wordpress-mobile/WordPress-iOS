@@ -63,9 +63,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     
     self.tableView.contentInset     = IS_IPAD ? NotificationTableInsetsPad : NotificationTableInsetsPhone;
     self.tableView.backgroundColor  = [WPStyleGuide itsEverywhereGrey];
-    self.tableView.separatorColor   = [WPStyleGuide readGrey];
-    self.tableView.separatorStyle   = UITableViewCellSeparatorStyleNone;
-    
+
     self.reuseIdentifierMap = @{
         @(NoteBlockTypesText)       : NoteBlockTextTableViewCell.reuseIdentifier,
         @(NoteBlockTypesComment)    : NoteBlockCommentTableViewCell.reuseIdentifier,
@@ -167,6 +165,17 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 
 
 #pragma mark - UITableViewDelegate Methods
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    /**
+        Note
+        This is a workaround. iOS 7 + grouped cells result in an extra top spacing.
+        Ref.: http://stackoverflow.com/questions/17699831/how-to-change-height-of-grouped-uitableview-header
+     */
+    
+    return CGFLOAT_MIN;
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
