@@ -63,7 +63,7 @@ static NSTimeInterval NotificationPushMaxWait = 1;
     self = [super initWithCoder:aDecoder];
     if (self) {
         self.title              = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
-        
+
         // Watch for application badge number changes
         NSString *badgeKeyPath  = NSStringFromSelector(@selector(applicationIconBadgeNumber));
         [[UIApplication sharedApplication] addObserver:self forKeyPath:badgeKeyPath options:NSKeyValueObservingOptionNew context:nil];
@@ -116,7 +116,7 @@ static NSTimeInterval NotificationPushMaxWait = 1;
     dispatch_once(&_trackedViewDisplay, ^{
         [WPAnalytics track:WPAnalyticsStatNotificationsAccessed];
     });
-    
+
     // Badge + Metadata
     [self updateLastSeenTime];
     [self resetApplicationBadge];
@@ -318,7 +318,7 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSNumber *rowCacheValue = self.cachedRowHeights[@(indexPath.row)];
+    NSNumber *rowCacheValue = self.cachedRowHeights[indexPath];
     if (rowCacheValue) {
         return rowCacheValue.floatValue;
     }
@@ -330,8 +330,7 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Hit the cache first
-    NSNumber *rowCacheKey   = @(indexPath.row);
-    NSNumber *rowCacheValue = self.cachedRowHeights[rowCacheKey];
+    NSNumber *rowCacheValue = self.cachedRowHeights[indexPath];
     if (rowCacheValue) {
         return rowCacheValue.floatValue;
     }
@@ -342,7 +341,7 @@ static NSTimeInterval NotificationPushMaxWait = 1;
     CGFloat height = [self.layoutTableViewCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
     
     // Cache
-    self.cachedRowHeights[rowCacheKey] = @(height);
+    self.cachedRowHeights[indexPath] = @(height);
     
     return height;
 }
@@ -396,6 +395,11 @@ static NSTimeInterval NotificationPushMaxWait = 1;
     return NSStringFromClass([Notification class]);
 }
 
+- (NSString *)sectionNameKeyPath
+{
+    return NSStringFromSelector(@selector(sectionIdentifier));
+}
+
 - (NSDate *)lastSyncDate
 {
     return [NSDate date];
@@ -405,7 +409,7 @@ static NSTimeInterval NotificationPushMaxWait = 1;
 {
     NSString *sortKey               = NSStringFromSelector(@selector(timestamp));
     NSFetchRequest *fetchRequest    = [NSFetchRequest fetchRequestWithEntityName:self.entityName];
-    fetchRequest.sortDescriptors    = @[ [NSSortDescriptor sortDescriptorWithKey:sortKey ascending:NO] ];
+    fetchRequest.sortDescriptors    = @[[NSSortDescriptor sortDescriptorWithKey:sortKey ascending:NO] ];
     
     return fetchRequest;
 }
@@ -421,7 +425,6 @@ static NSTimeInterval NotificationPushMaxWait = 1;
     cell.attributedSubject  = note.subjectBlock.attributedSubject;
     cell.read               = note.read.boolValue;
     cell.noticon            = note.noticon;
-    cell.timestamp          = note.timestampAsDate;
     
     [cell downloadGravatarWithURL:note.iconURL];
 }
