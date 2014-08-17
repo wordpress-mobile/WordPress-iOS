@@ -40,7 +40,7 @@ extension NotificationBlock
                 theString.addAttributes(Notification.Styles.blockItalics, range: url.range)
             }
             
-            if url.url {
+            if url.url != nil {
                 theString.addAttribute(DTLinkAttribute, value: url.url, range: url.range)
                 theString.addAttribute(NSForegroundColorAttributeName, value: Notification.Colors.blockLink, range: url.range)
             }
