@@ -5,9 +5,8 @@
 #import <MessageUI/MFMailComposeViewController.h>
 #import "WPActivityDefaults.h"
 #import "WordPressAppDelegate.h"
-#import "ReaderComment.h"
+#import "Comment.h"
 #import "ReaderCommentTableViewCell.h"
-#import "IOS7CorrectedTextView.h"
 #import "WPImageViewController.h"
 #import "WPWebVideoViewController.h"
 #import "WPWebViewController.h"
@@ -26,7 +25,7 @@
 #import "WPTableImageSource.h"
 #import "WPNoResultsView+AnimatedBox.h"
 
-static NSInteger const ReaderCommentsToSync = 100;
+//static NSInteger const ReaderCommentsToSync = 100;
 static NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
 static CGFloat const SectionHeaderHeight = 25.0f;
 
@@ -304,11 +303,11 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 {
     self.title = self.post.postTitle ?: NSLocalizedString(@"Reader", @"Placeholder title for ReaderPostDetails.");
     
-    [self prepareComments];
-    
+//    [self prepareComments];
+
     [self refreshPostView];
     [self refreshHeightForTableHeaderView];
-    [self refreshCommentsIfNeeded];
+//    [self refreshCommentsIfNeeded];
     [self refreshShareButton];
 }
 
@@ -386,17 +385,17 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     self.tableView.tableHeaderView = tableHeaderView;
 }
 
-- (void)refreshCommentsIfNeeded
-{
-    // Hit the backend, if needed
-    BOOL isConnected    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] connectionAvailable];
-    NSDate *lastSynced  = self.lastSyncDate;
-    BOOL isRefreshTime  = (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow] > ReaderPostDetailViewControllerRefreshTimeout));
-    
-    if (isConnected && self.post.isWPCom && isRefreshTime) {
-        [self syncWithUserInteraction:NO];
-    }
-}
+//- (void)refreshCommentsIfNeeded
+//{
+//    // Hit the backend, if needed
+//    BOOL isConnected    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] connectionAvailable];
+//    NSDate *lastSynced  = self.lastSyncDate;
+//    BOOL isRefreshTime  = (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow] > ReaderPostDetailViewControllerRefreshTimeout));
+//    
+//    if (isConnected && self.post.isWPCom && isRefreshTime) {
+//        [self syncWithUserInteraction:NO];
+//    }
+//}
 
 - (void)refreshShareButton
 {
@@ -449,46 +448,46 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     return self.post.commentsOpen;
 }
 
-- (void)prepareComments
-{
-    self.resultsController = nil;
-    [self.comments removeAllObjects];
-
-    __block void(__unsafe_unretained ^flattenComments)(NSArray *) = ^void (NSArray *comments) {
-        // Ensure the array is correctly sorted.
-        comments = [comments sortedArrayUsingComparator: ^(id obj1, id obj2) {
-            ReaderComment *a = obj1;
-            ReaderComment *b = obj2;
-            if ([[a dateCreated] timeIntervalSince1970] > [[b dateCreated] timeIntervalSince1970]) {
-                return (NSComparisonResult)NSOrderedDescending;
-            }
-            if ([[a dateCreated] timeIntervalSince1970] < [[b dateCreated] timeIntervalSince1970]) {
-                return (NSComparisonResult)NSOrderedAscending;
-            }
-            return (NSComparisonResult)NSOrderedSame;
-        }];
-
-        for (ReaderComment *comment in comments) {
-            [self.comments addObject:comment];
-            if ([comment.childComments count] > 0) {
-                flattenComments([comment.childComments allObjects]);
-            }
-        }
-    };
-
-    flattenComments(self.resultsController.fetchedObjects);
-
-    // Cache attributed strings.
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, NULL), ^{
-        for (ReaderComment *comment in self.comments) {
-            comment.attributedContent = [ReaderCommentTableViewCell convertHTMLToAttributedString:comment.content withOptions:nil];
-        }
-        __weak ReaderPostDetailViewController *weakSelf = self;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf.tableView reloadData];
-        });
-    });
-}
+//- (void)prepareComments
+//{
+//    self.resultsController = nil;
+//    [self.comments removeAllObjects];
+//
+//    __block void(__unsafe_unretained ^flattenComments)(NSArray *) = ^void (NSArray *comments) {
+//        // Ensure the array is correctly sorted.
+//        comments = [comments sortedArrayUsingComparator: ^(id obj1, id obj2) {
+//            ReaderComment *a = obj1;
+//            ReaderComment *b = obj2;
+//            if ([[a dateCreated] timeIntervalSince1970] > [[b dateCreated] timeIntervalSince1970]) {
+//                return (NSComparisonResult)NSOrderedDescending;
+//            }
+//            if ([[a dateCreated] timeIntervalSince1970] < [[b dateCreated] timeIntervalSince1970]) {
+//                return (NSComparisonResult)NSOrderedAscending;
+//            }
+//            return (NSComparisonResult)NSOrderedSame;
+//        }];
+//
+//        for (ReaderComment *comment in comments) {
+//            [self.comments addObject:comment];
+//            if ([comment.childComments count] > 0) {
+//                flattenComments([comment.childComments allObjects]);
+//            }
+//        }
+//    };
+//
+//    flattenComments(self.resultsController.fetchedObjects);
+//
+//    // Cache attributed strings.
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, NULL), ^{
+//        for (ReaderComment *comment in self.comments) {
+//            comment.attributedContent = [ReaderCommentTableViewCell convertHTMLToAttributedString:comment.content withOptions:nil];
+//        }
+//        __weak ReaderPostDetailViewController *weakSelf = self;
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [weakSelf.tableView reloadData];
+//        });
+//    });
+//}
 
 - (UIActivityViewController *)activityViewControllerForSharing
 {
@@ -771,68 +770,68 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
 - (void)syncWithUserInteraction:(BOOL)userInteraction
 {
-    if ([self.post.postID integerValue] == 0 ) { // Weird that this should ever happen.
-        self.post.dateCommentsSynced = [NSDate date];
-        return;
-    }
-    self.isSyncing = YES;
-    NSDictionary *params = @{@"number":[NSNumber numberWithInteger:ReaderCommentsToSync]};
-
-    [ReaderPost getCommentsForPost:[self.post.postID integerValue]
-                          fromSite:[self.post.siteID stringValue]
-                    withParameters:params
-                           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                               [self onSyncSuccess:operation response:responseObject];
-                           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                           }];
+//    if ([self.post.postID integerValue] == 0 ) { // Weird that this should ever happen.
+//        self.post.dateCommentsSynced = [NSDate date];
+//        return;
+//    }
+//    self.isSyncing = YES;
+//    NSDictionary *params = @{@"number":[NSNumber numberWithInteger:ReaderCommentsToSync]};
+//
+//    [ReaderPost getCommentsForPost:[self.post.postID integerValue]
+//                          fromSite:[self.post.siteID stringValue]
+//                    withParameters:params
+//                           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//                               [self onSyncSuccess:operation response:responseObject];
+//                           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//                           }];
 }
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    if ([self.resultsController.fetchedObjects count] == 0) {
-        return;
-    }
-
-    if (self.loadingMore) {
-        return;
-    }
-
-    self.loadingMore = YES;
-    self.isSyncing = YES;
-    NSUInteger numberToSync = [self.comments count] + ReaderCommentsToSync;
-    NSDictionary *params = @{@"number":[NSNumber numberWithInteger:numberToSync]};
-
-    [ReaderPost getCommentsForPost:[self.post.postID integerValue]
-                          fromSite:[self.post.siteID stringValue]
-                    withParameters:params
-                           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                               [self onSyncSuccess:operation response:responseObject];
-                           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                           }];
+//    if ([self.resultsController.fetchedObjects count] == 0) {
+//        return;
+//    }
+//
+//    if (self.loadingMore) {
+//        return;
+//    }
+//
+//    self.loadingMore = YES;
+//    self.isSyncing = YES;
+//    NSUInteger numberToSync = [self.comments count] + ReaderCommentsToSync;
+//    NSDictionary *params = @{@"number":[NSNumber numberWithInteger:numberToSync]};
+//
+//    [ReaderPost getCommentsForPost:[self.post.postID integerValue]
+//                          fromSite:[self.post.siteID stringValue]
+//                    withParameters:params
+//                           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//                               [self onSyncSuccess:operation response:responseObject];
+//                           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//                           }];
 }
 
 - (void)onSyncSuccess:(AFHTTPRequestOperation *)operation response:(id)responseObject
 {
-    self.post.dateCommentsSynced = [NSDate date];
-    self.loadingMore = NO;
-    self.isSyncing = NO;
-    NSDictionary *resp = (NSDictionary *)responseObject;
-    NSArray *commentsArr = [resp arrayForKey:@"comments"];
-
-    if (!commentsArr) {
-        self.hasMoreContent = NO;
-        return;
-    }
-
-    if ([commentsArr count] < ([self.comments count] + ReaderCommentsToSync)) {
-        self.hasMoreContent = NO;
-    }
-
-    [ReaderComment syncAndThreadComments:commentsArr
-                                 forPost:self.post
-                             withContext:[[ContextManager sharedInstance] mainContext]];
-
-    [self prepareComments];
+//    self.post.dateCommentsSynced = [NSDate date];
+//    self.loadingMore = NO;
+//    self.isSyncing = NO;
+//    NSDictionary *resp = (NSDictionary *)responseObject;
+//    NSArray *commentsArr = [resp arrayForKey:@"comments"];
+//
+//    if (!commentsArr) {
+//        self.hasMoreContent = NO;
+//        return;
+//    }
+//
+//    if ([commentsArr count] < ([self.comments count] + ReaderCommentsToSync)) {
+//        self.hasMoreContent = NO;
+//    }
+//
+//    [ReaderComment syncAndThreadComments:commentsArr
+//                                 forPost:self.post
+//                             withContext:[[ContextManager sharedInstance] mainContext]];
+//
+//    [self prepareComments];
 }
 
 #pragma mark - Infinite Scrolling
@@ -887,7 +886,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
         return 0.0f;
     }
 
-    ReaderComment *comment = [self.comments objectAtIndex:indexPath.row];
+    Comment *comment = [self.comments objectAtIndex:indexPath.row];
     return [ReaderCommentTableViewCell heightForComment:comment
                                                   width:width
                                              tableStyle:tableView.style
@@ -914,14 +913,14 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     }
     cell.accessoryType = UITableViewCellAccessoryNone;
 
-    ReaderComment *comment = [self.comments objectAtIndex:indexPath.row];
+    Comment *comment = [self.comments objectAtIndex:indexPath.row];
     [cell configureCell:comment];
     [self setAvatarForComment:comment forCell:cell indexPath:indexPath];
 
     return cell;
 }
 
-- (void)setAvatarForComment:(ReaderComment *)comment forCell:(ReaderCommentTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
+- (void)setAvatarForComment:(Comment *)comment forCell:(ReaderCommentTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
 {
     WPAvatarSource *source = [WPAvatarSource sharedSource];
 
@@ -948,7 +947,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ReaderComment *comment = [self.comments objectAtIndex:indexPath.row];
+    Comment *comment = [self.comments objectAtIndex:indexPath.row];
 
     // if a row is already selected don't allow selection of another
     if (self.inlineComposeView.isDisplayed) {
@@ -984,7 +983,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 {
     // if we selected the already active comment allow highlight
     // so we can toggle the inline composer
-    ReaderComment *comment = [self.comments objectAtIndex:indexPath.row];
+    Comment *comment = [self.comments objectAtIndex:indexPath.row];
     if (comment == self.commentPublisher.comment) {
         return YES;
     }
