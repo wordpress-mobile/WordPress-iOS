@@ -44,6 +44,7 @@ NSString const *NotePostKey             = @"post";
 NSString const *NoteTextKey             = @"text";
 NSString const *NoteTypeKey             = @"type";
 NSString const *NoteUrlKey              = @"url";
+NSString const *NoteTitlesKey           = @"titles";
 NSString const *NoteIndicesKey          = @"indices";
 NSString const *NoteWidthKey            = @"width";
 NSString const *NoteHeightKey           = @"height";
@@ -194,6 +195,11 @@ NSString const *NoteHeightKey           = @"height";
 - (NSString *)metaLinksHome
 {
     return [[self.meta dictionaryForKey:NoteLinksKey] stringForKey:NoteHomeKey];
+}
+
+- (NSString *)metaTitlesHome
+{
+    return [[self.meta dictionaryForKey:NoteTitlesKey] stringForKey:NoteHomeKey];
 }
 
 - (void)setActionOverrideValue:(NSNumber *)value forKey:(NSString *)key
