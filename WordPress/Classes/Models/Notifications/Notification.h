@@ -83,10 +83,12 @@ typedef NS_ENUM(NSInteger, NoteBlockTypes)
 @property (nonatomic, strong, readonly) NSNumber            *metaCommentID;
 @property (nonatomic, strong, readonly) NSString            *metaLinksHome;
 
-- (BOOL)hasActions;
 - (void)setActionOverrideValue:(NSNumber *)obj forKey:(NSString *)key;
 - (void)removeActionOverrideForKey:(NSString *)key;
 - (NSNumber *)actionForKey:(NSString *)key;
+
+- (BOOL)isActionEnabled:(NSString *)key;
+- (BOOL)isActionOn:(NSString *)key;
 
 @end
 
