@@ -1,7 +1,9 @@
 #import <Foundation/Foundation.h>
-#import "AbstractComment.h"
-#import "Blog.h"
-#import "Post.h"
+#import <CoreData/CoreData.h>
+#import "WPContentViewProvider.h"
+
+@class Blog;
+@class BasePost;
 
 // This is the notification name used with NSNotificationCenter
 extern NSString * const CommentUploadFailedNotification;
@@ -14,12 +16,25 @@ extern NSString * const CommentStatusSpam;
 // we can use this status to restore comment replies that the user has written
 extern NSString * const CommentStatusDraft;
 
-@interface Comment : AbstractComment {
+@interface Comment : NSManagedObject<WPContentViewProvider>
 
-}
-
-@property (nonatomic, strong) Blog * blog;
-@property (nonatomic, strong) AbstractPost * post;
+@property (nonatomic, strong) Blog *blog;
+@property (nonatomic, strong) BasePost *post;
+@property (nonatomic, strong) NSString *author;
+@property (nonatomic, strong) NSString *author_email;
+@property (nonatomic, strong) NSString *author_ip;
+@property (nonatomic, strong) NSString *author_url;
+@property (nonatomic, strong) NSNumber *commentID;
+@property (nonatomic, strong) NSString *content;
+@property (nonatomic, strong) NSDate *dateCreated;
+@property (nonatomic, strong) NSString *link;
+@property (nonatomic, strong) NSNumber *parentID;
+@property (nonatomic, strong) NSNumber *postID;
+@property (nonatomic, strong) NSString *postTitle;
+@property (nonatomic, strong) NSString *status;
+@property (nonatomic, strong) NSString *type;
+@property (nonatomic, strong) NSNumber *depth;
+@property (nonatomic, strong) NSString *authorAvatarURL;
 @property (nonatomic, assign) BOOL isNew;
 
 ///---------------------
