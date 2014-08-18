@@ -18,10 +18,21 @@
 
 
 
-static NSString *const NotificationsDeviceIdKey     = @"notification_device_id";
-static NSString *const NotificationsPreferencesKey  = @"notification_preferences";
-NSString *const NotificationsDeviceToken            = @"apnsDeviceToken";
+static NSString *const NotificationsDeviceIdKey                 = @"notification_device_id";
+static NSString *const NotificationsPreferencesKey              = @"notification_preferences";
+NSString *const NotificationsDeviceToken                        = @"apnsDeviceToken";
 
+// These correspond to the 'category' data WP.com will send with a push notification
+NSString *const NotificationCategoryCommentApproved             = @"APPROVED";
+NSString *const NotificationCategoryCommentApprovedWithLike     = @"APPROVED_LIKE";
+NSString *const NotificationCategoryCommentUnapproved           = @"UNAPPROVED";
+
+NSString *const NotificationActionCommentReply                  = @"COMMENT_REPLY";
+NSString *const NotificationActionCommentLike                   = @"COMMENT_LIKE";
+NSString *const NotificationActionCommentApprove                = @"COMMENT_MODERATE_APPROVE";
+NSString *const NotificationActionCommentUnapprove              = @"COMMENT_MODERATE_UNAPPROVE";
+NSString *const NotificationActionCommentSpam                   = @"COMMENT_MODERATE_SPAM";
+NSString *const NotificationActionCommentTrash                  = @"COMMENT_MODERATE_TRASH";
 
 @implementation NotificationsManager
 
@@ -33,26 +44,13 @@ NSString *const NotificationsDeviceToken            = @"apnsDeviceToken";
     // Register for push notifications
     [[UIApplication sharedApplication] registerForRemoteNotifications];
 
-    // Build the notification actions and categories
-    UIMutableUserNotificationAction *commentLikeAction = [[UIMutableUserNotificationAction alloc] init];
-    commentLikeAction.identifier = @"COMMENT_LIKE";
-    commentLikeAction.title = NSLocalizedString(@"Like", @"Like (verb)");
-    commentLikeAction.activationMode = UIUserNotificationActivationModeBackground;
-    commentLikeAction.destructive = NO;
-    commentLikeAction.authenticationRequired = NO;
-    UIMutableUserNotificationCategory *commentLikeCategory = [[UIMutableUserNotificationCategory alloc] init];
-    commentLikeCategory.identifier = @"COMMENT_LIKE_CATEGORY";
-    [commentLikeCategory setActions:@[commentLikeAction] forContext:UIUserNotificationActionContextDefault];
-    
+    // Add the categories to UIUserNotificationSettings
     UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
-    
-    NSSet *categories = [NSSet setWithObjects:commentLikeCategory, nil];
-    
-    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types categories:categories];
-    
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types categories:[self buildNotificationCategories]];
+
+    // Finally, register the notification settings
     [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
 }
-
 
 #pragma mark - Device token registration
 
@@ -185,7 +183,7 @@ NSString *const NotificationsDeviceToken            = @"apnsDeviceToken";
     }
     
     // Comment like
-    if ([identifier isEqualToString:@"COMMENT_LIKE"]) {
+    if ([identifier isEqualToString:NotificationActionCommentLike]) {
         // Get the site and comment id and like the comment via the REST API
         NSInteger blogId = [remoteNotification[@"blog_id"] integerValue];
         NSInteger commentId = [remoteNotification[@"comment_id"] integerValue];
@@ -194,14 +192,46 @@ NSString *const NotificationsDeviceToken            = @"apnsDeviceToken";
             [[defaultAccount restApi] likeComment: blogId
                                      forCommentID:commentId
                                           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                              DDLogInfo(@"Liked comment!");
+                                              DDLogInfo(@"Liked comment from push notification");
                                           }
                                           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                              DDLogInfo(@"Couldn't like comment!");
+                                              DDLogInfo(@"Couldn't like comment from push notification");
                                           }
              ];
             
         }
+    } else if ([identifier containsString:@"MODERATE"]) {
+        // Moderate comment
+        NSString *newStatus = @"approved";
+        if ([identifier isEqualToString: NotificationActionCommentUnapprove]) {
+            newStatus = @"unapproved";
+        } else if ([identifier isEqualToString:NotificationActionCommentSpam]) {
+            newStatus = @"spam";
+        } else if ([identifier isEqualToString:NotificationActionCommentTrash]) {
+            newStatus = @"trash";
+        }
+
+
+        NSInteger blogId = [remoteNotification[@"blog_id"] integerValue];
+        NSInteger commentId = [remoteNotification[@"comment_id"] integerValue];
+
+
+        if (blogId && commentId) {
+            [[defaultAccount restApi] moderateComment:blogId forCommentID:commentId withStatus:newStatus
+                                          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                              DDLogInfo(@"Successfully moderated comment from push notification");
+                                          }
+                                          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                              DDLogInfo(@"Couldn't moderate comment from push notification");
+                                          }
+             ];
+        }
+    } else if ([identifier isEqualToString:NotificationActionCommentReply]) {
+        NSString *notificationID            = [[remoteNotification numberForKey:@"note_id"] stringValue];
+        WordPressAppDelegate *appDelegate   = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+
+        [appDelegate showTabForIndex:kNotificationsTabIndex];
+        [appDelegate.notificationsViewController showDetailsForNoteWithID:notificationID animated:NO];
     }
 }
 
@@ -324,6 +354,69 @@ NSString *const NotificationsDeviceToken            = @"apnsDeviceToken";
                                              DDLogError(@"Failed to receive supported notification list: %@", error);
                                          }
      ];
+}
+
+
+#pragma mark - Enhanced Notifications
+
++ (NSSet *)buildNotificationCategories {
+    // Build the notification actions
+    UIMutableUserNotificationAction *commentReplyAction = [[UIMutableUserNotificationAction alloc] init];
+    commentReplyAction.identifier = NotificationActionCommentReply;
+    commentReplyAction.title = NSLocalizedString(@"Reply", @"Reply to a comment (verb)");
+    commentReplyAction.activationMode = UIUserNotificationActivationModeForeground;
+    commentReplyAction.destructive = NO;
+    commentReplyAction.authenticationRequired = YES;
+
+    UIMutableUserNotificationAction *commentLikeAction = [[UIMutableUserNotificationAction alloc] init];
+    commentLikeAction.identifier = NotificationActionCommentLike;
+    commentLikeAction.title = NSLocalizedString(@"Like", @"Like (verb)");
+    commentLikeAction.activationMode = UIUserNotificationActivationModeBackground;
+    commentLikeAction.destructive = NO;
+    commentLikeAction.authenticationRequired = NO;
+
+    UIMutableUserNotificationAction *commentApproveAction = [[UIMutableUserNotificationAction alloc] init];
+    commentApproveAction.identifier = NotificationActionCommentApprove;
+    commentApproveAction.title = NSLocalizedString(@"Approve", @"Approve comment (verb)");
+    commentApproveAction.activationMode = UIUserNotificationActivationModeBackground;
+    commentApproveAction.destructive = NO;
+    commentApproveAction.authenticationRequired = YES;
+
+    UIMutableUserNotificationAction *commentUnapproveAction = [[UIMutableUserNotificationAction alloc] init];
+    commentUnapproveAction.identifier = NotificationActionCommentUnapprove;
+    commentUnapproveAction.title = NSLocalizedString(@"Unapprove", @"Unapprove comment (verb)");
+    commentUnapproveAction.activationMode = UIUserNotificationActivationModeBackground;
+    commentUnapproveAction.destructive = NO;
+    commentUnapproveAction.authenticationRequired = YES;
+
+    UIMutableUserNotificationAction *commentSpamAction = [[UIMutableUserNotificationAction alloc] init];
+    commentSpamAction.identifier = NotificationActionCommentSpam;
+    commentSpamAction.title = NSLocalizedString(@"Spam", @"Spam comment (verb)");
+    commentSpamAction.activationMode = UIUserNotificationActivationModeBackground;
+    commentSpamAction.destructive = NO;
+    commentSpamAction.authenticationRequired = YES;
+
+    UIMutableUserNotificationAction *commentTrashAction = [[UIMutableUserNotificationAction alloc] init];
+    commentTrashAction.identifier = NotificationActionCommentTrash;
+    commentTrashAction.title = NSLocalizedString(@"Trash", @"Trash comment (verb)");
+    commentTrashAction.activationMode = UIUserNotificationActivationModeBackground;
+    commentTrashAction.destructive = YES;
+    commentTrashAction.authenticationRequired = YES;
+
+    // Add actions to categories
+    UIMutableUserNotificationCategory *commentApprovedCategory = [[UIMutableUserNotificationCategory alloc] init];
+    commentApprovedCategory.identifier = NotificationCategoryCommentApproved;
+    [commentApprovedCategory setActions:@[commentReplyAction, commentUnapproveAction, commentSpamAction, commentTrashAction] forContext:UIUserNotificationActionContextDefault];
+
+    UIMutableUserNotificationCategory *commentApprovedWithLikeCategory = [[UIMutableUserNotificationCategory alloc] init];
+    commentApprovedWithLikeCategory.identifier = NotificationCategoryCommentApprovedWithLike;
+    [commentApprovedWithLikeCategory setActions:@[commentLikeAction, commentReplyAction, commentUnapproveAction, commentSpamAction] forContext:UIUserNotificationActionContextDefault];
+
+    UIMutableUserNotificationCategory *commentUnapprovedCategory = [[UIMutableUserNotificationCategory alloc] init];
+    commentUnapprovedCategory.identifier = NotificationCategoryCommentUnapproved;
+    [commentUnapprovedCategory setActions:@[commentApproveAction, commentSpamAction, commentTrashAction] forContext:UIUserNotificationActionContextDefault];
+
+    return [NSSet setWithObjects:commentApprovedCategory, commentApprovedWithLikeCategory, commentUnapprovedCategory, nil];
 }
 
 @end
