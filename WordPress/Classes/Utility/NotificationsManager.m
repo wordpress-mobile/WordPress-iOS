@@ -32,8 +32,7 @@ NSString *const NotificationsDeviceToken            = @"apnsDeviceToken";
 #endif
     // Register for push notifications
     [[UIApplication sharedApplication] registerForRemoteNotifications];
-    
-<<<<<<< HEAD
+
     // Build the notification actions and categories
     UIMutableUserNotificationAction *commentLikeAction = [[UIMutableUserNotificationAction alloc] init];
     commentLikeAction.identifier = @"COMMENT_LIKE";
@@ -52,10 +51,6 @@ NSString *const NotificationsDeviceToken            = @"apnsDeviceToken";
     UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types categories:categories];
     
     [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-=======
-    UIRemoteNotificationType types = (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert);
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:types];
->>>>>>> develop
 }
 
 
