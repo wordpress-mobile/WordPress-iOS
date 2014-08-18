@@ -213,7 +213,7 @@
     CommentServiceRemoteREST *remote = [self remoteForREST];
     [remote moderateCommentWithID:commentID
                            blogID:blogID
-                           status:@"approve"
+                           status:@"approved"
                           success:success
                           failure:failure];
 }
@@ -226,7 +226,7 @@
     CommentServiceRemoteREST *remote = [self remoteForREST];
     [remote moderateCommentWithID:commentID
                            blogID:blogID
-                           status:@"hold"
+                           status:@"unapproved"
                           success:success
                           failure:failure];
 }
