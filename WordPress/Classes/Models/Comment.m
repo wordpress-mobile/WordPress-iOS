@@ -36,7 +36,7 @@ NSString * const CommentStatusDraft = @"draft";
 @dynamic depth;
 @dynamic authorAvatarURL;
 @synthesize isNew;
-
+@synthesize attributedContent;
 
 #pragma mark - Helper methods
 

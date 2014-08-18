@@ -35,6 +35,7 @@ extern NSString * const CommentStatusDraft;
 @property (nonatomic, strong) NSString *type;
 @property (nonatomic, strong) NSNumber *depth;
 @property (nonatomic, strong) NSString *authorAvatarURL;
+@property (nonatomic, strong) NSAttributedString *attributedContent;
 @property (nonatomic, assign) BOOL isNew;
 
 ///---------------------
