@@ -6,20 +6,21 @@ import Foundation
     public typealias EventHandler = (() -> Void)
 
     // MARK: - Public Properties
-    public var onLikeClick:     EventHandler?
-    public var onUnlikeClick:   EventHandler?
-    public var onSpamClick:     EventHandler?
-    public var onTrashClick:    EventHandler?
-    public var onMoreClick:     EventHandler?
+    public var onLikeClick:         EventHandler?
+    public var onUnlikeClick:       EventHandler?
+    public var onApproveClick:      EventHandler?
+    public var onUnapproveClick:    EventHandler?
+    public var onTrashClick:        EventHandler?
+    public var onMoreClick:         EventHandler?
 
     public var isLikeEnabled: Bool = false {
         didSet {
             btnLike.enabled = isLikeEnabled
         }
     }
-    public var isSpamEnabled: Bool = false {
+    public var isApproveEnabled: Bool = false {
         didSet {
-            btnSpam.enabled = isSpamEnabled
+            btnApprove.enabled = isApproveEnabled
         }
     }
     public var isTrashEnabled: Bool = false {
@@ -34,24 +35,39 @@ import Foundation
     }
     public var isLikeOn: Bool = false {
         didSet {
-            let likeTitle = isLikeOn ? NSLocalizedString("Unlike", comment: "Unlike a comment") :
+            let textColor = isLikeOn ? Notification.Colors.actionOnText : Notification.Colors.actionOffText
+            let likeTitle = isLikeOn ? NSLocalizedString("Liked", comment: "A comment has been liked") :
                 NSLocalizedString("Like", comment: "Like a comment")
             
-            btnLike.setTitle(likeTitle, forState: .Normal)
+            btnLike.selected = isLikeOn
             btnLike.accessibilityLabel = likeTitle
+            
+            btnLike.setTitle(likeTitle, forState: .Normal)
+            btnLike.setTitleColor(textColor, forState: .Normal)
         }
     }
+    public var isApproveOn: Bool = false {
+        didSet {
+            let textColor    = isApproveOn ? Notification.Colors.actionOnText : Notification.Colors.actionOffText
+            let approveTitle = isApproveOn ? NSLocalizedString("Approved", comment: "Unapprove a comment") :
+                NSLocalizedString("Approve", comment: "Approve a comment")
+            
+            btnApprove.selected = isApproveOn
+            btnApprove.accessibilityLabel = approveTitle
+            
+            btnApprove.setTitle(approveTitle, forState: .Normal)
+            btnApprove.setTitleColor(textColor, forState: .Normal)
+        }
+    }
+    
 
     // MARK: - View Methods
     public override func awakeFromNib() {
         super.awakeFromNib()
         
-        let textColor   = Notification.Colors.actionText
+        let textColor   = Notification.Colors.actionOffText
         let moreTitle   = NSLocalizedString("More",  comment: "Verb, display More actions for a comment")
         let trashTitle  = NSLocalizedString("Trash", comment: "Move a comment to the trash")
-        let spamTitle   = NSLocalizedString("Spam",  comment: "Verb, mark a comment as spam")
-        
-        btnLike.setTitleColor(textColor, forState: .Normal)
         
         btnMore.setTitle(moreTitle, forState: .Normal)
         btnMore.setTitleColor(textColor, forState: .Normal)
@@ -60,10 +76,6 @@ import Foundation
         btnTrash.setTitle(trashTitle, forState: .Normal)
         btnTrash.setTitleColor(textColor, forState: .Normal)
         btnTrash.accessibilityLabel = trashTitle
-        
-        btnSpam.setTitle(spamTitle, forState: .Normal)
-        btnSpam.setTitleColor(textColor, forState: .Normal)
-        btnSpam.accessibilityLabel = spamTitle
     }
     
     // MARK: - IBActions
@@ -73,8 +85,10 @@ import Foundation
         isLikeOn = !isLikeOn
     }
     
-    @IBAction public func spamWasPressed(sender: AnyObject) {
-        hitEventHandler(onSpamClick)
+    @IBAction public func approveWasPressed(sender: AnyObject) {
+        let handler = isLikeOn ? onUnapproveClick : onApproveClick
+        hitEventHandler(handler)
+        isApproveOn = !isApproveOn
     }
     
     @IBAction public func trashWasPressed(sender: AnyObject) {
@@ -92,8 +106,8 @@ import Foundation
     }
     
     // MARK: - IBOutlets
-    @IBOutlet private weak var btnLike  : UIButton!
-    @IBOutlet private weak var btnSpam  : UIButton!
-    @IBOutlet private weak var btnTrash : UIButton!
-    @IBOutlet private weak var btnMore  : UIButton!
+    @IBOutlet private weak var btnLike      : UIButton!
+    @IBOutlet private weak var btnApprove   : UIButton!
+    @IBOutlet private weak var btnTrash     : UIButton!
+    @IBOutlet private weak var btnMore      : UIButton!
 }

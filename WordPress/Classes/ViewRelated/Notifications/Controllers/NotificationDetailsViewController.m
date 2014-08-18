@@ -20,8 +20,8 @@
 
 #import "NSURL+Util.h"
 #import "NSScanner+Helpers.h"
-
-#import "WPToast.h"
+#import "UIActionSheet+Helpers.h"
+#import "UIAlertView+Blocks.h"
 
 
 
@@ -30,9 +30,6 @@
 #pragma mark ==========================================================================================
 
 static NSUInteger NotificationDetailSectionsCount   = 1;
-
-static NSString *NotificationActionUnfollowIcon     = @"action_icon_unfollowed";
-static NSString *NotificationActionFollowIcon       = @"action_icon_followed";
 
 static UIEdgeInsets NotificationTableInsetsPhone    = {0.0f,  0.0f, 20.0f, 0.0f};
 static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f};
@@ -247,10 +244,9 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 - (void)setupUserCell:(NoteBlockUserTableViewCell *)cell block:(NotificationBlock *)block
 {
     NotificationMedia *media        = [block.media firstObject];
-    NSURL *blogURL                  = [NSURL URLWithString:block.metaLinksHome];
     
     cell.name                       = block.text;
-    cell.blogURL                    = blogURL.host;
+    cell.blogTitle                  = block.metaTitlesHome;
     
     [cell downloadGravatarWithURL:media.mediaURL];
 }
@@ -258,11 +254,17 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 - (void)setupCommentCell:(NoteBlockCommentTableViewCell *)cell block:(NotificationBlock *)block
 {
     __weak __typeof(self) weakSelf  = self;
+    
+    cell.isLikeEnabled              = [block isActionEnabled:NoteActionLikeKey];
+    cell.isApproveEnabled           = [block isActionEnabled:NoteActionApproveKey];
+    cell.isTrashEnabled             = [block isActionEnabled:NoteActionTrashKey];
+    cell.isMoreEnabled              = [block isActionEnabled:NoteActionApproveKey];
 
+    cell.isLikeOn                   = [block isActionOn:NoteActionLikeKey];
+    cell.isApproveOn                = [block isActionOn:NoteActionApproveKey];
+    
     cell.attributedText             = block.attributedTextRegular;
-    
-    cell.actionsEnabled             = block.metaCommentID != nil && block.metaSiteID != nil;
-    
+
     cell.onUrlClick                 = ^(NSURL *url){
         [weakSelf openURL:url];
     };
@@ -275,8 +277,12 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
         [weakSelf unlikeCommentWithBlock:block];
     };
     
-    cell.onSpamClick                = ^(){
-        [weakSelf spamCommentWithBlock:block];
+    cell.onApproveClick             = ^(){
+        [weakSelf approveCommentWithBlock:block];
+    };
+
+    cell.onUnapproveClick             = ^(){
+        [weakSelf unapproveCommentWithBlock:block];
     };
     
     cell.onTrashClick               = ^(){
@@ -284,7 +290,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     };
     
     cell.onMoreClick                = ^(){
-#warning TODO: Implement More
+        [weakSelf displayMoreActionsWithBlock:block];
     };
 }
 
@@ -365,15 +371,46 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     return success;
 }
 
+- (void)displayMoreActionsWithBlock:(NotificationBlock *)block
+{
+    NSString *editTitle     = NSLocalizedString(@"Edit", @"Edit a comment");
+    NSString *spamTitle     = NSLocalizedString(@"Mark as Spam", @"Mark a comment as spam");
+    NSString *cancelTitle   = NSLocalizedString(@"Cancel", nil);
+    
+    // Prepare the More Menu
+    NSMutableArray *otherButtonTitles  = [NSMutableArray array];
+    
+    if ([block isActionEnabled:NoteActionEditKey]) {
+        [otherButtonTitles addObject:editTitle];
+    }
+    
+    if ([block isActionEnabled:NoteActionSpamKey]) {
+        [otherButtonTitles addObject:spamTitle];
+    }
+    
+    // Render the actionSheet
+    __typeof(self) __weak weakSelf = self;
+    UIActionSheet *actionSheet  = [[UIActionSheet alloc] initWithTitle:nil
+                                                     cancelButtonTitle:cancelTitle
+                                                destructiveButtonTitle:nil
+                                                     otherButtonTitles:otherButtonTitles
+                                                            completion:^(NSString *buttonTitle) {
+                                                                if ([buttonTitle isEqualToString:editTitle]) {
+                                                                    [weakSelf editCommentWithBlock:block];
+                                                                } else if ([buttonTitle isEqualToString:spamTitle]) {
+                                                                    [weakSelf spamCommentWithBlock:block];
+                                                                }
+                                                            }];
+    
+    [actionSheet showInView:self.view.window];
+}
+
 
 #pragma mark - Action Handlers
 
 - (void)followSiteWithBlock:(NotificationBlock *)block
 {
     [WPAnalytics track:WPAnalyticsStatNotificationPerformedAction];
-    
-    [WPToast showToastWithMessage:NSLocalizedString(@"Followed", @"Followed a blog")
-                    andImageNamed:NotificationActionFollowIcon];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderSiteService *service      = [[ReaderSiteService alloc] initWithManagedObjectContext:context];
@@ -390,9 +427,6 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 - (void)unfollowSiteWithBlock:(NotificationBlock *)block
 {
     [WPAnalytics track:WPAnalyticsStatNotificationPerformedAction];
-    
-    [WPToast showToastWithMessage:NSLocalizedString(@"Unfollowed", @"Unfollowed a blog")
-                    andImageNamed:NotificationActionUnfollowIcon];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderSiteService *service      = [[ReaderSiteService alloc] initWithManagedObjectContext:context];
@@ -466,22 +500,65 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 
 - (void)spamCommentWithBlock:(NotificationBlock *)block
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationFlaggedAsSpam];
+    NSInteger const btnIndexSpam = 1;
     
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
+    // Callback Block
+    UIAlertViewCompletionBlock completion = ^(UIAlertView *alertView, NSInteger buttonIndex) {
+        if (buttonIndex != btnIndexSpam) {
+            return;
+        }
+        
+        [WPAnalytics track:WPAnalyticsStatNotificationFlaggedAsSpam];
+        
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
+        
+        [service spamCommentWithID:block.metaCommentID blogID:block.metaSiteID success:nil failure:nil];
+    };
     
-    [service spamCommentWithID:block.metaCommentID blogID:block.metaSiteID success:nil failure:nil];
+    // Show the alertView
+    NSString *message = NSLocalizedString(@"Are you sure you want to mark this comment as Spam?",
+                                          @"Message asking for confirmation before marking a comment as spam");
+    
+    [UIAlertView showWithTitle:NSLocalizedString(@"Confirm", @"Confirm")
+                       message:message
+             cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+             otherButtonTitles:@[NSLocalizedString(@"Spam", @"Spam")]
+                      tapBlock:completion];
 }
 
 - (void)trashCommentWithBlock:(NotificationBlock *)block
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationTrashed];
+    NSInteger const btnIndexTrash = 1;
     
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
+    // Callback Block
+    UIAlertViewCompletionBlock completion = ^(UIAlertView *alertView, NSInteger buttonIndex) {
+        if (buttonIndex != btnIndexTrash) {
+            return;
+        }
+        
+        [WPAnalytics track:WPAnalyticsStatNotificationTrashed];
+        
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
+        
+        [service deleteCommentWithID:block.metaCommentID blogID:block.metaSiteID success:nil failure:nil];
+    };
+ 
+    // Show the alertView
+    NSString *message = NSLocalizedString(@"Are you sure you want to delete this comment?",
+                                          @"Message asking for confirmation on comment deletion");
     
-    [service deleteCommentWithID:block.metaCommentID blogID:block.metaSiteID success:nil failure:nil];
+    [UIAlertView showWithTitle:NSLocalizedString(@"Confirm", @"Confirm")
+                       message:message
+             cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+             otherButtonTitles:@[NSLocalizedString(@"Delete", @"Delete")]
+                      tapBlock:completion];
+}
+
+- (void)editCommentWithBlock:(NotificationBlock *)block
+{
+#warning TODO: Implement Me
 }
 
 
