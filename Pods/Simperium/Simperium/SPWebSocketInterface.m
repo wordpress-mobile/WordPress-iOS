@@ -16,6 +16,7 @@
 #import "SPWebSocket.h"
 #import "SPWebSocketChannel.h"
 #import "SPEnvironment.h"
+#import <Security/Security.h>
 
 
 
@@ -182,15 +183,44 @@ typedef NS_ENUM(NSInteger, SPMessageIndex) {
 	// Prevent multiple 'openWebSocket' calls to get executed
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(openWebSocket) object:nil];
 	
+	// Prepare the Request: Handle certificate pinning stuff
+    NSString *urlString                 = [NSString stringWithFormat:@"%@/%@/websocket", SPWebsocketURL, self.simperium.appID];
+    NSMutableURLRequest *request        = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    request.SR_SSLPinnedCertificates    = [self loadTrustedCertificates];
+
 	// Open the socket!
-    NSString *urlString         = [NSString stringWithFormat:@"%@/%@/websocket", SPWebsocketURL, self.simperium.appID];
-    SPWebSocket *newWebSocket   = [[SPWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
-    self.webSocket              = newWebSocket;
-    self.webSocket.delegate     = self;
-    self.open                   = NO;
+    SPWebSocket *newWebSocket           = [[SPWebSocket alloc] initWithURLRequest:request];
+    self.webSocket                      = newWebSocket;
+    self.webSocket.delegate             = self;
+    self.open                           = NO;
 	
     SPLogVerbose(@"Simperium opening WebSocket connection...");
     [self.webSocket open];
+}
+
+- (NSArray *)loadTrustedCertificates {
+    NSArray *allowedCertificates    = nil;
+    NSDate *expirationDate          = [NSDate dateWithTimeIntervalSince1970:SPCertificateExpiration];
+    NSDate *currentDate             = [NSDate date];
+    
+    // Verify if the certificate hasn't expired!
+    if ([currentDate compare:expirationDate] == NSOrderedAscending) {
+        
+        NSData *rawCertificate              = [[NSData alloc] initWithBase64Encoding:SPCertificatePayload];
+        SecCertificateRef parsedCertificate = SecCertificateCreateWithData(NULL, (__bridge CFDataRef)rawCertificate);
+        
+        if (parsedCertificate) {
+            SPLogVerbose(@"Pinned Certificate is Valid: Proceeding with extra checks!");
+            allowedCertificates = @[ (__bridge id)parsedCertificate ];
+        } else {
+            SPLogError(@"Error: Could not load Pinned Certificate Payload!");
+        }
+        
+    } else {
+        SPLogError(@"Error: Simperium's Pinned Certificate has Expired!");
+    }
+    
+    return allowedCertificates;
 }
 
 - (void)start:(SPBucket *)bucket {

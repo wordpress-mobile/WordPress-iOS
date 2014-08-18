@@ -2,8 +2,8 @@
 
 @implementation WPBlogSelectorButton
 
-- (void)layoutSubviews {
-    
+- (void)layoutSubviews
+{
     [super layoutSubviews];
     self.titleLabel.frame = [self titleRectForContentRect:self.bounds];
     self.imageView.frame = [self imageRectForContentRect:self.bounds];

@@ -12,6 +12,17 @@ typedef NS_ENUM(NSInteger, WPNoteTemplateType) {
     WPNoteTemplateBigBadge,
 };
 
+typedef NS_ENUM(NSInteger, WPNoteCommentActionType) {
+    WPNoteCommentActionTypeUnknown,
+    WPNoteCommentActionTypeApprove,
+    WPNoteCommentActionTypeUnapprove,
+    WPNoteCommentActionTypeSpam,
+    WPNoteCommentActionTypeUnspam,
+    WPNoteCommentActionTypeTrash,
+    WPNoteCommentActionTypeUntrash,
+    WPNoteCommentActionTypeReply,
+};
+
 @interface Note : SPManagedObject<WPContentViewProvider>
 
 @property (nonatomic,  readonly) NSNumber           *timestamp;
@@ -49,5 +60,7 @@ typedef NS_ENUM(NSInteger, WPNoteTemplateType) {
 - (BOOL)isFollow;
 - (BOOL)isRead;
 - (BOOL)statsEvent;
+
+- (WPNoteCommentActionType) commentActionTypeForString:(NSString*)action;
 
 @end

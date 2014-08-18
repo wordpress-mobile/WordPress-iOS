@@ -36,7 +36,6 @@
     return self;
 }
 
-
 #pragma mark - Public Methods
 
 - (void)configurePost:(ReaderPost *)post
@@ -73,7 +72,6 @@
     return self.post.isPrivate;
 }
 
-
 #pragma mark - Private Methods
 
 - (void)configureActionButtons
@@ -85,7 +83,7 @@
 
     NSMutableArray *actionButtons = [NSMutableArray array];
 
-    if(self.post.isLikesEnabled){
+    if (self.post.isLikesEnabled){
         [actionButtons addObject:self.likeButton];
     }
 
@@ -93,11 +91,11 @@
         [actionButtons addObject:self.commentButton];
     }
 
-    // Reblogging just for non private blogs with sharing enabled
-    if (![self privateContent] && self.post.isSharingEnabled) {
+    // Reblogging just for non private blogs
+    if (![self privateContent]) {
         [actionButtons addObject:self.reblogButton];
     }
-    
+
     self.actionButtons = actionButtons;
 
     [self updateActionButtons];
@@ -152,7 +150,6 @@
     attrView.delegate = self;
     return attrView;
 }
-
 
 #pragma mark - Action Methods
 

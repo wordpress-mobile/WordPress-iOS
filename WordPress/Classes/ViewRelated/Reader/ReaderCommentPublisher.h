@@ -14,6 +14,8 @@
 
 @end
 
+
+
 @interface ReaderCommentPublisher : NSObject <InlineComposeViewDelegate>
 
 @property (nonatomic, weak) id <ReaderCommentPublisherDelegate> delegate;
@@ -21,6 +23,6 @@
 @property (nonatomic, strong) ReaderComment *comment;
 @property (nonatomic, strong, readonly) InlineComposeView *composeView;
 
-- (id)initWithComposer:(InlineComposeView *)composeView andPost:(ReaderPost *)post;
+- (id)initWithComposer:(InlineComposeView *)composeView;
 
 @end
