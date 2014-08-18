@@ -8,6 +8,7 @@
 #import "WPWebViewController.h"
 #import "NSDate+StringFormatting.h"
 #import "NSString+Helpers.h"
+#import "Comment.h"
 
 #define RCTVCVerticalPadding 10.0f
 #define RCTVCIndentationWidth 40.0f
@@ -17,7 +18,7 @@
 
 @interface ReaderCommentTableViewCell()<DTAttributedTextContentViewDelegate>
 
-@property (nonatomic, strong) ReaderComment *comment;
+@property (nonatomic, strong) Comment *comment;
 @property (nonatomic, strong) DTAttributedTextContentView *textContentView;
 @property (nonatomic, strong) UIImageView *avatarImageView;
 @property (nonatomic, strong) UIButton *bylineButton;
@@ -29,7 +30,7 @@
 
 @implementation ReaderCommentTableViewCell
 
-+ (CGFloat)heightForComment:(ReaderComment *)comment width:(CGFloat)width tableStyle:(UITableViewStyle)tableStyle accessoryType:(UITableViewCellAccessoryType *)accessoryType
++ (CGFloat)heightForComment:(Comment *)comment width:(CGFloat)width tableStyle:(UITableViewStyle)tableStyle accessoryType:(UITableViewCellAccessoryType *)accessoryType
 {
     static DTAttributedTextContentView *textContentView;
     static dispatch_once_t onceToken;
@@ -211,7 +212,7 @@
 
 #pragma mark - Instance Methods
 
-- (void)configureCell:(ReaderComment *)comment
+- (void)configureCell:(Comment *)comment
 {
     self.comment = comment;
 
@@ -226,7 +227,7 @@
     self.bylineButton.enabled = ([authorUrl length] > 0);
 
     // Highlighting the author of the post
-    if ([authorUrl isEqualToString:comment.post.authorURL]) {
+    if ([authorUrl isEqualToString:[(ReaderPost *)comment.post authorURL]]) {
         [self.bylineButton setTitleColor:[WPStyleGuide jazzyOrange] forState:UIControlStateNormal];
         [self.bylineButton setTitleColor:[WPStyleGuide jazzyOrange] forState:UIControlStateDisabled];
     }
