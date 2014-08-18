@@ -141,7 +141,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
 - (void)refreshLabelPreferredMaxLayoutWidth
 {
-    CGFloat width = CGRectGetWidth(self.bounds) - (WPContentViewHorizontalInnerPadding * 2);
+    CGFloat width = CGRectGetWidth(self.bounds) - (WPContentViewOuterMargin * 2);
     for (UILabel *label in self.labelsNeedingPreferredMaxLayoutWidth) {
         [label setPreferredMaxLayoutWidth:width];
     }

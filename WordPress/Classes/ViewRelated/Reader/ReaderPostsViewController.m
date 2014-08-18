@@ -333,6 +333,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     view.frame = frame;
 }
 
+
 #pragma mark - ReaderPostContentView delegate methods
 
 - (void)postView:(ReaderPostContentView *)postView didReceiveReblogAction:(id)sender
@@ -932,6 +933,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     self.hasMoreContent = YES;
 
     [self.tableView setContentOffset:CGPointMake(0, 0) animated:NO];
+
+    [self.cachedRowHeights removeAllObjects];
     [self resetResultsController];
     [self.tableView reloadData];
     [self syncItems];
@@ -963,7 +966,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (BOOL)isCurrentTagFreshlyPressed
 {
-    return [self.currentTopic.title rangeOfString:@"freshly-pressed"].location != NSNotFound;
+    return [self.currentTopic.path rangeOfString:@"freshly-pressed"].location != NSNotFound;
 }
 
 - (NSDictionary *)tagPropertyForStats
