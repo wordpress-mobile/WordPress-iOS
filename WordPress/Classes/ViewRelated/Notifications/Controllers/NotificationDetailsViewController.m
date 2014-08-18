@@ -248,6 +248,8 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     cell.name                       = block.text;
     cell.blogTitle                  = block.metaTitlesHome;
     
+#warning TODO: Implement Follow
+    
     [cell downloadGravatarWithURL:media.mediaURL];
 }
 
@@ -373,7 +375,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 
 - (void)displayMoreActionsWithBlock:(NotificationBlock *)block
 {
-    NSString *editTitle     = NSLocalizedString(@"Edit", @"Edit a comment");
+    NSString *editTitle     = NSLocalizedString(@"Edit Comment", @"Edit a comment");
     NSString *spamTitle     = NSLocalizedString(@"Mark as Spam", @"Mark a comment as spam");
     NSString *cancelTitle   = NSLocalizedString(@"Cancel", nil);
     
