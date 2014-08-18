@@ -209,14 +209,19 @@ NSString const *NoteHeightKey           = @"height";
     [_actionsOverride removeObjectForKey:key];
 }
 
-- (BOOL)hasActions
-{
-    return self.actions.count;
-}
-
 - (NSNumber *)actionForKey:(NSString *)key
 {
     return [self.actionsOverride numberForKey:key] ?: [self.actions numberForKey:key];
+}
+
+- (BOOL)isActionEnabled:(NSString *)key
+{
+    return [self actionForKey:key] != nil;
+}
+
+- (BOOL)isActionOn:(NSString *)key
+{
+    return [[self actionForKey:key] boolValue];
 }
 
 + (NSArray *)blocksFromArray:(NSArray *)rawBlocks notification:(Notification *)notification
