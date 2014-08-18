@@ -9,9 +9,9 @@ import Foundation
             nameLabel.text  = name ?? String()
         }
     }
-    public var blogURL: String? {
+    public var blogTitle: String? {
         didSet {
-            blogLabel.text  = blogURL ?? String()
+            blogLabel.text  = blogTitle ?? String()
         }
     }
     
@@ -41,9 +41,6 @@ import Foundation
         nameLabel.textColor                 = Notification.Colors.blockHeader
         nameLabel.font                      = Notification.Fonts.blockHeader
         
-        taglineLabel.font                   = Notification.Fonts.blockHeader
-        taglineLabel.textColor              = Notification.Colors.blockHeader
-        
         blogLabel.font                      = Notification.Fonts.blockSubtitle
         blogLabel.textColor                 = Notification.Colors.blockSubtitle
         blogLabel.adjustsFontSizeToFitWidth = false;
@@ -72,7 +69,7 @@ import Foundation
     
     // MARK: - IBOutlets
     @IBOutlet private weak var nameLabel:           UILabel!
-    @IBOutlet private weak var taglineLabel:        UILabel!
     @IBOutlet private weak var blogLabel:           UILabel!
+    @IBOutlet private weak var followButton:        UIButton!
     @IBOutlet private weak var gravatarImageView:   UIImageView!
 }
