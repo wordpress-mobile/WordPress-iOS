@@ -46,16 +46,23 @@ import Foundation
     public override func awakeFromNib() {
         super.awakeFromNib()
         
-        let moreTitle = NSLocalizedString("More", comment: "Verb, display More actions for a comment")
+        let textColor   = Notification.Colors.actionText
+        let moreTitle   = NSLocalizedString("More",  comment: "Verb, display More actions for a comment")
+        let trashTitle  = NSLocalizedString("Trash", comment: "Move a comment to the trash")
+        let spamTitle   = NSLocalizedString("Spam",  comment: "Verb, mark a comment as spam")
+        
+        btnLike.setTitleColor(textColor, forState: .Normal)
+        
         btnMore.setTitle(moreTitle, forState: .Normal)
+        btnMore.setTitleColor(textColor, forState: .Normal)
         btnMore.accessibilityLabel = moreTitle
         
-        let trashTitle = NSLocalizedString("Trash", comment: "Move a comment to the trash")
         btnTrash.setTitle(trashTitle, forState: .Normal)
+        btnTrash.setTitleColor(textColor, forState: .Normal)
         btnTrash.accessibilityLabel = trashTitle
         
-        let spamTitle = NSLocalizedString("Spam", comment: "Verb, mark a comment as spam")
         btnSpam.setTitle(spamTitle, forState: .Normal)
+        btnSpam.setTitleColor(textColor, forState: .Normal)
         btnSpam.accessibilityLabel = spamTitle
     }
     
