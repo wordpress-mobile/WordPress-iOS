@@ -14,6 +14,7 @@ NSString const *NoteActionApproveKey    = @"approve-comment";
 NSString const *NoteActionSpamKey       = @"spam-comment";
 NSString const *NoteActionTrashKey      = @"trash-comment";
 NSString const *NoteActionLikeKey       = @"like-comment";
+NSString const *NoteActionEditKey       = @"approve-comment";
 
 NSString const *NoteLinkTypeUser        = @"user";
 NSString const *NoteLinkTypePost        = @"post";
@@ -249,7 +250,7 @@ NSString const *NoteHeightKey           = @"height";
             block.type = NoteBlockTypesUser;
             
         //  Comments
-        } else if ([block.metaCommentID isEqual:notification.metaCommentID]) {
+        } else if ([block.metaCommentID isEqual:notification.metaCommentID] && block.metaSiteID != nil) {
             block.type = NoteBlockTypesComment;
 
         //  Quotes: Another comment that doesn't match with the note comment
