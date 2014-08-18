@@ -55,6 +55,7 @@ static CGFloat const NoteEstimatedHeight            = 80;
 
 - (void)dealloc
 {
+    DDLogMethod();
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[UIApplication sharedApplication] removeObserver:self forKeyPath:NSStringFromSelector(@selector(applicationIconBadgeNumber))];
 }
@@ -86,7 +87,6 @@ static CGFloat const NoteEstimatedHeight            = 80;
 
 - (void)viewDidLoad
 {
-    DDLogMethod();
     [super viewDidLoad];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
@@ -335,12 +335,12 @@ static CGFloat const NoteEstimatedHeight            = 80;
     if (rowCacheValue) {
         return rowCacheValue.floatValue;
     }
-    
+
     return NoteEstimatedHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+{    
     // Hit the cache first
     NSNumber *rowCacheValue = self.cachedRowHeights[indexPath];
     if (rowCacheValue) {
@@ -355,7 +355,7 @@ static CGFloat const NoteEstimatedHeight            = 80;
     
     // Cache
     self.cachedRowHeights[indexPath] = @(height);
-    
+
     return height;
 }
 
