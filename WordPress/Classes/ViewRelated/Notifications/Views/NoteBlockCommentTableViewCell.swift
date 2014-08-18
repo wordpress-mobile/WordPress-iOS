@@ -1,20 +1,69 @@
 import Foundation
 
 
-// FIXME: Implement!
 @objc public class NoteBlockCommentTableViewCell : NoteBlockTextTableViewCell
 {
     public typealias EventHandler = (() -> Void)
-    
-    public var actionsEnabled:  Bool            = false
+
+    // MARK: - Public Properties
     public var onLikeClick:     EventHandler?
     public var onUnlikeClick:   EventHandler?
     public var onSpamClick:     EventHandler?
     public var onTrashClick:    EventHandler?
     public var onMoreClick:     EventHandler?
+
+    public var isLikeEnabled: Bool = false {
+        didSet {
+            btnLike.enabled = isLikeEnabled
+        }
+    }
+    public var isSpamEnabled: Bool = false {
+        didSet {
+            btnSpam.enabled = isSpamEnabled
+        }
+    }
+    public var isTrashEnabled: Bool = false {
+        didSet {
+            btnTrash.enabled = isTrashEnabled
+        }
+    }
+    public var isMoreEnabled: Bool = false {
+        didSet {
+            btnMore.enabled = isMoreEnabled
+        }
+    }
+    public var isLikeOn: Bool = false {
+        didSet {
+            let likeTitle = isLikeOn ? NSLocalizedString("Unlike", comment: "Unlike a comment") :
+                NSLocalizedString("Like", comment: "Like a comment")
+            
+            btnLike.setTitle(likeTitle, forState: .Normal)
+            btnLike.accessibilityLabel = likeTitle
+        }
+    }
+
+    // MARK: - View Methods
+    public override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        let moreTitle = NSLocalizedString("More", comment: "Verb, display More actions for a comment")
+        btnMore.setTitle(moreTitle, forState: .Normal)
+        btnMore.accessibilityLabel = moreTitle
+        
+        let trashTitle = NSLocalizedString("Trash", comment: "Move a comment to the trash")
+        btnTrash.setTitle(trashTitle, forState: .Normal)
+        btnTrash.accessibilityLabel = trashTitle
+        
+        let spamTitle = NSLocalizedString("Spam", comment: "Verb, mark a comment as spam")
+        btnSpam.setTitle(spamTitle, forState: .Normal)
+        btnSpam.accessibilityLabel = spamTitle
+    }
     
+    // MARK: - IBActions
     @IBAction public func likeWasPressed(sender: AnyObject) {
-        hitEventHandler(onLikeClick)
+        let handler = isLikeOn ? onUnlikeClick : onLikeClick
+        hitEventHandler(handler)
+        isLikeOn = !isLikeOn
     }
     
     @IBAction public func spamWasPressed(sender: AnyObject) {
@@ -34,4 +83,10 @@ import Foundation
             listener()
         }
     }
+    
+    // MARK: - IBOutlets
+    @IBOutlet private weak var btnLike  : UIButton!
+    @IBOutlet private weak var btnSpam  : UIButton!
+    @IBOutlet private weak var btnTrash : UIButton!
+    @IBOutlet private weak var btnMore  : UIButton!
 }
