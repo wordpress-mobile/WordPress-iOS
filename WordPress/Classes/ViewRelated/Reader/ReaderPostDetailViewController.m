@@ -26,7 +26,7 @@
 #import "WPNoResultsView+AnimatedBox.h"
 
 //static NSInteger const ReaderCommentsToSync = 100;
-static NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
+//static NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
 static CGFloat const SectionHeaderHeight = 25.0f;
 
 @interface ReaderPostDetailViewController ()<UIActionSheetDelegate,
@@ -86,10 +86,9 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
 - (void)dealloc
 {
-    self.resultsController.delegate = nil;
-    self.tableView.delegate = nil;
-    self.postView.delegate = nil;
-    self.commentPublisher.delegate = nil;
+    _resultsController.delegate = nil;
+    _postView.delegate = nil;
+    _commentPublisher.delegate = nil;
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
