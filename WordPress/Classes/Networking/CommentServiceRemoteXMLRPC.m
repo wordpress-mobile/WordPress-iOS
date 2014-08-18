@@ -21,7 +21,8 @@
 
 - (void)getCommentsForBlog:(Blog *)blog
                    success:(void (^)(NSArray *))success
-                   failure:(void (^)(NSError *))failure {
+                   failure:(void (^)(NSError *))failure
+{
     NSDictionary *extraParameters = @{
                                      @"number": @100
                                      };
@@ -43,7 +44,8 @@
 - (void)getCommentWithID:(NSNumber *)commentID
                  forBlog:(Blog *)blog
                  success:(void (^)(RemoteComment *comment))success
-                 failure:(void (^)(NSError *))failure {
+                 failure:(void (^)(NSError *))failure
+{
     NSArray *parameters = [blog getXMLRPCArgsWithExtra:commentID];
     [self.api callMethod:@"wp.getComment"
               parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -60,7 +62,8 @@
 - (void)createComment:(RemoteComment *)comment
               forBlog:(Blog *)blog
               success:(void (^)(RemoteComment *comment))success
-              failure:(void (^)(NSError *error))failure {
+              failure:(void (^)(NSError *error))failure
+{
     NSParameterAssert(comment.postID != nil);
     NSDictionary *commentDictionary = @{
                                         @"content": comment.content,
@@ -90,7 +93,8 @@
 - (void)updateComment:(RemoteComment *)comment
               forBlog:(Blog *)blog
               success:(void (^)(RemoteComment *comment))success
-              failure:(void (^)(NSError *error))failure {
+              failure:(void (^)(NSError *error))failure
+{
     NSParameterAssert(comment.commentID != nil);
     NSArray *extraParameters = @[
                                  comment.commentID,
@@ -116,7 +120,8 @@
 - (void)moderateComment:(RemoteComment *)comment
                 forBlog:(Blog *)blog
                 success:(void (^)(RemoteComment *))success
-                failure:(void (^)(NSError *))failure {
+                failure:(void (^)(NSError *))failure
+{
     NSParameterAssert(comment.commentID != nil);
     NSArray *extraParameters = @[
                                  comment.commentID,
@@ -142,7 +147,8 @@
 - (void)trashComment:(RemoteComment *)comment
              forBlog:(Blog *)blog
              success:(void (^)())success
-             failure:(void (^)(NSError *))failure {
+             failure:(void (^)(NSError *))failure
+{
     NSParameterAssert(comment.commentID != nil);
     NSArray *parameters = [blog getXMLRPCArgsWithExtra:comment.commentID];
     [self.api callMethod:@"wp.deleteComment"
@@ -160,7 +166,8 @@
 
 #pragma mark - Private methods
 
-- (NSArray *)remoteCommentsFromXMLRPCArray:(NSArray *)xmlrpcArray {
+- (NSArray *)remoteCommentsFromXMLRPCArray:(NSArray *)xmlrpcArray
+{
     NSMutableArray *comments = [NSMutableArray arrayWithCapacity:xmlrpcArray.count];
     for (NSDictionary *xmlrpcComment in xmlrpcArray) {
         [comments addObject:[self remoteCommentFromXMLRPCDictionary:xmlrpcComment]];
@@ -168,7 +175,8 @@
     return [NSArray arrayWithArray:comments];
 }
 
-- (RemoteComment *)remoteCommentFromXMLRPCDictionary:(NSDictionary *)xmlrpcDictionary {
+- (RemoteComment *)remoteCommentFromXMLRPCDictionary:(NSDictionary *)xmlrpcDictionary
+{
     RemoteComment *comment = [RemoteComment new];
     comment.author = xmlrpcDictionary[@"author"];
     comment.authorEmail = xmlrpcDictionary[@"author_email"];

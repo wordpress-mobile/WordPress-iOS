@@ -1,7 +1,6 @@
 #import <XCTest/XCTest.h>
 #import "CoreDataTestHelper.h"
 #import "Blog.h"
-#import "AsyncTestHelper.h"
 #import "WPAccount.h"
 #import "AccountService.h"
 #import "ContextManager.h"
@@ -24,11 +23,9 @@
 {
     [super setUp];
 
-    ATHStart();
     AccountService *service = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
     WPAccount *account = [service createOrUpdateWordPressComAccountWithUsername:@"test" password:@"test" authToken:@"token"];
 
-    ATHEnd();
     [service setDefaultWordPressComAccount:account];
 }
 
@@ -44,31 +41,34 @@
     }
 
     [[CoreDataTestHelper sharedHelper] reset];
+    [CoreDataTestHelper sharedHelper].testExpectation = nil;
 }
 
 - (void)testObjectPermanence {
-    ATHStart();
+    XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
+    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
 
     NSManagedObjectContext *derivedContext = [[ContextManager sharedInstance] newDerivedContext];
     Blog *blog = [self createTestBlogWithContext:derivedContext];
     [[ContextManager sharedInstance] saveDerivedContext:derivedContext];
 
     // Wait on the merge to be completed
-    ATHEnd();
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
     
     XCTAssertFalse(blog.objectID.isTemporaryID, @"Object ID should be permanent");
 }
 
 - (void)testObjectExistenceInBackgroundFromMainSave
 {
-    ATHStart();
+    XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
+    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
     
     NSManagedObjectContext *mainMOC = [[ContextManager sharedInstance] mainContext];
     Blog *blog = [self createTestBlogWithContext:mainMOC];
     [[ContextManager sharedInstance] saveContext:mainMOC];
 
     // Wait on the merge to be completed
-    ATHEnd();
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
     
     XCTAssertFalse(blog.objectID.isTemporaryID, @"Object ID should be permanent");
     NSManagedObjectContext *bgMOC = [[ContextManager sharedInstance] newDerivedContext];
@@ -80,14 +80,15 @@
 }
 
 - (void)testObjectExistenceInMainFromBackgroundSave {
-    ATHStart();
+    XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
+    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
 
     NSManagedObjectContext *derivedContext = [[ContextManager sharedInstance] newDerivedContext];
     Blog *blog = [self createTestBlogWithContext:derivedContext];
     [[ContextManager sharedInstance] saveDerivedContext:derivedContext];
     
     // Wait on the merge to be completed
-    ATHEnd();
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
     
     XCTAssertFalse(blog.objectID.isTemporaryID, @"Object ID should be permanent");
     
@@ -107,9 +108,12 @@
     AccountService *service = [[AccountService alloc] initWithManagedObjectContext:derivedContext];
     WPAccount *account = [service createOrUpdateWordPressComAccountWithUsername:@"test" password:@"test" authToken:@"token"];
 
-    ATHStart();
+    XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
+    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
+
     [[ContextManager sharedInstance] saveDerivedContext:derivedContext];
-    ATHWait();
+
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
     
     // Check for existence in the main context
     WPAccount *mainAccount = (WPAccount *)[mainContext existingObjectWithID:account.objectID error:nil];
@@ -121,10 +125,13 @@
     blog.url = @"http://test.wordpress.com/";
     blog.account = mainAccount;
     
+    saveExpectation = [self expectationWithDescription:@"Context save expectation"];
+    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
+
     // Check that the save completes
     XCTAssertNoThrow([[ContextManager sharedInstance] saveContext:mainContext], @"Saving should be successful");
     
-    ATHEnd();
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
     
     XCTAssertFalse(blog.objectID.isTemporaryID, @"Blog object ID should be permanent");
     Blog *backgroundBlog = (Blog *)[derivedContext existingObjectWithID:blog.objectID error:nil];
@@ -139,28 +146,35 @@
     XCTAssertNotNil([service defaultWordPressComAccount], @"Account should be present");
     XCTAssertEqualObjects([service defaultWordPressComAccount].managedObjectContext, [ContextManager sharedInstance].mainContext, @"Account should have been created on main context");
     
-    ATHStart();
+    XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
+    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
+
     NSManagedObjectID *accountID = [service defaultWordPressComAccount].objectID;
     [mainContext performBlockAndWait:^{
         [service removeDefaultWordPressComAccount];
     }];
-    ATHEnd();
+    
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
 
     // Ensure object deleted in background context as well
-    ATHStart();
+    saveExpectation = [self expectationWithDescription:@"Context save expectation"];
+    
     NSManagedObjectContext *derivedContext = [[ContextManager sharedInstance] newDerivedContext];
     [derivedContext performBlockAndWait:^{
         WPAccount *backgroundAccount = (WPAccount *)[derivedContext existingObjectWithID:accountID error:nil];
         XCTAssertTrue(backgroundAccount == nil || backgroundAccount.isDeleted, @"Account should be considered deleted");
-        ATHNotify();
+        [saveExpectation fulfill];
     }];
-    ATHEnd();
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    
 }
 
 - (void)testDerivedContext {
-    return;
     // Create a new derived context, which the mainContext is the parent
-    ATHStart();
+    XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
+    XCTestExpectation *derivedSaveExpectation = [self expectationWithDescription:@"Derived context save expectation"];
+    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
+
     NSManagedObjectContext *derived = [[ContextManager sharedInstance] newDerivedContext];
     __block NSManagedObjectID *blogObjectID;
     __block Blog *newBlog;
@@ -172,7 +186,7 @@
 
         NSString *xmlrpc = @"http://blog.com/xmlrpc.php";
         NSString *url = @"blog.com";
-        Blog *newBlog = [service findBlogWithXmlrpc:xmlrpc inAccount:derivedAccount];
+        newBlog = [service findBlogWithXmlrpc:xmlrpc inAccount:derivedAccount];
         if (!newBlog) {
             newBlog = [service createBlogWithAccount:derivedAccount];
             newBlog.xmlrpc = xmlrpc;
@@ -184,10 +198,12 @@
             
             Blog *mainContextBlog =  (Blog *)[[ContextManager sharedInstance].mainContext existingObjectWithID:newBlog.objectID error:nil];
             XCTAssertNotNil(mainContextBlog, @"The new blog should exist in the main (parent) context");
+            [derivedSaveExpectation fulfill];
         }];
     }];
-    ATHEnd();
-    
+
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+
     // Should be accessible in both contexts: main, background
     blogObjectID = newBlog.objectID;
     XCTAssertFalse(blogObjectID.isTemporaryID, @"Object should be permanent");

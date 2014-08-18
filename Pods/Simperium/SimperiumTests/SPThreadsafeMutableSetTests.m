@@ -49,7 +49,7 @@ static NSUInteger const SPConcurrentWorkers	= 100;
 	XCTAssert(set.count == 0, @"Error deleting object");
 }
 
-- (void)testThreading {
+- (void)testThreadSafety {
 	
 	// If you replace SPThreadsafeMutableSet with the regular NSMutableSet, you should see a nice error: "pointer being freed was not allocated"
 	SPThreadsafeMutableSet *set = [SPThreadsafeMutableSet set];

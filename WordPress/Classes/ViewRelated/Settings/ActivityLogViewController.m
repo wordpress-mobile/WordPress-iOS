@@ -43,7 +43,7 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self loadLogFiles];
-    
+
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:ActivityLogCellIdentifier];
 }
 
@@ -58,7 +58,8 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
     self.logFiles = self.fileLogger.logFileManager.sortedLogFileInfos;
 }
 
-- (NSDateFormatter *)dateFormatter {
+- (NSDateFormatter *)dateFormatter
+{
     if (_dateFormatter) {
         return _dateFormatter;
     }
@@ -78,13 +79,15 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0)
+    if (section == 0) {
         return self.logFiles.count;
+    }
 
     return 1;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ActivityLogCellIdentifier];
     if (indexPath.section == 0) {
         DDLogFileInfo *logFileInfo = (DDLogFileInfo *)self.logFiles[indexPath.row];
@@ -101,36 +104,42 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
     return cell;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
     WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
     header.title = [self titleForHeaderInSection:section];
     return header;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
     NSString *title = [self titleForHeaderInSection:section];
     return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
-- (NSString *)titleForHeaderInSection:(NSInteger)section {
+- (NSString *)titleForHeaderInSection:(NSInteger)section
+{
     if (section == 0) {
         return NSLocalizedString(@"Log Files By Created Date", @"");
     }
     return nil;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
     WPTableViewSectionFooterView *header = [[WPTableViewSectionFooterView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
     header.title = [self titleForFooterInSection:section];
     return header;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
     NSString *title = [self titleForFooterInSection:section];
     return [WPTableViewSectionFooterView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
-- (NSString *)titleForFooterInSection:(NSInteger)section {
+- (NSString *)titleForFooterInSection:(NSInteger)section
+{
     if (section == 0) {
         return NSLocalizedString(@"Seven days worth of log files are kept on file.", @"");
     }
@@ -153,8 +162,9 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
         [self.navigationController pushViewController:detailViewController animated:YES];
     } else {
         for (DDLogFileInfo *logFileInfo in self.logFiles) {
-            if (logFileInfo.isArchived)
+            if (logFileInfo.isArchived) {
                 [[NSFileManager defaultManager] removeItemAtPath:logFileInfo.filePath error:nil];
+            }
         }
 
         DDLogWarn(@"All archived log files erased.");
