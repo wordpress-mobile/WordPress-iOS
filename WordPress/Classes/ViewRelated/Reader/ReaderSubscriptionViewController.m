@@ -1,17 +1,22 @@
 #import "ReaderSubscriptionViewController.h"
+#import "ReaderEditableSubscriptionPage.h"
 #import "WPFriendFinderViewController.h"
 #import "SubscribedTopicsViewController.h"
 #import "RecommendedTopicsViewController.h"
+#import "FollowedSitesViewController.h"
 #import "ContextManager.h"
 #import "WPAccount.h"
 #import "AccountService.h"
 #import "ReaderTopicService.h"
+#import "ReaderSiteService.h"
 #import "WPTableViewCell.h"
 #import "WPAlertView.h"
+#import "WPToast.h"
 
 static NSString *const FriendFinderURL = @"https://en.wordpress.com/reader/mobile/v2/?template=friendfinder";
 static NSString *const SubscribedTopicsPageIdentifier = @"SubscribedTopicsPageIdentifier";
 static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPageIdentifier";
+static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifier";
 
 @interface ReaderSubscriptionPagePlaceholder : NSObject
 @property (nonatomic, strong) NSString *identifier;
@@ -53,6 +58,7 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     if (self) {
         [self configureControllers];
         [self syncTopics];
+        [self syncSites];
     }
     return self;
 }
@@ -86,7 +92,6 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-
 #pragma mark - Private Methods
 
 - (void)syncTopics
@@ -98,6 +103,18 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
         // noop
     } failure:^(NSError *error) {
         DDLogError(@"Error background syncing topics : %@", error);
+    }];
+}
+
+- (void)syncSites
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+
+    ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:context];
+    [service fetchFollowedSitesWithSuccess:^{
+        //noop.
+    } failure:^(NSError *error) {
+        DDLogError(@"Error background syncing followed sites : %@", error);
     }];
 }
 
@@ -152,14 +169,84 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     if (placeholder.controller) {
         return placeholder.controller;
     }
+
+    // Lazy load controllers.
     if ([placeholder.identifier isEqualToString:SubscribedTopicsPageIdentifier]) {
         placeholder.controller = [[SubscribedTopicsViewController alloc] init];
 
     } else if ([placeholder.identifier isEqualToString:RecommendedTopicsPageIdentifier]) {
         placeholder.controller = [[RecommendedTopicsViewController alloc] init];
+
+    } else if ([placeholder.identifier isEqualToString:FollowedSitesPageIdentifier]) {
+        placeholder.controller = [[FollowedSitesViewController alloc] init];
     }
 
     return placeholder.controller;
+}
+
+
+#pragma mark - Follow Topic / Site Methods
+
+- (void)followTopicOrSite:(NSString *)topicOrSite
+{
+    NSString *str = [topicOrSite trim];
+    if (![str length]) {
+        return;
+    }
+
+    NSURL *site = [self URLFromString:str];
+    if (site) {
+        [self followSite:site];
+    } else {
+        [self followTopicNamed:str];
+    }
+}
+
+- (NSURL *)URLFromString:(NSString *)str
+{
+    // if the string contains space its not a URL
+    if ([str rangeOfString:@" "].location != NSNotFound) {
+        return nil;
+    }
+
+    // if the string does not have either a dot or protocol its not a URL
+    if ([str rangeOfString:@"."].location == NSNotFound && [str rangeOfString:@"://"].location == NSNotFound) {
+        return nil;
+    }
+
+    NSString *urlStr = str;
+    if ([urlStr rangeOfString:@"://"].location == NSNotFound) {
+        urlStr = [NSString stringWithFormat:@"http://%@", urlStr];
+    }
+
+    NSURL *url = [NSURL URLWithString:urlStr];
+    if (![url host]) {
+        return nil;
+    }
+
+    return url;
+}
+
+- (void)followSite:(NSURL *)site
+{
+    ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    [service followSiteByURL:site success:^{
+        [self syncSites];
+        [WPToast showToastWithMessage:NSLocalizedString(@"Followed", @"User followed a site.")
+                             andImage:[UIImage imageNamed:@"action-icon-followed"]];
+        [service syncPostsForFollowedSites];
+    } failure:^(NSError *error) {
+        DDLogError(@"Could not follow site: %@", error);
+
+        NSString *title = NSLocalizedString(@"Could not Follow Site", @"");
+        NSString *description = [error localizedDescription];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
+                                                            message:description
+                                                           delegate:nil
+                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"Label text for the close button on an alert view.")
+                                                  otherButtonTitles:nil, nil];
+        [alertView show];
+    }];
 }
 
 - (void)followTopicNamed:(NSString *)topicName
@@ -171,7 +258,7 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
         DDLogError(@"Could not follow topic: %@", error);
 
         NSString *title = NSLocalizedString(@"Could not Follow Topic", @"");
-        NSString *description = error.localizedDescription;
+        NSString *description = [error localizedDescription];
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
                                                             message:description
                                                            delegate:nil
@@ -181,7 +268,6 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     }];
 }
 
-
 #pragma mark - Configuration
 
 - (void)configureControllers
@@ -189,14 +275,23 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     self.controllers = [NSMutableArray array];
     ReaderSubscriptionPagePlaceholder *placeholder;
 
-    if ([self isWPComUser]) {
-        placeholder = [[ReaderSubscriptionPagePlaceholder alloc] init];
-        placeholder.identifier = SubscribedTopicsPageIdentifier;
-        [self.controllers addObject:placeholder];
-    }
-
+    // Recommended topics is our default
     placeholder = [[ReaderSubscriptionPagePlaceholder alloc] init];
     placeholder.identifier = RecommendedTopicsPageIdentifier;
+    [self.controllers addObject:placeholder];
+
+    if (![self isWPComUser]) {
+        return;
+    }
+
+    // Followed topics. Insert at index zero so its the first thing shown.
+    placeholder = [[ReaderSubscriptionPagePlaceholder alloc] init];
+    placeholder.identifier = SubscribedTopicsPageIdentifier;
+    [self.controllers insertObject:placeholder atIndex:0];
+
+    // Followed sites
+    placeholder = [[ReaderSubscriptionPagePlaceholder alloc] init];
+    placeholder.identifier = FollowedSitesPageIdentifier;
     [self.controllers addObject:placeholder];
 }
 
@@ -258,7 +353,8 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     }
 
     // Edit button
-    if (self.currentIndex == 0 && [self isWPComUser]) {
+    UIViewController *controller = [self currentViewController];
+    if ([controller conformsToProtocol:@protocol(ReaderEditableSubscriptionPage)]) {
         self.navigationItem.rightBarButtonItem = self.editButtonItem;
     } else {
         self.navigationItem.rightBarButtonItem = nil;
@@ -327,7 +423,6 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     return format;
 }
 
-
 #pragma mark - Accessors
 
 - (UIBarButtonItem *)cancelButton
@@ -352,7 +447,7 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     UISearchBar *searchBar = [[UISearchBar alloc] init];
     searchBar.delegate = self;
     searchBar.translatesAutoresizingMaskIntoConstraints = NO;
-    searchBar.placeholder = NSLocalizedString(@"Enter a tag to follow", @"Placeholder text prompting the user to type the name of the tag they would like to follow.");
+    searchBar.placeholder = NSLocalizedString(@"Enter a tag or URL to follow", @"Placeholder text prompting the user to type the name of the tag or URL they would like to follow.");
     searchBar.translucent = NO;
     searchBar.barTintColor = [WPStyleGuide itsEverywhereGrey];
     searchBar.backgroundImage = [[UIImage alloc] init];
@@ -478,7 +573,8 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     return _titleLabel;
 }
 
-- (UIPageControl *)pageControl {
+- (UIPageControl *)pageControl
+{
     if (_pageControl) {
         return _pageControl;
     }
@@ -490,7 +586,6 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
 
     return _pageControl;
 }
-
 
 #pragma mark - Action Methods
 
@@ -526,7 +621,6 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
     [self.searchBar resignFirstResponder];
 }
 
-
 #pragma mark - Search Bar Delegate Methods
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
@@ -538,11 +632,10 @@ static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPage
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    [self followTopicNamed:searchBar.text];
+    [self followTopicOrSite:searchBar.text];
     searchBar.text = nil;
     [searchBar resignFirstResponder];
 }
-
 
 #pragma mark - Pageview Controller Delegate Methods
 

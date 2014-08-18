@@ -20,7 +20,7 @@
     #import "NSString+Util.h"
     #import "WPError.h"
     #import "UIColor+Helpers.h"
-    #import "WPAnalytics.h"
+    #import <WordPressCom-Analytics-iOS/WPAnalytics.h>
     #import "WPStyleGuide.h"
 
 #ifndef IS_IPAD

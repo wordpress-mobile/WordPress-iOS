@@ -1,7 +1,8 @@
 #import <UIKit/UIKit.h>
 #import "WPStatsViewController.h"
+#import <WPTableViewCell.h>
 
-@interface WPStatsLinkToWebviewCell : UITableViewCell
+@interface WPStatsLinkToWebviewCell : WPTableViewCell
 
 @property (nonatomic, copy) void (^onTappedLinkToWebview)(void);
 

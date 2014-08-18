@@ -39,6 +39,14 @@
  */
 @property (nonatomic, assign) BOOL resizesImagesSynchronously;
 
+
+/**
+ When YES, images requested via the Photon API use the `resize` method with the potential to be resized larger than their native size.
+ When NO, images requested via the Photon API use the `fit` method, down-sizing to fit the specified size if necessary, but never scaling up.  The specified size must not have a zero height or else the `resize` method is used instead.
+ The default is `YES`.
+ */
+@property (nonatomic, assign) BOOL forceLargerSizeWhenFetching;
+
 /**
  Returns an image if there's a valid cached copy
 

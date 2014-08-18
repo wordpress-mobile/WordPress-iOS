@@ -13,7 +13,8 @@ CGFloat InlineComposeToolbarViewMinToolbarWidth = 320.f;
 
 @implementation InlineComposeToolbarView
 
-- (id)initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(CGRect)frame
+{
     self = [super initWithFrame:frame];
     if (self) {
         [self setDefaulsPropertyValues];
@@ -21,7 +22,8 @@ CGFloat InlineComposeToolbarViewMinToolbarWidth = 320.f;
     return self;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
     self = [super initWithCoder:aDecoder];
     if (self) {
         [self setDefaulsPropertyValues];
@@ -29,19 +31,22 @@ CGFloat InlineComposeToolbarViewMinToolbarWidth = 320.f;
     return self;
 }
 
-- (void)setDefaulsPropertyValues {
+- (void)setDefaulsPropertyValues
+{
     _maxToolbarWidth = InlineComposeToolbarViewMaxToolbarWidth;
     _minToolbarWidth = InlineComposeToolbarViewMinToolbarWidth;
     _borderColor = [UIColor colorWithWhite:0.88f alpha:1.f];
     [self addBorder];
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     self.borderColor = nil;
     self.borderLayer = nil;
 }
 
-- (void)addBorder {
+- (void)addBorder
+{
     _borderLayer = [CALayer layer];
     _borderLayer.backgroundColor = [self.borderColor CGColor];
 
@@ -54,7 +59,8 @@ CGFloat InlineComposeToolbarViewMinToolbarWidth = 320.f;
 
 }
 
-- (void)setMaxToolbarWidth:(CGFloat)maxToolbarWidth {
+- (void)setMaxToolbarWidth:(CGFloat)maxToolbarWidth
+{
     if (maxToolbarWidth == _maxToolbarWidth) {
         return;
     }
@@ -64,7 +70,8 @@ CGFloat InlineComposeToolbarViewMinToolbarWidth = 320.f;
     [self setNeedsLayout];
 }
 
-- (void)layoutSubviews {
+- (void)layoutSubviews
+{
     [super layoutSubviews];
 
     if (!self.composerContainerView){

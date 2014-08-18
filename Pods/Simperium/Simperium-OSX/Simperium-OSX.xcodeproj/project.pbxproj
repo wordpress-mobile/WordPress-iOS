@@ -99,10 +99,6 @@
 		4617AEBC179A1A3400545BD9 /* SPReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 4617AEBA179A1A3400545BD9 /* SPReachability.m */; };
 		46263BB117A7778E00131791 /* SPAuthenticationConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 46263BAF17A7778E00131791 /* SPAuthenticationConfiguration.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		46263BB217A7778E00131791 /* SPAuthenticationConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 46263BB017A7778E00131791 /* SPAuthenticationConfiguration.m */; };
-		463774E5171FC6D500E2E333 /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = 463774DE171FC6D500E2E333 /* base64.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		463774E6171FC6D500E2E333 /* base64.h in Headers */ = {isa = PBXBuildFile; fileRef = 463774DF171FC6D500E2E333 /* base64.h */; };
-		463774E7171FC6D500E2E333 /* NSData+SRB64Additions.h in Headers */ = {isa = PBXBuildFile; fileRef = 463774E0171FC6D500E2E333 /* NSData+SRB64Additions.h */; };
-		463774E8171FC6D500E2E333 /* NSData+SRB64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 463774E1171FC6D500E2E333 /* NSData+SRB64Additions.m */; };
 		463774E9171FC6D500E2E333 /* SocketRocket-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 463774E2171FC6D500E2E333 /* SocketRocket-Prefix.pch */; };
 		463774EA171FC6D500E2E333 /* SRWebSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 463774E3171FC6D500E2E333 /* SRWebSocket.h */; };
 		463774EB171FC6D500E2E333 /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 463774E4171FC6D500E2E333 /* SRWebSocket.m */; };
@@ -291,10 +287,6 @@
 		4617AEBA179A1A3400545BD9 /* SPReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPReachability.m; sourceTree = "<group>"; };
 		46263BAF17A7778E00131791 /* SPAuthenticationConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPAuthenticationConfiguration.h; path = ../../Simperium/SPAuthenticationConfiguration.h; sourceTree = "<group>"; };
 		46263BB017A7778E00131791 /* SPAuthenticationConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPAuthenticationConfiguration.m; path = ../../Simperium/SPAuthenticationConfiguration.m; sourceTree = "<group>"; };
-		463774DE171FC6D500E2E333 /* base64.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = base64.c; sourceTree = "<group>"; };
-		463774DF171FC6D500E2E333 /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
-		463774E0171FC6D500E2E333 /* NSData+SRB64Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+SRB64Additions.h"; sourceTree = "<group>"; };
-		463774E1171FC6D500E2E333 /* NSData+SRB64Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+SRB64Additions.m"; sourceTree = "<group>"; };
 		463774E2171FC6D500E2E333 /* SocketRocket-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SocketRocket-Prefix.pch"; sourceTree = "<group>"; };
 		463774E3171FC6D500E2E333 /* SRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRWebSocket.h; sourceTree = "<group>"; };
 		463774E4171FC6D500E2E333 /* SRWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRWebSocket.m; sourceTree = "<group>"; };
@@ -635,10 +627,6 @@
 		463774DD171FC6D500E2E333 /* SocketRocket */ = {
 			isa = PBXGroup;
 			children = (
-				463774DE171FC6D500E2E333 /* base64.c */,
-				463774DF171FC6D500E2E333 /* base64.h */,
-				463774E0171FC6D500E2E333 /* NSData+SRB64Additions.h */,
-				463774E1171FC6D500E2E333 /* NSData+SRB64Additions.m */,
 				463774E2171FC6D500E2E333 /* SocketRocket-Prefix.pch */,
 				463774E3171FC6D500E2E333 /* SRWebSocket.h */,
 				463774E4171FC6D500E2E333 /* SRWebSocket.m */,
@@ -820,8 +808,6 @@
 				26C3E1531666FE7500620306 /* SPWebSocketChannel.h in Headers */,
 				B58EC3181885B6C400ED37E5 /* SPPersistentMutableSet.h in Headers */,
 				B53E4888182AAC58000AA4C8 /* NSURLResponse+Simperium.h in Headers */,
-				463774E6171FC6D500E2E333 /* base64.h in Headers */,
-				463774E7171FC6D500E2E333 /* NSData+SRB64Additions.h in Headers */,
 				463774E9171FC6D500E2E333 /* SocketRocket-Prefix.pch in Headers */,
 				463774EA171FC6D500E2E333 /* SRWebSocket.h in Headers */,
 				46D5BC41174C2A9B0027DBAF /* SPRelationshipResolver.h in Headers */,
@@ -986,9 +972,7 @@
 				2698BE5115C908C80020565F /* SPSchema.m in Sources */,
 				2698BE5715C9097A0020565F /* JRSwizzle.m in Sources */,
 				26C3E1541666FE7500620306 /* SPWebSocketChannel.m in Sources */,
-				463774E5171FC6D500E2E333 /* base64.c in Sources */,
 				B525F1FA188429A8003E4AA0 /* STKeychain.m in Sources */,
-				463774E8171FC6D500E2E333 /* NSData+SRB64Additions.m in Sources */,
 				463774EB171FC6D500E2E333 /* SRWebSocket.m in Sources */,
 				B59AAC96185B90F000B557D3 /* SPThreadsafeMutableSet.m in Sources */,
 				46D5BC42174C2A9B0027DBAF /* SPRelationshipResolver.m in Sources */,

@@ -3,11 +3,13 @@
 
 @implementation NewNotificationsTableViewCell
 
-+ (BOOL)showGravatarImage {
++ (BOOL)showGravatarImage
+{
     return YES;
 }
 
-+ (BOOL)supportsUnreadStatus {
++ (BOOL)supportsUnreadStatus
+{
     return YES;
 }
 
@@ -21,21 +23,20 @@
     if (title.length == 0) {
         title = NSLocalizedString(@"(No Title)", nil);
     }
-    
+
     NSMutableAttributedString *attributedPostTitle = [[NSMutableAttributedString alloc] initWithString:title attributes:[[self class] titleAttributes]];
-    
+
     // Bold text in quotes. This code should be rewritten when the API is more flexible
     // and includes out-of-band data
     NSScanner *scanner = [NSScanner scannerWithString:title];
     NSString *tmp;
-    
-    while ([scanner isAtEnd] == NO)
-    {
+
+    while ([scanner isAtEnd] == NO) {
         [scanner scanUpToString:@"\"" intoString:NULL];
         [scanner scanString:@"\"" intoString:NULL];
         [scanner scanUpToString:@"\"" intoString:&tmp];
         [scanner scanString:@"\"" intoString:NULL];
-        
+
         if (tmp.length > 0) {
             NSRange itemRange = [title rangeOfString:tmp];
             if (itemRange.location != NSNotFound) {
@@ -43,7 +44,7 @@
             }
         }
     }
-    
+
     // Bold text up until "liked", "commented", or "followed"
     NSArray *keywords = @[@"liked", @"commented", @"followed"];
     for (NSString *keyword in keywords) {
@@ -53,7 +54,6 @@
             break;
         }
     }
-    
 
     if (content.length > 0) {
         [attributedPostTitle appendAttributedString:[[NSAttributedString alloc] initWithString:@": "]];

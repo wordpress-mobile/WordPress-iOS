@@ -6,6 +6,7 @@
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import "WPStatsViewController_Private.h"
+#import "BlogService.h"
 
 static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
@@ -15,7 +16,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 @implementation StatsViewController
 
-- (id)init {
+- (id)init
+{
     self = [super init];
     if (self) {
         self.statsDelegate = self;
@@ -23,52 +25,47 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     return self;
 }
 
-- (void)viewDidLoad
+- (void)setBlog:(Blog *)blog
 {
-    [super viewDidLoad];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    
-}
-
-- (void)setBlog:(Blog *)blog {
     _blog = blog;
     DDLogInfo(@"Loading Stats for the following blog: %@", [blog url]);
-    
+
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if (!appDelegate.connectionAvailable) {
         [self showNoResultsWithTitle:NSLocalizedString(@"No Connection", @"") message:NSLocalizedString(@"An active internet connection is required to view stats", @"")];
-    } else {
-        [self initStats];
     }
 }
 
-- (void)initStats {
+- (void)initStats
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    
+    self.siteTimeZone = [blogService timeZoneForBlog:self.blog];
+
     if (self.blog.isWPcom) {
-        
+
         self.oauth2Token = self.blog.restApi.authToken;
         self.siteID = self.blog.blogID;
-        
+
         [super initStats];
         return;
     }
-    
+
     // Jetpack
     BOOL needsJetpackLogin = ![self.blog.jetpackAccount.restApi hasCredentials];
     if (!needsJetpackLogin && self.blog.jetpackBlogID && self.blog.jetpackAccount) {
         self.siteID = self.blog.jetpackBlogID;
         self.oauth2Token = self.blog.jetpackAccount.restApi.authToken;
-        
+
         [super initStats];
     } else {
         [self promptForJetpackCredentials];
     }
 }
 
-- (void)promptForJetpackCredentials {
+- (void)promptForJetpackCredentials
+{
     if (self.showingJetpackLogin) {
         return;
     }
@@ -87,7 +84,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
             [self initStats];
         }
     }];
-    
+
     self.tableView.scrollEnabled = NO;
     [self addChildViewController:controller];
     [self.tableView addSubview:controller.view];
@@ -109,7 +106,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     [super encodeRestorableStateWithCoder:coder];
 }
 
-+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
     NSURL *blogObjectURL = [coder decodeObjectForKey:StatsBlogObjectURLRestorationKey];
     if (!blogObjectURL) {
         return nil;
