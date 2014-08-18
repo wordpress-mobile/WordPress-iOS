@@ -116,8 +116,8 @@
                                                 <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
-                                            <state key="selected" image="notifications-unapprove"/>
-                                            <state key="highlighted" image="notifications-unapprove"/>
+                                            <state key="selected" image="notifications-approved"/>
+                                            <state key="highlighted" image="notifications-approved"/>
                                             <connections>
                                                 <action selector="approveWasPressed:" destination="oku-4A-odK" eventType="touchUpInside" id="lXB-cJ-kbW"/>
                                             </connections>
@@ -321,11 +321,11 @@
     <resources>
         <image name="left.png" width="85" height="85"/>
         <image name="notifications-approve" width="21" height="21"/>
+        <image name="notifications-approved" width="21" height="21"/>
         <image name="notifications-like" width="21" height="21"/>
         <image name="notifications-liked" width="21" height="21"/>
         <image name="notifications-more" width="21" height="21"/>
         <image name="notifications-trash" width="21" height="21"/>
-        <image name="notifications-unapprove" width="21" height="21"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
