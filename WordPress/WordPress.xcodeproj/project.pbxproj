@@ -238,6 +238,7 @@
 		B532D4EB199D4357006E4DF6 /* NoteBlockTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B532D4E7199D4357006E4DF6 /* NoteBlockTableViewCell.swift */; };
 		B532D4EC199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B532D4E8199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift */; };
 		B532D4EE199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B532D4ED199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift */; };
+		B548458219A258890077E7A5 /* UIActionSheet+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B548458119A258890077E7A5 /* UIActionSheet+Helpers.m */; };
 		B54D257619A017E000C6FDA2 /* UIImageView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D257519A017E000C6FDA2 /* UIImageView+Helpers.swift */; };
 		B54D257A19A1084F00C6FDA2 /* NoteTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B54D257919A1084F00C6FDA2 /* NoteTableViewCell.xib */; };
 		B55853F31962337500FAF6C3 /* NSScanner+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B55853F21962337500FAF6C3 /* NSScanner+Helpers.m */; };
@@ -802,6 +803,8 @@
 		B532D4E7199D4357006E4DF6 /* NoteBlockTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteBlockTableViewCell.swift; sourceTree = "<group>"; };
 		B532D4E8199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteBlockTextTableViewCell.swift; sourceTree = "<group>"; };
 		B532D4ED199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteBlockImageTableViewCell.swift; sourceTree = "<group>"; };
+		B548458019A258890077E7A5 /* UIActionSheet+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Helpers.h"; sourceTree = "<group>"; };
+		B548458119A258890077E7A5 /* UIActionSheet+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+Helpers.m"; sourceTree = "<group>"; };
 		B54D257519A017E000C6FDA2 /* UIImageView+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Helpers.swift"; sourceTree = "<group>"; };
 		B54D257919A1084F00C6FDA2 /* NoteTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteTableViewCell.xib; sourceTree = "<group>"; };
 		B55853F11962337500FAF6C3 /* NSScanner+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScanner+Helpers.h"; sourceTree = "<group>"; };
@@ -1993,6 +1996,8 @@
 				46F8714E1838C41600BC149B /* NSDate+StringFormatting.m */,
 				E2AA87A318523E5300886693 /* UIView+Subviews.h */,
 				E2AA87A418523E5300886693 /* UIView+Subviews.m */,
+				B548458019A258890077E7A5 /* UIActionSheet+Helpers.h */,
+				B548458119A258890077E7A5 /* UIActionSheet+Helpers.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -2598,6 +2603,7 @@
 				5DF94E2D1962B97D00359241 /* NewPostTableViewCell.m in Sources */,
 				5DF94E501962BAEB00359241 /* ReaderPostAttributionView.m in Sources */,
 				93C1147F18EC5DD500DAC95C /* AccountService.m in Sources */,
+				B548458219A258890077E7A5 /* UIActionSheet+Helpers.m in Sources */,
 				85435BEA190F837500E868D0 /* WPUploadStatusView.m in Sources */,
 				8514DDA7190E2AB3009B6421 /* WPMediaMetadataExtractor.m in Sources */,
 				E13F23C314FE84600081D9CC /* NSMutableDictionary+Helpers.m in Sources */,
