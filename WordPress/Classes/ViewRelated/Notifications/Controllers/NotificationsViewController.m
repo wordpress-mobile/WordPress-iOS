@@ -32,7 +32,7 @@
 #pragma mark ====================================================================================
 
 static NSTimeInterval const NotificationPushMaxWait = 1;
-static CGFloat const NoteEstimatedHeight            = 80;
+static CGFloat const NoteEstimatedHeight            = 70;
 
 
 #pragma mark ====================================================================================
