@@ -31,12 +31,16 @@ extension Notification
         public static let backgroundUnread  = UIColor(red: 0xF1/255.0, green: 0xF6/255.0, blue: 0xF9/255.0, alpha: 0xFF/255.0)
         
         public static let timestamp         = UIColor(red: 0xB7/255.0, green: 0xC9/255.0, blue: 0xD5/255.0, alpha: 0xFF/255.0)
-        public static let blockBackground   = UIColor.clearColor()
+        
+        public static let blockBackground   = UIColor.whiteColor()
         public static let blockText         = WPStyleGuide.littleEddieGrey()
         public static let blockLink         = WPStyleGuide.baseLighterBlue()
         public static let blockHeader       = blockText
         public static let blockSubtitle     = WPStyleGuide.baseDarkerBlue()
+        
         public static let quotedText        = WPStyleGuide.allTAllShadeGrey()
+        
+        public static let actionText        = UIColor(red: 0x7F/255.0, green: 0x9E/255.0, blue: 0xB4/255.0, alpha: 0xFF/255.0)
     }
 
     public struct Styles
@@ -146,7 +150,7 @@ extension Notification
             return NSLocalizedString("Today", comment: "")
         }
     }
-    
+        
     // FIXME: Turn this into an enum, when llvm is fixed
     private struct Sections
     {
