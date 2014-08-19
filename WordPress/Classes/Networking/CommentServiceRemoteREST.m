@@ -20,6 +20,10 @@
     return self;
 }
 
+#pragma mark Public methods
+
+#pragma mark Blog-centric methods
+
 - (void)getCommentsForBlog:(Blog *)blog
                    success:(void (^)(NSArray *))success
                    failure:(void (^)(NSError *))failure
@@ -141,6 +145,30 @@
            }];
 }
 
+#pragma mark Post-centric methods
+
+- (void)syncHierarchicalCommentsForPost:(NSNumber *)postID
+                               fromSite:(NSNumber *)siteID
+                                   page:(NSUInteger)page
+                                success:(void (^)(NSArray *comments))success
+                                failure:(void (^)(NSError *error))failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%i/replies?hierarchical=1&page=%d", siteID, postID, page];
+
+    [self.api GET:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (success) {
+            NSDictionary *dict = (NSDictionary *)responseObject;
+            NSArray *comments = [self remoteCommentsFromJSONArray:[dict arrayForKey:@"comments"]];
+            success(comments);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+
 #pragma mark - Private methods
 
 - (NSArray *)remoteCommentsFromJSONArray:(NSArray *)jsonComments
@@ -150,26 +178,26 @@
         [comments addObject:[self remoteCommentFromJSONDictionary:jsonComment]];
     }
     return [NSArray arrayWithArray:comments];
-
 }
 
 - (RemoteComment *)remoteCommentFromJSONDictionary:(NSDictionary *)jsonDictionary
 {
     RemoteComment *comment = [RemoteComment new];
 
-    comment.author = jsonDictionary[@"author"][@"name"];
+    comment.author = [jsonDictionary stringForKeyPath:@"author.name"];
     // Email might be `false`, turn into `nil`
     comment.authorEmail = [jsonDictionary[@"author"] stringForKey:@"email"];
-    comment.authorUrl = jsonDictionary[@"author"][@"URL"];
-    comment.commentID = jsonDictionary[@"ID"];
-    comment.content = jsonDictionary[@"content"];
-    comment.date = [NSDate dateWithWordPressComJSONString:jsonDictionary[@"date"]];
-    comment.link = jsonDictionary[@"URL"];
+    comment.authorUrl = [jsonDictionary stringForKeyPath:@"author.URL"];
+    comment.authorAvatarURL = [jsonDictionary stringForKeyPath:@"author.avatar_URL"];
+    comment.commentID = [jsonDictionary numberForKey:@"ID"];
+    comment.content = [jsonDictionary stringForKey:@"content"];
+    comment.date = [NSDate dateWithWordPressComJSONString:[jsonDictionary stringForKey:@"date"]];
+    comment.link = [jsonDictionary stringForKey:@"URL"];
     comment.parentID = [jsonDictionary numberForKeyPath:@"parent.ID"];
     comment.postID = [jsonDictionary numberForKeyPath:@"post.ID"];
     comment.postTitle = [jsonDictionary stringForKeyPath:@"post.title"];
-    comment.status = [self statusWithRemoteStatus:jsonDictionary[@"status"]];
-    comment.type = jsonDictionary[@"type"];
+    comment.status = [self statusWithRemoteStatus:[jsonDictionary stringForKey:@"status"]];
+    comment.type = [jsonDictionary stringForKey:@"type"];
 
     return comment;
 }
