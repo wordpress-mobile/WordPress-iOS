@@ -559,6 +559,24 @@ name:MediaShouldInsertBelowNotification object:nil];
     }
 }
 
+/**
+ *	@brief		Returns a BOOL specifying if the status bar should be hidden while typing.
+ *	@details	The status bar should never hide on the iPad.
+ *
+ *	@returns	YES if the keyboard should be hidden, NO otherwise.
+ */
+- (BOOL)shouldHideStatusBarWhileTyping
+{
+    /*
+     Never hide for the iPad.
+     Always hide on the iPhone except for portrait + external keyboard
+     */
+    if (IS_IPAD) {
+        return NO;
+    }
+    return YES;
+}
+
 #pragma mark - Custom UI elements
 
 - (UIBarButtonItem*)cancelBarButtonItem
@@ -988,12 +1006,20 @@ name:MediaShouldInsertBelowNotification object:nil];
 - (void)editorDidBeginEditing:(WPEditorViewController *)editorController
 {
     self.post.postTitle = self.titleText;
+	
+	if ([self shouldHideStatusBarWhileTyping])
+	{
+		[[UIApplication sharedApplication] setStatusBarHidden:YES
+												withAnimation:UIStatusBarAnimationSlide];
+	}
     
     [self refreshNavigationBarButtons];
 }
 
 - (void)editorDidEndEditing:(WPEditorViewController *)editorController
 {
+	[[UIApplication sharedApplication] setStatusBarHidden:NO
+											withAnimation:UIStatusBarAnimationSlide];
 }
 
 - (void)editorTitleDidChange:(WPEditorViewController *)editorController
