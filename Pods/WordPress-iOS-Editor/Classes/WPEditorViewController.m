@@ -1349,7 +1349,6 @@ NSInteger const WPLinkAlertViewTag = 92;
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     if (textField == self.titleTextField) {
-        [self setTitle:[textField.text stringByReplacingCharactersInRange:range withString:string]];
         if ([self.delegate respondsToSelector: @selector(editorTitleDidChange:)]) {
             [self.delegate editorTitleDidChange:self];
         }
@@ -1508,10 +1507,6 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 			[self setHtml:@""];
 		}
 		
-		//if ([self shouldHideNavbarWhileTyping]) {
-		//	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-		//	[self.navigationController setNavigationBarHidden:YES animated:YES];
-		//}
 		[self.navigationController setToolbarHidden:YES animated:NO];
 		
 		CGRect localizedKeyboardEnd = [self.view convertRect:keyboardEnd fromView:nil];
@@ -1555,8 +1550,8 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
         self.isShowingKeyboard = NO;
         [self refreshUI];
         
-        //[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-        //[self.navigationController setNavigationBarHidden:NO animated:YES];
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
         [self.navigationController setToolbarHidden:NO animated:NO];
         
 		[UIView animateWithDuration:duration delay:0 options:animationOptions animations:^{
@@ -1573,18 +1568,6 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
             self.sourceView.frame = sourceFrame;
         } completion:nil];
 	}
-}
-
-- (BOOL)shouldHideNavbarWhileTyping
-{
-    /*
-     Never hide for the iPad.
-     Always hide on the iPhone except for portrait + external keyboard
-     */
-    if (IS_IPAD) {
-        return NO;
-    }
-    return YES;
 }
 
 #pragma mark - Utilities
