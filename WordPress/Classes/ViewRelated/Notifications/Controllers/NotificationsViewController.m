@@ -94,8 +94,8 @@ static CGFloat const NoteEstimatedHeight            = 70;
     self.infiniteScrollEnabled = NO;
 
     // Register the cells
-    NSString *nibName           = [NoteTableViewCell reuseIdentifier];
-    self.tableViewCellNib       = [UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]];
+    NSString *cellNibName       = [NoteTableViewCell classNameWithoutNamespaces];
+    self.tableViewCellNib       = [UINib nibWithNibName:cellNibName bundle:[NSBundle mainBundle]];
     [self.tableView registerNib:_tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell layoutIdentifier]];
     [self.tableView registerNib:_tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell reuseIdentifier]];
     
@@ -294,29 +294,24 @@ static CGFloat const NoteEstimatedHeight            = 70;
 
 #pragma mark - UITableViewDelegate
 
-#warning TODO: Implement Header View
-
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
-    return [Notification descriptionForSectionIdentifier:sectionInfo.name];
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    return [NoteTableHeaderView headerHeight];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
-    if (title.length) {
-        WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
-        header.title = title;
-        return header;
-    }
-    return nil;
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
+    
+    NoteTableHeaderView *headerView = [[NoteTableHeaderView alloc] initWithWidth:CGRectGetWidth(tableView.bounds)];
+    headerView.title                = [Notification descriptionForSectionIdentifier:sectionInfo.name];
+    
+    return headerView;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
