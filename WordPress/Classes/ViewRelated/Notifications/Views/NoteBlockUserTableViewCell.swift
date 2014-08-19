@@ -6,12 +6,12 @@ import Foundation
     // MARK: - Public Properties
     public var name: String? {
         didSet {
-            nameLabel.text  = name ?? String()
+            nameLabel.text  = name != nil ? name! : String()
         }
     }
     public var blogTitle: String? {
         didSet {
-            blogLabel.text  = blogTitle ?? String()
+            blogLabel.text  = blogTitle != nil ? blogTitle! :  String()
         }
     }
     
