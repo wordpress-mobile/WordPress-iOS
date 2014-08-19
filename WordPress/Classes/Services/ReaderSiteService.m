@@ -129,15 +129,15 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         return;
     }
 
-    // Omit any protocol included in the URL.
+    // Include protocol if absent.
     NSString *sanitizedURL = siteURL;
     NSRange rng = [sanitizedURL rangeOfString:@"://"];
-    if (rng.location != NSNotFound) {
-        sanitizedURL = [sanitizedURL substringFromIndex:(rng.location + rng.length)];
+    if (rng.location == NSNotFound) {
+        sanitizedURL = [NSString stringWithFormat:@"http://%@", sanitizedURL];
     }
 
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
-    [service checkSubscribedToFeedByURL:[NSURL URLWithString:siteURL] success:^(BOOL follows) {
+    [service checkSubscribedToFeedByURL:[NSURL URLWithString:sanitizedURL] success:^(BOOL follows) {
         if (follows) {
             if (failure) {
                 failure([self errorForAlreadyFollowingSiteOrFeed]);
