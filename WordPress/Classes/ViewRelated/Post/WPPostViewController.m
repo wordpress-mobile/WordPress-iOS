@@ -346,7 +346,12 @@ name:MediaShouldInsertBelowNotification object:nil];
     
     if (![self hasChanges]) {
         [WPAnalytics track:WPAnalyticsStatEditorClosed];
-        [self discardChangesAndDismiss];
+		
+		if (self.editMode == EditPostViewControllerModeNewPost) {
+			[self discardChangesAndDismiss];
+		} else {
+			[self discardChanges];
+		}
         return;
     }
     
@@ -661,14 +666,18 @@ name:MediaShouldInsertBelowNotification object:nil];
     }];
 }
 
-- (void)discardChangesAndDismiss
+- (void)discardChanges
 {
     [self.post.original deleteRevision];
     
     if (self.editMode == EditPostViewControllerModeNewPost) {
         [self.post.original remove];
     }
-    
+}
+
+- (void)discardChangesAndDismiss
+{
+    [self discardChanges];
     [self dismissEditView];
 }
 
@@ -677,8 +686,10 @@ name:MediaShouldInsertBelowNotification object:nil];
     if (self.onClose) {
         self.onClose();
         self.onClose = nil;
-	} else{
+	} else if (self.presentingViewController) {
 		[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+	} else {
+		[self.navigationController popViewControllerAnimated:YES];
 	}
 }
 
