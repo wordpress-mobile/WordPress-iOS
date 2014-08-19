@@ -181,6 +181,26 @@ name:MediaShouldInsertBelowNotification object:nil];
 	[self refreshNavigationBar];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+	[super viewDidAppear:animated];
+	
+	if (self.isEditing) {
+		if ([self shouldHideStatusBarWhileTyping]) {
+			[[UIApplication sharedApplication] setStatusBarHidden:YES
+													withAnimation:UIStatusBarAnimationSlide];
+		}
+	}
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+	[super viewWillDisappear:animated];
+	
+	[[UIApplication sharedApplication] setStatusBarHidden:NO
+											withAnimation:UIStatusBarAnimationSlide];
+}
+
 #pragma mark - Actions
 
 - (void)showBlogSelectorPrompt
@@ -303,16 +323,12 @@ name:MediaShouldInsertBelowNotification object:nil];
 {
     Post *post = (Post *)self.post;
     PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post];
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
-    self.navigationItem.backBarButtonItem = backButton;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)showPreview
 {
     PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.post];
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
-    self.navigationItem.backBarButtonItem = backButton;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -332,7 +348,7 @@ name:MediaShouldInsertBelowNotification object:nil];
 
 - (void)cancelEditing
 {
-    if(_currentActionSheet) return;
+    if (_currentActionSheet) return;
     
 	[self stopEditing];
     [self.postSettingsViewController endEditingAction:nil];
@@ -501,27 +517,11 @@ name:MediaShouldInsertBelowNotification object:nil];
 {
 	if ([self isEditing]) {
 		
-		NSString *buttonTitle;
+		NSArray* rightBarButtons = @[[self saveBarButtonItem],
+									 [self optionsBarButtonItem],
+									 [self previewBarButtonItem]];
 		
-		if(![self.post hasRemote] || ![self.post.status isEqualToString:self.post.original.status]) {
-			if ([self.post.status isEqualToString:@"publish"] && ([self.post.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
-				buttonTitle = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
-				
-			} else if ([self.post.status isEqualToString:@"publish"]){
-				buttonTitle = NSLocalizedString(@"Publish", @"Publish button label.");
-				
-			} else {
-				buttonTitle = NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).");
-			}
-		} else {
-			buttonTitle = NSLocalizedString(@"Update", @"Update button label (saving content, ex: Post, Page, Comment).");
-		}
-		
-		UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
-																	   style:[WPStyleGuide barButtonStyleForDone]
-																	  target:self
-																	  action:@selector(saveAction)];
-		self.navigationItem.rightBarButtonItem = saveButton;
+		[self.navigationItem setRightBarButtonItems:rightBarButtons];
 		
 		BOOL updateEnabled = self.hasChanges || self.post.remoteStatus == AbstractPostRemoteStatusFailed;
 		[self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];
@@ -533,7 +533,11 @@ name:MediaShouldInsertBelowNotification object:nil];
 		titleTextAttributes = @{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName : color};
 		[self.navigationItem.rightBarButtonItem setTitleTextAttributes:titleTextAttributes forState:controlState];
 	} else {
-		self.navigationItem.rightBarButtonItem = [self editBarButtonItem];
+		
+		NSArray* rightBarButtons = @[[self editBarButtonItem],
+									 [self previewBarButtonItem]];
+		
+		[self.navigationItem setRightBarButtonItems:rightBarButtons];
 	}
 }
 
@@ -596,6 +600,56 @@ name:MediaShouldInsertBelowNotification object:nil];
 															  action:@selector(startEditing)];
 	
 	return button;
+}
+
+- (UIBarButtonItem *)optionsBarButtonItem
+{
+	UIImage* optionsImage = [UIImage imageNamed:@"icon-posts-editor-options"];
+	
+	UIBarButtonItem* optionsButton = [[UIBarButtonItem alloc] initWithImage:optionsImage
+																	  style:UIBarButtonItemStylePlain
+																	 target:self
+																	 action:@selector(showSettings)];
+	
+	return optionsButton;
+}
+
+- (UIBarButtonItem *)previewBarButtonItem
+{
+	UIImage* previewImage = [UIImage imageNamed:@"icon-posts-editor-preview"];
+	
+	UIBarButtonItem* previewButton = [[UIBarButtonItem alloc] initWithImage:previewImage
+																	  style:UIBarButtonItemStylePlain
+																	 target:self
+																	 action:@selector(showPreview)];
+	
+	return previewButton;
+}
+
+- (UIBarButtonItem *)saveBarButtonItem
+{
+	NSString *buttonTitle;
+	
+	if(![self.post hasRemote] || ![self.post.status isEqualToString:self.post.original.status]) {
+		if ([self.post.status isEqualToString:@"publish"] && ([self.post.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
+			buttonTitle = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
+			
+		} else if ([self.post.status isEqualToString:@"publish"]){
+			buttonTitle = NSLocalizedString(@"Publish", @"Publish button label.");
+			
+		} else {
+			buttonTitle = NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).");
+		}
+	} else {
+		buttonTitle = NSLocalizedString(@"Update", @"Update button label (saving content, ex: Post, Page, Comment).");
+	}
+	
+	UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
+																   style:[WPStyleGuide barButtonStyleForDone]
+																  target:self
+																  action:@selector(saveAction)];
+	
+	return saveButton;
 }
 
 - (UIButton *)titleBarButton
