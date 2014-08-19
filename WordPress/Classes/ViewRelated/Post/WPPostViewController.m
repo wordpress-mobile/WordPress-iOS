@@ -198,11 +198,8 @@ name:MediaShouldInsertBelowNotification object:nil];
 {
 	[super viewWillDisappear:animated];
 	
-	if (self.navigationController.isToolbarHidden)
-	{
-		[[UIApplication sharedApplication] setStatusBarHidden:NO
-												withAnimation:UIStatusBarAnimationSlide];
-	}
+	[[UIApplication sharedApplication] setStatusBarHidden:NO
+											withAnimation:UIStatusBarAnimationSlide];
 }
 
 #pragma mark - Actions
