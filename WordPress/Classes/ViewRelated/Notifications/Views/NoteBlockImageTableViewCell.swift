@@ -18,7 +18,6 @@ import Foundation
     
     // MARK: - View Methods
     public override func awakeFromNib() {
-        assert(blockImageView)
         selectionStyle  = .None
         backgroundColor = Notification.Colors.blockBackground
     }
