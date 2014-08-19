@@ -167,6 +167,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	
     [self createRevisionOfPost];
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
     
@@ -197,8 +198,11 @@ name:MediaShouldInsertBelowNotification object:nil];
 {
 	[super viewWillDisappear:animated];
 	
-	[[UIApplication sharedApplication] setStatusBarHidden:NO
-											withAnimation:UIStatusBarAnimationSlide];
+	if (self.navigationController.isToolbarHidden)
+	{
+		[[UIApplication sharedApplication] setStatusBarHidden:NO
+												withAnimation:UIStatusBarAnimationSlide];
+	}
 }
 
 #pragma mark - Actions
@@ -323,12 +327,14 @@ name:MediaShouldInsertBelowNotification object:nil];
 {
     Post *post = (Post *)self.post;
     PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post];
+	vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)showPreview
 {
     PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.post];
+	vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
