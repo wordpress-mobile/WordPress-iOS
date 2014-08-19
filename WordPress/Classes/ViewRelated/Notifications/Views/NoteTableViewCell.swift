@@ -43,11 +43,6 @@ import Foundation
     public override func awakeFromNib() {
         super.awakeFromNib()
         
-        assert(iconImageView)
-        assert(noticonLabel)
-        assert(noticonView)
-        assert(subjectLabel)
-        
         iconImageView.image             = UIImage(named: placeholderName)
         
         noticonView.layer.cornerRadius  = noticonRadius
