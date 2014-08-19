@@ -49,19 +49,13 @@ WPEditorViewControllerMode;
 #pragma mark - Editing
 
 /**
- *	@brief		Use this method to know if the user is currently editing the content.
+ *	@brief		Call this method to know if the VC is in edit mode.
+ *	@details	Edit mode has to be manually turned on and off, and is not reliant on fields gaining
+ *				or losing focus.
+ *
+ *	@returns	YES if the VC is in edit mode, NO otherwise.
  */
 - (BOOL)isEditing;
-
-/**
- *	@brief		Enables editing.
- */
-- (void)enableEditing;
-
-/**
- *	@brief		Disables editing.
- */
-- (void)disableEditing;
 
 /**
  *	@brief		Starts editing.

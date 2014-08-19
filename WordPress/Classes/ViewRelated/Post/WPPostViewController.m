@@ -330,19 +330,11 @@ name:MediaShouldInsertBelowNotification object:nil];
 
 #pragma mark - Editing
 
-- (void)startEditing
-{
-	[self enableEditing];
-	[self focusTextEditor];
-	
-	[self refreshNavigationBar];
-}
-
 - (void)cancelEditing
 {
     if(_currentActionSheet) return;
     
-	[self disableEditing];
+	[self stopEditing];
     [self.postSettingsViewController endEditingAction:nil];
 	
 	[self refreshNavigationBar];
@@ -454,8 +446,8 @@ name:MediaShouldInsertBelowNotification object:nil];
 
 #pragma mark - UI Manipulation
 
-- (void)refreshNavigationBar {
-	
+- (void)refreshNavigationBar
+{
 	[self refreshNavigationBarButtons];
 	
     // Configure the custom title view, or just set the navigationItem title.
@@ -520,15 +512,11 @@ name:MediaShouldInsertBelowNotification object:nil];
 			buttonTitle = NSLocalizedString(@"Update", @"Update button label (saving content, ex: Post, Page, Comment).");
 		}
 		
-		if (self.navigationItem.rightBarButtonItem == nil) {
-			UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
-																		   style:[WPStyleGuide barButtonStyleForDone]
-																		  target:self
-																		  action:@selector(saveAction)];
-			self.navigationItem.rightBarButtonItem = saveButton;
-		} else {
-			self.navigationItem.rightBarButtonItem.title = buttonTitle;
-		}
+		UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
+																	   style:[WPStyleGuide barButtonStyleForDone]
+																	  target:self
+																	  action:@selector(saveAction)];
+		self.navigationItem.rightBarButtonItem = saveButton;
 		
 		BOOL updateEnabled = self.hasChanges || self.post.remoteStatus == AbstractPostRemoteStatusFailed;
 		[self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];
@@ -1005,8 +993,6 @@ name:MediaShouldInsertBelowNotification object:nil];
 
 - (void)editorDidBeginEditing:(WPEditorViewController *)editorController
 {
-    self.post.postTitle = self.titleText;
-	
 	if ([self shouldHideStatusBarWhileTyping])
 	{
 		[[UIApplication sharedApplication] setStatusBarHidden:YES
