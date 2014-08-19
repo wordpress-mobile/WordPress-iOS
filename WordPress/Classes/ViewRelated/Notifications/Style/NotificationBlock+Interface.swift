@@ -4,7 +4,7 @@ import Foundation
 extension NotificationBlock
 {
     public func attributedSubject() -> NSAttributedString {
-        if !text {
+        if text == nil {
             return NSAttributedString()
         }
         
@@ -24,7 +24,7 @@ extension NotificationBlock
     }
     
     public func attributedTextRegular() -> NSAttributedString {
-        if !text {
+        if text == nil {
             return NSAttributedString()
         }
         
@@ -60,7 +60,7 @@ extension NotificationBlock
     }
 
     public func attributedTextQuoted() -> NSAttributedString {
-        if !text {
+        if text == nil {
             return NSAttributedString()
         }
 
