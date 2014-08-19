@@ -103,7 +103,6 @@ NSInteger const WPLinkAlertViewTag = 92;
     
     [self buildTextViews];
     [self buildToolbar];
-    [self buildBottomToolbar];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -115,19 +114,10 @@ NSInteger const WPLinkAlertViewTag = 92;
     // When restoring state, the navigationController is nil when the view loads,
     // so configure its appearance here instead.
     self.navigationController.navigationBar.translucent = NO;
-    self.navigationController.toolbarHidden = NO;
     UIToolbar *toolbar = self.navigationController.toolbar;
     toolbar.barTintColor = [WPStyleGuide itsEverywhereGrey];
     toolbar.translucent = NO;
     toolbar.barStyle = UIBarStyleDefault;
-    
-    if(self.navigationController.navigationBarHidden) {
-        [self.navigationController setNavigationBarHidden:NO animated:animated];
-    }
-    
-    if (self.navigationController.toolbarHidden) {
-        [self.navigationController setToolbarHidden:NO animated:animated];
-    }
     
     for (UIView *view in self.navigationController.toolbar.subviews) {
         [view setExclusiveTouch:YES];
@@ -576,49 +566,6 @@ NSInteger const WPLinkAlertViewTag = 92;
         self.sourceView.delegate = self;
     }
     [self.view addSubview:self.sourceView];
-}
-
-- (void)buildBottomToolbar
-{
-    if ([self.toolbarItems count] > 0) {
-        return;
-    }
-    
-    UIBarButtonItem *previewButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_preview"]
-                                                                      style:UIBarButtonItemStylePlain
-                                                                     target:self
-                                                                     action:@selector(didTouchPreview)];
-    UIBarButtonItem *photoButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_media"]
-                                                                    style:UIBarButtonItemStylePlain
-                                                                   target:self
-                                                                   action:@selector(didTouchMediaOptions)];
-    UIBarButtonItem *optionsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_options"]
-                                                                    style:UIBarButtonItemStylePlain
-                                                                   target:self
-                                                                   action:@selector(didTouchSettings)];
-    
-    previewButton.tintColor = [WPStyleGuide textFieldPlaceholderGrey];
-    photoButton.tintColor = [WPStyleGuide textFieldPlaceholderGrey];
-    optionsButton.tintColor = [WPStyleGuide textFieldPlaceholderGrey];
-    
-    previewButton.accessibilityLabel = NSLocalizedString(@"Preview post", nil);
-    photoButton.accessibilityLabel = NSLocalizedString(@"Add media", nil);
-    optionsButton.accessibilityLabel = NSLocalizedString(@"Options", @"Title of the Post Settings tableview cell in the Post Editor. Tapping shows settings and options related to the post being edited.");
-    
-    UIBarButtonItem *leftFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-                                                                                     target:nil
-                                                                                     action:nil];
-    UIBarButtonItem *rightFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-                                                                                      target:nil
-                                                                                      action:nil];
-    UIBarButtonItem *centerFlexSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                                                      target:nil
-                                                                                      action:nil];
-    
-    leftFixedSpacer.width = -2.0f;
-    rightFixedSpacer.width = -5.0f;
-    
-    self.toolbarItems = @[leftFixedSpacer, photoButton, centerFlexSpacer, optionsButton, centerFlexSpacer, previewButton, rightFixedSpacer];
 }
 
 #pragma mark - Getters and Setters
@@ -1533,7 +1480,6 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
     NSUInteger curve = [[info objectForKey:UIKeyboardAnimationCurveUserInfoKey] unsignedIntegerValue];
     CGRect keyboardEnd = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     
-    CGFloat toolbarHeight = self.toolbarHolder.frame.size.height;
     CGFloat keyboardHeight = UIInterfaceOrientationIsLandscape(orientation) ? keyboardEnd.size.width : keyboardEnd.size.height;
     UIViewAnimationOptions animationOptions = curve;
 	
@@ -1549,25 +1495,21 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 			[self setHtml:@""];
 		}
 		
-		[self.navigationController setToolbarHidden:YES animated:NO];
-		
 		CGRect localizedKeyboardEnd = [self.view convertRect:keyboardEnd fromView:nil];
 		CGPoint keyboardOrigin = localizedKeyboardEnd.origin;
 		CGFloat vOffset = self.view.frame.size.height - keyboardOrigin.y;
 		
-		[UIView animateWithDuration:duration delay:0 options:animationOptions animations:^{
-			// Editor View
-			CGRect editorFrame = self.editorView.frame;
-			editorFrame.size.height -= vOffset;
-			self.editorView.frame = editorFrame;
-			self.editorView.scrollView.contentInset = UIEdgeInsetsZero;
-			self.editorView.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
-			
-			// Source View
-			CGRect sourceFrame = self.sourceView.frame;
-			sourceFrame.size.height = (self.view.frame.size.height - keyboardHeight) - toolbarHeight;
-			self.sourceView.frame = sourceFrame;
-		} completion:nil];
+		CGRect editorFrame = self.editorView.frame;
+		editorFrame.size.height -= vOffset;
+		
+		CGRect sourceFrame = self.sourceView.frame;
+		sourceFrame.size.height -= vOffset;
+		
+		[self setEditorFrame:editorFrame
+				 sourceFrame:sourceFrame
+					animated:YES
+			animationOptions:animationOptions
+					duration:duration];
 	}
 }
 
@@ -1580,8 +1522,6 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
     NSUInteger curve = [[info objectForKey:UIKeyboardAnimationCurveUserInfoKey] unsignedIntegerValue];
     CGRect keyboardEnd = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     
-    CGFloat toolbarHeight = self.toolbarHolder.frame.size.height;
-    
     UIViewAnimationOptions animationOptions = curve;
 	
 	// DRM: WORKAROUND: for some weird reason, we are receiving multiple UIKeyboardWillHide notifications.
@@ -1591,22 +1531,47 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 		
         self.isShowingKeyboard = NO;
         [self refreshUI];
-        
-        [self.navigationController setToolbarHidden:NO animated:NO];
-        
-		[UIView animateWithDuration:duration delay:0 options:animationOptions animations:^{
-            // Editor View
-            CGRect editorFrame = self.editorView.frame;
-            editorFrame.size.height = self.view.frame.size.height - toolbarHeight;
-            self.editorView.frame = editorFrame;
-            self.editorView.scrollView.contentInset = UIEdgeInsetsZero;
-            self.editorView.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
-            
-            // Source View
-            CGRect sourceFrame = self.sourceView.frame;
-            sourceFrame.size.height = self.view.frame.size.height;
-            self.sourceView.frame = sourceFrame;
-        } completion:nil];
+		
+		CGRect editorFrame = self.editorView.frame;
+		editorFrame.size.height = self.view.frame.size.height - editorFrame.origin.y;
+		
+		CGRect sourceFrame = self.sourceView.frame;
+		sourceFrame.size.height = self.view.frame.size.height - sourceFrame.origin.y;
+		
+		[self setEditorFrame:editorFrame
+				 sourceFrame:sourceFrame
+					animated:YES
+			animationOptions:animationOptions
+					duration:duration];
+	}
+}
+
+#pragma mark - Editor frame
+
+- (void)setEditorFrame:(CGRect)editorFrame
+		   sourceFrame:(CGRect)sourceFrame
+			  animated:(BOOL)animated
+	  animationOptions:(UIViewAnimationOptions)animationOptions
+			  duration:(CGFloat)duration
+{
+	__weak typeof(self) weakSelf = self;
+	
+	void (^privateSetFrames)(CGRect frame, CGRect sourceFrame) = ^void(CGRect editorFrame,
+																	   CGRect sourceFrame)
+	{
+		weakSelf.editorView.frame = editorFrame;
+		weakSelf.sourceView.frame = sourceFrame;
+	};
+	
+	if (animated) {
+		[UIView animateWithDuration:duration
+							  delay:0
+							options:animationOptions
+						 animations:^{
+			privateSetFrames(editorFrame, sourceFrame);
+		} completion:nil];
+	} else {
+		privateSetFrames(editorFrame, sourceFrame);
 	}
 }
 
