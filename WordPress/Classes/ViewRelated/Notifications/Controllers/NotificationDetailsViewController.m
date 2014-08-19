@@ -22,6 +22,7 @@
 #import "NSScanner+Helpers.h"
 #import "UIActionSheet+Helpers.h"
 #import "UIAlertView+Blocks.h"
+#import "NSObject+Helpers.h"
 
 
 
