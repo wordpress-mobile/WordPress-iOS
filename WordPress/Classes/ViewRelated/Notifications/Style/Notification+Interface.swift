@@ -7,6 +7,7 @@ extension Notification
     {
         public static let noticon           = UIFont(name: "Noticons", size: 16)
         public static let timestamp         = WPFontManager.openSansRegularFontOfSize(14)
+        public static let headerText        = WPStyleGuide.tableviewSectionHeaderFont()
         
         private static let subjectSize      = CGFloat(14)
         public static let subjectRegular    = WPFontManager.openSansRegularFontOfSize(subjectSize)
@@ -26,6 +27,9 @@ extension Notification
     {
         public static let iconRead          = UIColor(red: 0xA4/255.0, green: 0xB9/255.0, blue: 0xC9/255.0, alpha: 0xFF/255.0)
         public static let iconUnread        = UIColor(red: 0x25/255.0, green: 0x9C/255.0, blue: 0xCF/255.0, alpha: 0xFF/255.0)
+        
+        public static let headerText        = UIColor(red: 0xA7/255.0, green: 0xBB/255.0, blue: 0xCA/255.0, alpha: 0xFF/255.0)
+        public static let headerBackground  = UIColor(red: 0xFF/255.0, green: 0xFF/255.0, blue:0xFF/255.0, alpha: 0xEA/255.0)
         
         public static let backgroundRead    = UIColor.whiteColor()
         public static let backgroundUnread  = UIColor(red: 0xF1/255.0, green: 0xF6/255.0, blue: 0xF9/255.0, alpha: 0xFF/255.0)
