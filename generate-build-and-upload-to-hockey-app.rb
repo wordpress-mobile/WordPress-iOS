@@ -1,12 +1,14 @@
 #!/usr/bin/env ruby
 
-def update_internal_version_plist
-  begin
-    require 'plist'
-  rescue LoadError
-    puts "This script requires the \'plist\' gem. You can install it by running \'gem install plist\'"
+def check_dependencies
+  unless Gem::Specification::find_all_by_name("shenzhen").any?
+    print "This script requires the \'shenzhen\' gem. You can install it by running \'gem install shenzhen\'\n"
     exit
   end
+end
+
+def update_internal_version_plist
+  require 'plist'
 
   internal_plist = Plist::parse_xml('./WordPress/WordPress-Internal-Info.plist')
 
@@ -56,6 +58,7 @@ def upload_ipa_to_hockey_app(hockey_app_api_token)
   Kernel.system("ipa distribute:hockeyapp -f WordPress.ipa --token #{hockey_app_api_token} --mandatory")
 end
 
+check_dependencies
 build_ipa
 upload_ipa_to_hockey_app(get_hockey_app_api_token)
 
