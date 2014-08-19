@@ -21,9 +21,7 @@ import Foundation
     // MARK: - View Methods
     public override func awakeFromNib() {
         super.awakeFromNib()
-        
-        assert(attributedLabel)
-        
+                
         backgroundColor                   = Notification.Colors.blockBackground
         selectionStyle                    = .None
 
