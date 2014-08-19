@@ -13,6 +13,7 @@
 
 	// 3rd Party
     #import <AFNetworking/AFNetworking.h>
+	#import <CocoaLumberjack/DDLog.h>
     #import <NSObject+SafeExpectations.h>
     #import "DDLog.h"
 
