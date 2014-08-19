@@ -1,7 +1,9 @@
 #import <Foundation/Foundation.h>
 #import "LocalCoreDataService.h"
 
-@class Blog, Comment;
+@class Blog;
+@class Comment;
+@class ReaderPost;
 
 @interface CommentService : NSObject <LocalCoreDataService>
 
@@ -44,4 +46,9 @@
               success:(void (^)())success
               failure:(void (^)(NSError *error))failure;
 
+
+- (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
+                                   page:(NSUInteger)page
+                                success:(void (^)())success
+                                failure:(void (^)(NSError *error))failure;
 @end
