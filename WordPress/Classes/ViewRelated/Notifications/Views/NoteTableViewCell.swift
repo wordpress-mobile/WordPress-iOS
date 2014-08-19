@@ -11,7 +11,7 @@ import Foundation
     }
     public var attributedSubject: NSAttributedString? {
         didSet {
-            subjectLabel.attributedText = attributedSubject ?? NSAttributedString()
+            subjectLabel.attributedText = attributedSubject != nil ? attributedSubject! : NSAttributedString()
             setNeedsLayout()
         }
     }
