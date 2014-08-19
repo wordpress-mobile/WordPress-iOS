@@ -680,7 +680,6 @@ name:MediaShouldInsertBelowNotification object:nil];
 	} else{
 		[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 	}
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)saveAction
