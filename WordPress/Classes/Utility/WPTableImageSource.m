@@ -95,8 +95,6 @@
         [self handleImageDownloadFailedForReceiver:receiver error:error];
     };
 
-    url = [self photonURLForURL:url withSize:requestSize];
-
     if (isPrivate) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
@@ -106,6 +104,7 @@
                                               withSuccess:successBlock
                                                   failure:failureBlock];
     } else {
+        url = [self photonURLForURL:url withSize:requestSize];
         [[WPImageSource sharedSource] downloadImageForURL:url
                                               withSuccess:successBlock
                                                   failure:failureBlock];
