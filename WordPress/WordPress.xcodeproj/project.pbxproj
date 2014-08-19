@@ -246,6 +246,7 @@
 		B55853FC19630E7900FAF6C3 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = B55853F919630E7900FAF6C3 /* Notification.m */; };
 		B558541419631A1000FAF6C3 /* Notifications.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B558541019631A1000FAF6C3 /* Notifications.storyboard */; };
 		B57B99D519A2C20200506504 /* NoteTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B99D419A2C20200506504 /* NoteTableHeaderView.swift */; };
+		B57B99DE19A2DBF200506504 /* NSObject+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B57B99DD19A2DBF200506504 /* NSObject+Helpers.m */; };
 		B586593F197EE15900F67E57 /* Merriweather-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 462F4E0F183867AE0028D2F8 /* Merriweather-Bold.ttf */; };
 		B5A88A36199DC0090038ABD4 /* UITableViewCell+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A88A35199DC0090038ABD4 /* UITableViewCell+Helpers.swift */; };
 		B5A88A3C199DCB720038ABD4 /* UITableView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A88A3B199DCB720038ABD4 /* UITableView+Helpers.swift */; };
@@ -817,6 +818,8 @@
 		B55853F919630E7900FAF6C3 /* Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notification.m; sourceTree = "<group>"; };
 		B558541019631A1000FAF6C3 /* Notifications.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Notifications.storyboard; sourceTree = "<group>"; };
 		B57B99D419A2C20200506504 /* NoteTableHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteTableHeaderView.swift; sourceTree = "<group>"; };
+		B57B99DC19A2DBF200506504 /* NSObject+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Helpers.h"; sourceTree = "<group>"; };
+		B57B99DD19A2DBF200506504 /* NSObject+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Helpers.m"; sourceTree = "<group>"; };
 		B59ED10B197413E300D17F40 /* WordPress 21.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 21.xcdatamodel"; sourceTree = "<group>"; };
 		B5A88A35199DC0090038ABD4 /* UITableViewCell+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+Helpers.swift"; sourceTree = "<group>"; };
 		B5A88A3B199DCB720038ABD4 /* UITableView+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Helpers.swift"; sourceTree = "<group>"; };
@@ -2001,6 +2004,8 @@
 				E2AA87A418523E5300886693 /* UIView+Subviews.m */,
 				B548458019A258890077E7A5 /* UIActionSheet+Helpers.h */,
 				B548458119A258890077E7A5 /* UIActionSheet+Helpers.m */,
+				B57B99DC19A2DBF200506504 /* NSObject+Helpers.h */,
+				B57B99DD19A2DBF200506504 /* NSObject+Helpers.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -2656,6 +2661,7 @@
 				CC70165E185BB97A007B37DB /* ReaderCommentPublisher.m in Sources */,
 				5D11E3261979E76D00E70992 /* VideoThumbnailServiceRemote.m in Sources */,
 				859F761D18F2159800EF8D5D /* WPAnalyticsTrackerMixpanelInstructionsForStat.m in Sources */,
+				B57B99DE19A2DBF200506504 /* NSObject+Helpers.m in Sources */,
 				B52C4C89199DB1DD009FD823 /* NSParagraphStyle+Helpers.swift in Sources */,
 				E1523EB516D3B305002C5A36 /* InstapaperActivity.m in Sources */,
 				E18EE94B19349EAE00B0A40C /* AccountServiceRemote.m in Sources */,

@@ -20,16 +20,10 @@ extension UITableViewCell
     }
     
     public class func reuseIdentifier() -> String {
-        let name = NSStringFromClass(self)
-        
-        if let nameWithoutNamespaces = name.componentsSeparatedByString(".").last {
-            return nameWithoutNamespaces
-        } else {
-            return name
-        }
+        return classNameWithoutNamespaces()
     }
     
     public class func layoutIdentifier() -> String {
-        return self.reuseIdentifier() + "-Layout"
+        return classNameWithoutNamespaces() + "-Layout"
     }
 }
