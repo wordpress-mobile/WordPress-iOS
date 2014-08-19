@@ -24,17 +24,19 @@ extern NSString * const CommentStatusDraft;
 @property (nonatomic, strong) NSString *author_email;
 @property (nonatomic, strong) NSString *author_ip;
 @property (nonatomic, strong) NSString *author_url;
+@property (nonatomic, strong) NSString *authorAvatarURL;
 @property (nonatomic, strong) NSNumber *commentID;
 @property (nonatomic, strong) NSString *content;
 @property (nonatomic, strong) NSDate *dateCreated;
+@property (nonatomic, strong) NSNumber *depth;
+@property (nonatomic, strong) NSString *hierarchy;
 @property (nonatomic, strong) NSString *link;
 @property (nonatomic, strong) NSNumber *parentID;
 @property (nonatomic, strong) NSNumber *postID;
 @property (nonatomic, strong) NSString *postTitle;
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *type;
-@property (nonatomic, strong) NSNumber *depth;
-@property (nonatomic, strong) NSString *authorAvatarURL;
+
 @property (nonatomic, strong) NSAttributedString *attributedContent;
 @property (nonatomic, assign) BOOL isNew;
 
