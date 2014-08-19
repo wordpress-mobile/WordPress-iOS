@@ -700,10 +700,22 @@ name:MediaShouldInsertBelowNotification object:nil];
         return;
     }
     
-	[self savePost:YES];
+	[self savePostAndDismissVC];
 }
 
-- (void)savePost:(BOOL)upload
+/**
+ *	@brief		Saves the post being edited and closes this VC.
+ */
+- (void)savePostAndDismissVC
+{
+	[self savePost];
+    [self dismissEditView];
+}
+
+/**
+ *	@brief		Saves the post being edited and uploads it.
+ */
+- (void)savePost
 {
     DDLogMethod();
     [self logSavePostStats];
@@ -713,17 +725,14 @@ name:MediaShouldInsertBelowNotification object:nil];
     [self.post.original applyRevision];
     [self.post.original deleteRevision];
     
-    if (upload) {
-        NSString *postTitle = self.post.original.postTitle;
-        [self.post.original uploadWithSuccess:^{
-            DDLogInfo(@"post uploaded: %@", postTitle);
-        } failure:^(NSError *error) {
-            DDLogError(@"post failed: %@", [error localizedDescription]);
-        }];
-    }
-    
+	NSString *postTitle = self.post.original.postTitle;
+	[self.post.original uploadWithSuccess:^{
+		DDLogInfo(@"post uploaded: %@", postTitle);
+	} failure:^(NSError *error) {
+		DDLogError(@"post failed: %@", [error localizedDescription]);
+	}];
+	
     [self didSaveNewPost];
-    [self dismissEditView];
 }
 
 - (void)didSaveNewPost
@@ -938,7 +947,7 @@ name:MediaShouldInsertBelowNotification object:nil];
     if (alertView.tag == EditPostViewControllerAlertTagFailedMedia) {
         if (buttonIndex == 1) {
             DDLogInfo(@"Saving post even after some media failed to upload");
-            [self savePost:YES];
+			[self savePostAndDismissVC];
         }
         _failedMediaAlertView = nil;
     } else if (alertView.tag == EditPostViewControllerAlertTagSwitchBlogs) {
@@ -983,7 +992,7 @@ name:MediaShouldInsertBelowNotification object:nil];
                     self.post.status = @"draft";
                 }
                 DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
-                [self savePost:YES];
+				[self savePostAndDismissVC];
 			}
         }
     }
