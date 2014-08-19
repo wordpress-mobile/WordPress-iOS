@@ -5,6 +5,9 @@
 #import "CommentServiceRemoteXMLRPC.h"
 #import "CommentServiceRemoteREST.h"
 #import "ContextManager.h"
+#import "WPAccount.h"
+#import "AccountService.h"
+#import "ReaderPost.h"
 
 @interface CommentService ()
 
@@ -23,6 +26,10 @@
 
     return self;
 }
+
+#pragma mark Public methods
+
+#pragma mark Blog-centric methods
 
 // Create comment
 - (Comment *)createCommentForBlog:(Blog *)blog
@@ -175,8 +182,44 @@
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
+#pragma mark - Post-centric methods
+
+- (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
+                                   page:(NSUInteger)page
+                                success:(void (^)())success
+                                failure:(void (^)(NSError *error))failure
+{
+
+    NSManagedObjectID *postObjectID = post.objectID;
+    CommentServiceRemoteREST *service = [self remoteForREST];
+    [service syncHierarchicalCommentsForPost:post.postID fromSite:post.siteID page:page success:^(NSArray *comments) {
+        NSError *error;
+        ReaderPost *aPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
+        if (!aPost) {
+            if (failure) {
+                failure(error);
+            }
+            return;
+        }
+
+        [self mergeHierarchicalComments:comments forPost:aPost];
+
+        if (success) {
+            success();
+        }
+
+    } failure:^(NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+
+}
+
+
 #pragma mark - Private methods
 
+#pragma mark - Blog centrick methods
 // Generic moderation
 - (void)moderateComment:(Comment *)comment
              withStatus:(NSString *)status
@@ -249,12 +292,110 @@
     return [comments anyObject];
 }
 
+#pragma mark - Post centric methods
+
+- (NSMutableArray *)ancestorsForCommentWithParentID:(NSNumber *)commentParentID andCurrentAncestors:(NSArray *)currentAncestors
+{
+    NSMutableArray *ancestors = [currentAncestors mutableCopy];
+
+    // Calculate hierarchy and depth.
+    NSString *parentID = [commentParentID stringValue];
+    if (parentID) {
+        if ([ancestors containsObject:parentID]) {
+            NSUInteger index = [ancestors indexOfObject:parentID] + 1;
+            NSArray *subarray = [ancestors subarrayWithRange:NSMakeRange(0, index)];
+            [ancestors removeAllObjects];
+            [ancestors addObjectsFromArray:subarray];
+        } else {
+            [ancestors addObject:parentID];
+        }
+    } else {
+        [ancestors removeAllObjects];
+    }
+    return ancestors;
+}
+
+- (NSString *)hierarchyFromAncestors:(NSArray *)ancestors andCommentID:(NSNumber *)commentID
+{
+    NSString *hierarchy = [commentID stringValue];
+    if ([ancestors count] > 0) {
+        hierarchy = [NSString stringWithFormat:@"%@.%@", [ancestors componentsJoinedByString:@"."], hierarchy];
+    }
+    return hierarchy;
+}
+
+- (void)mergeHierarchicalComments:(NSArray *)comments forPost:(ReaderPost *)post
+{
+    NSMutableArray *ancestors = [NSMutableArray array];
+    NSMutableArray *commentsToKeep = [NSMutableArray array];
+    NSString *entityName = NSStringFromClass([Comment class]);
+
+    for (RemoteComment *remoteComment in comments) {
+        Comment *comment = [self findCommentWithID:remoteComment.commentID fromPost:post];
+        if (!comment) {
+            comment = [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:self.managedObjectContext];
+        }
+        [self updateComment:comment withRemoteComment:remoteComment];
+
+        // Calculate hierarchy and depth.
+        ancestors = [self ancestorsForCommentWithParentID:comment.parentID andCurrentAncestors:ancestors];
+        comment.hierarchy = [self hierarchyFromAncestors:ancestors andCommentID:comment.commentID];
+        comment.depth = @([ancestors count]);
+        comment.post = post;
+
+        [commentsToKeep addObject:comment];
+    }
+
+    // Remove deleted comments
+    [self deleteCommentsMissingFromHierarchicalComments:commentsToKeep forPost:post];
+
+    [self.managedObjectContext performBlock:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
+}
+
+// Does not save context
+- (void)deleteCommentsMissingFromHierarchicalComments:(NSArray *)commentsToKeep forPost:(ReaderPost *)post
+{
+    // Remove deleted comments
+    NSString *entityName = NSStringFromClass([Comment class]);
+    NSString *starting = [[commentsToKeep firstObject] hierarchy];
+    NSString *ending = [[commentsToKeep lastObject] hierarchy];
+
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:entityName];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = %@ && AND hierarchy >= %@ AND hierarchy <= %@", post, starting, ending];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"hierarchy" ascending:YES];
+    fetchRequest.sortDescriptors = @[sortDescriptor];
+
+    NSError *error = nil;
+    NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        DDLogError(@"Error fetching existing comments : %@", error);
+    }
+
+    for (Comment *comment in fetchedObjects) {
+        if (![commentsToKeep containsObject:comment]) {
+            [self.managedObjectContext deleteObject:comment];
+        }
+    }
+}
+
+- (Comment *)findCommentWithID:(NSNumber *)commentID fromPost:(ReaderPost *)post
+{
+    NSSet *comments = [post.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"commentID = %@", commentID]];
+    return [comments anyObject];
+}
+
+
+#pragma mark - Transformations
+
 - (void)updateComment:(Comment *)comment withRemoteComment:(RemoteComment *)remoteComment
 {
     comment.commentID = remoteComment.commentID;
     comment.author = remoteComment.author;
     comment.author_email = remoteComment.authorEmail;
     comment.author_url = remoteComment.authorUrl;
+    comment.authorAvatarURL = remoteComment.authorAvatarURL;
     comment.content = remoteComment.content;
     comment.dateCreated = remoteComment.date;
     comment.link = remoteComment.link;
@@ -272,6 +413,7 @@
     remoteComment.author = comment.author;
     remoteComment.authorEmail = comment.author_email;
     remoteComment.authorUrl = comment.author_url;
+    remoteComment.authorAvatarURL = comment.authorAvatarURL;
     remoteComment.content = comment.content;
     remoteComment.date = comment.dateCreated;
     remoteComment.link = comment.link;
@@ -283,17 +425,39 @@
     return remoteComment;
 }
 
+
+#pragma mark - Remotes
+
 - (id<CommentServiceRemote>)remoteForBlog:(Blog *)blog
 {
     id<CommentServiceRemote>remote;
     // TODO: refactor API creation so it's not part of the model
     if (blog.restApi) {
-        remote = [[CommentServiceRemoteREST alloc] initWithApi:blog.restApi];
+        remote = [self remoteForREST];
     } else {
         WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:blog.xmlrpc]];
         remote = [[CommentServiceRemoteXMLRPC alloc] initWithApi:client];
     }
     return remote;
+}
+
+- (CommentServiceRemoteREST *)remoteForREST
+{
+    return [[CommentServiceRemoteREST alloc] initWithApi:[self apiForRESTRequest]];
+}
+
+/**
+ Get the api to use for the request.
+ */
+- (WordPressComApi *)apiForRESTRequest
+{
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    WordPressComApi *api = [defaultAccount restApi];
+    if (![api hasCredentials]) {
+        api = [WordPressComApi anonymousApi];
+    }
+    return api;
 }
 
 @end
