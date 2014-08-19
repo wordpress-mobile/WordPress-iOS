@@ -21,6 +21,7 @@ extension UIImageView
                 (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) -> Void in
                 
                 if let theImage = image {
+                    self?.image = theImage
                     success?(theImage)
                 }
             },
