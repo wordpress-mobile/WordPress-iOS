@@ -211,15 +211,8 @@
 {
     WPPostViewController *postViewController = [[WPPostViewController alloc] initWithPost:apost
 																					 mode:kWPPostViewControllerModeEdit];
-	
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:postViewController];
-	
-    [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
-    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-    navController.restorationIdentifier = WPEditorNavigationRestorationID;
-    navController.restorationClass = [WPPostViewController class];
-    
-	[self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
+	postViewController.restorationIdentifier = WPEditorNavigationRestorationID;
+	[self.navigationController.navigationController presentViewController:postViewController animated:YES completion:nil];
 }
 
 - (void)viewPost:(AbstractPost *)apost
