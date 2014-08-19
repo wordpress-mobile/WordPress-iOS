@@ -39,7 +39,8 @@ NSInteger const WPLinkAlertViewTag = 92;
 @property (nonatomic) BOOL didFinishLoadingEditor;
 
 #pragma mark - Properties: Editability
-@property (nonatomic, assign, readwrite, getter=isEditingDisabled) BOOL editingDisabled;
+@property (nonatomic, assign, readwrite, getter=isEditingEnabled) BOOL editingEnabled;
+@property (nonatomic, assign, readwrite, getter=isEditing) BOOL editing;
 @property (nonatomic, assign, readwrite) BOOL wasEditing;
 
 #pragma mark - Properties: Editor View
@@ -55,15 +56,32 @@ NSInteger const WPLinkAlertViewTag = 92;
 
 #pragma mark - Initializers
 
+- (instancetype)init
+{
+	return [self initWithMode:kWPEditorViewControllerModeEdit];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+	self = [super initWithCoder:aDecoder];
+	
+	if (self)
+	{
+		_editing = YES;
+	}
+	
+	return self;
+}
+
 - (instancetype)initWithMode:(WPEditorViewControllerMode)mode
 {
 	self = [super init];
 	
 	if (self) {
 		if (mode == kWPEditorViewControllerModePreview) {
-			_editingDisabled = YES;
+			_editing = NO;
 		} else {
-			_editingDisabled = NO;
+			_editing = YES;
 		}
 	}
 	
@@ -91,6 +109,7 @@ NSInteger const WPLinkAlertViewTag = 92;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+	
     self.view.backgroundColor = [UIColor whiteColor];
     
     // When restoring state, the navigationController is nil when the view loads,
@@ -114,15 +133,12 @@ NSInteger const WPLinkAlertViewTag = 92;
         [view setExclusiveTouch:YES];
     }
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(keyboardWillShow:)
-												 name:UIKeyboardWillShowNotification
-											   object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(keyboardWillHide:)
-												 name:UIKeyboardWillHideNotification
-											   object:nil];
-    
+	[self startObservingKeyboardNotifications];
+	
+	if (self.isEditing) {
+		[self startEditing];
+	}
+	
     [self refreshUI];
 }
 
@@ -132,7 +148,26 @@ NSInteger const WPLinkAlertViewTag = 92;
     
     [self.navigationController setToolbarHidden:YES animated:animated];
 	[self stopEditing];
-    
+	
+	[self stopObservingKeyboardNotifications];
+}
+
+#pragma mark - Keyboard notifications
+
+- (void)startObservingKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(keyboardWillShow:)
+												 name:UIKeyboardWillShowNotification
+											   object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(keyboardWillHide:)
+												 name:UIKeyboardWillHideNotification
+											   object:nil];
+}
+
+- (void)stopObservingKeyboardNotifications
+{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
@@ -649,21 +684,6 @@ NSInteger const WPLinkAlertViewTag = 92;
 
 #pragma mark - Editor and Misc Methods
 
-- (void)startEditing
-{
-	[self focusTextEditor];
-}
-
-- (void)stopEditing
-{
-    [self dismissKeyboard];
-    [self.view endEditing:YES];
-	
-	if ([self.delegate respondsToSelector:@selector(editorDidEndEditing:)]) {
-		[self.delegate editorDidEndEditing:self];
-	}
-}
-
 - (BOOL)isBodyTextEmpty
 {
     if(!self.bodyText
@@ -686,14 +706,12 @@ NSInteger const WPLinkAlertViewTag = 92;
 
 #pragma mark - Editing
 
-- (BOOL)isEditing
-{
-	return !self.isEditingDisabled && (self.titleTextField.isEditing || self.editorViewIsEditing);
-}
-
+/**
+ *	@brief		Enables editing.
+ */
 - (void)enableEditing
 {
-	self.editingDisabled = NO;
+	self.editingEnabled = YES;
 	
 	if (self.didFinishLoadingEditor)
 	{
@@ -703,18 +721,19 @@ NSInteger const WPLinkAlertViewTag = 92;
 
 - (void)enableEditingInHTMLEditor
 {
-	NSAssert(self.editingDisabled == NO,
-			 @"This method should not be called directly, unless you know editingDisabled is configured already.");
+	NSAssert(self.editingEnabled,
+			 @"This method should not be called directly, unless you know editingEnabled is configured already.");
 	
 	NSString *js = [NSString stringWithFormat:@"zss_editor.enableEditing();"];
 	[self.editorView stringByEvaluatingJavaScriptFromString:js];
 }
 
+/**
+ *	@brief		Disables editing.
+ */
 - (void)disableEditing
 {
-	self.editingDisabled = YES;
-	
-	[self stopEditing];
+	self.editingEnabled = NO;
 	
 	if (self.didFinishLoadingEditor)
 	{
@@ -724,12 +743,42 @@ NSInteger const WPLinkAlertViewTag = 92;
 
 - (void)disableEditingInHTMLEditor
 {
-	NSAssert(self.editingDisabled,
-			 @"This method should not be called directly, unless you know editingDisabled is configured already.");
+	NSAssert(!self.editingEnabled,
+			 @"This method should not be called directly, unless you know editingEnabled is configured already.");
 	
 	NSString *js = [NSString stringWithFormat:@"zss_editor.disableEditing();"];
 	[self.editorView stringByEvaluatingJavaScriptFromString:js];
 }
+
+- (void)startEditing
+{
+	self.editing = YES;
+	
+	// We need the editor ready before executing the steps in the conditional block below.
+	// If it's not ready, this method will be called again on webViewDidFinishLoad:
+	//
+	if (self.didFinishLoadingEditor)
+	{
+		[self enableEditing];
+		
+		[self.titleTextField becomeFirstResponder];
+
+		[self tellOurDelegateEditingDidBegin];
+	}
+}
+
+- (void)stopEditing
+{
+	self.editing = NO;
+	
+	[self disableEditing];
+    [self dismissKeyboard];
+    [self.view endEditing:YES];
+	
+	[self tellOurDelegateEditingDidEnd];
+}
+
+#pragma mark - Editor focus
 
 - (void)focusTextEditor
 {
@@ -1327,7 +1376,7 @@ NSInteger const WPLinkAlertViewTag = 92;
 {
 	BOOL result = NO;
 	
-	if (!self.isEditingDisabled)
+	if (self.editingEnabled)
 	{
 		result = YES;
 	}
@@ -1341,7 +1390,6 @@ NSInteger const WPLinkAlertViewTag = 92;
 		
 		[self enableToolbarItems:NO shouldShowSourceButton:NO];
 		
-		[self tellOurDelegateEditingChangedIfNecessary];
 		[self refreshUI];
 	}
 }
@@ -1359,7 +1407,6 @@ NSInteger const WPLinkAlertViewTag = 92;
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
 	if (textField == self.titleTextField) {
-		[self tellOurDelegateEditingChangedIfNecessary];
 		[self refreshUI];
 	}
 }
@@ -1375,10 +1422,10 @@ NSInteger const WPLinkAlertViewTag = 92;
 {
     self.didFinishLoadingEditor = YES;
 	
-	if (self.editingDisabled) {
-		[self disableEditingInHTMLEditor];
+	if (self.editing) {
+		[self startEditing];
 	} else {
-		[self enableEditingInHTMLEditor];
+		[self disableEditingInHTMLEditor];
 	}
 	
     [self refreshUI];
@@ -1441,7 +1488,6 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 		self.editorView.usesCustomInputAccessoryView = YES;
 		self.editorViewIsEditing = YES;
 		
-		[self tellOurDelegateEditingChangedIfNecessary];
 		[self enableToolbarItems:YES shouldShowSourceButton:NO];
 		
 		result = YES;
@@ -1453,7 +1499,6 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 		self.editorView.usesCustomInputAccessoryView = NO;
 		self.editorViewIsEditing = NO;
 		
-		[self tellOurDelegateEditingChangedIfNecessary];
 		result = YES;
 	} else {
 		NSString *className = resourceSpecifier;
@@ -1550,8 +1595,6 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
         self.isShowingKeyboard = NO;
         [self refreshUI];
         
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
         [self.navigationController setToolbarHidden:NO animated:NO];
         
 		[UIView animateWithDuration:duration delay:0 options:animationOptions animations:^{
@@ -1631,28 +1674,9 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 
 #pragma mark - Delegate calls
 
-/**
- *	@brief		If editing starts or finishes, this method will tell our delegate.
- */
-- (void)tellOurDelegateEditingChangedIfNecessary
-{
-	BOOL isEditing = [self isEditing];
-	BOOL editingChanged = (self.wasEditing != isEditing);
-	
-	if (editingChanged) {
-		if (isEditing) {
-			[self tellOurDelegateEditingDidBegin];
-		} else {
-			[self tellOurDelegateEditingDidEnd];
-		}
-	
-		self.wasEditing = isEditing;
-	}
-}
-
 - (void)tellOurDelegateEditingDidBegin
 {
-	NSAssert([self isEditing],
+	NSAssert(self.isEditing,
 			 @"Can't call this delegate method if not editing.");
 	
 	if ([self.delegate respondsToSelector: @selector(editorDidBeginEditing:)]) {
@@ -1662,7 +1686,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 
 - (void)tellOurDelegateEditingDidEnd
 {
-	NSAssert(![self isEditing],
+	NSAssert(!self.isEditing,
 			 @"Can't call this delegate method if editing.");
 	
 	if ([self.delegate respondsToSelector: @selector(editorDidEndEditing:)]) {
