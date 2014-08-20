@@ -30,9 +30,6 @@ NSString *const NotificationCategoryCommentUnapproved           = @"UNAPPROVED";
 NSString *const NotificationActionCommentReply                  = @"COMMENT_REPLY";
 NSString *const NotificationActionCommentLike                   = @"COMMENT_LIKE";
 NSString *const NotificationActionCommentApprove                = @"COMMENT_MODERATE_APPROVE";
-NSString *const NotificationActionCommentUnapprove              = @"COMMENT_MODERATE_UNAPPROVE";
-NSString *const NotificationActionCommentSpam                   = @"COMMENT_MODERATE_SPAM";
-NSString *const NotificationActionCommentTrash                  = @"COMMENT_MODERATE_TRASH";
 
 @implementation NotificationsManager
 
@@ -200,21 +197,11 @@ NSString *const NotificationActionCommentTrash                  = @"COMMENT_MODE
              ];
             
         }
-    } else if ([identifier containsString:@"MODERATE"]) {
+    } else if ([identifier isEqualToString:NotificationActionCommentApprove]) {
         // Moderate comment
         NSString *newStatus = @"approved";
-        if ([identifier isEqualToString: NotificationActionCommentUnapprove]) {
-            newStatus = @"unapproved";
-        } else if ([identifier isEqualToString:NotificationActionCommentSpam]) {
-            newStatus = @"spam";
-        } else if ([identifier isEqualToString:NotificationActionCommentTrash]) {
-            newStatus = @"trash";
-        }
-
-
         NSInteger blogId = [remoteNotification[@"blog_id"] integerValue];
         NSInteger commentId = [remoteNotification[@"comment_id"] integerValue];
-
 
         if (blogId && commentId) {
             [[defaultAccount restApi] moderateComment:blogId forCommentID:commentId withStatus:newStatus
@@ -382,39 +369,18 @@ NSString *const NotificationActionCommentTrash                  = @"COMMENT_MODE
     commentApproveAction.destructive = NO;
     commentApproveAction.authenticationRequired = YES;
 
-    UIMutableUserNotificationAction *commentUnapproveAction = [[UIMutableUserNotificationAction alloc] init];
-    commentUnapproveAction.identifier = NotificationActionCommentUnapprove;
-    commentUnapproveAction.title = NSLocalizedString(@"Unapprove", @"Unapprove comment (verb)");
-    commentUnapproveAction.activationMode = UIUserNotificationActivationModeBackground;
-    commentUnapproveAction.destructive = NO;
-    commentUnapproveAction.authenticationRequired = YES;
-
-    UIMutableUserNotificationAction *commentSpamAction = [[UIMutableUserNotificationAction alloc] init];
-    commentSpamAction.identifier = NotificationActionCommentSpam;
-    commentSpamAction.title = NSLocalizedString(@"Spam", @"Spam comment (verb)");
-    commentSpamAction.activationMode = UIUserNotificationActivationModeBackground;
-    commentSpamAction.destructive = NO;
-    commentSpamAction.authenticationRequired = YES;
-
-    UIMutableUserNotificationAction *commentTrashAction = [[UIMutableUserNotificationAction alloc] init];
-    commentTrashAction.identifier = NotificationActionCommentTrash;
-    commentTrashAction.title = NSLocalizedString(@"Trash", @"Trash comment (verb)");
-    commentTrashAction.activationMode = UIUserNotificationActivationModeBackground;
-    commentTrashAction.destructive = YES;
-    commentTrashAction.authenticationRequired = YES;
-
     // Add actions to categories
     UIMutableUserNotificationCategory *commentApprovedCategory = [[UIMutableUserNotificationCategory alloc] init];
     commentApprovedCategory.identifier = NotificationCategoryCommentApproved;
-    [commentApprovedCategory setActions:@[commentReplyAction, commentUnapproveAction, commentSpamAction, commentTrashAction] forContext:UIUserNotificationActionContextDefault];
+    [commentApprovedCategory setActions:@[commentReplyAction] forContext:UIUserNotificationActionContextDefault];
 
     UIMutableUserNotificationCategory *commentApprovedWithLikeCategory = [[UIMutableUserNotificationCategory alloc] init];
     commentApprovedWithLikeCategory.identifier = NotificationCategoryCommentApprovedWithLike;
-    [commentApprovedWithLikeCategory setActions:@[commentLikeAction, commentReplyAction, commentUnapproveAction, commentSpamAction] forContext:UIUserNotificationActionContextDefault];
+    [commentApprovedWithLikeCategory setActions:@[commentLikeAction, commentReplyAction] forContext:UIUserNotificationActionContextDefault];
 
     UIMutableUserNotificationCategory *commentUnapprovedCategory = [[UIMutableUserNotificationCategory alloc] init];
     commentUnapprovedCategory.identifier = NotificationCategoryCommentUnapproved;
-    [commentUnapprovedCategory setActions:@[commentApproveAction, commentSpamAction, commentTrashAction] forContext:UIUserNotificationActionContextDefault];
+    [commentUnapprovedCategory setActions:@[commentApproveAction] forContext:UIUserNotificationActionContextDefault];
 
     return [NSSet setWithObjects:commentApprovedCategory, commentApprovedWithLikeCategory, commentUnapprovedCategory, nil];
 }
