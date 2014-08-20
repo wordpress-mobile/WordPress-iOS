@@ -56,37 +56,37 @@
 
 // Like comment
 - (void)likeCommentWithID:(NSNumber *)commentID
-                   blogID:(NSNumber *)blogID
+                   siteID:(NSNumber *)siteID
                   success:(void (^)())success
                   failure:(void (^)(NSError *error))failure;
 
 // Unlike comment
 - (void)unlikeCommentWithID:(NSNumber *)commentID
-                     blogID:(NSNumber *)blogID
+                     siteID:(NSNumber *)siteID
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure;
 
 // Approve comment
 - (void)approveCommentWithID:(NSNumber *)commentID
-                      blogID:(NSNumber *)blogID
+                      siteID:(NSNumber *)siteID
                      success:(void (^)())success
                      failure:(void (^)(NSError *error))failure;
 
 // Unapprove comment
 - (void)unapproveCommentWithID:(NSNumber *)commentID
-                        blogID:(NSNumber *)blogID
+                        siteID:(NSNumber *)siteID
                        success:(void (^)())success
                        failure:(void (^)(NSError *error))failure;
 
 // Spam comment
 - (void)spamCommentWithID:(NSNumber *)commentID
-                   blogID:(NSNumber *)blogID
+                   siteID:(NSNumber *)siteID
                   success:(void (^)())success
                   failure:(void (^)(NSError *error))failure;
 
 // Delete comment
 - (void)deleteCommentWithID:(NSNumber *)commentID
-                     blogID:(NSNumber *)blogID
+                     siteID:(NSNumber *)siteID
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure;
 
