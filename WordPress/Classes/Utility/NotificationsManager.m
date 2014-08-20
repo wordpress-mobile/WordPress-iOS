@@ -24,9 +24,9 @@ static NSString *const NotificationsPreferencesKey              = @"notification
 NSString *const NotificationsDeviceToken                        = @"apnsDeviceToken";
 
 // These correspond to the 'category' data WP.com will send with a push notification
-NSString *const NotificationCategoryCommentApproved             = @"APPROVED";
-NSString *const NotificationCategoryCommentApprovedWithLike     = @"APPROVED_LIKE";
-NSString *const NotificationCategoryCommentUnapproved           = @"UNAPPROVED";
+NSString *const NotificationCategoryCommentApproved             = @"approve-comment";
+NSString *const NotificationCategoryCommentApprovedWithLike     = @"like-comment";
+NSString *const NotificationCategoryCommentUnapproved           = @"unapprove-comment";
 
 NSString *const NotificationActionCommentReply                  = @"COMMENT_REPLY";
 NSString *const NotificationActionCommentLike                   = @"COMMENT_LIKE";
