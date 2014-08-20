@@ -17,6 +17,11 @@ extern const CGFloat WPContentAttributionViewAvatarSize;
  */
 - (void)attributionView:(WPContentAttributionView *)attributionView didReceiveAttributionLinkAction:(id)sender;
 
+/**
+ Tells the delegate the user has tapped the attribution menu.
+ */
+- (void)attributionView:(WPContentAttributionView *)attributionView didReceiveAttributionMenuAction:(id)sender;
+
 @end
 
 
@@ -59,6 +64,13 @@ extern const CGFloat WPContentAttributionViewAvatarSize;
  */
 - (void)selectAttributionButton:(BOOL)select;
 
+/**
+ Shows or hides the attribution menu.
+
+ @param hide A Boolean value indicating whether the menu should be hidden.
+ */
+- (void)hideAttributionMenu:(BOOL)hide;
+
 
 #pragma mark - Private Subclass Members and Methods
 
@@ -66,6 +78,7 @@ extern const CGFloat WPContentAttributionViewAvatarSize;
 @property (nonatomic, strong) UIImageView *avatarImageView;
 @property (nonatomic, strong) UILabel *attributionNameLabel;
 @property (nonatomic, strong) UIButton *attributionLinkButton;
+@property (nonatomic, strong) UIButton *attributionMenuButton;
 @property (nonatomic, strong) UIView *borderView;
 
 // Configuration

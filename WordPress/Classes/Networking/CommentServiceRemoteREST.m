@@ -165,13 +165,37 @@
 
 #pragma mark - Public Methods
 
+- (void)updateCommentWithID:(NSNumber *)commentID
+                     siteID:(NSNumber *)siteID
+                    content:(NSString *)content
+                    success:(void (^)())success
+                    failure:(void (^)(NSError *error))failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", siteID, commentID];
+    NSDictionary *parameters = @{
+                                 @"content": content,
+                                 @"context": @"edit",
+                                 };
+    [self.api POST:path
+        parameters:parameters
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               if (success) {
+                   success();
+               }
+           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
+}
+
 - (void)moderateCommentWithID:(NSNumber *)commentID
-                       blogID:(NSNumber *)blogID
+                       siteID:(NSNumber *)siteID
                        status:(NSString *)status
                       success:(void (^)())success
                       failure:(void (^)(NSError *error))failure
 {
-    NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", blogID, commentID];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", siteID, commentID];
     NSDictionary *parameters = @{
         @"status"   : status,
         @"context"  : @"edit",
@@ -191,11 +215,11 @@
 }
 
 - (void)trashCommentWithID:(NSNumber *)commentID
-                    blogID:(NSNumber *)blogID
+                    siteID:(NSNumber *)siteID
                    success:(void (^)())success
                    failure:(void (^)(NSError *error))failure
 {
-    NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@/delete", blogID, commentID];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@/delete", siteID, commentID];
     [self.api POST:path
         parameters:nil
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -210,11 +234,11 @@
 }
 
 - (void)likeCommentWithID:(NSNumber *)commentID
-                   blogID:(NSNumber *)blogID
+                   siteID:(NSNumber *)siteID
                   success:(void (^)())success
                   failure:(void (^)(NSError *error))failure
 {
-    NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@/likes/new", blogID, commentID];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@/likes/new", siteID, commentID];
     
     [self.api POST:path
         parameters:nil
@@ -230,11 +254,11 @@
 }
 
 - (void)unlikeCommentWithID:(NSNumber *)commentID
-                     blogID:(NSNumber *)blogID
+                     siteID:(NSNumber *)siteID
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure
 {
-    NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@/likes/mine/delete", blogID, commentID];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@/likes/mine/delete", siteID, commentID];
     
     [self.api POST:path
         parameters:nil

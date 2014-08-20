@@ -449,7 +449,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
     __typeof(self) __weak weakSelf  = self;
     
-    [service likeCommentWithID:block.metaCommentID blogID:block.metaSiteID success:nil failure:^(NSError *error) {
+    [service likeCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:^(NSError *error) {
         [block removeActionOverrideForKey:NoteActionLikeKey];
         [weakSelf.tableView reloadData];
     }];
@@ -463,7 +463,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
     __typeof(self) __weak weakSelf  = self;
     
-    [service unlikeCommentWithID:block.metaCommentID blogID:block.metaSiteID success:nil failure:^(NSError *error) {
+    [service unlikeCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:^(NSError *error) {
         [block removeActionOverrideForKey:NoteActionLikeKey];
         [weakSelf.tableView reloadData];
     }];
@@ -479,7 +479,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
     __typeof(self) __weak weakSelf  = self;
     
-    [service approveCommentWithID:block.metaCommentID blogID:block.metaSiteID success:nil failure:^(NSError *error) {
+    [service approveCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:^(NSError *error) {
         [block removeActionOverrideForKey:NoteActionApproveKey];
         [weakSelf.tableView reloadData];
     }];
@@ -493,7 +493,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
     __typeof(self) __weak weakSelf  = self;
     
-    [service unapproveCommentWithID:block.metaCommentID blogID:block.metaSiteID success:nil failure:^(NSError *error) {
+    [service unapproveCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:^(NSError *error) {
         [block removeActionOverrideForKey:NoteActionApproveKey];
         [weakSelf.tableView reloadData];
     }];
@@ -516,7 +516,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
         
-        [service spamCommentWithID:block.metaCommentID blogID:block.metaSiteID success:nil failure:nil];
+        [service spamCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:nil];
     };
     
     // Show the alertView
@@ -545,7 +545,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
         
-        [service deleteCommentWithID:block.metaCommentID blogID:block.metaSiteID success:nil failure:nil];
+        [service deleteCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:nil];
     };
  
     // Show the alertView

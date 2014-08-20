@@ -129,7 +129,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:@"PostCell"];
 
     // Don't show 'Reader' in the next-view back button
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     
     UIToolbar *toolbar = self.navigationController.toolbar;
@@ -351,8 +351,10 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     NSURL *featuredImageURL = [self.post featuredImageURLForDisplay];
     if (featuredImageURL) {
         // If ReaderPostView has a featured image, show it unless you're showing full detail & featured image is in the post already
+        // One URL might be http and the other https, so don't include the protocol in the check.
+        NSString *featuredImagePath = [[[featuredImageURL absoluteString] componentsSeparatedByString:@"://"] lastObject];
         NSString *content = [self.post contentForDisplay];
-        if ([content rangeOfString:[featuredImageURL absoluteString]].length > 0) {
+        if ([content rangeOfString:featuredImagePath].length > 0) {
             self.postView.alwaysHidesFeaturedImage = YES;
         } else {
             [self fetchFeaturedImage];

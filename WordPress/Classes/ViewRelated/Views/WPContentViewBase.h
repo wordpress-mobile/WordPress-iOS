@@ -41,6 +41,14 @@ extern const CGFloat WPContentViewLineHeightMultiple;
  */
 - (void)contentView:(UIView *)contentView didReceiveAttributionLinkAction:(id)sender;
 
+/**
+ Tells the delegate the user has tapped on the menu button in the content view's attribution view.
+
+ @param contentView The content view informing the delegate of the event.
+ @param sender A reference to the receiving `UIControl`.
+ */
+- (void)contentView:(UIView *)contentView didReceiveAttributionMenuAction:(id)sender;
+
 @end
 
 
