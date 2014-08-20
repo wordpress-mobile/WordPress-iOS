@@ -140,17 +140,10 @@
 
 #pragma mark - Helper Methods
 
-- (void)dismissWithoutUpdates
+- (void)dismissWithUpdates:(BOOL)hasUpdates
 {    
-    if ([self.delegate respondsToSelector:@selector(editCommentViewControllerWasDismissed:)]) {
-        [self.delegate editCommentViewControllerWasDismissed:self];
-    }
-}
-
-- (void)dismissWithComment:(Comment *)comment
-{
-    if ([self.delegate respondsToSelector:@selector(editCommentViewController:didUpdateComment:)]) {
-        [self.delegate editCommentViewController:self didUpdateComment:comment];
+    if ([self.delegate respondsToSelector:@selector(editCommentViewController:finishedWithUpdates:)]) {
+        [self.delegate editCommentViewController:self finishedWithUpdates:hasUpdates];
     }
 }
 
@@ -160,7 +153,7 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0) {
-        [self dismissWithoutUpdates];
+        [self dismissWithUpdates:NO];
     }
 }
 
@@ -170,7 +163,7 @@
 - (void)btnCancelPressed
 {
     if (self.hasChanges == NO) {
-        [self dismissWithoutUpdates];
+        [self dismissWithUpdates:NO];
         return;
     }
 
@@ -195,7 +188,7 @@
     [self.textView resignFirstResponder];
     
     if (self.hasChanges == NO) {
-        [self dismissWithoutUpdates];
+        [self dismissWithUpdates:NO];
         return;
     }
     
@@ -206,7 +199,7 @@
     CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
     
     [commentService uploadComment:self.comment success:^{
-        [self dismissWithComment:self.comment];
+        [self dismissWithUpdates:YES];
     } failure:^(NSError *error) {
         NSString *message = NSLocalizedString(@"There has been an error. Please, try again later", @"Error displayed if a comment fails to get updated");
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil

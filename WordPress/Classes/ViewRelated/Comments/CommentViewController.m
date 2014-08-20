@@ -223,14 +223,11 @@ typedef NS_ENUM(NSInteger, CommentViewActionIndex) {
 
 #pragma mark - EditCommentViewController Delegate
 
-- (void)editCommentViewController:(EditCommentViewController *)sender didUpdateComment:(Comment *)comment
+- (void)editCommentViewController:(EditCommentViewController *)sender finishedWithUpdates:(BOOL)hasUpdates
 {
-    [self showComment:comment];
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)editCommentViewControllerWasDismissed:(EditCommentViewController *)sender
-{
+    if (hasUpdates) {
+        [self showComment:sender.comment];
+    }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
