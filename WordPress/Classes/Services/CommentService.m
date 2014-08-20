@@ -179,66 +179,81 @@
 
 #pragma mark - REST Helpers
 
+// Edition
+- (void)updateCommentWithID:(NSNumber *)commentID
+                     siteID:(NSNumber *)siteID
+                    content:(NSString *)content
+                    success:(void (^)())success
+                    failure:(void (^)(NSError *error))failure
+{
+    CommentServiceRemoteREST *remote = [self remoteForREST];
+    [remote updateCommentWithID:commentID
+                         siteID:siteID
+                        content:content
+                        success:success
+                        failure:failure];
+}
+
 // Likes
 - (void)likeCommentWithID:(NSNumber *)commentID
-                   blogID:(NSNumber *)blogID
+                   siteID:(NSNumber *)siteID
                   success:(void (^)())success
                   failure:(void (^)(NSError *error))failure
 {
     CommentServiceRemoteREST *remote = [self remoteForREST];
     [remote likeCommentWithID:commentID
-                       blogID:blogID
+                       siteID:siteID
                       success:success
                       failure:failure];
 }
 
 - (void)unlikeCommentWithID:(NSNumber *)commentID
-                     blogID:(NSNumber *)blogID
+                     siteID:(NSNumber *)siteID
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure
 {
     CommentServiceRemoteREST *remote = [self remoteForREST];
     [remote unlikeCommentWithID:commentID
-                         blogID:blogID
+                         siteID:siteID
                         success:success
                         failure:failure];
 }
 
 // Moderation
 - (void)approveCommentWithID:(NSNumber *)commentID
-                      blogID:(NSNumber *)blogID
+                      siteID:(NSNumber *)siteID
                      success:(void (^)())success
                      failure:(void (^)(NSError *error))failure
 {
     CommentServiceRemoteREST *remote = [self remoteForREST];
     [remote moderateCommentWithID:commentID
-                           blogID:blogID
+                           siteID:siteID
                            status:@"approved"
                           success:success
                           failure:failure];
 }
 
 - (void)unapproveCommentWithID:(NSNumber *)commentID
-                        blogID:(NSNumber *)blogID
+                        blogID:(NSNumber *)siteID
                        success:(void (^)())success
                        failure:(void (^)(NSError *error))failure
 {
     CommentServiceRemoteREST *remote = [self remoteForREST];
     [remote moderateCommentWithID:commentID
-                           blogID:blogID
+                           siteID:siteID
                            status:@"unapproved"
                           success:success
                           failure:failure];
 }
 
 - (void)spamCommentWithID:(NSNumber *)commentID
-                   blogID:(NSNumber *)blogID
+                   blogID:(NSNumber *)siteID
                   success:(void (^)())success
                   failure:(void (^)(NSError *error))failure
 {
     CommentServiceRemoteREST *remote = [self remoteForREST];
     [remote moderateCommentWithID:commentID
-                           blogID:blogID
+                           siteID:siteID
                            status:@"spam"
                           success:success
                           failure:failure];
@@ -246,13 +261,13 @@
 
 // Trash
 - (void)deleteCommentWithID:(NSNumber *)commentID
-                     blogID:(NSNumber *)blogID
+                     blogID:(NSNumber *)siteID
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure
 {
     CommentServiceRemoteREST *remote = [self remoteForREST];
     [remote trashCommentWithID:commentID
-                        blogID:blogID
+                        siteID:siteID
                        success:success
                        failure:failure];
 }

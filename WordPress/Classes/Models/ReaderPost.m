@@ -42,6 +42,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic globalID;
 @dynamic isLikesEnabled;
 @dynamic isSharingEnabled;
+@dynamic isSiteBlocked;
 
 - (BOOL)isFollowable
 {
@@ -145,6 +146,15 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 }
 
 #pragma mark - WPContentViewProvider protocol
+
+- (NSString *)titleForDisplay
+{
+    NSString *title = [[self.postTitle trim] stringByDecodingXMLCharacters];
+    if (!title) {
+        title = @"";
+    }
+    return title;
+}
 
 - (NSString *)authorForDisplay
 {

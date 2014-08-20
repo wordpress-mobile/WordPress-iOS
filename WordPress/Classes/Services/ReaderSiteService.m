@@ -129,15 +129,15 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         return;
     }
 
-    // Omit any protocol included in the URL.
+    // Include protocol if absent.
     NSString *sanitizedURL = siteURL;
     NSRange rng = [sanitizedURL rangeOfString:@"://"];
-    if (rng.location != NSNotFound) {
-        sanitizedURL = [sanitizedURL substringFromIndex:(rng.location + rng.length)];
+    if (rng.location == NSNotFound) {
+        sanitizedURL = [NSString stringWithFormat:@"http://%@", sanitizedURL];
     }
 
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
-    [service checkSubscribedToFeedByURL:[NSURL URLWithString:siteURL] success:^(BOOL follows) {
+    [service checkSubscribedToFeedByURL:[NSURL URLWithString:sanitizedURL] success:^(BOOL follows) {
         if (follows) {
             if (failure) {
                 failure([self errorForAlreadyFollowingSiteOrFeed]);
@@ -214,6 +214,35 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     [postService fetchPostsForTopic:followedSites earlierThan:[NSDate date] success:nil failure:nil];
 }
 
+
+- (void)flagSiteWithID:(NSNumber *)siteID asBlocked:(BOOL)blocked success:(void(^)())success failure:(void(^)(NSError *error))failure
+{
+    WordPressComApi *api = [self apiForRequest];
+    if (!api) {
+        if (failure) {
+            failure([self errorForNotLoggedIn]);
+        }
+        return;
+    }
+
+    // Optimistically flag the posts from the site being blocked.
+    [self flagPostsFromSite:siteID asBlocked:blocked];
+
+    ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithRemoteApi:api];
+    [service flagSiteWithID:[siteID integerValue] asBlocked:blocked success:^{
+        if (success) {
+            success();
+        }
+    } failure:^(NSError *error) {
+        // Undo the changes
+        [self flagPostsFromSite:siteID asBlocked:!blocked];
+
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
 #pragma mark - Private Methods
 
 /**
@@ -248,6 +277,13 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         [self followSiteAtURL:[siteURL absoluteString] success:success failure:failure];
     }];
 }
+
+- (void)flagPostsFromSite:(NSNumber *)siteID asBlocked:(BOOL)blocked
+{
+    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    [service flagPostsFromSite:siteID asBlocked:blocked];
+}
+
 
 /**
  Saves the specified `ReaderSites`. Any `ReaderSites` not included in the passed
