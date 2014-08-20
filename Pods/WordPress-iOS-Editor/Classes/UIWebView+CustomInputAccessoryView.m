@@ -18,48 +18,86 @@ static Class fixClass = Nil;
             break;
         }
     }
+	
     return browserView;
 }
 
 - (id)methodReturningCustomInputAccessoryView
 {
-	UIView* parentWebView = self.superview;
+	UIView* view = [self performSelector:@selector(originalInputAccessoryView) withObject:nil];
 	
-	while (parentWebView && ![parentWebView isKindOfClass:[UIWebView class]])
-	{
-		parentWebView = parentWebView.superview;
+	if (view) {
+		UIView* parentWebView = self.superview;
+		
+		while (parentWebView && ![parentWebView isKindOfClass:[UIWebView class]])
+		{
+			parentWebView = parentWebView.superview;
+		}
+		
+		view = [(UIWebView*)parentWebView customInputAccessoryView];
 	}
 	
-    return [(UIWebView*)parentWebView customInputAccessoryView];
+	return view;
+}
+
+- (BOOL)delayedBecomeFirstResponder
+{
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+		[super becomeFirstResponder];
+	});
+	
+	return YES;
 }
 
 - (void)ensureFixedSubclassExistsOfBrowserViewClass:(Class)browserViewClass
 {
     if (!fixClass) {
         Class newClass = objc_allocateClassPair(browserViewClass, fixedClassName, 0);
-        //newClass = objc_allocateClassPair(browserViewClass, fixedClassName, 0);
+		IMP oldImp = class_getMethodImplementation(browserViewClass, @selector(inputAccessoryView));
+		class_addMethod(newClass, @selector(originalInputAccessoryView), oldImp, "@@:");
+		
         IMP newImp = [self methodForSelector:@selector(methodReturningCustomInputAccessoryView)];
         class_addMethod(newClass, @selector(inputAccessoryView), newImp, "@@:");
         objc_registerClassPair(newClass);
+		
+		Class documentClass = objc_getClass("UIWebDocumentView");
+        IMP newImp2 = [self methodForSelector:@selector(delayedBecomeFirstResponder)];
+		Method becomeFirstResponderMethod = class_getClassMethod(documentClass, @selector(becomeFirstResponder));
+		unsigned int outCount = 0;
+		Method *allMethods = class_copyMethodList(documentClass, &outCount);
+		
+		for (unsigned int i = 0; i < outCount; i++)
+		{
+			SEL methodName = method_getName(allMethods[i]);
+			
+			if (methodName == @selector(becomeFirstResponder))
+			{
+				becomeFirstResponderMethod = allMethods[i];
+				break;
+			}
+		}
+		
+		method_setImplementation(becomeFirstResponderMethod, newImp2);
         
         fixClass = newClass;
     }
 }
 
-- (BOOL)usesCustomInputAccessoryView
+- (BOOL)usesGUIFixes
 {
     UIView *browserView = [self browserView];
     return [browserView class] == fixClass;
 }
 
-- (void)setUsesCustomInputAccessoryView:(BOOL)value
+- (void)setUsesGUIFixes:(BOOL)value
 {
     UIView *browserView = [self browserView];
     if (browserView == nil) {
         return;
     }
-    [self ensureFixedSubclassExistsOfBrowserViewClass:[browserView class]];
-	
+   
+	[self ensureFixedSubclassExistsOfBrowserViewClass:[browserView class]];
+
     if (value) {
         object_setClass(browserView, fixClass);
     }
@@ -67,6 +105,7 @@ static Class fixClass = Nil;
         Class normalClass = objc_getClass("UIWebBrowserView");
         object_setClass(browserView, normalClass);
     }
+	
     [browserView reloadInputViews];
 }
 
