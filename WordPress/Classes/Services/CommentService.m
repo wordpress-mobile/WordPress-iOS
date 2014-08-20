@@ -186,7 +186,7 @@
 
 - (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
                                    page:(NSUInteger)page
-                                success:(void (^)())success
+                                success:(void (^)(NSUInteger count))success
                                 failure:(void (^)(NSError *error))failure
 {
 
@@ -205,7 +205,7 @@
         [self mergeHierarchicalComments:comments forPost:aPost];
 
         if (success) {
-            success();
+            success([comments count]);
         }
 
     } failure:^(NSError *error) {
@@ -363,7 +363,7 @@
     NSString *ending = [[commentsToKeep lastObject] hierarchy];
 
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:entityName];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = %@ && AND hierarchy >= %@ AND hierarchy <= %@", post, starting, ending];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = %@ AND hierarchy >= %@ AND hierarchy <= %@", post, starting, ending];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"hierarchy" ascending:YES];
     fetchRequest.sortDescriptors = @[sortDescriptor];
 
