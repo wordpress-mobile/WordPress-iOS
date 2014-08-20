@@ -234,7 +234,7 @@
 }
 
 - (void)unapproveCommentWithID:(NSNumber *)commentID
-                        blogID:(NSNumber *)siteID
+                        siteID:(NSNumber *)siteID
                        success:(void (^)())success
                        failure:(void (^)(NSError *error))failure
 {
@@ -247,7 +247,7 @@
 }
 
 - (void)spamCommentWithID:(NSNumber *)commentID
-                   blogID:(NSNumber *)siteID
+                   siteID:(NSNumber *)siteID
                   success:(void (^)())success
                   failure:(void (^)(NSError *error))failure
 {
@@ -261,7 +261,7 @@
 
 // Trash
 - (void)deleteCommentWithID:(NSNumber *)commentID
-                     blogID:(NSNumber *)siteID
+                     siteID:(NSNumber *)siteID
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure
 {
