@@ -11,6 +11,7 @@
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "WPAccount.h"
+#import "CommentService.h"
 
 #import <Helpshift/Helpshift.h>
 #import <Simperium/Simperium.h>
@@ -179,41 +180,36 @@ NSString *const NotificationActionCommentApprove                = @"COMMENT_MODE
         return;
     }
     
-    // Comment like
-    if ([identifier isEqualToString:NotificationActionCommentLike]) {
-        // Get the site and comment id and like the comment via the REST API
-        NSInteger blogId = [remoteNotification[@"blog_id"] integerValue];
-        NSInteger commentId = [remoteNotification[@"comment_id"] integerValue];
+    // Comment actions
+    if ([identifier isEqualToString:NotificationActionCommentLike] || [identifier isEqualToString:NotificationActionCommentApprove]) {
+        // Get the site and comment id
+        NSNumber *siteID = remoteNotification[@"blog_id"];
+        NSNumber *commentID = remoteNotification[@"comment_id"];
         
-        if (blogId && commentId) {
-            [[defaultAccount restApi] likeComment: blogId
-                                     forCommentID:commentId
-                                          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (siteID && commentID) {
+            NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+            CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+
+            if ([identifier isEqualToString:NotificationActionCommentLike]) {
+                [commentService likeCommentWithID:commentID siteID:siteID
+                                          success:^{
                                               DDLogInfo(@"Liked comment from push notification");
                                           }
-                                          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                          failure:^(NSError *error) {
                                               DDLogInfo(@"Couldn't like comment from push notification");
-                                          }
-             ];
-            
-        }
-    } else if ([identifier isEqualToString:NotificationActionCommentApprove]) {
-        // Moderate comment
-        NSString *newStatus = @"approved";
-        NSInteger blogId = [remoteNotification[@"blog_id"] integerValue];
-        NSInteger commentId = [remoteNotification[@"comment_id"] integerValue];
-
-        if (blogId && commentId) {
-            [[defaultAccount restApi] moderateComment:blogId forCommentID:commentId withStatus:newStatus
-                                          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                              DDLogInfo(@"Successfully moderated comment from push notification");
-                                          }
-                                          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                              DDLogInfo(@"Couldn't moderate comment from push notification");
-                                          }
-             ];
+                                          }];
+            } else {
+                [commentService approveCommentWithID:commentID siteID:siteID
+                                             success:^{
+                                                 DDLogInfo(@"Successfully moderated comment from push notification");
+                                             }
+                                             failure:^(NSError *error) {
+                                                 DDLogInfo(@"Couldn't moderate comment from push notification");
+                                             }];
+            }
         }
     } else if ([identifier isEqualToString:NotificationActionCommentReply]) {
+        // Load notifications detail view
         NSString *notificationID            = [[remoteNotification numberForKey:@"note_id"] stringValue];
         WordPressAppDelegate *appDelegate   = [WordPressAppDelegate sharedWordPressApplicationDelegate];
 
