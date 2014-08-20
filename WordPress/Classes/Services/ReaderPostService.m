@@ -363,6 +363,55 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     }];
 }
 
+- (void)deletePostsFromSiteWithID:(NSNumber *)siteID
+{
+    NSError *error;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
+    request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@ AND isWPCom = YES", siteID];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@, error deleting posts belonging to siteID %@: %@", NSStringFromSelector(_cmd), siteID, error);
+        return;
+    }
+
+    if ([results count] == 0) {
+        return;
+    }
+
+    for (ReaderPost *post in results) {
+        DDLogInfo(@"Deleting post: %@", post);
+        [self.managedObjectContext deleteObject:post];
+    }
+
+    [self.managedObjectContext performBlockAndWait:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
+}
+
+- (void)flagPostsFromSite:(NSNumber *)siteID asBlocked:(BOOL)blocked
+{
+    NSError *error;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
+    request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@ AND isWPCom = YES", siteID];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@, error deleting posts belonging to siteID %@: %@", NSStringFromSelector(_cmd), siteID, error);
+        return;
+    }
+
+    if ([results count] == 0) {
+        return;
+    }
+
+    for (ReaderPost *post in results) {
+        post.isSiteBlocked = blocked;
+    }
+
+    [self.managedObjectContext performBlockAndWait:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
+}
+
 
 #pragma mark - Private Methods
 
@@ -537,6 +586,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
             [self deletePostsForTopic:readerTopic missingFromBatch:newPosts withStartingDate:date];
         }
         [self deletePostsInExcessOfMaxAllowedForTopic:readerTopic];
+        [self deletePostsFromBlockedSites];
         readerTopic.lastSynced = [NSDate date];
 
         // performBlockAndWait here so we know our objects are saved before we call success.
@@ -667,6 +717,32 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 }
 
 /**
+ Delete posts that are flagged as belonging to a blocked site.
+ 
+ The managed object context is not saved.
+ */
+- (void)deletePostsFromBlockedSites
+{
+    NSError *error;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
+    request.predicate = [NSPredicate predicateWithFormat:@"isSiteBlocked = YES"];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@, error deleting deleting posts from blocked sites: %@", NSStringFromSelector(_cmd), error);
+        return;
+    }
+
+    if ([results count] == 0) {
+        return;
+    }
+
+    for (ReaderPost *post in results) {
+        DDLogInfo(@"Deleting post: %@", post);
+        [self.managedObjectContext deleteObject:post];
+    }
+}
+
+/**
  Accepts an array of `RemoteReaderPost` objects and creates model objects
  for each one.
 
@@ -741,6 +817,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     post.tags = remotePost.tags;
     post.isSharingEnabled = remotePost.isSharingEnabled;
     post.isLikesEnabled = remotePost.isLikesEnabled;
+    post.isSiteBlocked = NO;
 
     // Construct a summary if necessary.
     NSString *summary = [self formatSummary:remotePost.summary];

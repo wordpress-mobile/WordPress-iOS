@@ -42,6 +42,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic globalID;
 @dynamic isLikesEnabled;
 @dynamic isSharingEnabled;
+@dynamic isSiteBlocked;
 
 - (BOOL)isFollowable
 {
