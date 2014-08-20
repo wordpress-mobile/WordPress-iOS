@@ -49,6 +49,6 @@
 
 - (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
                                    page:(NSUInteger)page
-                                success:(void (^)())success
+                                success:(void (^)(NSUInteger count))success
                                 failure:(void (^)(NSError *error))failure;
 @end
