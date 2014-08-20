@@ -6,8 +6,7 @@
 
 
 @protocol EditCommentViewControllerDelegate <NSObject>
-- (void)editCommentViewController:(EditCommentViewController *)sender didUpdateComment:(Comment *)comment;
-- (void)editCommentViewControllerWasDismissed:(EditCommentViewController *)sender;
+- (void)editCommentViewController:(EditCommentViewController *)sender finishedWithUpdates:(BOOL)hasUpdates;
 @end
 
 
