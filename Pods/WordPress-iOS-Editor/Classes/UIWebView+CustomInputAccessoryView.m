@@ -62,21 +62,7 @@ static Class fixClass = Nil;
 		
 		Class documentClass = objc_getClass("UIWebDocumentView");
         IMP newImp2 = [self methodForSelector:@selector(delayedBecomeFirstResponder)];
-		Method becomeFirstResponderMethod = class_getClassMethod(documentClass, @selector(becomeFirstResponder));
-		unsigned int outCount = 0;
-		Method *allMethods = class_copyMethodList(documentClass, &outCount);
-		
-		for (unsigned int i = 0; i < outCount; i++)
-		{
-			SEL methodName = method_getName(allMethods[i]);
-			
-			if (methodName == @selector(becomeFirstResponder))
-			{
-				becomeFirstResponderMethod = allMethods[i];
-				break;
-			}
-		}
-		
+		Method becomeFirstResponderMethod = class_getInstanceMethod(documentClass, @selector(becomeFirstResponder));
 		method_setImplementation(becomeFirstResponderMethod, newImp2);
         
         fixClass = newClass;
