@@ -31,7 +31,7 @@
 {
     [super viewDidLoad];
 
-	self.title = NSLocalizedString(@"Edit Comment", @"");
+    self.title = NSLocalizedString(@"Edit Comment", @"");
     
     self.textView.font = [WPStyleGuide regularTextFont];
     
