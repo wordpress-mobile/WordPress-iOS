@@ -4,83 +4,109 @@
 #import "ContextManager.h"
 #import "IOS7CorrectedTextView.h"
 
-@interface EditCommentViewController() {
-    CGRect _keyboardFrame;
-}
+
+
+@interface EditCommentViewController() <UIActionSheetDelegate>
+
+@property (nonatomic,   weak) IBOutlet IOS7CorrectedTextView    *textView;
+@property (nonatomic, strong) NSString                          *pristineText;
+@property (nonatomic, assign) CGRect                            keyboardFrame;
+@property (nonatomic, assign) BOOL                              interfaceEnabled;
+
+- (void)handleKeyboardDidShow:(NSNotification *)notification;
+- (void)handleKeyboardWillHide:(NSNotification *)notification;
 
 @end
 
-@implementation EditCommentViewController
 
-@synthesize commentViewController, comment, hasChanges, textViewText, textView, isTransitioning, isEditing;
+@implementation EditCommentViewController
 
 - (void)dealloc
 {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad
 {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
 
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil)
-                                                                             style:UIBarButtonItemStylePlain
-                                                                            target:self
-                                                                            action:@selector(cancelView:)];
-
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).")
-                                                                              style:[WPStyleGuide barButtonStyleForDone]
-                                                                             target:self
-                                                                             action:@selector(initiateSaveCommentReply:)];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleKeyboardDidShow:)
-                                                 name:UIKeyboardDidShowNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleKeyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
-    self.hasChanges = NO;
+    self.title = NSLocalizedString(@"Edit Comment", @"");
+    
+    self.textView.font = [WPStyleGuide regularTextFont];
+    
+    [self showCancelBarButton];
+    [self showSaveBarButton];
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    [nc addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    DDLogMethod();
     [super viewWillAppear:animated];
 
-    self.textView.text = self.comment.content;
-
-    //foo = textView.text;
-    //so we can compare to set hasChanges correctly
-    self.textViewText = [[NSString alloc] initWithString:self.textView.text];
+    self.textView.text  = self.comment.content;
+    self.pristineText   = self.textView.text;
+    
     [self.textView becomeFirstResponder];
-
-    self.isEditing = YES;
+    [self enableSaveIfNeeded];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+#pragma mark - View Helpers
+
+- (void)showCancelBarButton
 {
-    DDLogMethod();
-    [super viewWillDisappear:animated];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil)
+                                                                             style:UIBarButtonItemStylePlain
+                                                                            target:self
+                                                                            action:@selector(btnCancelPressed)];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (void)showDoneBarButton
 {
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"")
+                                                                             style:[WPStyleGuide barButtonStyleForDone]
+                                                                            target:self
+                                                                            action:@selector(btnDonePressed)];
 }
 
-#pragma mark -
-#pragma mark KeyboardNotification Methods
+- (void)showSaveBarButton
+{
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).")
+                                                                              style:[WPStyleGuide barButtonStyleForDone]
+                                                                             target:self
+                                                                             action:@selector(btnSavePressed)];
+}
+
+- (void)setInterfaceEnabled:(BOOL)enabled
+{
+    self.textView.editable                          = enabled;
+    self.navigationItem.rightBarButtonItem.enabled  = enabled;
+    self.navigationItem.leftBarButtonItem.enabled   = enabled;
+    _interfaceEnabled                               = enabled;
+}
+
+- (BOOL)hasChanges
+{
+    return ![self.textView.text isEqualToString:self.pristineText];
+}
+
+- (void)enableSaveIfNeeded
+{
+    self.navigationItem.rightBarButtonItem.enabled = self.hasChanges;
+}
+
+
+#pragma mark - KeyboardNotification Methods
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification
 {
-    NSDictionary *info = notification.userInfo;
-    _keyboardFrame = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    NSTimeInterval animationDuration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    
+    _keyboardFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     _keyboardFrame = [self.view convertRect:_keyboardFrame fromView:self.view.window];
-    float animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    
     [UIView animateWithDuration:animationDuration animations:^{
         CGRect frm = self.textView.frame;
         frm.size.height = CGRectGetMinY(_keyboardFrame);
@@ -90,8 +116,8 @@
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification
 {
-    NSDictionary *info = notification.userInfo;
-    float animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    NSTimeInterval animationDuration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    
     [UIView animateWithDuration:animationDuration animations:^{
         CGRect frm = self.textView.frame;
         frm.size.height = CGRectGetMaxY(self.view.bounds);
@@ -99,92 +125,98 @@
     }];
 }
 
-#pragma mark -
-#pragma mark Helper Methods
 
-- (void)endTextEnteringButtonAction:(id)sender
-{
-    [textView resignFirstResponder];
-    if (IS_IPAD == NO) {
-        UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
-        if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
-            self.isTransitioning = YES;
-            UIViewController *garbageController = [[UIViewController alloc] init];
-            [self.navigationController pushViewController:garbageController animated:NO];
-            [self.navigationController popViewControllerAnimated:NO];
-            self.isTransitioning = NO;
-            [textView resignFirstResponder];
-        }
-    }
-    self.isEditing = NO;
-}
-
-#pragma mark -
-#pragma mark Text View Delegate Methods
+#pragma mark - Text View Delegate Methods
 
 - (void)textViewDidBeginEditing:(UITextView *)aTextView
 {
     if (IS_IPAD == NO) {
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"")
-                                                                                 style:[WPStyleGuide barButtonStyleForDone]
-                                                                                target:self
-                                                                                action:@selector(endTextEnteringButtonAction:)];
+        [self showDoneBarButton];
     }
-    self.isEditing = YES;
+}
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    [self enableSaveIfNeeded];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)aTextView
 {
-    if (![self.textView.text isEqualToString:textViewText]) {
-        self.hasChanges = YES;
-    }
-    self.isEditing = NO;
     if (IS_IPAD == NO) {
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"")
-                                                                                 style:[WPStyleGuide barButtonStyleForBordered]
-                                                                                target:self
-                                                                                action:@selector(cancelView:)];
+        [self showCancelBarButton];
     }
 }
 
-#pragma mark -
-#pragma mark Comment Handling Methods
 
-- (void)initiateSaveCommentReply:(id)sender
+#pragma mark - Helper Methods
+
+- (void)dismissWithUpdates:(BOOL)hasUpdates
+{    
+    if ([self.delegate respondsToSelector:@selector(editCommentViewController:finishedWithUpdates:)]) {
+        [self.delegate editCommentViewController:self finishedWithUpdates:hasUpdates];
+    }
+}
+
+
+#pragma mark - UIActionSheet delegate methods
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    [self endTextEnteringButtonAction: sender];
+    if (buttonIndex == actionSheet.destructiveButtonIndex) {
+        [self dismissWithUpdates:NO];
+    }
+}
+
+
+#pragma mark - Button Delegates
+
+- (void)btnCancelPressed
+{
     if (self.hasChanges == NO) {
-        [commentViewController cancelView:self];
+        [self dismissWithUpdates:NO];
         return;
     }
-    self.comment.content = self.textView.text;
-    commentViewController.wasLastCommentPending = YES;
-    [commentViewController showComment:comment];
-    [self.navigationController popViewControllerAnimated:YES];
 
-    self.textView.editable = NO;
-    self.navigationItem.rightBarButtonItem.enabled = NO;
-    self.navigationItem.leftBarButtonItem.enabled = NO;
-    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    [commentService uploadComment:self.comment success:^{
-        self.hasChanges = NO;
-        [commentViewController cancelView:self];
-    } failure:^(NSError *error) {
-        self.textView.editable = YES;
-        self.navigationItem.rightBarButtonItem.enabled = YES;
-        self.navigationItem.leftBarButtonItem.enabled = YES;
-    }];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"")
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                               destructiveButtonTitle:NSLocalizedString(@"Discard", @"")
+                                                    otherButtonTitles:nil];
+    
+    actionSheet.delegate = self;
+    actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
+    [actionSheet showInView:self.view];
 }
 
-#pragma mark -
-#pragma mark Button Override Methods
-
-- (void)cancelView:(id)sender
+- (void)btnDonePressed
 {
-    if (![self.textView.text isEqualToString:self.textViewText]) {
-        self.hasChanges = YES;
-    }
-    [commentViewController cancelView:sender];
+    [self.textView resignFirstResponder];
+}
+
+- (void)btnSavePressed
+{
+    [self.textView resignFirstResponder];
+    
+    [self setInterfaceEnabled:NO];
+    self.comment.content = self.textView.text;
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
+    
+    [commentService uploadComment:self.comment success:^{
+        [self dismissWithUpdates:YES];
+    } failure:^(NSError *error) {
+        NSString *message = NSLocalizedString(@"There has been an error. Please, try again later", @"Error displayed if a comment fails to get updated");
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:message
+                                                           delegate:nil
+                                                  cancelButtonTitle:NSLocalizedString(@"Accept", nil)
+                                                  otherButtonTitles:nil,
+                                  nil];
+        [alertView show];
+        
+        [self setInterfaceEnabled:YES];
+    }];
 }
 
 @end
