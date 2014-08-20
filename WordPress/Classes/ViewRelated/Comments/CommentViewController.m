@@ -157,6 +157,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)showComment:(Comment *)comment
 {
     self.comment = comment;
+    [self.commentView reloadData];
     [self updateApproveButton];
 }
 
