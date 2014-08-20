@@ -1,7 +1,7 @@
-#import "UIWebView+CustomInputAccessoryView.h"
+#import "UIWebView+GUIFixes.h"
 #import <objc/runtime.h>
 
-@implementation UIWebView (CustomInputAccessoryView)
+@implementation UIWebView (GUIFixes)
 
 static const char* const kCustomInputAccessoryView = "kCustomInputAccessoryView";
 static const char* const fixedClassName = "UIWebBrowserViewMinusAccessoryView";
@@ -27,6 +27,7 @@ static Class fixClass = Nil;
 	UIView* view = [self performSelector:@selector(originalInputAccessoryView) withObject:nil];
 	
 	if (view) {
+		
 		UIView* parentWebView = self.superview;
 		
 		while (parentWebView && ![parentWebView isKindOfClass:[UIWebView class]])
@@ -60,10 +61,9 @@ static Class fixClass = Nil;
         class_addMethod(newClass, @selector(inputAccessoryView), newImp, "@@:");
         objc_registerClassPair(newClass);
 		
-		Class documentClass = objc_getClass("UIWebDocumentView");
-        IMP newImp2 = [self methodForSelector:@selector(delayedBecomeFirstResponder)];
-		Method becomeFirstResponderMethod = class_getInstanceMethod(documentClass, @selector(becomeFirstResponder));
-		method_setImplementation(becomeFirstResponderMethod, newImp2);
+        IMP delayedFirstResponderImp = [self methodForSelector:@selector(delayedBecomeFirstResponder)];
+		Method becomeFirstResponderMethod = class_getInstanceMethod(browserViewClass, @selector(becomeFirstResponder));
+		method_setImplementation(becomeFirstResponderMethod, delayedFirstResponderImp);
         
         fixClass = newClass;
     }
