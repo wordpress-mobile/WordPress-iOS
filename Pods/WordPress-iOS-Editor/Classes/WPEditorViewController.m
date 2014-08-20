@@ -8,7 +8,7 @@
 #import "ZSSBarButtonItem.h"
 #import "HRColorUtil.h"
 #import "ZSSTextView.h"
-#import "UIWebView+CustomInputAccessoryView.h"
+#import "UIWebView+GUIFixes.h"
 #import "WPInsetTextField.h"
 
 CGFloat const EPVCTextfieldHeight = 44.0f;
