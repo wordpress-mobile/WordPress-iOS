@@ -162,7 +162,7 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 0) {
+    if (buttonIndex == actionSheet.destructiveButtonIndex) {
         [self dismissWithUpdates:NO];
     }
 }
