@@ -478,11 +478,7 @@ NSInteger const WPLinkAlertViewTag = 92;
         [toolbarCropper addSubview:line];
     }
 	
-	// DRM: WORKAROUND: setting this property to NO prevents a bug on UIWebView that shows the
-	// input accessory view sometimes even if the keyboard is not shown.  We will set this property
-	// to YES when editing starts.
-	//
-	self.editorView.usesCustomInputAccessoryView = NO;
+	self.editorView.usesGUIFixes = YES;
 	self.editorView.customInputAccessoryView = self.toolbarHolder;
 	self.titleTextField.inputAccessoryView = self.toolbarHolder;
     
@@ -1426,21 +1422,13 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 		result = YES;
 	} else if ([resourceSpecifier isEqualToString:kFocusInSpecifier]){
 		
-		// DRM: WORKAROUND: UIWebView seems to display the keyboard's input access view sometimes even
-		// if the keyboard is not shown.
-		//
-		self.editorView.usesCustomInputAccessoryView = YES;
 		self.editorViewIsEditing = YES;
 		
 		[self enableToolbarItems:YES shouldShowSourceButton:NO];
 		
 		result = YES;
 	} else if ([resourceSpecifier isEqualToString:kFocusOutSpecifier]){
-		
-		// DRM: WORKAROUND: UIWebView seems to display the keyboard's input access view sometimes even
-		// if the keyboard is not shown.
-		//
-		self.editorView.usesCustomInputAccessoryView = NO;
+
 		self.editorViewIsEditing = NO;
 		
 		result = YES;
