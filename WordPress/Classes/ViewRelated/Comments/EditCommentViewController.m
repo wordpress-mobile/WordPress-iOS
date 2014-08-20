@@ -23,7 +23,6 @@
 
 - (void)dealloc
 {
-    DDLogMethod();
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
