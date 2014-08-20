@@ -179,6 +179,21 @@
 
 #pragma mark - REST Helpers
 
+// Edition
+- (void)updateCommentWithID:(NSNumber *)commentID
+                     siteID:(NSNumber *)siteID
+                    content:(NSString *)content
+                    success:(void (^)())success
+                    failure:(void (^)(NSError *error))failure
+{
+    CommentServiceRemoteREST *remote = [self remoteForREST];
+    [remote updateCommentWithID:commentID
+                         siteID:siteID
+                        content:content
+                        success:success
+                        failure:failure];
+}
+
 // Likes
 - (void)likeCommentWithID:(NSNumber *)commentID
                    siteID:(NSNumber *)siteID
