@@ -229,6 +229,11 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 
 #pragma mark - Instance methods
 
+- (void)reloadData
+{
+    [self configureContentView:_contentProvider];
+}
+
 - (void)reset
 {
     _bylineLabel.text = nil;
