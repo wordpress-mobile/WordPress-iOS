@@ -103,7 +103,6 @@ typedef NS_ENUM(NSInteger, CommentViewActionIndex) {
     [self.editButton setAccessibilityLabel:NSLocalizedString(@"Edit comment", @"Spoken accessibility label.")];
     self.navigationItem.rightBarButtonItem = self.editButton;
 
-    self.replyButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-comment-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-comment-active"]];
     [self.view addSubview:self.commentView];
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
