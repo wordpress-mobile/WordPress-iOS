@@ -4,6 +4,8 @@
 #import "CommentServiceRemote.h"
 #import "CommentServiceRemoteXMLRPC.h"
 #import "CommentServiceRemoteREST.h"
+#import "WPAccount.h"
+#import "AccountService.h"
 #import "ContextManager.h"
 
 @interface CommentService ()
@@ -64,7 +66,6 @@
     reply.status = CommentStatusDraft;
 
     return reply;
-
 }
 
 // Sync comments
@@ -174,6 +175,103 @@
     [self.managedObjectContext deleteObject:comment];
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
+
+
+#pragma mark - REST Helpers
+
+// Edition
+- (void)updateCommentWithID:(NSNumber *)commentID
+                     siteID:(NSNumber *)siteID
+                    content:(NSString *)content
+                    success:(void (^)())success
+                    failure:(void (^)(NSError *error))failure
+{
+    CommentServiceRemoteREST *remote = [self remoteForREST];
+    [remote updateCommentWithID:commentID
+                         siteID:siteID
+                        content:content
+                        success:success
+                        failure:failure];
+}
+
+// Likes
+- (void)likeCommentWithID:(NSNumber *)commentID
+                   siteID:(NSNumber *)siteID
+                  success:(void (^)())success
+                  failure:(void (^)(NSError *error))failure
+{
+    CommentServiceRemoteREST *remote = [self remoteForREST];
+    [remote likeCommentWithID:commentID
+                       siteID:siteID
+                      success:success
+                      failure:failure];
+}
+
+- (void)unlikeCommentWithID:(NSNumber *)commentID
+                     siteID:(NSNumber *)siteID
+                    success:(void (^)())success
+                    failure:(void (^)(NSError *error))failure
+{
+    CommentServiceRemoteREST *remote = [self remoteForREST];
+    [remote unlikeCommentWithID:commentID
+                         siteID:siteID
+                        success:success
+                        failure:failure];
+}
+
+// Moderation
+- (void)approveCommentWithID:(NSNumber *)commentID
+                      siteID:(NSNumber *)siteID
+                     success:(void (^)())success
+                     failure:(void (^)(NSError *error))failure
+{
+    CommentServiceRemoteREST *remote = [self remoteForREST];
+    [remote moderateCommentWithID:commentID
+                           siteID:siteID
+                           status:@"approved"
+                          success:success
+                          failure:failure];
+}
+
+- (void)unapproveCommentWithID:(NSNumber *)commentID
+                        blogID:(NSNumber *)siteID
+                       success:(void (^)())success
+                       failure:(void (^)(NSError *error))failure
+{
+    CommentServiceRemoteREST *remote = [self remoteForREST];
+    [remote moderateCommentWithID:commentID
+                           siteID:siteID
+                           status:@"unapproved"
+                          success:success
+                          failure:failure];
+}
+
+- (void)spamCommentWithID:(NSNumber *)commentID
+                   blogID:(NSNumber *)siteID
+                  success:(void (^)())success
+                  failure:(void (^)(NSError *error))failure
+{
+    CommentServiceRemoteREST *remote = [self remoteForREST];
+    [remote moderateCommentWithID:commentID
+                           siteID:siteID
+                           status:@"spam"
+                          success:success
+                          failure:failure];
+}
+
+// Trash
+- (void)deleteCommentWithID:(NSNumber *)commentID
+                     blogID:(NSNumber *)siteID
+                    success:(void (^)())success
+                    failure:(void (^)(NSError *error))failure
+{
+    CommentServiceRemoteREST *remote = [self remoteForREST];
+    [remote trashCommentWithID:commentID
+                        siteID:siteID
+                       success:success
+                       failure:failure];
+}
+
 
 #pragma mark - Private methods
 
@@ -294,6 +392,26 @@
         remote = [[CommentServiceRemoteXMLRPC alloc] initWithApi:client];
     }
     return remote;
+}
+
+- (CommentServiceRemoteREST *)remoteForREST
+{
+    return [[CommentServiceRemoteREST alloc] initWithApi:[self apiForRESTRequest]];
+}
+
+
+/**
+ Get the api to use for the request.
+ */
+- (WordPressComApi *)apiForRESTRequest
+{
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    WordPressComApi *api = [defaultAccount restApi];
+    if (![api hasCredentials]) {
+        api = [WordPressComApi anonymousApi];
+    }
+    return api;
 }
 
 @end
