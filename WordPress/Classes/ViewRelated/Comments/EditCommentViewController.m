@@ -36,7 +36,6 @@
     
     [self showCancelBarButton];
     [self showSaveBarButton];
-
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
@@ -51,6 +50,7 @@
     self.pristineText   = self.textView.text;
     
     [self.textView becomeFirstResponder];
+    [self enableSaveIfNeeded];
 }
 
 #pragma mark - View Helpers
@@ -92,6 +92,11 @@
     return ![self.textView.text isEqualToString:self.pristineText];
 }
 
+- (void)enableSaveIfNeeded
+{
+    self.navigationItem.rightBarButtonItem.enabled = self.hasChanges;
+}
+
 
 #pragma mark - KeyboardNotification Methods
 
@@ -128,6 +133,11 @@
     if (IS_IPAD == NO) {
         [self showDoneBarButton];
     }
+}
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    [self enableSaveIfNeeded];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)aTextView
@@ -186,11 +196,6 @@
 - (void)btnSavePressed
 {
     [self.textView resignFirstResponder];
-    
-    if (self.hasChanges == NO) {
-        [self dismissWithUpdates:NO];
-        return;
-    }
     
     [self setInterfaceEnabled:NO];
     self.comment.content = self.textView.text;
