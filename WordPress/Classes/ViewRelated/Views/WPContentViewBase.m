@@ -141,7 +141,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
 - (void)refreshLabelPreferredMaxLayoutWidth
 {
-    CGFloat width = CGRectGetWidth(self.bounds) - (WPContentViewHorizontalInnerPadding * 2);
+    CGFloat width = CGRectGetWidth(self.bounds) - (WPContentViewOuterMargin * 2);
     for (UILabel *label in self.labelsNeedingPreferredMaxLayoutWidth) {
         [label setPreferredMaxLayoutWidth:width];
     }
@@ -489,7 +489,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     }
 }
 
-#pragma mark - authorLinkAction
+#pragma mark - Attribution Delegate Methods
 
 /**
  Receives the notification from the attribution view that its button was pressed and informs the
@@ -499,6 +499,17 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 {
     if ([self.delegate respondsToSelector:@selector(contentView:didReceiveAttributionLinkAction:)]) {
         [self.delegate contentView:self didReceiveAttributionLinkAction:sender];
+    }
+}
+
+/**
+ Receives the notification from the attribution view that its menu button was pressed and informs the
+ delegate of the interaction.
+ */
+- (void)attributionView:(WPContentAttributionView *)attributionView didReceiveAttributionMenuAction:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(contentView:didReceiveAttributionMenuAction:)]) {
+        [self.delegate contentView:self didReceiveAttributionMenuAction:sender];
     }
 }
 

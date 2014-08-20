@@ -1,7 +1,8 @@
 #import <Foundation/Foundation.h>
 #import "LocalCoreDataService.h"
 
-@class Blog, Comment;
+@class Blog;
+@class Comment;
 
 @interface CommentService : NSObject <LocalCoreDataService>
 
@@ -24,17 +25,17 @@
               success:(void (^)())success
               failure:(void (^)(NSError *error))failure;
 
-// Approve
+// Approve comment
 - (void)approveComment:(Comment *)comment
                success:(void (^)())success
                failure:(void (^)(NSError *error))failure;
 
-// Unapprove
+// Unapprove comment
 - (void)unapproveComment:(Comment *)comment
                  success:(void (^)())success
                  failure:(void (^)(NSError *error))failure;
 
-// Spam
+// Spam comment
 - (void)spamComment:(Comment *)comment
             success:(void (^)())success
             failure:(void (^)(NSError *error))failure;
@@ -43,5 +44,57 @@
 - (void)deleteComment:(Comment *)comment
               success:(void (^)())success
               failure:(void (^)(NSError *error))failure;
+
+
+/**
+    REST Helpers:
+    =============
+ 
+    Decoupled from the CoreData Model, the main goal of the following helpers is to
+    to allow Comment Interaction in scenarios in which the Comment / Blog instances may not be available.
+*/
+
+// Edit Comment
+- (void)updateCommentWithID:(NSNumber *)commentID
+                     siteID:(NSNumber *)siteID
+                    content:(NSString *)content
+                    success:(void (^)())success
+                    failure:(void (^)(NSError *error))failure;
+
+// Like comment
+- (void)likeCommentWithID:(NSNumber *)commentID
+                   siteID:(NSNumber *)siteID
+                  success:(void (^)())success
+                  failure:(void (^)(NSError *error))failure;
+
+// Unlike comment
+- (void)unlikeCommentWithID:(NSNumber *)commentID
+                     siteID:(NSNumber *)siteID
+                    success:(void (^)())success
+                    failure:(void (^)(NSError *error))failure;
+
+// Approve comment
+- (void)approveCommentWithID:(NSNumber *)commentID
+                      siteID:(NSNumber *)siteID
+                     success:(void (^)())success
+                     failure:(void (^)(NSError *error))failure;
+
+// Unapprove comment
+- (void)unapproveCommentWithID:(NSNumber *)commentID
+                        siteID:(NSNumber *)siteID
+                       success:(void (^)())success
+                       failure:(void (^)(NSError *error))failure;
+
+// Spam comment
+- (void)spamCommentWithID:(NSNumber *)commentID
+                   siteID:(NSNumber *)siteID
+                  success:(void (^)())success
+                  failure:(void (^)(NSError *error))failure;
+
+// Delete comment
+- (void)deleteCommentWithID:(NSNumber *)commentID
+                     siteID:(NSNumber *)siteID
+                    success:(void (^)())success
+                    failure:(void (^)(NSError *error))failure;
 
 @end

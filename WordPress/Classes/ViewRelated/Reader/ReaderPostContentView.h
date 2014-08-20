@@ -54,6 +54,11 @@
 @property (nonatomic) BOOL shouldShowActions;
 
 /**
+ A Boolean value specifying whether the view should display the attribution menu.
+ */
+@property (nonatomic) BOOL shouldShowAttributionMenu;
+
+/**
  Configures the view to display the contents of the specified `ReaderPost`.
  This method automatically set the `contentProvider`
  */
