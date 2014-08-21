@@ -61,7 +61,7 @@
     self.livePreviewButton.titleLabel.text = NSLocalizedString(@"Live Preview", nil);
     self.activateButton.titleLabel.text = NSLocalizedString(@"Activate", nil);
     [self.livePreviewButton setBackgroundColor:[WPStyleGuide whisperGrey]];
-    [self.activateButton setBackgroundColor:[WPStyleGuide baseDarkerBlue]];
+    [self.activateButton setBackgroundColor:[WPStyleGuide wordPressBlue]];
     self.livePreviewButton.layer.cornerRadius = 3.0f;
     self.activateButton.layer.cornerRadius = 3.0f;
     self.livePreviewButton.exclusiveTouch = YES;
