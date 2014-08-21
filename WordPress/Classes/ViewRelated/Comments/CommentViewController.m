@@ -38,7 +38,7 @@ typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
 #pragma mark Private
 #pragma mark ==========================================================================================
 
-@interface CommentViewController () <UIActionSheetDelegate, InlineComposeViewDelegate, WPContentViewDelegate>
+@interface CommentViewController () <UIActionSheetDelegate, InlineComposeViewDelegate, WPContentViewDelegate, EditCommentViewControllerDelegate>
 
 @property (nonatomic, strong) CommentView               *commentView;
 @property (nonatomic, strong) UIButton                  *trashButton;
