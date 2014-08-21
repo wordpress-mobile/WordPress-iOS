@@ -9,12 +9,13 @@
     [numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
     NSNumber *resizePreferenceNumber = @(0);
     NSString *resizePreferenceString = [[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"];
-    
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
+
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil) {
         resizePreferenceNumber = [numberFormatter numberFromString:resizePreferenceString];
-    
+    }
+
     NSInteger resizePreferenceIndex = [resizePreferenceNumber integerValue];
-    
+
     // Need to deal with preference index awkwardly due to the way we're storing preferences
     if (resizePreferenceIndex == 0) {
         // We used to support per-image resizing; replace that with large by default
@@ -30,7 +31,6 @@
     return MediaResizeOriginal;
 }
 
-
 + (CGSize)sizeForImage:(UIImage *)image
            mediaResize:(MediaResize)resize
   blogResizeDimensions:(NSDictionary *)dimensions
@@ -39,10 +39,10 @@
     CGSize mediumSize = [dimensions[@"mediumSize"] CGSizeValue];
     CGSize largeSize =  [dimensions[@"largeSize"] CGSizeValue];
     CGSize originalSize = CGSizeMake(image.size.width, image.size.height);
-    
+
     // Resize the image using the selected dimensions
     CGSize newSize = originalSize;
-    
+
     switch (image.imageOrientation) {
         case UIImageOrientationLeft:
         case UIImageOrientationLeftMirrored:
@@ -55,7 +55,7 @@
         default:
             break;
     }
-    
+
     if (resize == MediaResizeSmall &&
         (image.size.width > smallSize.width || image.size.height > smallSize.height)) {
         newSize = smallSize;
@@ -74,14 +74,14 @@
 {
     CGSize originalSize = CGSizeMake(original.size.width, original.size.height);
     UIImage *resizedImage = original;
-    
+
     // Perform resizing if necessary
     if (!CGSizeEqualToSize(originalSize, newSize)) {
         resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
                                                       bounds:newSize
                                         interpolationQuality:kCGInterpolationHigh];
     }
-    
+
     return resizedImage;
 }
 

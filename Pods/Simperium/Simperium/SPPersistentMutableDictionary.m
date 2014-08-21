@@ -28,11 +28,11 @@ static SPLogLevels logLevel					= SPLogLevelsError;
 #pragma mark ====================================================================================
 
 @interface SPPersistentMutableDictionary ()
-@property (nonatomic, strong, readwrite) NSString *label;
-@property (nonatomic, strong, readwrite) NSCache *cache;
-@property (nonatomic, strong, readwrite) NSManagedObjectContext* managedObjectContext;
-@property (nonatomic, strong, readwrite) NSManagedObjectModel* managedObjectModel;
-@property (nonatomic, strong, readwrite) NSPersistentStoreCoordinator* persistentStoreCoordinator;
+@property (nonatomic, strong, readwrite) NSString                       *label;
+@property (nonatomic, strong, readwrite) NSCache                        *cache;
+@property (nonatomic, strong, readwrite) NSManagedObjectContext         *managedObjectContext;
+@property (nonatomic, strong, readwrite) NSManagedObjectModel           *managedObjectModel;
+@property (nonatomic, strong, readwrite) NSPersistentStoreCoordinator   *persistentStoreCoordinator;
 - (NSURL*)baseURL;
 @end
 
@@ -44,7 +44,8 @@ static SPLogLevels logLevel					= SPLogLevelsError;
 @implementation SPPersistentMutableDictionary
 
 - (id)initWithLabel:(NSString *)label {
-	if ((self = [super init])) {
+    self = [super init];
+	if (self) {
 		self.label = label;
 		self.cache = [[NSCache alloc] init];
 	}
@@ -65,7 +66,6 @@ static SPLogLevels logLevel					= SPLogLevelsError;
 }
 
 - (BOOL)containsObjectForKey:(id)aKey {
-	// Failsafe
 	if (aKey == nil) {
 		return false;
 	}
@@ -88,7 +88,6 @@ static SPLogLevels logLevel					= SPLogLevelsError;
 }
 
 - (id)objectForKey:(id)aKey {
-	// Failsafe
 	if (aKey == nil) {
 		return nil;
 	}
@@ -127,7 +126,6 @@ static SPLogLevels logLevel					= SPLogLevelsError;
 }
 
 - (void)setObject:(id)anObject forKey:(NSString*)aKey {
-	// Failsafe
 	if (anObject == nil) {
 		[self removeObjectForKey:aKey];
 		return;
@@ -206,7 +204,6 @@ static SPLogLevels logLevel					= SPLogLevelsError;
 }
 
 - (void)removeAllObjects {
-	// Remove from CoreData
 	[self.managedObjectContext performBlock:^{
 		
 		// Fetch the objectID's
@@ -237,45 +234,56 @@ static SPLogLevels logLevel					= SPLogLevelsError;
 #pragma mark ====================================================================================
 
 - (NSManagedObjectModel *)managedObjectModel {
-    if (_managedObjectModel != nil) {
+    if (_managedObjectModel) {
         return _managedObjectModel;
     }
-	
-	// Dynamic Attributes
-	NSAttributeDescription *keyAttribute = [[NSAttributeDescription alloc] init];
-	[keyAttribute setName:@"key"];
-	[keyAttribute setAttributeType:NSStringAttributeType];
-	[keyAttribute setOptional:NO];
-	[keyAttribute setIndexed:YES];
-	
-	NSAttributeDescription *valueAttribute = [[NSAttributeDescription alloc] init];
-	[valueAttribute setName:@"value"];
-	[valueAttribute setAttributeType:NSBinaryDataAttributeType];
-	[valueAttribute setOptional:NO];
-	
-	// SPMetadata Entity
-	NSEntityDescription *entity = [[NSEntityDescription alloc] init];
-	[entity setName:SPDictionaryEntityName];
-	[entity setManagedObjectClassName:NSStringFromClass([NSManagedObject class])];
-	[entity setProperties:@[keyAttribute, valueAttribute] ];
-	
-	// Done!
-	NSManagedObjectModel *model = [[NSManagedObjectModel alloc] init];
-	[model setEntities:@[entity]];
-	
-	_managedObjectModel = model;
+
+	@synchronized(self) {
+        if (_managedObjectModel) {
+            return _managedObjectModel;
+        }
+        
+        // Dynamic Attributes
+        NSAttributeDescription *keyAttribute    = [[NSAttributeDescription alloc] init];
+        keyAttribute.name                       = @"key";
+        keyAttribute.attributeType              = NSStringAttributeType;
+        keyAttribute.optional                   = NO;
+        keyAttribute.indexed                    = YES;
+        
+        NSAttributeDescription *valueAttribute  = [[NSAttributeDescription alloc] init];
+        valueAttribute.name                     = @"value";
+        valueAttribute.attributeType            = NSBinaryDataAttributeType;
+        valueAttribute.optional                 = NO;
+        
+        // SPMetadata Entity
+        NSEntityDescription *entity             = [[NSEntityDescription alloc] init];
+        entity.name                             = SPDictionaryEntityName;
+        entity.managedObjectClassName           = NSStringFromClass([NSManagedObject class]);
+        entity.properties                       = @[keyAttribute, valueAttribute];
+        
+        // Done!
+        NSManagedObjectModel *model             = [[NSManagedObjectModel alloc] init];
+        model.entities                          = @[entity];
+        
+        _managedObjectModel = model;
+    }
 	
 	return _managedObjectModel;
 }
 
 - (NSManagedObjectContext*)managedObjectContext {
-    if (_managedObjectContext != nil) {
+    if (_managedObjectContext) {
         return _managedObjectContext;
     }
 	
     @synchronized(self) {
-        _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-        _managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
+        if (_managedObjectContext) {
+            return _managedObjectContext;
+        }
+        
+        NSManagedObjectContext *managedObjectContext    = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+        managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
+        _managedObjectContext                           = managedObjectContext;
     }
     
     return _managedObjectContext;
@@ -283,12 +291,15 @@ static SPLogLevels logLevel					= SPLogLevelsError;
 
 
 - (NSPersistentStoreCoordinator*)persistentStoreCoordinator {
-    if (_persistentStoreCoordinator != nil) {
+    if (_persistentStoreCoordinator) {
         return _persistentStoreCoordinator;
     }
     
 	@synchronized(self) {
-		// If the baseURL doesn't exist, create it
+        if (_persistentStoreCoordinator) {
+            return _persistentStoreCoordinator;
+        }
+        
 		NSURL *baseURL	= [self baseURL];
 		
 		NSError *error	= nil;
@@ -305,12 +316,15 @@ static SPLogLevels logLevel					= SPLogLevelsError;
 		// Finally, load the PSC
 		NSURL *storeURL = [baseURL URLByAppendingPathComponent:self.filename];
 		
-		_persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
-		if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error])
+        NSManagedObjectModel *context       = self.managedObjectModel;
+		NSPersistentStoreCoordinator *psc   = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:context];
+		if (![psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error])
 		{
 			SPLogError(@"Unresolved error %@, %@", error, [error userInfo]);
 			abort();
 		}
+        
+        _persistentStoreCoordinator = psc;
 	}
     
     return _persistentStoreCoordinator;
@@ -332,8 +346,7 @@ static SPLogLevels logLevel					= SPLogLevelsError;
 }
 
 - (void)migrateIfNeeded {
-	
-	// Prepare the URL's
+
 	NSFileManager *fileManager	= [NSFileManager defaultManager];
 	NSURL *oldBaseURL			= [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 	NSURL *newBaseURL			= self.baseURL;
@@ -388,8 +401,8 @@ static SPLogLevels logLevel					= SPLogLevelsError;
 
 - (NSFetchRequest *)requestForEntityWithKey:(id)aKey {
 	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:SPDictionaryEntityName];
-	request.predicate = [NSPredicate predicateWithFormat:@"key == %@", aKey];
-	request.fetchLimit = 1;
+	request.predicate       = [NSPredicate predicateWithFormat:@"key == %@", aKey];
+	request.fetchLimit      = 1;
 	
 	return request;
 }

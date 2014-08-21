@@ -4,7 +4,6 @@
 #import "Blog.h"
 #import "NotificationsManager.h"
 #import "SettingsViewController.h"
-#import "AsyncTestHelper.h"
 #import "ContextManager.h"
 #import "AccountService.h"
 
@@ -23,9 +22,7 @@
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     if (defaultAccount) {
-        ATHStart();
         [accountService removeDefaultWordPressComAccount];
-        ATHEnd();
     }
 }
 
@@ -33,6 +30,7 @@
 {
     [super tearDown];
     [[CoreDataTestHelper sharedHelper] reset];
+    [CoreDataTestHelper sharedHelper].testExpectation = nil;
 }
 
 - (void)testWpcomSection
@@ -60,9 +58,12 @@
 
 
     // Sign In
-    ATHStart();
+    XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
+    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
+
     WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:@"jacksparrow" password:@"piratesobrave" authToken:@"token"];
-    ATHEnd();
+    
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
 
     /*
      Signed In, Notifications disabled, 1 blog
@@ -94,7 +95,9 @@
     cell = [self tableView:table cellForRow:2];
     XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
 
-    ATHStart();
+    saveExpectation = [self expectationWithDescription:@"Context save expectation"];
+    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
+    
     NSString *xmlrpc = @"http://blog1.com/xmlrpc.php";
     NSString *url = @"blog1.com";
     Blog *blog = [accountService findBlogWithXmlrpc:xmlrpc inAccount:account];
@@ -104,7 +107,7 @@
         blog.url = url;
     }
     [[ContextManager sharedInstance] saveContext:account.managedObjectContext];
-    ATHEnd();
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
 
     [table reloadData];
 
@@ -123,17 +126,21 @@
     cell = [self tableView:table cellForRow:2];
     XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
     
-    ATHStart();
+    saveExpectation = [self expectationWithDescription:@"Context save expectation"];
+    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
+
     xmlrpc = @"http://blog2.com/xmlrpc.php";
     url = @"blog2.com";
     blog = [accountService findBlogWithXmlrpc:xmlrpc inAccount:account];
     if (!blog) {
-        blog = [accountService createBlogWithAccount:defaultAccount];
+        blog = [accountService createBlogWithAccount:account];
         blog.xmlrpc = xmlrpc;
         blog.url = url;
     }
     [[ContextManager sharedInstance] saveContext:account.managedObjectContext];
-    ATHEnd();
+    [self waitForExpectationsWithTimeout:2.0 handler:^(NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
 
     [table reloadData];
 

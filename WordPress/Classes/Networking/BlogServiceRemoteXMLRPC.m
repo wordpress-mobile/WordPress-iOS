@@ -20,7 +20,6 @@
     return self;
 }
 
-
 - (void)syncPostsAndMetadataForBlog:(Blog *)blog
                   categoriesSuccess:(CategoriesHandler)categoriesSuccess
                      optionsSuccess:(OptionsHandler)optionsSuccess
@@ -64,14 +63,11 @@
     [blog.api enqueueXMLRPCRequestOperation:operation];
 }
 
-
 - (void)syncPagesForBlog:(Blog *)blog batchSize:(NSUInteger)batchSize loadMore:(BOOL)more success:(PagesHandler)success failure:(void (^)(NSError *))failure
 {
     WPXMLRPCRequestOperation *operation = [self operationForPagesWithBlog:blog batchSize:batchSize loadMore:more success:success failure:failure];
     [blog.api enqueueXMLRPCRequestOperation:operation];
 }
-
-
 
 - (void)syncCategoriesForBlog:(Blog *)blog success:(CategoriesHandler)success failure:(void (^)(NSError *))failure
 {
@@ -79,15 +75,11 @@
     [blog.api enqueueXMLRPCRequestOperation:operation];
 }
 
-
-
 - (void)syncOptionsForBlog:(Blog *)blog success:(OptionsHandler)success failure:(void (^)(NSError *))failure
 {
     WPXMLRPCRequestOperation *operation = [self operationForOptionsWithBlog:blog success:success failure:failure];
     [blog.api enqueueXMLRPCRequestOperation:operation];
 }
-
-
 
 - (void)syncMediaLibraryForBlog:(Blog *)blog success:(MediaHandler)success failure:(void (^)(NSError *))failure
 {
@@ -95,14 +87,11 @@
     [blog.api enqueueXMLRPCRequestOperation:operation];
 }
 
-
-
 - (void)syncPostFormatsForBlog:(Blog *)blog success:(PostFormatsHandler)success failure:(void (^)(NSError *))failure
 {
     WPXMLRPCRequestOperation *operation = [self operationForPostFormatsWithBlog:blog success:success failure:failure];
     [blog.api enqueueXMLRPCRequestOperation:operation];
 }
-
 
 - (void)syncBlogContentAndMetadata:(Blog *)blog
                  categoriesSuccess:(CategoriesHandler)categoriesSuccess
@@ -158,10 +147,12 @@
 
     [blog.api enqueueHTTPRequestOperation:combinedOperation];
 
-
 }
 
-- (WPXMLRPCRequestOperation *)operationForOptionsWithBlog:(Blog *)blog success:(OptionsHandler)success failure:(void (^)(NSError *error))failure {
+- (WPXMLRPCRequestOperation *)operationForOptionsWithBlog:(Blog *)blog
+                                                  success:(OptionsHandler)success
+                                                  failure:(void (^)(NSError *error))failure
+{
     NSArray *parameters = [blog getXMLRPCArgsWithExtra:nil];
     WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getOptions" parameters:parameters];
     WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -181,8 +172,11 @@
     return operation;
 }
 
-- (WPXMLRPCRequestOperation *)operationForPostFormatsWithBlog:(Blog *)blog success:(PostFormatsHandler)success failure:(void (^)(NSError *error))failure {
-    NSDictionary *dict = [NSDictionary dictionaryWithObject:@"1" forKey:@"show-supported"];
+- (WPXMLRPCRequestOperation *)operationForPostFormatsWithBlog:(Blog *)blog 
+                                                      success:(PostFormatsHandler)success
+                                                      failure:(void (^)(NSError *error))failure
+{
+    NSDictionary *dict = @{@"show-supported": @"1"};
     NSArray *parameters = [blog getXMLRPCArgsWithExtra:dict];
 
     WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPostFormats" parameters:parameters];
@@ -203,7 +197,10 @@
     return operation;
 }
 
-- (WPXMLRPCRequestOperation *)operationForCategoriesWithBlog:(Blog *)blog success:(CategoriesHandler)success failure:(void (^)(NSError *error))failure {
+- (WPXMLRPCRequestOperation *)operationForCategoriesWithBlog:(Blog *)blog 
+                                                     success:(CategoriesHandler)success
+                                                     failure:(void (^)(NSError *error))failure
+{
     NSArray *parameters = [blog getXMLRPCArgsWithExtra:nil];
     WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getCategories" parameters:parameters];
     WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -223,7 +220,12 @@
     return operation;
 }
 
-- (WPXMLRPCRequestOperation *)operationForPostsWithBlog:(Blog *)blog batchSize:(NSUInteger)batchSize loadMore:(BOOL)more success:(PostsHandler)success failure:(void (^)(NSError *error))failure {
+- (WPXMLRPCRequestOperation *)operationForPostsWithBlog:(Blog *)blog
+                                              batchSize:(NSUInteger)batchSize
+                                               loadMore:(BOOL)more
+                                                success:(PostsHandler)success
+                                                failure:(void (^)(NSError *error))failure
+{
     // Don't load more than 20 posts if we aren't at the end of the table,
     // even if they were previously donwloaded
     //
@@ -249,7 +251,12 @@
     return operation;
 }
 
-- (WPXMLRPCRequestOperation *)operationForPagesWithBlog:(Blog *)blog batchSize:(NSUInteger)batchSize loadMore:(BOOL)more success:(PagesHandler)success failure:(void (^)(NSError *error))failure {
+- (WPXMLRPCRequestOperation *)operationForPagesWithBlog:(Blog *)blog
+                                              batchSize:(NSUInteger)batchSize
+                                               loadMore:(BOOL)more
+                                                success:(PagesHandler)success
+                                                failure:(void (^)(NSError *error))failure
+{
     // Don't load more than 20 pages if we aren't at the end of the table,
     // even if they were previously donwloaded
     //
@@ -275,8 +282,10 @@
     return operation;
 }
 
-
-- (WPXMLRPCRequestOperation *)operationForMediaLibraryWithBlog:(Blog *)blog success:(MediaHandler)success failure:(void (^)(NSError *))failure {
+- (WPXMLRPCRequestOperation *)operationForMediaLibraryWithBlog:(Blog *)blog 
+                                                       success:(MediaHandler)success
+                                                       failure:(void (^)(NSError *))failure
+{
     WPXMLRPCRequest *mediaLibraryRequest = [self.api XMLRPCRequestWithMethod:@"wp.getMediaLibrary" parameters:[blog getXMLRPCArgsWithExtra:nil]];
     WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:mediaLibraryRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
@@ -294,6 +303,5 @@
     }];
     return operation;
 }
-
 
 @end

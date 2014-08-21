@@ -15,7 +15,8 @@
  */
 
 #import <OCMock/OCMockObject.h>
-#import <OCMock/OCMockRecorder.h>
+#import <OCMock/OCMRecorder.h>
+#import <OCMock/OCMStubRecorder.h>
 #import <OCMock/OCMConstraint.h>
 #import <OCMock/OCMArg.h>
 #import <OCMock/OCMLocation.h>

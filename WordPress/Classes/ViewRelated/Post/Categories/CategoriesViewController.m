@@ -20,7 +20,8 @@
 
 @implementation CategoriesViewController
 
-- (id)initWithPost:(Post *)post selectionMode:(CategoriesSelectionMode)selectionMode {
+- (id)initWithPost:(Post *)post selectionMode:(CategoriesSelectionMode)selectionMode
+{
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         self.selectionMode = selectionMode;
@@ -29,12 +30,13 @@
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    
+
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero]; // Hide extra cell separators.
-    
+
     // Show the add category button if we're selecting categories for a post.
     if (self.selectionMode == CategoriesSelectionModePost ) {
         UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
@@ -42,45 +44,49 @@
         [button setImage:image forState:UIControlStateNormal];
         [button addTarget:self action:@selector(showAddNewCategory) forControlEvents:UIControlEventTouchUpInside];
         UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-        
+
         [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:rightBarButtonItem forNavigationItem:self.navigationItem];
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
-    
+
     [self configureCategories];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     [super viewWillDisappear:animated];
-    
+
     // Save changes.
     self.post.categories = [NSMutableSet setWithArray:self.selectedCategories];
     [self.post save];
 }
 
-
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 }
 
-
 #pragma mark - Instance Methods
 
-- (BOOL)hasChanges {
+- (BOOL)hasChanges
+{
     return [self.originalSelection isEqualToArray:self.selectedCategories];
 }
 
-- (void)showAddNewCategory {
+- (void)showAddNewCategory
+{
     DDLogMethod();
     WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithPost:self.post];
     [self.navigationController pushViewController:addCategoryViewController animated:YES];
 }
 
-- (void)configureCategories {
+- (void)configureCategories
+{
     self.selectedCategories = [NSMutableArray arrayWithArray:[self.post.categories allObjects]];
     self.originalSelection = [self.selectedCategories copy];
     self.categoryIndentationDict = [NSMutableDictionary dictionary];
@@ -89,10 +95,10 @@
     WPCategoryTree *tree = [[WPCategoryTree alloc] initWithParent:nil];
     [tree getChildrenFromObjects:[self.post.blog sortedCategories]];
     self.categories = [tree getAllObjects];
-    
+
     // Get the indentation level of each category.
     NSUInteger count = [self.categories count];
-    
+
     NSMutableDictionary *categoryDict = [NSMutableDictionary dictionary];
     for (NSInteger i = 0; i < count; i++) {
         Category *category = [self.categories objectAtIndex:i];
@@ -101,49 +107,52 @@
 
     for (NSInteger i = 0; i < count; i++) {
         Category *category = [self.categories objectAtIndex:i];
-        
+
         NSInteger indentationLevel = [self indentationLevelForCategory:category.parentID categoryCollection:categoryDict];
-        
+
         [self.categoryIndentationDict setValue:[NSNumber numberWithInteger:indentationLevel]
                                               forKey:[category.categoryID stringValue]];
     }
-    
+
     [self.tableView reloadData];
 }
 
-- (NSInteger)indentationLevelForCategory:(NSNumber *)parentID categoryCollection:(NSMutableDictionary *)categoryDict {
+- (NSInteger)indentationLevelForCategory:(NSNumber *)parentID categoryCollection:(NSMutableDictionary *)categoryDict
+{
     if ([parentID intValue] == 0) {
         return 0;
-    } else {
-        Category *category = [categoryDict objectForKey:parentID];
-        return ([self indentationLevelForCategory:category.parentID categoryCollection:categoryDict]) + 1;
     }
-}
 
+    Category *category = [categoryDict objectForKey:parentID];
+    return ([self indentationLevelForCategory:category.parentID categoryCollection:categoryDict]) + 1;
+}
 
 #pragma mark - UITableView Delegate & DataSource
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section
+{
     return [self.categories count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     static NSString *categoryCell = @"categoryCell";
     WPTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:categoryCell];
     if (!cell) {
         cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:categoryCell];
     }
-    
+
     Category *category = self.categories[indexPath.row];
-    
+
     // Cell indentation
     NSInteger indentationLevel = [[self.categoryIndentationDict objectForKey:[category.categoryID stringValue]] integerValue];
     cell.indentationLevel = indentationLevel;
-    
+
     if (indentationLevel == 0) {
         cell.imageView.image = nil;
     } else {
@@ -166,7 +175,8 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
 
     Category *category = self.categories[indexPath.row];
@@ -189,6 +199,5 @@
         [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
     }
 }
-
 
 @end

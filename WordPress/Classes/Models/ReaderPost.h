@@ -36,6 +36,7 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic, strong) ReaderTopic *topic;
 @property (nonatomic) BOOL isLikesEnabled;
 @property (nonatomic) BOOL isSharingEnabled;
+@property (nonatomic) BOOL isSiteBlocked;
 
 - (BOOL)isFollowable;
 
@@ -71,9 +72,9 @@ extern NSString * const ReaderPostStoredCommentTextKey;
  @param failure a block called if there is any error. `error` can be any underlying network error
  */
 + (void)getCommentsForPost:(NSUInteger)postID
-				  fromSite:(NSString *)siteID
-			withParameters:(NSDictionary*)params
-				   success:(WordPressComApiRestSuccessResponseBlock)success
-				   failure:(WordPressComApiRestSuccessFailureBlock)failure;
+                  fromSite:(NSString *)siteID
+            withParameters:(NSDictionary*)params
+                   success:(WordPressComApiRestSuccessResponseBlock)success
+                   failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
 @end

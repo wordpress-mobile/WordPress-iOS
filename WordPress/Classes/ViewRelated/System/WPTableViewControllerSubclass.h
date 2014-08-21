@@ -1,5 +1,7 @@
 #import "WPTableViewController.h"
 
+@class WPNoResultsView;
+
 @interface WPTableViewController (SubclassMethods)
 /**
  The results controller is made available to the subclasses so they can access the data
@@ -14,7 +16,7 @@
 /**
  The noResultsView is made available to subclasses so they can customize its content.
  */
-@property (nonatomic, readonly, strong) UIView *noResultsView;
+@property (nonatomic, readonly, strong) WPNoResultsView *noResultsView;
 
 
 /**

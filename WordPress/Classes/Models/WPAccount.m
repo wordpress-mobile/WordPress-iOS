@@ -2,7 +2,6 @@
 #import "SFHFKeychainUtils.h"
 #import "WordPressComOAuthClient.h"
 
-
 @implementation WPAccount {
     WordPressComApi *_restApi;
     WordPressXMLRPCApi *_xmlrpcApi;
@@ -16,7 +15,8 @@
 
 #pragma mark - NSManagedObject subclass methods
 
-- (void)prepareForDeletion {
+- (void)prepareForDeletion
+{
     // Only do these deletions in the primary context (no parent)
     if (self.managedObjectContext.parentContext) {
         return;
@@ -33,20 +33,23 @@
     self.authToken = nil;
 }
 
-- (void)didTurnIntoFault {
+- (void)didTurnIntoFault
+{
     [super didTurnIntoFault];
-    
+
     _restApi = nil;
     _xmlrpcApi = nil;
 }
 
 #pragma mark - Custom accessors
 
-- (NSString *)password {
+- (NSString *)password
+{
     return [SFHFKeychainUtils getPasswordForUsername:self.username andServiceName:self.xmlrpc error:nil];
 }
 
-- (void)setPassword:(NSString *)password {
+- (void)setPassword:(NSString *)password
+{
     if (password) {
         [SFHFKeychainUtils storeUsername:self.username
                              andPassword:password
@@ -60,7 +63,8 @@
     }
 }
 
-- (NSString *)authToken {
+- (NSString *)authToken
+{
     NSError *error = nil;
     NSString *authToken = [SFHFKeychainUtils getPasswordForUsername:self.username andServiceName:WordPressComOAuthKeychainServiceName error:&error];
 
@@ -71,7 +75,8 @@
     return authToken;
 }
 
-- (void)setAuthToken:(NSString *)authToken {
+- (void)setAuthToken:(NSString *)authToken
+{
     if (authToken) {
         NSError *error = nil;
         [SFHFKeychainUtils storeUsername:self.username
@@ -94,7 +99,8 @@
     }
 }
 
-- (NSArray *)visibleBlogs {
+- (NSArray *)visibleBlogs
+{
     NSSet *visibleBlogs = [self.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"visible = YES"]];
     NSArray *sortedBlogs = [visibleBlogs sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]]];
     return sortedBlogs;
@@ -114,7 +120,8 @@
     return _restApi;
 }
 
-- (WordPressXMLRPCApi *)xmlrpcApi {
+- (WordPressXMLRPCApi *)xmlrpcApi
+{
     if (!_xmlrpcApi) {
         _xmlrpcApi = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:[NSURL URLWithString:self.xmlrpc] username:self.username password:self.password];
     }
