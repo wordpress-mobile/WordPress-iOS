@@ -198,8 +198,8 @@ static CGFloat kMinimumGutterWidth = 30.f;
                                        NSRange paraRange = [self.textStorage.string paragraphRangeForRange:charRange];
                                        
                                        BOOL showCursorRect = NSLocationInRange(_selectedRange.location, paraRange);
-                                       
-                                       if (showCursorRect)
+
+                                       if (!self.shouldCompletelyHideGutter && showCursorRect)
                                        {
                                            CGContextRef context = UIGraphicsGetCurrentContext();
                                            CGRect cursorRect = CGRectMake(0, usedRect.origin.y + 8, _gutterWidth, usedRect.size.height);
