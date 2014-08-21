@@ -398,12 +398,27 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_shared"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_shared_article"];
             break;
-        case WPAnalyticsStatNotificationPerformedAction:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_notifications_performed_action_against"];
-            [instructions setCurrentDateForPeopleProperty:@"last_time_performed_action_against_notification"];
-            break;
         case WPAnalyticsStatNotificationApproved:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_notifications_approved"];
+            break;
+        case WPAnalyticsStatNotificationUnapproved:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_notifications_unapproved"];
+            break;
+        case WPAnalyticsStatNotificationFollowAction:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notifications - Followed User"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_followed_user_from_notification"];
+            break;
+        case WPAnalyticsStatNotificationUnfollowAction:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notifications - Unfollowed User"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_unfollowed_user_from_notification"];
+            break;
+        case WPAnalyticsStatNotificationLiked:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notifications - Liked Comment"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_comment_likes_from_notification"];
+            break;
+        case WPAnalyticsStatNotificationUnliked:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notifications - Unliked Comment"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_comment_unlikes_from_notification"];
             break;
         case WPAnalyticsStatNotificationRepliedTo:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_notifications_replied_to"];
