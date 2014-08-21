@@ -259,21 +259,21 @@
 		A2D55BB01975BBFC00B9A561 /* loader.html in Resources */ = {isa = PBXBuildFile; fileRef = E18165FC14E4428B006CE885 /* loader.html */; };
 		A2D55BB11975BBFC00B9A561 /* postPreview.html in Resources */ = {isa = PBXBuildFile; fileRef = 5DB767401588F64D00EBE36C /* postPreview.html */; };
 		A2D55BB21975BBFC00B9A561 /* WPAlertView.h in Resources */ = {isa = PBXBuildFile; fileRef = 93740DC817D8F85600C41B2F /* WPAlertView.h */; };
-		A2D55BB31975BBFC00B9A561 /* OpenSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85A69D0117C530FE0061E254 /* OpenSans-LightItalic.ttf */; };
+		A2D55BB31975BBFC00B9A561 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		A2D55BB41975BBFC00B9A561 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85ED988717DFA00000090D0B /* Images.xcassets */; };
 		A2D55BB51975BBFC00B9A561 /* ThemeDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DC02A3518E4C5BD009A1765 /* ThemeDetailsViewController.xib */; };
-		A2D55BB61975BBFC00B9A561 /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85A69CFF17C530FE0061E254 /* OpenSans-BoldItalic.ttf */; };
+		A2D55BB61975BBFC00B9A561 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		A2D55BB71975BBFC00B9A561 /* InlineComposeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CC70165A185A7536007B37DB /* InlineComposeView.xib */; };
 		A2D55BB81975BBFC00B9A561 /* NotificationsFollowDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 379DA04D166E6EFE001A43CC /* NotificationsFollowDetailViewController.xib */; };
-		A2D55BB91975BBFC00B9A561 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85A69D0017C530FE0061E254 /* OpenSans-Italic.ttf */; };
+		A2D55BB91975BBFC00B9A561 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		A2D55BBA1975BBFC00B9A561 /* ToastView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3716E400167296D30035F8C4 /* ToastView.xib */; };
 		A2D55BBB1975BBFC00B9A561 /* EditMediaViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DA5BF2918E32DCF005F11F9 /* EditMediaViewController.xib */; };
 		A2D55BBC1975BBFC00B9A561 /* MediaBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DA5BF3018E32DCF005F11F9 /* MediaBrowserViewController.xib */; };
 		A2D55BBD1975BBFC00B9A561 /* n.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5D69DBC3165428CA00A2D1F7 /* n.caf */; };
 		A2D55BBE1975BBFC00B9A561 /* DotCom-Languages.plist in Resources */ = {isa = PBXBuildFile; fileRef = 85D80557171630B30075EEAC /* DotCom-Languages.plist */; };
-		A2D55BBF1975BBFC00B9A561 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 858DE41017303BB4000AC628 /* OpenSans-Light.ttf */; };
-		A2D55BC01975BBFC00B9A561 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 858DE41117303BB4000AC628 /* OpenSans-Regular.ttf */; };
-		A2D55BC11975BBFC00B9A561 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D358D6417723DB500739AA4 /* OpenSans-Bold.ttf */; };
+		A2D55BBF1975BBFC00B9A561 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		A2D55BC01975BBFC00B9A561 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		A2D55BC11975BBFC00B9A561 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		A2D55BC21975BBFC00B9A561 /* ThemeBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DC02A3418E4C5BD009A1765 /* ThemeBrowserViewController.xib */; };
 		A2D55BC31975BBFC00B9A561 /* HelpshiftConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = A2787D0119002AB1000D6CA6 /* HelpshiftConfig.plist */; };
 		A2D55BC71975BBFC00B9A561 /* ContextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C545E0A11811B9880020844C /* ContextManager.m */; };
@@ -307,7 +307,7 @@
 		A2D55BE31975BBFC00B9A561 /* PageSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D62BAD618AA88210044E5F7 /* PageSettingsViewController.m */; };
 		A2D55BE41975BBFC00B9A561 /* PostSettingsSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF94E2F1962B99C00359241 /* PostSettingsSelectionViewController.m */; };
 		A2D55BE51975BBFC00B9A561 /* PagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4696FE0EA75D460040EE8E /* PagesViewController.m */; };
-		A2D55BE61975BBFC00B9A561 /* RemoteReaderPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DE8A03A1912C58800B2FF59 /* RemoteReaderPost.m */; };
+		A2D55BE61975BBFC00B9A561 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		A2D55BE71975BBFC00B9A561 /* WPCategoryTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 7059CD200F332B6500A0660B /* WPCategoryTree.m */; };
 		A2D55BE81975BBFC00B9A561 /* NoteBodyItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B545186518E9E07900AC3A54 /* NoteBodyItem.m */; };
 		A2D55BE91975BBFC00B9A561 /* AccountServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = E149D64619349E69006A843D /* AccountServiceRemoteREST.m */; };
@@ -320,7 +320,7 @@
 		A2D55BF01975BBFC00B9A561 /* CustomHighlightButton.m in Sources */ = {isa = PBXBuildFile; fileRef = ADF544C1195A0F620092213D /* CustomHighlightButton.m */; };
 		A2D55BF11975BBFC00B9A561 /* EditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2906F810110CDA8900169D56 /* EditCommentViewController.m */; };
 		A2D55BF21975BBFC00B9A561 /* MediaBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DA5BF2D18E32DCF005F11F9 /* MediaBrowserCell.m */; };
-		A2D55BF31975BBFC00B9A561 /* RemoteReaderTopic.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DE8A03D1912C59600B2FF59 /* RemoteReaderTopic.m */; };
+		A2D55BF31975BBFC00B9A561 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		A2D55BF41975BBFC00B9A561 /* Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = 83418AA911C9FA6E00ACF00C /* Comment.m */; };
 		A2D55BF51975BBFC00B9A561 /* WordPress.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */; };
 		A2D55BF61975BBFC00B9A561 /* Media.m in Sources */ = {isa = PBXBuildFile; fileRef = 8350E49511D2C71E00A7B073 /* Media.m */; };
@@ -458,12 +458,12 @@
 		A2D55C7A1975BBFC00B9A561 /* ReaderImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D42A3E6175E75EE005CFF05 /* ReaderImageView.m */; };
 		A2D55C7B1975BBFC00B9A561 /* ThemeDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DA5BF3A18E32DCF005F11F9 /* ThemeDetailsViewController.m */; };
 		A2D55C7C1975BBFC00B9A561 /* ContentActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D062D3177C685700644185 /* ContentActionButton.m */; };
-		A2D55C7D1975BBFC00B9A561 /* WPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D2275518F1E5E7001DA8DA /* WPAnalytics.m */; };
+		A2D55C7D1975BBFC00B9A561 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		A2D55C7E1975BBFC00B9A561 /* ReaderMediaQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D0077A6182AE9DF00F865DB /* ReaderMediaQueue.m */; };
 		A2D55C7F1975BBFC00B9A561 /* BlogListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 462F4E0918369F0B0028D2F8 /* BlogListViewController.m */; };
 		A2D55C801975BBFC00B9A561 /* ReaderMediaView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D42A3E8175E75EE005CFF05 /* ReaderMediaView.m */; };
 		A2D55C811975BBFC00B9A561 /* WPAnalyticsTrackerMixpanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D2275818F1EB8A001DA8DA /* WPAnalyticsTrackerMixpanel.m */; };
-		A2D55C821975BBFC00B9A561 /* NotificationsBigBadgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F395FB18E5CE2D00AF1919 /* NotificationsBigBadgeViewController.m */; };
+		A2D55C821975BBFC00B9A561 /* NotificationsBigBadgeDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F395FB18E5CE2D00AF1919 /* NotificationsBigBadgeDetailViewController.m */; };
 		A2D55C831975BBFC00B9A561 /* AccountServiceRemoteXMLRPC.m in Sources */ = {isa = PBXBuildFile; fileRef = E149D64819349E69006A843D /* AccountServiceRemoteXMLRPC.m */; };
 		A2D55C841975BBFC00B9A561 /* WPRichTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF94E3F1962BAA700359241 /* WPRichTextView.m */; };
 		A2D55C851975BBFC00B9A561 /* ReaderPostDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D42A3EC175E75EE005CFF05 /* ReaderPostDetailViewController.m */; };
@@ -528,6 +528,17 @@
 		A2D55CC11975BBFC00B9A561 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1CCFB32175D624F0016BD8A /* Crashlytics.framework */; };
 		A2D55CCD1975BD2600B9A561 /* LoginTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A2D55CCC1975BD2600B9A561 /* LoginTest.m */; };
 		A2DC5B1A1953451B009584C3 /* WPNUXHelpBadgeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A2DC5B191953451B009584C3 /* WPNUXHelpBadgeLabel.m */; };
+		A2E5561C19A684B90039FF32 /* FollowedSitesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D20A6521982D56600463A91 /* FollowedSitesViewController.m */; };
+		A2E5561F19A685680039FF32 /* ReaderSiteService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D44EB371986D8BA008B7175 /* ReaderSiteService.m */; };
+		A2E5562019A685DB0039FF32 /* ReaderSiteServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D44EB341986D695008B7175 /* ReaderSiteServiceRemote.m */; };
+		A2E5562119A686600039FF32 /* ReaderBlockedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D9B17C419998A430047A4A2 /* ReaderBlockedTableViewCell.m */; };
+		A2E5562219A6866D0039FF32 /* RemoteReaderPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D12FE1B1988243700378BD6 /* RemoteReaderPost.m */; };
+		A2E5562319A686760039FF32 /* RemoteReaderSite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D12FE211988245B00378BD6 /* RemoteReaderSite.m */; };
+		A2E5562419A686930039FF32 /* RemoteReaderTopic.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D12FE1D1988243700378BD6 /* RemoteReaderTopic.m */; };
+		A2E5562519A6869C0039FF32 /* VerticallyStackedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 37022D901981BF9200F322B7 /* VerticallyStackedButton.m */; };
+		A2E5562619A686AD0039FF32 /* VideoThumbnailServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D11E3251979E76D00E70992 /* VideoThumbnailServiceRemote.m */; };
+		A2E5562719A686B70039FF32 /* WPRichTextImageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1945611979C3D5003EDDAD /* WPRichTextImageControl.m */; };
+		A2E5562819A686D00039FF32 /* WPRichTextVideoControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1945641979E091003EDDAD /* WPRichTextVideoControl.m */; };
 		A2F76A0B1976D83800398F87 /* IntegrationTestsInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F76A0A1976D83800398F87 /* IntegrationTestsInfo.m */; };
 		ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */; };
 		ACBAB6860E1247F700F38795 /* PostPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBAB6850E1247F700F38795 /* PostPreviewViewController.m */; };
@@ -2809,21 +2820,21 @@
 				A2D55BB11975BBFC00B9A561 /* postPreview.html in Resources */,
 				A29D67A8197878F000A97C28 /* sample.WPiOS_integration_tests in Resources */,
 				A2D55BB21975BBFC00B9A561 /* WPAlertView.h in Resources */,
-				A2D55BB31975BBFC00B9A561 /* OpenSans-LightItalic.ttf in Resources */,
+				A2D55BB31975BBFC00B9A561 /* (null) in Resources */,
 				A2D55BB41975BBFC00B9A561 /* Images.xcassets in Resources */,
 				A2D55BB51975BBFC00B9A561 /* ThemeDetailsViewController.xib in Resources */,
-				A2D55BB61975BBFC00B9A561 /* OpenSans-BoldItalic.ttf in Resources */,
+				A2D55BB61975BBFC00B9A561 /* (null) in Resources */,
 				A2D55BB71975BBFC00B9A561 /* InlineComposeView.xib in Resources */,
 				A2D55BB81975BBFC00B9A561 /* NotificationsFollowDetailViewController.xib in Resources */,
-				A2D55BB91975BBFC00B9A561 /* OpenSans-Italic.ttf in Resources */,
+				A2D55BB91975BBFC00B9A561 /* (null) in Resources */,
 				A2D55BBA1975BBFC00B9A561 /* ToastView.xib in Resources */,
 				A2D55BBB1975BBFC00B9A561 /* EditMediaViewController.xib in Resources */,
 				A2D55BBC1975BBFC00B9A561 /* MediaBrowserViewController.xib in Resources */,
 				A2D55BBD1975BBFC00B9A561 /* n.caf in Resources */,
 				A2D55BBE1975BBFC00B9A561 /* DotCom-Languages.plist in Resources */,
-				A2D55BBF1975BBFC00B9A561 /* OpenSans-Light.ttf in Resources */,
-				A2D55BC01975BBFC00B9A561 /* OpenSans-Regular.ttf in Resources */,
-				A2D55BC11975BBFC00B9A561 /* OpenSans-Bold.ttf in Resources */,
+				A2D55BBF1975BBFC00B9A561 /* (null) in Resources */,
+				A2D55BC01975BBFC00B9A561 /* (null) in Resources */,
+				A2D55BC11975BBFC00B9A561 /* (null) in Resources */,
 				A2D55BC21975BBFC00B9A561 /* ThemeBrowserViewController.xib in Resources */,
 				A2D55BC31975BBFC00B9A561 /* HelpshiftConfig.plist in Resources */,
 			);
@@ -3244,6 +3255,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2E5562819A686D00039FF32 /* WPRichTextVideoControl.m in Sources */,
+				A2E5562719A686B70039FF32 /* WPRichTextImageControl.m in Sources */,
+				A2E5562619A686AD0039FF32 /* VideoThumbnailServiceRemote.m in Sources */,
+				A2E5562519A6869C0039FF32 /* VerticallyStackedButton.m in Sources */,
+				A2E5562419A686930039FF32 /* RemoteReaderTopic.m in Sources */,
+				A2E5562319A686760039FF32 /* RemoteReaderSite.m in Sources */,
+				A2E5562219A6866D0039FF32 /* RemoteReaderPost.m in Sources */,
+				A2E5562119A686600039FF32 /* ReaderBlockedTableViewCell.m in Sources */,
+				A2E5562019A685DB0039FF32 /* ReaderSiteServiceRemote.m in Sources */,
+				A2E5561F19A685680039FF32 /* ReaderSiteService.m in Sources */,
+				A2E5561C19A684B90039FF32 /* FollowedSitesViewController.m in Sources */,
 				A2D55BC71975BBFC00B9A561 /* ContextManager.m in Sources */,
 				A2D55BC81975BBFC00B9A561 /* WPMainTabBarController.m in Sources */,
 				A2D55BC91975BBFC00B9A561 /* WordPressActivity.m in Sources */,
@@ -3275,7 +3297,7 @@
 				A2D55BE31975BBFC00B9A561 /* PageSettingsViewController.m in Sources */,
 				A2D55BE41975BBFC00B9A561 /* PostSettingsSelectionViewController.m in Sources */,
 				A2D55BE51975BBFC00B9A561 /* PagesViewController.m in Sources */,
-				A2D55BE61975BBFC00B9A561 /* RemoteReaderPost.m in Sources */,
+				A2D55BE61975BBFC00B9A561 /* (null) in Sources */,
 				A2D55BE71975BBFC00B9A561 /* WPCategoryTree.m in Sources */,
 				A2D55BE81975BBFC00B9A561 /* NoteBodyItem.m in Sources */,
 				A2D55BE91975BBFC00B9A561 /* AccountServiceRemoteREST.m in Sources */,
@@ -3288,7 +3310,7 @@
 				A2D55BF01975BBFC00B9A561 /* CustomHighlightButton.m in Sources */,
 				A2D55BF11975BBFC00B9A561 /* EditCommentViewController.m in Sources */,
 				A2D55BF21975BBFC00B9A561 /* MediaBrowserCell.m in Sources */,
-				A2D55BF31975BBFC00B9A561 /* RemoteReaderTopic.m in Sources */,
+				A2D55BF31975BBFC00B9A561 /* (null) in Sources */,
 				A2D55BF41975BBFC00B9A561 /* Comment.m in Sources */,
 				A2D55BF51975BBFC00B9A561 /* WordPress.xcdatamodeld in Sources */,
 				A2D55BF61975BBFC00B9A561 /* Media.m in Sources */,
@@ -3428,12 +3450,12 @@
 				A2D55C7A1975BBFC00B9A561 /* ReaderImageView.m in Sources */,
 				A2D55C7B1975BBFC00B9A561 /* ThemeDetailsViewController.m in Sources */,
 				A2D55C7C1975BBFC00B9A561 /* ContentActionButton.m in Sources */,
-				A2D55C7D1975BBFC00B9A561 /* WPAnalytics.m in Sources */,
+				A2D55C7D1975BBFC00B9A561 /* (null) in Sources */,
 				A2D55C7E1975BBFC00B9A561 /* ReaderMediaQueue.m in Sources */,
 				A2D55C7F1975BBFC00B9A561 /* BlogListViewController.m in Sources */,
 				A2D55C801975BBFC00B9A561 /* ReaderMediaView.m in Sources */,
 				A2D55C811975BBFC00B9A561 /* WPAnalyticsTrackerMixpanel.m in Sources */,
-				A2D55C821975BBFC00B9A561 /* NotificationsBigBadgeViewController.m in Sources */,
+				A2D55C821975BBFC00B9A561 /* NotificationsBigBadgeDetailViewController.m in Sources */,
 				A2D55C831975BBFC00B9A561 /* AccountServiceRemoteXMLRPC.m in Sources */,
 				A2D55C841975BBFC00B9A561 /* WPRichTextView.m in Sources */,
 				A2D55C851975BBFC00B9A561 /* ReaderPostDetailViewController.m in Sources */,
@@ -3791,11 +3813,10 @@
 			};
 			name = "Release-Internal";
 		};
-		A2D55CC51975BBFC00B9A561 /* Debug */ = {
+		A2795808198819DE0031C6A3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -3841,11 +3862,127 @@
 			};
 			name = Debug;
 		};
-		A2795808198819DE0031C6A3 /* Debug */ = {
+		A2795809198819DE0031C6A3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */;
 			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc. (PZYM8XX95Q)";
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Classes\"",
+					"\"$(SRCROOT)\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NS_BLOCK_ASSERTIONS,
+					"${inherited}",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_THUMB_SUPPORT = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_CFLAGS = (
+					"-Wno-format-security",
+					"-Wno-format",
+				);
+				PRODUCT_NAME = "WordPress copy";
+				PROVISIONING_PROFILE = "A5A51EB7-2E4D-4D01-A0E9-6E1C7BEC4951";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "";
+				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
+			};
+			name = Release;
+		};
+		A279580A198819DE0031C6A3 /* Release-Internal */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Classes\"",
+					"\"$(SRCROOT)\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NS_BLOCK_ASSERTIONS,
+					INTERNAL_BUILD,
+					"${inherited}",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_THUMB_SUPPORT = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_CFLAGS = (
+					"-Wno-format-security",
+					"-Wno-format",
+				);
+				PRODUCT_NAME = "WordPress copy";
+				PROVISIONING_PROFILE = "74FADB78-88AD-4CB2-9225-24AA1D4D5319";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "";
+				WPCOM_CONFIG = $HOME/.wpcom_internal_app_credentials;
+			};
+			name = "Release-Internal";
+		};
+		A279580B198819DE0031C6A3 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc. (PZYM8XX95Q)";
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Classes\"",
+					"\"$(SRCROOT)\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_THUMB_SUPPORT = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_CFLAGS = (
+					"-Wno-format",
+					"-Wno-format-security",
+				);
+				PRODUCT_NAME = "WordPress copy";
+				PROVISIONING_PROFILE = "A5A51EB7-2E4D-4D01-A0E9-6E1C7BEC4951";
+				STRIP_INSTALLED_PRODUCT = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "";
+				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
+			};
+			name = Distribution;
+		};
+		A2D55CC51975BBFC00B9A561 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -3931,46 +4068,6 @@
 			};
 			name = Release;
 		};
-		A2795809198819DE0031C6A3 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_ENABLE_MODULES = NO;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc. (PZYM8XX95Q)";
-				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Classes\"",
-					"\"$(SRCROOT)\"",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					NS_BLOCK_ASSERTIONS,
-					"${inherited}",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_THUMB_SUPPORT = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				OTHER_CFLAGS = (
-					"-Wno-format-security",
-					"-Wno-format",
-				);
-				PRODUCT_NAME = "WordPress copy";
-				PROVISIONING_PROFILE = "A5A51EB7-2E4D-4D01-A0E9-6E1C7BEC4951";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "";
-				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
-			};
-			name = Release;
-		};
 		A2D55CC71975BBFC00B9A561 /* Release-Internal */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */;
@@ -4012,90 +4109,11 @@
 			};
 			name = "Release-Internal";
 		};
-		A279580A198819DE0031C6A3 /* Release-Internal */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_ENABLE_MODULES = NO;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
-				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Classes\"",
-					"\"$(SRCROOT)\"",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					NS_BLOCK_ASSERTIONS,
-					INTERNAL_BUILD,
-					"${inherited}",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_THUMB_SUPPORT = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				OTHER_CFLAGS = (
-					"-Wno-format-security",
-					"-Wno-format",
-				);
-				PRODUCT_NAME = "WordPress copy";
-				PROVISIONING_PROFILE = "74FADB78-88AD-4CB2-9225-24AA1D4D5319";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "";
-				WPCOM_CONFIG = $HOME/.wpcom_internal_app_credentials;
-			};
-			name = "Release-Internal";
-		};
 		A2D55CC81975BBFC00B9A561 /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_ENABLE_MODULES = NO;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc. (PZYM8XX95Q)";
-				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Classes\"",
-					"\"$(SRCROOT)\"",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_THUMB_SUPPORT = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				OTHER_CFLAGS = (
-					"-Wno-format",
-					"-Wno-format-security",
-				);
-				PRODUCT_NAME = "WordPress copy";
-				PROVISIONING_PROFILE = "A5A51EB7-2E4D-4D01-A0E9-6E1C7BEC4951";
-				STRIP_INSTALLED_PRODUCT = NO;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "";
-				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
-			};
-			name = Distribution;
-		};
-		A279580B198819DE0031C6A3 /* Distribution */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -4261,17 +4279,6 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A2D55CC41975BBFC00B9A561 /* Build configuration list for PBXNativeTarget "IntegrationTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A2D55CC51975BBFC00B9A561 /* Debug */,
-				A2D55CC61975BBFC00B9A561 /* Release */,
-				A2D55CC71975BBFC00B9A561 /* Release-Internal */,
-				A2D55CC81975BBFC00B9A561 /* Distribution */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		A279580C198819DE0031C6A3 /* Build configuration list for PBXAggregateTarget "OCLint" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -4279,6 +4286,17 @@
 				A2795809198819DE0031C6A3 /* Release */,
 				A279580A198819DE0031C6A3 /* Release-Internal */,
 				A279580B198819DE0031C6A3 /* Distribution */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A2D55CC41975BBFC00B9A561 /* Build configuration list for PBXNativeTarget "IntegrationTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A2D55CC51975BBFC00B9A561 /* Debug */,
+				A2D55CC61975BBFC00B9A561 /* Release */,
+				A2D55CC71975BBFC00B9A561 /* Release-Internal */,
+				A2D55CC81975BBFC00B9A561 /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
