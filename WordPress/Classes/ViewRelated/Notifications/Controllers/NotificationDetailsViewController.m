@@ -413,7 +413,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 
 - (void)followSiteWithBlock:(NotificationBlock *)block
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationPerformedAction];
+    [WPAnalytics track:WPAnalyticsStatNotificationFollowAction];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderSiteService *service      = [[ReaderSiteService alloc] initWithManagedObjectContext:context];
@@ -429,7 +429,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 
 - (void)unfollowSiteWithBlock:(NotificationBlock *)block
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationPerformedAction];
+    [WPAnalytics track:WPAnalyticsStatNotificationUnfollowAction];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderSiteService *service      = [[ReaderSiteService alloc] initWithManagedObjectContext:context];
@@ -445,6 +445,8 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 
 - (void)likeCommentWithBlock:(NotificationBlock *)block
 {
+    [WPAnalytics track:WPAnalyticsStatNotificationLiked];
+    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
     __typeof(self) __weak weakSelf  = self;
@@ -459,6 +461,8 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 
 - (void)unlikeCommentWithBlock:(NotificationBlock *)block
 {
+    [WPAnalytics track:WPAnalyticsStatNotificationUnliked];
+    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
     __typeof(self) __weak weakSelf  = self;
@@ -489,6 +493,8 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 
 - (void)unapproveCommentWithBlock:(NotificationBlock *)block
 {
+    [WPAnalytics track:WPAnalyticsStatNotificationUnapproved];
+    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
     __typeof(self) __weak weakSelf  = self;
