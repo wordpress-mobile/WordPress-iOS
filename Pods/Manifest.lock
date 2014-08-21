@@ -74,14 +74,14 @@ PODS:
     - CocoaLumberjack (~> 1.8.1)
     - UIAlertView+Blocks
     - WordPress-iOS-Shared (~> 0.0.5)
-  - WordPress-iOS-Shared (0.0.6):
+  - WordPress-iOS-Shared (0.0.9):
     - AFNetworking (~> 2.3.1)
     - CocoaLumberjack (~> 1.8.1)
     - DTCoreText (= 1.6.13)
   - WordPressApi (0.0.1):
     - AFNetworking (~> 2.3.1)
     - wpxmlrpc (~> 0.1)
-  - WordPressCom-Analytics-iOS (0.0.1)
+  - WordPressCom-Analytics-iOS (0.0.3)
   - WordPressCom-Stats-iOS (0.0.5):
     - AFNetworking (~> 2.3.1)
     - CocoaLumberjack (~> 1.8.1)
@@ -113,9 +113,9 @@ DEPENDENCIES:
   - Taplytics (~> 1.3.10)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-iOS-Editor (= 0.1.6)
-  - WordPress-iOS-Shared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, tag `0.0.6`)
+  - WordPress-iOS-Shared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, tag `0.0.9`)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPressApi.git`)
-  - WordPressCom-Analytics-iOS (= 0.0.1)
+  - WordPressCom-Analytics-iOS (= 0.0.3)
   - WordPressCom-Stats-iOS (= 0.0.5)
   - wpxmlrpc (~> 0.4.1)
 
@@ -132,7 +132,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/jleandroperez/SocketRocket.git
   WordPress-iOS-Shared:
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
-    :tag: 0.0.6
+    :tag: 0.0.9
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPressApi.git
 
@@ -165,9 +165,9 @@ SPEC CHECKSUMS:
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
   UIDeviceIdentifier: 1944dd25ee46fbc592740148ab47d543f80f0bba
   WordPress-iOS-Editor: e0af92d2a923be2bbdb957b76f0505e12ae1cc96
-  WordPress-iOS-Shared: 2fc2e61b4c02d78b5cb14ca205f0748865dcd7c5
+  WordPress-iOS-Shared: 072695021aca47f86101132cfee371f4d9673bfa
   WordPressApi: 2e05a82014171bc6f9d6cdab580cc16e9c5f2c6c
-  WordPressCom-Analytics-iOS: 3d9c188df501dde686661b620dcd9ca08f6e1e14
+  WordPressCom-Analytics-iOS: 8a485b98564ce4ea5a16ff43b526f59909acdc34
   WordPressCom-Stats-iOS: 3ceb7ec9169d06e492ca186d4b37c880568ade13
   wpxmlrpc: a56b534ad0eb7db28a580eabb68a4a3d3426f6d7
 

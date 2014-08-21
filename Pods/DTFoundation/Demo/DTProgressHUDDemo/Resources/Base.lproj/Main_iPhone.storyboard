@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="vXZ-lx-hvc">
+    <dependencies>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="ufC-wZ-h7g">
+            <objects>
+                <viewController id="vXZ-lx-hvc" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
+                        <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Mandel" translatesAutoresizingMaskIntoConstraints="NO" id="phX-rF-Ucj">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jb8-0v-n9D">
+                                <rect key="frame" x="17" y="108" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="280" id="FgA-6O-yrx"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="Vsh-A0-ofY"/>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="30" id="a1h-xZ-Al8"/>
+                                    <constraint firstAttribute="width" constant="280" id="pbe-PU-qiP"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="172" id="phC-fl-cK6"/>
+                                    <constraint firstAttribute="height" constant="30" id="v2u-am-zm8"/>
+                                </constraints>
+                                <state key="normal" title="Show infinite progress (gravity tilt)">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="showInfiniteProgressWithGravityTilt:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Xja-3j-1eP"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UdA-xj-qh9">
+                                <rect key="frame" x="19" y="146" width="277" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="4Fb-tO-4iv"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="172" id="ap0-oE-wj2"/>
+                                    <constraint firstAttribute="width" constant="277" id="hgp-po-kI7"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="zQX-Sh-g9s"/>
+                                </constraints>
+                                <state key="normal" title="Show pie progress (snap)">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="showPieProgressWithSnapAnimation:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="PtI-Bb-dje"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DJh-Fe-y6C">
+                                <rect key="frame" x="20" y="184" width="277" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="277" id="BPt-of-qWf"/>
+                                    <constraint firstAttribute="height" constant="30" id="pdy-Ow-Cig"/>
+                                </constraints>
+                                <state key="normal" title="Show pie progress (gravity roll)">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="showInfiniteProgressPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="giO-tw-95G"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JyR-G9-NUt">
+                                <rect key="frame" x="20" y="32" width="277" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="277" id="2MU-y8-pj3"/>
+                                    <constraint firstAttribute="height" constant="30" id="A5z-9L-E1g"/>
+                                </constraints>
+                                <state key="normal" title="Show status with Image (fade)">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="showStatusAndImagePressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="M0h-EB-Dsk"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bhl-G4-Opf">
+                                <rect key="frame" x="20" y="70" width="277" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="3aR-2B-qts"/>
+                                    <constraint firstAttribute="width" constant="277" id="wdM-za-fgA"/>
+                                </constraints>
+                                <state key="normal" title="Show infinite progress (gravity)">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="showInfiniteProgressActivityIndicatorPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="s9u-Yg-arj"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yTU-xt-6ui">
+                                <rect key="frame" x="20" y="250" width="277" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="C9i-Kw-wGd"/>
+                                    <constraint firstAttribute="width" constant="277" id="RMp-Ac-ydq"/>
+                                </constraints>
+                                <state key="normal" title="Hide">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="hidePressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="eJy-K1-61N"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Ce-MQ-aMo">
+                                <rect key="frame" x="19" y="316" width="277" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="gIy-D5-eRI"/>
+                                    <constraint firstAttribute="width" constant="277" id="nxq-Oi-W2z"/>
+                                </constraints>
+                                <state key="normal" title="Show DTActionSheet">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="showDTActionSheet:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="9p0-PT-8LX"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IH4-d0-toA">
+                                <rect key="frame" x="20" y="354" width="277" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="jg2-tj-hBR"/>
+                                    <constraint firstAttribute="width" constant="277" id="lF2-DZ-aS6"/>
+                                </constraints>
+                                <state key="normal" title="Show DTAlertView">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="showDTAlertViewidsender:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="RqG-kI-lHZ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="DJh-Fe-y6C" firstAttribute="trailing" secondItem="8Ce-MQ-aMo" secondAttribute="trailing" constant="1" id="1QR-SL-90q"/>
+                            <constraint firstItem="DJh-Fe-y6C" firstAttribute="top" secondItem="bhl-G4-Opf" secondAttribute="bottom" constant="84" id="2wD-3Q-MnD"/>
+                            <constraint firstAttribute="trailing" secondItem="DJh-Fe-y6C" secondAttribute="trailing" constant="23" id="Bi9-UI-Sos"/>
+                            <constraint firstAttribute="trailing" secondItem="phX-rF-Ucj" secondAttribute="trailing" id="DT0-UQ-LXl"/>
+                            <constraint firstItem="8Ce-MQ-aMo" firstAttribute="trailing" secondItem="IH4-d0-toA" secondAttribute="trailing" constant="-1" id="Inw-Gz-cbH"/>
+                            <constraint firstAttribute="trailing" secondItem="jb8-0v-n9D" secondAttribute="trailing" constant="23" id="J6E-MF-dC6"/>
+                            <constraint firstAttribute="trailing" secondItem="UdA-xj-qh9" secondAttribute="trailing" constant="24" id="KgY-g6-huc"/>
+                            <constraint firstAttribute="trailing" secondItem="JyR-G9-NUt" secondAttribute="trailing" constant="23" id="NUE-7c-bo9"/>
+                            <constraint firstItem="UdA-xj-qh9" firstAttribute="top" secondItem="DJh-Fe-y6C" secondAttribute="bottom" constant="-68" id="PbP-et-qi4"/>
+                            <constraint firstItem="jb8-0v-n9D" firstAttribute="top" secondItem="UdA-xj-qh9" secondAttribute="bottom" constant="-68" id="QKk-QO-MKm"/>
+                            <constraint firstItem="8Ce-MQ-aMo" firstAttribute="top" secondItem="yTU-xt-6ui" secondAttribute="bottom" constant="36" id="SAm-VX-1FZ"/>
+                            <constraint firstAttribute="trailing" secondItem="yTU-xt-6ui" secondAttribute="trailing" constant="23" id="Xzv-ef-0lG"/>
+                            <constraint firstItem="phX-rF-Ucj" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="ZyE-ey-D99"/>
+                            <constraint firstItem="phX-rF-Ucj" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="bgf-WY-f5c"/>
+                            <constraint firstItem="bhl-G4-Opf" firstAttribute="top" secondItem="JyR-G9-NUt" secondAttribute="bottom" constant="8" id="gIL-P7-jwO"/>
+                            <constraint firstItem="IH4-d0-toA" firstAttribute="top" secondItem="8Ce-MQ-aMo" secondAttribute="bottom" constant="8" id="iVE-KI-8A3"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="phX-rF-Ucj" secondAttribute="bottom" id="knm-GB-MkK"/>
+                            <constraint firstItem="JyR-G9-NUt" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="12" id="moE-Nj-euQ"/>
+                            <constraint firstItem="yTU-xt-6ui" firstAttribute="top" secondItem="DJh-Fe-y6C" secondAttribute="bottom" constant="36" id="qaq-SL-9SM"/>
+                            <constraint firstAttribute="trailing" secondItem="bhl-G4-Opf" secondAttribute="trailing" constant="23" id="wVs-PZ-E1K"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="376" y="292"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Mandel" width="400" height="300"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

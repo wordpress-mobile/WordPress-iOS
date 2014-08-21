@@ -8,8 +8,6 @@
     #import <UIKit/UIKit.h>
     #import "DDLog.h"
 
-extern int ddLogLevel;
-
 #ifndef IS_IPAD
 #define IS_IPAD   ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
 #endif
