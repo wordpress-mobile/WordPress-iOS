@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" 
+	"http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>--input</key>
+	<array>
+		<string>WordPressApi</string>
+	</array>
+	<key>--index-desc</key>
+	<string>README.md</string>
+	<key>--output</key>
+	<string>docs</string>
+	<key>--project-name</key>
+	<string>WordPress API for iOS</string>
+	<key>--project-company</key>
+	<string>WordPress</string>
+	<key>--company-id</key>
+	<string>org.wordpress</string>
+	<key>--keep-undocumented-members</key>
+	<false/>
+	<key>--keep-intermediate-files</key>
+	<true/>
+</dict>
+</plist>
