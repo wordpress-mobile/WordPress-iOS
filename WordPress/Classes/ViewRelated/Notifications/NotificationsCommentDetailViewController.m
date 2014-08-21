@@ -389,9 +389,9 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         // Pressed unapprove, so flip button optimistically to approve
         [self updateApproveButton:YES];
         [self performCommentAction:unapproveAction forButton:sender];
+        
+        [WPAnalytics track:WPAnalyticsStatNotificationUnapproved];
     }
-
-    [WPAnalytics track:WPAnalyticsStatNotificationPerformedAction];
 }
 
 - (void)deleteAction:(id)sender
@@ -412,7 +412,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         [self performCommentAction:untrashAction forButton:sender];
     }
 
-    [WPAnalytics track:WPAnalyticsStatNotificationPerformedAction];
+    [WPAnalytics track:WPAnalyticsStatNotificationTrashed];
 }
 
 - (void)spamAction:(id)sender
@@ -429,7 +429,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         [self performCommentAction:unspamAction forButton:sender];
     }
 
-    [WPAnalytics track:WPAnalyticsStatNotificationPerformedAction];
+    [WPAnalytics track:WPAnalyticsStatNotificationFlaggedAsSpam];
 }
 
 - (void)replyAction:(id)sender
@@ -506,7 +506,6 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         [[defaultAccount restApi] POST:replyPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             DDLogVerbose(@"Response: %@", responseObject);
             [WPAnalytics track:WPAnalyticsStatNotificationRepliedTo];
-            [WPAnalytics track:WPAnalyticsStatNotificationPerformedAction];
             success();
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             DDLogError(@"Failure %@", error);
