@@ -39,15 +39,23 @@ NSString *const NotificationActionCommentApprove                = @"COMMENT_MODE
 #if TARGET_IPHONE_SIMULATOR
     return;
 #endif
-    // Register for push notifications
-    [[UIApplication sharedApplication] registerForRemoteNotifications];
 
-    // Add the categories to UIUserNotificationSettings
-    UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
-    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types categories:[self buildNotificationCategories]];
+    BOOL canRegisterUserNotifications = [[UIApplication sharedApplication] respondsToSelector:@selector(registerForRemoteNotifications)];
+    if (!canRegisterUserNotifications) {
+        // iOS 7 notifications registration
+        UIRemoteNotificationType types = (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert);
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:types];
+    } else {
+        // iOS 8 or higher notifications registration
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
 
-    // Finally, register the notification settings
-    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+        // Add the categories to UIUserNotificationSettings
+        UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types categories:[self buildNotificationCategories]];
+
+        // Finally, register the notification settings
+        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    }
 }
 
 #pragma mark - Device token registration
