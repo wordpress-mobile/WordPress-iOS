@@ -61,29 +61,29 @@ static const float kCursorVelocity = 1.0f/8.0f;
 {
     CYRTextStorage *textStorage = [CYRTextStorage new];
     CYRLayoutManager *layoutManager = [CYRLayoutManager new];
-    
+    layoutManager.shouldCompletelyHideGutter = self.lineNumbersEnabled;
     self.lineNumberLayoutManager = layoutManager;
-    
     NSTextContainer *textContainer = [[NSTextContainer alloc] initWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)];
     
     //  Wrap text to the text view's frame
     textContainer.widthTracksTextView = YES;
-    
     [layoutManager addTextContainer:textContainer];
-
     [textStorage removeLayoutManager:textStorage.layoutManagers.firstObject];
     [textStorage addLayoutManager:layoutManager];
-    
     self.syntaxTextStorage = textStorage;
     
-    if ((self = [super initWithFrame:frame textContainer:textContainer]))
-    {
+    if ((self = [super initWithFrame:frame textContainer:textContainer])) {
         self.contentMode = UIViewContentModeRedraw; // causes drawRect: to be called on frame resizing and device rotation
-        
         [self _commonSetup];
     }
     
     return self;
+}
+
+- (void) setLineNumbersEnabled:(BOOL)pLineNumbersEnabled
+{
+    _lineNumbersEnabled = pLineNumbersEnabled;
+    self.lineNumberLayoutManager.shouldCompletelyHideGutter = !self.lineNumbersEnabled;
 }
 
 - (void)_commonSetup
@@ -96,15 +96,17 @@ static const float kCursorVelocity = 1.0f/8.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleTextViewDidChangeNotification:) name:UITextViewTextDidChangeNotification object:self];
     
     // Setup defaults
-    self.font = [UIFont systemFontOfSize:16.0f];
+    self.font = [UIFont fontWithName: @"Menlo-Regular" size:14.0f];
     self.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.autocorrectionType     = UITextAutocorrectionTypeNo;
-    self.lineCursorEnabled = YES;
-    self.gutterBackgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
-    self.gutterLineColor       = [UIColor lightGrayColor];
-    
+    self.lineCursorEnabled = NO;
+
     // Inset the content to make room for line numbers
-    self.textContainerInset = UIEdgeInsetsMake(8, self.lineNumberLayoutManager.gutterWidth, 8, 0);
+    if (self.lineNumbersEnabled) {
+        self.gutterBackgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
+        self.gutterLineColor       = [UIColor lightGrayColor];
+        self.textContainerInset = UIEdgeInsetsMake(8, self.lineNumberLayoutManager.gutterWidth, 8, 0);
+    }
     
     // Setup the gesture recognizers
     _singleFingerPanRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(singleFingerPanHappend:)];
@@ -198,28 +200,30 @@ static const float kCursorVelocity = 1.0f/8.0f;
 // Original implementation sourced from: https://github.com/alldritt/TextKit_LineNumbers
 - (void)drawRect:(CGRect)rect
 {
-    //  Drag the line number gutter background.  The line numbers them selves are drawn by LineNumberLayoutManager.
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGRect bounds = self.bounds;
-    
-    CGFloat height = MAX(CGRectGetHeight(bounds), self.contentSize.height) + 200;
-    
-    // Set the regular fill
-    CGContextSetFillColorWithColor(context, self.gutterBackgroundColor.CGColor);
-    CGContextFillRect(context, CGRectMake(bounds.origin.x, bounds.origin.y, self.lineNumberLayoutManager.gutterWidth, height));
-    
-    // Draw line
-    CGContextSetFillColorWithColor(context, self.gutterLineColor.CGColor);
-    CGContextFillRect(context, CGRectMake(self.lineNumberLayoutManager.gutterWidth, bounds.origin.y, 0.5, height));
-    
-    if (_lineCursorEnabled)
-    {
-        self.lineNumberLayoutManager.selectedRange = self.selectedRange;
+    if (self.lineNumbersEnabled) {
+        //  Drag the line number gutter background.  The line numbers them selves are drawn by LineNumberLayoutManager.
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGRect bounds = self.bounds;
         
-        NSRange glyphRange = [self.lineNumberLayoutManager.textStorage.string paragraphRangeForRange:self.selectedRange];
-        glyphRange = [self.lineNumberLayoutManager glyphRangeForCharacterRange:glyphRange actualCharacterRange:NULL];
-        self.lineNumberLayoutManager.selectedRange = glyphRange;
-        [self.lineNumberLayoutManager invalidateDisplayForGlyphRange:glyphRange];
+        CGFloat height = MAX(CGRectGetHeight(bounds), self.contentSize.height) + 200;
+        
+        // Set the regular fill
+        CGContextSetFillColorWithColor(context, self.gutterBackgroundColor.CGColor);
+        CGContextFillRect(context, CGRectMake(bounds.origin.x, bounds.origin.y, self.lineNumberLayoutManager.gutterWidth, height));
+        
+        // Draw line
+        CGContextSetFillColorWithColor(context, self.gutterLineColor.CGColor);
+        CGContextFillRect(context, CGRectMake(self.lineNumberLayoutManager.gutterWidth, bounds.origin.y, 0.5, height));
+        
+        if (_lineCursorEnabled)
+        {
+            self.lineNumberLayoutManager.selectedRange = self.selectedRange;
+            
+            NSRange glyphRange = [self.lineNumberLayoutManager.textStorage.string paragraphRangeForRange:self.selectedRange];
+            glyphRange = [self.lineNumberLayoutManager glyphRangeForCharacterRange:glyphRange actualCharacterRange:NULL];
+            self.lineNumberLayoutManager.selectedRange = glyphRange;
+            [self.lineNumberLayoutManager invalidateDisplayForGlyphRange:glyphRange];
+        }
     }
     
     [super drawRect:rect];

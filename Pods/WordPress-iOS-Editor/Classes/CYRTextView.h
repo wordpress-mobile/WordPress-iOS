@@ -48,5 +48,6 @@
 @property UIColor *gutterLineColor;
 
 @property (nonatomic, assign) BOOL lineCursorEnabled;
+@property (nonatomic, assign) BOOL lineNumbersEnabled;
 
 @end
