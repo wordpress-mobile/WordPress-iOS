@@ -94,11 +94,14 @@ extension Notification
     }
 
     public func sectionIdentifier() -> String {
+        // Normalize Dates: Time must not be considered. Just the raw dates
+        let fromDate                = timestampAsDate.normalizedDate()
+        let toDate                  = NSDate().normalizedDate()
+
+        // Analyze the Delta-Components
         let calendar                = NSCalendar.currentCalendar()
-        
         let flags: NSCalendarUnit   = .DayCalendarUnit | .WeekOfYearCalendarUnit | .MonthCalendarUnit
-        let toDate                  = NSDate()
-        let components              = calendar.components(flags, fromDate: timestampAsDate, toDate: toDate, options: nil)
+        let components              = calendar.components(flags, fromDate: fromDate, toDate: toDate, options: nil)
         
         var identifier: (kind: Int, value: Int)
 

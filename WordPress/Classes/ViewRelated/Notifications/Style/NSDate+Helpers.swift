@@ -16,4 +16,22 @@ extension NSDate
     public class func dateWithISO8601String(string: String) -> NSDate? {
         return iso8601Date.formatter.dateFromString(string)
     }
+
+    public func normalizedDate() -> NSDate {
+
+        let calendar        = NSCalendar.currentCalendar()
+        calendar.timeZone   = NSTimeZone.localTimeZone()
+
+        let flags: NSCalendarUnit   = .DayCalendarUnit | .WeekOfYearCalendarUnit | .MonthCalendarUnit | .YearCalendarUnit
+  
+        let components      = calendar.components(flags, fromDate: self)
+
+        let normalized      = NSDateComponents()
+        normalized.year     = components.year
+        normalized.month    = components.month
+        normalized.weekday  = components.weekday
+        normalized.day      = components.day
+
+        return calendar.dateFromComponents(normalized) ?? self
+    }
 }
