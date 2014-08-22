@@ -229,14 +229,14 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
         return cell;
     }
 
-    UITableViewCell *cell            = [tableView dequeueReusableCellWithIdentifier:WPNotificationFooterCellIdentifier];
+    UITableViewCell *cell           = [tableView dequeueReusableCellWithIdentifier:WPNotificationFooterCellIdentifier];
 
-    cell.accessoryType                = UITableViewCellAccessoryDisclosureIndicator;
+    cell.accessoryType              = UITableViewCellAccessoryDisclosureIndicator;
     cell.backgroundColor            = [WPStyleGuide itsEverywhereGrey];
-    cell.textLabel.backgroundColor    = [UIColor clearColor];
+    cell.textLabel.backgroundColor  = [UIColor clearColor];
     cell.textLabel.textColor        = [WPStyleGuide newKidOnTheBlockBlue];
-    cell.textLabel.font                = [WPStyleGuide regularTextFont];
-    cell.textLabel.text                = _note.bodyFooterText;
+    cell.textLabel.font             = [WPStyleGuide regularTextFont];
+    cell.textLabel.text             = _note.bodyFooterText;
 
     return cell;
 }
@@ -249,8 +249,14 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
     }
 
     BOOL isFollowing = item.action.following;
-	   
-	// Hit the Backend
+
+    if (isFollowing) {
+        [WPAnalytics track:WPAnalyticsStatNotificationUnfollowAction];
+    } else {
+        [WPAnalytics track:WPAnalyticsStatNotificationFollowAction];
+    }
+
+    // Hit the Backend
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];

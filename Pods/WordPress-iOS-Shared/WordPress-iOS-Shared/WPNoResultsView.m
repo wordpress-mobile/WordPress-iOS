@@ -18,7 +18,7 @@
 + (instancetype)noResultsViewWithTitle:(NSString *)titleText message:(NSString *)messageText accessoryView:(UIView *)accessoryView buttonTitle:(NSString *)buttonTitle {
     
     WPNoResultsView *noResultsView  = [WPNoResultsView new];
-
+    
     noResultsView.accessoryView     = accessoryView;
     noResultsView.titleText         = titleText;
     noResultsView.messageText       = messageText;
@@ -49,7 +49,6 @@
         // Button
         _button                     = [UIButton buttonWithType:UIButtonTypeCustom];
         _button.titleLabel.font     = [WPStyleGuide regularTextFont];
-        _button.hidden              = YES;
         [_button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
         [_button setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateNormal];
         [_button setBackgroundImage:[self newButtonBackgroundImage] forState:UIControlStateNormal];
@@ -190,7 +189,7 @@
 }
 
 - (void)centerInSuperview {
-
+    
     if (!self.superview) {
         return;
     }
