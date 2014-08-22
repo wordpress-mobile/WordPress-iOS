@@ -55,8 +55,6 @@ typedef NS_ENUM(NSInteger, NoteBlockTypes)
 @property (nonatomic, strong,  readonly) NSURL              *iconURL;
 @property (nonatomic, strong,  readonly) NSDate             *timestampAsDate;
 @property (nonatomic, assign,  readonly) BOOL               isMatcher;
-@property (nonatomic, assign,  readonly) BOOL               isStatsEvent;
-@property (nonatomic, assign,  readonly) BOOL               isComment;
 
 // Helpers
 - (NotificationBlock *)findUserBlock;
@@ -109,6 +107,7 @@ typedef NS_ENUM(NSInteger, NoteBlockTypes)
 @property (nonatomic, assign, readonly) BOOL                isUser;
 @property (nonatomic, assign, readonly) BOOL                isPost;
 @property (nonatomic, assign, readonly) BOOL                isComment;
+@property (nonatomic, assign, readonly) BOOL                isStats;
 
 @end
 
