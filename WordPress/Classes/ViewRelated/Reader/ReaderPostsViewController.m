@@ -5,6 +5,7 @@
 #import "ReaderSubscriptionViewController.h"
 #import "ReaderPostDetailViewController.h"
 #import "ReaderPost.h"
+#import "ReaderTopic.h"
 #import "WordPressAppDelegate.h"
 #import "NSString+XMLExtensions.h"
 #import "WPAccount.h"
@@ -377,10 +378,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
-
-    if (![post isFollowable]) {
-        return;
-    }
 
     if (!post.isFollowing) {
         [WPAnalytics track:WPAnalyticsStatReaderFollowedSite];
