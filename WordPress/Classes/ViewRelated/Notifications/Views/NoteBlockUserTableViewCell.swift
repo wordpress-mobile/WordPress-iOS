@@ -3,7 +3,23 @@ import Foundation
 
 @objc public class NoteBlockUserTableViewCell : NoteBlockTableViewCell
 {
+    public typealias EventHandler = (() -> Void)
+    
     // MARK: - Public Properties
+    public var onFollowClick:      EventHandler?
+    public var onUnfollowClick:    EventHandler?
+    
+    public var isFollowEnabled: Bool = false {
+        didSet {
+            btnFollow.enabled = isFollowEnabled
+        }
+    }
+    public var isFollowOn: Bool = false {
+        didSet {
+            btnFollow.selected = isFollowOn
+        }
+    }
+    
     public var name: String? {
         didSet {
             nameLabel.text  = name != nil ? name! : String()
@@ -35,6 +51,8 @@ import Foundation
     public override func awakeFromNib() {
         super.awakeFromNib()
 
+        WPStyleGuide.configureFollowButton(btnFollow)
+        
         backgroundColor                     = Notification.Colors.blockBackground
         accessoryType                       = .None
         
@@ -58,6 +76,14 @@ import Foundation
         }
     }
     
+    // MARK: - IBActions
+    @IBAction public func followWasPressed(sender: AnyObject) {
+        if let listener = isFollowOn ? onUnfollowClick : onFollowClick {
+            listener()
+        }
+        isFollowOn = !isFollowOn
+    }
+    
     // MARK: - Private
     private struct Animation {
         static let duration         = 0.3
@@ -70,6 +96,6 @@ import Foundation
     // MARK: - IBOutlets
     @IBOutlet private weak var nameLabel:           UILabel!
     @IBOutlet private weak var blogLabel:           UILabel!
-    @IBOutlet private weak var followButton:        UIButton!
+    @IBOutlet private weak var btnFollow:           UIButton!
     @IBOutlet private weak var gravatarImageView:   UIImageView!
 }

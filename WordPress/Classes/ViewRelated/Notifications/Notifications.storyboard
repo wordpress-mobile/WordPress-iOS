@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6205" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MbC-cA-c9S">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6206.8" systemVersion="14A329f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MbC-cA-c9S">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6198"/>
+        <deployment defaultVersion="1792" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7026.1"/>
     </dependencies>
     <scenes>
         <!--Notifications View Controller-->
@@ -241,6 +242,16 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F3e-O2-MLK" userLabel="FollowButton">
+                                            <rect key="frame" x="65" y="39" width="100" height="26"/>
+                                            <inset key="contentEdgeInsets" minX="2" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                            <state key="normal" title="Button" image="reader-postaction-follow.png">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="followWasPressed:" destination="5xE-rP-cOl" eventType="touchUpInside" id="xjB-lR-EYE"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="rMO-Sz-KSd" secondAttribute="trailing" constant="12" id="8t3-7u-ufB"/>
@@ -256,6 +267,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="blogLabel" destination="wTS-9g-tC4" id="1VI-qM-8S9"/>
+                                    <outlet property="btnFollow" destination="F3e-O2-MLK" id="LTd-u4-n8j"/>
                                     <outlet property="gravatarImageView" destination="uO0-Jy-JBJ" id="j1G-EB-SA2"/>
                                     <outlet property="nameLabel" destination="rMO-Sz-KSd" id="1Fj-iV-Jh6"/>
                                 </connections>
@@ -275,7 +287,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bJT-Hx-TtA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1027" y="-372"/>
+            <point key="canvasLocation" x="1027" y="-372.5"/>
         </scene>
         <!--Reader Post Detail View Controller-->
         <scene sceneID="ET8-9p-ZLz">
@@ -325,6 +337,7 @@
         <image name="notifications-liked" width="21" height="21"/>
         <image name="notifications-more" width="21" height="21"/>
         <image name="notifications-trash" width="21" height="21"/>
+        <image name="reader-postaction-follow.png" width="21" height="21"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

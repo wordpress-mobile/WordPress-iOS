@@ -35,28 +35,12 @@ import Foundation
     }
     public var isLikeOn: Bool = false {
         didSet {
-            let textColor = isLikeOn ? Notification.Colors.actionOnText : Notification.Colors.actionOffText
-            let likeTitle = isLikeOn ? NSLocalizedString("Liked", comment: "A comment has been liked") :
-                NSLocalizedString("Like", comment: "Like a comment")
-            
             btnLike.selected = isLikeOn
-            btnLike.accessibilityLabel = likeTitle
-            
-            btnLike.setTitle(likeTitle, forState: .Normal)
-            btnLike.setTitleColor(textColor, forState: .Normal)
         }
     }
     public var isApproveOn: Bool = false {
         didSet {
-            let textColor    = isApproveOn ? Notification.Colors.actionOnText : Notification.Colors.actionOffText
-            let approveTitle = isApproveOn ? NSLocalizedString("Approved", comment: "Unapprove a comment") :
-                NSLocalizedString("Approve", comment: "Approve a comment")
-            
             btnApprove.selected = isApproveOn
-            btnApprove.accessibilityLabel = approveTitle
-            
-            btnApprove.setTitle(approveTitle, forState: .Normal)
-            btnApprove.setTitleColor(textColor, forState: .Normal)
         }
     }
     
@@ -65,16 +49,40 @@ import Foundation
     public override func awakeFromNib() {
         super.awakeFromNib()
         
-        let textColor   = Notification.Colors.actionOffText
-        let moreTitle   = NSLocalizedString("More",  comment: "Verb, display More actions for a comment")
-        let trashTitle  = NSLocalizedString("Trash", comment: "Move a comment to the trash")
+        let textNormalColor         = Notification.Colors.actionOffText
+        let textSelectedColor       = Notification.Colors.actionOnText
+        
+        let likeNormalTitle         = NSLocalizedString("Like", comment: "Like a comment")
+        let likeSelectedTitle       = NSLocalizedString("Liked", comment: "A comment has been liked")
+
+        let approveNormalTitle      = NSLocalizedString("Approve", comment: "Approve a comment")
+        let approveSelectedTitle    = NSLocalizedString("Approved", comment: "Unapprove a comment")
+        
+        let moreTitle               = NSLocalizedString("More",  comment: "Verb, display More actions for a comment")
+        let trashTitle              = NSLocalizedString("Trash", comment: "Move a comment to the trash")
+        
+        btnLike.setTitle(likeNormalTitle,           forState: .Normal)
+        btnLike.setTitle(likeSelectedTitle,         forState: .Highlighted)
+        btnLike.setTitle(likeSelectedTitle,         forState: .Selected)
+        btnLike.setTitleColor(textNormalColor,      forState: .Normal)
+        btnLike.setTitleColor(textSelectedColor,    forState: .Highlighted)
+        btnLike.setTitleColor(textSelectedColor,    forState: .Selected)
+        btnLike.accessibilityLabel = likeNormalTitle
+        
+        btnApprove.setTitle(approveNormalTitle,     forState: .Normal)
+        btnApprove.setTitle(approveSelectedTitle,   forState: .Highlighted)
+        btnApprove.setTitle(approveSelectedTitle,   forState: .Selected)
+        btnApprove.setTitleColor(textNormalColor,   forState: .Normal)
+        btnApprove.setTitleColor(textSelectedColor, forState: .Highlighted)
+        btnApprove.setTitleColor(textSelectedColor, forState: .Selected)
+        btnApprove.accessibilityLabel = approveNormalTitle
         
         btnMore.setTitle(moreTitle, forState: .Normal)
-        btnMore.setTitleColor(textColor, forState: .Normal)
+        btnMore.setTitleColor(textNormalColor, forState: .Normal)
         btnMore.accessibilityLabel = moreTitle
         
         btnTrash.setTitle(trashTitle, forState: .Normal)
-        btnTrash.setTitleColor(textColor, forState: .Normal)
+        btnTrash.setTitleColor(textNormalColor, forState: .Normal)
         btnTrash.accessibilityLabel = trashTitle
     }
     
