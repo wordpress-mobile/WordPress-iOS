@@ -358,7 +358,7 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
     commentReplyAction.title = NSLocalizedString(@"Reply", @"Reply to a comment (verb)");
     commentReplyAction.activationMode = UIUserNotificationActivationModeForeground;
     commentReplyAction.destructive = NO;
-    commentReplyAction.authenticationRequired = YES;
+    commentReplyAction.authenticationRequired = NO;
 
     UIMutableUserNotificationAction *commentLikeAction = [[UIMutableUserNotificationAction alloc] init];
     commentLikeAction.identifier = NotificationActionCommentLike;
@@ -372,7 +372,7 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
     commentApproveAction.title = NSLocalizedString(@"Approve", @"Approve comment (verb)");
     commentApproveAction.activationMode = UIUserNotificationActivationModeBackground;
     commentApproveAction.destructive = NO;
-    commentApproveAction.authenticationRequired = YES;
+    commentApproveAction.authenticationRequired = NO;
 
     // Add actions to categories
     UIMutableUserNotificationCategory *commentApproveCategory = [[UIMutableUserNotificationCategory alloc] init];

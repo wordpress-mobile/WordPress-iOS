@@ -135,10 +135,6 @@ extern NSString *const WordPressComApiPushAppId;
                success:(WordPressComApiRestSuccessResponseBlock)success
                failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
-- (void)likeComment:(NSUInteger)blogId forCommentID:(NSUInteger)commentId
-               success:(WordPressComApiRestSuccessResponseBlock)success
-               failure:(WordPressComApiRestSuccessFailureBlock)failure;
-
 ///------------------
 /// @name Blog Themes
 ///------------------
