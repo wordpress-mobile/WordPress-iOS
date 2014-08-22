@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 
 @protocol WPTableViewHandlerDelegate <NSObject>
+
 - (NSManagedObjectContext *)managedObjectContext;
 - (NSString *)entityName;
 - (NSFetchRequest *)fetchRequest;
@@ -8,6 +9,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 
 @optional
+
 - (NSString *)sectionNameKeyPath;
 - (NSString *)titleForHeaderInSection:(NSInteger)section;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -18,6 +20,9 @@
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (void)deletingSelectedRowAtIndexPath:(NSIndexPath *)indexPath;
 - (void)tableViewDidChangeContent:(UITableView *)tableView;
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath;
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
