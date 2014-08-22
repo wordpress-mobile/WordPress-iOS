@@ -22,6 +22,7 @@ static CGFloat const DefaultCellHeight = 44.0;
 - (void)dealloc
 {
     _tableView.delegate = nil;
+    _tableView.dataSource = nil;
 }
 
 - (instancetype)initWithTableView:(UITableView *)tableView
@@ -152,6 +153,29 @@ static CGFloat const DefaultCellHeight = 44.0;
         return [self.delegate tableView:tableView heightForRowAtIndexPath:indexPath];
     }
     return DefaultCellHeight;
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([self.delegate respondsToSelector:@selector(tableView:shouldHighlightRowAtIndexPath:)]) {
+        return [self.delegate tableView:tableView shouldHighlightRowAtIndexPath:indexPath];
+    }
+    return YES;
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([self.delegate respondsToSelector:@selector(tableView:willSelectRowAtIndexPath:)]) {
+        [self.delegate tableView:tableView willSelectRowAtIndexPath:indexPath];
+    }
+    return indexPath;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([self.delegate respondsToSelector:@selector(tableView:willDisplayCell:forRowAtIndexPath:)]) {
+        [self.delegate tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
+    }
 }
 
 #pragma mark - TableView Datasource Methods
