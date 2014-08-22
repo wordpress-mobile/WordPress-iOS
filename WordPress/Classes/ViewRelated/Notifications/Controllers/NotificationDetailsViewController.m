@@ -245,11 +245,18 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 - (void)setupUserCell:(NoteBlockUserTableViewCell *)cell block:(NotificationBlock *)block
 {
     NotificationMedia *media        = [block.media firstObject];
+    __weak __typeof(self) weakSelf  = self;
     
     cell.name                       = block.text;
     cell.blogTitle                  = block.metaTitlesHome;
-    
-#warning TODO: Implement Follow
+    cell.isFollowEnabled            = [block isActionEnabled:NoteActionFollowKey];
+    cell.isFollowOn                 = [block isActionOn:NoteActionFollowKey];
+    cell.onFollowClick              = ^() {
+        [weakSelf followSiteWithBlock:block];
+    };
+    cell.onUnfollowClick            = ^() {
+        [weakSelf unfollowSiteWithBlock:block];
+    };
     
     [cell downloadGravatarWithURL:media.mediaURL];
 }
@@ -340,7 +347,6 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 - (BOOL)displayReaderWithURL:(NSURL *)url
 {
     NotificationURL *notificationURL = [self.note findNotificationUrlWithUrl:url];
-    
     BOOL success = ((notificationURL.isPost || notificationURL.isComment) && _note.metaPostID && _note.metaSiteID);
     if (success) {
         [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:_note];
