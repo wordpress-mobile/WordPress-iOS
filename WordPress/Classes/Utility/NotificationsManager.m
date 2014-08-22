@@ -19,18 +19,19 @@
 
 
 
-static NSString *const NotificationsDeviceIdKey                 = @"notification_device_id";
-static NSString *const NotificationsPreferencesKey              = @"notification_preferences";
-NSString *const NotificationsDeviceToken                        = @"apnsDeviceToken";
+static NSString *const NotificationsDeviceIdKey                     = @"notification_device_id";
+static NSString *const NotificationsPreferencesKey                  = @"notification_preferences";
+NSString *const NotificationsDeviceToken                            = @"apnsDeviceToken";
 
 // These correspond to the 'category' data WP.com will send with a push notification
-NSString *const NotificationCategoryCommentApproved             = @"approve-comment";
-NSString *const NotificationCategoryCommentApprovedWithLike     = @"like-comment";
-NSString *const NotificationCategoryCommentUnapproved           = @"unapprove-comment";
+NSString *const NotificationCategoryCommentApprove                  = @"approve-comment";
+NSString *const NotificationCategoryCommentLike                     = @"like-comment";
+NSString *const NotificationCategoryCommentReply                    = @"replyto-comment";
+NSString *const NotificationCategoryCommentReplyWithLike            = @"replyto-like-comment";
 
-NSString *const NotificationActionCommentReply                  = @"COMMENT_REPLY";
-NSString *const NotificationActionCommentLike                   = @"COMMENT_LIKE";
-NSString *const NotificationActionCommentApprove                = @"COMMENT_MODERATE_APPROVE";
+NSString *const NotificationActionCommentReply                      = @"COMMENT_REPLY";
+NSString *const NotificationActionCommentLike                       = @"COMMENT_LIKE";
+NSString *const NotificationActionCommentApprove                    = @"COMMENT_MODERATE_APPROVE";
 
 @implementation NotificationsManager
 
@@ -374,19 +375,23 @@ NSString *const NotificationActionCommentApprove                = @"COMMENT_MODE
     commentApproveAction.authenticationRequired = YES;
 
     // Add actions to categories
-    UIMutableUserNotificationCategory *commentApprovedCategory = [[UIMutableUserNotificationCategory alloc] init];
-    commentApprovedCategory.identifier = NotificationCategoryCommentApproved;
-    [commentApprovedCategory setActions:@[commentReplyAction] forContext:UIUserNotificationActionContextDefault];
+    UIMutableUserNotificationCategory *commentApproveCategory = [[UIMutableUserNotificationCategory alloc] init];
+    commentApproveCategory.identifier = NotificationCategoryCommentApprove;
+    [commentApproveCategory setActions:@[commentApproveAction] forContext:UIUserNotificationActionContextDefault];
 
-    UIMutableUserNotificationCategory *commentApprovedWithLikeCategory = [[UIMutableUserNotificationCategory alloc] init];
-    commentApprovedWithLikeCategory.identifier = NotificationCategoryCommentApprovedWithLike;
-    [commentApprovedWithLikeCategory setActions:@[commentLikeAction, commentReplyAction] forContext:UIUserNotificationActionContextDefault];
+    UIMutableUserNotificationCategory *commentReplyCategory = [[UIMutableUserNotificationCategory alloc] init];
+    commentReplyCategory.identifier = NotificationCategoryCommentReply;
+    [commentReplyCategory setActions:@[commentReplyAction] forContext:UIUserNotificationActionContextDefault];
 
-    UIMutableUserNotificationCategory *commentUnapprovedCategory = [[UIMutableUserNotificationCategory alloc] init];
-    commentUnapprovedCategory.identifier = NotificationCategoryCommentUnapproved;
-    [commentUnapprovedCategory setActions:@[commentApproveAction] forContext:UIUserNotificationActionContextDefault];
+    UIMutableUserNotificationCategory *commentLikeCategory = [[UIMutableUserNotificationCategory alloc] init];
+    commentLikeCategory.identifier = NotificationCategoryCommentLike;
+    [commentLikeCategory setActions:@[commentLikeAction] forContext:UIUserNotificationActionContextDefault];
 
-    return [NSSet setWithObjects:commentApprovedCategory, commentApprovedWithLikeCategory, commentUnapprovedCategory, nil];
+    UIMutableUserNotificationCategory *commentReplyWithLikeCategory = [[UIMutableUserNotificationCategory alloc] init];
+    commentReplyWithLikeCategory.identifier = NotificationCategoryCommentReplyWithLike;
+    [commentReplyWithLikeCategory setActions:@[commentLikeAction, commentReplyAction] forContext:UIUserNotificationActionContextDefault];
+
+    return [NSSet setWithObjects:commentApproveCategory, commentReplyCategory, commentLikeCategory, commentReplyWithLikeCategory, nil];
 }
 
 @end
