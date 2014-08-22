@@ -8,10 +8,11 @@
 #import "WPStatsViewController_Private.h"
 #import "BlogService.h"
 #import <NotificationCenter/NotificationCenter.h>
+#import "SettingsViewController.h"
 
 static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
-@interface StatsViewController ()
+@interface StatsViewController () <UIActionSheetDelegate>
 @property (nonatomic, assign) BOOL showingJetpackLogin;
 @end
 
@@ -24,6 +25,14 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
         self.statsDelegate = self;
     }
     return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Today", @"") style:UIBarButtonItemStylePlain target:self action:@selector(makeSiteTodayWidgetSite:)];
+    self.navigationItem.rightBarButtonItem = settingsButton;
 }
 
 - (void)setBlog:(Blog *)blog
@@ -49,7 +58,6 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
         self.oauth2Token = self.blog.restApi.authToken;
         self.siteID = self.blog.blogID;
 
-        [self saveSiteDetailsForTodayWidget];
         [super initStats];
         return;
     }
@@ -60,7 +68,6 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
         self.siteID = self.blog.jetpackBlogID;
         self.oauth2Token = self.blog.jetpackAccount.restApi.authToken;
 
-        [self saveSiteDetailsForTodayWidget];
         [super initStats];
     } else {
         [self promptForJetpackCredentials];
@@ -111,6 +118,25 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     StatsWebViewController *vc = [[StatsWebViewController alloc] init];
     vc.blog = self.blog;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (IBAction)makeSiteTodayWidgetSite:(id)sender
+{
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You can display a single site's stats in the iOS Today/Notification Center view.", @"Action sheet title for setting Today Widget site to the current one")
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:NSLocalizedString(@"Use this site", @""), nil];
+    [actionSheet showFromTabBar:self.tabBarController.tabBar];
+}
+
+#pragma mark - UIActionSheetDelegate methods
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        [self saveSiteDetailsForTodayWidget];
+    }
 }
 
 #pragma mark - Restoration
