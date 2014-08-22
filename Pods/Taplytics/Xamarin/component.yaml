@@ -1,0 +1,16 @@
+version: 1.2.46
+name: Taplytics SDK
+id: taplytics
+publisher: Syrp Inc.
+publisher-url: https://taplytics.com
+summary: Mobile A/B testing for everyone.
+libraries:
+  ios: TaplyticsSDK.dll
+samples:
+  - name: "iOS Sample"
+    path: samples/TaplyticsSample/TaplyticsSample.sln
+    configuration: "Release|iPhone"
+screenshots:
+  - component/screenshots/taplytics-buttons.png
+  - component/screenshots/taplytics-colors.png
+  - component/screenshots/taplytics-livechanges.png

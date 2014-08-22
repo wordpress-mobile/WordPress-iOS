@@ -389,6 +389,8 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         // Pressed unapprove, so flip button optimistically to approve
         [self updateApproveButton:YES];
         [self performCommentAction:unapproveAction forButton:sender];
+        
+        [WPAnalytics track:WPAnalyticsStatNotificationUnapproved];
     }
 }
 
@@ -409,6 +411,8 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         [self updateTrashButton:YES];
         [self performCommentAction:untrashAction forButton:sender];
     }
+    
+    [WPAnalytics track:WPAnalyticsStatNotificationTrashed];
 }
 
 - (void)spamAction:(id)sender
@@ -424,6 +428,8 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         [self updateSpamButton:YES];
         [self performCommentAction:unspamAction forButton:sender];
     }
+
+    [WPAnalytics track:WPAnalyticsStatNotificationFlaggedAsSpam];
 }
 
 - (void)replyAction:(id)sender
