@@ -8,16 +8,16 @@
         <!--Today View Controller-->
         <scene sceneID="cwh-vc-ff4">
             <objects>
-                <viewController storyboardIdentifier="TodayWidget" useStoryboardIdentifierAsRestorationIdentifier="YES" id="M4Y-Lb-cyx" customClass="TodayViewController" customModule="WordPressTodayWidget" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="M4Y-Lb-cyx" customClass="TodayViewController" customModule="WordPressTodayWidget" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Ft6-oW-KC0"/>
                         <viewControllerLayoutGuide type="bottom" id="FKl-LY-JtV"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" simulatedAppContext="notificationCenter" id="S3S-Oj-5AN">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="230"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blogger's Digest" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Wcm-ss-zFo">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="BlogName" text="Blogger's Digest" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Wcm-ss-zFo">
                                 <rect key="frame" x="16" y="8" width="288" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="8Sh-yt-2W3"/>
@@ -81,12 +81,24 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jIM-Xc-aQk">
+                                <rect key="frame" x="16" y="194" width="75" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Ny8-1y-wDE"/>
+                                </constraints>
+                                <state key="normal" title="Show All…">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstItem="pyt-KX-qbk" firstAttribute="leading" secondItem="d87-vS-4g1" secondAttribute="leading" id="3OW-rE-laZ"/>
                             <constraint firstItem="bgc-XM-3Jg" firstAttribute="top" secondItem="d87-vS-4g1" secondAttribute="bottom" constant="17" id="4HD-6G-XLq"/>
                             <constraint firstItem="Wcm-ss-zFo" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="BKO-pK-u0S"/>
+                            <constraint firstItem="FKl-LY-JtV" firstAttribute="top" secondItem="jIM-Xc-aQk" secondAttribute="bottom" constant="6" id="DgO-4o-m7y"/>
                             <constraint firstItem="OOl-1S-KZG" firstAttribute="top" secondItem="bgc-XM-3Jg" secondAttribute="bottom" constant="8" id="Dti-Uv-iws"/>
+                            <constraint firstItem="jIM-Xc-aQk" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="In7-eK-fCI"/>
+                            <constraint firstItem="jIM-Xc-aQk" firstAttribute="top" secondItem="OOl-1S-KZG" secondAttribute="bottom" constant="8" id="NlM-x4-Skb"/>
                             <constraint firstItem="IOg-zT-oAD" firstAttribute="baseline" secondItem="pyt-KX-qbk" secondAttribute="baseline" id="Rwj-ZH-X82"/>
                             <constraint firstItem="bgc-XM-3Jg" firstAttribute="trailing" secondItem="S3S-Oj-5AN" secondAttribute="trailingMargin" id="TCa-fw-G2E"/>
                             <constraint firstItem="pyt-KX-qbk" firstAttribute="leading" secondItem="IOg-zT-oAD" secondAttribute="trailing" constant="64" id="V2d-td-NiN"/>
@@ -97,7 +109,6 @@
                             <constraint firstItem="ya5-b8-L12" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="e3i-Nn-Ax4"/>
                             <constraint firstItem="IOg-zT-oAD" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="efL-lJ-Wdt"/>
                             <constraint firstItem="bgc-XM-3Jg" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="fp0-na-4mZ"/>
-                            <constraint firstItem="FKl-LY-JtV" firstAttribute="top" secondItem="OOl-1S-KZG" secondAttribute="bottom" constant="14" id="gKY-oB-Gw4"/>
                             <constraint firstItem="OOl-1S-KZG" firstAttribute="trailing" secondItem="S3S-Oj-5AN" secondAttribute="trailingMargin" id="i9u-tH-Mq1"/>
                             <constraint firstAttribute="trailing" secondItem="Wcm-ss-zFo" secondAttribute="trailing" constant="16" id="ndY-yf-y6u"/>
                             <constraint firstItem="OOl-1S-KZG" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="xpQ-Me-c69"/>
@@ -108,7 +119,7 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="200"/>
+                    <size key="freeformSize" width="320" height="230"/>
                     <connections>
                         <outlet property="siteNameLabel" destination="Wcm-ss-zFo" id="WsJ-6K-WZ5"/>
                         <outlet property="topPostLabel" destination="OOl-1S-KZG" id="YQy-W4-1Pl"/>
