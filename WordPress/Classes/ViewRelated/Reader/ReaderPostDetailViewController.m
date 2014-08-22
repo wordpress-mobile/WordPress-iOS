@@ -24,9 +24,8 @@
 #import "CustomHighlightButton.h"
 #import "WPTableImageSource.h"
 #import "WPNoResultsView+AnimatedBox.h"
+#import "CommentService.h"
 
-//static NSInteger const ReaderCommentsToSync = 100;
-//static NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
 static CGFloat const SectionHeaderHeight = 25.0f;
 
 @interface ReaderPostDetailViewController ()<UIActionSheetDelegate,
@@ -44,13 +43,11 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 @property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, strong) UIGestureRecognizer *tapOffKeyboardGesture;
 @property (nonatomic, strong) ReaderPostRichContentView *postView;
-@property (nonatomic) BOOL infiniteScrollEnabled;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, strong) UIBarButtonItem *commentButton;
 @property (nonatomic, strong) UIBarButtonItem *likeButton;
 @property (nonatomic, strong) UIBarButtonItem *reblogButton;
 @property (nonatomic, strong) UIBarButtonItem *shareButton;
-@property (nonatomic, strong) NSMutableArray *comments;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic) BOOL hasMoreContent;
 @property (nonatomic) BOOL loadingMore;
@@ -93,23 +90,16 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        _comments = [NSMutableArray array];
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    if (self.infiniteScrollEnabled) {
+
+    if (self.hasMoreContent) {
         [self enableInfiniteScrolling];
+    } else {
+        [self disableInfiniteScrolling];
     }
-    
+
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:@"PostCell"];
@@ -200,6 +190,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     }
 }
 
+
 #pragma mark - Actions
 
 - (void)dismissKeyboard:(id)sender
@@ -213,7 +204,23 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     [self.inlineComposeView dismissComposer];
 }
 
+
 #pragma mark - View getters/builders
+
+- (void)setPost:(ReaderPost *)post
+{
+    if (post == _post) {
+        return;
+    }
+
+    _post = post;
+
+    if (_post.isWPCom) {
+        self.hasMoreContent = YES;
+    } else {
+        self.hasMoreContent = NO;
+    }
+}
 
 - (void)configurePostView
 {
@@ -301,13 +308,11 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 - (void)reloadData
 {
     self.title = self.post.postTitle ?: NSLocalizedString(@"Reader", @"Placeholder title for ReaderPostDetails.");
-    
-//    [self prepareComments];
 
     [self refreshPostView];
     [self refreshHeightForTableHeaderView];
-//    [self refreshCommentsIfNeeded];
     [self refreshShareButton];
+    [self syncWithUserInteraction:NO];
 }
 
 - (void)refreshPostView
@@ -384,18 +389,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     self.tableView.tableHeaderView = tableHeaderView;
 }
 
-//- (void)refreshCommentsIfNeeded
-//{
-//    // Hit the backend, if needed
-//    BOOL isConnected    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] connectionAvailable];
-//    NSDate *lastSynced  = self.lastSyncDate;
-//    BOOL isRefreshTime  = (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow] > ReaderPostDetailViewControllerRefreshTimeout));
-//    
-//    if (isConnected && self.post.isWPCom && isRefreshTime) {
-//        [self syncWithUserInteraction:NO];
-//    }
-//}
-
 - (void)refreshShareButton
 {
     // Enable Share action only when the post is fully loaded
@@ -447,47 +440,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     return self.post.commentsOpen;
 }
 
-//- (void)prepareComments
-//{
-//    self.resultsController = nil;
-//    [self.comments removeAllObjects];
-//
-//    __block void(__unsafe_unretained ^flattenComments)(NSArray *) = ^void (NSArray *comments) {
-//        // Ensure the array is correctly sorted.
-//        comments = [comments sortedArrayUsingComparator: ^(id obj1, id obj2) {
-//            ReaderComment *a = obj1;
-//            ReaderComment *b = obj2;
-//            if ([[a dateCreated] timeIntervalSince1970] > [[b dateCreated] timeIntervalSince1970]) {
-//                return (NSComparisonResult)NSOrderedDescending;
-//            }
-//            if ([[a dateCreated] timeIntervalSince1970] < [[b dateCreated] timeIntervalSince1970]) {
-//                return (NSComparisonResult)NSOrderedAscending;
-//            }
-//            return (NSComparisonResult)NSOrderedSame;
-//        }];
-//
-//        for (ReaderComment *comment in comments) {
-//            [self.comments addObject:comment];
-//            if ([comment.childComments count] > 0) {
-//                flattenComments([comment.childComments allObjects]);
-//            }
-//        }
-//    };
-//
-//    flattenComments(self.resultsController.fetchedObjects);
-//
-//    // Cache attributed strings.
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, NULL), ^{
-//        for (ReaderComment *comment in self.comments) {
-//            comment.attributedContent = [ReaderCommentTableViewCell convertHTMLToAttributedString:comment.content withOptions:nil];
-//        }
-//        __weak ReaderPostDetailViewController *weakSelf = self;
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [weakSelf.tableView reloadData];
-//        });
-//    });
-//}
-
 - (UIActivityViewController *)activityViewControllerForSharing
 {
     NSString *title = self.post.postTitle;
@@ -538,21 +490,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     } else {
         [self presentViewController:activityViewController animated:YES completion:nil];
     }
-}
-
-- (BOOL)isReplying
-{
-    return [self.tableView indexPathForSelectedRow] != nil;
-}
-
-- (CGSize)tabBarSize
-{
-    CGSize tabBarSize = CGSizeZero;
-    if ([self tabBarController]) {
-        tabBarSize = [[[self tabBarController] tabBar] bounds].size;
-    }
-
-    return tabBarSize;
 }
 
 - (void)dismissPopover
@@ -762,94 +699,60 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
 #pragma mark - Sync methods
 
-- (NSDate *)lastSyncDate
-{
-    return self.post.dateCommentsSynced;
-}
-
 - (void)syncWithUserInteraction:(BOOL)userInteraction
 {
-//    if ([self.post.postID integerValue] == 0 ) { // Weird that this should ever happen.
-//        self.post.dateCommentsSynced = [NSDate date];
-//        return;
-//    }
-//    self.isSyncing = YES;
-//    NSDictionary *params = @{@"number":[NSNumber numberWithInteger:ReaderCommentsToSync]};
-//
-//    [ReaderPost getCommentsForPost:[self.post.postID integerValue]
-//                          fromSite:[self.post.siteID stringValue]
-//                    withParameters:params
-//                           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//                               [self onSyncSuccess:operation response:responseObject];
-//                           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//                           }];
+    if (!self.post.isWPCom) {
+        return;
+    }
+
+    self.isSyncing = YES;
+    //show spinner?
+
+    CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    [service syncHierarchicalCommentsForPost:self.post page:1 success:^(NSUInteger count) {
+        // hide spinner
+        self.isSyncing = NO;
+        if (count == 0) {
+            self.hasMoreContent = NO;
+        }
+
+    } failure:^(NSError *error) {
+        // hide spinner
+        self.isSyncing = NO;
+    }];
 }
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-//    if ([self.resultsController.fetchedObjects count] == 0) {
-//        return;
-//    }
-//
-//    if (self.loadingMore) {
-//        return;
-//    }
-//
-//    self.loadingMore = YES;
-//    self.isSyncing = YES;
-//    NSUInteger numberToSync = [self.comments count] + ReaderCommentsToSync;
-//    NSDictionary *params = @{@"number":[NSNumber numberWithInteger:numberToSync]};
-//
-//    [ReaderPost getCommentsForPost:[self.post.postID integerValue]
-//                          fromSite:[self.post.siteID stringValue]
-//                    withParameters:params
-//                           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//                               [self onSyncSuccess:operation response:responseObject];
-//                           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//                           }];
-}
-
-- (void)onSyncSuccess:(AFHTTPRequestOperation *)operation response:(id)responseObject
-{
-//    self.post.dateCommentsSynced = [NSDate date];
-//    self.loadingMore = NO;
-//    self.isSyncing = NO;
-//    NSDictionary *resp = (NSDictionary *)responseObject;
-//    NSArray *commentsArr = [resp arrayForKey:@"comments"];
-//
-//    if (!commentsArr) {
-//        self.hasMoreContent = NO;
-//        return;
-//    }
-//
-//    if ([commentsArr count] < ([self.comments count] + ReaderCommentsToSync)) {
-//        self.hasMoreContent = NO;
-//    }
-//
-//    [ReaderComment syncAndThreadComments:commentsArr
-//                                 forPost:self.post
-//                             withContext:[[ContextManager sharedInstance] mainContext]];
-//
-//    [self prepareComments];
-}
-
-#pragma mark - Infinite Scrolling
-
-- (void)setInfiniteScrollEnabled:(BOOL)infiniteScrollEnabled
-{
-    if (infiniteScrollEnabled == self.infiniteScrollEnabled) {
+    if (self.isSyncing || self.loadingMore) {
         return;
     }
 
-    self.infiniteScrollEnabled = infiniteScrollEnabled;
-    if (self.isViewLoaded) {
-        if (self.infiniteScrollEnabled) {
-            [self enableInfiniteScrolling];
-        } else {
-            [self disableInfiniteScrolling];
+    self.loadingMore = YES;
+    self.isSyncing = YES;
+
+    NSSet *topComments = [self.post.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"parentID = NULL"]];
+    NSUInteger page = ([topComments count] / 20) + 1;
+
+    CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    [service syncHierarchicalCommentsForPost:self.post page:page success:^(NSUInteger count) {
+        // hide spinner
+        self.isSyncing = NO;
+        self.loadingMore = NO;
+        if (count == 0) {
+            self.hasMoreContent = NO;
         }
-    }
+
+    } failure:^(NSError *error) {
+        // hide spinner
+        self.isSyncing = NO;
+        self.loadingMore = NO;
+
+    }];
 }
+
+
+#pragma mark - Infinite Scrolling
 
 - (void)enableInfiniteScrolling
 {
@@ -881,11 +784,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 {
     CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
 
-    if ([self.comments count] == 0) {
-        return 0.0f;
-    }
-
-    Comment *comment = [self.comments objectAtIndex:indexPath.row];
+    Comment *comment = [self.resultsController.fetchedObjects objectAtIndex:indexPath.row];
     return [ReaderCommentTableViewCell heightForComment:comment
                                                   width:width
                                              tableStyle:tableView.style
@@ -894,12 +793,14 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.comments count];
+    id <NSFetchedResultsSectionInfo> sectionInfo = nil;
+    sectionInfo = [[self.resultsController sections] objectAtIndex:section];
+    return [sectionInfo numberOfObjects];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return [[self.resultsController sections] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -912,7 +813,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     }
     cell.accessoryType = UITableViewCellAccessoryNone;
 
-    Comment *comment = [self.comments objectAtIndex:indexPath.row];
+    Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
     [cell configureCell:comment];
     [self setAvatarForComment:comment forCell:cell indexPath:indexPath];
 
@@ -946,7 +847,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Comment *comment = [self.comments objectAtIndex:indexPath.row];
+    Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
 
     // if a row is already selected don't allow selection of another
     if (self.inlineComposeView.isDisplayed) {
@@ -982,7 +883,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 {
     // if we selected the already active comment allow highlight
     // so we can toggle the inline composer
-    Comment *comment = [self.comments objectAtIndex:indexPath.row];
+    Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
     if (comment == self.commentPublisher.comment) {
         return YES;
     }
@@ -990,15 +891,15 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     return !self.inlineComposeView.isDisplayed;
 }
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleNone;
-}
-
-- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return NO;
-}
+//- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return UITableViewCellEditingStyleNone;
+//}
+//
+//- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return NO;
+//}
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -1061,14 +962,13 @@ static CGFloat const SectionHeaderHeight = 25.0f;
         return _resultsController;
     }
 
-    NSString *entityName = @"ReaderComment";
+    NSString *entityName = NSStringFromClass([Comment class]);
     NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
 
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:@"ReaderComment" inManagedObjectContext:moc]];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(post = %@) && (parentID = 0)", self.post];
-    [fetchRequest setPredicate:predicate];
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:YES];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:entityName];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = %@", self.post];
+
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"hierarchy" ascending:YES];
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
 
     _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
@@ -1078,7 +978,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
     _resultsController.delegate = self;
 
-    NSError *error = nil;
+    NSError *error;
     if (![_resultsController performFetch:&error]) {
         DDLogError(@"%@ couldn't fetch %@: %@", self, entityName, [error localizedDescription]);
         _resultsController = nil;
