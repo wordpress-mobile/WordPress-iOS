@@ -31,6 +31,10 @@ pod 'NSObject-SafeExpectations', '0.0.2'
 pod 'SocketRocket', :git => 'https://github.com/jleandroperez/SocketRocket.git', :branch => 'master'
 pod 'Simperium', '0.6.6'
 
+target 'WordPressTodayWidget', :exclusive => true do
+    pod 'WordPressCom-Stats-iOS', '0.0.5'
+end
+
 target :WordPressTest, :exclusive => true do
   pod 'OHHTTPStubs', '1.1.1'
   pod 'OCMock'
