@@ -43,11 +43,6 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic isLikesEnabled;
 @dynamic isSharingEnabled;
 
-- (BOOL)isFollowable
-{
-    // For now, anything in the reader is something that can be followed.
-    return YES;
-}
 
 - (BOOL)isPrivate
 {
@@ -126,22 +121,20 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 - (NSURL *)featuredImageURL
 {
-    if (self.featuredImage && [self.featuredImage length] > 0) {
-        return [NSURL URLWithString:self.featuredImage];
-    }
-
-    return nil;
+    return [NSURL URLWithString:self.featuredImage];
 }
 
-- (NSString *)featuredImageForWidth:(NSUInteger)width height:(NSUInteger)height
+- (BOOL)contentIncludesFeaturedImage
 {
-    NSString *fmt = nil;
-    if ([self.featuredImage rangeOfString:@"mshots/"].location == NSNotFound) {
-        fmt = @"https://i0.wp.com/%@?resize=%i,%i";
-    } else {
-        fmt = @"%@?w=%i&h=%i";
+    NSString *featuredImage = [[self featuredImageURL] absoluteString];
+    if (!featuredImage) {
+        return NO;
     }
-    return [NSString stringWithFormat:fmt, self.featuredImage, width, height];
+
+    // One URL might be http and the other https, so don't include the protocol in the check.
+    NSString *featuredImagePath = [[featuredImage componentsSeparatedByString:@"://"] lastObject];
+    NSString *content = [self contentForDisplay];
+    return ([content rangeOfString:featuredImagePath].location != NSNotFound);
 }
 
 #pragma mark - WPContentViewProvider protocol
@@ -175,27 +168,5 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     return [self featuredImageURL];
 }
 
-@end
-
-@implementation ReaderPost (WordPressComApi)
-
-+ (void)getCommentsForPost:(NSUInteger)postID
-                  fromSite:(NSString *)siteID
-            withParameters:(NSDictionary*)params
-                   success:(WordPressComApiRestSuccessResponseBlock)success
-                   failure:(WordPressComApiRestSuccessFailureBlock)failure
-{
-    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%i/replies", siteID, postID];
-
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    if ([defaultAccount restApi].authToken) {
-        [[defaultAccount restApi] GET:path parameters:params success:success failure:failure];
-    } else {
-        [[WordPressComApi anonymousApi] GET:path parameters:params success:success failure:failure];
-    }
-}
 
 @end
