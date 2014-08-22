@@ -19,18 +19,14 @@ NSString const *NoteActionEditKey       = @"approve-comment";
 NSString const *NoteLinkTypeUser        = @"user";
 NSString const *NoteLinkTypePost        = @"post";
 NSString const *NoteLinkTypeComment     = @"comment";
+NSString const *NoteLinkTypeStats       = @"stat";
 
 NSString const *NoteMediaTypeImage      = @"image";
 
 NSString const *NoteBlockTypeUser       = @"user";
 NSString const *NoteBlockTypeComment    = @"comment";
 
-NSString const *NoteTypeComment         = @"comment";
 NSString const *NoteTypeMatcher         = @"automattcher";
-NSString const *NoteTypeMilestoneInfix  = @"_milestone_";
-NSString const *NoteTypeTrafficPrefix   = @"traffic_";
-NSString const *NoteTypeBestPrefix      = @"best_";
-NSString const *NoteTypeMostPrefix      = @"most_";
 
 NSString const *NoteMetaKey             = @"meta";
 NSString const *NoteMediaKey            = @"media";
@@ -86,6 +82,11 @@ NSString const *NoteHeightKey           = @"height";
 - (BOOL)isComment
 {
     return [self.type isEqual:NoteLinkTypeComment];
+}
+
+- (BOOL)isStats
+{
+    return [self.type isEqual:NoteLinkTypeStats];
 }
 
 + (NSArray *)urlsFromArray:(NSArray *)rawURL
@@ -377,27 +378,9 @@ NSString const *NoteHeightKey           = @"height";
     return [[self.meta dictionaryForKey:NoteIdsKey] numberForKey:NoteCommentKey];
 }
 
-- (BOOL)isComment
-{
-    return [self.type isEqual:NoteTypeComment];
-}
-
 - (BOOL)isMatcher
 {
     return [self.type isEqual:NoteTypeMatcher];
-}
-
-- (BOOL)isStatsEvent
-{
-    NSArray *events = @[NoteTypeMilestoneInfix, NoteTypeTrafficPrefix, NoteTypeBestPrefix, NoteTypeMostPrefix];
-    
-    for (NSString *event in events) {
-        if ([self.type rangeOfString:event].length) {
-            return YES;
-        }
-    }
-    
-    return NO;
 }
 
 
