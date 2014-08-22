@@ -1,0 +1,5 @@
+#import <Foundation/Foundation.h>
+@interface PodsDummy_Pods_WordPressTodayWidget_NSObject_SafeExpectations : NSObject
+@end
+@implementation PodsDummy_Pods_WordPressTodayWidget_NSObject_SafeExpectations
+@end

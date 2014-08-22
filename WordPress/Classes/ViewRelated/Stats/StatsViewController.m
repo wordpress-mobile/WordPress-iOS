@@ -7,6 +7,7 @@
 #import "ContextManager.h"
 #import "WPStatsViewController_Private.h"
 #import "BlogService.h"
+#import <NotificationCenter/NotificationCenter.h>
 
 static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
@@ -48,6 +49,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
         self.oauth2Token = self.blog.restApi.authToken;
         self.siteID = self.blog.blogID;
 
+        [self saveSiteDetailsForTodayWidget];
         [super initStats];
         return;
     }
@@ -58,10 +60,24 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
         self.siteID = self.blog.jetpackBlogID;
         self.oauth2Token = self.blog.jetpackAccount.restApi.authToken;
 
+        [self saveSiteDetailsForTodayWidget];
         [super initStats];
     } else {
         [self promptForJetpackCredentials];
     }
+}
+
+- (void)saveSiteDetailsForTodayWidget
+{
+    // Save the token and site ID to shared user defaults for use in the today widget
+    NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.org.wordpress"];
+    [sharedDefaults setObject:self.siteTimeZone.name forKey:@"WordPressTodayWidgetTimeZone"];
+    [sharedDefaults setObject:self.siteID forKey:@"WordPressTodayWidgetSiteId"];
+    [sharedDefaults setObject:self.blog.blogName forKey:@"WordPressTodayWidgetSiteName"];
+    [sharedDefaults setObject:self.oauth2Token forKey:@"WordPressTodayWidgetOAuth2Token"];
+    
+    // Turns the widget on for this site
+    [[NCWidgetController widgetController] setHasContent:YES forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
 }
 
 - (void)promptForJetpackCredentials
