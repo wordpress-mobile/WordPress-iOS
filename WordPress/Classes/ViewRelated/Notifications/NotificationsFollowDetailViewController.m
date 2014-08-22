@@ -249,10 +249,8 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
     }
 
     BOOL isFollowing = item.action.following;
-
-    [WPAnalytics track:WPAnalyticsStatNotificationPerformedAction];
-
-    // Hit the Backend
+	   
+	// Hit the Backend
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
