@@ -350,7 +350,8 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 
 - (BOOL)displayStatsWithURL:(NSURL *)url
 {
-    if (!_note.isStatsEvent || !_note.metaSiteID) {
+    NotificationURL *notificationURL = [self.note findNotificationUrlWithUrl:url];
+    if (!notificationURL.isStats || !_note.metaSiteID) {
         return false;
     }
     
