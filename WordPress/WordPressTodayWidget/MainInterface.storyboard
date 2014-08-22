@@ -14,23 +14,13 @@
                         <viewControllerLayoutGuide type="bottom" id="FKl-LY-JtV"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" simulatedAppContext="notificationCenter" id="S3S-Oj-5AN">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="230"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="98"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="BlogName" text="Blogger's Digest" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Wcm-ss-zFo">
                                 <rect key="frame" x="16" y="8" width="288" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="8Sh-yt-2W3"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Top Post" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="bgc-XM-3Jg">
-                                <rect key="frame" x="16" y="109" width="288" height="20"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="20" id="7HQ-Yo-gdY"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="Wf3-N4-zA9"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -72,35 +62,12 @@
                                 <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10 Tips To Help Cure Blogger's Block" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="OOl-1S-KZG">
-                                <rect key="frame" x="16" y="137" width="288" height="49"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="49" id="7hL-K9-ZuN"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="21"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jIM-Xc-aQk">
-                                <rect key="frame" x="16" y="194" width="75" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="Ny8-1y-wDE"/>
-                                </constraints>
-                                <state key="normal" title="Show All…">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
                         </subviews>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="pyt-KX-qbk" firstAttribute="leading" secondItem="d87-vS-4g1" secondAttribute="leading" id="3OW-rE-laZ"/>
-                            <constraint firstItem="bgc-XM-3Jg" firstAttribute="top" secondItem="d87-vS-4g1" secondAttribute="bottom" constant="17" id="4HD-6G-XLq"/>
                             <constraint firstItem="Wcm-ss-zFo" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="BKO-pK-u0S"/>
-                            <constraint firstItem="FKl-LY-JtV" firstAttribute="top" secondItem="jIM-Xc-aQk" secondAttribute="bottom" constant="6" id="DgO-4o-m7y"/>
-                            <constraint firstItem="OOl-1S-KZG" firstAttribute="top" secondItem="bgc-XM-3Jg" secondAttribute="bottom" constant="8" id="Dti-Uv-iws"/>
-                            <constraint firstItem="jIM-Xc-aQk" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="In7-eK-fCI"/>
-                            <constraint firstItem="jIM-Xc-aQk" firstAttribute="top" secondItem="OOl-1S-KZG" secondAttribute="bottom" constant="8" id="NlM-x4-Skb"/>
                             <constraint firstItem="IOg-zT-oAD" firstAttribute="baseline" secondItem="pyt-KX-qbk" secondAttribute="baseline" id="Rwj-ZH-X82"/>
-                            <constraint firstItem="bgc-XM-3Jg" firstAttribute="trailing" secondItem="S3S-Oj-5AN" secondAttribute="trailingMargin" id="TCa-fw-G2E"/>
                             <constraint firstItem="pyt-KX-qbk" firstAttribute="leading" secondItem="IOg-zT-oAD" secondAttribute="trailing" constant="64" id="V2d-td-NiN"/>
                             <constraint firstItem="IOg-zT-oAD" firstAttribute="top" secondItem="Wcm-ss-zFo" secondAttribute="bottom" constant="9" id="VLf-Va-atw"/>
                             <constraint firstItem="d87-vS-4g1" firstAttribute="baseline" secondItem="ya5-b8-L12" secondAttribute="baseline" id="abe-eG-JY0"/>
@@ -108,26 +75,31 @@
                             <constraint firstItem="ya5-b8-L12" firstAttribute="top" secondItem="IOg-zT-oAD" secondAttribute="bottom" constant="1" id="ddP-Zk-Pvl"/>
                             <constraint firstItem="ya5-b8-L12" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="e3i-Nn-Ax4"/>
                             <constraint firstItem="IOg-zT-oAD" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="efL-lJ-Wdt"/>
-                            <constraint firstItem="bgc-XM-3Jg" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="fp0-na-4mZ"/>
-                            <constraint firstItem="OOl-1S-KZG" firstAttribute="trailing" secondItem="S3S-Oj-5AN" secondAttribute="trailingMargin" id="i9u-tH-Mq1"/>
                             <constraint firstAttribute="trailing" secondItem="Wcm-ss-zFo" secondAttribute="trailing" constant="16" id="ndY-yf-y6u"/>
-                            <constraint firstItem="OOl-1S-KZG" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="xpQ-Me-c69"/>
+                            <constraint firstItem="FKl-LY-JtV" firstAttribute="top" secondItem="ya5-b8-L12" secondAttribute="bottom" constant="6" id="qAp-GP-g03"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="StW-vH-RTH" appends="YES" id="Uac-Xl-YJb"/>
+                        </connections>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <nil key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="230"/>
+                    <size key="freeformSize" width="320" height="98"/>
                     <connections>
                         <outlet property="siteNameLabel" destination="Wcm-ss-zFo" id="WsJ-6K-WZ5"/>
-                        <outlet property="topPostLabel" destination="OOl-1S-KZG" id="YQy-W4-1Pl"/>
                         <outlet property="viewsCountLabel" destination="pyt-KX-qbk" id="fkK-Tp-fGM"/>
                         <outlet property="visitorsCountLabel" destination="IOg-zT-oAD" id="8TU-zn-Njk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vXp-U4-Rya" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="StW-vH-RTH">
+                    <connections>
+                        <action selector="launchContainingApp" destination="M4Y-Lb-cyx" id="tGu-Xt-qJ3"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="69" y="35"/>
         </scene>
