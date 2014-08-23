@@ -167,7 +167,7 @@
             <userInfo/>
         </attribute>
         <attribute name="depth" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="hierarchy" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="hierarchy" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="link" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
@@ -315,6 +315,7 @@
         <attribute name="isLikesEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isReblogged" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isSharingEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isSiteBlocked" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="isWPCom" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="likeCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="postAvatar" optional="YES" attributeType="String" syncable="YES"/>
@@ -362,18 +363,18 @@
     </entity>
     <fetchRequest name="UnreadNotes" entity="NoteSimperium" predicateString="unread == 1"/>
     <elements>
+        <element name="Comment" positionX="0" positionY="0" width="128" height="313"/>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="105"/>
         <element name="Account" positionX="0" positionY="0" width="128" height="150"/>
-        <element name="BasePost" positionX="0" positionY="0" width="128" height="255"/>
+        <element name="BasePost" positionX="0" positionY="0" width="128" height="253"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="450"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="Comment" positionX="0" positionY="0" width="128" height="313"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="343"/>
         <element name="Meta" positionX="9" positionY="153" width="128" height="105"/>
         <element name="NoteSimperium" positionX="0" positionY="0" width="128" height="178"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="150"/>
-        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="448"/>
+        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="463"/>
         <element name="ReaderSite" positionX="9" positionY="153" width="128" height="163"/>
         <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="180"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
