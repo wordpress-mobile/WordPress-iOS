@@ -1,0 +1,234 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E17BE237134F2FFD00165C3D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E17BE236134F2FFD00165C3D /* Foundation.framework */; };
+		E17BE23A134F2FFD00165C3D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E17BE239134F2FFD00165C3D /* main.m */; };
+		E17BE245134F301D00165C3D /* NSURL+IDN.m in Sources */ = {isa = PBXBuildFile; fileRef = E17BE244134F301D00165C3D /* NSURL+IDN.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E17BE230134F2FFD00165C3D /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		E17BE232134F2FFD00165C3D /* IDNTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = IDNTest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E17BE236134F2FFD00165C3D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E17BE239134F2FFD00165C3D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E17BE23C134F2FFD00165C3D /* IDNTest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "IDNTest-Prefix.pch"; sourceTree = "<group>"; };
+		E17BE23D134F2FFD00165C3D /* IDNTest.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = IDNTest.1; sourceTree = "<group>"; };
+		E17BE243134F301D00165C3D /* NSURL+IDN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSURL+IDN.h"; path = "../NSURL+IDN.h"; sourceTree = "<group>"; };
+		E17BE244134F301D00165C3D /* NSURL+IDN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSURL+IDN.m"; path = "../NSURL+IDN.m"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E17BE22F134F2FFD00165C3D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E17BE237134F2FFD00165C3D /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E17BE227134F2FFD00165C3D = {
+			isa = PBXGroup;
+			children = (
+				E17BE238134F2FFD00165C3D /* IDNTest */,
+				E17BE235134F2FFD00165C3D /* Frameworks */,
+				E17BE233134F2FFD00165C3D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E17BE233134F2FFD00165C3D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E17BE232134F2FFD00165C3D /* IDNTest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E17BE235134F2FFD00165C3D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E17BE236134F2FFD00165C3D /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E17BE238134F2FFD00165C3D /* IDNTest */ = {
+			isa = PBXGroup;
+			children = (
+				E17BE239134F2FFD00165C3D /* main.m */,
+				E17BE23D134F2FFD00165C3D /* IDNTest.1 */,
+				E17BE23B134F2FFD00165C3D /* Supporting Files */,
+				E17BE243134F301D00165C3D /* NSURL+IDN.h */,
+				E17BE244134F301D00165C3D /* NSURL+IDN.m */,
+			);
+			path = IDNTest;
+			sourceTree = "<group>";
+		};
+		E17BE23B134F2FFD00165C3D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E17BE23C134F2FFD00165C3D /* IDNTest-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E17BE231134F2FFD00165C3D /* IDNTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E17BE240134F2FFD00165C3D /* Build configuration list for PBXNativeTarget "IDNTest" */;
+			buildPhases = (
+				E17BE22E134F2FFD00165C3D /* Sources */,
+				E17BE22F134F2FFD00165C3D /* Frameworks */,
+				E17BE230134F2FFD00165C3D /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = IDNTest;
+			productName = IDNTest;
+			productReference = E17BE232134F2FFD00165C3D /* IDNTest */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E17BE229134F2FFD00165C3D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				ORGANIZATIONNAME = Automattic;
+			};
+			buildConfigurationList = E17BE22C134F2FFD00165C3D /* Build configuration list for PBXProject "IDNTest" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = E17BE227134F2FFD00165C3D;
+			productRefGroup = E17BE233134F2FFD00165C3D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E17BE231134F2FFD00165C3D /* IDNTest */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E17BE22E134F2FFD00165C3D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E17BE23A134F2FFD00165C3D /* main.m in Sources */,
+				E17BE245134F301D00165C3D /* NSURL+IDN.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		E17BE23E134F2FFD00165C3D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		E17BE23F134F2FFD00165C3D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		E17BE241134F2FFD00165C3D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "IDNTest/IDNTest-Prefix.pch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		E17BE242134F2FFD00165C3D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "IDNTest/IDNTest-Prefix.pch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E17BE22C134F2FFD00165C3D /* Build configuration list for PBXProject "IDNTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E17BE23E134F2FFD00165C3D /* Debug */,
+				E17BE23F134F2FFD00165C3D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E17BE240134F2FFD00165C3D /* Build configuration list for PBXNativeTarget "IDNTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E17BE241134F2FFD00165C3D /* Debug */,
+				E17BE242134F2FFD00165C3D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E17BE229134F2FFD00165C3D /* Project object */;
+}

@@ -126,7 +126,7 @@ NSString *const WPComOAuthErrorDomain = @"WPComOAuthError";
                                   [self stringByUrlEncodingString:queryUrl]];
         [request setURL:[NSURL URLWithString:WPComOAuthLoginUrl]];
         [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
-        [request setValue:[NSString stringWithFormat:@"%tu", [request_body length]] forHTTPHeaderField:@"Content-Length"];
+        [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[request_body length]] forHTTPHeaderField:@"Content-Length"];
         [request addValue:@"*/*" forHTTPHeaderField:@"Accept"];
         [request setHTTPMethod:@"POST"];
     }
@@ -239,8 +239,8 @@ NSString *const WPComOAuthErrorDomain = @"WPComOAuthError";
                               code];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
-	AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] init];
-	operation.responseSerializer = [[AFJSONResponseSerializer alloc] init];
+    AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    operation.responseSerializer = [[AFJSONResponseSerializer alloc] init];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *response = (NSDictionary *)responseObject;
         NSString *token = [response objectForKey:@"access_token"];
@@ -276,6 +276,8 @@ NSString *const WPComOAuthErrorDomain = @"WPComOAuthError";
         NSString *redirectUrl = [params objectForKey:@"redirect_uri"];
         if (clientId && redirectUrl) {
             WPComOAuthController *ssoController = [[WPComOAuthController alloc] initForSSO];
+            [ssoController setWordPressComUsername:_username];
+            [ssoController setWordPressComPassword:_password];
             [ssoController setClient:clientId];
             [ssoController setRedirectUrl:redirectUrl];
             [ssoController present];

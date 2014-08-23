@@ -98,11 +98,13 @@ CGFloat const blavatarImageSize = 50.f;
 
     // Trigger the blog sync when loading the view, which should more or less be once when the app launches
     // We could do this on the app delegate, but the blogs list feels like a better place for it.
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    [context performBlock:^{
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    [accountService syncBlogsForAccount:defaultAccount success:nil failure:nil];
+        [accountService syncBlogsForAccount:defaultAccount success:nil failure:nil];
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

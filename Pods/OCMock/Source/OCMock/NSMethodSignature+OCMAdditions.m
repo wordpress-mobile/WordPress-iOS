@@ -1,25 +1,29 @@
-//---------------------------------------------------------------------------------------
-//  $Id$
-//  Copyright (c) 2009 by Mulle Kybernetik. See License file for details.
-//---------------------------------------------------------------------------------------
+/*
+ *  Copyright (c) 2009-2014 Erik Doernenburg and contributors
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may
+ *  not use these files except in compliance with the License. You may obtain
+ *  a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ *  License for the specific language governing permissions and limitations
+ *  under the License.
+ */
 
 #import "NSMethodSignature+OCMAdditions.h"
+#import "OCMFunctions.h"
 #import <objc/runtime.h>
 
 
 @implementation NSMethodSignature(OCMAdditions)
 
-- (const char *)methodReturnTypeWithoutQualifiers
-{
-	const char *returnType = [self methodReturnType];
-	while(strchr("rnNoORV", returnType[0]) != NULL)
-		returnType += 1;
-	return returnType;
-}
-
 - (BOOL)usesSpecialStructureReturn
 {
-    const char *types = [self methodReturnTypeWithoutQualifiers];
+    const char *types = OCMTypeWithoutQualifiers([self methodReturnType]);
 
     if((types == NULL) || (types[0] != '{'))
         return NO;

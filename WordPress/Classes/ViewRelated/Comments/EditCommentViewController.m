@@ -1,5 +1,7 @@
 #import "EditCommentViewController.h"
 #import "CommentViewController.h"
+#import "CommentService.h"
+#import "ContextManager.h"
 #import "IOS7CorrectedTextView.h"
 
 @interface EditCommentViewController() {
@@ -152,7 +154,8 @@
     self.textView.editable = NO;
     self.navigationItem.rightBarButtonItem.enabled = NO;
     self.navigationItem.leftBarButtonItem.enabled = NO;
-    [self.comment uploadWithSuccess:^{
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    [commentService uploadComment:self.comment success:^{
         self.hasChanges = NO;
         [commentViewController cancelView:self];
     } failure:^(NSError *error) {

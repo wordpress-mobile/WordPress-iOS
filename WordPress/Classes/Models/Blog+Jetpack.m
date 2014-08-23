@@ -6,7 +6,6 @@
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
 #import "WordPressComOAuthClient.h"
-#import "NoteService.h"
 #import "AccountService.h"
 
 NSString * const BlogJetpackErrorDomain = @"BlogJetpackError";
@@ -156,9 +155,6 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                                      
                                      // Sadly we don't care if this succeeds or not
                                      [accountService syncBlogsForAccount:account success:nil failure:nil];
-                                     
-                                     NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:account.managedObjectContext];
-                                     [noteService fetchNewNotificationsWithSuccess:nil failure:nil];
                                  }
                                  
                                  if (success) {
@@ -195,10 +191,23 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
     [self removeWithoutJetpack];
 }
 
+- (NSNumber *)jetpackDotComID {
+    // For WordPress.com blogs, don't override the blog ID
+    if ([self isWPcom]) {
+        return [self jetpackDotComID];
+    }
+
+    // For self hosted, return the jetpackBlogID, which will be nil if there's no Jetpack
+    return [self jetpackBlogID];
+}
+
 + (void)load {
     Method originalRemove = class_getInstanceMethod(self, @selector(remove));
     Method customRemove = class_getInstanceMethod(self, @selector(removeWithoutJetpack));
     method_exchangeImplementations(originalRemove, customRemove);
+    Method originalDotcomId = class_getInstanceMethod(self, @selector(dotComID));
+    Method customDotcomId = class_getInstanceMethod(self, @selector(jetpackDotComID));
+    method_exchangeImplementations(originalDotcomId, customDotcomId);
 }
 
 @end

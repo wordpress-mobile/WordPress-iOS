@@ -46,7 +46,7 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
     [super viewDidLoad];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(wordPressComAccountChanged)
+                                             selector:@selector(wordPressComAccountChanged:)
                                                  name:WPAccountDefaultWordPressComAccountChangedNotification
                                                object:nil];
     
@@ -99,7 +99,7 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
 
 #pragma mark - Notifications
 
-- (void)wordPressComAccountChanged {
+- (void)wordPressComAccountChanged:(NSNotification *)note {
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
 }
 

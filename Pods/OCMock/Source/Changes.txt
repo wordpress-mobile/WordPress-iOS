@@ -1,0 +1,205 @@
+Listing of notable changes by release. More detail is usually found in the Git 
+commit messages and/or the pull requests.
+
+OCMock 3.0 (2013-06-12)
+
+* Added macro for verify with delay
+* Fixed several critical bugs
+* Allowing nil as block in stub action. With partial mocks this makes it 
+  possible to overwrite a method to do nothing (Sam Stigler) 
+* More descriptive messages when trying to verify unknown method
+
+
+OCMock 3.0.M3 (2014-05-31)
+
+* Changed license to Apache 2 license
+* Added support for verify-after-run for class methods and for methods sent 
+  directly to the real object covered by a partial mock.
+* Using a temporary meta class subclass for mocking class methods, enabling
+  full clean-up. As a consequence class methods mocked on a given class are no 
+  longer mocked in all subclasses. 
+* Throwing descriptive exception when attempting to create partial mock on
+  toll-free bridged classes and tagged pointers (Mark Larsen)	
+
+
+OCMock 3.0.M2 (2014-05-07)
+
+* Added support from verify-after-run. Only works for methods that are sent
+  to a mock object. Does not work for classes and methods sent directly to 
+  the real object covered by a partial mock.
+* Failures without location are now thrown as OCMockTestFailure exception, 
+  not as NSInternalInconsistencyException
+
+
+OCMock 3.0.M1 (2014-04-26)
+
+* Added macros for modern syntax
+* Automatic deregistration of observer mocks
+
+
+
+
+OCMock 2.2.4 (2014-04-04)
+
+2014-04-05
+
+* Switched unit test for OCMock itself to XCTest.
+* Added andForwardToRealObject support for class methods (Carl Lindberg)
+* Extended OCMockObject with verifyWithDelay (Charles Harley, Daniel
+  Doubrovkine)
+
+
+OCMock 2.2.2 (2013-12-19)
+
+* Added implementation for Apple-interal NSIsKind informal protocol (Brian 
+  Gerstle)
+* Various fixes for method with structure returns (Carl Lindberg)
+* Added a specially typed method for object references to OCMArg.
+* Fixed bug that caused matching to be aborted on first ignored non-object arg.
+* Fixed a bug where partial mocks wouldn't clean up mocked class methods.
+  (we7teck)
+* Improved value macro so it can take constant arguments and expressions. (Carl
+  Lindberg)
+* Fixed a bug that caused crashes when methods that require "special" struct
+  returns were mocked in partial mocks. (Carl Lindberg)
+
+
+OCMock 2.2.1 (2013-07-24)
+
+* Fixed several bugs regarding class method mocking in class hierarchies.
+* Fixed bug preventing the same class method to be expected more than once.
+
+
+OCMock 2.2 (2013-07-02)
+
+* Can ignore non-object arguments on a per-invocation basis.
+* Added constraint for any selector.
+
+
+OCMock 2.1.2 (2013-06-19)
+
+* Constraints implement NSCopying for OS X 10.9 SDK compatibility.
+
+
+OCMock 2.1 (2013-03-15)
+
+* Stubbing an object creation method now handles retain count correctly.
+* Added support for forwardingTagetForSelector: (thanks to Jeff Watkins)
+* Added class method mocking capability to class mock objects
+* Added implementation of isKindOfClass: to class mock objects
+* Allowing to set non-object pass-by-ref args (thanks to Glenn L. Austin)
+* Calling a previously expected method on a partial mock is no longer an error.
+
+
+OCMock 2.0 (2012-03-02)
+
+* Avoiding deprecated method to convert to a C string (thanks to Kushal
+  Pisavadia)
+* Recreated project from scratch with new conventions in Xcode 4.2 (thanks to
+  Matt Di Pasquale)
+* Arguments only need to be equal, don't have to have same class
+
+
+
+            
+OCMock 1.77 (2011-02-15)
+
+* Added feature to explicitly disable a partial mock
+* Updated example to work with iOS 4.2.
+
+
+OCMock 1.70 (2010-08-21)
+
+* Added feature to explicitly reject methods on nice mocks (thanks to Heath
+  Borders)
+* Added feature to forward method to real object from partial mock (thanks to
+  Marco Sandrini)
+* Fix to allow block arguments (thanks to Justin DeWind)
+* Now building OCMock library for simulator (i386) and device (armv7)
+* Updated example to run tests on device                    
+* Changed OCMOCK_VALUE macro to be iOS compatible (thanks to Derek Clarkson)
+* Added a new target to build a static library for iOS use
+* Created an example showing how to use OCMock in an iOS project
+* Various small clean-ups; no change in functionality (thanks to Jonah Williams)
+* Added block constraints and invocation handler (thanks to Justin DeWind)
+
+
+OCMock 1.55 (2009-10-16)
+
+* Fixed broken test for array argument descciptions (Craig Beck)
+* Disambiguated mock table method name to avoid compiler warning
+* Renamed some variables to avoid warnings when using -Wshadow
+* Partial mocks are now deallocated as they should
+* Fixed problems that occured when using mocks as arguments
+* OnCall methods now have same signature as replaced ones.
+* Fixed possible retain bug (Daniel Eggert)
+* Added feature that allows to verify expectations are called in sequence.
+* Improved detection of unqualified method return type.
+* Fixed bug that caused crash when using method swizzling with void return type.
+* Added support for calling arbitrary methods when stubbed methods are invoked.
+* Added support for posting notifications (based on Jean-Francois Dontigny's
+  code)
+* Fixed bug around complex type encodings (Jean-Francois Dontigny)
+* Partial mocks now work on object reference and self (thanks to Mike Mangino)
+* Added partial mocks (calls to the original object reference cannot be mocked)
+
+
+OCMock 1.42 (2009-05-19)
+
+* Mock observers now handle user infos on notifications.
+* Added inital support for mock observers (loosely based on Dave Dribbin's idea)
+* Moved factory methods from OCMConstraint to OCMArg
+* Added pass by ref argument setters
+* Linked install name now uses @rpath (Dave Dribbin)
+* Added support for respondsToSelector (Dave Dribin)
+* Added constraint for any pointer 
+* Now comparing selectors as strings (Dado Colussi)
+
+
+OCMock 1.29 (2008-07-07)
+
+* Resetting invocation target in recorder to avoid retain cycles.
+* Added optional integration with hamcrest for constraints
+* Now building quad-fat; the 64-bit versions are somewhat experimental though
+* Using new functions to deal with protocols (Evan Doll)
+* Added support for void* parameters (Tuukka Norri)
+* Fixed a bug that could caused crashes when non-char const pointers were
+  described
+* Fixed bug to allow mocking of methods with type qualifieres (Nikita Zhuk)
+* Added a simple constraint implementation.
+
+
+OCMock 1.17 (2007-06-04)
+
+* Now re-throwing fail-fast exceptions, for unexpected invocations for example,
+  when verify is called; in case the first throw is ignored by a framework.
+* Added nice mocks, i.e. mocks that don't raise on unknown methods (Mark Thomas)
+* Fixed bug that prevented expectations after invocations (M. Scott Ford)
+* Added possibility to throw an exception, based on code by Justin DeWind
+* Added Evan Doll's bugfix, which forwards conformsToProtocol: methods when
+  necessary
+* Added the ability to match struct arguments, based on code contributed by
+  Daniel Eggert
+* Better description of arguments, based on code contributed by Jeremy Higgs
+* Added the ability to create multiple identical expectations on the mock
+  object (Jeremy Higgs)
+* Added the ability to mock out nil arguments (Jeremy Higgs)
+* Added slightly modified version of Jon Reid's contribution, which adds the 
+  possibility to stub primitive return values.
+* Added Jon Reid's bugfix that prevents a crash when trying to stub an unknown
+  method on a protocol.
+
+
+OCMock 1.10 (2005-10-03)
+
+* Upgraded to build and run tests using the OCUnit that is now part of XCode.
+* Added XCode 2.1 project
+* Added Richard Clark's contribution, which provides support for scalar
+  arguments.
+* Added support for mocking formal protocols
+
+
+OCMock 1.6 (2004-08-30)
+
+* MockObject and Recorder now inherit from NSProxy.
+

@@ -5,7 +5,12 @@
 #import "Comment.h"
 #import "Page.h"
 #import "CategoryService.h"
-#import "BlogRemoteService.h"
+#import "CommentService.h"
+#import "BlogServiceRemote.h"
+#import "BlogServiceRemoteXMLRPC.h"
+#import "BlogServiceRemoteREST.h"
+#import "BlogServiceRemoteProxy.h"
+
 
 @interface BlogService ()
 
@@ -19,7 +24,8 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 @implementation BlogService
 
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context {
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context
+{
     self = [super init];
     if (self) {
         _managedObjectContext = context;
@@ -46,7 +52,34 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     return [results firstObject];
 }
 
-- (void)flagBlogAsLastUsed:(Blog *)blog {
+- (Blog *)blogByBlogName:(NSString *)blogName
+{
+    if (!blogName) {
+        return nil;
+    }
+    
+    NSPredicate *subjectPredicate       = [NSPredicate predicateWithFormat:@"self.blogName CONTAINS[cd] %@", blogName];
+    NSPredicate *wpcomPredicate         = [NSPredicate predicateWithFormat:@"self.account.isWpcom == YES"];
+    NSPredicate *jetpackPredicate       = [NSPredicate predicateWithFormat:@"self.jetpackAccount != nil"];
+    NSPredicate *statsBlogsPredicate    = [NSCompoundPredicate orPredicateWithSubpredicates:@[wpcomPredicate, jetpackPredicate]];
+    NSPredicate *combinedPredicate      = [NSCompoundPredicate andPredicateWithSubpredicates:@[subjectPredicate, statsBlogsPredicate]];
+    
+    NSFetchRequest *fetchRequest        = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Blog class])];
+    fetchRequest.predicate              = combinedPredicate;
+    
+    NSError *error = nil;
+    NSArray *blogs = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    
+    if (error) {
+        DDLogError(@"Error while retrieving blog named %d: %@", blogName, error);
+        return nil;
+    }
+    
+    return [blogs firstObject];
+}
+
+- (void)flagBlogAsLastUsed:(Blog *)blog
+{
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:blog.url forKey:LastUsedBlogURLDefaultsKey];
     [defaults synchronize];
@@ -152,7 +185,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 - (void)syncPostsAndMetadataForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    BlogRemoteService *remote = [[BlogRemoteService alloc] initWithRemoteApi:blog.api];
+    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncPostsAndMetadataForBlog:blog
                       categoriesSuccess:[self categoriesHandlerWithBlog:blog completionHandler:nil]
                          optionsSuccess:[self optionsHandlerWithBlog:blog completionHandler:nil]
@@ -168,7 +201,6 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
                              }
                          }
                                 failure:^(NSError *error) {
-                                    blog.isSyncingComments = NO;
                                     blog.isSyncingMedia = NO;
                                     blog.isSyncingPages = NO;
                                     blog.isSyncingPosts = NO;
@@ -197,7 +229,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         }
     }
     
-    BlogRemoteService *remote = [[BlogRemoteService alloc] initWithRemoteApi:blog.api];
+    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncPostsForBlog:blog
                    batchSize:postsToRequest
                     loadMore:more
@@ -230,7 +262,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         }
     }
     
-    BlogRemoteService *remote = [[BlogRemoteService alloc] initWithRemoteApi:blog.api];
+    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncPagesForBlog:blog
                    batchSize:pagesToRequest
                     loadMore:more
@@ -246,34 +278,14 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 - (void)syncCategoriesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    BlogRemoteService *remote = [[BlogRemoteService alloc] initWithRemoteApi:blog.api];
+    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncCategoriesForBlog:blog success:[self categoriesHandlerWithBlog:blog completionHandler:success] failure:failure];
 }
 
 - (void)syncOptionsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    BlogRemoteService *remote = [[BlogRemoteService alloc] initWithRemoteApi:blog.api];
+    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncOptionsForBlog:blog success:[self optionsHandlerWithBlog:blog completionHandler:success] failure:failure];
-}
-
-- (void)syncCommentsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
-{
-	if (blog.isSyncingComments) {
-        DDLogWarn(@"Already syncing comments. Skip");
-        return;
-    }
-    blog.isSyncingComments = YES;
-    
-    BlogRemoteService *remote = [[BlogRemoteService alloc] initWithRemoteApi:blog.api];
-    [remote syncCommentsForBlog:blog
-                        success:[self commentsHandlerWithBlog:blog completionHandler:success]
-                        failure:^(NSError *error) {
-                            blog.isSyncingComments = NO;
-                            
-                            if (failure) {
-                                failure(error);
-                            }
-                        }];
 }
 
 - (void)syncMediaLibraryForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
@@ -284,7 +296,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     }
     blog.isSyncingMedia = YES;
     
-    BlogRemoteService *remote = [[BlogRemoteService alloc] initWithRemoteApi:blog.api];
+    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncMediaLibraryForBlog:blog
                             success:[self mediaHandlerWithBlog:blog completionHandler:success]
                             failure:^(NSError *error) {
@@ -298,16 +310,15 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 - (void)syncPostFormatsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    BlogRemoteService *remote = [[BlogRemoteService alloc] initWithRemoteApi:blog.api];
+    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncPostFormatsForBlog:blog success:[self postFormatsHandlerWithBlog:blog completionHandler:success] failure:failure];
 }
 
 - (void)syncBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    BlogRemoteService *remote = [[BlogRemoteService alloc] initWithRemoteApi:blog.api];
+    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncBlogContentAndMetadata:blog
                      categoriesSuccess:[self categoriesHandlerWithBlog:blog completionHandler:nil]
-                       commentsSuccess:[self commentsHandlerWithBlog:blog completionHandler:nil]
                           mediaSuccess:[self mediaHandlerWithBlog:blog completionHandler:nil]
                         optionsSuccess:[self optionsHandlerWithBlog:blog completionHandler:nil]
                           pagesSuccess:[self pagesHandlerWithBlog:blog loadMore:NO syncCount:0 completionHandler:nil]
@@ -323,7 +334,6 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
                             }
                         }
                                failure:^(NSError *error) {
-                                   blog.isSyncingComments = NO;
                                    blog.isSyncingMedia = NO;
                                    blog.isSyncingPages = NO;
                                    blog.isSyncingPosts = NO;
@@ -332,6 +342,11 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
                                        failure(error);
                                    }
                                }];
+
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    // Right now, none of the callers care about the results of the sync
+    // We're ignoring the callbacks here but this needs refactoring
+    [commentService syncCommentsForBlog:blog success:nil failure:nil];
 }
 
 - (void)checkVideoPressEnabledForBlog:(Blog *)blog success:(void (^)(BOOL enabled))success failure:(void (^)(NSError *error))failure
@@ -401,6 +416,17 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 #pragma mark - Private methods
 
+- (id<BlogServiceRemote>)remoteForBlog:(Blog *)blog {
+    BlogServiceRemoteXMLRPC *xmlrpcRemote = [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.api];
+    BlogServiceRemoteREST *restRemote = nil;
+    if (blog.restApi) {
+        restRemote = [[BlogServiceRemoteREST alloc] initWithApi:blog.restApi];
+    }
+    id<BlogServiceRemote> remote = [[BlogServiceRemoteProxy alloc] initWithXMLRPCRemote:xmlrpcRemote RESTRemote:restRemote];
+
+    return remote;
+}
+
 - (NSInteger)blogCountWithPredicate:(NSPredicate *)predicate
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -449,22 +475,6 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
             CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
             [categoryService mergeNewCategories:categories forBlogObjectID:blog.objectID];
         }];
-
-        if (completion) {
-            completion();
-        }
-    };
-}
-
-- (CommentsHandler)commentsHandlerWithBlog:(Blog *)blog completionHandler:(void (^)(void))completion
-{
-    return ^void(NSArray *comments) {
-        if ([blog isDeleted] || blog.managedObjectContext == nil)
-            return;
-        
-        [Comment mergeNewComments:comments forBlog:blog];
-        blog.isSyncingComments = NO;
-        blog.lastCommentsSync = [NSDate date];
 
         if (completion) {
             completion();

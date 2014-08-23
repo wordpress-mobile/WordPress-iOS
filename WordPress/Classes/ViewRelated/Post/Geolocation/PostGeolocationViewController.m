@@ -117,7 +117,7 @@
             [self refreshView];
         } else if (error) {
             [self refreshView];
-            NSString *message = NSLocalizedString(@"There was a problem findind your current location.", @"Generic message explaining there was a problem finding the user's current location.");
+            NSString *message = NSLocalizedString(@"There was a problem finding your current location.", @"Generic message explaining there was a problem finding the user's current location.");
             message = [NSString stringWithFormat:@"%@ %@", message, [error localizedDescription]];
             [WPError showAlertWithTitle:NSLocalizedString(@"Location Unavailable", @"Title of an alert view stating that the user's location is unavailable.")
                                 message:message

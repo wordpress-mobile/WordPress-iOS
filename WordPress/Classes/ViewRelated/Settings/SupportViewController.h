@@ -6,6 +6,7 @@
 
 + (void)checkIfFeedbackShouldBeEnabled;
 + (void)checkIfHelpshiftShouldBeEnabled;
++ (BOOL)isHelpshiftEnabled;
 + (void)showFromTabBar;
 
 @end
