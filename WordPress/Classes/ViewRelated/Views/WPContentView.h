@@ -38,5 +38,6 @@
 - (void)refreshMediaLayout;
 - (CGFloat)topMarginHeight;
 - (void)reset;
+- (void)reloadData;
 
 @end

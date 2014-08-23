@@ -140,6 +140,9 @@
 {
     [super configureAttributionView];
     [self.attributionView selectAttributionButton:self.post.isFollowing];
+
+    BOOL hide = (self.shouldShowAttributionMenu && self.post.isWPCom)? NO : YES;
+    [self.attributionView hideAttributionMenu:hide];
 }
 
 - (WPContentAttributionView *)viewForAttributionView

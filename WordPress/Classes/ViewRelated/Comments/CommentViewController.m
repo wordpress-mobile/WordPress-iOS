@@ -15,14 +15,17 @@
 #import "WPToast.h"
 #import "VerticallyStackedButton.h"
 
-CGFloat const CommentViewDeletePromptActionSheetTag = 501;
-CGFloat const CommentViewReplyToCommentViewControllerHasChangesActionSheetTag = 401;
-CGFloat const CommentViewEditCommentViewControllerHasChangesActionSheetTag = 601;
-CGFloat const CommentViewApproveButtonTag = 700;
-CGFloat const CommentViewUnapproveButtonTag = 701;
+typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
+    CommentViewButtonTagApprove,
+    CommentViewButtonTagUnapprove
+};
 
-@interface CommentViewController () <UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, InlineComposeViewDelegate, WPContentViewDelegate> {
-}
+typedef NS_ENUM(NSInteger, CommentViewActionIndex) {
+    CommentViewActionIndexDelete = 0
+};
+
+                
+@interface CommentViewController () <UIActionSheetDelegate, InlineComposeViewDelegate, WPContentViewDelegate, EditCommentViewControllerDelegate>
 
 @property (nonatomic, strong) CommentView *commentView;
 @property (nonatomic, strong) UIButton *trashButton;
@@ -33,7 +36,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 @property (nonatomic, strong) Comment *reply;
 @property (nonatomic, strong) EditCommentViewController *editCommentViewController;
-@property (nonatomic, assign) BOOL isShowingActionSheet;
 @property (nonatomic, assign) BOOL transientReply;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
 
@@ -101,7 +103,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     [self.editButton setAccessibilityLabel:NSLocalizedString(@"Edit comment", @"Spoken accessibility label.")];
     self.navigationItem.rightBarButtonItem = self.editButton;
 
-    self.replyButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-comment-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-comment-active"]];
     [self.view addSubview:self.commentView];
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
@@ -137,49 +138,20 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     }
 }
 
-- (void)cancelView:(id)sender
-{
-    //there are no changes
-    if (!self.editCommentViewController.hasChanges) {
-        [self dismissEditViewController];
-
-        return;
-    }
-
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"")
-                                                             delegate:self
-                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                               destructiveButtonTitle:NSLocalizedString(@"Discard", @"")
-                                                    otherButtonTitles:nil];
-
-    actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-
-    if (self.editCommentViewController.hasChanges) {
-        actionSheet.tag = CommentViewEditCommentViewControllerHasChangesActionSheetTag;
-        [actionSheet showInView:self.editCommentViewController.view];
-    }
-
-    self.isShowingActionSheet = YES;
-}
 
 #pragma mark - Instance methods
-
-- (void)dismissEditViewController
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
 
 - (void)updateApproveButton
 {
     if ([self.comment.status isEqualToString:@"approve"]) {
-        [self.approveButton setTag:CommentViewUnapproveButtonTag];
+        [self.approveButton setTag:CommentViewButtonTagUnapprove];
         [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-unapprove"] forState:UIControlStateNormal];
         [self.approveButton setTitle:NSLocalizedString(@"Unapprove", @"Verb, unapprove a comment") forState:UIControlStateNormal];
         [self.approveButton setAccessibilityLabel:NSLocalizedString(@"Approve", @"Spoken accessibility label.")];
         return;
     }
     
-    [self.approveButton setTag:CommentViewApproveButtonTag];
+    [self.approveButton setTag:CommentViewButtonTagApprove];
     [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-approve"] forState:UIControlStateNormal];
     [self.approveButton setTitle:NSLocalizedString(@"Approve", @"Verb, approve a comment") forState:UIControlStateNormal];
     [self.approveButton setAccessibilityLabel:NSLocalizedString(@"Unapprove", @"Spoken accessibility label.")];
@@ -188,6 +160,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)showComment:(Comment *)comment
 {
     self.comment = comment;
+    [self.commentView reloadData];
     [self updateApproveButton];
 }
 
@@ -209,11 +182,6 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     return attributedString;
 }
 
-- (void)discard
-{
-    [self dismissEditViewController];
-}
-
 #pragma mark - Comment moderation
 
 - (void)deleteComment
@@ -226,12 +194,11 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)showEditCommentViewWithAnimation:(BOOL)animate
 {
-    self.editCommentViewController = [[EditCommentViewController alloc]
-                                  initWithNibName:@"EditCommentViewController"
-                                  bundle:nil];
-    self.editCommentViewController.commentViewController = self;
-    self.editCommentViewController.comment = self.comment;
-    self.editCommentViewController.title = NSLocalizedString(@"Edit Comment", @"");
+    NSString *nibName = NSStringFromClass([EditCommentViewController class]);
+    self.editCommentViewController = [[EditCommentViewController alloc] initWithNibName:nibName
+                                                                                 bundle:nil];
+    self.editCommentViewController.delegate = self;
+    self.editCommentViewController.comment  = self.comment;
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.editCommentViewController];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -240,16 +207,30 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     [self presentViewController:navController animated:animate completion:nil];
 }
 
-- (void)updateStateOfActionButtons:(BOOL)state {
+- (void)updateStateOfActionButtons:(BOOL)state
+{
     [self updateStateOfActionButton:self.spamButton toState:state];
     [self updateStateOfActionButton:self.trashButton toState:state];
     [self updateStateOfActionButton:self.approveButton toState:state];
     [self updateStateOfActionButton:self.replyButton toState:state];
 }
 
-- (void)updateStateOfActionButton:(UIButton*)button toState:(BOOL)state {
+- (void)updateStateOfActionButton:(UIButton*)button toState:(BOOL)state
+{
     button.enabled = state;
 }
+
+
+#pragma mark - EditCommentViewController Delegate
+
+- (void)editCommentViewController:(EditCommentViewController *)sender finishedWithUpdates:(BOOL)hasUpdates
+{
+    if (hasUpdates) {
+        [self showComment:sender.comment];
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 
 #pragma mark - Actions
 
@@ -265,7 +246,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     indicatorView.frame = CGRectMake(-5.0f, 1.0f, button.frame.size.width + 10.0f, button.frame.size.height - 1.0f);
     [button addSubview:indicatorView];
     [indicatorView startAnimating];
-    if (button.tag == CommentViewApproveButtonTag) {
+    if (button.tag == CommentViewButtonTagApprove) {
         [commentService approveComment:self.comment
                                success:^{
                                    [self updateStateOfActionButtons:YES];
@@ -303,18 +284,13 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)deleteAction:(id)sender
 {
-    if (!self.isShowingActionSheet) {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you sure you want to delete this comment?", @"")
-                                                                 delegate:self
-                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                                   destructiveButtonTitle:NSLocalizedString(@"Delete", @"")
-                                                        otherButtonTitles:nil];
-        actionSheet.tag = CommentViewDeletePromptActionSheetTag;
-        actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-        [actionSheet showFromToolbar:self.navigationController.toolbar];
-
-        self.isShowingActionSheet = YES;
-    }
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you sure you want to delete this comment?", @"")
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                               destructiveButtonTitle:NSLocalizedString(@"Delete", @"")
+                                                    otherButtonTitles:nil];
+    actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
+    [actionSheet showFromToolbar:self.navigationController.toolbar];
 }
 
 - (void)spamAction:(id)sender
@@ -375,30 +351,11 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    if (actionSheet.tag == CommentViewDeletePromptActionSheetTag) {
-        [self processDeletePromptActionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
-    } else if (actionSheet.tag == CommentViewEditCommentViewControllerHasChangesActionSheetTag) {
-        [self processEditCommentHasChangesActionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
-    }
-
-    self.isShowingActionSheet = NO;
-}
-
-- (void)processDeletePromptActionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 0) {
+    if (buttonIndex == CommentViewActionIndexDelete) {
         [self deleteComment];
     }
 }
 
-- (void)processEditCommentHasChangesActionSheet:(UIActionSheet *)actionSheet
-                      didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 0) {
-        self.editCommentViewController.hasChanges = NO;
-        [self discard];
-    }
-}
 
 #pragma mark UIWebView delegate methods
 
