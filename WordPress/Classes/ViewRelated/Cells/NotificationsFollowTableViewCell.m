@@ -21,7 +21,7 @@
         [self.textLabel setFont:[WPStyleGuide tableviewSectionHeaderFont]];
 
         [self.detailTextLabel setFont:[WPStyleGuide subtitleFont]];
-        [self.detailTextLabel setTextColor:[WPStyleGuide baseDarkerBlue]];
+        [self.detailTextLabel setTextColor:[WPStyleGuide wordPressBlue]];
         [self.detailTextLabel setBackgroundColor:[UIColor clearColor]];
         [self.detailTextLabel setNumberOfLines:1];
         [self.detailTextLabel setAdjustsFontSizeToFitWidth:NO];

@@ -40,8 +40,7 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 
         [self addSubview:_proxyTextView];
 
-        self.sendButton.tintColor = [WPStyleGuide baseDarkerBlue];
-
+        self.sendButton.tintColor = [WPStyleGuide wordPressBlue];
     }
     return self;
 }
