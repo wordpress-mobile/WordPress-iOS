@@ -80,14 +80,21 @@ extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
 ///--------------------
 
 /**
- Creates a `Blog` object for this account with the given XML-RPC dictionary
- 
- If a there is an existing blog with the same `url`, it is returned as-is.
- 
- @param blogInfo a dictionary containing `url`, `blogName`, `xmlrpc`, and `blogid`; as returned by `wp.getUsersBlogs`
+ Searches for a `Blog` object for this account with the given XML-RPC endpoint
+
+ @param xmlrpc the XML-RPC endpoint URL as a string
+ @param account the account the blog belongs to
+ @return the blog if one was found, otherwise it returns nil
+ */
+- (Blog *)findBlogWithXmlrpc:(NSString *)xmlrpc inAccount:(WPAccount *)account;
+
+/**
+ Creates a blank `Blog` object for this account
+
+ @param account the account the blog belongs to
  @return the newly created blog
  */
-- (Blog *)findOrCreateBlogFromDictionary:(NSDictionary *)blogInfo withAccount:(WPAccount *)account;
+- (Blog *)createBlogWithAccount:(WPAccount *)account;
 
 - (void)syncBlogsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure;
 

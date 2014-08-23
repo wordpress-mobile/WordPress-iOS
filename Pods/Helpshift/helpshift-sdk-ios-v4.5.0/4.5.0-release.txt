@@ -1,0 +1,272 @@
+  
+Helpshift SDK 4.5.0 Release Notes (for iOS)
+-----------------------------------------------
+
+Helpshift is an embedded support desk for native apps.
+Helpshift SDK for iOS is required for having Helpshift support running on native apps.
+
+Requirements:
+App must be running on iOS 5, 6 or 7.
+The SDK works with armv7, armv7s, arm64 as well as i386/x86_64 (iOS simulator) architectures.
+
+Documentation for Installation and Usage Instructions:
+http://developers.helpshift.com/
+
+New features:
+4.5.0 Release Date: June 6, 2014
+       * Optimized FAQ updates. Changes to FAQs in the admin are now updated and shown as soon as the SDK is opened.
+       * Users can now directly attach screenshots while submitting new conversation or during an ongoing conversation.
+       * New options for enableContactUs flag for ticket avoidance: ALWAYS, AFTER_VIEWING_FAQS and NEVER
+       * setName:andEmail: API can now clear name and email if nil is passed for both.
+       * Automatic app rating reminder is now available alongside the manual app rating API.
+       * Bug fixes
+       * UI fixes
+4.4.0 Release Date: April 30, 2014
+       * Added new app rating API (showAlertToRateAppWithURL:withCompletionBlock:). Automatic review request is now removed in this release.
+       * Conversation text and message reply text are now buffered, if users leaves the screen while typing is in progress.
+       * Improved message resolution interaction.
+       * Added a new option in skinning plist for cell selection color.
+       * Improved on some skinning bugs.
+       * Improved on new conversation submission warnings.
+       * Improved on FAQ helpful/unhelpful UI interaction.
+       * Various bug fixes (crashes related to migration).
+       * UI fixes
+4.3.1 Release Date: March 12, 2014
+       * Critical migration bug fix that caused a conversation related crash
+4.3.0 Release Date: March 7, 2014
+       * Added method pauseDisplayOfInAppNotification: to pause/resume display of in-app notifications
+       * Added optional delegate method didReceiveInAppNotificationWithMessageCount: for in-app notifications
+       * Added Dutch translations
+       * Potrait only/Landscape only rotation now supported in the SDK, if app supports the same
+       * New inapp notification delegate method
+       * Review request in conversation can now be customized via localized strings.
+       * Bug fixes
+       * UI fixes
+4.2.1 Release Date: February 23, 2014
+       * Fixed some critical crashes (Crash during screenshot attach, FAQ mark helpful/unhelpful and others).
+4.2.0 Release Date: February 3, 2014
+       * Added support for fullscreen and formsheet modal presentation styles on iPad
+       * Added Turkish translations
+       * Static library now contains a 64-bit simulator slice
+       * Added support for custom metadata in API options
+       * Bug fixes
+       * UI fixes
+4.1.0 Release Date: December 23, 2013
+       * Conversation forwarding feature added to SDK
+       * New Rate/Review & Feedback feature
+       * Now using CFBundleShortVersionString instead of CFBundleVersion for app version
+       * Added support for background image in HelpshiftConfig.plist
+       * Fixed bugs related to getNotificationCountRemote being called from inside helpshiftSessionHasEnded
+       * Improved UX for resolution rejected by user for resolved conversations
+       * Bug fixes
+       * UI fixes
+4.0.0 Release Date: December 4, 2013
+       * Multiple issues and inbox is no longer supported
+       * The conversation interface has been unified into a single channel
+       * New API calls for support tools and install method. Refer upgrade guide: http://developers.helpshift.com/ios/upgrade-3x/
+       * When FAQ is marked unhelpful, users can contact you to tell you why
+       * Moved helpshift db from Documents/ folder to Library/ folder
+       * New strings for localizations
+       * Bug fixes
+       * UI fixes
+3.2.1 Release Date: October 26, 2013
+       * Fixed UI issue that causes the view to cut off if UINavigationBar translucency is set to NO
+       * Bug fixes
+       * UI fixes
+3.2.0 Release Date: October 18, 2013
+       * Added support for arm64 architecture
+       * Added custom tags feature for tagging issues being reported
+       * Critical UI fix for FAQ search
+       * Bug fix for Vimeo video rendering in FAQs
+       * Other bug fixes
+3.1.2 Release Date: October 4, 2013
+       * Critical fix for a bug introduced in 2.6.0 that caused intermittent crashes (race condition)
+       * UI fixes
+3.1.1 Release Date: September 25, 2013
+       * Critical fix for Search UI issues in 3.1.0
+3.1.0 Release Date: September 24, 2013
+       * Japanese and Korean translations added
+       * Stability fixes
+       * Bug fixes
+       * UI fixes
+3.0.0 Release Date: September 13, 2013
+       * iOS 7 Support for iPad
+       * Bug fixes
+       * UI fixes
+3.0.0-rc.1 Release Date: September 7, 2013
+       * iOS 7 Support for iPhone/iPod Touch devices
+       * Skinning changes for iOS 7
+       * UI fixes
+2.6.1  Release Date: September 3, 2013
+       * Bug fixes
+       * UI fixes
+2.6.0  Release Date: August 29, 2013
+       * Migrating away from OpenUDID to identifierForVendor for iOS 6.0+
+       * FAQ support for right-to-left languages
+       * Bug fixes
+2.6.0-rc.5 Release Date: August 14, 2013
+       * Critical UI fixes related to progress hud in landscape mode
+2.6.0-rc.4 Release Date: August 13, 2013
+       * Removed some detached UIKit methods to main thread
+       * FAQ screen fixes
+       * Bug fixes
+       * UI fixes
+2.6.0-rc.3 Release Date: August 6, 2013
+       * Name collision fixes
+       * UI fixes
+2.6.0-rc.2 Release Date: July 29, 2013
+       * UI fixes
+2.6.0-rc.1 Release Date: July 25, 2013
+       * Send screenshot bug fixes
+       * Memory optimization fixes
+       * Bug fixes
+2.5.0 Release Date: June 17, 2013
+       * Bug fixes in chat
+2.5.0-rc.1 Release Date: June 6, 2013
+       * UX change in the way in app notifications are shown
+       * Bug fixes
+       * UI fixes
+2.4.0 Release Date: May 22, 2013
+       * In app notification bug fixes
+       * UI fixes
+2.4.0-rc.1 Release Date: May 8, 2013
+       * In app notifications
+       * Bug fixes
+       * UI fixes
+2.3.0 Release Date: May 2, 2013
+2.3.0-rc.2 Release Date: April 29, 2013
+       * Bug fixes
+2.3.0-rc.1 Release Date: April 25, 2013
+       * Added API's to clear user data and breadcrumb list.	
+2.2.0 Release Date: April 17, 2013
+       * Bug fixes
+2.2.0-rc.3 Release Date: April 13, 2013
+       * Bug fixes
+2.2.0-rc.2 Release Date: April 12, 2013
+       * Bug fixes
+2.2.0-rc.1 Release Date: April 11, 2013
+       * Added optional flags for reporting issues
+2.1.0 Release Date: April 10, 2013
+2.1.0-rc.2 Release Date: April 3, 2013
+       * Bug fixes
+       * UI fixes
+2.1.0-rc.1 Release Date: March 28, 2013
+       * Added translation for German, Spanish, Russian, Italian, French
+       * New api to show a decomposed view for showing all FAQs
+       * Improved FAQ display
+       * Bug fixes
+2.0.1 Release Date: March 26, 2013
+       * Bug fixes
+2.0.0 Release Date: March 20, 2013
+       * registerDeviceToken api is now asynchronous
+       * Bug fixes
+       * UI fixes
+2.0.0-rc.1 Release Date: March 13, 2013
+       * Urban Airship bug fixes on iPad
+       * Fixes for custom popovers on iPhone
+       * Other bug fixes
+       * UI fixes
+2.0.0-beta.3 Release Date: March 8, 2013
+       * iPad support
+       * Links and telephone numbers in chat messages are discernible and clickable
+       * Added api to provide additional metadata with every reported issue
+       * Bug fixes
+       * UI fixes
+2.0.0-beta.2 Release Date: February 25, 2013
+       * Bug fixes
+2.0.0-beta.1 Release Date: February 22, 2013
+       * Enhanced skinning support through plist files
+       * Enhanced Decomposition support
+       * Localization support
+       * Animation/UI fixes
+       * Bug fixes
+1.4.6 Release Date : February 18, 2013
+       * Notification API fixes
+1.4.5 Release Date : February 6, 2013
+       * Documentation updates
+1.4.5-rc2 Release Date: February 1, 2013
+       * iOS 6 Navigation Controller rotation fixes
+1.4.5-rc1 Release Date: January 30, 2013
+       * Critical fix: Chat polling not working if notification polling is running
+1.4.4 Release Date: January 24, 2013
+       * Added support for multilingual issue reporting
+       * Some memory leaks resolved
+       * Bug fixes
+1.4.4-rc2 Release Data: January 21, 2013
+       * Special characters handled for report issue
+       * Chat screen offline messages fixes
+       * Some UI fixes
+       * Other bug fixes
+1.4.4-rc1 Release Data: January 16, 2013
+       * Added new apis for getting notifications about issue updates.
+       * Added screenshot confirmation before sending the image.
+       * Bug fixes
+       * UI fixes
+1.4.3 Release Date: January 10, 2013
+       * Added Helpshift delegate method for helpshift session ended.
+       * Bug fixes
+1.4.2 Release Date: January 2, 2013
+       * Report issue decomposition
+       * Bug fixes
+       * UI fixes
+       * Documentation updates
+1.4.1 Release Date: December 28, 2012
+       * Bug fixes
+1.4.0 Release Date: December 27, 2012
+       * Urban airship integration
+       * Search performance improvements
+       * Improved documentation
+       * Bug fixes
+       * UI fixes
+1.3.3 Release Date: December 19, 2012
+       * Bug fixes
+       * UI fixes
+1.3.2 Release Date: December 18, 2012
+       * Crittercism integration
+       * Bug fixes
+1.3.1 Release Date: December 13, 2012
+       * Bug fixes
+1.3.0 Release Date: December 12, 2012
+       * Support for landscape mode
+       * Bug fixes
+       * UI fixes
+1.2.4 Release Date: December 7, 2012
+       * Bug fixes
+1.2.3 Release Date: December 5, 2012
+       * Updates to the device meta-data being sent to the server
+       * Api for migrating the data in case user migrates from an old sdk which stored data in the standard user-defaults
+       * The user-defaults storage is now sandboxed away to avoid data deletion when application clears its own data
+       * User profile is based on a config value from the config api
+       * Enhancements to the review request workflow
+       * Migrating to config api for getting the review request information such as url and interval
+       * Debug log limit now comes from a dedicated config option rather than using the breadcrumb limit
+       * Bug fixes
+       * UI fixes
+1.2.2 Release Date: November 23, 2012
+	* Change in the method signature for installing the Helpshift library support.
+	* Bug fixes
+	* UI fixes
+1.2.1 Release Date: November 12, 2012
+	* iPod touch carrier does not exist (case handled)
+	* UIView choppy animations fixed
+	* Reachability class conflict fixed
+	* Memory leak fixes
+	* UI/Stability fixes
+
+1.2.0 Release Date: November 2, 2012
+        * Funnel support
+        * UI Changes/Fixes
+        * Powered By Helpshift logo
+        * Stability fixes
+        * New UI for the library including half-modal and fullscreen views
+        * Screenshot thumbnail
+        * Network warnings
+        * Review Feedback workflow
+        * Skinning support for the app through the admin dashboard
+        * Extra device information
+        * Debug logs for the app
+        * Breadcrumbs support
+        * Was this FAQ helpful workflow
+        * Universal library with support for simulator, armv7, armv7s versions
+        * Support for iPhone 5
+        * Improved stability and performance

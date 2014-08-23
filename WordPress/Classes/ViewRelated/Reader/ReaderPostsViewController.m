@@ -1,10 +1,8 @@
 #import <AFNetworking/AFNetworking.h>
-#import <DTCoreText/DTCoreText.h>
-#import "DTCoreTextFontDescriptor.h"
 #import "WPTableViewControllerSubclass.h"
 #import "ReaderPostsViewController.h"
 #import "ReaderPostTableViewCell.h"
-#import "ReaderTopicsViewController.h"
+#import "ReaderSubscriptionViewController.h"
 #import "ReaderPostDetailViewController.h"
 #import "ReaderPost.h"
 #import "WordPressAppDelegate.h"
@@ -14,7 +12,6 @@
 #import "WPTableImageSource.h"
 #import "WPNoResultsView.h"
 #import "NSString+Helpers.h"
-#import "IOS7CorrectedTextView.h"
 #import "WPAnimatedBox.h"
 #import "InlineComposeView.h"
 #import "ReaderCommentPublisher.h"
@@ -23,94 +20,98 @@
 #import "RebloggingViewController.h"
 #import "ReaderTopicService.h"
 #import "ReaderPostService.h"
+#import "CustomHighlightButton.h"
 
-static CGFloat const RPVCHeaderHeightPhone = 10.f;
-static CGFloat const RPVCMaxImageHeightPercentage = 0.58f;
-static CGFloat const RPVCExtraTableViewHeightPercentage = 2.0f;
+static CGFloat const RPVCHeaderHeightPhone = 10.0;
+static CGFloat const RPVCExtraTableViewHeightPercentage = 2.0;
+static CGFloat const RPVCEstimatedRowHeightIPhone = 400.0;
+static CGFloat const RPVCEstimatedRowHeightIPad = 600.0;
 
+NSString * const FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
+NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier";
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
-@interface ReaderPostsViewController ()<WPTableImageSourceDelegate, ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate> {
-	BOOL _hasMoreContent;
-	BOOL _loadingMore;
-    BOOL _viewHasAppeared;
-    WPTableImageSource *_featuredImageSource;
-	CGFloat keyboardOffset;
-    CGFloat _lastOffset;
-    UIPopoverController *_popover;
-    WPAnimatedBox *_animatedBox;
-    UIGestureRecognizer *_tapOffKeyboardGesture;
-}
+@interface ReaderPostsViewController ()<WPTableImageSourceDelegate, ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate>
 
+@property (nonatomic, assign) BOOL hasMoreContent;
+@property (nonatomic, assign) BOOL loadingMore;
+@property (nonatomic, assign) BOOL viewHasAppeared;
+@property (nonatomic, strong) WPTableImageSource *featuredImageSource;
+@property (nonatomic, assign) CGFloat keyboardOffset;
+@property (nonatomic, assign) CGFloat lastOffset;
+@property (nonatomic, strong) WPAnimatedBox *animatedBox;
+@property (nonatomic, strong) UIGestureRecognizer *tapOffKeyboardGesture;
 @property (nonatomic, strong) ReaderPostDetailViewController *detailController;
-@property (nonatomic, strong) UINavigationBar *navBar;
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 @property (nonatomic, strong) ReaderCommentPublisher *commentPublisher;
-@property (nonatomic, strong) ReaderTopic *currentTopic;
+@property (nonatomic, readonly) ReaderTopic *currentTopic;
+@property (nonatomic, strong) ReaderPostTableViewCell *cellForLayout;
+@property (nonatomic, strong) NSLayoutConstraint *cellForLayoutWidthConstraint;
+@property (nonatomic) BOOL infiniteScrollEnabled;
+@property (nonatomic, strong) NSMutableDictionary *cachedRowHeights;
 
 @end
 
 @implementation ReaderPostsViewController
 
-+ (void)initialize {
-	// DTCoreText will cache font descriptors on a background thread. However, because the font cache
-	// updated synchronously, the detail view controller ends up waiting for the fonts to load anyway
-	// (at least for the first time). We'll have DTCoreText prime its font cache here so things are ready
-	// for the detail view, and avoid a perceived lag. 
-	[DTCoreTextFontDescriptor fontDescriptorWithFontAttributes:nil];
-}
-
-
 #pragma mark - Life Cycle methods
 
-- (void)dealloc {
-    _featuredImageSource.delegate = nil;
+- (void)dealloc
+{
+    self.featuredImageSource.delegate = nil;
     self.inlineComposeView.delegate = nil;
     self.inlineComposeView = nil;
     self.commentPublisher = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id)init {
+- (instancetype)init
+{
 	self = [super init];
 	if (self) {
-		_hasMoreContent = YES;
-		self.infiniteScrollEnabled = YES;
-        self.incrementalLoadingSupported = YES;
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readerTopicDidChange:) name:ReaderTopicDidChangeNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchBlogsAndPrimaryBlog) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+        _hasMoreContent = YES;
+        _infiniteScrollEnabled = YES;
 
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        self.currentTopic = [[[ReaderTopicService alloc] initWithManagedObjectContext:context] currentTopic];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readerTopicDidChange:) name:ReaderTopicDidChangeNotification object:nil];
 	}
 	return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
 	[super viewDidLoad];
+
+    self.cachedRowHeights = [NSMutableDictionary dictionary];
+
+    [self configureCellSeparatorStyle];
+
+    self.incrementalLoadingSupported = YES;
+
+    [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:NoFeaturedImageCellIdentifier];
+    [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:FeaturedImageCellIdentifier];
 
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
 
-    [self fetchBlogsAndPrimaryBlog];
+    [self configureCellForLayout];
 
     CGFloat maxWidth;
     if (IS_IPHONE) {
-        maxWidth = MAX(self.tableView.bounds.size.width, self.tableView.bounds.size.height);
+        maxWidth = MAX(CGRectGetWidth(self.tableView.bounds), CGRectGetHeight(self.tableView.bounds));
     } else {
         maxWidth = WPTableViewFixedWidth;
     }
 
-    CGFloat maxHeight = maxWidth * RPVCMaxImageHeightPercentage;
-    _featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
-    _featuredImageSource.delegate = self;
-	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    CGFloat maxHeight = maxWidth * WPContentViewMaxImageHeightPercentage;
+    self.featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
+    self.featuredImageSource.delegate = self;
+
     
 	// Topics button
-	UIBarButtonItem *button = nil;
-    UIButton *topicsButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIBarButtonItem *button = nil;
+    CustomHighlightButton *topicsButton = [CustomHighlightButton buttonWithType:UIButtonTypeCustom];
+    topicsButton.tintColor = [UIColor colorWithWhite:1.0 alpha:0.5];
     [topicsButton setImage:[UIImage imageNamed:@"icon-reader-topics"] forState:UIControlStateNormal];
-    [topicsButton setImage:[UIImage imageNamed:@"icon-reader-topics-active"] forState:UIControlStateHighlighted];
 
     CGSize imageSize = [UIImage imageNamed:@"icon-reader-topics"].size;
     topicsButton.frame = CGRectMake(0.0, 0.0, imageSize.width, imageSize.height);
@@ -121,11 +122,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [button setAccessibilityLabel:NSLocalizedString(@"Browse", @"")];
     self.navigationItem.rightBarButtonItem = button;
 
-    _tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                     action:@selector(dismissKeyboard:)];
-
-    // Sync content as soon as login or creation occurs
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+    self.tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                         action:@selector(dismissKeyboard:)];
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
     [self.inlineComposeView setButtonTitle:NSLocalizedString(@"Post", nil)];
@@ -139,7 +137,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     self.tableView.tableFooterView = self.inlineComposeView;
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
 	[super viewWillAppear:animated];
 
     [self updateTitle];
@@ -147,12 +146,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
-    if (self.noResultsView && _animatedBox) {
-        [_animatedBox prepareAnimation:NO];
+    if (self.noResultsView && self.animatedBox) {
+        [self.animatedBox prepareAnimation:NO];
     }
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated
+{
     [super viewDidAppear:animated];
 
     NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
@@ -160,11 +160,11 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
     }
 
-    if (!_viewHasAppeared) {
+    if (!self.viewHasAppeared) {
         if (self.currentTopic) {
             [WPAnalytics track:WPAnalyticsStatReaderAccessed withProperties:[self tagPropertyForStats]];
         }
-        _viewHasAppeared = YES;
+        self.viewHasAppeared = YES;
     }
 
     [self resizeTableViewForImagePreloading];
@@ -173,13 +173,14 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     double delayInSeconds = 0.3;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        if (self.noResultsView && _animatedBox) {
-            [_animatedBox animate];
+        if (self.noResultsView && self.animatedBox) {
+            [self.animatedBox animate];
         }
     });
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     [self.inlineComposeView endEditing:YES];
     [super viewWillDisappear:animated];
 
@@ -187,7 +188,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
     // Remove the no results view or else the position will abruptly adjust after rotation
     // due to the table view sizing for image preloading
     [self.noResultsView removeFromSuperview];
@@ -195,15 +197,74 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     [self resizeTableViewForImagePreloading];
     [self configureNoResultsView];
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    CGFloat width;
+    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+        width = CGRectGetWidth(self.tableView.window.frame);
+    } else {
+        width = CGRectGetHeight(self.tableView.window.frame);
+    }
+    [self updateCellForLayoutWidthConstraint:width];
+    if (IS_IPHONE) {
+        [self.cachedRowHeights removeAllObjects];
+    }
+}
+
+
 #pragma mark - Instance Methods
 
-- (void)updateTitle {
+- (void)configureCellSeparatorStyle
+{
+    // Setting the separator style will cause the table view to redraw all its cells.
+    // We want to avoid this when we first load the tableview as there is a performance
+    // cost.  As a work around, unset the delegate and datasource, and restore them
+    // after setting the style.
+    self.tableView.delegate = nil;
+    self.tableView.dataSource = nil;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+}
+
+- (void)configureCellForLayout
+{
+    NSString *CellIdentifier = @"CellForLayoutIdentifier";
+    [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:CellIdentifier];
+    self.cellForLayout = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    [self updateCellForLayoutWidthConstraint:CGRectGetWidth(self.tableView.bounds)];
+}
+
+- (void)updateCellForLayoutWidthConstraint:(CGFloat)width
+{
+    UIView *contentView = self.cellForLayout.contentView;
+    if (self.cellForLayoutWidthConstraint) {
+        [contentView removeConstraint:self.cellForLayoutWidthConstraint];
+    }
+    NSDictionary *views = NSDictionaryOfVariableBindings(contentView);
+    NSDictionary *metrics = @{@"width":@(width)};
+    self.cellForLayoutWidthConstraint = [[NSLayoutConstraint constraintsWithVisualFormat:@"[contentView(width)]"
+                                                                             options:0
+                                                                             metrics:metrics
+                                                                               views:views] firstObject];
+    [contentView addConstraint:self.cellForLayoutWidthConstraint];
+}
+
+- (ReaderTopic *)currentTopic
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    return [[[ReaderTopicService alloc] initWithManagedObjectContext:context] currentTopic];
+}
+
+- (void)updateTitle
+{
     if (self.currentTopic) {
         self.title = [self.currentTopic.title capitalizedString];
     } else {
@@ -211,8 +272,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 }
 
-- (void)resizeTableViewForImagePreloading {
-    
+- (void)resizeTableViewForImagePreloading
+{
     // Use a little trick to preload more images by making the table view longer
     CGRect rect = self.tableView.frame;
     CGFloat navigationHeight = self.navigationController.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - self.navigationController.navigationBar.frame.origin.y;
@@ -229,10 +290,11 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     UIEdgeInsets scrollInsets = self.tableView.scrollIndicatorInsets;
     scrollInsets.bottom = insets.bottom;
     self.tableView.scrollIndicatorInsets = scrollInsets;
-    [self.tableView layoutIfNeeded];
+    [self.tableView setNeedsLayout];
 }
 
-- (void)setTitle:(NSString *)title {
+- (void)setTitle:(NSString *)title
+{
     [super setTitle:title];
     
     // Reset the tab bar title; this isn't a great solution, but works
@@ -241,17 +303,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     tabItem.title = NSLocalizedString(@"Reader", @"Description of the Reader tab");
 }
 
-- (void)dismissPopover {
-    if (_popover) {
-        [_popover dismissPopoverAnimated:YES];
-        _popover = nil;
-    }
-}
-
-- (void)handleKeyboardDidShow:(NSNotification *)notification {
+- (void)handleKeyboardDidShow:(NSNotification *)notification
+{
     if (self.inlineComposeView.isDisplayed) {
         return;
     }
+
     UIView *view = self.view.superview;
 	CGRect frame = view.frame;
 	CGRect startFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
@@ -260,7 +317,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	// Figure out the difference between the bottom of this view, and the top of the keyboard.
 	// This should account for any toolbars.
 	CGPoint point = [view.window convertPoint:startFrame.origin toView:view];
-	keyboardOffset = point.y - (frame.origin.y + frame.size.height);
+	self.keyboardOffset = point.y - (frame.origin.y + frame.size.height);
 	
 	// if we're upside down, we need to adjust the origin.
 	if (endFrame.origin.x == 0 && endFrame.origin.y == 0) {
@@ -286,8 +343,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	}];
 }
 
-- (void)handleKeyboardWillHide:(NSNotification *)notification {
-
+- (void)handleKeyboardWillHide:(NSNotification *)notification
+{
     if (self.inlineComposeView.isDisplayed) {
         return;
     }
@@ -297,18 +354,22 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	CGRect keyFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
 	
 	CGPoint point = [view.window convertPoint:keyFrame.origin toView:view];
-	frame.size.height = point.y - (frame.origin.y + keyboardOffset);
+	frame.size.height = point.y - (frame.origin.y + self.keyboardOffset);
 	view.frame = frame;
 }
 
-#pragma mark - ReaderPostView delegate methods
 
-- (void)postView:(ReaderPostView *)postView didReceiveReblogAction:(id)sender {
+#pragma mark - ReaderPostContentView delegate methods
+
+- (void)postView:(ReaderPostContentView *)postView didReceiveReblogAction:(id)sender
+{
     // Pass the image forward
-	ReaderPost *post = postView.post;
-    CGSize imageSize = postView.cellImageView.image.size;
-    UIImage *image = [_featuredImageSource imageForURL:post.featuredImageURL withSize:imageSize];
-    UIImage *avatarImage = postView.avatarImageView.image;
+    ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
+
+    UIImage *image = [cell.postView.featuredImageView.image copy];
+    UIImage *avatarImage = [post cachedAvatarWithSize:CGSizeMake(WPContentAttributionViewAvatarSize, WPContentAttributionViewAvatarSize)];
 
     RebloggingViewController *controller = [[RebloggingViewController alloc] initWithPost:post featuredImage:image avatarImage:avatarImage];
     controller.delegate = self;
@@ -318,8 +379,11 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self presentViewController:navController animated:YES completion:nil];
 }
 
-- (void)postView:(ReaderPostView *)postView didReceiveLikeAction:(id)sender {
-    ReaderPost *post = postView.post;
+- (void)postView:(ReaderPostContentView *)postView didReceiveLikeAction:(id)sender
+{
+    ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
@@ -335,20 +399,22 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	[postView updateActionButtons];
 }
 
-- (void)contentView:(ReaderPostView *)postView didReceiveFollowAction:(id)sender {
+- (void)contentView:(UIView *)contentView didReceiveAttributionLinkAction:(id)sender
+{
     UIButton *followButton = (UIButton *)sender;
     ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
-    ReaderPost *post = postView.post;
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
     
-    if (![post isFollowable])
+    if (![post isFollowable]) {
         return;
-    
+    }
+
     if (!post.isFollowing) {
         [WPAnalytics track:WPAnalyticsStatReaderFollowedSite];
     }
 
     [followButton setSelected:!post.isFollowing]; // Set it optimistically
-	[cell setNeedsLayout];
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
@@ -357,34 +423,36 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     } failure:^(NSError *error) {
 		DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
 		[followButton setSelected:post.isFollowing];
-		[cell setNeedsLayout];
     }];
 }
 
-- (void)postView:(ReaderPostView *)postView didReceiveCommentAction:(id)sender {
-    [self.view addGestureRecognizer:_tapOffKeyboardGesture];
-    
-    if (self.commentPublisher.post == postView.post) {
+- (void)postView:(ReaderPostContentView *)postView didReceiveCommentAction:(id)sender
+{
+    [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
+
+    ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
+
+    if (self.commentPublisher.post == post) {
         [self.inlineComposeView toggleComposer];
         return;
     }
 
-    self.commentPublisher.post = postView.post;
+    self.commentPublisher.post = post;
     [self.inlineComposeView displayComposer];
 
     // scroll the item into view if possible
-    NSIndexPath *indexPath = [self.resultsController indexPathForObject:postView.post];
-
     [self.tableView scrollToRowAtIndexPath:indexPath
                           atScrollPosition:UITableViewScrollPositionTop
                                   animated:YES];
-
 }
 
 
 #pragma mark - RebloggingViewController Delegate Methods
 
-- (void)postWasReblogged:(ReaderPost *)post {
+- (void)postWasReblogged:(ReaderPost *)post
+{
     NSIndexPath *indexPath = [self.resultsController indexPathForObject:post];
     if (!indexPath) {
         return;
@@ -397,28 +465,19 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 #pragma mark - Actions
 
-- (void)topicsAction:(id)sender {
-	ReaderTopicsViewController *controller = [[ReaderTopicsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    if (IS_IPAD) {
-        if (_popover && [_popover isPopoverVisible]) {
-            [self dismissPopover];
-            return;
-        }
-        
-        _popover = [[UIPopoverController alloc] initWithContentViewController:controller];
-        
-        UIBarButtonItem *shareButton = self.navigationItem.rightBarButtonItem;
-        [_popover presentPopoverFromBarButtonItem:shareButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    } else {
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-        navController.navigationBar.translucent = NO;
-        [self presentViewController:navController animated:YES completion:nil];
-    }
+- (void)topicsAction:(id)sender
+{
+    ReaderSubscriptionViewController *controller = [[ReaderSubscriptionViewController alloc] init];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.navigationBar.translucent = NO;
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
-- (void)dismissKeyboard:(id)sender {
+
+- (void)dismissKeyboard:(id)sender
+{
     for (UIGestureRecognizer *gesture in self.view.gestureRecognizers) {
-        if ([gesture isEqual:_tapOffKeyboardGesture]) {
+        if ([gesture isEqual:self.tapOffKeyboardGesture]) {
             [self.view removeGestureRecognizer:gesture];
         }
     }
@@ -428,30 +487,38 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 #pragma mark - ReaderCommentPublisherDelegate Methods
 
-- (void)commentPublisherDidPublishComment:(ReaderCommentPublisher *)publisher {
+- (void)commentPublisherDidPublishComment:(ReaderCommentPublisher *)publisher
+{
     [WPAnalytics track:WPAnalyticsStatReaderCommentedOnArticle];
     publisher.post.dateCommentsSynced = nil;
     [self.inlineComposeView dismissComposer];
 }
 
-- (void)openPost:(NSUInteger *)postId onBlog:(NSUInteger)blogId {
-
+- (void)openPost:(NSUInteger *)postId onBlog:(NSUInteger)blogId
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    [service deletePostsWithNoTopic];
     [service fetchPost:postId forSite:blogId success:^(ReaderPost *post) {
+        if (![self.navigationController.topViewController isEqual:self]) {
+            return;
+        }
+        
         ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post
                                                                                             featuredImage:nil
                                                                                               avatarImage:nil];
 
         [self.navigationController pushViewController:controller animated:YES];
     } failure:^(NSError *error) {
-        // noop
+        DDLogError(@"%@, error fetching post for site", _cmd, error);
     }];
 }
 
+
 #pragma mark - WPTableViewSublass methods
 
-- (NSString *)noResultsTitleText {
+- (NSString *)noResultsTitleText
+{
     NSRange range = [self.currentTopic.path rangeOfString:@"following"];
     if (range.location != NSNotFound) {
         return NSLocalizedString(@"You're not following any sites yet.", @"");
@@ -466,26 +533,31 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 
-- (NSString *)noResultsMessageText {
+- (NSString *)noResultsMessageText
+{
 	return NSLocalizedString(@"Tap the tag icon to browse posts from popular sites.", nil);
 }
 
-- (UIView *)noResultsAccessoryView {
-    if (!_animatedBox) {
-        _animatedBox = [WPAnimatedBox new];
+- (UIView *)noResultsAccessoryView
+{
+    if (!self.animatedBox) {
+        self.animatedBox = [WPAnimatedBox new];
     }
-    return _animatedBox;
+    return self.animatedBox;
 }
 
-- (NSString *)entityName {
+- (NSString *)entityName
+{
 	return @"ReaderPost";
 }
 
-- (NSDate *)lastSyncDate {
+- (NSDate *)lastSyncDate
+{
     return self.currentTopic.lastSynced;
 }
 
-- (NSFetchRequest *)fetchRequest {
+- (NSFetchRequest *)fetchRequest
+{
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(topic == %@)", self.currentTopic];
     NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"sortDate" ascending:NO];
@@ -494,63 +566,72 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 	return fetchRequest;
 }
 
-- (NSString *)sectionNameKeyPath {
+- (NSString *)sectionNameKeyPath
+{
 	return nil;
 }
 
-- (Class)cellClass {
+- (Class)cellClass
+{
     return [ReaderPostTableViewCell class];
 }
 
-- (void)configureCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath {
-	if (!aCell)
+- (void)configureCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath
+{
+	if (!aCell) {
         return;
+    }
 
-	ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)aCell;
-	cell.selectionStyle = UITableViewCellSelectionStyleNone;
-	cell.accessoryType = UITableViewCellAccessoryNone;
-	
-	ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
+    ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)aCell;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.accessoryType = UITableViewCellAccessoryNone;
 
-	[cell configureCell:post];
+    ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
+    [cell configureCell:post];
     [self setImageForPost:post forCell:cell indexPath:indexPath];
     [self setAvatarForPost:post forCell:cell indexPath:indexPath];
-    
     cell.postView.delegate = self;
-
 }
 
-- (UIImage *)imageForURL:(NSURL *)imageURL size:(CGSize)imageSize {
-    if (!imageURL)
+- (UIImage *)imageForURL:(NSURL *)imageURL size:(CGSize)imageSize
+{
+    if (!imageURL) {
         return nil;
-    
+    }
+
     if (CGSizeEqualToSize(imageSize, CGSizeZero)) {
         imageSize.width = self.tableView.bounds.size.width;
-        imageSize.height = round(imageSize.width * RPVCMaxImageHeightPercentage);
+        imageSize.height = round(imageSize.width * WPContentViewMaxImageHeightPercentage);
     }
-    return [_featuredImageSource imageForURL:imageURL withSize:imageSize];
+    return [self.featuredImageSource imageForURL:imageURL withSize:imageSize];
 }
 
-- (void)setAvatarForPost:(ReaderPost *)post forCell:(ReaderPostTableViewCell *)cell indexPath:(NSIndexPath *)indexPath {
-    CGSize imageSize = cell.postView.avatarImageView.bounds.size;
+- (void)setAvatarForPost:(ReaderPost *)post forCell:(ReaderPostTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
+{
+    CGSize imageSize = CGSizeMake(WPContentViewAuthorAvatarSize, WPContentViewAuthorAvatarSize);
     UIImage *image = [post cachedAvatarWithSize:imageSize];
     if (image) {
-        [cell.postView setAvatar:image];
+        [cell.postView setAvatarImage:image];
     } else {
         [post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
+            if (!image) {
+                return;
+            }
             if (cell == [self.tableView cellForRowAtIndexPath:indexPath]) {
-                [cell.postView setAvatar:image];
+                [cell.postView setAvatarImage:image];
             }
         }];
     }
 }
 
-- (void)setImageForPost:(ReaderPost *)post forCell:(ReaderPostTableViewCell *)cell indexPath:(NSIndexPath *)indexPath {
+- (void)setImageForPost:(ReaderPost *)post forCell:(ReaderPostTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
+{
     NSURL *imageURL = post.featuredImageURL;
     
-    if (!imageURL)
+    if (!imageURL) {
         return;
-    
+    }
+
     // We know the width, but not the height; let the image loader figure that out
     CGFloat imageWidth = self.tableView.frame.size.width;
     if (IS_IPAD) {
@@ -562,15 +643,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     if (image) {
         [cell.postView setFeaturedImage:image];
     } else {
-        [_featuredImageSource fetchImageForURL:imageURL withSize:imageSize indexPath:indexPath isPrivate:post.isPrivate];
+        [self.featuredImageSource fetchImageForURL:imageURL withSize:imageSize indexPath:indexPath isPrivate:post.isPrivate];
     }
 }
 
-- (BOOL)hasMoreContent {
-	return _hasMoreContent;
-}
-
-- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure
+{
     DDLogMethod();
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -578,7 +656,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     if(!self.currentTopic) {
         ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
         [topicService fetchReaderMenuWithSuccess:^{
-            self.currentTopic = [[[ReaderTopicService alloc] initWithManagedObjectContext:context] currentTopic];
             // Changing the topic means we need to also change the fetch request.
             [self resetResultsController];
             [self updateTitle];
@@ -596,7 +673,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 }
 
-- (void)backfillReaderItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)backfillReaderItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure
+{
     DDLogMethod();
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
@@ -616,7 +694,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }];
 }
 
-- (void)syncReaderItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)syncReaderItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure
+{
     DDLogMethod();
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
@@ -636,15 +715,25 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }];
 }
 
-- (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     DDLogMethod();
-	if ([self.resultsController.fetchedObjects count] == 0)
+	if ([self.resultsController.fetchedObjects count] == 0) {
 		return;
-	
-	if (_loadingMore)
+    }
+
+	if (self.loadingMore) {
         return;
-    
-	_loadingMore = YES;
+    }
+
+    if (self.currentTopic == nil) {
+        if (failure) {
+            failure(nil);
+        }
+        return;
+    }
+
+	self.loadingMore = YES;
 
 	ReaderPost *post = self.resultsController.fetchedObjects.lastObject;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
@@ -668,40 +757,96 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [WPAnalytics track:WPAnalyticsStatReaderInfiniteScroll withProperties:[self tagPropertyForStats]];
 }
 
-- (UITableViewRowAnimation)tableViewRowAnimation {
+- (UITableViewRowAnimation)tableViewRowAnimation
+{
 	return UITableViewRowAnimationNone;
 }
 
-- (void)onSyncSuccess:(BOOL)hasMore {
+- (void)onSyncSuccess:(BOOL)hasMore
+{
     DDLogMethod();
-    _loadingMore = NO;
-    _hasMoreContent = hasMore;
+    self.loadingMore = NO;
+    self.hasMoreContent = hasMore;
 }
 
 
-#pragma mark -
-#pragma mark TableView Methods
+#pragma mark - TableView Methods
 
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-     return [ReaderPostTableViewCell cellHeightForPost:[self.resultsController objectAtIndexPath:indexPath] withWidth:self.tableView.bounds.size.width];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell;
+    ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
+    if ([post featuredImageURLForDisplay]) {
+        cell = [tableView dequeueReusableCellWithIdentifier:FeaturedImageCellIdentifier];
+    } else {
+        cell = [tableView dequeueReusableCellWithIdentifier:NoFeaturedImageCellIdentifier];
+    }
+
+    if (self.tableView.isEditing) {
+		cell.accessoryType = UITableViewCellAccessoryNone;
+	} else {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+
+    [self configureCell:cell atIndexPath:indexPath];
+    if (!cell) {
+        NSLog(@"NO CELL!");
+    }
+
+    return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [ReaderPostTableViewCell cellHeightForPost:[self.resultsController objectAtIndexPath:indexPath] withWidth:self.tableView.bounds.size.width];
+- (void)cacheHeight:(CGFloat)height forIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *key = [NSString stringWithFormat:@"%i", indexPath.row];
+    [self.cachedRowHeights setObject:@(height) forKey:key];
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+- (NSNumber *)cachedHeightForIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *key = [NSString stringWithFormat:@"%i", indexPath.row];
+    return [self.cachedRowHeights numberForKey:key];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSNumber *height = [self cachedHeightForIndexPath:indexPath];
+    if (height) {
+        return [height floatValue];
+    }
+    return IS_IPAD ? RPVCEstimatedRowHeightIPad : RPVCEstimatedRowHeightIPhone;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSNumber *cachedHeight = [self cachedHeightForIndexPath:indexPath];
+    if (cachedHeight) {
+        return [cachedHeight floatValue];
+    }
+
+    [self configureCell:self.cellForLayout atIndexPath:indexPath];
+    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
+    CGSize size = [self.cellForLayout sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
+    CGFloat height = ceil(size.height) + 1;
+
+    [self cacheHeight:height forIndexPath:indexPath];
+    return height;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
     return [[UIView alloc] initWithFrame:CGRectZero];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (IS_IPHONE)
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (IS_IPHONE) {
         return RPVCHeaderHeightPhone;
-    
+    }
     return [super tableView:tableView heightForHeaderInSection:section];
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     if (IS_IPAD) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
@@ -709,10 +854,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     // Pass the image forward
 	ReaderPost *post = [self.resultsController.fetchedObjects objectAtIndex:indexPath.row];
     ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    CGSize imageSize = cell.postView.cellImageView.image.size;
-    UIImage *image = [_featuredImageSource imageForURL:post.featuredImageURL withSize:imageSize];
-    UIImage *avatarImage = cell.postView.avatarImageView.image;
 
+    UIImage *image = [cell.postView.featuredImageView.image copy];
+    UIImage *avatarImage = [cell.post cachedAvatarWithSize:CGSizeMake(32.0, 32.0)];
+// TODO: the detail controller should just fetch the cached versions of these resources vs passing them around here. :P
 	self.detailController = [[ReaderPostDetailViewController alloc] initWithPost:post featuredImage:image avatarImage:avatarImage];
     
     [self.navigationController pushViewController:self.detailController animated:YES];
@@ -723,11 +868,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 #pragma mark - NSFetchedResultsController overrides
 
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
     // Do nothing (prevent superclass from adjusting table view)
 }
 
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
     [self.tableView reloadData];
     [self.noResultsView removeFromSuperview];
 }
@@ -736,24 +883,23 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
    didChangeObject:(id)anObject
        atIndexPath:(NSIndexPath *)indexPath
      forChangeType:(NSFetchedResultsChangeType)type
-      newIndexPath:(NSIndexPath *)newIndexPath {
-    // Do nothing (prevent superclass from adjusting table view)
+      newIndexPath:(NSIndexPath *)newIndexPath
+{
+    if (type == NSFetchedResultsChangeInsert || type == NSFetchedResultsChangeDelete) {
+        [self.cachedRowHeights removeAllObjects];
+    }
+    // Do not call super. (prevent superclass from adjusting table view)
 }
 
 
 #pragma mark - Notifications
 
-- (void)readerTopicDidChange:(NSNotification *)notification {
-	if (IS_IPAD){
-        [self dismissPopover];
-	}
-
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    self.currentTopic = [[[ReaderTopicService alloc] initWithManagedObjectContext:context] currentTopic];
+- (void)readerTopicDidChange:(NSNotification *)notification
+{
     [self updateTitle];
 
-	_loadingMore = NO;
-	_hasMoreContent = YES;
+	self.loadingMore = NO;
+	self.hasMoreContent = YES;
 	[(WPNoResultsView *)self.noResultsView setTitleText:[self noResultsTitleText]];
 
 	[self.tableView setContentOffset:CGPointMake(0, 0) animated:NO];
@@ -768,8 +914,15 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 }
 
-- (void)didChangeAccount:(NSNotification *)notification {
-    self.currentTopic = nil;
+
+#pragma mark - WPAccount Notifications
+
+- (void)didChangeAccount:(NSNotification *)notification
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    [[[ReaderTopicService alloc] initWithManagedObjectContext:context] deleteAllTopics];
+    [[[ReaderPostService alloc] initWithManagedObjectContext:context] deletePostsWithNoTopic];
+
     [self resetResultsController];
     [self.tableView reloadData];
     [self.navigationController popToViewController:self animated:NO];
@@ -782,90 +935,18 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 #pragma mark - Utility
 
-- (BOOL)isCurrentTagFreshlyPressed {
+- (BOOL)isCurrentTagFreshlyPressed
+{
     return [self.currentTopic.title rangeOfString:@"freshly-pressed"].location != NSNotFound;
 }
 
-- (NSDictionary *)tagPropertyForStats {
+- (NSDictionary *)tagPropertyForStats
+{
     return @{@"tag": self.currentTopic.title};
 }
 
-- (void)fetchBlogsAndPrimaryBlog {
-	NSURL *xmlrpc;
-    NSString *username, *password, *authToken;
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    if (!defaultAccount) {
-        return;
-    }
-	
-	xmlrpc = [NSURL URLWithString:@"https://wordpress.com/xmlrpc.php"];
-	username = defaultAccount.username;
-	password = defaultAccount.password;
-    authToken = defaultAccount.authToken;
-    
-    WPXMLRPCClient *api = [WPXMLRPCClient clientWithXMLRPCEndpoint:xmlrpc];
-    [api setAuthorizationHeaderWithToken:authToken];
-    [api callMethod:@"wp.getUsersBlogs"
-         parameters:[NSArray arrayWithObjects:username, password, nil]
-            success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                NSArray *usersBlogs = responseObject;
-				
-                if ([usersBlogs count] > 0) {
-                    [usersBlogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                        NSString *title = [obj valueForKey:@"blogName"];
-                        title = [title stringByDecodingXMLCharacters];
-                        [obj setValue:title forKey:@"blogName"];
-                    }];
-                }
-				
-				[[NSUserDefaults standardUserDefaults] setObject:usersBlogs forKey:@"wpcom_users_blogs"];
-				
-                NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-                AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-                WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-                [[defaultAccount restApi] GET:@"me"
-                                       parameters:nil
-                                          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                              if ([usersBlogs count] < 1)
-                                                  return;
-                                              
-                                              NSDictionary *dict = (NSDictionary *)responseObject;
-                                              __block NSNumber *preferredBlogId;
-                                              NSNumber *primaryBlog = [dict objectForKey:@"primary_blog"];
-                                              [usersBlogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                                                  if ([primaryBlog isEqualToNumber:[obj numberForKey:@"blogid"]]) {
-                                                      preferredBlogId = [obj numberForKey:@"blogid"];
-                                                      *stop = YES;
-                                                  }
-                                              }];
-                                              
-                                              if (!preferredBlogId) {
-                                                  NSDictionary *dict = [usersBlogs objectAtIndex:0];
-                                                  preferredBlogId = [dict numberForKey:@"blogid"];
-                                              }
-                                              
-                                              [[NSUserDefaults standardUserDefaults] setObject:preferredBlogId forKey:@"wpcom_users_prefered_blog_id"];
-                                              [NSUserDefaults resetStandardUserDefaults];
-                                              
-                                          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                              // TODO: Handle Failure. Retry maybe?
-                                          }];
-                
-                if ([usersBlogs count] == 0) {
-                    return;
-                }
-
-			} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-				// Fail silently.
-                DDLogError(@"Failed retrieving user blogs in ReaderPostsViewController: %@", error);
-            }];
-}
-
-- (CGSize)tabBarSize {
+- (CGSize)tabBarSize
+{
     CGSize tabBarSize = CGSizeZero;
     if ([self tabBarController]) {
         tabBarSize = [[[self tabBarController] tabBar] bounds].size;
@@ -876,7 +957,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 #pragma mark - WPTableImageSourceDelegate
 
-- (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath {
+- (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath
+{
     ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
     
     // Don't do anything if the cell is out of view or out of range

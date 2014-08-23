@@ -1,0 +1,15 @@
+<?xml version='1.0'?>
+<methodResponse>
+  <params>
+    <param>
+      <value>
+        <array>
+          <data>
+            <value><dateTime.iso8601>20091201T20:49:00</dateTime.iso8601></value>
+            <value><dateTime.iso8601>2009-12-01T20:50:00</dateTime.iso8601></value>
+          </data>
+        </array>
+      </value>
+    </param>
+  </params>
+</methodResponse>

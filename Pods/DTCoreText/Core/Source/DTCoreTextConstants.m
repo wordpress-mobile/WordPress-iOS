@@ -13,6 +13,7 @@ NSString * const NSAttachmentAttributeName = @"NSAttachmentAttributeName";
 
 NSString * const DTMaxImageSize = @"DTMaxImageSize";
 NSString * const DTDefaultFontFamily = @"DTDefaultFontFamily";
+NSString * const DTDefaultFontName = @"DTDefaultFontName";
 NSString * const DTDefaultFontSize = @"DTDefaultFontSize";
 NSString * const DTDefaultTextColor = @"DTDefaultTextColor";
 NSString * const DTDefaultLinkColor = @"DTDefaultLinkColor";
@@ -32,7 +33,7 @@ NSString * const DTIgnoreInlineStylesOption = @"DTIgnoreInlineStyles";
 
 NSString * const DTTextListsAttribute = @"DTTextLists";
 NSString * const DTAttachmentParagraphSpacingAttribute = @"DTAttachmentParagraphSpacing";
-NSString * const DTLinkAttribute = @"NSLinkAttributeName";
+NSString * const DTLinkAttribute = @"NSLink";
 NSString * const DTLinkHighlightColorAttribute = @"DTLinkHighlightColor";
 NSString * const DTAnchorAttribute = @"DTAnchor";
 NSString * const DTGUIDAttribute = @"DTGUID";
@@ -45,6 +46,9 @@ NSString * const DTTextBlocksAttribute = @"DTTextBlocks";
 NSString * const DTFieldAttribute = @"DTField";
 NSString * const DTCustomAttributesAttribute = @"DTCustomAttributes";
 NSString * const DTAscentMultiplierAttribute = @"DTAscentMultiplierAttribute";
+NSString * const DTBackgroundStrokeColorAttribute = @"DTBackgroundStrokeColor";
+NSString * const DTBackgroundStrokeWidthAttribute = @"DTBackgroundStrokeWidth";
+NSString * const DTBackgroundCornerRadiusAttribute = @"DTBackgroundCornerRadius";
 
 // field constants
 NSString * const DTListPrefixField = @"{listprefix}";

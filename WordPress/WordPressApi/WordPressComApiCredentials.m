@@ -4,6 +4,7 @@
 #define WPCOM_API_CLIENT_SECRET @""
 
 @implementation WordPressComApiCredentials
+
 + (NSString *)client {
     return WPCOM_API_CLIENT_ID;
 }
@@ -30,6 +31,14 @@
     
 + (NSString *)googlePlusClientId {
     return @"";
+}
+
++ (NSString *)simperiumAppId {
+	return @"";
+}
+
++ (NSString *)simperiumAPIKey {
+	return @"";
 }
 
 + (NSString *)helpshiftAPIKey {

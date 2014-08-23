@@ -33,6 +33,10 @@
 	DTColor *_textColor;
 	DTColor *_backgroundColor;
 	
+	DTColor *_backgroundStrokeColor;
+	CGFloat _backgroundStrokeWidth;
+	CGFloat _backgroundCornerRadius;
+	
 	CTUnderlineStyle _underlineStyle;
 	
 	NSString *_beforeContent;
@@ -45,8 +49,6 @@
 	NSInteger _headerLevel;
 	
 	NSArray *_shadows;
-	
-	NSMutableDictionary *_fontCache;
 	
 	DTHTMLElementDisplayStyle _displayStyle;
 	DTHTMLElementFloatStyle _floatStyle;
@@ -153,6 +155,21 @@
 @property (nonatomic, strong) DTColor *backgroundColor;
 
 /**
+ Background stroke color in the receiver
+ */
+@property (nonatomic, strong) DTColor *backgroundStrokeColor;
+
+/**
+ Background stroke width in the receiver
+ */
+@property (nonatomic, assign) CGFloat backgroundStrokeWidth;
+
+/**
+ Background stroke width in the receiver
+ */
+@property (nonatomic, assign) CGFloat backgroundCornerRadius;
+
+/**
  The custom letter spacing of the receiver, default is 0px
  */
 @property (nonatomic, assign) CGFloat letterSpacing;
@@ -241,13 +258,6 @@
  Specifies that whitespace contained in the receiver's text has been converted with Apple's algorithm.
  */
 @property (nonatomic, assign) BOOL containsAppleConvertedSpace;
-
-
-/**
- Ignores children for output that consist only of whitespace
- */
-@property (nonatomic, assign) BOOL supressWhitespaceChildren;
-
 
 /**
  Prevents adding custom HTML attributes to output

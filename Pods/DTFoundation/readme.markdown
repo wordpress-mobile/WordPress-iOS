@@ -21,6 +21,7 @@ Methods, categories and functions are grouped into Subspecs. The grouping determ
 - **DTSQLite:** Objective-C wrapper for SQLite
 - **DTUTI:** UTI methods
 - **DTZipArchive:** Handing of Pkzip and GZip files
+- **DTProgressHUD:** Displaying informations or progress (in the middle fo the screen)
 
 License
 -------

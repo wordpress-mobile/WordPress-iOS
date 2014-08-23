@@ -1,0 +1,8 @@
+target :HelloMixpanelTests do
+    link_with 'HelloMixpanelTests'
+    pod 'CocoaHTTPServer', '~> 2.2.1'
+end
+
+target :HelloMixpanel do
+    pod 'iOS-Color-Picker', '~> 0.0.6'
+end

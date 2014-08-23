@@ -2,9 +2,9 @@
 #import <NSURL+IDN.h>
 #import "SFHFKeychainUtils.h"
 #import "WPAccount.h"
+#import "Constants.h"
 
-static NSString * const DefaultDotcomAccountDefaultsKey = @"AccountDefaultDotcom";
-static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
+
 
 @implementation BlogToAccount {
     NSString *_defaultWpcomUsername;
@@ -18,7 +18,7 @@ static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
 - (BOOL)endEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
 	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 
-    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:WPComDefaultAccountUsernameKey];
     if (!username) {
         // There is no default WordPress.com account, nothing to do here
         return YES;
@@ -53,7 +53,7 @@ static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
     }
 
     NSURL *accountURL = [[account objectID] URIRepresentation];
-    [[NSUserDefaults standardUserDefaults] setURL:accountURL forKey:DefaultDotcomAccountDefaultsKey];
+    [[NSUserDefaults standardUserDefaults] setURL:accountURL forKey:WPComDefaultAccountUrlKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
 	return YES;

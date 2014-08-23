@@ -1,6 +1,9 @@
 #import <MGImageUtilities/UIImage+ProportionalFill.h>
 
 #import "WPTableImageSource.h"
+#import "AccountService.h"
+#import "ContextManager.h"
+#import "WPAccount.h"
 #import "WPImageSource.h"
 
 @implementation WPTableImageSource {
@@ -91,13 +94,21 @@
         [self handleImageDownloadFailedForReceiver:receiver error:error];
     };
     
-    if (!isPrivate) {
-        url = [self photonURLForURL:url withSize:requestSize];
-    }
+    url = [self photonURLForURL:url withSize:requestSize];
     
-    [[WPImageSource sharedSource] downloadImageForURL:url
-                                          withSuccess:successBlock
-                                              failure:failureBlock];
+    if (isPrivate) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+        [[WPImageSource sharedSource] downloadImageForURL:url
+                                                authToken:[[defaultAccount restApi] authToken]
+                                              withSuccess:successBlock
+                                                  failure:failureBlock];
+    } else {
+        [[WPImageSource sharedSource] downloadImageForURL:url
+                                              withSuccess:successBlock
+                                                  failure:failureBlock];
+    }
 }
 
 - (void)invalidateIndexPaths

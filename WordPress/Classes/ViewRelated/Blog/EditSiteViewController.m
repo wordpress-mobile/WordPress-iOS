@@ -481,7 +481,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 			[self validationDidFail:error];
         } else if ([error.domain isEqual:WordPressXMLRPCApiErrorDomain]) {
             [self validationDidFail:error];
-		} else if([error.domain isEqual:AFNetworkingErrorDomain]) {
+		} else if([error.domain isEqual:AFURLRequestSerializationErrorDomain] || [error.domain isEqual:AFURLResponseSerializationErrorDomain]) {
 			NSString *str = [NSString stringWithFormat:NSLocalizedString(@"There was a server error communicating with your site:\n%@\nTap 'Need Help?' to view the FAQ.", @""), [error localizedDescription]];
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                       str, NSLocalizedDescriptionKey,

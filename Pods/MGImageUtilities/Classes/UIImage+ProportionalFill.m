@@ -87,40 +87,13 @@
 		destRect = CGRectMake(0, 0, scaledWidth, scaledHeight);
 	}
 	
-	UIImage* (^privateModifyImageWithRect)(UIImage* image, CGRect srcRect, CGRect dstRect)
-	= ^UIImage* (UIImage* image,
-				 CGRect srcRect,
-				 CGRect dstRect)
-	{
-		NSParameterAssert([image isKindOfClass:[UIImage class]]);
-		
-		UIImage* modifiedImage = [image cropWithRect:sourceRect];
-		modifiedImage = [modifiedImage resizeToRect:destRect];
-		
-		return modifiedImage;
-	};
-	
-	UIImage* finalImage = nil;
-	BOOL isAnimatedImage = (self.images != nil);
+	UIImage *finalImage = nil;
 	
 	static const CGFloat kScaleForDevicesMainScreen = 0.f;
 	UIGraphicsBeginImageContextWithOptions(destRect.size, opaque, kScaleForDevicesMainScreen);
 	
-	if (!isAnimatedImage) {
-		finalImage = privateModifyImageWithRect(self, sourceRect, destRect);
-	} else {
-		NSMutableArray* modifiedImages = [NSMutableArray arrayWithCapacity:[self.images count]];
-		
-		for (UIImage* image in self.images)
-		{
-			image = privateModifyImageWithRect(image, sourceRect, destRect);
-			
-			[modifiedImages addObject:image];
-		}
-		
-		finalImage = [UIImage animatedImageWithImages:modifiedImages
-											 duration:self.duration];
-	}
+	finalImage = [self cropToRect:sourceRect
+				   andResizeToRec:destRect];
 	
 	UIGraphicsEndImageContext();
 	
@@ -158,6 +131,8 @@
 
 /**
  *	@brief		Crops the image to the specified rect.
+ *	@details	Does not support animated images directly, but support could be added by replicating
+ *				cropToRect:andResizeToRect:'s logic.
  *
  *	@param		rect	The rect to crop this image to.
  *
@@ -166,7 +141,7 @@
 - (UIImage*)cropWithRect:(CGRect)rect
 {
 	CGImageRef cgImage = CGImageCreateWithImageInRect([self CGImage], rect);
-	UIImage* image = [UIImage imageWithCGImage:cgImage
+	UIImage *image = [UIImage imageWithCGImage:cgImage
 										 scale:0.0
 								   orientation:self.imageOrientation];
 	CGImageRelease(cgImage);
@@ -175,9 +150,49 @@
 }
 
 /**
+ *	@brief		Crops & resizes the image.
+ *	@details	Supports animated images.
+ *
+ *	@param		cropRect	The rect to use for cropping.
+ *	@param		resizeRect	The rect to use for resizing.
+ *
+ *	@returns	The resulting image.
+ */
+- (UIImage*)cropToRect:(CGRect)cropRect
+		andResizeToRec:(CGRect)resizeRect
+{
+	UIImage *modifiedImage = nil;
+	
+	BOOL isAnimatedImage = (self.images != nil);
+	
+	if (!isAnimatedImage) {
+		
+		modifiedImage = [self cropWithRect:cropRect];
+		modifiedImage = [modifiedImage resizeToRect:resizeRect];
+	} else {
+		NSMutableArray *modifiedImages = [NSMutableArray arrayWithCapacity:[self.images count]];
+		
+		for (UIImage *image in self.images)
+		{
+			image = [image cropToRect:cropRect
+					   andResizeToRec:resizeRect];
+			
+			[modifiedImages addObject:image];
+		}
+		
+		modifiedImage = [UIImage animatedImageWithImages:modifiedImages
+												duration:self.duration];
+	}
+	
+	return modifiedImage;
+}
+
+/**
  *	@brief		Resizes the image to the specified rect.
  *	@details	This method must be called after UIGraphicsBeginImageContext() and before
- *				UIGraphicsEndImageContext();
+ *				UIGraphicsEndImageContext();.
+ *				Does not support animated images directly, but support could be added by replicating
+ *				cropToRect:andResizeToRect:'s logic.
  *
  *	@param		rect	The rect to resize this image to.
  *
@@ -189,7 +204,7 @@
 			 @"A context should be created before calling this method.");
 	
 	[self drawInRect:rect];
-	UIImage* image = UIGraphicsGetImageFromCurrentImageContext();
+	UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
 	
 	return image;
 }

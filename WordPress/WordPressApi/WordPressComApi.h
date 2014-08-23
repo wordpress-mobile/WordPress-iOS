@@ -151,6 +151,13 @@ extern NSString *const WordPressComApiPushAppId;
                        success:(WordPressComApiRestSuccessResponseBlock)success
                        failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
+///---------------
+/// @name User Details
+///---------------
+
+- (void)getUserDetailsWithSuccess:(WordPressComApiRestSuccessResponseBlock)success
+                                  failure:(WordPressComApiRestSuccessFailureBlock)failure;
+
 ///-----------------
 /// @name OAuth info
 ///-----------------

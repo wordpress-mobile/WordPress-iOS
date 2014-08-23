@@ -39,6 +39,7 @@ extern NSString * const NSAttachmentAttributeName;
 
 extern NSString * const DTMaxImageSize;
 extern NSString * const DTDefaultFontFamily;
+extern NSString * const DTDefaultFontName;
 extern NSString * const DTDefaultFontSize;
 extern NSString * const DTDefaultTextColor;
 extern NSString * const DTDefaultLinkColor;
@@ -73,6 +74,9 @@ extern NSString * const DTTextBlocksAttribute;
 extern NSString * const DTFieldAttribute;
 extern NSString * const DTCustomAttributesAttribute;
 extern NSString * const DTAscentMultiplierAttribute;
+extern NSString * const DTBackgroundStrokeColorAttribute;
+extern NSString * const DTBackgroundStrokeWidthAttribute;
+extern NSString * const DTBackgroundCornerRadiusAttribute;
 
 // field constants
 
