@@ -1,27 +1,14 @@
 #import "AccountServiceRemote.h"
 #import <WordPressApi/WordPressApi.h>
 
-@interface AccountServiceRemote ()
-
-@property (nonatomic, strong) WordPressXMLRPCApi *api;
-
-@end
-
-@implementation AccountServiceRemote
-
-- (id)initWithRemoteApi:(WordPressXMLRPCApi *)api
-{
-    self = [super init];
-    if (self) {
-        _api = api;
-    }
-    
-    return self;
+@implementation RemoteBlog
+- (NSString *)debugDescription {
+    NSDictionary *properties = @{
+                                 @"ID": self.ID,
+                                 @"title": self.title,
+                                 @"url": self.url,
+                                 @"xmlrpc": self.xmlrpc,
+                                 };
+    return [NSString stringWithFormat:@"<%@: %p> (%@)", NSStringFromClass([self class]), self, properties];
 }
-
-- (void)getBlogsWithSuccess:(void (^)(NSArray *blogs))success failure:(void (^)(NSError *error))failure
-{
-    [self.api getBlogsWithSuccess:success failure:failure];
-}
-
 @end

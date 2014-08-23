@@ -22,36 +22,9 @@ extern NSString * const CommentStatusDraft;
 @property (nonatomic, strong) AbstractPost * post;
 @property (nonatomic, assign) BOOL isNew;
 
-///-------------------------------------------
-/// @name Creating and finding comment objects
-///-------------------------------------------
-
-- (Comment *)newReply;
-
-// Finds an existing drafted reply, or builds a new one if no draft exists
-- (Comment *)restoreReply;
-+ (void)mergeNewComments:(NSArray *)newComments forBlog:(Blog *)blog;
-
 ///---------------------
 /// @name Helper methods
 ///---------------------
 + (NSString *)titleForStatus:(NSString *)status;
-
-///------------------------
-/// @name Remote management
-///------------------------
-///
-/// The following methods will change the comment on the WordPress site
-
-/**
- Uploads a new reply or changes to an edited comment
- */
-- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-
-/// Moderation
-- (void)approve;
-- (void)unapprove;
-- (void)spam;
-- (void)remove;
 
 @end

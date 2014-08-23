@@ -1,0 +1,13 @@
+//
+// Prefix header for all source files of the 'CoreTextExtensions' target in the 'CoreTextExtensions' project
+//
+
+#ifdef __OBJC__
+    
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import <CoreText/CoreText.h>
+
+#import "DTCoreText.h"
+
+#endif

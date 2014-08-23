@@ -125,7 +125,18 @@ print <<-EOF
 EOF
 end
 
-def print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, taplytics_api_key)
+def print_simperium(simperium_api_key, simperium_app_id)
+print <<-EOF
++ (NSString *)simperiumAppId {
+	return @"#{simperium_app_id}";
+}
++ (NSString *)simperiumAPIKey {
+	return @"#{simperium_api_key}";
+}
+EOF
+end
+
+def print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, taplytics_api_key, simperium_api_key, simperium_app_id)
   print <<-EOF
 #import "WordPressComApiCredentials.h"
 @implementation WordPressComApiCredentials
@@ -141,6 +152,7 @@ EOF
   print_helpshift_domain_name(helpshift_domain_name)
   print_helpshift_app_id(helpshift_app_id)
   print_taplytics_api_key(taplytics_api_key)
+  print_simperium(simperium_api_key, simperium_app_id)
   printf("@end\n")
 end
 
@@ -164,6 +176,8 @@ mixpanel_prod = nil
 crashlytics = nil
 hockeyapp = nil
 googleplus = nil
+simperium_api_key = nil
+simperium_app_id = nil
 helpshift_api_key = nil
 helpshift_domain_name = nil
 helpshift_app_id = nil
@@ -187,6 +201,10 @@ File.open(path) do |f|
       hockeyapp = v.chomp
     elsif k == "GOOGLE_PLUS_CLIENT_ID"
       googleplus = v.chomp
+	elsif k == "SIMPERIUM_API_KEY"
+      simperium_api_key = v.chomp
+	elsif k == "SIMPERIUM_APP_ID"
+      simperium_app_id = v.chomp
     elsif k == "HELPSHIFT_API_KEY"
       helpshift_api_key = v.chomp
     elsif k == "HELPSHIFT_DOMAIN_NAME"
@@ -211,4 +229,4 @@ if secret.nil?
   exit 3
 end
 
-print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, taplytics_api_key)
+print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, taplytics_api_key, simperium_api_key, simperium_app_id)

@@ -1,4 +1,5 @@
 #import "WPUploadStatusView.h"
+#import <WordPress-iOS-Shared/WPFontManager.h>
 
 @interface WPUploadStatusView() {
     UIButton *_uploadMediaButton;
@@ -32,7 +33,7 @@ CGFloat const WPUploadStatusViewOffset = 8.0;
     [_uploadMediaButton addTarget:self action:@selector(tappedUploadText) forControlEvents:UIControlEventTouchUpInside];
     [_uploadMediaButton setAccessibilityHint:NSLocalizedString(@"Tap to select which blog to post to", nil)];
     [_uploadMediaButton setTitle:NSLocalizedString(@"Uploading Media...", nil) forState:UIControlStateNormal];
-    _uploadMediaButton.titleLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:14.0];
+    _uploadMediaButton.titleLabel.font = [WPFontManager openSansBoldFontOfSize:14.0];
     _uploadMediaButton.backgroundColor = [UIColor clearColor];
     [_uploadMediaButton sizeToFit];
     [self addSubview:_uploadMediaButton];

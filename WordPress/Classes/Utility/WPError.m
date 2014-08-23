@@ -34,7 +34,7 @@ NSInteger const SupportButtonIndex = 0;
     NSString *message = nil;
     NSString *customTitle = nil;
 
-    if ([error.domain isEqual:AFNetworkingErrorDomain]) {
+    if ([error.domain isEqual:AFURLRequestSerializationErrorDomain] || [error.domain isEqual:AFURLResponseSerializationErrorDomain]) {
         NSHTTPURLResponse *response = (NSHTTPURLResponse *)[error.userInfo objectForKey:AFNetworkingOperationFailingURLResponseErrorKey];
         switch (error.code) {
             case NSURLErrorBadServerResponse:

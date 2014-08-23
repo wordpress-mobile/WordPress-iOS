@@ -1,10 +1,12 @@
 #import "WPContentCell.h"
 
 #import <AFNetworking/UIKit+AFNetworking.h>
+#import "UIImageView+AFNetworkingExtra.h"
 #import "WPComLanguages.h"
 #import "UIImageView+Gravatar.h"
 #import "NSDate+StringFormatting.h"
 #import "NSString+Util.h"
+#import <WordPress-iOS-Shared/WPFontManager.h>
 
 @interface WPContentCell() {
     UIImageView *_gravatarImageView;
@@ -184,7 +186,7 @@ CGFloat const WPContentCellDefaultOrigin                    = 15.0f;
         NSString *url = [NSString stringWithFormat:@"%@", [contentProvider avatarURLForDisplay]];
         if (url) {
             url = [url stringByReplacingOccurrencesOfString:@"s=256" withString:[NSString stringWithFormat:@"s=%.0f", WPContentCellImageWidth * [[UIScreen mainScreen] scale]]];
-            [_gravatarImageView setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"gravatar"]];
+            [_gravatarImageView setImageWithURL:[NSURL URLWithString:url] emptyCachePlaceholderImage:[UIImage imageNamed:@"gravatar"] ];
         } else {
             [_gravatarImageView setImage:[UIImage imageNamed:@"gravatar"]];
         }
@@ -215,7 +217,7 @@ CGFloat const WPContentCellDefaultOrigin                    = 15.0f;
 
 + (NSString *)statusTextForContentProvider:(id<WPContentViewProvider>)contentProvider
 {
-    return [[contentProvider statusForDisplay] uppercaseString];
+    return [[contentProvider statusForDisplay] uppercaseStringWithLocale:[NSLocale currentLocale]];
 }
 
 + (UIColor *)statusColorForContentProvider:(id<WPContentViewProvider>)contentProvider
@@ -225,12 +227,12 @@ CGFloat const WPContentCellDefaultOrigin                    = 15.0f;
 
 + (UIFont *)titleFont
 {
-    return [UIFont fontWithName:@"OpenSans" size:14.0];
+    return [WPFontManager openSansRegularFontOfSize:14.0];
 }
 
 + (UIFont *)titleFontBold
 {
-    return [UIFont fontWithName:@"OpenSans-Bold" size:14.0];
+    return [WPFontManager openSansBoldFontOfSize:14.0];
 }
 
 + (NSDictionary *)titleAttributes

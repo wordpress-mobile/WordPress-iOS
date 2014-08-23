@@ -1,5 +1,4 @@
 #import <UIKit/UIKit.h>
-#import "ReaderTableViewCell.h"
 #import "ReaderComment.h"
 #import "WPTableViewCell.h"
 

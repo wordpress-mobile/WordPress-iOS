@@ -5,13 +5,15 @@
 #import "NSString+Helpers.h"
 #import "WPCookie.h"
 #import "Constants.h"
+#import "WPError.h"
 
 @class WPReaderDetailViewController;
 
-@interface WPWebViewController () <UIWebViewDelegate>
+@interface WPWebViewController () <UIWebViewDelegate, UIPopoverControllerDelegate>
 
 @property (weak, readonly) UIScrollView *scrollView;
 @property (nonatomic) BOOL isLoading, needsLogin, hasLoadedContent;
+@property (nonatomic, strong) UIPopoverController *popover;
 
 @end
 
@@ -193,7 +195,7 @@
         
         //make sure we are not sharing URL like this: http://en.wordpress.com/reader/mobile/?v=post-16841252-1828
         if ([permaLink rangeOfString:@"wordpress.com/reader/mobile/"].location != NSNotFound) { 
-            permaLink = kMobileReaderURL;                 
+            permaLink = WPMobileReaderURL;                 
         } 
     }
     
@@ -420,7 +422,18 @@
             return;
         [WPActivityDefaults trackActivityType:activityType];
     };
-    [self presentViewController:activityViewController animated:YES completion:nil];
+
+    if (IS_IPAD) {
+        if (self.popover) {
+            [self dismissPopover];
+            return;
+        }
+        self.popover = [[UIPopoverController alloc] initWithContentViewController:activityViewController];
+        self.popover.delegate = self;
+        [self.popover presentPopoverFromBarButtonItem:self.optionsButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    } else {
+        [self presentViewController:activityViewController animated:YES completion:nil];
+    }
 }
 
 - (void)reload {
@@ -451,6 +464,23 @@
     }
     return scrollView;
 }
+
+- (void)dismissPopover
+{
+    if (self.popover) {
+        [self.popover dismissPopoverAnimated:YES];
+        self.popover = nil;
+    }
+}
+
+
+#pragma mark - UIPopover Delegate
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    self.popover = nil;
+}
+
 
 #pragma mark - UIWebViewDelegate
 
@@ -503,7 +533,7 @@
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [self setLoading:NO];
     
-    if (!self.hasLoadedContent && ([aWebView.request.URL.absoluteString rangeOfString:kMobileReaderDetailURL].location == NSNotFound || self.detailContent)) {
+    if (!self.hasLoadedContent && ([aWebView.request.URL.absoluteString rangeOfString:WPMobileReaderDetailURL].location == NSNotFound || self.detailContent)) {
         [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.set_loaded_items(%@);", self.readerAllItems]];
         [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.show_article_details(%@);", self.detailContent]];
         

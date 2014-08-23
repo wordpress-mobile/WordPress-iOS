@@ -15,7 +15,15 @@ Choose AFNetworking for your next project, or migrate over your existing project
 - [Download AFNetworking](https://github.com/AFNetworking/AFNetworking/archive/master.zip) and try out the included Mac and iPhone example apps
 - Read the ["Getting Started" guide](https://github.com/AFNetworking/AFNetworking/wiki/Getting-Started-with-AFNetworking), [FAQ](https://github.com/AFNetworking/AFNetworking/wiki/AFNetworking-FAQ), or [other articles on the Wiki](https://github.com/AFNetworking/AFNetworking/wiki)
 - Check out the [documentation](http://cocoadocs.org/docsets/AFNetworking/2.0.0/) for a comprehensive look at all of the APIs available in AFNetworking
-- Questions? [Stack Overflow](http://stackoverflow.com/questions/tagged/afnetworking) is the best place to find answers
+- Read the [AFNetworking 2.0 Migration Guide](https://github.com/AFNetworking/AFNetworking/wiki/AFNetworking-2.0-Migration-Guide) for an overview of the architectural changes from 1.0.
+
+## Communication
+
+- If you **need help**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/afnetworking). (Tag 'afnetworking')
+- If you'd like to **ask a general question**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/afnetworking).
+- If you **found a bug**, open an issue.
+- If you **have a feature request**, open an issue.
+- If you **want to contribute**, submit a pull request.
 
 ### Installation with CocoaPods
 
@@ -28,27 +36,15 @@ platform :ios, '7.0'
 pod "AFNetworking", "~> 2.0"
 ```
 
-## 2.0
-
-AFNetworking 2.0 is a major update to the framework. Building on 2 years of development, this new version introduces powerful new features, while providing an easy upgrade path for existing users.
-
-**Read the [AFNetworking 2.0 Migration Guide](https://github.com/AFNetworking/AFNetworking/wiki/AFNetworking-2.0-Migration-Guide) for an overview of the architectural and API changes.**
-
-### What's New
-
-- Refactored Architecture
-- Support for NSURLSession
-- Serialization Modules
-- Expanded UIKit Extensions
-- Real-time functionality with [Rocket](http://rocket.github.io)
-
 ## Requirements
 
-AFNetworking 2.0 and higher requires Xcode 5, targeting either iOS 6.0 and above, or Mac OS 10.8 Mountain Lion ([64-bit with modern Cocoa runtime](https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtVersionsPlatforms.html)) and above.
+| AFNetworking Version | Minimum iOS Target  | Minimum OS X Target  |                                   Notes                                   |
+|:--------------------:|:---------------------------:|:----------------------------:|:-------------------------------------------------------------------------:|
+|          2.x         |            iOS 6            |           OS X 10.8          | Xcode 5 is required. `AFHTTPSessionManager` requires iOS 7 or OS X 10.9. |
+|          [1.x](https://github.com/AFNetworking/AFNetworking/tree/1.x)         |            iOS 5            |         Mac OS X 10.7        |                                                                           |
+|        [0.10.x](https://github.com/AFNetworking/AFNetworking/tree/0.10.x)        |            iOS 4            |         Mac OS X 10.6        |                                                                           |
 
-For compatibility with iOS 5 or Mac OS X 10.7, use the [latest 1.x release](https://github.com/AFNetworking/AFNetworking/tree/1.x).
-
-For compatibility with iOS 4.3 or Mac OS X 10.6, use the [latest 0.10.x release](https://github.com/AFNetworking/AFNetworking/tree/0.10.x).
+(OS X projects must support [64-bit with modern Cocoa runtime](https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtVersionsPlatforms.html)).
 
 ## Architecture
 
@@ -266,9 +262,7 @@ NSDictionary *parameters = @{@"foo": @"bar", @"baz": @[@1, @2, @3]};
 }];
 ```
 
-#### HTTP Manager with Base URL
-
-When a `baseURL` is provided, network reachability is scoped to the host of that base URL.
+#### HTTP Manager Reachability
 
 ```objective-c
 NSURL *baseURL = [NSURL URLWithString:@"http://example.com/"];
@@ -381,10 +375,6 @@ Follow AFNetworking on Twitter ([@AFNetworking](https://twitter.com/AFNetworking
 ### Maintainers
 
 - [Mattt Thompson](http://github.com/mattt) ([@mattt](https://twitter.com/mattt))
-
-## One More Thing...
-
-**AFNetworking: the Definitive Guide** written by Mattt Thompson and published by [O'Reilly](http://oreilly.com), will be available late 2013 / early 2014. [Sign up here to be notified about updates](http://eepurl.com/Flnvn).
 
 ## License
 

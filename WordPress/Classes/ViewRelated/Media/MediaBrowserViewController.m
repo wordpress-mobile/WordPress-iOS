@@ -15,6 +15,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "ContextManager.h"
 #import "BlogService.h"
+#import "CustomHighlightButton.h"
 
 static NSString *const MediaCellIdentifier = @"media_cell";
 static NSUInteger const MediaTypeActionSheetVideo = 1;
@@ -112,7 +113,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     
     UIBarButtonItem *addMediaButton;
     UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+    CustomHighlightButton *button = [[CustomHighlightButton alloc] initWithFrame:CGRectMake(0.0, 0.0, image.size.width, image.size.height)];
     [button setImage:image forState:UIControlStateNormal];
     [button addTarget:self action:@selector(addMediaButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     addMediaButton = [[UIBarButtonItem alloc] initWithCustomView:button];
@@ -1236,11 +1237,6 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 		[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
 	}
     
-	if(self.currentOrientation == MediaOrientationLandscape) {
-		imageMedia.orientation = @"landscape";
-	} else {
-		imageMedia.orientation = @"portrait";
-    }
 	imageMedia.creationDate = [NSDate date];
 	imageMedia.filename = filename;
 	imageMedia.localURL = filepath;
@@ -1327,11 +1323,6 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 	if(copySuccess) {
 		videoMedia = [Media newMediaForBlog:self.blog];
 		
-		if(_currentOrientation == MediaOrientationLandscape) {
-			videoMedia.orientation = @"landscape";
-        } else {
-			videoMedia.orientation = @"portrait";
-        }
 		videoMedia.creationDate = [NSDate date];
 		[videoMedia setFilename:filename];
 		[videoMedia setLocalURL:filepath];

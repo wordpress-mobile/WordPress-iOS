@@ -34,6 +34,7 @@
 #import "NotificationsManager.h"
 #import "ContextManager.h"
 #import "AccountService.h"
+#import "WPImageOptimizer.h"
 
 typedef enum {
     SettingsSectionWpcom = 0,
@@ -46,7 +47,6 @@ CGFloat const blavatarImageViewSize = 43.f;
 
 @interface SettingsViewController () <UIActionSheetDelegate>
 
-@property (nonatomic, strong) NSArray *mediaSettingsArray;
 @property (nonatomic, strong) UIBarButtonItem *doneButton;
 
 @end
@@ -87,28 +87,9 @@ CGFloat const blavatarImageViewSize = 43.f;
 
 #pragma mark - Custom Getter
 
-- (NSArray *)mediaSettingsArray {
-    if (_mediaSettingsArray) {
-        return _mediaSettingsArray;
-    }
-    
-    // Construct the media data to mimick how it would appear if a settings bundle plist was loaded
-    // into an NSDictionary
-    // Our settings bundle stored numeric values as strings so we use strings here for backward compatibility.
-    NSDictionary *imageResizeDict = [NSDictionary dictionaryWithObjectsAndKeys:@"3", @"DefaultValue",
-                                     @"media_resize_preference", @"Key", 
-                                     NSLocalizedString(@"Image Quality", @""), @"Title",
-                                     [NSArray arrayWithObjects:
-                                      NSLocalizedString(@"Small", @"Small - Image Quality setting"),
-                                      NSLocalizedString(@"Medium", @"Medium - Image Quality setting"),
-                                      NSLocalizedString(@"Large", @"Large - Image Quality setting"),
-                                      NSLocalizedString(@"Original Size", @"Original (uncompressed)  - Image Quality setting"), nil], @"Titles",
-                                     [NSArray arrayWithObjects:@"1",@"2",@"3",@"4", nil], @"Values",
-                                     NSLocalizedString(@"Set which size images should be uploaded in.", @""), @"Info",
-                                     nil];
-        
-    _mediaSettingsArray = [NSArray arrayWithObjects:imageResizeDict, nil];
-    return _mediaSettingsArray;
+- (void)handleOptimizeImagesChanged:(id)sender {
+    UISwitch *aSwitch = (UISwitch *)sender;
+    [WPImageOptimizer setShouldOptimizeImages:aSwitch.on];
 }
 
 - (void)dismiss {
@@ -153,7 +134,7 @@ CGFloat const blavatarImageViewSize = 43.f;
         }
 
         case SettingsSectionMedia:
-            return [self.mediaSettingsArray count];
+            return 1;
 
         case SettingsSectionInfo:
             return 2;
@@ -193,7 +174,6 @@ CGFloat const blavatarImageViewSize = 43.f;
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {    
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     cell.accessoryType = UITableViewCellAccessoryNone;
-    cell.accessoryView = nil;
 
     if (indexPath.section == SettingsSectionWpcom) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -224,23 +204,10 @@ CGFloat const blavatarImageViewSize = 43.f;
         }
         
     } else if (indexPath.section == SettingsSectionMedia){
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        
-        NSDictionary *dict = self.mediaSettingsArray[indexPath.row];
-        cell.textLabel.text = dict[@"Title"];
-        NSString *key = dict[@"Key"];
-        NSString *currentVal = [[NSUserDefaults standardUserDefaults] objectForKey:key];
-        
-        // If setting doesn't exist yet, or if it was set to "0" (which was removed) set it to default
-        if (currentVal == nil || [currentVal isEqualToString:@"0"]) {
-            currentVal = dict[@"DefaultValue"];
-        }
-        
-        NSArray *values = [dict objectForKey:@"Values"];
-        NSInteger index = [values indexOfObject:currentVal];
-        NSArray *titles = [dict objectForKey:@"Titles"];
-        cell.detailTextLabel.text = titles[index];
-        
+        cell.textLabel.text = NSLocalizedString(@"Optimize Images", nil);
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
+        aSwitch.on = [WPImageOptimizer shouldOptimizeImages];
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 0) {
             // About
@@ -275,7 +242,7 @@ CGFloat const blavatarImageViewSize = 43.f;
         }
         case SettingsSectionMedia:
             cellIdentifier = @"Media";
-            cellStyle = UITableViewCellStyleValue1;
+            cellStyle = UITableViewCellStyleDefault;
             break;
             
         default:
@@ -286,7 +253,13 @@ CGFloat const blavatarImageViewSize = 43.f;
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:cellStyle reuseIdentifier:cellIdentifier];
     }
-    
+
+    if (indexPath.section == SettingsSectionMedia) {
+        UISwitch *optimizeImagesSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
+        [optimizeImagesSwitch addTarget:self action:@selector(handleOptimizeImagesChanged:) forControlEvents:UIControlEventValueChanged];
+        cell.accessoryView = optimizeImagesSwitch;
+    }
+
     return cell;
 }
 
@@ -348,11 +321,6 @@ CGFloat const blavatarImageViewSize = 43.f;
             [self.navigationController pushViewController:loginViewController animated:YES];
         }
         
-    } else if (indexPath.section == SettingsSectionMedia) {
-        NSDictionary *dict = [self.mediaSettingsArray objectAtIndex:indexPath.row];
-        SettingsPageViewController *controller = [[SettingsPageViewController alloc] initWithDictionary:dict];
-        [self.navigationController pushViewController:controller animated:YES];
-
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 0) {
             AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];

@@ -95,7 +95,14 @@
     XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
 
     ATHStart();
-    Blog *blog = [accountService findOrCreateBlogFromDictionary:@{@"url": @"blog1.com", @"xmlrpc": @"http://blog1.com/xmlrpc.php"} withAccount:account];
+    NSString *xmlrpc = @"http://blog1.com/xmlrpc.php";
+    NSString *url = @"blog1.com";
+    Blog *blog = [accountService findBlogWithXmlrpc:xmlrpc inAccount:account];
+    if (!blog) {
+        blog = [accountService createBlogWithAccount:account];
+        blog.xmlrpc = xmlrpc;
+        blog.url = url;
+    }
     [[ContextManager sharedInstance] saveContext:account.managedObjectContext];
     ATHEnd();
 
@@ -117,7 +124,14 @@
     XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
     
     ATHStart();
-    blog = [accountService findOrCreateBlogFromDictionary:@{@"url": @"blog2.com", @"xmlrpc": @"http://blog2.com/xmlrpc.php"} withAccount:account];
+    xmlrpc = @"http://blog2.com/xmlrpc.php";
+    url = @"blog2.com";
+    blog = [accountService findBlogWithXmlrpc:xmlrpc inAccount:account];
+    if (!blog) {
+        blog = [accountService createBlogWithAccount:defaultAccount];
+        blog.xmlrpc = xmlrpc;
+        blog.url = url;
+    }
     [[ContextManager sharedInstance] saveContext:account.managedObjectContext];
     ATHEnd();
 

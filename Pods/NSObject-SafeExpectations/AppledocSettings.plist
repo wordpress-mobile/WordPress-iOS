@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" 
+	"http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>--project-name</key>
+	<string>NSObject+SafeExpectations</string>
+	<key>--project-company</key>
+	<string>Jorge Bernal</string>
+	<key>--company-id</key>
+	<string>me.koke</string>
+	<key>--create-docset</key>
+	<false/>
+	<key>--install-docset</key>
+	<false/>
+	<key>--verbose</key>
+	<integer>4</integer>
+	<key>--logformat</key>
+	<integer>1</integer>
+  <key>--index-desc</key>
+  <string>README.md</string>
+  <key>--input</key>
+  <array>
+    <string>NSDictionary+SafeExpectations.h</string>
+  </array>
+  <key>--output</key>
+  <string>docs</string>
+</dict>
+</plist>

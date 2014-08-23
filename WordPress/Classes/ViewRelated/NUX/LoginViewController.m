@@ -16,11 +16,12 @@
 #import "WPAccount.h"
 #import "Note.h"
 #import "ContextManager.h"
-#import "NoteService.h"
 #import "AccountService.h"
 #import "BlogService.h"
 #import "WPNUXHelpBadgeLabel.h"
 #import <Helpshift/Helpshift.h>
+#import <WordPress-iOS-Shared/WPFontManager.h>
+
 
 static NSString *const ForgotPasswordDotComBaseUrl = @"https://wordpress.com";
 static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
@@ -52,6 +53,7 @@ static NSString *const GenerateApplicationSpecificPasswordUrl = @"http://en.supp
     NSString *_dotComSiteUrl;
     NSArray *_blogs;
     Blog *_blog;
+    NSUInteger _numberOfTimesLoginFailed;
 }
 
 @end
@@ -78,7 +80,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     
-    self.view.backgroundColor = [WPNUXUtility backgroundColor];
+    self.view.backgroundColor = [WPStyleGuide wordPressBlue];
     _userIsDotCom = self.onlyDotComAllowed || !self.prefersSelfHosted;
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -268,6 +270,20 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     [self.view addSubview:overlayView];
 }
 
+- (void)displayGenericErrorMessageWithHelpshiftButton:(NSString *)message
+{
+    WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
+    overlayView.secondaryButtonText = NSLocalizedString(@"Contact Us", @"The text on the button at the bottom of the error message when a user has repeated trouble logging in");
+    overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+        [overlayView dismiss];
+        [self showHelpshiftConversationView];
+    };
+    overlayView.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+        [overlayView dismiss];
+    };
+    [self.view addSubview:overlayView];
+}
+
 #pragma mark - Button Press Methods
 
 - (void)helpButtonAction:(id)sender
@@ -302,7 +318,14 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         [self displayErrorMessages];
         return;
     }
-    
+
+    if ([self isUserNameReserved]) {
+        [self displayReservedNameErrorMessage];
+        [self toggleSignInFormAction:nil];
+        [_siteUrlText becomeFirstResponder];
+        return;
+    }
+
     [self signIn];
 }
 
@@ -386,7 +409,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _helpBadge.textAlignment = NSTextAlignmentCenter;
         _helpBadge.backgroundColor = [UIColor colorWithHexString:@"dd3d36"];
         _helpBadge.textColor = [UIColor whiteColor];
-        _helpBadge.font = [UIFont fontWithName:@"OpenSans" size:8.0];
+        _helpBadge.font = [WPFontManager openSansRegularFontOfSize:8.0];
         _helpBadge.hidden = YES;
         [_mainView addSubview:_helpBadge];
     }
@@ -614,7 +637,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
     
     if (!defaultAccount) {
-        [delegate showBlogListTab];
+        [delegate showTabForIndex:kMeTabIndex];
     }
     
     self.parentViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -635,6 +658,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
         if (didAuthenticate) {
             [WPAnalytics track:WPAnalyticsStatSignedInToJetpack];
+            [WPAnalytics refreshMetadata];
         } else {
             [WPAnalytics track:WPAnalyticsStatSkippedConnectingToJetpack];
         }
@@ -649,6 +673,15 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     SupportViewController *supportViewController = [[SupportViewController alloc] init];
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     [self.navigationController pushViewController:supportViewController animated:animated];
+}
+
+- (void)showHelpshiftConversationView
+{
+    NSDictionary *metaData = @{@"Source": @"Failed login",
+                               @"Username": _usernameText.text,
+                               @"SiteURL": _siteUrlText.text};
+    
+    [[Helpshift sharedInstance] showConversation:self withOptions:@{HSCustomMetadataKey: metaData}];
 }
 
 - (BOOL)isUrlWPCom:(NSString *)url
@@ -748,9 +781,27 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     return siteURL != nil;
 }
 
+- (BOOL)isUserNameReserved
+{
+    if (!_userIsDotCom) {
+        return NO;
+    }
+    NSString *username = [[_usernameText.text trim] lowercaseString];
+    NSArray *reservedUserNames = @[@"admin",@"administrator",@"root"];
+    if ([reservedUserNames containsObject:username]) {
+        return YES;
+    }
+    return NO;
+}
+
 - (void)displayErrorMessages
 {
     [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Please fill out all the fields", nil) withSupportButton:NO];
+}
+
+- (void)displayReservedNameErrorMessage
+{
+    [WPError showAlertWithTitle:NSLocalizedString(@"Self-hosted site?", nil) message:NSLocalizedString(@"Please enter the URL of your WordPress site.", nil) withSupportButton:NO];
 }
 
 - (void)setAuthenticating:(BOOL)authenticating withStatusMessage:(NSString *)status {
@@ -840,14 +891,13 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
                                 success:^{
                                     [self setAuthenticating:NO withStatusMessage:nil];
                                     [self dismiss];
+                                    [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:@{ @"dotcom_user" : @(YES) }];
+                                    [WPAnalytics refreshMetadata];
                                 }
                                 failure:^(NSError *error) {
                                     [self setAuthenticating:NO withStatusMessage:nil];
                                     [self displayRemoteError:error];
                                 }];
-
-    NoteService *noteService = [[NoteService alloc] initWithManagedObjectContext:account.managedObjectContext];
-    [noteService fetchNewNotificationsWithSuccess:nil failure:nil];
 }
 
 - (void)createSelfHostedAccountAndBlogWithUsername:(NSString *)username password:(NSString *)password xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options
@@ -863,14 +913,17 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     if (!url) {
         url = [options stringForKeyPath:@"blog_url.value"];
     }
-    NSMutableDictionary *blogDetails = [NSMutableDictionary dictionaryWithObject:xmlrpc forKey:@"xmlrpc"];
-    if (blogName) {
-        [blogDetails setObject:blogName forKey:@"blogName"];
+    _blog = [accountService findBlogWithXmlrpc:xmlrpc inAccount:account];
+    if (!_blog) {
+        _blog = [accountService createBlogWithAccount:account];
+        if (url) {
+            _blog.url = url;
+        }
+        if (blogName) {
+            _blog.blogName = blogName;
+        }
     }
-    if (url) {
-        [blogDetails setObject:url forKey:@"url"];
-    }
-    _blog = [accountService findOrCreateBlogFromDictionary:blogDetails withAccount:account];
+    _blog.xmlrpc = xmlrpc;
     _blog.options = options;
     [_blog dataSave];
     [blogService syncBlog:_blog success:nil failure:nil];
@@ -885,6 +938,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     } else {
         [self dismiss];
     }
+    
+    [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:@{ @"dotcom_user" : @(NO) }];
+    [WPAnalytics refreshMetadata];
 }
 
 - (void)handleGuessXMLRPCURLFailure:(NSError *)error
@@ -894,7 +950,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         [self displayRemoteError:nil];
     } else if ([error.domain isEqual:WPXMLRPCErrorDomain] && error.code == WPXMLRPCInvalidInputError) {
         [self displayRemoteError:error];
-    } else if([error.domain isEqual:AFNetworkingErrorDomain]) {
+    } else if([error.domain isEqual:AFURLRequestSerializationErrorDomain] || [error.domain isEqual:AFURLResponseSerializationErrorDomain]) {
         NSString *str = [NSString stringWithFormat:NSLocalizedString(@"There was a server error communicating with your site:\n%@\nTap 'Need Help?' to view the FAQ.", nil), [error localizedDescription]];
         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                   str, NSLocalizedDescriptionKey,
@@ -917,7 +973,15 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         if ([message rangeOfString:@"application-specific"].location != NSNotFound) {
             [self displayGenerateApplicationSpecificPasswordErrorMessage:message];
         } else {
-            [self displayGenericErrorMessage:message];
+            if (error.code == WordPressComOAuthErrorInvalidRequest) {
+                _numberOfTimesLoginFailed++;
+            }
+            
+            if ([SupportViewController isHelpshiftEnabled] && _numberOfTimesLoginFailed >= 2) {
+                [self displayGenericErrorMessageWithHelpshiftButton:message];
+            } else {
+                [self displayGenericErrorMessage:message];
+            }
         }
         return;
     }
