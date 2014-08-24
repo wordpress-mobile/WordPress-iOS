@@ -41,9 +41,9 @@ PODS:
     - DTFoundation/Core
   - EmailChecker (0.1)
   - Google-Diff-Match-Patch (0.0.1)
-  - google-plus-ios-sdk (1.5.1)
+  - google-plus-ios-sdk (1.7.0)
   - Helpshift (4.5.0)
-  - HockeySDK (3.5.5)
+  - HockeySDK (3.5.6)
   - JRSwizzle (1.0)
   - MGImageUtilities (0.0.1)
   - Mixpanel (2.3.1)
@@ -53,7 +53,7 @@ PODS:
     - NSLogger
   - NSObject-SafeExpectations (0.0.2)
   - NSURL+IDN (0.1)
-  - OCMock (3.0)
+  - OCMock (3.1.1)
   - OHHTTPStubs (1.1.1)
   - Reachability (3.1.1)
   - Simperium (0.6.6):
@@ -82,11 +82,12 @@ PODS:
     - AFNetworking (~> 2.3.1)
     - wpxmlrpc (~> 0.1)
   - WordPressCom-Analytics-iOS (0.0.3)
-  - WordPressCom-Stats-iOS (0.0.5):
+  - WordPressCom-Stats-iOS (0.1.0):
     - AFNetworking (~> 2.3.1)
     - CocoaLumberjack (~> 1.8.1)
     - NSObject-SafeExpectations (= 0.0.2)
     - WordPress-iOS-Shared (~> 0.0.1)
+    - WordPressCom-Analytics-iOS
   - wpxmlrpc (0.4.1)
 
 DEPENDENCIES:
@@ -116,7 +117,7 @@ DEPENDENCIES:
   - WordPress-iOS-Shared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, tag `0.0.9`)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPressApi.git`)
   - WordPressCom-Analytics-iOS (= 0.0.3)
-  - WordPressCom-Stats-iOS (= 0.0.5)
+  - WordPressCom-Stats-iOS (= 0.1.0)
   - wpxmlrpc (~> 0.4.1)
 
 EXTERNAL SOURCES:
@@ -145,9 +146,9 @@ SPEC CHECKSUMS:
   DTFoundation: 126729614911ae7dbab3dcc1c078f189943bee66
   EmailChecker: e909e6d113fac7ad5e3c304fabce30fc4a79c80e
   Google-Diff-Match-Patch: 1f9c0b972c351d9c0a4fee137eb96896460477cd
-  google-plus-ios-sdk: 98d76ce1f1edbfe8730628aafe017301a734042c
+  google-plus-ios-sdk: f613bd712196b435ecc098eed75afb3364bca177
   Helpshift: 6c34462c4b94b8882e837a5bff7989c3118df15f
-  HockeySDK: f9af97c2f5df4eb6ca6d2a9c408f2ff498edd608
+  HockeySDK: 27d8b411208f9d3f70c8f6695a8defa2a3465721
   JRSwizzle: 30da7a2c539a4ebf954b16d15f6dd8221c9f6fa5
   MGImageUtilities: ce03a910781d7e189814d668af340bc1c0238363
   Mixpanel: 9cc470a58346f60da8ce2982096bcc72b5a7372b
@@ -155,7 +156,7 @@ SPEC CHECKSUMS:
   NSLogger-CocoaLumberjack-connector: 8f659ea51386f0a0e8c2643bf9273010a83a15f5
   NSObject-SafeExpectations: c31276ef7209016849fc4e5c8ed5ae5453e1e208
   NSURL+IDN: 22633c0149b86d6391f32f23776bc0e6ecc532e2
-  OCMock: 6e6041173cf801f458ef66ec1a8fa3d974947335
+  OCMock: f6cb8c162ab9d5620dddf411282c7b2c0ee78854
   OHHTTPStubs: d6ace2645e4744a0ad6c5a72940999a5632037fb
   Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
   Simperium: 6c7e8ebbfb32a854d3cbbab2f5dc8d6f5b311885
@@ -168,7 +169,7 @@ SPEC CHECKSUMS:
   WordPress-iOS-Shared: 072695021aca47f86101132cfee371f4d9673bfa
   WordPressApi: 2e05a82014171bc6f9d6cdab580cc16e9c5f2c6c
   WordPressCom-Analytics-iOS: 8a485b98564ce4ea5a16ff43b526f59909acdc34
-  WordPressCom-Stats-iOS: 3ceb7ec9169d06e492ca186d4b37c880568ade13
+  WordPressCom-Stats-iOS: 99c845cd016b1c81b60eac5c91aea77e0dcd06ca
   wpxmlrpc: a56b534ad0eb7db28a580eabb68a4a3d3426f6d7
 
 COCOAPODS: 0.33.1

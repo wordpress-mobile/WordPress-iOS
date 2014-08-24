@@ -21,7 +21,7 @@
 	id	returnValue;
 }
 
-- (id)initWithValue:(id)aValue;
+- (instancetype)initWithValue:(id)aValue;
 
 - (void)handleInvocation:(NSInvocation *)anInvocation;
 
