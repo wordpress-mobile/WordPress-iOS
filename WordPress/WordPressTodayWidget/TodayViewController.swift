@@ -11,13 +11,14 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     var siteName: String = ""
     var visitorCount: String = ""
     var viewCount: String = ""
+    var siteId: NSNumber?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view from its nib.
         
         let sharedDefaults = NSUserDefaults(suiteName: "group.org.wordpress")
-        let siteId = sharedDefaults.objectForKey("WordPressTodayWidgetSiteId") as NSNumber?
+        siteId = sharedDefaults.objectForKey("WordPressTodayWidgetSiteId") as NSNumber?
         let oauth2Token = sharedDefaults.stringForKey("WordPressTodayWidgetOAuth2Token")
         visitorsLabel?.text = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
         viewsLabel?.text = NSLocalizedString("Views", comment: "Stats Views Label")
@@ -59,7 +60,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     }
     
     @IBAction func launchContainingApp() {
-        self.extensionContext.openURL(NSURL(string: "wordpress://"), completionHandler: nil)
+        self.extensionContext.openURL(NSURL(string: "wordpress://?siteId=\(siteId!)"), completionHandler: nil)
     }
     
     func widgetPerformUpdateWithCompletionHandler(completionHandler: ((NCUpdateResult) -> Void)!) {
