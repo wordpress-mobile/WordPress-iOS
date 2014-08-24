@@ -4,7 +4,9 @@ import NotificationCenter
 class TodayViewController: UIViewController, NCWidgetProviding {
     @IBOutlet var siteNameLabel: UILabel?
     @IBOutlet var visitorsCountLabel: UILabel?
+    @IBOutlet var visitorsLabel: UILabel?
     @IBOutlet var viewsCountLabel: UILabel?
+    @IBOutlet var viewsLabel: UILabel?
     
     var siteName: String = ""
     var visitorCount: String = ""
@@ -17,6 +19,8 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         let sharedDefaults = NSUserDefaults(suiteName: "group.org.wordpress")
         let siteId = sharedDefaults.objectForKey("WordPressTodayWidgetSiteId") as NSNumber?
         let oauth2Token = sharedDefaults.stringForKey("WordPressTodayWidgetOAuth2Token")
+        visitorsLabel?.text = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
+        viewsLabel?.text = NSLocalizedString("Views", comment: "Stats Views Label")
         
         if siteId == nil || oauth2Token == nil {
             // Dynamically determine bundle ID so it doesn't have to be hardcoded
