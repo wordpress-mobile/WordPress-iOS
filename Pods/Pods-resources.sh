@@ -136,7 +136,7 @@ install_resource "WordPress-iOS-Editor/Assets/icon_format_underline.png"
 install_resource "WordPress-iOS-Editor/Assets/icon_format_underline@2x.png"
 install_resource "WordPress-iOS-Editor/Assets/icon_format_underline_highlighted.png"
 install_resource "WordPress-iOS-Editor/Assets/icon_format_underline_highlighted@2x.png"
-install_resource "google-plus-ios-sdk/google-plus-ios-sdk-1.5.1/GooglePlus.bundle"
+install_resource "google-plus-ios-sdk/google-plus-ios-sdk-1.7.0/GooglePlus.bundle"
 install_resource "${BUILT_PRODUCTS_DIR}/HockeySDKResources.bundle"
 install_resource "${BUILT_PRODUCTS_DIR}/WordPress-iOS-Shared.bundle"
 

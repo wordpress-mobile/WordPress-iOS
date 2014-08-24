@@ -188,6 +188,55 @@ static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.w
     }];
 }
 
+
+// For simplicity of implementation (copy & paste), batch is being used here even though its not necessary
+- (void)fetchSummaryStatsForTodayWithCompletionHandler:(void (^)(WPStatsSummary *summary))completionHandler failureHandler:(void (^)(NSError *error))failureHandler
+{
+    NSArray *urls = @[
+                      [self urlForSummary],
+                      ];
+    
+    // This needs to eventually be replaced with an instance of WordPressComApi when it's decoupled from Core Data
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.oauth2Token]
+                     forHTTPHeaderField:@"Authorization"];
+    
+    [manager GET:[self urlForBatch]
+      parameters:@{ @"urls" : urls}
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             if (![responseObject isKindOfClass:[NSDictionary class]]) {
+                 if (failureHandler) {
+                     NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                                          code:NSURLErrorBadServerResponse
+                                                      userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"The server returned an empty response. This usually means you need to increase the memory limit for your site.", @"")}];
+                     failureHandler(error);
+                 }
+                 
+                 return;
+             }
+             
+             NSDictionary *batch = (NSDictionary *)responseObject;
+             
+             WPStatsSummary *statsSummary;
+             NSDictionary *statsSummaryDict = [batch dictionaryForKey:urls[0]];
+             if (statsSummaryDict) {
+                 statsSummary = [[WPStatsSummary alloc] initWithData:statsSummaryDict];
+             }
+             
+             if (completionHandler) {
+                 completionHandler(statsSummary);
+                 
+             }
+         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             DDLogError(@"Error with today summary stats: %@", error);
+             
+             if (failureHandler) {
+                 failureHandler(error);
+             }
+         }];
+}
+
 - (NSString *)urlForBatch
 {
     return [NSString stringWithFormat:@"%@/batch", WordPressComApiClientEndpointURL];
