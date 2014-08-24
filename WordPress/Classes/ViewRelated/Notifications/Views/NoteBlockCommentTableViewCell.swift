@@ -15,22 +15,22 @@ import Foundation
 
     public var isLikeEnabled: Bool = false {
         didSet {
-            btnLike.enabled = isLikeEnabled
+            setupButtonConstraints(btnLike, enabled: isLikeEnabled)
         }
     }
     public var isApproveEnabled: Bool = false {
         didSet {
-            btnApprove.enabled = isApproveEnabled
+            setupButtonConstraints(btnApprove, enabled: isApproveEnabled)
         }
     }
     public var isTrashEnabled: Bool = false {
         didSet {
-            btnTrash.enabled = isTrashEnabled
+            setupButtonConstraints(btnTrash, enabled: isTrashEnabled)
         }
     }
     public var isMoreEnabled: Bool = false {
         didSet {
-            btnMore.enabled = isMoreEnabled
+            setupButtonConstraints(btnMore, enabled: isMoreEnabled)
         }
     }
     public var isLikeOn: Bool = false {
@@ -43,7 +43,6 @@ import Foundation
             btnApprove.selected = isApproveOn
         }
     }
-    
 
     // MARK: - View Methods
     public override func awakeFromNib() {
@@ -107,11 +106,37 @@ import Foundation
         hitEventHandler(onMoreClick)
     }
     
+    
+    // MARK: - Private
     private func hitEventHandler(handler: EventHandler?) {
         if let listener = handler {
             listener()
         }
     }
+    
+    private func setupButtonConstraints(button: UIButton, enabled: Bool) {
+        let width: CGFloat       = hidden ? CGFloat.min : buttonWidth
+        let trailing: CGFloat    = hidden ? CGFloat.min : buttonTrailing
+        
+        for constraint in button.constraints() as [NSLayoutConstraint] {
+            if constraint.firstAttribute == NSLayoutAttribute.Width {
+                constraint.constant = width
+            }
+        }
+        
+        for constraint in contentView.constraints() as [NSLayoutConstraint] {
+            if constraint.firstItem as NSObject == button && constraint.firstAttribute == NSLayoutAttribute.Trailing {
+                constraint.constant = trailing
+            }
+        }
+        
+        button.hidden   = !enabled
+        button.enabled  = enabled
+    }
+    
+    // MARK: - Constants
+    private let buttonWidth:    CGFloat = 55
+    private let buttonTrailing: CGFloat = 20
     
     // MARK: - IBOutlets
     @IBOutlet private weak var btnLike      : UIButton!
