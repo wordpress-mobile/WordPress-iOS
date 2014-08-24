@@ -220,7 +220,7 @@ NSInteger const kMeTabIndex                                     = 2;
         } else if ([URLString rangeOfString:@"viewpost"].length) {
             // View the post specified by the shared blog ID and post ID
             NSDictionary *params = [[url query] dictionaryFromQueryString];
-
+            
             if (params.count) {
                 NSNumber *blogId = [params numberForKey:@"blogId"];
                 NSNumber *postId = [params numberForKey:@"postId"];
@@ -229,7 +229,20 @@ NSInteger const kMeTabIndex                                     = 2;
                 NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
                 [self.tabBarController setSelectedIndex:readerTabIndex];
                 [self.readerPostsViewController openPost:postId onBlog:blogId];
-
+                
+                returnValue = YES;
+            }
+        } else if ([URLString rangeOfString:@"viewstats"].length) {
+            // View the post specified by the shared blog ID and post ID
+            NSDictionary *params = [[url query] dictionaryFromQueryString];
+            
+            if (params.count) {
+                NSNumber *siteId = [params numberForKey:@"siteId"];
+                
+                [self.blogListViewController.navigationController popToRootViewControllerAnimated:NO];
+                NSInteger meTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.blogListViewController.navigationController];
+                [self.tabBarController setSelectedIndex:meTabIndex];
+                
                 returnValue = YES;
             }
         } else if ([URLString rangeOfString:@"debugging"].length) {
