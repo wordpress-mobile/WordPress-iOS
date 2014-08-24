@@ -33,7 +33,8 @@
 
 static NSTimeInterval const NotificationPushMaxWait = 1;
 static CGFloat const NoteEstimatedHeight            = 70;
-static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 48.0f, 0.0f};
+static CGRect NotificationsTableHeaderFrame         = {0.0f, 0.0f, 0.0f, 40.0f};
+static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
 
 
 #pragma mark ====================================================================================
@@ -100,15 +101,16 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 48.0f, 0.0f}
     [self.tableView registerNib:_tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell layoutIdentifier]];
     [self.tableView registerNib:_tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell reuseIdentifier]];
     
-    //  This is a workaround:
-    //  We're using an empty tableHeader to ensure a top margin. contentInsets won't do the trick, since it produces an
-    //  undesired behavior when using sectionViews (the section view respects the topInsets, while the cells won't)
-    //
+    // iPad Fix: contentInset breaks tableSectionViews
     if (UIDevice.isPad) {
-        self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, NotificationTableInsetsPad.top)];
-        self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, NotificationTableInsetsPad.bottom)];
+        self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:NotificationsTableHeaderFrame];
+        self.tableView.tableFooterView = [[UIView alloc] initWithFrame:NotificationsTableFooterFrame];
+    
+    // iPhone Fix: Hide the cellSeparators, when the table is empty
+    } else {
+        self.tableView.tableFooterView = [UIView new];
     }
-
+    
     // Don't show 'Notifications' in the next-view back button
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
