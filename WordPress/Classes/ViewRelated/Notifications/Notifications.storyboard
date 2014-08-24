@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6206.8" systemVersion="14A329f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MbC-cA-c9S">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7026.1"/>
     </dependencies>
     <scenes>
@@ -40,7 +39,7 @@
                         <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockTextTableViewCell" id="jmW-dd-Cbx" userLabel="Text TableViewCell" customClass="NoteBlockTextTableViewCell" customModule="WordPress">
-                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="55" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jmW-dd-Cbx" id="giy-cd-Nqj">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -65,10 +64,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockCommentTableViewCell" rowHeight="85" id="oku-4A-odK" userLabel="Comment TableViewCell" customClass="NoteBlockCommentTableViewCell" customModule="WordPress">
-                                <rect key="frame" x="0.0" y="66" width="320" height="134"/>
+                                <rect key="frame" x="0.0" y="99" width="320" height="85"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oku-4A-odK" id="cG4-pT-v6A">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="133"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="84"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rgW-kf-700" customClass="DTAttributedLabel">
@@ -164,7 +163,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockQuoteTableViewCell" id="iyh-u1-L6U" userLabel="Quote TableViewCell" customClass="NoteBlockQuoteTableViewCell" customModule="WordPress">
-                                <rect key="frame" x="0.0" y="200" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="184" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iyh-u1-L6U" id="DNi-Ol-Dh9">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -189,7 +188,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockImageTableViewCell" rowHeight="200" id="haN-FG-i9H" userLabel="Image TableViewCell" customClass="NoteBlockImageTableViewCell" customModule="WordPress">
-                                <rect key="frame" x="0.0" y="244" width="320" height="200"/>
+                                <rect key="frame" x="0.0" y="228" width="320" height="200"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="haN-FG-i9H" id="jcD-Sy-kp4">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="199"/>
@@ -215,10 +214,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockUserTableViewCell" rowHeight="70" id="5xE-rP-cOl" userLabel="User TableViewCell" customClass="NoteBlockUserTableViewCell" customModule="WordPress">
-                                <rect key="frame" x="0.0" y="444" width="320" height="80"/>
+                                <rect key="frame" x="0.0" y="428" width="320" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5xE-rP-cOl" id="cu5-vz-Y42">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="79"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="69"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="left.png" translatesAutoresizingMaskIntoConstraints="NO" id="uO0-Jy-JBJ" userLabel="GravatarImageView">
@@ -229,21 +228,24 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name Lastname" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rMO-Sz-KSd" userLabel="NameLabel">
-                                            <rect key="frame" x="69" y="12" width="239" height="15"/>
+                                            <rect key="frame" x="69" y="9" width="239" height="16"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="15" id="gwn-bj-bzd"/>
+                                                <constraint firstAttribute="height" constant="16" id="gwn-bj-bzd"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blog URL" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wTS-9g-tC4" userLabel="BlogUrlLabel">
-                                            <rect key="frame" x="69" y="27" width="239" height="20.5"/>
+                                            <rect key="frame" x="69" y="26" width="239" height="16"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="16" id="6kR-hM-LP3"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F3e-O2-MLK" userLabel="FollowButton">
-                                            <rect key="frame" x="65" y="39" width="100" height="26"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F3e-O2-MLK" userLabel="FollowButton">
+                                            <rect key="frame" x="65" y="43" width="78" height="22"/>
                                             <inset key="contentEdgeInsets" minX="2" minY="0.0" maxX="0.0" maxY="0.0"/>
                                             <state key="normal" title="Button" image="reader-postaction-follow.png">
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -259,10 +261,12 @@
                                         <constraint firstItem="wTS-9g-tC4" firstAttribute="leading" secondItem="uO0-Jy-JBJ" secondAttribute="trailing" constant="12" id="Ifu-ku-eCE"/>
                                         <constraint firstItem="rMO-Sz-KSd" firstAttribute="leading" secondItem="uO0-Jy-JBJ" secondAttribute="trailing" constant="12" id="Kxw-HX-sNc"/>
                                         <constraint firstItem="uO0-Jy-JBJ" firstAttribute="top" secondItem="cu5-vz-Y42" secondAttribute="top" constant="12" id="RuQ-GJ-uy2"/>
-                                        <constraint firstItem="rMO-Sz-KSd" firstAttribute="top" secondItem="cu5-vz-Y42" secondAttribute="top" constant="12" id="Y5L-Kd-5hN"/>
+                                        <constraint firstItem="F3e-O2-MLK" firstAttribute="top" secondItem="wTS-9g-tC4" secondAttribute="bottom" constant="1" id="TqU-Xh-qJd"/>
+                                        <constraint firstItem="rMO-Sz-KSd" firstAttribute="top" secondItem="cu5-vz-Y42" secondAttribute="top" constant="9" id="Y5L-Kd-5hN"/>
                                         <constraint firstItem="uO0-Jy-JBJ" firstAttribute="leading" secondItem="cu5-vz-Y42" secondAttribute="leading" constant="12" id="hN5-TW-FH1"/>
+                                        <constraint firstItem="F3e-O2-MLK" firstAttribute="leading" secondItem="uO0-Jy-JBJ" secondAttribute="trailing" constant="8" id="oW2-Fy-U5d"/>
                                         <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="uO0-Jy-JBJ" secondAttribute="bottom" constant="12" id="p65-G6-dlz"/>
-                                        <constraint firstItem="wTS-9g-tC4" firstAttribute="top" secondItem="rMO-Sz-KSd" secondAttribute="bottom" id="vFa-Rh-sKm"/>
+                                        <constraint firstItem="wTS-9g-tC4" firstAttribute="top" secondItem="rMO-Sz-KSd" secondAttribute="bottom" constant="1" id="vFa-Rh-sKm"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
