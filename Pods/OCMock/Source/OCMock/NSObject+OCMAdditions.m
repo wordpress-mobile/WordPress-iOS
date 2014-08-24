@@ -20,32 +20,53 @@
 
 @implementation NSObject(OCMAdditions)
 
+static NSMutableDictionary *_OCMReturnTypeCache;
+
 + (IMP)instanceMethodForwarderForSelector:(SEL)aSelector
 {
-    // use NSSelectorFromString and not @selector to avoid warning
-    SEL selectorWithNoImplementation = NSSelectorFromString(@"methodWhichMustNotExist::::");
+    // use sel_registerName() and not @selector to avoid warning
+    SEL selectorWithNoImplementation = sel_registerName("methodWhichMustNotExist::::");
 
 #ifndef __arm64__
-    NSMethodSignature *sig = [self instanceMethodSignatureForSelector:aSelector];
-    if([sig usesSpecialStructureReturn])
-        return class_getMethodImplementation_stret(self, selectorWithNoImplementation);
+    if(_OCMReturnTypeCache == nil)
+        _OCMReturnTypeCache = [[NSMutableDictionary alloc] init];
+
+    BOOL needsStructureReturn;
+    void *rawCacheKey[2] = { (void *)self, aSelector };
+    NSData *cacheKey = [NSData dataWithBytes:rawCacheKey length:sizeof(rawCacheKey)];
+    NSNumber *cachedValue = [_OCMReturnTypeCache objectForKey:cacheKey];
+
+    if(cachedValue == nil)
+    {
+        NSMethodSignature *sig = [self instanceMethodSignatureForSelector:aSelector];
+        needsStructureReturn = [sig usesSpecialStructureReturn];
+        [_OCMReturnTypeCache setObject:@(needsStructureReturn) forKey:cacheKey];
+    }
+    else
+    {
+        needsStructureReturn = [cachedValue boolValue];
+    }
+
+    if(needsStructureReturn)
+        return class_getMethodImplementation_stret([NSObject class], selectorWithNoImplementation);
 #endif
     
-    return class_getMethodImplementation(self, selectorWithNoImplementation);
+    return class_getMethodImplementation([NSObject class], selectorWithNoImplementation);
 }
 
 
-+ (void)enumerateMethodsInClass:(Class)aClass usingBlock:(void (^)(SEL selector))aBlock
++ (void)enumerateMethodsInClass:(Class)aClass usingBlock:(void (^)(Class cls, SEL sel))aBlock
 {
     for(Class cls = aClass; cls != nil; cls = class_getSuperclass(cls))
     {
         Method *methodList = class_copyMethodList(cls, NULL);
         if(methodList == NULL)
             continue;
+
         for(Method *mPtr = methodList; *mPtr != NULL; mPtr++)
         {
-            SEL selector = method_getName(*mPtr);
-            aBlock(selector);
+            SEL sel = method_getName(*mPtr);
+            aBlock(cls, sel);
         }
         free(methodList);
     }
