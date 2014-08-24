@@ -411,7 +411,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
         [self updateTrashButton:YES];
         [self performCommentAction:untrashAction forButton:sender];
     }
-
+    
     [WPAnalytics track:WPAnalyticsStatNotificationTrashed];
 }
 
