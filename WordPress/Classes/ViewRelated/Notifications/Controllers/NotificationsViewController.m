@@ -110,7 +110,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 48.0f, 0.0f}
     }
 
     // Don't show 'Notifications' in the next-view back button
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     
     // Refresh Badge
@@ -439,10 +439,11 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 48.0f, 0.0f}
 
 - (void)configureCell:(NoteTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    Notification *note      = [self.resultsController objectAtIndexPath:indexPath];
-    cell.attributedSubject  = note.subjectBlock.attributedSubject;
-    cell.read               = note.read.boolValue;
-    cell.noticon            = note.noticon;
+    Notification *note          = [self.resultsController objectAtIndexPath:indexPath];
+    NotificationBlock *subject  = note.subjectBlocks.firstObject;
+    cell.attributedSubject      = subject.attributedSubject;
+    cell.read                   = note.read.boolValue;
+    cell.noticon                = note.noticon;
     
     [cell downloadGravatarWithURL:note.iconURL];
 }

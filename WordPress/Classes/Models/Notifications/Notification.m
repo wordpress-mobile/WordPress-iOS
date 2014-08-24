@@ -288,10 +288,10 @@ NSString const *NoteHeightKey           = @"height";
 #pragma mark ====================================================================================
 
 @interface Notification ()
-@property (nonatomic, strong) NSDate            *date;
-@property (nonatomic, strong) NSURL             *iconURL;
-@property (nonatomic, strong) NotificationBlock *subjectBlock;
-@property (nonatomic, strong) NSArray           *bodyBlocks;
+@property (nonatomic, strong) NSDate    *date;
+@property (nonatomic, strong) NSURL     *iconURL;
+@property (nonatomic, strong) NSArray   *subjectBlocks;
+@property (nonatomic, strong) NSArray   *bodyBlocks;
 @end
 
 
@@ -311,7 +311,7 @@ NSString const *NoteHeightKey           = @"height";
 
 @synthesize date            = _date;
 @synthesize iconURL         = _iconURL;
-@synthesize subjectBlock    = _subjectBlock;
+@synthesize subjectBlocks   = _subjectBlocks;
 @synthesize bodyBlocks      = _bodyBlocks;
 
 
@@ -321,7 +321,7 @@ NSString const *NoteHeightKey           = @"height";
 {
     _date           = nil;
     _iconURL        = nil;
-    _subjectBlock   = nil;
+    _subjectBlocks  = nil;
     _bodyBlocks     = nil;
 }
 
@@ -345,13 +345,13 @@ NSString const *NoteHeightKey           = @"height";
     return self.date;
 }
 
-- (NotificationBlock *)subjectBlock
+- (NSArray *)subjectBlocks
 {
-    if (!_subjectBlock) {
-        _subjectBlock = [[NotificationBlock alloc] initWithDictionary:self.subject];
+    if (!_subjectBlocks) {
+        _subjectBlocks = [NotificationBlock blocksFromArray:self.subject notification:self];
     }
 
-    return _subjectBlock;
+    return _subjectBlocks;
 }
 
 - (NSArray *)bodyBlocks
