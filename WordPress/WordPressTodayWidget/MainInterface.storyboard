@@ -27,7 +27,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7,025" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IOg-zT-oAD">
-                                <rect key="frame" x="16" y="37" width="71" height="34"/>
+                                <rect key="frame" x="16" y="37" width="70.5" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="34" id="a98-2f-m7a"/>
                                 </constraints>
@@ -36,7 +36,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10,394" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pyt-KX-qbk">
-                                <rect key="frame" x="151" y="37" width="86" height="34"/>
+                                <rect key="frame" x="150.5" y="37" width="86" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="34" id="0FK-D7-cq1"/>
                                 </constraints>
@@ -45,7 +45,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Visitors" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ya5-b8-L12">
-                                <rect key="frame" x="16" y="72" width="56" height="20"/>
+                                <rect key="frame" x="16" y="72" width="55.5" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="Mtu-sJ-0n2"/>
                                 </constraints>
@@ -54,7 +54,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Views" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d87-vS-4g1">
-                                <rect key="frame" x="151" y="72" width="45" height="20"/>
+                                <rect key="frame" x="150.5" y="72" width="44.5" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="2Ue-mA-3A5"/>
                                 </constraints>
@@ -76,7 +76,7 @@
                             <constraint firstItem="ya5-b8-L12" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="e3i-Nn-Ax4"/>
                             <constraint firstItem="IOg-zT-oAD" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="efL-lJ-Wdt"/>
                             <constraint firstAttribute="trailing" secondItem="Wcm-ss-zFo" secondAttribute="trailing" constant="16" id="ndY-yf-y6u"/>
-                            <constraint firstItem="FKl-LY-JtV" firstAttribute="top" secondItem="ya5-b8-L12" secondAttribute="bottom" constant="6" id="qAp-GP-g03"/>
+                            <constraint firstItem="FKl-LY-JtV" firstAttribute="top" secondItem="ya5-b8-L12" secondAttribute="bottom" priority="250" constant="6" id="qAp-GP-g03"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="StW-vH-RTH" appends="YES" id="Uac-Xl-YJb"/>
