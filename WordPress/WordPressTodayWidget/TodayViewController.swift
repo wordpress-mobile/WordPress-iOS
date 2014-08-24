@@ -83,11 +83,8 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         
         let timeZone = NSTimeZone(name: timeZoneName)
         var statsService: WPStatsService = WPStatsService(siteId: siteId, siteTimeZone: timeZone, andOAuth2Token: oauth2Token)
-        statsService.retrieveStatsWithCompletionHandler({ (wpStatsSummary: WPStatsSummary!, topPosts, something2, something3, something4, something5, viewsVisitors) -> Void in
+        statsService.retrieveTodayStatsWithCompletionHandler({ (wpStatsSummary: WPStatsSummary!) -> Void in
             WPDDLogWrapper.logInfo("Downloaded data in the Today widget")
-            
-            var topPostsArray = topPosts["today"] as NSArray
-            var topPost = topPostsArray[0] as WPStatsTopPost
             
             var numberFormatter = NSNumberFormatter()
             numberFormatter.locale = NSLocale.currentLocale()
