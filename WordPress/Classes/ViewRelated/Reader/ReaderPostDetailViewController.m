@@ -24,7 +24,7 @@
 #import "WPWebVideoViewController.h"
 #import "WPWebViewController.h"
 
-//static CGFloat const SectionHeaderHeight = 25.0f;
+static CGFloat const SectionHeaderHeight = 25.0f;
 static CGFloat const TableViewTopMargin = 40;
 static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 
@@ -774,15 +774,15 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
     [self setAvatarForComment:comment forCell:cell indexPath:indexPath];
 }
 
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-//{
-//    return [[UIView alloc] initWithFrame:CGRectZero];
-//}
-//
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-//{
-//    return SectionHeaderHeight;
-//}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return [[UIView alloc] initWithFrame:CGRectZero];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return SectionHeaderHeight;
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
