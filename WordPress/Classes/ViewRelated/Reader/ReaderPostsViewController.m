@@ -1036,7 +1036,15 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     UIViewController *detailController = [ReaderPostDetailViewController detailControllerWithPost:post];
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:nil
+                                                                  action:nil];
+
     [self.navigationController pushViewController:detailController animated:YES];
+
+    // replace the back button of the newly presented view controller
+    self.navigationController.topViewController.navigationItem.backBarButtonItem = backButton;
 
     [WPAnalytics track:WPAnalyticsStatReaderOpenedArticle];
 }
