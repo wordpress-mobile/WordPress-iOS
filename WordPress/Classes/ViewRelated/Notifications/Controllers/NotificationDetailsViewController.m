@@ -42,9 +42,13 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 #pragma mark ==========================================================================================
 
 @interface NotificationDetailsViewController () <SPBucketDelegate, EditCommentViewControllerDelegate>
-@property (nonatomic,   weak) IBOutlet UITableView  *tableView;
-@property (nonatomic, strong) NSDictionary          *layoutCellMap;
-@property (nonatomic, strong) NSDictionary          *reuseIdentifierMap;
+@property (nonatomic,   weak) IBOutlet UITableView      *tableView;
+@property (nonatomic,   weak) IBOutlet ReplyTextView    *replyTextView;
+@property (nonatomic, assign) CGRect                    originalReplyFrame;
+@property (nonatomic, strong) NSDictionary              *layoutCellMap;
+@property (nonatomic, strong) NSDictionary              *reuseIdentifierMap;
+@property (nonatomic, assign) BOOL                      isKeyboardOnscreen;
+@property (nonatomic, assign) BOOL                      isRotating;
 @end
 
 
@@ -76,7 +80,40 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     SPBucket *notificationsBucket   = [simperium bucketForName:NSStringFromClass([Notification class])];
     notificationsBucket.delegate    = self;
     
+    self.replyTextView.isVisible    = [[self.note findCommentBlock] actionForKey:NoteActionReplyKey];
+
     #warning TODO: Implement Reply
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [nc addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.replyTextView dismiss];
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [nc removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    self.isRotating = YES;
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    self.isRotating = NO;
 }
 
 
@@ -645,7 +682,88 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
         editViewController.content                      = block.text;
         editViewController.userInfo                     = block;
     }
+}
+
+
+#pragma mark - Notification Helpers
+
+- (void)handleKeyboardWillShow:(NSNotification *)notification
+{
+    if (self.isKeyboardOnscreen) {
+        return;
+    }
     
+    NSDictionary* userInfo          = notification.userInfo;
+    
+    // Convert the rect to view coordinates: enforce the current orientation!
+    CGRect kbRect                   = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    kbRect                          = [self.view convertRect:kbRect fromView:nil];
+    
+    CGRect viewFrame                = self.view.frame;
+    CGFloat bottomInset             = CGRectGetHeight(kbRect) - (CGRectGetMaxY(kbRect) - CGRectGetMaxY(viewFrame) + CGRectGetMinY(viewFrame));
+    
+    CGRect originalReplyFrame       = self.replyTextView.frame;
+    
+    // Prepare the Animation
+    void (^animation)(void) = ^() {
+        UIEdgeInsets newContentInsets   = self.tableView.contentInset;
+        newContentInsets.bottom         = bottomInset;
+        self.tableView.contentInset     = newContentInsets;
+        
+        CGRect replyFrame               = self.replyTextView.frame;
+        replyFrame.origin.y             -= bottomInset;
+        self.replyTextView.frame        = replyFrame;
+    };
+    
+    // Rotation hides + shows the keyboard again. Animation will look odd!
+    if (self.isRotating) {
+        animation();
+        
+    } else {
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
+        [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
+        
+        animation();
+        
+        [UIView commitAnimations];
+    }
+
+    self.originalReplyFrame = originalReplyFrame;
+    self.isKeyboardOnscreen = true;
+}
+
+- (void)handleKeyboardWillHide:(NSNotification *)notification
+{
+    if (!self.isKeyboardOnscreen) {
+        return;
+    }
+    
+    NSDictionary* userInfo          = notification.userInfo;
+    
+    void (^animation)(void) = ^() {
+        UIEdgeInsets newContentInsets   = self.tableView.contentInset;
+        newContentInsets.bottom         = 0;
+        self.tableView.contentInset     = newContentInsets;
+        
+        self.replyTextView.frame        = self.originalReplyFrame;
+    };
+    
+    // Rotation hides + shows the keyboard again. Animation will look odd!
+    if (self.isRotating) {
+        animation();
+        
+    } else {
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
+        [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
+        
+        animation();
+        
+        [UIView commitAnimations];
+    }
+    
+    self.isKeyboardOnscreen = NO;
 }
 
 @end
