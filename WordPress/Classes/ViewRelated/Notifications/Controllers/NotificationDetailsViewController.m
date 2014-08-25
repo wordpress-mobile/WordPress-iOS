@@ -579,18 +579,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 
 - (void)editCommentWithBlock:(NotificationBlock *)block
 {
-#warning TODO: This should be a segue
-    EditCommentViewController *editViewController   = [EditCommentViewController newEditCommentViewController];
-    editViewController.delegate                     = self;
-    editViewController.content                      = block.text;
-    editViewController.userInfo                     = block;
-    
-    UINavigationController *navController           = [[UINavigationController alloc] initWithRootViewController:editViewController];
-    navController.modalPresentationStyle            = UIModalPresentationFormSheet;
-    navController.modalTransitionStyle              = UIModalTransitionStyleCoverVertical;
-    navController.navigationBar.translucent         = NO;
-    
-    [self presentViewController:navController animated:true completion:nil];
+    [self performSegueWithIdentifier:NSStringFromClass([EditCommentViewController class]) sender:block];
 }
 
 
@@ -647,7 +636,17 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
         ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
         Notification *note = (Notification *)sender;
         [readerViewController setupWithPostID:note.metaPostID siteID:note.metaSiteID];
+        
+    } else if ([segue.identifier isEqualToString:NSStringFromClass([EditCommentViewController class])]) {
+        NotificationBlock *block                        = sender;
+        
+        UINavigationController *navigationController    = segue.destinationViewController;
+        EditCommentViewController *editViewController   = (EditCommentViewController *)navigationController.topViewController;
+        editViewController.delegate                     = self;
+        editViewController.content                      = block.text;
+        editViewController.userInfo                     = block;
     }
+    
 }
 
 @end
