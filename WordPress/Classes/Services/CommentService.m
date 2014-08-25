@@ -188,7 +188,7 @@
 
 - (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
                                    page:(NSUInteger)page
-                                success:(void (^)(NSUInteger count))success
+                                success:(void (^)(NSInteger count))success
                                 failure:(void (^)(NSError *error))failure
 {
 
