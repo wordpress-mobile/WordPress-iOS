@@ -1,14 +1,10 @@
 #import <UIKit/UIKit.h>
-#import "Suggestion.h"
 
-@interface SuggestionsTableViewController : UITableViewController <UISearchBarDelegate, UISearchDisplayDelegate>
+@protocol SuggestionsTableViewDelegate;
 
-@property (nonatomic,weak) id delegate;
+@interface SuggestionsTableViewController : UITableViewController
 
-@property (nonatomic, strong) UISearchBar *viewSearchBar;
-@property (nonatomic, strong) UISearchDisplayController *viewSearchDisplayController;
-@property (strong) NSMutableArray *suggestions;
-@property (strong) NSMutableArray *searchResults;
+@property (nonatomic, weak) id<SuggestionsTableViewDelegate> delegate;
 
 @end
 
@@ -17,7 +13,7 @@
 @optional
 
 - (void)suggestionViewDidSelect:(SuggestionsTableViewController *)suggestionsTableViewController
-                  selectionString:(NSString *)string;
+                selectionString:(NSString *)string;
 
 - (void)suggestionViewDidDisappear:(SuggestionsTableViewController *)suggestionsTableViewController;
 

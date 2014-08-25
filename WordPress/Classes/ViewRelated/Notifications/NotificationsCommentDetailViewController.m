@@ -595,35 +595,10 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range
                                                 replacementText:(NSString *)text {
-    if ( [text isEqualToString: @"@"] ) {
-        SuggestionsTableViewController *suggestionsController = [[SuggestionsTableViewController alloc] init];
-        // @todo - get from rest api
-        suggestionsController.suggestions = [[NSMutableArray alloc] initWithObjects:
-                                             [Suggestion suggestionWithUserLogin:@"alans19231"
-                                                                     displayName:@"Alan Shephard"
-                                                                        imageURL:[NSURL URLWithString:@"http://s.gravatar.com/avatar/31bebfb2e302d673a7ada29e4d449b78"]],
-                                             [Suggestion suggestionWithUserLogin:@"dekes19241"
-                                                                     displayName:@"Deke Slayton"
-                                                                        imageURL:[NSURL URLWithString:@"http://s.gravatar.com/avatar/d2b4119ddf895bd7e9eb2fad53396eec"]],
-                                             [Suggestion suggestionWithUserLogin:@"gordonc19271"
-                                                                     displayName:@"Gordon Cooper"
-                                                                        imageURL:[NSURL URLWithString:@"http://s.gravatar.com/avatar/9d7158527cccb23c82f065f7f572d49d"]],
-                                             [Suggestion suggestionWithUserLogin:@"gusg19261"
-                                                                     displayName:@"Gus Grissom"
-                                                                        imageURL:[NSURL URLWithString:@"http://s.gravatar.com/avatar/f02eda5a5457466a1c09008d11000a08"]],
-                                             [Suggestion suggestionWithUserLogin:@"johng19211"
-                                                                     displayName:@"John Glenn"
-                                                                        imageURL:[NSURL URLWithString:@"http://s.gravatar.com/avatar/31bebfb2e302d673a7ada29e4d449b78"]],
-                                             [Suggestion suggestionWithUserLogin:@"scottc19251"
-                                                                     displayName:@"Scott Carpenter"
-                                                                        imageURL:[NSURL URLWithString:@"http://s.gravatar.com/avatar/d2b4119ddf895bd7e9eb2fad53396eec"]],
-                                             [Suggestion suggestionWithUserLogin:@"wallys19231"
-                                                                     displayName:@"Wally Schirra"
-                                                                        imageURL:[NSURL URLWithString:@"http://s.gravatar.com/avatar/9d7158527cccb23c82f065f7f572d49d"]],
-                                             nil];
-        
-        [self.navigationController pushViewController:suggestionsController animated:YES];
+    if ([text isEqualToString:@"@"]) {
+        SuggestionsTableViewController *suggestionsController = [SuggestionsTableViewController new];
         suggestionsController.delegate = self;
+        [self.navigationController pushViewController:suggestionsController animated:YES];
     }
     
     return YES;
@@ -632,15 +607,15 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 #pragma mark - SuggestionsTableViewDelegate
 
 - (void)suggestionViewDidSelect:(SuggestionsTableViewController *)suggestionsController
-                  selectionString:(NSString *)selectionString
+                selectionString:(NSString *)selectionString
 {
     self.inlineComposeView.text = [self.inlineComposeView.text stringByAppendingString:selectionString];
-    [self.navigationController popViewControllerAnimated:YES]; // Close the suggestions controller
 }
 
 - (void)suggestionViewDidDisappear:(SuggestionsTableViewController *)suggestionsController
 {
-    [self.inlineComposeView becomeFirstResponder];    
+    suggestionsController.delegate = nil;
+    [self.inlineComposeView becomeFirstResponder];
 }
 
 #pragma mark - WPContentViewDelegate
