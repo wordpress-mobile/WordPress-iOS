@@ -3,7 +3,7 @@ import Foundation
 
 extension NotificationBlock
 {
-    public func attributedSubject() -> NSAttributedString {
+    public func subjectFormattedText() -> NSAttributedString {
         if text == nil {
             return NSAttributedString()
         }
@@ -22,8 +22,16 @@ extension NotificationBlock
 
         return theString;
     }
-    
-    public func attributedTextRegular() -> NSAttributedString {
+
+    public func regularFormattedOverride() -> NSAttributedString? {
+        if textOverride == nil {
+            return nil
+        }
+        
+        return NSMutableAttributedString(string: textOverride, attributes: Notification.Styles.blockRegular)
+    }
+
+    public func regularFormattedText() -> NSAttributedString {
         if text == nil {
             return NSAttributedString()
         }
@@ -45,21 +53,11 @@ extension NotificationBlock
                 theString.addAttribute(NSForegroundColorAttributeName, value: Notification.Colors.blockLink, range: url.range)
             }
         }
-
-        // Failsafe: Sometimes the backend won't linkify URL's 
-        let range       = NSMakeRange(0, countElements(text!))
-        let detector    = NSDataDetector(types: NSTextCheckingType.Link.toRaw(), error: nil)
-
-        detector.enumerateMatchesInString(text, options: nil, range: range) {
-            (result: NSTextCheckingResult!, flags: NSMatchingFlags, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
-            theString.addAttribute(DTLinkAttribute, value: result.URL, range: result.range)
-            theString.addAttribute(NSForegroundColorAttributeName, value: Notification.Colors.blockLink, range: result.range)
-        }
         
         return theString
     }
 
-    public func attributedTextQuoted() -> NSAttributedString {
+    public func quotedFormattedText() -> NSAttributedString {
         if text == nil {
             return NSAttributedString()
         }
