@@ -10,4 +10,18 @@
 
 @implementation ZSSBarButtonItem
 
+- (BOOL)selected
+{
+	UIButton* button = (UIButton*)self.customView;
+	
+	return button.selected;
+}
+
+- (void)setSelected:(BOOL)selected
+{
+	UIButton* button = (UIButton*)self.customView;
+	
+	button.selected = selected;
+}
+
 @end
