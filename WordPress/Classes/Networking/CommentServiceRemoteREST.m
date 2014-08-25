@@ -157,7 +157,7 @@
                                 success:(void (^)(NSArray *comments))success
                                 failure:(void (^)(NSError *error))failure
 {
-    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/replies?hierarchical=1&page=%d", siteID, postID, page];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/replies?order=ASC&hierarchical=1&page=%d", siteID, postID, page];
 
     [self.api GET:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
