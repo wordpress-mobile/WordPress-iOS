@@ -19,7 +19,7 @@ import Foundation
     // MARK: - View Methods
     public override func awakeFromNib() {
         selectionStyle  = .None
-        backgroundColor = Notification.Colors.blockBackground
+        backgroundColor = WPStyleGuide.Notifications.Colors.blockBackground
     }
     
     // MARK: - Private Methods

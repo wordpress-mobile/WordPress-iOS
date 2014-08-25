@@ -53,14 +53,14 @@ import Foundation
 
         WPStyleGuide.configureFollowButton(btnFollow)
         
-        backgroundColor                     = Notification.Colors.blockBackground
+        backgroundColor                     = WPStyleGuide.Notifications.Colors.blockBackground
         accessoryType                       = .None
         
-        nameLabel.textColor                 = Notification.Colors.blockHeader
-        nameLabel.font                      = Notification.Fonts.blockHeader
+        nameLabel.textColor                 = WPStyleGuide.Notifications.Colors.blockHeader
+        nameLabel.font                      = WPStyleGuide.Notifications.Fonts.blockHeader
         
-        blogLabel.font                      = Notification.Fonts.blockSubtitle
-        blogLabel.textColor                 = Notification.Colors.blockSubtitle
+        blogLabel.font                      = WPStyleGuide.Notifications.Fonts.blockSubtitle
+        blogLabel.textColor                 = WPStyleGuide.Notifications.Colors.blockSubtitle
         blogLabel.adjustsFontSizeToFitWidth = false;
     }
     

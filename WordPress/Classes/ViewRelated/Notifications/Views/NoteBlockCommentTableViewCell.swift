@@ -48,8 +48,8 @@ import Foundation
     public override func awakeFromNib() {
         super.awakeFromNib()
         
-        let textNormalColor         = Notification.Colors.actionOffText
-        let textSelectedColor       = Notification.Colors.actionOnText
+        let textNormalColor         = WPStyleGuide.Notifications.Colors.actionOffText
+        let textSelectedColor       = WPStyleGuide.Notifications.Colors.actionOnText
         
         let likeNormalTitle         = NSLocalizedString("Like", comment: "Like a comment")
         let likeSelectedTitle       = NSLocalizedString("Liked", comment: "A comment has been liked")
