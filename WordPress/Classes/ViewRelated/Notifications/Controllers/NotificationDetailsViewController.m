@@ -15,6 +15,7 @@
 #import "WPWebViewController.h"
 #import "ReaderPostDetailViewController.h"
 #import "StatsViewController.h"
+#import "EditCommentViewController.h"
 
 #import "WordPress-Swift.h"
 
@@ -30,6 +31,7 @@
 #pragma mark Constants
 #pragma mark ==========================================================================================
 
+static NSUInteger NotificationDetailSectionsBlocks  = 0;
 static NSUInteger NotificationDetailSectionsCount   = 1;
 
 static UIEdgeInsets NotificationTableInsetsPhone    = {0.0f,  0.0f, 20.0f, 0.0f};
@@ -40,7 +42,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 #pragma mark Private
 #pragma mark ==========================================================================================
 
-@interface NotificationDetailsViewController () <SPBucketDelegate>
+@interface NotificationDetailsViewController () <SPBucketDelegate, EditCommentViewControllerDelegate>
 @property (nonatomic, strong) NSDictionary *layoutCellMap;
 @property (nonatomic, strong) NSDictionary *reuseIdentifierMap;
 @end
@@ -73,6 +75,8 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     Simperium *simperium            = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
     SPBucket *notificationsBucket   = [simperium bucketForName:NSStringFromClass([Notification class])];
     notificationsBucket.delegate    = self;
+    
+    #warning TODO: Implement Reply
 }
 
 
@@ -88,7 +92,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     NotificationDetailsViewController *detailsViewController = [self.storyboard instantiateViewControllerWithIdentifier:storyboardID];
     
     UITableView *tableView  = detailsViewController.tableView;
-    
+
     _layoutCellMap = @{
         @(NoteBlockTypesText)       : [tableView dequeueReusableCellWithIdentifier:NoteBlockTextTableViewCell.reuseIdentifier],
         @(NoteBlockTypesComment)    : [tableView dequeueReusableCellWithIdentifier:NoteBlockCommentTableViewCell.reuseIdentifier],
@@ -272,8 +276,8 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 
     cell.isLikeOn                   = [block isActionOn:NoteActionLikeKey];
     cell.isApproveOn                = [block isActionOn:NoteActionApproveKey];
-    
-    cell.attributedText             = block.attributedTextRegular;
+
+    cell.attributedText             = block.regularFormattedOverride ?: block.regularFormattedText;
 
     cell.onUrlClick                 = ^(NSURL *url){
         [weakSelf openURL:url];
@@ -306,7 +310,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 
 - (void)setupQuoteCell:(NoteBlockQuoteTableViewCell *)cell block:(NotificationBlock *)block
 {
-    cell.attributedText             = block.attributedTextQuoted;
+    cell.attributedText             = block.quotedFormattedText;
 }
 
 - (void)setupImageCell:(NoteBlockImageTableViewCell *)cell block:(NotificationBlock *)block
@@ -318,7 +322,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 - (void)setupTextCell:(NoteBlockTextTableViewCell *)cell block:(NotificationBlock *)block
 {
     __weak __typeof(self) weakSelf  = self;
-    cell.attributedText             = block.attributedTextRegular;
+    cell.attributedText             = block.regularFormattedText;
     cell.onUrlClick                 = ^(NSURL *url){
         [weakSelf openURL:url];
     };
@@ -516,11 +520,8 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 
 - (void)spamCommentWithBlock:(NotificationBlock *)block
 {
-    NSInteger const btnIndexSpam = 1;
-    
-    // Callback Block
     UIAlertViewCompletionBlock completion = ^(UIAlertView *alertView, NSInteger buttonIndex) {
-        if (buttonIndex != btnIndexSpam) {
+        if (buttonIndex == alertView.cancelButtonIndex) {
             return;
         }
         
@@ -530,9 +531,10 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
         CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
         
         [service spamCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:nil];
+        
+        [self.navigationController popToRootViewControllerAnimated:YES];
     };
     
-    // Show the alertView
     NSString *message = NSLocalizedString(@"Are you sure you want to mark this comment as Spam?",
                                           @"Message asking for confirmation before marking a comment as spam");
     
@@ -545,11 +547,9 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 
 - (void)trashCommentWithBlock:(NotificationBlock *)block
 {
-    NSInteger const btnIndexTrash = 1;
-    
     // Callback Block
     UIAlertViewCompletionBlock completion = ^(UIAlertView *alertView, NSInteger buttonIndex) {
-        if (buttonIndex != btnIndexTrash) {
+        if (buttonIndex == alertView.cancelButtonIndex) {
             return;
         }
         
@@ -559,6 +559,8 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
         CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
         
         [service deleteCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:nil];
+        
+        [self.navigationController popToRootViewControllerAnimated:YES];
     };
  
     // Show the alertView
@@ -574,7 +576,54 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 
 - (void)editCommentWithBlock:(NotificationBlock *)block
 {
-#warning TODO: Implement Me
+    EditCommentViewController *editViewController   = [EditCommentViewController newEditCommentViewController];
+    editViewController.delegate                     = self;
+    editViewController.content                      = block.text;
+    editViewController.userInfo                     = block;
+    
+    UINavigationController *navController           = [[UINavigationController alloc] initWithRootViewController:editViewController];
+    navController.modalPresentationStyle            = UIModalPresentationFormSheet;
+    navController.modalTransitionStyle              = UIModalTransitionStyleCoverVertical;
+    navController.navigationBar.translucent         = NO;
+    
+    [self presentViewController:navController animated:true completion:nil];
+}
+
+
+#pragma mark - EditCommentViewControllerDelegate
+
+- (void)editCommentViewController:(EditCommentViewController *)sender didUpdateContent:(NSString *)newContent
+{
+    NSAssert([sender.userInfo isKindOfClass:[NotificationBlock class]], nil);
+    
+    // Local Override: Temporary hack until Simperium reflects the REST op
+    NotificationBlock *block        = sender.userInfo;
+    block.textOverride              = newContent;
+    [self.tableView reloadData];
+    
+    // Hit the backend
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
+    __typeof(self) __weak weakSelf  = self;
+    
+    [service updateCommentWithID:block.metaCommentID siteID:block.metaSiteID content:newContent success:nil failure:^(NSError *error) {
+        [UIAlertView showWithTitle:nil
+                           message:NSLocalizedString(@"Couldn't Update Comment. Please, try again later",
+                                                     @"Error displayed if a comment fails to get updated")
+                 cancelButtonTitle:NSLocalizedString(@"Accept", nil)
+                 otherButtonTitles:nil
+                          tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                      block.textOverride = nil;
+                      [weakSelf.tableView reloadData];
+                 }];
+    }];
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)editCommentViewControllerFinished:(EditCommentViewController *)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

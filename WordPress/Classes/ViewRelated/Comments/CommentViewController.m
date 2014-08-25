@@ -38,7 +38,8 @@ typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
 #pragma mark Private
 #pragma mark ==========================================================================================
 
-@interface CommentViewController () <UIActionSheetDelegate, InlineComposeViewDelegate, WPContentViewDelegate, EditCommentViewControllerDelegate>
+@interface CommentViewController () <UIActionSheetDelegate, InlineComposeViewDelegate,
+                                     WPContentViewDelegate, EditCommentViewControllerDelegate>
 
 @property (nonatomic, strong) CommentView               *commentView;
 @property (nonatomic, strong) UIButton                  *trashButton;
@@ -48,7 +49,6 @@ typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
 @property (nonatomic, strong) UIButton                  *replyButton;
 @property (nonatomic, strong) InlineComposeView         *inlineComposeView;
 @property (nonatomic, strong) Comment                   *reply;
-@property (nonatomic, strong) EditCommentViewController *editCommentViewController;
 @property (nonatomic, assign) BOOL                      transientReply;
 @property (nonatomic, strong) UITapGestureRecognizer    *tapGesture;
 
@@ -127,12 +127,10 @@ typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
     self.inlineComposeView.delegate         = self;
     [self.view addSubview:self.inlineComposeView];
 
-    if (self.comment) {
-        [self showComment:self.comment];
-   }
-
     // For tapping to dismiss the keyboard
     self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+    
+    [self reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -179,9 +177,8 @@ typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
     [self.approveButton setAccessibilityLabel:NSLocalizedString(@"Unapprove", @"Spoken accessibility label.")];
 }
 
-- (void)showComment:(Comment *)comment
+- (void)reloadData
 {
-    self.comment = comment;
     [self.commentView reloadData];
     [self updateApproveButton];
 }
@@ -218,17 +215,16 @@ typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
 
 - (void)showEditCommentViewWithAnimation:(BOOL)animate
 {
-	self.editCommentViewController = [[EditCommentViewController alloc]
-                                      initWithNibName:NSStringFromClass([EditCommentViewController class])
-                                      bundle:nil];
-    self.editCommentViewController.delegate = self;
-	self.editCommentViewController.comment  = self.comment;
-	self.editCommentViewController.title    = NSLocalizedString(@"Edit Comment", @"");
+	EditCommentViewController *editViewController   = [EditCommentViewController newEditCommentViewController];
     
-    UINavigationController *navController   = [[UINavigationController alloc] initWithRootViewController:self.editCommentViewController];
-    navController.modalPresentationStyle    = UIModalPresentationFormSheet;
-    navController.modalTransitionStyle      = UIModalTransitionStyleCoverVertical;
-    navController.navigationBar.translucent = NO;
+	editViewController.content                      = self.comment.content;
+    editViewController.delegate                     = self;
+    
+    UINavigationController *navController           = [[UINavigationController alloc] initWithRootViewController:editViewController];
+    navController.modalPresentationStyle            = UIModalPresentationFormSheet;
+    navController.modalTransitionStyle              = UIModalTransitionStyleCoverVertical;
+    navController.navigationBar.translucent         = NO;
+    
     [self presentViewController:navController animated:animate completion:nil];
 }
 
@@ -246,13 +242,39 @@ typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
 }
 
 
-#pragma mark - EditCommentViewController Delegate
+#pragma mark - EditCommentViewControllerDelegate
 
-- (void)editCommentViewController:(EditCommentViewController *)sender finishedWithUpdates:(BOOL)hasUpdates
+- (void)editCommentViewController:(EditCommentViewController *)sender didUpdateContent:(NSString *)newContent
 {
-    if (hasUpdates) {
-        [self showComment:sender.comment];
-    }
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
+    __typeof(self) __weak weakSelf  = self;
+
+    sender.interfaceEnabled = NO;
+    
+    [commentService uploadComment:self.comment
+                          success:^(void) {
+                              weakSelf.comment.content = newContent;
+                              [weakSelf reloadData];
+                              [weakSelf dismissViewControllerAnimated:YES completion:nil];
+                          }
+                          failure:^(NSError *error) {
+                              NSString *message = NSLocalizedString(@"Couldn't Update Comment. Please, try again later",
+                                                                    @"Error displayed if a comment fails to get updated");
+
+                              UIAlertView *alertView  = [[UIAlertView alloc] initWithTitle:nil
+                                                                                   message:message
+                                                                                  delegate:nil
+                                                                         cancelButtonTitle:NSLocalizedString(@"Accept", nil)
+                                                                         otherButtonTitles:nil,
+                                                         nil];
+                              [alertView show];
+                              sender.interfaceEnabled = YES;
+                          }];
+}
+
+- (void)editCommentViewControllerFinished:(EditCommentViewController *)sender
+{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
