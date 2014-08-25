@@ -4,10 +4,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7026.1"/>
     </dependencies>
     <scenes>
-        <!--Notifications View Controller-->
+        <!--Notification List Controller-->
         <scene sceneID="vDn-Eb-UHK">
             <objects>
-                <tableViewController storyboardIdentifier="NotificationsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="MbC-cA-c9S" customClass="NotificationsViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NotificationsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="MbC-cA-c9S" userLabel="Notification List Controller" customClass="NotificationsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="dwB-H6-MqD">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -20,283 +20,18 @@
                         </connections>
                     </tableView>
                     <connections>
-                        <segue destination="sRf-Tq-HI3" kind="push" identifier="NotificationDetailsViewController" id="4WF-8r-gCq"/>
                         <segue destination="xj3-6N-2Jy" kind="push" identifier="ReaderPostDetailViewController" id="4ec-Ni-5a5"/>
+                        <segue destination="veA-Pg-QAw" kind="push" identifier="NotificationDetailsViewController" id="Wf0-ec-EMc"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tfv-il-pov" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="424" y="-372"/>
+            <point key="canvasLocation" x="420" y="-372"/>
         </scene>
-        <!--Notification Details View Controller-->
-        <scene sceneID="0oX-bB-0qa">
-            <objects>
-                <tableViewController storyboardIdentifier="NotificationDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="sRf-Tq-HI3" customClass="NotificationDetailsViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="1" id="uZb-9j-LkQ">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockTextTableViewCell" id="jmW-dd-Cbx" userLabel="Text TableViewCell" customClass="NoteBlockTextTableViewCell" customModule="WordPress">
-                                <rect key="frame" x="0.0" y="55" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jmW-dd-Cbx" id="giy-cd-Nqj">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xQl-T8-nxx" customClass="DTAttributedLabel">
-                                            <rect key="frame" x="12" y="4" width="296" height="35"/>
-                                            <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
-                                        </view>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="xQl-T8-nxx" secondAttribute="trailing" constant="12" id="1eK-fK-GCm"/>
-                                        <constraint firstAttribute="bottom" secondItem="xQl-T8-nxx" secondAttribute="bottom" constant="4" id="32J-rw-yAR"/>
-                                        <constraint firstAttribute="centerY" secondItem="xQl-T8-nxx" secondAttribute="centerY" id="3vn-hK-mN9"/>
-                                        <constraint firstAttribute="centerX" secondItem="xQl-T8-nxx" secondAttribute="centerX" id="Gaf-Co-E4R"/>
-                                        <constraint firstItem="xQl-T8-nxx" firstAttribute="top" secondItem="giy-cd-Nqj" secondAttribute="top" constant="4" id="KZd-Oo-gLt"/>
-                                        <constraint firstItem="xQl-T8-nxx" firstAttribute="leading" secondItem="giy-cd-Nqj" secondAttribute="leading" constant="12" id="Nh3-QF-FzD"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="attributedLabel" destination="xQl-T8-nxx" id="TGD-Ae-77C"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockCommentTableViewCell" rowHeight="85" id="oku-4A-odK" userLabel="Comment TableViewCell" customClass="NoteBlockCommentTableViewCell" customModule="WordPress">
-                                <rect key="frame" x="0.0" y="99" width="320" height="85"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oku-4A-odK" id="cG4-pT-v6A">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="84"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rgW-kf-700" customClass="DTAttributedLabel">
-                                            <rect key="frame" x="12" y="4" width="296" height="20"/>
-                                            <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
-                                        </view>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h5e-hC-AQ3" customClass="VerticallyStackedButton">
-                                            <rect key="frame" x="245" y="44" width="55" height="30"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="55" id="Vho-c3-TWh"/>
-                                                <constraint firstAttribute="height" constant="30" id="kN3-2w-Mt2"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                            <state key="normal" title="More" image="notifications-more">
-                                                <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="moreWasPressed:" destination="oku-4A-odK" eventType="touchUpInside" id="xR2-1Q-wR5"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="etA-iD-79F" customClass="VerticallyStackedButton">
-                                            <rect key="frame" x="170" y="44" width="55" height="30"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="55" id="Sid-wv-gZI"/>
-                                                <constraint firstAttribute="height" constant="30" id="U7g-U2-03k"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                            <state key="normal" title="Trash" image="notifications-trash">
-                                                <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="trashWasPressed:" destination="oku-4A-odK" eventType="touchUpInside" id="cGd-SP-J4P"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8zl-sO-yf4" customClass="VerticallyStackedButton">
-                                            <rect key="frame" x="95" y="44" width="55" height="30"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="30" id="MJF-d4-6Jm"/>
-                                                <constraint firstAttribute="width" constant="55" id="i3Y-p6-6qw"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                            <state key="normal" title="Approve" image="notifications-approve">
-                                                <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <state key="selected" image="notifications-approved"/>
-                                            <state key="highlighted" image="notifications-approved"/>
-                                            <connections>
-                                                <action selector="approveWasPressed:" destination="oku-4A-odK" eventType="touchUpInside" id="lXB-cJ-kbW"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vto-lH-7Lj" customClass="VerticallyStackedButton">
-                                            <rect key="frame" x="20" y="44" width="55" height="30"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="30" id="3HY-fa-UE8"/>
-                                                <constraint firstAttribute="width" constant="55" id="ftc-dW-wlC"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                            <state key="normal" title="Like" image="notifications-like">
-                                                <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <state key="selected" image="notifications-liked"/>
-                                            <state key="highlighted" image="notifications-liked"/>
-                                            <connections>
-                                                <action selector="likeWasPressed:" destination="oku-4A-odK" eventType="touchUpInside" id="DYL-In-5zL"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="etA-iD-79F" firstAttribute="leading" secondItem="8zl-sO-yf4" secondAttribute="trailing" constant="20" id="2Mp-rh-erz"/>
-                                        <constraint firstAttribute="bottom" secondItem="8zl-sO-yf4" secondAttribute="bottom" constant="10" id="C8l-Y6-AgZ"/>
-                                        <constraint firstItem="rgW-kf-700" firstAttribute="leading" secondItem="cG4-pT-v6A" secondAttribute="leading" constant="12" id="JOA-8B-yWV"/>
-                                        <constraint firstItem="h5e-hC-AQ3" firstAttribute="leading" secondItem="etA-iD-79F" secondAttribute="trailing" constant="20" id="Kth-U4-J9R"/>
-                                        <constraint firstAttribute="trailing" secondItem="h5e-hC-AQ3" secondAttribute="trailing" constant="20" id="MMF-gg-Z8u"/>
-                                        <constraint firstAttribute="bottom" secondItem="etA-iD-79F" secondAttribute="bottom" constant="10" id="PML-yo-QB4"/>
-                                        <constraint firstAttribute="trailing" secondItem="rgW-kf-700" secondAttribute="trailing" constant="12" id="U9a-ao-zsZ"/>
-                                        <constraint firstItem="8zl-sO-yf4" firstAttribute="leading" secondItem="vto-lH-7Lj" secondAttribute="trailing" constant="20" id="YMi-es-n2e"/>
-                                        <constraint firstAttribute="bottom" secondItem="h5e-hC-AQ3" secondAttribute="bottom" constant="10" id="cUB-3k-lRe"/>
-                                        <constraint firstItem="rgW-kf-700" firstAttribute="top" secondItem="cG4-pT-v6A" secondAttribute="top" constant="4" id="eua-xv-Aej"/>
-                                        <constraint firstAttribute="bottom" secondItem="vto-lH-7Lj" secondAttribute="bottom" constant="10" id="jET-CI-PkH"/>
-                                        <constraint firstItem="8zl-sO-yf4" firstAttribute="top" secondItem="rgW-kf-700" secondAttribute="bottom" constant="20" id="xbI-ib-BJY"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="attributedLabel" destination="rgW-kf-700" id="vEY-2c-Mff"/>
-                                    <outlet property="btnApprove" destination="8zl-sO-yf4" id="GAF-72-3x0"/>
-                                    <outlet property="btnLike" destination="vto-lH-7Lj" id="kWp-LW-8s1"/>
-                                    <outlet property="btnMore" destination="h5e-hC-AQ3" id="FpW-fd-JES"/>
-                                    <outlet property="btnTrash" destination="etA-iD-79F" id="9au-o2-ShQ"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockQuoteTableViewCell" id="iyh-u1-L6U" userLabel="Quote TableViewCell" customClass="NoteBlockQuoteTableViewCell" customModule="WordPress">
-                                <rect key="frame" x="0.0" y="184" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iyh-u1-L6U" id="DNi-Ol-Dh9">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sbX-f5-Gcj" customClass="DTAttributedLabel">
-                                            <rect key="frame" x="46" y="4" width="254" height="35"/>
-                                            <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
-                                        </view>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="centerX" secondItem="sbX-f5-Gcj" secondAttribute="centerX" constant="-13" id="3mX-KV-85L"/>
-                                        <constraint firstAttribute="centerY" secondItem="sbX-f5-Gcj" secondAttribute="centerY" id="5Hu-B3-v4C"/>
-                                        <constraint firstItem="sbX-f5-Gcj" firstAttribute="top" secondItem="DNi-Ol-Dh9" secondAttribute="top" constant="4" id="9P2-eE-xHH"/>
-                                        <constraint firstAttribute="trailing" secondItem="sbX-f5-Gcj" secondAttribute="trailing" constant="20" id="D7q-T0-sPM"/>
-                                        <constraint firstAttribute="bottom" secondItem="sbX-f5-Gcj" secondAttribute="bottom" constant="4" id="Rsx-2A-3jr"/>
-                                        <constraint firstItem="sbX-f5-Gcj" firstAttribute="leading" secondItem="DNi-Ol-Dh9" secondAttribute="leading" constant="46" id="VA4-Iu-WUh"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="attributedLabel" destination="sbX-f5-Gcj" id="TAG-xA-x9m"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockImageTableViewCell" rowHeight="200" id="haN-FG-i9H" userLabel="Image TableViewCell" customClass="NoteBlockImageTableViewCell" customModule="WordPress">
-                                <rect key="frame" x="0.0" y="228" width="320" height="200"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="haN-FG-i9H" id="jcD-Sy-kp4">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="199"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uTP-8C-n1f">
-                                            <rect key="frame" x="70" y="10" width="180" height="180"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="180" id="B2H-AC-b6O"/>
-                                                <constraint firstAttribute="height" constant="180" id="ngI-Pe-IJK"/>
-                                            </constraints>
-                                        </imageView>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <constraints>
-                                        <constraint firstAttribute="centerX" secondItem="uTP-8C-n1f" secondAttribute="centerX" id="XEI-wO-7wh"/>
-                                        <constraint firstItem="uTP-8C-n1f" firstAttribute="top" secondItem="jcD-Sy-kp4" secondAttribute="top" constant="10" id="gZk-lc-hCi"/>
-                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="uTP-8C-n1f" secondAttribute="bottom" constant="9" id="jcH-KR-U2X"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="blockImageView" destination="uTP-8C-n1f" id="0XB-7F-Ajd"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockUserTableViewCell" rowHeight="70" id="5xE-rP-cOl" userLabel="User TableViewCell" customClass="NoteBlockUserTableViewCell" customModule="WordPress">
-                                <rect key="frame" x="0.0" y="428" width="320" height="70"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5xE-rP-cOl" id="cu5-vz-Y42">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="69"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="left.png" translatesAutoresizingMaskIntoConstraints="NO" id="uO0-Jy-JBJ" userLabel="GravatarImageView">
-                                            <rect key="frame" x="12" y="12" width="45" height="45"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="45" id="8b5-TD-whw"/>
-                                                <constraint firstAttribute="height" constant="45" id="pC3-Hj-o6f"/>
-                                            </constraints>
-                                        </imageView>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name Lastname" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rMO-Sz-KSd" userLabel="NameLabel">
-                                            <rect key="frame" x="69" y="9" width="239" height="16"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="16" id="gwn-bj-bzd"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blog URL" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wTS-9g-tC4" userLabel="BlogUrlLabel">
-                                            <rect key="frame" x="69" y="26" width="239" height="16"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="16" id="6kR-hM-LP3"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F3e-O2-MLK" userLabel="FollowButton">
-                                            <rect key="frame" x="65" y="43" width="78" height="22"/>
-                                            <inset key="contentEdgeInsets" minX="2" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                            <state key="normal" title="Button" image="reader-postaction-follow.png">
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="followWasPressed:" destination="5xE-rP-cOl" eventType="touchUpInside" id="xjB-lR-EYE"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="rMO-Sz-KSd" secondAttribute="trailing" constant="12" id="8t3-7u-ufB"/>
-                                        <constraint firstAttribute="trailing" secondItem="wTS-9g-tC4" secondAttribute="trailing" constant="12" id="CsE-UV-m6q"/>
-                                        <constraint firstItem="wTS-9g-tC4" firstAttribute="leading" secondItem="uO0-Jy-JBJ" secondAttribute="trailing" constant="12" id="Ifu-ku-eCE"/>
-                                        <constraint firstItem="rMO-Sz-KSd" firstAttribute="leading" secondItem="uO0-Jy-JBJ" secondAttribute="trailing" constant="12" id="Kxw-HX-sNc"/>
-                                        <constraint firstItem="uO0-Jy-JBJ" firstAttribute="top" secondItem="cu5-vz-Y42" secondAttribute="top" constant="12" id="RuQ-GJ-uy2"/>
-                                        <constraint firstItem="F3e-O2-MLK" firstAttribute="top" secondItem="wTS-9g-tC4" secondAttribute="bottom" constant="1" id="TqU-Xh-qJd"/>
-                                        <constraint firstItem="rMO-Sz-KSd" firstAttribute="top" secondItem="cu5-vz-Y42" secondAttribute="top" constant="9" id="Y5L-Kd-5hN"/>
-                                        <constraint firstItem="uO0-Jy-JBJ" firstAttribute="leading" secondItem="cu5-vz-Y42" secondAttribute="leading" constant="12" id="hN5-TW-FH1"/>
-                                        <constraint firstItem="F3e-O2-MLK" firstAttribute="leading" secondItem="uO0-Jy-JBJ" secondAttribute="trailing" constant="8" id="oW2-Fy-U5d"/>
-                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="uO0-Jy-JBJ" secondAttribute="bottom" constant="12" id="p65-G6-dlz"/>
-                                        <constraint firstItem="wTS-9g-tC4" firstAttribute="top" secondItem="rMO-Sz-KSd" secondAttribute="bottom" constant="1" id="vFa-Rh-sKm"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="blogLabel" destination="wTS-9g-tC4" id="1VI-qM-8S9"/>
-                                    <outlet property="btnFollow" destination="F3e-O2-MLK" id="LTd-u4-n8j"/>
-                                    <outlet property="gravatarImageView" destination="uO0-Jy-JBJ" id="j1G-EB-SA2"/>
-                                    <outlet property="nameLabel" destination="rMO-Sz-KSd" id="1Fj-iV-Jh6"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="sRf-Tq-HI3" id="JwA-1a-Zry"/>
-                            <outlet property="delegate" destination="sRf-Tq-HI3" id="Mkg-KM-iUT"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="tUU-NJ-YmT"/>
-                    <connections>
-                        <segue destination="Bbj-DX-KQ7" kind="push" identifier="WPWebViewController" id="ypC-nX-8xX"/>
-                        <segue destination="8p8-88-FGK" kind="push" identifier="StatsViewController" id="LbX-cC-eQB"/>
-                        <segue destination="xj3-6N-2Jy" kind="push" identifier="ReaderPostDetailViewController" id="bzs-Og-i8b"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="bJT-Hx-TtA" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1027" y="-372.5"/>
-        </scene>
-        <!--Reader Post Detail View Controller-->
+        <!--Reader Post Details-->
         <scene sceneID="ET8-9p-ZLz">
             <objects>
-                <tableViewController id="xj3-6N-2Jy" customClass="ReaderPostDetailViewController" sceneMemberID="viewController">
+                <tableViewController id="xj3-6N-2Jy" userLabel="Reader Post Details" customClass="ReaderPostDetailViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="7Cm-An-fV3">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -312,20 +47,302 @@
             </objects>
             <point key="canvasLocation" x="1573" y="-1271"/>
         </scene>
-        <!--Web View Controller-->
+        <!--WebView-->
         <scene sceneID="1zS-D4-F1Z">
             <objects>
-                <viewController id="Bbj-DX-KQ7" customClass="WPWebViewController" sceneMemberID="viewController">
+                <viewController id="Bbj-DX-KQ7" userLabel="WebView" customClass="WPWebViewController" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="Ggf-4b-Gwr"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fEj-cd-uMn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1573" y="-372"/>
         </scene>
-        <!--Stats View Controller-->
+        <!--Notification Details-->
+        <scene sceneID="0B7-mU-JSs">
+            <objects>
+                <viewController storyboardIdentifier="NotificationDetailsViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="veA-Pg-QAw" userLabel="Notification Details" customClass="NotificationDetailsViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="8gl-SX-x5I"/>
+                        <viewControllerLayoutGuide type="bottom" id="6LW-NS-qSh"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="lvM-1n-Dgf">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="Dcn-Il-AtN">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockTextTableViewCell" id="8uY-4y-V9f" userLabel="Text TableViewCell" customClass="NoteBlockTextTableViewCell" customModule="WordPress">
+                                        <rect key="frame" x="0.0" y="55" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8uY-4y-V9f" id="NH8-8d-hqH">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GLh-mA-WVS" customClass="DTAttributedLabel">
+                                                    <rect key="frame" x="12" y="4" width="296" height="35"/>
+                                                    <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="centerY" secondItem="GLh-mA-WVS" secondAttribute="centerY" id="4ZG-iK-vRU"/>
+                                                <constraint firstItem="GLh-mA-WVS" firstAttribute="top" secondItem="NH8-8d-hqH" secondAttribute="top" constant="4" id="5dV-4x-X4w"/>
+                                                <constraint firstAttribute="bottom" secondItem="GLh-mA-WVS" secondAttribute="bottom" constant="4" id="8mn-JC-yW3"/>
+                                                <constraint firstItem="GLh-mA-WVS" firstAttribute="leading" secondItem="NH8-8d-hqH" secondAttribute="leading" constant="12" id="Bmt-Hq-JsJ"/>
+                                                <constraint firstAttribute="trailing" secondItem="GLh-mA-WVS" secondAttribute="trailing" constant="12" id="FaL-Yr-4jD"/>
+                                                <constraint firstAttribute="centerX" secondItem="GLh-mA-WVS" secondAttribute="centerX" id="ota-iQ-DAa"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="attributedLabel" destination="GLh-mA-WVS" id="qNi-br-Wyd"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockCommentTableViewCell" rowHeight="85" id="FtC-SI-oJr" userLabel="Comment TableViewCell" customClass="NoteBlockCommentTableViewCell" customModule="WordPress">
+                                        <rect key="frame" x="0.0" y="99" width="320" height="85"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FtC-SI-oJr" id="7qg-ok-Rbo">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="84"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N7y-ge-mMq" customClass="DTAttributedLabel">
+                                                    <rect key="frame" x="12" y="4" width="296" height="20"/>
+                                                    <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
+                                                </view>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ab9-Eo-ue1" customClass="VerticallyStackedButton">
+                                                    <rect key="frame" x="245" y="44" width="55" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="qlj-w2-KrE"/>
+                                                        <constraint firstAttribute="width" constant="55" id="xMy-8x-DnT"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                    <state key="normal" title="More" image="notifications-more">
+                                                        <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="moreWasPressed:" destination="FtC-SI-oJr" eventType="touchUpInside" id="5Ga-UK-Pu7"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q3a-Aa-VqY" customClass="VerticallyStackedButton">
+                                                    <rect key="frame" x="170" y="44" width="55" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="VSj-Rz-XHO"/>
+                                                        <constraint firstAttribute="width" constant="55" id="aqK-WO-00U"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                    <state key="normal" title="Trash" image="notifications-trash">
+                                                        <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="trashWasPressed:" destination="FtC-SI-oJr" eventType="touchUpInside" id="Qe4-mZ-Jkb"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dZU-ho-dbu" customClass="VerticallyStackedButton">
+                                                    <rect key="frame" x="95" y="44" width="55" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="jsm-Ss-Rje"/>
+                                                        <constraint firstAttribute="width" constant="55" id="oj5-pk-p8y"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                    <state key="normal" title="Approve" image="notifications-approve">
+                                                        <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <state key="selected" image="notifications-approved"/>
+                                                    <state key="highlighted" image="notifications-approved"/>
+                                                    <connections>
+                                                        <action selector="approveWasPressed:" destination="FtC-SI-oJr" eventType="touchUpInside" id="YLu-SY-nNP"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e1p-ec-Dn3" customClass="VerticallyStackedButton">
+                                                    <rect key="frame" x="20" y="44" width="55" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="4xJ-DC-pYG"/>
+                                                        <constraint firstAttribute="width" constant="55" id="jzW-8y-eL4"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                    <state key="normal" title="Like" image="notifications-like">
+                                                        <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <state key="selected" image="notifications-liked"/>
+                                                    <state key="highlighted" image="notifications-liked"/>
+                                                    <connections>
+                                                        <action selector="likeWasPressed:" destination="FtC-SI-oJr" eventType="touchUpInside" id="c0t-Kd-Ydq"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="dZU-ho-dbu" secondAttribute="bottom" constant="10" id="1aA-CQ-qo3"/>
+                                                <constraint firstItem="q3a-Aa-VqY" firstAttribute="leading" secondItem="dZU-ho-dbu" secondAttribute="trailing" constant="20" id="5uM-TI-L7f"/>
+                                                <constraint firstItem="N7y-ge-mMq" firstAttribute="leading" secondItem="7qg-ok-Rbo" secondAttribute="leading" constant="12" id="J6e-4J-hog"/>
+                                                <constraint firstAttribute="trailing" secondItem="Ab9-Eo-ue1" secondAttribute="trailing" constant="20" id="KDn-Ow-HF5"/>
+                                                <constraint firstItem="dZU-ho-dbu" firstAttribute="top" secondItem="N7y-ge-mMq" secondAttribute="bottom" constant="20" id="Nv9-2J-fPz"/>
+                                                <constraint firstAttribute="bottom" secondItem="e1p-ec-Dn3" secondAttribute="bottom" constant="10" id="Uay-O7-R9b"/>
+                                                <constraint firstItem="dZU-ho-dbu" firstAttribute="leading" secondItem="e1p-ec-Dn3" secondAttribute="trailing" constant="20" id="UiB-vh-iqC"/>
+                                                <constraint firstItem="N7y-ge-mMq" firstAttribute="top" secondItem="7qg-ok-Rbo" secondAttribute="top" constant="4" id="gJa-1O-Y1d"/>
+                                                <constraint firstAttribute="bottom" secondItem="q3a-Aa-VqY" secondAttribute="bottom" constant="10" id="p8O-Ad-1yT"/>
+                                                <constraint firstItem="Ab9-Eo-ue1" firstAttribute="leading" secondItem="q3a-Aa-VqY" secondAttribute="trailing" constant="20" id="vhg-mW-OJq"/>
+                                                <constraint firstAttribute="trailing" secondItem="N7y-ge-mMq" secondAttribute="trailing" constant="12" id="voR-xo-QDx"/>
+                                                <constraint firstAttribute="bottom" secondItem="Ab9-Eo-ue1" secondAttribute="bottom" constant="10" id="wQc-o4-BEX"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="attributedLabel" destination="N7y-ge-mMq" id="Cou-VH-JAO"/>
+                                            <outlet property="btnApprove" destination="dZU-ho-dbu" id="wQI-LZ-w9g"/>
+                                            <outlet property="btnLike" destination="e1p-ec-Dn3" id="HMC-LX-m8X"/>
+                                            <outlet property="btnMore" destination="Ab9-Eo-ue1" id="W9i-90-82S"/>
+                                            <outlet property="btnTrash" destination="q3a-Aa-VqY" id="vN5-93-aA4"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockQuoteTableViewCell" id="Dpg-vo-rxU" userLabel="Quote TableViewCell" customClass="NoteBlockQuoteTableViewCell" customModule="WordPress">
+                                        <rect key="frame" x="0.0" y="184" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Dpg-vo-rxU" id="ZTa-lk-ggH">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pHP-LD-lzg" customClass="DTAttributedLabel">
+                                                    <rect key="frame" x="46" y="4" width="254" height="35"/>
+                                                    <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="pHP-LD-lzg" firstAttribute="leading" secondItem="ZTa-lk-ggH" secondAttribute="leading" constant="46" id="Pqv-ke-HPK"/>
+                                                <constraint firstAttribute="bottom" secondItem="pHP-LD-lzg" secondAttribute="bottom" constant="4" id="RJK-8L-jT0"/>
+                                                <constraint firstAttribute="trailing" secondItem="pHP-LD-lzg" secondAttribute="trailing" constant="20" id="are-21-ABH"/>
+                                                <constraint firstAttribute="centerY" secondItem="pHP-LD-lzg" secondAttribute="centerY" id="fKQ-qH-Y1z"/>
+                                                <constraint firstAttribute="centerX" secondItem="pHP-LD-lzg" secondAttribute="centerX" constant="-13" id="k3H-3y-KsQ"/>
+                                                <constraint firstItem="pHP-LD-lzg" firstAttribute="top" secondItem="ZTa-lk-ggH" secondAttribute="top" constant="4" id="vug-dN-6Vl"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="attributedLabel" destination="pHP-LD-lzg" id="fRS-tG-9g4"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockImageTableViewCell" rowHeight="200" id="maM-iX-PxD" userLabel="Image TableViewCell" customClass="NoteBlockImageTableViewCell" customModule="WordPress">
+                                        <rect key="frame" x="0.0" y="228" width="320" height="200"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="maM-iX-PxD" id="YlY-Sp-I9d">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="199"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7Wk-on-qN0">
+                                                    <rect key="frame" x="70" y="10" width="180" height="180"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="180" id="VpH-f3-DEv"/>
+                                                        <constraint firstAttribute="height" constant="180" id="r7o-Cr-Si6"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="centerX" secondItem="7Wk-on-qN0" secondAttribute="centerX" id="D5r-ea-6YV"/>
+                                                <constraint firstItem="7Wk-on-qN0" firstAttribute="top" secondItem="YlY-Sp-I9d" secondAttribute="top" constant="10" id="Rk2-tE-Y2A"/>
+                                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="7Wk-on-qN0" secondAttribute="bottom" constant="9" id="utL-Wy-WBK"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="blockImageView" destination="7Wk-on-qN0" id="KvG-Pe-3Ir"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockUserTableViewCell" rowHeight="70" id="l6H-Qs-0x7" userLabel="User TableViewCell" customClass="NoteBlockUserTableViewCell" customModule="WordPress">
+                                        <rect key="frame" x="0.0" y="428" width="320" height="70"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="l6H-Qs-0x7" id="1cQ-bH-Fko">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="69"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="left.png" translatesAutoresizingMaskIntoConstraints="NO" id="gS1-fC-NuP" userLabel="GravatarImageView">
+                                                    <rect key="frame" x="12" y="12" width="45" height="45"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="45" id="8bA-fM-cAz"/>
+                                                        <constraint firstAttribute="height" constant="45" id="Gqw-qr-j7g"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name Lastname" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NoK-QJ-MnS" userLabel="NameLabel">
+                                                    <rect key="frame" x="69" y="9" width="239" height="16"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="16" id="b1N-Xi-zdv"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blog URL" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8yY-Q0-7Ra" userLabel="BlogUrlLabel">
+                                                    <rect key="frame" x="69" y="26" width="239" height="16"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="16" id="eJA-cA-Zex"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rba-We-3uT" userLabel="FollowButton">
+                                                    <rect key="frame" x="65" y="43" width="78" height="22"/>
+                                                    <inset key="contentEdgeInsets" minX="2" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                    <state key="normal" title="Button" image="reader-postaction-follow.png">
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="followWasPressed:" destination="l6H-Qs-0x7" eventType="touchUpInside" id="KKi-Wv-KtU"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="NoK-QJ-MnS" firstAttribute="leading" secondItem="gS1-fC-NuP" secondAttribute="trailing" constant="12" id="6ef-jI-ty4"/>
+                                                <constraint firstItem="NoK-QJ-MnS" firstAttribute="top" secondItem="1cQ-bH-Fko" secondAttribute="top" constant="9" id="6tn-VB-ibE"/>
+                                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="gS1-fC-NuP" secondAttribute="bottom" constant="12" id="6z2-L3-OMa"/>
+                                                <constraint firstItem="rba-We-3uT" firstAttribute="top" secondItem="8yY-Q0-7Ra" secondAttribute="bottom" constant="1" id="750-tI-Bgq"/>
+                                                <constraint firstItem="gS1-fC-NuP" firstAttribute="top" secondItem="1cQ-bH-Fko" secondAttribute="top" constant="12" id="LeR-AI-23o"/>
+                                                <constraint firstAttribute="trailing" secondItem="8yY-Q0-7Ra" secondAttribute="trailing" constant="12" id="MFb-v2-d12"/>
+                                                <constraint firstItem="gS1-fC-NuP" firstAttribute="leading" secondItem="1cQ-bH-Fko" secondAttribute="leading" constant="12" id="dOZ-os-eoq"/>
+                                                <constraint firstItem="8yY-Q0-7Ra" firstAttribute="top" secondItem="NoK-QJ-MnS" secondAttribute="bottom" constant="1" id="kHQ-em-9qk"/>
+                                                <constraint firstItem="rba-We-3uT" firstAttribute="leading" secondItem="gS1-fC-NuP" secondAttribute="trailing" constant="8" id="nxL-zR-Io3"/>
+                                                <constraint firstItem="8yY-Q0-7Ra" firstAttribute="leading" secondItem="gS1-fC-NuP" secondAttribute="trailing" constant="12" id="tfl-Du-DuD"/>
+                                                <constraint firstAttribute="trailing" secondItem="NoK-QJ-MnS" secondAttribute="trailing" constant="12" id="zIv-px-bip"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="blogLabel" destination="8yY-Q0-7Ra" id="Ok8-FJ-aAR"/>
+                                            <outlet property="btnFollow" destination="rba-We-3uT" id="YkP-Xm-hkf"/>
+                                            <outlet property="gravatarImageView" destination="gS1-fC-NuP" id="lcT-ni-CT2"/>
+                                            <outlet property="nameLabel" destination="NoK-QJ-MnS" id="coz-8W-hDZ"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="veA-Pg-QAw" id="VzN-sT-2Co"/>
+                                    <outlet property="delegate" destination="veA-Pg-QAw" id="s6c-EK-4wV"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Dcn-Il-AtN" firstAttribute="leading" secondItem="lvM-1n-Dgf" secondAttribute="leading" id="EDd-eL-C3N"/>
+                            <constraint firstItem="Dcn-Il-AtN" firstAttribute="top" secondItem="lvM-1n-Dgf" secondAttribute="top" id="VrG-Fy-A84"/>
+                            <constraint firstAttribute="trailing" secondItem="Dcn-Il-AtN" secondAttribute="trailing" id="eJA-A9-B0Q"/>
+                            <constraint firstItem="6LW-NS-qSh" firstAttribute="top" secondItem="Dcn-Il-AtN" secondAttribute="bottom" id="gEq-Iu-gKX"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="gVZ-cy-2mc"/>
+                    <connections>
+                        <outlet property="tableView" destination="Dcn-Il-AtN" id="Mjf-q7-Lkn"/>
+                        <segue destination="8p8-88-FGK" kind="push" identifier="StatsViewController" id="EAn-K1-ofm"/>
+                        <segue destination="Bbj-DX-KQ7" kind="push" identifier="WPWebViewController" id="ygK-a3-WEJ"/>
+                        <segue destination="xj3-6N-2Jy" kind="push" identifier="ReaderPostDetailViewController" id="ODX-zz-S1G"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jzQ-hT-Ajt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1043" y="-372"/>
+        </scene>
+        <!--StatsView-->
         <scene sceneID="iWL-VB-TOS">
             <objects>
-                <viewController id="8p8-88-FGK" customClass="StatsViewController" sceneMemberID="viewController">
+                <viewController id="8p8-88-FGK" userLabel="StatsView" customClass="StatsViewController" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="Emb-tQ-YvX"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KeQ-Nv-SGg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -352,6 +369,6 @@
         </simulatedScreenMetrics>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="bzs-Og-i8b"/>
+        <segue reference="ODX-zz-S1G"/>
     </inferredMetricsTieBreakers>
 </document>

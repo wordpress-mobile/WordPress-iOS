@@ -31,7 +31,6 @@
 #pragma mark Constants
 #pragma mark ==========================================================================================
 
-static NSUInteger NotificationDetailSectionsBlocks  = 0;
 static NSUInteger NotificationDetailSectionsCount   = 1;
 
 static UIEdgeInsets NotificationTableInsetsPhone    = {0.0f,  0.0f, 20.0f, 0.0f};
@@ -43,8 +42,9 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 #pragma mark ==========================================================================================
 
 @interface NotificationDetailsViewController () <SPBucketDelegate, EditCommentViewControllerDelegate>
-@property (nonatomic, strong) NSDictionary *layoutCellMap;
-@property (nonatomic, strong) NSDictionary *reuseIdentifierMap;
+@property (nonatomic,   weak) IBOutlet UITableView  *tableView;
+@property (nonatomic, strong) NSDictionary          *layoutCellMap;
+@property (nonatomic, strong) NSDictionary          *reuseIdentifierMap;
 @end
 
 
@@ -90,6 +90,9 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     
     NSString *storyboardID  = NSStringFromClass([self class]);
     NotificationDetailsViewController *detailsViewController = [self.storyboard instantiateViewControllerWithIdentifier:storyboardID];
+    
+    // Force load the view
+    [detailsViewController view];
     
     UITableView *tableView  = detailsViewController.tableView;
 
@@ -576,6 +579,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 
 - (void)editCommentWithBlock:(NotificationBlock *)block
 {
+#warning TODO: This should be a segue
     EditCommentViewController *editViewController   = [EditCommentViewController newEditCommentViewController];
     editViewController.delegate                     = self;
     editViewController.content                      = block.text;
