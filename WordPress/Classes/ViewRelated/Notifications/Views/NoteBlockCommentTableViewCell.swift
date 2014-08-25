@@ -115,8 +115,8 @@ import Foundation
     }
     
     private func setupButtonConstraints(button: UIButton, enabled: Bool) {
-        let width: CGFloat       = hidden ? CGFloat.min : buttonWidth
-        let trailing: CGFloat    = hidden ? CGFloat.min : buttonTrailing
+        let width: CGFloat       = enabled ? buttonWidth    : CGFloat.min
+        let trailing: CGFloat    = enabled ? buttonTrailing : CGFloat.min
         
         for constraint in button.constraints() as [NSLayoutConstraint] {
             if constraint.firstAttribute == NSLayoutAttribute.Width {
@@ -125,7 +125,8 @@ import Foundation
         }
         
         for constraint in contentView.constraints() as [NSLayoutConstraint] {
-            if constraint.firstItem as NSObject == button && constraint.firstAttribute == NSLayoutAttribute.Trailing {
+            if constraint.firstItem as NSObject == button &&
+                (constraint.firstAttribute == .Trailing || constraint.firstAttribute == .Leading) {
                 constraint.constant = trailing
             }
         }
