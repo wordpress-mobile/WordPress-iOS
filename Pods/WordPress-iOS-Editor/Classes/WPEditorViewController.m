@@ -634,8 +634,8 @@ typedef enum
 {
 	ZSSBarButtonItem *barButtonItem = [[ZSSBarButtonItem alloc] initWithImage:nil
 																		style:UIBarButtonItemStylePlain
-																	   target:target
-																	   action:selector];
+																	   target:nil
+																	   action:nil];
 	barButtonItem.tag = tag;
 	barButtonItem.htmlProperty = htmlProperty;
 	barButtonItem.accessibilityLabel = accessibilityLabel;
@@ -646,6 +646,9 @@ typedef enum
 	[customButton setImage:buttonImage forState:UIControlStateNormal];
 	customButton.normalTintColor = self.barButtonItemDefaultColor;
 	customButton.selectedTintColor = self.barButtonItemSelectedDefaultColor;
+	[customButton addTarget:self
+					 action:selector
+		   forControlEvents:UIControlEventTouchUpInside];
 	barButtonItem.customView = customButton;
 
 	return barButtonItem;
