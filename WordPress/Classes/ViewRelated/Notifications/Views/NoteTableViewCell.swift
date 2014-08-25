@@ -6,7 +6,7 @@ import Foundation
     // MARK: - Public Properties
     public var read: Bool = false {
         didSet {
-            backgroundColor = read ? Notification.Colors.backgroundRead : Notification.Colors.backgroundUnread
+            backgroundColor = read ? WPStyleGuide.Notifications.Colors.backgroundRead : WPStyleGuide.Notifications.Colors.backgroundUnread
         }
     }
     public var attributedSubject: NSAttributedString? {
@@ -46,7 +46,7 @@ import Foundation
         iconImageView.image             = UIImage(named: placeholderName)
         
         noticonView.layer.cornerRadius  = noticonRadius
-        noticonLabel.font               = Notification.Fonts.noticon
+        noticonLabel.font               = WPStyleGuide.Notifications.Fonts.noticon
         noticonLabel.textColor          = UIColor.whiteColor()
         
         subjectLabel.numberOfLines      = numberOfLines
@@ -54,7 +54,7 @@ import Foundation
         subjectLabel.textAlignment      = .Left
         subjectLabel.lineBreakMode      = .ByWordWrapping
         subjectLabel.shadowOffset       = CGSizeZero
-        subjectLabel.textColor          = Notification.Colors.blockText
+        subjectLabel.textColor          = WPStyleGuide.Notifications.Colors.blockText
     }
     
     public override func layoutSubviews() {
@@ -79,7 +79,7 @@ import Foundation
     }
     
     private func refreshBackgrounds() {
-        noticonView.backgroundColor = read ? Notification.Colors.iconRead : Notification.Colors.iconUnread
+        noticonView.backgroundColor = read ? WPStyleGuide.Notifications.Colors.iconRead : WPStyleGuide.Notifications.Colors.iconUnread
     }
     
     // MARK: - Private Properties

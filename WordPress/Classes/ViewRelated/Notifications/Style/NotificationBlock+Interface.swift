@@ -8,15 +8,15 @@ extension NotificationBlock
             return NSAttributedString()
         }
         
-        let theString = NSMutableAttributedString(string: text, attributes: Notification.Styles.subjectRegular)
+        let theString = NSMutableAttributedString(string: text, attributes: WPStyleGuide.Notifications.Styles.subjectRegular)
 
-        theString.applyAttributesToQuotes(Notification.Styles.subjectItalics)
+        theString.applyAttributesToQuotes(WPStyleGuide.Notifications.Styles.subjectItalics)
 
         for url in urls as [NotificationURL] {
             if url.isUser {
-                theString.addAttributes(Notification.Styles.subjectBold, range: url.range)
+                theString.addAttributes(WPStyleGuide.Notifications.Styles.subjectBold, range: url.range)
             } else if url.isPost {
-                theString.addAttributes(Notification.Styles.subjectItalics, range: url.range)
+                theString.addAttributes(WPStyleGuide.Notifications.Styles.subjectItalics, range: url.range)
             }
         }
 
@@ -28,7 +28,7 @@ extension NotificationBlock
             return nil
         }
         
-        return NSMutableAttributedString(string: textOverride, attributes: Notification.Styles.blockRegular)
+        return NSMutableAttributedString(string: textOverride, attributes: WPStyleGuide.Notifications.Styles.blockRegular)
     }
 
     public func regularFormattedText() -> NSAttributedString {
@@ -36,21 +36,21 @@ extension NotificationBlock
             return NSAttributedString()
         }
         
-        let theString = NSMutableAttributedString(string: text, attributes: Notification.Styles.blockRegular)
+        let theString = NSMutableAttributedString(string: text, attributes: WPStyleGuide.Notifications.Styles.blockRegular)
         
-        theString.applyAttributesToQuotes(Notification.Styles.blockBold)
+        theString.applyAttributesToQuotes(WPStyleGuide.Notifications.Styles.blockBold)
         
         //  Note: CoreText doesn't work with NSLinkAttributeName
         //      DTLinkAttribute     = "NSLinkAttributeName"
         //      NSLinkAttributeName = "NSLink"
         for url in urls as [NotificationURL] {
             if url.isPost {
-                theString.addAttributes(Notification.Styles.blockItalics, range: url.range)
+                theString.addAttributes(WPStyleGuide.Notifications.Styles.blockItalics, range: url.range)
             }
             
             if url.url != nil {
                 theString.addAttribute(DTLinkAttribute, value: url.url, range: url.range)
-                theString.addAttribute(NSForegroundColorAttributeName, value: Notification.Colors.blockLink, range: url.range)
+                theString.addAttribute(NSForegroundColorAttributeName, value: WPStyleGuide.Notifications.Colors.blockLink, range: url.range)
             }
         }
         
@@ -62,6 +62,6 @@ extension NotificationBlock
             return NSAttributedString()
         }
 
-        return NSMutableAttributedString(string: text, attributes: Notification.Styles.quotedItalics)
+        return NSMutableAttributedString(string: text, attributes: WPStyleGuide.Notifications.Styles.quotedItalics)
     }
 }

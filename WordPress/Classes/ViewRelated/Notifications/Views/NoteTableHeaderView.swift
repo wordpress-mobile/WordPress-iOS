@@ -51,14 +51,14 @@ import Foundation
 
     // MARK - Private Helpers
     private func setupSubviews() {
-        backgroundColor             = Notification.Colors.headerBackground
+        backgroundColor             = WPStyleGuide.Notifications.Colors.headerBackground
         
         titleLabel                  = UILabel()
         titleLabel.textAlignment    = .Left
         titleLabel.numberOfLines    = 0;
         titleLabel.lineBreakMode    = .ByWordWrapping
-        titleLabel.font             = Notification.Fonts.headerText
-        titleLabel.textColor        = Notification.Colors.headerText
+        titleLabel.font             = WPStyleGuide.Notifications.Fonts.headerText
+        titleLabel.textColor        = WPStyleGuide.Notifications.Colors.headerText
         titleLabel.backgroundColor  = UIColor.clearColor()
         titleLabel.shadowOffset     = CGSizeZero
         addSubview(titleLabel)
