@@ -319,12 +319,22 @@
                                     <outlet property="delegate" destination="veA-Pg-QAw" id="s6c-EK-4wV"/>
                                 </connections>
                             </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F7c-Vr-zfK" userLabel="Input Accessory">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F7c-Vr-zfK" userLabel="Input Accessory" customClass="ReplyTextView" customModule="WordPress">
                                 <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                                <subviews>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Db0-Ld-RKM">
+                                        <rect key="frame" x="8" y="7" width="304" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                </subviews>
                                 <color key="backgroundColor" red="0.6910223365" green="0.1778415109" blue="0.27158834729999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="Y0K-36-Qe4"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="textField" destination="Db0-Ld-RKM" id="noY-d8-ubC"/>
+                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -340,6 +350,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="gVZ-cy-2mc"/>
                     <connections>
+                        <outlet property="replyTextView" destination="F7c-Vr-zfK" id="EAb-bd-jLN"/>
                         <outlet property="tableView" destination="Dcn-Il-AtN" id="Mjf-q7-Lkn"/>
                         <segue destination="8p8-88-FGK" kind="push" identifier="StatsViewController" id="EAn-K1-ofm"/>
                         <segue destination="Bbj-DX-KQ7" kind="push" identifier="WPWebViewController" id="ygK-a3-WEJ"/>
@@ -409,6 +420,6 @@
         </simulatedScreenMetrics>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="4ec-Ni-5a5"/>
+        <segue reference="ODX-zz-S1G"/>
     </inferredMetricsTieBreakers>
 </document>
