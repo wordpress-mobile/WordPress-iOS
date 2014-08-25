@@ -2,88 +2,97 @@ import UIKit
 
 
 @objc protocol WPContentSyncHelperDelegate: NSObjectProtocol {
-    func syncHelper(syncHelper:WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success:((count: Int)->Void)!, failure:((error:NSError)->Void)!);
-    func syncHelper(syncHelper:WPContentSyncHelper, syncMoreWithSuccess success:((count: Int)->Void)!, failure:((error:NSError)->Void)!);
-    optional func syncContentEnded();
-    optional func hasNoMoreContent();
+    func syncHelper(syncHelper:WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((count: Int) -> Void)?, failure: ((error: NSError) -> Void)?)
+    func syncHelper(syncHelper:WPContentSyncHelper, syncMoreWithSuccess success: ((count: Int) -> Void)?, failure: ((error: NSError) -> Void)?)
+    optional func syncContentEnded()
+    optional func hasNoMoreContent()
 }
 
 
 class WPContentSyncHelper: NSObject {
 
-    weak var delegate: WPContentSyncHelperDelegate?;
-    var isSyncing:Bool = false;
-    var isLoadingMore:Bool = false;
+    weak var delegate: WPContentSyncHelperDelegate?
+    var isSyncing:Bool = false
+    var isLoadingMore:Bool = false
     var hasMoreContent:Bool = true {
         didSet {
             if (hasMoreContent == oldValue) {
-                return;
+                return
             }
 
-            if (!hasMoreContent && self.delegate!.respondsToSelector(Selector("hasNoMoreContent"))) {
-                self.delegate!.hasNoMoreContent!();
-            }
+            delegate?.hasNoMoreContent?()
         }
-    };
+    }
 
 
     // MARK: - Syncing
 
     func syncContent() -> Bool {
-        return self.syncContentWithUserInteraction(false);
+        return syncContentWithUserInteraction(false)
     }
 
 
     func syncContentWithUserInteraction() -> Bool {
-        return self.syncContentWithUserInteraction(true);
+        return syncContentWithUserInteraction(true)
     }
 
 
     func syncContentWithUserInteraction(userInteraction:Bool) -> Bool {
-        if (self.isSyncing) {
-            return false;
+        if (isSyncing) {
+            return false
         }
 
-        self.isSyncing = true;
-        self.delegate?.syncHelper(self, syncContentWithUserInteraction: userInteraction, success: { (count) -> Void in
-            self.hasMoreContent = (count > 0);
-            self.syncContentEnded();
-        }, failure: { (error) -> Void in
-            self.syncContentEnded();
-        });
+        isSyncing = true
 
-        return true;
+        delegate?.syncHelper(self, syncContentWithUserInteraction: userInteraction, success: {
+            [weak self] (count: Int) -> Void in
+            if let weakSelf = self {
+                weakSelf.hasMoreContent = (count > 0)
+                weakSelf.syncContentEnded()
+            }
+        }, failure: {
+            [weak self] (error: NSError) -> Void in
+            if let weakSelf = self {
+                weakSelf.syncContentEnded()
+            }
+        })
+
+        return true
     }
 
 
     func syncMoreContent() -> Bool {
-        if (self.isSyncing) {
-            return false;
+        if (isSyncing) {
+            return false
         }
 
-        self.isSyncing = true;
-        self.isLoadingMore = true;
-        self.delegate?.syncHelper(self, syncMoreWithSuccess: { (count) -> Void in
-            self.isLoadingMore = false;
-            self.hasMoreContent = (count > 0);
-            self.syncContentEnded();
-        }, failure: { (error) -> Void in
-            self.syncContentEnded();
-        });
+        isSyncing = true
+        isLoadingMore = true
 
-        return true;
+        delegate?.syncHelper(self, syncMoreWithSuccess: {
+            [weak self] (count: Int) -> Void in
+            if let weakSelf = self {
+                weakSelf.hasMoreContent = (count > 0)
+                weakSelf.syncContentEnded()
+            }
+        }, failure: {
+            [weak self] (error: NSError) -> Void in
+            if let weakSelf = self {
+                weakSelf.syncContentEnded()
+            }
+        })
+
+        return true
     }
 
 
     // MARK: - Private Methods
 
     private func syncContentEnded() {
-        self.isSyncing = false;
-        self.isLoadingMore = false;
+        isSyncing = false
+        isLoadingMore = false
 
-        if (self.delegate!.respondsToSelector(Selector("syncContentEnded"))) {
-            self.delegate!.syncContentEnded!();
-        }
+        delegate?.syncContentEnded?()
     }
 
 }
