@@ -78,11 +78,6 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 
 - (void)dealloc
 {
-//    _resultsController.delegate = nil;
-    _postView.delegate = nil;
-    _commentPublisher.delegate = nil;
-    _tableViewHandler.delegate = nil;
-
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -165,7 +160,8 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 - (void)configureInfiniteScroll
 {
     if (self.syncHelper.hasMoreContent) {
-        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
+        CGFloat width = CGRectGetWidth(self.tableView.bounds);
+        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 50.0f)];
         footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [footerView addSubview:self.activityFooter];
         self.tableView.tableFooterView = footerView;
@@ -366,11 +362,7 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
         self.syncHelper = [[WPContentSyncHelper alloc] init];
         self.syncHelper.delegate = self;
     }
-//    if (_post.isWPCom) {
-//        self.hasMoreContent = YES;
-//    } else {
-//        self.hasMoreContent = NO;
-//    }
+
     [self configureInfiniteScroll];
 }
 
@@ -735,11 +727,17 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(NSInteger))success failure:(void (^)(NSError *))failure
 {
+    [self.activityFooter startAnimating];
     NSSet *topComments = [self.post.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"parentID = NULL"]];
     NSUInteger page = ([topComments count] / 20) + 1;
 
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [service syncHierarchicalCommentsForPost:self.post page:page success:success failure:failure];
+}
+
+- (void)syncContentEnded
+{
+    [self.activityFooter stopAnimating];
 }
 
 
@@ -862,25 +860,12 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 {
     // Are we approaching the end of the table?
     if ((indexPath.section + 1 == [self.tableViewHandler numberOfSectionsInTableView:tableView]) &&
-        (indexPath.row + 4 >= [self.tableViewHandler tableView:tableView numberOfRowsInSection:indexPath.section]) &&
-        [self.tableViewHandler tableView:tableView numberOfRowsInSection:indexPath.section] > 10) {
+        (indexPath.row + 4 >= [self.tableViewHandler tableView:tableView numberOfRowsInSection:indexPath.section])) {
 
         // Only 3 rows till the end of table
         if (self.syncHelper.hasMoreContent) {
             [self.syncHelper syncMoreContent];
         }
-
-        // TODO: Display/hide the spinner
-
-//        if (!self.isSyncing && self.hasMoreContent) {
-//            [self.activityFooter startAnimating];
-//
-//            [self loadMoreWithSuccess:^{
-//                [self.activityFooter stopAnimating];
-//            } failure:^(NSError *error) {
-//                [self.activityFooter stopAnimating];
-//            }];
-//        }
     }
 }
 
