@@ -120,9 +120,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
 
-    // Don't show tag title next to back button arrow
-    self.navigationController.navigationBar.topItem.title = @"";
-
     UIToolbar *toolbar = self.navigationController.toolbar;
     toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
     toolbar.tintColor = [UIColor whiteColor];
