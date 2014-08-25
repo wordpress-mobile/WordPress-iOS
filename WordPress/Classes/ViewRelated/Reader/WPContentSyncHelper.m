@@ -78,6 +78,7 @@
     self.isSyncing = YES;
     self.isLoadingMore = YES;
     [self.delegate syncHelper:self syncMoreWithSuccess:^(NSUInteger count) {
+        self.isLoadingMore = NO;
         self.hasMoreContent = (count > 0);
         [self syncContentEnded];
     } failure:^(NSError *error) {
