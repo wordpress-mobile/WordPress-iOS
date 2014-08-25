@@ -195,21 +195,22 @@
     NSManagedObjectID *postObjectID = post.objectID;
     CommentServiceRemoteREST *service = [self remoteForREST];
     [service syncHierarchicalCommentsForPost:post.postID fromSite:post.siteID page:page success:^(NSArray *comments) {
-        NSError *error;
-        ReaderPost *aPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
-        if (!aPost) {
-            if (failure) {
-                failure(error);
+        [self.managedObjectContext performBlock:^{
+            NSError *error;
+            ReaderPost *aPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
+            if (!aPost) {
+                if (failure) {
+                    failure(error);
+                }
+                return;
             }
-            return;
-        }
 
-        [self mergeHierarchicalComments:comments forPost:aPost];
+            [self mergeHierarchicalComments:comments forPost:aPost];
 
-        if (success) {
-            success([comments count]);
-        }
-
+            if (success) {
+                success([comments count]);
+            }
+        }];
     } failure:^(NSError *error) {
         if (failure) {
             failure(error);
@@ -316,7 +317,7 @@
 
 #pragma mark - Private methods
 
-#pragma mark - Blog centrick methods
+#pragma mark - Blog centric methods
 // Generic moderation
 - (void)moderateComment:(Comment *)comment
              withStatus:(NSString *)status
@@ -530,7 +531,7 @@
     id<CommentServiceRemote>remote;
     // TODO: refactor API creation so it's not part of the model
     if (blog.restApi) {
-        remote = [self remoteForREST];
+        remote = [[CommentServiceRemoteREST alloc] initWithApi:blog.restApi];
     } else {
         WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:blog.xmlrpc]];
         remote = [[CommentServiceRemoteXMLRPC alloc] initWithApi:client];
