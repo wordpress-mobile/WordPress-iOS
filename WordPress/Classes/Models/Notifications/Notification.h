@@ -43,11 +43,13 @@ typedef NS_ENUM(NSInteger, NoteBlockTypes)
 
 // Raw Properties
 @property (nonatomic, strong,  readonly) NSArray            *subject;
+@property (nonatomic, strong,  readonly) NSArray            *header;
 @property (nonatomic, strong,  readonly) NSArray            *body;
 @property (nonatomic, strong,  readonly) NSDictionary       *meta;
 
 // Derived Properties
 @property (nonatomic, strong,  readonly) NSArray            *subjectBlocks;		// Array of NotificationBlock objects
+@property (nonatomic, strong,  readonly) NSArray            *headerBlocks;		// Array of NotificationBlock objects
 @property (nonatomic, strong,  readonly) NSArray            *bodyBlocks;		// Array of NotificationBlock objects
 @property (nonatomic, assign,  readonly) NSNumber           *metaSiteID;
 @property (nonatomic, assign,  readonly) NSNumber           *metaPostID;
