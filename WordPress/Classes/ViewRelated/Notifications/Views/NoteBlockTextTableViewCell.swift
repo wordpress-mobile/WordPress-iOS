@@ -22,7 +22,7 @@ import Foundation
     public override func awakeFromNib() {
         super.awakeFromNib()
                 
-        backgroundColor                   = Notification.Colors.blockBackground
+        backgroundColor                   = WPStyleGuide.Notifications.Colors.blockBackground
         selectionStyle                    = .None
 
         attributedLabel.backgroundColor   = UIColor.clearColor()
