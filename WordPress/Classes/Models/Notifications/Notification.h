@@ -83,6 +83,9 @@ typedef NS_ENUM(NSInteger, NoteBlockTypes)
 @property (nonatomic, strong, readonly) NSString            *metaLinksHome;
 @property (nonatomic, strong, readonly) NSString            *metaTitlesHome;
 
+// Overrides
+@property (nonatomic, strong, readwrite) NSString           *textOverride;
+
 - (void)setActionOverrideValue:(NSNumber *)obj forKey:(NSString *)key;
 - (void)removeActionOverrideForKey:(NSString *)key;
 - (NSNumber *)actionForKey:(NSString *)key;
