@@ -91,8 +91,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     NSString *storyboardID  = NSStringFromClass([self class]);
     NotificationDetailsViewController *detailsViewController = [self.storyboard instantiateViewControllerWithIdentifier:storyboardID];
     
-    // Force load the view
-    [detailsViewController view];
+    [detailsViewController loadView];
     
     UITableView *tableView  = detailsViewController.tableView;
 
