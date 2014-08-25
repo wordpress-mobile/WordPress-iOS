@@ -291,12 +291,14 @@ NSString const *NoteHeightKey           = @"height";
 @property (nonatomic, strong) NSDate    *date;
 @property (nonatomic, strong) NSURL     *iconURL;
 @property (nonatomic, strong) NSArray   *subjectBlocks;
+@property (nonatomic, strong) NSArray   *headerBlocks;
 @property (nonatomic, strong) NSArray   *bodyBlocks;
 @end
 
 
 @implementation Notification
 
+@dynamic header;
 @dynamic body;
 @dynamic ghostData;
 @dynamic simperiumKey;
@@ -312,6 +314,7 @@ NSString const *NoteHeightKey           = @"height";
 @synthesize date            = _date;
 @synthesize iconURL         = _iconURL;
 @synthesize subjectBlocks   = _subjectBlocks;
+@synthesize headerBlocks    = _headerBlocks;
 @synthesize bodyBlocks      = _bodyBlocks;
 
 
@@ -322,6 +325,7 @@ NSString const *NoteHeightKey           = @"height";
     _date           = nil;
     _iconURL        = nil;
     _subjectBlocks  = nil;
+    _headerBlocks   = nil;
     _bodyBlocks     = nil;
 }
 
@@ -352,6 +356,15 @@ NSString const *NoteHeightKey           = @"height";
     }
 
     return _subjectBlocks;
+}
+
+- (NSArray *)headerBlocks
+{
+    if (!_headerBlocks) {
+        _headerBlocks = [NotificationBlock blocksFromArray:self.header notification:self];
+    }
+    
+    return _headerBlocks;
 }
 
 - (NSArray *)bodyBlocks
