@@ -1,5 +1,6 @@
 #import "ReaderPostDetailViewController.h"
 
+#import <WordPress-Swift.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "Comment.h"
 #import "CommentService.h"
@@ -14,7 +15,6 @@
 #import "RebloggingViewController.h"
 #import "WPActivityDefaults.h"
 #import "WPAvatarSource.h"
-#import "WPContentSyncHelper.h"
 #import "WPImageViewController.h"
 #import "WPNoResultsView+AnimatedBox.h"
 #import "WPRichTextVideoControl.h"
