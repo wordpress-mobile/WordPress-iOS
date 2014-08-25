@@ -18,7 +18,8 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 
 @implementation InlineComposeView
 
-- (id)initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(CGRect)frame
+{
     self = [super initWithFrame:frame];
     if (self) {
         _enabled = YES;
@@ -29,7 +30,7 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
         _proxyTextView = [[UITextView alloc] initWithFrame:CGRectZero];
         _proxyTextView.delegate = self;
         _proxyTextView.inputAccessoryView = self.inputAccessoryView;
-        
+
         // Ensure scroll-to-top gesture is disabled so it still works in parent views
         _proxyTextView.scrollsToTop = NO;
         _toolbarTextView.scrollsToTop = NO;
@@ -39,20 +40,21 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 
         [self addSubview:_proxyTextView];
 
-        self.sendButton.tintColor = [WPStyleGuide baseDarkerBlue];
-
+        self.sendButton.tintColor = [WPStyleGuide wordPressBlue];
     }
     return self;
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     self.proxyTextView.delegate = nil;
     self.proxyTextView = nil;
 
     self.bundle = nil;
 }
 
-- (void)updatePlaceholderAndSize {
+- (void)updatePlaceholderAndSize
+{
     NSCharacterSet *whitespaceCharSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
     UITextView *textView = self.toolbarTextView;
     // show placeholder if text is empty
@@ -93,7 +95,8 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 
 }
 
-- (void)updateSendButtonSize {
+- (void)updateSendButtonSize
+{
     // Update the components' size and location after localized button label has been set.
     CGFloat sendButtonWidth = self.sendButton.frame.size.width;
     [self.sendButton sizeToFit];
@@ -121,15 +124,18 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
     }
 }
 
-- (void)clearText {
+- (void)clearText
+{
     self.text = @"";
 }
 
-- (void)displayComposer {
+- (void)displayComposer
+{
     [self.proxyTextView becomeFirstResponder];
 }
 
-- (void)toggleComposer {
+- (void)toggleComposer
+{
     if (self.isDisplayed) {
         [self dismissComposer];
     } else {
@@ -137,25 +143,29 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
     }
 }
 
-- (void)dismissComposer {
+- (void)dismissComposer
+{
     [self resignFirstResponder];
     // resigning first responder doesn't always dismiss they keyboard, so force it
     [self endEditing:YES];
 }
 
-- (BOOL)isDisplayed {
+- (BOOL)isDisplayed
+{
     return self.isFirstResponder || self.proxyTextView.isFirstResponder || self.toolbarTextView.isFirstResponder;
 }
 
 #pragma mark - IBAction
 
-- (IBAction)onSendReply:(id)sender {
+- (IBAction)onSendReply:(id)sender
+{
     [self.delegate composeView:self didSendText:self.toolbarTextView.text];
 }
 
 #pragma mark - Accessors
 
-- (void)setEnabled:(BOOL)enabled {
+- (void)setEnabled:(BOOL)enabled
+{
     if (enabled == _enabled) {
         return;
     }
@@ -173,65 +183,77 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
     [self.proxyTextView becomeFirstResponder];
 }
 
-- (void)setAttributedText:(NSAttributedString *)attributedText {
+- (void)setAttributedText:(NSAttributedString *)attributedText
+{
     self.toolbarTextView.attributedText = attributedText;
     [self updatePlaceholderAndSize];
 }
 
-- (NSAttributedString *)attributedText {
+- (NSAttributedString *)attributedText
+{
     return self.toolbarTextView.attributedText;
 }
 
-- (void)setText:(NSString *)text {
+- (void)setText:(NSString *)text
+{
     self.toolbarTextView.text = text;
     [self updatePlaceholderAndSize];
 }
 
-- (NSString *)text {
+- (NSString *)text
+{
     return self.toolbarTextView.text;
 }
 
-- (void)setPlaceholder:(NSString *)placeholder {
+- (void)setPlaceholder:(NSString *)placeholder
+{
     self.placeholderLabel.text = placeholder;
 }
 
-- (NSString *)placeholder {
+- (NSString *)placeholder
+{
     return self.placeholderLabel.text;
 }
 
 #pragma mark - UIResponder
 
-- (BOOL)canBecomeFirstResponder {
+- (BOOL)canBecomeFirstResponder
+{
     return [self.proxyTextView canBecomeFirstResponder];
 }
 
-- (BOOL)becomeFirstResponder {
+- (BOOL)becomeFirstResponder
+{
     return [self.proxyTextView becomeFirstResponder];
 }
 
-- (BOOL)resignFirstResponder {
+- (BOOL)resignFirstResponder
+{
     [super resignFirstResponder];
     return [self.proxyTextView resignFirstResponder];
 }
 
-- (BOOL)canResignFirstResponder {
+- (BOOL)canResignFirstResponder
+{
     return [self.proxyTextView canResignFirstResponder];
 }
 
 #pragma mark - UITextViewDelegate
 // Forwards all delegate methods to our delegate if the textview is the toolbar text view
 
-- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
     if (textView == self.toolbarTextView && [self.delegate respondsToSelector:@selector(textViewShouldBeginEditing:)]) {
         return [self.delegate textViewShouldBeginEditing:textView];
     }
     return YES;
 }
 
-- (void)textViewDidBeginEditing:(UITextView *)textView {
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
     // Focus the input field in the toolbar when we begin editing from the proxy
     if (textView == self.proxyTextView) {
-        if(self.toolbarTextView.editable){
+        if (self.toolbarTextView.editable){
             [self.toolbarTextView becomeFirstResponder];
         }
         self.toolbarTextView.editable = YES;
@@ -244,8 +266,8 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
     }
 }
 
-- (BOOL)textViewShouldEndEditing:(UITextView *)textView {
-
+- (BOOL)textViewShouldEndEditing:(UITextView *)textView
+{
     if (textView != self.toolbarTextView){
         return YES;
     }
@@ -256,7 +278,8 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
     return YES;
 }
 
-- (void)textViewDidEndEditing:(UITextView *)textView {
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
 
     if (textView != self.toolbarTextView){
         return;
@@ -268,8 +291,8 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 
 }
 
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
-
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
     if (textView != self.toolbarTextView){
         return YES;
     }
@@ -281,7 +304,8 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
     return YES;
 }
 
-- (void)textViewDidChange:(UITextView *)textView {
+- (void)textViewDidChange:(UITextView *)textView
+{
     // ignore any changes to the proxy textview, it's not used for text entry
     if (textView == self.proxyTextView){
         return;
@@ -295,7 +319,8 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
     [self updatePlaceholderAndSize];
 }
 
-- (void)textViewDidChangeSelection:(UITextView *)textView {
+- (void)textViewDidChangeSelection:(UITextView *)textView
+{
     if (textView != self.toolbarTextView){
         return;
     }
@@ -305,8 +330,10 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
     }
 }
 
-- (BOOL)textView:(UITextView *)textView shouldInteractWithTextAttachment:(NSTextAttachment *)textAttachment inRange:(NSRange)characterRange {
-
+- (BOOL)textView:(UITextView *)textView
+        shouldInteractWithTextAttachment:(NSTextAttachment *)textAttachment
+         inRange:(NSRange)characterRange
+{
     if (self.toolbarTextView != textView){
         return YES;
     }
@@ -318,8 +345,8 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
     return YES;
 }
 
-- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange {
-
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
+{
     if (self.toolbarTextView != textView){
         return YES;
     }
@@ -330,6 +357,5 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 
     return YES;
 }
-
 
 @end

@@ -22,7 +22,8 @@
 
 @implementation WPAddCategoryViewController
 
-- (id)initWithPost:(Post *)post {
+- (id)initWithPost:(Post *)post
+{
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.post = post;
@@ -30,10 +31,11 @@
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     DDLogMethod();
-	[super viewDidLoad];
-    
+    [super viewDidLoad];
+
     self.title = NSLocalizedString(@"Add Category", @"The title on the add category screen");
     self.tableView.sectionFooterHeight = 0.0f;
 
@@ -42,46 +44,51 @@
                                                           target:self
                                                           action:@selector(saveAddCategory:)];
     self.navigationItem.rightBarButtonItem = self.saveButtonItem;
-    
+
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 }
 
-
 #pragma mark -
 #pragma mark Instance Methods
 
-- (void)clearUI {
+- (void)clearUI
+{
     self.createCatNameField.text = @"";
     self.parentCatNameField.text = @"";
 }
 
-- (void)addProgressIndicator {
+- (void)addProgressIndicator
+{
     UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activityView];
     [activityView startAnimating];
-    
+
     self.navigationItem.rightBarButtonItem = activityButtonItem;
 }
 
-- (void)removeProgressIndicator {
-	self.navigationItem.rightBarButtonItem = self.saveButtonItem;
+- (void)removeProgressIndicator
+{
+    self.navigationItem.rightBarButtonItem = self.saveButtonItem;
 }
 
-- (void)dismiss {
+- (void)dismiss
+{
     DDLogMethod();
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)saveAddCategory:(id)sender {
+- (void)saveAddCategory:(id)sender
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:context];
     NSString *catName = [self.createCatNameField.text trim];
-    
+
     if (!catName ||[catName length] == 0) {
         NSString *title = NSLocalizedString(@"Category title missing.", @"Error popup title to indicate that there was no category title filled in.");
         NSString *message = NSLocalizedString(@"Title for a category is mandatory.", @"Error popup message to indicate that there was no category title filled in.");
@@ -90,16 +97,16 @@
 
         return;
     }
-    
+
     if ([categoryService existsName:catName forBlogObjectID:self.post.blog.objectID withParentId:self.parentCategory.categoryID]) {
         NSString *title = NSLocalizedString(@"Category name already exists.", @"Error popup title to show that a category already exists.");
         NSString *message = NSLocalizedString(@"There is another category with that name.", @"Error popup message to show that a category already exists.");
         [WPError showAlertWithTitle:title message:message withSupportButton:NO];
         return;
     }
-    
+
     [self addProgressIndicator];
-    
+
     [categoryService createCategoryWithName:catName
                      parentCategoryObjectID:self.parentCategory.objectID
                             forBlogObjectID:self.post.blog.objectID
@@ -107,11 +114,11 @@
                                         // Add the newly created category to the post
                                         [self.post.categories addObject:category];
                                         [self.post save];
-                                        
+
                                         //re-syncs categories this is necessary because the server can change the name of the category!!!
                                         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
                                         [blogService syncCategoriesForBlog:self.post.blog success:nil failure:nil];
-                                        
+
                                         // Cleanup and dismiss
                                         [self clearUI];
                                         [self removeProgressIndicator];
@@ -119,14 +126,14 @@
                                     } failure:^(NSError *error) {
                                         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
                                         [self removeProgressIndicator];
-                                        
+
                                         if ([error code] == 403) {
                                             [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't Connect", @"") message:NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"") withSupportButton:NO];
-                                            
+
                                             // bad login/pass combination
                                             EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.post.blog];
                                             [self.navigationController pushViewController:editSiteViewController animated:YES];
-                                            
+
                                         } else {
                                             [WPError showXMLRPCErrorAlert:error];
                                         }
@@ -135,7 +142,8 @@
 
 #pragma mark - functional methods
 
-- (void)showParentCategorySelector {
+- (void)showParentCategorySelector
+{
     CategoriesViewController *controller = [[CategoriesViewController alloc] initWithPost:self.post selectionMode:CategoriesSelectionModeParent];
     controller.delegate = self;
     [self.navigationController pushViewController:controller animated:YES];
@@ -143,15 +151,18 @@
 
 #pragma mark - tableviewDelegates/datasources
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 2;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     return 1;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     WPTableViewCell *cell;
     if (indexPath.section == 0) {
         cell = [self cellForNewCategory];
@@ -161,9 +172,10 @@
     return cell;
 }
 
-- (WPTableViewCell *)cellForNewCategory {
+- (WPTableViewCell *)cellForNewCategory
+{
     WPTableViewCell *cell;
-    
+
     static NSString *newCategoryCellIdentifier = @"newCategoryCellIdentifier";
     cell = (WPTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:newCategoryCellIdentifier];
     if (!cell) {
@@ -181,11 +193,12 @@
     frame.size.height = cell.contentView.frame.size.height;
     self.createCatNameField.frame = frame;
     [cell.contentView addSubview:self.createCatNameField];
-    
+
     return cell;
 }
 
-- (WPTableViewCell *)cellForParentCategory {
+- (WPTableViewCell *)cellForParentCategory
+{
     WPTableViewCell *cell;
     static NSString *parentCategoryCellIdentifier = @"parentCategoryCellIdentifier";
     cell = (WPTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:parentCategoryCellIdentifier];
@@ -194,7 +207,7 @@
         cell.textLabel.font = [WPStyleGuide tableviewTextFont];
         cell.textLabel.textColor = [WPStyleGuide whisperGrey];
         cell.textLabel.text = NSLocalizedString(@"Parent Category", @"Placeholder to set a parent category for a new category.");
-        
+
         cell.detailTextLabel.font = [WPStyleGuide tableviewTextFont];
     }
     NSString *parentCategoryName;
@@ -210,7 +223,8 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
 
     if (indexPath.section == 1) {
@@ -220,14 +234,16 @@
 
 #pragma mark textfied deletage
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
     [textField resignFirstResponder];
     return YES;
 }
 
 #pragma mark - CategoriesViewControllerDelegate methods
 
-- (void)categoriesViewController:(CategoriesViewController *)controller didSelectCategory:(Category *)category {
+- (void)categoriesViewController:(CategoriesViewController *)controller didSelectCategory:(Category *)category
+{
     self.parentCategory = category;
     [self.tableView reloadData];
 }

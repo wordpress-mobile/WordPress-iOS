@@ -47,7 +47,8 @@ static NSUInteger const AlertDiscardChanges = 500;
 
 @implementation EditMediaViewController
 
-- (id)initWithMedia:(Media *)media {
+- (id)initWithMedia:(Media *)media
+{
     self = [super init];
     if (self) {
         _media = media;
@@ -55,85 +56,88 @@ static NSUInteger const AlertDiscardChanges = 500;
     return self;
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     _showingEditFields = NO;
-    
+
     self.title = NSLocalizedString(@"Edit Media", nil);
     _editFieldsScrollView.contentSize = CGSizeMake(_editFieldsScrollView.frame.size.width, CGRectGetMaxY(_editFieldsContainer.frame));
     [_editFieldsScrollView addSubview:_editFieldsContainer];
-    
+
     UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageDoubleTapped:)];
     doubleTap.delegate = self;
     doubleTap.numberOfTapsRequired = 2;
     [_mediaImageview addGestureRecognizer:doubleTap];
-    
+
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
     singleTap.delegate = self;
     singleTap.numberOfTapsRequired = 1;
     [singleTap requireGestureRecognizerToFail:doubleTap];
     [_mediaImageview addGestureRecognizer:singleTap];
-    
+
     UIPanGestureRecognizer *panRecogniser = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(editingBarPanned:)];
     panRecogniser.delegate = self;
     [_editingBar addGestureRecognizer:panRecogniser];
-    
+
     UIImageView *dragIndicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-media-edit-grab"]];
     [self.editingBar addSubview:dragIndicator];
     [_editingBar addTarget:self action:@selector(barTapped:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(savePressed)];
-    
+
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"") style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonPressed)];
-    
+
     self.titleLabel.font = [WPStyleGuide tableviewSectionHeaderFont];
     self.captionLabel.font = self.titleLabel.font;
     self.descriptionLabel.font = self.titleLabel.font;
-    
+
     self.titleTextfield.font = [WPStyleGuide regularTextFont];
     self.captionTextfield.font = self.titleTextfield.font;
     self.descriptionTextview.font = self.titleTextfield.font;
     self.createdDateLabel.font = self.titleTextfield.font;
     self.dimensionsLabel.font = self.titleTextfield.font;
-    
+
     self.titleTextfield.delegate = self;
     self.captionTextfield.delegate = self;
     self.descriptionTextview.delegate = self;
-    
+
     self.imageScrollView.minimumZoomScale = 0.5f;
     self.imageScrollView.maximumZoomScale = 6.0f;
     self.imageScrollView.delegate = self;
-    
+
     UIColor *color = [UIColor colorWithWhite:1.0f alpha:0.5f];
     _titleTextfield.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Title", nil) attributes:@{NSForegroundColorAttributeName: color}];
     _captionTextfield.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Caption", nil) attributes:@{NSForegroundColorAttributeName: color}];
     _descriptionTextview.contentInset = UIEdgeInsetsMake(0, -4, 0, 0);
-    
+
     [self applyLayoutForMedia];
     self.descriptionTextview.editable = YES;
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    
+
     _mediaImageview.userInteractionEnabled = NO;
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     [super viewWillDisappear:animated];
-    
+
     if (self.videoPlayer && !self.videoPlayer.fullscreen) {
         [self.videoPlayer stop];
     }
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
+- (void)viewDidDisappear:(BOOL)animated
+{
     [super viewDidDisappear:animated];
-    
+
     // Clean up temporary file
     if (_media.blog.isPrivate && _media.localURL) {
         [[NSFileManager defaultManager] removeItemAtPath:_media.localURL error:nil];
@@ -141,9 +145,10 @@ static NSUInteger const AlertDiscardChanges = 500;
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
-    
+
     if (_media.mediaType == MediaTypeImage) {
         [self loadMediaImage];
     } else {
@@ -151,11 +156,13 @@ static NSUInteger const AlertDiscardChanges = 500;
     }
 }
 
-- (void)viewDidLayoutSubviews {
+- (void)viewDidLayoutSubviews
+{
     [self layoutEditOverlay];
 }
 
-- (void)layoutEditOverlay {
+- (void)layoutEditOverlay
+{
     BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
     CGPoint containerOrigin, scrollViewOrigin;
     CGSize containerSize, scrollViewSize;
@@ -184,7 +191,7 @@ static NSUInteger const AlertDiscardChanges = 500;
         scrollViewOrigin = CGPointMake(0, _editingBar.frame.size.height);
         [(UIImageView *)self.editingBar.subviews[0] setTransform:CGAffineTransformIdentity];
     }
-    
+
     _editContainerView.frame = (CGRect) {
         .origin = containerOrigin,
         .size = containerSize
@@ -193,7 +200,7 @@ static NSUInteger const AlertDiscardChanges = 500;
         .origin = scrollViewOrigin,
         .size = scrollViewSize
     };
-    
+
     [(UIImageView *)self.editingBar.subviews[0] setCenter:_editingBar.center];
 }
 
@@ -203,16 +210,17 @@ static NSUInteger const AlertDiscardChanges = 500;
     // Dispose of any resources that can be recreated.
 }
 
-
 #pragma mark - Image zooming
 
-- (void)imageTapped:(UIGestureRecognizer *)sender {
+- (void)imageTapped:(UIGestureRecognizer *)sender
+{
     if (_showingEditFields) {
         [self toggleEditBar];
     }
 }
 
-- (void)imageDoubleTapped:(UIGestureRecognizer *)sender {
+- (void)imageDoubleTapped:(UIGestureRecognizer *)sender
+{
     if (_imageScrollView.zoomScale != 1) {
         [UIView animateWithDuration:0.3 animations:^{
             [_imageScrollView setZoomScale:1];
@@ -224,10 +232,10 @@ static NSUInteger const AlertDiscardChanges = 500;
     }
 }
 
-
 #pragma mark - Pannable/Tappable bar
 
-- (void)editingBarPanned:(UIPanGestureRecognizer *)sender {
+- (void)editingBarPanned:(UIPanGestureRecognizer *)sender
+{
     BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
     CGFloat translation = (IS_IPAD && isLandscape) ? [sender translationInView:self.view].x : [sender translationInView:self.view].y;
     CGFloat maxOffset = (IS_IPAD && isLandscape) ? self.view.frame.size.width - _editingBar.frame.size.width : self.view.frame.size.height - _editingBar.frame.size.height;
@@ -267,44 +275,47 @@ static NSUInteger const AlertDiscardChanges = 500;
                 CGFloat velocity = (IS_IPAD && isLandscape) ? [sender velocityInView:self.view].x : [sender velocityInView:self.view].y;
                 _showingEditFields = velocity > 10.0f;
             }
-            
+
             [self toggleEditBar];
-            
+
         default:;
     }
 }
 
-- (void)barTapped:(id)sender {
+- (void)barTapped:(id)sender
+{
     [self toggleEditBar];
 }
 
-- (void)toggleEditBar {
+- (void)toggleEditBar
+{
     _showingEditFields = !_showingEditFields;
-    
+
     if (!_showingEditFields) {
         [[self currentFirstResponder] resignFirstResponder];
     }
-    
+
     [UIView animateWithDuration:0.3f animations:^{
         [self layoutEditOverlay];
     } completion:nil];
 }
 
-- (void)applyLayoutForMedia {
+- (void)applyLayoutForMedia
+{
     [self.titleTextfield setText:_media.title];
     [self.titleTextfield setPlaceholder:NSLocalizedString(@"Title", @"")];
-    
+
     [self.captionTextfield setText:_media.caption];
     [self.captionTextfield setPlaceholder:NSLocalizedString(@"Caption", @"")];
-    
+
     [self.descriptionTextview setText:_media.desc];
     [self.descriptionTextview setPlaceholder:NSLocalizedString(@"Description", @"")];
-    
+
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSString *stringFromDate = [dateFormatter stringFromDate:_media.creationDate];
     self.createdDateLabel.text = [NSLocalizedString(@"Created ", nil) stringByAppendingString:stringFromDate];
-    
+
     if (_media.width > 0 && _media.height > 0) {
         [self.dimensionsLabel setText:[NSString stringWithFormat:@"%@x%@ px", _media.width, _media.height]];
     }
@@ -312,32 +323,32 @@ static NSUInteger const AlertDiscardChanges = 500;
     _mediaImageview.image = [UIImage imageNamed:[@"media_" stringByAppendingString:_media.mediaTypeString]];
 }
 
-
 #pragma mark - Video player
 
-- (void)setupVideoPlayer {
+- (void)setupVideoPlayer
+{
     // Attempt to grab the video with authentication if the blog is private
     if (self.media.blog.isPrivate && !_media.localURL && _media.remoteURL) {
         [self showLoadingSpinner];
-        
+
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
 
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[_media.remoteURL stringByReplacingOccurrencesOfString:@"http://" withString:@"https://"]]];
         [request addValue:[@"Bearer " stringByAppendingString:[accountService defaultWordPressComAccount].restApi.authToken] forHTTPHeaderField:@"Authorization"];
 
-		AFHTTPRequestOperationManager* operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"" ]];
-		[operationManager HTTPRequestOperationWithRequest:request
-												  success:^(AFHTTPRequestOperation *operation, id responseObject)
-		{
-			NSData *videoData = (NSData *)responseObject;
-			NSFileManager *f = [NSFileManager defaultManager];
-			// Save to a temporary file
-			NSString *path = [NSTemporaryDirectory() stringByAppendingFormat:@"%@.mov", _media.mediaID.stringValue];
-			[f createFileAtPath:path contents:videoData attributes:nil];
-			_media.localURL = path;
-			[self.videoPlayer prepareToPlay];
-		} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        AFHTTPRequestOperationManager* operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"" ]];
+        [operationManager HTTPRequestOperationWithRequest:request
+                                                  success:^(AFHTTPRequestOperation *operation, id responseObject)
+        {
+            NSData *videoData = (NSData *)responseObject;
+            NSFileManager *f = [NSFileManager defaultManager];
+            // Save to a temporary file
+            NSString *path = [NSTemporaryDirectory() stringByAppendingFormat:@"%@.mov", _media.mediaID.stringValue];
+            [f createFileAtPath:path contents:videoData attributes:nil];
+            _media.localURL = path;
+            [self.videoPlayer prepareToPlay];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             DDLogError(@"Authenticated media video failed to download: %@", error);
             [self hideLoadingSpinner];
             [self showDownloadError];
@@ -346,53 +357,60 @@ static NSUInteger const AlertDiscardChanges = 500;
         [self.videoPlayer prepareToPlay];
     }
 }
-         
- - (MPMoviePlayerController *)videoPlayer {
-     if (_videoPlayer) {
-         return _videoPlayer;
-     }
-     
-     NSURL *videoPath;
-     if (_media.localURL) {
-         videoPath = [NSURL fileURLWithPath:_media.localURL];
-     } else {
-         videoPath = [NSURL URLWithString:_media.remoteURL];
-     }
-     _videoPlayer = [[MPMoviePlayerController alloc] initWithContentURL:videoPath];
-     _videoPlayer.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - _editingBar.frame.size.height);
-     _videoPlayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-     [self.view insertSubview:self.videoPlayer.view belowSubview:_editContainerView];
-     _videoPlayer.movieSourceType = MPMovieSourceTypeFile;
-     _videoPlayer.shouldAutoplay = NO;
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoPlayerLoadStateChanged) name:MPMoviePlayerLoadStateDidChangeNotification object:nil];
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoPlayerPlaybackFinished:) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
-     return _videoPlayer;
- }
 
-- (void)videoPlayerLoadStateChanged {
+- (MPMoviePlayerController *)videoPlayer 
+{
+    if (_videoPlayer) {
+        return _videoPlayer;
+    }
+
+    NSURL *videoPath;
+    if (_media.localURL) {
+        videoPath = [NSURL fileURLWithPath:_media.localURL];
+    } else {
+        videoPath = [NSURL URLWithString:_media.remoteURL];
+    }
+    _videoPlayer = [[MPMoviePlayerController alloc] initWithContentURL:videoPath];
+    _videoPlayer.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - _editingBar.frame.size.height);
+    _videoPlayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.view insertSubview:self.videoPlayer.view belowSubview:_editContainerView];
+    _videoPlayer.movieSourceType = MPMovieSourceTypeFile;
+    _videoPlayer.shouldAutoplay = NO;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoPlayerLoadStateChanged) name:MPMoviePlayerLoadStateDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoPlayerPlaybackFinished:) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
+    return _videoPlayer;
+}
+
+- (void)videoPlayerLoadStateChanged
+{
     [self updateForVideoStateChangeWithError:nil];
 }
 
-- (void)videoPlayerPlaybackFinished:(NSNotification *)notification {
+- (void)videoPlayerPlaybackFinished:(NSNotification *)notification
+{
     [self updateForVideoStateChangeWithError:notification.userInfo[@"error"]];
 }
 
-- (void)updateForVideoStateChangeWithError:(NSError *)error {
-    if (self.videoPlayer.loadState == MPMovieLoadStateStalled || self.videoPlayer.loadState == MPMovieLoadStateUnknown) {
+- (void)updateForVideoStateChangeWithError:(NSError *)error
+{
+    if (self.videoPlayer.loadState == MPMovieLoadStateStalled
+            || self.videoPlayer.loadState == MPMovieLoadStateUnknown) 
+    {
         if (![self.view viewWithTag:1337]) {
             [self showLoadingSpinner];
         }
     } else {
         [self hideLoadingSpinner];
     }
-    
+
     if (error) {
         [self hideLoadingSpinner];
         [self showDownloadError];
     }
 }
 
-- (NSString *)saveFullsizeImageToDisk:(UIImage*)image imageName:(NSString *)imageName {
+- (NSString *)saveFullsizeImageToDisk:(UIImage*)image imageName:(NSString *)imageName
+{
     NSString *docsDirectory = (NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES))[0];
     NSData *imageData = UIImageJPEGRepresentation(image, 1);
     NSString *path = [docsDirectory stringByAppendingPathComponent:imageName];
@@ -403,7 +421,8 @@ static NSUInteger const AlertDiscardChanges = 500;
     return nil;
 }
 
-- (void)showLoadingSpinner {
+- (void)showLoadingSpinner
+{
     UIActivityIndicatorView *loading = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     loading.center = self.view.center;
     loading.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin
@@ -413,11 +432,13 @@ static NSUInteger const AlertDiscardChanges = 500;
     [loading startAnimating];
 }
 
-- (void)hideLoadingSpinner {
+- (void)hideLoadingSpinner
+{
     [[_mediaImageview viewWithTag:1337] removeFromSuperview];
 }
 
-- (void)showDownloadError {
+- (void)showDownloadError
+{
     UILabel *error = [[UILabel alloc] init];
     error.text = [_media.mediaTypeName stringByAppendingString:NSLocalizedString(@" failed to load", @"Appended on the appropriate media type when it has failed to download")];
     [error sizeToFit];
@@ -427,14 +448,15 @@ static NSUInteger const AlertDiscardChanges = 500;
     [self.view insertSubview:error belowSubview:_editContainerView];
 }
 
-- (void)loadMediaImage {
+- (void)loadMediaImage
+{
     if (_media.localURL && [[NSFileManager defaultManager] fileExistsAtPath:_media.localURL isDirectory:0]) {
         _mediaImageview.contentMode = UIViewContentModeScaleAspectFit;
         _mediaImageview.image = [[UIImage alloc] initWithContentsOfFile:_media.localURL];
         _mediaImageview.userInteractionEnabled = YES;
         return;
     }
-    
+
     [self showLoadingSpinner];
     if (_media.remoteURL) {
         void (^mediaDownloadSuccess)(UIImage *image) = ^(UIImage *image) {
@@ -445,14 +467,14 @@ static NSUInteger const AlertDiscardChanges = 500;
             _mediaImageview.userInteractionEnabled = YES;
             [self hideLoadingSpinner];
         };
-        
+
         // TODO change placeholder to a failure or alert the user somehow.
         void (^mediaDownloadFailure)(NSError *error) = ^(NSError *error) {
             DDLogWarn(@"Failed to download image for %@: %@", _media, error);
             [self showDownloadError];
             [self hideLoadingSpinner];
         };
-        
+
         if (_media.blog.isPrivate) {
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
             AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
@@ -468,28 +490,28 @@ static NSUInteger const AlertDiscardChanges = 500;
     }
 }
 
-
 #pragma mark - Keyboard Management
 
-- (void)keyboardWillShow:(NSNotification*)sender {
+- (void)keyboardWillShow:(NSNotification*)sender
+{
     BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
     NSValue *keyboardFrame = [sender userInfo][UIKeyboardFrameBeginUserInfoKey];
     CGFloat animationDuration = [[sender userInfo][UIKeyboardAnimationDurationUserInfoKey] floatValue];
     UIViewAnimationCurve curve = [[sender userInfo][UIKeyboardAnimationCurveUserInfoKey] integerValue];
     CGFloat keyboardHeight = isLandscape ? [keyboardFrame CGRectValue].size.width : [keyboardFrame CGRectValue].size.height;
     _currentKeyboardHeight = keyboardHeight;
-    
+
     if (UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation) && !IS_IPAD) {
         [self.navigationController setNavigationBarHidden:YES animated:YES];
     }
-    
+
     CGFloat visibleHeight = self.view.bounds.size.height - keyboardHeight;
     if (isLandscape && !IS_IPAD) {
         visibleHeight += _editingBar.frame.size.height;
     }
     CGFloat yOffset = (IS_IPAD && !isLandscape) ? (_editContainerView.frame.origin.y - keyboardHeight) : 0;
     CGFloat scrollViewHeight = (IS_IPAD && !isLandscape) ? _editFieldsScrollView.frame.size.height : visibleHeight;
-    
+
     [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState|curve animations:^{
         _editContainerView.frame = (CGRect) {
             .origin = CGPointMake(_editContainerView.frame.origin.x, yOffset),
@@ -502,7 +524,8 @@ static NSUInteger const AlertDiscardChanges = 500;
     } completion:nil];
 }
 
-- (void)keyboardWillHide:(NSNotification*)sender {
+- (void)keyboardWillHide:(NSNotification*)sender
+{
     BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
     _currentKeyboardHeight = 0;
     CGFloat animationDuration = [[sender userInfo]
@@ -517,7 +540,7 @@ static NSUInteger const AlertDiscardChanges = 500;
             .origin = CGPointMake(_editContainerView.frame.origin.x, self.view.bounds.size.height - (_editFieldsScrollView.frame.size.height + ((IS_IPAD && isLandscape) ? _editingBar.frame.size.width : _editingBar.frame.size.height))),
             .size = _editContainerView.frame.size
         };
-        
+
         if (self.navigationController.navigationBarHidden) {
             [self.navigationController setNavigationBarHidden:NO animated:YES];
         }
@@ -525,7 +548,8 @@ static NSUInteger const AlertDiscardChanges = 500;
     } completion:nil];
 }
 
-- (UIView *)currentFirstResponder {
+- (UIView *)currentFirstResponder
+{
     for (UIView *v in _editFieldsContainer.subviews) {
         if (v.isFirstResponder) {
             return v;
@@ -534,16 +558,17 @@ static NSUInteger const AlertDiscardChanges = 500;
     return nil;
 }
 
-- (void)savePressed {
+- (void)savePressed
+{
     [self.view addSubview:self.loadingView];
     [self.loadingView show];
-    
+
     dispatch_block_t success = ^{
         [self.navigationController popViewControllerAnimated:YES];
         [self.loadingView hide];
         [self.loadingView removeFromSuperview];
     };
-    
+
     __block void (^failure)(NSError*) = ^(NSError *error) {
         if (error.code == 404) {
             // Server-side deleted
@@ -555,19 +580,20 @@ static NSUInteger const AlertDiscardChanges = 500;
         [self.loadingView hide];
         [self.loadingView removeFromSuperview];
     };
-    
+
     // Media upload may have failed at some point, so we need to upload here
     if (!_media.mediaID) {
         [_media.managedObjectContext save:nil];
         [self.media uploadWithSuccess:success failure:failure];
         return;
     }
-    
+
     // Block the user from escaping before it's done
     [self.media remoteUpdateWithSuccess:success failure:failure];
 }
 
-- (UIView *)loadingView {
+- (UIView *)loadingView
+{
     if (!_loadingView) {
         CGFloat side = 100.0f;
         WPLoadingView *loadingView = [[WPLoadingView alloc] initWithSide:side];
@@ -577,7 +603,8 @@ static NSUInteger const AlertDiscardChanges = 500;
     return _loadingView;
 }
 
-- (void)cancelButtonPressed {
+- (void)cancelButtonPressed
+{
     __block BOOL hasDataChanges = NO;
     if ([_media.managedObjectContext hasChanges]) {
         [[_media changedValues] enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop) {
@@ -596,7 +623,8 @@ static NSUInteger const AlertDiscardChanges = 500;
     }
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
     if (alertView.tag == AlertDiscardChanges) {
         if (buttonIndex == 1) {
             [_media.managedObjectContext rollback];
@@ -606,7 +634,7 @@ static NSUInteger const AlertDiscardChanges = 500;
         if (buttonIndex == 0) {
             [_media remove];
             [self.navigationController popViewControllerAnimated:YES];
-        
+
         } else if (buttonIndex == 1) {
             if (_media.localURL) {
                 [self.view addSubview:self.loadingView];
@@ -630,16 +658,17 @@ static NSUInteger const AlertDiscardChanges = 500;
     }
 }
 
-
 #pragma mark - UITextField/View delegates
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
     if (!IS_IPAD) {
         _editFieldsScrollView.contentOffset = CGPointMake(0, CGRectGetMinY(textField.frame));
     }
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField {
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
     if (textField == _titleTextfield) {
         _media.title = textField.text;
     } else if (textField == _captionTextfield) {
@@ -647,64 +676,67 @@ static NSUInteger const AlertDiscardChanges = 500;
     }
 }
 
-- (void)textViewDidBeginEditing:(UITextView *)textView {
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
     [textView textViewDidBeginEditing:textView];
-    if (!IS_IPAD)
+    if (!IS_IPAD) {
         _editFieldsScrollView.contentOffset = CGPointMake(0, CGRectGetMinY(textView.frame));
+    }
 }
 
-- (void)textViewDidEndEditing:(UITextView *)textView {
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
     [textView textViewDidEndEditing:textView];
     if (textView == _descriptionTextview) {
         _media.desc = textView.enteredText;
     }
 }
 
-
 #pragma mark UIScrollView delegate
 
-- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+{
     return _mediaImageview;
 }
 
-- (void)scrollViewDidZoom:(UIScrollView *)pScrollView {
-	CGRect innerFrame = _mediaImageview.frame;
-	CGRect scrollerBounds = pScrollView.bounds;
-	
-	if ((innerFrame.size.width < scrollerBounds.size.width) || (innerFrame.size.height < scrollerBounds.size.height))
-	{
-		CGFloat tempx = _mediaImageview.center.x - ( scrollerBounds.size.width / 2 );
-		CGFloat tempy = _mediaImageview.center.y - ( scrollerBounds.size.height / 2 );
-		CGPoint myScrollViewOffset = CGPointMake( tempx, tempy);
-		
-		pScrollView.contentOffset = myScrollViewOffset;
-	}
-	
-	UIEdgeInsets anEdgeInset = { 0, 0, 0, 0};
-	if(scrollerBounds.size.width > innerFrame.size.width)
-	{
-		anEdgeInset.left = (scrollerBounds.size.width - innerFrame.size.width) / 2;
-		anEdgeInset.right = -anEdgeInset.left;
-	}
-	if(scrollerBounds.size.height > innerFrame.size.height)
-	{
-		anEdgeInset.top = (scrollerBounds.size.height - innerFrame.size.height) / 2;
-		anEdgeInset.bottom = -anEdgeInset.top;
-	}
-	pScrollView.contentInset = anEdgeInset;
+- (void)scrollViewDidZoom:(UIScrollView *)pScrollView
+{
+    CGRect innerFrame = _mediaImageview.frame;
+    CGRect scrollerBounds = pScrollView.bounds;
+
+    if ((innerFrame.size.width < scrollerBounds.size.width) || (innerFrame.size.height < scrollerBounds.size.height)) {
+        CGFloat tempx = _mediaImageview.center.x - ( scrollerBounds.size.width / 2 );
+        CGFloat tempy = _mediaImageview.center.y - ( scrollerBounds.size.height / 2 );
+        CGPoint myScrollViewOffset = CGPointMake( tempx, tempy);
+
+        pScrollView.contentOffset = myScrollViewOffset;
+    }
+
+    UIEdgeInsets anEdgeInset = { 0, 0, 0, 0};
+    if (scrollerBounds.size.width > innerFrame.size.width) {
+        anEdgeInset.left = (scrollerBounds.size.width - innerFrame.size.width) / 2;
+        anEdgeInset.right = -anEdgeInset.left;
+    }
+    if (scrollerBounds.size.height > innerFrame.size.height) {
+        anEdgeInset.top = (scrollerBounds.size.height - innerFrame.size.height) / 2;
+        anEdgeInset.bottom = -anEdgeInset.top;
+    }
+    pScrollView.contentInset = anEdgeInset;
 }
 
 @end
 
 @implementation UITextView (Placeholder)
 
-- (void)textViewDidBeginEditing:(UITextView *)textView {
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
     if ([self.text isEqualToString:self.placeholder]) {
         self.text = nil;
     }
 }
 
-- (void)textViewDidEndEditing:(UITextView *)textView {
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
     if (!self.text || [self.text isEqualToString:@""]) {
         self.text = self.placeholder;
         self.alpha = 0.5f;
@@ -713,7 +745,8 @@ static NSUInteger const AlertDiscardChanges = 500;
     }
 }
 
-- (void)setPlaceholder:(NSString *)placeholder {
+- (void)setPlaceholder:(NSString *)placeholder
+{
     objc_setAssociatedObject(self, "placeholder", placeholder, OBJC_ASSOCIATION_RETAIN);
     if (!self.text || [self.text isEqualToString:@""]) {
         self.text = placeholder;
@@ -721,11 +754,13 @@ static NSUInteger const AlertDiscardChanges = 500;
     }
 }
 
-- (NSString *)enteredText {
+- (NSString *)enteredText
+{
     return [self.text isEqualToString:self.placeholder] ? @"" : self.text;
 }
 
-- (NSString *)placeholder {
+- (NSString *)placeholder
+{
     return objc_getAssociatedObject(self, "placeholder");
 }
 

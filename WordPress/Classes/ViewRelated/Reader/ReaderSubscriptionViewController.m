@@ -92,7 +92,6 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-
 #pragma mark - Private Methods
 
 - (void)syncTopics
@@ -269,7 +268,6 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
     }];
 }
 
-
 #pragma mark - Configuration
 
 - (void)configureControllers
@@ -425,7 +423,6 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
     return format;
 }
 
-
 #pragma mark - Accessors
 
 - (UIBarButtonItem *)cancelButton
@@ -576,7 +573,8 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
     return _titleLabel;
 }
 
-- (UIPageControl *)pageControl {
+- (UIPageControl *)pageControl
+{
     if (_pageControl) {
         return _pageControl;
     }
@@ -588,7 +586,6 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
 
     return _pageControl;
 }
-
 
 #pragma mark - Action Methods
 
@@ -624,7 +621,6 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
     [self.searchBar resignFirstResponder];
 }
 
-
 #pragma mark - Search Bar Delegate Methods
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
@@ -640,7 +636,6 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
     searchBar.text = nil;
     [searchBar resignFirstResponder];
 }
-
 
 #pragma mark - Pageview Controller Delegate Methods
 

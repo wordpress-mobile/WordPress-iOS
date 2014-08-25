@@ -13,8 +13,8 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 };
 
 typedef NS_ENUM(NSUInteger, EditPostViewControllerMode) {
-	EditPostViewControllerModeNewPost,
-	EditPostViewControllerModeEditPost
+    EditPostViewControllerModeNewPost,
+    EditPostViewControllerModeEditPost
 };
 
 @interface EditPostViewController () <UIActionSheetDelegate, UITextFieldDelegate, UITextViewDelegate, UIViewControllerRestoration>

@@ -31,10 +31,10 @@ const CGFloat WPToastAnimationVisibleDuration = 0.35f;
     [self.toastView setCenter:CGPointMake(CGRectGetMidX(parentView.bounds), CGRectGetMidY(parentView.bounds))];
     [self.toastView.layer setCornerRadius:20.0f];
     [parentViewController.view addSubview:self.toastView];
-    
+
     self.toastLabel.text = message;
     self.toastLabel.alpha = 0.0f;
-    
+
     self.toastIcon.image = image;
     self.toastIcon.alpha = 0.0f;
 
@@ -45,17 +45,19 @@ const CGFloat WPToastAnimationVisibleDuration = 0.35f;
     [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
     self.toastView.alpha= 1.0f;
     CGFloat toastOffset = 95.0f;
-    if (IS_IPHONE && UIInterfaceOrientationIsPortrait(parentViewController.interfaceOrientation))
+    if (IS_IPHONE && UIInterfaceOrientationIsPortrait(parentViewController.interfaceOrientation)) {
         toastOffset = 125.0f;
+    }
     self.toastView.frame = CGRectMake((parentViewController.view.bounds.size.width / 2) - 95.0f, (parentViewController.view.bounds.size.height / 2) - toastOffset, 190.0f, 190.0f);
-    [UIView commitAnimations];    
+    [UIView commitAnimations];
 }
 
-- (void)animationDidStop:(NSString*)animationID finished:(BOOL)finished context:(void *)context {
+- (void)animationDidStop:(NSString*)animationID finished:(BOOL)finished context:(void *)context
+{
     UIViewController *parentViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
 
     UIView *toastView = (__bridge UIView *)context;
-    if([animationID isEqualToString:@"toast_zoom_in"]) {
+    if ([animationID isEqualToString:@"toast_zoom_in"]) {
         [UIView beginAnimations:@"content_fade_in" context:(__bridge void *)(toastView)];
         [UIView setAnimationDuration:WPToastAnimationFadeDuration];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
@@ -74,7 +76,7 @@ const CGFloat WPToastAnimationVisibleDuration = 0.35f;
         self.toastLabel.alpha = 0.0f;
         self.toastIcon.alpha = 0.0f;
         [UIView commitAnimations];
-    }else if ([animationID isEqualToString:@"content_fade_out"]) {
+    } else if ([animationID isEqualToString:@"content_fade_out"]) {
         [UIView beginAnimations:@"toast_zoom_out" context:(__bridge void *)(toastView)];
         [UIView setAnimationDuration:WPToastAnimationZoomDuration];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];

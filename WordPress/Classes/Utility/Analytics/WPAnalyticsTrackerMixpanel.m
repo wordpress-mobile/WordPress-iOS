@@ -40,7 +40,7 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
         DDLogInfo(@"No instructions, do nothing");
         return;
     }
-    
+
     [self trackMixpanelDataForInstructions:instructions andProperties:properties];
 }
 
@@ -55,7 +55,7 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *account = [accountService defaultWordPressComAccount];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    
+
     BOOL dotcom_user = NO;
     BOOL jetpack_user = NO;
     if (account != nil) {
@@ -64,20 +64,20 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             jetpack_user = YES;
         }
     }
-    
+
     NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
     superProperties[@"platform"] = @"iOS";
     superProperties[@"dotcom_user"] = @(dotcom_user);
     superProperties[@"jetpack_user"] = @(jetpack_user);
     superProperties[@"number_of_blogs"] = @([blogService blogCountForAllAccounts]);
     [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
-    
+
     NSString *username = account.username;
     if (account && [username length] > 0) {
         [[Mixpanel sharedInstance] identify:username];
         [[Mixpanel sharedInstance].people set:@{ @"$username": username, @"$first_name" : username }];
     }
-    
+
     [self retrieveAndRegisterEmailAddressIfApplicable];
 }
 
@@ -87,17 +87,17 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
     if ([userDefaults boolForKey:EmailAddressRetrievedKey]) {
         return;
     }
-    
+
     DDLogInfo(@"Retrieving /me endpoint");
-    
+
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    
+
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
     if (defaultAccount == nil) {
         return;
     }
-    
+
     [[defaultAccount restApi] getUserDetailsWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *response = (NSDictionary *)responseObject;
         if ([[response stringForKey:@"email"] length] > 0) {
@@ -127,7 +127,7 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    
+
     return [[defaultAccount restApi] hasCredentials];
 }
 
@@ -138,7 +138,7 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             return;
         }
     }
-    
+
     if ([instructions.mixpanelEventName length] > 0) {
         NSDictionary *aggregatedPropertiesForEvent = [self propertiesForStat:instructions.stat];
         if (aggregatedPropertiesForEvent != nil) {
@@ -150,23 +150,23 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             [[Mixpanel sharedInstance] track:instructions.mixpanelEventName properties:properties];
         }
     }
-    
+
     if ([instructions.superPropertyToIncrement length] > 0) {
         [self incrementSuperProperty:instructions.superPropertyToIncrement];
     }
-    
+
     if ([instructions.peoplePropertyToIncrement length] > 0) {
         [self incrementPeopleProperty:instructions.peoplePropertyToIncrement];
     }
-    
+
     if ([instructions.propertyToIncrement length] > 0) {
         [self incrementProperty:instructions.propertyToIncrement forStat:instructions.statToAttachProperty];
     }
-    
+
     [instructions.superPropertiesToFlag enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         [self flagSuperProperty:obj];
     }];
-    
+
     [instructions.peoplePropertiesToAssign enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         [self setValue:obj forPeopleProperty:key];
     }];
@@ -200,7 +200,7 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
 - (WPAnalyticsTrackerMixpanelInstructionsForStat *)instructionsForStat:(WPAnalyticsStat )stat
 {
     WPAnalyticsTrackerMixpanelInstructionsForStat *instructions;
-    
+
     switch (stat) {
         case WPAnalyticsStatApplicationOpened:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Application Opened"];
@@ -276,6 +276,21 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Accessed"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_stats"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_stats"];
+            break;
+        case WPAnalyticsStatStatsTappedBarChart:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Tapped Bar Chart"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_tapped_stats_bar_chart"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_tapped_stats_bar_chart"];
+            break;
+        case WPAnalyticsStatStatsOpenedWebVersion:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Opened Web Version"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_web_version_of_stats"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_web_version_of_stats"];
+            break;
+        case WPAnalyticsStatStatsScrolledToBottom:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Scrolled to Bottom"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_scrolled_to_bottom_of_stats"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_scrolled_to_bottom_of_stats"];
             break;
         case WPAnalyticsStatEditorCreatedPost:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Created Post"];
@@ -390,20 +405,35 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_sent_to_google_plus"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_sent_item_to_google_plus"];
             break;
-		case WPAnalyticsStatSentItemToWordPress:
-			instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_sent_to_wordpress"];
+        case WPAnalyticsStatSentItemToWordPress:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_sent_to_wordpress"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_sent_item_to_wordpress"];
-			break;
+            break;
         case WPAnalyticsStatSharedItem:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_shared"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_shared_article"];
             break;
-        case WPAnalyticsStatNotificationPerformedAction:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_notifications_performed_action_against"];
-            [instructions setCurrentDateForPeopleProperty:@"last_time_performed_action_against_notification"];
-            break;
         case WPAnalyticsStatNotificationApproved:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_notifications_approved"];
+            break;
+        case WPAnalyticsStatNotificationUnapproved:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_notifications_unapproved"];
+            break;
+        case WPAnalyticsStatNotificationFollowAction:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notifications - Followed User"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_followed_user_from_notification"];
+            break;
+        case WPAnalyticsStatNotificationUnfollowAction:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notifications - Unfollowed User"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_unfollowed_user_from_notification"];
+            break;
+        case WPAnalyticsStatNotificationLiked:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notifications - Liked Comment"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_comment_likes_from_notification"];
+            break;
+        case WPAnalyticsStatNotificationUnliked:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notifications - Unliked Comment"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_comment_unlikes_from_notification"];
             break;
         case WPAnalyticsStatNotificationRepliedTo:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_notifications_replied_to"];
@@ -460,9 +490,9 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
         default:
             break;
     }
-    
+
     instructions.stat = stat;
-    
+
     return instructions;
 }
 
@@ -481,7 +511,7 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
         properties = [[NSMutableDictionary alloc] init];
         [_aggregatedStatProperties setValue:properties forKey:[self convertWPStatToString:stat]];
     }
-    
+
     properties[property] = value;
 }
 
@@ -498,7 +528,7 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
         newValue = [currentValue intValue];
         newValue++;
     }
-    
+
     [self saveProperty:property withValue:@(newValue) forStat:stat];
 }
 
@@ -506,7 +536,7 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
 {
     NSInteger sessionCount = [[[[Mixpanel sharedInstance] currentSuperProperties] numberForKey:@"session_count"] integerValue];
     sessionCount++;
-    
+
     NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
     superProperties[@"session_count"] = @(sessionCount);
     [[Mixpanel sharedInstance] registerSuperProperties:superProperties];

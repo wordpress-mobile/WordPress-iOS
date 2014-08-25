@@ -4,17 +4,20 @@
 
 @synthesize inputView = _inputView;
 
-- (UIView *)inputView {
+- (UIView *)inputView
+{
     return _inputView;
 }
 
-- (void)setInputView:(UIView *)inputView {
+- (void)setInputView:(UIView *)inputView
+{
     if (_inputView != inputView) {
         _inputView = inputView;
     }
 }
 
-- (BOOL)canBecomeFirstResponder {
+- (BOOL)canBecomeFirstResponder
+{
     return YES;
 }
 
