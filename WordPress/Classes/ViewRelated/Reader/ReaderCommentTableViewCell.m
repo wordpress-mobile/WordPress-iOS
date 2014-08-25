@@ -212,6 +212,16 @@
 
 #pragma mark - Instance Methods
 
+- (NSString *)sanitizeAuthorURLString:(NSString *)urlString
+{
+    if (![urlString length]) {
+        return nil;
+    }
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSString *str = [url absoluteString];
+    return [[str componentsSeparatedByString:@"://"] lastObject];
+}
+
 - (void)configureCell:(Comment *)comment
 {
     self.comment = comment;
@@ -223,11 +233,12 @@
     [self.timeButton sizeToFit];
 
     [self.bylineButton setTitle:[comment authorForDisplay] forState:UIControlStateNormal];
-    NSString *authorUrl = comment.author_url;
+    NSString *authorUrl = [self sanitizeAuthorURLString:comment.author_url];
+    NSString *postAuthorURL = [self sanitizeAuthorURLString:[(ReaderPost *)comment.post authorURL]];
     self.bylineButton.enabled = ([authorUrl length] > 0);
 
     // Highlighting the author of the post
-    if ([authorUrl isEqualToString:[(ReaderPost *)comment.post authorURL]]) {
+    if ([authorUrl isEqualToString:postAuthorURL]) {
         [self.bylineButton setTitleColor:[WPStyleGuide jazzyOrange] forState:UIControlStateNormal];
         [self.bylineButton setTitleColor:[WPStyleGuide jazzyOrange] forState:UIControlStateDisabled];
     }
