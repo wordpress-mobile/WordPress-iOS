@@ -12,6 +12,7 @@ typedef enum
 WPPostViewControllerMode;
 
 extern NSString *const WPEditorNavigationRestorationID;
+extern NSString *const UserDefaultsNewEditorEnabled;
 
 @interface WPPostViewController : WPEditorViewController <UINavigationControllerDelegate, CTAssetsPickerControllerDelegate, WPEditorViewControllerDelegate>
 
@@ -20,6 +21,8 @@ extern NSString *const WPEditorNavigationRestorationID;
  */
 typedef void (^EditPostCompletionHandler)(void);
 @property (nonatomic, copy, readwrite) EditPostCompletionHandler onClose;
+
++ (BOOL)isNewEditorEnabled;
 
 /*
  Compose a new post with the last used blog.

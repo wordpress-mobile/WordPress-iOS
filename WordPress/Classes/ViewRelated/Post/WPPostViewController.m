@@ -21,6 +21,8 @@
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
+NSString *const UserDefaultsNewEditorEnabled = @"wp_neweditor_enabled";
+
 static NSInteger const MaximumNumberOfPictures = 4;
 
 @interface WPPostViewController ()<UIPopoverControllerDelegate> {
@@ -405,6 +407,21 @@ name:MediaShouldInsertBelowNotification object:nil];
     } else {
         [actionSheet showFromToolbar:self.navigationController.toolbar];
     }
+}
+
++ (BOOL)isNewEditorEnabled
+{
+    
+#ifdef DEBUG
+    return YES;
+#else
+#ifdef INTERNAL_BUILD
+    return YES;
+#else
+    return [[NSUserDefaults standardUserDefaults] boolForKey:UserDefaultsNewEditorEnabled];
+#endif
+#endif
+    
 }
 
 #pragma mark - Instance Methods
