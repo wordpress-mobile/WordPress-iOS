@@ -1919,9 +1919,9 @@ typedef enum
 	
     for (ZSSBarButtonItem *item in items) {
         if ([htmlProperties containsObject:item.htmlProperty]) {
-            item.tintColor = [self barButtonItemSelectedDefaultColor];
+			item.selected = YES;
         } else {
-            item.tintColor = [self barButtonItemDefaultColor];
+			item.selected = NO;
         }
     }
 }
