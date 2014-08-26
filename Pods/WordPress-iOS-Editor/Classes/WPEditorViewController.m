@@ -720,7 +720,7 @@ typedef enum
 													 @"Accessibility label for block quote button on formatting toolbar.");
 	
 	ZSSBarButtonItem *barButtonItem = [self barButtonItemWithTag:kWPEditorViewControllerElementTagBlockQuoteBarButton
-													htmlProperty:@"blockQuote"
+													htmlProperty:@"blockquote"
 													   imageName:@"icon_format_quote"
 														  target:self
 														selector:@selector(setBlockQuote)
