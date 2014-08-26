@@ -40,6 +40,7 @@ typedef NS_ENUM(NSInteger, NoteBlockTypes)
 @property (nonatomic, strong,  readonly) NSString           *timestamp;
 @property (nonatomic, strong,  readonly) NSString           *type;
 @property (nonatomic, strong,  readonly) NSString           *url;
+@property (nonatomic, strong,  readonly) NSString           *title;
 
 // Raw Properties
 @property (nonatomic, strong,  readonly) NSArray            *subject;

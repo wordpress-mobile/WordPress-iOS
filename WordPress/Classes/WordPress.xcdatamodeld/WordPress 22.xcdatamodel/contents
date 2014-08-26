@@ -269,6 +269,7 @@
         <attribute name="simperiumKey" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="subject" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
@@ -387,7 +388,7 @@
         <element name="Comment" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="343"/>
         <element name="Meta" positionX="9" positionY="153" width="128" height="105"/>
-        <element name="Notification" positionX="9" positionY="153" width="128" height="225"/>
+        <element name="Notification" positionX="9" positionY="153" width="128" height="240"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="150"/>
         <element name="ReaderComment" positionX="0" positionY="0" width="128" height="120"/>

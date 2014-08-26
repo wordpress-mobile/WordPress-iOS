@@ -101,8 +101,6 @@ import Foundation
         if oldHeight == newHeight {
             return
         }
-
-    println("Resizing OLD \(oldHeight) NEW \(newHeight)")
         
         frame.size.height   = newHeight
         frame.origin.y      += oldHeight - newHeight

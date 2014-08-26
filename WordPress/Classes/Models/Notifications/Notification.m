@@ -310,6 +310,7 @@ NSString const *NoteHeightKey           = @"height";
 @dynamic timestamp;
 @dynamic type;
 @dynamic url;
+@dynamic title;
 
 @synthesize date            = _date;
 @synthesize iconURL         = _iconURL;

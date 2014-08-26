@@ -62,7 +62,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 {
     [super viewDidLoad];
     
-    self.title                          = NSLocalizedString(@"Details", @"Notification Details Section Title");
+    self.title                          = self.note.title;
     self.restorationClass               = [self class];
     self.view.backgroundColor           = [WPStyleGuide itsEverywhereGrey];
     
