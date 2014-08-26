@@ -71,7 +71,13 @@ extension WPStyleGuide
                 subjectParagraph,                   NSParagraphStyleAttributeName,
                 Fonts.subjectItalics,               NSFontAttributeName
             )
-            
+
+            public static let snippetItalics    = NSDictionary(objectsAndKeys:
+                subjectParagraph,                   NSParagraphStyleAttributeName,
+                Fonts.subjectItalics,               NSFontAttributeName,
+                Colors.quotedText,                  NSForegroundColorAttributeName
+            )
+
             public static let blockRegular      = NSDictionary(objectsAndKeys:
                 blockParagraph,                     NSParagraphStyleAttributeName,
                 Fonts.blockRegular,                 NSFontAttributeName,

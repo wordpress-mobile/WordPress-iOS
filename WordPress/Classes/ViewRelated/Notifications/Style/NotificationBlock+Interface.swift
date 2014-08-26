@@ -57,6 +57,14 @@ extension NotificationBlock
         return theString
     }
 
+    public func snippetFormattedText() -> NSAttributedString {
+        if text == nil {
+            return NSAttributedString()
+        }
+
+        return NSMutableAttributedString(string: text, attributes: WPStyleGuide.Notifications.Styles.snippetItalics)
+    }
+
     public func quotedFormattedText() -> NSAttributedString {
         if text == nil {
             return NSAttributedString()
