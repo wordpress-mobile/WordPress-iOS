@@ -143,4 +143,17 @@
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
 
+- (void)testJetpackSetupDoesntReplaceDotcomAccount {
+    ATHStart();
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
+    WPAccount *wpComAccount = [accountService createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:@"token"];
+    ATHWait();
+    XCTAssertEqualObjects(wpComAccount, [accountService defaultWordPressComAccount]);
+
+    [accountService createOrUpdateWordPressComAccountWithUsername:@"test1" password:@"test1" authToken:@"token1"];
+    ATHWait();
+
+    XCTAssertEqualObjects(wpComAccount, [accountService defaultWordPressComAccount]);
+}
+
 @end
