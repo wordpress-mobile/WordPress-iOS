@@ -46,7 +46,7 @@ import Foundation
         imageView.frame.origin  = imageOrigin
         
         titleLabel.frame.origin = titleOrigin
-        titleLabel.frame.size   = CGSize(width: bounds.width - imageOrigin.x, height: titleHeight)
+        titleLabel.frame.size   = CGSize(width: bounds.width - imageOrigin.x * 2 - imageView.frame.width, height: titleHeight)
     }
 
     // MARK - Private Helpers
