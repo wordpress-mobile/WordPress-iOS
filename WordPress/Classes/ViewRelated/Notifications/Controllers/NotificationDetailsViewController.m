@@ -43,10 +43,10 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 
 @interface NotificationDetailsViewController () <SPBucketDelegate, EditCommentViewControllerDelegate>
 @property (nonatomic,   weak) IBOutlet UITableView      *tableView;
-@property (nonatomic,   weak) IBOutlet ReplyTextView    *replyTextView;
-@property (nonatomic, assign) CGRect                    originalReplyFrame;
+@property (nonatomic, strong) IBOutlet ReplyTextView    *replyTextView;
 @property (nonatomic, strong) NSDictionary              *layoutCellMap;
 @property (nonatomic, strong) NSDictionary              *reuseIdentifierMap;
+@property (nonatomic, assign) CGFloat                   keyboardBottomDelta;
 @property (nonatomic, assign) BOOL                      isKeyboardOnscreen;
 @property (nonatomic, assign) BOOL                      isRotating;
 @end
@@ -62,32 +62,32 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 {
     [super viewDidLoad];
     
-    self.title                      = NSLocalizedString(@"Details", @"Notification Details Section Title");
-    self.restorationClass           = [self class];
+    self.title                          = NSLocalizedString(@"Details", @"Notification Details Section Title");
+    self.restorationClass               = [self class];
+    self.view.backgroundColor           = [WPStyleGuide itsEverywhereGrey];
     
-    self.tableView.contentInset     = IS_IPAD ? NotificationTableInsetsPad : NotificationTableInsetsPhone;
-    self.tableView.backgroundColor  = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.contentInset         = IS_IPAD ? NotificationTableInsetsPad : NotificationTableInsetsPhone;
+    self.tableView.backgroundColor      = [WPStyleGuide itsEverywhereGrey];
 
     self.reuseIdentifierMap = @{
-        @(NoteBlockTypesText)       : NoteBlockTextTableViewCell.reuseIdentifier,
-        @(NoteBlockTypesComment)    : NoteBlockCommentTableViewCell.reuseIdentifier,
-        @(NoteBlockTypesQuote)      : NoteBlockQuoteTableViewCell.reuseIdentifier,
-        @(NoteBlockTypesImage)      : NoteBlockImageTableViewCell.reuseIdentifier,
-        @(NoteBlockTypesUser)       : NoteBlockUserTableViewCell.reuseIdentifier
+        @(NoteBlockTypesText)           : NoteBlockTextTableViewCell.reuseIdentifier,
+        @(NoteBlockTypesComment)        : NoteBlockCommentTableViewCell.reuseIdentifier,
+        @(NoteBlockTypesQuote)          : NoteBlockQuoteTableViewCell.reuseIdentifier,
+        @(NoteBlockTypesImage)          : NoteBlockImageTableViewCell.reuseIdentifier,
+        @(NoteBlockTypesUser)           : NoteBlockUserTableViewCell.reuseIdentifier
     };
     
-    Simperium *simperium            = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
-    SPBucket *notificationsBucket   = [simperium bucketForName:NSStringFromClass([Notification class])];
-    notificationsBucket.delegate    = self;
-    
-    self.replyTextView.isVisible    = [[self.note findCommentBlock] actionForKey:NoteActionReplyKey];
-
-    #warning TODO: Implement Reply
+    Simperium *simperium                = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+    SPBucket *notificationsBucket       = [simperium bucketForName:NSStringFromClass([Notification class])];
+    notificationsBucket.delegate        = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    [self attachReplyViewIfNeeded];
+    [self.replyTextView alignAtBottomOfSuperview];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -97,7 +97,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [self.replyTextView dismiss];
+    [self.replyTextView resignFirstResponder];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc removeObserver:self name:UIKeyboardWillShowNotification object:nil];
@@ -141,6 +141,34 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     };
     
     return _layoutCellMap;
+}
+
+
+#pragma mark - Reply View Helpers
+
+- (void)attachReplyViewIfNeeded
+{
+    if (self.replyTextView) {
+        return;
+    }
+    
+    NotificationBlock *commentBlock = [self.note findCommentBlock];
+    if (![commentBlock actionForKey:NoteActionReplyKey]) {
+        return;
+    }
+    
+    ReplyTextView *replyTextView    = [[ReplyTextView alloc] initWithWidth:CGRectGetWidth(self.view.frame)];
+    replyTextView.placeholder       = NSLocalizedString(@"Write a reply…", @"Placeholder text for inline compose view");
+    replyTextView.replyText         = [NSLocalizedString(@"Reply", @"") uppercaseString];
+    
+    [self.view addSubview:replyTextView];
+    [replyTextView alignAtBottomOfSuperview];
+    
+    self.replyTextView = replyTextView;
+    
+    UIEdgeInsets tableViewInsets    = self.tableView.contentInset;
+    tableViewInsets.bottom          += CGRectGetHeight(replyTextView.frame);
+    self.tableView.contentInset     = tableViewInsets;
 }
 
 
@@ -702,23 +730,22 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     CGRect viewFrame                = self.view.frame;
     CGFloat bottomInset             = CGRectGetHeight(kbRect) - (CGRectGetMaxY(kbRect) - CGRectGetMaxY(viewFrame) + CGRectGetMinY(viewFrame));
     
-    CGRect originalReplyFrame       = self.replyTextView.frame;
+    UIEdgeInsets newContentInsets   = self.tableView.contentInset;
+    newContentInsets.bottom         += bottomInset;
+    
+    CGRect replyFrame               = self.replyTextView.frame;
+    replyFrame.origin.y             -= bottomInset;
     
     // Prepare the Animation
     void (^animation)(void) = ^() {
-        UIEdgeInsets newContentInsets   = self.tableView.contentInset;
-        newContentInsets.bottom         = bottomInset;
-        self.tableView.contentInset     = newContentInsets;
-        
-        CGRect replyFrame               = self.replyTextView.frame;
-        replyFrame.origin.y             -= bottomInset;
-        self.replyTextView.frame        = replyFrame;
+        self.tableView.contentInset = newContentInsets;
+        self.replyTextView.frame    = replyFrame;
     };
     
     // Rotation hides + shows the keyboard again. Animation will look odd!
     if (self.isRotating) {
         animation();
-        
+    
     } else {
         [UIView beginAnimations:nil context:nil];
         [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
@@ -728,9 +755,9 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
         
         [UIView commitAnimations];
     }
-
-    self.originalReplyFrame = originalReplyFrame;
-    self.isKeyboardOnscreen = true;
+    
+    self.keyboardBottomDelta        = bottomInset;
+    self.isKeyboardOnscreen         = true;
 }
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification
@@ -743,16 +770,18 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     
     void (^animation)(void) = ^() {
         UIEdgeInsets newContentInsets   = self.tableView.contentInset;
-        newContentInsets.bottom         = 0;
+        newContentInsets.bottom         -= self.keyboardBottomDelta;
         self.tableView.contentInset     = newContentInsets;
         
-        self.replyTextView.frame        = self.originalReplyFrame;
+        CGRect replyFrame               = self.replyTextView.frame;
+        replyFrame.origin.y             += self.keyboardBottomDelta;
+        self.replyTextView.frame        = replyFrame;
     };
     
     // Rotation hides + shows the keyboard again. Animation will look odd!
     if (self.isRotating) {
         animation();
-        
+    
     } else {
         [UIView beginAnimations:nil context:nil];
         [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];

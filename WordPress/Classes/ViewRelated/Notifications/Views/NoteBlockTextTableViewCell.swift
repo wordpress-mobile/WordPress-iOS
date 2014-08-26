@@ -37,8 +37,8 @@ import Foundation
         attributedLabel.layoutFrameHeightIsConstrainedByBounds = false
         
         let insets  = labelInsets
-        let width   = bounds.width - insets.left - insets.right
-        let size    = attributedLabel.suggestedFrameSizeToFitEntireStringConstraintedToWidth(width)
+        let width   = min(bounds.width, maxWidth) - insets.left - insets.right
+        var size    = attributedLabel.suggestedFrameSizeToFitEntireStringConstraintedToWidth(width)
         attributedLabel.frame.size = size
     }
     
@@ -62,8 +62,9 @@ import Foundation
     }
     
     // MARK: - Private
-    private let insets = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
-    private let maxNumberOfLines = 0
+    private let maxWidth            = WPTableViewFixedWidth
+    private let insets              = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
+    private let maxNumberOfLines    = 0
     
     // MARK: - IBOutlets
     @IBOutlet private weak var attributedLabel: DTAttributedLabel!
