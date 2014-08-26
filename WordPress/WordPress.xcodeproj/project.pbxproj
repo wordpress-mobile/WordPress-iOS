@@ -45,6 +45,7 @@
 		311F2A19199961A700B74538 /* SuggestionsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 311F2A17199961A700B74538 /* SuggestionsTableViewCell.m */; };
 		311F2A211999627200B74538 /* SuggestionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311F2A201999627200B74538 /* SuggestionsTableViewController.m */; };
 		311F2A23199962F500B74538 /* SuggestionsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 311F2A22199962F500B74538 /* SuggestionsTableViewCell.xib */; };
+		31A336CE19ACA95E004ED107 /* SuggestionService.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A336CD19ACA95E004ED107 /* SuggestionService.m */; };
 		37022D931981C19000F322B7 /* VerticallyStackedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 37022D901981BF9200F322B7 /* VerticallyStackedButton.m */; };
 		3716E401167296D30035F8C4 /* ToastView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3716E400167296D30035F8C4 /* ToastView.xib */; };
 		37245ADC13FC23FF006CDBE3 /* WPWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37245ADB13FC23FF006CDBE3 /* WPWebViewController.xib */; };
@@ -433,6 +434,8 @@
 		311F2A1F1999627200B74538 /* SuggestionsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SuggestionsTableViewController.h; path = Terms/SuggestionsTableViewController.h; sourceTree = "<group>"; };
 		311F2A201999627200B74538 /* SuggestionsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SuggestionsTableViewController.m; path = Terms/SuggestionsTableViewController.m; sourceTree = "<group>"; };
 		311F2A22199962F500B74538 /* SuggestionsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SuggestionsTableViewCell.xib; path = Resources/SuggestionsTableViewCell.xib; sourceTree = "<group>"; };
+		31A336CC19ACA95E004ED107 /* SuggestionService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuggestionService.h; sourceTree = "<group>"; };
+		31A336CD19ACA95E004ED107 /* SuggestionService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SuggestionService.m; sourceTree = "<group>"; };
 		37022D8F1981BF9200F322B7 /* VerticallyStackedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerticallyStackedButton.h; sourceTree = "<group>"; };
 		37022D901981BF9200F322B7 /* VerticallyStackedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerticallyStackedButton.m; sourceTree = "<group>"; };
 		3716E400167296D30035F8C4 /* ToastView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ToastView.xib; path = Resources/ToastView.xib; sourceTree = "<group>"; };
@@ -1843,6 +1846,8 @@
 				5D44EB371986D8BA008B7175 /* ReaderSiteService.m */,
 				5DBCD9D318F35D7500B32229 /* ReaderTopicService.h */,
 				5DBCD9D418F35D7500B32229 /* ReaderTopicService.m */,
+				31A336CC19ACA95E004ED107 /* SuggestionService.h */,
+				31A336CD19ACA95E004ED107 /* SuggestionService.m */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -2512,6 +2517,7 @@
 				93C486511810445D00A24725 /* ActivityLogViewController.m in Sources */,
 				ACC156CC0E10E67600D6E1A0 /* EditPostViewController.m in Sources */,
 				93C1148518EDF6E100DAC95C /* BlogService.m in Sources */,
+				31A336CE19ACA95E004ED107 /* SuggestionService.m in Sources */,
 				ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */,
 				ACBAB6860E1247F700F38795 /* PostPreviewViewController.m in Sources */,
 				C58349C51806F95100B64089 /* IOS7CorrectedTextView.m in Sources */,

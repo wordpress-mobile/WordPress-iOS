@@ -6,6 +6,8 @@
 
 @property (nonatomic, weak) id<SuggestionsTableViewDelegate> delegate;
 
+- (instancetype)initWithSiteID:(NSNumber *)siteID;
+
 @end
 
 @protocol SuggestionsTableViewDelegate <NSObject>

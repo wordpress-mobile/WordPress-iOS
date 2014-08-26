@@ -1,0 +1,86 @@
+#import "SuggestionService.h"
+#import "Suggestion.h"
+#import "AccountService.h"
+#import "ContextManager.h"
+#import "WPAccount.h"
+
+NSString * const SuggestionListUpdatedNotification = @"SuggestionListUpdatedNotification";
+
+@interface SuggestionService ()
+
+@property (nonatomic, strong) NSCache *suggestionsCache;
+@property (nonatomic, strong) NSMutableArray *siteIDsCurrentlyBeingRequested;
+
+@end
+
+@implementation SuggestionService
+
++ (id)shared
+{
+    static SuggestionService *shared = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        shared = [[self alloc] init];
+    });
+    return shared;
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _suggestionsCache = [NSCache new];
+        _siteIDsCurrentlyBeingRequested = [NSMutableArray new];
+    }
+    return self;
+}
+
+#pragma mark -
+
+- (NSArray *)suggestionsForSiteID:(NSNumber *)siteID
+{
+    NSArray *suggestions = [self.suggestionsCache objectForKey:siteID];
+    if (!suggestions) {
+        [self updateSuggestionsForSiteID:siteID];
+    }
+    return suggestions;
+}
+
+- (void)updateSuggestionsForSiteID:(NSNumber *)siteID
+{
+    // if there is already a request in place for this siteID, just wait
+    if ([self.siteIDsCurrentlyBeingRequested containsObject:siteID]) {
+        return;
+    }
+
+    // add this siteID to currently being requested list
+    [self.siteIDsCurrentlyBeingRequested addObject:siteID];
+
+    NSString *suggestPath = @"users/suggest";
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    NSDictionary *params = @{@"site_id": siteID};
+
+    __weak __typeof(self) weakSelf = self;
+
+    [[defaultAccount restApi] GET:suggestPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSArray *restSuggestions = responseObject[@"suggestions"];
+        NSMutableArray *suggestions = [[NSMutableArray alloc] initWithCapacity:restSuggestions.count];
+
+        for (id restSuggestion in restSuggestions) {
+            [suggestions addObject:[Suggestion suggestionFromDictionary:restSuggestion]];
+        }
+        [weakSelf.suggestionsCache setObject:suggestions forKey:siteID cost:suggestions.count];
+
+        // send the siteID with the notification so it could be filtered out
+        [[NSNotificationCenter defaultCenter] postNotificationName:SuggestionListUpdatedNotification object:siteID];
+
+        // remove siteID from the currently being requested list
+        [weakSelf.siteIDsCurrentlyBeingRequested removeObject:siteID];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+        DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
+    }];
+}
+
+@end

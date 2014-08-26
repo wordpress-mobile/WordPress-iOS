@@ -6,8 +6,6 @@
 @property (nonatomic, strong) NSString *displayName;
 @property (nonatomic, strong) NSURL *imageURL;
 
-+ (id)suggestionWithUserLogin:(NSString*)_userLogin
-                  displayName:(NSString *)_displayName
-                     imageURL:(NSURL *)_imageURL;
++ (instancetype)suggestionFromDictionary:(NSDictionary *)dictionary;
 
 @end

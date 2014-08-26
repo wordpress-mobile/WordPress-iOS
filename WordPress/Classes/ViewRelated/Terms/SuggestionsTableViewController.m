@@ -2,11 +2,13 @@
 #import "SuggestionsTableViewCell.h"
 #import "Suggestion.h"
 #import "UIImageView+AFNetworking.h"
+#import "SuggestionService.h"
 
 NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 
 @interface SuggestionsTableViewController () <UISearchBarDelegate, UISearchDisplayDelegate>
 
+@property (nonatomic, strong) NSNumber *siteID;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) UISearchDisplayController *searchController;
 @property (nonatomic, strong) NSArray *searchResults;
@@ -15,6 +17,15 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 @end
 
 @implementation SuggestionsTableViewController
+
+- (instancetype)initWithSiteID:(NSNumber *)siteID
+{
+    self = [super init];
+    if (self) {
+        _siteID = siteID;
+    }
+    return self;
+}
 
 - (void)dealloc {
     self.delegate = nil;
@@ -45,32 +56,15 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
 
-    // TODO - get from rest api
-    self.suggestions = @[[Suggestion suggestionWithUserLogin:@"alans19231"
-                                                 displayName:@"Alan Shephard"
-                                                    imageURL:[NSURL URLWithString:@"http://s.gravatar.com/avatar/31bebfb2e302d673a7ada29e4d449b78"]],
-                         [Suggestion suggestionWithUserLogin:@"dekes19241"
-                                                 displayName:@"Deke Slayton"
-                                                    imageURL:[NSURL URLWithString:@"http://s.gravatar.com/avatar/d2b4119ddf895bd7e9eb2fad53396eec"]],
-                         [Suggestion suggestionWithUserLogin:@"gordonc19271"
-                                                 displayName:@"Gordon Cooper"
-                                                    imageURL:[NSURL URLWithString:@"http://s.gravatar.com/avatar/9d7158527cccb23c82f065f7f572d49d"]],
-                         [Suggestion suggestionWithUserLogin:@"gusg19261"
-                                                 displayName:@"Gus Grissom"
-                                                    imageURL:[NSURL URLWithString:@"http://s.gravatar.com/avatar/f02eda5a5457466a1c09008d11000a08"]],
-                         [Suggestion suggestionWithUserLogin:@"johng19211"
-                                                 displayName:@"John Glenn"
-                                                    imageURL:[NSURL URLWithString:@"http://s.gravatar.com/avatar/31bebfb2e302d673a7ada29e4d449b78"]],
-                         [Suggestion suggestionWithUserLogin:@"scottc19251"
-                                                 displayName:@"Scott Carpenter"
-                                                    imageURL:[NSURL URLWithString:@"http://s.gravatar.com/avatar/d2b4119ddf895bd7e9eb2fad53396eec"]],
-                         [Suggestion suggestionWithUserLogin:@"wallys19231"
-                                                 displayName:@"Wally Schirra"
-                                                    imageURL:[NSURL URLWithString:@"http://s.gravatar.com/avatar/9d7158527cccb23c82f065f7f572d49d"]]];
+    self.title = NSLocalizedString(@"Suggestions", @"Suggestions page title");
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(suggestionListUpdated:)
+                                                 name:SuggestionListUpdatedNotification
+                                               object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -82,6 +76,8 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 
 - (void)viewDidDisappear:(BOOL)animated
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
     if ([self.delegate respondsToSelector:@selector(suggestionViewDidDisappear:)])
     {
         [self.delegate suggestionViewDidDisappear:self];
@@ -183,6 +179,23 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
         searchBar.text = @"@";
     }
     return YES;
+}
+
+#pragma mark - Suggestion list management
+
+- (void)suggestionListUpdated:(NSNotification *)notification {
+    // only reload if the suggestion list is updated for the current site
+    if ([notification.object isEqualToNumber:self.siteID]) {
+        self.suggestions = [[SuggestionService shared] suggestionsForSiteID:self.siteID];
+        [self.tableView reloadData];
+    }
+}
+
+- (NSArray *)suggestions {
+    if (!_suggestions) {
+        _suggestions = [[SuggestionService shared] suggestionsForSiteID:self.siteID];
+    }
+    return _suggestions;
 }
 
 @end
