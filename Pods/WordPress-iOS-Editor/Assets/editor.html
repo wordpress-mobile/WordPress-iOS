@@ -784,12 +784,12 @@ function style_html(html_source, options) {
     <script>
     <!--editor-->
     </script>
-    <script type="text/javascript" src="fastclick.js"></script>
+    <!--<script type="text/javascript" src="fastclick.js"></script>
     <script>
         $(function() {
             FastClick.attach(document.body);
         });
-    </script>
+    </script>-->
 
     <style type="text/css">
         * {outline: 0px solid transparent; -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-touch-callout: none;}
@@ -798,5 +798,5 @@ function style_html(html_source, options) {
         img.zs_active {border: 2px dashed #000;}
     </style>
   </head>
-  <body contenteditable="true" onLoad="zss_editor.init();" onclick="void(0)" oninput="window.location='callback://user-triggered-change'" id="zss_editor_content"><!--content--></body>
+  <body contenteditable="true" onLoad="zss_editor.init();" id="zss_editor_content"><!--content--></body>
 </html>
