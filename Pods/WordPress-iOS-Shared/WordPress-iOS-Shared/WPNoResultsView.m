@@ -18,7 +18,7 @@
 + (instancetype)noResultsViewWithTitle:(NSString *)titleText message:(NSString *)messageText accessoryView:(UIView *)accessoryView buttonTitle:(NSString *)buttonTitle {
     
     WPNoResultsView *noResultsView  = [WPNoResultsView new];
-
+    
     noResultsView.accessoryView     = accessoryView;
     noResultsView.titleText         = titleText;
     noResultsView.messageText       = messageText;
@@ -189,7 +189,7 @@
 }
 
 - (void)centerInSuperview {
-
+    
     if (!self.superview) {
         return;
     }
