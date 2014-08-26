@@ -9,7 +9,7 @@ import Foundation
         
         textView.font                   = WPStyleGuide.Notifications.Fonts.blockRegular
         placeholderLabel.font           = WPStyleGuide.Notifications.Fonts.blockRegular
-        backgroundColor                 = WPStyleGuide.Notifications.Colors.replyBackground
+        layoutView.backgroundColor      = WPStyleGuide.Notifications.Colors.replyBackground
     }
     
     public required init(coder: NSCoder) {
@@ -102,6 +102,8 @@ import Foundation
             return
         }
 
+    println("Resizing OLD \(oldHeight) NEW \(newHeight)")
+        
         frame.size.height   = newHeight
         frame.origin.y      += oldHeight - newHeight
     }
@@ -119,7 +121,7 @@ import Foundation
     
     
     // MARK: - Constants
-    private let textViewPadding:            UIEdgeInsets = UIEdgeInsets(top: 3, left: 0, bottom: 3, right: 0)
+    private let textViewPadding:            UIEdgeInsets = UIEdgeInsets(top: 2, left: 0, bottom: 1, right: 0)
     private let textViewMaxHeight:          CGFloat     = 84
     private let textViewMinHeight:          CGFloat     = 44
     private let bundle:                     NSArray?
@@ -128,5 +130,6 @@ import Foundation
     @IBOutlet private var textView:         UITextView!
     @IBOutlet private var placeholderLabel: UILabel!
     @IBOutlet private var replyButton:      UIButton!
+    @IBOutlet private var layoutView:       UIView!
     @IBOutlet private var containerView:    UIView!
 }
