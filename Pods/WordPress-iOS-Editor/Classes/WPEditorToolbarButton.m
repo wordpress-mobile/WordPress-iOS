@@ -125,14 +125,18 @@ static const int kBottomLineHeight = 2;
 
 - (void)setSelected:(BOOL)selected
 {
+	BOOL hasChangedSelectedStatus = (selected != self.selected);
+	
 	[super setSelected:selected];
 	
-	if (selected) {
-		self.tintColor = self.selectedTintColor;
-		[self slideInBottomLineView];
-	} else {
-		self.tintColor = self.normalTintColor;
-		[self slideOutBottomLineView];
+	if (hasChangedSelectedStatus) {
+		if (selected) {
+			self.tintColor = self.selectedTintColor;
+			[self slideInBottomLineView];
+		} else {
+			self.tintColor = self.normalTintColor;
+			[self slideOutBottomLineView];
+		}
 	}
 }
 
