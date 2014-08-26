@@ -122,8 +122,62 @@ zss_editor.setUnderline = function() {
 }
 
 zss_editor.setBlockquote = function() {
-	document.execCommand('formatBlock', false, '<blockquote>');
+	var formatTag = "blockquote";
+	var formatBlock = document.queryCommandValue('formatBlock');
+	 
+	if (formatBlock.length > 0 && formatBlock.toLowerCase() == formatTag) {
+		document.execCommand('formatBlock', false, '<div>');
+	} else {
+		document.execCommand('formatBlock', false, '<' + formatTag + '>');
+	}
+
+	 zss_editor.enabledEditingItems();
+
+	/* DRM: the following code has been disabled for the time being, but it's a good starting point
+	 for being able to apply blockquote to your selection only.
+	 
+	var formatBlock = document.queryCommandValue('formatBlock');
+	
+	if (formatBlock.length > 0 && formatBlock.toLowerCase() == "blockquote") {
+
+		var selection = document.getSelection();
+		alert(selection);
+		var range = selection.getRangeAt(0).cloneRange();
+		alert(range);
+		var container = range.commonAncestorContainer;
+		
+		alert(container.nodeName);
+		
+		while (container && container.elementName != "blockquote")
+		{
+			container = container.parentElement();
+		}
+		
+		if (container) {
+			container.contents().unwrap();
+		}
+	} else {
+		var selection = document.getSelection();
+		
+		if (selection) {
+			if (selection.rangeCount) {
+				
+				var elementName = "blockquote";
+				var el = document.createElement(elementName);
+				
+				var range = selection.getRangeAt(0).cloneRange();
+				range.surroundContents(el);
+				
+				range.selectNodeContents(el)
+				
+				selection.removeAllRanges();
+				selection.addRange(range);
+			}
+		}
+	}
+	
 	zss_editor.enabledEditingItems();
+	 */
 }
 
 zss_editor.removeFormating = function() {
@@ -137,17 +191,30 @@ zss_editor.setHorizontalRule = function() {
 }
 
 zss_editor.setHeading = function(heading) {
-	document.execCommand('formatBlock', false, '<'+heading+'>');
+	var formatTag = heading;
+	var formatBlock = document.queryCommandValue('formatBlock');
+	
+	if (formatBlock.length > 0 && formatBlock.toLowerCase() == formatTag) {
+		document.execCommand('formatBlock', false, '<div>');
+	} else {
+		document.execCommand('formatBlock', false, '<' + formatTag + '>');
+	}
+	
 	zss_editor.enabledEditingItems();
 }
 
 zss_editor.setParagraph = function() {
-	document.execCommand('formatBlock', false, '<p>');
+	var formatTag = "p";
+	var formatBlock = document.queryCommandValue('formatBlock');
+	
+	if (formatBlock.length > 0 && formatBlock.toLowerCase() == formatTag) {
+		document.execCommand('formatBlock', false, '<div>');
+	} else {
+		document.execCommand('formatBlock', false, '<' + formatTag + '>');
+	}
+	
 	zss_editor.enabledEditingItems();
 }
-
-// Need way to remove formatBlock
-console.log('WARNING: We need a way to remove formatBlock items');
 
 zss_editor.undo = function() {
 	document.execCommand('undo', false, null);
