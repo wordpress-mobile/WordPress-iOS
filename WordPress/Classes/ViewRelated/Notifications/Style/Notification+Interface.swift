@@ -13,30 +13,26 @@ extension Notification
         let flags: NSCalendarUnit   = .DayCalendarUnit | .WeekOfYearCalendarUnit | .MonthCalendarUnit
         let components              = calendar.components(flags, fromDate: fromDate, toDate: toDate, options: nil)
         
-        var identifier: (kind: Int, value: Int)
+        var identifier: Int
 
         // Months
-        if components.month > 1 {
-            identifier = (Sections.Months, components.month)
-        } else if components.month == 1 {
-            identifier = (Sections.Month, components.month)
+        if components.month >= 1 {
+            identifier = Sections.Months
             
         // Weeks
-        } else if components.weekOfYear > 1 {
-            identifier = (Sections.Weeks, components.weekOfYear)
-        } else if components.weekOfYear == 1 {
-            identifier = (Sections.Week, components.weekOfYear)
+        } else if components.weekOfYear >= 1 {
+            identifier = Sections.Weeks
             
         // Days
         } else if components.day > 1 {
-            identifier = (Sections.Days, components.day)
+            identifier = Sections.Days
         } else if components.day == 1 {
-            identifier = (Sections.Yesterday, components.day)
+            identifier = Sections.Yesterday
         } else {
-            identifier = (Sections.Today, components.day)
+            identifier = Sections.Today
         }
         
-        return String(format: "%d:%d", identifier.kind, identifier.value)
+        return String(format: "%d", identifier)
     }
     
     public class func descriptionForSectionIdentifier(identifier: String) -> String {
@@ -53,15 +49,11 @@ extension Notification
         
         switch kind {
         case Sections.Months:
-            return String(format: "%d %@", payload, NSLocalizedString("Months Ago", comment: ""))
-        case Sections.Month:
-            return NSLocalizedString("One Month Ago", comment: "")
+            return NSLocalizedString("Older than a Month", comment: "")
         case Sections.Weeks:
-            return String(format: "%d %@", payload, NSLocalizedString("Weeks Ago", comment: ""))
-        case Sections.Week:
-            return NSLocalizedString("One Week Ago", comment: "")
+            return NSLocalizedString("Older than a Week", comment: "")
         case Sections.Days:
-            return String(format: "%d %@", payload, NSLocalizedString("Days Ago", comment: ""))
+            return NSLocalizedString("Older than 2 days", comment: "")
         case Sections.Yesterday:
             return NSLocalizedString("Yesterday", comment: "")
         default:
@@ -73,9 +65,7 @@ extension Notification
     private struct Sections
     {
         static let Months       = 0
-        static let Month        = 1
         static let Weeks        = 2
-        static let Week         = 3
         static let Days         = 4
         static let Yesterday    = 5
         static let Today        = 6
