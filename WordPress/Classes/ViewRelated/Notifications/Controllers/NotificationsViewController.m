@@ -441,11 +441,14 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
 
 - (void)configureCell:(NoteTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    Notification *note          = [self.resultsController objectAtIndexPath:indexPath];
-    NotificationBlock *block    = note.subjectBlocks.firstObject;
-    cell.attributedSubject      = block.subjectFormattedText;
-    cell.read                   = note.read.boolValue;
-    cell.noticon                = note.noticon;
+    Notification *note                      = [self.resultsController objectAtIndexPath:indexPath];
+    NotificationBlock *subjectTopBlock      = note.subjectBlocks.firstObject;
+    NotificationBlock *subjectSnippetBlock  = (note.subjectBlocks.count > 1) ? note.subjectBlocks.lastObject : nil;
+    
+    cell.attributedSubject                  = subjectTopBlock.subjectFormattedText;
+    cell.attributedSnippet                  = subjectSnippetBlock.snippetFormattedText;
+    cell.read                               = note.read.boolValue;
+    cell.noticon                            = note.noticon;
     
     [cell downloadGravatarWithURL:note.iconURL];
 }

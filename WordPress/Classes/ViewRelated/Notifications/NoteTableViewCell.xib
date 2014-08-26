@@ -21,14 +21,6 @@
                             <constraint firstAttribute="height" constant="45" id="ta1-tG-DqK"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="238" translatesAutoresizingMaskIntoConstraints="NO" id="SfC-6n-kyD" userLabel="SubjectLabel">
-                        <rect key="frame" x="70" y="12" width="238" height="20.5"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wfO-j3-kM6" userLabel="NoticonView">
                         <rect key="frame" x="42" y="42" width="20" height="20"/>
                         <subviews>
@@ -51,25 +43,54 @@
                             <constraint firstAttribute="height" constant="20" id="t5b-6V-yq3"/>
                         </constraints>
                     </view>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Text" lineBreakMode="wordWrap" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="238" translatesAutoresizingMaskIntoConstraints="NO" id="SfC-6n-kyD" userLabel="SubjectLabel">
+                        <rect key="frame" x="70" y="12" width="238" height="19"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" text="Snippet" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="238" translatesAutoresizingMaskIntoConstraints="NO" id="wcv-fL-daS" userLabel="SnippetLabel">
+                        <rect key="frame" x="70" y="33" width="238" height="19"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="SfC-6n-kyD" firstAttribute="leading" secondItem="wcv-fL-daS" secondAttribute="leading" id="3gF-DJ-y1E"/>
                     <constraint firstAttribute="trailing" secondItem="SfC-6n-kyD" secondAttribute="trailing" constant="12" id="6YI-0h-7xG"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="wcv-fL-daS" secondAttribute="bottom" constant="12" id="AFb-po-J3Z"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="SfC-6n-kyD" secondAttribute="bottom" constant="12" id="BoF-cP-a2D"/>
+                    <constraint firstItem="wcv-fL-daS" firstAttribute="leading" secondItem="wfO-j3-kM6" secondAttribute="trailing" constant="13" id="EU8-so-Lwt"/>
+                    <constraint firstAttribute="trailing" secondItem="wcv-fL-daS" secondAttribute="trailing" constant="12" id="MFS-Lb-Dh4"/>
                     <constraint firstItem="wfO-j3-kM6" firstAttribute="top" secondItem="9Ex-yA-LkS" secondAttribute="top" constant="42" id="NI5-rg-Yif"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="GgS-tD-1kB" secondAttribute="bottom" constant="12" id="O3R-0F-z4J"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="wfO-j3-kM6" secondAttribute="bottom" constant="8" id="SoC-7w-fOG"/>
                     <constraint firstItem="GgS-tD-1kB" firstAttribute="top" secondItem="9Ex-yA-LkS" secondAttribute="top" constant="12" id="UVx-Pm-foz"/>
                     <constraint firstItem="GgS-tD-1kB" firstAttribute="leading" secondItem="9Ex-yA-LkS" secondAttribute="leading" constant="12" id="a80-yz-Nlv"/>
                     <constraint firstItem="SfC-6n-kyD" firstAttribute="leading" secondItem="GgS-tD-1kB" secondAttribute="trailing" constant="13" id="dT8-x1-JZI"/>
                     <constraint firstItem="SfC-6n-kyD" firstAttribute="top" secondItem="9Ex-yA-LkS" secondAttribute="top" constant="12" id="gLA-vl-aV3"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="GgS-tD-1kB" secondAttribute="bottom" constant="12" id="qcv-Yj-oZy"/>
+                    <constraint firstItem="wcv-fL-daS" firstAttribute="top" secondItem="SfC-6n-kyD" secondAttribute="bottom" constant="2" id="vFp-hy-O2S"/>
                     <constraint firstItem="wfO-j3-kM6" firstAttribute="leading" secondItem="9Ex-yA-LkS" secondAttribute="leading" constant="42" id="wvg-PE-czH"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="BoF-cP-a2D"/>
+                        <exclude reference="EU8-so-Lwt"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
                 <outlet property="iconImageView" destination="GgS-tD-1kB" id="fdU-t2-UFf"/>
                 <outlet property="noticonLabel" destination="a81-9a-t1j" id="8QY-8p-5cq"/>
                 <outlet property="noticonView" destination="wfO-j3-kM6" id="gEY-Rx-Ylg"/>
+                <outlet property="snippetLabel" destination="wcv-fL-daS" id="vXn-Z0-vQW"/>
                 <outlet property="subjectLabel" destination="SfC-6n-kyD" id="r2y-qC-96l"/>
             </connections>
         </tableViewCell>

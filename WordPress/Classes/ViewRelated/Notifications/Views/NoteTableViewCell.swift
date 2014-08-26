@@ -15,6 +15,12 @@ import Foundation
             setNeedsLayout()
         }
     }
+    public var attributedSnippet: NSAttributedString? {
+        didSet {
+            snippetLabel.attributedText = attributedSnippet != nil ? attributedSnippet! : NSAttributedString()
+            setNeedsLayout()
+        }
+    }
     public var noticon: NSString? {
         didSet {
             noticonLabel.text = noticon ?? String()
@@ -49,18 +55,22 @@ import Foundation
         noticonLabel.font               = WPStyleGuide.Notifications.Fonts.noticon
         noticonLabel.textColor          = UIColor.whiteColor()
         
-        subjectLabel.numberOfLines      = numberOfLines
+        subjectLabel.numberOfLines      = subjectNumberOfLines
         subjectLabel.backgroundColor    = UIColor.clearColor()
         subjectLabel.textAlignment      = .Left
         subjectLabel.lineBreakMode      = .ByWordWrapping
         subjectLabel.shadowOffset       = CGSizeZero
         subjectLabel.textColor          = WPStyleGuide.Notifications.Colors.blockText
+
+        snippetLabel.backgroundColor    = UIColor.clearColor()
+        snippetLabel.lineBreakMode      = .ByWordWrapping
+        snippetLabel.numberOfLines      = snippetNumberOfLines
     }
     
     public override func layoutSubviews() {
+        refreshLabelPreferredMaxLayoutWidth()
         super.layoutSubviews()
         contentView.layoutIfNeeded()
-        refreshLabelPreferredMaxLayoutWidth()
     }
 
     public override func setSelected(selected: Bool, animated: Bool) {
@@ -75,7 +85,9 @@ import Foundation
     
     // MARK: - Private Methods
     private func refreshLabelPreferredMaxLayoutWidth() {
-        subjectLabel.preferredMaxLayoutWidth = bounds.width - subjectPaddingRight - subjectLabel.frame.minX;
+        let maxWidthLabel                    = frame.width - subjectPaddingRight - subjectLabel.frame.minX
+        subjectLabel.preferredMaxLayoutWidth = maxWidthLabel
+        snippetLabel.preferredMaxLayoutWidth = maxWidthLabel
     }
     
     private func refreshBackgrounds() {
@@ -84,7 +96,8 @@ import Foundation
     
     // MARK: - Private Properties
     private let subjectPaddingRight:            CGFloat     = 12
-    private let numberOfLines:                  Int         = 0
+    private let subjectNumberOfLines:           Int         = 0
+    private let snippetNumberOfLines:           Int         = 2
     private let noticonRadius:                  CGFloat     = 10
     private var placeholderName:                String      = "gravatar"
     private var gravatarURL:                    NSURL?
@@ -94,5 +107,6 @@ import Foundation
     @IBOutlet private weak var noticonLabel:    UILabel!
     @IBOutlet private weak var noticonView:     UIView!
     @IBOutlet private weak var subjectLabel:    UILabel!
+    @IBOutlet private weak var snippetLabel:    UILabel!
     @IBOutlet private weak var timestampLabel:  UILabel!
 }
