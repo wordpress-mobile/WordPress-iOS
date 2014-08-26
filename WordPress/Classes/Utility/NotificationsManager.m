@@ -179,7 +179,8 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
     }
 }
 
-+ (void)handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)remoteNotification {
++ (void)handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)remoteNotification
+{
     // Ensure we have a WP.com account
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
@@ -351,7 +352,8 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
 
 #pragma mark - Enhanced Notifications
 
-+ (NSSet *)buildNotificationCategories {
++ (NSSet *)buildNotificationCategories
+{
     // Build the notification actions
     UIMutableUserNotificationAction *commentReplyAction = [[UIMutableUserNotificationAction alloc] init];
     commentReplyAction.identifier = NotificationActionCommentReply;
