@@ -1,6 +1,8 @@
 #import "WPEditorToolbarButton.h"
 
 @interface WPEditorToolbarButton ()
+@property (nonatomic, weak, readonly) id target;
+@property (nonatomic, assign, readonly) SEL selector;
 @property (nonatomic, weak, readwrite) UIView* bottomLineView;
 @end
 
@@ -45,11 +47,7 @@ static const int kBottomLineHeight = 2;
 
 - (void)touchUpInside:(id)sender
 {
-	__weak typeof(self) weakSelf = self;
-	
-	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-		weakSelf.selected = !weakSelf.selected;
-	});
+	self.selected = !self.selected;
 }
 
 #pragma mark - Bottom line
@@ -130,13 +128,18 @@ static const int kBottomLineHeight = 2;
 	[super setSelected:selected];
 	
 	if (hasChangedSelectedStatus) {
-		if (selected) {
-			self.tintColor = self.selectedTintColor;
-			[self slideInBottomLineView];
-		} else {
-			self.tintColor = self.normalTintColor;
-			[self slideOutBottomLineView];
-		}
+		dispatch_time_t dispatchDelay = dispatch_time(DISPATCH_TIME_NOW,
+													  (int64_t)(0.2 * NSEC_PER_SEC));
+		
+		dispatch_after(dispatchDelay, dispatch_get_main_queue(), ^{
+			if (selected) {
+				self.tintColor = self.selectedTintColor;
+				[self slideInBottomLineView];
+			} else {
+				self.tintColor = self.normalTintColor;
+				[self slideOutBottomLineView];
+			}
+		});
 	}
 }
 
