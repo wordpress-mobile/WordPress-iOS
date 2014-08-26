@@ -1106,6 +1106,7 @@ typedef enum
 	
 	self.editorView.usesGUIFixes = YES;
 	self.editorView.customInputAccessoryView = self.toolbarHolder;
+	self.sourceView.inputAccessoryView = self.toolbarHolder;
 	self.titleTextField.inputAccessoryView = self.toolbarHolder;
     
     // Check to see if we have any toolbar items, if not, add them all
