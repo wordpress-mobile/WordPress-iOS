@@ -3,7 +3,7 @@
 #import "Suggestion.h"
 #import "UIImageView+AFNetworking.h"
 
-NSString * const CellIdentifier = @"CellIdentifier";
+NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 
 @interface SuggestionsTableViewController () <UISearchBarDelegate, UISearchDisplayDelegate>
 
