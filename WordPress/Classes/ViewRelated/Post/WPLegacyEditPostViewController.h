@@ -11,8 +11,8 @@ extern NSString *const WPLegacyEditorNavigationRestorationID;
 /*
  EditPostViewController instance will execute the onClose callback, if provided, whenever the UI is dismissed.
  */
-typedef void (^EditPostCompletionHandler)(void);
-@property (nonatomic, copy, readwrite) EditPostCompletionHandler onClose;
+typedef void (^WPLegacyEditPostCompletionHandler)(void);
+@property (nonatomic, copy, readwrite) WPLegacyEditPostCompletionHandler onClose;
 
 /*
  Initialize the editor with the specified post.
