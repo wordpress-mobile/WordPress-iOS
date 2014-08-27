@@ -40,6 +40,14 @@ zss_editor.init = function() {
 			$('img').removeClass('zs_active');
 		}
 	}, false);
+	
+	editor.bind('doubletap', function(e) {
+		zss_editor.focusEditor();
+		var range = document.createRange();
+		range.selectNode(e.target);
+		selection.removeAllRanges();
+		selection.addRange(range);
+	});
 
 	editor.bind('focusin', function(e) {
 		if (zss_editor.isUsingiOS) {
@@ -530,7 +538,6 @@ zss_editor.enabledEditingItems = function(e) {
 	
 	// Use jQuery to figure out those that are not supported
 	if (typeof(e) != "undefined") {
-		//alert($(e.target).css('textAlign'));
 		
 		// The target element
 		var t = $(e.target);
