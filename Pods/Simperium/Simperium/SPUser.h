@@ -14,7 +14,7 @@
 @property (copy, nonatomic, readwrite) NSString *email;
 @property (copy, nonatomic, readwrite) NSString *authToken;
 
-- (id)initWithEmail:(NSString *)username token:(NSString *)token;
+- (instancetype)initWithEmail:(NSString *)username token:(NSString *)token;
 - (NSString *)hashedEmail;
 - (BOOL)authenticated;
 
