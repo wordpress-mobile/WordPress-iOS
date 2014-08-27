@@ -22,6 +22,7 @@
 #import <Simperium/Simperium.h>
 #import "VerticallyStackedButton.h"
 #import "SuggestionsTableViewController.h"
+#import "SuggestionService.h"
 
 const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight = 64.f;
 NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRestorationKey";
@@ -594,9 +595,11 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 }
 
 - (void)composeViewDidStartAtMention:(InlineComposeView *)view {
-    SuggestionsTableViewController *suggestionsController = [[SuggestionsTableViewController alloc] initWithSiteID:self.siteID];
-    suggestionsController.delegate = self;
-    [self.navigationController pushViewController:suggestionsController animated:YES];
+    if ([[SuggestionService shared] shouldShowSuggestionsPageForSiteID:self.siteID]) {
+        SuggestionsTableViewController *suggestionsController = [[SuggestionsTableViewController alloc] initWithSiteID:self.siteID];
+        suggestionsController.delegate = self;
+        [self.navigationController pushViewController:suggestionsController animated:YES];
+    }
 }
 
 #pragma mark - SuggestionsTableViewDelegate

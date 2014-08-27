@@ -3,6 +3,7 @@
 #import "AccountService.h"
 #import "ContextManager.h"
 #import "WPAccount.h"
+#import "WordPressAppDelegate.h"
 
 NSString * const SuggestionListUpdatedNotification = @"SuggestionListUpdatedNotification";
 
@@ -81,6 +82,24 @@ NSString * const SuggestionListUpdatedNotification = @"SuggestionListUpdatedNoti
     } failure:^(AFHTTPRequestOperation *operation, NSError *error){
         DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
     }];
+}
+
+- (BOOL)shouldShowSuggestionsPageForSiteID:(NSNumber *)siteID {
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+
+    NSArray *suggestions = [self.suggestionsCache objectForKey:siteID];
+
+    // if the device is offline and suggestion list is not yet retrieved
+    if (!appDelegate.connectionAvailable && !suggestions) {
+        return NO;
+    }
+
+    // if the suggestion list is already retrieved and there is nothing to show
+    if (suggestions && suggestions.count == 0) {
+        return NO;
+    }
+
+    return YES;
 }
 
 @end
