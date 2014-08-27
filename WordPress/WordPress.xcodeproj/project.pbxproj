@@ -142,6 +142,7 @@
 		7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 7059CD200F332B6500A0660B /* WPCategoryTree.m */; };
 		74C1C306199170930077A7DC /* PostDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74C1C305199170930077A7DC /* PostDetailViewController.xib */; };
 		74C1C30E199170EA0077A7DC /* PostDetailViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74C1C30D199170EA0077A7DC /* PostDetailViewController~ipad.xib */; };
+		74D5FFD619ACDF6700389E8F /* WPLegacyEditPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D5FFD519ACDF6700389E8F /* WPLegacyEditPostViewController.m */; };
 		83043E55126FA31400EC9953 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83043E54126FA31400EC9953 /* MessageUI.framework */; };
 		8333FE0E11FF6EF200A495C1 /* EditSiteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8333FE0D11FF6EF200A495C1 /* EditSiteViewController.xib */; };
 		83418AAA11C9FA6E00ACF00C /* Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = 83418AA911C9FA6E00ACF00C /* Comment.m */; };
@@ -617,6 +618,9 @@
 		7059CD200F332B6500A0660B /* WPCategoryTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPCategoryTree.m; sourceTree = "<group>"; };
 		74C1C305199170930077A7DC /* PostDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PostDetailViewController.xib; path = Resources/PostDetailViewController.xib; sourceTree = "<group>"; };
 		74C1C30D199170EA0077A7DC /* PostDetailViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "PostDetailViewController~ipad.xib"; path = "Resources-iPad/PostDetailViewController~ipad.xib"; sourceTree = "<group>"; };
+		74D5FFD319ACDF6700389E8F /* WPLegacyEditPostViewController_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLegacyEditPostViewController_Internal.h; sourceTree = "<group>"; };
+		74D5FFD419ACDF6700389E8F /* WPLegacyEditPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLegacyEditPostViewController.h; sourceTree = "<group>"; };
+		74D5FFD519ACDF6700389E8F /* WPLegacyEditPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLegacyEditPostViewController.m; sourceTree = "<group>"; };
 		83043E54126FA31400EC9953 /* MessageUI.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		8333FE0D11FF6EF200A495C1 /* EditSiteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditSiteViewController.xib; path = Resources/EditSiteViewController.xib; sourceTree = "<group>"; };
 		833AF259114575A50016DE8F /* PostAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostAnnotation.h; sourceTree = "<group>"; };
@@ -1801,6 +1805,9 @@
 				E183EC9B16B1C01D00C2EB11 /* WPPostViewController_Internal.h */,
 				ACBAB6840E1247F700F38795 /* PostPreviewViewController.h */,
 				ACBAB6850E1247F700F38795 /* PostPreviewViewController.m */,
+				74D5FFD419ACDF6700389E8F /* WPLegacyEditPostViewController.h */,
+				74D5FFD319ACDF6700389E8F /* WPLegacyEditPostViewController_Internal.h */,
+				74D5FFD519ACDF6700389E8F /* WPLegacyEditPostViewController.m */,
 				ACBAB5FC0E121C7300F38795 /* PostSettingsViewController.h */,
 				ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */,
 				5D62BAD818AAAE9B0044E5F7 /* PostSettingsViewController_Internal.h */,
@@ -2624,6 +2631,7 @@
 				93D6D64A1924FDAD00A4F44A /* CategoryServiceRemote.m in Sources */,
 				5D577D361891360900B964C3 /* PostGeolocationView.m in Sources */,
 				5DA5BF4118E32DCF005F11F9 /* MediaBrowserViewController.m in Sources */,
+				74D5FFD619ACDF6700389E8F /* WPLegacyEditPostViewController.m in Sources */,
 				E174F6E6172A73960004F23A /* WPAccount.m in Sources */,
 				E100C6BB1741473000AE48D8 /* WordPress-11-12.xcmappingmodel in Sources */,
 				E1A03EE217422DCF0085D192 /* BlogToAccount.m in Sources */,
