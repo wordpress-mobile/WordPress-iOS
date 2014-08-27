@@ -6,6 +6,12 @@
 
 - (void)composeView:(InlineComposeView *)view didSendText:(NSString *)text;
 
+@optional
+/**
+ Tells the delegate the user has typed @ sign. It will NOT work if the user replaces text.
+ */
+- (void)composeViewDidStartAtMention:(InlineComposeView *)view;
+
 @end
 
 @interface InlineComposeView : UIView

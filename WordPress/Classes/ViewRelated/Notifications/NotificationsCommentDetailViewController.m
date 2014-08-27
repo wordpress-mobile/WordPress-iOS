@@ -593,15 +593,10 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     [self publishReply:text];
 }
 
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range
-                                                replacementText:(NSString *)text {
-    if ([text isEqualToString:@"@"]) {
-        SuggestionsTableViewController *suggestionsController = [[SuggestionsTableViewController alloc] initWithSiteID:self.siteID];
-        suggestionsController.delegate = self;
-        [self.navigationController pushViewController:suggestionsController animated:YES];
-    }
-    
-    return YES;
+- (void)composeViewDidStartAtMention:(InlineComposeView *)view {
+    SuggestionsTableViewController *suggestionsController = [[SuggestionsTableViewController alloc] initWithSiteID:self.siteID];
+    suggestionsController.delegate = self;
+    [self.navigationController pushViewController:suggestionsController animated:YES];
 }
 
 #pragma mark - SuggestionsTableViewDelegate
