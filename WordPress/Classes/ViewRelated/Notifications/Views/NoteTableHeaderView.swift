@@ -57,8 +57,8 @@ import Foundation
         titleLabel.textAlignment    = .Left
         titleLabel.numberOfLines    = 0;
         titleLabel.lineBreakMode    = .ByWordWrapping
-        titleLabel.font             = WPStyleGuide.Notifications.Fonts.headerText
-        titleLabel.textColor        = WPStyleGuide.Notifications.Colors.headerText
+        titleLabel.font             = WPStyleGuide.Notifications.Fonts.header
+        titleLabel.textColor        = WPStyleGuide.Notifications.Colors.header
         titleLabel.backgroundColor  = UIColor.clearColor()
         titleLabel.shadowOffset     = CGSizeZero
         addSubview(titleLabel)
