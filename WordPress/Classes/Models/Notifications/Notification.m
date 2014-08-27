@@ -27,6 +27,7 @@ NSString const *NoteBlockTypeUser       = @"user";
 NSString const *NoteBlockTypeComment    = @"comment";
 
 NSString const *NoteTypeMatcher         = @"automattcher";
+NSString const *NoteTypeComment         = @"comment";
 
 NSString const *NoteMetaKey             = @"meta";
 NSString const *NoteMediaKey            = @"media";
@@ -162,7 +163,6 @@ NSString const *NoteHeightKey           = @"height";
 @end
 
 
-
 @implementation NotificationBlock
 
 - (instancetype)initWithDictionary:(NSDictionary *)rawBlock
@@ -203,6 +203,17 @@ NSString const *NoteHeightKey           = @"height";
     return [[self.meta dictionaryForKey:NoteTitlesKey] stringForKey:NoteHomeKey];
 }
 
+- (NotificationURL *)notificationUrlWithUrl:(NSURL *)url
+{
+    for (NotificationURL *noteURL in self.urls) {
+        if ([noteURL.url isEqual:url]) {
+            return noteURL;
+        }
+    }
+
+    return nil;
+}
+
 - (void)setActionOverrideValue:(NSNumber *)value forKey:(NSString *)key
 {
     if (!_actionsOverride) {
@@ -238,9 +249,9 @@ NSString const *NoteHeightKey           = @"height";
         return nil;
     }
     
-	NSMutableArray *parsed  = [NSMutableArray array];
+    NSMutableArray *parsed  = [NSMutableArray array];
     
-	for (NSDictionary *rawDict in rawBlocks) {
+    for (NSDictionary *rawDict in rawBlocks) {
         if (![rawDict isKindOfClass:[NSDictionary class]]) {
             continue;
         }
@@ -259,28 +270,85 @@ NSString const *NoteHeightKey           = @"height";
         //  Comments
         } else if ([block.metaCommentID isEqual:notification.metaCommentID] && block.metaSiteID != nil) {
             block.type = NoteBlockTypesComment;
-
-        //  Quotes: Another comment that doesn't match with the note comment
-        } else if (block.metaCommentID != nil) {
-            block.type = NoteBlockTypesQuote;
             
         //  Images
         } else if (media.isImage) {
             block.type = NoteBlockTypesImage;
-          
+            
         //  Text
         } else {
             block.type = NoteBlockTypesText;
         }
-
+        
         
         [parsed addObject:block];
-	}
+    }
     
-	return parsed;
+    return parsed;
 }
 
 @end
+
+
+#pragma mark ====================================================================================
+#pragma mark NotificationBlock
+#pragma mark ====================================================================================
+
+@interface NotificationBlockGroup ()
+@property (nonatomic, strong) NSArray             *blocks;
+@property (nonatomic, assign) NoteBlockGroupTypes type;
+@end
+
+@implementation NotificationBlockGroup
+
+- (NotificationBlock *)blockOfType:(NoteBlockTypes)type
+{
+    for (NotificationBlock *block in self.blocks) {
+        if (block.type == type) {
+            return block;
+        }
+    }
+    return nil;
+}
+
++ (NotificationBlockGroup *)groupWithBlocks:(NSArray *)blocks type:(NoteBlockGroupTypes)type
+{
+    NSAssert([blocks isKindOfClass:[NSArray class]], nil);
+    NotificationBlockGroup *group   = [self new];
+    group.blocks                    = blocks;
+    group.type                      = type;
+    return group;
+}
+
++ (NSArray *)blockGroupsFromArray:(NSArray *)rawBlocks notification:(Notification *)notification
+{
+    NSArray *blocks         = [NotificationBlock blocksFromArray:rawBlocks notification:notification];
+    NSMutableArray *groups  = [NSMutableArray array];
+    
+    // Subject: Contains a User + Text Block
+    if (rawBlocks == notification.subject) {
+        [groups addObject:[NotificationBlockGroup groupWithBlocks:blocks type:NoteBlockGroupTypesSubject]];
+    
+    // Snippet: Contains a User + Text Block
+    } else if (rawBlocks == notification.header) {
+        [groups addObject:[NotificationBlockGroup groupWithBlocks:blocks type:NoteBlockGroupTypesSnippet]];
+        
+    // Comment: Contains a User + Comment Block
+    } else if (notification.isComment) {
+        [groups addObject:[NotificationBlockGroup groupWithBlocks:blocks type:NoteBlockGroupTypesComment]];
+       
+    // Rest: 1-1 relationship
+    } else {
+        for (NotificationBlock *block in blocks) {
+            [groups addObject:[NotificationBlockGroup groupWithBlocks:@[block] type:block.type]];
+        }
+    }
+    
+    return groups;
+}
+
+@end
+
 
 
 #pragma mark ====================================================================================
@@ -288,11 +356,11 @@ NSString const *NoteHeightKey           = @"height";
 #pragma mark ====================================================================================
 
 @interface Notification ()
-@property (nonatomic, strong) NSDate    *date;
-@property (nonatomic, strong) NSURL     *iconURL;
-@property (nonatomic, strong) NSArray   *subjectBlocks;
-@property (nonatomic, strong) NSArray   *headerBlocks;
-@property (nonatomic, strong) NSArray   *bodyBlocks;
+@property (nonatomic, strong) NSDate                    *date;
+@property (nonatomic, strong) NSURL                     *iconURL;
+@property (nonatomic, strong) NotificationBlockGroup    *subjectBlockGroup;
+@property (nonatomic, strong) NotificationBlockGroup    *headerBlockGroup;
+@property (nonatomic, strong) NSArray                   *bodyBlockGroups;
 @end
 
 
@@ -312,22 +380,22 @@ NSString const *NoteHeightKey           = @"height";
 @dynamic url;
 @dynamic title;
 
-@synthesize date            = _date;
-@synthesize iconURL         = _iconURL;
-@synthesize subjectBlocks   = _subjectBlocks;
-@synthesize headerBlocks    = _headerBlocks;
-@synthesize bodyBlocks      = _bodyBlocks;
+@synthesize date                = _date;
+@synthesize iconURL             = _iconURL;
+@synthesize subjectBlockGroup   = _subjectBlockGroup;
+@synthesize headerBlockGroup    = _headerBlockGroup;
+@synthesize bodyBlockGroups     = _bodyBlockGroups;
 
 
 #pragma mark - NSManagedObject Overriden Methods
 
 - (void)didTurnIntoFault
 {
-    _date           = nil;
-    _iconURL        = nil;
-    _subjectBlocks  = nil;
-    _headerBlocks   = nil;
-    _bodyBlocks     = nil;
+    _date               = nil;
+    _iconURL            = nil;
+    _subjectBlockGroup  = nil;
+    _headerBlockGroup   = nil;
+    _bodyBlockGroups    = nil;
 }
 
 
@@ -350,31 +418,31 @@ NSString const *NoteHeightKey           = @"height";
     return self.date;
 }
 
-- (NSArray *)subjectBlocks
+- (NotificationBlockGroup *)subjectBlockGroup
 {
-    if (!_subjectBlocks) {
-        _subjectBlocks = [NotificationBlock blocksFromArray:self.subject notification:self];
+    if (!_subjectBlockGroup) {
+        _subjectBlockGroup = [[NotificationBlockGroup blockGroupsFromArray:self.subject notification:self] firstObject];
     }
 
-    return _subjectBlocks;
+    return _subjectBlockGroup;
 }
 
-- (NSArray *)headerBlocks
+- (NotificationBlockGroup *)headerBlockGroup
 {
-    if (!_headerBlocks) {
-        _headerBlocks = [NotificationBlock blocksFromArray:self.header notification:self];
+    if (!_headerBlockGroup) {
+        _headerBlockGroup = [[NotificationBlockGroup blockGroupsFromArray:self.header notification:self] firstObject];
     }
     
-    return _headerBlocks;
+    return _headerBlockGroup;
 }
 
-- (NSArray *)bodyBlocks
+- (NSArray *)bodyBlockGroups
 {
-    if (!_bodyBlocks) {
-        _bodyBlocks = [NotificationBlock blocksFromArray:self.body notification:self];
+    if (!_bodyBlockGroups) {
+        _bodyBlockGroups = [NotificationBlockGroup blockGroupsFromArray:self.body notification:self];
     }
     
-    return _bodyBlocks;
+    return _bodyBlockGroups;
 }
 
 - (NSNumber *)metaSiteID
@@ -397,36 +465,40 @@ NSString const *NoteHeightKey           = @"height";
     return [self.type isEqual:NoteTypeMatcher];
 }
 
+- (BOOL)isComment
+{
+    return [self.type isEqual:NoteTypeComment];
+}
+
 
 #pragma mark - Comment Helpers
 
-- (NotificationBlock *)findCommentBlock
+- (NotificationBlockGroup *)blockGroupOfType:(NoteBlockGroupTypes)type
 {
-    for (NotificationBlock *block in self.bodyBlocks) {
-        if (block.type == NoteBlockTypesComment && [block.metaCommentID isEqual:self.metaCommentID]) {
-            return block;
+    for (NotificationBlockGroup *blockGroup in self.bodyBlockGroups) {
+        if (blockGroup.type == type) {
+            return blockGroup;
         }
     }
     return nil;
 }
 
-- (NotificationBlock *)findUserBlock
+- (NotificationURL *)notificationUrlWithUrl:(NSURL *)url
 {
-    for (NotificationBlock *block in self.bodyBlocks) {
-        if (block.type == NoteBlockTypesUser) {
-            return block;
-        }
-    }
-    return nil;
+#warning NOT COOL
     
-}
-
-- (NotificationURL *)findNotificationUrlWithUrl:(NSURL *)url
-{
-    for (NotificationBlock *block in self.bodyBlocks) {
-        for (NotificationURL *noteURL in block.urls) {
-            if ([noteURL.url isEqual:url]) {
-                return noteURL;
+    // Find in Header + Body please!
+    NSMutableArray *groups = [NSMutableArray array];
+    [groups addObjectsFromArray:self.bodyBlockGroups];
+    if (self.headerBlockGroup) {
+        [groups addObject:self.headerBlockGroup];
+    }
+    
+    for (NotificationBlockGroup *group in groups) {
+        for (NotificationBlock *block in group.blocks) {
+            NotificationURL *notificationURL = [block notificationUrlWithUrl:url];
+            if (notificationURL) {
+                return notificationURL;
             }
         }
     }

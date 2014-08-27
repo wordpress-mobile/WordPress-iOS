@@ -3,7 +3,9 @@
 
 
 @class NotificationBlock;
+@class NotificationBlockGroup;
 @class NotificationURL;
+@class NotificationMedia;
 
 #pragma mark ====================================================================================
 #pragma mark Constants
@@ -20,10 +22,19 @@ extern NSString * NoteActionEditKey;
 typedef NS_ENUM(NSInteger, NoteBlockTypes)
 {
     NoteBlockTypesText,
-    NoteBlockTypesComment,
-    NoteBlockTypesQuote,
     NoteBlockTypesImage,
-    NoteBlockTypesUser
+    NoteBlockTypesUser,
+    NoteBlockTypesComment
+};
+
+typedef NS_ENUM(NSInteger, NoteBlockGroupTypes)
+{
+    NoteBlockGroupTypesText     = NoteBlockTypesText,
+    NoteBlockGroupTypesImage    = NoteBlockTypesImage,
+    NoteBlockGroupTypesUser     = NoteBlockTypesUser,
+    NoteBlockGroupTypesComment  = NoteBlockTypesComment,    // Contains a User + Comment Block
+    NoteBlockGroupTypesSnippet  = 20,                       // Contains a User + Text Block
+    NoteBlockGroupTypesSubject  = 30,                       // Contains a User + Text Block
 };
 
 
@@ -33,36 +44,51 @@ typedef NS_ENUM(NSInteger, NoteBlockTypes)
 
 @interface Notification : SPManagedObject
 
-@property (nonatomic, strong,  readonly) NSString           *icon;
-@property (nonatomic, strong,  readonly) NSString           *noticon;
+@property (nonatomic, strong,  readonly) NSString               *icon;
+@property (nonatomic, strong,  readonly) NSString               *noticon;
 
-@property (nonatomic, strong, readwrite) NSNumber           *read;
-@property (nonatomic, strong,  readonly) NSString           *timestamp;
-@property (nonatomic, strong,  readonly) NSString           *type;
-@property (nonatomic, strong,  readonly) NSString           *url;
-@property (nonatomic, strong,  readonly) NSString           *title;
+@property (nonatomic, strong, readwrite) NSNumber               *read;
+@property (nonatomic, strong,  readonly) NSString               *timestamp;
+@property (nonatomic, strong,  readonly) NSString               *type;
+@property (nonatomic, strong,  readonly) NSString               *url;
+@property (nonatomic, strong,  readonly) NSString               *title;
 
 // Raw Properties
-@property (nonatomic, strong,  readonly) NSArray            *subject;
-@property (nonatomic, strong,  readonly) NSArray            *header;
-@property (nonatomic, strong,  readonly) NSArray            *body;
-@property (nonatomic, strong,  readonly) NSDictionary       *meta;
+@property (nonatomic, strong,  readonly) NSArray                *subject;
+@property (nonatomic, strong,  readonly) NSArray                *header;
+@property (nonatomic, strong,  readonly) NSArray                *body;
+@property (nonatomic, strong,  readonly) NSDictionary           *meta;
 
 // Derived Properties
-@property (nonatomic, strong,  readonly) NSArray            *subjectBlocks;		// Array of NotificationBlock objects
-@property (nonatomic, strong,  readonly) NSArray            *headerBlocks;		// Array of NotificationBlock objects
-@property (nonatomic, strong,  readonly) NSArray            *bodyBlocks;		// Array of NotificationBlock objects
-@property (nonatomic, assign,  readonly) NSNumber           *metaSiteID;
-@property (nonatomic, assign,  readonly) NSNumber           *metaPostID;
-@property (nonatomic, strong,  readonly) NSNumber           *metaCommentID;
-@property (nonatomic, strong,  readonly) NSURL              *iconURL;
-@property (nonatomic, strong,  readonly) NSDate             *timestampAsDate;
-@property (nonatomic, assign,  readonly) BOOL               isMatcher;
+@property (nonatomic, strong,  readonly) NotificationBlockGroup *subjectBlockGroup;
+@property (nonatomic, strong,  readonly) NotificationBlockGroup *headerBlockGroup;
+@property (nonatomic, strong,  readonly) NSArray                *bodyBlockGroups;   // Array of NotificationBlockGroup objects
+@property (nonatomic, assign,  readonly) NSNumber               *metaSiteID;
+@property (nonatomic, assign,  readonly) NSNumber               *metaPostID;
+@property (nonatomic, strong,  readonly) NSNumber               *metaCommentID;
+@property (nonatomic, strong,  readonly) NSURL                  *iconURL;
+@property (nonatomic, strong,  readonly) NSDate                 *timestampAsDate;
+@property (nonatomic, assign,  readonly) BOOL                   isMatcher;
+@property (nonatomic, assign,  readonly) BOOL                   isComment;
 
 // Helpers
-- (NotificationBlock *)findUserBlock;
-- (NotificationBlock *)findCommentBlock;
-- (NotificationURL *)findNotificationUrlWithUrl:(NSURL *)url;
+- (NotificationBlockGroup *)blockGroupOfType:(NoteBlockGroupTypes)type;
+- (NotificationURL *)notificationUrlWithUrl:(NSURL *)url;
+
+@end
+
+
+#pragma mark ====================================================================================
+#pragma mark NotificationBlock
+#pragma mark ====================================================================================
+
+// Adapter Class: Multiple Blocks can be mapped to a single view
+@interface NotificationBlockGroup : NSObject
+
+@property (nonatomic, strong, readonly) NSArray             *blocks;
+@property (nonatomic, assign, readonly) NoteBlockGroupTypes type;
+
+- (NotificationBlock *)blockOfType:(NoteBlockTypes)type;
 
 @end
 
@@ -88,6 +114,8 @@ typedef NS_ENUM(NSInteger, NoteBlockTypes)
 
 // Overrides
 @property (nonatomic, strong, readwrite) NSString           *textOverride;
+
+- (NotificationURL *)notificationUrlWithUrl:(NSURL *)url;
 
 - (void)setActionOverrideValue:(NSNumber *)obj forKey:(NSString *)key;
 - (void)removeActionOverrideForKey:(NSString *)key;
@@ -123,6 +151,7 @@ typedef NS_ENUM(NSInteger, NoteBlockTypes)
 #pragma mark ====================================================================================
 
 @interface NotificationMedia : NSObject
+
 @property (nonatomic, strong, readonly) NSString            *type;
 @property (nonatomic, strong, readonly) NSURL               *mediaURL;
 @property (nonatomic, assign, readonly) CGSize              size;
