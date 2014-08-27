@@ -92,12 +92,6 @@ extension WPStyleGuide
                 Fonts.blockItalics,                 NSFontAttributeName,
                 Colors.blockText,                   NSForegroundColorAttributeName
             )
-            
-            public static let quotedItalics     = NSDictionary(objectsAndKeys:
-                blockParagraph,                     NSParagraphStyleAttributeName,
-                Fonts.blockItalics,                 NSFontAttributeName,
-                Colors.quotedText,                  NSForegroundColorAttributeName
-            )
         }
     }
 }

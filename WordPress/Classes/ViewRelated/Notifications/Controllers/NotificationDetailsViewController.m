@@ -408,7 +408,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     
     cell.name                       = userBlock.text;
     cell.timestamp                  = [self.note.timestampAsDate shortString];
-    cell.attributedText             = commentBlock.regularFormattedOverride ?: commentBlock.regularFormattedText;
+    cell.attributedText             = commentBlock.regularFormattedText;
 
     cell.onUrlClick                 = ^(NSURL *url){
         [weakSelf openURL:url];

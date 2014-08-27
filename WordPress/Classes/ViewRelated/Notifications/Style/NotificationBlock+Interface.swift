@@ -23,15 +23,19 @@ extension NotificationBlock
         return theString;
     }
 
-    public func regularFormattedOverride() -> NSAttributedString? {
-        if textOverride == nil {
-            return nil
+    public func snippetFormattedText() -> NSAttributedString {
+        if text == nil {
+            return NSAttributedString()
         }
-        
-        return NSMutableAttributedString(string: textOverride, attributes: WPStyleGuide.Notifications.Styles.blockRegular)
+
+        return NSMutableAttributedString(string: text, attributes: WPStyleGuide.Notifications.Styles.snippetItalics)
     }
 
     public func regularFormattedText() -> NSAttributedString {
+        if textOverride != nil {
+            return NSMutableAttributedString(string: textOverride, attributes: WPStyleGuide.Notifications.Styles.blockRegular)
+        }
+
         if text == nil {
             return NSAttributedString()
         }
@@ -43,6 +47,7 @@ extension NotificationBlock
         //  Note: CoreText doesn't work with NSLinkAttributeName
         //      DTLinkAttribute     = "NSLinkAttributeName"
         //      NSLinkAttributeName = "NSLink"
+        //
         for url in urls as [NotificationURL] {
             if url.isPost {
                 theString.addAttributes(WPStyleGuide.Notifications.Styles.blockItalics, range: url.range)
@@ -53,23 +58,7 @@ extension NotificationBlock
                 theString.addAttribute(NSForegroundColorAttributeName, value: WPStyleGuide.Notifications.Colors.blockLink, range: url.range)
             }
         }
-        
+
         return theString
-    }
-
-    public func snippetFormattedText() -> NSAttributedString {
-        if text == nil {
-            return NSAttributedString()
-        }
-
-        return NSMutableAttributedString(string: text, attributes: WPStyleGuide.Notifications.Styles.snippetItalics)
-    }
-
-    public func quotedFormattedText() -> NSAttributedString {
-        if text == nil {
-            return NSAttributedString()
-        }
-
-        return NSMutableAttributedString(string: text, attributes: WPStyleGuide.Notifications.Styles.quotedItalics)
     }
 }
