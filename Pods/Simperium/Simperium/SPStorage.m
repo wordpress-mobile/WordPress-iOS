@@ -49,7 +49,7 @@
 {
     if (object.simperiumKey == nil || object.simperiumKey.length == 0) {
         object.simperiumKey = [NSString sp_makeUUID];
-	}
+    }
     
     [self configureNewGhost:object];
     
