@@ -24,6 +24,7 @@
 #import "UIActionSheet+Helpers.h"
 #import "UIAlertView+Blocks.h"
 #import "NSObject+Helpers.h"
+#import "NSDate+StringFormatting.h"
 
 
 
@@ -31,10 +32,17 @@
 #pragma mark Constants
 #pragma mark ==========================================================================================
 
-static NSUInteger NotificationDetailSectionsCount   = 1;
-
 static UIEdgeInsets NotificationTableInsetsPhone    = {0.0f,  0.0f, 20.0f, 0.0f};
 static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f};
+
+typedef NS_ENUM(NSInteger, NotificationSection) {
+    NotificationSectionHeader,
+    NotificationSectionBody,
+    NotificationSectionCount
+};
+
+static NSInteger NotificationSectionHeaderRows  = 1;
+static CGFloat NotificationSectionSeparator     = 10;
 
 
 #pragma mark ==========================================================================================
@@ -42,10 +50,19 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 #pragma mark ==========================================================================================
 
 @interface NotificationDetailsViewController () <SPBucketDelegate, EditCommentViewControllerDelegate>
+
+// Views
 @property (nonatomic,   weak) IBOutlet UITableView      *tableView;
-@property (nonatomic, strong) IBOutlet ReplyTextView    *replyTextView;
+@property (nonatomic, strong) ReplyTextView             *replyTextView;
+
+// Table Helpers
 @property (nonatomic, strong) NSDictionary              *layoutCellMap;
 @property (nonatomic, strong) NSDictionary              *reuseIdentifierMap;
+@property (nonatomic, assign) NSInteger                 sectionCount;
+@property (nonatomic, assign) NSInteger                 headerSectionIndex;
+@property (nonatomic, assign) NSInteger                 bodySectionIndex;
+
+// Keyboard Helpers
 @property (nonatomic, assign) CGFloat                   keyboardBottomDelta;
 @property (nonatomic, assign) BOOL                      isKeyboardOnscreen;
 @property (nonatomic, assign) BOOL                      isRotating;
@@ -70,11 +87,11 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     self.tableView.backgroundColor      = [WPStyleGuide itsEverywhereGrey];
 
     self.reuseIdentifierMap = @{
-        @(NoteBlockTypesText)           : NoteBlockTextTableViewCell.reuseIdentifier,
-        @(NoteBlockTypesComment)        : NoteBlockCommentTableViewCell.reuseIdentifier,
-        @(NoteBlockTypesQuote)          : NoteBlockQuoteTableViewCell.reuseIdentifier,
-        @(NoteBlockTypesImage)          : NoteBlockImageTableViewCell.reuseIdentifier,
-        @(NoteBlockTypesUser)           : NoteBlockUserTableViewCell.reuseIdentifier
+        @(NoteBlockGroupTypesSnippet)   : NoteBlockSnippetTableViewCell.reuseIdentifier,
+        @(NoteBlockGroupTypesText)      : NoteBlockTextTableViewCell.reuseIdentifier,
+        @(NoteBlockGroupTypesComment)   : NoteBlockCommentTableViewCell.reuseIdentifier,
+        @(NoteBlockGroupTypesImage)     : NoteBlockImageTableViewCell.reuseIdentifier,
+        @(NoteBlockGroupTypesUser)      : NoteBlockUserTableViewCell.reuseIdentifier
     };
     
     Simperium *simperium                = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
@@ -85,9 +102,8 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    [self attachReplyViewIfNeeded];
-    [self.replyTextView alignAtBottomOfSuperview];
+    
+    [self reloadData];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -97,11 +113,9 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [self.replyTextView resignFirstResponder];
     
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [nc removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [self.replyTextView resignFirstResponder];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -114,6 +128,23 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     self.isRotating = NO;
+}
+
+- (void)reloadData
+{
+    // Hide the header, if needed
+    self.sectionCount       = NotificationSectionCount;
+    self.headerSectionIndex = NotificationSectionHeader;
+    self.bodySectionIndex   = NotificationSectionBody;
+    
+    if (self.note.headerBlockGroup == nil) {
+        --_sectionCount;
+        --_headerSectionIndex;
+        --_bodySectionIndex;
+    }
+    
+    [self.tableView reloadData];
+    [self attachReplyViewIfNeeded];
 }
 
 
@@ -133,11 +164,11 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     UITableView *tableView  = detailsViewController.tableView;
 
     _layoutCellMap = @{
-        @(NoteBlockTypesText)       : [tableView dequeueReusableCellWithIdentifier:NoteBlockTextTableViewCell.reuseIdentifier],
-        @(NoteBlockTypesComment)    : [tableView dequeueReusableCellWithIdentifier:NoteBlockCommentTableViewCell.reuseIdentifier],
-        @(NoteBlockTypesQuote)      : [tableView dequeueReusableCellWithIdentifier:NoteBlockQuoteTableViewCell.reuseIdentifier],
-        @(NoteBlockTypesImage)      : [tableView dequeueReusableCellWithIdentifier:NoteBlockImageTableViewCell.reuseIdentifier],
-        @(NoteBlockTypesUser)       : [tableView dequeueReusableCellWithIdentifier:NoteBlockUserTableViewCell.reuseIdentifier]
+        @(NoteBlockGroupTypesSnippet)   : [tableView dequeueReusableCellWithIdentifier:NoteBlockSnippetTableViewCell.reuseIdentifier],
+        @(NoteBlockGroupTypesText)      : [tableView dequeueReusableCellWithIdentifier:NoteBlockTextTableViewCell.reuseIdentifier],
+        @(NoteBlockGroupTypesComment)   : [tableView dequeueReusableCellWithIdentifier:NoteBlockCommentTableViewCell.reuseIdentifier],
+        @(NoteBlockGroupTypesImage)     : [tableView dequeueReusableCellWithIdentifier:NoteBlockImageTableViewCell.reuseIdentifier],
+        @(NoteBlockGroupTypesUser)      : [tableView dequeueReusableCellWithIdentifier:NoteBlockUserTableViewCell.reuseIdentifier]
     };
     
     return _layoutCellMap;
@@ -152,8 +183,9 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
         return;
     }
     
-    NotificationBlock *commentBlock = [self.note findCommentBlock];
-    if (![commentBlock actionForKey:NoteActionReplyKey]) {
+    NotificationBlockGroup *group   = [self.note blockGroupOfType:NoteBlockGroupTypesComment];
+    NotificationBlock *block        = [group blockOfType:NoteBlockTypesComment];
+    if (![block actionForKey:NoteActionReplyKey]) {
         return;
     }
     
@@ -164,7 +196,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     [self.view addSubview:replyTextView];
     [replyTextView alignAtBottomOfSuperview];
     
-    self.replyTextView = replyTextView;
+    self.replyTextView              = replyTextView;
     
     UIEdgeInsets tableViewInsets    = self.tableView.contentInset;
     tableViewInsets.bottom          += CGRectGetHeight(replyTextView.frame);
@@ -178,7 +210,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 {
     // Reload the table, if *our* notification got updated
     if ([self.note.simperiumKey isEqualToString:key]) {
-        [self.tableView reloadData];
+        [self reloadData];
     }
 }
 
@@ -227,9 +259,9 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 
 #pragma mark - Helpers
 
-- (NotificationBlock *)blockForIndexPath:(NSIndexPath *)indexPath
+- (NotificationBlockGroup *)blockGroupForIndexPath:(NSIndexPath *)indexPath
 {
-    return self.note.bodyBlocks[indexPath.row];
+    return (indexPath.section == _headerSectionIndex) ? _note.headerBlockGroup : _note.bodyBlockGroups[indexPath.row];
 }
 
 
@@ -242,26 +274,26 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
         This is a workaround. iOS 7 + grouped cells result in an extra top spacing.
         Ref.: http://stackoverflow.com/questions/17699831/how-to-change-height-of-grouped-uitableview-header
      */
-    
-    return CGFLOAT_MIN;
+
+    return (section == _bodySectionIndex && _sectionCount > 1) ? NotificationSectionSeparator : CGFLOAT_MIN;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	return NotificationDetailSectionsCount;
+    return self.sectionCount;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.note.bodyBlocks.count;
+    return (section == _headerSectionIndex) ? NotificationSectionHeaderRows : self.note.bodyBlockGroups.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NotificationBlock *block                = [self blockForIndexPath:indexPath];
-    NoteBlockTableViewCell *tableViewCell   = self.layoutCellMap[@(block.type)] ?: self.layoutCellMap[@(NoteBlockTypesText)];
+    NotificationBlockGroup *blockGroup      = [self blockGroupForIndexPath:indexPath];
+    NoteBlockTableViewCell *tableViewCell   = self.layoutCellMap[@(blockGroup.type)] ?: self.layoutCellMap[@(NoteBlockGroupTypesText)];
     
-    [self setupCell:tableViewCell block:block];
+    [self setupCell:tableViewCell blockGroup:blockGroup];
 
     CGFloat height = [tableViewCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
     
@@ -270,126 +302,163 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NotificationBlock *block        = [self blockForIndexPath:indexPath];
-    NSString *reuseIdentifier       = self.reuseIdentifierMap[@(block.type)] ?: self.reuseIdentifierMap[@(NoteBlockTypesText)];
-    NoteBlockTableViewCell *cell    = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
+    NotificationBlockGroup *blockGroup      = [self blockGroupForIndexPath:indexPath];
+    NSString *reuseIdentifier               = self.reuseIdentifierMap[@(blockGroup.type)] ?: self.reuseIdentifierMap[@(NoteBlockGroupTypesText)];
+    NoteBlockTableViewCell *cell            = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
     
-    [self setupCell:cell block:block];
-    
+    [self setupCell:cell blockGroup:blockGroup];
+
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NotificationBlock *block = [self blockForIndexPath:indexPath];
-    
-    // When tapping a User's cell, let's push the associated blog. If any!
-    if (block.type == NoteBlockTypesUser) {
-        NSURL *linkHome = [NSURL URLWithString:block.metaLinksHome];
-        [self openURL:linkHome];
+    NotificationBlockGroup *group = [self blockGroupForIndexPath:indexPath];
+
+    // User Blocks: Push the associated blog, if any
+    if (group.type == NoteBlockGroupTypesUser) {
+        
+        NotificationBlock *block    = [group blockOfType:NoteBlockTypesUser];
+        [self openURL:[NSURL URLWithString:block.metaLinksHome]];
+        
+    } else if (group.type == NoteBlockGroupTypesSnippet) {
+        
+        NotificationBlock *block    = [group blockOfType:NoteBlockGroupTypesText];
+        NotificationURL *url        = block.urls.firstObject;
+        [self openURL:url.url];
     }
 }
 
 
 #pragma mark - NoteBlockTableViewCell Helpers
 
-- (void)setupCell:(NoteBlockTableViewCell *)cell block:(NotificationBlock *)block
+- (void)setupCell:(NoteBlockTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
 {
     // Note: This is gonna look awesome in Swift
-    if (block.type == NoteBlockTypesUser) {
-        [self setupUserCell:(NoteBlockUserTableViewCell *)cell block:block];
+    if (blockGroup.type == NoteBlockGroupTypesSnippet) {
+        [self setupSnippetCell:(NoteBlockSnippetTableViewCell *)cell blockGroup:blockGroup];
         
-    } else if (block.type == NoteBlockTypesQuote) {
-        [self setupQuoteCell:(NoteBlockQuoteTableViewCell *)cell block:block];
+    } else if (blockGroup.type == NoteBlockGroupTypesUser) {
+        [self setupUserCell:(NoteBlockUserTableViewCell *)cell blockGroup:blockGroup];
         
-    } else if (block.type == NoteBlockTypesComment){
-        [self setupCommentCell:(NoteBlockCommentTableViewCell *)cell block:block];
+    } else if (blockGroup.type == NoteBlockGroupTypesComment){
+        [self setupCommentCell:(NoteBlockCommentTableViewCell *)cell blockGroup:blockGroup];
         
-    } else if (block.type == NoteBlockTypesImage) {
-        [self setupImageCell:(NoteBlockImageTableViewCell *)cell block:block];
+    } else if (blockGroup.type == NoteBlockGroupTypesImage) {
+        [self setupImageCell:(NoteBlockImageTableViewCell *)cell blockGroup:blockGroup];
         
     } else {
-        [self setupTextCell:(NoteBlockTextTableViewCell *)cell block:block];
+        [self setupTextCell:(NoteBlockTextTableViewCell *)cell blockGroup:blockGroup];
     }
 }
 
-- (void)setupUserCell:(NoteBlockUserTableViewCell *)cell block:(NotificationBlock *)block
+- (void)setupSnippetCell:(NoteBlockSnippetTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
 {
-    NotificationMedia *media        = [block.media firstObject];
+    NotificationBlock *gravatarBlock    = [blockGroup blockOfType:NoteBlockTypesImage];
+    NotificationBlock *snippetBlock     = [blockGroup blockOfType:NoteBlockTypesText];
+    NotificationMedia *media            = gravatarBlock.media.firstObject;
+    
+    cell.name                           = gravatarBlock.text;
+    cell.snippet                        = snippetBlock.text;
+    
+    [cell downloadGravatarWithURL:media.mediaURL];
+}
+
+- (void)setupUserCell:(NoteBlockUserTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
+{
+    NotificationBlock *userBlock    = blockGroup.blocks.firstObject;
+    NotificationMedia *media        = [userBlock.media firstObject];
+    
+    NSAssert(userBlock, nil);
+    
     __weak __typeof(self) weakSelf  = self;
     
-    cell.name                       = block.text;
-    cell.blogTitle                  = block.metaTitlesHome;
-    cell.isFollowEnabled            = [block isActionEnabled:NoteActionFollowKey];
-    cell.isFollowOn                 = [block isActionOn:NoteActionFollowKey];
+    cell.name                       = userBlock.text;
+    cell.blogTitle                  = userBlock.metaTitlesHome;
+    cell.isFollowEnabled            = [userBlock isActionEnabled:NoteActionFollowKey];
+    cell.isFollowOn                 = [userBlock isActionOn:NoteActionFollowKey];
     cell.onFollowClick              = ^() {
-        [weakSelf followSiteWithBlock:block];
+        [weakSelf followSiteWithBlock:userBlock];
     };
     cell.onUnfollowClick            = ^() {
-        [weakSelf unfollowSiteWithBlock:block];
+        [weakSelf unfollowSiteWithBlock:userBlock];
     };
     
     [cell downloadGravatarWithURL:media.mediaURL];
 }
 
-- (void)setupCommentCell:(NoteBlockCommentTableViewCell *)cell block:(NotificationBlock *)block
+- (void)setupCommentCell:(NoteBlockCommentTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
 {
+    NotificationBlock *commentBlock = [blockGroup blockOfType:NoteBlockTypesComment];
+    NotificationBlock *userBlock    = [blockGroup blockOfType:NoteBlockTypesUser];
+    NotificationMedia *media        = userBlock.media.firstObject;
+    
+    NSAssert(commentBlock, nil);
+    NSAssert(userBlock, nil);
+    
     __weak __typeof(self) weakSelf  = self;
     
-    cell.isLikeEnabled              = [block isActionEnabled:NoteActionLikeKey];
-    cell.isApproveEnabled           = [block isActionEnabled:NoteActionApproveKey];
-    cell.isTrashEnabled             = [block isActionEnabled:NoteActionTrashKey];
-    cell.isMoreEnabled              = [block isActionEnabled:NoteActionApproveKey];
+    cell.isLikeEnabled              = [commentBlock isActionEnabled:NoteActionLikeKey];
+    cell.isApproveEnabled           = [commentBlock isActionEnabled:NoteActionApproveKey];
+    cell.isTrashEnabled             = [commentBlock isActionEnabled:NoteActionTrashKey];
+    cell.isMoreEnabled              = [commentBlock isActionEnabled:NoteActionApproveKey];
 
-    cell.isLikeOn                   = [block isActionOn:NoteActionLikeKey];
-    cell.isApproveOn                = [block isActionOn:NoteActionApproveKey];
-
-    cell.attributedText             = block.regularFormattedOverride ?: block.regularFormattedText;
+    cell.isLikeOn                   = [commentBlock isActionOn:NoteActionLikeKey];
+    cell.isApproveOn                = [commentBlock isActionOn:NoteActionApproveKey];
+    
+    cell.name                       = userBlock.text;
+    cell.timestamp                  = [self.note.timestampAsDate shortString];
+    cell.attributedText             = commentBlock.regularFormattedOverride ?: commentBlock.regularFormattedText;
 
     cell.onUrlClick                 = ^(NSURL *url){
         [weakSelf openURL:url];
     };
     
     cell.onLikeClick                = ^(){
-        [weakSelf likeCommentWithBlock:block];
+        [weakSelf likeCommentWithBlock:commentBlock];
     };
     
     cell.onUnlikeClick              = ^(){
-        [weakSelf unlikeCommentWithBlock:block];
+        [weakSelf unlikeCommentWithBlock:commentBlock];
     };
     
     cell.onApproveClick             = ^(){
-        [weakSelf approveCommentWithBlock:block];
+        [weakSelf approveCommentWithBlock:commentBlock];
     };
 
     cell.onUnapproveClick             = ^(){
-        [weakSelf unapproveCommentWithBlock:block];
+        [weakSelf unapproveCommentWithBlock:commentBlock];
     };
     
     cell.onTrashClick               = ^(){
-        [weakSelf trashCommentWithBlock:block];
+        [weakSelf trashCommentWithBlock:commentBlock];
     };
     
     cell.onMoreClick                = ^(){
-        [weakSelf displayMoreActionsWithBlock:block];
+        [weakSelf displayMoreActionsWithBlock:commentBlock];
     };
+    
+    [cell downloadGravatarWithURL:media.mediaURL];
 }
 
-- (void)setupQuoteCell:(NoteBlockQuoteTableViewCell *)cell block:(NotificationBlock *)block
+- (void)setupImageCell:(NoteBlockImageTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
 {
-    cell.attributedText             = block.quotedFormattedText;
-}
-
-- (void)setupImageCell:(NoteBlockImageTableViewCell *)cell block:(NotificationBlock *)block
-{
-    NotificationMedia *media        = [block.media firstObject];
+    NotificationBlock *imageBlock   = blockGroup.blocks.firstObject;
+    NSAssert(imageBlock, nil);
+    
+    NotificationMedia *media        = imageBlock.media.firstObject;
+    
     [cell downloadImageWithURL:media.mediaURL];
 }
 
-- (void)setupTextCell:(NoteBlockTextTableViewCell *)cell block:(NotificationBlock *)block
+- (void)setupTextCell:(NoteBlockTextTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
 {
+    NotificationBlock *textBlock    = blockGroup.blocks.firstObject;
+    NSAssert(textBlock, nil);
+    
     __weak __typeof(self) weakSelf  = self;
-    cell.attributedText             = block.regularFormattedText;
+    
+    cell.attributedText             = textBlock.regularFormattedText;
     cell.onUrlClick                 = ^(NSURL *url){
         [weakSelf openURL:url];
     };
@@ -400,11 +469,13 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
 
 - (void)openURL:(NSURL *)url
 {
-    if ([self displayReaderWithURL:url]) {
+    NotificationURL *notificationURL = [self.note notificationUrlWithUrl:url];
+    
+    if ([self displayReaderWithNotificationURL:notificationURL]) {
         return;
     }
     
-    if ([self displayStatsWithURL:url]) {
+    if ([self displayStatsWithNotificationURL:notificationURL]) {
         return;
     }
     
@@ -415,9 +486,8 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     [self.tableView deselectSelectedRowWithAnimation:YES];
 }
 
-- (BOOL)displayReaderWithURL:(NSURL *)url
+- (BOOL)displayReaderWithNotificationURL:(NotificationURL *)notificationURL
 {
-    NotificationURL *notificationURL = [self.note findNotificationUrlWithUrl:url];
     BOOL success = ((notificationURL.isPost || notificationURL.isComment) && _note.metaPostID && _note.metaSiteID);
     if (success) {
         [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:_note];
@@ -425,9 +495,8 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     return success;
 }
 
-- (BOOL)displayStatsWithURL:(NSURL *)url
+- (BOOL)displayStatsWithNotificationURL:(NotificationURL *)notificationURL
 {
-    NotificationURL *notificationURL = [self.note findNotificationUrlWithUrl:url];
     if (!notificationURL.isStats || !_note.metaSiteID) {
         return false;
     }
@@ -499,7 +568,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     
     [service followSiteWithID:block.metaSiteID.integerValue success:nil failure:^(NSError *error) {
         [block removeActionOverrideForKey:NoteActionFollowKey];
-        [weakSelf.tableView reloadData];
+        [weakSelf reloadData];
     }];
     
     [block setActionOverrideValue:@(true) forKey:NoteActionFollowKey];
@@ -515,7 +584,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     
     [service unfollowSiteWithID:block.metaSiteID.integerValue success:nil failure:^(NSError *error) {
         [block removeActionOverrideForKey:NoteActionFollowKey];
-        [weakSelf.tableView reloadData];
+        [weakSelf reloadData];
     }];
     
     [block setActionOverrideValue:@(false) forKey:NoteActionFollowKey];
@@ -531,7 +600,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     
     [service likeCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:^(NSError *error) {
         [block removeActionOverrideForKey:NoteActionLikeKey];
-        [weakSelf.tableView reloadData];
+        [weakSelf reloadData];
     }];
     
     [block setActionOverrideValue:@(true) forKey:NoteActionLikeKey];
@@ -547,7 +616,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     
     [service unlikeCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:^(NSError *error) {
         [block removeActionOverrideForKey:NoteActionLikeKey];
-        [weakSelf.tableView reloadData];
+        [weakSelf reloadData];
     }];
     
     [block setActionOverrideValue:@(false) forKey:NoteActionLikeKey];
@@ -563,7 +632,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     
     [service approveCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:^(NSError *error) {
         [block removeActionOverrideForKey:NoteActionApproveKey];
-        [weakSelf.tableView reloadData];
+        [weakSelf reloadData];
     }];
     
     [block setActionOverrideValue:@(true) forKey:NoteActionApproveKey];
@@ -579,7 +648,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     
     [service unapproveCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:^(NSError *error) {
         [block removeActionOverrideForKey:NoteActionApproveKey];
-        [weakSelf.tableView reloadData];
+        [weakSelf reloadData];
     }];
     
     [block setActionOverrideValue:@(false) forKey:NoteActionApproveKey];
@@ -656,7 +725,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
     // Local Override: Temporary hack until Simperium reflects the REST op
     NotificationBlock *block        = sender.userInfo;
     block.textOverride              = newContent;
-    [self.tableView reloadData];
+    [self reloadData];
     
     // Hit the backend
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -671,7 +740,7 @@ static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f}
                  otherButtonTitles:nil
                           tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
                       block.textOverride = nil;
-                      [weakSelf.tableView reloadData];
+                      [weakSelf reloadData];
                  }];
     }];
     
