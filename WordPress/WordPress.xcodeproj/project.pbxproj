@@ -140,6 +140,7 @@
 		5DF94E531962BAEB00359241 /* ReaderPostSimpleContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF94E4F1962BAEB00359241 /* ReaderPostSimpleContentView.m */; };
 		5DFA9D1A196B1BA30061FF96 /* ReaderTopicServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DFA9D19196B1BA30061FF96 /* ReaderTopicServiceTest.m */; };
 		7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 7059CD200F332B6500A0660B /* WPCategoryTree.m */; };
+		74BB6F1A19AE7B9400FB7829 /* WPLegacyEditPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BB6F1919AE7B9400FB7829 /* WPLegacyEditPageViewController.m */; };
 		74C1C306199170930077A7DC /* PostDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74C1C305199170930077A7DC /* PostDetailViewController.xib */; };
 		74C1C30E199170EA0077A7DC /* PostDetailViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74C1C30D199170EA0077A7DC /* PostDetailViewController~ipad.xib */; };
 		74D5FFD619ACDF6700389E8F /* WPLegacyEditPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D5FFD519ACDF6700389E8F /* WPLegacyEditPostViewController.m */; };
@@ -616,6 +617,8 @@
 		6EDC0E8E105881A800F68A1D /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		7059CD1F0F332B6500A0660B /* WPCategoryTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPCategoryTree.h; sourceTree = "<group>"; };
 		7059CD200F332B6500A0660B /* WPCategoryTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPCategoryTree.m; sourceTree = "<group>"; };
+		74BB6F1819AE7B9400FB7829 /* WPLegacyEditPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLegacyEditPageViewController.h; sourceTree = "<group>"; };
+		74BB6F1919AE7B9400FB7829 /* WPLegacyEditPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLegacyEditPageViewController.m; sourceTree = "<group>"; };
 		74C1C305199170930077A7DC /* PostDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PostDetailViewController.xib; path = Resources/PostDetailViewController.xib; sourceTree = "<group>"; };
 		74C1C30D199170EA0077A7DC /* PostDetailViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "PostDetailViewController~ipad.xib"; path = "Resources-iPad/PostDetailViewController~ipad.xib"; sourceTree = "<group>"; };
 		74D5FFD319ACDF6700389E8F /* WPLegacyEditPostViewController_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLegacyEditPostViewController_Internal.h; sourceTree = "<group>"; };
@@ -2172,6 +2175,8 @@
 			children = (
 				EC4696FD0EA75D460040EE8E /* PagesViewController.h */,
 				EC4696FE0EA75D460040EE8E /* PagesViewController.m */,
+				74BB6F1819AE7B9400FB7829 /* WPLegacyEditPageViewController.h */,
+				74BB6F1919AE7B9400FB7829 /* WPLegacyEditPageViewController.m */,
 				83D180F712329B1A002DCCB0 /* EditPageViewController.h */,
 				83D180F812329B1A002DCCB0 /* EditPageViewController.m */,
 				5D62BAD518AA88210044E5F7 /* PageSettingsViewController.h */,
@@ -2590,6 +2595,7 @@
 				5DBCD9D218F3569F00B32229 /* ReaderTopic.m in Sources */,
 				5DF94E2B1962B97D00359241 /* NewCommentsTableViewCell.m in Sources */,
 				85B6F74F1742DA1E00CE7F3A /* WPNUXMainButton.m in Sources */,
+				74BB6F1A19AE7B9400FB7829 /* WPLegacyEditPageViewController.m in Sources */,
 				85B6F7521742DAE800CE7F3A /* WPNUXBackButton.m in Sources */,
 				5DF738941965FAB900393584 /* SubscribedTopicsViewController.m in Sources */,
 				E2E7EB46185FB140004F5E72 /* WPBlogSelectorButton.m in Sources */,
