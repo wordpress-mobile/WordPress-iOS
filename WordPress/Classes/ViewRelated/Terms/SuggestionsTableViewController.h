@@ -14,8 +14,8 @@
 
 @optional
 
-- (void)suggestionViewDidSelect:(SuggestionsTableViewController *)suggestionsTableViewController
-                selectionString:(NSString *)string;
+- (void)suggestionTableView:(SuggestionsTableViewController *)suggestionsTableViewController
+            didSelectString:(NSString *)string;
 
 - (void)suggestionViewDidDisappear:(SuggestionsTableViewController *)suggestionsTableViewController;
 

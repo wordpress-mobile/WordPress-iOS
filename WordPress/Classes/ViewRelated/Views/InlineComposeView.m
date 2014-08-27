@@ -301,7 +301,7 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
 
     if ([text isEqualToString:@"@"] && range.length == 0 && delegateImplementsAtMention) {
         [self.delegate composeViewDidStartAtMention:self];
-        return NO;
+        return YES;
     }
 
     if ([self.delegate respondsToSelector:@selector(textView:shouldChangeTextInRange:replacementText:)]) {

@@ -127,7 +127,7 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([self.delegate respondsToSelector:@selector(suggestionViewDidSelect:selectionString:)])
+    if ([self.delegate respondsToSelector:@selector(suggestionTableView:didSelectString:)])
     {
         Suggestion *suggestion = nil;
         
@@ -137,7 +137,7 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
             suggestion = [self.suggestions objectAtIndex:indexPath.row];
         }
         
-        [self.delegate suggestionViewDidSelect:self selectionString:suggestion.userLogin];
+        [self.delegate suggestionTableView:self didSelectString:suggestion.userLogin];
     }
     
     [self.navigationController popViewControllerAnimated:YES];

@@ -601,10 +601,10 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
 #pragma mark - SuggestionsTableViewDelegate
 
-- (void)suggestionViewDidSelect:(SuggestionsTableViewController *)suggestionsController
-                selectionString:(NSString *)selectionString
+- (void)suggestionTableView:(SuggestionsTableViewController *)suggestionsTableViewController
+            didSelectString:(NSString *)string
 {
-    self.inlineComposeView.text = [self.inlineComposeView.text stringByAppendingString:selectionString];
+    self.inlineComposeView.text = [self.inlineComposeView.text stringByAppendingString:string];
 }
 
 - (void)suggestionViewDidDisappear:(SuggestionsTableViewController *)suggestionsController
