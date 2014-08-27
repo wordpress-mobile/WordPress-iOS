@@ -323,9 +323,10 @@ static CGFloat NotificationSectionSeparator     = 10;
         
     } else if (group.type == NoteBlockGroupTypesSnippet) {
         
-        NotificationBlock *block    = [group blockOfType:NoteBlockGroupTypesText];
-        NotificationURL *url        = block.urls.firstObject;
-        [self openURL:url.url];
+        NotificationBlock *block    = [group blockOfType:NoteBlockTypesText];
+        NotificationRange *range    = block.ranges.firstObject;
+
+        [self openURL:range.url];
     }
 }
 
@@ -469,13 +470,13 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 - (void)openURL:(NSURL *)url
 {
-    NotificationURL *notificationURL = [self.note notificationUrlWithUrl:url];
+    NotificationRange *range = [self.note notificationRangeWithUrl:url];
     
-    if ([self displayReaderWithNotificationURL:notificationURL]) {
+    if ([self displayReaderWithNotificationRange:range]) {
         return;
     }
     
-    if ([self displayStatsWithNotificationURL:notificationURL]) {
+    if ([self displayStatsWithNotificationRange:range]) {
         return;
     }
     
@@ -486,18 +487,19 @@ static CGFloat NotificationSectionSeparator     = 10;
     [self.tableView deselectSelectedRowWithAnimation:YES];
 }
 
-- (BOOL)displayReaderWithNotificationURL:(NotificationURL *)notificationURL
+- (BOOL)displayReaderWithNotificationRange:(NotificationRange *)range
 {
-    BOOL success = ((notificationURL.isPost || notificationURL.isComment) && _note.metaPostID && _note.metaSiteID);
+    BOOL success = ((range.isPost || range.isComment) && range.postID && range.siteID);
     if (success) {
-        [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:_note];
+        [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:range];
     }
     return success;
 }
 
-- (BOOL)displayStatsWithNotificationURL:(NotificationURL *)notificationURL
+- (BOOL)displayStatsWithNotificationRange:(NotificationRange *)range
 {
-    if (!notificationURL.isStats || !_note.metaSiteID) {
+#warning TODO FIXME
+    if (!range.isStats || !_note.metaSiteID) {
         return false;
     }
     
@@ -767,8 +769,8 @@ static CGFloat NotificationSectionSeparator     = 10;
         
     } else if([segue.identifier isEqualToString:NSStringFromClass([ReaderPostDetailViewController class])]) {
         ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
-        Notification *note = (Notification *)sender;
-        [readerViewController setupWithPostID:note.metaPostID siteID:note.metaSiteID];
+        NotificationRange *range = (NotificationRange *)sender;
+        [readerViewController setupWithPostID:range.postID siteID:range.siteID];
         
     } else if ([segue.identifier isEqualToString:NSStringFromClass([EditCommentViewController class])]) {
         NotificationBlock *block                        = sender;

@@ -34,6 +34,7 @@ NSString const *NoteMediaKey            = @"media";
 NSString const *NoteActionsKey          = @"actions";
 NSString const *NoteLinksKey            = @"links";
 NSString const *NoteIdsKey              = @"ids";
+NSString const *NoteRangesKey           = @"ranges";
 NSString const *NoteSiteKey             = @"site";
 NSString const *NoteHomeKey             = @"home";
 NSString const *NoteCommentKey          = @"comment";
@@ -46,25 +47,31 @@ NSString const *NoteIndicesKey          = @"indices";
 NSString const *NoteWidthKey            = @"width";
 NSString const *NoteHeightKey           = @"height";
 
+NSString const *NoteSiteIdKey           = @"site_id";
+NSString const *NotePostIdKey           = @"post_id";
+
 
 #pragma mark ====================================================================================
-#pragma mark NotificationURL
+#pragma mark NotificationRange
 #pragma mark ====================================================================================
 
-@implementation NotificationURL
+@implementation NotificationRange
 
-- (instancetype)initWithDictionary:(NSDictionary *)rawURL
+- (instancetype)initWithDictionary:(NSDictionary *)rawRange
 {
     self = [super init];
 	if (self)
 	{
-		NSArray *indices	= [rawURL arrayForKey:NoteIndicesKey];
+		NSArray *indices	= [rawRange arrayForKey:NoteIndicesKey];
 		NSInteger location	= [indices.firstObject intValue];
 		NSInteger length	= [indices.lastObject intValue] - location;
 		
-		_url                = [NSURL URLWithString:[rawURL stringForKey:NoteUrlKey]];
+		_url                = [NSURL URLWithString:[rawRange stringForKey:NoteUrlKey]];
 		_range              = NSMakeRange(location, length);
-        _type               = [rawURL stringForKey:NoteTypeKey];
+        _type               = [rawRange stringForKey:NoteTypeKey];
+        
+        _siteID             = [rawRange numberForKey:NoteSiteIdKey];
+        _postID             = [rawRange numberForKey:NotePostIdKey];
 	}
 	
 	return self;
@@ -90,7 +97,7 @@ NSString const *NoteHeightKey           = @"height";
     return [self.type isEqual:NoteLinkTypeStats];
 }
 
-+ (NSArray *)urlsFromArray:(NSArray *)rawURL
++ (NSArray *)rangesFromArray:(NSArray *)rawURL
 {
 	NSMutableArray *parsed = [NSMutableArray array];
 	for (NSDictionary *rawDict in rawURL) {
@@ -170,11 +177,11 @@ NSString const *NoteHeightKey           = @"height";
     self = [super init];
 	if (self)
 	{
-        NSArray *rawUrls            = [rawBlock arrayForKey:NoteIdsKey];
+        NSArray *rawRanges          = [rawBlock arrayForKey:NoteRangesKey];
         NSArray *rawMedia           = [rawBlock arrayForKey:NoteMediaKey];
         
 		_text                       = [rawBlock stringForKey:NoteTextKey];
-		_urls                       = [NotificationURL urlsFromArray:rawUrls];
+		_ranges                     = [NotificationRange rangesFromArray:rawRanges];
 		_media                      = [NotificationMedia mediaFromArray:rawMedia];
         _meta                       = [rawBlock dictionaryForKey:NoteMetaKey];
         _actions                    = [rawBlock dictionaryForKey:NoteActionsKey];
@@ -203,11 +210,11 @@ NSString const *NoteHeightKey           = @"height";
     return [[self.meta dictionaryForKey:NoteTitlesKey] stringForKey:NoteHomeKey];
 }
 
-- (NotificationURL *)notificationUrlWithUrl:(NSURL *)url
+- (NotificationRange *)notificationRangeWithUrl:(NSURL *)url
 {
-    for (NotificationURL *noteURL in self.urls) {
-        if ([noteURL.url isEqual:url]) {
-            return noteURL;
+    for (NotificationRange *range in self.ranges) {
+        if ([range.url isEqual:url]) {
+            return range;
         }
     }
 
@@ -483,10 +490,8 @@ NSString const *NoteHeightKey           = @"height";
     return nil;
 }
 
-- (NotificationURL *)notificationUrlWithUrl:(NSURL *)url
+- (NotificationRange *)notificationRangeWithUrl:(NSURL *)url
 {
-#warning NOT COOL
-    
     // Find in Header + Body please!
     NSMutableArray *groups = [NSMutableArray array];
     [groups addObjectsFromArray:self.bodyBlockGroups];
@@ -496,9 +501,9 @@ NSString const *NoteHeightKey           = @"height";
     
     for (NotificationBlockGroup *group in groups) {
         for (NotificationBlock *block in group.blocks) {
-            NotificationURL *notificationURL = [block notificationUrlWithUrl:url];
-            if (notificationURL) {
-                return notificationURL;
+            NotificationRange *range = [block notificationRangeWithUrl:url];
+            if (range) {
+                return range;
             }
         }
     }
