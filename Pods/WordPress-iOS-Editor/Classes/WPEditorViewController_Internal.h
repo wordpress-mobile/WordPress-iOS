@@ -44,10 +44,6 @@ typedef NS_ENUM(NSInteger, ZSSRichTextEditorToolbar) {
  *  The viewController used with ZSSRichTextEditor
  */
 @interface WPEditorViewController ()
-/**
- *  The base URL to use for the webView
- */
-@property (nonatomic, strong) NSURL *baseURL;
 
 /**
  *  If the HTML should be formatted to be pretty
@@ -68,22 +64,6 @@ typedef NS_ENUM(NSInteger, ZSSRichTextEditorToolbar) {
  *  Color to tint selected items
  */
 @property (nonatomic, strong) UIColor *toolbarItemSelectedTintColor;
-
-/**
- *  The rich text editor
- *
- *  @param html  HTML string to start with
- *
- *  @return id
- */
-- (void)setHtml:(NSString *)html;
-
-/**
- *  Returns the HTML from the Rich Text Editor
- *
- *  @return NSString
- */
-- (NSString *)getHTML;
 
 /**
  *  Manually focuses on the text editor
