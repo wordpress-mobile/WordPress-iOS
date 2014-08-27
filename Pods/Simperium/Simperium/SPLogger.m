@@ -42,44 +42,44 @@ static NSString *const SPLoggerDefaultFileExtension         = @"log";
 }
 
 - (instancetype)init {
-	if ((self = [super init])) {
-		self.sharedLogLevel     = SPLogLevelsOff;
+    if ((self = [super init])) {
+        self.sharedLogLevel     = SPLogLevelsOff;
         self.queue              = dispatch_queue_create("com.simperium.SPLogger", NULL);
         self.maxLogfileSize     = SPLoggerDefaultMaxFilesize;
         self.maxLogfiles        = SPLoggerDefaultMaxLogfiles;
         self.writesToDisk       = NO;
-	}
-	return self;
+    }
+    return self;
 }
 
 + (instancetype)sharedInstance {
-	static SPLogger* logger;
-	static dispatch_once_t onceToken;
-	
-	dispatch_once(&onceToken, ^{
-		logger = [[[self class] alloc] init];
-	});
-	
-	return logger;
+    static SPLogger* logger;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        logger = [[[self class] alloc] init];
+    });
+    
+    return logger;
 }
 
 - (void)logWithLevel:(SPLogLevels)level flag:(SPLogFlags)flag format:(NSString*)format, ... {
-	va_list args;
-	va_start(args, format);
-	NSString *message = [[NSString alloc] initWithFormat:format arguments:args];
-	va_end(args);
-	
-	dispatch_async(self.queue, ^{
-		if (_delegate) {
-			[_delegate handleLogMessage:message];
-		}
-		
+    va_list args;
+    va_start(args, format);
+    NSString *message = [[NSString alloc] initWithFormat:format arguments:args];
+    va_end(args);
+    
+    dispatch_async(self.queue, ^{
+        if (_delegate) {
+            [_delegate handleLogMessage:message];
+        }
+        
         if (_writesToDisk) {
             [self writeLogMessage:message];
         }
         
-		NSLog(@"%@", message);
-	});
+        NSLog(@"%@", message);
+    });
 }
 
 
@@ -150,9 +150,9 @@ static NSString *const SPLoggerDefaultFileExtension         = @"log";
 
 - (NSURL *)createLogfileIfNeeded {    
     // Make sure the baseURL exists
-    NSError *error	= nil;
-    NSURL *baseURL	= self.logfilesFolderURL;
-    BOOL success	= [[NSFileManager defaultManager] createDirectoryAtURL:baseURL withIntermediateDirectories:YES attributes:nil error:&error];
+    NSError *error  = nil;
+    NSURL *baseURL  = self.logfilesFolderURL;
+    BOOL success    = [[NSFileManager defaultManager] createDirectoryAtURL:baseURL withIntermediateDirectories:YES attributes:nil error:&error];
     if (!success) {
         NSLog(@"%@ could not create folder %@ :: %@", NSStringFromClass([self class]), baseURL, error);
     }
@@ -215,14 +215,14 @@ static NSString *const SPLoggerDefaultFileExtension         = @"log";
 
 - (NSURL *)logfilesFolderURL {
     NSURL *appSupportURL = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
-	return [appSupportURL URLByAppendingPathComponent:NSStringFromClass([self class])];
+    return [appSupportURL URLByAppendingPathComponent:NSStringFromClass([self class])];
 }
 
 #else
 
 - (NSURL *)logfilesFolderURL {
     NSURL *appSupportURL = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
-	return [appSupportURL URLByAppendingPathComponent:NSStringFromClass([self class])];
+    return [appSupportURL URLByAppendingPathComponent:NSStringFromClass([self class])];
 }
 
 #endif

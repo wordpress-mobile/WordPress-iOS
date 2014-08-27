@@ -29,9 +29,10 @@
 @synthesize objectList;
 @synthesize ghosts;
 
-- (id)initWithDelegate:(id<SPStorageObserver>)aDelegate
+- (instancetype)initWithDelegate:(id<SPStorageObserver>)aDelegate
 {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
         delegate = aDelegate;
         self.objects = [NSMutableDictionary dictionaryWithCapacity:10];
         self.ghosts = [NSMutableDictionary dictionaryWithCapacity:10];
@@ -307,19 +308,19 @@
 }
 
 - (void)beginSafeSection {
-	
+    
 }
 
 - (void)finishSafeSection {
-	
+    
 }
 
 - (void)beginCriticalSection {
-	
+    
 }
 
 - (void)finishCriticalSection {
-	
+    
 }
 
 @end
