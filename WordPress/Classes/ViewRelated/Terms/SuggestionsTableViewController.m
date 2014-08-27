@@ -148,10 +148,9 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
 {
     [self filterContentForSearchText:searchString
-                               scope:[[self.searchDisplayController.searchBar scopeButtonTitles]
-                                      objectAtIndex:[self.searchDisplayController.searchBar
-                                                     selectedScopeButtonIndex]]];
-    
+                               scope:[[controller.searchBar scopeButtonTitles]
+                                      objectAtIndex:[controller.searchBar selectedScopeButtonIndex]]];
+
     return YES;
 }
 
@@ -188,6 +187,13 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
     if ([notification.object isEqualToNumber:self.siteID]) {
         self.suggestions = [[SuggestionService shared] suggestionsForSiteID:self.siteID];
         [self.tableView reloadData];
+
+        /**
+         This will trigger a reload for the search controller, for some reason
+         [self.searchController.searchResultsTableView reloadData]; doesn't work when there was
+         no result before the reload.
+         */
+        self.searchBar.text = self.searchBar.text;
     }
 }
 
