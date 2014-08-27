@@ -36,7 +36,7 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 - (void)loadView
 {
     [super loadView];
-    
+
     // create a new Search Bar and add it to the table view
     self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectZero];
     [self.searchBar sizeToFit];
@@ -48,10 +48,10 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
     self.searchController.searchResultsDataSource = self;
     self.searchController.searchResultsDelegate = self;
     self.searchController.delegate = self;
-    
+
     UINib *nib = [UINib nibWithNibName:@"SuggestionsTableViewCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:CellIdentifier];
-    
+
     // suppress display of blank rows
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
@@ -95,7 +95,6 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 {
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         return [self.searchResults count];
-        
     } else {
         return [self.suggestions count];
     }
@@ -105,7 +104,7 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 {
     SuggestionsTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier
                                                                           forIndexPath:indexPath];
-    
+
     Suggestion *suggestion = nil;
 
     if (tableView == self.searchController.searchResultsTableView) {
@@ -129,16 +128,16 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
     if ([self.delegate respondsToSelector:@selector(suggestionTableView:didSelectString:)])
     {
         Suggestion *suggestion = nil;
-        
+
         if (tableView == self.searchController.searchResultsTableView) {
             suggestion = [self.searchResults objectAtIndex:indexPath.row];
         } else {
             suggestion = [self.suggestions objectAtIndex:indexPath.row];
         }
-        
+
         [self.delegate suggestionTableView:self didSelectString:suggestion.userLogin];
     }
-    
+
     [self.navigationController popViewControllerAnimated:YES];
 }
 
