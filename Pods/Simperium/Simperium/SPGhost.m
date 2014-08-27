@@ -11,8 +11,9 @@
 
 @implementation SPGhost
 
-- (id)initFromDictionary:(NSDictionary *)dict {
-    if ((self = [super init])) {
+- (instancetype)initFromDictionary:(NSDictionary *)dict {
+    self = [super init];
+    if (self) {
         _key        = dict[@"key"];
         _memberData = dict[@"obj"];
         _version    = dict[@"version"];
@@ -22,33 +23,34 @@
         _needsSave = NO;
     }
     
-	return self;
+    return self;
 }
 
-- (id)initWithKey:(NSString *)k memberData:(NSMutableDictionary *)data {
-	if ((self = [super init])) {
-		_key        = k;
-		_memberData = data;
-	}
-	return self;
+- (instancetype)initWithKey:(NSString *)k memberData:(NSMutableDictionary *)data {
+    self = [super init];
+    if (self) {
+        _key        = k;
+        _memberData = data;
+    }
+    return self;
 }
 
 - (id)copyWithZone: (NSZone *) zone {
     SPGhost *newGhost = [[[self class] allocWithZone:zone] init];
-	newGhost.key = [self key];
-	newGhost.memberData = [self memberData];
+    newGhost.key = [self key];
+    newGhost.memberData = [self memberData];
     newGhost.version = [self version];
     return newGhost;
 }
 
 - (id)mutableCopyWithZone: (NSZone *) zone {
-    SPGhost *newGhost = [[[self class] allocWithZone:zone] init];	
-	newGhost.key = [self key];
+    SPGhost *newGhost = [[[self class] allocWithZone:zone] init];
+    newGhost.key = [self key];
     newGhost.version = [self version];
-	
-	NSMutableDictionary *memberDataCopy = [[self memberData] mutableCopyWithZone:zone];
-	newGhost.memberData = memberDataCopy;
-	return newGhost;
+    
+    NSMutableDictionary *memberDataCopy = [[self memberData] mutableCopyWithZone:zone];
+    newGhost.memberData = memberDataCopy;
+    return newGhost;
 }
 
 - (void)setMemberData:(NSMutableDictionary *)newMemberData {
@@ -67,12 +69,12 @@
 }
 
 - (NSDictionary *)dictionary {
-	if (_version == nil) {
-		return [NSDictionary dictionaryWithObjectsAndKeys:
-				self.key, @"key", self.memberData, @"obj", nil];
+    if (_version == nil) {
+        return [NSDictionary dictionaryWithObjectsAndKeys:
+                self.key, @"key", self.memberData, @"obj", nil];
     } else {
-		return [NSDictionary dictionaryWithObjectsAndKeys:
-				self.key, @"key", self.version, @"version", self.memberData, @"obj", nil];
+        return [NSDictionary dictionaryWithObjectsAndKeys:
+                self.key, @"key", self.version, @"version", self.memberData, @"obj", nil];
     }
 }
 

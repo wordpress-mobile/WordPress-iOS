@@ -25,8 +25,9 @@
 @synthesize persistentStoreCoordinator	= __persistentStoreCoordinator;
 
 
-- (id)initWithToken:(NSString *)aToken label:(NSString *)label {
-    if (self = [super init]) {
+- (instancetype)initWithToken:(NSString *)aToken label:(NSString *)label {
+    self = [super init];
+    if (self) {
         self.done = NO;
         
 		self.simperium = [[Simperium alloc] initWithModel:self.managedObjectModel

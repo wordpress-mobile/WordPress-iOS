@@ -24,25 +24,25 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-NSTimeInterval const SPWebSocketHeartbeatInterval	= 30;
+NSTimeInterval const SPWebSocketHeartbeatInterval   = 30;
 
-NSString * const COM_AUTH							= @"auth";
-NSString * const COM_INDEX							= @"i";
-NSString * const COM_CHANGE							= @"c";
-NSString * const COM_CHANGE_VERSION					= @"cv";
-NSString * const COM_ENTITY							= @"e";
-NSString * const COM_ERROR							= @"?";
-NSString * const COM_LOG							= @"log";
-NSString * const COM_INDEX_STATE					= @"index";
-NSString * const COM_HEARTBEAT						= @"h";
-NSString * const COM_OPTIONS						= @"o";
+NSString * const COM_AUTH                           = @"auth";
+NSString * const COM_INDEX                          = @"i";
+NSString * const COM_CHANGE                         = @"c";
+NSString * const COM_CHANGE_VERSION                 = @"cv";
+NSString * const COM_ENTITY                         = @"e";
+NSString * const COM_ERROR                          = @"?";
+NSString * const COM_LOG                            = @"log";
+NSString * const COM_INDEX_STATE                    = @"index";
+NSString * const COM_HEARTBEAT                      = @"h";
+NSString * const COM_OPTIONS                        = @"o";
 
-static SPLogLevels logLevel							= SPLogLevelsInfo;
+static SPLogLevels logLevel                         = SPLogLevelsInfo;
 
 typedef NS_ENUM(NSInteger, SPRemoteLogging) {
-	SPRemoteLoggingOff		= 0,
-	SPRemoteLoggingRegular	= 1,
-	SPRemoteLoggingVerbose	= 2
+    SPRemoteLoggingOff      = 0,
+    SPRemoteLoggingRegular  = 1,
+    SPRemoteLoggingVerbose  = 2
 };
 
 typedef NS_ENUM(NSInteger, SPMessageIndex) {
@@ -58,11 +58,11 @@ typedef NS_ENUM(NSInteger, SPMessageIndex) {
 #pragma mark ====================================================================================
 
 @interface SPWebSocketInterface() <SPWebSocketDelegate>
-@property (nonatomic, strong, readwrite) SPWebSocket			*webSocket;
-@property (nonatomic, weak,   readwrite) Simperium				*simperium;
-@property (nonatomic, strong, readwrite) NSMutableDictionary	*channels;
-@property (nonatomic, strong, readwrite) NSTimer				*heartbeatTimer;
-@property (nonatomic, assign, readwrite) BOOL					open;
+@property (nonatomic, strong, readwrite) SPWebSocket            *webSocket;
+@property (nonatomic, weak,   readwrite) Simperium              *simperium;
+@property (nonatomic, strong, readwrite) NSMutableDictionary    *channels;
+@property (nonatomic, strong, readwrite) NSTimer                *heartbeatTimer;
+@property (nonatomic, assign, readwrite) BOOL                   open;
 @end
 
 
@@ -72,13 +72,14 @@ typedef NS_ENUM(NSInteger, SPMessageIndex) {
 
 @implementation SPWebSocketInterface
 
-- (id)initWithSimperium:(Simperium *)s {
-	if ((self = [super init])) {
-        self.simperium  = s;
-        self.channels   = [NSMutableDictionary dictionaryWithCapacity:20];
-	}
-	
-	return self;
+- (instancetype)initWithSimperium:(Simperium *)s {
+    self = [super init];
+    if (self) {
+        _simperium  = s;
+        _channels   = [NSMutableDictionary dictionaryWithCapacity:20];
+    }
+    
+    return self;
 }
 
 - (SPWebSocketChannel *)channelForName:(NSString *)str {
@@ -89,7 +90,7 @@ typedef NS_ENUM(NSInteger, SPMessageIndex) {
     for (SPWebSocketChannel *channel in [self.channels allValues]) {
         if ([num intValue] == channel.number) {
             return channel;
-		}
+        }
     }
     return nil;
 }
@@ -98,7 +99,7 @@ typedef NS_ENUM(NSInteger, SPMessageIndex) {
     SPWebSocketChannel *channel = [SPWebSocketChannel channelWithSimperium:self.simperium];
     channel.number              = (int)[self.channels count];
     channel.name                = bucket.name;
-	channel.remoteName          = bucket.remoteName;
+    channel.remoteName          = bucket.remoteName;
     [self.channels setObject:channel forKey:bucket.name];
     
     return channel;
@@ -107,7 +108,7 @@ typedef NS_ENUM(NSInteger, SPMessageIndex) {
 - (void)loadChannelsForBuckets:(NSDictionary *)bucketList {
     for (SPBucket *bucket in [bucketList allValues]) {
         [self loadChannelForBucket:bucket];
-	}
+    }
 }
 
 - (void)startChannels {
@@ -135,13 +136,13 @@ typedef NS_ENUM(NSInteger, SPMessageIndex) {
 
 - (void)removeAllBucketObjects:(SPBucket *)bucket {
     SPWebSocketChannel *channel = [self channelForName:bucket.name];
-	[channel removeAllBucketObjects:bucket];
+    [channel removeAllBucketObjects:bucket];
 }
 
 - (void)sendLogMessage:(NSString*)logMessage {
-	NSDictionary *payload   = @{ @"log" : logMessage };
-	NSString *message       = [NSString stringWithFormat:@"%@:%@", COM_LOG, [payload sp_JSONString]];
-	[self send:message];
+    NSDictionary *payload   = @{ @"log" : logMessage };
+    NSString *message       = [NSString stringWithFormat:@"%@:%@", COM_LOG, [payload sp_JSONString]];
+    [self send:message];
 }
 
 - (void)authenticateChannel:(SPWebSocketChannel *)channel {
@@ -165,14 +166,14 @@ typedef NS_ENUM(NSInteger, SPMessageIndex) {
     }
     
     NSDictionary *jsonData = @{
-		@"api"		: @(SPAPIVersion.floatValue),
-		@"clientid"	: self.simperium.clientID,
-		@"app_id"	: self.simperium.appID,
-		@"token"	: self.simperium.user.authToken,
-		@"name"		: channel.remoteName,
-		@"library"	: SPLibraryID,
-		@"version"	: SPLibraryVersion
-	};
+        @"api"      : @(SPAPIVersion.floatValue),
+        @"clientid" : self.simperium.clientID,
+        @"app_id"   : self.simperium.appID,
+        @"token"    : self.simperium.user.authToken,
+        @"name"     : channel.remoteName,
+        @"library"  : SPLibraryID,
+        @"version"  : SPLibraryVersion
+    };
     
     SPLogVerbose(@"Simperium initializing websocket channel %d:%@", channel.number, jsonData);
     NSString *message = [NSString stringWithFormat:@"%d:init:%@", channel.number, [jsonData sp_JSONString]];
@@ -180,20 +181,20 @@ typedef NS_ENUM(NSInteger, SPMessageIndex) {
 }
 
 - (void)openWebSocket {
-	// Prevent multiple 'openWebSocket' calls to get executed
-	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(openWebSocket) object:nil];
-	
-	// Prepare the Request: Handle certificate pinning stuff
+    // Prevent multiple 'openWebSocket' calls to get executed
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(openWebSocket) object:nil];
+    
+    // Prepare the Request: Handle certificate pinning stuff
     NSString *urlString                 = [NSString stringWithFormat:@"%@/%@/websocket", SPWebsocketURL, self.simperium.appID];
     NSMutableURLRequest *request        = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     request.SR_SSLPinnedCertificates    = [self loadTrustedCertificates];
 
-	// Open the socket!
+    // Open the socket!
     SPWebSocket *newWebSocket           = [[SPWebSocket alloc] initWithURLRequest:request];
     self.webSocket                      = newWebSocket;
     self.webSocket.delegate             = self;
     self.open                           = NO;
-	
+    
     SPLogVerbose(@"Simperium opening WebSocket connection...");
     [self.webSocket open];
 }
@@ -228,11 +229,11 @@ typedef NS_ENUM(NSInteger, SPMessageIndex) {
     if (!channel) {
         channel = [self loadChannelForBucket:bucket];
     }
-	
+    
     if (channel.authenticated) {
         return;
     }
-	
+    
     if (self.webSocket == nil) {
         [self openWebSocket];
         // Channels will get setup after successfully connection
@@ -248,7 +249,7 @@ typedef NS_ENUM(NSInteger, SPMessageIndex) {
     
     // Can't remove the channel because it's needed for offline changes; this is weird and should be fixed
     //[channels removeObjectForKey:bucket.name];
-	
+    
     SPLogVerbose(@"Simperium stopping network manager (%@)", bucket.name);
     
     // Mark it closed so it doesn't reopen
@@ -256,31 +257,31 @@ typedef NS_ENUM(NSInteger, SPMessageIndex) {
     
     // Cleanup
     [self.webSocket close];
-	self.webSocket.delegate = nil;
+    self.webSocket.delegate = nil;
     self.webSocket          = nil;
     
-	// Prevent any pending retries
+    // Prevent any pending retries
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     
     // TODO: Consider ensuring threads are done their work and sending a notification
 }
 
 - (void)reset:(SPBucket *)bucket completion:(SPNetworkInterfaceResetCompletion)completion {
-	// Note: Let's prevent any death lock scenarios. This call should be sync, and we'll hit the callback when appropiate
+    // Note: Let's prevent any death lock scenarios. This call should be sync, and we'll hit the callback when appropiate
     dispatch_async(bucket.processorQueue, ^{
         [bucket.changeProcessor reset];
-		[bucket setLastChangeSignature:nil];
-		
-		if (completion) {
-			completion();
-		}
+        [bucket setLastChangeSignature:nil];
+        
+        if (completion) {
+            completion();
+        }
     });
 }
 
 - (void)send:(NSString *)message {
-	if (!self.open) {
-		return;
-	}
+    if (!self.open) {
+        return;
+    }
     [self.webSocket send:message];
     [self resetHeartbeatTimer];
 }
@@ -289,17 +290,17 @@ typedef NS_ENUM(NSInteger, SPMessageIndex) {
 #pragma mark - Heatbeat Helpers
 
 - (void)resetHeartbeatTimer {
-	[self.heartbeatTimer invalidate];
-	self.heartbeatTimer = [NSTimer scheduledTimerWithTimeInterval:SPWebSocketHeartbeatInterval target:self selector:@selector(sendHeartbeat:) userInfo:nil repeats:NO];
+    [self.heartbeatTimer invalidate];
+    self.heartbeatTimer = [NSTimer scheduledTimerWithTimeInterval:SPWebSocketHeartbeatInterval target:self selector:@selector(sendHeartbeat:) userInfo:nil repeats:NO];
 }
 
 - (void)sendHeartbeat:(NSTimer *)timer {
     if (self.webSocket.readyState != SR_OPEN) {
-		return;
-	}
-	
-	// Send it (will also schedule another one)
-	[self send:@"h:1"];
+        return;
+    }
+    
+    // Send it (will also schedule another one)
+    [self send:@"h:1"];
 }
 
 
@@ -309,7 +310,7 @@ typedef NS_ENUM(NSInteger, SPMessageIndex) {
     
     SPLogVerbose(@"Simperium (%@) Received Remote LogLevel %d", self.simperium.label, level);
     
-    self.simperium.remoteLoggingEnabled	 = (level != SPRemoteLoggingOff);
+    self.simperium.remoteLoggingEnabled     = (level != SPRemoteLoggingOff);
     self.simperium.verboseLoggingEnabled = (level == SPRemoteLoggingVerbose);
 }
 
@@ -318,11 +319,11 @@ typedef NS_ENUM(NSInteger, SPMessageIndex) {
 
 - (void)webSocketDidOpen:(SPWebSocket *)theWebSocket {
     
-	// Reconnection failsafe
-	if ( theWebSocket != self.webSocket) {
-		return;
-	}
-	
+    // Reconnection failsafe
+    if ( theWebSocket != self.webSocket) {
+        return;
+    }
+    
     self.open = YES;
     [self startChannels];
     [self resetHeartbeatTimer];
@@ -330,23 +331,23 @@ typedef NS_ENUM(NSInteger, SPMessageIndex) {
 
 - (void)webSocket:(SPWebSocket *)webSocket didFailWithError:(NSError *)error {
     
-	[self stopChannels];
-	self.webSocket.delegate = nil;
+    [self stopChannels];
+    self.webSocket.delegate = nil;
     self.webSocket          = nil;
     self.open               = NO;
-	
-	// Network enabled = YES: There was a networking glitch, yet, reachability flags are OK. We should retry
+    
+    // Network enabled = YES: There was a networking glitch, yet, reachability flags are OK. We should retry
     if (self.simperium.networkEnabled) {
-		SPLogVerbose(@"Simperium websocket failed (will retry) with error %@", error);
-		[self performSelector:@selector(openWebSocket) withObject:nil afterDelay:2];
-	// Otherwise, the device lost reachability, and the interfaces were shut down by the framework
-	} else {
-		SPLogVerbose(@"Simperium websocket failed (will NOT retry) with error %@", error);
-	}
+        SPLogVerbose(@"Simperium websocket failed (will retry) with error %@", error);
+        [self performSelector:@selector(openWebSocket) withObject:nil afterDelay:2];
+    // Otherwise, the device lost reachability, and the interfaces were shut down by the framework
+    } else {
+        SPLogVerbose(@"Simperium websocket failed (will NOT retry) with error %@", error);
+    }
 }
 
 - (void)webSocket:(SPWebSocket *)webSocket didReceiveMessage:(id)message {
-			
+    
     NSArray *components = [message sp_componentsSeparatedByString:@":" limit:SPMessageIndexLast];
     
     // Shortest messages have the form: [CHANNEL:COMMAND]
@@ -355,49 +356,49 @@ typedef NS_ENUM(NSInteger, SPMessageIndex) {
         return;
     }
     
-	// Parse!
+    // Parse!
     NSString *channelStr    = components[SPMessageIndexChannel];
     NSString *command       = components[SPMessageIndexCommand];
-	NSString *data          = (components.count > SPMessageIndexData) ? components[SPMessageIndexData] : nil;
+    NSString *data          = (components.count > SPMessageIndexData) ? components[SPMessageIndexData] : nil;
     
     // Message: Heartbeat
     if ([channelStr isEqualToString:COM_HEARTBEAT]) {
         return;
     }
     
-	// Message: LogLevel
-	if ([channelStr isEqualToString:COM_LOG]) {
+    // Message: LogLevel
+    if ([channelStr isEqualToString:COM_LOG]) {
         [self handleRemoteLogLevel:command.intValue];
-		return;
-	}
-			
+        return;
+    }
+    
     SPLogVerbose(@"Simperium (%@) received \"%@\"", self.simperium.label, message);
     
     // Load the WebsocketChannel + Bucket
     SPWebSocketChannel *channel = [self channelForNumber:@(channelStr.intValue)];
-    SPBucket *bucket			= [self.simperium bucketForName:channel.name];
-    	
+    SPBucket *bucket            = [self.simperium bucketForName:channel.name];
+    
     // Data: Is it empty?
     if (!data) {
         SPLogWarn(@"Simperium received unrecognized websocket message: %@", message);
     }
     
-	// Messages: [CHANNEL:COMMAND:DATA]
-	if ([command isEqualToString:COM_AUTH]) {
-		[channel handleAuthResponse:data bucket:bucket];
+    // Messages: [CHANNEL:COMMAND:DATA]
+    if ([command isEqualToString:COM_AUTH]) {
+        [channel handleAuthResponse:data bucket:bucket];
     } else if ([command isEqualToString:COM_INDEX]) {
         [channel handleIndexResponse:data bucket:bucket];
     } else if ([command isEqualToString:COM_CHANGE_VERSION]) {
-		[channel requestLatestVersionsForBucket:bucket];
-	} else if ([command isEqualToString:COM_CHANGE]) {
-		NSArray *changes = [data sp_objectFromJSONString];
-		[channel handleRemoteChanges:changes bucket:bucket];
+        [channel requestLatestVersionsForBucket:bucket];
+    } else if ([command isEqualToString:COM_CHANGE]) {
+        NSArray *changes = [data sp_objectFromJSONString];
+        [channel handleRemoteChanges:changes bucket:bucket];
     } else if ([command isEqualToString:COM_ENTITY]) {
         [channel handleVersionResponse:data bucket:bucket];
-	} else if ([command isEqualToString:COM_OPTIONS]) {
-		[channel handleOptions:data bucket:bucket];
+    } else if ([command isEqualToString:COM_OPTIONS]) {
+        [channel handleOptions:data bucket:bucket];
     } else if ([command isEqualToString:COM_INDEX_STATE]) {
-		[channel handleIndexStatusRequest:bucket];
+        [channel handleIndexStatusRequest:bucket];
     } else if ([command isEqualToString:COM_ERROR]) {
         SPLogVerbose(@"Simperium returned a command error (?) for bucket %@", bucket.name);
     }
@@ -413,8 +414,8 @@ typedef NS_ENUM(NSInteger, SPMessageIndex) {
         SPLogInfo(@"Simperium connection closed");
     }
 
-	[self stopChannels];
-	self.webSocket.delegate = nil;
+    [self stopChannels];
+    self.webSocket.delegate = nil;
     self.webSocket          = nil;
     self.open               = NO;
 }
@@ -438,9 +439,9 @@ typedef NS_ENUM(NSInteger, SPMessageIndex) {
 }
 
 - (void)forceSyncBucket:(SPBucket *)bucket {
-	// Let's reuse the start mechanism. This will post the latest CV + publish pending changes
-	SPWebSocketChannel *channel = [self channelForName:bucket.name];
-	[channel startProcessingChangesForBucket:bucket];
+    // Let's reuse the start mechanism. This will post the latest CV + publish pending changes
+    SPWebSocketChannel *channel = [self channelForName:bucket.name];
+    [channel startProcessingChangesForBucket:bucket];
 }
 
 
@@ -472,15 +473,15 @@ typedef NS_ENUM(NSInteger, SPMessageIndex) {
 static Class _class;
 
 + (void)load {
-	_class = [SPWebSocketInterface class];
+    _class = [SPWebSocketInterface class];
 }
 
 + (void)registerClass:(Class)c {
-	_class = c;
+    _class = c;
 }
 
 + (instancetype)interfaceWithSimperium:(Simperium *)s {
-	return [[_class alloc] initWithSimperium:s];
+    return [[_class alloc] initWithSimperium:s];
 }
 
 @end
