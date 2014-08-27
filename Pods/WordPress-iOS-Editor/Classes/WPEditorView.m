@@ -152,8 +152,22 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 		[self processStyles:styles];
 		handled = YES;
 	}
+	else if ([self isDOMLoadedScheme:scheme]) {
+		if ([self.delegate respondsToSelector:@selector(editorViewDidFinishLoadingDOM:)]) {
+			[self.delegate editorViewDidFinishLoadingDOM:self];
+		}
+		
+		handled = YES;
+	}
 	
 	return handled;
+}
+
+- (BOOL)isDOMLoadedScheme:(NSString*)scheme
+{
+	static NSString* const kCallbackScheme = @"callback-dom-loaded";
+	
+	return [scheme isEqualToString:kCallbackScheme];
 }
 
 - (BOOL)isFocusInScheme:(NSString*)scheme

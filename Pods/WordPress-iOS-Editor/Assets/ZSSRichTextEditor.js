@@ -85,6 +85,17 @@ zss_editor.log = function(msg) {
 	}
 }
 
+zss_editor.domLoadedCallback = function() {
+	
+	var callback = "callback-dom-loaded://";
+	
+	if (zss_editor.isUsingiOS) {
+		window.location = callback;
+	} else {
+		console.log(callback);
+	}
+}
+
 zss_editor.stylesCallback = function(stylesArray) {
 	
 	var stylesString = '';
