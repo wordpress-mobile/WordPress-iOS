@@ -311,7 +311,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
 - (void)showSettings
 {
     Post *post = (Post *)self.post;
-    PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post];
+    UIViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post];
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     [self.navigationController pushViewController:vc animated:YES];
