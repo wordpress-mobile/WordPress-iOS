@@ -442,11 +442,12 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
 - (void)configureCell:(NoteTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     Notification *note                      = [self.resultsController objectAtIndexPath:indexPath];
-    NotificationBlock *subjectTopBlock      = note.subjectBlocks.firstObject;
-    NotificationBlock *subjectSnippetBlock  = (note.subjectBlocks.count > 1) ? note.subjectBlocks.lastObject : nil;
+    NotificationBlockGroup *blockGroup      = note.subjectBlockGroup;
+    NotificationBlock *subjectBlock         = blockGroup.blocks.firstObject;
+    NotificationBlock *snippetBlock         = (blockGroup.blocks.count > 1) ? blockGroup.blocks.lastObject : nil;
     
-    cell.attributedSubject                  = subjectTopBlock.subjectFormattedText;
-    cell.attributedSnippet                  = subjectSnippetBlock.snippetFormattedText;
+    cell.attributedSubject                  = subjectBlock.subjectFormattedText;
+    cell.attributedSnippet                  = snippetBlock.snippetFormattedText;
     cell.read                               = note.read.boolValue;
     cell.noticon                            = note.noticon;
     
