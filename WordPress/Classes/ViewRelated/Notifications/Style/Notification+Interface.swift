@@ -49,15 +49,15 @@ extension Notification
         
         switch kind {
         case Sections.Months:
-            return NSLocalizedString("Older than a Month", comment: "")
+            return NSLocalizedString("Older than a Month",  comment: "Notifications Months Section Header")
         case Sections.Weeks:
-            return NSLocalizedString("Older than a Week", comment: "")
+            return NSLocalizedString("Older than a Week",   comment: "Notifications Weeks Section Header")
         case Sections.Days:
-            return NSLocalizedString("Older than 2 days", comment: "")
+            return NSLocalizedString("Older than 2 days",   comment: "Notifications +2 Days Section Header")
         case Sections.Yesterday:
-            return NSLocalizedString("Yesterday", comment: "")
+            return NSLocalizedString("Yesterday",           comment: "Notifications Yesterday Section Header")
         default:
-            return NSLocalizedString("Today", comment: "")
+            return NSLocalizedString("Today",               comment: "Notifications Today Section Header")
         }
     }
         
