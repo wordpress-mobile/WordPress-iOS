@@ -409,19 +409,16 @@ name:MediaShouldInsertBelowNotification object:nil];
     }
 }
 
-+ (BOOL)isNewEditorEnabled
++ (void)setNewEditorEnabled:(BOOL)isEnabled
 {
-    
-#ifdef DEBUG
-    return YES;
-#else
-#ifdef INTERNAL_BUILD
-    return YES;
-#else
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:isEnabled forKey:UserDefaultsNewEditorEnabled];
+    [defaults synchronize];
+}
+
++ (BOOL)isNewEditorEnabled
+{    
     return [[NSUserDefaults standardUserDefaults] boolForKey:UserDefaultsNewEditorEnabled];
-#endif
-#endif
-    
 }
 
 #pragma mark - Instance Methods
