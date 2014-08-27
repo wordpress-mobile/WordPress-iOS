@@ -33,6 +33,7 @@
 #import "BlogDetailsViewController.h"
 #import "PostsViewController.h"
 #import "WPPostViewController.h"
+#import "WPLegacyEditPostViewController.h"
 #import "LoginViewController.h"
 #import "NotificationsViewController.h"
 #import "ReaderPostsViewController.h"
@@ -508,21 +509,39 @@ NSInteger const kMeTabIndex = 2;
         [presenter dismissViewControllerAnimated:NO completion:nil];
     }
     
-    WPPostViewController *editPostViewController;
-    if (!options) {
-        [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
-        editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlog];
+    UINavigationController *navController;
+    if ([WPPostViewController isNewEditorEnabled]) {
+        WPPostViewController *editPostViewController;
+        if (!options) {
+            [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
+            editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlog];
+        } else {
+            editPostViewController = [[WPPostViewController alloc] initWithTitle:[options stringForKey:@"title"]
+                                                                      andContent:[options stringForKey:@"content"]
+                                                                         andTags:[options stringForKey:@"tags"]
+                                                                        andImage:[options stringForKey:@"image"]];
+        }
+        navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+        navController.restorationIdentifier = WPEditorNavigationRestorationID;
+        navController.restorationClass = [WPPostViewController class];
     } else {
-        editPostViewController = [[WPPostViewController alloc] initWithTitle:[options stringForKey:@"title"]
-                                                                    andContent:[options stringForKey:@"content"]
-                                                                       andTags:[options stringForKey:@"tags"]
-                                                                      andImage:[options stringForKey:@"image"]];
+        WPLegacyEditPostViewController *editPostLegacyViewController;
+        if (!options) {
+            [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
+            editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithDraftForLastUsedBlog];
+        } else {
+            editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithTitle:[options stringForKey:@"title"]
+                                                                      andContent:[options stringForKey:@"content"]
+                                                                         andTags:[options stringForKey:@"tags"]
+                                                                        andImage:[options stringForKey:@"image"]];
+        }
+        navController = [[UINavigationController alloc] initWithRootViewController:editPostLegacyViewController];
+        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
+        navController.restorationClass = [WPLegacyEditPostViewController class];
     }
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+        
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
     navController.navigationBar.translucent = NO;
-    navController.restorationIdentifier = WPEditorNavigationRestorationID;
-    navController.restorationClass = [WPPostViewController class];
     [navController setToolbarHidden:NO]; // Make the toolbar visible here to avoid a weird left/right transition when the VC appears.
     [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }
