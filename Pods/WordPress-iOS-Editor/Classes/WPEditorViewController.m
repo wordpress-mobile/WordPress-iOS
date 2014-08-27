@@ -1767,8 +1767,12 @@ typedef enum
 	}
 }
 
-- (void)editorViewDidFinishLoading:(WPEditorView*)editorView
+- (void)editorViewDidFinishLoadingDOM:(WPEditorView*)editorView
 {
+	// DRM: the reason why we're doing is when the DOM finishes loading, instead of when the full
+	// content finishe loading, is that the content may not finish loading at all when the device is
+	// offline and the content has remote subcontent (such as pictures).
+	//
     self.didFinishLoadingEditor = YES;
 	
 	if (self.editing) {
@@ -1778,10 +1782,6 @@ typedef enum
 	}
 	
     [self refreshUI];
-}
-
-- (void)editorViewDidFinishLoadingDOM:(WPEditorView*)editorView
-{
 }
 
 - (void)editorView:(WPEditorView*)editorView
