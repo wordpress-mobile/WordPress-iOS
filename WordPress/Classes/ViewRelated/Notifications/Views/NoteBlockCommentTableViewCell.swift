@@ -13,6 +13,16 @@ import Foundation
     public var onTrashClick:        EventHandler?
     public var onMoreClick:         EventHandler?
 
+    public var name: String? {
+        didSet {
+            nameLabel.text  = name != nil ? name! : String()
+        }
+    }
+    public var timestamp: String? {
+        didSet {
+            timestampLabel.text  = timestamp != nil ? timestamp! : String()
+        }
+    }
     public var isLikeEnabled: Bool = false {
         didSet {
             setupButtonConstraints(btnLike, enabled: isLikeEnabled)
@@ -44,10 +54,32 @@ import Foundation
         }
     }
 
+    // MARK: - Public Methods
+    public func downloadGravatarWithURL(url: NSURL?) {
+        if url == gravatarURL {
+            return
+        }
+        
+        let success = { (image: UIImage) in
+            self.gravatarImageView.displayImageWithFadeInAnimation(image)
+        }
+        
+        gravatarImageView.downloadImage(url, placeholderName: placeholderName, success: success, failure: nil)
+        
+        gravatarURL = url
+    }
+    
     // MARK: - View Methods
     public override func awakeFromNib() {
         super.awakeFromNib()
         
+        // Setup Labels
+        nameLabel.font              = WPStyleGuide.Notifications.Fonts.blockBold
+        nameLabel.textColor         = WPStyleGuide.Notifications.Colors.blockText
+        timestampLabel.font         = WPStyleGuide.Notifications.Fonts.blockRegular
+        timestampLabel.textColor    = WPStyleGuide.Notifications.Colors.quotedText
+        
+        // Setup Action Buttons
         let textNormalColor         = WPStyleGuide.Notifications.Colors.actionOffText
         let textSelectedColor       = WPStyleGuide.Notifications.Colors.actionOnText
         
@@ -136,12 +168,19 @@ import Foundation
     }
     
     // MARK: - Constants
-    private let buttonWidth:    CGFloat = 55
-    private let buttonTrailing: CGFloat = 20
+    private let buttonWidth                         : CGFloat   = 55
+    private let buttonTrailing                      : CGFloat   = 20
+    
+    // MARK: - Private
+    private let placeholderName                     : String    = "gravatar"
+    private var gravatarURL                         : NSURL?
     
     // MARK: - IBOutlets
-    @IBOutlet private weak var btnLike      : UIButton!
-    @IBOutlet private weak var btnApprove   : UIButton!
-    @IBOutlet private weak var btnTrash     : UIButton!
-    @IBOutlet private weak var btnMore      : UIButton!
+    @IBOutlet private weak var gravatarImageView    : UIImageView!
+    @IBOutlet private weak var nameLabel            : UILabel!
+    @IBOutlet private weak var timestampLabel       : UILabel!
+    @IBOutlet private weak var btnLike              : UIButton!
+    @IBOutlet private weak var btnApprove           : UIButton!
+    @IBOutlet private weak var btnTrash             : UIButton!
+    @IBOutlet private weak var btnMore              : UIButton!
 }
