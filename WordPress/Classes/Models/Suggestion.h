@@ -8,4 +8,7 @@
 
 + (instancetype)suggestionFromDictionary:(NSDictionary *)dictionary;
 
+- (UIImage *)cachedAvatarWithSize:(CGSize)size;
+- (void)fetchAvatarWithSize:(CGSize)size success:(void (^)(UIImage *image))success;
+
 @end

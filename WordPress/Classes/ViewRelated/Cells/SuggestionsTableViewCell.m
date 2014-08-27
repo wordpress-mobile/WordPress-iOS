@@ -1,25 +1,15 @@
 #import "SuggestionsTableViewCell.h"
 
+const CGFloat SuggestionsTableViewCellAvatarSize = 32.0;
+
 @implementation SuggestionsTableViewCell
-
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-
-    return self;
-}
 
 - (void)awakeFromNib
 {
     // Initialization code
-    self.username.textColor = [WPStyleGuide baseDarkerBlue];
-    self.displayName.textColor = [WPStyleGuide littleEddieGrey];
-    self.displayName.font = [WPStyleGuide subtitleFont];
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
+    self.usernameLabel.textColor = [WPStyleGuide baseDarkerBlue];
+    self.displayNameLabel.textColor = [WPStyleGuide littleEddieGrey];
+    self.displayNameLabel.font = [WPStyleGuide subtitleFont];
 }
 
 @end

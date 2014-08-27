@@ -34,9 +34,9 @@
                 </subviews>
             </tableViewCellContentView>
             <connections>
-                <outlet property="avatar" destination="Nzy-l6-NGD" id="zwv-Px-rTg"/>
-                <outlet property="displayName" destination="bxW-Ft-ljy" id="k8p-QY-5cJ"/>
-                <outlet property="username" destination="KHU-ui-RGt" id="WHr-Tb-k19"/>
+                <outlet property="avatarImageView" destination="Nzy-l6-NGD" id="iRK-QC-xeN"/>
+                <outlet property="displayNameLabel" destination="bxW-Ft-ljy" id="Nde-bH-4kp"/>
+                <outlet property="usernameLabel" destination="KHU-ui-RGt" id="27N-9z-wOe"/>
             </connections>
         </tableViewCell>
     </objects>

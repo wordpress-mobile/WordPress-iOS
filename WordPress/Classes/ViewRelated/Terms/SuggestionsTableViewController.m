@@ -114,11 +114,10 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
         suggestion = [self.suggestions objectAtIndex:indexPath.row];
     }
 
-    cell.username.text = [NSString stringWithFormat:@"@%@", suggestion.userLogin];
-    cell.displayName.text = suggestion.displayName;
+    cell.usernameLabel.text = [NSString stringWithFormat:@"@%@", suggestion.userLogin];
+    cell.displayNameLabel.text = suggestion.displayName;
 
-    UIImage *avatarPlaceholderImage = [UIImage imageNamed:@"gravatar"];
-    [cell.avatar setImageWithURL:suggestion.imageURL placeholderImage:avatarPlaceholderImage];
+    [self setAvatarForSuggestion:suggestion forCell:cell indexPath:indexPath];
 
     return cell;
 }
@@ -202,6 +201,28 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
         _suggestions = [[SuggestionService shared] suggestionsForSiteID:self.siteID];
     }
     return _suggestions;
+}
+
+#pragma mark - Avatar helper
+
+- (void)setAvatarForSuggestion:(Suggestion *)post forCell:(SuggestionsTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
+{
+    CGSize imageSize = CGSizeMake(SuggestionsTableViewCellAvatarSize, SuggestionsTableViewCellAvatarSize);
+    UIImage *image = [post cachedAvatarWithSize:imageSize];
+    if (image) {
+        [cell.avatarImageView setImage:image];
+    } else {
+        [cell.avatarImageView setImage:[UIImage imageNamed:@"gravatar"]];
+        [post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
+            if (!image) {
+                return;
+            }
+            if (cell == [self.tableView cellForRowAtIndexPath:indexPath]
+                || cell == [self.searchController.searchResultsTableView cellForRowAtIndexPath:indexPath]) {
+                [cell.avatarImageView setImage:image];
+            }
+        }];
+    }
 }
 
 @end
