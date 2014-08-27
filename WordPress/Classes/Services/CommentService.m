@@ -424,6 +424,10 @@
 
 - (void)mergeHierarchicalComments:(NSArray *)comments forPost:(ReaderPost *)post
 {
+    if (![comments count]) {
+        return;
+    }
+
     NSMutableArray *ancestors = [NSMutableArray array];
     NSMutableArray *commentsToKeep = [NSMutableArray array];
     NSString *entityName = NSStringFromClass([Comment class]);
