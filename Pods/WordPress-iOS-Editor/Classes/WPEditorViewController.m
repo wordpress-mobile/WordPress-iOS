@@ -187,6 +187,7 @@ typedef enum
 	ZSSRichTextEditorToolbar defaultToolbarItems = (ZSSRichTextEditorToolbarInsertImage
 													| ZSSRichTextEditorToolbarBold
 													| ZSSRichTextEditorToolbarItalic
+													| ZSSRichTextEditorToolbarStrikeThrough
 													| ZSSRichTextEditorToolbarUnderline
 													| ZSSRichTextEditorToolbarBlockQuote
 													| ZSSRichTextEditorToolbarInsertLink
@@ -195,7 +196,9 @@ typedef enum
 	
 	// iPad gets the HTML source button too
 	if (IS_IPAD) {
-		defaultToolbarItems = defaultToolbarItems | ZSSRichTextEditorToolbarViewSource;
+		defaultToolbarItems = (defaultToolbarItems
+							   | ZSSRichTextEditorToolbarStrikeThrough
+							   | ZSSRichTextEditorToolbarViewSource);
 	}
 	
 	return defaultToolbarItems;
@@ -720,7 +723,7 @@ typedef enum
 													 @"Accessibility label for block quote button on formatting toolbar.");
 	
 	ZSSBarButtonItem *barButtonItem = [self barButtonItemWithTag:kWPEditorViewControllerElementTagBlockQuoteBarButton
-													htmlProperty:@"blockQuote"
+													htmlProperty:@"blockquote"
 													   imageName:@"icon_format_quote"
 														  target:self
 														selector:@selector(setBlockQuote)
@@ -1106,6 +1109,7 @@ typedef enum
 	
 	self.editorView.usesGUIFixes = YES;
 	self.editorView.customInputAccessoryView = self.toolbarHolder;
+	self.sourceView.inputAccessoryView = self.toolbarHolder;
 	self.titleTextField.inputAccessoryView = self.toolbarHolder;
     
     // Check to see if we have any toolbar items, if not, add them all
