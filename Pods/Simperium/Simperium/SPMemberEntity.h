@@ -8,9 +8,7 @@
 
 #import "SPMember.h"
 
-@interface SPMemberEntity : SPMember {
-    NSString *entityName;
-}
+@interface SPMemberEntity : SPMember
 
 @property (nonatomic, copy) NSString *entityName;
 
