@@ -29,7 +29,7 @@ pod 'WordPressCom-Stats-iOS', '0.0.5'
 pod 'WordPressCom-Analytics-iOS', '0.0.3'
 pod 'NSObject-SafeExpectations', '0.0.2'
 pod 'SocketRocket', :git => 'https://github.com/jleandroperez/SocketRocket.git', :branch => 'master'
-pod 'Simperium', '0.6.6'
+pod 'Simperium', '0.6.8'
 
 target :WordPressTest, :exclusive => true do
   pod 'OHHTTPStubs', '1.1.1'
