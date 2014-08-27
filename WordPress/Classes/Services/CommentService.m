@@ -415,11 +415,27 @@
 
 - (NSString *)hierarchyFromAncestors:(NSArray *)ancestors andCommentID:(NSNumber *)commentID
 {
-    NSString *hierarchy = [commentID stringValue];
+    NSString *hierarchy = [self formatAncestorString:[commentID stringValue]];
     if ([ancestors count] > 0) {
-        hierarchy = [NSString stringWithFormat:@"%@.%@", [ancestors componentsJoinedByString:@"."], hierarchy];
+        NSArray *arr = [self formatAncestorArray:ancestors];
+        hierarchy = [NSString stringWithFormat:@"%@.%@", [arr componentsJoinedByString:@"."], hierarchy];
     }
     return hierarchy;
+}
+
+- (NSString *)formatAncestorString:(NSString *)str
+{
+    NSString *formattedString = [NSString stringWithFormat:@"0000000000%@", str];
+    return [formattedString substringFromIndex:[str length]];
+}
+
+- (NSArray *)formatAncestorArray:(NSArray *)ancestors
+{
+    NSMutableArray *arr = [NSMutableArray array];
+    for (NSString *str in ancestors) {
+        [arr addObject:[self formatAncestorString:str]];
+    }
+    return arr;
 }
 
 - (void)mergeHierarchicalComments:(NSArray *)comments forPost:(ReaderPost *)post
