@@ -779,16 +779,18 @@ function style_html(html_source, options) {
     return multi_parser.output.join('');
 }
 
-
     </script>
 	<script><!--jquery-mobile-events--></script>
     <script><!--editor--></script>
-    <!--<script type="text/javascript" src="fastclick.js"></script>
-    <script>
-        $(function() {
-            FastClick.attach(document.body);
-        });
-    </script>-->
+	<script>
+		
+		// DRM: onLoad does not get called when offline, if there's remote content in the editor
+		// (such as remote images).  We use the 'ready' event for this reason.
+		//
+		$(document).ready(function() {
+			zss_editor.init();
+		});
+	</script>
 
     <style type="text/css">
         * {outline: 0px solid transparent; -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-touch-callout: none;}
@@ -797,5 +799,5 @@ function style_html(html_source, options) {
         img.zs_active {border: 2px dashed #000;}
     </style>
   </head>
-  <body contenteditable="true" onLoad="zss_editor.init();" id="zss_editor_content"><!--content--></body>
+  <body contenteditable="true" id="zss_editor_content"><!--content--></body>
 </html>
