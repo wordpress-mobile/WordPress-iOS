@@ -22,6 +22,8 @@ extern NSString *const UserDefaultsNewEditorEnabled;
 typedef void (^EditPostCompletionHandler)(void);
 @property (nonatomic, copy, readwrite) EditPostCompletionHandler onClose;
 
++ (void)setNewEditorEnabled:(BOOL)isEnabled;
+
 + (BOOL)isNewEditorEnabled;
 
 /*
