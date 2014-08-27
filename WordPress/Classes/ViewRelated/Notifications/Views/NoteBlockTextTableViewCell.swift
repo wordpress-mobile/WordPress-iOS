@@ -63,7 +63,7 @@ import Foundation
     
     // MARK: - Private
     private let maxWidth            = WPTableViewFixedWidth
-    private let insets              = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
+    private let insets              = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 14)
     private let maxNumberOfLines    = 0
     
     // MARK: - IBOutlets
