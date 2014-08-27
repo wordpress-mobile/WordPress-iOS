@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6206.8" systemVersion="14A329f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MbC-cA-c9S">
     <dependencies>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7026.1"/>
     </dependencies>
     <scenes>
@@ -74,7 +75,52 @@
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockTextTableViewCell" id="8uY-4y-V9f" userLabel="Text TableViewCell" customClass="NoteBlockTextTableViewCell" customModule="WordPress">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockSnippetTableViewCell" rowHeight="56" id="Dpg-vo-rxU" userLabel="Snippet" customClass="NoteBlockSnippetTableViewCell" customModule="WordPress">
+                                        <rect key="frame" x="0.0" y="184" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Dpg-vo-rxU" id="ZTa-lk-ggH">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fja-DW-mzm">
+                                                    <rect key="frame" x="12" y="12" width="32" height="32"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="32" id="Ln1-ba-Evd"/>
+                                                        <constraint firstAttribute="height" constant="32" id="l36-zl-ml8"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QIf-EO-cFO">
+                                                    <rect key="frame" x="54" y="9" width="254" height="14.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Snippet" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LeI-iE-lkn">
+                                                    <rect key="frame" x="54" y="23.5" width="254" height="14.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="LeI-iE-lkn" firstAttribute="leading" secondItem="QIf-EO-cFO" secondAttribute="leading" id="3wr-f3-tlr"/>
+                                                <constraint firstAttribute="trailing" secondItem="QIf-EO-cFO" secondAttribute="trailing" constant="12" id="8EF-Ob-4yN"/>
+                                                <constraint firstItem="fja-DW-mzm" firstAttribute="leading" secondItem="ZTa-lk-ggH" secondAttribute="leading" constant="12" id="Mt2-As-wMJ"/>
+                                                <constraint firstItem="fja-DW-mzm" firstAttribute="top" secondItem="ZTa-lk-ggH" secondAttribute="top" constant="12" id="Nl7-oy-bLe"/>
+                                                <constraint firstItem="QIf-EO-cFO" firstAttribute="leading" secondItem="fja-DW-mzm" secondAttribute="trailing" constant="10" id="Ppb-Jc-XMS"/>
+                                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="fja-DW-mzm" secondAttribute="bottom" constant="12" id="fyG-1a-mNi"/>
+                                                <constraint firstItem="LeI-iE-lkn" firstAttribute="trailing" secondItem="QIf-EO-cFO" secondAttribute="trailing" id="h8k-xj-X1S"/>
+                                                <constraint firstItem="fja-DW-mzm" firstAttribute="top" secondItem="QIf-EO-cFO" secondAttribute="top" constant="3" id="iEU-eT-TF6"/>
+                                                <constraint firstItem="LeI-iE-lkn" firstAttribute="top" secondItem="QIf-EO-cFO" secondAttribute="bottom" id="rQo-2v-hQ1"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="gravatarImageView" destination="fja-DW-mzm" id="zzW-cA-ucz"/>
+                                            <outlet property="nameLabel" destination="QIf-EO-cFO" id="MOL-rl-DpI"/>
+                                            <outlet property="snippetLabel" destination="LeI-iE-lkn" id="uoG-Od-v1y"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockTextTableViewCell" rowHeight="44" id="8uY-4y-V9f" userLabel="Text" customClass="NoteBlockTextTableViewCell" customModule="WordPress">
                                         <rect key="frame" x="0.0" y="55" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8uY-4y-V9f" id="NH8-8d-hqH">
@@ -82,16 +128,16 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GLh-mA-WVS" customClass="DTAttributedLabel">
-                                                    <rect key="frame" x="12" y="4" width="296" height="35"/>
+                                                    <rect key="frame" x="12" y="4.5" width="296" height="35"/>
                                                     <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
                                                 </view>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="centerY" secondItem="GLh-mA-WVS" secondAttribute="centerY" id="4ZG-iK-vRU"/>
-                                                <constraint firstItem="GLh-mA-WVS" firstAttribute="top" secondItem="NH8-8d-hqH" secondAttribute="top" constant="4" id="5dV-4x-X4w"/>
                                                 <constraint firstAttribute="bottom" secondItem="GLh-mA-WVS" secondAttribute="bottom" constant="4" id="8mn-JC-yW3"/>
                                                 <constraint firstItem="GLh-mA-WVS" firstAttribute="leading" secondItem="NH8-8d-hqH" secondAttribute="leading" constant="12" id="Bmt-Hq-JsJ"/>
                                                 <constraint firstAttribute="trailing" secondItem="GLh-mA-WVS" secondAttribute="trailing" constant="12" id="FaL-Yr-4jD"/>
+                                                <constraint firstItem="GLh-mA-WVS" firstAttribute="top" secondItem="NH8-8d-hqH" secondAttribute="top" constant="4" id="XPD-sU-iUa"/>
                                                 <constraint firstAttribute="centerX" secondItem="GLh-mA-WVS" secondAttribute="centerX" id="ota-iQ-DAa"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -99,7 +145,7 @@
                                             <outlet property="attributedLabel" destination="GLh-mA-WVS" id="qNi-br-Wyd"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockCommentTableViewCell" rowHeight="85" id="FtC-SI-oJr" userLabel="Comment TableViewCell" customClass="NoteBlockCommentTableViewCell" customModule="WordPress">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockCommentTableViewCell" rowHeight="110" id="FtC-SI-oJr" userLabel="Comment" customClass="NoteBlockCommentTableViewCell" customModule="WordPress">
                                         <rect key="frame" x="0.0" y="99" width="320" height="85"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FtC-SI-oJr" id="7qg-ok-Rbo">
@@ -107,11 +153,27 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N7y-ge-mMq" customClass="DTAttributedLabel">
-                                                    <rect key="frame" x="12" y="4" width="296" height="20"/>
+                                                    <rect key="frame" x="12" y="23" width="296" height="26.5"/>
                                                     <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
                                                 </view>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dAK-Dd-Cvw">
+                                                    <rect key="frame" x="12" y="12" width="32" height="32"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="32" id="1Zx-6x-Obj"/>
+                                                        <constraint firstAttribute="width" constant="32" id="RE2-FO-zNL"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uYt-ov-kC3">
+                                                    <rect key="frame" x="54" y="9" width="188" height="14.5"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="188" id="tqG-8i-PGz"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ab9-Eo-ue1" customClass="VerticallyStackedButton">
-                                                    <rect key="frame" x="245" y="44" width="55" height="30"/>
+                                                    <rect key="frame" x="245" y="69" width="55" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="qlj-w2-KrE"/>
                                                         <constraint firstAttribute="width" constant="55" id="xMy-8x-DnT"/>
@@ -126,7 +188,7 @@
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q3a-Aa-VqY" customClass="VerticallyStackedButton">
-                                                    <rect key="frame" x="170" y="44" width="55" height="30"/>
+                                                    <rect key="frame" x="170" y="69.5" width="55" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="VSj-Rz-XHO"/>
                                                         <constraint firstAttribute="width" constant="55" id="aqK-WO-00U"/>
@@ -141,7 +203,7 @@
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dZU-ho-dbu" customClass="VerticallyStackedButton">
-                                                    <rect key="frame" x="95" y="44" width="55" height="30"/>
+                                                    <rect key="frame" x="95" y="69" width="55" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="jsm-Ss-Rje"/>
                                                         <constraint firstAttribute="width" constant="55" id="oj5-pk-p8y"/>
@@ -158,7 +220,7 @@
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e1p-ec-Dn3" customClass="VerticallyStackedButton">
-                                                    <rect key="frame" x="20" y="44" width="55" height="30"/>
+                                                    <rect key="frame" x="20" y="69" width="55" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="4xJ-DC-pYG"/>
                                                         <constraint firstAttribute="width" constant="55" id="jzW-8y-eL4"/>
@@ -174,23 +236,36 @@
                                                         <action selector="likeWasPressed:" destination="FtC-SI-oJr" eventType="touchUpInside" id="c0t-Kd-Ydq"/>
                                                     </connections>
                                                 </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Timestamp" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sed-4I-XCW">
+                                                    <rect key="frame" x="242" y="9" width="64" height="14.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="e1p-ec-Dn3" firstAttribute="top" secondItem="N7y-ge-mMq" secondAttribute="bottom" constant="20" id="0Ci-6w-RxJ"/>
                                                 <constraint firstAttribute="bottom" secondItem="dZU-ho-dbu" secondAttribute="bottom" constant="10" id="1aA-CQ-qo3"/>
+                                                <constraint firstAttribute="trailing" secondItem="Sed-4I-XCW" secondAttribute="trailing" constant="14" id="314-v9-19r"/>
                                                 <constraint firstItem="q3a-Aa-VqY" firstAttribute="top" secondItem="N7y-ge-mMq" secondAttribute="bottom" constant="20" id="45x-ua-fpO"/>
+                                                <constraint firstItem="dAK-Dd-Cvw" firstAttribute="top" secondItem="7qg-ok-Rbo" secondAttribute="top" constant="12" id="5nR-rf-CxY"/>
                                                 <constraint firstItem="q3a-Aa-VqY" firstAttribute="leading" secondItem="dZU-ho-dbu" secondAttribute="trailing" constant="20" id="5uM-TI-L7f"/>
+                                                <constraint firstItem="Sed-4I-XCW" firstAttribute="leading" secondItem="uYt-ov-kC3" secondAttribute="trailing" id="Cb2-kt-DBz"/>
+                                                <constraint firstItem="dAK-Dd-Cvw" firstAttribute="top" secondItem="uYt-ov-kC3" secondAttribute="top" constant="3" id="Fyu-hc-Dfp"/>
+                                                <constraint firstItem="Sed-4I-XCW" firstAttribute="top" secondItem="uYt-ov-kC3" secondAttribute="top" id="GDk-kb-TU3"/>
                                                 <constraint firstItem="N7y-ge-mMq" firstAttribute="leading" secondItem="7qg-ok-Rbo" secondAttribute="leading" constant="12" id="J6e-4J-hog"/>
                                                 <constraint firstAttribute="trailing" secondItem="Ab9-Eo-ue1" secondAttribute="trailing" constant="20" id="KDn-Ow-HF5"/>
                                                 <constraint firstItem="dZU-ho-dbu" firstAttribute="top" secondItem="N7y-ge-mMq" secondAttribute="bottom" constant="20" id="Nv9-2J-fPz"/>
                                                 <constraint firstAttribute="bottom" secondItem="e1p-ec-Dn3" secondAttribute="bottom" constant="10" id="Uay-O7-R9b"/>
                                                 <constraint firstItem="dZU-ho-dbu" firstAttribute="leading" secondItem="e1p-ec-Dn3" secondAttribute="trailing" constant="20" id="UiB-vh-iqC"/>
-                                                <constraint firstItem="N7y-ge-mMq" firstAttribute="top" secondItem="7qg-ok-Rbo" secondAttribute="top" constant="4" id="gJa-1O-Y1d"/>
+                                                <constraint firstItem="N7y-ge-mMq" firstAttribute="top" secondItem="Sed-4I-XCW" secondAttribute="bottom" id="YbY-OI-O0N"/>
+                                                <constraint firstItem="uYt-ov-kC3" firstAttribute="leading" secondItem="dAK-Dd-Cvw" secondAttribute="trailing" constant="10" id="n5G-wD-KRZ"/>
                                                 <constraint firstAttribute="bottom" secondItem="q3a-Aa-VqY" secondAttribute="bottom" constant="10" id="p8O-Ad-1yT"/>
                                                 <constraint firstItem="Ab9-Eo-ue1" firstAttribute="top" secondItem="N7y-ge-mMq" secondAttribute="bottom" constant="20" id="pOK-8H-PLa"/>
                                                 <constraint firstItem="Ab9-Eo-ue1" firstAttribute="leading" secondItem="q3a-Aa-VqY" secondAttribute="trailing" constant="20" id="vhg-mW-OJq"/>
                                                 <constraint firstAttribute="trailing" secondItem="N7y-ge-mMq" secondAttribute="trailing" constant="12" id="voR-xo-QDx"/>
                                                 <constraint firstAttribute="bottom" secondItem="Ab9-Eo-ue1" secondAttribute="bottom" constant="10" id="wQc-o4-BEX"/>
+                                                <constraint firstItem="dAK-Dd-Cvw" firstAttribute="leading" secondItem="7qg-ok-Rbo" secondAttribute="leading" constant="12" id="zem-mU-Tgv"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -199,34 +274,12 @@
                                             <outlet property="btnLike" destination="e1p-ec-Dn3" id="HMC-LX-m8X"/>
                                             <outlet property="btnMore" destination="Ab9-Eo-ue1" id="W9i-90-82S"/>
                                             <outlet property="btnTrash" destination="q3a-Aa-VqY" id="vN5-93-aA4"/>
+                                            <outlet property="gravatarImageView" destination="dAK-Dd-Cvw" id="QLC-K4-YZR"/>
+                                            <outlet property="nameLabel" destination="uYt-ov-kC3" id="iUh-rH-6T4"/>
+                                            <outlet property="timestampLabel" destination="Sed-4I-XCW" id="Sc4-Hw-skT"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockQuoteTableViewCell" id="Dpg-vo-rxU" userLabel="Quote TableViewCell" customClass="NoteBlockQuoteTableViewCell" customModule="WordPress">
-                                        <rect key="frame" x="0.0" y="184" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Dpg-vo-rxU" id="ZTa-lk-ggH">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pHP-LD-lzg" customClass="DTAttributedLabel">
-                                                    <rect key="frame" x="46" y="4" width="254" height="35"/>
-                                                    <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
-                                                </view>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="pHP-LD-lzg" firstAttribute="leading" secondItem="ZTa-lk-ggH" secondAttribute="leading" constant="46" id="Pqv-ke-HPK"/>
-                                                <constraint firstAttribute="bottom" secondItem="pHP-LD-lzg" secondAttribute="bottom" constant="4" id="RJK-8L-jT0"/>
-                                                <constraint firstAttribute="trailing" secondItem="pHP-LD-lzg" secondAttribute="trailing" constant="20" id="are-21-ABH"/>
-                                                <constraint firstAttribute="centerY" secondItem="pHP-LD-lzg" secondAttribute="centerY" id="fKQ-qH-Y1z"/>
-                                                <constraint firstAttribute="centerX" secondItem="pHP-LD-lzg" secondAttribute="centerX" constant="-13" id="k3H-3y-KsQ"/>
-                                                <constraint firstItem="pHP-LD-lzg" firstAttribute="top" secondItem="ZTa-lk-ggH" secondAttribute="top" constant="4" id="vug-dN-6Vl"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="attributedLabel" destination="pHP-LD-lzg" id="fRS-tG-9g4"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockImageTableViewCell" rowHeight="200" id="maM-iX-PxD" userLabel="Image TableViewCell" customClass="NoteBlockImageTableViewCell" customModule="WordPress">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockImageTableViewCell" rowHeight="200" id="maM-iX-PxD" userLabel="Image" customClass="NoteBlockImageTableViewCell" customModule="WordPress">
                                         <rect key="frame" x="0.0" y="228" width="320" height="200"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="maM-iX-PxD" id="YlY-Sp-I9d">
@@ -252,7 +305,7 @@
                                             <outlet property="blockImageView" destination="7Wk-on-qN0" id="KvG-Pe-3Ir"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockUserTableViewCell" rowHeight="70" id="l6H-Qs-0x7" userLabel="User TableViewCell" customClass="NoteBlockUserTableViewCell" customModule="WordPress">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockUserTableViewCell" rowHeight="70" id="l6H-Qs-0x7" userLabel="User" customClass="NoteBlockUserTableViewCell" customModule="WordPress">
                                         <rect key="frame" x="0.0" y="428" width="320" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="l6H-Qs-0x7" id="1cQ-bH-Fko">
@@ -341,7 +394,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jzQ-hT-Ajt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="795" y="-840"/>
+            <point key="canvasLocation" x="795" y="-840.5"/>
         </scene>
         <!--Edit Comment View Controller-->
         <scene sceneID="m2s-6B-KjD">
