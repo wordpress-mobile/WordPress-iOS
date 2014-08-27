@@ -156,11 +156,9 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 - (void)filterContentForSearchText:(NSString *)searchText scope:(NSString *)scope
 {
     // strip any leading @ from searchText before searching
-    if (searchText.length > 1 && [[searchText substringToIndex:1] isEqualToString:@"@"]) {
-        if ([[searchText substringToIndex:1] isEqualToString:@"@"]) {
-            searchText = [searchText substringFromIndex:1];
-        }
-        
+    searchText = [searchText stringByReplacingOccurrencesOfString:@"@" withString:@""];
+
+    if (searchText.length > 0) {
         NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"(displayName contains[c] %@) OR (userLogin contains[c] %@)",
                                         searchText, searchText];
         self.searchResults = [self.suggestions filteredArrayUsingPredicate:resultPredicate];
