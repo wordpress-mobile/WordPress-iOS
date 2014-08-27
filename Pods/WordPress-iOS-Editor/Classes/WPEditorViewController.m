@@ -187,6 +187,7 @@ typedef enum
 	ZSSRichTextEditorToolbar defaultToolbarItems = (ZSSRichTextEditorToolbarInsertImage
 													| ZSSRichTextEditorToolbarBold
 													| ZSSRichTextEditorToolbarItalic
+													| ZSSRichTextEditorToolbarStrikeThrough
 													| ZSSRichTextEditorToolbarUnderline
 													| ZSSRichTextEditorToolbarBlockQuote
 													| ZSSRichTextEditorToolbarInsertLink
@@ -195,7 +196,9 @@ typedef enum
 	
 	// iPad gets the HTML source button too
 	if (IS_IPAD) {
-		defaultToolbarItems = defaultToolbarItems | ZSSRichTextEditorToolbarViewSource;
+		defaultToolbarItems = (defaultToolbarItems
+							   | ZSSRichTextEditorToolbarStrikeThrough
+							   | ZSSRichTextEditorToolbarViewSource);
 	}
 	
 	return defaultToolbarItems;

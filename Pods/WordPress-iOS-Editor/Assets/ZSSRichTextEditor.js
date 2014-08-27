@@ -112,7 +112,50 @@ zss_editor.setSuperscript = function() {
 }
 
 zss_editor.setStrikeThrough = function() {
-	document.execCommand('strikeThrough', false, null);
+	var commandName = 'strikeThrough';
+	var isDisablingStrikeThrough = zss_editor.isCommandEnabled(commandName);
+	
+	document.execCommand(commandName, false, null);
+	
+	// DRM: WebKit has a problem disabling strikeThrough when the tag <del> is used instead of
+	// <strike>.  The code below serves as a way to fix this issue.
+	//
+	var mustHandleWebKitIssue = (isDisablingStrikeThrough
+								 && zss_editor.isCommandEnabled(commandName));
+	
+	if (mustHandleWebKitIssue) {
+		var troublesomeNodeNames = ['del'];
+		
+		var selection = window.getSelection();
+		var range = selection.getRangeAt(0).cloneRange();
+		
+		var container = range.commonAncestorContainer;
+		var nodeFound = false;
+		var textNode = null;
+		
+		while (container && !nodeFound) {
+			nodeFound = (container
+						 && container.nodeType == document.ELEMENT_NODE
+						 && troublesomeNodeNames.indexOf(container.nodeName.toLowerCase()) > -1);
+			
+			if (!nodeFound) {
+				container = container.parentElement;
+			}
+		}
+		
+		if (container) {
+			var newObject = $(container).replaceWith(container.innerHTML);
+			
+			var finalSelection = window.getSelection();
+			var finalRange = selection.getRangeAt(0).cloneRange();
+			
+			finalRange.setEnd(finalRange.startContainer, finalRange.startOffset + 1);
+			
+			selection.removeAllRanges();
+			selection.addRange(finalRange);
+		}
+	}
+	
 	zss_editor.enabledEditingItems();
 }
 
