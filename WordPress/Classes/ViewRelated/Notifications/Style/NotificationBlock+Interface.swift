@@ -12,11 +12,11 @@ extension NotificationBlock
 
         theString.applyAttributesToQuotes(WPStyleGuide.Notifications.Styles.subjectItalics)
 
-        for url in urls as [NotificationURL] {
-            if url.isUser {
-                theString.addAttributes(WPStyleGuide.Notifications.Styles.subjectBold, range: url.range)
-            } else if url.isPost {
-                theString.addAttributes(WPStyleGuide.Notifications.Styles.subjectItalics, range: url.range)
+        for range in ranges as [NotificationRange] {
+            if range.isUser {
+                theString.addAttributes(WPStyleGuide.Notifications.Styles.subjectBold, range: range.range)
+            } else if range.isPost {
+                theString.addAttributes(WPStyleGuide.Notifications.Styles.subjectItalics, range: range.range)
             }
         }
 
@@ -48,14 +48,14 @@ extension NotificationBlock
         //      DTLinkAttribute     = "NSLinkAttributeName"
         //      NSLinkAttributeName = "NSLink"
         //
-        for url in urls as [NotificationURL] {
-            if url.isPost {
-                theString.addAttributes(WPStyleGuide.Notifications.Styles.blockItalics, range: url.range)
+        for range in ranges as [NotificationRange] {
+            if range.isPost {
+                theString.addAttributes(WPStyleGuide.Notifications.Styles.blockItalics, range: range.range)
             }
             
-            if url.url != nil {
-                theString.addAttribute(DTLinkAttribute, value: url.url, range: url.range)
-                theString.addAttribute(NSForegroundColorAttributeName, value: WPStyleGuide.Notifications.Colors.blockLink, range: url.range)
+            if range.url != nil {
+                theString.addAttribute(DTLinkAttribute, value: range.url, range: range.range)
+                theString.addAttribute(NSForegroundColorAttributeName, value: WPStyleGuide.Notifications.Colors.blockLink, range: range.range)
             }
         }
 

@@ -4,7 +4,7 @@
 
 @class NotificationBlock;
 @class NotificationBlockGroup;
-@class NotificationURL;
+@class NotificationRange;
 @class NotificationMedia;
 
 #pragma mark ====================================================================================
@@ -73,7 +73,7 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupTypes)
 
 // Helpers
 - (NotificationBlockGroup *)blockGroupOfType:(NoteBlockGroupTypes)type;
-- (NotificationURL *)notificationUrlWithUrl:(NSURL *)url;
+- (NotificationRange *)notificationRangeWithUrl:(NSURL *)url;
 
 @end
 
@@ -100,7 +100,7 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupTypes)
 @interface NotificationBlock : NSObject
 
 @property (nonatomic, strong, readonly) NSString            *text;
-@property (nonatomic, strong, readonly) NSArray             *urls;				// Array of NotificationURL objects
+@property (nonatomic, strong, readonly) NSArray             *ranges;			// Array of NotificationRange objects
 @property (nonatomic, strong, readonly) NSArray             *media;				// Array of NotificationMedia objects
 @property (nonatomic, strong, readonly) NSDictionary        *meta;
 @property (nonatomic, strong, readonly) NSDictionary        *actions;
@@ -115,7 +115,7 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupTypes)
 // Overrides
 @property (nonatomic, strong, readwrite) NSString           *textOverride;
 
-- (NotificationURL *)notificationUrlWithUrl:(NSURL *)url;
+- (NotificationRange *)notificationRangeWithUrl:(NSURL *)url;
 
 - (void)setActionOverrideValue:(NSNumber *)obj forKey:(NSString *)key;
 - (void)removeActionOverrideForKey:(NSString *)key;
@@ -128,14 +128,16 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupTypes)
 
 
 #pragma mark ====================================================================================
-#pragma mark NotificationURL
+#pragma mark NotificationRange
 #pragma mark ====================================================================================
 
-@interface NotificationURL : NSObject
+@interface NotificationRange : NSObject
 
 @property (nonatomic, strong, readonly) NSString            *type;
 @property (nonatomic, strong, readonly) NSURL               *url;
 @property (nonatomic, assign, readonly) NSRange             range;
+@property (nonatomic, strong, readonly) NSNumber            *siteID;
+@property (nonatomic, strong, readonly) NSNumber            *postID;
 
 // Derived Properties
 @property (nonatomic, assign, readonly) BOOL                isUser;
