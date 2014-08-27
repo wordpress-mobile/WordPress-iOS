@@ -26,6 +26,8 @@
 
 static CGFloat const SectionHeaderHeight = 25.0f;
 static CGFloat const TableViewTopMargin = 40;
+static CGFloat const EstimatedCommentRowHeight = 150.0;
+
 static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 
 @interface ReaderPostDetailViewController ()<
@@ -85,11 +87,11 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 {
     [super viewDidLoad];
 
-
     if (self.tableViewHandler) {
         self.tableViewHandler.delegate = nil;
     }
     self.tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
+    self.tableViewHandler.cacheRowHeights = YES;
     self.tableViewHandler.delegate = self;
 
     self.tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
@@ -152,6 +154,29 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
     if ([self.tableView indexPathForSelectedRow] && self.inlineComposeView.isDisplayed) {
         [self.tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionNone animated:NO];
     }
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+    if (IS_IPAD) {
+        return;
+    }
+
+    // Refresh cached row heights based on the width for the new orientation.
+    // Must happen before the table view calculates its content size / offset
+    // for the new orientation.
+    CGRect bounds = self.tableView.window.frame;
+    CGFloat width = CGRectGetWidth(bounds);
+    CGFloat height = CGRectGetHeight(bounds);
+    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+        width = MIN(width, height);
+    } else {
+        width = MAX(width, height);
+    }
+
+    [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
 }
 
 
@@ -553,7 +578,6 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
     }
 }
 
-
 - (void)dismissKeyboard:(id)sender
 {
     if ([self.view.gestureRecognizers containsObject:self.tapOffKeyboardGesture]) {
@@ -784,10 +808,19 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
     return SectionHeaderHeight;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return EstimatedCommentRowHeight;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
+    return [self tableView:tableView heightForRowAtIndexPath:indexPath forWidth:width];
+}
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath forWidth:(CGFloat)width
+{
     Comment *comment = [self.tableViewHandler.resultsController.fetchedObjects objectAtIndex:indexPath.row];
     return [ReaderCommentTableViewCell heightForComment:comment
                                                   width:width
