@@ -32,14 +32,14 @@ import Foundation
         if url == gravatarURL {
             return
         }
-
-        let placeholderImage = UIImage(named: placeholderName)
+        
+        // Scale down Gravatar images: faster downloads!
         if let unrawppedURL = url {
             let size                = iconImageView.frame.width * UIScreen.mainScreen().scale
             let scaledURL           = unrawppedURL.patchGravatarUrlWithSize(size)
-            iconImageView.downloadImage(scaledURL, placeholderImage: placeholderImage)
+            iconImageView.downloadImage(scaledURL, placeholderName: placeholderName)
         } else {
-            iconImageView.image = placeholderImage
+            iconImageView.image = UIImage(named: placeholderName)
         }
         
         gravatarURL = url
