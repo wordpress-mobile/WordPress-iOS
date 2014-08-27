@@ -23,7 +23,7 @@ import Foundation
         
         let placeholderImage = UIImage(named: placeholderName)
         let success = { (image: UIImage) in
-            self.gravatarImageView.displayImageWithSpringAnimation(image)
+            self.gravatarImageView.displayImageWithFadeInAnimation(image)
         }
 
         gravatarImageView.downloadImage(url, placeholderName: placeholderName, success: success, failure: nil)
