@@ -16,13 +16,10 @@ extension WPStyleGuide
             public static let subjectBold       = WPFontManager.openSansBoldFontOfSize(subjectSize)
             public static let subjectItalics    = WPFontManager.openSansItalicFontOfSize(subjectSize)
             
-            private static let blockSizeMedium  = CGFloat(UIDevice.isPad() ? 18 : 16)
-            private static let blockSizeSmall   = CGFloat(12)
+            private static let blockSizeMedium  = CGFloat(UIDevice.isPad() ? 16 : 14)
             public static let blockRegular      = WPFontManager.openSansRegularFontOfSize(blockSizeMedium)
             public static let blockBold         = WPFontManager.openSansBoldFontOfSize(blockSizeMedium)
             public static let blockItalics      = WPFontManager.openSansItalicFontOfSize(blockSizeMedium)
-            public static let blockHeader       = WPFontManager.openSansBoldFontOfSize(blockSizeSmall)
-            public static let blockSubtitle     = WPFontManager.openSansRegularFontOfSize(blockSizeSmall)
         }
 
         public struct Colors
@@ -55,7 +52,7 @@ extension WPStyleGuide
         public struct Styles
         {
             private static let subjectParagraph = NSMutableParagraphStyle(minimumLineHeight: 18, maximumLineHeight: 18)
-            private static let blockParagraph   = NSMutableParagraphStyle(minimumLineHeight: 24, maximumLineHeight: 24)
+            private static let blockParagraph   = NSMutableParagraphStyle(minimumLineHeight: 20, maximumLineHeight: 20)
             
             public static let subjectRegular    = NSDictionary(objectsAndKeys:
                 subjectParagraph,                   NSParagraphStyleAttributeName,
