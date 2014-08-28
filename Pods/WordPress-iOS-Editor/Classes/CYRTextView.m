@@ -190,6 +190,12 @@ static const float kCursorVelocity = 1.0f/8.0f;
 
 - (void)setText:(NSString *)text
 {
+	// DRM: the call to replaceRange:withText: doesn't like at all text being nil.
+	//
+	if (!text) {
+		text = @"";
+	}
+	
     UITextRange *textRange = [self textRangeFromPosition:self.beginningOfDocument toPosition:self.endOfDocument];
     [self replaceRange:textRange withText:text];
 }
