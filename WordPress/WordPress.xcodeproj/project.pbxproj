@@ -245,6 +245,7 @@
 		B55853F719630D5400FAF6C3 /* NSAttributedString+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = B55853F619630D5400FAF6C3 /* NSAttributedString+Util.m */; };
 		B55853FC19630E7900FAF6C3 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = B55853F919630E7900FAF6C3 /* Notification.m */; };
 		B558541419631A1000FAF6C3 /* Notifications.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B558541019631A1000FAF6C3 /* Notifications.storyboard */; };
+		B568C8FE19AEC9F4006DAB5E /* UIView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B568C8FD19AEC9F4006DAB5E /* UIView+Helpers.swift */; };
 		B56FA55B19AE8B1D004DB78C /* UIImageView+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56FA55A19AE8B1D004DB78C /* UIImageView+Animations.swift */; };
 		B57B99D519A2C20200506504 /* NoteTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B99D419A2C20200506504 /* NoteTableHeaderView.swift */; };
 		B57B99DE19A2DBF200506504 /* NSObject+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B57B99DD19A2DBF200506504 /* NSObject+Helpers.m */; };
@@ -822,6 +823,7 @@
 		B55853F819630E7900FAF6C3 /* Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notification.h; sourceTree = "<group>"; };
 		B55853F919630E7900FAF6C3 /* Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notification.m; sourceTree = "<group>"; };
 		B558541019631A1000FAF6C3 /* Notifications.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Notifications.storyboard; sourceTree = "<group>"; };
+		B568C8FD19AEC9F4006DAB5E /* UIView+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Helpers.swift"; sourceTree = "<group>"; };
 		B56FA55A19AE8B1D004DB78C /* UIImageView+Animations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Animations.swift"; sourceTree = "<group>"; };
 		B57B99D419A2C20200506504 /* NoteTableHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteTableHeaderView.swift; sourceTree = "<group>"; };
 		B57B99DC19A2DBF200506504 /* NSObject+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Helpers.h"; sourceTree = "<group>"; };
@@ -1960,6 +1962,7 @@
 				B5A88A3D199DCCE80038ABD4 /* NSDate+Helpers.swift */,
 				B56FA55A19AE8B1D004DB78C /* UIImageView+Animations.swift */,
 				B54D257519A017E000C6FDA2 /* UIImageView+Networking.swift */,
+				B568C8FD19AEC9F4006DAB5E /* UIView+Helpers.swift */,
 			);
 			path = Style;
 			sourceTree = "<group>";
@@ -2768,6 +2771,7 @@
 				E100C6BB1741473000AE48D8 /* WordPress-11-12.xcmappingmodel in Sources */,
 				E1A03EE217422DCF0085D192 /* BlogToAccount.m in Sources */,
 				5D44EB381986D8BA008B7175 /* ReaderSiteService.m in Sources */,
+				B568C8FE19AEC9F4006DAB5E /* UIView+Helpers.swift in Sources */,
 				5D37941B19216B1300E26CA4 /* RebloggingViewController.m in Sources */,
 				E1A03F48174283E10085D192 /* BlogToJetpackAccount.m in Sources */,
 				5DA3EE13192508F700294E0B /* WPImageOptimizer+Private.m in Sources */,
