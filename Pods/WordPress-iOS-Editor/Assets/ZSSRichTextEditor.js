@@ -35,10 +35,17 @@ zss_editor.init = function() {
 	var editor = $('#zss_editor_content');
 	
 	document.addEventListener("selectionchange", function(e) {
-		zss_editor.enabledEditingItems(e);
-		var clicked = $(e.target);
-		if (!clicked.hasClass('zs_active')) {
-			$('img').removeClass('zs_active');
+					
+		// DRM: only do something here if the editor has focus.  The reason is that when the
+		// selection changes due to the editor loosing focus, the focusout event will not be
+		// sent if we try to load a callback here.
+		//
+		if (editor.is(":focus")) {
+			zss_editor.enabledEditingItems(e);
+			var clicked = $(e.target);
+			if (!clicked.hasClass('zs_active')) {
+				$('img').removeClass('zs_active');
+			}
 		}
 	}, false);
 	

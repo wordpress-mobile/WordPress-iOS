@@ -1147,6 +1147,10 @@ typedef enum
     
     // Title TextField.
     if (!self.titleTextField) {
+		NSString* placeholder = (NSLocalizedString(@"Post title",
+												   @"Label for the title of the post field."));
+		NSDictionary* placeholderAttributes = @{NSForegroundColorAttributeName: [WPStyleGuide textFieldPlaceholderGrey]};
+		
         self.titleTextField = [[WPInsetTextField alloc] initWithFrame:frame];
         self.titleTextField.returnKeyType = UIReturnKeyDone;
         self.titleTextField.delegate = self;
@@ -1154,7 +1158,8 @@ typedef enum
         self.titleTextField.backgroundColor = [UIColor whiteColor];
         self.titleTextField.textColor = [WPStyleGuide bigEddieGrey];
         self.titleTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        self.titleTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:(NSLocalizedString(@"Post title", @"Label for the title of the post field.")) attributes:(@{NSForegroundColorAttributeName: [WPStyleGuide textFieldPlaceholderGrey]})];
+        self.titleTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder
+																					attributes:placeholderAttributes];
         self.titleTextField.accessibilityLabel = NSLocalizedString(@"Title", @"Post title");
         self.titleTextField.keyboardType = UIKeyboardTypeAlphabet;
         self.titleTextField.returnKeyType = UIReturnKeyNext;
@@ -1169,7 +1174,15 @@ typedef enum
         self.editorView.autoresizesSubviews = YES;
         self.editorView.autoresizingMask = mask;
         self.editorView.backgroundColor = [UIColor whiteColor];
+		
+		NSString* placeholderHTMLString = @"Share your story here...";
+		
+		NSString* hexColorStr = [NSString stringWithFormat:@"#%06x", HexColorFromUIColor([WPStyleGuide textFieldPlaceholderGrey])];
+		placeholderHTMLString = [NSString stringWithFormat:@"<font color='%@'>%@<font>", hexColorStr, placeholderHTMLString];
+		
+		self.editorView.placeholderHTMLString = placeholderHTMLString;
     }
+	
     [self.view addSubview:self.editorView];
 }
 
