@@ -21,14 +21,14 @@
 
 @interface SPWebSocketChannel : NSObject
 
-@property (nonatomic,   weak) SPWebSocketInterface	*webSocketManager;
-@property (nonatomic, strong) NSMutableArray		*indexArray;
-@property (nonatomic,   copy) NSString				*nextMark;
-@property (nonatomic,   copy) NSString				*pendingLastChangeSignature;
-@property (nonatomic,   copy) NSString				*name;
-@property (nonatomic,   copy) NSString				*remoteName;
-@property (nonatomic, assign) int					number;
-@property (nonatomic, assign) BOOL					authenticated;
+@property (nonatomic,   weak) SPWebSocketInterface  *webSocketManager;
+@property (nonatomic, strong) NSMutableArray        *indexArray;
+@property (nonatomic,   copy) NSString              *nextMark;
+@property (nonatomic,   copy) NSString              *pendingLastChangeSignature;
+@property (nonatomic,   copy) NSString              *name;
+@property (nonatomic,   copy) NSString              *remoteName;
+@property (nonatomic, assign) int                   number;
+@property (nonatomic, assign) BOOL                  authenticated;
 
 // Object Versions
 - (void)requestVersions:(int)numVersions object:(id<SPDiffable>)object;

@@ -14,8 +14,8 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 };
 
 typedef NS_ENUM(NSUInteger, EditPostViewControllerMode) {
-	EditPostViewControllerModeNewPost,
-	EditPostViewControllerModeEditPost
+    EditPostViewControllerModeNewPost,
+    EditPostViewControllerModeEditPost
 };
 
 @interface WPPostViewController () <UIActionSheetDelegate, UITextFieldDelegate, UITextViewDelegate, UIViewControllerRestoration>

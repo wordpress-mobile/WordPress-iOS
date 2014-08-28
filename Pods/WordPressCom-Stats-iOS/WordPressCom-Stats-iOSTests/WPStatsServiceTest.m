@@ -19,7 +19,7 @@
 
     self.remoteMock = [OCMockObject mockForClass:[WPStatsServiceRemote class]];
 
-    self.statsService = [[WPStatsService alloc] initWithSiteId:@2 andOAuth2Token:@"token"];
+    self.statsService = [[WPStatsService alloc] initWithSiteId:@2 siteTimeZone:[NSTimeZone systemTimeZone] andOAuth2Token:@"token"];
     self.statsService.remote = self.remoteMock;
 }
 
