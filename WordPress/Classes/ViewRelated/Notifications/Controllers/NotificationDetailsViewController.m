@@ -815,8 +815,9 @@ static CGFloat NotificationSectionSeparator     = 10;
 
     [UIView commitAnimations];
     
-    self.keyboardBottomDelta        = bottomInset;
-    self.isKeyboardVisible          = true;
+    self.keyboardBottomDelta                = bottomInset;
+    self.isKeyboardVisible                  = true;
+    self.tableGesturesRecognizer.enabled    = true;
 }
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification
@@ -836,7 +837,9 @@ static CGFloat NotificationSectionSeparator     = 10;
     self.tableView.contentInset     = newContentInsets;
     
     [UIView commitAnimations];
-    self.isKeyboardVisible = false;
+    
+    self.isKeyboardVisible                  = false;
+    self.tableGesturesRecognizer.enabled    = false;
 }
 
 
