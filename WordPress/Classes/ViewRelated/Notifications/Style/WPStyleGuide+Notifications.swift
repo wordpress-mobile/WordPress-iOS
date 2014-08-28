@@ -92,6 +92,12 @@ extension WPStyleGuide
                 Fonts.blockItalics,                 NSFontAttributeName,
                 Colors.blockText,                   NSForegroundColorAttributeName
             )
+
+            public static func blockParagraphStyle(indentation: CGFloat) -> NSParagraphStyle {
+                let paragraph                   = blockParagraph.mutableCopy() as NSMutableParagraphStyle
+                paragraph.firstLineHeadIndent   = indentation
+                return paragraph
+            }
         }
     }
 }
