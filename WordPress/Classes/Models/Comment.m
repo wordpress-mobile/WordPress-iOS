@@ -106,7 +106,7 @@ NSString * const CommentStatusDraft = @"draft";
 
 - (NSString *)authorForDisplay
 {
-    return [self.author length] > 0 ? [[self.author stringByDecodingXMLCharacters] trim] : [self.author_email trim];
+    return [[self.author trim] length] > 0 ? [[self.author stringByDecodingXMLCharacters] trim] : [self.author_email trim];
 }
 
 - (NSString *)blogNameForDisplay
