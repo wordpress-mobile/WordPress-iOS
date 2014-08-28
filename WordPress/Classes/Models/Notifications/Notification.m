@@ -320,7 +320,6 @@ NSString const *NotePostIdKey           = @"post_id";
 
 + (NotificationBlockGroup *)groupWithBlocks:(NSArray *)blocks type:(NoteBlockGroupTypes)type
 {
-    NSAssert([blocks isKindOfClass:[NSArray class]], nil);
     NotificationBlockGroup *group   = [self new];
     group.blocks                    = blocks;
     group.type                      = type;
@@ -332,10 +331,15 @@ NSString const *NotePostIdKey           = @"post_id";
     NSArray *blocks         = [NotificationBlock blocksFromArray:rawBlocks notification:notification];
     NSMutableArray *groups  = [NSMutableArray array];
     
+    // Don't proceed if there are no parsed blocks
+    if (!blocks) {
+        return nil;
+    }
+    
     // Subject: Contains a User + Text Block
     if (rawBlocks == notification.subject) {
         [groups addObject:[NotificationBlockGroup groupWithBlocks:blocks type:NoteBlockGroupTypesSubject]];
-    
+
     // Snippet: Contains a User + Text Block
     } else if (rawBlocks == notification.header) {
         [groups addObject:[NotificationBlockGroup groupWithBlocks:blocks type:NoteBlockGroupTypesSnippet]];
