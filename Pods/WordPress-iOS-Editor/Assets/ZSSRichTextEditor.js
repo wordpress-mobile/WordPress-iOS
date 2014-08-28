@@ -7,6 +7,7 @@
  *
  */
 
+
 // The editor object
 var zss_editor = {};
 
@@ -29,7 +30,7 @@ zss_editor.enabledItems = {};
  * The initializer function that must be called onLoad
  */
 zss_editor.init = function() {
-	
+
 	// Main editor div
 	var editor = $('#zss_editor_content');
 	
@@ -51,36 +52,62 @@ zss_editor.init = function() {
 
 	editor.bind('focusin', function(e) {
 		if (zss_editor.isUsingiOS) {
-			window.location = "callback://focusin";
+			window.location = "callback-focus-in://noop";
 		} else {
-			console.log("callback://focusin");
+			console.log("callback-focus-in://noop");
 		}
 	});
 	
 	editor.bind('focusout', function(e) {
 		if (zss_editor.isUsingiOS) {
-			window.location = "callback://focusout";
+			window.location = "callback-focus-out://noop";
 		} else {
-			console.log("callback://focusout");
+			console.log("callback-focus-out://noop");
 		}
 	});
 	
 	editor.bind('keyup', function(e) {
 		zss_editor.enabledEditingItems(e);
 		if (zss_editor.isUsingiOS) {
-			window.location = "callback://user-triggered-change";
+			window.location = "callback-user-triggered-change://noop";
 		} else {
-			console.log("callback://user-triggered-change");
+			console.log("callback-user-triggered-change://noop");
 		}
 	});
 	
 }//end
 
-zss_editor.log = function(msg){
+zss_editor.log = function(msg) {
 	if (zss_editor.isUsingiOS) {
-		window.location = "callback://" + msg;
+		window.location = "callback-log://" + msg;
 	} else {
-		console.log("callback://" + msg);
+		console.log("callback-log://" + msg);
+	}
+}
+
+zss_editor.domLoadedCallback = function() {
+	
+	var callback = "callback-dom-loaded://";
+	
+	if (zss_editor.isUsingiOS) {
+		window.location = callback;
+	} else {
+		console.log(callback);
+	}
+}
+
+zss_editor.stylesCallback = function(stylesArray) {
+	
+	var stylesString = '';
+	
+	if (stylesArray.length > 0) {
+		stylesString = stylesArray.join(',');
+	}
+	
+	if (zss_editor.isUsingiOS) {
+		window.location = "callback-selection-style://" + stylesString;
+	} else {
+		console.log("callback-selection-style://" + stylesString);
 	}
 }
 
@@ -601,19 +628,7 @@ zss_editor.enabledEditingItems = function(e) {
         }
 	}
 	
-	if (items.length > 0) {
-		if (zss_editor.isUsingiOS) {
-			window.location = "callback://"+items.join(',');
-		} else {
-			console.log("callback://"+items.join(','));
-		}
-	} else {
-		if (zss_editor.isUsingiOS) {
-			window.location = "callback://";
-		} else {
-			console.log("callback://");
-		}
-	}
+	zss_editor.stylesCallback(items);
 }
 
 zss_editor.focusEditor = function() {
