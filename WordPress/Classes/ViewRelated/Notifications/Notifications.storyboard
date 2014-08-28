@@ -153,7 +153,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N7y-ge-mMq" customClass="DTAttributedLabel">
-                                                    <rect key="frame" x="12" y="23" width="296" height="26.5"/>
+                                                    <rect key="frame" x="12" y="21.5" width="296" height="28"/>
                                                     <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
                                                 </view>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dAK-Dd-Cvw">
@@ -258,7 +258,7 @@
                                                 <constraint firstItem="dZU-ho-dbu" firstAttribute="top" secondItem="N7y-ge-mMq" secondAttribute="bottom" constant="20" id="Nv9-2J-fPz"/>
                                                 <constraint firstAttribute="bottom" secondItem="e1p-ec-Dn3" secondAttribute="bottom" constant="10" id="Uay-O7-R9b"/>
                                                 <constraint firstItem="dZU-ho-dbu" firstAttribute="leading" secondItem="e1p-ec-Dn3" secondAttribute="trailing" constant="20" id="UiB-vh-iqC"/>
-                                                <constraint firstItem="N7y-ge-mMq" firstAttribute="top" secondItem="Sed-4I-XCW" secondAttribute="bottom" id="YbY-OI-O0N"/>
+                                                <constraint firstItem="N7y-ge-mMq" firstAttribute="top" secondItem="Sed-4I-XCW" secondAttribute="bottom" constant="-2" id="YbY-OI-O0N"/>
                                                 <constraint firstItem="uYt-ov-kC3" firstAttribute="leading" secondItem="dAK-Dd-Cvw" secondAttribute="trailing" constant="10" id="n5G-wD-KRZ"/>
                                                 <constraint firstAttribute="bottom" secondItem="q3a-Aa-VqY" secondAttribute="bottom" constant="10" id="p8O-Ad-1yT"/>
                                                 <constraint firstItem="Ab9-Eo-ue1" firstAttribute="top" secondItem="N7y-ge-mMq" secondAttribute="bottom" constant="20" id="pOK-8H-PLa"/>

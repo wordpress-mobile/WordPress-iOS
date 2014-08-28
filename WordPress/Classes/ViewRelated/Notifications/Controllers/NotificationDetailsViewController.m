@@ -760,16 +760,16 @@ static CGFloat NotificationSectionSeparator     = 10;
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:NSStringFromClass([WPWebViewController class])]) {
-        WPWebViewController *webViewController = segue.destinationViewController;
-        webViewController.url = (NSURL *)sender;
+        WPWebViewController *webViewController          = segue.destinationViewController;
+        webViewController.url                           = (NSURL *)sender;
         
     } else if([segue.identifier isEqualToString:NSStringFromClass([StatsViewController class])]) {
-        StatsViewController *statsViewController = segue.destinationViewController;
-        statsViewController.blog = (Blog *)sender;
+        StatsViewController *statsViewController        = segue.destinationViewController;
+        statsViewController.blog                        = (Blog *)sender;
         
     } else if([segue.identifier isEqualToString:NSStringFromClass([ReaderPostDetailViewController class])]) {
         ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
-        NotificationRange *range = (NotificationRange *)sender;
+        NotificationRange *range                        = (NotificationRange *)sender;
         [readerViewController setupWithPostID:range.postID siteID:range.siteID];
         
     } else if ([segue.identifier isEqualToString:NSStringFromClass([EditCommentViewController class])]) {

@@ -13,6 +13,22 @@ import Foundation
     public var onTrashClick:        EventHandler?
     public var onMoreClick:         EventHandler?
 
+    public override var attributedText: NSAttributedString? {
+        didSet {
+            // Apply an indentation of `firstLineHeadIndent` pixels, only on the first line!
+            let indentedString = attributedText?.mutableCopy() as? NSMutableAttributedString
+            if let unwrappedIndentedString = indentedString {
+                
+                let length      = min(1, unwrappedIndentedString.length)
+                let range       = NSRange(location: 0, length: length)
+                let paragraph   = WPStyleGuide.Notifications.Styles.blockParagraphStyle(firstLineHeadIndent)
+                
+                unwrappedIndentedString.addAttribute(NSParagraphStyleAttributeName, value: paragraph, range: range)
+            }
+            
+            super.attributedText = indentedString
+        }
+    }
     public var name: String? {
         didSet {
             nameLabel.text  = name != nil ? name! : String()
@@ -170,6 +186,7 @@ import Foundation
     // MARK: - Constants
     private let buttonWidth                         : CGFloat   = 55
     private let buttonTrailing                      : CGFloat   = 20
+    private let firstLineHeadIndent                 : CGFloat   = 43
     
     // MARK: - Private
     private let placeholderName                     : String    = "gravatar"
