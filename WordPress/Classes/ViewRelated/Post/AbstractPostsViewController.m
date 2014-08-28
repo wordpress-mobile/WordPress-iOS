@@ -6,8 +6,8 @@
 #import "WPTableImageSource.h"
 
 static CGFloat const APVCHeaderHeightPhone = 10.0;
-static CGFloat const APVCEstimatedRowHeightIPhone = 400.0;
-static CGFloat const APVCEstimatedRowHeightIPad = 600.0;
+static CGFloat const APVCEstimatedRowHeightIPhone = 200.0;
+static CGFloat const APVCEstimatedRowHeightIPad = 200.0;
 
 NSString * const FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
 NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier";
