@@ -9,10 +9,10 @@
 
 @interface SubscribedTopicsViewController ()<WPTableViewHandlerDelegate>
 
+@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
 
 @end
-
 
 @implementation SubscribedTopicsViewController
 
@@ -56,7 +56,6 @@
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
 
 #pragma mark - Instance Methods
 
@@ -129,7 +128,6 @@
     }];
 }
 
-
 #pragma mark - TableView Handler Delegate Methods
 
 - (NSManagedObjectContext *)managedObjectContext
@@ -190,15 +188,11 @@
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
-    switch (section) {
-        case 0:
-            return NSLocalizedString(@"Lists", @"Section title for the default reader lists");
-            break;
-
-        default:
-            return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
-            break;
+    if (section == 0) {
+        return NSLocalizedString(@"Lists", @"Section title for the default reader lists");
     }
+
+    return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath

@@ -22,7 +22,7 @@ typedef void (^ExecutionBlock)(WPAsyncBlockOperation *);
         _executing = NO;
         _finished = NO;
     }
-    
+
     return self;
 }
 
@@ -59,13 +59,13 @@ typedef void (^ExecutionBlock)(WPAsyncBlockOperation *);
         [self completeOperation];
         return;
     }
-    
+
     if ([self haveAnyDependenciesFailed]) {
         [self didFail];
         [self completeOperation];
         return;
     }
-    
+
     [self willChangeValueForKey:@"isExecuting"];
     _executing = YES;
     [self didChangeValueForKey:@"isExecuting"];
@@ -94,10 +94,10 @@ typedef void (^ExecutionBlock)(WPAsyncBlockOperation *);
 {
     [self willChangeValueForKey:@"isFinished"];
     [self willChangeValueForKey:@"isExecuting"];
-    
+
     _executing = NO;
     _finished = YES;
-    
+
     [self didChangeValueForKey:@"isFinished"];
     [self didChangeValueForKey:@"isExecuting"];
 }
@@ -107,11 +107,12 @@ typedef void (^ExecutionBlock)(WPAsyncBlockOperation *);
     for (NSOperation *operation in self.dependencies) {
         if ([operation isKindOfClass:[WPAsyncBlockOperation class]]) {
             WPAsyncBlockOperation *asyncBlockOperation = (WPAsyncBlockOperation *)operation;
-            if (asyncBlockOperation.failed)
+            if (asyncBlockOperation.failed) {
                 return YES;
+            }
         }
     }
-    
+
     return NO;
 }
 

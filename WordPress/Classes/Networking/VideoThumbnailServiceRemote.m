@@ -3,35 +3,35 @@
 
 @implementation VideoThumbnailServiceRemote
 
-+ (AFHTTPRequestOperationManager *)sharedYoutubeClient {
-	static AFHTTPRequestOperationManager *_sharedClient = nil;
++ (AFHTTPRequestOperationManager *)sharedYoutubeClient
+{
+    static AFHTTPRequestOperationManager *_sharedClient = nil;
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
-		_sharedClient = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://gdata.youtube.com"]];
-	});
-	return _sharedClient;
+        _sharedClient = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://gdata.youtube.com"]];
+    });
+    return _sharedClient;
 }
 
-
-+ (AFHTTPRequestOperationManager *)sharedVimeoClient {
-	static AFHTTPRequestOperationManager *_sharedClient = nil;
++ (AFHTTPRequestOperationManager *)sharedVimeoClient
+{
+    static AFHTTPRequestOperationManager *_sharedClient = nil;
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
-		_sharedClient = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://vimeo.com"]];
-	});
-	return _sharedClient;
+        _sharedClient = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://vimeo.com"]];
+    });
+    return _sharedClient;
 }
 
-
-+ (AFHTTPRequestOperationManager *)sharedDailyMotionClient {
-	static AFHTTPRequestOperationManager *_sharedClient = nil;
++ (AFHTTPRequestOperationManager *)sharedDailyMotionClient
+{
+    static AFHTTPRequestOperationManager *_sharedClient = nil;
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
-		_sharedClient = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://api.dailymotion.com"]];
-	});
-	return _sharedClient;
+        _sharedClient = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://api.dailymotion.com"]];
+    });
+    return _sharedClient;
 }
-
 
 - (void)getThumbnailForVideoAtURL:(NSURL *)url
                           success:(void (^)(NSURL *thumbnailURL, NSString *title))success
@@ -42,16 +42,16 @@
         url = [NSURL URLWithString:[NSString stringWithFormat:@"http:%@", url]];
     }
 
-	NSString *path = [url path];
-	NSRange rng = [path rangeOfString:@"/" options:NSBackwardsSearch];
-	NSString *vidId = [path substringFromIndex:rng.location + 1];
+    NSString *path = [url path];
+    NSRange rng = [path rangeOfString:@"/" options:NSBackwardsSearch];
+    NSString *vidId = [path substringFromIndex:rng.location + 1];
 
     NSString *absolutePath = [url absoluteString];
 
     if ([absolutePath rangeOfString:@"youtube.com/embed"].location != NSNotFound) {
         [self getYoutubeThumb:vidId success:success failure:failure];
 
-    } else if([absolutePath rangeOfString:@"videos.files.wordpress.com"].location != NSNotFound ||
+    } else if ([absolutePath rangeOfString:@"videos.files.wordpress.com"].location != NSNotFound ||
               [absolutePath rangeOfString:@"videos.videopress.com"].location != NSNotFound) {
         [self getVideoPressThumb:url success:success failure:failure];
 
@@ -67,13 +67,12 @@
     }
 }
 
-
 - (void)getYoutubeThumb:(NSString *)vidId
                 success:(void (^)(NSURL *thumbnailURL, NSString *title))success
                 failure:(void (^)(NSError *error))failure
 {
-	NSString *path = [NSString stringWithFormat:@"/feeds/api/videos/%@?v=2&alt=json", vidId];
-	[[[self class] sharedYoutubeClient] GET:path
+    NSString *path = [NSString stringWithFormat:@"/feeds/api/videos/%@?v=2&alt=json", vidId];
+    [[[self class] sharedYoutubeClient] GET:path
                                  parameters:nil
                                     success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                         if (!success) {
@@ -98,15 +97,13 @@
                                             failure(error);
                                         }
                                     }];
-    
-}
 
+}
 
 - (void)getVideoPressThumb:(NSURL *)url
                    success:(void (^)(NSURL *thumbnailURL, NSString *title))success
                    failure:(void (^)(NSError *error))failure
 {
-
     NSString *urlHost = [url host];
     NSString *urlPath = [[url path] stringByReplacingOccurrencesOfString:@".mp4" withString:@".original.jpg?w=640"];
     NSString *path = [NSString stringWithFormat:@"http://i0.wp.com/%@%@", urlHost, urlPath];
@@ -115,14 +112,12 @@
     success(thumbURL, nil);
 }
 
-
 - (void)getVimeoThumb:(NSString *)vidId
               success:(void (^)(NSURL *thumbnailURL, NSString *title))success
               failure:(void (^)(NSError *error))failure
 {
-
-	NSString *path = [NSString stringWithFormat:@"/api/v2/video/%@.json", vidId];
-	[[[self class] sharedVimeoClient] GET:path
+    NSString *path = [NSString stringWithFormat:@"/api/v2/video/%@.json", vidId];
+    [[[self class] sharedVimeoClient] GET:path
                                parameters:nil
                                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                       if (!success) {
@@ -143,13 +138,12 @@
                                   }];
 }
 
-
 - (void)getDailyMotionThumb:(NSString *)vidId
                     success:(void (^)(NSURL *thumbnailURL, NSString *title))success
                     failure:(void (^)(NSError *error))failure
 {
-	NSString *path = [NSString stringWithFormat:@"/video/%@?fields=thumbnail_large_url", vidId];
-	[[[self class] sharedDailyMotionClient] GET:path
+    NSString *path = [NSString stringWithFormat:@"/video/%@?fields=thumbnail_large_url", vidId];
+    [[[self class] sharedDailyMotionClient] GET:path
                                      parameters:nil
                                         success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                             if (!success) {

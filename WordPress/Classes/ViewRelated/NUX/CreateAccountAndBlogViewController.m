@@ -23,10 +23,7 @@
 #import "ContextManager.h"
 #import "NSString+XMLExtensions.h"
 
-@interface CreateAccountAndBlogViewController ()<
-    UITextFieldDelegate,
-    UIGestureRecognizerDelegate> {
-    
+@interface CreateAccountAndBlogViewController ()<UITextFieldDelegate,UIGestureRecognizerDelegate> {
     // Page 1
     WPNUXBackButton *_backButton;
     UIButton *_helpButton;
@@ -38,7 +35,7 @@
     WPWalkthroughTextField *_passwordField;
     WPNUXMainButton *_createAccountButton;
     WPWalkthroughTextField *_siteAddressField;
-    
+
     NSOperationQueue *_operationQueue;
 
     BOOL _authenticating;
@@ -47,7 +44,7 @@
     BOOL _userDefinedSiteAddress;
     CGFloat _keyboardOffset;
     NSString *_defaultSiteUrl;
-    
+
     NSDictionary *_currentLanguage;
 
     WPAccount *_account;
@@ -82,15 +79,19 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.view.backgroundColor = [WPStyleGuide wordPressBlue];
-        
+
     [self initializeView];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow) name:UIKeyboardDidShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide) name:UIKeyboardDidHideNotification object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow)
+                                                 name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide)
+                                                 name:UIKeyboardDidHideNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -100,14 +101,18 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     [self layoutControls];
 }
 
-- (NSUInteger)supportedInterfaceOrientations {
-    if (IS_IPHONE)
+- (NSUInteger)supportedInterfaceOrientations
+{
+    if (IS_IPHONE) {
         return UIInterfaceOrientationMaskPortrait;
-    
+    }
+
     return UIInterfaceOrientationMaskAll;
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+                                         duration:(NSTimeInterval)duration
+{
     [self layoutControls];
 }
 
@@ -129,25 +134,26 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     return YES;
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range
+                                                       replacementString:(NSString *)string
 {
     NSArray *fields = @[_emailField, _usernameField, _passwordField, _siteAddressField];
-    
+
     NSMutableString *updatedString = [[NSMutableString alloc] initWithString:textField.text];
     [updatedString replaceCharactersInRange:range withString:string];
 
     if ([fields containsObject:textField]) {
         [self updateCreateAccountButtonForTextfield:textField andUpdatedString:updatedString];
     }
-    
+
     if ([textField isEqual:_siteAddressField]) {
         _userDefinedSiteAddress = YES;
     }
     return YES;
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-    
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
     if ([textField isEqual:_usernameField]) {
         if ([[_siteAddressField.text trim] length] == 0 || !_userDefinedSiteAddress) {
             _siteAddressField.text = _defaultSiteUrl = _usernameField.text;
@@ -164,7 +170,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     BOOL isPasswordFilled = [self isPasswordFilled];
     BOOL isSiteAddressFilled = [self isSiteAddressFilled];
     BOOL updatedStringHasContent = [[updatedString trim] length] != 0;
-    
+
     if (textField == _emailField) {
         isEmailFilled = updatedStringHasContent;
     } else if (textField == _usernameField) {
@@ -174,7 +180,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     } else if (textField == _siteAddressField) {
         isSiteAddressFilled = updatedStringHasContent;
     }
-    
+
     _createAccountButton.enabled = isEmailFilled && isUsernameFilled && isPasswordFilled && isSiteAddressFilled;
 }
 
@@ -202,11 +208,12 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 
 - (void)initializeView
 {
-    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewWasTapped:)];
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                        action:@selector(viewWasTapped:)];
     gestureRecognizer.numberOfTapsRequired = 1;
     gestureRecognizer.cancelsTouchesInView = YES;
     [self.view addGestureRecognizer:gestureRecognizer];
-    
+
     [self addControls];
     [self layoutControls];
 }
@@ -224,7 +231,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
         _helpButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         [self.view addSubview:_helpButton];
     }
-    
+
     // Add Cancel Button
     if (_backButton == nil) {
         _backButton = [[WPNUXBackButton alloc] init];
@@ -233,17 +240,18 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
         _backButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
         [self.view addSubview:_backButton];
     }
-    
+
     // Add Title
     if (_titleLabel == nil) {
         _titleLabel = [[UILabel alloc] init];
-        _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Create an account on WordPress.com", @"NUX Create Account Page 1 Title") attributes:[WPNUXUtility titleAttributesWithColor:[UIColor whiteColor]]];
+        _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Create an account on WordPress.com", @"NUX Create Account Page 1 Title")
+                                                                     attributes:[WPNUXUtility titleAttributesWithColor:[UIColor whiteColor]]];
         _titleLabel.numberOfLines = 0;
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         [self.view addSubview:_titleLabel];
     }
-    
+
     // Add Email
     if (_emailField == nil) {
         _emailField = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-email-field"]];
@@ -258,7 +266,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
         _emailField.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         [self.view addSubview:_emailField];
     }
-    
+
     // Add Username
     if (_usernameField == nil) {
         _usernameField = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-username-field"]];
@@ -273,7 +281,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
         _usernameField.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         [self.view addSubview:_usernameField];
     }
-    
+
     // Add Password
     if (_passwordField == nil) {
         _passwordField = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
@@ -290,7 +298,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
         _passwordField.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         [self.view addSubview:_passwordField];
     }
-    
+
     // Add Site Address
     if (_siteAddressField == nil) {
         _siteAddressField = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-url-field"]];
@@ -304,7 +312,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
         _siteAddressField.showTopLineSeparator = YES;
         _siteAddressField.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         [self.view addSubview:_siteAddressField];
-        
+
         // add .wordpress.com label to textfield
         _siteAddressWPComLabel = [[UILabel alloc] init];
         _siteAddressWPComLabel.text = @".wordpress.com";
@@ -312,13 +320,13 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
         _siteAddressWPComLabel.font = [WPNUXUtility descriptionTextFont];
         _siteAddressWPComLabel.textColor = [WPStyleGuide allTAllShadeGrey];
         [_siteAddressWPComLabel sizeToFit];
-        
+
         UIEdgeInsets siteAddressTextInsets = [(WPWalkthroughTextField *)_siteAddressField textInsets];
         siteAddressTextInsets.right += _siteAddressWPComLabel.frame.size.width + 10;
         [(WPWalkthroughTextField *)_siteAddressField setTextInsets:siteAddressTextInsets];
         [_siteAddressField addSubview:_siteAddressWPComLabel];
     }
-    
+
     // Add Terms of Service Label
     if (_TOSLabel == nil) {
         _TOSLabel = [[UILabel alloc] init];
@@ -331,12 +339,13 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
         _TOSLabel.textColor = [WPNUXUtility tosLabelColor];
         _TOSLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         [self.view addSubview:_TOSLabel];
-        
-        UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(TOSLabelWasTapped)];
+
+        UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                            action:@selector(TOSLabelWasTapped)];
         gestureRecognizer.numberOfTapsRequired = 1;
         [_TOSLabel addGestureRecognizer:gestureRecognizer];
     }
-    
+
     // Add Next Button
     if (_createAccountButton == nil) {
         _createAccountButton = [[WPNUXMainButton alloc] init];
@@ -352,34 +361,34 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 - (void)layoutControls
 {
     CGFloat x,y;
-    
+
     CGFloat viewWidth = CGRectGetWidth(self.view.bounds);
     CGFloat viewHeight = CGRectGetHeight(self.view.bounds);
-    
+
     // Layout Help Button
     UIImage *helpButtonImage = [UIImage imageNamed:@"btn-help"];
     x = viewWidth - helpButtonImage.size.width - CreateAccountAndBlogStandardOffset;
     y = 0.5 * CreateAccountAndBlogStandardOffset + CreateAccountAndBlogiOS7StatusBarOffset;
     _helpButton.frame = CGRectMake(x, y, helpButtonImage.size.width, CreateAccountAndBlogButtonHeight);
-    
+
     // Layout Cancel Button
     x = 0;
     y = 0.5 * CreateAccountAndBlogStandardOffset + CreateAccountAndBlogiOS7StatusBarOffset;
     _backButton.frame = CGRectMake(x, y, CGRectGetWidth(_backButton.frame), CreateAccountAndBlogButtonHeight);
-        
+
     // Layout the controls starting out from y of 0, then offset them once the height of the controls
     // is accurately calculated we can determine the vertical center and adjust everything accordingly.
-    
+
     // Layout Title
     CGSize titleSize = [_titleLabel suggestedSizeForWidth:CreateAccountAndBlogMaxTextWidth];
     x = (viewWidth - titleSize.width)/2.0;
     y = 0;
     _titleLabel.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
-    
+
     // In order to fit controls ontol all phones, the textField height is smaller on iPhones
     // versus iPads.
     CGFloat textFieldHeight = IS_IPAD ? CreateAccountAndBlogTextFieldHeight: CreateAccountAndBlogTextFieldPhoneHeight;
-    
+
     // Layout Email
     x = (viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
     y = CGRectGetMaxY(_titleLabel.frame) + CreateAccountAndBlogStandardOffset;
@@ -394,45 +403,57 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     x = (viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
     y = CGRectGetMaxY(_usernameField.frame) - 1;
     _passwordField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, textFieldHeight));
-    
+
     // Layout Site Address
     x = (viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
     y = CGRectGetMaxY(_passwordField.frame) - 1;
     _siteAddressField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, textFieldHeight));
-    
+
     // Layout WordPressCom Label
     [_siteAddressWPComLabel sizeToFit];
     CGSize wordPressComLabelSize = _siteAddressWPComLabel.frame.size;
     wordPressComLabelSize.height = _siteAddressField.frame.size.height - 10;
     wordPressComLabelSize.width += 10;
-    _siteAddressWPComLabel.frame = CGRectMake(_siteAddressField.frame.size.width - wordPressComLabelSize.width - 5, (_siteAddressField.frame.size.height - wordPressComLabelSize.height) / 2 - 1, wordPressComLabelSize.width, wordPressComLabelSize.height);
-    
+    _siteAddressWPComLabel.frame = CGRectMake(_siteAddressField.frame.size.width - wordPressComLabelSize.width - 5,
+                                              (_siteAddressField.frame.size.height - wordPressComLabelSize.height) / 2 - 1,
+                                              wordPressComLabelSize.width,
+                                              wordPressComLabelSize.height);
+
     // Layout Create Account Button
     x = (viewWidth - CreateAccountAndBlogButtonWidth)/2.0;
     y = CGRectGetMaxY(_siteAddressField.frame) + CreateAccountAndBlogStandardOffset;
-    _createAccountButton.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogButtonWidth, CreateAccountAndBlogButtonHeight));
+    _createAccountButton.frame = CGRectIntegral(CGRectMake(x,
+                                                           y,
+                                                           CreateAccountAndBlogButtonWidth,
+                                                           CreateAccountAndBlogButtonHeight));
 
     // Layout Terms of Service
     CGFloat TOSSingleLineHeight = [@"WordPress" sizeWithAttributes:@{NSFontAttributeName:_TOSLabel.font}].height;
-    CGSize TOSLabelSize = [_TOSLabel.text boundingRectWithSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: _TOSLabel.font} context:nil].size;
-    // If the terms of service don't fit on two lines, then shrink the font to make sure the entire terms of service is visible.
+    CGSize TOSLabelSize = [_TOSLabel.text boundingRectWithSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX)
+                                                       options:NSStringDrawingUsesLineFragmentOrigin
+                                                    attributes:@{NSFontAttributeName: _TOSLabel.font}
+                                                       context:nil].size;
+    // If the terms of service don't fit on two lines, then shrink the font to make sure
+    // the entire terms of service is visible.
     if (TOSLabelSize.height > 2*TOSSingleLineHeight) {
         _TOSLabel.font = [WPNUXUtility tosLabelSmallerFont];
-        TOSLabelSize = [_TOSLabel.text boundingRectWithSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: _TOSLabel.font} context:nil].size;
+        TOSLabelSize = [_TOSLabel.text boundingRectWithSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX)
+                                                    options:NSStringDrawingUsesLineFragmentOrigin
+                                                 attributes:@{NSFontAttributeName: _TOSLabel.font} context:nil].size;
     }
     x = (viewWidth - TOSLabelSize.width)/2.0;
     y = CGRectGetMaxY(_createAccountButton.frame) + 0.5 * CreateAccountAndBlogStandardOffset;
     _TOSLabel.frame = CGRectIntegral(CGRectMake(x, y, TOSLabelSize.width, TOSLabelSize.height));
-    
-    NSArray *controls = @[_titleLabel, _emailField, _usernameField, _passwordField, _TOSLabel, _createAccountButton, _siteAddressField];
+
+    NSArray *controls = @[_titleLabel, _emailField, _usernameField, _passwordField,
+                          _TOSLabel, _createAccountButton, _siteAddressField];
     [WPNUXUtility centerViews:controls withStartingView:_titleLabel andEndingView:_TOSLabel forHeight:viewHeight];
 }
 
-
 - (void)helpButtonAction
 {
-    SupportViewController *supportViewController = [[SupportViewController alloc] init];
-    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:supportViewController];
+    SupportViewController *supportVC = [[SupportViewController alloc] init];
+    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:supportVC];
     nc.navigationBar.translucent = NO;
     nc.modalPresentationStyle = UIModalPresentationFormSheet;
     [self.navigationController presentViewController:nc animated:YES completion:nil];
@@ -451,13 +472,13 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 - (void)createAccountButtonAction
 {
     [self.view endEditing:YES];
-    
+
     if (![self fieldsValid]) {
         [self showAllErrors];
         return;
-    } else {
-        [self createUserAndSite];
     }
+
+    [self createUserAndSite];
 }
 
 - (void)TOSLabelWasTapped
@@ -474,9 +495,9 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     CGRect keyboardFrame = [[keyboardInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardFrame = [self.view convertRect:keyboardFrame fromView:nil];
-    
+
     CGFloat newKeyboardOffset = (CGRectGetMaxY(_createAccountButton.frame) - CGRectGetMinY(keyboardFrame)) + CreateAccountAndBlogStandardOffset;
-    
+
     // make sure keyboard offset is greater than 0, otherwise do not move controls
     if (newKeyboardOffset < 0) {
         return;
@@ -488,7 +509,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
             frame.origin.y -= newKeyboardOffset;
             control.frame = frame;
         }
-        
+
         for (UIControl *control in [self controlsToShowOrHideDuringKeyboardTransition]) {
             control.alpha = 0.0;
         }
@@ -501,17 +522,17 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 {
     NSDictionary *keyboardInfo = notification.userInfo;
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
-    
+
     CGFloat currentKeyboardOffset = _keyboardOffset;
     _keyboardOffset = 0;
-    
+
     [UIView animateWithDuration:animationDuration animations:^{
         for (UIControl *control in [self controlsToMoveDuringKeyboardTransition]) {
             CGRect frame = control.frame;
             frame.origin.y += currentKeyboardOffset;
             control.frame = frame;
         }
-                
+
         for (UIControl *control in [self controlsToShowOrHideDuringKeyboardTransition]) {
             control.alpha = 1.0;
         }
@@ -579,8 +600,8 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     return [self fieldsFilled] && [self isUsernameUnderFiftyCharacters];
 }
 
-- (NSString *)generateSiteTitleFromUsername:(NSString *)username {
-    
+- (NSString *)generateSiteTitleFromUsername:(NSString *)username
+{
     // Currently, we set the title of a new site to the username of the account.
     // Another possibility would be to name the site "username's blog", which is
     // why this has been placed in a separate method.
@@ -603,8 +624,10 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 
 - (NSString *)getSiteAddressWithoutWordPressDotCom
 {
-    NSRegularExpression *dotCom = [NSRegularExpression regularExpressionWithPattern:@"\\.wordpress\\.com/?$" options:NSRegularExpressionCaseInsensitive error:nil];
-    return [dotCom stringByReplacingMatchesInString:_siteAddressField.text options:0 range:NSMakeRange(0, [_siteAddressField.text length]) withTemplate:@""];
+    NSRegularExpression *dotCom = [NSRegularExpression regularExpressionWithPattern:@"\\.wordpress\\.com/?$"
+                                                                            options:NSRegularExpressionCaseInsensitive error:nil];
+    return [dotCom stringByReplacingMatchesInString:_siteAddressField.text options:0
+                                              range:NSMakeRange(0, [_siteAddressField.text length]) withTemplate:@""];
 }
 
 - (void)showError:(NSString *)message
@@ -630,9 +653,9 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     if (_authenticating) {
         return;
     }
-    
+
     [self setAuthenticating:YES];
-    
+
     // The site must be validated prior to making an account. Without validation,
     // the situation could exist where a user account is created, but the site creation
     // fails.
@@ -645,7 +668,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
             [self setAuthenticating:NO];
             [self displayRemoteError:error];
         };
-        
+
         NSNumber *languageId = [_currentLanguage objectForKey:@"lang_id"];
         [[WordPressComApi anonymousApi] validateWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
                                                  andBlogTitle:[self generateSiteTitleFromUsername:_usernameField.text]
@@ -653,7 +676,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
                                                       success:blogValidationSuccess
                                                       failure:blogValidationFailure];
     }];
-    
+
     WPAsyncBlockOperation *userCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
         void (^createUserSuccess)(id) = ^(id responseObject){
             // Turn on the new editor only for users that create a new account within the iOS app
@@ -679,7 +702,9 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
             AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
 
-            _account = [accountService createOrUpdateWordPressComAccountWithUsername:_usernameField.text password:_passwordField.text authToken:authToken];
+            _account = [accountService createOrUpdateWordPressComAccountWithUsername:_usernameField.text
+                                                                            password:_passwordField.text
+                                                                           authToken:authToken];
             if (![accountService defaultWordPressComAccount]) {
                 [accountService setDefaultWordPressComAccount:_account];
             }
@@ -693,7 +718,6 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
             [self setAuthenticating:NO];
             [self displayRemoteError:error];
         };
-
 
         WordPressComOAuthClient *client = [WordPressComOAuthClient client];
         [client authenticateWithUsername:_usernameField.text
@@ -753,7 +777,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     [blogCreation addDependency:userSignIn];
     [userSignIn addDependency:userCreation];
     [userCreation addDependency:siteValidation];
-    
+
     [_operationQueue addOperation:siteValidation];
     [_operationQueue addOperation:userCreation];
     [_operationQueue addOperation:userSignIn];

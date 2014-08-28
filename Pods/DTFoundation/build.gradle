@@ -1,0 +1,85 @@
+buildscript {
+    repositories {
+				maven {
+					url('http://openbakery.org/repository/')
+				}
+				mavenCentral()
+    }
+    dependencies {
+        classpath group: 'org.openbakery', name: 'xcodePlugin', version: '0.9.11'
+    }
+}
+apply plugin: 'xcode'
+
+
+xcodebuild {
+	scheme = 'Static Library'
+  target = 'Static Library'
+	configuration = 'Debug'
+
+
+}
+
+
+task documentation(type:Exec) {
+
+	def documentationDirectory = new File('build/documentation')
+	def appledoc = new File(documentationDirectory, 'appledoc')
+
+	doFirst {
+		documentationDirectory.mkdirs()
+		def zip = new File(documentationDirectory, 'appledoc.zip')
+		ant.get(src: 'https://github.com/tomaz/appledoc/releases/download/v2.2-963/appledoc.zip', dest: documentationDirectory, verbose:true)
+		ant.unzip(src: zip,  dest:documentationDirectory)
+		ant.chmod(file: appledoc, perm:"+x")
+	}
+
+	workingDir "."
+	commandLine appledoc.absolutePath, '--print-settings', '--output', documentationDirectory.absolutePath, '--ignore', 'build',  '.'
+	
+}
+
+
+
+task continuous(dependsOn: 'test')
+
+
+
+gradle.taskGraph.whenReady { taskGraph ->
+
+
+
+
+	if (taskGraph.hasTask(test)) {
+		println "CONFIGURE CONTINUOUS"
+		xcodebuild {
+		
+			destination {
+				platform = 'iOS Simulator'
+				name = 'iPad'
+				os='7.1'
+			}
+
+			destination {
+				platform = 'iOS Simulator'
+				name = 'iPhone Retina (3.5-inch)'
+				os='7.1'
+			}
+			
+			destination {
+				platform = 'iOS Simulator'
+				name = 'iPhone Retina (4-inch)'
+				os='7.1'
+			}
+
+			destination {
+				platform = 'iOS Simulator'
+				name = 'iPad Retina'
+				os='7.1'
+			}
+			
+
+		}
+	}
+
+}

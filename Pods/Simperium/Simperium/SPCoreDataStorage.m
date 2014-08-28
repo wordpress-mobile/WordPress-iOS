@@ -13,6 +13,7 @@
 #import "SPSchema.h"
 #import "SPThreadsafeMutableSet.h"
 #import "SPLogger.h"
+#import <objc/runtime.h>
 
 
 
@@ -20,10 +21,10 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-NSString* const SPCoreDataBucketListKey = @"SPCoreDataBucketListKey";
-NSString* const SPCoreDataWorkerContext	= @"SPCoreDataWorkerContext";
-static SPLogLevels logLevel				= SPLogLevelsInfo;
-static NSInteger const SPWorkersDone	= 0;
+char* const SPCoreDataBucketListKey     = "SPCoreDataBucketListKey";
+NSString* const SPCoreDataWorkerContext = @"SPCoreDataWorkerContext";
+static SPLogLevels logLevel             = SPLogLevelsInfo;
+static NSInteger const SPWorkersDone    = 0;
 
 
 #pragma mark ====================================================================================
@@ -31,14 +32,14 @@ static NSInteger const SPWorkersDone	= 0;
 #pragma mark ====================================================================================
 
 @interface SPCoreDataStorage ()
-@property (nonatomic, strong, readwrite) NSManagedObjectContext			*writerManagedObjectContext;
-@property (nonatomic, strong, readwrite) NSManagedObjectContext			*mainManagedObjectContext;
-@property (nonatomic, strong, readwrite) NSManagedObjectModel			*managedObjectModel;
-@property (nonatomic, strong, readwrite) NSPersistentStoreCoordinator	*persistentStoreCoordinator;
-@property (nonatomic, strong, readwrite) NSMutableDictionary			*classMappings;
-@property (nonatomic, strong, readwrite) SPThreadsafeMutableSet			*remotelyDeletedKeys;
-@property (nonatomic, weak,   readwrite) SPCoreDataStorage				*sibling;
-@property (nonatomic, strong, readwrite) NSConditionLock				*mutex;
+@property (nonatomic, strong, readwrite) NSManagedObjectContext         *writerManagedObjectContext;
+@property (nonatomic, strong, readwrite) NSManagedObjectContext         *mainManagedObjectContext;
+@property (nonatomic, strong, readwrite) NSManagedObjectModel           *managedObjectModel;
+@property (nonatomic, strong, readwrite) NSPersistentStoreCoordinator   *persistentStoreCoordinator;
+@property (nonatomic, strong, readwrite) NSMutableDictionary            *classMappings;
+@property (nonatomic, strong, readwrite) SPThreadsafeMutableSet         *remotelyDeletedKeys;
+@property (nonatomic, weak,   readwrite) SPCoreDataStorage              *sibling;
+@property (nonatomic, strong, readwrite) NSConditionLock                *mutex;
 - (void)addObserversForMainContext:(NSManagedObjectContext *)context;
 - (void)addObserversForChildrenContext:(NSManagedObjectContext *)context;
 @end
@@ -50,77 +51,73 @@ static NSInteger const SPWorkersDone	= 0;
 
 @implementation SPCoreDataStorage
 
-- (id)initWithModel:(NSManagedObjectModel *)model mainContext:(NSManagedObjectContext *)mainContext coordinator:(NSPersistentStoreCoordinator *)coordinator {
-    if (self = [super init]) {
-		// Create a writer MOC
-		self.writerManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-		
+- (instancetype)initWithModel:(NSManagedObjectModel *)model mainContext:(NSManagedObjectContext *)mainContext coordinator:(NSPersistentStoreCoordinator *)coordinator {
+    self = [super init];
+    if (self) {
+        // Create a writer MOC
+        self.writerManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+        
         stashedObjects = [NSMutableSet setWithCapacity:3];
         self.classMappings = [NSMutableDictionary dictionary];
-		self.remotelyDeletedKeys = [SPThreadsafeMutableSet set];
-		
+        self.remotelyDeletedKeys = [SPThreadsafeMutableSet set];
+        
         self.persistentStoreCoordinator = coordinator;
         self.managedObjectModel = model;
         self.mainManagedObjectContext = mainContext;
-		
+        
         [self.mainManagedObjectContext setMergePolicy:NSMergeByPropertyStoreTrumpMergePolicy];
-		
-		// Just one mutex for this Simperium stack
-		self.mutex = [[NSConditionLock alloc] initWithCondition:SPWorkersDone];
-		
-		// The new writer MOC will be the only one with direct access to the persistentStoreCoordinator
-		self.writerManagedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
-		self.mainManagedObjectContext.parentContext = self.writerManagedObjectContext;
+        
+        // Just one mutex for this Simperium stack
+        self.mutex = [[NSConditionLock alloc] initWithCondition:SPWorkersDone];
+        
+        // The new writer MOC will be the only one with direct access to the persistentStoreCoordinator
+        self.writerManagedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
+        self.mainManagedObjectContext.parentContext = self.writerManagedObjectContext;
 
         [self addObserversForMainContext:self.mainManagedObjectContext];
     }
     return self;
 }
 
-- (id)initWithSibling:(SPCoreDataStorage *)aSibling {
-    if (self = [super init]) {
+- (instancetype)initWithSibling:(SPCoreDataStorage *)aSibling {
+    self = [super init];
+    if (self) {
         self.sibling = aSibling;
-		
+        
         // Create an ephemeral, thread-safe context that will push its changes directly to the writer MOC,
-		// and will also post the changes to the MainQueue
+        // and will also post the changes to the MainQueue
         self.mainManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSConfinementConcurrencyType];
-		self.mainManagedObjectContext.userInfo[SPCoreDataWorkerContext] = @(true);
-		
-		self.writerManagedObjectContext = aSibling.writerManagedObjectContext;
-		
-		// Wire the Thread Confined Context, directly to the writer MOC
-		self.mainManagedObjectContext.parentContext = self.writerManagedObjectContext;
-		
+        self.mainManagedObjectContext.userInfo[SPCoreDataWorkerContext] = @(true);
+        
+        self.writerManagedObjectContext = aSibling.writerManagedObjectContext;
+        
+        // Wire the Thread Confined Context, directly to the writer MOC
+        self.mainManagedObjectContext.parentContext = self.writerManagedObjectContext;
+        
         // Simperium's context always trumps the app's local context (potentially stomping in-memory changes)
         [self.mainManagedObjectContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
         
         // For efficiency
         [self.mainManagedObjectContext setUndoManager:nil];
         
-		// Shared mutex
-		self.mutex = aSibling.mutex;
-		
+        // Shared mutex
+        self.mutex = aSibling.mutex;
+        
         // An observer is expected to handle merges for otherContext when the threaded context is saved
-		[self addObserversForChildrenContext:self.mainManagedObjectContext];
+        [self addObserversForChildrenContext:self.mainManagedObjectContext];
     }
     
     return self;
 }
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)setBucketList:(NSDictionary *)dict {
-    // Set a custom field on the context so that objects can figure out their own buckets when they wake up
-	NSMutableDictionary* bucketList = self.writerManagedObjectContext.userInfo[SPCoreDataBucketListKey];
-	
-	if (!bucketList) {
-		bucketList = [NSMutableDictionary dictionary];
-		[self.writerManagedObjectContext.userInfo setObject:bucketList forKey:SPCoreDataBucketListKey];
-	}
-	
-	[bucketList addEntriesFromDictionary:dict];
+    // Associate the bucketList with the writerMOC, so that every NSManagedObject instance can retrieve
+    // the appropiate SPBucket pointer
+    objc_setAssociatedObject(self.writerManagedObjectContext, SPCoreDataBucketListKey, dict, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (NSArray *)exportSchemas {
@@ -145,19 +142,19 @@ static NSInteger const SPWorkersDone	= 0;
 }
 
 - (id<SPDiffable>)objectForKey:(NSString *)key bucketName:(NSString *)bucketName {
-	
-    NSEntityDescription *entityDescription	= [NSEntityDescription entityForName:bucketName inManagedObjectContext:self.mainManagedObjectContext];
-    NSPredicate *predicate					= [NSPredicate predicateWithFormat:@"simperiumKey == %@", key];
-	
-    NSFetchRequest *fetchRequest			= [[NSFetchRequest alloc] init];
-    fetchRequest.entity						= entityDescription;
-    fetchRequest.predicate					= predicate;
-	fetchRequest.fetchLimit					= 1;
-	
+    
+    NSEntityDescription *entityDescription  = [NSEntityDescription entityForName:bucketName inManagedObjectContext:self.mainManagedObjectContext];
+    NSPredicate *predicate                  = [NSPredicate predicateWithFormat:@"simperiumKey == %@", key];
+    
+    NSFetchRequest *fetchRequest            = [[NSFetchRequest alloc] init];
+    fetchRequest.entity                     = entityDescription;
+    fetchRequest.predicate                  = predicate;
+    fetchRequest.fetchLimit                 = 1;
+    
     NSError *error;
     NSArray *items = [self.mainManagedObjectContext executeFetchRequest:fetchRequest error:&error];
 
-	return [items firstObject];
+    return [items firstObject];
 }
 
 - (NSArray *)objectsForKeys:(NSSet *)keys bucketName:(NSString *)bucketName {
@@ -173,7 +170,7 @@ static NSInteger const SPWorkersDone	= 0;
     if (predicate) {
         [fetchRequest setPredicate:predicate];
     }
-	
+    
     NSError *error;
     NSArray *items = [self.mainManagedObjectContext executeFetchRequest:fetchRequest error:&error];
     
@@ -230,7 +227,7 @@ static NSInteger const SPWorkersDone	= 0;
     if (predicate) {
         [request setPredicate:predicate];
     }
-	
+    
     NSError *err;
     NSUInteger count = [self.mainManagedObjectContext countForFetchRequest:request error:&err];
     if (count == NSNotFound) {
@@ -277,29 +274,29 @@ static NSInteger const SPWorkersDone	= 0;
 }
 
 - (id)insertNewObjectForBucketName:(NSString *)bucketName simperiumKey:(NSString *)key {
-	// Every object has its persistent storage managed automatically
+    // Every object has its persistent storage managed automatically
     SPManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:bucketName
-															inManagedObjectContext:self.mainManagedObjectContext];
-	
+                                                            inManagedObjectContext:self.mainManagedObjectContext];
+    
     object.simperiumKey = key ? key : [NSString sp_makeUUID];
     
     // Populate with member data if applicable
-//	if (memberData)
-//		[entity loadMemberData: memberData manager: self];
+//  if (memberData)
+//      [entity loadMemberData: memberData manager: self];
     
-	return object;
+    return object;
 }
 
 - (void)deleteObject:(id<SPDiffable>)object {
     SPManagedObject *managedObject = (SPManagedObject *)object;
     [managedObject.managedObjectContext deleteObject:managedObject];
-	
-	// NOTE:
-	// 'mergeChangesFromContextDidSaveNotification' calls 'deleteObject' in the receiver context. As a result,
-	// remote deletions will be posted as local deletions. Let's prevent that!
-	if (self.sibling) {
-		[self.sibling.remotelyDeletedKeys addObject:managedObject.simperiumKey];
-	}
+    
+    // NOTE:
+    // 'mergeChangesFromContextDidSaveNotification' calls 'deleteObject' in the receiver context. As a result,
+    // remote deletions will be posted as local deletions. Let's prevent that!
+    if (self.sibling) {
+        [self.sibling.remotelyDeletedKeys addObject:managedObject.simperiumKey];
+    }
 }
 
 - (void)deleteAllObjectsForBucketName:(NSString *)bucketName {
@@ -316,7 +313,7 @@ static NSInteger const SPWorkersDone	= 0;
     for (NSManagedObject *managedObject in items) {
         [self.mainManagedObjectContext deleteObject:managedObject];
     }
-	
+    
     if (![self.mainManagedObjectContext save:&error]) {
         NSLog(@"Simperium error deleting %@ - error:%@",bucketName,error);
     }
@@ -371,7 +368,7 @@ static NSInteger const SPWorkersDone	= 0;
                 return NO;
             }
         } @catch (NSException *exception) {
-            NSLog(@"Simperium exception while saving context: %@", (id)[exception userInfo] ?: (id)[exception reason]);	
+            NSLog(@"Simperium exception while saving context: %@", (id)[exception userInfo] ?: (id)[exception reason]);
         }
     }  
     return YES;
@@ -415,22 +412,22 @@ static NSInteger const SPWorkersDone	= 0;
 # pragma mark Main MOC + Children MOC Notification Handlers
 
 - (void)managedContextWillSave:(NSNotification*)notification {
-	NSManagedObjectContext *context	= (NSManagedObjectContext *)notification.object;
-	NSMutableSet *temporaryObjects = [NSMutableSet set];
-	
-	for (NSManagedObject *mo in context.insertedObjects) {
-		if (mo.objectID.isTemporaryID) {
-			[temporaryObjects addObject:mo];
-		}
-	}
-	
-	if (temporaryObjects.count == 0) {
-		return;
-	}
-	
-	// Obtain permanentID's for newly inserted objects
-	NSError *error = nil;
-	if (![context obtainPermanentIDsForObjects:temporaryObjects.allObjects error:&error]) {
+    NSManagedObjectContext *context = (NSManagedObjectContext *)notification.object;
+    NSMutableSet *temporaryObjects = [NSMutableSet set];
+    
+    for (NSManagedObject *mo in context.insertedObjects) {
+        if (mo.objectID.isTemporaryID) {
+            [temporaryObjects addObject:mo];
+        }
+    }
+    
+    if (temporaryObjects.count == 0) {
+        return;
+    }
+    
+    // Obtain permanentID's for newly inserted objects
+    NSError *error = nil;
+    if (![context obtainPermanentIDsForObjects:temporaryObjects.allObjects error:&error]) {
         SPLogVerbose(@"Unable to obtain permanent IDs for objects newly inserted into the main context: %@", error);
     }
 }
@@ -439,31 +436,31 @@ static NSInteger const SPWorkersDone	= 0;
 # pragma mark Main MOC Notification Handlers
 
 - (void)mainContextDidSave:(NSNotification *)notification {
-	// Now that the changes have been pushed to the writerMOC, persist to disk
-	[self saveWriterContext];
-	
+    // Now that the changes have been pushed to the writerMOC, persist to disk
+    [self saveWriterContext];
+    
     // This bypass allows saving to be performed without triggering a sync, as is needed
     // when storing changes that come off the wire
     if (![self.delegate objectsShouldSync]) {
         return;
-	}
-	
-	// Filter remotely deleted objects
-	NSDictionary *userInfo	= notification.userInfo;
-	NSMutableSet *locallyDeleted = [NSMutableSet set];
-	for (SPManagedObject* mainMO in userInfo[NSDeletedObjectsKey]) {
-		if ([mainMO isKindOfClass:[SPManagedObject class]] == NO) {
-			continue;
-		}
-		if ([self.remotelyDeletedKeys containsObject:mainMO.simperiumKey] == NO) {
-			// We'll need to post it
-			[locallyDeleted addObject:mainMO];
-		} else {
-			// Cleanup!
-			[self.remotelyDeletedKeys removeObject:mainMO.simperiumKey];
-		}
-	}
-	
+    }
+    
+    // Filter remotely deleted objects
+    NSDictionary *userInfo  = notification.userInfo;
+    NSMutableSet *locallyDeleted = [NSMutableSet set];
+    for (SPManagedObject* mainMO in userInfo[NSDeletedObjectsKey]) {
+        if ([mainMO isKindOfClass:[SPManagedObject class]] == NO) {
+            continue;
+        }
+        if ([self.remotelyDeletedKeys containsObject:mainMO.simperiumKey] == NO) {
+            // We'll need to post it
+            [locallyDeleted addObject:mainMO];
+        } else {
+            // Cleanup!
+            [self.remotelyDeletedKeys removeObject:mainMO.simperiumKey];
+        }
+    }
+    
     // Sync all changes
     [self.delegate storage:self updatedObjects:userInfo[NSUpdatedObjectsKey] insertedObjects:userInfo[NSInsertedObjectsKey] deletedObjects:locallyDeleted];
 }
@@ -481,8 +478,8 @@ static NSInteger const SPWorkersDone	= 0;
 }
 
 - (void)addObserversForMainContext:(NSManagedObjectContext *)moc {
-	NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
-	[nc addObserver:self selector:@selector(managedContextWillSave:) name:NSManagedObjectContextWillSaveNotification object:moc];
+    NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(managedContextWillSave:) name:NSManagedObjectContextWillSaveNotification object:moc];
     [nc addObserver:self selector:@selector(mainContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:moc];
     [nc addObserver:self selector:@selector(mainContextObjectsDidChange:) name:NSManagedObjectContextObjectsDidChangeNotification object:moc];
 }
@@ -491,34 +488,34 @@ static NSInteger const SPWorkersDone	= 0;
 # pragma mark Children MOC Notification Handlers
 
 - (void)childrenContextDidSave:(NSNotification*)notification {
-	// Move the changes to the main MOC. This will NOT trigger main MOC's hasChanges flag.
-	// NOTE: setting the mainMOC as the childrenMOC's parent will trigger 'mainMOC hasChanges' flag.
-	// Which, in turn, can cause changes retrieved from the backend to get posted as local changes.
-	NSManagedObjectContext* mainMOC = self.sibling.mainManagedObjectContext;
-	[mainMOC performBlockAndWait:^{
-		
-		// Fault in all updated objects
-		// (fixes NSFetchedResultsControllers that have predicates, see http://www.mlsite.net/blog/?p=518)		
+    // Move the changes to the main MOC. This will NOT trigger main MOC's hasChanges flag.
+    // NOTE: setting the mainMOC as the childrenMOC's parent will trigger 'mainMOC hasChanges' flag.
+    // Which, in turn, can cause changes retrieved from the backend to get posted as local changes.
+    NSManagedObjectContext* mainMOC = self.sibling.mainManagedObjectContext;
+    [mainMOC performBlockAndWait:^{
+        
+        // Fault in all updated objects
+        // (fixes NSFetchedResultsControllers that have predicates, see http://www.mlsite.net/blog/?p=518)
         NSArray* updated = [notification.userInfo[NSUpdatedObjectsKey] allObjects];
-		for (NSManagedObject* childMO in updated) {
-			
-			// Do not use 'objectWithId': might return an object that already got deleted
-			NSManagedObject* localMO = [self.mainManagedObjectContext existingObjectWithID:childMO.objectID error:nil];
-			if (localMO.isFault) {
-				[localMO willAccessValueForKey:nil];
-			}
+        for (NSManagedObject* childMO in updated) {
+            
+            // Do not use 'objectWithId': might return an object that already got deleted
+            NSManagedObject* localMO = [mainMOC existingObjectWithID:childMO.objectID error:nil];
+            if (localMO.isFault) {
+                [localMO willAccessValueForKey:nil];
+            }
         }
-		
-		// Proceed with the regular merge. This should trigger a contextDidChange note
-		[mainMOC mergeChangesFromContextDidSaveNotification:notification];
-		
-		// Note: Once the changes have been merged to the mainMOC, let's persist to "disk"!
-		[self saveWriterContext];
-	}];
+        
+        // Proceed with the regular merge. This should trigger a contextDidChange note
+        [mainMOC mergeChangesFromContextDidSaveNotification:notification];
+        
+        // Note: Once the changes have been merged to the mainMOC, let's persist to "disk"!
+        [self saveWriterContext];
+    }];
 }
 
 - (void)addObserversForChildrenContext:(NSManagedObjectContext *)context {
-	NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+    NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(managedContextWillSave:) name:NSManagedObjectContextWillSaveNotification object:context];
     [nc addObserver:self selector:@selector(childrenContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:context];
 }
@@ -527,44 +524,44 @@ static NSInteger const SPWorkersDone	= 0;
 # pragma mark Writer MOC Helpers
 
 - (void)saveWriterContext {
-	[self.writerManagedObjectContext performBlock:^{
+    [self.writerManagedObjectContext performBlock:^{
         @try {
-			NSError *error = nil;
+            NSError *error = nil;
             if ([self.writerManagedObjectContext hasChanges] && ![self.writerManagedObjectContext save:&error]) {
                 NSLog(@"Critical Simperium error while persisting writer context's changes: %@, %@", error, error.userInfo);
             }
         } @catch (NSException *exception) {
             NSLog(@"Simperium exception while persisting writer context's changes: %@", exception.userInfo ? : exception.reason);
         }
-	}];
+    }];
 }
 
 
 #pragma mark - Synchronization
 
 - (void)beginSafeSection {
-	NSAssert([NSThread isMainThread] == false, @"It is not recommended to use this method on the main thread");
+    NSAssert([NSThread isMainThread] == false, @"It is not recommended to use this method on the main thread");
 
-	[_mutex lock];
-	NSInteger workers = _mutex.condition + 1;
-	[_mutex unlockWithCondition:workers];
+    [_mutex lock];
+    NSInteger workers = _mutex.condition + 1;
+    [_mutex unlockWithCondition:workers];
 }
 
 - (void)finishSafeSection {
-	
-	[_mutex lock];
-	NSInteger workers = _mutex.condition - 1;
-	[_mutex unlockWithCondition:workers];
+    
+    [_mutex lock];
+    NSInteger workers = _mutex.condition - 1;
+    [_mutex unlockWithCondition:workers];
 }
 
 - (void)beginCriticalSection {
-	NSAssert([NSThread isMainThread] == false, @"It is not recommended to use this method on the main thread");
+    NSAssert([NSThread isMainThread] == false, @"It is not recommended to use this method on the main thread");
 
-	[_mutex lockWhenCondition:SPWorkersDone];
+    [_mutex lockWhenCondition:SPWorkersDone];
 }
 
 - (void)finishCriticalSection {
-	[_mutex unlock];
+    [_mutex unlock];
 }
 
 
@@ -612,10 +609,10 @@ static NSInteger const SPWorkersDone	= 0;
     
     // Perform automatic, lightweight migration
     NSDictionary *options = @{
-		NSMigratePersistentStoresAutomaticallyOption : @(YES),
-		NSInferMappingModelAutomaticallyOption : @(YES)
-	};
-	
+        NSMigratePersistentStoresAutomaticallyOption : @(YES),
+        NSInferMappingModelAutomaticallyOption : @(YES)
+    };
+    
     if (![*coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error])
     {
          //TODO: this can occur the first time you launch a Simperium app after adding Simperium to it. The existing data store lacks the dynamically added members, so it must be upgraded first, and then the opening of the persistent store must be attempted again.

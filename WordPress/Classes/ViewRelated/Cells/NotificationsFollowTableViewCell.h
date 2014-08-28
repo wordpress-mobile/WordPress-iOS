@@ -5,8 +5,8 @@ typedef void (^NotificationsFollowBlock)(id sender);
 
 @interface NotificationsFollowTableViewCell : WPTableViewCell
 
-@property (nonatomic, copy)	  NotificationsFollowBlock	onClick;
-@property (nonatomic, strong) UIButton					*actionButton;
-@property (nonatomic, assign) BOOL						following;
+@property (nonatomic, copy)      NotificationsFollowBlock    onClick;
+@property (nonatomic, strong) UIButton                    *actionButton;
+@property (nonatomic, assign) BOOL                        following;
 
 @end
