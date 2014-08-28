@@ -29,8 +29,8 @@ static const char _base64EncodingTable[64] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefgh
     // Get the Raw Data length and ensure we actually have data
     int intLength = (int)[objData length];
     if (intLength == 0) {
-		return nil;	
-	}
+        return nil;
+    }
     
     // Setup the String-based Result placeholder and pointer within that placeholder
     strResult = (char *)calloc(((intLength + 2) / 3) * 4, sizeof(char));
@@ -66,15 +66,15 @@ static const char _base64EncodingTable[64] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefgh
     *objPointer = '\0';
     
     // Return the results as an NSString object
-	return [[NSString alloc] initWithBytesNoCopy:strResult length:(objPointer - strResult) encoding:NSASCIIStringEncoding freeWhenDone:YES];
+    return [[NSString alloc] initWithBytesNoCopy:strResult length:(objPointer - strResult) encoding:NSASCIIStringEncoding freeWhenDone:YES];
 }
 
 + (NSString *)sp_makeUUID
 {
     // From http://stackoverflow.com/questions/427180/how-to-create-a-guid-uuid-using-the-iphone-sdk
-	CFUUIDRef theUUID = CFUUIDCreate(NULL);
-	NSString *str = CFBridgingRelease(CFUUIDCreateString(NULL, theUUID));
-	CFRelease(theUUID);
+    CFUUIDRef theUUID = CFUUIDCreate(NULL);
+    NSString *str = CFBridgingRelease(CFUUIDCreateString(NULL, theUUID));
+    CFRelease(theUUID);
     
     return [[str stringByReplacingOccurrencesOfString:@"-" withString:@""] lowercaseString];
 }
@@ -85,10 +85,10 @@ static const char _base64EncodingTable[64] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefgh
     void *cData = malloc([data length]);
     unsigned char resultCString[16];
     [data getBytes:cData length:[data length]];
-	
+    
     CC_MD5(cData, (int)[data length], resultCString);
     free(cData);
-	
+    
     NSString *result = [NSString stringWithFormat:
                         @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
                         resultCString[0], resultCString[1], resultCString[2], resultCString[3], 

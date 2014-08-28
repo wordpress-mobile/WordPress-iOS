@@ -17,7 +17,7 @@
     if (self.text.length == 0) {
         return 0;
     }
-    
+
     CGRect r1;
     if ([[self.text substringFromIndex:self.text.length-1] isEqualToString:@"\n"]) {
         r1 = [super caretRectForPosition:[super positionFromPosition:self.endOfDocument offset:-1]];
@@ -27,14 +27,14 @@
     } else {
         r1 = [super caretRectForPosition:[super positionFromPosition:self.endOfDocument offset:0]];
     }
-    
+
     if ((point.x > r1.origin.x && point.y >= r1.origin.y) || point.y >= r1.origin.y+r1.size.height) {
         return [super offsetFromPosition:self.beginningOfDocument toPosition:self.endOfDocument];
     }
-    
+
     CGFloat fraction;
     NSUInteger index = [self.textStorage.layoutManagers[0] characterIndexForPoint:point inTextContainer:self.textContainer fractionOfDistanceBetweenInsertionPoints:&fraction];
-    
+
     return index;
 }
 
@@ -50,9 +50,8 @@
 - (void)scrollRangeToVisible:(NSRange)range
 {
     [super scrollRangeToVisible:range];
-    
-    if (self.layoutManager.extraLineFragmentTextContainer != nil && self.selectedRange.location == range.location)
-    {
+
+    if (self.layoutManager.extraLineFragmentTextContainer != nil && self.selectedRange.location == range.location) {
         CGRect caretRect = [self caretRectForPosition:self.selectedTextRange.start];
         [self scrollRectToVisible:caretRect animated:YES];
     }

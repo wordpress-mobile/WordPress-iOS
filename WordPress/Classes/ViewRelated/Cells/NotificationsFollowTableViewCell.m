@@ -12,29 +12,29 @@
         actionButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [WPStyleGuide configureFollowButton:actionButton];
         [actionButton setTitleEdgeInsets: UIEdgeInsetsMake(0, 2.0f, 0, 0)];
-		[actionButton addTarget:self action:@selector(actionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [actionButton addTarget:self action:@selector(actionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:actionButton];
-        
+
         [self.textLabel setBackgroundColor:[UIColor clearColor]];
         [self.textLabel setTextColor:[WPStyleGuide littleEddieGrey]];
         [self.textLabel setFont:[WPStyleGuide postTitleFont]];
         [self.textLabel setFont:[WPStyleGuide tableviewSectionHeaderFont]];
-		
+
         [self.detailTextLabel setFont:[WPStyleGuide subtitleFont]];
-        [self.detailTextLabel setTextColor:[WPStyleGuide baseDarkerBlue]];
+        [self.detailTextLabel setTextColor:[WPStyleGuide wordPressBlue]];
         [self.detailTextLabel setBackgroundColor:[UIColor clearColor]];
         [self.detailTextLabel setNumberOfLines:1];
         [self.detailTextLabel setAdjustsFontSizeToFitWidth:NO];
         [self.detailTextLabel setLineBreakMode:NSLineBreakByTruncatingTail];
     }
-	
+
     return self;
 }
 
 - (void)setFollowing:(BOOL)isFollowing
 {
     [actionButton setSelected:isFollowing];
-	_following = isFollowing;
+    _following = isFollowing;
 }
 
 - (void)layoutSubviews
@@ -46,7 +46,8 @@
     [actionButton setFrame:CGRectMake(78.0f, 22.0f, 100.0f, 30.0f)];
 }
 
-- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
+{
     [super setHighlighted:highlighted animated:animated];
     actionButton.highlighted = NO;
 }
@@ -59,9 +60,9 @@
 
 - (void)actionButtonPressed:(id)sender
 {
-	if (_onClick) {
-		_onClick(self);
-	}
+    if (_onClick) {
+        _onClick(self);
+    }
 }
 
 @end

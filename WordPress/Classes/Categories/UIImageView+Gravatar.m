@@ -14,7 +14,8 @@ NSString *const GravatarDefault = @"gravatar.png";
 
 @implementation UIImageView (Gravatar)
 
-- (void)setImageWithGravatarEmail:(NSString *)emailAddress {
+- (void)setImageWithGravatarEmail:(NSString *)emailAddress
+{
     static UIImage *gravatarDefaultImage;
     if (gravatarDefaultImage == nil) {
         gravatarDefaultImage = [UIImage imageNamed:GravatarDefault];
@@ -27,19 +28,21 @@ NSString *const GravatarDefault = @"gravatar.png";
 {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[self gravatarURLForEmail:emailAddress]];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    
+
     __weak UIImageView *weakSelf = self;
     [self setImageWithURLRequest:request placeholderImage:fallbackImage success:nil failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error){
         weakSelf.image = fallbackImage;
     }];
 }
 
-- (void)setImageWithBlavatarUrl:(NSString *)blavatarUrl {
+- (void)setImageWithBlavatarUrl:(NSString *)blavatarUrl
+{
     BOOL wpcom = ([blavatarUrl rangeOfString:@".wordpress.com"].location != NSNotFound);
     [self setImageWithBlavatarUrl:blavatarUrl isWPcom:wpcom];
 }
 
-- (void)setImageWithBlavatarUrl:(NSString *)blavatarUrl isWPcom:(BOOL)wpcom {
+- (void)setImageWithBlavatarUrl:(NSString *)blavatarUrl isWPcom:(BOOL)wpcom
+{
     static UIImage *blavatarDefaultImageWPcom;
     static UIImage *blavatarDefaultImageWPorg;
     if (blavatarDefaultImageWPcom == nil) {
@@ -48,14 +51,24 @@ NSString *const GravatarDefault = @"gravatar.png";
     if (blavatarDefaultImageWPorg == nil) {
         blavatarDefaultImageWPorg = [UIImage imageNamed:BlavatarDefaultWporg];
     }
-    
+
     UIImage *placeholderImage;
     if (wpcom) {
         placeholderImage = blavatarDefaultImageWPcom;
     } else {
         placeholderImage = blavatarDefaultImageWPorg;
     }
-    [self setImageWithURL:[self blavatarURLForHost:blavatarUrl] placeholderImage:placeholderImage];
+
+    [self setImageWithBlavatarUrl:blavatarUrl placeholderImage:placeholderImage];
+}
+
+- (void)setImageWithBlavatarUrl:(NSString *)blavatarUrl placeholderImage:(UIImage *)placeholderImage
+{
+    if ([blavatarUrl rangeOfString:@"gravatar.com/blavatar"].location == NSNotFound) {
+        [self setImageWithURL:[self blavatarURLForHost:blavatarUrl] placeholderImage:placeholderImage];
+    } else {
+        [self setImageWithURL:[self blavatarURLForBlavatarURL:blavatarUrl] placeholderImage:placeholderImage];
+    }
 }
 
 - (NSURL *)gravatarURLForEmail:(NSString *)email
@@ -80,6 +93,13 @@ NSString *const GravatarDefault = @"gravatar.png";
     return [NSURL URLWithString:blavatarUrl];
 }
 
+- (NSURL *)blavatarURLForBlavatarURL:(NSString *)path
+{
+    CGFloat size = [self sizeForBlavatarDownload];
+    NSString *blavatarURL = [NSString stringWithFormat:@"%@?d=404&s=%d", path, size];
+    return [NSURL URLWithString:blavatarURL];
+}
+
 - (NSInteger)sizeForGravatarDownload
 {
     NSInteger size = GravatarDefaultSize;
@@ -100,7 +120,7 @@ NSString *const GravatarDefault = @"gravatar.png";
     }
 
     size *= [[UIScreen mainScreen] scale];
-    
+
     return size;
 }
 

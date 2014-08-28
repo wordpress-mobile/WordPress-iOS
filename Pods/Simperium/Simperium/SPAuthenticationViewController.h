@@ -21,9 +21,9 @@
 
 @interface SPAuthenticationViewController : UIViewController
 
-@property (nonatomic, strong) SPAuthenticator	*authenticator;
-@property (nonatomic, strong) UITableView		*tableView;
-@property (nonatomic, strong) UIImageView		*logoView;
-@property (nonatomic, assign) BOOL				signingIn;
+@property (nonatomic, strong) SPAuthenticator   *authenticator;
+@property (nonatomic, strong) UITableView       *tableView;
+@property (nonatomic, strong) UIImageView       *logoView;
+@property (nonatomic, assign) BOOL              signingIn;
 
 @end

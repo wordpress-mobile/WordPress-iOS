@@ -37,13 +37,13 @@ CGFloat const WPUploadStatusViewOffset = 8.0;
     _uploadMediaButton.backgroundColor = [UIColor clearColor];
     [_uploadMediaButton sizeToFit];
     [self addSubview:_uploadMediaButton];
-    
+
     _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     _activityIndicator.autoresizingMask = UIViewAutoresizingNone;
     [_activityIndicator startAnimating];
     [_activityIndicator sizeToFit];
     [self addSubview:_activityIndicator];
-    
+
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedActivityIndicator)];
     tapGestureRecognizer.numberOfTapsRequired = 1;
     [_activityIndicator addGestureRecognizer:tapGestureRecognizer];
@@ -68,10 +68,10 @@ CGFloat const WPUploadStatusViewOffset = 8.0;
     CGFloat x = floor((CGRectGetWidth(self.bounds) - CGRectGetWidth(_uploadMediaButton.frame) - CGRectGetWidth(_activityIndicator.frame) - WPUploadStatusViewOffset)/2.0);
     CGFloat y = floor((CGRectGetHeight(self.bounds) - CGRectGetHeight(_uploadMediaButton.frame))/2.0);
     _uploadMediaButton.frame = CGRectMake(x, y, CGRectGetWidth(_uploadMediaButton.frame), CGRectGetHeight(_uploadMediaButton.frame));
-    
+
     y = CGRectGetMinY(_uploadMediaButton.frame) + floor((CGRectGetHeight(_uploadMediaButton.frame) - CGRectGetHeight(_activityIndicator.frame))/2.0);
     _activityIndicator.frame = CGRectMake(CGRectGetMaxX(_uploadMediaButton.frame) + WPUploadStatusViewOffset, y, CGRectGetWidth(_activityIndicator.frame), CGRectGetHeight(_activityIndicator.frame));
-    
+
     [super layoutSubviews];
 }
 

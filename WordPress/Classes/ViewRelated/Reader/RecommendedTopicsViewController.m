@@ -9,6 +9,7 @@
 
 @interface RecommendedTopicsViewController ()<WPTableViewHandlerDelegate>
 
+@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
 
 @end
@@ -38,7 +39,7 @@
         tableInset.top = -1;
         self.tableView.contentInset = tableInset;
     }
-    
+
     self.tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
     self.tableViewHandler.delegate = self;
 
@@ -56,7 +57,6 @@
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
 
 #pragma mark - Instance Methods
 
@@ -90,7 +90,6 @@
 {
     [self updateSelectedTopic];
 }
-
 
 #pragma mark - TableView Handler Delegate Methods
 
@@ -166,15 +165,7 @@
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
-    switch (section) {
-        case 0:
-            return NSLocalizedString(@"Lists", @"Section title for the default reader lists");
-            break;
-
-        default:
-            return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
-            break;
-    }
+    return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath

@@ -18,7 +18,6 @@
 
 @end
 
-
 @implementation NotificationSettingsViewController
 
 BOOL hasChanges;
@@ -27,32 +26,30 @@ BOOL hasChanges;
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
     return self;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.tableView.backgroundView = nil;
     self.view.backgroundColor =  [WPStyleGuide itsEverywhereGrey];
     self.title = NSLocalizedString(@"Manage Notifications", @"");
-    
+
     CGRect refreshFrame = self.tableView.bounds;
     refreshFrame.origin.y = -refreshFrame.size.height;
     self.refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:refreshFrame];
     self.refreshHeaderView.delegate = self;
     [self.tableView addSubview:self.refreshHeaderView];
-    
-    if(self.showCloseButton) {
+
+    if (self.showCloseButton) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     hasChanges = NO;
     _notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
@@ -67,7 +64,8 @@ BOOL hasChanges;
     }
 }
 
-- (void)getNotificationSettings {
+- (void)getNotificationSettings
+{
     [NotificationsManager fetchNotificationSettingsWithSuccess:^{
         [self notificationsDidFinishRefreshingWithError:nil];
     } failure:^(NSError *error) {
@@ -75,7 +73,8 @@ BOOL hasChanges;
     }];
 }
 
-- (void)reloadNotificationSettings {
+- (void)reloadNotificationSettings
+{
     _notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
     if (_notificationPreferences) {
         _notificationPrefArray = [[_notificationPreferences allKeys] mutableCopy];
@@ -94,16 +93,16 @@ BOOL hasChanges;
     [self setupToolbarButtons];
 }
 
-- (void)setupToolbarButtons{
-    
+- (void)setupToolbarButtons
+{
     return; //Do not show the toolbar with 'mute blogs' option for now
-    
+
     bool toolbarVisible = NO;
     bool muteAvailable = NO;
-    
+
     //show the mute/unmute button only when there are 10+ blogs
     if (_notificationPrefArray && _mutedBlogsArray && [_mutedBlogsArray count] > 10){
-        
+
         if ([[_notificationPreferences allKeys] indexOfObject:@"muted_blogs"] != NSNotFound) {
             toolbarVisible = YES;
             NSDictionary *mutedBlogsDictionary = [_notificationPreferences objectForKey:@"muted_blogs"];
@@ -112,16 +111,16 @@ BOOL hasChanges;
             for ( ; i < [mutedBlogsArray count]; i++) {
                 NSDictionary *currentPreference = [mutedBlogsArray objectAtIndex:i];
                 NSNumber *muted = [currentPreference valueForKey:@"value"];
-                if([muted boolValue] == NO){
+                if ([muted boolValue] == NO){
                     muteAvailable = YES; //One blog is not muted
                     break;
                 }
             }
         }
     }
-    
-    if( toolbarVisible == YES ) {
-        
+
+    if ( toolbarVisible == YES ) {
+
         NSString *buttonLabel = muteAvailable ? NSLocalizedString(@"Mute all sites", @"") : NSLocalizedString(@"Unmute all sites", @"");
 
         self.muteUnmuteBarButton = [[UIBarButtonItem alloc] initWithTitle:buttonLabel
@@ -129,17 +128,17 @@ BOOL hasChanges;
                                                                    target:self
                                                                    action:@selector(muteUnmutedButtonClicked:)];
         self.muteUnmuteBarButton.tag = muteAvailable;
-        
+
         self.toolbarItems = @[self.muteUnmuteBarButton];
     }
-    
+
     self.navigationController.toolbarHidden = ! toolbarVisible;
 }
 
-- (void)muteUnmutedButtonClicked:(id)sender{
-    
+- (void)muteUnmutedButtonClicked:(id)sender
+{
     bool muted = self.muteUnmuteBarButton.tag;
-    
+
     if (_notificationPreferences) {
         _notificationPrefArray = [[_notificationPreferences allKeys] mutableCopy];
         if ([_notificationPrefArray indexOfObject:@"muted_blogs"] != NSNotFound) {
@@ -154,47 +153,51 @@ BOOL hasChanges;
             [mutedBlogsDictionary setValue:mutedBlogsArray forKey:@"value"];
             [_notificationPreferences setValue:mutedBlogsDictionary forKey:@"muted_blogs"];
         }
-        
+
         [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
         hasChanges = YES;
         [self reloadNotificationSettings];
     }
 }
 
-- (void)notificationSettingChanged:(id)sender {
+- (void)notificationSettingChanged:(id)sender
+{
     hasChanges = YES;
     UISwitch *cellSwitch = (UISwitch *)sender;
-    
+
     NSMutableDictionary *updatedPreference = [[_notificationPreferences objectForKey:[_notificationPrefArray objectAtIndex:cellSwitch.tag]] mutableCopy];
-    
+
     [updatedPreference setValue:[NSNumber numberWithBool:cellSwitch.on] forKey:@"value"];
-    
+
     [_notificationPreferences setValue:updatedPreference forKey:[_notificationPrefArray objectAtIndex:cellSwitch.tag]];
     [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
 }
 
-- (void)muteBlogSettingChanged:(id)sender {
+- (void)muteBlogSettingChanged:(id)sender
+{
     hasChanges = YES;
     UISwitch *cellSwitch = (UISwitch *)sender;
-    
+
     NSMutableDictionary *updatedPreference = [[_mutedBlogsArray objectAtIndex:cellSwitch.tag] mutableCopy];
     [updatedPreference setValue:[NSNumber numberWithBool:!cellSwitch.on] forKey:@"value"];
-    
+
     [_mutedBlogsArray setObject:updatedPreference atIndexedSubscript:cellSwitch.tag];
-    
+
     NSMutableDictionary *mutedBlogsDictionary = [[_notificationPreferences objectForKey:@"muted_blogs"] mutableCopy];
     [mutedBlogsDictionary setValue:_mutedBlogsArray forKey:@"value"];
-    
+
     [_notificationPreferences setValue:mutedBlogsDictionary forKey:@"muted_blogs"];
     [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
     [self setupToolbarButtons];
 }
 
-- (void)dismiss {
+- (void)dismiss
+{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     self.navigationController.toolbarHidden = YES;
     if (hasChanges){
         [NotificationsManager saveNotificationSettings];
@@ -217,55 +220,59 @@ BOOL hasChanges;
         NSString *mute_value = [_notificationMutePreferences objectForKey:@"value"];
         if (mute_value && ![mute_value isEqualToString:@"0"]){
             return 1;
-        } else {
-            if (_mutedBlogsArray) {
-                return 3;
-            } else {
-                return 2;
-            }
         }
-    } else {
-        return 0;
+
+        if (_mutedBlogsArray) {
+            return 3;
+        }
+
+        return 2;
     }
+
+    return 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if (section == 0)
-        return 1;
-    else if (section == 1)
-        return [_notificationPrefArray count];
-    else if (section == 2)
-        return [_mutedBlogsArray count];
-    else
-        return 0;
+    switch (section) {
+        case 0:
+            return 1;
+        case 1:
+            return [_notificationPrefArray count];
+        case 2:
+            return [_mutedBlogsArray count];
+        default:
+            break;
+    }
+
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-   
+
     if (indexPath.section == 0) {
         static NSString *CellIdentifier = @"NotficationSettingsCellOnOff";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        
+
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
         }
-        
+
         cell.textLabel.text = NSLocalizedString(@"Notifications", @"");
-     
+
         DDLogInfo(@"muteDictionary: %@", _notificationMutePreferences);
-        
+
         if (_notificationMutePreferences && [_notificationMutePreferences objectForKey:@"value"] != nil) {
             NSString *mute_value = [_notificationMutePreferences objectForKey:@"value"];
-            if([mute_value isEqualToString:@"forever"]){
+            if ([mute_value isEqualToString:@"forever"]){
                 cell.detailTextLabel.text = NSLocalizedString(@"Off", @"");
             } else {
                 //check the date before showing it in the cell. Date can be in the past and already expired.
                 NSDate* mutedUntilValue = [NSDate dateWithTimeIntervalSince1970:[mute_value doubleValue]];
                 NSDate *currentDate = [NSDate date];
-                
+
                 if (mutedUntilValue == [mutedUntilValue laterDate:currentDate]){
                     NSDateFormatter *formatter = nil;
                     formatter = [[NSDateFormatter alloc] init];
@@ -287,33 +294,34 @@ BOOL hasChanges;
         [WPStyleGuide configureTableViewCell:cell];
         return cell;
     }
-    
+
     static NSString *CellIdentifier = @"NotficationSettingsCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
+
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
         UISwitch *cellSwitch = [[UISwitch alloc] initWithFrame:CGRectZero]; // Frame is ignored.
         cell.accessoryView = cellSwitch;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    
+
     UISwitch *cellSwitch = (UISwitch *)cell.accessoryView;
     cellSwitch.tag = indexPath.row;
     [cellSwitch removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
-    
+
     if (indexPath.section == 1) {
         [cellSwitch addTarget:self action:@selector(notificationSettingChanged:) forControlEvents:UIControlEventValueChanged];
         NSDictionary *notificationPreference = [_notificationPreferences objectForKey:[_notificationPrefArray objectAtIndex:indexPath.row]];
-        
+
         cell.textLabel.text = [[notificationPreference objectForKey:@"desc"] stringByDecodingXMLCharacters];
         cellSwitch.on = [[notificationPreference objectForKey:@"value"] boolValue];
     } else {
         [cellSwitch addTarget:self action:@selector(muteBlogSettingChanged:) forControlEvents:UIControlEventValueChanged];
         NSDictionary *muteBlogSetting = [_mutedBlogsArray objectAtIndex:indexPath.row];
         NSString *blogName = [muteBlogSetting objectForKey:@"blog_name"];
-        if ([blogName length] == 0)
+        if ([blogName length] == 0) {
             blogName = [muteBlogSetting objectForKey:@"url"];
+        }
         cell.textLabel.text = [blogName stringByDecodingXMLCharacters];
         cellSwitch.on = ![[muteBlogSetting objectForKey:@"value"] boolValue];
     }
@@ -321,7 +329,8 @@ BOOL hasChanges;
     return cell;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
     WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
     header.title = [self titleForHeaderInSection:section];
     return header;
@@ -335,20 +344,21 @@ BOOL hasChanges;
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
-    if (section == 0)
+    if (section == 0) {
         return @"";
-    else if (section == 1)
+    } else if (section == 1) {
         return NSLocalizedString(@"Push Notifications", @"");
-    else
-        return NSLocalizedString(@"Sites", @"");
+    }
+
+    return NSLocalizedString(@"Sites", @"");
 }
 
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.section == 0){
+    if (indexPath.section == 0){
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        UIActionSheet *actionSheet;        
+        UIActionSheet *actionSheet;
         if ([_notificationMutePreferences objectForKey:@"value"] != nil) {
             //Notifications were muted
             actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Notifications", @"")
@@ -365,26 +375,26 @@ BOOL hasChanges;
                                         destructiveButtonTitle:nil
                                              otherButtonTitles:NSLocalizedString(@"Turn Off", @""), NSLocalizedString(@"Turn Off for 1hr", @""), NSLocalizedString(@"Turn Off Until 8am", @""), nil ];
             actionSheet.tag = 101;
-            
+
         }
         [actionSheet showFromRect:cell.frame inView:self.view animated:YES];
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
     }
 }
 
-
 #pragma mark -
 #pragma mark Action Sheet Delegate Methods
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
-    
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
+
     DDLogInfo(@"Button Clicked: %d", buttonIndex);
     NSMutableDictionary *muteDictionary;
-    
+
     if (actionSheet.tag == 100 ) {
         //Notifications were muted.
         //buttonIndex == 0 -> Turn on, cancel otherwise.
-        if(buttonIndex == 0) {
+        if (buttonIndex == 0) {
             hasChanges = YES;
             muteDictionary = [NSMutableDictionary dictionary];
             [muteDictionary setObject:@"0" forKey:@"value"];
@@ -418,24 +428,24 @@ BOOL hasChanges;
             case 2:{ //Turn off until 8am
                 NSDate *currentDate = [NSDate date];
                 NSCalendar *sysCalendar = [NSCalendar currentCalendar];
-                
+
                 //Get the hr from the current date and check if > 8AM
                 unsigned int unitFlags = NSHourCalendarUnit;//Other usage:  =(NSHourCalendarUnit | NSMinuteCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit);
                 NSDateComponents *comps = [sysCalendar components:unitFlags fromDate:currentDate];
                 NSInteger hour = [comps hour]; //Other usage: [comps minute] [comps hour] [comps day] [comps month];
 
                 comps = [[NSDateComponents alloc] init];
-                if(hour >= 8){ //add one day if 8AM is already passed
+                if (hour >= 8){ //add one day if 8AM is already passed
                     [comps setDay:+1];
                 }
-                
+
                 //calculate the new date
                 NSDate *eightAM = [sysCalendar dateByAddingComponents:comps toDate:currentDate options:0];
                 comps = [sysCalendar
                          components:NSDayCalendarUnit | NSYearCalendarUnit | NSMonthCalendarUnit
                          fromDate:eightAM];
                 [comps setHour:8];
-                
+
                 NSDate *todayOrTomorrow8AM = [sysCalendar dateFromComponents:comps];
                 int timestamp = [todayOrTomorrow8AM timeIntervalSince1970];
                 DDLogInfo(@"Time Stamp: %d", timestamp);
@@ -445,12 +455,12 @@ BOOL hasChanges;
             default:
                 return; //cancel
         }
-        
+
         hasChanges = YES;
         muteDictionary = [NSMutableDictionary dictionary];
         [muteDictionary setObject:mute_until_value forKey:@"value"];
     }
-    
+
     [_notificationPreferences setValue:muteDictionary forKey:@"mute_until"];
     [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
     [self reloadNotificationSettings];
@@ -458,32 +468,37 @@ BOOL hasChanges;
 
 #pragma mark - Pull to Refresh delegate
 
-- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view {
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view
+{
     return self.isRefreshing;
 }
 
-- (NSDate *)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView *)view {
+- (NSDate *)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView *)view
+{
     return self.lastRefreshDate;
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
     [self.refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
 }
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
     [self.refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
 }
 
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view {
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view
+{
     [self getNotificationSettings];
 }
 
-- (void)notificationsDidFinishRefreshingWithError:(NSError *)error {
+- (void)notificationsDidFinishRefreshingWithError:(NSError *)error
+{
     [self.refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
     if (!error) {
         [self reloadNotificationSettings];
-    }
-    else {
+    } else {
         [WPError showAlertWithTitle:(NSLocalizedString(@"Error", @"")) message:error.localizedDescription];
     }
 }

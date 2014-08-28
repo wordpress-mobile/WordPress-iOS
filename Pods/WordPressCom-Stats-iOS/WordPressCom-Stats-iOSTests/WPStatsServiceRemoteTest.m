@@ -16,7 +16,7 @@
 - (void)setUp
 {
     [super setUp];
-    subject = [[WPStatsServiceRemote alloc] initWithOAuth2Token:@"token" andSiteId:@66592863];
+    subject = [[WPStatsServiceRemote alloc] initWithOAuth2Token:@"token" siteId:@66592863 andSiteTimeZone:[NSTimeZone systemTimeZone]];
 }
 
 - (void)tearDown

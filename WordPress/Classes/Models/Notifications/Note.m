@@ -7,123 +7,120 @@
 #import "ContextManager.h"
 #import "XMLParserCollecter.h"
 
-
 @interface Note ()
 @property (nonatomic, strong) NSArray   *bodyItems;
 @property (nonatomic, strong) NSDate    *date;
 @end
-
 
 @implementation Note
 
 @dynamic timestamp;
 @dynamic type;
 @dynamic unread;
-@dynamic subject; 
+@dynamic subject;
 @dynamic body;
 @dynamic meta;
-@synthesize bodyItems	= _bodyItems;
-@synthesize date		= _date;
-
+@synthesize bodyItems    = _bodyItems;
+@synthesize date        = _date;
 
 #pragma mark - Derived Properties from subject / body dictionaries
 
 - (NSString *)subjectText
 {
-	NSString *subject = [self.subject stringForKey:@"text"] ?: [self.subject stringForKey:@"html"];
-	return [subject trim];
+    NSString *subject = [self.subject stringForKey:@"text"] ?: [self.subject stringForKey:@"html"];
+    return [subject trim];
 }
 
 - (NSString *)subjectIcon
 {
-	return [self.subject stringForKey:@"icon"];
+    return [self.subject stringForKey:@"icon"];
 }
 
 - (NSString *)bodyHtml
 {
-	return [self.body stringForKey:@"html"];
+    return [self.body stringForKey:@"html"];
 }
 
 - (NSArray *)bodyItems
 {
-	if (_bodyItems) {
-		return _bodyItems;
-	}
-	
-	NSArray *rawItems = [self.body arrayForKey:@"items"];
-	if (rawItems.count) {
-		_bodyItems = [NoteBodyItem parseItems:rawItems];
-	}
-	return _bodyItems;
+    if (_bodyItems) {
+        return _bodyItems;
+    }
+
+    NSArray *rawItems = [self.body arrayForKey:@"items"];
+    if (rawItems.count) {
+        _bodyItems = [NoteBodyItem parseItems:rawItems];
+    }
+    return _bodyItems;
 }
 
 - (NSArray *)bodyActions
 {
-	return [self.body arrayForKey:@"actions"];
+    return [self.body arrayForKey:@"actions"];
 }
 
 - (NSString *)bodyTemplate
 {
-	return [self.body stringForKey:@"template"];	
+    return [self.body stringForKey:@"template"];
 }
 
 - (NSString *)bodyHeaderText
 {
-	return [self.body stringForKey:@"header_text"];
+    return [self.body stringForKey:@"header_text"];
 }
 
 - (NSString *)bodyHeaderLink
 {
-	return [self.body stringForKey:@"header_link"];
+    return [self.body stringForKey:@"header_link"];
 }
 
 - (NSString *)bodyFooterText
 {
-	return [self.body stringForKey:@"footer_text"];
+    return [self.body stringForKey:@"footer_text"];
 }
 
 - (NSString *)bodyFooterLink
 {
-	return [self.body stringForKey:@"footer_link"];
+    return [self.body stringForKey:@"footer_link"];
 }
 
 - (NSString *)bodyCommentText
 {
     if (self.isComment == NO) {
-		return nil;
-	}
-	
-	NoteBodyItem *bodyItem	= [self.bodyItems lastObject];
-	NSString *comment		= bodyItem.bodyHtml;
-	if (comment == (id)[NSNull null] || comment.length == 0 ) {
-		return nil;
-	}
-	
-	// Sanitize the string: strips HTML Tags and converts html entites
-	comment = [comment stringByReplacingHTMLEmoticonsWithEmoji];
-	comment = [comment stringByStrippingHTML];
-	
-	NSString *xmlString				= [NSString stringWithFormat:@"<d>%@</d>", comment];
-	NSData *xml						= [xmlString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-	
-	// Parse please!
-	NSXMLParser *parser				= [[NSXMLParser alloc] initWithData:xml];
-	XMLParserCollecter *collector	= [XMLParserCollecter new];
-	parser.delegate					= collector;
-	[parser parse];
-	
-	return collector.result;
+        return nil;
+    }
+
+    NoteBodyItem *bodyItem    = [self.bodyItems lastObject];
+    NSString *comment        = bodyItem.bodyHtml;
+    if (comment == (id)[NSNull null] || comment.length == 0 ) {
+        return nil;
+    }
+
+    // Sanitize the string: strips HTML Tags and converts html entites
+    comment = [comment stringByReplacingHTMLEmoticonsWithEmoji];
+    comment = [comment stringByStrippingHTML];
+
+    NSString *xmlString                = [NSString stringWithFormat:@"<d>%@</d>", comment];
+    NSData *xml                        = [xmlString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+
+    // Parse please!
+    NSXMLParser *parser                = [[NSXMLParser alloc] initWithData:xml];
+    XMLParserCollecter *collector    = [XMLParserCollecter new];
+    parser.delegate                    = collector;
+    [parser parse];
+
+    return collector.result;
 }
 
 - (NSString *)bodyCommentHtml
 {
     NoteBodyItem *noteBodyItem  = [self.bodyItems lastObject];
     NSString *commentHtml       = nil;
-    
+
     if (noteBodyItem) {
         commentHtml = [noteBodyItem.bodyHtml stringByReplacingHTMLEmoticonsWithEmoji];
     }
-    
+
     return commentHtml;
 }
 
@@ -142,16 +139,41 @@
     NSDictionary *noteBody = self.body;
     if (noteBody) {
         NSString *noteTypeName = noteBody[@"template"];
-        
-        if ([noteTypeName isEqualToString:@"single-line-list"])
+
+        if ([noteTypeName isEqualToString:@"single-line-list"]) {
             return WPNoteTemplateSingleLineList;
-        else if ([noteTypeName isEqualToString:@"multi-line-list"])
+        } else if ([noteTypeName isEqualToString:@"multi-line-list"]) {
             return WPNoteTemplateMultiLineList;
-        else if ([noteTypeName isEqualToString:@"big-badge"])
+        } else if ([noteTypeName isEqualToString:@"big-badge"]) {
             return WPNoteTemplateBigBadge;
+        }
+    }
+
+    return WPNoteTemplateUnknown;
+}
+
+- (WPNoteCommentActionType) commentActionTypeForString:(NSString*)action {
+    if (!action) {
+        return WPNoteCommentActionTypeUnknown;
     }
     
-    return WPNoteTemplateUnknown;
+    if ([action isEqualToString:@"approve-comment"]) {
+        return WPNoteCommentActionTypeApprove;
+    } else if ([action isEqualToString:@"unapprove-comment"]) {
+        return WPNoteCommentActionTypeUnapprove;
+    } else if ([action isEqualToString:@"spam-comment"]) {
+        return WPNoteCommentActionTypeSpam;
+    } else if ([action isEqualToString:@"unspam-comment"]) {
+        return WPNoteCommentActionTypeUnspam;
+    } else if ([action isEqualToString:@"trash-comment"]) {
+        return WPNoteCommentActionTypeTrash;
+    } else if ([action isEqualToString:@"untrash-comment"]) {
+        return WPNoteCommentActionTypeUntrash;
+    } else if ([action isEqualToString:@"replyto-comment"]) {
+        return WPNoteCommentActionTypeReply;
+    }
+    
+    return WPNoteCommentActionTypeUnknown;
 }
 
 #pragma mark - Public Methods
@@ -184,20 +206,19 @@
 - (BOOL)statsEvent
 {
     BOOL statsEvent = [self.type rangeOfString:@"_milestone_"].length > 0 || [self.type hasPrefix:@"traffic_"] || [self.type hasPrefix:@"best_"] || [self.type hasPrefix:@"most_"] ;
-    
+
     return statsEvent;
 }
 
-
 #pragma mark - NSManagedObject methods
 
-- (void)didTurnIntoFault {
+- (void)didTurnIntoFault
+{
     [super didTurnIntoFault];
-    
+
     self.date = nil;
     self.bodyItems = nil;
 }
-
 
 #pragma mark - WPContentViewProvider protocol
 
@@ -212,7 +233,7 @@
             title = [title trim];
         }
     }
-	return [title stringByDecodingXMLCharacters] ?: @"";
+    return [title stringByDecodingXMLCharacters] ?: @"";
 }
 
 - (NSString *)authorForDisplay
@@ -231,7 +252,7 @@
     // This is clearly an error prone method of isolating the status,
     // but is necessary due to the current API. This should be changed
     // if/when the API is improved.
-    
+
     NSString *status = [self.subjectText trim];
     if (status.length > 0 && [status hasPrefix:@"["]) {
         // Find location of trailing bracket
@@ -272,7 +293,7 @@
         NSTimeInterval timeInterval = [self.timestamp doubleValue];
         _date = [NSDate dateWithTimeIntervalSince1970:timeInterval];
     }
-    
+
     return _date;
 }
 

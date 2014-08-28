@@ -190,13 +190,13 @@
 #define COCOAPODS_POD_AVAILABLE_Simperium
 #define COCOAPODS_VERSION_MAJOR_Simperium 0
 #define COCOAPODS_VERSION_MINOR_Simperium 6
-#define COCOAPODS_VERSION_PATCH_Simperium 6
+#define COCOAPODS_VERSION_PATCH_Simperium 8
 
 // Simperium/no-arc
 #define COCOAPODS_POD_AVAILABLE_Simperium_no_arc
 #define COCOAPODS_VERSION_MAJOR_Simperium_no_arc 0
 #define COCOAPODS_VERSION_MINOR_Simperium_no_arc 6
-#define COCOAPODS_VERSION_PATCH_Simperium_no_arc 6
+#define COCOAPODS_VERSION_PATCH_Simperium_no_arc 8
 
 // SocketRocket
 #define COCOAPODS_POD_AVAILABLE_SocketRocket
@@ -244,13 +244,13 @@
 #define COCOAPODS_POD_AVAILABLE_WordPressCom_Analytics_iOS
 #define COCOAPODS_VERSION_MAJOR_WordPressCom_Analytics_iOS 0
 #define COCOAPODS_VERSION_MINOR_WordPressCom_Analytics_iOS 0
-#define COCOAPODS_VERSION_PATCH_WordPressCom_Analytics_iOS 1
+#define COCOAPODS_VERSION_PATCH_WordPressCom_Analytics_iOS 3
 
 // WordPressCom-Stats-iOS
 #define COCOAPODS_POD_AVAILABLE_WordPressCom_Stats_iOS
 #define COCOAPODS_VERSION_MAJOR_WordPressCom_Stats_iOS 0
 #define COCOAPODS_VERSION_MINOR_WordPressCom_Stats_iOS 0
-#define COCOAPODS_VERSION_PATCH_WordPressCom_Stats_iOS 4
+#define COCOAPODS_VERSION_PATCH_WordPressCom_Stats_iOS 5
 
 // google-plus-ios-sdk
 #define COCOAPODS_POD_AVAILABLE_google_plus_ios_sdk

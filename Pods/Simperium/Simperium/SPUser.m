@@ -13,8 +13,9 @@
 
 @implementation SPUser
 
-- (id)initWithEmail:(NSString *)username token:(NSString *)token {
-    if ((self = [super init])) {
+- (instancetype)initWithEmail:(NSString *)username token:(NSString *)token {
+    self = [super init];
+    if (self) {
         self.email = username;
         self.authToken = token;
     }
