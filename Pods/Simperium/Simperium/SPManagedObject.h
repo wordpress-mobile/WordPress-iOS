@@ -16,16 +16,16 @@
 @class SPBucket;
 
 @interface SPManagedObject : NSManagedObject <SPDiffable> {
-	// The entity's member data as last seen by the server, stored in dictionary form for diffing
-	// has key, data, and signature
-	SPGhost *ghost;
+    // The entity's member data as last seen by the server, stored in dictionary form for diffing
+    // has key, data, and signature
+    SPGhost *ghost;
     SPBucket *__weak bucket;
     
     NSString *simperiumKey;
     NSString *ghostData;
-	
-	// Flagged if changed while waiting for server ack (could be tracked externally instead)
-	BOOL updateWaiting;
+    
+    // Flagged if changed while waiting for server ack (could be tracked externally instead)
+    BOOL updateWaiting;
 }
 
 @property (strong, nonatomic) SPGhost *ghost;
