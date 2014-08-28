@@ -4,7 +4,7 @@ import Foundation
 @objc public class ReplyTextView : UIView, UITextViewDelegate
 {
     // MARK: - Initializers
-    public convenience init(width: Int) {
+    public convenience init(width: CGFloat) {
         let theFrame = CGRect(x: 0, y: 0, width: width, height: 0)
         self.init(frame: theFrame)
     }
@@ -20,6 +20,8 @@ import Foundation
     }
     
     // MARK: - Public Properties
+    public var delegate: UITextViewDelegate?
+    
     public var placeholder: String! {
         didSet {
             placeholderLabel.text       = placeholder
@@ -40,12 +42,53 @@ import Foundation
         }
     }
     
+    public func setupProxyAccessoryView() {
+        let accessory               = ReplyTextView(width: bounds.width)
+        accessory.placeholder       = placeholder
+        accessory.replyText         = replyText
+        textView.inputAccessoryView = accessory
+    }
+    
     
     // MARK: - UITextViewDelegate
+    public func textViewShouldBeginEditing(textView: UITextView!) -> Bool {
+        let result = delegate?.textViewShouldBeginEditing?(textView)
+        return result ?? true
+    }
+    
+    public func textViewShouldEndEditing(textView: UITextView!) -> Bool {
+        let result = delegate?.textViewShouldEndEditing?(textView)
+        return result ?? true
+    }
+    
+    public func textViewDidBeginEditing(textView: UITextView!) {
+        if textView.inputAccessoryView is ReplyTextView {
+            textView.inputAccessoryView.becomeFirstResponder()
+        } else {
+            delegate?.textViewDidBeginEditing?(textView)
+        }
+    }
+    
+    public func textViewDidEndEditing(textView: UITextView!) {
+        delegate?.textViewDidEndEditing?(textView)
+    }
+    
+    public func textView(textView: UITextView!, shouldChangeTextInRange range: NSRange, replacementText text: String!) -> Bool {
+        let result = delegate?.textView?(textView, shouldChangeTextInRange: range, replacementText: text)
+        return result ?? true
+    }
+
     public func textViewDidChange(textView: UITextView!) {
         placeholderLabel.hidden = !textView.text.isEmpty
         updateTextViewSize()
         scrollToCaretInTextView()
+        
+        delegate?.textViewDidChange?(textView)
+    }
+    
+    public func textView(textView: UITextView!, shouldInteractWithURL URL: NSURL!, inRange characterRange: NSRange) -> Bool {
+        let result = delegate?.textView?(textView, shouldInteractWithURL: URL, inRange: characterRange)
+        return result ?? true
     }
     
     
@@ -154,7 +197,7 @@ public class ReplyBezierView : UIView {
             setNeedsDisplay()
         }
     }
-    public var topLineHeight: CGFloat = 0.5 {
+    public var topLineHeight: CGFloat = 1 {
         didSet {
             setNeedsDisplay()
         }
@@ -207,7 +250,9 @@ public class ReplyBezierView : UIView {
         
         // Draw the top separator line
         separatorColor.set()
-        let topLineFrame = CGRect(x: 0, y: 0, width: bounds.width, height: topLineHeight)
+        
+        let topHeightInPixels = topLineHeight / UIScreen.mainScreen().scale
+        let topLineFrame = CGRect(x: 0, y: 0, width: bounds.width, height: topHeightInPixels)
         UIRectFill(topLineFrame)
     }
 }
