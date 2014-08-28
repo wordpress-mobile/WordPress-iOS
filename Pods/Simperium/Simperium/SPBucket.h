@@ -21,11 +21,11 @@
 /** SPBucketChangeType is used in the bucket:didChangeObjectForKey:forChangeType: method of SPBucketDelegate. It's similar to NSFetchedResultsChangeType, which is used with an NSFetchedResultsControllerDelegate.
  */
 typedef NS_ENUM(NSUInteger, SPBucketChangeType) {
-	SPBucketChangeInsert		= 1,
-    SPBucketChangeDelete		= 2,
-	SPBucketChangeMove			= 3, // not yet implemented
-	SPBucketChangeUpdate		= 4,
-    SPBucketChangeAcknowledge	= 5
+    SPBucketChangeInsert        = 1,
+    SPBucketChangeDelete        = 2,
+    SPBucketChangeMove          = 3, // not yet implemented
+    SPBucketChangeUpdate        = 4,
+    SPBucketChangeAcknowledge   = 5
 };
 
 

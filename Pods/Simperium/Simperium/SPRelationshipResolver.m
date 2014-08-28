@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Simperium. All rights reserved.
 //
 
-#import "SPRelationshipResolver.H"
+#import "SPRelationshipResolver+Internals.h"
 #import "SPDiffable.h"
 #import "SPStorage.h"
 #import "SPStorageProvider.h"
@@ -20,12 +20,10 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-static NSString * const SPRelationshipsPathKey          = @"SPPathKey";
-static NSString * const SPRelationshipsPathBucket       = @"SPPathBucket";
-static NSString * const SPRelationshipsPathAttribute    = @"SPPathAttribute";
-static NSString * const SPRelationshipsPendingsKey      = @"SPPendingReferences";
+static NSString * const SPRelationshipsPendingsLegacyKey    = @"SPPendingReferences";
+static NSString * const SPRelationshipsPendingsNewKey       = @"SPRelationshipsPendingsNewKey";
 
-static SPLogLevels logLevel                             = SPLogLevelsInfo;
+static SPLogLevels logLevel                                 = SPLogLevelsInfo;
 
 
 #pragma mark ====================================================================================
@@ -34,8 +32,8 @@ static SPLogLevels logLevel                             = SPLogLevelsInfo;
 
 @interface SPRelationshipResolver()
 
-@property (nonatomic, strong) NSMutableDictionary   *pendingRelationships;
-@property (nonatomic, strong) dispatch_queue_t      queue;
+@property (nonatomic, strong, readwrite) dispatch_queue_t   queue;
+@property (nonatomic, strong, readwrite) NSHashTable        *pendingRelationships;
 
 @end
 
@@ -46,78 +44,59 @@ static SPLogLevels logLevel                             = SPLogLevelsInfo;
 
 @implementation SPRelationshipResolver
 
-- (id)init {
-    if ((self = [super init])) {
-        NSString *queueLabel        = [@"com.simperium." stringByAppendingString:[[self class] description]];
-        self.queue                  = dispatch_queue_create([queueLabel cStringUsingEncoding:NSUTF8StringEncoding], NULL);
-        self.pendingRelationships   = [NSMutableDictionary dictionaryWithCapacity:10];
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        NSString *label         = [@"com.simperium." stringByAppendingString:[[self class] description]];
+        _queue                  = dispatch_queue_create([label cStringUsingEncoding:NSUTF8StringEncoding], NULL);
+        _pendingRelationships   = [NSHashTable hashTableWithOptions:NSPointerFunctionsStrongMemory | NSPointerFunctionsObjectPersonality];
     }
     
     return self;
 }
 
 
-- (void)writePendingReferences:(id<SPStorageProvider>)storage {
-    NSDictionary *metadata = [storage metadata];
-
-    // If there's already nothing there, save some CPU by not writing anything
-    if ( self.pendingRelationships.count == 0 && metadata[SPRelationshipsPendingsKey] == nil ) {
-        return;
-    }
-    
-    NSMutableDictionary *updated = [metadata mutableCopy];
-    updated[SPRelationshipsPendingsKey] = self.pendingRelationships;
-    [storage setMetadata:updated];
-}
+#pragma mark - Public Methods
 
 - (void)loadPendingRelationships:(id<SPStorageProvider>)storage {
-    // Load changes that didn't get a chance to send
-	NSDictionary *pendingDict = storage.metadata[SPRelationshipsPendingsKey];
-    for (NSString *key in [pendingDict allKeys]) {
-        // Manually create mutable children
-        self.pendingRelationships[key] = [pendingDict[key] mutableCopy];
+    
+    NSAssert([NSThread isMainThread],                                   @"Invalid Thread");
+    NSAssert([storage conformsToProtocol:@protocol(SPStorageProvider)], @"Invalid Parameter");
+    
+    NSArray *legacy = [SPRelationship parseFromLegacyDictionary:storage.metadata[SPRelationshipsPendingsLegacyKey]];
+    for (SPRelationship *relationship in legacy) {
+        [self addPendingRelationship:relationship];
+    }
+    
+    NSArray *pendings = [SPRelationship parseFromArray:storage.metadata[SPRelationshipsPendingsNewKey]];
+    for (SPRelationship *relationship in pendings) {
+        [self addPendingRelationship:relationship];
+    }
+    
+    if (legacy.count) {
+        [self saveWithStorage:storage];
     }
 }
 
-
-- (BOOL)hasPendingReferenceToKey:(NSString *)key {
-    return self.pendingRelationships[key] != nil;
+- (void)addPendingRelationship:(SPRelationship *)relationship {
+    
+    NSAssert([NSThread isMainThread],                                   @"Invalid Thread");
+    NSAssert([relationship isKindOfClass:[SPRelationship class]],       @"Invalid Parameter");
+        
+    [self.pendingRelationships addObject:relationship];
 }
 
-- (void)addPendingRelationshipToKey:(NSString *)key fromKey:(NSString *)fromKey bucketName:(NSString *)bucketName
-                   attributeName:(NSString *)attributeName storage:(id<SPStorageProvider>)storage {
-    if (key.length == 0) {
-        SPLogWarn(@"Simperium warning: received empty pending reference to attribute %@", attributeName);
-        return;
-    }
-    
-    if (bucketName.length == 0) {
-        SPLogWarn(@"Simperium warning: received pending reference to attribute %@ with empty bucket", attributeName);
-        return;
-    }
-    
-    NSDictionary *path = @{
-        SPRelationshipsPathKey          : fromKey,
-        SPRelationshipsPathBucket       : bucketName,
-        SPRelationshipsPathAttribute    : attributeName
-    };
-    
-    SPLogVerbose(@"Simperium adding pending reference from %@ (%@) to %@ (%@)", fromKey, attributeName, key, bucketName);
-    
-    // Check to see if any references are already being tracked for this entity
-    NSMutableArray *paths = self.pendingRelationships[key];
-    if (paths == nil) {
-        paths = [NSMutableArray arrayWithCapacity:3];
-        [self.pendingRelationships setObject:paths forKey:key];
-    }
-    [paths addObject:path];
-    [self writePendingReferences:storage];
-}
+- (void)resolvePendingRelationshipsForKey:(NSString *)simperiumKey
+                               bucketName:(NSString *)bucketName
+                                  storage:(id<SPStorageProvider>)storage {
 
-- (void)resolvePendingRelationshipsToKey:(NSString *)toKey bucketName:(NSString *)bucketName storage:(id<SPStorageProvider>)storage {
-    // The passed entity is now synced, so check for any pending references to it that can now be resolved
-    NSMutableArray *paths = self.pendingRelationships[toKey];
-    if (paths == nil) {
+    NSAssert([NSThread isMainThread],                                   @"Invalid Thread");
+    NSAssert([simperiumKey isKindOfClass:[NSString class]],             @"Invalid Parameter");
+    NSAssert([bucketName isKindOfClass:[NSString class]],               @"Invalid Parameter");
+    NSAssert([storage conformsToProtocol:@protocol(SPStorageProvider)], @"Invalid Parameter");
+    
+    NSHashTable *relationships = [self relationshipsForKey:simperiumKey];
+    if (relationships.count == 0) {
         return;
     }
     
@@ -126,48 +105,140 @@ static SPLogLevels logLevel                             = SPLogLevelsInfo;
         id<SPStorageProvider> threadSafeStorage = [storage threadSafeStorage];
         [threadSafeStorage beginSafeSection];
         
-        id<SPDiffable>toObject = [threadSafeStorage objectForKey:toKey bucketName:bucketName];
+        NSHashTable *processed = [NSHashTable hashTableWithOptions:NSHashTableStrongMemory];
         
-        if (!toObject) {
-            SPLogError(@"Simperium error, tried to resolve reference to an object that doesn't exist yet (%@): %@", bucketName, toKey);
-            [threadSafeStorage finishSafeSection];
-            return;
-        }
+        for (SPRelationship *relationship in relationships) {
 
-        for (NSDictionary *path in paths) {
-            // There'd be no way to get the entityName here since there's no way to look at an instance's members
-            // Get it from the "path" instead
-            NSString *fromKey           = path[SPRelationshipsPathKey];
-            NSString *fromBucketName    = path[SPRelationshipsPathBucket];
-            NSString *attributeName     = path[SPRelationshipsPathAttribute];
-            id<SPDiffable> fromObject   = [threadSafeStorage objectForKey:fromKey bucketName:fromBucketName];
+            // Infer the targetBucket: 'Legacy' descriptors didn't store the targetBucket
+            NSString *targetBucket = relationship.targetBucket;
             
-            SPLogVerbose(@"Simperium resolving pending reference for %@.%@=%@", fromKey, attributeName, toKey);
-            [fromObject simperiumSetValue:toObject forKey: attributeName];
+            if (!targetBucket) {
+                if ([simperiumKey isEqualToString:relationship.targetKey]) {
+                    targetBucket = bucketName;
+                } else {
+                    // Unhandled scenario: There is no way to determine the targetBucket!
+                    SPLogError(@"Simperium Relationship Resolver cannot determine the targetBucket for relationship [%@] > [%@]",
+                               relationship.sourceKey, relationship.targetKey);
+                    continue;
+                }
+            }
+            
+            id<SPDiffable>sourceObject  = [threadSafeStorage objectForKey:relationship.sourceKey bucketName:relationship.sourceBucket];
+            id<SPDiffable>targetObject  = [threadSafeStorage objectForKey:relationship.targetKey bucketName:targetBucket];
+            
+            if (!sourceObject || !targetObject) {
+                continue;
+            }
+
+            SPLogVerbose(@"Simperium resolving pending reference for %@.%@=%@",
+                         relationship.sourceKey, relationship.sourceAttribute, relationship.targetKey);
+            
+            [sourceObject simperiumSetValue:targetObject forKey:relationship.sourceAttribute];
             
             // Get the key reference into the ghost as well
-            [fromObject.ghost.memberData setObject:toKey forKey: attributeName];
-            fromObject.ghost.needsSave = YES;
+            [sourceObject.ghost.memberData setObject:relationship.targetKey forKey:relationship.sourceAttribute];
+            sourceObject.ghost.needsSave = YES;
+            
+            // Cleanup!
+            [processed addObject:relationship];
         }
         
-        [threadSafeStorage save];
-        [threadSafeStorage finishSafeSection];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            // All references to entity were resolved above, so remove it from the pending array
-            [self.pendingRelationships removeObjectForKey:toKey];
-            [self writePendingReferences:storage];
+        if (processed.count) {
+            [threadSafeStorage save];
             
-            // Expect the context to be saved elsewhere
-            //[storage save];
-        });
+            dispatch_async(dispatch_get_main_queue(), ^{
+                @autoreleasepool {
+                    [self removeRelationships:processed];
+                    [self saveWithStorage:storage];
+                }
+            });
+        }
+        
+        [threadSafeStorage finishSafeSection];
     });
 }
 
-- (void)reset:(id<SPStorageProvider>)storage {
-    [self.pendingRelationships removeAllObjects];
-    [self writePendingReferences:storage];
+- (void)saveWithStorage:(id<SPStorageProvider>)storage {
+    
+    NSAssert([storage conformsToProtocol:@protocol(SPStorageProvider)], @"Invalid Storage");
+    NSAssert([NSThread isMainThread], @"Invalid Thread");
+    
+    NSMutableDictionary *metadata = [storage.metadata mutableCopy];
+    
+    // If there's already nothing there, save some CPU by not writing anything
+    if (_pendingRelationships.count == 0 && !metadata[SPRelationshipsPendingsNewKey]) {
+        return;
+    }
+    
+    metadata[SPRelationshipsPendingsNewKey] = [SPRelationship serializeFromArray:_pendingRelationships.allObjects];
+    [metadata removeObjectForKey:SPRelationshipsPendingsLegacyKey];
+    storage.metadata = metadata;
+    
     [storage save];
 }
+
+- (void)reset:(id<SPStorageProvider>)storage {
+    
+    [self.pendingRelationships removeAllObjects];
+    [self saveWithStorage:storage];
+    
+    [storage save];
+}
+
+
+#pragma mark ====================================================================================
+#pragma mark Private Helpers
+#pragma mark ====================================================================================
+
+- (NSHashTable *)relationshipsForKey:(NSString *)simperiumKey {
+    
+    NSAssert([NSThread isMainThread],                           @"Invalid Thread");
+    NSAssert([simperiumKey isKindOfClass:[NSString class]],     @"Invalid Parameter");
+    
+    NSHashTable *relationships = [NSHashTable weakObjectsHashTable];
+    for (SPRelationship *relationship in self.pendingRelationships) {
+        if ([relationship.sourceKey isEqualToString:simperiumKey] || [relationship.targetKey isEqualToString:simperiumKey]) {
+            [relationships addObject:relationship];
+        }
+    }
+    
+    return relationships;
+}
+
+- (void)removeRelationships:(NSHashTable *)relationships {
+    
+    NSAssert([NSThread isMainThread],                           @"Invalid Thread");
+    NSAssert([relationships isKindOfClass:[NSHashTable class]], @"Invalid Parameter");
+    
+    [self.pendingRelationships minusHashTable:relationships];
+}
+
+
+#pragma mark ====================================================================================
+#pragma mark Debug Helpers
+#pragma mark ====================================================================================
+
+#ifdef DEBUG
+
+- (void)performBlock:(void (^)())block {
+    dispatch_async(self.queue, block);
+}
+
+- (NSInteger)countPendingRelationships {
+    return self.pendingRelationships.count;
+}
+
+- (NSInteger)countPendingRelationshipsWithSourceKey:(NSString *)sourceKey andTargetKey:(NSString *)targetKey {
+    NSInteger count = 0;
+    for (SPRelationship *relationship in self.pendingRelationships) {
+        if ([relationship.sourceKey isEqualToString:sourceKey] && [relationship.targetKey isEqualToString:targetKey]) {
+            ++count;
+        }
+    }
+    
+    return count;
+}
+
+#endif
 
 @end

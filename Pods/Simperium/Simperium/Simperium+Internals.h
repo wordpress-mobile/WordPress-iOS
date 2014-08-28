@@ -27,24 +27,24 @@
 
 @interface Simperium() <SPStorageObserver, SPAuthenticatorDelegate, SPLoggerDelegate>
 
-@property (nonatomic, strong) SPCoreDataStorage			*coreDataStorage;
-@property (nonatomic, strong) SPJSONStorage				*JSONStorage;
-@property (nonatomic, strong) NSMutableDictionary		*buckets;
-@property (nonatomic, strong) id<SPNetworkInterface>	network;
-@property (nonatomic, strong) SPRelationshipResolver	*relationshipResolver;
-@property (nonatomic, strong) SPReachability			*reachability;
-@property (nonatomic, strong) SPUser					*user;
-@property (nonatomic,	copy) NSString					*clientID;
-@property (nonatomic,	copy) NSString					*appID;
-@property (nonatomic,	copy) NSString					*APIKey;
-@property (nonatomic,	copy) NSString					*appURL;
-@property (nonatomic,   copy) NSString					*label;
+@property (nonatomic, strong) SPCoreDataStorage         *coreDataStorage;
+@property (nonatomic, strong) SPJSONStorage             *JSONStorage;
+@property (nonatomic, strong) NSMutableDictionary       *buckets;
+@property (nonatomic, strong) id<SPNetworkInterface>    network;
+@property (nonatomic, strong) SPRelationshipResolver    *relationshipResolver;
+@property (nonatomic, strong) SPReachability            *reachability;
+@property (nonatomic, strong) SPUser                    *user;
+@property (nonatomic,   copy) NSString                  *clientID;
+@property (nonatomic,   copy) NSString                  *appID;
+@property (nonatomic,   copy) NSString                  *APIKey;
+@property (nonatomic,   copy) NSString                  *appURL;
+@property (nonatomic,   copy) NSString                  *label;
 @property (nonatomic,   copy) NSDictionary              *bucketOverrides;
-@property (nonatomic, assign) BOOL						skipContextProcessing;
-@property (nonatomic, assign) BOOL						networkManagersStarted;
-@property (nonatomic, assign) BOOL						dynamicSchemaEnabled;
-@property (nonatomic, assign) BOOL						shouldSignIn;
-@property (nonatomic, assign) BOOL						authenticationEnabled;
+@property (nonatomic, assign) BOOL                      skipContextProcessing;
+@property (nonatomic, assign) BOOL                      networkManagersStarted;
+@property (nonatomic, assign) BOOL                      dynamicSchemaEnabled;
+@property (nonatomic, assign) BOOL                      shouldSignIn;
+@property (nonatomic, assign) BOOL                      authenticationEnabled;
 
 #if TARGET_OS_IPHONE
 @property (nonatomic, strong) SPAuthenticationViewController *authenticationViewController;
@@ -52,11 +52,11 @@
 @property (nonatomic, strong) SPAuthenticationWindowController *authenticationWindowController;
 #endif
 
-- (id)initWithModel:(NSManagedObjectModel *)model
-			context:(NSManagedObjectContext *)context
-		coordinator:(NSPersistentStoreCoordinator *)coordinator
-			  label:(NSString *)label
-    bucketOverrides:(NSDictionary *)bucketOverrides;
+- (instancetype)initWithModel:(NSManagedObjectModel *)model
+                      context:(NSManagedObjectContext *)context
+                  coordinator:(NSPersistentStoreCoordinator *)coordinator
+                        label:(NSString *)label
+              bucketOverrides:(NSDictionary *)bucketOverrides;
 
 - (void)removeRemoteData;
 

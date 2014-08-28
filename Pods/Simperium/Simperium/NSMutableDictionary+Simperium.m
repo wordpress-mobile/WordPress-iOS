@@ -56,5 +56,4 @@ static char const * const SimperiumKey = "simperiumKey";
     objc_setAssociatedObject(self, SimperiumKey, key, OBJC_ASSOCIATION_COPY);    
 }
 
-
 @end
