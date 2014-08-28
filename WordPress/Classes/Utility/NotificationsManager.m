@@ -223,7 +223,7 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
         WordPressAppDelegate *appDelegate   = [WordPressAppDelegate sharedWordPressApplicationDelegate];
 
         [appDelegate showTabForIndex:kNotificationsTabIndex];
-        [appDelegate.notificationsViewController showDetailsForNoteWithID:notificationID animated:NO];
+        [appDelegate.notificationsViewController showDetailsForNoteWithID:notificationID];
     }
 }
 
