@@ -5,46 +5,21 @@ import Foundation
 {
     // MARK: - Initializers
     public convenience init(width: Int) {
-        self.init(frame: CGRect(x: 0, y: 0, width: width, height: 0))
-        
-        textView.font                   = WPStyleGuide.Notifications.Fonts.blockRegular
-        placeholderLabel.font           = WPStyleGuide.Notifications.Fonts.blockRegular
-        layoutView.backgroundColor      = WPStyleGuide.Notifications.Colors.replyBackground
+        let theFrame = CGRect(x: 0, y: 0, width: width, height: 0)
+        self.init(frame: theFrame)
     }
     
     public required init(coder: NSCoder) {
         super.init(coder: coder)
+        setupView()
     }
     
-    private override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        self.frame.size.height          = textViewMinHeight
-        
-        // Load the nib + add its container view
-        bundle = NSBundle.mainBundle().loadNibNamed("ReplyTextView", owner: self, options: nil)
-        addSubview(containerView)
-        
-        // We want this view to stick at the bottom
-        contentMode                     = .BottomLeft
-        autoresizingMask                = .FlexibleWidth | .FlexibleTopMargin
-        containerView.autoresizingMask  = .FlexibleWidth | .FlexibleHeight
-        
-        // Setup the TextView
-        textView.delegate               = self
-        textView.scrollsToTop           = false
-        textView.contentInset           = UIEdgeInsetsZero
+        setupView()
     }
-    
     
     // MARK: - Public Properties
-    public var font: UIFont! {
-        didSet {
-            textView.font               = font
-            placeholderLabel.font       = font
-        }
-    }
-    
     public var placeholder: String! {
         didSet {
             placeholderLabel.text       = placeholder
@@ -89,7 +64,6 @@ import Foundation
         containerView.frame.size.width = self.bounds.width
     }
     
-    
     // MARK: - Private Helpers
     private func updateTextViewSize() {
         let textSize        = textView.contentSize
@@ -117,17 +91,110 @@ import Foundation
         textView.scrollRectToVisible(caretRect, animated: false)
     }
     
+    private func setupView() {
+        self.frame.size.height          = textViewMinHeight
+        
+        // Load the nib + add its container view
+        bundle = NSBundle.mainBundle().loadNibNamed("ReplyTextView", owner: self, options: nil)
+        addSubview(containerView)
+        
+        // We want this view to stick at the bottom
+        contentMode                     = .BottomLeft
+        autoresizingMask                = .FlexibleWidth | .FlexibleTopMargin
+        containerView.autoresizingMask  = .FlexibleWidth | .FlexibleHeight
+        
+        // Setup the TextView
+        textView.delegate               = self
+        textView.scrollsToTop           = false
+        textView.contentInset           = UIEdgeInsetsZero
+        textView.font                   = WPStyleGuide.Comments.Fonts.replyText
+        textView.textColor              = WPStyleGuide.Comments.Colors.replyText
+        
+        // Placeholder
+        placeholderLabel.font           = WPStyleGuide.Comments.Fonts.replyText
+        placeholderLabel.textColor      = WPStyleGuide.Comments.Colors.replySeparator
+        
+        // Reply
+        replyButton.titleLabel.font     = WPStyleGuide.Comments.Fonts.replyButton
+        replyButton.setTitleColor(WPStyleGuide.Comments.Colors.replyDisabled, forState: .Disabled)
+        replyButton.setTitleColor(WPStyleGuide.Comments.Colors.replyEnabled,  forState: .Normal)
+        
+        // Background
+        layoutView.backgroundColor      = WPStyleGuide.Comments.Colors.replyBackground
+    }
     
     // MARK: - Constants
-    private let textViewPadding:            UIEdgeInsets = UIEdgeInsets(top: 2, left: 0, bottom: 1, right: 0)
-    private let textViewMaxHeight:          CGFloat     = 84
-    private let textViewMinHeight:          CGFloat     = 44
-    private let bundle:                     NSArray?
+    private let textViewPadding:            UIEdgeInsets    = UIEdgeInsets(top: 2, left: 0, bottom: 1, right: 0)
+    private let textViewMaxHeight:          CGFloat         = 77   // Fits 3 lines onscreen
+    private let textViewMinHeight:          CGFloat         = 44
+    private var bundle:                     NSArray?
     
     // MARK: - IBOutlets
-    @IBOutlet private var textView:         UITextView!
+    @IBOutlet public var textView:         UITextView!
     @IBOutlet private var placeholderLabel: UILabel!
     @IBOutlet private var replyButton:      UIButton!
     @IBOutlet private var layoutView:       UIView!
     @IBOutlet private var containerView:    UIView!
+}
+
+
+//  NOTE:
+//  =====
+//  ReplyBezierView is a helper class, used to render the TextField bubble
+//
+public class ReplyBezierView : UIView {
+    
+    public var fieldBackgroundColor: UIColor = WPStyleGuide.Comments.Colors.replyBackground {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    public var separatorColor: UIColor = WPStyleGuide.Comments.Colors.replySeparator {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    public var cornerRadius: CGFloat = 5 {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    public var insets: UIEdgeInsets = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0) {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
+    // MARK: - Initializers
+    public required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setupView()
+    }
+    
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupView()
+    }
+    
+    private func setupView() {
+        // Make sure this is re-drawn on rotation events
+        layer.needsDisplayOnBoundsChange    = true
+    }
+    
+    // MARK: - View Methods
+    public override func drawRect(rect: CGRect) {
+        var bezierRect                      = bounds
+        bezierRect.origin.y                 += insets.top
+        bezierRect.size.height              -= insets.top + insets.bottom
+        let bezier                          = UIBezierPath(roundedRect: bezierRect, cornerRadius: cornerRadius)
+        let outer                           = UIBezierPath(rect: bounds)
+        
+        separatorColor.set()
+        bezier.stroke()
+        
+        fieldBackgroundColor.set()
+        bezier.appendPath(outer)
+        bezier.usesEvenOddFillRule = true
+        bezier.fill()
+    }
 }
