@@ -16,7 +16,7 @@ class WPContentSyncHelper: NSObject {
     var isLoadingMore:Bool = false
     var hasMoreContent:Bool = true {
         didSet {
-            if (hasMoreContent == oldValue) {
+            if hasMoreContent == oldValue {
                 return
             }
 
@@ -38,7 +38,7 @@ class WPContentSyncHelper: NSObject {
 
 
     func syncContentWithUserInteraction(userInteraction:Bool) -> Bool {
-        if (isSyncing) {
+        if isSyncing {
             return false
         }
 
@@ -62,7 +62,7 @@ class WPContentSyncHelper: NSObject {
 
 
     func syncMoreContent() -> Bool {
-        if (isSyncing) {
+        if isSyncing {
             return false
         }
 
