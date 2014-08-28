@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6206.8" systemVersion="14A329f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7026.1"/>
     </dependencies>
     <objects>
@@ -22,7 +23,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MBe-41-STV" userLabel="Background View">
-                            <rect key="frame" x="8" y="0.0" width="258" height="44"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Omp-7E-YTH" userLabel="Placeholder">
@@ -40,7 +41,7 @@
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textView>
                         <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KQI-Ok-M85" userLabel="Bezier View" customClass="ReplyBezierView" customModule="WordPress">
-                            <rect key="frame" x="8" y="0.0" width="258" height="44"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5G8-Al-JKt" userLabel="Reply Button">
@@ -58,17 +59,17 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="KQI-Ok-M85" firstAttribute="leading" secondItem="TqK-rp-BlK" secondAttribute="leading" constant="8" id="0Ih-PG-tLq"/>
+                        <constraint firstItem="KQI-Ok-M85" firstAttribute="leading" secondItem="TqK-rp-BlK" secondAttribute="leading" id="0Ih-PG-tLq"/>
                         <constraint firstAttribute="bottom" secondItem="2Pd-vE-u9b" secondAttribute="bottom" constant="1" id="1DJ-ch-NcS"/>
                         <constraint firstItem="KQI-Ok-M85" firstAttribute="top" secondItem="TqK-rp-BlK" secondAttribute="top" id="2KV-ES-gcA"/>
                         <constraint firstItem="2Pd-vE-u9b" firstAttribute="top" secondItem="TqK-rp-BlK" secondAttribute="top" constant="5" id="6Y8-31-mYZ"/>
                         <constraint firstItem="5G8-Al-JKt" firstAttribute="leading" secondItem="Omp-7E-YTH" secondAttribute="trailing" constant="8" id="6aJ-nz-nyj"/>
                         <constraint firstAttribute="trailing" secondItem="5G8-Al-JKt" secondAttribute="trailing" constant="2" id="9Oi-SR-O6o"/>
                         <constraint firstItem="5G8-Al-JKt" firstAttribute="leading" secondItem="2Pd-vE-u9b" secondAttribute="trailing" constant="2" id="E7J-mE-cKb"/>
+                        <constraint firstAttribute="trailing" secondItem="KQI-Ok-M85" secondAttribute="trailing" id="E8r-Hj-w7u"/>
                         <constraint firstItem="MBe-41-STV" firstAttribute="leading" secondItem="KQI-Ok-M85" secondAttribute="leading" id="FIs-sA-rSR"/>
                         <constraint firstAttribute="bottom" secondItem="5G8-Al-JKt" secondAttribute="bottom" constant="7" id="HE4-pe-BCj"/>
                         <constraint firstItem="MBe-41-STV" firstAttribute="height" secondItem="KQI-Ok-M85" secondAttribute="height" id="Lg5-u8-sk7"/>
-                        <constraint firstItem="2Pd-vE-u9b" firstAttribute="trailing" secondItem="KQI-Ok-M85" secondAttribute="trailing" id="UNu-4S-2D1"/>
                         <constraint firstAttribute="bottom" secondItem="KQI-Ok-M85" secondAttribute="bottom" id="VXT-En-PsR"/>
                         <constraint firstItem="Omp-7E-YTH" firstAttribute="leading" secondItem="TqK-rp-BlK" secondAttribute="leading" constant="18" id="iDQ-BD-29L"/>
                         <constraint firstItem="Omp-7E-YTH" firstAttribute="top" secondItem="TqK-rp-BlK" secondAttribute="top" constant="2" id="n4g-Rg-opm"/>
