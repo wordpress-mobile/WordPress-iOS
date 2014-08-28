@@ -13,12 +13,14 @@
  @param postID The ID of the post.
  @param siteID The ID of the origin site.
  @param page The page number to fetch.
+ @param number The number to fetch per page.
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 - (void)syncHierarchicalCommentsForPost:(NSNumber *)postID
                                fromSite:(NSNumber *)siteID
                                    page:(NSUInteger)page
+                                 number:(NSUInteger)number
                                 success:(void (^)(NSArray *comments))success
                                 failure:(void (^)(NSError *error))failure;
 

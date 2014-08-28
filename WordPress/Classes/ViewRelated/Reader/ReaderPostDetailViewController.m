@@ -27,6 +27,7 @@
 static CGFloat const SectionHeaderHeight = 25.0f;
 static CGFloat const TableViewTopMargin = 40;
 static CGFloat const EstimatedCommentRowHeight = 150.0;
+static CGFloat const CommentAvatarSize = 32.0;
 
 static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 
@@ -202,7 +203,7 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
     WPAvatarSource *source = [WPAvatarSource sharedSource];
 
     NSString *hash;
-    CGSize size = CGSizeMake(32.0, 32.0);
+    CGSize size = CGSizeMake(CommentAvatarSize, CommentAvatarSize);
     NSURL *url = [comment avatarURLForDisplay];
     WPAvatarSourceType type = [source parseURL:url forAvatarHash:&hash];
 
@@ -753,7 +754,7 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 {
     [self.activityFooter startAnimating];
     NSSet *topComments = [self.post.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"parentID = NULL"]];
-    NSUInteger page = ([topComments count] / 20) + 1;
+    NSUInteger page = ([topComments count] / WPTopLevelHierarchicalCommentsPerPage) + 1;
 
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [service syncHierarchicalCommentsForPost:self.post page:page success:success failure:failure];
@@ -925,7 +926,6 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 
 // TODO: figure out which page of comments this falls under and sync that page.
 
-//    [self syncWithUserInteraction:NO];
 }
 
 

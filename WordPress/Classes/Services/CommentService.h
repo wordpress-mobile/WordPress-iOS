@@ -1,6 +1,8 @@
 #import <Foundation/Foundation.h>
 #import "LocalCoreDataService.h"
 
+extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
+
 @class Blog;
 @class Comment;
 @class ReaderPost;

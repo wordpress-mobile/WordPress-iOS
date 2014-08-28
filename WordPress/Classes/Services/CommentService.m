@@ -11,6 +11,8 @@
 #import "AccountService.h"
 #import "ReaderPost.h"
 
+NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
+
 @interface CommentService ()
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
@@ -194,28 +196,32 @@
 
     NSManagedObjectID *postObjectID = post.objectID;
     CommentServiceRemoteREST *service = [self remoteForREST];
-    [service syncHierarchicalCommentsForPost:post.postID fromSite:post.siteID page:page success:^(NSArray *comments) {
-        [self.managedObjectContext performBlock:^{
-            NSError *error;
-            ReaderPost *aPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
-            if (!aPost) {
-                if (failure) {
-                    failure(error);
-                }
-                return;
-            }
-
-            [self mergeHierarchicalComments:comments forPost:aPost];
-
-            if (success) {
-                success([comments count]);
-            }
-        }];
-    } failure:^(NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
+    [service syncHierarchicalCommentsForPost:post.postID
+                                    fromSite:post.siteID
+                                        page:page
+                                      number:WPTopLevelHierarchicalCommentsPerPage
+                                     success:^(NSArray *comments) {
+                                         [self.managedObjectContext performBlock:^{
+                                             NSError *error;
+                                             ReaderPost *aPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
+                                             if (!aPost) {
+                                                 if (failure) {
+                                                     failure(error);
+                                                 }
+                                                 return;
+                                             }
+                                             
+                                             [self mergeHierarchicalComments:comments forPost:aPost];
+                                             
+                                             if (success) {
+                                                 success([comments count]);
+                                             }
+                                         }];
+                                     } failure:^(NSError *error) {
+                                         if (failure) {
+                                             failure(error);
+                                         }
+                                     }];
 }
 
 
