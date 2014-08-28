@@ -26,8 +26,8 @@ NSTimeInterval const SPWebSocketTimeoutInterval = 60;
 #pragma mark ====================================================================================
 
 @interface SPWebSocket () <SRWebSocketDelegate>
-@property (nonatomic, strong, readwrite) SRWebSocket	*webSocket;
-@property (nonatomic, strong, readwrite) NSTimer		*timeoutTimer;
+@property (nonatomic, strong, readwrite) SRWebSocket    *webSocket;
+@property (nonatomic, strong, readwrite) NSTimer        *timeoutTimer;
 @property (nonatomic, strong, readwrite) NSDate         *lastSeenTimestamp;
 @end
 
@@ -39,44 +39,45 @@ NSTimeInterval const SPWebSocketTimeoutInterval = 60;
 @implementation SPWebSocket
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[self.timeoutTimer invalidate];
-	self.webSocket.delegate = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self.timeoutTimer invalidate];
+    self.webSocket.delegate = nil;
 }
 
-- (id)initWithURLRequest:(NSURLRequest *)request
+- (instancetype)initWithURLRequest:(NSURLRequest *)request
 {
-	if ((self = [super init])) {
-		self.webSocket			= [[SRWebSocket alloc] initWithURLRequest:request];
-		self.webSocket.delegate	= self;
-		
-		self.activityTimeout	= SPWebSocketTimeoutInterval;
-		
+    self = [super init];
+    if (self) {
+        self.webSocket          = [[SRWebSocket alloc] initWithURLRequest:request];
+        self.webSocket.delegate = self;
+        
+        self.activityTimeout    = SPWebSocketTimeoutInterval;
+        
 #if TARGET_OS_IPHONE
-		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-		[nc addObserver:self selector:@selector(handleBackgroundNote:) name:UIApplicationDidEnterBackgroundNotification object:nil];
-		[nc addObserver:self selector:@selector(handleForegroundNote:) name:UIApplicationWillEnterForegroundNotification object:nil];
+        NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+        [nc addObserver:self selector:@selector(handleBackgroundNote:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+        [nc addObserver:self selector:@selector(handleForegroundNote:) name:UIApplicationWillEnterForegroundNotification object:nil];
 #endif
-	}
-	return self;
+    }
+    return self;
 }
 
 - (void)open {
-	[self resetTimeoutTimer];
-	[self.webSocket open];
+    [self resetTimeoutTimer];
+    [self.webSocket open];
 }
 
 - (void)close {
-	[self invalidateTimeoutTimer];
-	[self.webSocket close];
+    [self invalidateTimeoutTimer];
+    [self.webSocket close];
 }
 
 - (void)send:(id)data {
-	[self.webSocket send:data];
+    [self.webSocket send:data];
 }
 
 - (SRReadyState)readyState {
-	return self.webSocket.readyState;
+    return self.webSocket.readyState;
 }
 
 
@@ -85,22 +86,22 @@ NSTimeInterval const SPWebSocketTimeoutInterval = 60;
 #pragma mark ====================================================================================
 
 - (void)resetTimeoutTimer {
-	[self.timeoutTimer invalidate];
-	self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:self.activityTimeout target:self selector:@selector(handleTimeout:) userInfo:nil repeats:NO];
+    [self.timeoutTimer invalidate];
+    self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:self.activityTimeout target:self selector:@selector(handleTimeout:) userInfo:nil repeats:NO];
 }
 
 - (void)invalidateTimeoutTimer {
-	[self.timeoutTimer invalidate];
-	self.timeoutTimer = nil;
+    [self.timeoutTimer invalidate];
+    self.timeoutTimer = nil;
 }
 
 - (void)handleTimeout:(NSTimer *)timer {
-	self.webSocket.delegate = nil;
-	[self.webSocket close];
-	
-	NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : @"Activity Timeout"};
-	NSError* error = [NSError errorWithDomain:SRWebSocketErrorDomain code:SPWebSocketErrorsActivityTimeout userInfo:userInfo];
-	[self.delegate webSocket:self didFailWithError:error];
+    self.webSocket.delegate = nil;
+    [self.webSocket close];
+    
+    NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : @"Activity Timeout"};
+    NSError* error = [NSError errorWithDomain:SRWebSocketErrorDomain code:SPWebSocketErrorsActivityTimeout userInfo:userInfo];
+    [self.delegate webSocket:self didFailWithError:error];
 }
 
 
@@ -118,25 +119,25 @@ NSTimeInterval const SPWebSocketTimeoutInterval = 60;
 #pragma mark ====================================================================================
 
 - (void)webSocketDidOpen:(SRWebSocket *)theWebSocket {
-	[self resetTimeoutTimer];
+    [self resetTimeoutTimer];
     [self resetLastSeenTimestamp];
-	[self.delegate webSocketDidOpen:self];
+    [self.delegate webSocketDidOpen:self];
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message {
-	[self resetTimeoutTimer];
+    [self resetTimeoutTimer];
     [self resetLastSeenTimestamp];
-	[self.delegate webSocket:self didReceiveMessage:message];
+    [self.delegate webSocket:self didReceiveMessage:message];
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error {
-	[self invalidateTimeoutTimer];
-	[self.delegate webSocket:self didFailWithError:error];
+    [self invalidateTimeoutTimer];
+    [self.delegate webSocket:self didFailWithError:error];
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
-	[self invalidateTimeoutTimer];
-	[self.delegate webSocket:self didCloseWithCode:code reason:reason wasClean:wasClean];
+    [self invalidateTimeoutTimer];
+    [self.delegate webSocket:self didCloseWithCode:code reason:reason wasClean:wasClean];
 }
 
 
@@ -145,11 +146,11 @@ NSTimeInterval const SPWebSocketTimeoutInterval = 60;
 #pragma mark ====================================================================================
 
 - (void)handleBackgroundNote:(NSNotification *)note {
-	[self invalidateTimeoutTimer];
+    [self invalidateTimeoutTimer];
 }
 
 - (void)handleForegroundNote:(NSNotification *)note {
-	[self resetTimeoutTimer];
+    [self resetTimeoutTimer];
 }
 
 @end

@@ -11,7 +11,7 @@
 
 @implementation NSError (Simperium)
 
-+ (NSError*)errorWithDomain:(NSString*)errorDomain code:(NSInteger)errorCode description:(NSString*)description
++ (NSError*)sp_errorWithDomain:(NSString*)errorDomain code:(NSInteger)errorCode description:(NSString*)description
 {
     if (!description) {
         return [NSError errorWithDomain:errorDomain code:errorCode userInfo:nil];
