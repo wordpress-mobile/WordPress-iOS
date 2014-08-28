@@ -9,6 +9,7 @@
 #import "BlogService.h"
 #import <NotificationCenter/NotificationCenter.h>
 #import "SettingsViewController.h"
+#import "SFHFKeychainUtils.h"
 
 static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
@@ -81,8 +82,18 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     [sharedDefaults setObject:self.siteTimeZone.name forKey:@"WordPressTodayWidgetTimeZone"];
     [sharedDefaults setObject:self.siteID forKey:@"WordPressTodayWidgetSiteId"];
     [sharedDefaults setObject:self.blog.blogName forKey:@"WordPressTodayWidgetSiteName"];
+    
+    // Temporarily left this line in to support simulator testing
     [sharedDefaults setObject:self.oauth2Token forKey:@"WordPressTodayWidgetOAuth2Token"];
     
+    NSError *error;
+    [SFHFKeychainUtils storeUsername:@"OAuth2Token"
+                         andPassword:self.oauth2Token
+                      forServiceName:@"TodayWidget"
+                         accessGroup:@"org.wordpress"
+                      updateExisting:YES
+                               error:&error];
+
     // Turns the widget on for this site
     [[NCWidgetController widgetController] setHasContent:YES forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
 }
