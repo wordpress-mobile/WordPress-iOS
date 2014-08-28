@@ -7,14 +7,20 @@
 //
 
 #import "WPSAppDelegate.h"
+#import <DDLog.h>
+#import "DDTTYLogger.h"
+#import "DDASLLogger.h"
 
-int ddLogLevel = LOG_LEVEL_INFO;
+int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 @implementation WPSAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    [DDLog addLogger:[DDASLLogger sharedInstance]];
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+
     return YES;
 }
 							

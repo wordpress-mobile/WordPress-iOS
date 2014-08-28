@@ -41,7 +41,7 @@ NSUInteger const WPPostSummaryLength = 150;
 
 #pragma mark -
 
-@implementation Post 
+@implementation Post
 
 @dynamic geolocation, tags, postFormat;
 @dynamic categories;
@@ -50,15 +50,17 @@ NSUInteger const WPPostSummaryLength = 150;
 
 #pragma mark - NSManagedObject subclass methods
 
-- (void)didTurnIntoFault {
+- (void)didTurnIntoFault
+{
     [super didTurnIntoFault];
-    
+
     self.specialType = nil;
 }
 
 #pragma mark -
 
-+ (NSString *const)remoteUniqueIdentifier {
++ (NSString *const)remoteUniqueIdentifier
+{
     return @"postid";
 }
 
@@ -83,6 +85,7 @@ NSUInteger const WPPostSummaryLength = 150;
         password = nil;
     }
     self.password = password;
+
     if (postInfo[@"wp_author_display_name"]) {
         self.author = postInfo[@"wp_author_display_name"];
     }
@@ -91,6 +94,7 @@ NSUInteger const WPPostSummaryLength = 150;
         self.author = author[@"name"];
         self.authorAvatarURL = author[@"avatar_URL"];
     }
+
     self.tags = postInfo[@"mt_keywords"];
     self.permaLink = postInfo[@"permaLink"];
     self.mt_excerpt = postInfo[@"mt_excerpt"];
@@ -105,8 +109,9 @@ NSUInteger const WPPostSummaryLength = 150;
     }
     self.wp_slug = postInfo[@"wp_slug"];
     self.post_thumbnail = [postInfo[@"wp_post_thumbnail"] numericValue];
-    if (self.post_thumbnail != nil && [self.post_thumbnail intValue] == 0)
+    if (self.post_thumbnail != nil && [self.post_thumbnail intValue] == 0) {
         self.post_thumbnail = nil;
+    }
     self.postFormat = postInfo[@"wp_post_format"];
 
     self.remoteStatus = AbstractPostRemoteStatusSync;
@@ -118,17 +123,17 @@ NSUInteger const WPPostSummaryLength = 150;
     self.longitudeID = nil;
     self.publicID = nil;
 
-    if (postInfo[@"custom_fields"]) {
-        NSArray *customFields = postInfo[@"custom_fields"];
+    if ([postInfo objectForKey:@"custom_fields"]) {
+        NSArray *customFields = [postInfo objectForKey:@"custom_fields"];
         NSString *geo_longitude = nil;
         NSString *geo_latitude = nil;
         NSString *geo_longitude_id = nil;
         NSString *geo_latitude_id = nil;
         NSString *geo_public_id = nil;
         for (NSDictionary *customField in customFields) {
-            NSString *ID = customField[@"id"];
-            NSString *key = customField[@"key"];
-            NSString *value = customField[@"value"];
+            NSString *ID = [customField objectForKey:@"id"];
+            NSString *key = [customField objectForKey:@"key"];
+            NSString *value = [customField objectForKey:@"value"];
 
             if (key) {
                 if ([key isEqualToString:@"geo_longitude"]) {
@@ -156,11 +161,13 @@ NSUInteger const WPPostSummaryLength = 150;
     }
 }
 
-- (NSString *)categoriesText {
+- (NSString *)categoriesText
+{
     return [[[self.categories valueForKey:@"categoryName"] allObjects] componentsJoinedByString:@", "];
 }
 
-- (NSString *)postFormatText {
+- (NSString *)postFormatText
+{
     NSDictionary *allFormats = self.blog.postFormats;
     NSString *formatText = self.postFormat;
     if (allFormats[self.postFormat]) {
@@ -172,7 +179,8 @@ NSUInteger const WPPostSummaryLength = 150;
     return formatText;
 }
 
-- (void)setPostFormatText:(NSString *)postFormatText {
+- (void)setPostFormatText:(NSString *)postFormatText
+{
     __block NSString *format = nil;
     [self.blog.postFormats enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         if ([obj isEqual:postFormatText]) {
@@ -183,41 +191,42 @@ NSUInteger const WPPostSummaryLength = 150;
     self.postFormat = format;
 }
 
-- (void)setCategoriesFromNames:(NSArray *)categoryNames {
+- (void)setCategoriesFromNames:(NSArray *)categoryNames
+{
     [self.categories removeAllObjects];
-	NSMutableSet *categories = nil;
-	
+    NSMutableSet *categories = nil;
+
     for (NSString *categoryName in categoryNames) {
         NSSet *results = [self.blog.categories filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"categoryName = %@", categoryName]];
         if (results && (results.count > 0)) {
-			if(categories == nil) {
-				categories = [NSMutableSet setWithSet:results];
-			} else {
-				[categories unionSet:results];
-			}
-		}
+            if (categories == nil) {
+                categories = [NSMutableSet setWithSet:results];
+            } else {
+                [categories unionSet:results];
+            }
+        }
     }
-	
-	if (categories && (categories.count > 0)) {
-		self.categories = categories;
-	}
+
+    if (categories && (categories.count > 0)) {
+        self.categories = categories;
+    }
 }
 
-- (BOOL)hasChanged {
+- (BOOL)hasChanged
+{
     if ([super hasChanged]) {
         return YES;
     }
-   
+
     Post *original = (Post *)self.original;
     if (!original) {
         return NO;
     }
-    
-    if (([self.tags length] != [original.tags length])
-        && (![self.tags isEqual:original.tags])) {
+
+    if (([self.tags length] != [original.tags length]) && (![self.tags isEqual:original.tags])) {
         return YES;
     }
-    
+
     if (self.hasRemote) {
         CLLocationCoordinate2D coord1 = self.geolocation.coordinate;
         CLLocationCoordinate2D coord2 = original.geolocation.coordinate;
@@ -225,43 +234,45 @@ NSUInteger const WPPostSummaryLength = 150;
             return YES;
         }
     }
-    
+
     return NO;
 }
 
-- (BOOL)hasSiteSpecificChanges {
+- (BOOL)hasSiteSpecificChanges
+{
     if ([super hasSiteSpecificChanges]) {
         return YES;
     }
-    
+
     Post *original = (Post *)self.original;
-    
-    if ((self.postFormat != original.postFormat)
-        && (![self.postFormat isEqual:original.postFormat])) {
+
+    if ((self.postFormat != original.postFormat) && (![self.postFormat isEqual:original.postFormat])) {
         return YES;
     }
-    
+
     if (![self.categories isEqual:original.categories]) {
         return YES;
     }
-    
+
     return NO;
 }
 
 - (BOOL)hasCategories
 {
-    if ([self.categories count] > 0)
+    if ([self.categories count] > 0) {
         return true;
-    else
-        return false;
+    }
+
+    return false;
 }
 
 - (BOOL)hasTags
 {
-    if ([[self.tags trim] length] > 0)
+    if ([[self.tags trim] length] > 0) {
         return true;
-    else
-        return false;
+    }
+
+    return false;
 }
 
 #pragma mark - Avatar
@@ -300,8 +311,8 @@ NSUInteger const WPPostSummaryLength = 150;
 }
 
 #pragma mark - QuickPhoto
-
-- (void)mediaDidUploadSuccessfully:(NSNotification *)notification {
+- (void)mediaDidUploadSuccessfully:(NSNotification *)notification
+{
     Media *media = (Media *)[notification object];
     [media save];
 
@@ -312,22 +323,24 @@ NSUInteger const WPPostSummaryLength = 150;
         self.content = [NSString stringWithFormat:@"%@\n\n%@", [media html], self.content];
         [self uploadWithSuccess:nil failure:nil];
     }
-    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)mediaUploadFailed:(NSNotification *)notification {
+- (void)mediaUploadFailed:(NSNotification *)notification
+{
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick Photo Failed", @"")
                                                     message:NSLocalizedString(@"Sorry, the photo upload failed. The post has been saved as a Local Draft.", @"")
                                                    delegate:self
                                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                           otherButtonTitles:nil];
     [alert show];
-    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     if ([self hasRemote]) {
         [self editPostWithSuccess:success failure:failure];
     } else {
@@ -335,7 +348,8 @@ NSUInteger const WPPostSummaryLength = 150;
     }
 }
 
-- (Media *)featuredImage {
+- (Media *)featuredImage
+{
     if (!self.post_thumbnail) {
         return nil;
     }
@@ -360,24 +374,28 @@ NSUInteger const WPPostSummaryLength = 150;
     return [arr objectAtIndex:index];
 }
 
-- (void)setFeaturedImage:(Media *)featuredImage {
+- (void)setFeaturedImage:(Media *)featuredImage
+{
     self.post_thumbnail = featuredImage.mediaID;
 }
 
-- (NSURL *)featuredImageURLForDisplay {
+- (NSURL *)featuredImageURLForDisplay
+{
     return [NSURL URLWithString:self.featuredImage.remoteURL];
 }
 
 #pragma mark - WPContentViewProvider protocol
 
-- (NSString *)contentPreviewForDisplay {
+- (NSString *)contentPreviewForDisplay
+{
     if (!_summary) {
         _summary = [self createSummaryFromContent:self.content];
     }
     return _summary;
 }
 
-- (NSString *)createSummaryFromContent:(NSString *)string {
+- (NSString *)createSummaryFromContent:(NSString *)string
+{
     string = [[[string stringByRemovingScriptsAndStrippingHTML] stringByDecodingXMLCharacters] trim];
     string = [string stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]];
     return [string stringByEllipsizingWithMaxLength:WPPostSummaryLength preserveWords:YES];
@@ -387,9 +405,10 @@ NSUInteger const WPPostSummaryLength = 150;
 
 @implementation Post (WordPressApi)
 
-- (NSDictionary *)XMLRPCDictionary {
+- (NSDictionary *)XMLRPCDictionary
+{
     NSMutableDictionary *postParams = [NSMutableDictionary dictionaryWithDictionary:[super XMLRPCDictionary]];
-    
+
     [postParams setValueIfNotNil:self.postFormat forKey:@"wp_post_format"];
     [postParams setValueIfNotNil:self.tags forKey:@"mt_keywords"];
 
@@ -441,19 +460,21 @@ NSUInteger const WPPostSummaryLength = 150;
     if ([publicField count] > 0) {
         [customFields addObject:publicField];
     }
-    
+
     if ([customFields count] > 0) {
         [postParams setObject:customFields forKey:@"custom_fields"];
     }
-	
-    if (self.status == nil)
+
+    if (self.status == nil) {
         self.status = @"publish";
+    }
     [postParams setObject:self.status forKey:@"post_status"];
-    
+
     return postParams;
 }
 
-- (void)postPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)postPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     DDLogMethod();
     // XML-RPC doesn't like empty post thumbnail ID's for new posts, but it's required to delete them on edit. see #1395 and #1507
     NSMutableDictionary *xmlrpcDictionary = [NSMutableDictionary dictionaryWithDictionary:[self XMLRPCDictionary]];
@@ -470,8 +491,9 @@ NSUInteger const WPPostSummaryLength = 150;
     }
     AFHTTPRequestOperation *operation = [self.blog.api HTTPRequestOperationWithRequest:request
                                                                                success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                                                                   if ([self isDeleted] || self.managedObjectContext == nil)
+                                                                                   if ([self isDeleted] || self.managedObjectContext == nil) {
                                                                                        return;
+                                                                                   }
 
                                                                                    if ([responseObject respondsToSelector:@selector(numericValue)]) {
                                                                                        self.postID = [responseObject numericValue];
@@ -485,15 +507,16 @@ NSUInteger const WPPostSummaryLength = 150;
                                                                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploaded" object:self];
                                                                                    } else if (failure) {
                                                                                        self.remoteStatus = AbstractPostRemoteStatusFailed;
-                                                                                       NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"Invalid value returned for new post: %@", responseObject] forKey:NSLocalizedDescriptionKey];
+                                                                                       NSDictionary *userInfo = @{NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Invalid value returned for new post: %@", responseObject]};
                                                                                        NSError *error = [NSError errorWithDomain:@"org.wordpress.iphone" code:0 userInfo:userInfo];
                                                                                        failure(error);
                                                                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadFailed" object:self];
                                                                                    }
 
                                                                                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                                                                   if ([self isDeleted] || self.managedObjectContext == nil)
+                                                                                   if ([self isDeleted] || self.managedObjectContext == nil) {
                                                                                        return;
+                                                                                   }
 
                                                                                    self.remoteStatus = AbstractPostRemoteStatusFailed;
                                                                                    if (failure) failure(error);
@@ -502,14 +525,16 @@ NSUInteger const WPPostSummaryLength = 150;
     [self.blog.api enqueueHTTPRequestOperation:operation];
 }
 
-- (void)getPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)getPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     DDLogMethod();
-    NSArray *parameters = [NSArray arrayWithObjects:self.postID, self.blog.username, self.blog.password, nil];
+    NSArray *parameters = @[self.postID, self.blog.username, self.blog.password];
     [self.blog.api callMethod:@"metaWeblog.getPost"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                          if ([self isDeleted] || self.managedObjectContext == nil)
+                          if ([self isDeleted] || self.managedObjectContext == nil) {
                               return;
+                          }
 
                           [self updateFromDictionary:responseObject];
                           [self save];
@@ -521,11 +546,12 @@ NSUInteger const WPPostSummaryLength = 150;
                       }];
 }
 
-- (void)editPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)editPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     DDLogMethod();
     if (self.postID == nil) {
         if (failure) {
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Can't edit a post if it's not in the server" forKey:NSLocalizedDescriptionKey];
+            NSDictionary *userInfo = @{NSLocalizedDescriptionKey: @"Can't edit a post if it's not in the server"};
             NSError *error = [NSError errorWithDomain:@"org.wordpress.iphone" code:0 userInfo:userInfo];
             dispatch_async(dispatch_get_main_queue(), ^{
                 failure(error);
@@ -534,26 +560,28 @@ NSUInteger const WPPostSummaryLength = 150;
         return;
     }
 
-    NSArray *parameters = [NSArray arrayWithObjects:self.postID, self.blog.username, self.blog.password, [self XMLRPCDictionary], nil];
+    NSArray *parameters = @[self.postID, self.blog.username, self.blog.password, [self XMLRPCDictionary]];
     self.remoteStatus = AbstractPostRemoteStatusPushing;
-    
-    if( self.isFeaturedImageChanged == NO ) {
+
+    if ( self.isFeaturedImageChanged == NO ) {
         NSMutableDictionary *xmlrpcDictionary = (NSMutableDictionary*) [parameters objectAtIndex:3] ;
         [xmlrpcDictionary removeObjectForKey:@"wp_post_thumbnail"];
     }
-    
+
     [self.blog.api callMethod:@"metaWeblog.editPost"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                          if ([self isDeleted] || self.managedObjectContext == nil)
+                          if ([self isDeleted] || self.managedObjectContext == nil) {
                               return;
+                          }
 
                           self.remoteStatus = AbstractPostRemoteStatusSync;
                           [self getPostWithSuccess:success failure:failure];
                           [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploaded" object:self];
                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                          if ([self isDeleted] || self.managedObjectContext == nil)
+                          if ([self isDeleted] || self.managedObjectContext == nil) {
                               return;
+                          }
 
                           self.remoteStatus = AbstractPostRemoteStatusFailed;
                           if (failure) failure(error);
@@ -561,10 +589,11 @@ NSUInteger const WPPostSummaryLength = 150;
                       }];
 }
 
-- (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     BOOL remote = [self hasRemote];
     if (remote) {
-        NSArray *parameters = [NSArray arrayWithObjects:@"unused", self.postID, self.blog.username, self.blog.password, nil];
+        NSArray *parameters = @[@"unused", self.postID, self.blog.username, self.blog.password];
         [self.blog.api callMethod:@"metaWeblog.deletePost"
                        parameters:parameters
                           success:^(AFHTTPRequestOperation *operation, id responseObject) {

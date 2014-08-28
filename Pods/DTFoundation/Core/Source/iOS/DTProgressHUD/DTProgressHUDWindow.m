@@ -7,46 +7,12 @@
 //
 
 #import "DTProgressHUDWindow.h"
-
-@implementation DTProgressHUDWindow
+#import "DTProgressHUD.h"
 
 #define DegreesToRadians(degrees) (degrees * M_PI / 180)
 
-- (instancetype)initWithFrame:(CGRect)frame
-{
-	self = [super initWithFrame:frame];
-	if (self)
-	{
-		[self _setup];
-	}
-	return self;
-}
-
-- (instancetype)init
-{
-	self = [super init];
-	if (self)
-	{
-		[self _setup];
-	}
-	return self;
-}
-
-- (void)_setup
-{
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarDidChangeFrame:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
-	
-	UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-	
-	[self setTransform:[self transformForOrientation:orientation]];
-}
-
-- (void)dealloc
-{
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (CGAffineTransform)transformForOrientation:(UIInterfaceOrientation)orientation
+// local helper function
+static CGAffineTransform _transformForInterfaceOrientation(UIInterfaceOrientation orientation)
 {
 	switch (orientation)
 	{
@@ -62,6 +28,7 @@
 		{
 			return CGAffineTransformMakeRotation(DegreesToRadians(180));
 		}
+		default:
 		case UIInterfaceOrientationPortrait:
 		{
 			return CGAffineTransformMakeRotation(DegreesToRadians(0));
@@ -69,11 +36,47 @@
 	}
 }
 
+@implementation DTProgressHUDWindow
+
+- (instancetype)initWithProgressHUD:(DTProgressHUD *)progressHUD
+{
+	NSParameterAssert(progressHUD);
+	
+	self = [super initWithFrame:[UIScreen mainScreen].bounds];
+	
+	if (self)
+	{
+		self.windowLevel = UIWindowLevelAlert;
+		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		self.autoresizesSubviews = NO;
+		self.userInteractionEnabled = NO;
+		
+		// use a dummy view controller to calm iOS 7's warning about missing root VC
+		UIViewController *viewController = [[UIViewController alloc] init];
+		viewController.view = progressHUD;
+		self.rootViewController = viewController; // this replaces the addSubview
+		
+		// observe interface rotations
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarDidChangeFrame:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+		
+		// set initial transform
+		UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+		[self setTransform:_transformForInterfaceOrientation(orientation)];
+	}
+	return self;
+}
+
+- (void)dealloc
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - Notifications
+
 - (void)statusBarDidChangeFrame:(NSNotification *)notification
 {
 	UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-	
-	[self setTransform:[self transformForOrientation:orientation]];
+	[self setTransform:_transformForInterfaceOrientation(orientation)];
 }
 
 @end

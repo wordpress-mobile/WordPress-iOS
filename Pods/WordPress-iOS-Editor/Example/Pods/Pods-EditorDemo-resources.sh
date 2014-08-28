@@ -89,6 +89,7 @@ install_resource "../../Assets/icon_format_underline.png"
 install_resource "../../Assets/icon_format_underline@2x.png"
 install_resource "../../Assets/icon_format_underline_highlighted.png"
 install_resource "../../Assets/icon_format_underline_highlighted@2x.png"
+install_resource "${BUILT_PRODUCTS_DIR}/WordPress-iOS-Shared.bundle"
 
 rsync -avr --copy-links --no-relative --exclude '*/.svn/*' --files-from="$RESOURCES_TO_COPY" / "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
 if [[ "${ACTION}" == "install" ]]; then

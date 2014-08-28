@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -103,7 +103,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yTU-xt-6ui">
-                                <rect key="frame" x="20" y="277" width="277" height="30"/>
+                                <rect key="frame" x="20" y="250" width="277" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="C9i-Kw-wGd"/>
@@ -117,24 +117,58 @@
                                     <action selector="hidePressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="eJy-K1-61N"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Ce-MQ-aMo">
+                                <rect key="frame" x="19" y="316" width="277" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="gIy-D5-eRI"/>
+                                    <constraint firstAttribute="width" constant="277" id="nxq-Oi-W2z"/>
+                                </constraints>
+                                <state key="normal" title="Show DTActionSheet">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="showDTActionSheet:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="9p0-PT-8LX"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IH4-d0-toA">
+                                <rect key="frame" x="20" y="354" width="277" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="jg2-tj-hBR"/>
+                                    <constraint firstAttribute="width" constant="277" id="lF2-DZ-aS6"/>
+                                </constraints>
+                                <state key="normal" title="Show DTAlertView">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="showDTAlertViewidsender:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="RqG-kI-lHZ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="DJh-Fe-y6C" firstAttribute="trailing" secondItem="8Ce-MQ-aMo" secondAttribute="trailing" constant="1" id="1QR-SL-90q"/>
                             <constraint firstItem="DJh-Fe-y6C" firstAttribute="top" secondItem="bhl-G4-Opf" secondAttribute="bottom" constant="84" id="2wD-3Q-MnD"/>
                             <constraint firstAttribute="trailing" secondItem="DJh-Fe-y6C" secondAttribute="trailing" constant="23" id="Bi9-UI-Sos"/>
                             <constraint firstAttribute="trailing" secondItem="phX-rF-Ucj" secondAttribute="trailing" id="DT0-UQ-LXl"/>
+                            <constraint firstItem="8Ce-MQ-aMo" firstAttribute="trailing" secondItem="IH4-d0-toA" secondAttribute="trailing" constant="-1" id="Inw-Gz-cbH"/>
                             <constraint firstAttribute="trailing" secondItem="jb8-0v-n9D" secondAttribute="trailing" constant="23" id="J6E-MF-dC6"/>
                             <constraint firstAttribute="trailing" secondItem="UdA-xj-qh9" secondAttribute="trailing" constant="24" id="KgY-g6-huc"/>
                             <constraint firstAttribute="trailing" secondItem="JyR-G9-NUt" secondAttribute="trailing" constant="23" id="NUE-7c-bo9"/>
                             <constraint firstItem="UdA-xj-qh9" firstAttribute="top" secondItem="DJh-Fe-y6C" secondAttribute="bottom" constant="-68" id="PbP-et-qi4"/>
                             <constraint firstItem="jb8-0v-n9D" firstAttribute="top" secondItem="UdA-xj-qh9" secondAttribute="bottom" constant="-68" id="QKk-QO-MKm"/>
+                            <constraint firstItem="8Ce-MQ-aMo" firstAttribute="top" secondItem="yTU-xt-6ui" secondAttribute="bottom" constant="36" id="SAm-VX-1FZ"/>
                             <constraint firstAttribute="trailing" secondItem="yTU-xt-6ui" secondAttribute="trailing" constant="23" id="Xzv-ef-0lG"/>
                             <constraint firstItem="phX-rF-Ucj" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="ZyE-ey-D99"/>
-                            <constraint firstItem="yTU-xt-6ui" firstAttribute="top" secondItem="DJh-Fe-y6C" secondAttribute="bottom" constant="63" id="bHF-5P-RoQ"/>
                             <constraint firstItem="phX-rF-Ucj" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="bgf-WY-f5c"/>
                             <constraint firstItem="bhl-G4-Opf" firstAttribute="top" secondItem="JyR-G9-NUt" secondAttribute="bottom" constant="8" id="gIL-P7-jwO"/>
+                            <constraint firstItem="IH4-d0-toA" firstAttribute="top" secondItem="8Ce-MQ-aMo" secondAttribute="bottom" constant="8" id="iVE-KI-8A3"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="phX-rF-Ucj" secondAttribute="bottom" id="knm-GB-MkK"/>
                             <constraint firstItem="JyR-G9-NUt" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="12" id="moE-Nj-euQ"/>
+                            <constraint firstItem="yTU-xt-6ui" firstAttribute="top" secondItem="DJh-Fe-y6C" secondAttribute="bottom" constant="36" id="qaq-SL-9SM"/>
                             <constraint firstAttribute="trailing" secondItem="bhl-G4-Opf" secondAttribute="trailing" constant="23" id="wVs-PZ-E1K"/>
                         </constraints>
                     </view>

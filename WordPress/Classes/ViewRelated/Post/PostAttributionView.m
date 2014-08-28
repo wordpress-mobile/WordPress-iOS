@@ -10,7 +10,8 @@
 
 @implementation PostAttributionView
 
-- (void)setupSubviews {
+- (void)setupSubviews
+{
     [super setupSubviews];
 
     self.attributionNameLabel.textColor = [WPStyleGuide newKidOnTheBlockBlue];
@@ -51,12 +52,14 @@
     [super setNeedsUpdateConstraints];
 }
 
-- (void)configureView {
+- (void)configureView
+{
     [super configureView];
     self.postStatusLabel.text = [self.contentProvider statusForDisplay];
 }
 
-- (void)configureAttributionButton {
+- (void)configureAttributionButton
+{
     [self hideAttributionButton:YES];
 }
 

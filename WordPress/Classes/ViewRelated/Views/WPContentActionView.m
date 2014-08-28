@@ -15,7 +15,6 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
 
 @end
 
-
 @implementation WPContentActionView
 
 #pragma mark - Life Cycle Methods
@@ -43,7 +42,6 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
     }
     return self;
 }
-
 
 #pragma mark - Public Methods
 
@@ -181,7 +179,6 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
     [self setNeedsUpdateConstraints];
 }
 
-
 #pragma mark - Subview factories
 
 - (UIView *)viewForBorder
@@ -208,7 +205,6 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
 
     return button;
 }
-
 
 #pragma mark - Timer Related
 

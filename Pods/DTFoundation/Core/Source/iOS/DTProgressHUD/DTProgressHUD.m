@@ -523,13 +523,7 @@
 	if (!_hudWindow)
 	{
 		// use own window
-		_hudWindow = [[DTProgressHUDWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-		_hudWindow.windowLevel = UIWindowLevelAlert;
-		_hudWindow.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		_hudWindow.autoresizesSubviews = NO;
-		_hudWindow.userInteractionEnabled = NO;
-		
-		[_hudWindow addSubview:self];
+		_hudWindow = [[DTProgressHUDWindow alloc] initWithProgressHUD:self];
 		[_hudWindow makeKeyAndVisible];
 	}
 	

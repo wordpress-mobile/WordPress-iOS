@@ -24,16 +24,6 @@
 	<string>1.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>UIAppFonts</key>
-	<array>
-		<string>OpenSans-Light.ttf</string>
-		<string>OpenSans-Regular.ttf</string>
-		<string>OpenSans-Bold.ttf</string>
-		<string>OpenSans-Italic.ttf</string>
-		<string>OpenSans-BoldItalic.ttf</string>
-		<string>OpenSans-LightItalic.ttf</string>
-		<string>Merriweather-Bold.ttf</string>
-	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>Main_iPhone</string>
 	<key>UIMainStoryboardFile~ipad</key>

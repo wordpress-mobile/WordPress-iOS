@@ -16,7 +16,6 @@ const CGFloat WPContentViewActionViewHeight = 48.0;
 const CGFloat WPContentViewBorderHeight = 1.0;
 const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
-
 @interface WPContentViewBase()<WPContentAttributionViewDelegate>
 // Stores a reference to the image height constraints for easy adjustment.
 @property (nonatomic, strong) NSLayoutConstraint *featuredImageZeroHeightConstraint;
@@ -26,14 +25,15 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
 @implementation WPContentViewBase
 
-+ (UIFont *)titleFont {
++ (UIFont *)titleFont
+{
     return (IS_IPAD ? [UIFont fontWithName:@"Merriweather-Bold" size:24.0f] : [UIFont fontWithName:@"Merriweather-Bold" size:19.0f]);
 }
 
-+ (UIFont *)contentFont {
++ (UIFont *)contentFont
+{
     return (IS_IPAD ? [WPFontManager openSansRegularFontOfSize:16.0] : [WPFontManager openSansRegularFontOfSize:14.0]);
 }
-
 
 #pragma mark - Lifecycle
 
@@ -128,7 +128,6 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     [self configureFeaturedImageView];
 }
 
-
 #pragma mark - Private Methods
 
 - (void)registerLabelForRefreshingPreferredMaxLayoutWidth:(UILabel *)label
@@ -138,7 +137,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
 - (void)refreshLabelPreferredMaxLayoutWidth
 {
-    CGFloat width = CGRectGetWidth(self.bounds) - (WPContentViewHorizontalInnerPadding * 2);
+    CGFloat width = CGRectGetWidth(self.bounds) - (WPContentViewOuterMargin * 2);
     for (UILabel *label in self.labelsNeedingPreferredMaxLayoutWidth) {
         [label setPreferredMaxLayoutWidth:width];
     }
@@ -223,8 +222,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     NSLayoutConstraint *constraintToAdd;
     NSLayoutConstraint *constraintToRemove;
 
-    if (self.featuredImageView.hidden)
-    {
+    if (self.featuredImageView.hidden) {
         constraintToRemove = self.featuredImagePercentageHeightConstraint;
         constraintToAdd = self.featuredImageZeroHeightConstraint;
     } else {
@@ -234,12 +232,12 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     }
 
     // Remove the old constraint if necessary.
-    if([self.constraints indexOfObject:constraintToRemove] != NSNotFound) {
+    if ([self.constraints indexOfObject:constraintToRemove] != NSNotFound) {
         [self removeConstraint:constraintToRemove];
     }
 
     // Add the new constraint and update if necessary.
-    if([self.constraints indexOfObject:constraintToAdd] == NSNotFound) {
+    if ([self.constraints indexOfObject:constraintToAdd] == NSNotFound) {
         [self addConstraint:constraintToAdd];
         [self setNeedsUpdateConstraints];
     }
@@ -265,7 +263,6 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     self.actionView = [self viewForActionView];
     [self addSubview:self.actionView];
 }
-
 
 #pragma mark - Subview factories
 
@@ -335,7 +332,6 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     actionView.translatesAutoresizingMaskIntoConstraints = NO;
     return actionView;
 }
-
 
 #pragma mark - Configuration
 
@@ -431,7 +427,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
 /**
  Returns an attributed string for the specified `title`, formatted for the title view.
- 
+
  @param title The string to convert to an attriubted string.
  @return An attributed string formatted to display in the title view.
  */
@@ -474,13 +470,12 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     return attributedSummary;
 }
 
-
 #pragma mark - WPContentView Delegate Methods
 
 /**
- Receives the notification that the user has tapped the featured image, and informs 
+ Receives the notification that the user has tapped the featured image, and informs
  the delegate of the interaction.
- 
+
  @param sender A reference to the featured image.
  */
 - (void)featuredImageAction:(id)sender
@@ -490,11 +485,10 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     }
 }
 
-
-#pragma mark - authorLinkAction
+#pragma mark - Attribution Delegate Methods
 
 /**
- Receives the notification from the attribution view that its button was pressed and informs the 
+ Receives the notification from the attribution view that its button was pressed and informs the
  delegate of the interaction.
  */
 - (void)attributionView:(WPContentAttributionView *)attributionView didReceiveAttributionLinkAction:(id)sender
@@ -504,5 +498,15 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     }
 }
 
+/**
+ Receives the notification from the attribution view that its menu button was pressed and informs the
+ delegate of the interaction.
+ */
+- (void)attributionView:(WPContentAttributionView *)attributionView didReceiveAttributionMenuAction:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(contentView:didReceiveAttributionMenuAction:)]) {
+        [self.delegate contentView:self didReceiveAttributionMenuAction:sender];
+    }
+}
 
 @end

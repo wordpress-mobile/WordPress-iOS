@@ -5,7 +5,7 @@ target "EditorDemo" do
   pod "WordPress-iOS-Editor", :path => "../"
   pod 'CocoaLumberjack', '~>1.8.1'
   pod 'UIAlertView+Blocks'
-  pod 'WordPress-iOS-Shared', '~>0.0.2'  
+  pod 'WordPress-iOS-Shared', '~>0.0.5'
 end
 
 target "EditorDemoTests" do

@@ -8,8 +8,6 @@
 #import "ReaderComment.h"
 #import "ReaderCommentTableViewCell.h"
 #import "IOS7CorrectedTextView.h"
-#import "ReaderImageView.h"
-#import "ReaderVideoView.h"
 #import "WPImageViewController.h"
 #import "WPWebVideoViewController.h"
 #import "WPWebViewController.h"
@@ -20,10 +18,13 @@
 #import "WPAvatarSource.h"
 #import "ReaderPostService.h"
 #import "ReaderPost.h"
+#import "WPRichTextVideoControl.h"
+#import "WPRichTextImageControl.h"
 #import "ReaderCommentTableViewCell.h"
 #import "ReaderPostRichContentView.h"
 #import "CustomHighlightButton.h"
 #import "WPTableImageSource.h"
+#import "WPNoResultsView+AnimatedBox.h"
 
 static NSInteger const ReaderCommentsToSync = 100;
 static NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
@@ -40,6 +41,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
                                             WPTableImageSourceDelegate,
                                             NSFetchedResultsControllerDelegate>
 
+@property (nonatomic, strong, readwrite) ReaderPost *post;
 @property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, strong) UIGestureRecognizer *tapOffKeyboardGesture;
 @property (nonatomic, strong) ReaderPostRichContentView *postView;
@@ -64,6 +66,23 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
 @implementation ReaderPostDetailViewController
 
+#pragma mark - Static Helpers
+
++ (instancetype)detailControllerWithPost:(ReaderPost *)post
+{
+    ReaderPostDetailViewController *detailsViewController = [self new];
+    detailsViewController.post = post;
+    return detailsViewController;
+}
+
++ (instancetype)detailControllerWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID
+{
+    ReaderPostDetailViewController *detailsViewController = [self new];
+    [detailsViewController setupWithPostID:postID siteID:siteID];
+    return detailsViewController;
+}
+
+
 #pragma mark - LifeCycle Methods
 
 - (void)dealloc
@@ -76,11 +95,10 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (instancetype)initWithPost:(ReaderPost *)post
+- (instancetype)init
 {
     self = [super init];
     if (self) {
-        _post = post;
         _comments = [NSMutableArray array];
     }
     return self;
@@ -89,47 +107,39 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
-
+    
     if (self.infiniteScrollEnabled) {
         [self enableInfiniteScrolling];
     }
-	
-    self.title = self.post.postTitle;
-
+    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:@"PostCell"];
-    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
-    [self configurePostView];
-    [self configureTableHeaderView];
-
-    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.shareButton forNavigationItem:self.navigationItem];
-
-    [self prepareComments];
-
+    // Don't show 'Reader' in the next-view back button
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
+    
+    UIToolbar *toolbar = self.navigationController.toolbar;
+    toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
+    toolbar.tintColor = [UIColor whiteColor];
+    toolbar.translucent = NO;
+    
+    self.tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
+    
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
     [self.inlineComposeView setButtonTitle:NSLocalizedString(@"Post", nil)];
-
-
-
-    self.tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                         action:@selector(dismissKeyboard:)];
-
-    // comment composer responds to the inline compose view to publish comments
-    self.commentPublisher = [[ReaderCommentPublisher alloc]
-                             initWithComposer:self.inlineComposeView
-                             andPost:self.post];
-
-    self.commentPublisher.delegate = self;
-
-    // Let pushed view controllers just show an arrow for the back button, not title.
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] init];
-    backButton.title = @"";
-    self.navigationItem.backBarButtonItem = backButton;
-
     [self.view addSubview:self.inlineComposeView];
+    
+    // Comment composer responds to the inline compose view to publish comments
+    self.commentPublisher = [[ReaderCommentPublisher alloc] initWithComposer:self.inlineComposeView];
+    self.commentPublisher.delegate = self;
+    
+    [self configurePostView];
+    [self configureTableHeaderView];
+    
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.shareButton forNavigationItem:self.navigationItem];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -144,27 +154,13 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     }
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-
-    UIToolbar *toolbar = self.navigationController.toolbar;
-    toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
-    toolbar.tintColor = [UIColor whiteColor];
-    toolbar.translucent = NO;
-
-    [self refreshHeightForTableHeaderView];
+    
+    [self reloadData];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated
+{
     [super viewDidAppear:animated];
-
-    // Do not start auto-sync if connection is down
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    if (appDelegate.connectionAvailable == NO)
-        return;
-	
-    NSDate *lastSynced = [self lastSyncDate];
-    if ((lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > ReaderPostDetailViewControllerRefreshTimeout) && self.post.isWPCom) {
-        [self syncWithUserInteraction:NO];
-    }
 
     // The first time the activity view controller is loaded, there is a bit of
     // processing that happens under the hood. This can cause a stutter
@@ -173,13 +169,12 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     // The performance hit only happens once so its fine to discard the controller
     // after it loads its view.
     [[self activityViewControllerForSharing] view];
-
-    [self.tableView reloadData];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     [super viewWillDisappear:animated];
-	
+
     if (IS_IPHONE) {
         self.savedScrollOffset = self.tableView.contentOffset;
     }
@@ -207,7 +202,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     }
 }
 
-
 #pragma mark - Actions
 
 - (void)dismissKeyboard:(id)sender
@@ -217,10 +211,9 @@ static CGFloat const SectionHeaderHeight = 25.0f;
             [self.view removeGestureRecognizer:gesture];
         }
     }
-    
+
     [self.inlineComposeView dismissComposer];
 }
-
 
 #pragma mark - View getters/builders
 
@@ -230,59 +223,14 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     self.postView = [[ReaderPostRichContentView alloc] initWithFrame:CGRectMake(0.0, 0.0, width, 1.0)]; // minimal frame so rich text will have initial layout.
     self.postView.translatesAutoresizingMaskIntoConstraints = NO;
     self.postView.delegate = self;
-    [self.postView configurePost:self.post];
     self.postView.backgroundColor = [UIColor whiteColor];
-
-    CGSize imageSize = CGSizeMake(WPContentViewAuthorAvatarSize, WPContentViewAuthorAvatarSize);
-    UIImage *image = [self.post cachedAvatarWithSize:imageSize];
-    if (image) {
-        [self.postView setAvatarImage:image];
-    } else {
-        [self.post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
-            [self.postView setAvatarImage:image];
-        }];
-    }
-
-    // Only show featured image if one exists and its not already in the post content.
-    NSURL *featuredImageURL = [self.post featuredImageURLForDisplay];
-    if (featuredImageURL) {
-        // If ReaderPostView has a featured image, show it unless you're showing full detail & featured image is in the post already
-        NSString *content = [self.post contentForDisplay];
-        if ([content rangeOfString:[featuredImageURL absoluteString]].length > 0) {
-            self.postView.alwaysHidesFeaturedImage = YES;
-        } else {
-            [self fetchFeaturedImage];
-        }
-    }
-}
-
-- (void)fetchFeaturedImage
-{
-    if (!self.featuredImageSource) {
-        CGFloat maxWidth = IS_IPAD ? WPTableViewFixedWidth : MAX(CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds));;
-        CGFloat maxHeight = maxWidth * WPContentViewMaxImageHeightPercentage;
-        self.featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
-        self.featuredImageSource.delegate = self;
-    }
-
-    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
-    CGFloat height = round(width * WPContentViewMaxImageHeightPercentage);
-    CGSize size = CGSizeMake(width, height);
-
-    NSURL *imageURL = [self.post featuredImageURLForDisplay];
-    UIImage *image = [self.featuredImageSource imageForURL:imageURL withSize:size];
-    if(image) {
-        [self.postView setFeaturedImage:image];
-    } else {
-        [self.featuredImageSource fetchImageForURL:imageURL
-                                          withSize:size
-                                         indexPath:[NSIndexPath indexPathForRow:0 inSection:0]
-                                         isPrivate:self.post.isPrivate];
-    }
 }
 
 - (void)configureTableHeaderView
 {
+    NSParameterAssert(self.postView);
+    NSParameterAssert(self.tableView);
+    
     UIView *tableHeaderView = [[UIView alloc] init];
     [tableHeaderView addSubview:self.postView];
 
@@ -316,17 +264,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     [self refreshHeightForTableHeaderView];
 }
 
-- (void)refreshHeightForTableHeaderView
-{
-    CGFloat marginTop = IS_IPAD ? WPTableViewTopMargin : 0;
-    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
-    CGSize size = [self.postView sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
-    CGFloat height = size.height + marginTop;
-    UIView *tableHeaderView = self.tableView.tableHeaderView;
-    tableHeaderView.frame = CGRectMake(0.0, 0.0, CGRectGetWidth(self.tableView.bounds), height);
-    self.tableView.tableHeaderView = tableHeaderView;
-}
-
 - (UIBarButtonItem *)shareButton
 {
     if (_shareButton) {
@@ -349,7 +286,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     if (_activityFooter) {
         return _activityFooter;
     }
-    
+
     CGRect rect = CGRectMake(145.0f, 10.0f, 30.0f, 30.0f);
     _activityFooter = [[UIActivityIndicatorView alloc] initWithFrame:rect];
     _activityFooter.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
@@ -360,6 +297,150 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     return _activityFooter;
 }
 
+
+#pragma mark View Refresh Helpers
+
+- (void)reloadData
+{
+    self.title = self.post.postTitle ?: NSLocalizedString(@"Reader", @"Placeholder title for ReaderPostDetails.");
+    
+    [self prepareComments];
+    
+    [self refreshPostView];
+    [self refreshHeightForTableHeaderView];
+    [self refreshCommentsIfNeeded];
+    [self refreshShareButton];
+}
+
+- (void)refreshPostView
+{
+    NSParameterAssert(self.postView);
+    
+    BOOL isLoaded = self.isLoaded;
+    self.postView.hidden = !isLoaded;
+    
+    if (!isLoaded) {
+        return;
+    }
+    
+    [self.postView configurePost:self.post];
+    
+    CGSize imageSize = CGSizeMake(WPContentViewAuthorAvatarSize, WPContentViewAuthorAvatarSize);
+    UIImage *image = [self.post cachedAvatarWithSize:imageSize];
+    if (image) {
+        [self.postView setAvatarImage:image];
+    } else {
+        [self.post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
+            [self.postView setAvatarImage:image];
+        }];
+    }
+    
+    // Only show featured image if one exists and its not already in the post content.
+    NSURL *featuredImageURL = [self.post featuredImageURLForDisplay];
+    if (featuredImageURL) {
+        // If ReaderPostView has a featured image, show it unless you're showing full detail & featured image is in the post already
+        // One URL might be http and the other https, so don't include the protocol in the check.
+        NSString *featuredImagePath = [[[featuredImageURL absoluteString] componentsSeparatedByString:@"://"] lastObject];
+        NSString *content = [self.post contentForDisplay];
+        if ([content rangeOfString:featuredImagePath].length > 0) {
+            self.postView.alwaysHidesFeaturedImage = YES;
+        } else {
+            [self fetchFeaturedImage];
+        }
+    }
+}
+
+- (void)fetchFeaturedImage
+{
+    if (!self.featuredImageSource) {
+        CGFloat maxWidth = IS_IPAD ? WPTableViewFixedWidth : MAX(CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds));;
+        CGFloat maxHeight = maxWidth * WPContentViewMaxImageHeightPercentage;
+        self.featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
+        self.featuredImageSource.delegate = self;
+    }
+    
+    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
+    CGFloat height = round(width * WPContentViewMaxImageHeightPercentage);
+    CGSize size = CGSizeMake(width, height);
+    
+    NSURL *imageURL = [self.post featuredImageURLForDisplay];
+    UIImage *image = [self.featuredImageSource imageForURL:imageURL withSize:size];
+    if(image) {
+        [self.postView setFeaturedImage:image];
+    } else {
+        [self.featuredImageSource fetchImageForURL:imageURL
+                                          withSize:size
+                                         indexPath:[NSIndexPath indexPathForRow:0 inSection:0]
+                                         isPrivate:self.post.isPrivate];
+    }
+}
+
+- (void)refreshHeightForTableHeaderView
+{
+    CGFloat marginTop = IS_IPAD ? WPTableViewTopMargin : 0;
+    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
+    CGSize size = [self.postView sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
+    CGFloat height = size.height + marginTop;
+    UIView *tableHeaderView = self.tableView.tableHeaderView;
+    tableHeaderView.frame = CGRectMake(0.0, 0.0, CGRectGetWidth(self.tableView.bounds), height);
+    self.tableView.tableHeaderView = tableHeaderView;
+}
+
+- (void)refreshCommentsIfNeeded
+{
+    // Hit the backend, if needed
+    BOOL isConnected    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] connectionAvailable];
+    NSDate *lastSynced  = self.lastSyncDate;
+    BOOL isRefreshTime  = (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow] > ReaderPostDetailViewControllerRefreshTimeout));
+    
+    if (isConnected && self.post.isWPCom && isRefreshTime) {
+        [self syncWithUserInteraction:NO];
+    }
+}
+
+- (void)refreshShareButton
+{
+    // Enable Share action only when the post is fully loaded
+    self.shareButton.enabled = self.isLoaded;
+}
+
+
+#pragma mark Lazy Loading Helpers
+
+- (void)setupWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    ReaderPostService *service      = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    __weak __typeof(self) weakSelf  = self;
+    
+    [WPNoResultsView displayAnimatedBoxWithTitle:NSLocalizedString(@"Loading Post...", @"Text displayed while loading a post.")
+                                         message:nil
+                                            view:self.view];
+    
+    [service deletePostsWithNoTopic];
+    [service fetchPost:postID.integerValue forSite:siteID.integerValue success:^(ReaderPost *post) {
+        
+        [[ContextManager sharedInstance] saveContext:context];
+        
+        weakSelf.post = post;
+        [weakSelf reloadData];
+
+        [WPNoResultsView removeFromView:weakSelf.view];
+        
+    } failure:^(NSError *error) {
+        DDLogError(@"[RestAPI] %@", error);
+
+        [WPNoResultsView displayAnimatedBoxWithTitle:NSLocalizedString(@"Error Loading Post", @"Text displayed when load post fails.")
+                                             message:nil
+                                                view:weakSelf.view];
+        
+    }];
+}
+
+- (BOOL)isLoaded
+{
+    return (self.post != nil);
+}
 
 #pragma mark - Comments
 
@@ -374,7 +455,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     [self.comments removeAllObjects];
 
     __block void(__unsafe_unretained ^flattenComments)(NSArray *) = ^void (NSArray *comments) {
-        // Ensure the array is correctly sorted. 
+        // Ensure the array is correctly sorted.
         comments = [comments sortedArrayUsingComparator: ^(id obj1, id obj2) {
             ReaderComment *a = obj1;
             ReaderComment *b = obj2;
@@ -406,7 +487,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf.tableView reloadData];
         });
-	});
+    });
 }
 
 - (UIActivityViewController *)activityViewControllerForSharing
@@ -463,7 +544,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 
 - (BOOL)isReplying
 {
-    return ([self.tableView indexPathForSelectedRow] != nil) ? YES : NO;
+    return [self.tableView indexPathForSelectedRow] != nil;
 }
 
 - (CGSize)tabBarSize
@@ -472,7 +553,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     if ([self tabBarController]) {
         tabBarSize = [[[self tabBarController] tabBar] bounds].size;
     }
-    
+
     return tabBarSize;
 }
 
@@ -503,21 +584,20 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 {
     // Obtain the reason why the movie playback finished
     NSNumber *finishReason = [[notification userInfo] objectForKey:MPMoviePlayerPlaybackDidFinishReasonUserInfoKey];
-    
+
     // Dismiss the view controller ONLY when the reason is not "playback ended"
     if ([finishReason intValue] != MPMovieFinishReasonPlaybackEnded) {
         MPMoviePlayerController *moviePlayer = [notification object];
-        
+
         // Remove this class from the observers
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:MPMoviePlayerPlaybackDidFinishNotification
                                                       object:moviePlayer];
-        
+
         // Dismiss the view controller
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
-
 
 #pragma mark - ReaderPostView delegate methods
 
@@ -580,17 +660,17 @@ static CGFloat const SectionHeaderHeight = 25.0f;
         DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
         [postView updateActionButtons];
     }];
-	[postView updateActionButtons];
+    [postView updateActionButtons];
 }
 
 - (void)postView:(ReaderPostContentView *)postView didReceiveCommentAction:(id)sender
 {
     [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
 
+    self.commentPublisher.post = self.post;
     self.commentPublisher.comment = nil;
     [self.inlineComposeView toggleComposer];
 }
-
 
 # pragma mark - Rich Text Delegate Methods
 
@@ -601,12 +681,12 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(ReaderImageView *)readerImageView
+- (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(WPRichTextImageControl *)imageControl
 {
     UIViewController *controller;
 
-    if (readerImageView.linkURL) {
-        NSString *url = [readerImageView.linkURL absoluteString];
+    if (imageControl.linkURL) {
+        NSString *url = [imageControl.linkURL absoluteString];
 
         BOOL matched = NO;
         NSArray *types = @[@".png", @".jpg", @".gif", @".jpeg"];
@@ -618,13 +698,13 @@ static CGFloat const SectionHeaderHeight = 25.0f;
         }
 
         if (matched) {
-            controller = [[WPImageViewController alloc] initWithImage:readerImageView.image andURL:readerImageView.linkURL];
+            controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image andURL:imageControl.linkURL];
         } else {
             controller = [[WPWebViewController alloc] init];
-            [(WPWebViewController *)controller setUrl:readerImageView.linkURL];
+            [(WPWebViewController *)controller setUrl:imageControl.linkURL];
         }
     } else {
-        controller = [[WPImageViewController alloc] initWithImage:readerImageView.image];
+        controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image];
     }
 
     if ([controller isKindOfClass:[WPImageViewController class]]) {
@@ -636,11 +716,11 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     }
 }
 
-- (void)richTextView:(WPRichTextView *)richTextView didReceiveVideoLinkAction:(ReaderVideoView *)readerVideoView
+- (void)richTextView:(WPRichTextView *)richTextView didReceiveVideoLinkAction:(WPRichTextVideoControl *)videoControl
 {
-    if (readerVideoView.contentType == ReaderVideoContentTypeVideo) {
+    if (!videoControl.isHTMLContent) {
+        MPMoviePlayerViewController *controller = [[MPMoviePlayerViewController alloc] initWithContentURL:videoControl.contentURL];
 
-        MPMoviePlayerViewController *controller = [[MPMoviePlayerViewController alloc] initWithContentURL:readerVideoView.contentURL];
         // Remove the movie player view controller from the "playback did finish" notification observers
         [[NSNotificationCenter defaultCenter] removeObserver:controller
                                                         name:MPMoviePlayerPlaybackDidFinishNotification
@@ -659,8 +739,8 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     } else {
         // Should either be an iframe, or an object embed. In either case a src attribute should have been parsed for the contentURL.
         // Assume this is content we can show and try to load it.
-        UIViewController *controller = [[WPWebVideoViewController alloc] initWithURL:readerVideoView.contentURL];
-        controller.title = (readerVideoView.title != nil) ? readerVideoView.title : @"Video";
+        UIViewController *controller = [[WPWebVideoViewController alloc] initWithURL:videoControl.contentURL];
+        controller.title = (videoControl.title != nil) ? videoControl.title : @"Video";
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
         navController.navigationBar.translucent = NO;
         navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -669,12 +749,11 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     }
 }
 
-- (void)richTextViewDidLoadAllMedia:(WPRichTextView *)richTextView
+- (void)richTextViewDidLoadMediaBatch:(WPRichTextView *)richTextView
 {
     [self.postView layoutIfNeeded];
     [self refreshHeightForTableHeaderView];
 }
-
 
 #pragma mark - RebloggingViewController Delegate Methods
 
@@ -682,7 +761,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 {
     [self.postView updateActionButtons];
 }
-
 
 #pragma mark - Sync methods
 
@@ -714,7 +792,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     if ([self.resultsController.fetchedObjects count] == 0) {
         return;
     }
-	
+
     if (self.loadingMore) {
         return;
     }
@@ -757,7 +835,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     [self prepareComments];
 }
 
-
 #pragma mark - Infinite Scrolling
 
 - (void)setInfiniteScrollEnabled:(BOOL)infiniteScrollEnabled
@@ -765,7 +842,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     if (infiniteScrollEnabled == self.infiniteScrollEnabled) {
         return;
     }
-	
+
     self.infiniteScrollEnabled = infiniteScrollEnabled;
     if (self.isViewLoaded) {
         if (self.infiniteScrollEnabled) {
@@ -789,7 +866,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     self.tableView.tableFooterView = nil;
     self.activityFooter = nil;
 }
-
 
 #pragma mark - UITableView Delegate Methods
 
@@ -882,11 +958,12 @@ static CGFloat const SectionHeaderHeight = 25.0f;
         return nil;
     }
 
+    self.commentPublisher.post = self.post;
     self.commentPublisher.comment = comment;
-
+    
     if ([self canComment]) {
         [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
-        
+
         [self.inlineComposeView displayComposer];
     }
 
@@ -948,7 +1025,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     }
 }
 
-
 #pragma mark - UIScrollView Delegate Methods
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -986,7 +1062,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     if (_resultsController != nil) {
         return _resultsController;
     }
-	
+
     NSString *entityName = @"ReaderComment";
     NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
 
@@ -995,21 +1071,21 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(post = %@) && (parentID = 0)", self.post];
     [fetchRequest setPredicate:predicate];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:YES];
-    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-    
+    [fetchRequest setSortDescriptors:@[sortDescriptor]];
+
     _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                              managedObjectContext:moc
                                                                sectionNameKeyPath:nil
                                                                         cacheName:nil];
-    
+
     _resultsController.delegate = self;
-	
+
     NSError *error = nil;
     if (![_resultsController performFetch:&error]) {
         DDLogError(@"%@ couldn't fetch %@: %@", self, entityName, [error localizedDescription]);
         _resultsController = nil;
     }
-    
+
     return _resultsController;
 }
 
@@ -1032,7 +1108,6 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     // noop
 }
 
-
 #pragma mark - MFMailComposeViewControllerDelegate
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
@@ -1053,7 +1128,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
             [subview becomeFirstResponder];
             return YES;
         }
-        
+
         if ([subview.subviews count] > 0) {
             if ([self setMFMailFieldAsFirstResponder:subview mfMailField:field]){
                 //Field was found and made first responder in a subview
@@ -1061,11 +1136,10 @@ static CGFloat const SectionHeaderHeight = 25.0f;
             }
         }
     }
-    
+
     //field not found in this view.
     return NO;
 }
-
 
 #pragma mark - WPTableImageSource Delegate
 

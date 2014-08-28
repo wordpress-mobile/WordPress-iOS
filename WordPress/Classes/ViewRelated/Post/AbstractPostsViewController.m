@@ -112,11 +112,8 @@ NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier
         cell = [tableView dequeueReusableCellWithIdentifier:NoFeaturedImageCellIdentifier];
     }
 
-    if (self.tableView.isEditing) {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-    } else {
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.accessoryType = UITableViewCellAccessoryNone;
 
     [self configureCell:cell atIndexPath:indexPath];
 
@@ -183,11 +180,13 @@ NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier
 #pragma mark - Subclass Methods
 
 // Subclasses should override
-- (Class)cellClass {
+- (Class)cellClass
+{
     return [AbstractPostTableViewCell class];
 }
 
-- (void)configureCell:(AbstractPostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+- (void)configureCell:(AbstractPostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
     // noop. Subclasses should override.
 }
 

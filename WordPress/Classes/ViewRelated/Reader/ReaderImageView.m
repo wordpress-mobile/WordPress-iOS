@@ -4,13 +4,12 @@
 @implementation ReaderImageView
 
 - (void)setImageWithURL:(NSURL *)url
-	   placeholderImage:(UIImage *)image
-				success:(void (^)(ReaderMediaView *))success
-				failure:(void (^)(ReaderMediaView *, NSError *))failure {
+       placeholderImage:(UIImage *)image
+                success:(void (^)(ReaderMediaView *))success
+                failure:(void (^)(ReaderMediaView *, NSError *))failure {
 
-	self.contentURL = url;
-	[super setImageWithURL:url placeholderImage:image success:success failure:failure];
+    self.contentURL = url;
+    [super setImageWithURL:url placeholderImage:image success:success failure:failure];
 }
-
 
 @end

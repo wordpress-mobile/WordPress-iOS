@@ -7,7 +7,8 @@
 
 #pragma mark - Private Methods
 
-- (WPContentViewBase *)configurePostView {
+- (WPContentViewBase *)configurePostView
+{
     ReaderPostContentView *postView = [[ReaderPostContentView alloc] init];
     postView.translatesAutoresizingMaskIntoConstraints = NO;
     postView.backgroundColor = [UIColor whiteColor];

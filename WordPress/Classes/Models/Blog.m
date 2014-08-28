@@ -12,26 +12,34 @@ static NSInteger const ImageSizeMediumHeight = 360;
 static NSInteger const ImageSizeLargeWidth = 640;
 static NSInteger const ImageSizeLargeHeight = 480;
 
-@interface Blog (PrivateMethods)
-
-@property (readwrite, assign) BOOL reachable;
-
-@end
-
-
 @implementation Blog {
     WPXMLRPCClient *_api;
     NSString *_blavatarUrl;
-    Reachability *_reachability;
-    BOOL _isReachable;
 }
 
-@dynamic blogID, blogName, url, xmlrpc, apiKey;
-@dynamic hasOlderPosts, hasOlderPages;
-@dynamic posts, categories, comments, themes, media;
+@dynamic blogID;
+@dynamic blogName;
+@dynamic url;
+@dynamic xmlrpc;
+@dynamic apiKey;
+@dynamic hasOlderPosts;
+@dynamic hasOlderPages;
+@dynamic posts;
+@dynamic categories;
+@dynamic comments;
+@dynamic themes;
+@dynamic media;
 @dynamic currentThemeId;
-@dynamic lastPostsSync, lastStatsSync, lastPagesSync, lastCommentsSync, lastUpdateWarning;
-@dynamic geolocationEnabled, options, postFormats, isActivated, visible;
+@dynamic lastPostsSync;
+@dynamic lastStatsSync;
+@dynamic lastPagesSync;
+@dynamic lastCommentsSync;
+@dynamic lastUpdateWarning;
+@dynamic geolocationEnabled;
+@dynamic options;
+@dynamic postFormats;
+@dynamic isActivated;
+@dynamic visible;
 @dynamic account;
 @dynamic jetpackAccount;
 @synthesize isSyncingPosts;
@@ -42,24 +50,15 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 #pragma mark - NSManagedObject subclass methods
 
-- (void)didTurnIntoFault {
+- (void)didTurnIntoFault
+{
     [super didTurnIntoFault];
-    
+
     // Clean up instance variables
     _blavatarUrl = nil;
     _api = nil;
-    [_reachability stopNotifier];
-    _reachability = nil;
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
 
-- (void)awakeFromFetch {
-    [super awakeFromFetch];
-    
-    if (!self.isDeleted) {
-        [self reachability];
-    }
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark -
@@ -67,15 +66,15 @@ static NSInteger const ImageSizeLargeHeight = 480;
 - (BOOL)geolocationEnabled
 {
     BOOL tmpValue;
-    
+
     [self willAccessValueForKey:@"geolocationEnabled"];
     tmpValue = [[self primitiveValueForKey:@"geolocationEnabled"] boolValue];
     [self didAccessValueForKey:@"geolocationEnabled"];
-    
+
     return tmpValue;
 }
 
-- (void)setGeolocationEnabled:(BOOL)value 
+- (void)setGeolocationEnabled:(BOOL)value
 {
     [self willChangeValueForKey:@"geolocationEnabled"];
     [self setPrimitiveValue:[NSNumber numberWithBool:value] forKey:@"geolocationEnabled"];
@@ -85,21 +84,23 @@ static NSInteger const ImageSizeLargeHeight = 480;
 #pragma mark -
 #pragma mark Custom methods
 
-- (NSString *)blavatarUrl {
-	if (_blavatarUrl == nil) {
+- (NSString *)blavatarUrl
+{
+    if (_blavatarUrl == nil) {
         NSString *hostUrl = [[NSURL URLWithString:self.xmlrpc] host];
         if (hostUrl == nil) {
             hostUrl = self.xmlrpc;
         }
-		
+
         _blavatarUrl = hostUrl;
     }
 
     return _blavatarUrl;
 }
 
-// used as a key to store passwords, if you change the algorithm, logins will break
-- (NSString *)displayURL {
+// Used as a key to store passwords, if you change the algorithm, logins will break
+- (NSString *)displayURL
+{
     NSString *url = [NSURL IDNDecodedHostname:self.url];
     NSAssert(url != nil, @"Decoded url shouldn't be nil");
     if (url == nil) {
@@ -109,14 +110,16 @@ static NSInteger const ImageSizeLargeHeight = 480;
     NSError *error = nil;
     NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"http(s?)://" options:NSRegularExpressionCaseInsensitive error:&error];
     NSString *result = [NSString stringWithFormat:@"%@", [protocol stringByReplacingMatchesInString:url options:0 range:NSMakeRange(0, [url length]) withTemplate:@""]];
-    
-    if([result hasSuffix:@"/"])
+
+    if ([result hasSuffix:@"/"]) {
         result = [result substringToIndex:[result length] - 1];
-    
+    }
+
     return result;
 }
 
-- (NSString *)hostURL {
+- (NSString *)hostURL
+{
     return [self displayURL];
 }
 
@@ -129,7 +132,8 @@ static NSInteger const ImageSizeLargeHeight = 480;
     return homeURL;
 }
 
-- (NSString *)hostname {
+- (NSString *)hostname
+{
     NSString *hostname = [[NSURL URLWithString:self.xmlrpc] host];
     if (hostname == nil) {
         NSError *error = nil;
@@ -141,14 +145,15 @@ static NSInteger const ImageSizeLargeHeight = 480;
     // This can break reachibility (among other things) for the blog.
     // As a saftey net, make sure we drop any path component before returning the hostname.
     NSArray *parts = [hostname componentsSeparatedByString:@"/"];
-    if([parts count] > 0) {
-        hostname = [parts objectAtIndex:0];
+    if (parts.count) {
+        hostname = [parts firstObject];
     }
-    
+
     return hostname;
 }
 
-- (NSString *)loginUrl {
+- (NSString *)loginUrl
+{
     NSString *loginUrl = [self getOptionValue:@"login_url"];
     if (!loginUrl) {
         loginUrl = [self urlWithPath:@"wp-login.php"];
@@ -156,13 +161,15 @@ static NSInteger const ImageSizeLargeHeight = 480;
     return loginUrl;
 }
 
-- (NSString *)urlWithPath:(NSString *)path {
+- (NSString *)urlWithPath:(NSString *)path
+{
     NSError *error = nil;
     NSRegularExpression *xmlrpc = [NSRegularExpression regularExpressionWithPattern:@"xmlrpc.php$" options:NSRegularExpressionCaseInsensitive error:&error];
     return [xmlrpc stringByReplacingMatchesInString:self.xmlrpc options:0 range:NSMakeRange(0, [self.xmlrpc length]) withTemplate:path];
 }
 
-- (NSString *)adminUrlWithPath:(NSString *)path {
+- (NSString *)adminUrlWithPath:(NSString *)path
+{
     NSString *adminBaseUrl = [self getOptionValue:@"admin_url"];
     if (!adminBaseUrl) {
         adminBaseUrl = [self urlWithPath:@"wp-admin/"];
@@ -173,7 +180,8 @@ static NSInteger const ImageSizeLargeHeight = 480;
     return [NSString stringWithFormat:@"%@%@", adminBaseUrl, path];
 }
 
-- (NSUInteger)numberOfPendingComments{
+- (NSUInteger)numberOfPendingComments
+{
     NSUInteger pendingComments = 0;
     if ([self hasFaultForRelationshipNamed:@"comments"]) {
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Comment"];
@@ -183,26 +191,29 @@ static NSInteger const ImageSizeLargeHeight = 480;
         pendingComments = [self.managedObjectContext countForFetchRequest:request error:&error];
     } else {
         for (Comment *element in self.comments) {
-            if ( [@"hold" isEqualToString: element.status] )
+            if ( [@"hold" isEqualToString: element.status] ) {
                 pendingComments++;
+            }
         }
     }
-    
+
     return pendingComments;
 }
 
--(NSArray *)sortedCategories {
-	NSSortDescriptor *sortNameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"categoryName" 
-																		ascending:YES 
-																		 selector:@selector(caseInsensitiveCompare:)];
-	NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortNameDescriptor, nil];
-	
-	return [[self.categories allObjects] sortedArrayUsingDescriptors:sortDescriptors];
+- (NSArray *)sortedCategories
+{
+    NSSortDescriptor *sortNameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"categoryName"
+                                                                        ascending:YES
+                                                                         selector:@selector(caseInsensitiveCompare:)];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortNameDescriptor, nil];
+
+    return [[self.categories allObjects] sortedArrayUsingDescriptors:sortDescriptors];
 }
 
-- (NSArray *)sortedPostFormatNames {
+- (NSArray *)sortedPostFormatNames
+{
     NSMutableArray *sortedNames = [NSMutableArray arrayWithCapacity:[self.postFormats count]];
-    
+
     if ([self.postFormats count] != 0) {
         id standardPostFormat = [self.postFormats objectForKey:@"standard"];
         if (standardPostFormat) {
@@ -214,22 +225,23 @@ static NSInteger const ImageSizeLargeHeight = 480;
             }
         }];
     }
-    
+
     return [NSArray arrayWithArray:sortedNames];
 }
 
-- (BOOL)isWPcom {
+- (BOOL)isWPcom
+{
     return self.account.isWpcom;
 }
 
-//WP.COM private blog. 
-- (BOOL)isPrivate {
-    if ( [self isWPcom] && [[self getOptionValue:@"blog_public"] isEqual:@"-1"] )
-        return YES;
-    return NO;
+// WP.COM private blog.
+- (BOOL)isPrivate
+{
+    return (self.isWPcom && [[self getOptionValue:@"blog_public"] isEqualToString:@"-1"]);
 }
 
-- (NSDictionary *)getImageResizeDimensions{
+- (NSDictionary *)getImageResizeDimensions
+{
     CGSize smallSize, mediumSize, largeSize;
     CGFloat smallSizeWidth = [[self getOptionValue:@"thumbnail_size_w"] floatValue] > 0 ? [[self getOptionValue:@"thumbnail_size_w"] floatValue] : ImageSizeSmallWidth;
     CGFloat smallSizeHeight = [[self getOptionValue:@"thumbnail_size_h"] floatValue] > 0 ? [[self getOptionValue:@"thumbnail_size_h"] floatValue] : ImageSizeSmallHeight;
@@ -237,27 +249,25 @@ static NSInteger const ImageSizeLargeHeight = 480;
     CGFloat mediumSizeHeight = [[self getOptionValue:@"medium_size_h"] floatValue] > 0 ? [[self getOptionValue:@"medium_size_h"] floatValue] : ImageSizeMediumHeight;
     CGFloat largeSizeWidth = [[self getOptionValue:@"large_size_w"] floatValue] > 0 ? [[self getOptionValue:@"large_size_w"] floatValue] : ImageSizeLargeWidth;
     CGFloat largeSizeHeight = [[self getOptionValue:@"large_size_h"] floatValue] > 0 ? [[self getOptionValue:@"large_size_h"] floatValue] : ImageSizeLargeHeight;
-    
+
     smallSize = CGSizeMake(smallSizeWidth, smallSizeHeight);
     mediumSize = CGSizeMake(mediumSizeWidth, mediumSizeHeight);
     largeSize = CGSizeMake(largeSizeWidth, largeSizeHeight);
-    
+
     return @{@"smallSize": [NSValue valueWithCGSize:smallSize],
              @"mediumSize": [NSValue valueWithCGSize:mediumSize],
              @"largeSize": [NSValue valueWithCGSize:largeSize]};
 }
 
-
-- (void)dataSave {
+- (void)dataSave
+{
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
-- (void)remove {
+- (void)remove
+{
     DDLogInfo(@"<Blog:%@> remove", self.hostURL);
     [self.api cancelAllHTTPOperations];
-    _reachability.reachableBlock = nil;
-    _reachability.unreachableBlock = nil;
-    [_reachability stopNotifier];
     [self.managedObjectContext performBlock:^{
         WPAccount *account = self.account;
 
@@ -274,7 +284,8 @@ static NSInteger const ImageSizeLargeHeight = 480;
     }];
 }
 
-- (void)setXmlrpc:(NSString *)xmlrpc {
+- (void)setXmlrpc:(NSString *)xmlrpc
+{
     [self willChangeValueForKey:@"xmlrpc"];
     [self setPrimitiveValue:xmlrpc forKey:@"xmlrpc"];
     [self didChangeValueForKey:@"xmlrpc"];
@@ -284,7 +295,8 @@ static NSInteger const ImageSizeLargeHeight = 480;
      _api = nil;
 }
 
-- (NSArray *)getXMLRPCArgsWithExtra:(id)extra {
+- (NSArray *)getXMLRPCArgsWithExtra:(id)extra
+{
     NSMutableArray *result = [NSMutableArray array];
     NSString *password = self.password;
     if (!password) {
@@ -293,80 +305,59 @@ static NSInteger const ImageSizeLargeHeight = 480;
     [result addObject:self.blogID];
     [result addObject:self.username];
     [result addObject:password];
-    
+
     if ([extra isKindOfClass:[NSArray class]]) {
         [result addObjectsFromArray:extra];
     } else if (extra != nil) {
         [result addObject:extra];
     }
-    
+
     return [NSArray arrayWithArray:result];
 }
 
-- (NSString *)version {
+- (NSString *)version
+{
     return [self getOptionValue:@"software_version"];
 }
 
-- (Reachability *)reachability {
-    if (_reachability == nil) {
-        _reachability = [Reachability reachabilityWithHostname:self.hostname];
-        __weak Blog *blog = self;
-        blog.reachable = YES;
-        _reachability.reachableBlock = ^(Reachability *reach) {
-            blog.reachable = YES;
-        };
-        _reachability.unreachableBlock = ^(Reachability *reach) {
-            blog.reachable = NO;
-        };
-        [_reachability startNotifier];
-    }
-    
-    return _reachability;
-}
-
-- (BOOL)reachable {
-    // Creates reachability object if it's nil
-    [self reachability];
-    return _isReachable;
-}
-
-- (void)setReachable:(BOOL)reachable {
-    _isReachable = reachable;
-}
-
-- (NSString *)username {
+- (NSString *)username
+{
     [self willAccessValueForKey:@"username"];
-    
+
     NSString *username = self.account.username ?: @"";
-    
+
     [self didAccessValueForKey:@"username"];
-    
+
     return username;
 }
 
-- (NSString *)password {
+- (NSString *)password
+{
     WPAccount *account = self.account;
     NSString *password = account.password ?: @"";
-    
+
     return password;
 }
 
-- (BOOL)supportsFeaturedImages {
+- (BOOL)supportsFeaturedImages
+{
     id hasSupport = [self getOptionValue:@"post_thumbnail"];
     if (hasSupport) {
         return [hasSupport boolValue];
     }
-    
+
     return NO;
 }
 
-- (NSNumber *)dotComID {
+- (NSNumber *)dotComID
+{
     return self.blogID;
 }
 
 #pragma mark - api accessor
 
-- (WPXMLRPCClient *)api {
+- (WPXMLRPCClient *)api
+{
     if (_api == nil) {
         _api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:self.xmlrpc]];
         // Enable compression for wp.com only, as some self hosted have connection issues
@@ -378,8 +369,9 @@ static NSInteger const ImageSizeLargeHeight = 480;
     return _api;
 }
 
-- (WordPressComApi *)restApi {
-    if ([self isWPcom]) {
+- (WordPressComApi *)restApi
+{
+    if (self.isWPcom) {
         return self.account.restApi;
     } else if (self.jetpackAccount) {
         return self.jetpackAccount.restApi;
@@ -389,7 +381,8 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 #pragma mark - Private Methods
 
-- (id)getOptionValue:(NSString *) name {
+- (id)getOptionValue:(NSString *)name
+{
     __block id optionValue;
     [self.managedObjectContext performBlockAndWait:^{
         if ( self.options == nil || (self.options.count == 0) ) {
@@ -398,7 +391,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
         NSDictionary *currentOption = [self.options objectForKey:name];
         optionValue = currentOption[@"value"];
     }];
-	return optionValue;
+    return optionValue;
 }
 
 @end

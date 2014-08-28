@@ -2,6 +2,7 @@
 
 const CGFloat WPContentAttributionViewAvatarSize = 32.0;
 const CGFloat WPContentAttributionLabelHeight = 18.0;
+const CGFloat WPContentAttributionMenuSize = 30.0;
 
 @implementation WPContentAttributionView
 
@@ -19,11 +20,14 @@ const CGFloat WPContentAttributionLabelHeight = 18.0;
     if (self) {
         [self setupSubviews];
 
+        _attributionMenuButton = [self buttonForAttributionMenu];
+        [self addSubview:self.attributionMenuButton];
+
+
         [self configureConstraints];
     }
     return self;
 }
-
 
 #pragma mark - Public Methods
 
@@ -53,32 +57,42 @@ const CGFloat WPContentAttributionLabelHeight = 18.0;
     [self.attributionLinkButton setSelected:select];
 }
 
+- (void)hideAttributionMenu:(BOOL)hide
+{
+    self.attributionMenuButton.hidden = hide;
+}
+
 
 #pragma mark - Private Methods
 
 - (void)configureConstraints
 {
-    NSDictionary *views = NSDictionaryOfVariableBindings(_avatarImageView, _attributionNameLabel, _attributionLinkButton);
+    NSDictionary *views = NSDictionaryOfVariableBindings(_avatarImageView, _attributionNameLabel, _attributionLinkButton, _attributionMenuButton);
     NSDictionary *metrics = @{@"avatarSize": @(WPContentAttributionViewAvatarSize),
-                              @"labelHeight":@(WPContentAttributionLabelHeight)};
+                              @"labelHeight":@(WPContentAttributionLabelHeight),
+                              @"menuSize":@(WPContentAttributionMenuSize)};
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_avatarImageView(avatarSize)]"
-                                                                 options:NSLayoutFormatAlignAllTop
+                                                                 options:0
                                                                  metrics:metrics
                                                                    views:views]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_avatarImageView(avatarSize)]"
-                                                                 options:NSLayoutFormatAlignAllLeft
+                                                                 options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-40-[_attributionNameLabel]|"
-                                                                 options:NSLayoutFormatAlignAllTop
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-40-[_attributionNameLabel][_attributionMenuButton(menuSize)]|"
+                                                                 options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-40-[_attributionLinkButton]|"
-                                                                 options:NSLayoutFormatAlignAllBottom
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-40-[_attributionLinkButton(>=100)]-(>=10)-[_attributionMenuButton]|"
+                                                                 options:0
                                                                  metrics:metrics
                                                                    views:views]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(-2)-[_attributionNameLabel(labelHeight)][_attributionLinkButton(labelHeight)]"
                                                                  options:NSLayoutFormatAlignAllLeft
+                                                                 metrics:metrics
+                                                                   views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_attributionMenuButton]|"
+                                                                 options:0
                                                                  metrics:metrics
                                                                    views:views]];
     [super setNeedsUpdateConstraints];
@@ -96,7 +110,6 @@ const CGFloat WPContentAttributionLabelHeight = 18.0;
     [self.attributionLinkButton setTitle:[self.contentProvider blogNameForDisplay] forState:UIControlStateNormal];
     [self.attributionLinkButton setTitle:[self.contentProvider blogNameForDisplay] forState:UIControlStateHighlighted];
 }
-
 
 #pragma mark - Subview factories
 
@@ -145,6 +158,18 @@ const CGFloat WPContentAttributionLabelHeight = 18.0;
     return button;
 }
 
+- (UIButton *)buttonForAttributionMenu
+{
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.translatesAutoresizingMaskIntoConstraints = NO;
+    [button setImage:[UIImage imageNamed:@"icon-menu-ellipsis"] forState:UIControlStateNormal];
+    button.hidden = YES; // Hidden by default.
+
+    [button addTarget:self action:@selector(attributionMenuAction:) forControlEvents:UIControlEventTouchUpInside];
+
+    return button;
+}
+
 - (UIView *)viewForBorderView
 {
     UIView *borderView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -153,13 +178,19 @@ const CGFloat WPContentAttributionLabelHeight = 18.0;
     return borderView;
 }
 
-
 #pragma mark - Actions
 
 - (void)attributionButtonAction:(id)sender
 {
     if (self.delegate && [self.delegate respondsToSelector:@selector(attributionView:didReceiveAttributionLinkAction:)]) {
         [self.delegate attributionView:self didReceiveAttributionLinkAction:sender];
+    }
+}
+
+- (void)attributionMenuAction:(id)sender
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(attributionView:didReceiveAttributionMenuAction:)]) {
+        [self.delegate attributionView:self didReceiveAttributionMenuAction:sender];
     }
 }
 
