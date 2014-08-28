@@ -42,21 +42,25 @@ import Foundation
     public var isLikeEnabled: Bool = false {
         didSet {
             setupButtonConstraints(btnLike, enabled: isLikeEnabled)
+            updateBottomSpacingIfNeeded()
         }
     }
     public var isApproveEnabled: Bool = false {
         didSet {
             setupButtonConstraints(btnApprove, enabled: isApproveEnabled)
+            updateBottomSpacingIfNeeded()
         }
     }
     public var isTrashEnabled: Bool = false {
         didSet {
             setupButtonConstraints(btnTrash, enabled: isTrashEnabled)
+            updateBottomSpacingIfNeeded()
         }
     }
     public var isMoreEnabled: Bool = false {
         didSet {
             setupButtonConstraints(btnMore, enabled: isMoreEnabled)
+            updateBottomSpacingIfNeeded()
         }
     }
     public var isLikeOn: Bool = false {
@@ -163,6 +167,7 @@ import Foundation
     }
     
     private func setupButtonConstraints(button: UIButton, enabled: Bool) {
+        // When disabled, let's hide the button by shrinking it's width
         let width    : CGFloat  = enabled ? buttonWidth     : CGFloat.min
         let trailing : CGFloat  = enabled ? buttonTrailing  : CGFloat.min
         
@@ -175,9 +180,27 @@ import Foundation
         button.enabled  = enabled
     }
 
+    private func updateBottomSpacingIfNeeded() {
+        //  Note:
+        //  =====
+        //
+        //  When all of the buttons are disabled, let's remove the bottom space.
+        //  Since all of the action buttons are linked to the more button, affecting that one will
+        //  effectively reflect on the rest
+        //
+        let hasButtonsEnabled   = isLikeEnabled || isTrashEnabled || isApproveEnabled || isMoreEnabled
+        let moreTop             = hasButtonsEnabled ? buttonTop     : CGFloat.min
+        let moreHeight          = hasButtonsEnabled ? buttonHeight  : CGFloat.min
+        
+        contentView.updateConstraintForView(btnMore, attribute: .Top, constant: moreTop)
+        btnMore.updateConstraint(.Height, constant: moreHeight)
+        setNeedsLayout()
+    }
+    
     // MARK: - Constants
     private let buttonWidth                         : CGFloat   = 55
     private let buttonHeight                        : CGFloat   = 30
+    private let buttonTop                           : CGFloat   = 20
     private let buttonTrailing                      : CGFloat   = 20
     private let firstLineHeadIndent                 : CGFloat   = 43
     
