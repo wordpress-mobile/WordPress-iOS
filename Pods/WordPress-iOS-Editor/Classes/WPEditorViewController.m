@@ -9,9 +9,9 @@
 #import "HRColorUtil.h"
 #import "UIWebView+GUIFixes.h"
 #import "WPEditorToolbarButton.h"
+#import "WPEditorView.h"
 #import "WPInsetTextField.h"
 #import "ZSSBarButtonItem.h"
-#import "ZSSTextView.h"
 
 CGFloat const EPVCTextfieldHeight = 44.0f;
 CGFloat const EPVCStandardOffset = 10.0;
@@ -61,8 +61,6 @@ typedef enum
 @property (nonatomic, strong) UIScrollView *toolBarScroll;
 @property (nonatomic, strong) UIToolbar *toolbar;
 @property (nonatomic, strong) NSString *htmlString;
-@property (nonatomic, strong) ZSSTextView *sourceView;
-@property (assign) BOOL resourcesLoaded;
 @property (nonatomic, strong) NSString *editorPlaceholderText;
 @property (nonatomic, strong) NSArray *editorItemsEnabled;
 @property (nonatomic, strong) UIAlertView *alertView;
@@ -79,8 +77,7 @@ typedef enum
 @property (nonatomic, assign, readwrite) BOOL wasEditing;
 
 #pragma mark - Properties: Editor View
-@property (nonatomic, strong, readwrite) UIWebView *editorView;
-@property (nonatomic, assign, readwrite) BOOL editorViewIsEditing;
+@property (nonatomic, strong, readwrite) WPEditorView *editorView;
 
 #pragma mark - Properties: Title Text View
 @property (nonatomic, strong) WPInsetTextField *titleTextField;
@@ -1107,9 +1104,7 @@ typedef enum
         [self.toolbarHolder addSubview:[self rightToolbarHolder]];
     }
 	
-	self.editorView.usesGUIFixes = YES;
-	self.editorView.customInputAccessoryView = self.toolbarHolder;
-	self.sourceView.inputAccessoryView = self.toolbarHolder;
+	[self.editorView setInputAccessoryView:self.toolbarHolder];
 	self.titleTextField.inputAccessoryView = self.toolbarHolder;
     
     // Check to see if we have any toolbar items, if not, add them all
@@ -1169,28 +1164,13 @@ typedef enum
     // Editor View
     frame = CGRectMake(0.0f, frame.size.height, viewWidth, CGRectGetHeight(self.view.frame) - EPVCTextfieldHeight);
     if (!self.editorView) {
-        self.editorView = [[UIWebView alloc] initWithFrame:frame];
+        self.editorView = [[WPEditorView alloc] initWithFrame:frame];
         self.editorView.delegate = self;
         self.editorView.autoresizesSubviews = YES;
         self.editorView.autoresizingMask = mask;
-        self.editorView.scalesPageToFit = YES;
-        self.editorView.dataDetectorTypes = UIDataDetectorTypeNone;
-        self.editorView.scrollView.bounces = NO;
         self.editorView.backgroundColor = [UIColor whiteColor];
     }
     [self.view addSubview:self.editorView];
-    
-    // Source View
-    if (!self.sourceView) {
-        self.sourceView = [[ZSSTextView alloc] initWithFrame:frame];
-        self.sourceView.hidden = YES;
-        self.sourceView.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        self.sourceView.autocorrectionType = UITextAutocorrectionTypeNo;
-        self.sourceView.autoresizingMask =  UIViewAutoresizingFlexibleHeight;
-        self.sourceView.autoresizesSubviews = YES;
-        self.sourceView.delegate = self;
-    }
-    [self.view addSubview:self.sourceView];
 }
 
 #pragma mark - Getters and Setters
@@ -1207,12 +1187,12 @@ typedef enum
 
 - (NSString*)bodyText
 {
-    return [self getHTML];
+    return [self.editorView getHTML];
 }
 
-- (void) setBodyText:(NSString*)bodyText
+- (void)setBodyText:(NSString*)bodyText
 {
-    [self setHtml:bodyText];
+    [self.editorView setHtml:bodyText];
     [self refreshUI];
 }
 
@@ -1232,7 +1212,7 @@ typedef enum
     if (self.didFinishLoadingEditor) {
 		
 		if (!self.isEditing && [self isBodyTextEmpty]) {
-			[self setHtml:self.editorPlaceholderText];
+			[self.editorView setHtml:self.editorPlaceholderText];
 		}
     }
 }
@@ -1270,17 +1250,8 @@ typedef enum
 	
 	if (self.didFinishLoadingEditor)
 	{
-		[self enableEditingInHTMLEditor];
+		[self.editorView enableEditing];
 	}
-}
-
-- (void)enableEditingInHTMLEditor
-{
-	NSAssert(self.editingEnabled,
-			 @"This method should not be called directly, unless you know editingEnabled is configured already.");
-	
-	NSString *js = [NSString stringWithFormat:@"zss_editor.enableEditing();"];
-	[self.editorView stringByEvaluatingJavaScriptFromString:js];
 }
 
 /**
@@ -1292,17 +1263,8 @@ typedef enum
 	
 	if (self.didFinishLoadingEditor)
 	{
-		[self disableEditingInHTMLEditor];
+		[self.editorView disableEditing];
 	}
-}
-
-- (void)disableEditingInHTMLEditor
-{
-	NSAssert(!self.editingEnabled,
-			 @"This method should not be called directly, unless you know editingEnabled is configured already.");
-	
-	NSString *js = [NSString stringWithFormat:@"zss_editor.disableEditing();"];
-	[self.editorView stringByEvaluatingJavaScriptFromString:js];
 }
 
 - (void)startEditing
@@ -1333,299 +1295,148 @@ typedef enum
 	[self tellOurDelegateEditingDidEnd];
 }
 
-#pragma mark - Editor focus
-
-- (void)focusTextEditor
-{
-    self.editorView.keyboardDisplayRequiresUserAction = NO;
-    NSString *js = [NSString stringWithFormat:@"zss_editor.focusEditor();"];
-    [self.editorView stringByEvaluatingJavaScriptFromString:js];
-}
-
-- (void)blurTextEditor
-{
-    NSString *js = [NSString stringWithFormat:@"zss_editor.blurEditor();"];
-    [self.editorView stringByEvaluatingJavaScriptFromString:js];
-}
-
 #pragma mark - Editor Interaction
-
-// Sets the HTML for the entire editor
-- (void)setHtml:(NSString *)html
-{
-    if (!self.resourcesLoaded) {
-        NSString *filePath = [[NSBundle mainBundle] pathForResource:@"editor" ofType:@"html"];
-        NSData *htmlData = [NSData dataWithContentsOfFile:filePath];
-        NSString *htmlString = [[NSString alloc] initWithData:htmlData encoding:NSUTF8StringEncoding];
-        NSString *jQueryMobileEventsPath = [[NSBundle mainBundle] pathForResource:@"jquery.mobile-events.min" ofType:@"js"];
-        NSString *jQueryMobileEvents = [[NSString alloc] initWithData:[NSData dataWithContentsOfFile:jQueryMobileEventsPath] encoding:NSUTF8StringEncoding];
-        NSString *source = [[NSBundle mainBundle] pathForResource:@"ZSSRichTextEditor" ofType:@"js"];
-        NSString *jsString = [[NSString alloc] initWithData:[NSData dataWithContentsOfFile:source] encoding:NSUTF8StringEncoding];
-		htmlString = [htmlString stringByReplacingOccurrencesOfString:@"<!--jquery-mobile-events-->" withString:jQueryMobileEvents];
-        htmlString = [htmlString stringByReplacingOccurrencesOfString:@"<!--editor-->" withString:jsString];
-        htmlString = [htmlString stringByReplacingOccurrencesOfString:@"<!--content-->" withString:html];
-        
-        [self.editorView loadHTMLString:htmlString baseURL:self.baseURL];
-        self.resourcesLoaded = YES;
-    }
-    
-    self.sourceView.text = html;
-    NSString *cleanedHTML = [self removeQuotesFromHTML:self.sourceView.text];
-	NSString *trigger = [NSString stringWithFormat:@"zss_editor.setHTML(\"%@\");", cleanedHTML];
-	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-}
-
-// Inserts HTML at the caret position
-- (void)insertHTML:(NSString *)html
-{
-    NSString *cleanedHTML = [self removeQuotesFromHTML:html];
-    NSString *trigger = [NSString stringWithFormat:@"zss_editor.insertHTML(\"%@\");", cleanedHTML];
-    [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-}
-
-- (NSString *)getHTML
-{
-    NSString *html = [self.editorView stringByEvaluatingJavaScriptFromString:@"zss_editor.getHTML();"];
-//    html = [self removeQuotesFromHTML:html];
-//    html = [self tidyHTML:html];
-	return html;
-}
 
 - (void)dismissKeyboard
 {
-    [self.editorView stringByEvaluatingJavaScriptFromString:@"document.activeElement.blur()"];
-    [self.sourceView resignFirstResponder];
+	[self.editorView resignFirstResponder];
     [self.view endEditing:YES];
 }
 
 - (void)showHTMLSource:(UIBarButtonItem *)barButtonItem
 {
-    if (self.sourceView.hidden) {
-        self.sourceView.text = [self getHTML];
-        self.sourceView.hidden = NO;
+    if ([self.editorView isInVisualMode]) {
+		[self.editorView showHTMLSource];
+		
         barButtonItem.tintColor = [self barButtonItemSelectedDefaultColor];
-        self.editorView.hidden = YES;
         [self enableToolbarItems:NO shouldShowSourceButton:YES];
     } else {
-        [self setHtml:self.sourceView.text];
+		[self.editorView showVisualEditor];
+		
         barButtonItem.tintColor = [self barButtonItemDefaultColor];
-        self.sourceView.hidden = YES;
-        self.editorView.hidden = NO;
         [self enableToolbarItems:YES shouldShowSourceButton:YES];
     }
 }
 
 - (void)removeFormat
 {
-    NSString *trigger = @"zss_editor.removeFormating();";
-	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self.editorView removeFormat];
 }
 
 - (void)alignLeft
 {
-    NSString *trigger = @"zss_editor.setJustifyLeft();";
-	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self.editorView alignLeft];
 }
 
 - (void)alignCenter
 {
-    NSString *trigger = @"zss_editor.setJustifyCenter();";
-	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self.editorView alignCenter];
 }
 
 - (void)alignRight
 {
-    NSString *trigger = @"zss_editor.setJustifyRight();";
-	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self.editorView alignRight];
 }
 
 - (void)alignFull
 {
-    NSString *trigger = @"zss_editor.setJustifyFull();";
-	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self.editorView alignFull];
 }
 
 - (void)setBold
 {
-    NSString *trigger = @"zss_editor.setBold();";
-	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self.editorView setBold];
 }
 
 - (void)setBlockQuote
 {
-    NSString *trigger = @"zss_editor.setBlockquote();";
-	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self.editorView setBlockQuote];
 }
 
 - (void)setItalic
 {
-    NSString *trigger = @"zss_editor.setItalic();";
-	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self.editorView setItalic];
 }
 
 - (void)setSubscript
 {
-    NSString *trigger = @"zss_editor.setSubscript();";
-	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self.editorView setSubscript];
 }
 
 - (void)setUnderline
 {
-    NSString *trigger = @"zss_editor.setUnderline();";
-	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+	[self.editorView setUnderline];
 }
 
 - (void)setSuperscript
 {
-    NSString *trigger = @"zss_editor.setSuperscript();";
-	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+	[self.editorView setSuperscript];
 }
 
 - (void)setStrikethrough
 {
-    NSString *trigger = @"zss_editor.setStrikeThrough();";
-	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self.editorView setStrikethrough];
 }
 
 - (void)setUnorderedList
 {
-    NSString *trigger = @"zss_editor.setUnorderedList();";
-	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self.editorView setUnorderedList];
 }
 
 - (void)setOrderedList
 {
-    NSString *trigger = @"zss_editor.setOrderedList();";
-	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self.editorView setOrderedList];
 }
 
 - (void)setHR
 {
-    NSString *trigger = @"zss_editor.setHorizontalRule();";
-	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self.editorView setHR];
 }
 
 - (void)setIndent
 {
-    NSString *trigger = @"zss_editor.setIndent();";
-	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self.editorView setIndent];
 }
 
 - (void)setOutdent
 {
-    NSString *trigger = @"zss_editor.setOutdent();";
-	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self.editorView setOutdent];
 }
 
 - (void)heading1
 {
-    NSString *trigger = @"zss_editor.setHeading('h1');";
-	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+	[self.editorView heading1];
 }
 
 - (void)heading2
 {
-    NSString *trigger = @"zss_editor.setHeading('h2');";
-	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self.editorView heading2];
 }
 
 - (void)heading3
 {
-    NSString *trigger = @"zss_editor.setHeading('h3');";
-	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self.editorView heading3];
 }
 
 - (void)heading4
 {
-    NSString *trigger = @"zss_editor.setHeading('h4');";
-	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+	[self.editorView heading4];
 }
 
 - (void)heading5
 {
-    NSString *trigger = @"zss_editor.setHeading('h5');";
-	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+	[self.editorView heading5];
 }
 
 - (void)heading6
 {
-    NSString *trigger = @"zss_editor.setHeading('h6');";
-	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+	[self.editorView heading6];
 }
 
 - (void)textColor
 {
     // Save the selection location
-    [self.editorView stringByEvaluatingJavaScriptFromString:@"zss_editor.prepareInsert();"];
+	[self.editorView saveSelection];
     
     // Call the picker
     HRColorPickerViewController *colorPicker = [HRColorPickerViewController cancelableFullColorPickerViewControllerWithColor:[UIColor whiteColor]];
@@ -1638,7 +1449,7 @@ typedef enum
 - (void)bgColor
 {
     // Save the selection location
-    [self.editorView stringByEvaluatingJavaScriptFromString:@"zss_editor.prepareInsert();"];
+	[self.editorView saveSelection];
     
     // Call the picker
     HRColorPickerViewController *colorPicker = [HRColorPickerViewController cancelableFullColorPickerViewControllerWithColor:[UIColor whiteColor]];
@@ -1650,39 +1461,23 @@ typedef enum
 
 - (void)setSelectedColor:(UIColor*)color tag:(int)tag
 {
-    NSString *hex = [NSString stringWithFormat:@"#%06x",HexColorFromUIColor(color)];
-    NSString *trigger;
-    if (tag == 1) {
-        trigger = [NSString stringWithFormat:@"zss_editor.setTextColor(\"%@\");", hex];
-    } else if (tag == 2) {
-        trigger = [NSString stringWithFormat:@"zss_editor.setBackgroundColor(\"%@\");", hex];
-    }
-	[self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self.editorView setSelectedColor:color tag:tag];
 }
 
 - (void)undo:(ZSSBarButtonItem *)barButtonItem
 {
-    [self.editorView stringByEvaluatingJavaScriptFromString:@"zss_editor.undo();"];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self.editorView undo];
 }
 
 - (void)redo:(ZSSBarButtonItem *)barButtonItem
 {
-    [self.editorView stringByEvaluatingJavaScriptFromString:@"zss_editor.redo();"];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self.editorView redo];
 }
 
 - (void)insertLink
 {
     // Save the selection location
-    [self.editorView stringByEvaluatingJavaScriptFromString:@"zss_editor.prepareInsert();"];
+	[self.editorView saveSelection];
     
     // Show the dialog for inserting or editing a link
     [self showInsertLinkDialogWithLink:self.selectedLinkURL title:self.selectedLinkTitle];
@@ -1747,20 +1542,12 @@ typedef enum
 
 - (void)insertLink:(NSString *)url title:(NSString *)title
 {
-    NSString *trigger = [NSString stringWithFormat:@"zss_editor.insertLink(\"%@\", \"%@\");", url, title];
-    [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self.editorView insertLink:url title:title];
 }
 
 - (void)updateLink:(NSString *)url title:(NSString *)title
 {
-    NSString *trigger = [NSString stringWithFormat:@"zss_editor.updateLink(\"%@\", \"%@\");", url, title];
-    [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+	[self.editorView updateLink:url title:title];
 }
 
 - (void)dismissAlertView
@@ -1787,18 +1574,18 @@ typedef enum
 
 - (void)removeLink
 {
-    [self.editorView stringByEvaluatingJavaScriptFromString:@"zss_editor.unlink();"];
+    [self.editorView removeLink];
 }
 
 - (void)quickLink
 {
-    [self.editorView stringByEvaluatingJavaScriptFromString:@"zss_editor.quickLink();"];
+    [self.editorView quickLink];
 }
 
 - (void)insertImage
 {
     // Save the selection location
-    [self.editorView stringByEvaluatingJavaScriptFromString:@"zss_editor.prepareInsert();"];
+	[self.editorView saveSelection];
     
     [self showInsertImageDialogWithLink:self.selectedImageURL alt:self.selectedImageAlt];
 }
@@ -1876,56 +1663,20 @@ typedef enum
 
 - (void)insertImage:(NSString *)url alt:(NSString *)alt
 {
-    NSString *trigger = [NSString stringWithFormat:@"zss_editor.insertImage(\"%@\", \"%@\");", url, alt];
-    [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
+	[self.editorView insertImage:url alt:alt];
 }
 
 - (void)updateImage:(NSString *)url alt:(NSString *)alt
 {
-    NSString *trigger = [NSString stringWithFormat:@"zss_editor.updateImage(\"%@\", \"%@\");", url, alt];
-    [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
+    [self.editorView updateImage:url alt:alt];
 }
 
-- (void)updateToolBarWithButtonName:(NSString *)name
-{
-    // Items that are enabled
-    NSArray *itemNames = [name componentsSeparatedByString:@","];
-    
-    // Special case for link
-    NSMutableArray *itemsModified = [[NSMutableArray alloc] init];
-    for (NSString *linkItem in itemNames) {
-        NSString *updatedItem = linkItem;
-        if ([linkItem hasPrefix:@"link:"]) {
-            updatedItem = @"link";
-            self.selectedLinkURL = [linkItem stringByReplacingOccurrencesOfString:@"link:" withString:@""];
-        } else if ([linkItem hasPrefix:@"link-title:"]) {
-            self.selectedLinkTitle = [self stringByDecodingURLFormat:[linkItem stringByReplacingOccurrencesOfString:@"link-title:" withString:@""]];
-        } else if ([linkItem hasPrefix:@"image:"]) {
-            updatedItem = @"image";
-            self.selectedImageURL = [linkItem stringByReplacingOccurrencesOfString:@"image:" withString:@""];
-        } else if ([linkItem hasPrefix:@"image-alt:"]) {
-            self.selectedImageAlt = [self stringByDecodingURLFormat:[linkItem stringByReplacingOccurrencesOfString:@"image-alt:" withString:@""]];
-        } else {
-            self.selectedImageURL = nil;
-            self.selectedImageAlt = nil;
-            self.selectedLinkURL = nil;
-            self.selectedLinkTitle = nil;
-        }
-        [itemsModified addObject:updatedItem];
-    }
-    itemNames = [NSArray arrayWithArray:itemsModified];
-    NSLog(@"%@", itemNames);
-    self.editorItemsEnabled = itemNames;
-    
-	[self selectToolbarItemsForHtmlProperties:itemNames];
-}
-
-- (void)selectToolbarItemsForHtmlProperties:(NSArray*)htmlProperties
+- (void)selectToolbarItemsForStyles:(NSArray*)styles
 {
 	NSArray *items = self.toolbar.items;
 	
     for (ZSSBarButtonItem *item in items) {
-        if ([htmlProperties containsObject:item.htmlProperty]) {
+        if ([styles containsObject:item.htmlProperty]) {
 			item.selected = YES;
         } else {
 			item.selected = NO;
@@ -1980,92 +1731,58 @@ typedef enum
     return YES;
 }
 
-#pragma mark - UIWebView Delegate
+#pragma mark - WPEditorViewDelegate
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView
+- (void)editorTextDidChange:(WPEditorView*)editorView
 {
+	if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
+		[self.delegate editorTextDidChange:self];
+	}
+}
+
+- (void)editorViewDidFinishLoadingDOM:(WPEditorView*)editorView
+{
+	// DRM: the reason why we're doing is when the DOM finishes loading, instead of when the full
+	// content finishe loading, is that the content may not finish loading at all when the device is
+	// offline and the content has remote subcontent (such as pictures).
+	//
     self.didFinishLoadingEditor = YES;
 	
 	if (self.editing) {
 		[self startEditing];
 	} else {
-		[self disableEditingInHTMLEditor];
+		[self.editorView disableEditing];
 	}
 	
     [self refreshUI];
 }
 
--            (BOOL)webView:(UIWebView *)webView
-shouldStartLoadWithRequest:(NSURLRequest *)request
-			navigationType:(UIWebViewNavigationType)navigationType
+- (void)editorView:(WPEditorView*)editorView
+	  focusChanged:(BOOL)focusGained
 {
-	static NSString* const kCallbackScheme = @"callback";
-	BOOL result = YES;
-	
-    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-		result = NO;
-	} else {
-		NSURL *url = [request URL];
-		BOOL isCallbackURL = [[url scheme] isEqualToString:kCallbackScheme];
-		
-		if (isCallbackURL) {
-			result = ![self handleWebViewCallbackURL:url];
-		}
-    }
-    
-    return result;
-}
-
-#pragma mark - UIWebView Delegate helpers
-
-/**
- *	@brief		Handles UIWebView callbacks.
- *
- *	@param		url		The url for the callback.  Cannot be nil.
- *
- *	@returns	YES if the callback was handled, NO otherwise.
- */
-- (BOOL)handleWebViewCallbackURL:(NSURL*)url
-{
-	NSAssert([url isKindOfClass:[NSURL class]],
-			 @"Expected param url to be a non-nil, NSURL object.");
-	
-	BOOL result = NO;
-	
-	NSString* resourceSpecifier = [[url resourceSpecifier] stringByReplacingOccurrencesOfString:@"//" withString:@""];
-	
-	static NSString* kUserTriggeredChangeSpecifier = @"user-triggered-change";
-	static NSString* kFocusInSpecifier = @"focusin";
-	static NSString* kFocusOutSpecifier = @"focusout";
-	
-	if ([resourceSpecifier isEqualToString:kUserTriggeredChangeSpecifier]) {
-		if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-			[self.delegate editorTextDidChange:self];
-		}
-		
-		result = YES;
-	} else if ([resourceSpecifier isEqualToString:kFocusInSpecifier]){
-		
-		self.editorViewIsEditing = YES;
-		
+	if (focusGained) {
 		[self enableToolbarItems:YES
 		  shouldShowSourceButton:NO];
-		
-		result = YES;
-	} else if ([resourceSpecifier isEqualToString:kFocusOutSpecifier]){
-
-		self.editorViewIsEditing = NO;
-		
-		result = YES;
-	} else {
-		NSString *className = resourceSpecifier;
-		[self updateToolBarWithButtonName:className];
-		
-		result = YES;
 	}
-	
-	return result;
 }
+
+- (void)editorView:(WPEditorView*)editorView stylesForCurrentSelection:(NSArray*)styles
+{
+    self.editorItemsEnabled = styles;
+	
+	[self selectToolbarItemsForStyles:styles];
+}
+
+
+#ifdef DEBUG
+-      (void)webView:(UIWebView *)webView
+didFailLoadWithError:(NSError *)error
+{
+	NSLog(@"Loading error: %@", error);
+	NSAssert(NO,
+			 @"This should never happen since the editor is a local HTML page of our own making.");
+}
+#endif
 
 #pragma mark - Asset Picker
 
@@ -2080,7 +1797,6 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
     // Blank method. User should implement this in their subclass
 	NSAssert(NO, @"Blank method. User should implement this in their subclass");
 }
-
 
 #pragma mark - Keyboard status
 
@@ -2105,7 +1821,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 		
 		// Hide the placeholder if visible before editing
 		if (!self.titleTextField.isFirstResponder && [self isEditorPlaceholderTextVisible]) {
-			[self setHtml:@""];
+			[self.editorView setHtml:@""];
 		}
 		
 		CGRect localizedKeyboardEnd = [self.view convertRect:keyboardEnd fromView:nil];
@@ -2115,11 +1831,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 		CGRect editorFrame = self.editorView.frame;
 		editorFrame.size.height -= vOffset;
 		
-		CGRect sourceFrame = self.sourceView.frame;
-		sourceFrame.size.height -= vOffset;
-		
 		[self setEditorFrame:editorFrame
-				 sourceFrame:sourceFrame
 					animated:YES
 			animationOptions:animationOptions
 					duration:duration];
@@ -2148,11 +1860,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 		CGRect editorFrame = self.editorView.frame;
 		editorFrame.size.height = self.view.frame.size.height - editorFrame.origin.y;
 		
-		CGRect sourceFrame = self.sourceView.frame;
-		sourceFrame.size.height = self.view.frame.size.height - sourceFrame.origin.y;
-		
 		[self setEditorFrame:editorFrame
-				 sourceFrame:sourceFrame
 					animated:YES
 			animationOptions:animationOptions
 					duration:duration];
@@ -2162,18 +1870,15 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 #pragma mark - Editor frame
 
 - (void)setEditorFrame:(CGRect)editorFrame
-		   sourceFrame:(CGRect)sourceFrame
 			  animated:(BOOL)animated
 	  animationOptions:(UIViewAnimationOptions)animationOptions
 			  duration:(CGFloat)duration
 {
 	__weak typeof(self) weakSelf = self;
 	
-	void (^privateSetFrames)(CGRect frame, CGRect sourceFrame) = ^void(CGRect editorFrame,
-																	   CGRect sourceFrame)
+	void (^privateSetFrames)(CGRect frame) = ^void(CGRect editorFrame)
 	{
 		weakSelf.editorView.frame = editorFrame;
-		weakSelf.sourceView.frame = sourceFrame;
 	};
 	
 	if (animated) {
@@ -2181,34 +1886,14 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 							  delay:0
 							options:animationOptions
 						 animations:^{
-			privateSetFrames(editorFrame, sourceFrame);
+			privateSetFrames(editorFrame);
 		} completion:nil];
 	} else {
-		privateSetFrames(editorFrame, sourceFrame);
+		privateSetFrames(editorFrame);
 	}
 }
 
 #pragma mark - Utilities
-
-- (NSString *)removeQuotesFromHTML:(NSString *)html
-{
-    html = [html stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
-    html = [html stringByReplacingOccurrencesOfString:@"“" withString:@"&quot;"];
-    html = [html stringByReplacingOccurrencesOfString:@"”" withString:@"&quot;"];
-    html = [html stringByReplacingOccurrencesOfString:@"\r"  withString:@"\\r"];
-    html = [html stringByReplacingOccurrencesOfString:@"\n"  withString:@"\\n"];
-    return html;
-}
-
-- (NSString *)tidyHTML:(NSString *)html
-{
-    html = [html stringByReplacingOccurrencesOfString:@"<br>" withString:@"<br />"];
-    html = [html stringByReplacingOccurrencesOfString:@"<hr>" withString:@"<hr />"];
-    if (self.formatHTML) {
-        html = [self.editorView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"style_html(\"%@\");", html]];
-    }
-    return html;
-}
 
 - (UIColor *)barButtonItemDefaultColor
 {
@@ -2225,13 +1910,6 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
         return self.toolbarItemSelectedTintColor;
     }
     return [WPStyleGuide newKidOnTheBlockBlue];
-}
-
-- (NSString *)stringByDecodingURLFormat:(NSString *)string
-{
-    NSString *result = [string stringByReplacingOccurrencesOfString:@"+" withString:@" "];
-    result = [result stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    return result;
 }
 
 - (void)enableToolbarItems:(BOOL)enable
