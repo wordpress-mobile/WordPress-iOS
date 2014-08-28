@@ -221,7 +221,8 @@
     return [self dateCreated];
 }
 
-- (NSString *)statusForDisplay {
+- (NSString *)statusForDisplay
+{
     if (self.remoteStatus == AbstractPostRemoteStatusSync) {
         return [[self class] titleForStatus:self.status];
     }

@@ -826,7 +826,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
     ReaderPost *post = [self.resultsController.fetchedObjects objectAtIndex:indexPath.row];
     if (post.isSiteBlocked) {
         return RPVCBlockedCellHeight;
