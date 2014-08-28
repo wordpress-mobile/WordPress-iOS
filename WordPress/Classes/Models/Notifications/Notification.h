@@ -22,7 +22,7 @@ extern NSString * NoteActionEditKey;
 typedef NS_ENUM(NSInteger, NoteBlockTypes)
 {
     NoteBlockTypesText,
-    NoteBlockTypesImage,
+    NoteBlockTypesImage,                                    // BlockTypesImage: Includes Badges and Images
     NoteBlockTypesUser,
     NoteBlockTypesComment
 };
@@ -68,6 +68,7 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupTypes)
 @property (nonatomic, strong,  readonly) NSNumber               *metaCommentID;
 @property (nonatomic, strong,  readonly) NSURL                  *iconURL;
 @property (nonatomic, strong,  readonly) NSDate                 *timestampAsDate;
+
 @property (nonatomic, assign,  readonly) BOOL                   isMatcher;
 @property (nonatomic, assign,  readonly) BOOL                   isComment;
 
@@ -163,6 +164,7 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupTypes)
 
 // Derived Properties
 @property (nonatomic, assign, readonly) BOOL                isImage;
+@property (nonatomic, assign, readonly) BOOL                isBadge;
 
 @end
 
