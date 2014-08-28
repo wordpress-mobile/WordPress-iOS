@@ -123,16 +123,6 @@ NSString * const CommentStatusDraft = @"draft";
     return status;
 }
 
-//- (NSString *)blogNameForDisplay
-//{
-//    return nil;
-//}
-//
-//- (NSString *)statusForDisplay
-//{
-//    return self.status;
-//}
-
 - (NSString *)contentForDisplay
 {
     // Unescape HTML characters and add <br /> tags
