@@ -27,7 +27,7 @@
 @property (nonatomic, strong, readonly)  NSManagedObjectModel			*managedObjectModel;
 @property (nonatomic, strong, readonly)  NSPersistentStoreCoordinator	*persistentStoreCoordinator;
 
-- (id)initWithToken:(NSString *)token label:(NSString *)label;
+- (instancetype)initWithToken:(NSString *)token label:(NSString *)label;
 - (void)start;
 - (void)stop;
 - (void)connect;

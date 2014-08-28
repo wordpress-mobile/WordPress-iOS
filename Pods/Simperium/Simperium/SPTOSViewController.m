@@ -33,7 +33,7 @@ NSString *const TOSUrl = @"http://simperium.com/tos/";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    // Do any additional setup after loading the view.
     
     activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [activityIndicator hidesWhenStopped];

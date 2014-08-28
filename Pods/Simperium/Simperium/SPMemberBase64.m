@@ -13,7 +13,7 @@
 @implementation SPMemberBase64
 
 - (id)defaultValue {
-	return nil;
+    return nil;
 }
 
 - (NSString *)stringValueFromTransformable:(id)value {
@@ -27,15 +27,15 @@
     
     NSString *base64 = [NSString sp_encodeBase64WithData:data];
     //NSLog(@"Simperium transformed base64 (%@) %@ to %@", keyName, value, base64);
-	return base64;
+    return base64;
 }
 
 - (id)getValueFromDictionary:(NSDictionary *)dict key:(NSString *)key object:(id<SPDiffable>)object {
     id value = [dict objectForKey: key];
-	if (![value isKindOfClass:[NSString class]])
-		return value;
+    if (![value isKindOfClass:[NSString class]])
+        return value;
     
-	// Convert from NSString (base64) to NSData
+    // Convert from NSString (base64) to NSData
     NSData *data = [NSData sp_decodeBase64WithString:value];
     id obj = (self.valueTransformerName ?
               [[NSValueTransformer valueTransformerForName:self.valueTransformerName] reverseTransformedValue:data] :
@@ -57,7 +57,7 @@
     [dict setValue:convertedValue forKey:key];
 }
 
-- (NSDictionary *)diff:(id)thisValue otherValue:(id)otherValue {	
+- (NSDictionary *)diff:(id)thisValue otherValue:(id)otherValue {
     
     if ([thisValue isEqual: otherValue])
         return [NSDictionary dictionary];
@@ -70,15 +70,15 @@
     if ([thisStr compare:otherStr] == NSOrderedSame)
         return [NSDictionary dictionary];
     
-	// Construct the diff in the expected format
-	return [NSDictionary dictionaryWithObjectsAndKeys:
-			OP_REPLACE, OP_OP,
-			[self stringValueFromTransformable: otherValue], OP_VALUE, nil];
+    // Construct the diff in the expected format
+    return [NSDictionary dictionaryWithObjectsAndKeys:
+            OP_REPLACE, OP_OP,
+            [self stringValueFromTransformable: otherValue], OP_VALUE, nil];
 }
 
 - (id)applyDiff:(id)thisValue otherValue:(id)otherValue error:(NSError **)error {
-	
-	return otherValue;
+    
+    return otherValue;
 }
 
 @end
