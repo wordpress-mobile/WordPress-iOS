@@ -51,21 +51,21 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 @interface NotificationDetailsViewController () <SPBucketDelegate, EditCommentViewControllerDelegate>
 
-// Views
-@property (nonatomic,   weak) IBOutlet UITableView      *tableView;
-@property (nonatomic, strong) ReplyTextView             *replyTextView;
+// Outlets
+@property (nonatomic,   weak) IBOutlet UITableView          *tableView;
+@property (nonatomic,   weak) IBOutlet UIGestureRecognizer  *tableGesturesRecognizer;
+@property (nonatomic, strong) ReplyTextView                 *replyTextView;
 
 // Table Helpers
-@property (nonatomic, strong) NSDictionary              *layoutCellMap;
-@property (nonatomic, strong) NSDictionary              *reuseIdentifierMap;
-@property (nonatomic, assign) NSInteger                 sectionCount;
-@property (nonatomic, assign) NSInteger                 headerSectionIndex;
-@property (nonatomic, assign) NSInteger                 bodySectionIndex;
+@property (nonatomic, strong) NSDictionary                  *layoutCellMap;
+@property (nonatomic, strong) NSDictionary                  *reuseIdentifierMap;
+@property (nonatomic, assign) NSInteger                     sectionCount;
+@property (nonatomic, assign) NSInteger                     headerSectionIndex;
+@property (nonatomic, assign) NSInteger                     bodySectionIndex;
 
 // Keyboard Helpers
-@property (nonatomic, assign) CGFloat                   keyboardBottomDelta;
-@property (nonatomic, assign) BOOL                      isKeyboardOnscreen;
-@property (nonatomic, assign) BOOL                      isRotating;
+@property (nonatomic, assign) CGFloat                       keyboardBottomDelta;
+@property (nonatomic, assign) BOOL                          isKeyboardVisible;
 @end
 
 
@@ -116,18 +116,6 @@ static CGFloat NotificationSectionSeparator     = 10;
     
     [self.replyTextView resignFirstResponder];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    self.isRotating = YES;
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    self.isRotating = NO;
 }
 
 - (void)reloadData
@@ -195,12 +183,24 @@ static CGFloat NotificationSectionSeparator     = 10;
     
     [self.view addSubview:replyTextView];
     [replyTextView alignAtBottomOfSuperview];
-    
     self.replyTextView              = replyTextView;
     
+    // Workaround:
+    // Matching EXACTLY the keyboard animation is a no-go. Let's use a helper inputAccessoryView to do the trick
+    [replyTextView setupProxyAccessoryView];
+    
+    // Setup the Table Insets
     UIEdgeInsets tableViewInsets    = self.tableView.contentInset;
     tableViewInsets.bottom          += CGRectGetHeight(replyTextView.frame);
     self.tableView.contentInset     = tableViewInsets;
+    
+    
+#warning UNHACK
+    
+//    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+//    CommentService *service = [[CommentService alloc] initWithManagedObjectContext:context];
+//    
+//    [service replyCommentWithID:block.metaCommentID siteID:block.metaSiteID content:@"Reply?" success:nil failure:nil];
 }
 
 
@@ -788,7 +788,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 - (void)handleKeyboardWillShow:(NSNotification *)notification
 {
-    if (self.isKeyboardOnscreen) {
+    if (self.isKeyboardVisible) {
         return;
     }
     
@@ -799,71 +799,53 @@ static CGFloat NotificationSectionSeparator     = 10;
     kbRect                          = [self.view convertRect:kbRect fromView:nil];
     
     CGRect viewFrame                = self.view.frame;
-    CGFloat bottomInset             = CGRectGetHeight(kbRect) - (CGRectGetMaxY(kbRect) - CGRectGetMaxY(viewFrame) + CGRectGetMinY(viewFrame));
+    CGFloat bottomInset             = CGRectGetHeight(kbRect) - (CGRectGetMaxY(kbRect) - CGRectGetHeight(viewFrame) + CGRectGetHeight(self.replyTextView.bounds));
     
     UIEdgeInsets newContentInsets   = self.tableView.contentInset;
     newContentInsets.bottom         += bottomInset;
     
-    CGRect replyFrame               = self.replyTextView.frame;
-    replyFrame.origin.y             -= bottomInset;
+    self.replyTextView.textView.inputAccessoryView.alpha = 0;
     
-    // Prepare the Animation
-    void (^animation)(void) = ^() {
-        self.tableView.contentInset = newContentInsets;
-        self.replyTextView.frame    = replyFrame;
-    };
-    
-    // Rotation hides + shows the keyboard again. Animation will look odd!
-    if (self.isRotating) {
-        animation();
-    
-    } else {
-        [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
-        [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
-        
-        animation();
-        
-        [UIView commitAnimations];
-    }
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
+    [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
+
+    self.tableView.contentInset = newContentInsets;
+    self.replyTextView.textView.inputAccessoryView.alpha = 1;
+
+    [UIView commitAnimations];
     
     self.keyboardBottomDelta        = bottomInset;
-    self.isKeyboardOnscreen         = true;
+    self.isKeyboardVisible          = true;
 }
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification
 {
-    if (!self.isKeyboardOnscreen) {
+    if (!self.isKeyboardVisible) {
         return;
     }
     
     NSDictionary* userInfo          = notification.userInfo;
     
-    void (^animation)(void) = ^() {
-        UIEdgeInsets newContentInsets   = self.tableView.contentInset;
-        newContentInsets.bottom         -= self.keyboardBottomDelta;
-        self.tableView.contentInset     = newContentInsets;
-        
-        CGRect replyFrame               = self.replyTextView.frame;
-        replyFrame.origin.y             += self.keyboardBottomDelta;
-        self.replyTextView.frame        = replyFrame;
-    };
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
+    [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
     
-    // Rotation hides + shows the keyboard again. Animation will look odd!
-    if (self.isRotating) {
-        animation();
+    UIEdgeInsets newContentInsets   = self.tableView.contentInset;
+    newContentInsets.bottom         -= self.keyboardBottomDelta;
+    self.tableView.contentInset     = newContentInsets;
     
-    } else {
-        [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
-        [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
-        
-        animation();
-        
-        [UIView commitAnimations];
-    }
-    
-    self.isKeyboardOnscreen = NO;
+    [UIView commitAnimations];
+    self.isKeyboardVisible = false;
+}
+
+
+#pragma mark - Gestures Recognizer Delegate
+
+- (IBAction)dismissKeyboardIfNeeded:(id)sender
+{
+    // Dismiss the reply field when tapping on the tableView
+    [self.replyTextView resignFirstResponder];
 }
 
 @end
