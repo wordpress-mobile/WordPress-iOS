@@ -22,6 +22,7 @@ NSString const *NoteLinkTypeComment     = @"comment";
 NSString const *NoteLinkTypeStats       = @"stat";
 
 NSString const *NoteMediaTypeImage      = @"image";
+NSString const *NoteMediaTypeBadge      = @"badge";
 
 NSString const *NoteBlockTypeUser       = @"user";
 NSString const *NoteBlockTypeComment    = @"comment";
@@ -169,6 +170,11 @@ NSString const *NotePostIdKey           = @"post_id";
     return [self.type isEqual:NoteMediaTypeImage];
 }
 
+- (BOOL)isBadge
+{
+    return [self.type isEqual:NoteMediaTypeBadge];
+}
+
 + (NSArray *)mediaFromArray:(NSArray *)rawMedia
 {
 	NSMutableArray *parsed = [NSMutableArray array];
@@ -303,7 +309,7 @@ NSString const *NotePostIdKey           = @"post_id";
             block.type = NoteBlockTypesComment;
             
         //  Images
-        } else if (media.isImage) {
+        } else if (media.isImage || media.isBadge) {
             block.type = NoteBlockTypesImage;
             
         //  Text
