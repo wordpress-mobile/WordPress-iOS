@@ -136,8 +136,10 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupTypes)
 @property (nonatomic, strong, readonly) NSString            *type;
 @property (nonatomic, strong, readonly) NSURL               *url;
 @property (nonatomic, assign, readonly) NSRange             range;
-@property (nonatomic, strong, readonly) NSNumber            *siteID;
 @property (nonatomic, strong, readonly) NSNumber            *postID;
+@property (nonatomic, strong, readonly) NSNumber            *commentID;
+@property (nonatomic, strong, readonly) NSNumber            *userID;
+@property (nonatomic, strong, readonly) NSNumber            *siteID;
 
 // Derived Properties
 @property (nonatomic, assign, readonly) BOOL                isUser;
