@@ -154,12 +154,17 @@ public class ReplyBezierView : UIView {
             setNeedsDisplay()
         }
     }
+    public var topLineHeight: CGFloat = 0.5 {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
     public var cornerRadius: CGFloat = 5 {
         didSet {
             setNeedsDisplay()
         }
     }
-    public var insets: UIEdgeInsets = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0) {
+    public var insets: UIEdgeInsets = UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 54) {
         didSet {
             setNeedsDisplay()
         }
@@ -183,9 +188,12 @@ public class ReplyBezierView : UIView {
     
     // MARK: - View Methods
     public override func drawRect(rect: CGRect) {
+        // Draw the background, while clipping a rounded rect with the given insets
         var bezierRect                      = bounds
+        bezierRect.origin.x                 += insets.left
         bezierRect.origin.y                 += insets.top
         bezierRect.size.height              -= insets.top + insets.bottom
+        bezierRect.size.width               -= insets.left + insets.right
         let bezier                          = UIBezierPath(roundedRect: bezierRect, cornerRadius: cornerRadius)
         let outer                           = UIBezierPath(rect: bounds)
         
@@ -196,5 +204,10 @@ public class ReplyBezierView : UIView {
         bezier.appendPath(outer)
         bezier.usesEvenOddFillRule = true
         bezier.fill()
+        
+        // Draw the top separator line
+        separatorColor.set()
+        let topLineFrame = CGRect(x: 0, y: 0, width: bounds.width, height: topLineHeight)
+        UIRectFill(topLineFrame)
     }
 }
