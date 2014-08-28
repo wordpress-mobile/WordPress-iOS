@@ -17,7 +17,6 @@ extern NSString * const ProcessorDidDeleteObjectKeysNotification;
 extern NSString * const ProcessorDidAcknowledgeObjectsNotification;
 extern NSString * const ProcessorWillChangeObjectsNotification;
 extern NSString * const ProcessorDidAcknowledgeDeleteNotification;
-extern NSString * const ProcessorRequestsReindexingNotification;
 
 
 #pragma mark ====================================================================================
@@ -48,13 +47,13 @@ typedef NS_ENUM(NSUInteger, CH_ERRORS) {
     CH_ERRORS_INVALID_SCHEMA        = 400,
     CH_ERRORS_INVALID_PERMISSION    = 401,
     CH_ERRORS_NOT_FOUND             = 404,
-	CH_ERRORS_BAD_VERSION           = 405,
-	CH_ERRORS_DUPLICATE             = 409,
+    CH_ERRORS_BAD_VERSION           = 405,
+    CH_ERRORS_DUPLICATE             = 409,
     CH_ERRORS_EMPTY_CHANGE          = 412,
     CH_ERRORS_DOCUMENT_TOO_lARGE    = 413,
-	CH_ERRORS_EXPECTATION_FAILED	= 417,		// (e.g. foreign key doesn't exist just yet)
-    CH_ERRORS_INVALID_DIFF			= 440,
-	CH_ERRORS_THRESHOLD				= 503
+    CH_ERRORS_EXPECTATION_FAILED    = 417,      // (e.g. foreign key doesn't exist just yet)
+    CH_ERRORS_INVALID_DIFF          = 440,
+    CH_ERRORS_THRESHOLD             = 503
 };
 
 // Internal Server Errors: [500-599]

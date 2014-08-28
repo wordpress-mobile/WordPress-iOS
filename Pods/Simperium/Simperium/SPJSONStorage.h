@@ -23,6 +23,6 @@
 @property (nonatomic, strong) NSMutableArray *objectList;
 @property (nonatomic, strong) NSMutableDictionary *allObjects;
 
-- (id)initWithDelegate:(id<SPStorageObserver>)aDelegate;
+- (instancetype)initWithDelegate:(id<SPStorageObserver>)aDelegate;
 
 @end
