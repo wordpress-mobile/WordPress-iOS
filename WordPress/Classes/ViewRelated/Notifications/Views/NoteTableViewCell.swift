@@ -96,7 +96,7 @@ import Foundation
     
     // MARK: - Private Properties
     private let subjectPaddingRight:            CGFloat     = 12
-    private let subjectNumberOfLines:           Int         = 0
+    private let subjectNumberOfLines:           Int         = 3
     private let snippetNumberOfLines:           Int         = 2
     private let noticonRadius:                  CGFloat     = 10
     private var placeholderName:                String      = "gravatar"
