@@ -270,14 +270,9 @@ CGFloat const blavatarImageViewSize = 43.f;
     } else if (indexPath.section == SettingsSectionMedia) {
             cellIdentifier = @"Media";
             cellStyle = UITableViewCellStyleDefault;
-            break;
-        case SettingsSectionEditor:
+    } else if (indexPath.section == SettingsSectionEditor) {
             cellIdentifier = @"Editor";
             cellStyle = UITableViewCellStyleDefault;
-            break;
-            
-        default:
-            break;
     }
 
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
