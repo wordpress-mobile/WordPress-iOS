@@ -12,7 +12,6 @@
 #import "WPEditorView.h"
 #import "WPInsetTextField.h"
 #import "ZSSBarButtonItem.h"
-#import "ZSSTextView.h"
 
 CGFloat const EPVCTextfieldHeight = 44.0f;
 CGFloat const EPVCStandardOffset = 10.0;
@@ -1437,7 +1436,7 @@ typedef enum
 - (void)textColor
 {
     // Save the selection location
-    [self.editorView.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.prepareInsert();"];
+	[self.editorView saveSelection];
     
     // Call the picker
     HRColorPickerViewController *colorPicker = [HRColorPickerViewController cancelableFullColorPickerViewControllerWithColor:[UIColor whiteColor]];
@@ -1450,7 +1449,7 @@ typedef enum
 - (void)bgColor
 {
     // Save the selection location
-    [self.editorView.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.prepareInsert();"];
+	[self.editorView saveSelection];
     
     // Call the picker
     HRColorPickerViewController *colorPicker = [HRColorPickerViewController cancelableFullColorPickerViewControllerWithColor:[UIColor whiteColor]];
@@ -1462,39 +1461,23 @@ typedef enum
 
 - (void)setSelectedColor:(UIColor*)color tag:(int)tag
 {
-    NSString *hex = [NSString stringWithFormat:@"#%06x",HexColorFromUIColor(color)];
-    NSString *trigger;
-    if (tag == 1) {
-        trigger = [NSString stringWithFormat:@"zss_editor.setTextColor(\"%@\");", hex];
-    } else if (tag == 2) {
-        trigger = [NSString stringWithFormat:@"zss_editor.setBackgroundColor(\"%@\");", hex];
-    }
-	[self.editorView.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self.editorView setSelectedColor:color tag:tag];
 }
 
 - (void)undo:(ZSSBarButtonItem *)barButtonItem
 {
-    [self.editorView.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.undo();"];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self.editorView undo];
 }
 
 - (void)redo:(ZSSBarButtonItem *)barButtonItem
 {
-    [self.editorView.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.redo();"];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self.editorView redo];
 }
 
 - (void)insertLink
 {
     // Save the selection location
-    [self.editorView.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.prepareInsert();"];
+	[self.editorView saveSelection];
     
     // Show the dialog for inserting or editing a link
     [self showInsertLinkDialogWithLink:self.selectedLinkURL title:self.selectedLinkTitle];
@@ -1559,20 +1542,12 @@ typedef enum
 
 - (void)insertLink:(NSString *)url title:(NSString *)title
 {
-    NSString *trigger = [NSString stringWithFormat:@"zss_editor.insertLink(\"%@\", \"%@\");", url, title];
-    [self.editorView.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self.editorView insertLink:url title:title];
 }
 
 - (void)updateLink:(NSString *)url title:(NSString *)title
 {
-    NSString *trigger = [NSString stringWithFormat:@"zss_editor.updateLink(\"%@\", \"%@\");", url, title];
-    [self.editorView.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+	[self.editorView updateLink:url title:title];
 }
 
 - (void)dismissAlertView
@@ -1599,18 +1574,18 @@ typedef enum
 
 - (void)removeLink
 {
-    [self.editorView.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.unlink();"];
+    [self.editorView removeLink];
 }
 
 - (void)quickLink
 {
-    [self.editorView.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.quickLink();"];
+    [self.editorView quickLink];
 }
 
 - (void)insertImage
 {
     // Save the selection location
-    [self.editorView.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.prepareInsert();"];
+	[self.editorView saveSelection];
     
     [self showInsertImageDialogWithLink:self.selectedImageURL alt:self.selectedImageAlt];
 }
@@ -1688,14 +1663,12 @@ typedef enum
 
 - (void)insertImage:(NSString *)url alt:(NSString *)alt
 {
-    NSString *trigger = [NSString stringWithFormat:@"zss_editor.insertImage(\"%@\", \"%@\");", url, alt];
-    [self.editorView.webView stringByEvaluatingJavaScriptFromString:trigger];
+	[self.editorView insertImage:url alt:alt];
 }
 
 - (void)updateImage:(NSString *)url alt:(NSString *)alt
 {
-    NSString *trigger = [NSString stringWithFormat:@"zss_editor.updateImage(\"%@\", \"%@\");", url, alt];
-    [self.editorView.webView stringByEvaluatingJavaScriptFromString:trigger];
+    [self.editorView updateImage:url alt:alt];
 }
 
 - (void)selectToolbarItemsForStyles:(NSArray*)styles
