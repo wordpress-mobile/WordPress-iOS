@@ -28,6 +28,7 @@ NSString const *NoteBlockTypeComment    = @"comment";
 
 NSString const *NoteTypeMatcher         = @"automattcher";
 NSString const *NoteTypeComment         = @"comment";
+NSString const *NoteTypePost            = @"post";
 
 NSString const *NoteMetaKey             = @"meta";
 NSString const *NoteMediaKey            = @"media";
@@ -47,6 +48,11 @@ NSString const *NoteIndicesKey          = @"indices";
 NSString const *NoteWidthKey            = @"width";
 NSString const *NoteHeightKey           = @"height";
 
+
+NSString const *NoteRangeIdKey          = @"id";
+NSString const *NoteRangeTypeComment    = @"comment";
+NSString const *NoteRangeTypePost       = @"post";
+NSString const *NoteRangeTypeUser       = @"user";
 NSString const *NoteSiteIdKey           = @"site_id";
 NSString const *NotePostIdKey           = @"post_id";
 
@@ -70,8 +76,26 @@ NSString const *NotePostIdKey           = @"post_id";
 		_range              = NSMakeRange(location, length);
         _type               = [rawRange stringForKey:NoteTypeKey];
         
+        //  SORRY:
+        //  ======
+        //  `id` is coupled with the `type
+        //
+        //      type = post     => id = post_id
+        //      type = comment  => id = comment_id
+        //      type = user     => id = user_id
+
+        if ([_type isEqual:NoteRangeTypePost]) {
+            _postID         = [rawRange numberForKey:NoteRangeIdKey];
+            
+        } else if ([_type isEqual:NoteRangeTypeComment]) {
+            _commentID      = [rawRange numberForKey:NoteRangeIdKey];
+            _postID         = [rawRange numberForKey:NotePostIdKey];
+            
+        } else if ([_type isEqual:NoteRangeTypeUser]) {
+            _userID         = [rawRange numberForKey:NoteRangeIdKey];
+        }
+        
         _siteID             = [rawRange numberForKey:NoteSiteIdKey];
-        _postID             = [rawRange numberForKey:NotePostIdKey];
 	}
 	
 	return self;
