@@ -1,23 +1,27 @@
-//
-//  WPEditorView.m
-//  Pods
-//
-//  Created by Diego E. Rey Mendez on 8/27/14.
-//
-//
-
 #import "WPEditorView.h"
 
 #import "UIWebView+GUIFixes.h"
+#import "HRColorUtil.h"
 #import "ZSSTextView.h"
 
 @interface WPEditorView () <UIWebViewDelegate>
+
+#pragma mark - Resources state
 @property (assign) BOOL resourcesLoaded;
+
+#pragma mark - Editing state
+@property (nonatomic, assign, readwrite, getter = isEditing) BOOL editing;
+
+#pragma mark - Selection
 @property (nonatomic, strong) NSString *selectedLinkURL;
 @property (nonatomic, strong) NSString *selectedLinkTitle;
 @property (nonatomic, strong) NSString *selectedImageURL;
 @property (nonatomic, strong) NSString *selectedImageAlt;
+
+#pragma mark - Subviews
 @property (nonatomic, strong) ZSSTextView *sourceView;
+@property (nonatomic, strong, readonly) UIWebView* webView;
+
 @end
 
 @implementation WPEditorView
@@ -37,16 +41,6 @@
 	}
 	
 	return self;
-}
-
-- (BOOL)resignFirstResponder
-{
-	// DRM: TODO: review if this is necessary at all.
-	//
-    [self.webView stringByEvaluatingJavaScriptFromString:@"document.activeElement.blur()"];
-    [self.sourceView resignFirstResponder];
-	
-	return [super resignFirstResponder];
 }
 
 #pragma mark - Init helpers
@@ -294,16 +288,100 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 	return html;
 }
 
+- (void)undo
+{
+    [self.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.undo();"];
+	
+    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
+        [self.delegate editorTextDidChange:self];
+    }
+}
+
+- (void)redo
+{
+    [self.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.redo();"];
+	
+    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
+        [self.delegate editorTextDidChange:self];
+    }
+}
+
+- (void)saveSelection
+{
+    [self.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.prepareInsert();"];
+}
+
+- (void)insertLink:(NSString *)url
+			 title:(NSString *)title
+{
+    NSString *trigger = [NSString stringWithFormat:@"zss_editor.insertLink(\"%@\", \"%@\");", url, title];
+    [self.webView stringByEvaluatingJavaScriptFromString:trigger];
+	
+    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
+        [self.delegate editorTextDidChange:self];
+    }
+}
+
+- (void)updateLink:(NSString *)url
+			 title:(NSString *)title
+{
+    NSString *trigger = [NSString stringWithFormat:@"zss_editor.updateLink(\"%@\", \"%@\");", url, title];
+    [self.webView stringByEvaluatingJavaScriptFromString:trigger];
+	
+    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
+        [self.delegate editorTextDidChange:self];
+    }
+}
+
+- (void)setSelectedColor:(UIColor*)color tag:(int)tag
+{
+    NSString *hex = [NSString stringWithFormat:@"#%06x",HexColorFromUIColor(color)];
+    NSString *trigger;
+    if (tag == 1) {
+        trigger = [NSString stringWithFormat:@"zss_editor.setTextColor(\"%@\");", hex];
+    } else if (tag == 2) {
+        trigger = [NSString stringWithFormat:@"zss_editor.setBackgroundColor(\"%@\");", hex];
+    }
+	
+	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
+	
+    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
+        [self.delegate editorTextDidChange:self];
+    }
+}
+
+- (void)removeLink
+{
+    [self.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.unlink();"];
+}
+
+- (void)quickLink
+{
+    [self.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.quickLink();"];
+}
+
+- (void)insertImage:(NSString *)url alt:(NSString *)alt
+{
+    NSString *trigger = [NSString stringWithFormat:@"zss_editor.insertImage(\"%@\", \"%@\");", url, alt];
+    [self.webView stringByEvaluatingJavaScriptFromString:trigger];
+}
+
+- (void)updateImage:(NSString *)url alt:(NSString *)alt
+{
+    NSString *trigger = [NSString stringWithFormat:@"zss_editor.updateImage(\"%@\", \"%@\");", url, alt];
+    [self.webView stringByEvaluatingJavaScriptFromString:trigger];
+}
+
 #pragma mark - Editor focus
 
-- (void)focusTextEditor
+- (void)focus
 {
     self.webView.keyboardDisplayRequiresUserAction = NO;
     NSString *js = [NSString stringWithFormat:@"zss_editor.focusEditor();"];
     [self.webView stringByEvaluatingJavaScriptFromString:js];
 }
 
-- (void)blurTextEditor
+- (void)blur
 {
     NSString *js = [NSString stringWithFormat:@"zss_editor.blurEditor();"];
     [self.webView stringByEvaluatingJavaScriptFromString:js];
@@ -354,16 +432,6 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 }
 
 #pragma mark - Styles
-
-
-- (void)removeFormat
-{
-    NSString *trigger = @"zss_editor.removeFormating();";
-	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
-}
 
 - (void)alignLeft
 {
@@ -563,6 +631,15 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
     }
 }
 
+
+- (void)removeFormat
+{
+    NSString *trigger = @"zss_editor.removeFormating();";
+	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
+    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
+        [self.delegate editorTextDidChange:self];
+    }
+}
 
 
 @end
