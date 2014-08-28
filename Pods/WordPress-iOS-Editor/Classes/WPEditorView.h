@@ -74,6 +74,11 @@ stylesForCurrentSelection:(NSArray*)styles;
  */
 @property (nonatomic, assign, readonly, getter = isEditing) BOOL editing;
 
+/**
+ *	@brief		The placeholder HTML string to show when the editor view is empty in visual mode.
+ */
+@property (nonatomic, copy, readwrite) NSString* placeholderHTMLString;
+
 #pragma mark - Interaction
 
 - (void)setHtml:(NSString *)html;
