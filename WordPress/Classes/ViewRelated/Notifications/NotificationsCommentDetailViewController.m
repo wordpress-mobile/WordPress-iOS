@@ -594,7 +594,8 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     [self publishReply:text];
 }
 
-- (void)composeViewDidStartAtMention:(InlineComposeView *)view {
+- (void)composeViewDidStartAtMention:(InlineComposeView *)view
+{
     if ([[SuggestionService shared] shouldShowSuggestionsPageForSiteID:self.siteID]) {
         SuggestionsTableViewController *suggestionsController = [[SuggestionsTableViewController alloc] initWithSiteID:self.siteID];
         suggestionsController.delegate = self;

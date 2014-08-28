@@ -56,7 +56,8 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
 
     self.title = NSLocalizedString(@"Suggestions", @"Suggestions page title");
@@ -169,7 +170,8 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 
 #pragma mark - UISearchBarDelegate methods
 
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
     if ([searchBar.text isEqualToString:@""]) {
         searchBar.text = @"@";
     }
@@ -178,7 +180,8 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 
 #pragma mark - Suggestion list management
 
-- (void)suggestionListUpdated:(NSNotification *)notification {
+- (void)suggestionListUpdated:(NSNotification *)notification
+{
     // only reload if the suggestion list is updated for the current site
     if ([notification.object isEqualToNumber:self.siteID]) {
         self.suggestions = [[SuggestionService shared] suggestionsForSiteID:self.siteID];
@@ -193,7 +196,8 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
     }
 }
 
-- (NSArray *)suggestions {
+- (NSArray *)suggestions
+{
     if (!_suggestions) {
         _suggestions = [[SuggestionService shared] suggestionsForSiteID:self.siteID];
     }
