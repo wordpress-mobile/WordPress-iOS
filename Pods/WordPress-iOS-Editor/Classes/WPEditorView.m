@@ -6,8 +6,8 @@
 
 @interface WPEditorView () <UIWebViewDelegate>
 
-#pragma mark - Resources state
-@property (assign) BOOL resourcesLoaded;
+#pragma mark - Misc state
+@property (nonatomic, assign, readwrite, getter = isShowingPlaceholder) BOOL showingPlaceholder;
 
 #pragma mark - Editing state
 @property (nonatomic, assign, readwrite, getter = isEditing) BOOL editing;
@@ -21,6 +21,13 @@
 #pragma mark - Subviews
 @property (nonatomic, strong) ZSSTextView *sourceView;
 @property (nonatomic, strong, readonly) UIWebView* webView;
+
+#pragma mark - Operation queues
+@property (nonatomic, strong, readwrite) NSOperationQueue* editorInteractionQueue;
+
+#pragma mark - Editor loading support
+@property (nonatomic, copy, readwrite) NSString* preloadedHTML;
+@property (atomic, assign, readwrite) BOOL resourcesLoaded;
 
 @end
 
@@ -38,6 +45,7 @@
 		
 		[self createSourceViewWithFrame:childFrame];
 		[self createWebViewWithFrame:childFrame];
+		[self setupHTMLEditor];
 	}
 	
 	return self;
@@ -72,6 +80,91 @@
 	_webView.scrollView.bounces = NO;
 	
 	[self addSubview:_webView];
+}
+
+- (void)setupHTMLEditor
+{
+	NSAssert(!_resourcesLoaded,
+			 @"This method is meant to be called only once, to load resources.");
+	
+	_editorInteractionQueue = [[NSOperationQueue alloc] init];
+	
+	__block NSString* htmlEditor = nil;
+	__weak typeof(self) weakSelf = self;
+	
+	NSBlockOperation* loadEditorOperation = [NSBlockOperation blockOperationWithBlock:^{
+		htmlEditor = [self editorHTML];
+	}];
+	
+	NSBlockOperation* editorDidLoadOperation = [NSBlockOperation blockOperationWithBlock:^{
+		
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		
+		if (strongSelf) {
+			[strongSelf.webView loadHTMLString:htmlEditor baseURL:nil];
+		}
+	}];
+	
+	[loadEditorOperation setCompletionBlock:^{
+		
+		[[NSOperationQueue mainQueue] addOperation:editorDidLoadOperation];
+	}];
+	
+	[_editorInteractionQueue addOperation:loadEditorOperation];
+}
+
+- (NSString*)editorHTML
+{
+	NSString *filePath = [[NSBundle mainBundle] pathForResource:@"editor" ofType:@"html"];
+	NSData *htmlData = [NSData dataWithContentsOfFile:filePath];
+	NSString *htmlString = [[NSString alloc] initWithData:htmlData encoding:NSUTF8StringEncoding];
+	NSString *jQueryMobileEventsPath = [[NSBundle mainBundle] pathForResource:@"jquery.mobile-events.min" ofType:@"js"];
+	NSString *jQueryMobileEvents = [[NSString alloc] initWithData:[NSData dataWithContentsOfFile:jQueryMobileEventsPath] encoding:NSUTF8StringEncoding];
+	NSString *source = [[NSBundle mainBundle] pathForResource:@"ZSSRichTextEditor" ofType:@"js"];
+	NSString *jsString = [[NSString alloc] initWithData:[NSData dataWithContentsOfFile:source] encoding:NSUTF8StringEncoding];
+	htmlString = [htmlString stringByReplacingOccurrencesOfString:@"<!--jquery-mobile-events-->" withString:jQueryMobileEvents];
+	htmlString = [htmlString stringByReplacingOccurrencesOfString:@"<!--editor-->" withString:jsString];
+	
+	return htmlString;
+}
+
+#pragma mark - Placeholder
+
+/**
+ *	@brief		Refreshes the placeholder text, by either showing it or hiding it according to
+ *				several conditions.
+ */
+- (void)refreshPlaceholder
+{
+	[self refreshPlaceholder:self.placeholderHTMLString];
+}
+
+/**
+ *	@brief		Refreshes the specified placeholder text, by either showing it or hiding it
+ *				according to several conditions.
+ *	@details	Same as refreshPlaceholder, but uses the received parameter instead of the property.
+ *				This is a convenience method in case the caller already has a reference to the
+ *				placeholder text and is not intended as a way to bypass the placeholder property.
+ *
+ *	@param		placeholder		The placeholder text to show, if conditions are met.
+ */
+- (void)refreshPlaceholder:(NSString*)placeholder
+{
+	BOOL shouldHidePlaceholer = self.isShowingPlaceholder && self.isEditing;
+	
+	if (shouldHidePlaceholer) {
+		self.showingPlaceholder = NO;
+		[self setHtml:@""];
+	} else {
+		BOOL shouldShowPlaceholder = (!self.isShowingPlaceholder && self.resourcesLoaded && !self.isEditing
+									  && ([[self getHTML] length] == 0
+										  || [[self getHTML] isEqualToString:@"<br>"]));
+		
+		if (shouldShowPlaceholder) {
+			self.showingPlaceholder = YES;
+			[self setHtml:self.placeholderHTMLString];
+		}
+	}
 }
 
 #pragma mark - UIWebViewDelegate
@@ -116,6 +209,8 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 	NSLog(@"WebEditor callback received: %@", url);
 	
 	if ([self isUserTriggeredChangeScheme:scheme]) {
+		[self refreshPlaceholder];
+		
 		if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
 			[self.delegate editorTextDidChange:self];
 		}
@@ -124,6 +219,8 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 	} else if ([self isFocusInScheme:scheme]){
 		
 		self.editing = YES;
+		
+		[self refreshPlaceholder];
 		
 		if ([self.delegate respondsToSelector:@selector(editorView:focusChanged:)]) {
 			[self.delegate editorView:self focusChanged:YES];
@@ -135,6 +232,8 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 		
 		self.editing = NO;
 		
+		[self refreshPlaceholder];
+		
 		if ([self.delegate respondsToSelector:@selector(editorView:focusChanged:)]) {
 			[self.delegate editorView:self focusChanged:YES];
 		}
@@ -145,8 +244,14 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 		
 		[self processStyles:styles];
 		handled = YES;
-	}
-	else if ([self isDOMLoadedScheme:scheme]) {
+	} else if ([self isDOMLoadedScheme:scheme]) {
+
+		self.resourcesLoaded = YES;
+		self.editorInteractionQueue = nil;
+		
+		// DRM: it's important to call this after resourcesLoaded has been set to YES.
+		[self setHtml:self.preloadedHTML];
+		
 		if ([self.delegate respondsToSelector:@selector(editorViewDidFinishLoadingDOM:)]) {
 			[self.delegate editorViewDidFinishLoadingDOM:self];
 		}
@@ -246,51 +351,26 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
     NSString *result = [string stringByReplacingOccurrencesOfString:@"+" withString:@" "];
     result = [result stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     return result;
+}\
+
+#pragma mark - Setters
+
+- (void)setPlaceholderHTMLString:(NSString *)placeholderHTMLString
+{
+	if (_placeholderHTMLString != placeholderHTMLString) {
+		_placeholderHTMLString = placeholderHTMLString;
+		
+		[self refreshPlaceholder:placeholderHTMLString];
+	}
 }
 
 #pragma mark - Interaction
 
-- (void)setHtml:(NSString *)html
-{
-    if (!self.resourcesLoaded) {
-        NSString *filePath = [[NSBundle mainBundle] pathForResource:@"editor" ofType:@"html"];
-        NSData *htmlData = [NSData dataWithContentsOfFile:filePath];
-        NSString *htmlString = [[NSString alloc] initWithData:htmlData encoding:NSUTF8StringEncoding];
-        NSString *jQueryMobileEventsPath = [[NSBundle mainBundle] pathForResource:@"jquery.mobile-events.min" ofType:@"js"];
-        NSString *jQueryMobileEvents = [[NSString alloc] initWithData:[NSData dataWithContentsOfFile:jQueryMobileEventsPath] encoding:NSUTF8StringEncoding];
-        NSString *source = [[NSBundle mainBundle] pathForResource:@"ZSSRichTextEditor" ofType:@"js"];
-        NSString *jsString = [[NSString alloc] initWithData:[NSData dataWithContentsOfFile:source] encoding:NSUTF8StringEncoding];
-		htmlString = [htmlString stringByReplacingOccurrencesOfString:@"<!--jquery-mobile-events-->" withString:jQueryMobileEvents];
-        htmlString = [htmlString stringByReplacingOccurrencesOfString:@"<!--editor-->" withString:jsString];
-        htmlString = [htmlString stringByReplacingOccurrencesOfString:@"<!--content-->" withString:html];
-        
-        [self.webView loadHTMLString:htmlString baseURL:nil];
-        self.resourcesLoaded = YES;
-    }
-    
-    self.sourceView.text = html;
-    NSString *cleanedHTML = [self removeQuotesFromHTML:self.sourceView.text];
-	NSString *trigger = [NSString stringWithFormat:@"zss_editor.setHTML(\"%@\");", cleanedHTML];
-	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-}
-
-// Inserts HTML at the caret position
-- (void)insertHTML:(NSString *)html
-{
-    NSString *cleanedHTML = [self removeQuotesFromHTML:html];
-    NSString *trigger = [NSString stringWithFormat:@"zss_editor.insertHTML(\"%@\");", cleanedHTML];
-    [self.webView stringByEvaluatingJavaScriptFromString:trigger];
-}
-
-- (NSString *)getHTML
-{
-    NSString *html = [self.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.getHTML();"];
-	return html;
-}
-
 - (void)undo
 {
     [self.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.undo();"];
+
+	[self refreshPlaceholder];
 	
     if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
         [self.delegate editorTextDidChange:self];
@@ -300,6 +380,8 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 - (void)redo
 {
     [self.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.redo();"];
+
+	[self refreshPlaceholder];
 	
     if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
         [self.delegate editorTextDidChange:self];
@@ -353,6 +435,8 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 - (void)removeLink
 {
     [self.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.unlink();"];
+	
+	[self refreshPlaceholder];
 }
 
 - (void)quickLink
@@ -372,6 +456,48 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
     [self.webView stringByEvaluatingJavaScriptFromString:trigger];
 }
 
+#pragma mark - Editor: HTML interaction
+
+/**
+ *	@brief		Call this method to know if the editor has no content.
+ *
+ *	@returns	YES if the editor has no content.
+ */
+- (BOOL)editorIsEmpty
+{
+	return [[self getHTML] length] == 0;
+}
+
+- (void)setHtml:(NSString *)html
+{
+	if (!self.resourcesLoaded) {
+		self.preloadedHTML = html;
+	} else {
+		self.sourceView.text = html;
+		NSString *cleanedHTML = [self removeQuotesFromHTML:self.sourceView.text];
+		NSString *trigger = [NSString stringWithFormat:@"zss_editor.setHTML(\"%@\");", cleanedHTML];
+		[self.webView stringByEvaluatingJavaScriptFromString:trigger];
+		
+		if ([html length] == 0) {
+			[self refreshPlaceholder];
+		}
+	}
+}
+
+// Inserts HTML at the caret position
+- (void)insertHTML:(NSString *)html
+{
+    NSString *cleanedHTML = [self removeQuotesFromHTML:html];
+    NSString *trigger = [NSString stringWithFormat:@"zss_editor.insertHTML(\"%@\");", cleanedHTML];
+    [self.webView stringByEvaluatingJavaScriptFromString:trigger];
+}
+
+- (NSString *)getHTML
+{
+    NSString *html = [self.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.getHTML();"];
+	return html;
+}
+
 #pragma mark - Editor focus
 
 - (void)focus
@@ -382,7 +508,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 }
 
 - (void)blur
-{
+{	
     NSString *js = [NSString stringWithFormat:@"zss_editor.blurEditor();"];
     [self.webView stringByEvaluatingJavaScriptFromString:js];
 }
