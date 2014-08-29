@@ -18,8 +18,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         // Do any additional setup after loading the view from its nib.
         let sharedDefaults = NSUserDefaults(suiteName: "group.org.wordpress")
         siteId = sharedDefaults.objectForKey("WordPressTodayWidgetSiteId") as NSNumber?
-        let oauth2Token = sharedDefaults.stringForKey("WordPressTodayWidgetOAuth2Token")
-//        let oauth2Token = self.getOAuth2Token()
+        let oauth2Token = self.getOAuth2Token()
         visitorsLabel?.text = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
         viewsLabel?.text = NSLocalizedString("Views", comment: "Stats Views Label")
         
@@ -74,8 +73,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         let siteId = sharedDefaults.objectForKey("WordPressTodayWidgetSiteId") as NSNumber?
         self.siteName = sharedDefaults.stringForKey("WordPressTodayWidgetSiteName") ?? ""
         let timeZoneName = sharedDefaults.stringForKey("WordPressTodayWidgetTimeZone")
-        let oauth2Token = sharedDefaults.stringForKey("WordPressTodayWidgetOAuth2Token")
-//        let oauth2Token = self.getOAuth2Token()
+        let oauth2Token = self.getOAuth2Token()
         
         if siteId == nil || timeZoneName == nil || oauth2Token == nil {
             WPDDLogWrapper.logError("Missing site ID, timeZone or oauth2Token")
@@ -114,6 +112,12 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     }
     
     func getOAuth2Token() -> String? {
+        if UIDevice.currentDevice().model == "iPhone Simulator" {
+            let sharedDefaults = NSUserDefaults(suiteName: "group.org.wordpress")
+            let oauth2Token = sharedDefaults.stringForKey("WordPressTodayWidgetOAuth2Token")
+            return oauth2Token
+        }
+        
         var error:NSError?
         
         let oauth2Token = SFHFKeychainUtils.getPasswordForUsername("OAuth2Token", andServiceName: "TodayWidget", accessGroup: "org.wordpress", error: &error)
