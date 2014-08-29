@@ -133,6 +133,14 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [button setAccessibilityLabel:NSLocalizedString(@"Browse", @"")];
     self.navigationItem.rightBarButtonItem = button;
 
+    // replace the back button of the newly presented view controller
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:nil
+                                                                  action:nil];
+
+    self.navigationItem.backBarButtonItem = backButton;
+
     self.tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                          action:@selector(dismissKeyboard:)];
 
@@ -1036,15 +1044,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     UIViewController *detailController = [ReaderPostDetailViewController detailControllerWithPost:post];
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                   style:UIBarButtonItemStylePlain
-                                                                  target:nil
-                                                                  action:nil];
-
     [self.navigationController pushViewController:detailController animated:YES];
-
-    // replace the back button of the newly presented view controller
-    self.navigationController.topViewController.navigationItem.backBarButtonItem = backButton;
 
     [WPAnalytics track:WPAnalyticsStatReaderOpenedArticle];
 }
