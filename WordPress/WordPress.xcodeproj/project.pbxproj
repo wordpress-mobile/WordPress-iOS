@@ -781,6 +781,12 @@
 		A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = defaultPostTemplate.html; path = Resources/HTML/defaultPostTemplate.html; sourceTree = "<group>"; };
 		A0E293EF0E21027E00C6919C /* WPAddCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAddCategoryViewController.h; sourceTree = "<group>"; };
 		A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAddCategoryViewController.m; sourceTree = "<group>"; };
+		A20971B419B0BC390058F395 /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		A20971B519B0BC390058F395 /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		A20971B619B0BC390058F395 /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		A20971B719B0BC570058F395 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		A20971B819B0BC570058F395 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		A20971B919B0BC580058F395 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		A25EBD85156E330600530E3D /* WPTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableViewController.h; sourceTree = "<group>"; };
 		A25EBD86156E330600530E3D /* WPTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewController.m; sourceTree = "<group>"; };
 		A2787D0119002AB1000D6CA6 /* HelpshiftConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = HelpshiftConfig.plist; sourceTree = "<group>"; };
@@ -2303,6 +2309,8 @@
 				fr,
 				nl,
 				de,
+				"en-GB",
+				"pt-BR",
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
@@ -2754,6 +2762,8 @@
 				931DF4DD18D09B1900540BDD /* th */,
 				931DF4DE18D09B2600540BDD /* de */,
 				931DF4DF18D09B3900540BDD /* id */,
+				A20971B519B0BC390058F395 /* en-GB */,
+				A20971B819B0BC570058F395 /* pt-BR */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -2762,6 +2772,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				E16AB93314D978240047A2E5 /* en */,
+				A20971B619B0BC390058F395 /* en-GB */,
+				A20971B919B0BC580058F395 /* pt-BR */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -2791,6 +2803,8 @@
 				E19853331755E461001CC6D5 /* da */,
 				E19853341755E4B3001CC6D5 /* ko */,
 				E1E977BC17B0FA9A00AFB867 /* th */,
+				A20971B419B0BC390058F395 /* en-GB */,
+				A20971B719B0BC570058F395 /* pt-BR */,
 			);
 			name = Localizable.strings;
 			path = Resources;
