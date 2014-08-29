@@ -66,19 +66,14 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        self.title              = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
+        self.title                      = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
 
         // Watch for application badge number changes
-        NSString *badgeKeyPath  = NSStringFromSelector(@selector(applicationIconBadgeNumber));
+        NSString *badgeKeyPath          = NSStringFromSelector(@selector(applicationIconBadgeNumber));
         [[UIApplication sharedApplication] addObserver:self forKeyPath:badgeKeyPath options:NSKeyValueObservingOptionNew context:nil];
         
         // Cache Row Heights!
-        self.cachedRowHeights   = [NSMutableDictionary dictionary];
-        
-        // Watch for new Notifications
-        Simperium *simperium    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
-        SPBucket *notesBucket   = [simperium bucketForName:self.entityName];
-        notesBucket.delegate    = self;
+        self.cachedRowHeights           = [NSMutableDictionary dictionary];
     }
     
     return self;
@@ -115,7 +110,6 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     
-    // Refresh Badge
     [self updateTabBarBadgeNumber];
 }
 
@@ -139,6 +133,7 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
     [self updateLastSeenTime];
     [self resetApplicationBadge];
     [self showManageButtonIfNeeded];
+    [self setupNotificationsBucketDelegate];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -150,7 +145,7 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    [self.cachedRowHeights removeAllObjects];
+    [self invalidateRowHeightsCache];
 }
 
 
@@ -182,7 +177,7 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
     }
     
     // Always nuke the cellHeight Cache's
-    [self.cachedRowHeights removeAllObjects];
+    [self invalidateRowHeightsCache];
 }
 
 
@@ -225,6 +220,19 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
 
 
 #pragma mark - Helper methods
+
+- (void)setupNotificationsBucketDelegate
+{
+    Simperium *simperium            = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+    SPBucket *notesBucket           = [simperium bucketForName:self.entityName];
+    notesBucket.delegate            = self;
+    notesBucket.notifyWhileIndexing = YES;
+}
+
+- (void)invalidateRowHeightsCache
+{
+    [self.cachedRowHeights removeAllObjects];
+}
 
 - (void)resetApplicationBadge
 {
@@ -343,12 +351,11 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
         return rowCacheValue.floatValue;
     }
 
-
     return NoteEstimatedHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{    
+{
     // Hit the cache first
     NSNumber *rowCacheValue = self.cachedRowHeights[indexPath.toString];
     if (rowCacheValue) {
