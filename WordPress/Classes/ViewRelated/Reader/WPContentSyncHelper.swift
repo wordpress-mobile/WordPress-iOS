@@ -19,8 +19,9 @@ class WPContentSyncHelper: NSObject {
             if hasMoreContent == oldValue {
                 return
             }
-
-            delegate?.hasNoMoreContent?()
+            if hasMoreContent == false {
+                delegate?.hasNoMoreContent?()
+            }
         }
     }
 
