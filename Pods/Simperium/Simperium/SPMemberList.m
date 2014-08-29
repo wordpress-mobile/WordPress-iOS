@@ -20,30 +20,30 @@
 
 - (DiffMatchPatch *)diffMatchPatch
 {
-	if (!_diffMatchPatch) {
-		_diffMatchPatch = [[DiffMatchPatch alloc] init];
-	}
-	return _diffMatchPatch;
+    if (!_diffMatchPatch) {
+        _diffMatchPatch = [[DiffMatchPatch alloc] init];
+    }
+    return _diffMatchPatch;
 }
 
 - (id)defaultValue {
-	return @"[]";
+    return @"[]";
 }
 
 - (id)arrayFromJSONString:(id)value {
     if ([value length] == 0)
         return [[self defaultValue] sp_objectFromJSONString];
-	return [value sp_objectFromJSONString];
+    return [value sp_objectFromJSONString];
 }
 
 - (id)getValueFromDictionary:(NSDictionary *)dict key:(NSString *)key object:(id<SPDiffable>)object {
-	return [self getValueFromJSON:dict key:key object:object];
+    return [self getValueFromJSON:dict key:key object:object];
 }
 
 - (id)getValueFromJSON:(NSDictionary *)json key:(NSString *)key object:(id<SPDiffable>)object
 {
-	id value = [json objectForKey:key];
-	return [value sp_JSONString];
+    id value = [json objectForKey:key];
+    return [value sp_JSONString];
 }
 
 - (void)setValue:(id)value forKey:(NSString *)key inDictionary:(NSMutableDictionary *)dict {
@@ -52,33 +52,33 @@
 }
 
 - (NSDictionary *)diff:(NSArray *)a otherValue:(NSArray *)b {
-	NSAssert([a isKindOfClass:[NSArray class]] && [b isKindOfClass:[NSArray class]],
-			 @"Simperium error: couldn't diff list because their classes weren't NSArray");
+    NSAssert([a isKindOfClass:[NSArray class]] && [b isKindOfClass:[NSArray class]],
+            @"Simperium error: couldn't diff list because their classes weren't NSArray");
     
     if ([a isEqualToArray:b])
-		return [NSDictionary dictionary];
-	
-	// For the moment we can only create OP_LIST_DMP
-	return @{ OP_OP: OP_LIST_DMP, OP_VALUE: [a sp_diffDeltaWithArray:b diffMatchPatch:self.diffMatchPatch] };
+        return [NSDictionary dictionary];
+    
+    // For the moment we can only create OP_LIST_DMP
+    return @{ OP_OP: OP_LIST_DMP, OP_VALUE: [a sp_diffDeltaWithArray:b diffMatchPatch:self.diffMatchPatch] };
 }
 
 - (id)applyDiff:(id)thisValue otherValue:(id)otherValue error:(NSError **)error {
-	
-	// Assuming OP_LIST_DMP. This code will have to change when OP_LIST is
-	// implemented and it will have to take the full change diff in order
-	// to apply the right diffing method.
-	NSString *delta = otherValue;
-	NSArray *source = thisValue;
-	
-	return [source sp_arrayByApplyingDiffDelta:delta diffMatchPatch:self.diffMatchPatch];
+    
+    // Assuming OP_LIST_DMP. This code will have to change when OP_LIST is
+    // implemented and it will have to take the full change diff in order
+    // to apply the right diffing method.
+    NSString *delta = otherValue;
+    NSArray *source = thisValue;
+    
+    return [source sp_arrayByApplyingDiffDelta:delta diffMatchPatch:self.diffMatchPatch];
 }
 
 - (NSDictionary *)transform:(id)thisValue otherValue:(id)otherValue oldValue:(id)oldValue error:(NSError **)error {
-	NSArray *source = oldValue;
-	NSString *delta1 = thisValue;
-	NSString *delta2 = otherValue;
-	
-	return @{ OP_OP: OP_LIST_DMP, OP_VALUE: [source sp_transformDelta:delta1 onto:delta2 diffMatchPatch:self.diffMatchPatch] };
+    NSArray *source = oldValue;
+    NSString *delta1 = thisValue;
+    NSString *delta2 = otherValue;
+    
+    return @{ OP_OP: OP_LIST_DMP, OP_VALUE: [source sp_transformDelta:delta1 onto:delta2 diffMatchPatch:self.diffMatchPatch] };
 }
 
 @end

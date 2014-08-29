@@ -118,12 +118,11 @@ static NSInteger const SPLogLength          = 50;
         NSDecimalNumber *expectedCost   = versionData[NSStringFromSelector(@selector(cost))];
         NSNumber *expectedWarp          = versionData[NSStringFromSelector(@selector(warpSpeed))];
         
-        XCTAssert([config isKindOfClass:[Config class]],            @"Invalid object kind");
-        XCTAssertEqualObjects(config.captainsLog, expectedLog,      @"1Invalid Log");
-        XCTAssertEqualObjects(config.cost, expectedCost,            @"Invalid Cost");
-        XCTAssertEqualObjects(config.warpSpeed, expectedWarp,       @"Invalid Warp");
-        XCTAssertEqualObjects(config.ghost.version, endVersion,     @"Invalid Ghost Version");
-        XCTAssertEqualObjects(config.ghost.memberData, versionData, @"Invalid Ghost MemberData");
+        XCTAssert([config isKindOfClass:[Config class]],                                @"Invalid object kind");
+        XCTAssertEqualObjects(config.captainsLog, expectedLog,                          @"Invalid Log");
+        XCTAssertEqualObjects(config.cost, expectedCost,                                @"Invalid Cost");
+        XCTAssertEqualObjects(config.warpSpeed, expectedWarp,                           @"Invalid Warp");
+        XCTAssertTrue([self isGhostEqualToDictionary:versionData ghost:config.ghost],   @"Invalid Ghost MemberData");
     }
 }
 
@@ -193,7 +192,7 @@ static NSInteger const SPLogLength          = 50;
         NSStringFromSelector(@selector(captainsLog))    : newRemoteLog,
         NSStringFromSelector(@selector(cost))           : newRemoteCost,
         NSStringFromSelector(@selector(warpSpeed))      : newRemoteWarp,
-        NSStringFromSelector(@selector(date))           : [newRemoteDate description]
+        NSStringFromSelector(@selector(date))           : @(newRemoteDate.timeIntervalSince1970)
     };
     
     for (Config *config in configs) {
@@ -236,11 +235,11 @@ static NSInteger const SPLogLength          = 50;
     for (Config *config in configs) {
         NSDictionary *versionData = versionMap[config.simperiumKey];
         
-        XCTAssertEqualObjects(config.captainsLog, newRemoteLog,     @"Invalid Log");
-        XCTAssertEqualObjects(config.cost, newRemoteCost,           @"Invalid Cost");
-        XCTAssertEqualObjects(config.warpSpeed, newRemoteWarp,      @"Invalid Warp");
-        XCTAssertEqualObjects(config.ghost.version, endVersion,     @"Invalid Ghost Version");
-        XCTAssertEqualObjects(config.ghost.memberData, versionData, @"Invalid Ghost MemberData");
+        XCTAssertEqualObjects(config.captainsLog, newRemoteLog,                         @"Invalid Log");
+        XCTAssertEqualObjects(config.cost, newRemoteCost,                               @"Invalid Cost");
+        XCTAssertEqualObjects(config.warpSpeed, newRemoteWarp,                          @"Invalid Warp");
+        XCTAssertEqualObjects(config.ghost.version, endVersion,                         @"Invalid Ghost Version");
+        XCTAssertTrue([self isGhostEqualToDictionary:versionData ghost:config.ghost],   @"Invalid Ghost MemberData");
     }
 }
 
@@ -359,11 +358,11 @@ static NSInteger const SPLogLength          = 50;
     
     [storage refaultObjects:@[config]];
     
-    XCTAssertEqualObjects(config.captainsLog, expectedLog,  @"Invalid Log");
-    XCTAssertEqualObjects(config.cost, expectedCost,        @"Invalid Cost");
-    XCTAssertEqualObjects(config.warpSpeed, expectedWarp,   @"Invalid Warp");
-    XCTAssertEqualObjects(config.ghost.version, endVersion, @"Invalid Ghost Version");
-    XCTAssertEqualObjects(config.ghost.memberData, data,    @"Invalid Ghost MemberData");
+    XCTAssertEqualObjects(config.captainsLog, expectedLog,                  @"Invalid Log");
+    XCTAssertEqualObjects(config.cost, expectedCost,                        @"Invalid Cost");
+    XCTAssertEqualObjects(config.warpSpeed, expectedWarp,                   @"Invalid Warp");
+    XCTAssertEqualObjects(config.ghost.version, endVersion,                 @"Invalid Ghost Version");
+    XCTAssertTrue([self isGhostEqualToDictionary:data ghost:config.ghost],  @"Invalid Ghost MemberData");
 }
 
 - (void)testProcessVersionsWithExistingObjectsAndLocalPendingChangesFailsRebasingAndFavorsLocalData {
@@ -462,10 +461,132 @@ static NSInteger const SPLogLength          = 50;
     //
     
     [storage refaultObjects:@[config]];
+    XCTAssertEqualObjects(config.captainsLog, expectedLog,                  @"Invalid Log");
+    XCTAssertEqualObjects(config.ghost.version, endVersion,                 @"Invalid Ghost Version");
+    XCTAssertTrue([self isGhostEqualToDictionary:data ghost:config.ghost],  @"Invalid Ghost MemberData");
+}
+
+- (void)testProcessVersionsWithExistingObjectsAndLocalPendingChangesWithRebaseDisabled {
     
-    XCTAssertEqualObjects(config.captainsLog, expectedLog,  @"Invalid Log");
-    XCTAssertEqualObjects(config.ghost.version, endVersion, @"Invalid Ghost Version");
-    XCTAssertEqualObjects(config.ghost.memberData, data,    @"Invalid Ghost MemberData");
+    // ===================================================================================================
+	// Testing values!
+    // ===================================================================================================
+    //
+    NSString *originalLog           = @"Original Captains Log";
+    NSString *localPendingLog       = @"Local Captains Log";
+    NSString *newRemoteLog          = @"Remote Captains Log";
+    NSString *expectedLog           = newRemoteLog;
+    
+    
+    // ===================================================================================================
+	// Helpers
+    // ===================================================================================================
+    //
+	MockSimperium* s                = [MockSimperium mockSimperium];
+	SPBucket* bucket                = [s bucketForName:NSStringFromClass([Config class])];
+	id<SPStorageProvider> storage   = bucket.storage;
+    
+    
+    // ===================================================================================================
+	// Insert Config
+    // ===================================================================================================
+    //
+    Config* config                  = [storage insertNewObjectForBucketName:bucket.name simperiumKey:nil];
+    config.captainsLog              = originalLog;
+    
+    
+    // ===================================================================================================
+    // Manually Intialize SPGhost: we're not relying on the backend to confirm these additions!
+    // ===================================================================================================
+    //
+    NSMutableDictionary *memberData = [config.dictionary mutableCopy];
+    SPGhost *ghost                  = [[SPGhost alloc] initWithKey:config.simperiumKey memberData:memberData];
+    ghost.version                   = @"1";
+    config.ghost                    = ghost;
+    config.ghostData                = [memberData sp_JSONString];
+    
+	[storage save];
+    
+    NSLog(@"<> Successfully inserted Config object");
+    
+    
+    // ===================================================================================================
+    // Prepare Remote Entity Message
+    // ===================================================================================================
+    //
+    NSString *endVersion    = [NSString stringWithFormat:@"%d", config.ghost.version.intValue + 1];
+    
+    NSDictionary *data      = @{
+                                NSStringFromSelector(@selector(captainsLog)) : newRemoteLog,
+                                };
+    
+    NSArray *versions       = @[ @[ config.simperiumKey, endVersion, data ] ];
+    
+    NSLog(@"<> Successfully generated versions");
+    
+    
+    // ===================================================================================================
+    // Add local pending changes
+    // ===================================================================================================
+    //
+    config.captainsLog  = localPendingLog;
+    
+    [storage save];
+    
+
+    // ===================================================================================================
+    // Disable Rebase
+    // ===================================================================================================
+    //
+    dispatch_async(bucket.processorQueue, ^{
+        [bucket.indexProcessor disableRebaseForObjectWithKey:config.simperiumKey];
+    });
+    
+    
+    // ===================================================================================================
+    // Process remote changes
+    // ===================================================================================================
+    //
+	StartBlock();
+    
+    dispatch_async(bucket.processorQueue, ^{
+        
+        [bucket.indexProcessor processVersions:versions bucket:bucket changeHandler:^(NSString *key) {
+            XCTAssertTrue(true, @"This should not get called");
+        }];
+        
+		dispatch_async(dispatch_get_main_queue(), ^{
+			EndBlock();
+		});
+    });
+    
+	WaitUntilBlockCompletes();
+    
+    NSLog(@"<> Finished processing versions");
+    
+    
+    // ===================================================================================================
+    // Verify if the indexProcessor actually did its job
+    // ===================================================================================================
+    //
+    
+    [storage refaultObjects:@[config]];
+    
+    XCTAssertEqualObjects(config.captainsLog, expectedLog,                  @"Invalid Log");
+    XCTAssertEqualObjects(config.ghost.version, endVersion,                 @"Invalid Ghost Version");
+    XCTAssertTrue([self isGhostEqualToDictionary:data ghost:config.ghost],  @"Invalid Ghost MemberData");
+}
+
+
+#pragma mark - Helpers
+
+- (BOOL)isGhostEqualToDictionary:(NSDictionary *)dictionary ghost:(SPGhost *)ghost {
+    for (id key in dictionary.allKeys) {
+        if ([dictionary[key] isEqual:ghost.memberData[key]] == false) {
+            return false;
+        }
+    }
+    return true;
 }
 
 @end

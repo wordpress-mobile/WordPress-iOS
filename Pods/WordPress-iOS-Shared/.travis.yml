@@ -1,4 +1,0 @@
-language: objective-c
-xcode_workspace: WordPress-iOS-Shared.xcworkspace
-xcode_scheme: WordPress-iOS-Shared
-xcode_sdk: iphonesimulator7.1
