@@ -20,7 +20,9 @@ import Foundation
     }
     
     // MARK: - Public Properties
-    public var delegate: UITextViewDelegate?
+    public weak var delegate: UITextViewDelegate?
+    
+    public var onReply: ((String) -> ())?
     
     public var placeholder: String! {
         didSet {
@@ -43,52 +45,50 @@ import Foundation
     }
     
     public func setupProxyAccessoryView() {
-        let accessory               = ReplyTextView(width: bounds.width)
-        accessory.placeholder       = placeholder
-        accessory.replyText         = replyText
-        textView.inputAccessoryView = accessory
+        proxyTextView                   = ReplyTextView(width: bounds.width)
+        textView.inputAccessoryView     = proxyTextView
+        proxyTextView.placeholder       = placeholder
+        proxyTextView.replyText         = replyText
+        proxyTextView.delegate          = self
     }
     
     
-    // MARK: - UITextViewDelegate
+    // MARK: - UITextViewDelegate Methods
     public func textViewShouldBeginEditing(textView: UITextView!) -> Bool {
-        let result = delegate?.textViewShouldBeginEditing?(textView)
-        return result ?? true
-    }
-    
-    public func textViewShouldEndEditing(textView: UITextView!) -> Bool {
-        let result = delegate?.textViewShouldEndEditing?(textView)
-        return result ?? true
+        return delegate?.textViewShouldBeginEditing?(textView) ?? true
     }
     
     public func textViewDidBeginEditing(textView: UITextView!) {
-        if textView.inputAccessoryView is ReplyTextView {
+        // If we have a Proxy Accessory View, forward the event!
+        if proxyTextView != nil {
             textView.inputAccessoryView.becomeFirstResponder()
         } else {
             delegate?.textViewDidBeginEditing?(textView)
         }
     }
     
+    public func textViewShouldEndEditing(textView: UITextView!) -> Bool {
+        return delegate?.textViewShouldEndEditing?(textView) ?? true
+    }
+
     public func textViewDidEndEditing(textView: UITextView!) {
         delegate?.textViewDidEndEditing?(textView)
     }
     
     public func textView(textView: UITextView!, shouldChangeTextInRange range: NSRange, replacementText text: String!) -> Bool {
-        let result = delegate?.textView?(textView, shouldChangeTextInRange: range, replacementText: text)
-        return result ?? true
+        return delegate?.textView?(textView, shouldChangeTextInRange: range, replacementText: text) ?? true
     }
 
     public func textViewDidChange(textView: UITextView!) {
-        placeholderLabel.hidden = !textView.text.isEmpty
-        updateTextViewSize()
+        refreshControls()
+        resizeIfNeeded()
         scrollToCaretInTextView()
         
         delegate?.textViewDidChange?(textView)
     }
     
     public func textView(textView: UITextView!, shouldInteractWithURL URL: NSURL!, inRange characterRange: NSRange) -> Bool {
-        let result = delegate?.textView?(textView, shouldInteractWithURL: URL, inRange: characterRange)
-        return result ?? true
+        return delegate?.textView?(textView, shouldInteractWithURL: URL, inRange: characterRange) ?? true
     }
     
     
@@ -99,28 +99,30 @@ import Foundation
     
     public override func resignFirstResponder() -> Bool {
         endEditing(true)
-        return textView.resignFirstResponder()
+        return super.resignFirstResponder()
     }
     
     public override func layoutSubviews() {
         super.layoutSubviews()
-        containerView.frame.size.width = self.bounds.width
+//        containerView.frame.size.width = self.bounds.width
     }
     
+    
     // MARK: - Private Helpers
-    private func updateTextViewSize() {
-        let textSize        = textView.contentSize
-        
-        let oldHeight       = frame.height
-        let textHeight      = ceil(textSize.height) + textViewPadding.bottom + textViewPadding.top
+    private func resizeIfNeeded() {
+        let textHeight      = ceil(textView.contentSize.height) + textViewPadding.bottom + textViewPadding.top
         let newHeight       = min(max(textHeight, textViewMinHeight), textViewMaxHeight)
+        let oldHeight       = frame.size.height
         
-        if oldHeight == newHeight {
+        if newHeight == oldHeight {
             return
         }
         
         frame.size.height   = newHeight
         frame.origin.y      += oldHeight - newHeight
+        
+//        layoutView.updateConstraint(.Height, constant: newSize.height)
+//        println("Resizing \(newHeight) old \(oldHeight)")
     }
     
     private func scrollToCaretInTextView() {
@@ -158,6 +160,7 @@ import Foundation
         placeholderLabel.textColor      = WPStyleGuide.Comments.Colors.replySeparator
         
         // Reply
+        replyButton.enabled             = false
         replyButton.titleLabel.font     = WPStyleGuide.Comments.Fonts.replyButton
         replyButton.setTitleColor(WPStyleGuide.Comments.Colors.replyDisabled, forState: .Disabled)
         replyButton.setTitleColor(WPStyleGuide.Comments.Colors.replyEnabled,  forState: .Normal)
@@ -166,19 +169,41 @@ import Foundation
         layoutView.backgroundColor      = WPStyleGuide.Comments.Colors.replyBackground
     }
     
+    private func refreshControls() {
+        // [Show | Hide] placeholder + reply button, as needed
+        let whitespaceCharSet       = NSCharacterSet.whitespaceAndNewlineCharacterSet()
+        let shouldEnableReply       = textView.text.stringByTrimmingCharactersInSet(whitespaceCharSet).isEmpty == false
+        let shouldHidePlaceholder   = !textView.text.isEmpty
+        
+        placeholderLabel.hidden     = shouldHidePlaceholder
+        replyButton.enabled         = shouldEnableReply
+    }
+
+    @IBAction private func btnReplyPressed() {
+        if let handler = onReply {
+            handler(textView.text)
+        }
+    }
+    
+    
     // MARK: - Constants
     private let textViewPadding:            UIEdgeInsets    = UIEdgeInsets(top: 2, left: 0, bottom: 1, right: 0)
     private let textViewMaxHeight:          CGFloat         = 77   // Fits 3 lines onscreen
     private let textViewMinHeight:          CGFloat         = 44
+    
+    // MARK: - Private Properties
     private var bundle:                     NSArray?
+    private var proxyTextView:              ReplyTextView!
     
     // MARK: - IBOutlets
-    @IBOutlet public var textView:         UITextView!
+    @IBOutlet public var textView:          UITextView!
     @IBOutlet private var placeholderLabel: UILabel!
     @IBOutlet private var replyButton:      UIButton!
     @IBOutlet private var layoutView:       UIView!
     @IBOutlet private var containerView:    UIView!
 }
+
+
 
 
 //  NOTE:
