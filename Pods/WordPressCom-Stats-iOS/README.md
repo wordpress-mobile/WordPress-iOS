@@ -92,4 +92,4 @@ http://make.wordpress.org/mobile/handbook/pathways/ios/how-to-contribute/
 
 ## License
 
-WordPressCom-Stats-iOS is available under the GPLv2 license. See the [LICENSE](https://raw.githubusercontent.com/wordpress-mobile/WordPressCom-Stats-iOS/develop/LICENSE) file for more info.
+WordPressCom-Stats-iOS is available under the MIT license. See the [LICENSE](https://raw.githubusercontent.com/wordpress-mobile/WordPressCom-Stats-iOS/develop/LICENSE) file for more info.
