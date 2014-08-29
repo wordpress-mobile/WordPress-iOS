@@ -34,10 +34,10 @@
 extern NSString * const SimperiumWillSaveNotification;
 
 typedef NS_ENUM(NSInteger, SPSimperiumErrors) {
-	SPSimperiumErrorsMissingAppID,
-	SPSimperiumErrorsMissingAPIKey,
-	SPSimperiumErrorsMissingToken,
-	SPSimperiumErrorsMissingWindow
+    SPSimperiumErrorsMissingAppID,
+    SPSimperiumErrorsMissingAPIKey,
+    SPSimperiumErrorsMissingToken,
+    SPSimperiumErrorsMissingWindow
 };
 
 
@@ -45,9 +45,9 @@ typedef NS_ENUM(NSInteger, SPSimperiumErrors) {
 #pragma mark SimperiumDelegate
 #pragma mark ====================================================================================
 
-/**	You can use this delegate to respond to general events and errors.
-	If you want explicit callbacks when objects are changed/added/deleted, you can also use SPBucketDelegate in SPBucket.h. 
-	Standard Core Data notifications are also generated, allowing you to update a `UITableView` (for example) in your `NSFetchedResultsControllerDelegate`.
+/** You can use this delegate to respond to general events and errors.
+    If you want explicit callbacks when objects are changed/added/deleted, you can also use SPBucketDelegate in SPBucket.h.
+    Standard Core Data notifications are also generated, allowing you to update a `UITableView` (for example) in your `NSFetchedResultsControllerDelegate`.
  */
 @protocol SimperiumDelegate <NSObject>
 @optional
@@ -65,16 +65,16 @@ typedef NS_ENUM(NSInteger, SPSimperiumErrors) {
 @interface Simperium : NSObject
 
 // Initializes Simperium: After executing this method, your CoreData Stack will be fully initialized
-- (id)initWithModel:(NSManagedObjectModel *)model
-			context:(NSManagedObjectContext *)context
-		coordinator:(NSPersistentStoreCoordinator *)coordinator;
+- (instancetype)initWithModel:(NSManagedObjectModel *)model
+                      context:(NSManagedObjectContext *)context
+                  coordinator:(NSPersistentStoreCoordinator *)coordinator;
 
 // Initializes Simperium: This constructor allows you to specify custom mappings between local and remote buckets.
-- (id)initWithModel:(NSManagedObjectModel *)model
-			context:(NSManagedObjectContext *)context
-		coordinator:(NSPersistentStoreCoordinator *)coordinator
-			  label:(NSString *)label
-    bucketOverrides:(NSDictionary *)bucketOverrides;
+- (instancetype)initWithModel:(NSManagedObjectModel *)model
+                      context:(NSManagedObjectContext *)context
+                  coordinator:(NSPersistentStoreCoordinator *)coordinator
+                        label:(NSString *)label
+              bucketOverrides:(NSDictionary *)bucketOverrides;
 
 #if TARGET_OS_IPHONE
 // Starts Simperium and displays the auth interface, if needed.
@@ -153,6 +153,10 @@ typedef void (^SimperiumSignoutCompletion)(void);
 
 // Enables or disables the network.
 @property (nonatomic, readwrite, assign) BOOL networkEnabled;
+
+// Enables or disables full database validation: objects with missing simperiumKey or ghost will be initialized.
+// By default this is enabled, and should be ran at least once after implementing Simperium on legacy databases.
+@property (nonatomic, readwrite, assign) BOOL validatesObjects;
 
 // Returns the currently authenticated Simperium user.
 @property (nonatomic, readonly, strong) SPUser *user;

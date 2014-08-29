@@ -20,6 +20,6 @@
 @property (nonatomic, copy) NSString *simperiumKey;
 @property (nonatomic, copy) NSString *version;
 
-- (id)initWithDictionary:(NSMutableDictionary *)dictionary;
+- (instancetype)initWithDictionary:(NSMutableDictionary *)dictionary;
 
 @end
