@@ -22,6 +22,15 @@ import Foundation
     // MARK: - Public Properties
     public weak var delegate: UITextViewDelegate?
     
+    public var proxyAccessoryAlpha: CGFloat {
+        get {
+            return proxyTextView.alpha
+        }
+        set {
+            proxyTextView.alpha = newValue
+        }
+    }
+
     public var onReply: ((String) -> ())?
     
     public var placeholder: String! {
@@ -104,7 +113,7 @@ import Foundation
     
     public override func layoutSubviews() {
         super.layoutSubviews()
-//        containerView.frame.size.width = self.bounds.width
+        containerView.frame.size.width = self.bounds.width
     }
     
     
@@ -120,9 +129,6 @@ import Foundation
         
         frame.size.height   = newHeight
         frame.origin.y      += oldHeight - newHeight
-        
-//        layoutView.updateConstraint(.Height, constant: newSize.height)
-//        println("Resizing \(newHeight) old \(oldHeight)")
     }
     
     private func scrollToCaretInTextView() {
@@ -196,7 +202,7 @@ import Foundation
     private var proxyTextView:              ReplyTextView!
     
     // MARK: - IBOutlets
-    @IBOutlet public var textView:          UITextView!
+    @IBOutlet private var textView:          UITextView!
     @IBOutlet private var placeholderLabel: UILabel!
     @IBOutlet private var replyButton:      UIButton!
     @IBOutlet private var layoutView:       UIView!
