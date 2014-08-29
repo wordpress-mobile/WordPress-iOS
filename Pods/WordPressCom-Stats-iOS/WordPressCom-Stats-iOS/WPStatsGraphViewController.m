@@ -118,8 +118,8 @@ static NSString *const GraphBackgroundView = @"GraphBackgroundView";
 {
     if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
         WPStatsGraphLegendView *legend = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:LegendView forIndexPath:indexPath];
-        [legend addCategory:NSLocalizedString(@"Views", @"Views Category in Site Stats") withColor:[WPStyleGuide statsLighterBlue]];
-        [legend addCategory:NSLocalizedString(@"Visitors", @"Visitors Category in Site Stats") withColor:[WPStyleGuide statsDarkerBlue]];
+        [legend addCategory:NSLocalizedString(@"Views", @"Views Category in Site Stats") withColor:[WPStyleGuide textFieldPlaceholderGrey]];
+        [legend addCategory:NSLocalizedString(@"Visitors", @"Visitors Category in Site Stats") withColor:[WPStyleGuide littleEddieGrey]];
         [legend finishedAddingCategories];
 
         return legend;
