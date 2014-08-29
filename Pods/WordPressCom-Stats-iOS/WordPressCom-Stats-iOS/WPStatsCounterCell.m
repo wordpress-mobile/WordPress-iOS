@@ -115,6 +115,8 @@ static CGFloat const StatCounterCellHeight = 100.0f;
     countNumber.font = [WPStyleGuide largePostTitleFont];
     countNumber.opaque = YES;
     countNumber.backgroundColor = [UIColor whiteColor];
+    countNumber.adjustsFontSizeToFitWidth = YES;
+    countNumber.minimumScaleFactor = 0.5f;
     
     countText.text = label;
     countText.textAlignment = NSTextAlignmentCenter;
