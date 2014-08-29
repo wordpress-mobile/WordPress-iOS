@@ -1,6 +1,7 @@
 #import "WPEditorViewController.h"
 #import "WPEditorViewController_Internal.h"
 #import <UIKit/UIKit.h>
+#import <WordPressCom-Analytics-iOS/WPAnalytics.h>
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
 #import <WordPress-iOS-Shared/WPTableViewCell.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
@@ -1216,6 +1217,7 @@ typedef enum
     if ([self.delegate respondsToSelector: @selector(editorDidPressMedia:)]) {
         [self.delegate editorDidPressMedia:self];
     }
+    [WPAnalytics track:WPAnalyticsStatEditorTappedImage];
 }
 
 #pragma mark - UI Refreshing
@@ -1329,6 +1331,7 @@ typedef enum
         barButtonItem.tintColor = [self barButtonItemDefaultColor];
         [self enableToolbarItems:YES shouldShowSourceButton:YES];
     }
+    [WPAnalytics track:WPAnalyticsStatEditorTappedHTML];
 }
 
 - (void)removeFormat
@@ -1359,16 +1362,19 @@ typedef enum
 - (void)setBold
 {
     [self.editorView setBold];
+    [WPAnalytics track:WPAnalyticsStatEditorTappedBold];
 }
 
 - (void)setBlockQuote
 {
     [self.editorView setBlockQuote];
+    [WPAnalytics track:WPAnalyticsStatEditorTappedBlockquote];
 }
 
 - (void)setItalic
 {
     [self.editorView setItalic];
+    [WPAnalytics track:WPAnalyticsStatEditorTappedItalic];
 }
 
 - (void)setSubscript
@@ -1379,6 +1385,7 @@ typedef enum
 - (void)setUnderline
 {
 	[self.editorView setUnderline];
+    [WPAnalytics track:WPAnalyticsStatEditorTappedUnderline];
 }
 
 - (void)setSuperscript
@@ -1389,16 +1396,19 @@ typedef enum
 - (void)setStrikethrough
 {
     [self.editorView setStrikethrough];
+    [WPAnalytics track:WPAnalyticsStatEditorTappedStrikethrough];
 }
 
 - (void)setUnorderedList
 {
     [self.editorView setUnorderedList];
+    [WPAnalytics track:WPAnalyticsStatEditorTappedUnorderedList];
 }
 
 - (void)setOrderedList
 {
     [self.editorView setOrderedList];
+    [WPAnalytics track:WPAnalyticsStatEditorTappedOrderedList];
 }
 
 - (void)setHR
@@ -1494,6 +1504,7 @@ typedef enum
     
     // Show the dialog for inserting or editing a link
     [self showInsertLinkDialogWithLink:self.selectedLinkURL title:self.selectedLinkTitle];
+    [WPAnalytics track:WPAnalyticsStatEditorTappedLink];
 }
 
 - (void)showInsertLinkDialogWithLink:(NSString *)url title:(NSString *)title
@@ -1588,6 +1599,7 @@ typedef enum
 - (void)removeLink
 {
     [self.editorView removeLink];
+    [WPAnalytics track:WPAnalyticsStatEditorTappedUnlink];
 }
 
 - (void)quickLink
