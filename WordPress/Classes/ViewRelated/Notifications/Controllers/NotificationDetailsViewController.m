@@ -503,14 +503,13 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 - (BOOL)displayStatsWithNotificationRange:(NotificationRange *)range
 {
-#warning TODO FIXME
-    if (!range.isStats || !_note.metaSiteID) {
+    if (!range.isStats || !range.siteID) {
         return false;
     }
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blog                      = [service blogByBlogId:_note.metaSiteID];
+    Blog *blog                      = [service blogByBlogId:range.siteID];
     
     BOOL success = blog.isWPcom;
     if (success) {
