@@ -398,12 +398,11 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 
 #pragma mark - Post centric methods
 
-- (NSMutableArray *)ancestorsForCommentWithParentID:(NSNumber *)commentParentID andCurrentAncestors:(NSArray *)currentAncestors
+- (NSMutableArray *)ancestorsForCommentWithParentID:(NSNumber *)parentID andCurrentAncestors:(NSArray *)currentAncestors
 {
     NSMutableArray *ancestors = [currentAncestors mutableCopy];
 
     // Calculate hierarchy and depth.
-    NSString *parentID = [commentParentID stringValue];
     if (parentID) {
         if ([ancestors containsObject:parentID]) {
             NSUInteger index = [ancestors indexOfObject:parentID] + 1;
@@ -421,25 +420,16 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 
 - (NSString *)hierarchyFromAncestors:(NSArray *)ancestors andCommentID:(NSNumber *)commentID
 {
-    NSString *hierarchy = [self formatAncestorString:[commentID stringValue]];
-    if ([ancestors count] > 0) {
-        NSArray *arr = [self formatAncestorArray:ancestors];
-        hierarchy = [NSString stringWithFormat:@"%@.%@", [arr componentsJoinedByString:@"."], hierarchy];
-    }
-    return hierarchy;
+    NSArray *arr = [ancestors arrayByAddingObject:commentID];
+    arr = [self formatHierarchyElements:arr];
+    return [arr componentsJoinedByString:@"."];
 }
 
-- (NSString *)formatAncestorString:(NSString *)str
-{
-    NSString *formattedString = [NSString stringWithFormat:@"0000000000%@", str];
-    return [formattedString substringFromIndex:[str length]];
-}
-
-- (NSArray *)formatAncestorArray:(NSArray *)ancestors
+- (NSArray *)formatHierarchyElements:(NSArray *)hierarchy
 {
     NSMutableArray *arr = [NSMutableArray array];
-    for (NSString *str in ancestors) {
-        [arr addObject:[self formatAncestorString:str]];
+    for (NSNumber *commentID in hierarchy) {
+        [arr addObject:[NSString stringWithFormat:@"%010u", [commentID integerValue]]];
     }
     return arr;
 }
