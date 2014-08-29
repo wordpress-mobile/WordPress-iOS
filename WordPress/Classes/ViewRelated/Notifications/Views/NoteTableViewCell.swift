@@ -56,14 +56,9 @@ import Foundation
         noticonLabel.textColor          = UIColor.whiteColor()
         
         subjectLabel.numberOfLines      = subjectNumberOfLines
-        subjectLabel.backgroundColor    = UIColor.clearColor()
-        subjectLabel.textAlignment      = .Left
-        subjectLabel.lineBreakMode      = .ByWordWrapping
         subjectLabel.shadowOffset       = CGSizeZero
         subjectLabel.textColor          = WPStyleGuide.Notifications.Colors.blockText
 
-        snippetLabel.backgroundColor    = UIColor.clearColor()
-        snippetLabel.lineBreakMode      = .ByWordWrapping
         snippetLabel.numberOfLines      = snippetNumberOfLines
     }
     

@@ -57,8 +57,9 @@ extension WPStyleGuide
 
         public struct Styles
         {
-            private static let subjectParagraph = NSMutableParagraphStyle(minimumLineHeight: 18, maximumLineHeight: 18)
-            private static let blockParagraph   = NSMutableParagraphStyle(minimumLineHeight: 20, maximumLineHeight: 20)
+            private static let subjectParagraph = NSMutableParagraphStyle(minLineHeight: 18, maxLineHeight: 18, lineBreakMode: .ByWordWrapping)
+            private static let snippetParagraph = NSMutableParagraphStyle(minLineHeight: 18, maxLineHeight: 18, lineBreakMode: .ByTruncatingTail)
+            private static let blockParagraph   = NSMutableParagraphStyle(minLineHeight: 20, maxLineHeight: 20, lineBreakMode: .ByWordWrapping)
             
             public static let subjectRegular    = NSDictionary(objectsAndKeys:
                 subjectParagraph,                   NSParagraphStyleAttributeName,
@@ -76,7 +77,7 @@ extension WPStyleGuide
             )
 
             public static let snippetRegular    = NSDictionary(objectsAndKeys:
-                subjectParagraph,                   NSParagraphStyleAttributeName,
+                snippetParagraph,                   NSParagraphStyleAttributeName,
                 Fonts.subjectRegular,               NSFontAttributeName,
                 Colors.quotedText,                  NSForegroundColorAttributeName
             )
