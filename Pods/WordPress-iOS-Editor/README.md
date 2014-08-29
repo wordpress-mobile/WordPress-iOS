@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/wordpress-mobile/WordPress-iOS-Editor.svg?branch=develop)](https://travis-ci.org/wordpress-mobile/WordPress-iOS-Editor)
+
 ![WordPress Logo](http://s.w.org/about/images/logos/wordpress-logo-hoz-rgb.png)
 
 # WordPress-iOS-Editor
@@ -87,4 +89,4 @@ http://make.wordpress.org/mobile/handbook/pathways/ios/how-to-contribute/
 
 ## License
 
-WordPress-iOS-Editor is available under the GPLv2 license. See the [LICENSE](https://raw.githubusercontent.com/wordpress-mobile/WordPress-iOS-Editor/develop/LICENSE) file for more info.
+WordPress-iOS-Editor is available under the MIT license. See the [LICENSE](https://raw.githubusercontent.com/wordpress-mobile/WordPress-iOS-Editor/develop/LICENSE) file for more info.
