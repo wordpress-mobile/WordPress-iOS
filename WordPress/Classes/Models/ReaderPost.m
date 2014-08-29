@@ -127,15 +127,21 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 - (BOOL)contentIncludesFeaturedImage
 {
-    NSString *featuredImage = [[self featuredImageURL] absoluteString];
+    NSURL *featuredImageURL = [self featuredImageURL];
+    NSString *featuredImage = [featuredImageURL absoluteString];
     if (!featuredImage) {
         return NO;
     }
 
     // One URL might be http and the other https, so don't include the protocol in the check.
-    NSString *featuredImagePath = [[featuredImage componentsSeparatedByString:@"://"] lastObject];
+    NSString *scheme = [featuredImageURL scheme];
+    if ([scheme length]) {
+        NSInteger index = [scheme length] + 3; // protocol + ://
+        featuredImage = [featuredImage substringFromIndex:index];
+    }
+
     NSString *content = [self contentForDisplay];
-    return ([content rangeOfString:featuredImagePath].location != NSNotFound);
+    return ([content rangeOfString:featuredImage].location != NSNotFound);
 }
 
 #pragma mark - WPContentViewProvider protocol
