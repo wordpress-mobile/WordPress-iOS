@@ -60,7 +60,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     }
     
     @IBAction func launchContainingApp() {
-        self.extensionContext.openURL(NSURL(string: "wordpress://?siteId=\(siteId!)"), completionHandler: nil)
+        self.extensionContext.openURL(NSURL(string: "wordpress://viewstats?siteId=\(siteId!)"), completionHandler: nil)
     }
     
     func widgetPerformUpdateWithCompletionHandler(completionHandler: ((NCUpdateResult) -> Void)!) {

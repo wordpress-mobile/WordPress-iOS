@@ -32,15 +32,21 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 {
     [super viewDidLoad];
     
-    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Today", @"") style:UIBarButtonItemStylePlain target:self action:@selector(makeSiteTodayWidgetSite:)];
-    self.navigationItem.rightBarButtonItem = settingsButton;
+    if (self.presentingViewController == nil) {
+        UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Today", @"") style:UIBarButtonItemStylePlain target:self action:@selector(makeSiteTodayWidgetSite:)];
+        self.navigationItem.rightBarButtonItem = settingsButton;
+    } else {
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonTapped:)];
+        self.navigationItem.rightBarButtonItem = doneButton;
+        self.title = self.blog.blogName;
+    }
 }
 
 - (void)setBlog:(Blog *)blog
 {
     _blog = blog;
     DDLogInfo(@"Loading Stats for the following blog: %@", [blog url]);
-
+    
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if (!appDelegate.connectionAvailable) {
         [self showNoResultsWithTitle:NSLocalizedString(@"No Connection", @"") message:NSLocalizedString(@"An active internet connection is required to view stats", @"")];
@@ -139,6 +145,13 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
                                                destructiveButtonTitle:nil
                                                     otherButtonTitles:NSLocalizedString(@"Use this site", @""), nil];
     [actionSheet showFromTabBar:self.tabBarController.tabBar];
+}
+
+- (IBAction)doneButtonTapped:(id)sender
+{
+    if (self.dismissBlock) {
+        self.dismissBlock();
+    }
 }
 
 #pragma mark - UIActionSheetDelegate methods

@@ -239,11 +239,24 @@ NSInteger const kMeTabIndex                                     = 2;
             if (params.count) {
                 NSNumber *siteId = [params numberForKey:@"siteId"];
                 
-                [self.blogListViewController.navigationController popToRootViewControllerAnimated:NO];
-                NSInteger meTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.blogListViewController.navigationController];
-                [self.tabBarController setSelectedIndex:meTabIndex];
+                BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+                Blog *blog = [blogService blogByBlogId:siteId];
                 
-                returnValue = YES;
+                if (blog) {
+                    returnValue = YES;
+                    
+                    StatsViewController *statsViewController = [[StatsViewController alloc] init];
+                    statsViewController.blog = blog;
+                    statsViewController.dismissBlock = ^{
+                        [self.tabBarController dismissViewControllerAnimated:YES completion:nil];
+                    };
+                    
+                    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:statsViewController];
+                    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+                    navController.navigationBar.translucent = NO;
+                    [self.tabBarController presentViewController:navController animated:YES completion:nil];
+                }
+                
             }
         } else if ([URLString rangeOfString:@"debugging"].length) {
             NSDictionary *params = [[url query] dictionaryFromQueryString];
