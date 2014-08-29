@@ -79,6 +79,9 @@ stylesForCurrentSelection:(NSArray*)styles;
  */
 @property (nonatomic, copy, readwrite) NSString* placeholderHTMLString;
 
+#pragma mark - Selection
+@property (nonatomic, strong, readonly) NSString *selectedLinkURL;
+
 #pragma mark - Interaction
 
 - (void)setHtml:(NSString *)html;

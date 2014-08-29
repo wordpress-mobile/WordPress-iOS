@@ -371,8 +371,9 @@ zss_editor.setBackgroundColor = function(color) {
 // Needs addClass method
 
 zss_editor.insertLink = function(url, title) {
-	
+
     zss_editor.restorerange();
+	
     var sel = document.getSelection();
 	if (sel.toString().length != 0) {
         if (sel.rangeCount) {
@@ -390,18 +391,27 @@ zss_editor.insertLink = function(url, title) {
 	zss_editor.enabledEditingItems();
 }
 
-zss_editor.updateLink = function(url, title) {
+zss_editor.updateLink = function(url) {
 	
     zss_editor.restorerange();
 	
-    if (zss_editor.currentEditingLink) {
-        var c = zss_editor.currentEditingLink;
-        c.attr('href', url);
-        c.attr('title', title);
+	var currentLinkNode = zss_editor.closerParentNode('a');
+	
+    if (currentLinkNode) {
+		currentLinkNode.setAttribute("href", url);
     }
     zss_editor.enabledEditingItems();
-    
-}//end
+}
+
+zss_editor.unlink = function() {
+	
+	var currentLinkNode = zss_editor.closerParentNode('a');
+	
+	if (currentLinkNode) {
+		zss_editor.unwrapNode(currentLinkNode);
+	}
+	zss_editor.enabledEditingItems();
+}
 
 zss_editor.updateImage = function(url, alt) {
 	
@@ -416,13 +426,37 @@ zss_editor.updateImage = function(url, alt) {
 	
 }//end
 
-zss_editor.unlink = function() {
-    
-	if (zss_editor.currentEditingLink) {
-        var c = zss_editor.currentEditingLink;
-        c.contents().unwrap();
-    }
-    zss_editor.enabledEditingItems();
+zss_editor.unwrapNode = function(node) {
+	
+	var newObject = $(node).replaceWith(node.innerHTML);
+	
+	var finalSelection = window.getSelection();
+	var finalRange = selection.getRangeAt(0).cloneRange();
+	
+	finalRange.setEnd(finalRange.startContainer, finalRange.startOffset + 1);
+	
+	selection.removeAllRanges();
+	selection.addRange(finalRange);
+}
+
+zss_editor.currentLinkNode = function() {
+	
+	// Find all relevant parent tags
+	var parentTags = zss_editor.closerParentTag('a');
+	
+	for (var i = 0; i < parentTags.length; i++) {
+		var currentNode = parentTags[i];
+		
+		if (currentNode.nodeName.toLowerCase() == 'a') {
+			zss_editor.currentEditingLink = currentNode;
+			
+			var title = currentNode.text;
+			var href = encodeURIComponent(currentNode.href);
+			
+			items.push('link-title:' + title);
+			items.push('link:' + href);
+		}
+	}
 }
 
 zss_editor.quickLink = function() {
@@ -518,12 +552,86 @@ zss_editor.isCommandEnabled = function(commandName) {
 	return document.queryCommandState(commandName);
 }
 
-zss_editor.enabledEditingItems = function(e) {
+zss_editor.closerParentNode = function(nodeName) {
+	
+	nodeName = nodeName.toLowerCase();
+	
+	var parentNode = null;
+	var selection = window.getSelection();
+	var range = selection.getRangeAt(0).cloneRange();
+	
+	var currentNode = range.commonAncestorContainer;
+	
+	while (currentNode) {
+		
+		if (currentNode.nodeName == document.body.nodeName) {
+			break;
+		}
+		
+		if (currentNode.nodeName.toLowerCase() == nodeName
+			&& currentNode.nodeType == document.ELEMENT_NODE) {
+			parentNode = currentNode;
+			
+			break;
+		}
+		
+		currentNode = currentNode.parentElement;
+	}
+	
+	return parentNode;
+}
 
+zss_editor.parentTags = function() {
+	
+	var parentTags = [];
+	var selection = window.getSelection();
+	var range = selection.getRangeAt(0).cloneRange();
+	
+	var currentNode = range.commonAncestorContainer;
+	
+	while (currentNode) {
+		
+		if (currentNode.nodeName == document.body.nodeName) {
+			break;
+		}
+		
+		if (currentNode.nodeType == document.ELEMENT_NODE) {
+			parentTags.push(currentNode);
+		}
+		
+		currentNode = currentNode.parentElement;
+	}
+	
+	return parentTags;
+}
+
+zss_editor.enabledEditingItems = function(e) {
+	
 	var items = [];
+	
+	// Find all relevant parent tags
+	var parentTags = zss_editor.parentTags();
+	
+	for (var i = 0; i < parentTags.length; i++) {
+		var currentNode = parentTags[i];
+		
+		if (currentNode.nodeName.toLowerCase() == 'a') {
+			zss_editor.currentEditingLink = currentNode;
+			
+			var title = currentNode.text;
+			var href = encodeURIComponent(currentNode.href);
+			
+			items.push('link-title:' + title);
+			items.push('link:' + href);
+		}
+	}
+	
 	if (zss_editor.isCommandEnabled('bold')) {
 		items.push('bold');
-	} 
+	}
+	if (zss_editor.isCommandEnabled('createLink')) {
+		items.push('createLink');
+	}
 	if (zss_editor.isCommandEnabled('italic')) {
 		items.push('italic');
 	}
@@ -605,7 +713,7 @@ zss_editor.enabledEditingItems = function(e) {
 			// DRM: I had to add these stupid try-catch blocks to solve an issue with t.css throwing
 			// exceptions for no reason.
 		}
-			
+		
 		// Link
 		if (nodeName == 'a') {
             zss_editor.currentEditingLink = t;
