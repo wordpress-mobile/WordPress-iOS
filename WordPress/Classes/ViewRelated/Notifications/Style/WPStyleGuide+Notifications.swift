@@ -17,7 +17,7 @@ extension WPStyleGuide
             public static let subjectBold       = WPFontManager.openSansBoldFontOfSize(subjectSize)
             public static let subjectItalics    = WPFontManager.openSansItalicFontOfSize(subjectSize)
             
-            private static let blockSizeMedium  = CGFloat(UIDevice.isPad() ? 16 : 14)
+            private static let blockSizeMedium  = CGFloat(14)
             public static let blockRegular      = WPFontManager.openSansRegularFontOfSize(blockSizeMedium)
             public static let blockBold         = WPFontManager.openSansBoldFontOfSize(blockSizeMedium)
             public static let blockItalics      = WPFontManager.openSansItalicFontOfSize(blockSizeMedium)
