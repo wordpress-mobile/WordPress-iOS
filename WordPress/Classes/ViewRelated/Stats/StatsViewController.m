@@ -90,7 +90,9 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     [sharedDefaults setObject:self.blog.blogName forKey:@"WordPressTodayWidgetSiteName"];
     
     // Temporarily left this line in to support simulator testing
-    [sharedDefaults setObject:self.oauth2Token forKey:@"WordPressTodayWidgetOAuth2Token"];
+    if (TARGET_IPHONE_SIMULATOR) {
+        [sharedDefaults setObject:self.oauth2Token forKey:@"WordPressTodayWidgetOAuth2Token"];
+    }
     
     NSError *error;
     [SFHFKeychainUtils storeUsername:@"OAuth2Token"
@@ -99,6 +101,9 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
                          accessGroup:@"org.wordpress"
                       updateExisting:YES
                                error:&error];
+    if (error) {
+        DDLogError(@"Today Widget OAuth2Token error: %@", error);
+    }
 
     // Turns the widget on for this site
     [[NCWidgetController widgetController] setHasContent:YES forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
