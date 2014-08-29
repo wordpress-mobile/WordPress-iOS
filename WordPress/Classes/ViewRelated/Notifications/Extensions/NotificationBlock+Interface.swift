@@ -15,7 +15,7 @@ extension NotificationBlock
         for range in ranges as [NotificationRange] {
             if range.isUser {
                 theString.addAttributes(WPStyleGuide.Notifications.Styles.subjectBold, range: range.range)
-            } else if range.isPost {
+            } else if range.isPost || range.isComment {
                 theString.addAttributes(WPStyleGuide.Notifications.Styles.subjectItalics, range: range.range)
             }
         }
