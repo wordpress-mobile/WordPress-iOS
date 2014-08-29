@@ -260,6 +260,7 @@
 		B5CC05F61962150600975CAC /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F51962150600975CAC /* Constants.m */; };
 		B5CC05F91962186D00975CAC /* Meta.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F81962186D00975CAC /* Meta.m */; };
 		B5CC05FC196218E100975CAC /* XMLParserCollecter.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05FB196218E100975CAC /* XMLParserCollecter.m */; };
+		B5D06D4919B1134100433A3A /* NSIndexPath+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D06D4819B1134100433A3A /* NSIndexPath+Swift.swift */; };
 		B5E23BDC19AD0CED000D6879 /* ReplyTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E23BDA19AD0CED000D6879 /* ReplyTextView.swift */; };
 		B5E23BDD19AD0CED000D6879 /* ReplyTextView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5E23BDB19AD0CED000D6879 /* ReplyTextView.xib */; };
 		B5E23BDF19AD0D00000D6879 /* NoteTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5E23BDE19AD0D00000D6879 /* NoteTableViewCell.xib */; };
@@ -843,6 +844,7 @@
 		B5CC05F81962186D00975CAC /* Meta.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Meta.m; sourceTree = "<group>"; };
 		B5CC05FA196218E100975CAC /* XMLParserCollecter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLParserCollecter.h; sourceTree = "<group>"; };
 		B5CC05FB196218E100975CAC /* XMLParserCollecter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLParserCollecter.m; sourceTree = "<group>"; };
+		B5D06D4819B1134100433A3A /* NSIndexPath+Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSIndexPath+Swift.swift"; sourceTree = "<group>"; };
 		B5DF454E19A51DD600D4FD79 /* WordPress 22.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 22.xcdatamodel"; sourceTree = "<group>"; };
 		B5E23BDA19AD0CED000D6879 /* ReplyTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyTextView.swift; sourceTree = "<group>"; };
 		B5E23BDB19AD0CED000D6879 /* ReplyTextView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReplyTextView.xib; sourceTree = "<group>"; };
@@ -1920,6 +1922,7 @@
 			children = (
 				B5B56D1719AFB4BA00B4E29B /* Notification+Interface.swift */,
 				B5B56D1819AFB4BA00B4E29B /* NotificationBlock+Interface.swift */,
+				B5D06D4819B1134100433A3A /* NSIndexPath+Swift.swift */,
 				B5B56D1919AFB4BA00B4E29B /* NSDate+Helpers.swift */,
 				B5B56D1A19AFB4BA00B4E29B /* NSParagraphStyle+Helpers.swift */,
 				B5B56D1B19AFB4BA00B4E29B /* UIDevice+Helpers.swift */,
@@ -2624,6 +2627,7 @@
 				83D180FA12329B1A002DCCB0 /* EditPageViewController.m in Sources */,
 				E125445612BF5B3900D87A0A /* Category.m in Sources */,
 				E125451812BF68F900D87A0A /* Page.m in Sources */,
+				B5D06D4919B1134100433A3A /* NSIndexPath+Swift.swift in Sources */,
 				FD9A948C12FAEA2300438F94 /* DateUtils.m in Sources */,
 				E1B4A9E112FC8B1000EB3F67 /* EGORefreshTableHeaderView.m in Sources */,
 				5DF94E521962BAEB00359241 /* ReaderPostRichContentView.m in Sources */,

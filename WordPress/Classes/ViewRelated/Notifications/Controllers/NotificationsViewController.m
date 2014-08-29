@@ -338,10 +338,11 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSNumber *rowCacheValue = self.cachedRowHeights[indexPath];
+    NSNumber *rowCacheValue = self.cachedRowHeights[indexPath.toString];
     if (rowCacheValue) {
         return rowCacheValue.floatValue;
     }
+
 
     return NoteEstimatedHeight;
 }
@@ -349,7 +350,7 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {    
     // Hit the cache first
-    NSNumber *rowCacheValue = self.cachedRowHeights[indexPath];
+    NSNumber *rowCacheValue = self.cachedRowHeights[indexPath.toString];
     if (rowCacheValue) {
         return rowCacheValue.floatValue;
     }
@@ -361,7 +362,7 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
     CGFloat height = [layoutCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
     
     // Cache
-    self.cachedRowHeights[indexPath] = @(height);
+    self.cachedRowHeights[indexPath.toString] = @(height);
 
     return height;
 }
