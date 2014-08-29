@@ -29,6 +29,12 @@ extern NSString * const CommentStatusDraft;
 @property (nonatomic, strong) NSString *content;
 @property (nonatomic, strong) NSDate *dateCreated;
 @property (nonatomic, strong) NSNumber *depth;
+// Hierarchy is a string representation of a comments ancestors. Each ancestor's
+// is denoted by a ten character zero padded representation of its ID
+// (e.g. "0000000001"). Ancestors are separated by a period.
+// This allows hierarchical comments to be retrieved from core data by sorting
+// on hierarchy, and allows for new comments to be inserted without needing to
+// reorder the list. 
 @property (nonatomic, strong) NSString *hierarchy;
 @property (nonatomic, strong) NSString *link;
 @property (nonatomic, strong) NSNumber *parentID;
