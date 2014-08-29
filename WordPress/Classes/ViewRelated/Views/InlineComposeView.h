@@ -21,6 +21,7 @@
 @property (nonatomic, weak) NSString *text;
 @property (nonatomic, weak) NSAttributedString *attributedText;
 @property (nonatomic, getter = isEnabled) BOOL enabled;
+@property (nonatomic) BOOL shouldDeleteTagWithBackspace;
 
 - (void)setButtonTitle:(NSString *)title;
 - (void)clearText;

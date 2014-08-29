@@ -172,6 +172,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
     self.inlineComposeView.delegate = self;
+    self.inlineComposeView.shouldDeleteTagWithBackspace = YES;
     [self.view addSubview:self.inlineComposeView];
 
     self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
