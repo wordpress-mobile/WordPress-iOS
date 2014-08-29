@@ -867,11 +867,13 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 - (NSString *)formatSummary:(NSString *)summary
 {
     summary = [self makePlainText:summary];
-    NSRange rng = [summary rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@".?!"] options:NSBackwardsSearch];
-    if (rng.location == NSNotFound || rng.location < ReaderPostServiceSummaryLength) {
-        return summary;
+
+    NSRange rng = [summary rangeOfString:@"Continue reading →"];
+    if (rng.location != NSNotFound) {
+        summary = [summary substringToIndex:rng.location];
     }
-    return [summary substringToIndex:(rng.location + 1)];
+
+    return summary;
 }
 
 /**
