@@ -335,7 +335,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rba-We-3uT" userLabel="FollowButton">
-                                                    <rect key="frame" x="66" y="45" width="78" height="22"/>
+                                                    <rect key="frame" x="66" y="43" width="78" height="22"/>
                                                     <inset key="contentEdgeInsets" minX="2" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                     <state key="normal" title="Button" image="reader-postaction-follow.png">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -348,7 +348,7 @@
                                             <constraints>
                                                 <constraint firstItem="NoK-QJ-MnS" firstAttribute="leading" secondItem="gS1-fC-NuP" secondAttribute="trailing" constant="12" id="6ef-jI-ty4"/>
                                                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="gS1-fC-NuP" secondAttribute="bottom" constant="12" id="6z2-L3-OMa"/>
-                                                <constraint firstItem="rba-We-3uT" firstAttribute="top" secondItem="8yY-Q0-7Ra" secondAttribute="bottom" id="750-tI-Bgq"/>
+                                                <constraint firstItem="rba-We-3uT" firstAttribute="top" secondItem="8yY-Q0-7Ra" secondAttribute="bottom" constant="-2" id="750-tI-Bgq"/>
                                                 <constraint firstItem="gS1-fC-NuP" firstAttribute="top" secondItem="1cQ-bH-Fko" secondAttribute="top" constant="12" id="LeR-AI-23o"/>
                                                 <constraint firstAttribute="trailing" secondItem="8yY-Q0-7Ra" secondAttribute="trailing" constant="12" id="MFb-v2-d12"/>
                                                 <constraint firstItem="gS1-fC-NuP" firstAttribute="leading" secondItem="1cQ-bH-Fko" secondAttribute="leading" constant="12" id="dOZ-os-eoq"/>
