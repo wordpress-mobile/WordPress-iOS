@@ -300,20 +300,20 @@
 {
     RemoteComment *comment = [RemoteComment new];
 
-    comment.author = [jsonDictionary stringForKeyPath:@"author.name"];
+    comment.author = jsonDictionary[@"author"][@"name"];
     // Email might be `false`, turn into `nil`
     comment.authorEmail = [jsonDictionary[@"author"] stringForKey:@"email"];
-    comment.authorUrl = [jsonDictionary stringForKeyPath:@"author.URL"];
+    comment.authorUrl = jsonDictionary[@"author"][@"URL"];
     comment.authorAvatarURL = [jsonDictionary stringForKeyPath:@"author.avatar_URL"];
-    comment.commentID = [jsonDictionary numberForKey:@"ID"];
-    comment.content = [jsonDictionary stringForKey:@"content"];
-    comment.date = [NSDate dateWithWordPressComJSONString:[jsonDictionary stringForKey:@"date"]];
-    comment.link = [jsonDictionary stringForKey:@"URL"];
+    comment.commentID = jsonDictionary[@"ID"];
+    comment.content = jsonDictionary[@"content"];
+    comment.date = [NSDate dateWithWordPressComJSONString:jsonDictionary[@"date"]];
+    comment.link = jsonDictionary[@"URL"];
     comment.parentID = [jsonDictionary numberForKeyPath:@"parent.ID"];
     comment.postID = [jsonDictionary numberForKeyPath:@"post.ID"];
     comment.postTitle = [jsonDictionary stringForKeyPath:@"post.title"];
-    comment.status = [self statusWithRemoteStatus:[jsonDictionary stringForKey:@"status"]];
-    comment.type = [jsonDictionary stringForKey:@"type"];
+    comment.status = [self statusWithRemoteStatus:jsonDictionary[@"status"]];
+    comment.type = jsonDictionary[@"type"];
 
     return comment;
 }
