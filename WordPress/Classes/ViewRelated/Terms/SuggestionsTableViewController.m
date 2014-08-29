@@ -23,11 +23,14 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
     self = [super init];
     if (self) {
         _siteID = siteID;
+
+        self.title = NSLocalizedString(@"Suggestions", @"Suggestions page title");
     }
     return self;
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     self.delegate = nil;
 }
 
@@ -59,8 +62,6 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    self.title = NSLocalizedString(@"Suggestions", @"Suggestions page title");
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(suggestionListUpdated:)

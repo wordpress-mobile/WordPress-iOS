@@ -92,7 +92,6 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 {
     self = [super init];
     if (self) {
-        self.title = NSLocalizedString(@"Notification", @"Title for notification detail view");
         _hasScrollBackView = NO;
         _note = note;
         self.restorationIdentifier = NSStringFromClass([self class]);
@@ -190,6 +189,10 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
     Simperium *simperium = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
     SPBucket *noteBucket = [simperium bucketForName:@"NoteSimperium"];
     noteBucket.delegate = self;
+
+    // Don't show 'Comment' in the next-view back button
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
 }
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder
