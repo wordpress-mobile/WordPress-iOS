@@ -3,9 +3,10 @@ import Foundation
 
 extension NSMutableParagraphStyle
 {
-    convenience init(minimumLineHeight: CGFloat, maximumLineHeight: CGFloat) {
+    convenience init(minLineHeight: CGFloat, maxLineHeight: CGFloat, lineBreakMode: NSLineBreakMode) {
         self.init()
-        self.minimumLineHeight = minimumLineHeight
-        self.maximumLineHeight = maximumLineHeight
+        self.minimumLineHeight  = minLineHeight
+        self.maximumLineHeight  = maxLineHeight
+        self.lineBreakMode      = lineBreakMode
     }
 }
