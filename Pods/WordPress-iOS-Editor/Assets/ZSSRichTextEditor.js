@@ -33,7 +33,7 @@ zss_editor.init = function() {
 
 	// Main editor div
 	var editor = $('#zss_editor_content');
-	
+
 	document.addEventListener("selectionchange", function(e) {
 					
 		// DRM: only do something here if the editor has focus.  The reason is that when the
@@ -49,12 +49,24 @@ zss_editor.init = function() {
 		}
 	}, false);
 	
+	editor.bind('tap', function(e) {
+		zss_editor.focusEditor();
+		var range = document.createRange();
+		range.selectNode(e.target);
+		selection.removeAllRanges();
+		selection.addRange(range);
+				
+		e.preventDefault();
+	});
+	
 	editor.bind('doubletap', function(e) {
 		zss_editor.focusEditor();
 		var range = document.createRange();
 		range.selectNode(e.target);
 		selection.removeAllRanges();
 		selection.addRange(range);
+				
+		e.preventDefault();
 	});
 
 	editor.bind('focusin', function(e) {
@@ -81,7 +93,7 @@ zss_editor.init = function() {
 			console.log("callback-user-triggered-change://noop");
 		}
 	});
-	
+
 }//end
 
 zss_editor.log = function(msg) {
@@ -410,6 +422,7 @@ zss_editor.unlink = function() {
 	if (currentLinkNode) {
 		zss_editor.unwrapNode(currentLinkNode);
 	}
+	
 	zss_editor.enabledEditingItems();
 }
 

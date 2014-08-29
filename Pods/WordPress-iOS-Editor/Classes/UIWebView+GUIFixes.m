@@ -44,15 +44,6 @@ static Class fixClass = Nil;
 	return view;
 }
 
-- (BOOL)delayedBecomeFirstResponder
-{
-	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-		[super becomeFirstResponder];
-	});
-	
-	return YES;
-}
-
 - (void)ensureFixedSubclassExistsOfBrowserViewClass:(Class)browserViewClass
 {
     if (!fixClass) {
@@ -63,10 +54,6 @@ static Class fixClass = Nil;
         IMP newImp = [self methodForSelector:@selector(methodReturningCustomInputAccessoryView)];
         class_addMethod(newClass, @selector(inputAccessoryView), newImp, "@@:");
         objc_registerClassPair(newClass);
-		
-        IMP delayedFirstResponderImp = [self methodForSelector:@selector(delayedBecomeFirstResponder)];
-		Method becomeFirstResponderMethod = class_getInstanceMethod(browserViewClass, @selector(becomeFirstResponder));
-		method_setImplementation(becomeFirstResponderMethod, delayedFirstResponderImp);
         
         fixClass = newClass;
     }
