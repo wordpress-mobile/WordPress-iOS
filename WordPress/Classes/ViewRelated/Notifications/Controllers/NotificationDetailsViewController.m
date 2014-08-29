@@ -171,6 +171,7 @@ static CGFloat NotificationSectionSeparator     = 10;
         return;
     }
     
+    // Attach the Reply component only if the noficiation has a comment, and it can be replied-to
     NotificationBlockGroup *group   = [self.note blockGroupOfType:NoteBlockGroupTypesComment];
     NotificationBlock *block        = [group blockOfType:NoteBlockTypesComment];
     if (![block actionForKey:NoteActionReplyKey]) {
@@ -180,13 +181,15 @@ static CGFloat NotificationSectionSeparator     = 10;
     ReplyTextView *replyTextView    = [[ReplyTextView alloc] initWithWidth:CGRectGetWidth(self.view.frame)];
     replyTextView.placeholder       = NSLocalizedString(@"Write a reply…", @"Placeholder text for inline compose view");
     replyTextView.replyText         = [NSLocalizedString(@"Reply", @"") uppercaseString];
-    
-    [self.view addSubview:replyTextView];
-    [replyTextView alignAtBottomOfSuperview];
+    replyTextView.onReply           = ^(NSString *content) {
+    };
     self.replyTextView              = replyTextView;
     
-    // Workaround:
-    // Matching EXACTLY the keyboard animation is a no-go. Let's use a helper inputAccessoryView to do the trick
+    // Attach!
+    [self.view addSubview:replyTextView];
+    
+    // Adjust position + use an internal ReplaceTextView instance as inputAccessoryView
+    [replyTextView alignAtBottomOfSuperview];
     [replyTextView setupProxyAccessoryView];
     
     // Setup the Table Insets
@@ -196,11 +199,13 @@ static CGFloat NotificationSectionSeparator     = 10;
     
     
 #warning UNHACK
+//  Status: Approved
+//  Approve Parent
     
-//    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-//    CommentService *service = [[CommentService alloc] initWithManagedObjectContext:context];
-//    
-//    [service replyCommentWithID:block.metaCommentID siteID:block.metaSiteID content:@"Reply?" success:nil failure:nil];
+    //    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    //    CommentService *service = [[CommentService alloc] initWithManagedObjectContext:context];
+    //
+    //    [service replyCommentWithID:block.metaCommentID siteID:block.metaSiteID content:@"Reply?" success:nil failure:nil];
 }
 
 
@@ -792,26 +797,26 @@ static CGFloat NotificationSectionSeparator     = 10;
         return;
     }
     
-    NSDictionary* userInfo          = notification.userInfo;
+    NSDictionary* userInfo                  = notification.userInfo;
     
     // Convert the rect to view coordinates: enforce the current orientation!
-    CGRect kbRect                   = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    kbRect                          = [self.view convertRect:kbRect fromView:nil];
+    CGRect kbRect                           = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    kbRect                                  = [self.view convertRect:kbRect fromView:nil];
     
-    CGRect viewFrame                = self.view.frame;
-    CGFloat bottomInset             = CGRectGetHeight(kbRect) - (CGRectGetMaxY(kbRect) - CGRectGetHeight(viewFrame) + CGRectGetHeight(self.replyTextView.bounds));
+    CGRect viewFrame                        = self.view.frame;
+    CGFloat bottomInset                     = CGRectGetHeight(kbRect) - (CGRectGetMaxY(kbRect) - CGRectGetHeight(viewFrame) + CGRectGetHeight(self.replyTextView.bounds));
     
-    UIEdgeInsets newContentInsets   = self.tableView.contentInset;
-    newContentInsets.bottom         += bottomInset;
+    UIEdgeInsets newContentInsets           = self.tableView.contentInset;
+    newContentInsets.bottom                 += bottomInset;
     
-    self.replyTextView.textView.inputAccessoryView.alpha = 0;
+    self.replyTextView.proxyAccessoryAlpha  = 0;
     
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
     [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
 
     self.tableView.contentInset = newContentInsets;
-    self.replyTextView.textView.inputAccessoryView.alpha = 1;
+    self.replyTextView.proxyAccessoryAlpha  = 1;
 
     [UIView commitAnimations];
     
@@ -826,15 +831,15 @@ static CGFloat NotificationSectionSeparator     = 10;
         return;
     }
     
-    NSDictionary* userInfo          = notification.userInfo;
+    NSDictionary* userInfo                  = notification.userInfo;
     
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
     [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
     
-    UIEdgeInsets newContentInsets   = self.tableView.contentInset;
-    newContentInsets.bottom         -= self.keyboardBottomDelta;
-    self.tableView.contentInset     = newContentInsets;
+    UIEdgeInsets newContentInsets           = self.tableView.contentInset;
+    newContentInsets.bottom                 -= self.keyboardBottomDelta;
+    self.tableView.contentInset             = newContentInsets;
     
     [UIView commitAnimations];
     
@@ -848,7 +853,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 - (IBAction)dismissKeyboardIfNeeded:(id)sender
 {
     // Dismiss the reply field when tapping on the tableView
-    [self.replyTextView resignFirstResponder];
+    [self.view.window endEditing:YES];
 }
 
 @end
