@@ -381,7 +381,8 @@ static BOOL const JetpackRESTSupportedForEveryone = NO;
     return nil;
 }
 
-- (BOOL)jetpackRESTSupported {
+- (BOOL)jetpackRESTSupported
+{
 #ifdef DEBUG
     return YES;
 #endif
