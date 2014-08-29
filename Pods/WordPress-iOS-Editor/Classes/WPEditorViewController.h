@@ -31,7 +31,6 @@ WPEditorViewControllerMode;
 @property (nonatomic, weak) id<WPEditorViewControllerDelegate> delegate;
 @property (nonatomic, copy) NSString *titleText;
 @property (nonatomic, copy) NSString *bodyText;
-@property (nonatomic) BOOL isShowingKeyboard;
 
 #pragma mark - Initializers
 

@@ -145,7 +145,7 @@ typedef enum
     [super viewWillAppear:animated];
 	
     self.view.backgroundColor = [UIColor whiteColor];
-    
+
     // When restoring state, the navigationController is nil when the view loads,
     // so configure its appearance here instead.
     self.navigationController.navigationBar.translucent = NO;
@@ -158,8 +158,6 @@ typedef enum
     for (UIView *view in self.navigationController.toolbar.subviews) {
         [view setExclusiveTouch:YES];
     }
-    
-	[self startObservingKeyboardNotifications];
 	
 	if (self.isEditing) {
 		[self startEditing];
@@ -168,13 +166,6 @@ typedef enum
     [self refreshUI];
     [self.titleTextField becomeFirstResponder];
     [self.navigationController setToolbarHidden:YES animated:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-	
-	[self stopObservingKeyboardNotifications];
 }
 
 #pragma mark - Default toolbar items
@@ -265,26 +256,6 @@ typedef enum
 	}
 	
 	return _rightToolbarHolder;
-}
-
-#pragma mark - Keyboard notifications
-
-- (void)startObservingKeyboardNotifications
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(keyboardWillShow:)
-												 name:UIKeyboardWillShowNotification
-											   object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(keyboardWillHide:)
-												 name:UIKeyboardWillHideNotification
-											   object:nil];
-}
-
-- (void)stopObservingKeyboardNotifications
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 #pragma mark - Toolbar
@@ -1320,7 +1291,7 @@ typedef enum
 }
 
 - (void)showHTMLSource:(UIBarButtonItem *)barButtonItem
-{
+{	
     if ([self.editorView isInVisualMode]) {
 		[self.editorView showHTMLSource];
 		
@@ -1828,101 +1799,6 @@ didFailLoadWithError:(NSError *)error
 {
     // Blank method. User should implement this in their subclass
 	NSAssert(NO, @"Blank method. User should implement this in their subclass");
-}
-
-#pragma mark - Keyboard status
-
-- (void)keyboardWillShow:(NSNotification *)notification
-{
-    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-	
-    NSDictionary *info = notification.userInfo;
-    CGFloat duration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
-    NSUInteger curve = [[info objectForKey:UIKeyboardAnimationCurveUserInfoKey] unsignedIntegerValue];
-    CGRect keyboardEnd = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    
-    CGFloat keyboardHeight = UIInterfaceOrientationIsLandscape(orientation) ? keyboardEnd.size.width : keyboardEnd.size.height;
-    UIViewAnimationOptions animationOptions = curve;
-	
-	// DRM: WORKAROUND: for some weird reason, we are receiving multiple UIKeyboardWillShow notifications.
-	// We will simply ignore repeated notifications.
-	//
-	if (!self.isShowingKeyboard) {
-		
-		self.isShowingKeyboard = YES;
-		
-		// Hide the placeholder if visible before editing
-		if (!self.titleTextField.isFirstResponder && [self isEditorPlaceholderTextVisible]) {
-			[self.editorView setHtml:@""];
-		}
-		
-		CGRect localizedKeyboardEnd = [self.view convertRect:keyboardEnd fromView:nil];
-		CGPoint keyboardOrigin = localizedKeyboardEnd.origin;
-		CGFloat vOffset = self.view.frame.size.height - keyboardOrigin.y;
-		
-		CGRect editorFrame = self.editorView.frame;
-		editorFrame.size.height -= vOffset;
-		
-		[self setEditorFrame:editorFrame
-					animated:YES
-			animationOptions:animationOptions
-					duration:duration];
-	}
-}
-
-- (void)keyboardWillHide:(NSNotification *)notification
-{
-    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-	
-    NSDictionary *info = notification.userInfo;
-    CGFloat duration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
-    NSUInteger curve = [[info objectForKey:UIKeyboardAnimationCurveUserInfoKey] unsignedIntegerValue];
-    CGRect keyboardEnd = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    
-    UIViewAnimationOptions animationOptions = curve;
-	
-	// DRM: WORKAROUND: for some weird reason, we are receiving multiple UIKeyboardWillHide notifications.
-	// We will simply ignore repeated notifications.
-	//
-	if (self.isShowingKeyboard) {
-
-        self.isShowingKeyboard = NO;
-        [self refreshUI];
-		
-		CGRect editorFrame = self.editorView.frame;
-		editorFrame.size.height = self.view.frame.size.height - editorFrame.origin.y;
-		
-		[self setEditorFrame:editorFrame
-					animated:YES
-			animationOptions:animationOptions
-					duration:duration];
-	}
-}
-
-#pragma mark - Editor frame
-
-- (void)setEditorFrame:(CGRect)editorFrame
-			  animated:(BOOL)animated
-	  animationOptions:(UIViewAnimationOptions)animationOptions
-			  duration:(CGFloat)duration
-{
-	__weak typeof(self) weakSelf = self;
-	
-	void (^privateSetFrames)(CGRect frame) = ^void(CGRect editorFrame)
-	{
-		weakSelf.editorView.frame = editorFrame;
-	};
-	
-	if (animated) {
-		[UIView animateWithDuration:duration
-							  delay:0
-							options:animationOptions
-						 animations:^{
-			privateSetFrames(editorFrame);
-		} completion:nil];
-	} else {
-		privateSetFrames(editorFrame);
-	}
 }
 
 #pragma mark - Utilities
