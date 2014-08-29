@@ -45,7 +45,7 @@
                         </constraints>
                     </view>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Text" lineBreakMode="wordWrap" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="238" translatesAutoresizingMaskIntoConstraints="NO" id="SfC-6n-kyD" userLabel="SubjectLabel">
-                        <rect key="frame" x="71" y="12" width="237" height="19"/>
+                        <rect key="frame" x="71" y="9" width="237" height="19"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
@@ -53,7 +53,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" text="Snippet" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="238" translatesAutoresizingMaskIntoConstraints="NO" id="wcv-fL-daS" userLabel="SnippetLabel">
-                        <rect key="frame" x="71" y="33" width="237" height="19"/>
+                        <rect key="frame" x="71" y="28" width="237" height="19"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
@@ -65,8 +65,7 @@
                     <constraint firstItem="SfC-6n-kyD" firstAttribute="leading" secondItem="wcv-fL-daS" secondAttribute="leading" id="3gF-DJ-y1E"/>
                     <constraint firstAttribute="trailing" secondItem="SfC-6n-kyD" secondAttribute="trailing" constant="12" id="6YI-0h-7xG"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="wcv-fL-daS" secondAttribute="bottom" constant="12" id="AFb-po-J3Z"/>
-                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="SfC-6n-kyD" secondAttribute="bottom" constant="12" id="BoF-cP-a2D"/>
-                    <constraint firstItem="wcv-fL-daS" firstAttribute="leading" secondItem="wfO-j3-kM6" secondAttribute="trailing" constant="13" id="EU8-so-Lwt"/>
+                    <constraint firstItem="GgS-tD-1kB" firstAttribute="top" secondItem="SfC-6n-kyD" secondAttribute="top" constant="3" id="LJX-o9-vZJ"/>
                     <constraint firstAttribute="trailing" secondItem="wcv-fL-daS" secondAttribute="trailing" constant="12" id="MFS-Lb-Dh4"/>
                     <constraint firstItem="wfO-j3-kM6" firstAttribute="top" secondItem="9Ex-yA-LkS" secondAttribute="top" constant="42" id="NI5-rg-Yif"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="GgS-tD-1kB" secondAttribute="bottom" constant="12" id="O3R-0F-z4J"/>
@@ -75,14 +74,12 @@
                     <constraint firstItem="GgS-tD-1kB" firstAttribute="leading" secondItem="9Ex-yA-LkS" secondAttribute="leading" constant="12" id="a80-yz-Nlv"/>
                     <constraint firstItem="SfC-6n-kyD" firstAttribute="leading" secondItem="GgS-tD-1kB" secondAttribute="trailing" constant="13" id="dT8-x1-JZI"/>
                     <constraint firstItem="SfC-6n-kyD" firstAttribute="top" secondItem="9Ex-yA-LkS" secondAttribute="top" constant="12" id="gLA-vl-aV3"/>
-                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="GgS-tD-1kB" secondAttribute="bottom" constant="12" id="qcv-Yj-oZy"/>
-                    <constraint firstItem="wcv-fL-daS" firstAttribute="top" secondItem="SfC-6n-kyD" secondAttribute="bottom" constant="2" id="vFp-hy-O2S"/>
+                    <constraint firstItem="wcv-fL-daS" firstAttribute="top" secondItem="SfC-6n-kyD" secondAttribute="bottom" id="vFp-hy-O2S"/>
                     <constraint firstItem="wfO-j3-kM6" firstAttribute="leading" secondItem="9Ex-yA-LkS" secondAttribute="leading" constant="42" id="wvg-PE-czH"/>
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">
-                        <exclude reference="BoF-cP-a2D"/>
-                        <exclude reference="EU8-so-Lwt"/>
+                        <exclude reference="gLA-vl-aV3"/>
                     </mask>
                 </variation>
             </tableViewCellContentView>
