@@ -393,7 +393,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jzQ-hT-Ajt" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="a20-Yr-RdT">
+                <tapGestureRecognizer enabled="NO" id="a20-Yr-RdT">
                     <connections>
                         <action selector="dismissKeyboardIfNeeded:" destination="veA-Pg-QAw" id="HU5-W6-6xc"/>
                     </connections>
