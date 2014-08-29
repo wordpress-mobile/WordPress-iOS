@@ -28,7 +28,7 @@ extension NotificationBlock
             return NSAttributedString()
         }
 
-        return NSMutableAttributedString(string: text, attributes: WPStyleGuide.Notifications.Styles.snippetItalics)
+        return NSMutableAttributedString(string: text, attributes: WPStyleGuide.Notifications.Styles.snippetRegular)
     }
 
     public func regularFormattedText() -> NSAttributedString {
