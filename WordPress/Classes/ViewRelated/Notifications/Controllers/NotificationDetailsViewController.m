@@ -814,7 +814,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
     [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
 
-    self.tableView.contentInset = newContentInsets;
+    self.tableView.contentInset             = newContentInsets;
     self.replyTextView.proxyAccessoryAlpha  = 1;
 
     [UIView commitAnimations];
