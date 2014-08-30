@@ -223,25 +223,24 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 {
 	NSAssert([url isKindOfClass:[NSURL class]],
 			 @"Expected param url to be a non-nil, NSURL object.");
-	
+
 	BOOL handled = NO;
-	
+
 	NSString *scheme = [url scheme];
 	
 	NSLog(@"WebEditor callback received: %@", url);
 	
 	if ([self isUserTriggeredChangeScheme:scheme]) {
 		[self refreshPlaceholder];
-		
+
 		if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
 			[self.delegate editorTextDidChange:self];
 		}
-		
+
 		handled = YES;
 	} else if ([self isFocusInScheme:scheme]){
-		
 		self.editing = YES;
-		
+
 		[self refreshPlaceholder];
 		
 		if ([self.delegate respondsToSelector:@selector(editorView:focusChanged:)]) {
@@ -249,7 +248,6 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 		}
 		
 		handled = YES;
-		
 	} else if ([self isFocusOutScheme:scheme]){
 		
 		self.editing = NO;
@@ -522,9 +520,15 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 }
 
 - (void)blur
-{	
+{
     NSString *js = [NSString stringWithFormat:@"zss_editor.blurEditor();"];
     [self.webView stringByEvaluatingJavaScriptFromString:js];
+}
+
+- (void)endEditing;
+{
+	[self.webView endEditing:YES];
+	[self.sourceView endEditing:YES];
 }
 
 #pragma mark - Editor mode

@@ -145,6 +145,11 @@ stylesForCurrentSelection:(NSArray*)styles;
  */
 - (void)blur;
 
+/**
+ *	@brief		Ends editing and forces any subview to resign first responder.
+ */
+- (void)endEditing;
+
 #pragma mark - Editor mode
 
 - (BOOL)isInVisualMode;

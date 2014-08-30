@@ -57,7 +57,7 @@ typedef enum
 	
 } WPEditorViewControllerElementTag;
 
-@interface WPEditorViewController () <UIWebViewDelegate, HRColorPickerViewControllerDelegate, UITextFieldDelegate>
+@interface WPEditorViewController () <UIAlertViewDelegate, UIWebViewDelegate, HRColorPickerViewControllerDelegate, UITextFieldDelegate>
 
 @property (nonatomic, strong) UIScrollView *toolBarScroll;
 @property (nonatomic, strong) UIToolbar *toolbar;
@@ -1480,7 +1480,9 @@ typedef enum
 }
 
 - (void)showInsertLinkDialogWithLink:(NSString *)url title:(NSString *)title
-{	
+{
+	[self.editorView endEditing];
+	
     // Insert Button Title
 	NSString *insertButtonTitle = url ? NSLocalizedString(@"Update", nil) : NSLocalizedString(@"Insert", nil);
     
@@ -1521,12 +1523,12 @@ typedef enum
         
         // Don't dismiss the keyboard
         // Hack from http://stackoverflow.com/a/7601631
+		/*
         dispatch_async(dispatch_get_main_queue(), ^{
             if([weakSelf.editorView resignFirstResponder] || [weakSelf.titleTextField resignFirstResponder]){
                 [weakSelf.editorView becomeFirstResponder];
             }
-        });
-		[weakSelf.editorView becomeFirstResponder];
+        });*/
     };
 
     self.alertView.shouldEnableFirstOtherButtonBlock = ^BOOL(UIAlertView *alertView) {
