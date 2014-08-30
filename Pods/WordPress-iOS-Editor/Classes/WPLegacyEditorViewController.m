@@ -1,6 +1,7 @@
 #import "WPLegacyEditorViewController.h"
 #import "WPLegacyKeyboardToolbarBase.h"
 #import "WPLegacyKeyboardToolbarDone.h"
+#import <WordPressCom-Analytics-iOS/WPAnalytics.h>
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
 #import <WordPress-iOS-Shared/WPTableViewCell.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
@@ -563,6 +564,22 @@ CGFloat const WPLegacyEPVCTextViewTopPadding = 7.0f;
 
 - (void)keyboardToolbarButtonItemPressed:(WPLegacyKeyboardToolbarButtonItem *)buttonItem
 {
+    if ([buttonItem.actionTag isEqualToString:@"strong"]) {
+        [WPAnalytics track:WPAnalyticsStatEditorTappedBold];
+    } else if ([buttonItem.actionTag isEqualToString:@"em"]) {
+        [WPAnalytics track:WPAnalyticsStatEditorTappedItalic];
+    } else if ([buttonItem.actionTag isEqualToString:@"u"]) {
+        [WPAnalytics track:WPAnalyticsStatEditorTappedUnderline];
+    } else if ([buttonItem.actionTag isEqualToString:@"del"]) {
+        [WPAnalytics track:WPAnalyticsStatEditorTappedStrikethrough];
+    } else if ([buttonItem.actionTag isEqualToString:@"link"]) {
+        [WPAnalytics track:WPAnalyticsStatEditorTappedLink];
+    } else if ([buttonItem.actionTag isEqualToString:@"blockquote"]) {
+        [WPAnalytics track:WPAnalyticsStatEditorTappedBlockquote];
+    } else if ([buttonItem.actionTag isEqualToString:@"more"]) {
+        [WPAnalytics track:WPAnalyticsStatEditorTappedMore];
+    }
+         
     if ([buttonItem.actionTag isEqualToString:@"link"]) {
         [self showLinkView];
     } else if ([buttonItem.actionTag isEqualToString:@"done"]) {
