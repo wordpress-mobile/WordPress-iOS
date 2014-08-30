@@ -35,99 +35,68 @@ zss_editor.init = function() {
 	var editor = $('#zss_editor_content');
 
 	document.addEventListener("selectionchange", function(e) {
-					
+
 		// DRM: only do something here if the editor has focus.  The reason is that when the
 		// selection changes due to the editor loosing focus, the focusout event will not be
 		// sent if we try to load a callback here.
 		//
 		if (editor.is(":focus")) {
-			zss_editor.enabledEditingItems(e);
+			zss_editor.sendEnabledStyles(e);
 			var clicked = $(e.target);
 			if (!clicked.hasClass('zs_active')) {
 				$('img').removeClass('zs_active');
 			}
 		}
 	}, false);
-	
-	editor.bind('tap', function(e) {
-		zss_editor.focusEditor();
-		var range = document.createRange();
-		range.selectNode(e.target);
-		selection.removeAllRanges();
-		selection.addRange(range);
-				
-		e.preventDefault();
-	});
-	
-	editor.bind('doubletap', function(e) {
-		zss_editor.focusEditor();
-		var range = document.createRange();
-		range.selectNode(e.target);
-		selection.removeAllRanges();
-		selection.addRange(range);
-				
-		e.preventDefault();
-	});
 
-	editor.bind('focusin', function(e) {
-		if (zss_editor.isUsingiOS) {
-			window.location = "callback-focus-in://noop";
-		} else {
-			console.log("callback-focus-in://noop");
-		}
+	editor.bind('focus', function(e) {
+		zss_editor.callback("callback-focus-in");
 	});
 	
-	editor.bind('focusout', function(e) {
-		if (zss_editor.isUsingiOS) {
-			window.location = "callback-focus-out://noop";
-		} else {
-			console.log("callback-focus-out://noop");
-		}
+	editor.bind('blur', function(e) {
+		zss_editor.callback("callback-focus-out");
 	});
 	
 	editor.bind('keyup', function(e) {
-		zss_editor.enabledEditingItems(e);
-		if (zss_editor.isUsingiOS) {
-			window.location = "callback-user-triggered-change://noop";
-		} else {
-			console.log("callback-user-triggered-change://noop");
-		}
+		zss_editor.sendEnabledStyles(e);
+		zss_editor.callback("callback-user-triggered-change");
 	});
 
 }//end
 
 zss_editor.log = function(msg) {
-	if (zss_editor.isUsingiOS) {
-		window.location = "callback-log://" + msg;
-	} else {
-		console.log("callback-log://" + msg);
-	}
+	zss_editor.callback(callback-log, msg);
 }
 
 zss_editor.domLoadedCallback = function() {
 	
-	var callback = "callback-dom-loaded://";
+	zss_editor.callback("callback-dom-loaded");
+}
+
+zss_editor.callback = function(callbackScheme, callbackPath) {
+	
+	var url =  callbackScheme + ":";
+ 
+	if (callbackPath) {
+		url = url + callbackPath;
+	}
 	
 	if (zss_editor.isUsingiOS) {
-		window.location = callback;
+		window.location = url;
 	} else {
-		console.log(callback);
+		console.log(url);
 	}
 }
 
 zss_editor.stylesCallback = function(stylesArray) {
-	
+
 	var stylesString = '';
 	
 	if (stylesArray.length > 0) {
 		stylesString = stylesArray.join(',');
 	}
-	
-	if (zss_editor.isUsingiOS) {
-		window.location = "callback-selection-style://" + stylesString;
-	} else {
-		console.log("callback-selection-style://" + stylesString);
-	}
+
+	zss_editor.callback("callback-selection-style", stylesString);
 }
 
 zss_editor.backuprange = function(){
@@ -147,22 +116,22 @@ zss_editor.restorerange = function(){
 
 zss_editor.setBold = function() {
 	document.execCommand('bold', false, null);
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 }
 
 zss_editor.setItalic = function() {
 	document.execCommand('italic', false, null);
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 }
 
 zss_editor.setSubscript = function() {
 	document.execCommand('subscript', false, null);
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 }
 
 zss_editor.setSuperscript = function() {
 	document.execCommand('superscript', false, null);
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 }
 
 zss_editor.setStrikeThrough = function() {
@@ -210,12 +179,12 @@ zss_editor.setStrikeThrough = function() {
 		}
 	}
 	
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 }
 
 zss_editor.setUnderline = function() {
 	document.execCommand('underline', false, null);
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 }
 
 zss_editor.setBlockquote = function() {
@@ -228,7 +197,7 @@ zss_editor.setBlockquote = function() {
 		document.execCommand('formatBlock', false, '<' + formatTag + '>');
 	}
 
-	 zss_editor.enabledEditingItems();
+	 zss_editor.sendEnabledStyles();
 
 	/* DRM: the following code has been disabled for the time being, but it's a good starting point
 	 for being able to apply blockquote to your selection only.
@@ -273,18 +242,18 @@ zss_editor.setBlockquote = function() {
 		}
 	}
 	
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 	 */
 }
 
 zss_editor.removeFormating = function() {
 	document.execCommand('removeFormat', false, null);
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 }
 
 zss_editor.setHorizontalRule = function() {
 	document.execCommand('insertHorizontalRule', false, null);
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 }
 
 zss_editor.setHeading = function(heading) {
@@ -297,7 +266,7 @@ zss_editor.setHeading = function(heading) {
 		document.execCommand('formatBlock', false, '<' + formatTag + '>');
 	}
 	
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 }
 
 zss_editor.setParagraph = function() {
@@ -310,57 +279,57 @@ zss_editor.setParagraph = function() {
 		document.execCommand('formatBlock', false, '<' + formatTag + '>');
 	}
 	
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 }
 
 zss_editor.undo = function() {
 	document.execCommand('undo', false, null);
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 }
 
 zss_editor.redo = function() {
 	document.execCommand('redo', false, null);
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 }
 
 zss_editor.setOrderedList = function() {
 	document.execCommand('insertOrderedList', false, null);
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 }
 
 zss_editor.setUnorderedList = function() {
 	document.execCommand('insertUnorderedList', false, null);
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 }
 
 zss_editor.setJustifyCenter = function() {
 	document.execCommand('justifyCenter', false, null);
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 }
 
 zss_editor.setJustifyFull = function() {
 	document.execCommand('justifyFull', false, null);
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 }
 
 zss_editor.setJustifyLeft = function() {
 	document.execCommand('justifyLeft', false, null);
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 }
 
 zss_editor.setJustifyRight = function() {
 	document.execCommand('justifyRight', false, null);
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 }
 
 zss_editor.setIndent = function() {
 	document.execCommand('indent', false, null);
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 }
 
 zss_editor.setOutdent = function() {
 	document.execCommand('outdent', false, null);
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 }
 
 zss_editor.setTextColor = function(color) {
@@ -368,7 +337,7 @@ zss_editor.setTextColor = function(color) {
 	document.execCommand("styleWithCSS", null, true);
 	document.execCommand('foreColor', false, color);
 	document.execCommand("styleWithCSS", null, false);
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
     // document.execCommand("removeFormat", false, "foreColor"); // Removes just foreColor
 }
 
@@ -377,7 +346,7 @@ zss_editor.setBackgroundColor = function(color) {
 	document.execCommand("styleWithCSS", null, true);
 	document.execCommand('hiliteColor', false, color);
 	document.execCommand("styleWithCSS", null, false);
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 }
 
 // Needs addClass method
@@ -400,7 +369,7 @@ zss_editor.insertLink = function(url, title) {
             sel.addRange(range);
         }
 	}
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 }
 
 zss_editor.updateLink = function(url) {
@@ -412,7 +381,7 @@ zss_editor.updateLink = function(url) {
     if (currentLinkNode) {
 		currentLinkNode.setAttribute("href", url);
     }
-    zss_editor.enabledEditingItems();
+    zss_editor.sendEnabledStyles();
 }
 
 zss_editor.unlink = function() {
@@ -423,7 +392,7 @@ zss_editor.unlink = function() {
 		zss_editor.unwrapNode(currentLinkNode);
 	}
 	
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 }
 
 zss_editor.updateImage = function(url, alt) {
@@ -435,7 +404,7 @@ zss_editor.updateImage = function(url, alt) {
         c.attr('src', url);
         c.attr('alt', alt);
     }
-    zss_editor.enabledEditingItems();
+    zss_editor.sendEnabledStyles();
 	
 }//end
 
@@ -512,7 +481,7 @@ zss_editor.insertImage = function(url, alt) {
 	zss_editor.restorerange();
 	var html = '<img src="'+url+'" alt="'+alt+'" />';
 	zss_editor.insertHTML(html);
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 }
 
 zss_editor.setHTML = function(html) {
@@ -522,7 +491,7 @@ zss_editor.setHTML = function(html) {
 
 zss_editor.insertHTML = function(html) {
 	document.execCommand('insertHTML', false, html);
-	zss_editor.enabledEditingItems();
+	zss_editor.sendEnabledStyles();
 }
 
 zss_editor.getHTML = function() {
@@ -598,10 +567,9 @@ zss_editor.parentTags = function() {
 	
 	var parentTags = [];
 	var selection = window.getSelection();
-	var range = selection.getRangeAt(0).cloneRange();
+	var range = selection.getRangeAt(0);
 	
 	var currentNode = range.commonAncestorContainer;
-	
 	while (currentNode) {
 		
 		if (currentNode.nodeName == document.body.nodeName) {
@@ -618,7 +586,7 @@ zss_editor.parentTags = function() {
 	return parentTags;
 }
 
-zss_editor.enabledEditingItems = function(e) {
+zss_editor.sendEnabledStyles = function(e) {
 	
 	var items = [];
 	
@@ -631,7 +599,7 @@ zss_editor.enabledEditingItems = function(e) {
 		if (currentNode.nodeName.toLowerCase() == 'a') {
 			zss_editor.currentEditingLink = currentNode;
 			
-			var title = currentNode.text;
+			var title = encodeURIComponent(currentNode.text);
 			var href = encodeURIComponent(currentNode.href);
 			
 			items.push('link-title:' + title);
@@ -727,18 +695,6 @@ zss_editor.enabledEditingItems = function(e) {
 			// exceptions for no reason.
 		}
 		
-		// Link
-		if (nodeName == 'a') {
-            zss_editor.currentEditingLink = t;
-			var title = t.attr('title');
-            items.push('link:'+t.attr('href'));
-            if (t.attr('title') !== undefined) {
-                items.push('link-title:'+t.attr('title'));
-            }
-            
-		} else {
-			zss_editor.currentEditingLink = null;
-		}
         // Blockquote
         if (nodeName == 'blockquote') {
 			items.push('indent');
@@ -759,12 +715,22 @@ zss_editor.enabledEditingItems = function(e) {
 	zss_editor.stylesCallback(items);
 }
 
+zss_editor.isFocused = function() {
+	return editor.is(":focus");
+}
+
 zss_editor.focusEditor = function() {
-    $('#zss_editor_content').focus();
+	if (!zss_editor.isFocused()) {
+		$('#zss_editor_content').focus();
+		zss_editor.isFocused = true;
+	}
 }
 
 zss_editor.blurEditor = function() {
-    $('#zss_editor_content').blur();
+	if (zss_editor.isFocused()) {
+		$('#zss_editor_content').blur();
+		zss_editor.isFocused = false;
+	}
 }
 
 zss_editor.enableEditing = function () {
