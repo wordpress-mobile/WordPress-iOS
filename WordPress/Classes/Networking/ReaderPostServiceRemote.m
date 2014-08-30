@@ -438,14 +438,9 @@
  */
 - (NSString *)featuredImageFromPostDictionary:(NSDictionary *)dict
 {
-    NSString *featuredImage = @"";
-
+    NSString *featuredImage = [dict stringForKey:@"featured_image"];
     NSDictionary *featured_media = [dict dictionaryForKey:@"featured_media"];
-    if ([featuredImage length] == 0) {
-        featuredImage = [dict stringForKey:@"featured_image"];
-    } else if ([[featured_media stringForKey:@"type"] isEqualToString:@"image"]) {
-        featuredImage = [self stringOrEmptyString:[featured_media stringForKey:@"uri"]];
-    }
+    NSArray *attachments = [[dict dictionaryForKey:@"attachments"] allValues];
 
     // Values set in editorial trumps the rest
     NSString *editorialImage = [dict stringForKeyPath:@"editorial.image"];
@@ -453,6 +448,24 @@
         featuredImage = editorialImage;
     }
 
+    // If no featured image specified, try featured media.
+    if (([featuredImage length] == 0) && ([[featured_media stringForKey:@"type"] isEqualToString:@"image"])) {
+        featuredImage = [self stringOrEmptyString:[featured_media stringForKey:@"uri"]];
+    }
+
+    // If no featured media specified, try attachments.
+    if ([featuredImage length] == 0 && [attachments count] > 0) {
+        NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"width" ascending:NO];
+        attachments = [attachments sortedArrayUsingDescriptors:@[descriptor]];
+        NSDictionary *attachment = [attachments firstObject];
+        NSString *mimeType = [attachment stringForKey:@"mime_type"];
+        NSInteger width = [[attachment numberForKey:@"width"] integerValue];
+        if ([mimeType rangeOfString:@"image"].location != NSNotFound && width >= 1024) {
+            featuredImage = [self stringOrEmptyString:[attachment stringForKey:@"URL"]];
+        }
+    }
+
+    // If still no image parse the content for a good match
     if ([featuredImage length] == 0) {
         featuredImage = [self searchContentForImageToFeature:[dict stringForKey:@"content"]];
     }
