@@ -937,12 +937,15 @@ typedef enum
 
 - (UIBarButtonItem*)showSourceBarButton
 {
-	ZSSBarButtonItem *barButtonItem = [self barButtonItemWithTag:kWPEditorViewControllerElementShowSourceBarButton
+    NSString* accessibilityLabel = NSLocalizedString(@"HTML",
+                                                     @"Accessibility label for HTML button on formatting toolbar.");
+    
+    ZSSBarButtonItem *barButtonItem = [self barButtonItemWithTag:kWPEditorViewControllerElementShowSourceBarButton
 													htmlProperty:@"source"
 													   imageName:@"icon_format_html"
 														  target:self
 														selector:@selector(showHTMLSource:)
-											  accessibilityLabel:nil];
+											  accessibilityLabel:accessibilityLabel];
 	
 	return barButtonItem;
 }
@@ -1709,7 +1712,7 @@ typedef enum
 	if (textField == self.titleTextField) {
 		
 		[self enableToolbarItems:NO
-		  shouldShowSourceButton:NO];
+		  shouldShowSourceButton:YES];
 		
 		[self refreshUI];
 	}
@@ -1766,10 +1769,13 @@ typedef enum
 - (void)editorView:(WPEditorView*)editorView
 	  focusChanged:(BOOL)focusGained
 {
-	if (focusGained) {
+	if (focusGained && editorView.isInVisualMode) {
 		[self enableToolbarItems:YES
-		  shouldShowSourceButton:NO];
-	}
+		  shouldShowSourceButton:YES];
+    } else if (focusGained && !editorView.isInVisualMode) {
+        [self enableToolbarItems:NO
+          shouldShowSourceButton:YES];
+    }
 }
 
 - (void)editorView:(WPEditorView*)editorView stylesForCurrentSelection:(NSArray*)styles
