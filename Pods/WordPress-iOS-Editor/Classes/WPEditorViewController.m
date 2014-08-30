@@ -179,6 +179,7 @@ typedef enum
 													| ZSSRichTextEditorToolbarUnderline
 													| ZSSRichTextEditorToolbarBlockQuote
 													| ZSSRichTextEditorToolbarInsertLink
+                                                    | ZSSRichTextEditorToolbarUnorderedList
 													| ZSSRichTextEditorToolbarOrderedList
 													| ZSSRichTextEditorToolbarRemoveLink);
 	
@@ -863,7 +864,7 @@ typedef enum
 	
 	ZSSBarButtonItem *barButtonItem = [self barButtonItemWithTag:kWPEditorViewControllerElementOrderedListBarButton
 													htmlProperty:@"orderedList"
-													   imageName:@"ZSSorderedlist.png"
+													   imageName:@"icon_format_ol"
 														  target:self
 														selector:@selector(setOrderedList)
 											  accessibilityLabel:accessibilityLabel];
@@ -926,7 +927,7 @@ typedef enum
 	
 	ZSSBarButtonItem *barButtonItem = [self barButtonItemWithTag:kWPEditorViewControllerElementRemoveFormatBarButton
 													htmlProperty:@"link"
-													   imageName:@"ZSSunlink.png"
+													   imageName:@"icon_format_unlink"
 														  target:self
 														selector:@selector(removeLink)
 											  accessibilityLabel:accessibilityLabel];
@@ -938,7 +939,7 @@ typedef enum
 {
 	ZSSBarButtonItem *barButtonItem = [self barButtonItemWithTag:kWPEditorViewControllerElementShowSourceBarButton
 													htmlProperty:@"source"
-													   imageName:@"ZSSviewsource.png"
+													   imageName:@"icon_format_html"
 														  target:self
 														selector:@selector(showHTMLSource:)
 											  accessibilityLabel:nil];
@@ -1019,7 +1020,7 @@ typedef enum
 	
 	ZSSBarButtonItem *barButtonItem = [self barButtonItemWithTag:kWPEditorViewControllerElementUnorderedListBarButton
 													htmlProperty:@"unorderedList"
-													   imageName:@"ZSSunorderedlist.png"
+													   imageName:@"icon_format_ul"
 														  target:self
 														selector:@selector(setUnorderedList)
 											  accessibilityLabel:accessibilityLabel];
@@ -1819,7 +1820,7 @@ didFailLoadWithError:(NSError *)error
     if (self.toolbarItemSelectedTintColor) {
         return self.toolbarItemSelectedTintColor;
     }
-    return [WPStyleGuide newKidOnTheBlockBlue];
+    return [WPStyleGuide wordPressBlue];
 }
 
 - (void)enableToolbarItems:(BOOL)enable

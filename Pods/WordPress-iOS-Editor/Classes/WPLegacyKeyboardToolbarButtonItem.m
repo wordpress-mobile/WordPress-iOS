@@ -64,7 +64,7 @@
 - (void)setHighlighted:(BOOL)highlighted {
     [super setHighlighted:highlighted];
     if (highlighted) {
-        [self setBackgroundColor:[WPStyleGuide newKidOnTheBlockBlue]];
+        [self setBackgroundColor:[WPStyleGuide wordPressBlue]];
     } else {
         [self setBackgroundColor:[WPStyleGuide keyboardColor]];
     }
