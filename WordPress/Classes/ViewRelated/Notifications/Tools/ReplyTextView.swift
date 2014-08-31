@@ -35,7 +35,7 @@ import Foundation
     
     public var placeholder: String! {
         didSet {
-            placeholderLabel.text       = placeholder
+            placeholderLabel.text = placeholder
         }
     }
 
@@ -113,20 +113,27 @@ import Foundation
     
     public override func layoutSubviews() {
         super.layoutSubviews()
-        containerView.frame.size.width = self.bounds.width
+        containerView.frame.size.width  = self.bounds.width
     }
     
     
     // MARK: - Private Helpers
     private func resizeIfNeeded() {
-        let textHeight      = ceil(textView.contentSize.height) + textViewPadding.bottom + textViewPadding.top
-        let newHeight       = min(max(textHeight, textViewMinHeight), textViewMaxHeight)
-        let oldHeight       = frame.size.height
         
+        // Load the padding from the constraints themselves
+        let topPadding      = textView.constraintForAttribute(.Top)     ?? textViewDefaultPadding
+        let bottomPadding   = textView.constraintForAttribute(.Bottom)  ?? textViewDefaultPadding
+        
+        // Calculate the new height
+        let textHeight      = floor(textView.contentSize.height + topPadding + bottomPadding)
+
+        var newHeight       = min(max(textHeight, textViewMinHeight), textViewMaxHeight)
+        let oldHeight       = frame.size.height
+
         if newHeight == oldHeight {
             return
         }
-        
+
         frame.size.height   = newHeight
         frame.origin.y      += oldHeight - newHeight
     }
@@ -135,8 +142,6 @@ import Foundation
         textView.layoutIfNeeded()
         
         var caretRect           = textView.caretRectForPosition(textView.selectedTextRange.start)
-        caretRect.size.height   += textView.textContainerInset.bottom + textViewPadding.bottom
-        
         caretRect               = CGRectIntegral(caretRect)
         
         textView.scrollRectToVisible(caretRect, animated: false)
@@ -158,8 +163,10 @@ import Foundation
         textView.delegate               = self
         textView.scrollsToTop           = false
         textView.contentInset           = UIEdgeInsetsZero
+        textView.textContainerInset     = UIEdgeInsetsZero
         textView.font                   = WPStyleGuide.Comments.Fonts.replyText
         textView.textColor              = WPStyleGuide.Comments.Colors.replyText
+        textView.textContainer.lineFragmentPadding  = 0
         
         // Placeholder
         placeholderLabel.font           = WPStyleGuide.Comments.Fonts.replyText
@@ -193,8 +200,8 @@ import Foundation
     
     
     // MARK: - Constants
-    private let textViewPadding:            UIEdgeInsets    = UIEdgeInsets(top: 2, left: 0, bottom: 1, right: 0)
-    private let textViewMaxHeight:          CGFloat         = 77   // Fits 3 lines onscreen
+    private let textViewDefaultPadding:     CGFloat         = 12
+    private let textViewMaxHeight:          CGFloat         = 82   // Fits 3 lines onscreen
     private let textViewMinHeight:          CGFloat         = 44
     
     // MARK: - Private Properties
@@ -207,83 +214,4 @@ import Foundation
     @IBOutlet private var replyButton:      UIButton!
     @IBOutlet private var layoutView:       UIView!
     @IBOutlet private var containerView:    UIView!
-}
-
-
-
-
-//  NOTE:
-//  =====
-//  ReplyBezierView is a helper class, used to render the TextField bubble
-//
-public class ReplyBezierView : UIView {
-    
-    public var fieldBackgroundColor: UIColor = WPStyleGuide.Comments.Colors.replyBackground {
-        didSet {
-            setNeedsDisplay()
-        }
-    }
-    public var separatorColor: UIColor = WPStyleGuide.Comments.Colors.replySeparator {
-        didSet {
-            setNeedsDisplay()
-        }
-    }
-    public var topLineHeight: CGFloat = 1 {
-        didSet {
-            setNeedsDisplay()
-        }
-    }
-    public var cornerRadius: CGFloat = 5 {
-        didSet {
-            setNeedsDisplay()
-        }
-    }
-    public var insets: UIEdgeInsets = UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 54) {
-        didSet {
-            setNeedsDisplay()
-        }
-    }
-    
-    // MARK: - Initializers
-    public required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setupView()
-    }
-    
-    public override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupView()
-    }
-    
-    private func setupView() {
-        // Make sure this is re-drawn on rotation events
-        layer.needsDisplayOnBoundsChange    = true
-    }
-    
-    // MARK: - View Methods
-    public override func drawRect(rect: CGRect) {
-        // Draw the background, while clipping a rounded rect with the given insets
-        var bezierRect                      = bounds
-        bezierRect.origin.x                 += insets.left
-        bezierRect.origin.y                 += insets.top
-        bezierRect.size.height              -= insets.top + insets.bottom
-        bezierRect.size.width               -= insets.left + insets.right
-        let bezier                          = UIBezierPath(roundedRect: bezierRect, cornerRadius: cornerRadius)
-        let outer                           = UIBezierPath(rect: bounds)
-        
-        separatorColor.set()
-        bezier.stroke()
-        
-        fieldBackgroundColor.set()
-        bezier.appendPath(outer)
-        bezier.usesEvenOddFillRule = true
-        bezier.fill()
-        
-        // Draw the top separator line
-        separatorColor.set()
-        
-        let topHeightInPixels = topLineHeight / UIScreen.mainScreen().scale
-        let topLineFrame = CGRect(x: 0, y: 0, width: bounds.width, height: topHeightInPixels)
-        UIRectFill(topLineFrame)
-    }
 }

@@ -7,7 +7,7 @@ extension WPStyleGuide
     {
         public struct Fonts
         {
-            private static let replyFontSize    = CGFloat(UIDevice.isPad() ? 16 : 14)
+            private static let replyFontSize    = CGFloat(14)
             public static let replyButton       = WPFontManager.openSansBoldFontOfSize(13)
             public static let replyText         = WPFontManager.openSansRegularFontOfSize(replyFontSize)
         }

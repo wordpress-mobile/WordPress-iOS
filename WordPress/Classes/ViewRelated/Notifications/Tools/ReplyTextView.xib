@@ -27,7 +27,7 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Omp-7E-YTH" userLabel="Placeholder">
-                            <rect key="frame" x="18" y="2" width="242" height="42"/>
+                            <rect key="frame" x="18" y="11" width="242" height="21"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -35,9 +35,9 @@
                             <size key="shadowOffset" width="-1" height="-1"/>
                         </label>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" bounces="NO" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Pd-vE-u9b">
-                            <rect key="frame" x="13" y="5" width="253" height="38"/>
+                            <rect key="frame" x="18" y="12" width="242" height="20"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textView>
                         <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KQI-Ok-M85" userLabel="Bezier View" customClass="ReplyBezierView" customModule="WordPress">
@@ -63,24 +63,24 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="KQI-Ok-M85" firstAttribute="leading" secondItem="TqK-rp-BlK" secondAttribute="leading" id="0Ih-PG-tLq"/>
-                        <constraint firstAttribute="bottom" secondItem="2Pd-vE-u9b" secondAttribute="bottom" constant="1" id="1DJ-ch-NcS"/>
+                        <constraint firstAttribute="bottom" secondItem="2Pd-vE-u9b" secondAttribute="bottom" constant="12" id="1DJ-ch-NcS"/>
                         <constraint firstItem="KQI-Ok-M85" firstAttribute="top" secondItem="TqK-rp-BlK" secondAttribute="top" id="2KV-ES-gcA"/>
-                        <constraint firstItem="2Pd-vE-u9b" firstAttribute="top" secondItem="TqK-rp-BlK" secondAttribute="top" constant="5" id="6Y8-31-mYZ"/>
-                        <constraint firstItem="5G8-Al-JKt" firstAttribute="leading" secondItem="Omp-7E-YTH" secondAttribute="trailing" constant="8" id="6aJ-nz-nyj"/>
+                        <constraint firstItem="2Pd-vE-u9b" firstAttribute="top" secondItem="TqK-rp-BlK" secondAttribute="top" constant="12" id="6Y8-31-mYZ"/>
                         <constraint firstAttribute="trailing" secondItem="5G8-Al-JKt" secondAttribute="trailing" constant="2" id="9Oi-SR-O6o"/>
-                        <constraint firstItem="5G8-Al-JKt" firstAttribute="leading" secondItem="2Pd-vE-u9b" secondAttribute="trailing" constant="2" id="E7J-mE-cKb"/>
+                        <constraint firstItem="2Pd-vE-u9b" firstAttribute="top" secondItem="Omp-7E-YTH" secondAttribute="top" constant="1" id="CBn-np-VwC"/>
+                        <constraint firstItem="5G8-Al-JKt" firstAttribute="leading" secondItem="2Pd-vE-u9b" secondAttribute="trailing" constant="8" id="E7J-mE-cKb"/>
                         <constraint firstAttribute="trailing" secondItem="KQI-Ok-M85" secondAttribute="trailing" id="E8r-Hj-w7u"/>
                         <constraint firstItem="MBe-41-STV" firstAttribute="leading" secondItem="KQI-Ok-M85" secondAttribute="leading" id="FIs-sA-rSR"/>
                         <constraint firstAttribute="bottom" secondItem="5G8-Al-JKt" secondAttribute="bottom" constant="7" id="HE4-pe-BCj"/>
                         <constraint firstItem="MBe-41-STV" firstAttribute="height" secondItem="KQI-Ok-M85" secondAttribute="height" id="Lg5-u8-sk7"/>
                         <constraint firstAttribute="bottom" secondItem="KQI-Ok-M85" secondAttribute="bottom" id="VXT-En-PsR"/>
+                        <constraint firstItem="2Pd-vE-u9b" firstAttribute="bottom" secondItem="Omp-7E-YTH" secondAttribute="bottom" id="i0S-Xb-R2C"/>
                         <constraint firstItem="Omp-7E-YTH" firstAttribute="leading" secondItem="TqK-rp-BlK" secondAttribute="leading" constant="18" id="iDQ-BD-29L"/>
-                        <constraint firstItem="Omp-7E-YTH" firstAttribute="top" secondItem="TqK-rp-BlK" secondAttribute="top" constant="2" id="n4g-Rg-opm"/>
+                        <constraint firstItem="2Pd-vE-u9b" firstAttribute="trailing" secondItem="Omp-7E-YTH" secondAttribute="trailing" id="n9o-dn-6dN"/>
                         <constraint firstItem="MBe-41-STV" firstAttribute="width" secondItem="KQI-Ok-M85" secondAttribute="width" id="o6E-4w-wrA"/>
                         <constraint firstItem="MBe-41-STV" firstAttribute="top" secondItem="KQI-Ok-M85" secondAttribute="top" id="p0A-H1-47p"/>
                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="600" id="rlm-Qy-72M"/>
-                        <constraint firstAttribute="bottom" secondItem="Omp-7E-YTH" secondAttribute="bottom" id="vlP-gL-Q2h"/>
-                        <constraint firstItem="2Pd-vE-u9b" firstAttribute="leading" secondItem="TqK-rp-BlK" secondAttribute="leading" constant="13" id="xc0-s9-sIf"/>
+                        <constraint firstItem="2Pd-vE-u9b" firstAttribute="leading" secondItem="TqK-rp-BlK" secondAttribute="leading" constant="18" id="xc0-s9-sIf"/>
                     </constraints>
                 </view>
             </subviews>
