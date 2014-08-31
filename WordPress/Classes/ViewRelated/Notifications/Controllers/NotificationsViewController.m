@@ -175,9 +175,6 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
         self.pushNotificationID     = nil;
         self.pushNotificationDate   = nil;
     }
-    
-    // Always nuke the cellHeight Cache's
-    [self invalidateRowHeightsCache];
 }
 
 
