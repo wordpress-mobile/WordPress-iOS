@@ -20,6 +20,7 @@ NSString const *NoteLinkTypeUser        = @"user";
 NSString const *NoteLinkTypePost        = @"post";
 NSString const *NoteLinkTypeComment     = @"comment";
 NSString const *NoteLinkTypeStats       = @"stat";
+NSString const *NoteLinkTypeBlockquote  = @"blockquote";
 
 NSString const *NoteMediaTypeImage      = @"image";
 NSString const *NoteMediaTypeBadge      = @"badge";
@@ -120,6 +121,11 @@ NSString const *NotePostIdKey           = @"post_id";
 - (BOOL)isStats
 {
     return [self.type isEqual:NoteLinkTypeStats];
+}
+
+- (BOOL)isBlockquote
+{
+    return [self.type isEqual:NoteLinkTypeBlockquote];
 }
 
 + (NSArray *)rangesFromArray:(NSArray *)rawURL
