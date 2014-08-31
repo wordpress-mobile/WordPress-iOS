@@ -89,9 +89,12 @@ import Foundation
     }
 
     public func textViewDidChange(textView: UITextView!) {
-        refreshControls()
-        resizeIfNeeded()
-        scrollToCaretInTextView()
+        // Don't overwork with the Proxy TextViewas
+        if (textView == self.textView) {
+            refreshControls()
+            resizeIfNeeded()
+            scrollToCaretInTextView()
+        }
         
         delegate?.textViewDidChange?(textView)
     }
@@ -119,32 +122,39 @@ import Foundation
     
     // MARK: - Private Helpers
     private func resizeIfNeeded() {
-        
-        // Load the padding from the constraints themselves
+        var newSize         = intrinsicContentSize()
+        let oldSize         = frame.size
+
+        if newSize.height == oldSize.height {
+            return
+        }
+
+        frame.size.height   = newSize.height
+        invalidateIntrinsicContentSize()
+    }
+    
+    public override func intrinsicContentSize() -> CGSize {
         let topPadding      = textView.constraintForAttribute(.Top)     ?? textViewDefaultPadding
         let bottomPadding   = textView.constraintForAttribute(.Bottom)  ?? textViewDefaultPadding
         
         // Calculate the new height
         let textHeight      = floor(textView.contentSize.height + topPadding + bottomPadding)
-
+        
         var newHeight       = min(max(textHeight, textViewMinHeight), textViewMaxHeight)
-        let oldHeight       = frame.size.height
-
-        if newHeight == oldHeight {
-            return
-        }
-
-        frame.size.height   = newHeight
-        frame.origin.y      += oldHeight - newHeight
+        let intrinsicSize   = CGSize(width: frame.width, height: newHeight)
+        
+        return intrinsicSize
     }
     
     private func scrollToCaretInTextView() {
-        textView.layoutIfNeeded()
-        
-        var caretRect           = textView.caretRectForPosition(textView.selectedTextRange.start)
-        caretRect               = CGRectIntegral(caretRect)
-        
-        textView.scrollRectToVisible(caretRect, animated: false)
+        // FIX: In iOS 8, scrollRectToVisible causes a weird flicker
+        if UIDevice.isOS8() {
+            textView.scrollRangeToVisible(textView.selectedRange)
+        } else {
+            var caretRect           = textView.caretRectForPosition(textView.selectedTextRange.start)
+            caretRect               = CGRectIntegral(caretRect)
+            textView.scrollRectToVisible(caretRect, animated: false)
+        }
     }
     
     private func setupView() {
@@ -153,11 +163,6 @@ import Foundation
         // Load the nib + add its container view
         bundle = NSBundle.mainBundle().loadNibNamed("ReplyTextView", owner: self, options: nil)
         addSubview(containerView)
-        
-        // We want this view to stick at the bottom
-        contentMode                     = .BottomLeft
-        autoresizingMask                = .FlexibleWidth | .FlexibleTopMargin
-        containerView.autoresizingMask  = .FlexibleWidth | .FlexibleHeight
         
         // Setup the TextView
         textView.delegate               = self
@@ -180,6 +185,11 @@ import Foundation
         
         // Background
         layoutView.backgroundColor      = WPStyleGuide.Comments.Colors.replyBackground
+        
+        // We want this view to stick at the bottom
+        contentMode                     = .BottomLeft
+        autoresizingMask                = .FlexibleWidth | .FlexibleHeight | .FlexibleTopMargin
+        containerView.autoresizingMask  = .FlexibleWidth | .FlexibleHeight
     }
     
     private func refreshControls() {
