@@ -300,6 +300,13 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
 {
     [WPAnalytics track:WPAnalyticsStatNotificationsOpenedNotificationDetails];
     
+    // Mark as Read, if needed
+    if(!note.read.boolValue) {
+        note.read = @(1);
+        [[ContextManager sharedInstance] saveContext:note.managedObjectContext];
+    }
+    
+    // Don't push nested!
     if (self.navigationController.visibleViewController != self) {
         [self.navigationController popToRootViewControllerAnimated:NO];
     }
@@ -380,16 +387,6 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
     if (!note) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         return;
-    }
-    
-    // Mark as Read, if needed
-    if(!note.read.boolValue) {
-        note.read = @(1);
-        [[ContextManager sharedInstance] saveContext:note.managedObjectContext];
-        
-        // Refresh the UI as well
-        NoteTableViewCell *cell = (NoteTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-        cell.read = note.read;
     }
     
     // At last, push the details
