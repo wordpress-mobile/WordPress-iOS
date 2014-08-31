@@ -64,23 +64,35 @@ import Foundation
     
     // MARK: - UITextViewDelegate Methods
     public func textViewShouldBeginEditing(textView: UITextView!) -> Bool {
+        
+        // If the proxy is being dismissed, prevent regaining focus
+        if isProxyDismissing {
+            return false
+        }
         return delegate?.textViewShouldBeginEditing?(textView) ?? true
     }
     
     public func textViewDidBeginEditing(textView: UITextView!) {
         // If we have a Proxy Accessory View, forward the event!
         if proxyTextView != nil {
-            textView.inputAccessoryView.becomeFirstResponder()
+            let delay = dispatch_time_t(0.1)
+            dispatch_after(delay, dispatch_get_main_queue()) {
+                // FIX: Xcode beta 6 fails if the only sentence returns a value
+                let result = textView.inputAccessoryView.becomeFirstResponder()
+            }
+
         } else {
             delegate?.textViewDidBeginEditing?(textView)
         }
     }
     
     public func textViewShouldEndEditing(textView: UITextView!) -> Bool {
+        isProxyDismissing = textView != self.textView
         return delegate?.textViewShouldEndEditing?(textView) ?? true
     }
 
     public func textViewDidEndEditing(textView: UITextView!) {
+        isProxyDismissing = false
         delegate?.textViewDidEndEditing?(textView)
     }
     
@@ -217,6 +229,7 @@ import Foundation
     // MARK: - Private Properties
     private var bundle:                     NSArray?
     private var proxyTextView:              ReplyTextView!
+    private var isProxyDismissing:          Bool            = false
     
     // MARK: - IBOutlets
     @IBOutlet private var textView:          UITextView!
