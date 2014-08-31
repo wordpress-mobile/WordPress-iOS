@@ -1,7 +1,7 @@
 import Foundation
 
 
-@objc public class NoteBlockSnippetTableViewCell : NoteBlockTableViewCell
+@objc public class NoteBlockHeaderTableViewCell : NoteBlockTableViewCell
 {
     // MARK: - Public Properties
     public var name: String? {
