@@ -33,8 +33,8 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupTypes)
     NoteBlockGroupTypesImage    = NoteBlockTypesImage,
     NoteBlockGroupTypesUser     = NoteBlockTypesUser,
     NoteBlockGroupTypesComment  = NoteBlockTypesComment,    // Contains a User + Comment Block
-    NoteBlockGroupTypesSnippet  = 20,                       // Contains a User + Text Block
-    NoteBlockGroupTypesSubject  = 30,                       // Contains a User + Text Block
+    NoteBlockGroupTypesSubject  = 20,                       // Contains a User + Text Block
+    NoteBlockGroupTypesHeader   = 30                        // Contains a User + Text Block
 };
 
 

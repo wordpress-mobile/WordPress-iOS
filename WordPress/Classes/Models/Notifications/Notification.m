@@ -376,9 +376,9 @@ NSString const *NotePostIdKey           = @"post_id";
     if (rawBlocks == notification.subject) {
         [groups addObject:[NotificationBlockGroup groupWithBlocks:blocks type:NoteBlockGroupTypesSubject]];
 
-    // Snippet: Contains a User + Text Block
+    // Header: Contains a User + Text Block
     } else if (rawBlocks == notification.header) {
-        [groups addObject:[NotificationBlockGroup groupWithBlocks:blocks type:NoteBlockGroupTypesSnippet]];
+        [groups addObject:[NotificationBlockGroup groupWithBlocks:blocks type:NoteBlockGroupTypesHeader]];
         
     // Comment: Contains a User + Comment Block
     } else if (notification.isComment) {

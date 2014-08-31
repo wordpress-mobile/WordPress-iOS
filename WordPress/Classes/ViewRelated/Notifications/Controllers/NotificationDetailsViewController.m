@@ -87,7 +87,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     self.tableView.backgroundColor      = [WPStyleGuide itsEverywhereGrey];
 
     self.reuseIdentifierMap = @{
-        @(NoteBlockGroupTypesSnippet)   : NoteBlockSnippetTableViewCell.reuseIdentifier,
+        @(NoteBlockGroupTypesHeader)    : NoteBlockHeaderTableViewCell.reuseIdentifier,
         @(NoteBlockGroupTypesText)      : NoteBlockTextTableViewCell.reuseIdentifier,
         @(NoteBlockGroupTypesComment)   : NoteBlockCommentTableViewCell.reuseIdentifier,
         @(NoteBlockGroupTypesImage)     : NoteBlockImageTableViewCell.reuseIdentifier,
@@ -157,7 +157,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     UITableView *tableView  = detailsViewController.tableView;
 
     _layoutCellMap = @{
-        @(NoteBlockGroupTypesSnippet)   : [tableView dequeueReusableCellWithIdentifier:NoteBlockSnippetTableViewCell.reuseIdentifier],
+        @(NoteBlockGroupTypesHeader)    : [tableView dequeueReusableCellWithIdentifier:NoteBlockHeaderTableViewCell.reuseIdentifier],
         @(NoteBlockGroupTypesText)      : [tableView dequeueReusableCellWithIdentifier:NoteBlockTextTableViewCell.reuseIdentifier],
         @(NoteBlockGroupTypesComment)   : [tableView dequeueReusableCellWithIdentifier:NoteBlockCommentTableViewCell.reuseIdentifier],
         @(NoteBlockGroupTypesImage)     : [tableView dequeueReusableCellWithIdentifier:NoteBlockImageTableViewCell.reuseIdentifier],
@@ -323,7 +323,7 @@ static CGFloat NotificationSectionSeparator     = 10;
         [self openURL:homeURL];
         
     // Header-Level: Push the resource associated with the note
-    } else if (group.type == NoteBlockGroupTypesSnippet) {
+    } else if (group.type == NoteBlockGroupTypesHeader) {
 
         [self openNotificationResource:self.note];
     }
@@ -335,8 +335,8 @@ static CGFloat NotificationSectionSeparator     = 10;
 - (void)setupCell:(NoteBlockTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
 {
     // Note: This is gonna look awesome in Swift
-    if (blockGroup.type == NoteBlockGroupTypesSnippet) {
-        [self setupSnippetCell:(NoteBlockSnippetTableViewCell *)cell blockGroup:blockGroup];
+    if (blockGroup.type == NoteBlockGroupTypesHeader) {
+        [self setupHeaderCell:(NoteBlockHeaderTableViewCell *)cell blockGroup:blockGroup];
         
     } else if (blockGroup.type == NoteBlockGroupTypesUser) {
         [self setupUserCell:(NoteBlockUserTableViewCell *)cell blockGroup:blockGroup];
@@ -352,7 +352,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     }
 }
 
-- (void)setupSnippetCell:(NoteBlockSnippetTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
+- (void)setupHeaderCell:(NoteBlockHeaderTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
 {
     NotificationBlock *gravatarBlock    = [blockGroup blockOfType:NoteBlockTypesImage];
     NotificationBlock *snippetBlock     = [blockGroup blockOfType:NoteBlockTypesText];
