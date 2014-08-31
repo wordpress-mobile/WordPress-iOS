@@ -325,14 +325,14 @@ static CGFloat NotificationSectionSeparator     = 10;
     if (group.type == NoteBlockGroupTypesUser) {
         
         NotificationBlock *block    = [group blockOfType:NoteBlockTypesUser];
-        [self openURL:[NSURL URLWithString:block.metaLinksHome]];
+        NSURL *homeURL              = [NSURL URLWithString:block.metaLinksHome];
         
+        [self openURL:homeURL];
+        
+    // Header-Level: Push the resource associated with the note
     } else if (group.type == NoteBlockGroupTypesSnippet) {
-        
-        NotificationBlock *block    = [group blockOfType:NoteBlockTypesText];
-        NotificationRange *range    = block.ranges.firstObject;
 
-        [self openURL:range.url];
+        [self openNotificationResource:self.note];
     }
 }
 
@@ -476,43 +476,63 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 - (void)openURL:(NSURL *)url
 {
-    NotificationRange *range = [self.note notificationRangeWithUrl:url];
+    //  NOTE:
+    //
+    //  DTAttributedLabel doesn't allow us to use *any* object as a DTLinkAttribute instance.
+    //  So, we loose the range metadata: is it a post? stats? comment?.
+    //  In this step, we attempt to match the URL with any NotificationRange instance, contained in the note,
+    //  and thus, recover the metadata!
+    //
+    NotificationRange *range    = [self.note notificationRangeWithUrl:url];
+    BOOL success                = false;
     
-    if ([self displayReaderWithNotificationRange:range]) {
-        return;
+    if (range.isPost || range.isComment) {
+        success = [self displayReaderWithPostId:range.postID siteID:range.siteID];
     }
     
-    if ([self displayStatsWithNotificationRange:range]) {
-        return;
+    if (!success && range.isStats) {
+        success = [self displayStatsWithSiteID:range.siteID];
     }
     
-    if ([self displayWebViewWithURL:url]) {
-        return;
+    if (!success && url) {
+        success = [self displayWebViewWithURL:url];
     }
     
-    [self.tableView deselectSelectedRowWithAnimation:YES];
+    if (!success) {
+        [self.tableView deselectSelectedRowWithAnimation:YES];
+    }
 }
 
-- (BOOL)displayReaderWithNotificationRange:(NotificationRange *)range
+- (void)openNotificationResource:(Notification *)note
 {
-    BOOL success = ((range.isPost || range.isComment) && range.postID && range.siteID);
+    if (note.isComment || note.isPost) {
+        [self displayReaderWithPostId:note.metaPostID siteID:note.metaSiteID];
+    } else {
+        [self displayStatsWithSiteID:note.metaSiteID];
+    }
+}
+
+- (BOOL)displayReaderWithPostId:(NSNumber *)postID siteID:(NSNumber *)siteID
+{
+    BOOL success = postID && siteID;
     if (success) {
-        [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:range];
+        NSArray *parameters = @[ siteID, postID ];
+        [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:parameters];
     }
     return success;
 }
 
-- (BOOL)displayStatsWithNotificationRange:(NotificationRange *)range
+- (BOOL)displayStatsWithSiteID:(NSNumber *)siteID
 {
-    if (!range.isStats || !range.siteID) {
+    if (!siteID) {
         return false;
     }
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blog                      = [service blogByBlogId:range.siteID];
+    Blog *blog                      = [service blogByBlogId:siteID];
+    BOOL success                    = blog.isWPcom;
     
-    BOOL success = blog.isWPcom;
     if (success) {
         [self performSegueWithIdentifier:NSStringFromClass([StatsViewController class]) sender:blog];
     }
@@ -773,9 +793,12 @@ static CGFloat NotificationSectionSeparator     = 10;
         statsViewController.blog                        = (Blog *)sender;
         
     } else if([segue.identifier isEqualToString:NSStringFromClass([ReaderPostDetailViewController class])]) {
+        NSArray *parameters                             = (NSArray *)sender;
+        NSNumber *siteID                                = parameters.firstObject;
+        NSNumber *postID                                = parameters.lastObject;
+        
         ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
-        NotificationRange *range                        = (NotificationRange *)sender;
-        [readerViewController setupWithPostID:range.postID siteID:range.siteID];
+        [readerViewController setupWithPostID:postID siteID:siteID];
         
     } else if ([segue.identifier isEqualToString:NSStringFromClass([EditCommentViewController class])]) {
         NotificationBlock *block                        = sender;
