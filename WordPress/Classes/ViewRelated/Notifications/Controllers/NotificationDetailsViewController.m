@@ -852,7 +852,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 - (IBAction)dismissKeyboardIfNeeded:(id)sender
 {
     // Dismiss the reply field when tapping on the tableView
-    [self.view.window endEditing:YES];
+    [self.view endEditing:YES];
 }
 
 @end
