@@ -71,6 +71,7 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupTypes)
 
 @property (nonatomic, assign,  readonly) BOOL                   isMatcher;
 @property (nonatomic, assign,  readonly) BOOL                   isComment;
+@property (nonatomic, assign,  readonly) BOOL                   isPost;
 
 // Helpers
 - (NotificationBlockGroup *)blockGroupOfType:(NoteBlockGroupTypes)type;
