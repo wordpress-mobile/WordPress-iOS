@@ -49,7 +49,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 #pragma mark Private
 #pragma mark ==========================================================================================
 
-@interface NotificationDetailsViewController () <SPBucketDelegate, EditCommentViewControllerDelegate>
+@interface NotificationDetailsViewController () <EditCommentViewControllerDelegate>
 
 // Outlets
 @property (nonatomic,   weak) IBOutlet UITableView          *tableView;
@@ -94,10 +94,11 @@ static CGFloat NotificationSectionSeparator     = 10;
         @(NoteBlockGroupTypesUser)      : NoteBlockUserTableViewCell.reuseIdentifier
     };
     
-#warning THIS overrides the previous 
-    Simperium *simperium                = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
-    SPBucket *notificationsBucket       = [simperium bucketForName:NSStringFromClass([Notification class])];
-    notificationsBucket.delegate        = self;
+    NSManagedObjectContext *context = self.note.managedObjectContext;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleNotificationChange:)
+                                                 name:NSManagedObjectContextObjectsDidChangeNotification
+                                               object:context];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -116,7 +117,10 @@ static CGFloat NotificationSectionSeparator     = 10;
     [super viewWillDisappear:animated];
     
     [self.replyTextView resignFirstResponder];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [nc removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)reloadData
@@ -207,17 +211,6 @@ static CGFloat NotificationSectionSeparator     = 10;
     //    CommentService *service = [[CommentService alloc] initWithManagedObjectContext:context];
     //
     //    [service replyCommentWithID:block.metaCommentID siteID:block.metaSiteID content:@"Reply?" success:nil failure:nil];
-}
-
-
-#pragma mark - SPBucketDeltage Methods
-
-- (void)bucket:(SPBucket *)bucket didChangeObjectForKey:(NSString *)key forChangeType:(SPBucketChangeType)changeType memberNames:(NSArray *)memberNames
-{
-    // Reload the table, if *our* notification got updated
-    if ([self.note.simperiumKey isEqualToString:key]) {
-        [self reloadData];
-    }
 }
 
 
@@ -813,6 +806,16 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 
 #pragma mark - Notification Helpers
+
+- (void)handleNotificationChange:(NSNotification *)notification
+{
+    NSSet *updated = notification.userInfo[NSUpdatedObjectsKey];
+    
+    // Reload the table, if *our* notification got updated
+    if ([updated containsObject:self.note]) {
+        [self reloadData];
+    }
+}
 
 - (void)handleKeyboardWillShow:(NSNotification *)notification
 {
