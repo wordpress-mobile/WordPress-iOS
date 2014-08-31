@@ -51,8 +51,10 @@ extension NotificationBlock
         for range in ranges as [NotificationRange] {
             if range.isPost {
                 theString.addAttributes(WPStyleGuide.Notifications.Styles.blockItalics, range: range.range)
+            } else if range.isBlockquote {
+                theString.addAttributes(WPStyleGuide.Notifications.Styles.blockQuoted, range: range.range)
             }
-            
+
             if range.url != nil {
                 theString.addAttribute(DTLinkAttribute, value: range.url, range: range.range)
                 theString.addAttribute(NSForegroundColorAttributeName, value: WPStyleGuide.Notifications.Colors.blockLink, range: range.range)
