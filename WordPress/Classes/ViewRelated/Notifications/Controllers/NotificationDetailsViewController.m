@@ -810,9 +810,10 @@ static CGFloat NotificationSectionSeparator     = 10;
 - (void)handleNotificationChange:(NSNotification *)notification
 {
     NSSet *updated = notification.userInfo[NSUpdatedObjectsKey];
+    NSSet *refreshed = notification.userInfo[NSRefreshedObjectsKey];
     
     // Reload the table, if *our* notification got updated
-    if ([updated containsObject:self.note]) {
+    if ([updated containsObject:self.note] || [refreshed containsObject:self.note]) {
         [self reloadData];
     }
 }
