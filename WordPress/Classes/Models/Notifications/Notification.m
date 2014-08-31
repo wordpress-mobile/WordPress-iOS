@@ -517,6 +517,11 @@ NSString const *NotePostIdKey           = @"post_id";
     return [self.type isEqual:NoteTypeComment];
 }
 
+- (BOOL)isPost
+{
+    return [self.type isEqual:NoteTypePost];
+}
+
 
 #pragma mark - Comment Helpers
 
