@@ -114,6 +114,12 @@ extension WPStyleGuide
                 Colors.blockText,                   NSForegroundColorAttributeName
             )
 
+            public static let blockQuoted       = NSDictionary(objectsAndKeys:
+                blockParagraph,                     NSParagraphStyleAttributeName,
+                Fonts.blockItalics,                 NSFontAttributeName,
+                Colors.quotedText,                  NSForegroundColorAttributeName
+            )
+
             public static func blockParagraphStyle(indentation: CGFloat) -> NSParagraphStyle {
                 let paragraph                   = blockParagraph.mutableCopy() as NSMutableParagraphStyle
                 paragraph.firstLineHeadIndent   = indentation

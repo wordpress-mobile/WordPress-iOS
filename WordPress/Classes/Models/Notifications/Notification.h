@@ -147,6 +147,7 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupTypes)
 @property (nonatomic, assign, readonly) BOOL                isPost;
 @property (nonatomic, assign, readonly) BOOL                isComment;
 @property (nonatomic, assign, readonly) BOOL                isStats;
+@property (nonatomic, assign, readonly) BOOL                isBlockquote;
 
 @end
 
