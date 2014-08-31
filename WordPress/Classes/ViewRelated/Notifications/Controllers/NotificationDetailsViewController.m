@@ -94,6 +94,7 @@ static CGFloat NotificationSectionSeparator     = 10;
         @(NoteBlockGroupTypesUser)      : NoteBlockUserTableViewCell.reuseIdentifier
     };
     
+#warning THIS overrides the previous 
     Simperium *simperium                = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
     SPBucket *notificationsBucket       = [simperium bucketForName:NSStringFromClass([Notification class])];
     notificationsBucket.delegate        = self;
@@ -822,6 +823,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     self.keyboardBottomDelta                = bottomInset;
     self.isKeyboardVisible                  = true;
     self.tableGesturesRecognizer.enabled    = true;
+    self.tableView.userInteractionEnabled   = false;
 }
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification
@@ -844,6 +846,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     
     self.isKeyboardVisible                  = false;
     self.tableGesturesRecognizer.enabled    = false;
+    self.tableView.userInteractionEnabled   = true;
 }
 
 

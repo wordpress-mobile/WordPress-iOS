@@ -369,7 +369,6 @@
                                 <connections>
                                     <outlet property="dataSource" destination="veA-Pg-QAw" id="VzN-sT-2Co"/>
                                     <outlet property="delegate" destination="veA-Pg-QAw" id="s6c-EK-4wV"/>
-                                    <outletCollection property="gestureRecognizers" destination="a20-Yr-RdT" appends="YES" id="SBO-6Z-bJf"/>
                                 </connections>
                             </tableView>
                         </subviews>
@@ -380,10 +379,13 @@
                             <constraint firstItem="Dcn-Il-AtN" firstAttribute="top" secondItem="lvM-1n-Dgf" secondAttribute="top" id="VrG-Fy-A84"/>
                             <constraint firstAttribute="trailing" secondItem="Dcn-Il-AtN" secondAttribute="trailing" id="eJA-A9-B0Q"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="a20-Yr-RdT" appends="YES" id="zrw-lN-fs1"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" id="gVZ-cy-2mc"/>
                     <connections>
-                        <outlet property="tableGesturesRecognizer" destination="a20-Yr-RdT" id="jnd-f0-Kn3"/>
+                        <outlet property="tableGesturesRecognizer" destination="a20-Yr-RdT" id="Ap0-WK-Z2n"/>
                         <outlet property="tableView" destination="Dcn-Il-AtN" id="Mjf-q7-Lkn"/>
                         <segue destination="8p8-88-FGK" kind="push" identifier="StatsViewController" id="EAn-K1-ofm"/>
                         <segue destination="Bbj-DX-KQ7" kind="push" identifier="WPWebViewController" id="ygK-a3-WEJ"/>
@@ -392,9 +394,10 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jzQ-hT-Ajt" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer enabled="NO" id="a20-Yr-RdT">
+                <tapGestureRecognizer enabled="NO" delaysTouchesEnded="NO" id="a20-Yr-RdT">
                     <connections>
                         <action selector="dismissKeyboardIfNeeded:" destination="veA-Pg-QAw" id="HU5-W6-6xc"/>
+                        <outlet property="delegate" destination="veA-Pg-QAw" id="L3M-88-aeP"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
