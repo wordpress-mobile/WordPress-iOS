@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6206.8" systemVersion="14A329f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MbC-cA-c9S">
     <dependencies>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7026.1"/>
     </dependencies>
     <scenes>
@@ -152,10 +153,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="84"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g23-xL-FVr" userLabel="Status Background">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g23-xL-FVr" userLabel="Approval Status">
                                                     <rect key="frame" x="0.0" y="0.0" width="320" height="57"/>
                                                     <subviews>
-                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eXO-Zm-IMb" userLabel="Sidebar">
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eXO-Zm-IMb" userLabel="Approval Sidebar">
                                                             <rect key="frame" x="0.0" y="0.0" width="3" height="57"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <constraints>
@@ -195,6 +196,9 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N7y-ge-mMq" customClass="DTAttributedLabel">
                                                     <rect key="frame" x="12" y="21" width="296" height="28"/>
                                                     <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="250" constant="28" id="fpi-gI-JQb"/>
+                                                    </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WpC-gY-myP" userLabel="Separator View">
                                                     <rect key="frame" x="12" y="57" width="296" height="1"/>
@@ -299,6 +303,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="approvalSidebarView" destination="eXO-Zm-IMb" id="dIO-vO-5SQ"/>
+                                            <outlet property="approvalStatusView" destination="g23-xL-FVr" id="YGK-1E-taO"/>
                                             <outlet property="attributedLabel" destination="N7y-ge-mMq" id="Cou-VH-JAO"/>
                                             <outlet property="btnApprove" destination="dZU-ho-dbu" id="wQI-LZ-w9g"/>
                                             <outlet property="btnLike" destination="e1p-ec-Dn3" id="HMC-LX-m8X"/>
