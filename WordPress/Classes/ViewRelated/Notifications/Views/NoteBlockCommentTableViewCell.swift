@@ -15,18 +15,7 @@ import Foundation
 
     public override var attributedText: NSAttributedString? {
         didSet {
-            // Apply an indentation of `firstLineHeadIndent` pixels, only on the first line!
-            let indentedString = attributedText?.mutableCopy() as? NSMutableAttributedString
-            if let unwrappedIndentedString = indentedString {
-                
-                let length      = min(1, unwrappedIndentedString.length)
-                let range       = NSRange(location: 0, length: length)
-                let paragraph   = WPStyleGuide.Notifications.blockParagraphStyleWithIndentation(firstLineHeadIndent)
-                
-                unwrappedIndentedString.addAttribute(NSParagraphStyleAttributeName, value: paragraph, range: range)
-            }
-            
-            super.attributedText = indentedString
+            super.attributedText = applyIndentation(attributedText)
         }
     }
     public var name: String? {
@@ -195,6 +184,24 @@ import Foundation
         contentView.updateConstraintForView(btnMore, attribute: .Top, constant: moreTop)
         btnMore.updateConstraint(.Height, constant: moreHeight)
         setNeedsLayout()
+    }
+    
+    private func applyIndentation(text: NSAttributedString?) -> NSAttributedString? {
+        
+        // Apply an indentation of `firstLineHeadIndent` pixels, only on the first line!
+        let indentedString = text?.mutableCopy() as? NSMutableAttributedString
+        if let unwrappedIndentedString = indentedString {
+            
+            let length      = min(1, unwrappedIndentedString.length)
+            let range       = NSRange(location: 0, length: length)
+            let paragraph   = WPStyleGuide.Notifications.blockParagraphStyleWithIndentation(firstLineHeadIndent)
+            
+            unwrappedIndentedString.addAttribute(NSParagraphStyleAttributeName, value: paragraph, range: range)
+            
+            return unwrappedIndentedString
+        }
+        
+        return nil
     }
     
     // MARK: - Constants
