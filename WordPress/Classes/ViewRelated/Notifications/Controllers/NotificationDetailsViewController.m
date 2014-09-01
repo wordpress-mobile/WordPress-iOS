@@ -83,7 +83,6 @@ static CGFloat NotificationSectionSeparator     = 10;
     self.restorationClass               = [self class];
     self.view.backgroundColor           = [WPStyleGuide itsEverywhereGrey];
     
-    self.tableView.contentInset         = IS_IPAD ? NotificationTableInsetsPad : NotificationTableInsetsPhone;
     self.tableView.backgroundColor      = [WPStyleGuide itsEverywhereGrey];
 
     self.reuseIdentifierMap = @{
@@ -138,6 +137,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     
     [self.tableView reloadData];
     [self attachReplyViewIfNeeded];
+    [self adjustTableStyleIfNeeded];
 }
 
 
@@ -211,6 +211,25 @@ static CGFloat NotificationSectionSeparator     = 10;
     //    CommentService *service = [[CommentService alloc] initWithManagedObjectContext:context];
     //
     //    [service replyCommentWithID:block.metaCommentID siteID:block.metaSiteID content:@"Reply?" success:nil failure:nil];
+}
+
+
+#pragma mark - Style Helpers
+
+- (void)adjustTableStyleIfNeeded
+{
+    UIEdgeInsets contentInset               = IS_IPAD ? NotificationTableInsetsPad : NotificationTableInsetsPhone;
+    UITableViewCellSeparatorStyle separator = UITableViewCellSeparatorStyleSingleLine;
+    
+    // Badge Notifications should be centered, and display no cell separators
+    if (self.note.isBadge) {
+        CGFloat offsetY = (self.view.frame.size.height - self.tableView.contentSize.height) * 0.5f;
+        contentInset    = UIEdgeInsetsMake(offsetY, 0, 0, 0);
+        separator       = UITableViewCellSeparatorStyleNone;
+    }
+    
+    self.tableView.contentInset     = contentInset;
+    self.tableView.separatorStyle   = separator;
 }
 
 
@@ -447,6 +466,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     NSAssert(imageBlock, nil);
     
     NotificationMedia *media        = imageBlock.media.firstObject;
+    cell.isBadge                    = media.isBadge;
     
     [cell downloadImageWithURL:media.mediaURL];
 }
@@ -459,6 +479,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     __weak __typeof(self) weakSelf  = self;
     
     cell.attributedText             = textBlock.regularAttributedText;
+    cell.isBadge                    = self.note.isBadge;
     cell.onUrlClick                 = ^(NSURL *url){
         [weakSelf openURL:url];
     };
