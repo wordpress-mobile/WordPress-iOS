@@ -5,13 +5,8 @@ import Foundation
 {
     // MARK: - Initializers
     public convenience init(width: CGFloat) {
-        let theFrame = CGRect(x: 0, y: 0, width: width, height: 0)
-        self.init(frame: theFrame)
-    }
-    
-    public required init(coder: NSCoder) {
-        super.init(coder: coder)
-        setupView()
+        let frame = CGRect(x: 0, y: 0, width: width, height: 0)
+        self.init(frame: frame)
     }
     
     public override init(frame: CGRect) {
@@ -19,29 +14,51 @@ import Foundation
         setupView()
     }
     
+    public required init(coder: NSCoder) {
+        super.init(coder: coder)
+        setupView()
+    }
+    
+    private init(frame: CGRect, isProxy: Bool) {
+        super.init(frame: frame)
+        isProxyTextView = isProxy
+        setupView()
+    }
+    
+    
     // MARK: - Public Properties
     public weak var delegate: UITextViewDelegate?
     
-    public var proxyAccessoryAlpha: CGFloat {
-        get {
-            return proxyTextView.alpha
-        }
-        set {
-            proxyTextView.alpha = newValue
+    public var onReply: ((String) -> ())? {
+        didSet {
+            refreshProxyTextView()
         }
     }
-
-    public var onReply: ((String) -> ())?
     
+    public override var inputAccessoryView: UIView! {
+        get {
+            return proxyTextView
+        }
+    }
+    
+    public var text: String! {
+        didSet {
+            textView.text = text
+            refreshInterface()
+            refreshProxyTextView()
+        }
+    }
     public var placeholder: String! {
         didSet {
             placeholderLabel.text = placeholder
+            refreshProxyTextView()
         }
     }
 
     public var replyText: String! {
         didSet {
             replyButton.setTitle(replyText, forState: .Normal)
+            refreshProxyTextView()
         }
     }
     
@@ -53,32 +70,23 @@ import Foundation
         }
     }
     
-    public func setupProxyAccessoryView() {
-        proxyTextView                   = ReplyTextView(width: bounds.width)
-        textView.inputAccessoryView     = proxyTextView
-        proxyTextView.placeholder       = placeholder
-        proxyTextView.replyText         = replyText
-        proxyTextView.delegate          = self
-    }
-    
     
     // MARK: - UITextViewDelegate Methods
     public func textViewShouldBeginEditing(textView: UITextView!) -> Bool {
-        
-        // If the proxy is being dismissed, prevent regaining focus
         if isProxyDismissing {
             return false
         }
+        
         return delegate?.textViewShouldBeginEditing?(textView) ?? true
     }
     
     public func textViewDidBeginEditing(textView: UITextView!) {
-        // If we have a Proxy Accessory View, forward the event!
+        
         if proxyTextView != nil {
             let delay = dispatch_time_t(0.1)
             dispatch_after(delay, dispatch_get_main_queue()) {
                 // FIX: Xcode beta 6 fails if the only sentence returns a value
-                let result = textView.inputAccessoryView.becomeFirstResponder()
+                let result = self.proxyTextView?.becomeFirstResponder()
             }
 
         } else {
@@ -87,7 +95,7 @@ import Foundation
     }
     
     public func textViewShouldEndEditing(textView: UITextView!) -> Bool {
-        isProxyDismissing = textView != self.textView
+        isProxyDismissing = self.textView != textView
         return delegate?.textViewShouldEndEditing?(textView) ?? true
     }
 
@@ -101,11 +109,9 @@ import Foundation
     }
 
     public func textViewDidChange(textView: UITextView!) {
-        // Don't overwork with the Proxy TextViewas
+        // Don't overwork if this is the proxyTextView
         if (textView == self.textView) {
-            refreshControls()
-            resizeIfNeeded()
-            scrollToCaretInTextView()
+            refreshInterface()
         }
         
         delegate?.textViewDidChange?(textView)
@@ -113,6 +119,14 @@ import Foundation
     
     public func textView(textView: UITextView!, shouldInteractWithURL URL: NSURL!, inRange characterRange: NSRange) -> Bool {
         return delegate?.textView?(textView, shouldInteractWithURL: URL, inRange: characterRange) ?? true
+    }
+    
+    
+    // MARK: - IBActions
+    @IBAction private func btnReplyPressed() {
+        if let handler = onReply {
+            handler(textView.text)
+        }
     }
     
     
@@ -132,19 +146,7 @@ import Foundation
     }
     
     
-    // MARK: - Private Helpers
-    private func resizeIfNeeded() {
-        var newSize         = intrinsicContentSize()
-        let oldSize         = frame.size
-
-        if newSize.height == oldSize.height {
-            return
-        }
-
-        frame.size.height   = newSize.height
-        invalidateIntrinsicContentSize()
-    }
-    
+    // MARK: - Autolayout Helpers
     public override func intrinsicContentSize() -> CGSize {
         let topPadding      = textView.constraintForAttribute(.Top)     ?? textViewDefaultPadding
         let bottomPadding   = textView.constraintForAttribute(.Bottom)  ?? textViewDefaultPadding
@@ -158,17 +160,8 @@ import Foundation
         return intrinsicSize
     }
     
-    private func scrollToCaretInTextView() {
-        // FIX: In iOS 8, scrollRectToVisible causes a weird flicker
-        if UIDevice.isOS8() {
-            textView.scrollRangeToVisible(textView.selectedRange)
-        } else {
-            var caretRect           = textView.caretRectForPosition(textView.selectedTextRange.start)
-            caretRect               = CGRectIntegral(caretRect)
-            textView.scrollRectToVisible(caretRect, animated: false)
-        }
-    }
     
+    // MARK: - Setup Helpers
     private func setupView() {
         self.frame.size.height          = textViewMinHeight
         
@@ -202,24 +195,66 @@ import Foundation
         contentMode                     = .BottomLeft
         autoresizingMask                = .FlexibleWidth | .FlexibleHeight | .FlexibleTopMargin
         containerView.autoresizingMask  = .FlexibleWidth | .FlexibleHeight
+        
+        // Setup the ProxyTextView: Prevent Recursion
+        if isProxyTextView {
+            return
+        }
+        
+        let proxyTextView               = ReplyTextView(frame: bounds, isProxy: true)
+        proxyTextView.delegate          = self
+        textView.inputAccessoryView     = proxyTextView
+        self.proxyTextView              = proxyTextView
     }
     
-    private func refreshControls() {
-        // [Show | Hide] placeholder + reply button, as needed
-        let whitespaceCharSet       = NSCharacterSet.whitespaceAndNewlineCharacterSet()
-        let shouldEnableReply       = textView.text.stringByTrimmingCharactersInSet(whitespaceCharSet).isEmpty == false
-        let shouldHidePlaceholder   = !textView.text.isEmpty
-        
-        placeholderLabel.hidden     = shouldHidePlaceholder
-        replyButton.enabled         = shouldEnableReply
+    // MARK: - Refresh Helpers
+    private func refreshInterface() {
+        refreshPlaceholder()
+        refreshReplyButton()
+        refreshSizeIfNeeded()
+        refreshScrollPosition()
     }
-
-    @IBAction private func btnReplyPressed() {
-        if let handler = onReply {
-            handler(textView.text)
+    
+    private func refreshSizeIfNeeded() {
+        var newSize         = intrinsicContentSize()
+        let oldSize         = frame.size
+        
+        if newSize.height == oldSize.height {
+            return
+        }
+        
+        frame.size.height   = newSize.height
+        invalidateIntrinsicContentSize()
+    }
+    
+    private func refreshPlaceholder() {
+        placeholderLabel.hidden         = !textView.text.isEmpty
+    }
+    
+    private func refreshReplyButton() {
+        let whitespaceCharSet           = NSCharacterSet.whitespaceAndNewlineCharacterSet()
+        replyButton.enabled             = textView.text.stringByTrimmingCharactersInSet(whitespaceCharSet).isEmpty == false
+    }
+    
+    private func refreshScrollPosition() {
+        // FIX: In iOS 8, scrollRectToVisible causes a weird flicker
+        if UIDevice.isOS8() {
+            textView.scrollRangeToVisible(textView.selectedRange)
+        } else {
+            var caretRect               = textView.caretRectForPosition(textView.selectedTextRange.start)
+            caretRect                   = CGRectIntegral(caretRect)
+            textView.scrollRectToVisible(caretRect, animated: false)
         }
     }
     
+    private func refreshProxyTextView() {
+        // Swift is not allowing us to do this in didSet. Not cool.
+        proxyTextView?.placeholder  = placeholder
+        proxyTextView?.replyText    = replyText
+        proxyTextView?.text         = text
+        proxyTextView?.onReply      = onReply
+    }
+
     
     // MARK: - Constants
     private let textViewDefaultPadding:     CGFloat         = 12
@@ -228,7 +263,8 @@ import Foundation
     
     // MARK: - Private Properties
     private var bundle:                     NSArray?
-    private var proxyTextView:              ReplyTextView!
+    private var proxyTextView:              ReplyTextView?
+    private var isProxyTextView:            Bool            = false
     private var isProxyDismissing:          Bool            = false
     
     // MARK: - IBOutlets
