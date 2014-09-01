@@ -6,6 +6,10 @@
 
 - (void)composeView:(InlineComposeView *)view didSendText:(NSString *)text;
 
+@end
+
+@protocol InlineComposeViewMentionDelegate <NSObject>
+
 @optional
 /**
  Tells the delegate the user has typed @ sign. It will NOT work if the user replaces text.
@@ -17,6 +21,7 @@
 @interface InlineComposeView : UIView
 
 @property (nonatomic, weak) id <InlineComposeViewDelegate> delegate;
+@property (nonatomic, weak) id <InlineComposeViewMentionDelegate> mentionDelegate;
 @property (nonatomic, strong) NSString *placeholder;
 @property (nonatomic, weak) NSString *text;
 @property (nonatomic, weak) NSAttributedString *attributedText;

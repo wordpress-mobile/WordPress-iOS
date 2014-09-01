@@ -303,10 +303,10 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
         }
     }
 
-    BOOL delegateImplementsAtMention = [self.delegate respondsToSelector:@selector(composeViewDidStartAtMention:)];
+    BOOL delegateImplementsAtMention = [self.mentionDelegate respondsToSelector:@selector(composeViewDidStartAtMention:)];
 
     if ([text isEqualToString:@"@"] && range.length == 0 && delegateImplementsAtMention) {
-        [self.delegate composeViewDidStartAtMention:self];
+        [self.mentionDelegate composeViewDidStartAtMention:self];
         return YES;
     }
 

@@ -29,7 +29,8 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
 @interface NotificationsCommentDetailViewController () <InlineComposeViewDelegate, WPContentViewDelegate,
                                                         UIViewControllerRestoration, UIActionSheetDelegate,
-                                                        SPBucketDelegate, SuggestionsTableViewDelegate>
+                                                        SPBucketDelegate, SuggestionsTableViewDelegate,
+                                                        InlineComposeViewMentionDelegate>
 
 @property (nonatomic, assign) NSUInteger        followBlogID;
 @property (nonatomic, strong) NSDictionary        *commentActions;
@@ -171,6 +172,7 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
     self.inlineComposeView.delegate = self;
+    self.inlineComposeView.mentionDelegate = self;
     self.inlineComposeView.shouldDeleteTagWithBackspace = YES;
     [self.view addSubview:self.inlineComposeView];
 
@@ -597,6 +599,8 @@ NSString *const WPNotificationCommentRestorationKey = @"WPNotificationCommentRes
 {
     [self publishReply:text];
 }
+
+#pragma mark - InlineComposeViewMentionDelgate
 
 - (void)composeViewDidStartAtMention:(InlineComposeView *)view
 {

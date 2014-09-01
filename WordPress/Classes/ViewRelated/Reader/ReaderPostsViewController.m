@@ -24,6 +24,8 @@
 #import "UIView+Subviews.h"
 #import "BlogService.h"
 #import "ReaderSiteService.h"
+#import "SuggestionsTableViewController.h"
+#import "SuggestionService.h"
 
 static CGFloat const RPVCHeaderHeightPhone = 10.0;
 static CGFloat const RPVCBlockedCellHeight = 66.0;
@@ -35,7 +37,7 @@ NSString * const FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
 NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier";
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
-@interface ReaderPostsViewController ()<WPTableImageSourceDelegate, ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate, UIActionSheetDelegate>
+@interface ReaderPostsViewController ()<WPTableImageSourceDelegate, ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate, UIActionSheetDelegate, SuggestionsTableViewDelegate, InlineComposeViewMentionDelegate>
 
 @property (nonatomic, assign) BOOL hasMoreContent;
 @property (nonatomic, assign) BOOL loadingMore;
@@ -138,11 +140,17 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
     [self.inlineComposeView setButtonTitle:NSLocalizedString(@"Post", nil)];
+    self.inlineComposeView.shouldDeleteTagWithBackspace = YES;
+    self.inlineComposeView.mentionDelegate = self;
     self.commentPublisher = [[ReaderCommentPublisher alloc] initWithComposer:self.inlineComposeView];
 
     self.commentPublisher.delegate = self;
 
     self.tableView.tableFooterView = self.inlineComposeView;
+
+    // Don't show current title in the next-view back button
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -1173,6 +1181,32 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
     self.actionSheet = nil;
     actionSheet.delegate = nil;
+}
+
+#pragma mark - InlineComposeViewMentionDelegate
+
+- (void)composeViewDidStartAtMention:(InlineComposeView *)view
+{
+    NSNumber *siteID = self.commentPublisher.post.siteID;
+    if ([[SuggestionService shared] shouldShowSuggestionsPageForSiteID:siteID]) {
+        SuggestionsTableViewController *suggestionsController = [[SuggestionsTableViewController alloc] initWithSiteID:siteID];
+        suggestionsController.delegate = self;
+        [self.navigationController pushViewController:suggestionsController animated:YES];
+    }
+}
+
+#pragma mark - SuggestionsTableViewDelegate
+
+- (void)suggestionTableView:(SuggestionsTableViewController *)suggestionsTableViewController
+            didSelectString:(NSString *)string
+{
+    self.inlineComposeView.text = [self.inlineComposeView.text stringByAppendingString:string];
+}
+
+- (void)suggestionViewDidDisappear:(SuggestionsTableViewController *)suggestionsController
+{
+    suggestionsController.delegate = nil;
+    [self.inlineComposeView becomeFirstResponder];
 }
 
 @end
