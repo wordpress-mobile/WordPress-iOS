@@ -98,7 +98,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     [SFHFKeychainUtils storeUsername:@"OAuth2Token"
                          andPassword:self.oauth2Token
                       forServiceName:@"TodayWidget"
-                         accessGroup:@"org.wordpress"
+                         accessGroup:@"3TMU3BH3NK.org.wordpress"
                       updateExisting:YES
                                error:&error];
     if (error) {
