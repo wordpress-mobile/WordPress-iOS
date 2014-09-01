@@ -7,6 +7,7 @@ extern NSString * const SuggestionListUpdatedNotification;
 + (id)shared;
 
 - (NSArray *)suggestionsForSiteID:(NSNumber *)siteID;
+- (void)updateSuggestionsForSiteID:(NSNumber *)siteID;
 - (BOOL)shouldShowSuggestionsPageForSiteID:(NSNumber *)siteID;
 
 @end
