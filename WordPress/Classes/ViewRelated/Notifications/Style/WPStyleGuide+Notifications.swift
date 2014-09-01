@@ -8,17 +8,16 @@ extension WPStyleGuide
         // Styles Used by NotificationsViewController
         //
 
-        //  Noticon
+        //  NoteTableViewCell
         public static let noticonFont               = UIFont(name: "Noticons", size: 16)
         public static let noticonTextColor          = UIColor.whiteColor()
         public static let noticonReadColor          = UIColor(red: 0xA4/255.0, green: 0xB9/255.0, blue: 0xC9/255.0, alpha: 0xFF/255.0)
         public static let noticonUnreadColor        = UIColor(red: 0x25/255.0, green: 0x9C/255.0, blue: 0xCF/255.0, alpha: 0xFF/255.0)
 
-        //  NoteTableViewCell
         public static let noteBackgroundReadColor   = UIColor.whiteColor()
         public static let noteBackgroundUnreadColor = UIColor(red: 0xF1/255.0, green: 0xF6/255.0, blue: 0xF9/255.0, alpha: 0xFF/255.0)
 
-        //  Subject
+        //  Subject Text
         public static let subjectColor              = WPStyleGuide.littleEddieGrey()
         public static let subjectRegularFont        = WPFontManager.openSansRegularFontOfSize(subjectFontSize)
         public static let subjectBoldFont           = WPFontManager.openSansBoldFontOfSize(subjectFontSize)
@@ -34,7 +33,7 @@ extension WPStyleGuide
         public static let subjectItalicsStyle       = [ NSParagraphStyleAttributeName:  subjectParagraph,
                                                         NSFontAttributeName:            subjectItalicsFont ]
 
-        //  Snippet
+        //  Subject Snippet
         public static let snippetColor              = WPStyleGuide.allTAllShadeGrey()
         public static let snippetRegularStyle       = [ NSParagraphStyleAttributeName:  snippetParagraph,
                                                         NSFontAttributeName:            subjectRegularFont,
@@ -76,16 +75,16 @@ extension WPStyleGuide
                                                         NSFontAttributeName:            blockItalicsFont,
                                                         NSForegroundColorAttributeName: blockQuotedColor]
 
+        // Action Buttons
+        public static let blockActionDisabledColor  = UIColor(red: 0x7F/255.0, green: 0x9E/255.0, blue: 0xB4/255.0, alpha: 0xFF/255.0)
+        public static let blockActionEnabledColor   = UIColor(red: 0xEA/255.0, green: 0x6D/255.0, blue: 0x1B/255.0, alpha: 0xFF/255.0)
+
         // Helper Methods
         public static func blockParagraphStyleWithIndentation(indentation: CGFloat) -> NSParagraphStyle {
             let paragraph                   = blockParagraph.mutableCopy() as NSMutableParagraphStyle
             paragraph.firstLineHeadIndent   = indentation
             return paragraph
         }
-
-        // Action Buttons
-        public static let blockActionDisabledColor  = UIColor(red: 0x7F/255.0, green: 0x9E/255.0, blue: 0xB4/255.0, alpha: 0xFF/255.0)
-        public static let blockActionEnabledColor   = UIColor(red: 0xEA/255.0, green: 0x6D/255.0, blue: 0x1B/255.0, alpha: 0xFF/255.0)
 
 
         //  Private

@@ -3,6 +3,7 @@ import Foundation
 
 extension Notification
 {
+    // MARK: - Helper Grouping Methods
     public func sectionIdentifier() -> String {
         // Normalize Dates: Time must not be considered. Just the raw dates
         let fromDate                = timestampAsDate.normalizedDate()

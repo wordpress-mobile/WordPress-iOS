@@ -3,7 +3,7 @@ import Foundation
 
 extension NotificationBlock
 {
-    public func subjectFormattedText() -> NSAttributedString {
+    public func subjectAttributedText() -> NSAttributedString {
         if text == nil {
             return NSAttributedString()
         }
@@ -23,7 +23,7 @@ extension NotificationBlock
         return theString;
     }
 
-    public func snippetFormattedText() -> NSAttributedString {
+    public func snippetAttributedText() -> NSAttributedString {
         if text == nil {
             return NSAttributedString()
         }
@@ -31,11 +31,7 @@ extension NotificationBlock
         return NSMutableAttributedString(string: text, attributes: WPStyleGuide.Notifications.snippetRegularStyle)
     }
 
-    public func regularFormattedText() -> NSAttributedString {
-        if textOverride != nil {
-            return NSMutableAttributedString(string: textOverride, attributes: WPStyleGuide.Notifications.blockRegularStyle)
-        }
-
+    public func regularAttributedText() -> NSAttributedString {
         if text == nil {
             return NSAttributedString()
         }
@@ -62,5 +58,14 @@ extension NotificationBlock
         }
 
         return theString
+    }
+
+    public func regularAttributedTextOverride() -> NSAttributedString? {
+        //  Operations such as editing a comment cause a lag between the REST and Simperium update.
+        //  TextOverride is a transient property meant to store, temporarily, the edited text
+        if textOverride != nil {
+            return NSAttributedString(string: textOverride, attributes: WPStyleGuide.Notifications.blockRegularStyle)
+        }
+        return nil
     }
 }
