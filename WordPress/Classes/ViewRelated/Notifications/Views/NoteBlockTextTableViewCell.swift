@@ -17,6 +17,11 @@ import Foundation
     public var labelInsets: UIEdgeInsets {
         return insets
     }
+    public var isBadge: Bool = false {
+        didSet {
+            backgroundColor = isBadge ? WPStyleGuide.Notifications.badgeBackgroundColor : WPStyleGuide.Notifications.blockBackgroundColor
+        }
+    }
     
     // MARK: - View Methods
     public override func awakeFromNib() {

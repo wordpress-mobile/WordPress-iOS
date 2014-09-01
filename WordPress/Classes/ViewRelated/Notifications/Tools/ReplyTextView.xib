@@ -27,7 +27,7 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Omp-7E-YTH" userLabel="Placeholder">
-                            <rect key="frame" x="18" y="11" width="242" height="21"/>
+                            <rect key="frame" x="18" y="11" width="242" height="20.5"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -35,7 +35,7 @@
                             <size key="shadowOffset" width="-1" height="-1"/>
                         </label>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" bounces="NO" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Pd-vE-u9b">
-                            <rect key="frame" x="18" y="12" width="242" height="20"/>
+                            <rect key="frame" x="18" y="12" width="242" height="19.5"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -63,7 +63,7 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="KQI-Ok-M85" firstAttribute="leading" secondItem="TqK-rp-BlK" secondAttribute="leading" id="0Ih-PG-tLq"/>
-                        <constraint firstAttribute="bottom" secondItem="2Pd-vE-u9b" secondAttribute="bottom" constant="12" id="1DJ-ch-NcS"/>
+                        <constraint firstAttribute="bottom" secondItem="2Pd-vE-u9b" secondAttribute="bottom" priority="750" constant="12" id="1DJ-ch-NcS"/>
                         <constraint firstItem="KQI-Ok-M85" firstAttribute="top" secondItem="TqK-rp-BlK" secondAttribute="top" id="2KV-ES-gcA"/>
                         <constraint firstItem="2Pd-vE-u9b" firstAttribute="top" secondItem="TqK-rp-BlK" secondAttribute="top" constant="12" id="6Y8-31-mYZ"/>
                         <constraint firstAttribute="trailing" secondItem="5G8-Al-JKt" secondAttribute="trailing" constant="2" id="9Oi-SR-O6o"/>
