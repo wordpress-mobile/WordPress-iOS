@@ -52,6 +52,8 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
     self.searchController.searchResultsDelegate = self;
     self.searchController.delegate = self;
 
+    self.tableView.rowHeight = self.searchDisplayController.searchResultsTableView.rowHeight;
+
     UINib *nib = [UINib nibWithNibName:@"SuggestionsTableViewCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:CellIdentifier];
 
