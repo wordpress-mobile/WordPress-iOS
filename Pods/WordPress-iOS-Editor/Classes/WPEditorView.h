@@ -40,6 +40,18 @@
 	  focusChanged:(BOOL)gained;
 
 /**
+ *	@brief		Received when the user taps on a link in the editor.
+ *
+ *	@param		editorView		The editor view.
+ *	@param		url				The url that should be loaded.
+ *
+ *	@return		YES if the tap was handled by the receiver and default handler should be supressed,
+ *				NO if it wasn't.
+ */
+- (BOOL)editorView:(WPEditorView*)editorView
+		linkTapped:(NSURL*)url;
+
+/**
  *	@brief		Received when the selection is changed.
  *	@details	Useful to know what styles surround the current selection.
  *
@@ -110,19 +122,15 @@ stylesForCurrentSelection:(NSArray*)styles;
  *	@brief		Inserts a link at the last saved selection.
  *
  *	@param		url		The url that will open when the link is clicked.
- *	@param		title	The title for the link.
  */
-- (void)insertLink:(NSString *)url
-			 title:(NSString *)title;
+- (void)insertLink:(NSString *)url;
 
 /**
  *	@brief		Updates the link at the last saved selection.
  *
  *	@param		url		The url that will open when the link is clicked.
- *	@param		title	The title for the link.
  */
-- (void)updateLink:(NSString *)url
-			 title:(NSString *)title;
+- (void)updateLink:(NSString *)url;
 
 - (void)setSelectedColor:(UIColor*)color
 					 tag:(int)tag;
@@ -130,6 +138,15 @@ stylesForCurrentSelection:(NSArray*)styles;
 - (void)quickLink;
 - (void)insertImage:(NSString *)url alt:(NSString *)alt;
 - (void)updateImage:(NSString *)url alt:(NSString *)alt;
+
+#pragma mark - Links
+
+/**
+ *	@brief		Call this method to know if the current selection is part of a link.
+ *
+ *	@return		YES if the current selection is part of a link.
+ */
+- (BOOL)isSelectionALink;
 
 #pragma mark - Editor focus
 

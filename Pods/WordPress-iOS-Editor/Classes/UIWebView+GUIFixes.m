@@ -24,7 +24,10 @@ static Class fixClass = Nil;
 
 - (id)methodReturningCustomInputAccessoryView
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
 	UIView* view = [self performSelector:@selector(originalInputAccessoryView) withObject:nil];
+#pragma clang diagnostic pop
 	
 	if (view) {
 		
@@ -36,9 +39,6 @@ static Class fixClass = Nil;
 		}
 		
 		view = [(UIWebView*)parentWebView customInputAccessoryView];
-	} else {
-		int i = 1;
-		i++;
 	}
 	
 	return view;
@@ -58,7 +58,10 @@ static Class fixClass = Nil;
     if (!fixClass) {
         Class newClass = objc_allocateClassPair(browserViewClass, fixedClassName, 0);
 		IMP oldImp = class_getMethodImplementation(browserViewClass, @selector(inputAccessoryView));
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
 		class_addMethod(newClass, @selector(originalInputAccessoryView), oldImp, "@@:");
+#pragma clang diagnostic pop
 		
         IMP newImp = [self methodForSelector:@selector(methodReturningCustomInputAccessoryView)];
         class_addMethod(newClass, @selector(inputAccessoryView), newImp, "@@:");
