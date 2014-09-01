@@ -120,7 +120,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         
         var error:NSError?
         
-        let oauth2Token = SFHFKeychainUtils.getPasswordForUsername("OAuth2Token", andServiceName: "TodayWidget", accessGroup: "org.wordpress", error: &error)
+        let oauth2Token = SFHFKeychainUtils.getPasswordForUsername("OAuth2Token", andServiceName: "TodayWidget", accessGroup: "3TMU3BH3NK.org.wordpress", error: &error)
         
         NSLog("Token: \(oauth2Token)")
         
