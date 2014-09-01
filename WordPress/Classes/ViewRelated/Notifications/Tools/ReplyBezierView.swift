@@ -7,12 +7,12 @@ import Foundation
 public class ReplyBezierView : UIView
 {
     
-    public var fieldBackgroundColor: UIColor = WPStyleGuide.Comments.Colors.replyBackground {
+    public var fieldBackgroundColor: UIColor = WPStyleGuide.Reply.backgroundColor {
         didSet {
             setNeedsDisplay()
         }
     }
-    public var separatorColor: UIColor = WPStyleGuide.Comments.Colors.replySeparator {
+    public var separatorColor: UIColor = WPStyleGuide.Reply.separatorColor {
         didSet {
             setNeedsDisplay()
         }

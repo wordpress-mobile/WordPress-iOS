@@ -6,7 +6,11 @@ import Foundation
     // MARK: - Public Properties
     public var read: Bool = false {
         didSet {
-            backgroundColor = read ? WPStyleGuide.Notifications.Colors.backgroundRead : WPStyleGuide.Notifications.Colors.backgroundUnread
+            if read {
+                backgroundColor = WPStyleGuide.Notifications.noteBackgroundReadColor
+            } else {
+                backgroundColor = WPStyleGuide.Notifications.noteBackgroundUnreadColor
+            }
         }
     }
     public var attributedSubject: NSAttributedString? {
@@ -52,12 +56,11 @@ import Foundation
         iconImageView.image             = UIImage(named: placeholderName)
         
         noticonView.layer.cornerRadius  = noticonRadius
-        noticonLabel.font               = WPStyleGuide.Notifications.Fonts.noticon
-        noticonLabel.textColor          = UIColor.whiteColor()
+        noticonLabel.font               = WPStyleGuide.Notifications.noticonFont
+        noticonLabel.textColor          = WPStyleGuide.Notifications.noticonTextColor
         
         subjectLabel.numberOfLines      = subjectNumberOfLines
         subjectLabel.shadowOffset       = CGSizeZero
-        subjectLabel.textColor          = WPStyleGuide.Notifications.Colors.blockText
 
         snippetLabel.numberOfLines      = snippetNumberOfLines
     }
@@ -86,7 +89,11 @@ import Foundation
     }
     
     private func refreshBackgrounds() {
-        noticonView.backgroundColor = read ? WPStyleGuide.Notifications.Colors.iconRead : WPStyleGuide.Notifications.Colors.iconUnread
+        if read {
+            noticonView.backgroundColor = WPStyleGuide.Notifications.noticonReadColor
+        } else {
+            noticonView.backgroundColor = WPStyleGuide.Notifications.noticonUnreadColor
+        }
     }
     
     // MARK: - Private Properties
