@@ -49,6 +49,7 @@
         // Button
         _button                     = [UIButton buttonWithType:UIButtonTypeCustom];
         _button.titleLabel.font     = [WPStyleGuide regularTextFont];
+        _button.hidden              = YES;
         [_button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
         [_button setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateNormal];
         [_button setBackgroundImage:[self newButtonBackgroundImage] forState:UIControlStateNormal];

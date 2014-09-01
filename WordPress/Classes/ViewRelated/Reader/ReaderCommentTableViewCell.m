@@ -258,28 +258,23 @@
     self.avatarImageView.image = image;
 }
 
+
 #pragma mark - DTAttributedTextContentView Delegate Methods
 
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame
 {
+    if (CGRectGetWidth(frame) == 0 || CGRectGetHeight(frame) == 0) {
+        return nil;
+    }
+
     NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:nil];
 
     NSURL *URL = [attributes objectForKey:DTLinkAttribute];
 
-    if (URL == nil) {
-        return nil;
-    }
-
-    NSString *identifier = [attributes objectForKey:DTGUIDAttribute];
-
-    DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
-    button.URL = URL;
-    button.minimumHitSize = CGSizeMake(25.0, 25.0); // adjusts it's bounds so that button is always large enough
-    button.GUID = identifier;
-
     // get image with normal link text
     UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDefault];
-    if (!normalImage) {
+
+    if (!URL || !normalImage) {
         return nil;
     }
 
@@ -289,9 +284,13 @@
         highlightImage = normalImage;
     }
 
+    DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
+    button.clipsToBounds = YES;
+    button.URL = URL;
+    button.minimumHitSize = CGSizeMake(25.0, 25.0); // adjusts it's bounds so that button is always large enough
+    button.GUID = [attributes objectForKey:DTGUIDAttribute];
     [button setImage:normalImage forState:UIControlStateNormal];
     [button setImage:highlightImage forState:UIControlStateHighlighted];
-
     // use normal push action for opening URL
     [button addTarget:self action:@selector(handleLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
 
