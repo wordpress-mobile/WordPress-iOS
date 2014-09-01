@@ -57,7 +57,7 @@ typedef enum
 	
 } WPEditorViewControllerElementTag;
 
-@interface WPEditorViewController () <UIAlertViewDelegate, UIWebViewDelegate, HRColorPickerViewControllerDelegate, UITextFieldDelegate>
+@interface WPEditorViewController () <HRColorPickerViewControllerDelegate, UIAlertViewDelegate, UITextFieldDelegate, WPEditorViewDelegate>
 
 @property (nonatomic, strong) UIScrollView *toolBarScroll;
 @property (nonatomic, strong) UIToolbar *toolbar;
@@ -65,7 +65,6 @@ typedef enum
 @property (nonatomic, strong) NSString *editorPlaceholderText;
 @property (nonatomic, strong) NSArray *editorItemsEnabled;
 @property (nonatomic, strong) UIAlertView *alertView;
-@property (nonatomic, strong) NSString *selectedLinkTitle;
 @property (nonatomic, strong) NSString *selectedImageURL;
 @property (nonatomic, strong) NSString *selectedImageAlt;
 @property (nonatomic, strong) NSMutableArray *customBarButtonItems;
@@ -164,7 +163,6 @@ typedef enum
 	}
 	
     [self refreshUI];
-    [self.titleTextField becomeFirstResponder];
     [self.navigationController setToolbarHidden:YES animated:animated];
 }
 
@@ -175,13 +173,11 @@ typedef enum
 	ZSSRichTextEditorToolbar defaultToolbarItems = (ZSSRichTextEditorToolbarInsertImage
 													| ZSSRichTextEditorToolbarBold
 													| ZSSRichTextEditorToolbarItalic
-													| ZSSRichTextEditorToolbarStrikeThrough
 													| ZSSRichTextEditorToolbarUnderline
-													| ZSSRichTextEditorToolbarBlockQuote
 													| ZSSRichTextEditorToolbarInsertLink
+													| ZSSRichTextEditorToolbarBlockQuote
                                                     | ZSSRichTextEditorToolbarUnorderedList
-													| ZSSRichTextEditorToolbarOrderedList
-													| ZSSRichTextEditorToolbarRemoveLink);
+													| ZSSRichTextEditorToolbarOrderedList);
 	
 	// iPad gets the HTML source button too
 	if (IS_IPAD) {
@@ -716,7 +712,7 @@ typedef enum
 	return barButtonItem;
 }
 
-- (WPEditorToolbarButton*)header1BarButton
+- (UIBarButtonItem*)header1BarButton
 {
 	ZSSBarButtonItem *barButtonItem = [self barButtonItemWithTag:kWPEditorViewControllerElementTagH1BarButton
 													htmlProperty:@"h1"
@@ -836,7 +832,7 @@ typedef enum
 													htmlProperty:@"link"
 													   imageName:@"icon_format_link"
 														  target:self
-														selector:@selector(insertLink)
+														selector:@selector(linkBarButtonTapped:)
 											  accessibilityLabel:accessibilityLabel];
 	
 	return barButtonItem;
@@ -1062,12 +1058,12 @@ typedef enum
     }
     [self.toolBarScroll addSubview:self.toolbar];
     self.toolBarScroll.autoresizingMask = self.toolbar.autoresizingMask;
-    
+	
     // Background Toolbar
     UIToolbar *backgroundToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
     backgroundToolbar.backgroundColor = [UIColor whiteColor];
     backgroundToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    
+	
     // Parent holding view
 	if (!self.toolbarHolder) {
 		self.toolbarHolder = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 44)];
@@ -1436,7 +1432,7 @@ typedef enum
 {
     // Save the selection location
 	[self.editorView saveSelection];
-    
+
     // Call the picker
     HRColorPickerViewController *colorPicker = [HRColorPickerViewController cancelableFullColorPickerViewControllerWithColor:[UIColor whiteColor]];
     colorPicker.delegate = self;
@@ -1473,20 +1469,20 @@ typedef enum
     [self.editorView redo];
 }
 
-- (void)insertLink
+- (void)linkBarButtonTapped:(WPEditorToolbarButton*)button
 {
-    // Save the selection location
 	[self.editorView saveSelection];
-    
-    // Show the dialog for inserting or editing a link
-	[self showInsertLinkDialogWithLink:self.editorView.selectedLinkURL title:self.selectedLinkTitle];
-	[WPAnalytics track:WPAnalyticsStatEditorTappedLink];
+	
+	if ([self.editorView isSelectionALink]) {
+		[self removeLink];
+	} else {
+		[self showInsertLinkDialogWithLink:self.editorView.selectedLinkURL];
+		[WPAnalytics track:WPAnalyticsStatEditorTappedLink];
+	}
 }
 
-- (void)showInsertLinkDialogWithLink:(NSString *)url title:(NSString *)title
+- (void)showInsertLinkDialogWithLink:(NSString*)url
 {
-	[self.editorView endEditing];
-	
     // Insert Button Title
 	NSString *insertButtonTitle = url ? NSLocalizedString(@"Update", nil) : NSLocalizedString(@"Insert", nil);
     
@@ -1513,28 +1509,26 @@ typedef enum
     
     __weak __typeof(self) weakSelf = self;
 
-    self.alertView.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
-        if (alertView.tag == WPLinkAlertViewTag) {
-            if (buttonIndex == 1) {
-                UITextField *linkURL = [alertView textFieldAtIndex:0];
-                if (!url) {
-                    [weakSelf insertLink:linkURL.text title:@""];
-                } else {
-                    [weakSelf updateLink:linkURL.text title:@""];
-                }
-            }
-        }
-        
-        // Don't dismiss the keyboard
-        // Hack from http://stackoverflow.com/a/7601631
-		/*
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if([weakSelf.editorView resignFirstResponder] || [weakSelf.titleTextField resignFirstResponder]){
-                [weakSelf.editorView becomeFirstResponder];
-            }
-        });*/
+	self.alertView.willPresentBlock = ^(UIAlertView* alertView) {
+		
+		[weakSelf.editorView endEditing];
+	};
+	
+	self.alertView.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
+		[weakSelf.editorView focus];
+		
+		if (alertView.tag == WPLinkAlertViewTag) {
+			if (buttonIndex == 1) {
+				UITextField *linkURL = [alertView textFieldAtIndex:0];
+				if (!url) {
+					[weakSelf insertLink:linkURL.text];
+				} else {
+					[weakSelf updateLink:linkURL.text];
+				}
+			}
+		}
     };
-
+	
     self.alertView.shouldEnableFirstOtherButtonBlock = ^BOOL(UIAlertView *alertView) {
 		if (alertView.tag == WPLinkAlertViewTag) {
             UITextField *textField = [alertView textFieldAtIndex:0];
@@ -1548,14 +1542,14 @@ typedef enum
     [self.alertView show];
 }
 
-- (void)insertLink:(NSString *)url title:(NSString *)title
+- (void)insertLink:(NSString *)url
 {
-    [self.editorView insertLink:url title:title];
+    [self.editorView insertLink:url];
 }
 
-- (void)updateLink:(NSString *)url title:(NSString *)title
+- (void)updateLink:(NSString *)url
 {
-	[self.editorView updateLink:url title:title];
+	[self.editorView updateLink:url];
 }
 
 - (void)dismissAlertView
@@ -1639,10 +1633,10 @@ typedef enum
             if (buttonIndex == 1) {
                 UITextField *imageURL = [alertView textFieldAtIndex:0];
                 UITextField *alt = [alertView textFieldAtIndex:1];
-                if (!self.selectedImageURL) {
-                    [self insertImage:imageURL.text alt:alt.text];
+                if (!weakSelf.selectedImageURL) {
+                    [weakSelf insertImage:imageURL.text alt:alt.text];
                 } else {
-                    [self updateImage:imageURL.text alt:alt.text];
+                    [weakSelf updateImage:imageURL.text alt:alt.text];
                 }
             }
         }
@@ -1776,6 +1770,15 @@ typedef enum
         [self enableToolbarItems:NO
           shouldShowSourceButton:YES];
     }
+}
+
+- (BOOL)editorView:(WPEditorView*)editorView linkTapped:(NSURL *)url
+{
+	if (self.isEditing) {
+		[self showInsertLinkDialogWithLink:url.absoluteString];
+	}
+	
+	return YES;
 }
 
 - (void)editorView:(WPEditorView*)editorView stylesForCurrentSelection:(NSArray*)styles

@@ -453,7 +453,7 @@ CGFloat const WPLegacyEPVCTextViewTopPadding = 7.0f;
                 
                 [[weakSelf.textView.undoManager prepareWithInvocationTarget:weakSelf] restoreText:oldText withRange:oldRange];
                 [weakSelf.textView.undoManager setActionName:@"link"];
-                [weakSelf textViewDidChange:self.textView];
+                [weakSelf textViewDidChange:weakSelf.textView];
                 [weakSelf refreshTextView];
                 
             }
