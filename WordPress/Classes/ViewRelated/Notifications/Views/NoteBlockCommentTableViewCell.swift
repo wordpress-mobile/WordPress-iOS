@@ -15,7 +15,7 @@ import Foundation
 
     public override var attributedText: NSAttributedString? {
         didSet {
-            super.attributedText = applyIndentation(attributedText)
+            refreshTextAttributes()
         }
     }
     public var name: String? {
@@ -30,26 +30,26 @@ import Foundation
     }
     public var isLikeEnabled: Bool = false {
         didSet {
-            setupButtonConstraints(btnLike, enabled: isLikeEnabled)
-            updateBottomSpacingIfNeeded()
+            refreshButtonSize(btnLike, isVisible: isLikeEnabled)
+            refreshBottomSpacing()
         }
     }
     public var isApproveEnabled: Bool = false {
         didSet {
-            setupButtonConstraints(btnApprove, enabled: isApproveEnabled)
-            updateBottomSpacingIfNeeded()
+            refreshButtonSize(btnApprove, isVisible: isApproveEnabled)
+            refreshBottomSpacing()
         }
     }
     public var isTrashEnabled: Bool = false {
         didSet {
-            setupButtonConstraints(btnTrash, enabled: isTrashEnabled)
-            updateBottomSpacingIfNeeded()
+            refreshButtonSize(btnTrash, isVisible: isTrashEnabled)
+            refreshBottomSpacing()
         }
     }
     public var isMoreEnabled: Bool = false {
         didSet {
-            setupButtonConstraints(btnMore, enabled: isMoreEnabled)
-            updateBottomSpacingIfNeeded()
+            refreshButtonSize(btnMore, isVisible: isMoreEnabled)
+            refreshBottomSpacing()
         }
     }
     public var isLikeOn: Bool = false {
@@ -60,6 +60,8 @@ import Foundation
     public var isApproveOn: Bool = false {
         didSet {
             btnApprove.selected = isApproveOn
+            refreshViewColors()
+            refreshTextAttributes()
         }
     }
 
@@ -83,27 +85,29 @@ import Foundation
         super.awakeFromNib()
         
         // Setup Labels
-        nameLabel.font                  = WPStyleGuide.Notifications.blockBoldFont
-        nameLabel.textColor             = WPStyleGuide.Notifications.blockTextColor
-        timestampLabel.font             = WPStyleGuide.Notifications.blockRegularFont
-        timestampLabel.textColor        = WPStyleGuide.Notifications.blockQuotedColor
+        nameLabel.font                      = WPStyleGuide.Notifications.blockBoldFont
+        timestampLabel.font                 = WPStyleGuide.Notifications.blockRegularFont
         
-        let separatorHeightInPixels = separatorHeight / UIScreen.mainScreen().scale
+        // Background
+        approvalStatusView.backgroundColor  = WPStyleGuide.Notifications.blockUnapprovedBgColor
+        approvalSidebarView.backgroundColor = WPStyleGuide.Notifications.blockUnapprovedSideColor
+        
+        // Separator Line should be 1px: Handle Retina!
+        let separatorHeightInPixels         = separatorHeight / UIScreen.mainScreen().scale
         separatorView.updateConstraint(.Height, constant: separatorHeightInPixels)
-        separatorView.backgroundColor   = WPStyleGuide.Notifications.blockSeparatorColor
         
         // Setup Action Buttons
-        let textNormalColor             = WPStyleGuide.Notifications.blockActionDisabledColor
-        let textSelectedColor           = WPStyleGuide.Notifications.blockActionEnabledColor
+        let textNormalColor                 = WPStyleGuide.Notifications.blockActionDisabledColor
+        let textSelectedColor               = WPStyleGuide.Notifications.blockActionEnabledColor
         
-        let likeNormalTitle             = NSLocalizedString("Like", comment: "Like a comment")
-        let likeSelectedTitle           = NSLocalizedString("Liked", comment: "A comment has been liked")
+        let likeNormalTitle                 = NSLocalizedString("Like", comment: "Like a comment")
+        let likeSelectedTitle               = NSLocalizedString("Liked", comment: "A comment has been liked")
 
-        let approveNormalTitle          = NSLocalizedString("Approve", comment: "Approve a comment")
-        let approveSelectedTitle        = NSLocalizedString("Approved", comment: "Unapprove a comment")
+        let approveNormalTitle              = NSLocalizedString("Approve", comment: "Approve a comment")
+        let approveSelectedTitle            = NSLocalizedString("Approved", comment: "Unapprove a comment")
         
-        let moreTitle                   = NSLocalizedString("More",  comment: "Verb, display More actions for a comment")
-        let trashTitle                  = NSLocalizedString("Trash", comment: "Move a comment to the trash")
+        let moreTitle                       = NSLocalizedString("More",  comment: "Verb, display More actions for a comment")
+        let trashTitle                      = NSLocalizedString("Trash", comment: "Move a comment to the trash")
         
         btnLike.setTitle(likeNormalTitle,           forState: .Normal)
         btnLike.setTitle(likeSelectedTitle,         forState: .Highlighted)
@@ -138,7 +142,7 @@ import Foundation
     }
     
     @IBAction public func approveWasPressed(sender: AnyObject) {
-        let handler = isLikeOn ? onUnapproveClick : onApproveClick
+        let handler = isApproveOn ? onUnapproveClick : onApproveClick
         hitEventHandler(handler)
         isApproveOn = !isApproveOn
     }
@@ -152,34 +156,31 @@ import Foundation
     }
     
     
-    // MARK: - Private
+    // MARK: - Private Methods
     private func hitEventHandler(handler: EventHandler?) {
         if let listener = handler {
             listener()
         }
     }
     
-    private func setupButtonConstraints(button: UIButton, enabled: Bool) {
+    private func refreshButtonSize(button: UIButton, isVisible: Bool) {
         // When disabled, let's hide the button by shrinking it's width
-        let width    : CGFloat  = enabled ? buttonWidth     : CGFloat.min
-        let trailing : CGFloat  = enabled ? buttonTrailing  : CGFloat.min
+        let width    : CGFloat  = isVisible ? buttonWidth     : CGFloat.min
+        let trailing : CGFloat  = isVisible ? buttonTrailing  : CGFloat.min
         
         button.updateConstraint(.Width, constant: width)
         
         contentView.updateConstraintForView(button, attribute: .Trailing, constant: trailing)
         contentView.updateConstraintForView(button, attribute: .Leading,  constant: trailing)
         
-        button.hidden   = !enabled
-        button.enabled  = enabled
+        button.hidden   = !isVisible
+        button.enabled  = isVisible
     }
 
-    private func updateBottomSpacingIfNeeded() {
+    private func refreshBottomSpacing() {
         //  Note:
-        //  =====
-        //
         //  When all of the buttons are disabled, let's remove the bottom space.
-        //  Since all of the action buttons are linked to the more button, affecting that one will
-        //  effectively reflect on the rest
+        //  Every button is linked to btnMore: We can do this in just one shot!
         //
         let hasButtonsEnabled   = isLikeEnabled || isTrashEnabled || isApproveEnabled || isMoreEnabled
         let moreTop             = hasButtonsEnabled ? buttonTop     : CGFloat.min
@@ -190,34 +191,44 @@ import Foundation
         setNeedsLayout()
     }
     
-    private func applyIndentation(text: NSAttributedString?) -> NSAttributedString? {
-        
-        // Apply an indentation of `firstLineHeadIndent` pixels, only on the first line!
-        let indentedString = text?.mutableCopy() as? NSMutableAttributedString
-        if let unwrappedIndentedString = indentedString {
-            
-            let length      = min(1, unwrappedIndentedString.length)
-            let range       = NSRange(location: 0, length: length)
-            let paragraph   = WPStyleGuide.Notifications.blockParagraphStyleWithIndentation(firstLineHeadIndent)
-            
-            unwrappedIndentedString.addAttribute(NSParagraphStyleAttributeName, value: paragraph, range: range)
-            
-            return unwrappedIndentedString
-        }
-        
-        return nil
+    private func refreshViewColors() {
+
+        approvalStatusView.hidden       = isApproveOn
+        separatorView.backgroundColor   = WPStyleGuide.Notifications.blockSeparatorColorForComment(isApproveOn)
     }
     
-    // MARK: - Constants
+    private func refreshTextAttributes() {
+        
+        nameLabel.textColor         = WPStyleGuide.Notifications.blockTextColorForComment(isApproveOn)
+        timestampLabel.textColor    = WPStyleGuide.Notifications.blockTimestampColorForComment(isApproveOn)
+        
+        // Since we're using DTAttributedLabel, we can't just hit the textColor property!
+        let mutableString = attributedText?.mutableCopy() as? NSMutableAttributedString
+        
+        if let unwrappedMutableString = mutableString {
+            
+            let range               = NSRange(location: 0, length: min(1, unwrappedMutableString.length))
+            let fullRange           = NSRange(location: 0, length: unwrappedMutableString.length)
+            let paragraph           = WPStyleGuide.Notifications.blockParagraphStyleWithIndentation(firstLineHeadIndent)
+            let textColor           = WPStyleGuide.Notifications.blockTextColorForComment(isApproveOn)
+            
+            unwrappedMutableString.addAttribute(NSParagraphStyleAttributeName, value: paragraph, range: range)
+            unwrappedMutableString.addAttribute(NSForegroundColorAttributeName, value: textColor, range: fullRange)
+            
+            super.attributedText    = unwrappedMutableString
+        }
+    }
+    
+    // MARK: - Private Constants
     private let separatorHeight                     : CGFloat   = 1
     private let buttonWidth                         : CGFloat   = 55
     private let buttonHeight                        : CGFloat   = 30
     private let buttonTop                           : CGFloat   = 20
     private let buttonTrailing                      : CGFloat   = 20
     private let firstLineHeadIndent                 : CGFloat   = 43
-    
-    // MARK: - Private
     private let placeholderName                     : String    = "gravatar"
+    
+    // MARK: - Private Properties
     private var gravatarURL                         : NSURL?
     
     // MARK: - IBOutlets
