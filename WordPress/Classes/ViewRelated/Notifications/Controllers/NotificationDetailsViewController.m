@@ -408,7 +408,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     
     cell.name                       = userBlock.text;
     cell.timestamp                  = [self.note.timestampAsDate shortString];
-    cell.attributedText             = commentBlock.regularFormattedText;
+    cell.attributedText             = commentBlock.regularAttributedTextOverride ?: commentBlock.regularAttributedText;
 
     cell.onUrlClick                 = ^(NSURL *url){
         [weakSelf openURL:url];
@@ -458,7 +458,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     
     __weak __typeof(self) weakSelf  = self;
     
-    cell.attributedText             = textBlock.regularFormattedText;
+    cell.attributedText             = textBlock.regularAttributedText;
     cell.onUrlClick                 = ^(NSURL *url){
         [weakSelf openURL:url];
     };

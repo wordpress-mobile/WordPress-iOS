@@ -448,8 +448,8 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
     NotificationBlock *subjectBlock         = blockGroup.blocks.firstObject;
     NotificationBlock *snippetBlock         = (blockGroup.blocks.count > 1) ? blockGroup.blocks.lastObject : nil;
     
-    cell.attributedSubject                  = subjectBlock.subjectFormattedText;
-    cell.attributedSnippet                  = snippetBlock.snippetFormattedText;
+    cell.attributedSubject                  = subjectBlock.subjectAttributedText;
+    cell.attributedSnippet                  = snippetBlock.snippetAttributedText;
     cell.read                               = note.read.boolValue;
     cell.noticon                            = note.noticon;
     
