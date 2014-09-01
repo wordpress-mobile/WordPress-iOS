@@ -238,6 +238,14 @@
     return [UIColor colorWithRed:0.7 green:0.0 blue:0.0 alpha:1.0];
 }
 
++ (UIColor *)nuxFormText {
+    return [UIColor colorWithRed:50.0f/255.0f green:65.0f/255.0f blue:85.0f/255.0f alpha:1.0f];
+}
+
++ (UIColor *)nuxFormPlaceholderText {
+    return [UIColor colorWithRed:144.0f/255.0f green:174.0f/255.0f blue:194.0f/255.0f alpha:1.0f];
+}
+
 + (UIColor *)tableViewActionColor
 {
     return [WPStyleGuide baseLighterBlue];
@@ -246,14 +254,6 @@
 + (UIColor *)buttonActionColor
 {
     return [WPStyleGuide baseLighterBlue];
-}
-
-+ (UIColor *)statsLighterBlue {
-    return [UIColor colorWithRed:144.0f/255.0f green:174.0f/255.0f blue:194.0f/255.0f alpha:1.0f];
-}
-
-+ (UIColor *)statsDarkerBlue {
-    return [UIColor colorWithRed:50.0f/255.0f green:65.0f/255.0f blue:85.0f/255.0f alpha:1.0f];
 }
 
 + (UIColor *)keyboardColor {
