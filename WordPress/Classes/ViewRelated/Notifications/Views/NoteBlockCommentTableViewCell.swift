@@ -83,23 +83,27 @@ import Foundation
         super.awakeFromNib()
         
         // Setup Labels
-        nameLabel.font              = WPStyleGuide.Notifications.blockBoldFont
-        nameLabel.textColor         = WPStyleGuide.Notifications.blockTextColor
-        timestampLabel.font         = WPStyleGuide.Notifications.blockRegularFont
-        timestampLabel.textColor    = WPStyleGuide.Notifications.blockQuotedColor
+        nameLabel.font                  = WPStyleGuide.Notifications.blockBoldFont
+        nameLabel.textColor             = WPStyleGuide.Notifications.blockTextColor
+        timestampLabel.font             = WPStyleGuide.Notifications.blockRegularFont
+        timestampLabel.textColor        = WPStyleGuide.Notifications.blockQuotedColor
+        
+        let separatorHeightInPixels = separatorHeight / UIScreen.mainScreen().scale
+        separatorView.updateConstraint(.Height, constant: separatorHeightInPixels)
+        separatorView.backgroundColor   = WPStyleGuide.Notifications.blockSeparatorColor
         
         // Setup Action Buttons
-        let textNormalColor         = WPStyleGuide.Notifications.blockActionDisabledColor
-        let textSelectedColor       = WPStyleGuide.Notifications.blockActionEnabledColor
+        let textNormalColor             = WPStyleGuide.Notifications.blockActionDisabledColor
+        let textSelectedColor           = WPStyleGuide.Notifications.blockActionEnabledColor
         
-        let likeNormalTitle         = NSLocalizedString("Like", comment: "Like a comment")
-        let likeSelectedTitle       = NSLocalizedString("Liked", comment: "A comment has been liked")
+        let likeNormalTitle             = NSLocalizedString("Like", comment: "Like a comment")
+        let likeSelectedTitle           = NSLocalizedString("Liked", comment: "A comment has been liked")
 
-        let approveNormalTitle      = NSLocalizedString("Approve", comment: "Approve a comment")
-        let approveSelectedTitle    = NSLocalizedString("Approved", comment: "Unapprove a comment")
+        let approveNormalTitle          = NSLocalizedString("Approve", comment: "Approve a comment")
+        let approveSelectedTitle        = NSLocalizedString("Approved", comment: "Unapprove a comment")
         
-        let moreTitle               = NSLocalizedString("More",  comment: "Verb, display More actions for a comment")
-        let trashTitle              = NSLocalizedString("Trash", comment: "Move a comment to the trash")
+        let moreTitle                   = NSLocalizedString("More",  comment: "Verb, display More actions for a comment")
+        let trashTitle                  = NSLocalizedString("Trash", comment: "Move a comment to the trash")
         
         btnLike.setTitle(likeNormalTitle,           forState: .Normal)
         btnLike.setTitle(likeSelectedTitle,         forState: .Highlighted)
@@ -205,6 +209,7 @@ import Foundation
     }
     
     // MARK: - Constants
+    private let separatorHeight                     : CGFloat   = 1
     private let buttonWidth                         : CGFloat   = 55
     private let buttonHeight                        : CGFloat   = 30
     private let buttonTop                           : CGFloat   = 20
@@ -219,6 +224,7 @@ import Foundation
     @IBOutlet private weak var gravatarImageView    : UIImageView!
     @IBOutlet private weak var nameLabel            : UILabel!
     @IBOutlet private weak var timestampLabel       : UILabel!
+    @IBOutlet private weak var separatorView        : UIView!
     @IBOutlet private weak var btnLike              : UIButton!
     @IBOutlet private weak var btnApprove           : UIButton!
     @IBOutlet private weak var btnTrash             : UIButton!
