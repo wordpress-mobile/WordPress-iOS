@@ -221,6 +221,8 @@ import Foundation
     private var gravatarURL                         : NSURL?
     
     // MARK: - IBOutlets
+    @IBOutlet private weak var approvalStatusView   : UIView!
+    @IBOutlet private weak var approvalSidebarView  : UIView!
     @IBOutlet private weak var gravatarImageView    : UIImageView!
     @IBOutlet private weak var nameLabel            : UILabel!
     @IBOutlet private weak var timestampLabel       : UILabel!

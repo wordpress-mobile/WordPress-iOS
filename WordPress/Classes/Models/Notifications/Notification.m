@@ -522,6 +522,24 @@ NSString const *NotePostIdKey           = @"post_id";
     return [self.type isEqual:NoteTypePost];
 }
 
+- (BOOL)isBadge
+{
+    //  Note:
+    //  This developer does not like duck typing. Sorry about the following snippet.
+    //
+    for (NotificationBlockGroup *group in self.bodyBlockGroups) {
+        for (NotificationBlock *block in group.blocks) {
+            for (NotificationMedia *media in block.media) {
+                if (media.isBadge) {
+                    return true;
+                }
+            }
+        }
+    }
+    
+    return false;
+}
+
 
 #pragma mark - Comment Helpers
 

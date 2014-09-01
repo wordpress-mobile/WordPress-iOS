@@ -3,6 +3,17 @@ import Foundation
 
 @objc public class NoteBlockImageTableViewCell : NoteBlockTableViewCell
 {
+    // MARK: - Public Properties
+    public var isBadge: Bool = false {
+        didSet {
+            if isBadge {
+                backgroundColor = WPStyleGuide.Notifications.badgeBackgroundColor
+            } else {
+                backgroundColor = WPStyleGuide.Notifications.blockBackgroundColor
+            }
+        }
+    }
+    
     // MARK: - Public Methods
     public func downloadImageWithURL(url: NSURL?) {
         if url == imageURL {
@@ -22,7 +33,6 @@ import Foundation
     public override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle  = .None
-        backgroundColor = WPStyleGuide.Notifications.blockBackgroundColor
     }
     
     // MARK: - Private Methods

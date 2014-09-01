@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6206.8" systemVersion="14A329f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MbC-cA-c9S">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7026.1"/>
     </dependencies>
     <scenes>
@@ -153,15 +152,22 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="84"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N7y-ge-mMq" customClass="DTAttributedLabel">
-                                                    <rect key="frame" x="12" y="21" width="296" height="28"/>
-                                                    <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
-                                                </view>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WpC-gY-myP" userLabel="Separator View">
-                                                    <rect key="frame" x="12" y="57" width="296" height="1"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g23-xL-FVr" userLabel="Status Background">
+                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="57"/>
+                                                    <subviews>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eXO-Zm-IMb" userLabel="Sidebar">
+                                                            <rect key="frame" x="0.0" y="0.0" width="3" height="57"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="3" id="7HL-GO-DSv"/>
+                                                            </constraints>
+                                                        </view>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="1" id="BUp-fs-LKw"/>
+                                                        <constraint firstAttribute="bottom" secondItem="eXO-Zm-IMb" secondAttribute="bottom" id="5sP-ti-Eqn"/>
+                                                        <constraint firstItem="eXO-Zm-IMb" firstAttribute="leading" secondItem="g23-xL-FVr" secondAttribute="leading" id="EVa-oG-1UL"/>
+                                                        <constraint firstItem="eXO-Zm-IMb" firstAttribute="top" secondItem="g23-xL-FVr" secondAttribute="top" id="Q4W-W3-gKr"/>
                                                     </constraints>
                                                 </view>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dAK-Dd-Cvw">
@@ -180,6 +186,23 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Timestamp" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sed-4I-XCW">
+                                                    <rect key="frame" x="242" y="9" width="64" height="14.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N7y-ge-mMq" customClass="DTAttributedLabel">
+                                                    <rect key="frame" x="12" y="21" width="296" height="28"/>
+                                                    <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
+                                                </view>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WpC-gY-myP" userLabel="Separator View">
+                                                    <rect key="frame" x="12" y="57" width="296" height="1"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="BUp-fs-LKw"/>
+                                                    </constraints>
+                                                </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ab9-Eo-ue1" customClass="VerticallyStackedButton">
                                                     <rect key="frame" x="245" y="69" width="55" height="30"/>
                                                     <constraints>
@@ -241,15 +264,10 @@
                                                         <action selector="likeWasPressed:" destination="FtC-SI-oJr" eventType="touchUpInside" id="c0t-Kd-Ydq"/>
                                                     </connections>
                                                 </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Timestamp" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sed-4I-XCW">
-                                                    <rect key="frame" x="242" y="9" width="64" height="14.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="WpC-gY-myP" firstAttribute="leading" secondItem="N7y-ge-mMq" secondAttribute="leading" id="1Ls-AD-Oax"/>
+                                                <constraint firstAttribute="trailing" secondItem="g23-xL-FVr" secondAttribute="trailing" id="2s9-XW-r28"/>
                                                 <constraint firstAttribute="trailing" secondItem="Sed-4I-XCW" secondAttribute="trailing" constant="14" id="314-v9-19r"/>
                                                 <constraint firstItem="dAK-Dd-Cvw" firstAttribute="top" secondItem="7qg-ok-Rbo" secondAttribute="top" constant="12" id="5nR-rf-CxY"/>
                                                 <constraint firstItem="q3a-Aa-VqY" firstAttribute="leading" secondItem="dZU-ho-dbu" secondAttribute="trailing" constant="20" id="5uM-TI-L7f"/>
@@ -258,6 +276,7 @@
                                                 <constraint firstItem="dAK-Dd-Cvw" firstAttribute="top" secondItem="uYt-ov-kC3" secondAttribute="top" constant="3" id="Fyu-hc-Dfp"/>
                                                 <constraint firstItem="Sed-4I-XCW" firstAttribute="top" secondItem="uYt-ov-kC3" secondAttribute="top" id="GDk-kb-TU3"/>
                                                 <constraint firstItem="N7y-ge-mMq" firstAttribute="leading" secondItem="7qg-ok-Rbo" secondAttribute="leading" constant="12" id="J6e-4J-hog"/>
+                                                <constraint firstItem="g23-xL-FVr" firstAttribute="leading" secondItem="7qg-ok-Rbo" secondAttribute="leading" id="JGW-wU-9Nd"/>
                                                 <constraint firstAttribute="trailing" secondItem="Ab9-Eo-ue1" secondAttribute="trailing" constant="20" id="KDn-Ow-HF5"/>
                                                 <constraint firstItem="q3a-Aa-VqY" firstAttribute="bottom" secondItem="Ab9-Eo-ue1" secondAttribute="bottom" id="Luo-X2-lxA"/>
                                                 <constraint firstItem="Ab9-Eo-ue1" firstAttribute="bottom" secondItem="e1p-ec-Dn3" secondAttribute="bottom" id="T4i-k6-wFD"/>
@@ -265,6 +284,8 @@
                                                 <constraint firstItem="dZU-ho-dbu" firstAttribute="height" secondItem="Ab9-Eo-ue1" secondAttribute="height" id="XtU-md-pNL"/>
                                                 <constraint firstItem="N7y-ge-mMq" firstAttribute="top" secondItem="Sed-4I-XCW" secondAttribute="bottom" constant="-2" id="YbY-OI-O0N"/>
                                                 <constraint firstItem="q3a-Aa-VqY" firstAttribute="height" secondItem="Ab9-Eo-ue1" secondAttribute="height" id="cI9-cM-OYE"/>
+                                                <constraint firstItem="WpC-gY-myP" firstAttribute="top" secondItem="g23-xL-FVr" secondAttribute="bottom" id="cha-cK-B2r"/>
+                                                <constraint firstItem="g23-xL-FVr" firstAttribute="top" secondItem="7qg-ok-Rbo" secondAttribute="top" id="g5b-GJ-nr2"/>
                                                 <constraint firstItem="Ab9-Eo-ue1" firstAttribute="height" secondItem="e1p-ec-Dn3" secondAttribute="height" id="kBl-AS-UbE"/>
                                                 <constraint firstItem="uYt-ov-kC3" firstAttribute="leading" secondItem="dAK-Dd-Cvw" secondAttribute="trailing" constant="10" id="n5G-wD-KRZ"/>
                                                 <constraint firstItem="Ab9-Eo-ue1" firstAttribute="top" secondItem="N7y-ge-mMq" secondAttribute="bottom" constant="20" id="pOK-8H-PLa"/>
@@ -277,6 +298,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="approvalSidebarView" destination="eXO-Zm-IMb" id="dIO-vO-5SQ"/>
                                             <outlet property="attributedLabel" destination="N7y-ge-mMq" id="Cou-VH-JAO"/>
                                             <outlet property="btnApprove" destination="dZU-ho-dbu" id="wQI-LZ-w9g"/>
                                             <outlet property="btnLike" destination="e1p-ec-Dn3" id="HMC-LX-m8X"/>
