@@ -181,22 +181,22 @@ import Foundation
         textView.scrollsToTop           = false
         textView.contentInset           = UIEdgeInsetsZero
         textView.textContainerInset     = UIEdgeInsetsZero
-        textView.font                   = WPStyleGuide.Comments.Fonts.replyText
-        textView.textColor              = WPStyleGuide.Comments.Colors.replyText
+        textView.font                   = WPStyleGuide.Reply.textFont
+        textView.textColor              = WPStyleGuide.Reply.textColor
         textView.textContainer.lineFragmentPadding  = 0
         
         // Placeholder
-        placeholderLabel.font           = WPStyleGuide.Comments.Fonts.replyText
-        placeholderLabel.textColor      = WPStyleGuide.Comments.Colors.replySeparator
+        placeholderLabel.font           = WPStyleGuide.Reply.textFont
+        placeholderLabel.textColor      = WPStyleGuide.Reply.placeholderColor
         
         // Reply
         replyButton.enabled             = false
-        replyButton.titleLabel.font     = WPStyleGuide.Comments.Fonts.replyButton
-        replyButton.setTitleColor(WPStyleGuide.Comments.Colors.replyDisabled, forState: .Disabled)
-        replyButton.setTitleColor(WPStyleGuide.Comments.Colors.replyEnabled,  forState: .Normal)
+        replyButton.titleLabel.font     = WPStyleGuide.Reply.buttonFont
+        replyButton.setTitleColor(WPStyleGuide.Reply.disabledColor, forState: .Disabled)
+        replyButton.setTitleColor(WPStyleGuide.Reply.enabledColor,  forState: .Normal)
         
         // Background
-        layoutView.backgroundColor      = WPStyleGuide.Comments.Colors.replyBackground
+        layoutView.backgroundColor      = WPStyleGuide.Reply.backgroundColor
         
         // We want this view to stick at the bottom
         contentMode                     = .BottomLeft

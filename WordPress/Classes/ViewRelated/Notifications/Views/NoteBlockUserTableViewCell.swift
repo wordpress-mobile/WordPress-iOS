@@ -51,16 +51,16 @@ import Foundation
         super.awakeFromNib()
 
         WPStyleGuide.configureFollowButton(btnFollow)
-        btnFollow.titleLabel.font           = WPStyleGuide.Notifications.Fonts.blockRegular
+        btnFollow.titleLabel.font           = WPStyleGuide.Notifications.blockRegularFont
 
-        backgroundColor                     = WPStyleGuide.Notifications.Colors.blockBackground
+        backgroundColor                     = WPStyleGuide.Notifications.blockBackgroundColor
         accessoryType                       = .None
         
-        nameLabel.font                      = WPStyleGuide.Notifications.Fonts.blockBold
-        nameLabel.textColor                 = WPStyleGuide.Notifications.Colors.blockHeader
+        nameLabel.font                      = WPStyleGuide.Notifications.blockBoldFont
+        nameLabel.textColor                 = WPStyleGuide.Notifications.blockTextColor
         
-        blogLabel.font                      = WPStyleGuide.Notifications.Fonts.blockRegular
-        blogLabel.textColor                 = WPStyleGuide.Notifications.Colors.blockSubtitle
+        blogLabel.font                      = WPStyleGuide.Notifications.blockRegularFont
+        blogLabel.textColor                 = WPStyleGuide.Notifications.blockSubtitleColor
         blogLabel.adjustsFontSizeToFitWidth = false;
     }
     

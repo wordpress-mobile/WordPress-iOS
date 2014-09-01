@@ -21,7 +21,7 @@ import Foundation
                 
                 let length      = min(1, unwrappedIndentedString.length)
                 let range       = NSRange(location: 0, length: length)
-                let paragraph   = WPStyleGuide.Notifications.Styles.blockParagraphStyle(firstLineHeadIndent)
+                let paragraph   = WPStyleGuide.Notifications.blockParagraphStyleWithIndentation(firstLineHeadIndent)
                 
                 unwrappedIndentedString.addAttribute(NSParagraphStyleAttributeName, value: paragraph, range: range)
             }
@@ -94,14 +94,14 @@ import Foundation
         super.awakeFromNib()
         
         // Setup Labels
-        nameLabel.font              = WPStyleGuide.Notifications.Fonts.blockBold
-        nameLabel.textColor         = WPStyleGuide.Notifications.Colors.blockText
-        timestampLabel.font         = WPStyleGuide.Notifications.Fonts.blockRegular
-        timestampLabel.textColor    = WPStyleGuide.Notifications.Colors.quotedText
+        nameLabel.font              = WPStyleGuide.Notifications.blockBoldFont
+        nameLabel.textColor         = WPStyleGuide.Notifications.blockTextColor
+        timestampLabel.font         = WPStyleGuide.Notifications.blockRegularFont
+        timestampLabel.textColor    = WPStyleGuide.Notifications.blockQuotedColor
         
         // Setup Action Buttons
-        let textNormalColor         = WPStyleGuide.Notifications.Colors.actionOffText
-        let textSelectedColor       = WPStyleGuide.Notifications.Colors.actionOnText
+        let textNormalColor         = WPStyleGuide.Notifications.blockActionDisabledColor
+        let textSelectedColor       = WPStyleGuide.Notifications.blockActionEnabledColor
         
         let likeNormalTitle         = NSLocalizedString("Like", comment: "Like a comment")
         let likeSelectedTitle       = NSLocalizedString("Liked", comment: "A comment has been liked")

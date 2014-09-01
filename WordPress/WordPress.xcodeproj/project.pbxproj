@@ -256,7 +256,7 @@
 		B5B56D2919AFB4BA00B4E29B /* UITableView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B56D1E19AFB4BA00B4E29B /* UITableView+Helpers.swift */; };
 		B5B56D2A19AFB4BA00B4E29B /* UITableViewCell+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B56D1F19AFB4BA00B4E29B /* UITableViewCell+Helpers.swift */; };
 		B5B56D2B19AFB4BA00B4E29B /* UIView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B56D2019AFB4BA00B4E29B /* UIView+Helpers.swift */; };
-		B5B56D3219AFB68800B4E29B /* WPStyleGuide+Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B56D3019AFB68800B4E29B /* WPStyleGuide+Comments.swift */; };
+		B5B56D3219AFB68800B4E29B /* WPStyleGuide+Reply.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B56D3019AFB68800B4E29B /* WPStyleGuide+Reply.swift */; };
 		B5B56D3319AFB68800B4E29B /* WPStyleGuide+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B56D3119AFB68800B4E29B /* WPStyleGuide+Notifications.swift */; };
 		B5CC05F61962150600975CAC /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F51962150600975CAC /* Constants.m */; };
 		B5CC05F91962186D00975CAC /* Meta.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F81962186D00975CAC /* Meta.m */; };
@@ -838,7 +838,7 @@
 		B5B56D1E19AFB4BA00B4E29B /* UITableView+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Helpers.swift"; sourceTree = "<group>"; };
 		B5B56D1F19AFB4BA00B4E29B /* UITableViewCell+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+Helpers.swift"; sourceTree = "<group>"; };
 		B5B56D2019AFB4BA00B4E29B /* UIView+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Helpers.swift"; sourceTree = "<group>"; };
-		B5B56D3019AFB68800B4E29B /* WPStyleGuide+Comments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Comments.swift"; sourceTree = "<group>"; };
+		B5B56D3019AFB68800B4E29B /* WPStyleGuide+Reply.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Reply.swift"; sourceTree = "<group>"; };
 		B5B56D3119AFB68800B4E29B /* WPStyleGuide+Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Notifications.swift"; sourceTree = "<group>"; };
 		B5B63F3F19621A9F001601C3 /* WordPress 19.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 19.xcdatamodel"; sourceTree = "<group>"; };
 		B5CC05F51962150600975CAC /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
@@ -1940,7 +1940,7 @@
 		B5B56D2F19AFB68800B4E29B /* Style */ = {
 			isa = PBXGroup;
 			children = (
-				B5B56D3019AFB68800B4E29B /* WPStyleGuide+Comments.swift */,
+				B5B56D3019AFB68800B4E29B /* WPStyleGuide+Reply.swift */,
 				B5B56D3119AFB68800B4E29B /* WPStyleGuide+Notifications.swift */,
 			);
 			path = Style;
@@ -2571,7 +2571,7 @@
 				5DB3BA0818D11D8D00F3F3E9 /* PublishDatePickerView.m in Sources */,
 				2F970F740DF92274006BD934 /* PostsViewController.m in Sources */,
 				46E4792C185BD2B8007AA76F /* CommentView.m in Sources */,
-				B5B56D3219AFB68800B4E29B /* WPStyleGuide+Comments.swift in Sources */,
+				B5B56D3219AFB68800B4E29B /* WPStyleGuide+Reply.swift in Sources */,
 				30EABE0918A5903400B73A9C /* WPBlogTableViewCell.m in Sources */,
 				E2AA87A518523E5300886693 /* UIView+Subviews.m in Sources */,
 				93C486511810445D00A24725 /* ActivityLogViewController.m in Sources */,
