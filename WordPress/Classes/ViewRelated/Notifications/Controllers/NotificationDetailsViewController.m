@@ -5,6 +5,7 @@
 
 #import "Blog.h"
 #import "Notification.h"
+#import "WPToast.h"
 
 #import "ContextManager.h"
 
@@ -34,6 +35,8 @@
 
 static UIEdgeInsets NotificationTableInsetsPhone    = {0.0f,  0.0f, 20.0f, 0.0f};
 static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f};
+
+static NSString *NotificationReplyToastImage        = @"action_icon_replied";
 
 typedef NS_ENUM(NSInteger, NotificationSection) {
     NotificationSectionHeader,
@@ -745,7 +748,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 - (void)replyCommentWithContent:(NSString *)content block:(NotificationBlock *)block
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    CommentService *service = [[CommentService alloc] initWithManagedObjectContext:context];
+    CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
     
     [service replyCommentWithID:block.metaCommentID
                          siteID:block.metaSiteID
@@ -755,6 +758,11 @@ static CGFloat NotificationSectionSeparator     = 10;
     
     self.replyTextView.text = [NSString string];
     [self.replyTextView resignFirstResponder];
+    
+    NSString *message   = NSLocalizedString(@"Sending!", @"The app is uploading a comment");
+    UIImage *image      = [UIImage imageNamed:NotificationReplyToastImage];
+    
+    [WPToast showToastWithMessage:message andImage:image];
 }
 
 
