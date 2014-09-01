@@ -66,16 +66,6 @@ typedef NS_ENUM(NSInteger, ZSSRichTextEditorToolbar) {
 @property (nonatomic, strong) UIColor *toolbarItemSelectedTintColor;
 
 /**
- *  Manually focuses on the text editor
- */
-- (void)focusTextEditor;
-
-/**
- *  Manually focuses on the text editor
- */
-- (void)blurTextEditor;
-
-/**
  *  Shows the insert image dialog with optinal inputs
  *
  *  @param url The URL for the image
@@ -95,9 +85,8 @@ typedef NS_ENUM(NSInteger, ZSSRichTextEditorToolbar) {
  *  Shows the insert link dialog with optional inputs
  *
  *  @param url   The URL for the link
- *  @param title The tile for the link
  */
-- (void)showInsertLinkDialogWithLink:(NSString *)url title:(NSString *)title;
+- (void)showInsertLinkDialogWithLink:(NSString *)url;
 
 /**
  *  Inserts a link
@@ -105,7 +94,7 @@ typedef NS_ENUM(NSInteger, ZSSRichTextEditorToolbar) {
  *  @param url The URL for the link
  *  @param title The title for the link
  */
-- (void)insertLink:(NSString *)url title:(NSString *)title;
+- (void)insertLink:(NSString *)url;
 
 /**
  *  Dismisses the current AlertView
