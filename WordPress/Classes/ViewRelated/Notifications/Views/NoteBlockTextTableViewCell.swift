@@ -37,7 +37,7 @@ import Foundation
     
     public override func layoutSubviews() {
         super.layoutSubviews()
-        
+
         // Manually update DTAttributedLabel's size
         attributedLabel.layoutFrameHeightIsConstrainedByBounds = false
         

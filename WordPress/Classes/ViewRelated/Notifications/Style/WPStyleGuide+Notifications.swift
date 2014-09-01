@@ -60,6 +60,10 @@ extension WPStyleGuide
         public static let blockSubtitleColor        = WPStyleGuide.baseDarkerBlue()
         public static let blockSeparatorColor       = UIColor(red: 0xC8/255.0, green: 0xD6/255.0, blue: 0xE0/255.0, alpha: 0xFF/255.0)
 
+        public static let blockUnapprovedSideColor  = UIColor(red: 0xFD/255.0, green: 0xAD/255.0, blue: 0x0A/255.0, alpha: 0xFF/255.0)
+        public static let blockUnapprovedBgColor    = UIColor(red: 0xFD/255.0, green: 0xAD/255.0, blue: 0x0A/255.0, alpha: 0x19/255.0)
+        public static let blockUnapprovedTextColor  = UIColor(red: 0xEA/255.0, green: 0x6E/255.0, blue: 0x18/255.0, alpha: 0xFF/255.0)
+
         public static let blockRegularStyle         = [ NSParagraphStyleAttributeName:  blockParagraph,
                                                         NSFontAttributeName:            blockRegularFont,
                                                         NSForegroundColorAttributeName: blockTextColor]
@@ -90,6 +94,17 @@ extension WPStyleGuide
             return paragraph
         }
 
+        public static func blockTextColorForComment(approved: Bool) -> UIColor {
+            return approved ? blockTextColor : blockUnapprovedTextColor
+        }
+
+        public static func blockSeparatorColorForComment(approved: Bool) -> UIColor {
+            return approved ? blockSeparatorColor : blockUnapprovedSideColor
+        }
+
+        public static func blockTimestampColorForComment(approved: Bool) -> UIColor {
+            return approved ? blockQuotedColor : blockUnapprovedTextColor
+        }
 
         //  Private
         private static let subjectFontSize          = CGFloat(14)
