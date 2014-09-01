@@ -325,7 +325,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     // Header-Level: Push the resource associated with the note
     } else if (group.type == NoteBlockGroupTypesHeader) {
 
-        [self openNotificationResource:self.note];
+        [self displayReaderWithPostId:self.note.metaPostID siteID:self.note.metaSiteID];
     }
 }
 
@@ -496,15 +496,6 @@ static CGFloat NotificationSectionSeparator     = 10;
     }
 }
 
-- (void)openNotificationResource:(Notification *)note
-{
-    if (note.isComment || note.isPost) {
-        [self displayReaderWithPostId:note.metaPostID siteID:note.metaSiteID];
-    } else {
-        [self displayStatsWithSiteID:note.metaSiteID];
-    }
-}
-
 - (BOOL)displayReaderWithPostId:(NSNumber *)postID siteID:(NSNumber *)siteID
 {
     BOOL success = postID && siteID;
@@ -527,7 +518,10 @@ static CGFloat NotificationSectionSeparator     = 10;
     BOOL success                    = blog.isWPcom;
     
     if (success) {
-        [self performSegueWithIdentifier:NSStringFromClass([StatsViewController class]) sender:blog];
+        // TODO: Update StatsViewController to work with initWithCoder!
+        StatsViewController *vc     = [[StatsViewController alloc] init];
+        vc.blog = blog;
+        [self.navigationController pushViewController:vc animated:YES];
     }
     return success;
 }
