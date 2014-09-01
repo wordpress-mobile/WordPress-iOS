@@ -58,6 +58,7 @@ extension WPStyleGuide
         public static let blockBackgroundColor      = UIColor.whiteColor()
         public static let blockLinkColor            = WPStyleGuide.baseLighterBlue()
         public static let blockSubtitleColor        = WPStyleGuide.baseDarkerBlue()
+        public static let blockSeparatorColor       = UIColor(red: 0xC8/255.0, green: 0xD6/255.0, blue: 0xE0/255.0, alpha: 0xFF/255.0)
 
         public static let blockRegularStyle         = [ NSParagraphStyleAttributeName:  blockParagraph,
                                                         NSFontAttributeName:            blockRegularFont,
