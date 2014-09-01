@@ -183,10 +183,13 @@ static CGFloat NotificationSectionSeparator     = 10;
         return;
     }
     
+    __typeof(self) __weak weakSelf  = self;
+    
     ReplyTextView *replyTextView    = [[ReplyTextView alloc] initWithWidth:CGRectGetWidth(self.view.frame)];
     replyTextView.placeholder       = NSLocalizedString(@"Write a reply…", @"Placeholder text for inline compose view");
     replyTextView.replyText         = [NSLocalizedString(@"Reply", @"") uppercaseString];
     replyTextView.onReply           = ^(NSString *content) {
+        [weakSelf replyCommentWithContent:content block:block];
     };
     self.replyTextView              = replyTextView;
     
@@ -195,22 +198,11 @@ static CGFloat NotificationSectionSeparator     = 10;
     
     // Adjust position + use an internal ReplaceTextView instance as inputAccessoryView
     [replyTextView alignAtBottomOfSuperview];
-    [replyTextView setupProxyAccessoryView];
     
     // Setup the Table Insets
     UIEdgeInsets tableViewInsets    = self.tableView.contentInset;
     tableViewInsets.bottom          += CGRectGetHeight(replyTextView.frame);
     self.tableView.contentInset     = tableViewInsets;
-    
-    
-#warning UNHACK
-//  Status: Approved
-//  Approve Parent
-    
-    //    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    //    CommentService *service = [[CommentService alloc] initWithManagedObjectContext:context];
-    //
-    //    [service replyCommentWithID:block.metaCommentID siteID:block.metaSiteID content:@"Reply?" success:nil failure:nil];
 }
 
 
@@ -750,6 +742,21 @@ static CGFloat NotificationSectionSeparator     = 10;
     [self performSegueWithIdentifier:NSStringFromClass([EditCommentViewController class]) sender:block];
 }
 
+- (void)replyCommentWithContent:(NSString *)content block:(NotificationBlock *)block
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *service = [[CommentService alloc] initWithManagedObjectContext:context];
+    
+    [service replyCommentWithID:block.metaCommentID
+                         siteID:block.metaSiteID
+                        content:content
+                        success:nil
+                        failure:nil];
+    
+    self.replyTextView.text = [NSString string];
+    [self.replyTextView resignFirstResponder];
+}
+
 
 #pragma mark - EditCommentViewControllerDelegate
 
@@ -851,14 +858,14 @@ static CGFloat NotificationSectionSeparator     = 10;
     UIEdgeInsets newContentInsets           = self.tableView.contentInset;
     newContentInsets.bottom                 += bottomInset;
     
-    self.replyTextView.proxyAccessoryAlpha  = 0;
+    self.replyTextView.inputAccessoryView.alpha = 0;
     
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
     [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
 
     self.tableView.contentInset             = newContentInsets;
-    self.replyTextView.proxyAccessoryAlpha  = 1;
+    self.replyTextView.inputAccessoryView.alpha  = 1;
 
     [UIView commitAnimations];
     
