@@ -38,11 +38,11 @@ import Foundation
         accessoryType                   = .DisclosureIndicator
         contentView.autoresizingMask    = .FlexibleHeight | .FlexibleWidth
         
-        backgroundColor                 = WPStyleGuide.Notifications.Colors.blockBackground
-        nameLabel.font                  = WPStyleGuide.Notifications.Fonts.blockRegular
-        nameLabel.textColor             = WPStyleGuide.Notifications.Colors.blockText
-        snippetLabel.font               = WPStyleGuide.Notifications.Fonts.blockItalics
-        snippetLabel.textColor          = WPStyleGuide.Notifications.Colors.quotedText
+        backgroundColor                 = WPStyleGuide.Notifications.blockBackgroundColor
+        nameLabel.font                  = WPStyleGuide.Notifications.blockRegularFont
+        nameLabel.textColor             = WPStyleGuide.Notifications.blockTextColor
+        snippetLabel.font               = WPStyleGuide.Notifications.blockItalicsFont
+        snippetLabel.textColor          = WPStyleGuide.Notifications.blockQuotedColor
     }
     
 
