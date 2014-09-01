@@ -238,9 +238,13 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
 
     NSMutableDictionary *query = [[[NSMutableDictionary alloc] initWithObjects: objects forKeys: keys] autorelease];
     
-    if (accessGroup.length > 0 && !TARGET_IPHONE_SIMULATOR) {
+#if TARGET_IPHONE_SIMULATOR
+    // Ignore access group if running in simulator
+#else
+    if (accessGroup.length > 0) {
         query[(id)kSecAttrAccessGroup] = accessGroup;
     }
+#endif
 
     // First do a query for attributes, in case we already have a Keychain item with no password data set.
     // One likely way such an incorrect item could have come about is due to the previous (incorrect)
@@ -383,13 +387,17 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
 
             NSMutableDictionary *query = [[[NSMutableDictionary alloc] initWithObjects: objects forKeys: keys] autorelease];
             
-            if (accessGroup.length > 0 && !TARGET_IPHONE_SIMULATOR) {
+#if TARGET_IPHONE_SIMULATOR
+            // Ignore access group if running in simulator
+#else
+            if (accessGroup.length > 0) {
                 query[(id)kSecAttrAccessGroup] = accessGroup;
             }
+#endif
             NSDictionary *attributesToUpdate = @{(NSString *)kSecValueData:
                                                      [password dataUsingEncoding: NSUTF8StringEncoding]};
 
-            status = SecItemUpdate((CFDictionaryRef) query,
+            status = SecItemUpdate((CFDictionaryRef) [NSDictionary dictionaryWithDictionary:query],
                                    (CFDictionaryRef) @{(NSString*)kSecValueData: attributesToUpdate});
         }
     } else {
@@ -414,11 +422,15 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
 
         NSMutableDictionary *query = [[[NSMutableDictionary alloc] initWithObjects: objects forKeys: keys] autorelease];
         
-        if (accessGroup.length > 0 && !TARGET_IPHONE_SIMULATOR) {
+#if TARGET_IPHONE_SIMULATOR
+        // Ignore access group if running in simulator
+#else
+        if (accessGroup.length > 0) {
             query[(id)kSecAttrAccessGroup] = accessGroup;
         }
+#endif
 
-        status = SecItemAdd((CFDictionaryRef) query, NULL);
+        status = SecItemAdd((CFDictionaryRef) [NSDictionary dictionaryWithDictionary:query], NULL);
     }
 
     if (status != noErr) {
@@ -454,11 +466,15 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
 
     NSMutableDictionary *query = [[[NSMutableDictionary alloc] initWithObjects: objects forKeys: keys] autorelease];
     
-    if (accessGroup.length > 0 && !TARGET_IPHONE_SIMULATOR) {
+#if TARGET_IPHONE_SIMULATOR
+    // Ignore access group if running in simulator
+#else
+    if (accessGroup.length > 0) {
         query[(id)kSecAttrAccessGroup] = accessGroup;
     }
+#endif
 
-    OSStatus status = SecItemDelete((CFDictionaryRef) query);
+    OSStatus status = SecItemDelete((CFDictionaryRef) [NSDictionary dictionaryWithDictionary:query]);
 
     if (status != noErr) {
         if (error != nil) {
