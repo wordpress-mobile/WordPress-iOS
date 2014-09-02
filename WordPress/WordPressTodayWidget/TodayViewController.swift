@@ -59,7 +59,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     }
     
     @IBAction func launchContainingApp() {
-        self.extensionContext.openURL(NSURL(string: "wordpress://viewstats?siteId=\(siteId!)"), completionHandler: nil)
+        self.extensionContext!.openURL(NSURL(string: "wordpress://viewstats?siteId=\(siteId!)"), completionHandler: nil)
     }
     
     func widgetPerformUpdateWithCompletionHandler(completionHandler: ((NCUpdateResult) -> Void)!) {
@@ -85,7 +85,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
             return
         }
         
-        let timeZone = NSTimeZone(name: timeZoneName)
+        let timeZone = NSTimeZone(name: timeZoneName!)
         var statsService: WPStatsService = WPStatsService(siteId: siteId, siteTimeZone: timeZone, andOAuth2Token: oauth2Token)
         statsService.retrieveTodayStatsWithCompletionHandler({ (wpStatsSummary: WPStatsSummary!) -> Void in
             WPDDLogWrapper.logInfo("Downloaded data in the Today widget")
