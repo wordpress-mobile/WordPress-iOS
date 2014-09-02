@@ -205,6 +205,13 @@ import Foundation
         proxyTextView.delegate          = self
         textView.inputAccessoryView     = proxyTextView
         self.proxyTextView              = proxyTextView
+        
+        let recognizer                  = UITapGestureRecognizer(target: self, action: "backgroundWasTapped")
+        gestureRecognizers              = [recognizer]
+    }
+    
+    public func backgroundWasTapped() {
+        becomeFirstResponder()
     }
     
     // MARK: - Refresh Helpers
