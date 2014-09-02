@@ -6,6 +6,7 @@
 #import "ReaderSubscriptionViewController.h"
 #import "ReaderPostDetailViewController.h"
 #import "ReaderPost.h"
+#import "ReaderTopic.h"
 #import "WordPressAppDelegate.h"
 #import "NSString+XMLExtensions.h"
 #import "WPAccount.h"
@@ -461,10 +462,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     UIButton *followButton = (UIButton *)sender;
 
     ReaderPost *post = [self postFromCellSubview:followButton];
-
-    if (![post isFollowable]) {
-        return;
-    }
 
     if (!post.isFollowing) {
         [WPAnalytics track:WPAnalyticsStatReaderFollowedSite];
