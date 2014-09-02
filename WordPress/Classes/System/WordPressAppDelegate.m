@@ -28,6 +28,7 @@
 #import "WPImageOptimizer.h"
 #import "ReaderPostService.h"
 #import "ReaderTopicService.h"
+#import "SVProgressHUD.h"
 
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
@@ -255,6 +256,8 @@ NSInteger const kMeTabIndex                                     = 2;
 				
 				[WPPostViewController setNewEditorAvailable:available];
 				[WPPostViewController setNewEditorEnabled:enabled];
+				
+				[self showVisualEditorAvailableInSettingsAnimation:available];
 			}
         }
     }
@@ -1248,6 +1251,40 @@ NSInteger const kMeTabIndex                                     = 2;
         [self logoutSimperiumAndResetNotifications];
         [self showWelcomeScreenIfNeededAnimated:NO];
     }
+}
+
+#pragma mark - GUI animations
+
+- (void)showVisualEditorAvailableInSettingsAnimation:(BOOL)available
+{
+	UIView* notificationView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	notificationView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
+	notificationView.alpha = 0.0f;
+	
+	[self.window addSubview:notificationView];
+	
+	[UIView animateWithDuration:0.2f animations:^{
+		notificationView.alpha = 1.0f;
+	} completion:^(BOOL finished) {
+		
+		NSString* statusString = nil;
+		
+		if (available) {
+			statusString = @"Visual Editor added to Settings";
+		} else {
+			statusString = @"Visual Editor removed from Settings";
+		}
+		
+		[SVProgressHUD showSuccessWithStatus:statusString];
+		
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+			[UIView animateWithDuration:0.2f animations:^{
+				notificationView.alpha = 0.0f;
+			} completion:^(BOOL finished) {
+				[notificationView removeFromSuperview];
+			}];
+		});
+	}];
 }
 
 @end
