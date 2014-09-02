@@ -17,8 +17,10 @@ int ddLogLevel                                                  = LOG_LEVEL_INFO
 {
     self = [super init];
     if (self) {
+#if DEBUG
         [DDLog addLogger:[DDASLLogger sharedInstance]];
         [DDLog addLogger:[DDTTYLogger sharedInstance]];
+#endif
     }
     
     return self;
