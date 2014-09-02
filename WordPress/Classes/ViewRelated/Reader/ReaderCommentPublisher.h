@@ -1,7 +1,9 @@
 #import <Foundation/Foundation.h>
 #include "InlineComposeView.h"
 
-@class ReaderPost, ReaderComment, ReaderCommentPublisher;
+@class ReaderPost;
+@class Comment;
+@class ReaderCommentPublisher;
 
 @protocol ReaderCommentPublisherDelegate <NSObject>
 
@@ -20,7 +22,7 @@
 
 @property (nonatomic, weak) id <ReaderCommentPublisherDelegate> delegate;
 @property (nonatomic, strong) ReaderPost *post;
-@property (nonatomic, strong) ReaderComment *comment;
+@property (nonatomic, strong) Comment *comment;
 @property (nonatomic, strong, readonly) InlineComposeView *composeView;
 
 - (id)initWithComposer:(InlineComposeView *)composeView;
