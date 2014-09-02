@@ -224,6 +224,12 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                                      }];
 }
 
+- (NSInteger)numberOfHierarchicalPagesSyncedforPost:(ReaderPost *)post
+{
+    NSSet *topComments = [post.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"parentID = NULL"]];
+    CGFloat page = [topComments count] / WPTopLevelHierarchicalCommentsPerPage;
+    return (NSInteger)ceil(page);
+}
 
 #pragma mark - REST Helpers
 
