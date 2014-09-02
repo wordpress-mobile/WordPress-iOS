@@ -1089,6 +1089,9 @@ name:MediaShouldInsertBelowNotification object:nil];
 			if ([actionSheet numberOfButtons] == 2) {
                 
 				[actionSheet dismissWithClickedButtonIndex:0 animated:YES];
+				
+				[self startEditing];
+				
                 // Save draft
 			} else {
                 // If you tapped on a button labeled "Save Draft", you probably expect the post to be saved as a draft
