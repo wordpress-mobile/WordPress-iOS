@@ -22,7 +22,8 @@
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
-NSString *const UserDefaultsNewEditorEnabled = @"wp_neweditor_enabled";
+NSString *const kUserDefaultsNewEditorAvailable = @"kUserDefaultsNewEditorAvailable";
+NSString *const kUserDefaultsNewEditorEnabled = @"kUserDefaultsNewEditorEnabled";
 
 static NSInteger const MaximumNumberOfPictures = 5;
 
@@ -414,16 +415,30 @@ static NSInteger const MaximumNumberOfPictures = 5;
     }
 }
 
+#pragma mark - Visual editor in settings
+
++ (void)setNewEditorAvailable:(BOOL)isAvailable
+{
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setBool:isAvailable forKey:kUserDefaultsNewEditorAvailable];
+	[defaults synchronize];
+}
+
 + (void)setNewEditorEnabled:(BOOL)isEnabled
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setBool:isEnabled forKey:UserDefaultsNewEditorEnabled];
+    [defaults setBool:isEnabled forKey:kUserDefaultsNewEditorEnabled];
     [defaults synchronize];
+}
+
++ (BOOL)isNewEditorAvailable
+{
+	return [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsNewEditorAvailable];
 }
 
 + (BOOL)isNewEditorEnabled
 {    
-    return [[NSUserDefaults standardUserDefaults] boolForKey:UserDefaultsNewEditorEnabled];
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsNewEditorEnabled];
 }
 
 #pragma mark - Instance Methods
