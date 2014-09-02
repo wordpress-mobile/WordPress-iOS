@@ -115,7 +115,7 @@ DEPENDENCIES:
   - Taplytics (~> 1.3.10)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor.git`, branch `feature/editor-upgrade`)
-  - WordPress-iOS-Shared (~> 0.1.0)
+  - WordPress-iOS-Shared (= 0.1.0)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPressApi.git`)
   - WordPressCom-Analytics-iOS (= 0.0.4)
   - WordPressCom-Stats-iOS (= 0.1.2)
