@@ -25,6 +25,8 @@
 #import "CustomHighlightButton.h"
 #import "WPTableImageSource.h"
 #import "WPNoResultsView+AnimatedBox.h"
+#import "SuggestionsTableViewController.h"
+#import "SuggestionService.h"
 
 static NSInteger const ReaderCommentsToSync = 100;
 static NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
@@ -39,7 +41,9 @@ static CGFloat const SectionHeaderHeight = 25.0f;
                                             WPRichTextViewDelegate,
                                             ReaderCommentTableViewCellDelegate,
                                             WPTableImageSourceDelegate,
-                                            NSFetchedResultsControllerDelegate>
+                                            NSFetchedResultsControllerDelegate,
+                                            SuggestionsTableViewDelegate,
+                                            InlineComposeViewMentionDelegate>
 
 @property (nonatomic, strong, readwrite) ReaderPost *post;
 @property (nonatomic, strong) UIPopoverController *popover;
@@ -129,6 +133,8 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
     [self.inlineComposeView setButtonTitle:NSLocalizedString(@"Post", nil)];
+    self.inlineComposeView.shouldDeleteTagWithBackspace = YES;
+    self.inlineComposeView.mentionDelegate = self;
     [self.view addSubview:self.inlineComposeView];
     
     // Comment composer responds to the inline compose view to publish comments
@@ -1148,6 +1154,32 @@ static CGFloat const SectionHeaderHeight = 25.0f;
 - (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath
 {
     [self.postView setFeaturedImage:image];
+}
+
+#pragma mark - InlineComposeViewMentionDelegate
+
+- (void)composeViewDidStartAtMention:(InlineComposeView *)view
+{
+    NSNumber *siteID = self.post.siteID;
+    if ([[SuggestionService shared] shouldShowSuggestionsPageForSiteID:siteID]) {
+        SuggestionsTableViewController *suggestionsController = [[SuggestionsTableViewController alloc] initWithSiteID:siteID];
+        suggestionsController.delegate = self;
+        [self.navigationController pushViewController:suggestionsController animated:YES];
+    }
+}
+
+#pragma mark - SuggestionsTableViewDelegate
+
+- (void)suggestionTableView:(SuggestionsTableViewController *)suggestionsTableViewController
+            didSelectString:(NSString *)string
+{
+    self.inlineComposeView.text = [self.inlineComposeView.text stringByAppendingString:string];
+}
+
+- (void)suggestionViewDidDisappear:(SuggestionsTableViewController *)suggestionsController
+{
+    suggestionsController.delegate = nil;
+    [self.inlineComposeView becomeFirstResponder];
 }
 
 @end
