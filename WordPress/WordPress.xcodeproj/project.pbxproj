@@ -131,6 +131,8 @@
 		5DB3BA0818D11D8D00F3F3E9 /* PublishDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DB3BA0718D11D8D00F3F3E9 /* PublishDatePickerView.m */; };
 		5DB4683B18A2E718004A89A9 /* LocationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DB4683A18A2E718004A89A9 /* LocationService.m */; };
 		5DB767411588F64D00EBE36C /* postPreview.html in Resources */ = {isa = PBXBuildFile; fileRef = 5DB767401588F64D00EBE36C /* postPreview.html */; };
+		5DB93EEC19B6190700EC88EB /* CommentContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DB93EE919B6190700EC88EB /* CommentContentView.m */; };
+		5DB93EED19B6190700EC88EB /* ReaderCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DB93EEB19B6190700EC88EB /* ReaderCommentCell.m */; };
 		5DBCD9D218F3569F00B32229 /* ReaderTopic.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DBCD9D118F3569F00B32229 /* ReaderTopic.m */; };
 		5DBCD9D518F35D7500B32229 /* ReaderTopicService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DBCD9D418F35D7500B32229 /* ReaderTopicService.m */; };
 		5DC02A3718E4C5BD009A1765 /* ThemeBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DC02A3418E4C5BD009A1765 /* ThemeBrowserViewController.xib */; };
@@ -589,6 +591,10 @@
 		5DB4683A18A2E718004A89A9 /* LocationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationService.m; sourceTree = "<group>"; };
 		5DB6D8F618F5DA6300956529 /* WordPress 17.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 17.xcdatamodel"; sourceTree = "<group>"; };
 		5DB767401588F64D00EBE36C /* postPreview.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = postPreview.html; path = Resources/HTML/postPreview.html; sourceTree = "<group>"; };
+		5DB93EE819B6190700EC88EB /* CommentContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentContentView.h; sourceTree = "<group>"; };
+		5DB93EE919B6190700EC88EB /* CommentContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentContentView.m; sourceTree = "<group>"; };
+		5DB93EEA19B6190700EC88EB /* ReaderCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderCommentCell.h; sourceTree = "<group>"; };
+		5DB93EEB19B6190700EC88EB /* ReaderCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderCommentCell.m; sourceTree = "<group>"; };
 		5DBCD9D018F3569F00B32229 /* ReaderTopic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderTopic.h; sourceTree = "<group>"; };
 		5DBCD9D118F3569F00B32229 /* ReaderTopic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderTopic.m; sourceTree = "<group>"; };
 		5DBCD9D318F35D7500B32229 /* ReaderTopicService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderTopicService.h; sourceTree = "<group>"; };
@@ -1366,6 +1372,10 @@
 		5D08B8FC19647C0300D5B381 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5DB93EE819B6190700EC88EB /* CommentContentView.h */,
+				5DB93EE919B6190700EC88EB /* CommentContentView.m */,
+				5DB93EEA19B6190700EC88EB /* ReaderCommentCell.h */,
+				5DB93EEB19B6190700EC88EB /* ReaderCommentCell.m */,
 				5DF94E481962BAEB00359241 /* ReaderPostAttributionView.h */,
 				5DF94E491962BAEB00359241 /* ReaderPostAttributionView.m */,
 				5DF94E4A1962BAEB00359241 /* ReaderPostContentView.h */,
@@ -2570,6 +2580,7 @@
 				FD75DDAD15B021C80043F12C /* UIViewController+Rotation.m in Sources */,
 				5DF94E2C1962B97D00359241 /* NewNotificationsTableViewCell.m in Sources */,
 				CC0E20AE15B87DA100D3468B /* WPWebBridge.m in Sources */,
+				5DB93EED19B6190700EC88EB /* ReaderCommentCell.m in Sources */,
 				5D97C2F315CAF8D8009B44DD /* UINavigationController+KeyboardFix.m in Sources */,
 				5D1EE80215E7AF3E007F1F02 /* JetpackSettingsViewController.m in Sources */,
 				5D3E334E15EEBB6B005FC6F2 /* ReachabilityUtils.m in Sources */,
@@ -2637,6 +2648,7 @@
 				5DBCD9D218F3569F00B32229 /* ReaderTopic.m in Sources */,
 				5DF94E2B1962B97D00359241 /* NewCommentsTableViewCell.m in Sources */,
 				85B6F74F1742DA1E00CE7F3A /* WPNUXMainButton.m in Sources */,
+				5DB93EEC19B6190700EC88EB /* CommentContentView.m in Sources */,
 				85B6F7521742DAE800CE7F3A /* WPNUXBackButton.m in Sources */,
 				5DF738941965FAB900393584 /* SubscribedTopicsViewController.m in Sources */,
 				E2E7EB46185FB140004F5E72 /* WPBlogSelectorButton.m in Sources */,
