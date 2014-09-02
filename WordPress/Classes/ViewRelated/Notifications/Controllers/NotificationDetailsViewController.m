@@ -140,8 +140,8 @@ static CGFloat NotificationSectionSeparator     = 10;
     }
     
     [self.tableView reloadData];
-    [self attachReplyViewIfNeeded];
     [self adjustTableStyleIfNeeded];
+    [self attachReplyViewIfNeeded];
 }
 
 
