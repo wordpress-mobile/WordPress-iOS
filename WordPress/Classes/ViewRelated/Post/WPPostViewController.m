@@ -16,6 +16,7 @@
 #import "BlogService.h"
 #import "MediaService.h"
 #import "WPMediaUploader.h"
+#import "WPButtonForNavigationBar.h"
 #import "WPUploadStatusView.h"
 
 
@@ -533,7 +534,6 @@ name:MediaShouldInsertBelowNotification object:nil];
 - (void)refreshNavigationBarRightButton
 {
 	if ([self isEditing]) {
-		
 		NSArray* rightBarButtons = @[[self saveBarButtonItem],
 									 [self optionsBarButtonItem],
 									 [self previewBarButtonItem]];
@@ -550,8 +550,8 @@ name:MediaShouldInsertBelowNotification object:nil];
 		titleTextAttributes = @{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName : color};
 		[self.navigationItem.rightBarButtonItem setTitleTextAttributes:titleTextAttributes forState:controlState];
 	} else {
-		
 		NSArray* rightBarButtons = @[[self editBarButtonItem],
+									 [self optionsBarButtonItem],
 									 [self previewBarButtonItem]];
 		
 		[self.navigationItem setRightBarButtonItems:rightBarButtons];
@@ -593,6 +593,24 @@ name:MediaShouldInsertBelowNotification object:nil];
 
 #pragma mark - Custom UI elements
 
+- (WPButtonForNavigationBar*)buttonForBarWithImageNamed:(NSString*)imageName
+												  frame:(CGRect)frame
+												 target:(id)target
+											   selector:(SEL)selector
+{
+	NSAssert([imageName isKindOfClass:[NSString class]],
+			 @"Expected imageName to be a non nil string.");
+
+	UIImage* image = [UIImage imageNamed:imageName];
+	
+	WPButtonForNavigationBar* button = [[WPButtonForNavigationBar alloc] initWithFrame:frame];
+	
+	[button setImage:image forState:UIControlStateNormal];
+	[button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
+	
+	return button;
+}
+
 - (UIBarButtonItem*)cancelBarButtonItem
 {
 	NSString* buttonTitle = NSLocalizedString(@"Cancel",
@@ -621,26 +639,31 @@ name:MediaShouldInsertBelowNotification object:nil];
 
 - (UIBarButtonItem *)optionsBarButtonItem
 {
-	UIImage* optionsImage = [UIImage imageNamed:@"icon-posts-editor-options"];
+	WPButtonForNavigationBar* button = [self buttonForBarWithImageNamed:@"icon-posts-editor-options"
+																  frame:CGRectMake(0.0f, 0.0f, 40.0f, 40.0f)
+																 target:self
+															   selector:@selector(showSettings)];
 	
-	UIBarButtonItem* optionsButton = [[UIBarButtonItem alloc] initWithImage:optionsImage
-																	  style:UIBarButtonItemStylePlain
-																	 target:self
-																	 action:@selector(showSettings)];
+	button.removeDefaultRightSpacing = YES;
+	button.rightSpacing = 5.0f;
 	
-	return optionsButton;
+	UIBarButtonItem* barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+	
+	return barButtonItem;
 }
 
 - (UIBarButtonItem *)previewBarButtonItem
 {
-	UIImage* previewImage = [UIImage imageNamed:@"icon-posts-editor-preview"];
+	WPButtonForNavigationBar* button = [self buttonForBarWithImageNamed:@"icon-posts-editor-preview"
+																  frame:CGRectMake(0.0f, 0.0f, 40.0f, 40.0f)
+																 target:self
+															   selector:@selector(showPreview)];
 	
-	UIBarButtonItem* previewButton = [[UIBarButtonItem alloc] initWithImage:previewImage
-																	  style:UIBarButtonItemStylePlain
-																	 target:self
-																	 action:@selector(showPreview)];
+	button.removeDefaultRightSpacing = YES;
 	
-	return previewButton;
+	UIBarButtonItem* barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+	
+	return barButtonItem;
 }
 
 - (UIBarButtonItem *)saveBarButtonItem
