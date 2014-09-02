@@ -119,7 +119,7 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     // Don't show 'Reader' in the next-view back button
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
-    
+
     UIToolbar *toolbar = self.navigationController.toolbar;
     toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
     toolbar.tintColor = [UIColor whiteColor];
@@ -777,12 +777,13 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     }
     self.isSyncing = YES;
     NSDictionary *params = @{@"number":[NSNumber numberWithInteger:ReaderCommentsToSync]};
-
+    __typeof(self) __weak weakSelf = self;
+    
     [ReaderPost getCommentsForPost:[self.post.postID integerValue]
                           fromSite:[self.post.siteID stringValue]
                     withParameters:params
                            success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                               [self onSyncSuccess:operation response:responseObject];
+                               [weakSelf onSyncSuccess:operation response:responseObject];
                            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                            }];
 }
@@ -801,12 +802,13 @@ static CGFloat const SectionHeaderHeight = 25.0f;
     self.isSyncing = YES;
     NSUInteger numberToSync = [self.comments count] + ReaderCommentsToSync;
     NSDictionary *params = @{@"number":[NSNumber numberWithInteger:numberToSync]};
-
+    __typeof(self) __weak weakSelf = self;
+    
     [ReaderPost getCommentsForPost:[self.post.postID integerValue]
                           fromSite:[self.post.siteID stringValue]
                     withParameters:params
                            success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                               [self onSyncSuccess:operation response:responseObject];
+                               [weakSelf onSyncSuccess:operation response:responseObject];
                            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                            }];
 }

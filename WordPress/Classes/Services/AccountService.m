@@ -162,7 +162,9 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     account.isWpcom = YES;
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
-    [self setDefaultWordPressComAccount:account];
+    if (![self defaultWordPressComAccount]) {
+        [self setDefaultWordPressComAccount:account];
+    }
 
     return account;
 }

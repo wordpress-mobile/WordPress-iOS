@@ -12,6 +12,8 @@ static NSInteger const ImageSizeMediumHeight = 360;
 static NSInteger const ImageSizeLargeWidth = 640;
 static NSInteger const ImageSizeLargeHeight = 480;
 
+static BOOL const JetpackRESTSupportedForEveryone = NO;
+
 @implementation Blog {
     WPXMLRPCClient *_api;
     NSString *_blavatarUrl;
@@ -373,10 +375,22 @@ static NSInteger const ImageSizeLargeHeight = 480;
 {
     if (self.isWPcom) {
         return self.account.restApi;
-    } else if (self.jetpackAccount) {
+    } else if ([self jetpackRESTSupported] && self.jetpackAccount) {
         return self.jetpackAccount.restApi;
     }
     return nil;
+}
+
+- (BOOL)jetpackRESTSupported
+{
+#ifdef DEBUG
+    return YES;
+#endif
+#ifdef INTERNAL_BUILD
+    return YES;
+#endif
+
+    return JetpackRESTSupportedForEveryone;
 }
 
 #pragma mark - Private Methods
