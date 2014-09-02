@@ -13,9 +13,9 @@ import Foundation
     public var onTrashClick:        EventHandler?
     public var onMoreClick:         EventHandler?
 
-    public override var attributedText: NSAttributedString? {
+    public var attributedCommentText: NSAttributedString? {
         didSet {
-            refreshTextAttributes()
+            refreshInterfaceStyle()
         }
     }
     public var name: String? {
@@ -60,8 +60,7 @@ import Foundation
     public var isApproveOn: Bool = false {
         didSet {
             btnApprove.selected = isApproveOn
-            refreshViewColors()
-            refreshTextAttributes()
+            refreshInterfaceStyle()
         }
     }
 
@@ -191,41 +190,46 @@ import Foundation
         setNeedsLayout()
     }
     
-    private func refreshViewColors() {
-        let isCommentApproved           = self.isCommentApproved
-        approvalStatusView.hidden       = isCommentApproved
-        separatorView.backgroundColor   = WPStyleGuide.Notifications.blockSeparatorColorForComment(isCommentApproved)
+    private func refreshInterfaceStyle() {
+        // If Approval is not even enabled, let's consider this as approved!
+        let isCommentApproved               = isApproveOn || !isApproveEnabled
+        approvalStatusView.hidden           = isCommentApproved
+        separatorView.backgroundColor       = WPStyleGuide.Notifications.blockSeparatorColorForComment(isCommentApproved)
+        nameLabel.textColor                 = WPStyleGuide.Notifications.blockTextColorForComment(isCommentApproved)
+        timestampLabel.textColor            = WPStyleGuide.Notifications.blockTimestampColorForComment(isCommentApproved)
+        super.attributedText                = isCommentApproved ? attributedCommentApprovedText : attributedCommentUnapprovedText
     }
     
-    private func refreshTextAttributes() {
-        let isCommentApproved           = self.isCommentApproved
-        nameLabel.textColor             = WPStyleGuide.Notifications.blockTextColorForComment(isCommentApproved)
-        timestampLabel.textColor        = WPStyleGuide.Notifications.blockTimestampColorForComment(isCommentApproved)
-        
-        // Since we're using DTAttributedLabel, we can't just hit the textColor property!
-        let mutableString = attributedText?.mutableCopy() as? NSMutableAttributedString
-        
-        if let unwrappedMutableString = mutableString {
-            
-            let range                   = NSRange(location: 0, length: min(1, unwrappedMutableString.length))
-            let fullRange               = NSRange(location: 0, length: unwrappedMutableString.length)
-            let paragraph               = WPStyleGuide.Notifications.blockParagraphStyleWithIndentation(firstLineHeadIndent)
-            let textColor               = WPStyleGuide.Notifications.blockTextColorForComment(isCommentApproved)
-            
-            unwrappedMutableString.addAttribute(NSParagraphStyleAttributeName, value: paragraph, range: range)
-            unwrappedMutableString.addAttribute(NSForegroundColorAttributeName, value: textColor, range: fullRange)
-            
-            super.attributedText        = unwrappedMutableString
+    
+    // MARK: - Private Calculated Properties
+    private var attributedCommentApprovedText : NSAttributedString? {
+        if attributedCommentText == nil {
+            return nil
         }
+            
+        let unwrappedMutableString  = attributedCommentText!.mutableCopy() as NSMutableAttributedString
+        let range                   = NSRange(location: 0, length: min(1, unwrappedMutableString.length))
+        let paragraph               = WPStyleGuide.Notifications.blockParagraphStyleWithIndentation(firstLineHeadIndent)
+        unwrappedMutableString.addAttribute(NSParagraphStyleAttributeName, value: paragraph, range: range)
+        
+        return unwrappedMutableString
     }
+
     
-    private var isCommentApproved: Bool {
-        get {
-            // If Approval is not even enabled, let's consider this as approved!
-            return isApproveOn || !isApproveEnabled
+    private var attributedCommentUnapprovedText : NSAttributedString? {
+        let text = attributedCommentApprovedText
+        if text == nil {
+            return nil
         }
+            
+        let unwrappedMutableString  = text!.mutableCopy() as NSMutableAttributedString
+        let range                   = NSRange(location: 0, length: unwrappedMutableString.length)
+        let textColor               = WPStyleGuide.Notifications.blockUnapprovedTextColor
+        unwrappedMutableString.addAttribute(NSForegroundColorAttributeName, value: textColor, range: range)
+
+        return unwrappedMutableString
     }
-    
+
     // MARK: - Private Constants
     private let separatorHeight                     : CGFloat   = 1
     private let buttonWidth                         : CGFloat   = 55
