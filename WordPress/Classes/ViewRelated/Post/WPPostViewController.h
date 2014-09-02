@@ -12,7 +12,7 @@ typedef enum
 WPPostViewControllerMode;
 
 extern NSString *const WPEditorNavigationRestorationID;
-extern NSString *const UserDefaultsNewEditorEnabled;
+extern NSString *const kUserDefaultsNewEditorEnabled;
 
 @interface WPPostViewController : WPEditorViewController <UINavigationControllerDelegate, CTAssetsPickerControllerDelegate, WPEditorViewControllerDelegate>
 
@@ -22,9 +22,7 @@ extern NSString *const UserDefaultsNewEditorEnabled;
 typedef void (^EditPostCompletionHandler)(void);
 @property (nonatomic, copy, readwrite) EditPostCompletionHandler onClose;
 
-+ (void)setNewEditorEnabled:(BOOL)isEnabled;
-
-+ (BOOL)isNewEditorEnabled;
+#pragma mark - Initializers
 
 /*
  Compose a new post with the last used blog.
@@ -57,6 +55,38 @@ typedef void (^EditPostCompletionHandler)(void);
          andContent:(NSString *)content
             andTags:(NSString *)tags
            andImage:(NSString *)image;
+
+#pragma mark - Visual editor in settings
+
+/**
+ *	@brief		Check if the new editor is available in the app settings.
+ *
+ *	@return		YES if the new editor is available in the app settings, NO otherwise.
+ */
++ (BOOL)isNewEditorAvailable;
+
+/**
+ *	@brief		Check if the new editor is enabled.
+ *
+ *	@return		YES if the new editor is enabled, NO otherwise.
+ */
++ (BOOL)isNewEditorEnabled;
+
+/**
+ *	@brief		Makes the new editor available in the app settings.
+ *	@details	This is set to NO by default.
+ *
+ *	@param		isAvailable		YES means the new editor will be available in the app settings.
+ */
++ (void)setNewEditorAvailable:(BOOL)isAvailable;
+
+/**
+ *	@brief		Enables the new editor.
+ *	@details	This is set to NO by default.
+ *
+ *	@param		isAvailable		YES means the new editor will be enabled.
+ */
++ (void)setNewEditorEnabled:(BOOL)isEnabled;
 
 
 @end

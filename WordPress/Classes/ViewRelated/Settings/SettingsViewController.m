@@ -151,8 +151,14 @@ CGFloat const blavatarImageViewSize = 43.f;
         case SettingsSectionMedia:
             return 1;
         
-        case SettingsSectionEditor:
-            return 1;
+		case SettingsSectionEditor: {
+			if (![WPPostViewController isNewEditorAvailable]) {
+				return 0;
+			} else {
+				return 1;
+			}
+		}
+		
         case SettingsSectionInfo:
             return 2;
         default:
@@ -162,16 +168,40 @@ CGFloat const blavatarImageViewSize = 43.f;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
-    header.fixedWidth = 0.0;
-    header.title = [self titleForHeaderInSection:section];
-    return header;
+	if (section == SettingsSectionEditor && ![WPPostViewController isNewEditorAvailable]) {
+		return nil;
+	} else {
+		WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+		header.fixedWidth = 0.0;
+		header.title = [self titleForHeaderInSection:section];
+		return header;
+	}
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    NSString *title = [self titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+	if (section == SettingsSectionEditor && ![WPPostViewController isNewEditorAvailable]) {
+		return 1;
+	} else {
+		NSString *title = [self titleForHeaderInSection:section];
+		return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+	}
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+	return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+	static const CGFloat kDefaultFooterHeight = 16.0f;
+	
+	if (section == SettingsSectionEditor && ![WPPostViewController isNewEditorAvailable]) {
+		return 1;
+	} else {
+		return kDefaultFooterHeight;
+	}
 }
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section

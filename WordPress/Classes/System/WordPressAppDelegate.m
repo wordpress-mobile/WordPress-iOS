@@ -246,6 +246,16 @@ NSInteger const kMeTabIndex                                     = 2;
                     }
                 }
             }
+		} else if ([[url host] isEqualToString:@"editor"]) {
+			NSDictionary* params = [[url query] dictionaryFromQueryString];
+			
+			if (params.count > 0) {
+				BOOL available = [[params objectForKey:@"available"] boolValue];
+				BOOL enabled = [[params objectForKey:@"enabled"] boolValue];
+				
+				[WPPostViewController setNewEditorAvailable:available];
+				[WPPostViewController setNewEditorEnabled:enabled];
+			}
         }
     }
 
