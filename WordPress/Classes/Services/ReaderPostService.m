@@ -867,11 +867,16 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 - (NSString *)formatSummary:(NSString *)summary
 {
     summary = [self makePlainText:summary];
-    NSRange rng = [summary rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@".?!"] options:NSBackwardsSearch];
-    if (rng.location == NSNotFound || rng.location < ReaderPostServiceSummaryLength) {
-        return summary;
+
+    NSString *continueReading = NSLocalizedString(@"Continue reading", @"Part of a prompt suggesting that there is more content for the user to read.");
+    continueReading = [NSString stringWithFormat:@"%@ →", continueReading];
+
+    NSRange rng = [summary rangeOfString:continueReading options:NSCaseInsensitiveSearch];
+    if (rng.location != NSNotFound) {
+        summary = [summary substringToIndex:rng.location];
     }
-    return [summary substringToIndex:(rng.location + 1)];
+
+    return summary;
 }
 
 /**
