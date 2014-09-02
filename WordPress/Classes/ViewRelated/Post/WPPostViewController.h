@@ -14,6 +14,10 @@ WPPostViewControllerMode;
 extern NSString *const WPEditorNavigationRestorationID;
 extern NSString *const kUserDefaultsNewEditorEnabled;
 
+// Secret URL config parameters
+extern NSString *const kWPEditorConfigURLParamAvailable;
+extern NSString *const kWPEditorConfigURLParamEnabled;
+
 @interface WPPostViewController : WPEditorViewController <UINavigationControllerDelegate, CTAssetsPickerControllerDelegate, WPEditorViewControllerDelegate>
 
 /*

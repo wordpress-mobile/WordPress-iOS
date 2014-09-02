@@ -25,6 +25,10 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 NSString *const kUserDefaultsNewEditorAvailable = @"kUserDefaultsNewEditorAvailable";
 NSString *const kUserDefaultsNewEditorEnabled = @"kUserDefaultsNewEditorEnabled";
 
+// Secret URL config parameters
+NSString *const kWPEditorConfigURLParamAvailable = @"available";
+NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
+
 static NSInteger const MaximumNumberOfPictures = 5;
 
 @interface WPPostViewController ()<UIPopoverControllerDelegate> {
