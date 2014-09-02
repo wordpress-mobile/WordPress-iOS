@@ -17,14 +17,16 @@
 @synthesize ghostData;
 @synthesize version;
 
-- (id)init {
-    if ((self = [self initWithDictionary:[NSMutableDictionary dictionary]])) {
+- (instancetype)init {
+    self = [self initWithDictionary:[NSMutableDictionary dictionary]];
+    if (self) {
     }
     return self;
 }
 
-- (id)initWithDictionary:(NSMutableDictionary *)dictionary {
-    if ((self = [super init])) {
+- (instancetype)initWithDictionary:(NSMutableDictionary *)dictionary {
+    self = [super init];
+    if (self) {
         self.dict = dictionary;
         [self.dict associateObject:self];
         SPGhost *newGhost = [[SPGhost alloc] init];
@@ -57,9 +59,18 @@
 
 - (id)simperiumValueForKey:(NSString *)key {
     __block id obj;
-    dispatch_sync(dispatch_get_main_queue(), ^{
+
+    dispatch_block_t block = ^{
         obj = [dict objectForKey: key];
-    });
+    };
+    
+    // Note: For thread safety reasons, let's use the dictionary just from the main thread
+    if ([NSThread isMainThread]) {
+        block();
+    } else {
+        dispatch_sync(dispatch_get_main_queue(), block);
+    }
+
     return obj;
 }
 
