@@ -382,11 +382,13 @@ static CGFloat NotificationSectionSeparator     = 10;
 {
     NotificationBlock *userBlock    = blockGroup.blocks.firstObject;
     NotificationMedia *media        = [userBlock.media firstObject];
+    BOOL hasHomeURL                 = (userBlock.metaLinksHome != nil);
     
     NSAssert(userBlock, nil);
     
     __weak __typeof(self) weakSelf  = self;
     
+    cell.accessoryType              = hasHomeURL ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     cell.name                       = userBlock.text;
     cell.blogTitle                  = userBlock.metaTitlesHome;
     cell.isFollowEnabled            = [userBlock isActionEnabled:NoteActionFollowKey];
