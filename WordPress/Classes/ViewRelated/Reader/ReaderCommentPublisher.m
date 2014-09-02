@@ -2,7 +2,7 @@
 #import "ContextManager.h"
 #import "NSString+Util.h"
 #import "ReaderPost.h"
-#import "ReaderComment.h"
+#import "Comment.h"
 #import "WPToast.h"
 #import "WPAccount.h"
 #import "AccountService.h"
@@ -15,6 +15,11 @@
 
 @implementation ReaderCommentPublisher
 
+- (void)dealloc
+{
+    _composeView.delegate = nil;
+}
+
 - (id)initWithComposer:(InlineComposeView *)composeView
 {
     self = [super init];
@@ -25,17 +30,9 @@
     return self;
 }
 
-- (void)dealloc
-{
-    self.post = nil;
-    self.comment = nil;
-    self.composeView.delegate = nil;
-    self.composeView = nil;
-}
-
 #pragma mark - Accessors
 
-- (void)setComment:(ReaderComment *)comment
+- (void)setComment:(Comment *)comment
 {
     if (_comment == comment) {
         return;
