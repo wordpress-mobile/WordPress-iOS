@@ -22,6 +22,7 @@ import Foundation
     public var attributedSnippet: NSAttributedString? {
         didSet {
             snippetLabel.attributedText = attributedSnippet != nil ? attributedSnippet! : NSAttributedString()
+            refreshNumberOfLines()
             setNeedsLayout()
         }
     }
@@ -59,7 +60,7 @@ import Foundation
         noticonLabel.font               = WPStyleGuide.Notifications.noticonFont
         noticonLabel.textColor          = WPStyleGuide.Notifications.noticonTextColor
         
-        subjectLabel.numberOfLines      = subjectNumberOfLines
+        subjectLabel.numberOfLines      = subjectNumberOfLinesWithSnippet
         subjectLabel.shadowOffset       = CGSizeZero
 
         snippetLabel.numberOfLines      = snippetNumberOfLines
@@ -95,20 +96,27 @@ import Foundation
             noticonView.backgroundColor = WPStyleGuide.Notifications.noticonUnreadColor
         }
     }
+
+    private func refreshNumberOfLines() {
+        // When the snippet is present, let's clip the number of lines in the subject
+        subjectLabel.numberOfLines = attributedSnippet != nil ? subjectNumberOfLinesWithSnippet : subjectNumberOfLinesWithoutSnippet
+    }
+
     
     // MARK: - Private Properties
-    private let subjectPaddingRight:            CGFloat     = 12
-    private let subjectNumberOfLines:           Int         = 3
-    private let snippetNumberOfLines:           Int         = 2
-    private let noticonRadius:                  CGFloat     = 10
-    private var placeholderName:                String      = "gravatar"
-    private var gravatarURL:                    NSURL?
+    private let subjectPaddingRight:                CGFloat     = 12
+    private let subjectNumberOfLinesWithoutSnippet: Int         = 3
+    private let subjectNumberOfLinesWithSnippet:    Int         = 2
+    private let snippetNumberOfLines:               Int         = 2
+    private let noticonRadius:                      CGFloat     = 10
+    private var placeholderName:                    String      = "gravatar"
+    private var gravatarURL:                        NSURL?
     
     // MARK: - IBOutlets
-    @IBOutlet private weak var iconImageView:   UIImageView!
-    @IBOutlet private weak var noticonLabel:    UILabel!
-    @IBOutlet private weak var noticonView:     UIView!
-    @IBOutlet private weak var subjectLabel:    UILabel!
-    @IBOutlet private weak var snippetLabel:    UILabel!
-    @IBOutlet private weak var timestampLabel:  UILabel!
+    @IBOutlet private weak var iconImageView:       UIImageView!
+    @IBOutlet private weak var noticonLabel:        UILabel!
+    @IBOutlet private weak var noticonView:         UIView!
+    @IBOutlet private weak var subjectLabel:        UILabel!
+    @IBOutlet private weak var snippetLabel:        UILabel!
+    @IBOutlet private weak var timestampLabel:      UILabel!
 }
