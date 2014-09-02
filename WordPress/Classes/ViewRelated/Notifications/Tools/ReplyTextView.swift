@@ -184,7 +184,7 @@ import Foundation
         
         // Reply
         replyButton.enabled             = false
-        replyButton.titleLabel.font     = WPStyleGuide.Reply.buttonFont
+        replyButton.titleLabel?.font    = WPStyleGuide.Reply.buttonFont
         replyButton.setTitleColor(WPStyleGuide.Reply.disabledColor, forState: .Disabled)
         replyButton.setTitleColor(WPStyleGuide.Reply.enabledColor,  forState: .Normal)
         
@@ -248,7 +248,8 @@ import Foundation
         if UIDevice.isOS8() {
             textView.scrollRangeToVisible(textView.selectedRange)
         } else {
-            var caretRect               = textView.caretRectForPosition(textView.selectedTextRange.start)
+            let selectedRangeStart      = textView.selectedTextRange?.start ?? UITextPosition()
+            var caretRect               = textView.caretRectForPosition(selectedRangeStart)
             caretRect                   = CGRectIntegral(caretRect)
             textView.scrollRectToVisible(caretRect, animated: false)
         }
@@ -275,7 +276,7 @@ import Foundation
     private var isProxyDismissing:          Bool            = false
     
     // MARK: - IBOutlets
-    @IBOutlet private var textView:          UITextView!
+    @IBOutlet private var textView:         UITextView!
     @IBOutlet private var placeholderLabel: UILabel!
     @IBOutlet private var replyButton:      UIButton!
     @IBOutlet private var layoutView:       UIView!

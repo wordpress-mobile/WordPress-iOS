@@ -51,7 +51,7 @@ import Foundation
         super.awakeFromNib()
 
         WPStyleGuide.configureFollowButton(btnFollow)
-        btnFollow.titleLabel.font           = WPStyleGuide.Notifications.blockRegularFont
+        btnFollow.titleLabel?.font          = WPStyleGuide.Notifications.blockRegularFont
 
         backgroundColor                     = WPStyleGuide.Notifications.blockBackgroundColor
         accessoryType                       = .None
