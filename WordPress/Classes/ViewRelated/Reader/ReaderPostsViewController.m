@@ -133,6 +133,14 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [button setAccessibilityLabel:NSLocalizedString(@"Browse", @"")];
     self.navigationItem.rightBarButtonItem = button;
 
+    // replace the back button of future child view controllers
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:nil
+                                                                  action:nil];
+
+    self.navigationItem.backBarButtonItem = backButton;
+
     self.tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                          action:@selector(dismissKeyboard:)];
 
