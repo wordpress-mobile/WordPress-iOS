@@ -408,6 +408,7 @@
                                 <connections>
                                     <outlet property="dataSource" destination="veA-Pg-QAw" id="VzN-sT-2Co"/>
                                     <outlet property="delegate" destination="veA-Pg-QAw" id="s6c-EK-4wV"/>
+                                    <outletCollection property="gestureRecognizers" destination="a20-Yr-RdT" appends="YES" id="9kS-tn-Ero"/>
                                 </connections>
                             </tableView>
                         </subviews>
@@ -418,9 +419,6 @@
                             <constraint firstItem="Dcn-Il-AtN" firstAttribute="top" secondItem="lvM-1n-Dgf" secondAttribute="top" id="VrG-Fy-A84"/>
                             <constraint firstAttribute="trailing" secondItem="Dcn-Il-AtN" secondAttribute="trailing" id="eJA-A9-B0Q"/>
                         </constraints>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="a20-Yr-RdT" appends="YES" id="zrw-lN-fs1"/>
-                        </connections>
                     </view>
                     <navigationItem key="navigationItem" id="gVZ-cy-2mc"/>
                     <connections>
@@ -433,7 +431,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jzQ-hT-Ajt" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer enabled="NO" delaysTouchesEnded="NO" id="a20-Yr-RdT">
+                <tapGestureRecognizer enabled="NO" cancelsTouchesInView="NO" delaysTouchesEnded="NO" id="a20-Yr-RdT">
                     <connections>
                         <action selector="dismissKeyboardIfNeeded:" destination="veA-Pg-QAw" id="HU5-W6-6xc"/>
                         <outlet property="delegate" destination="veA-Pg-QAw" id="L3M-88-aeP"/>
