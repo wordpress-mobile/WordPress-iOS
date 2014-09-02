@@ -24,7 +24,7 @@ NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestoratio
 NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 NSString *const UserDefaultsNewEditorEnabled = @"wp_neweditor_enabled";
 
-static NSInteger const MaximumNumberOfPictures = 4;
+static NSInteger const MaximumNumberOfPictures = 5;
 
 @interface WPPostViewController ()<UIPopoverControllerDelegate> {
     NSOperationQueue *_mediaUploadQueue;
@@ -176,12 +176,18 @@ static NSInteger const MaximumNumberOfPictures = 4;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:)
-name:MediaShouldInsertBelowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];
+                                                 name:MediaShouldInsertBelowNotification
+                                               object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(removeMedia:)
+                                                 name:@"ShouldRemoveMedia"
+                                               object:nil];
     
     [self geotagNewPost];
     self.delegate = self;
 	
+    // Display the "back" chevron without text
+    self.navigationController.navigationBar.topItem.title = @"";
 	[self refreshNavigationBar];
 }
 
@@ -359,8 +365,6 @@ name:MediaShouldInsertBelowNotification object:nil];
 	[self stopEditing];
     [self.postSettingsViewController endEditingAction:nil];
 	
-	[self refreshNavigationBar];
-    
 	if ([self isMediaInUploading]) {
 		[self showMediaInUploadingAlert];
 		return;
@@ -372,11 +376,11 @@ name:MediaShouldInsertBelowNotification object:nil];
 		if (self.editMode == EditPostViewControllerModeNewPost) {
 			[self discardChangesAndDismiss];
 		} else {
-			[self discardChanges];
+			[self refreshNavigationBar];
+            [self discardChanges];
 		}
         return;
     }
-    
 	UIActionSheet *actionSheet;
 	if (![self.post.original.status isEqualToString:@"draft"] && self.editMode != EditPostViewControllerModeNewPost) {
         // The post is already published in the server or it was intended to be and failed: Discard changes or keep editing
@@ -423,6 +427,30 @@ name:MediaShouldInsertBelowNotification object:nil];
 }
 
 #pragma mark - Instance Methods
+
+- (UIImage *)tintedImageWithColor:(UIColor *)tintColor image:(UIImage *)image
+{
+    UIGraphicsBeginImageContextWithOptions(image.size, NO, [[UIScreen mainScreen] scale]);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextTranslateCTM(context, 0, image.size.height);
+    CGContextScaleCTM(context, 1.0, -1.0);
+    
+    CGRect rect = CGRectMake(0, 0, image.size.width, image.size.height);
+    
+    // draw alpha-mask
+    CGContextSetBlendMode(context, kCGBlendModeNormal);
+    CGContextDrawImage(context, rect, image.CGImage);
+    
+    // draw tint color, preserving alpha values of original image
+    CGContextSetBlendMode(context, kCGBlendModeSourceIn);
+    [tintColor setFill];
+    CGContextFillRect(context, rect);
+    
+    UIImage *coloredImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return coloredImage;
+}
 
 - (void)geotagNewPost {
     if (EditPostViewControllerModeNewPost != self.editMode) {
@@ -502,14 +530,13 @@ name:MediaShouldInsertBelowNotification object:nil];
     } else {
         UIButton *titleButton = self.titleBarButton;
         self.navigationItem.titleView = titleButton;
-        NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", [self editorTitle]]
-                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
         
-        NSString *subtext = [self.post.blog.blogName length] == 0 ? self.post.blog.url : self.post.blog.blogName;
-        NSDictionary *subtextAttributes = @{ NSFontAttributeName: [WPFontManager openSansRegularFontOfSize:10.0] };
-        NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:subtext
-                                                                                         attributes:subtextAttributes];
-        [titleText appendAttributedString:titleSubtext];
+        
+        NSString *blogName = [self.post.blog.blogName length] == 0 ? self.post.blog.url : self.post.blog.blogName;
+        
+        NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", blogName]
+                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
+
         [titleButton setAttributedTitle:titleText forState:UIControlStateNormal];
         
         [titleButton sizeToFit];
@@ -525,9 +552,16 @@ name:MediaShouldInsertBelowNotification object:nil];
 - (void)refreshNavigationBarLeftButton
 {
 	if ([self isEditing]) {
-        self.navigationItem.leftBarButtonItem = [self cancelBarButtonItem];
+        
+        UIBarButtonItem *negativeSeparator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                                                                           target:nil
+                                                                                           action:nil];
+        negativeSeparator.width = -10;
+        NSArray* leftBarButtons = @[negativeSeparator, [self cancelBarButtonItem], negativeSeparator];
+        [self.navigationItem setLeftBarButtonItems:leftBarButtons animated:YES];
 	} else {
-		self.navigationItem.leftBarButtonItem = self.navigationItem.backBarButtonItem;
+        [self.navigationItem setLeftBarButtonItems:nil];
+        [self.navigationItem setLeftBarButtonItem:self.navigationItem.backBarButtonItem animated:YES];
 	}
 }
 
@@ -538,7 +572,7 @@ name:MediaShouldInsertBelowNotification object:nil];
 									 [self optionsBarButtonItem],
 									 [self previewBarButtonItem]];
 		
-		[self.navigationItem setRightBarButtonItems:rightBarButtons];
+		[self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
 		
 		BOOL updateEnabled = self.hasChanges || self.post.remoteStatus == AbstractPostRemoteStatusFailed;
 		[self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];
@@ -554,7 +588,7 @@ name:MediaShouldInsertBelowNotification object:nil];
 									 [self optionsBarButtonItem],
 									 [self previewBarButtonItem]];
 		
-		[self.navigationItem setRightBarButtonItems:rightBarButtons];
+		[self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
 	}
 }
 
@@ -613,14 +647,15 @@ name:MediaShouldInsertBelowNotification object:nil];
 
 - (UIBarButtonItem*)cancelBarButtonItem
 {
-	NSString* buttonTitle = NSLocalizedString(@"Cancel",
-											  @"Label for the button to cancel editing of current post.");
-	
-	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
-															   style:UIBarButtonItemStylePlain
-															  target:self
-															  action:@selector(cancelEditing)];
-	
+    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-x"
+                                                                  frame:CGRectMake(0.0f, 0.0f, 40.0f, 40.0f)
+                                                                 target:self
+                                                               selector:@selector(cancelEditing)];
+    
+    cancelButton.removeDefaultLeftSpacing = YES;
+    
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
+    
 	return button;
 }
 
@@ -639,11 +674,11 @@ name:MediaShouldInsertBelowNotification object:nil];
 
 - (UIBarButtonItem *)optionsBarButtonItem
 {
-	WPButtonForNavigationBar* button = [self buttonForBarWithImageNamed:@"icon-posts-editor-options"
+	WPButtonForNavigationBar *button = [self buttonForBarWithImageNamed:@"icon-posts-editor-options"
 																  frame:CGRectMake(0.0f, 0.0f, 40.0f, 40.0f)
 																 target:self
 															   selector:@selector(showSettings)];
-	
+
 	button.removeDefaultRightSpacing = YES;
 	button.rightSpacing = 5.0f;
 	
@@ -655,7 +690,7 @@ name:MediaShouldInsertBelowNotification object:nil];
 - (UIBarButtonItem *)previewBarButtonItem
 {
 	WPButtonForNavigationBar* button = [self buttonForBarWithImageNamed:@"icon-posts-editor-preview"
-																  frame:CGRectMake(0.0f, 0.0f, 40.0f, 40.0f)
+                                                                  frame:CGRectMake(0.0f, 0.0f, 40.0f, 40.0f)
 																 target:self
 															   selector:@selector(showPreview)];
 	
@@ -699,9 +734,11 @@ name:MediaShouldInsertBelowNotification object:nil];
     }
     UIButton *titleButton = [WPBlogSelectorButton buttonWithType:UIButtonTypeSystem];
     titleButton.frame = CGRectMake(0.0f, 0.0f, 200.0f, 33.0f);
-    titleButton.titleLabel.numberOfLines = 2;
+    titleButton.titleLabel.numberOfLines = 1;
     titleButton.titleLabel.textColor = [UIColor whiteColor];
     titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleButton.titleLabel.adjustsFontSizeToFitWidth = NO;
+    titleButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     titleButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     [titleButton setImage:[UIImage imageNamed:@"icon-navbar-dropdown.png"] forState:UIControlStateNormal];
     [titleButton addTarget:self action:@selector(showBlogSelectorPrompt) forControlEvents:UIControlEventTouchUpInside];
