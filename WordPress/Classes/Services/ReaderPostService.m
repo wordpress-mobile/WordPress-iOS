@@ -221,7 +221,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         if (follow) {
             [siteService followSiteAtURL:post.blogURL success:successBlock failure:failureBlock];
         } else {
-            [siteService followSiteAtURL:post.blogURL success:successBlock failure:failureBlock];
+            [siteService unfollowSiteAtURL:post.blogURL success:successBlock failure:failureBlock];
         }
     } else {
         NSString *description = NSLocalizedString(@"Could not toggle Follow: missing blogURL attribute", @"An error description explaining that Follow could not be toggled due to a missing blogURL attribute.");
