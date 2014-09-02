@@ -14,6 +14,8 @@
 #import "DTLinkButton.h"
 #import "WPToast.h"
 #import "VerticallyStackedButton.h"
+#import "SuggestionsTableViewController.h"
+#import "SuggestionService.h"
 
 typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
     CommentViewButtonTagApprove,
@@ -25,7 +27,7 @@ typedef NS_ENUM(NSInteger, CommentViewActionIndex) {
 };
 
                 
-@interface CommentViewController () <UIActionSheetDelegate, InlineComposeViewDelegate, WPContentViewDelegate, EditCommentViewControllerDelegate>
+@interface CommentViewController () <UIActionSheetDelegate, InlineComposeViewDelegate, WPContentViewDelegate, EditCommentViewControllerDelegate, SuggestionsTableViewDelegate, InlineComposeViewMentionDelegate>
 
 @property (nonatomic, strong) CommentView *commentView;
 @property (nonatomic, strong) UIButton *trashButton;
@@ -107,6 +109,8 @@ typedef NS_ENUM(NSInteger, CommentViewActionIndex) {
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
     self.inlineComposeView.delegate = self;
+    self.inlineComposeView.shouldDeleteTagWithBackspace = YES;
+    self.inlineComposeView.mentionDelegate = self;
     [self.view addSubview:self.inlineComposeView];
 
     if (self.comment) {
@@ -115,6 +119,10 @@ typedef NS_ENUM(NSInteger, CommentViewActionIndex) {
 
     // For tapping to dismiss the keyboard
     self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+
+    // Don't show current title in the next-view back button
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -445,6 +453,32 @@ typedef NS_ENUM(NSInteger, CommentViewActionIndex) {
 - (void)contentView:(WPContentView *)contentView didReceiveLinkAction:(id)sender
 {
     [self openInAppWebView:((DTLinkButton *)sender).URL];
+}
+
+#pragma mark - InlineComposeViewMentionDelegate
+
+- (void)composeViewDidStartAtMention:(InlineComposeView *)view
+{
+    NSNumber *siteID = self.comment.blog.blogID;
+    if ([[SuggestionService shared] shouldShowSuggestionsPageForSiteID:siteID]) {
+        SuggestionsTableViewController *suggestionsController = [[SuggestionsTableViewController alloc] initWithSiteID:siteID];
+        suggestionsController.delegate = self;
+        [self.navigationController pushViewController:suggestionsController animated:YES];
+    }
+}
+
+#pragma mark - SuggestionsTableViewDelegate
+
+- (void)suggestionTableView:(SuggestionsTableViewController *)suggestionsTableViewController
+            didSelectString:(NSString *)string
+{
+    self.inlineComposeView.text = [self.inlineComposeView.text stringByAppendingString:string];
+}
+
+- (void)suggestionViewDidDisappear:(SuggestionsTableViewController *)suggestionsController
+{
+    suggestionsController.delegate = nil;
+    [self.inlineComposeView becomeFirstResponder];
 }
 
 @end
