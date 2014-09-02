@@ -675,7 +675,7 @@ name:MediaShouldInsertBelowNotification object:nil];
 			buttonTitle = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
 			
 		} else if ([self.post.status isEqualToString:@"publish"]){
-			buttonTitle = NSLocalizedString(@"Publish", @"Publish button label.");
+			buttonTitle = NSLocalizedString(@"Post", @"Publish button label.");
 			
 		} else {
 			buttonTitle = NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).");
@@ -871,7 +871,7 @@ name:MediaShouldInsertBelowNotification object:nil];
         properties[@"word_diff_count"] = @(wordCount - originalWordCount);
     }
     
-    if ([buttonTitle isEqualToString:NSLocalizedString(@"Publish", nil)]) {
+    if ([buttonTitle isEqualToString:NSLocalizedString(@"Post", nil)]) {
         [WPAnalytics track:WPAnalyticsStatEditorPublishedPost withProperties:properties];
         
         if ([self.post hasPhoto]) {
