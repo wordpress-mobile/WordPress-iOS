@@ -880,7 +880,6 @@ static CGFloat NotificationSectionSeparator     = 10;
     self.keyboardBottomDelta                = bottomInset;
     self.isKeyboardVisible                  = true;
     self.tableGesturesRecognizer.enabled    = true;
-    self.tableView.userInteractionEnabled   = false;
 }
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification
@@ -903,7 +902,6 @@ static CGFloat NotificationSectionSeparator     = 10;
     
     self.isKeyboardVisible                  = false;
     self.tableGesturesRecognizer.enabled    = false;
-    self.tableView.userInteractionEnabled   = true;
 }
 
 
