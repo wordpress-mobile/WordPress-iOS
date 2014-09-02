@@ -36,7 +36,8 @@
 static UIEdgeInsets NotificationTableInsetsPhone    = {0.0f,  0.0f, 20.0f, 0.0f};
 static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f};
 
-static NSString *NotificationReplyToastImage        = @"action_icon_replied";
+static NSString *NotificationReplyToastImage        = @"action-icon-replied";
+static NSString *NotificationSuccessToastImage      = @"action-icon-success";
 
 typedef NS_ENUM(NSInteger, NotificationSection) {
     NotificationSectionHeader,
@@ -755,13 +756,18 @@ static CGFloat NotificationSectionSeparator     = 10;
     [service replyCommentWithID:block.metaCommentID
                          siteID:block.metaSiteID
                         content:content
-                        success:nil
+                        success:^() {
+                            NSString *message   = NSLocalizedString(@"Reply Sent!", @"The app successfully sent a comment");
+                            UIImage *image      = [UIImage imageNamed:NotificationSuccessToastImage];
+                            
+                            [WPToast showToastWithMessage:message andImage:image];
+                        }
                         failure:nil];
     
     self.replyTextView.text = [NSString string];
     [self.replyTextView resignFirstResponder];
     
-    NSString *message   = NSLocalizedString(@"Sending!", @"The app is uploading a comment");
+    NSString *message   = NSLocalizedString(@"Sending...", @"The app is uploading a comment");
     UIImage *image      = [UIImage imageNamed:NotificationReplyToastImage];
     
     [WPToast showToastWithMessage:message andImage:image];

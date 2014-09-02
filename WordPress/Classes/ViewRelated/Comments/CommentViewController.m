@@ -457,7 +457,7 @@ typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
         [self.inlineComposeView dismissComposer];
 
         [WPToast showToastWithMessage:NSLocalizedString(@"Replied", @"User replied to a comment")
-                             andImage:[UIImage imageNamed:@"action_icon_replied"]];
+                             andImage:[UIImage imageNamed:@"action-icon-replied"]];
 
     } failure:^(NSError *error) {
         // reset to draft status, AppDelegate automatically shows UIAlert when comment fails
