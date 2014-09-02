@@ -192,30 +192,37 @@ import Foundation
     }
     
     private func refreshViewColors() {
-
-        approvalStatusView.hidden       = isApproveOn
-        separatorView.backgroundColor   = WPStyleGuide.Notifications.blockSeparatorColorForComment(isApproveOn)
+        let isCommentApproved           = self.isCommentApproved
+        approvalStatusView.hidden       = isCommentApproved
+        separatorView.backgroundColor   = WPStyleGuide.Notifications.blockSeparatorColorForComment(isCommentApproved)
     }
     
     private func refreshTextAttributes() {
-        
-        nameLabel.textColor         = WPStyleGuide.Notifications.blockTextColorForComment(isApproveOn)
-        timestampLabel.textColor    = WPStyleGuide.Notifications.blockTimestampColorForComment(isApproveOn)
+        let isCommentApproved           = self.isCommentApproved
+        nameLabel.textColor             = WPStyleGuide.Notifications.blockTextColorForComment(isCommentApproved)
+        timestampLabel.textColor        = WPStyleGuide.Notifications.blockTimestampColorForComment(isCommentApproved)
         
         // Since we're using DTAttributedLabel, we can't just hit the textColor property!
         let mutableString = attributedText?.mutableCopy() as? NSMutableAttributedString
         
         if let unwrappedMutableString = mutableString {
             
-            let range               = NSRange(location: 0, length: min(1, unwrappedMutableString.length))
-            let fullRange           = NSRange(location: 0, length: unwrappedMutableString.length)
-            let paragraph           = WPStyleGuide.Notifications.blockParagraphStyleWithIndentation(firstLineHeadIndent)
-            let textColor           = WPStyleGuide.Notifications.blockTextColorForComment(isApproveOn)
+            let range                   = NSRange(location: 0, length: min(1, unwrappedMutableString.length))
+            let fullRange               = NSRange(location: 0, length: unwrappedMutableString.length)
+            let paragraph               = WPStyleGuide.Notifications.blockParagraphStyleWithIndentation(firstLineHeadIndent)
+            let textColor               = WPStyleGuide.Notifications.blockTextColorForComment(isCommentApproved)
             
             unwrappedMutableString.addAttribute(NSParagraphStyleAttributeName, value: paragraph, range: range)
             unwrappedMutableString.addAttribute(NSForegroundColorAttributeName, value: textColor, range: fullRange)
             
-            super.attributedText    = unwrappedMutableString
+            super.attributedText        = unwrappedMutableString
+        }
+    }
+    
+    private var isCommentApproved: Bool {
+        get {
+            // If Approval is not even enabled, let's consider this as approved!
+            return isApproveOn || !isApproveEnabled
         }
     }
     
