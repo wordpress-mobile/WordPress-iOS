@@ -20,6 +20,27 @@ import Foundation
     public var isBadge: Bool = false {
         didSet {
             backgroundColor = isBadge ? WPStyleGuide.Notifications.badgeBackgroundColor : WPStyleGuide.Notifications.blockBackgroundColor
+            alignment       = isBadge ? .Center : .Left
+        }
+    }
+    
+    //  TODO:
+    //  Once NotificationDetailsViewController has been migrated to Swift, please, nuke this property, and make sure this class is fed
+    //  with an string already aligned. 
+    //  This is temporary workaround since WPStyleGuide+Notifications is swift only.
+    //
+    private var alignment : NSTextAlignment = .Left {
+        didSet {
+            if attributedText == nil {
+                return
+            }
+            
+            let unwrappedMutableString  = attributedText!.mutableCopy() as NSMutableAttributedString
+            let range                   = NSRange(location: 0, length: unwrappedMutableString.length)
+            let paragraph               = WPStyleGuide.Notifications.blockParagraphStyleWithAlignment(.Center)
+            unwrappedMutableString.addAttribute(NSParagraphStyleAttributeName, value: paragraph, range: range)
+            
+            attributedText = unwrappedMutableString
         }
     }
     

@@ -94,6 +94,12 @@ extension WPStyleGuide
             return paragraph
         }
 
+        public static func blockParagraphStyleWithAlignment(alignment: NSTextAlignment) -> NSParagraphStyle {
+            let paragraph                   = blockParagraph.mutableCopy() as NSMutableParagraphStyle
+            paragraph.alignment             = alignment
+            return paragraph
+        }
+
         public static func blockTextColorForComment(approved: Bool) -> UIColor {
             return approved ? blockTextColor : blockUnapprovedTextColor
         }
@@ -113,13 +119,13 @@ extension WPStyleGuide
         private static let blockLineSize            = CGFloat(20)
 
         private static let subjectParagraph         = NSMutableParagraphStyle(
-            minLineHeight: subjectLineSize, maxLineHeight: subjectLineSize, lineBreakMode: .ByWordWrapping
+            minLineHeight: subjectLineSize, maxLineHeight: subjectLineSize, lineBreakMode: .ByWordWrapping, alignment: .Left
         )
         private static let snippetParagraph         = NSMutableParagraphStyle(
-            minLineHeight: subjectLineSize, maxLineHeight: subjectLineSize, lineBreakMode: .ByTruncatingTail
+            minLineHeight: subjectLineSize, maxLineHeight: subjectLineSize, lineBreakMode: .ByTruncatingTail, alignment: .Left
         )
         private static let blockParagraph           = NSMutableParagraphStyle(
-            minLineHeight: blockLineSize, maxLineHeight: blockLineSize, lineBreakMode: .ByWordWrapping
+            minLineHeight: blockLineSize, maxLineHeight: blockLineSize, lineBreakMode: .ByWordWrapping, alignment: .Left
         )
     }
 }

@@ -215,7 +215,6 @@ import Foundation
         return unwrappedMutableString
     }
 
-    
     private var attributedCommentUnapprovedText : NSAttributedString? {
         let text = attributedCommentApprovedText
         if text == nil {
