@@ -54,7 +54,7 @@ extension WPStyleGuide
         public static let blockItalicsFont          = WPFontManager.openSansItalicFontOfSize(blockFontSize)
 
         public static let blockTextColor            = WPStyleGuide.littleEddieGrey()
-        public static let blockQuotedColor          = WPStyleGuide.allTAllShadeGrey()
+        public static let blockQuotedColor          = UIColor(red: 0x7E/255.0, green: 0x9E/255.0, blue: 0xB5/255.0, alpha: 0xFF/255.0)
         public static let blockBackgroundColor      = UIColor.whiteColor()
         public static let blockLinkColor            = WPStyleGuide.baseLighterBlue()
         public static let blockSubtitleColor        = WPStyleGuide.baseDarkerBlue()
