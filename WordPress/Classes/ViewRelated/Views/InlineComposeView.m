@@ -306,8 +306,11 @@ const CGFloat InlineComposeViewMaxHeight = 88.f;
     BOOL delegateImplementsAtMention = [self.mentionDelegate respondsToSelector:@selector(composeViewDidStartAtMention:)];
 
     if ([text isEqualToString:@"@"] && range.length == 0 && delegateImplementsAtMention) {
-        [self.mentionDelegate composeViewDidStartAtMention:self];
-        return YES;
+        // only handle the @ sign after a space character or if it's the first character
+        if (range.location == 0 || [[textView.text substringWithRange:NSMakeRange(range.location - 1, 1)] isEqualToString:@" "]) {
+            [self.mentionDelegate composeViewDidStartAtMention:self];
+            return YES;
+        }
     }
 
     if ([self.delegate respondsToSelector:@selector(textView:shouldChangeTextInRange:replacementText:)]) {
