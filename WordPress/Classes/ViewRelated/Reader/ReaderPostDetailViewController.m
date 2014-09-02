@@ -753,10 +753,9 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(NSInteger))success failure:(void (^)(NSError *))failure
 {
     [self.activityFooter startAnimating];
-    NSSet *topComments = [self.post.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"parentID = NULL"]];
-    NSUInteger page = ([topComments count] / WPTopLevelHierarchicalCommentsPerPage) + 1;
 
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    NSInteger page = [service numberOfHierarchicalPagesSyncedforPost:self.post] + 1;
     [service syncHierarchicalCommentsForPost:self.post page:page success:success failure:failure];
 }
 

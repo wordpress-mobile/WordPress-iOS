@@ -54,6 +54,11 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
                                 success:(void (^)(NSInteger count))success
                                 failure:(void (^)(NSError *error))failure;
 
+// Counts and returns the total number of pages of hierarchcial comments synced for a post.
+// A partial set still counts as a page.
+- (NSInteger)numberOfHierarchicalPagesSyncedforPost:(ReaderPost *)post;
+
+
 /**
     REST Helpers:
     =============
