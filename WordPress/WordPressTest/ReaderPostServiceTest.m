@@ -138,6 +138,10 @@
     imagePath = [remoteService featuredImageFromPostDictionary:dict];
     XCTAssertTrue([@"" isEqualToString:imagePath], @"Non image media types should be ignored.");
 
+    dict = @{@"attachments": @{@"111": @{@"mime_type": @"image/jpg", @"width":@(2048), @"URL":uri}}};
+    imagePath = [remoteService featuredImageFromPostDictionary:dict];
+    XCTAssertTrue([uri isEqualToString:imagePath], @"Failed to retrieve the uri from attachments.");
+
     dict = [self editorialDictionaryWithKey:@"image" value:uri];
     imagePath = [remoteService featuredImageFromPostDictionary:dict];
     XCTAssertTrue([uri isEqualToString:imagePath], @"Failed to retrieve the uri for featured media.");
