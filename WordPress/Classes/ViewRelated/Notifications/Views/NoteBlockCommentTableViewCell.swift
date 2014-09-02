@@ -194,9 +194,9 @@ import Foundation
         // If Approval is not even enabled, let's consider this as approved!
         let isCommentApproved               = isApproveOn || !isApproveEnabled
         approvalStatusView.hidden           = isCommentApproved
-        separatorView.backgroundColor       = WPStyleGuide.Notifications.blockSeparatorColorForComment(isCommentApproved)
-        nameLabel.textColor                 = WPStyleGuide.Notifications.blockTextColorForComment(isCommentApproved)
-        timestampLabel.textColor            = WPStyleGuide.Notifications.blockTimestampColorForComment(isCommentApproved)
+        separatorView.backgroundColor       = WPStyleGuide.Notifications.blockSeparatorColorForComment(isApproved: isCommentApproved)
+        nameLabel.textColor                 = WPStyleGuide.Notifications.blockTextColorForComment(isApproved: isCommentApproved)
+        timestampLabel.textColor            = WPStyleGuide.Notifications.blockTimestampColorForComment(isApproved: isCommentApproved)
         super.attributedText                = isCommentApproved ? attributedCommentApprovedText : attributedCommentUnapprovedText
     }
     
