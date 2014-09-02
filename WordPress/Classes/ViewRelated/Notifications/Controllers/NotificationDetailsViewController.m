@@ -762,7 +762,9 @@ static CGFloat NotificationSectionSeparator     = 10;
                             
                             [WPToast showToastWithMessage:message andImage:image];
                         }
-                        failure:nil];
+                        failure:^(NSError *error) {
+                            [self handleReplyErrorWithBlock:block content:content];
+                        }];
     
     self.replyTextView.text = [NSString string];
     [self.replyTextView resignFirstResponder];
@@ -771,6 +773,21 @@ static CGFloat NotificationSectionSeparator     = 10;
     UIImage *image      = [UIImage imageNamed:NotificationReplyToastImage];
     
     [WPToast showToastWithMessage:message andImage:image];
+}
+
+- (void)handleReplyErrorWithBlock:(NotificationBlock *)block content:(NSString *)content
+{
+    [UIAlertView showWithTitle:NSLocalizedString(@"Sorry", nil)
+                       message:NSLocalizedString(@"There has been an unexpected error while sending your comment reply", nil)
+             cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+             otherButtonTitles:@[ NSLocalizedString(@"Retry", nil) ]
+                      tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                          if (buttonIndex == alertView.cancelButtonIndex) {
+                              return;
+                          }
+                          
+                          [self replyCommentWithContent:content block:block];
+                      }];
 }
 
 
