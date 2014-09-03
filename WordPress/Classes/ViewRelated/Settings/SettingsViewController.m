@@ -188,11 +188,6 @@ CGFloat const blavatarImageViewSize = 43.f;
 	}
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-	return nil;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
 	static const CGFloat kDefaultFooterHeight = 16.0f;
