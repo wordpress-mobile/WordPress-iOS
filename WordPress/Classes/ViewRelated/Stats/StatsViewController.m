@@ -151,7 +151,11 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
                                                destructiveButtonTitle:nil
                                                     otherButtonTitles:NSLocalizedString(@"Use this site", @""), nil];
-    [actionSheet showFromTabBar:self.tabBarController.tabBar];
+    if (IS_IPAD) {
+        [actionSheet showFromBarButtonItem:sender animated:YES];
+    } else {
+        [actionSheet showFromTabBar:self.tabBarController.tabBar];
+    }
 }
 
 - (IBAction)doneButtonTapped:(id)sender
