@@ -1,4 +1,5 @@
 #import "WordPressActivity.h"
+#import "WPLegacyEditPageViewController.h"
 #import "WPPostViewController.h"
 
 @interface WordPressActivity () <WPEditorViewControllerDelegate>
@@ -55,18 +56,37 @@
 - (UIViewController *)activityViewController
 {
     NSString * content = [self.summary stringByAppendingString:[NSString stringWithFormat:@"\n\n <a href=\"%@\">%@</a>", self.URL, self.URL]];
+	
+	__weak __typeof(self) weakSelf = self;
+	
+	UINavigationController *navController = nil;
+	
+	if ([WPPostViewController isNewEditorEnabled]) {
+		WPPostViewController * editPostViewController = [[WPPostViewController alloc] initWithTitle:self.title andContent:content andTags:self.tags andImage:nil];
+		editPostViewController.onClose = ^(){
+			[weakSelf activityDidFinish:YES];
+		};
 
-    __weak __typeof(self) weakSelf = self;
-    WPPostViewController * editPostViewController = [[WPPostViewController alloc] initWithTitle:self.title andContent:content andTags:self.tags andImage:nil];
-    editPostViewController.onClose = ^(){
-        [weakSelf activityDidFinish:YES];
-    };
-
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-    navController.modalPresentationStyle = UIModalPresentationFullScreen;
-    navController.navigationBar.translucent = NO;
-    navController.restorationIdentifier = WPEditorNavigationRestorationID;
-    navController.restorationClass = [WPPostViewController class];
+		navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+		navController.modalPresentationStyle = UIModalPresentationFullScreen;
+		navController.navigationBar.translucent = NO;
+		navController.restorationIdentifier = WPEditorNavigationRestorationID;
+		navController.restorationClass = [WPPostViewController class];
+	} else {
+		WPLegacyEditPostViewController * editPostViewController = [[WPLegacyEditPostViewController alloc] initWithTitle:self.title
+																											 andContent:content
+																												andTags:self.tags
+																											   andImage:nil];
+		editPostViewController.onClose = ^(){
+			[weakSelf activityDidFinish:YES];
+		};
+		
+		navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+		navController.modalPresentationStyle = UIModalPresentationFullScreen;
+		navController.navigationBar.translucent = NO;
+		navController.restorationIdentifier = WPEditorNavigationRestorationID;
+		navController.restorationClass = [WPLegacyEditPostViewController class];
+	}
 
     return navController;
 }
