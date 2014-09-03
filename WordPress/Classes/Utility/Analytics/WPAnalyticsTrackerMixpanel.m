@@ -325,7 +325,7 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
         case WPAnalyticsStatEditorTappedImage:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Tapped Image Button"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_tapped_image"];
-            [instructions setCurrentDateForPeopleProperty:@"last_time_tapped_image"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_tapped_image_in_editor"];
             break;
         case WPAnalyticsStatEditorTappedBold:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Tapped Bold Button"];
@@ -333,7 +333,7 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             [instructions setCurrentDateForPeopleProperty:@"last_time_tapped_bold"];
             break;
         case WPAnalyticsStatEditorTappedItalic:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Tapped Italic Button"];
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Tapped Italics Button"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_tapped_italic"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_tapped_italic"];
             break;
