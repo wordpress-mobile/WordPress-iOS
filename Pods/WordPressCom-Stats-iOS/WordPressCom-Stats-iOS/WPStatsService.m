@@ -30,7 +30,7 @@
     return self;
 }
 
-- (void)retrieveStatsWithCompletionHandler:(StatsCompletion)completion failureHandler:(void (^)(NSError *error))failureHandler
+- (void)retrieveAllStatsWithCompletionHandler:(StatsCompletion)completion failureHandler:(void (^)(NSError *error))failureHandler
 {
     void (^failure)(NSError *error) = ^void (NSError *error) {
         DDLogError(@"Error while retrieving stats: %@", error);
@@ -50,6 +50,20 @@
                        andYesterdayDate:yesterday
                   withCompletionHandler:completion
                          failureHandler:failure];
+}
+
+- (void)retrieveTodayStatsWithCompletionHandler:(void (^)(WPStatsSummary *))completion failureHandler:(void (^)(NSError *))failureHandler
+{
+    void (^failure)(NSError *error) = ^void (NSError *error) {
+        DDLogError(@"Error while retrieving stats: %@", error);
+        
+        if (failureHandler) {
+            failureHandler(error);
+        }
+    };
+    
+    [self.remote fetchSummaryStatsForTodayWithCompletionHandler:completion
+                                                 failureHandler:failure];
 }
 
 - (WPStatsServiceRemote *)remote

@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "WPTableViewController.h"
 
-@class EditPostViewController;
+@class WPPostViewController;
 
 @interface PostsViewController : WPTableViewController <NSFetchedResultsControllerDelegate>
 
