@@ -43,7 +43,7 @@ static CGFloat kNormalAlpha = 1.0f;
 
 - (UIEdgeInsets)alignmentRectInsets
 {
-	// DRM: keep an eye on this on different iOS versions.
+	// IMPORTANT: Keep an eye on this on different iOS versions.  This spacing is for iOS 7 and 8.
 	static const CGFloat kDefaultSpacing = 9.0f;
 	
 	UIEdgeInsets insets = UIEdgeInsetsZero;
