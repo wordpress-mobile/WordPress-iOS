@@ -1270,9 +1270,9 @@ NSInteger const kMeTabIndex                                     = 2;
 		NSString* statusString = nil;
 		
 		if (available) {
-			statusString = @"Visual Editor added to Settings";
+			statusString = NSLocalizedString(@"Visual Editor added to Settings", nil);
 		} else {
-			statusString = @"Visual Editor removed from Settings";
+			statusString = NSLocalizedString(@"Visual Editor removed from Settings", nil);
 		}
 		
 		[SVProgressHUD showSuccessWithStatus:statusString];
