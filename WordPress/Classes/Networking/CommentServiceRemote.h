@@ -7,14 +7,6 @@
 
 
 /**
- Loads the comment with the specified ID, associated with a blog
- */
-- (void)getCommentWithID:(NSNumber *)commentID
-                 forBlog:(Blog *)blog
-                 success:(void (^)(RemoteComment *comment))success
-                 failure:(void (^)(NSError *error))failure;
-
-/**
  Loads all of the comments associated with a blog
  */
 - (void)getCommentsForBlog:(Blog *)blog
