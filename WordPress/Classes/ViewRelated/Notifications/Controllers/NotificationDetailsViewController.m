@@ -134,9 +134,9 @@ static CGFloat NotificationSectionSeparator     = 10;
     self.bodySectionIndex   = NotificationSectionBody;
     
     if (self.note.headerBlockGroup == nil) {
-        --_sectionCount;
-        --_headerSectionIndex;
-        --_bodySectionIndex;
+        self.sectionCount--;
+        self.headerSectionIndex--;
+        self.bodySectionIndex--;
     }
     
     [self.tableView reloadData];
