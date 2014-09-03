@@ -96,11 +96,6 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     [sharedDefaults setObject:self.siteID forKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
     [sharedDefaults setObject:self.blog.blogName forKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
     
-    // Temporarily left this line in to support simulator testing
-    if (TARGET_IPHONE_SIMULATOR) {
-        [sharedDefaults setObject:self.oauth2Token forKey:@"WordPressTodayWidgetOAuth2Token"];
-    }
-    
     NSError *error;
     [SFHFKeychainUtils storeUsername:WPStatsTodayWidgetOAuth2TokenKeychainUsername
                          andPassword:self.oauth2Token
@@ -163,6 +158,48 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 {
     if (self.dismissBlock) {
         self.dismissBlock();
+    }
+}
+
+#pragma mark - Public Class methods
+
++ (void)removeTodayWidgetConfiguration
+{
+    if (NSClassFromString(@"NCWidgetController") == nil) {
+        return;
+    }
+    
+    NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
+    [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey];
+    [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
+    [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
+    
+    [SFHFKeychainUtils deleteItemForUsername:WPStatsTodayWidgetOAuth2TokenKeychainUsername
+                              andServiceName:WPStatsTodayWidgetOAuth2TokenKeychainServiceName
+                                 accessGroup:WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup
+                                       error:nil];
+    
+    // Turns the widget on for this site
+    [[NCWidgetController widgetController] setHasContent:NO forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
+}
+
++ (void)hideTodayWidgetIfNotConfigured
+{
+    if (NSClassFromString(@"NCWidgetController") == nil) {
+        return;
+    }
+
+    NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
+    NSString *siteId = [sharedDefaults stringForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
+    NSString *oauth2Token = [SFHFKeychainUtils getPasswordForUsername:WPStatsTodayWidgetOAuth2TokenKeychainUsername
+                                                       andServiceName:WPStatsTodayWidgetOAuth2TokenKeychainServiceName
+                                                          accessGroup:WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup
+                                                                error:nil];
+    
+    if (siteId.length == 0 || oauth2Token.length == 0) {
+        [[NCWidgetController widgetController] setHasContent:NO forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
+    } else {
+        [[NCWidgetController widgetController] setHasContent:YES forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
     }
 }
 
