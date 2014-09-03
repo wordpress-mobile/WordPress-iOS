@@ -460,7 +460,7 @@ typedef NS_ENUM(NSInteger, CommentViewActionIndex) {
 - (void)composeViewDidStartAtMention:(InlineComposeView *)view
 {
     NSNumber *siteID = self.comment.blog.blogID;
-    if ([[SuggestionService shared] shouldShowSuggestionsPageForSiteID:siteID]) {
+    if (self.comment.blog.isWPcom && [[SuggestionService shared] shouldShowSuggestionsPageForSiteID:siteID]) {
         SuggestionsTableViewController *suggestionsController = [[SuggestionsTableViewController alloc] initWithSiteID:siteID];
         suggestionsController.delegate = self;
         [self.navigationController pushViewController:suggestionsController animated:YES];

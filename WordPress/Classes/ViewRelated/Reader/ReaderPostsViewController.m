@@ -1189,7 +1189,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)composeViewDidStartAtMention:(InlineComposeView *)view
 {
     NSNumber *siteID = self.commentPublisher.post.siteID;
-    if ([[SuggestionService shared] shouldShowSuggestionsPageForSiteID:siteID]) {
+    if (self.commentPublisher.post.isWPCom && [[SuggestionService shared] shouldShowSuggestionsPageForSiteID:siteID]) {
         SuggestionsTableViewController *suggestionsController = [[SuggestionsTableViewController alloc] initWithSiteID:siteID];
         suggestionsController.delegate = self;
         [self.navigationController pushViewController:suggestionsController animated:YES];
