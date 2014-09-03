@@ -1,3 +1,4 @@
+#import <WordPressCom-Analytics-iOS/WPAnalytics.h>
 #import "WPStatsViewController.h"
 #import "WPStatsButtonCell.h"
 #import "WPStatsCounterCell.h"
@@ -199,7 +200,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         DDLogError(@"Stats: Error fetching stats %@", error);
     };
     
-    [self.statsService retrieveStatsWithCompletionHandler:^(WPStatsSummary *summary, NSDictionary *topPosts, NSDictionary *clicks, NSDictionary *countryViews, NSDictionary *referrers, NSDictionary *searchTerms, WPStatsViewsVisitors *viewsVisitors) {
+    [self.statsService retrieveAllStatsWithCompletionHandler:^(WPStatsSummary *summary, NSDictionary *topPosts, NSDictionary *clicks, NSDictionary *countryViews, NSDictionary *referrers, NSDictionary *searchTerms, WPStatsViewsVisitors *viewsVisitors) {
         self.statModels[@(StatsSectionVisitors)] = summary;
         self.statModels[@(StatsSectionVisitorsGraph)] = viewsVisitors;
         self.statModels[@(StatsSectionTopPosts)] = topPosts;
@@ -377,10 +378,12 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
         case StatsSectionLinkToWebview:
         {
             if ([self.statsDelegate respondsToSelector:@selector(statsViewController:didSelectViewWebStatsForSiteID:)]) {
+                [WPAnalytics track:WPAnalyticsStatStatsScrolledToBottom];
                 WPStatsLinkToWebviewCell *cell = [tableView dequeueReusableCellWithIdentifier:LinkToWebviewCellIdentifier];
                 [cell configureForSection:StatsSectionLinkToWebview];
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 cell.onTappedLinkToWebview = ^{
+                    [WPAnalytics track:WPAnalyticsStatStatsOpenedWebVersion];
                     [self.statsDelegate statsViewController:self didSelectViewWebStatsForSiteID:self.siteID];
                 };
                 return cell;
@@ -405,7 +408,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     WPStatsSummary *summary = _statModels[@(StatsSectionVisitors)];
     switch (index) {
         case TotalFollowersShareRowContentPost:
-            title = NSLocalizedString(@"Content", @"Stats - Title for the data cell");
+            title = nil;
             leftLabel = NSLocalizedString(@"Posts", @"Stats - Label for the count");
             leftCount = summary.totalPosts;
             break;
@@ -450,7 +453,7 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
             dataTitleRowRight = NSLocalizedString(@"Clicks", nil);
             break;
         case StatsSectionReferrers:
-            dataTitleRowLeft = NSLocalizedString(@"Referrers", nil);
+            dataTitleRowLeft = NSLocalizedString(@"Referrer", @"Stats - Referrer section label");
             break;
         case StatsSectionSearchTerms:
             dataTitleRowLeft = NSLocalizedString(@"Search", nil);
@@ -609,19 +612,30 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     NSString *title = [self headerTextForSection:section];
-    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    
+    if (title.length > 0) {
+        return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    } else {
+        return 0.0f;
+    }
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
-    header.title = [self headerTextForSection:section];
-    return header;
+    NSString *headerText = [self headerTextForSection:section];
+    
+    if (headerText.length > 0) {
+        WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+        header.title = headerText;
+        return header;
+    } else {
+        return nil;
+    }
 }
 
 - (NSString *)headerTextForSection:(StatsSection)section {
     switch (section) {
         case StatsSectionVisitors:
-            return NSLocalizedString(@"Visitors and Views", @"Stats: Section title");
+            return nil;
         case StatsSectionTopPosts:
             return NSLocalizedString(@"Top Posts & Pages", @"Stats: Section title");
         case StatsSectionViewsByCountry:
@@ -676,6 +690,9 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
 
 - (void)statsGraphViewController:(WPStatsGraphViewController *)controller didSelectData:(NSArray *)data withXLocation:(CGFloat)xLocation
 {
+    NSDictionary *properties = @{ @"unit" : [self currentUnitDescription]};
+    [WPAnalytics track:WPAnalyticsStatStatsTappedBarChart withProperties:properties];
+    
     self.showingGraphToast = YES;
     self.graphToastView.xOffset = xLocation;
     self.graphToastView.viewCount = [data[0][@"value"] unsignedIntegerValue];
@@ -693,6 +710,24 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
     // Causes table rows to be redrawn if heights have changed
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
+}
+
+- (NSString *)currentUnitDescription
+{
+    switch (self.graphViewController.currentUnit) {
+        case StatsViewsVisitorsUnitDay:
+            return @"day";
+            break;
+        case StatsViewsVisitorsUnitWeek:
+            return @"week";
+            break;
+        case StatsViewsVisitorsUnitMonth:
+            return @"month";
+            break;
+        default:
+            return @"";
+            break;
+    }
 }
 
 @end

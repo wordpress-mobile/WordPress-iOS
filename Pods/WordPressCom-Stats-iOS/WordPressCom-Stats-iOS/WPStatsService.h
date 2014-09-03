@@ -12,6 +12,8 @@ typedef void (^StatsCompletion)(WPStatsSummary *summary, NSDictionary *topPosts,
 
 - (instancetype)initWithSiteId:(NSNumber *)siteId siteTimeZone:(NSTimeZone *)timeZone andOAuth2Token:(NSString *)oauth2Token;
 
-- (void)retrieveStatsWithCompletionHandler:(StatsCompletion)completion failureHandler:(void (^)(NSError *error))failureHandler;
+- (void)retrieveAllStatsWithCompletionHandler:(StatsCompletion)completion failureHandler:(void (^)(NSError *error))failureHandler;
+
+- (void)retrieveTodayStatsWithCompletionHandler:(void (^)(WPStatsSummary *))completion failureHandler:(void (^)(NSError *))failureHandler;
 
 @end

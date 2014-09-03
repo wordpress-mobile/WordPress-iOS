@@ -322,6 +322,66 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_scheduled_post"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_scheduled_post"];
             break;
+        case WPAnalyticsStatEditorTappedImage:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Tapped Image Button"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_tapped_image"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_tapped_image_in_editor"];
+            break;
+        case WPAnalyticsStatEditorTappedBold:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Tapped Bold Button"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_tapped_bold"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_tapped_bold"];
+            break;
+        case WPAnalyticsStatEditorTappedItalic:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Tapped Italics Button"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_tapped_italic"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_tapped_italic"];
+            break;
+        case WPAnalyticsStatEditorTappedStrikethrough:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Tapped Strikethrough Button"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_tapped_strikethrough"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_tapped_strikethrough"];
+            break;
+        case WPAnalyticsStatEditorTappedUnderline:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Tapped Underline Button"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_tapped_underline"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_tapped_underline"];
+            break;
+        case WPAnalyticsStatEditorTappedBlockquote:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Tapped Blockquote Button"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_tapped_blockquote"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_tapped_blockquote"];
+            break;
+        case WPAnalyticsStatEditorTappedUnorderedList:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Tapped Unordered List Button"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_tapped_unordered_list"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_tapped_unordered_list"];
+            break;
+        case WPAnalyticsStatEditorTappedOrderedList:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Tapped Ordered List Button"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_tapped_ordered_list"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_tapped_ordered_list"];
+            break;
+        case WPAnalyticsStatEditorTappedLink:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Tapped Link Button"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_tapped_link"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_tapped_link"];
+            break;
+        case WPAnalyticsStatEditorTappedUnlink:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Tapped Unlink Button"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_tapped_unlink"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_tapped_unlink"];
+            break;
+        case WPAnalyticsStatEditorTappedMore:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Tapped More Button"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_tapped_more"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_tapped_more"];
+            break;
+        case WPAnalyticsStatEditorTappedHTML:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Tapped HTML Button"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_tapped_html"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_tapped_html"];
+            break;
         case WPAnalyticsStatEditorClosed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Closed"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_closed"];
