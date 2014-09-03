@@ -16,8 +16,8 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view from its nib.
-        let sharedDefaults = NSUserDefaults(suiteName: "group.org.wordpress")
-        siteId = sharedDefaults.objectForKey("WordPressTodayWidgetSiteId") as NSNumber?
+        let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)
+        siteId = sharedDefaults.objectForKey(WPStatsTodayWidgetUserDefaultsSiteIdKey) as NSNumber?
         let oauth2Token = self.getOAuth2Token()
         visitorsLabel?.text = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
         viewsLabel?.text = NSLocalizedString("Views", comment: "Stats Views Label")
@@ -33,20 +33,20 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         super.viewWillDisappear(animated)
 
         var userDefaults = NSUserDefaults.standardUserDefaults()
-        userDefaults.setObject(self.siteName, forKey: "TodaySiteName")
-        userDefaults.setObject(self.visitorCount, forKey: "TodayVisitorCount")
-        userDefaults.setObject(self.viewCount, forKey: "TodayViewCount")
+        userDefaults.setObject(self.siteName, forKey: WPStatsTodayWidgetUserDefaultsSiteNameKey)
+        userDefaults.setObject(self.visitorCount, forKey: WPStatsTodayWidgetUserDefaultsVisitorCountKey)
+        userDefaults.setObject(self.viewCount, forKey: WPStatsTodayWidgetUserDefaultsViewCountKey)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
-        let sharedDefaults = NSUserDefaults(suiteName: "group.org.wordpress")
-        self.siteName = sharedDefaults.stringForKey("WordPressTodayWidgetSiteName") ?? ""
+        let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)
+        self.siteName = sharedDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
 
         let userDefaults = NSUserDefaults.standardUserDefaults()
-        self.visitorCount = userDefaults.stringForKey("TodayVisitorCount") ?? ""
-        self.viewCount = userDefaults.stringForKey("TodayViewCount") ?? ""
+        self.visitorCount = userDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsVisitorCountKey) ?? ""
+        self.viewCount = userDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsViewCountKey) ?? ""
         
         self.siteNameLabel?.text = self.siteName
         self.visitorsCountLabel?.text = self.visitorCount
@@ -69,10 +69,10 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         // If there's no update required, use NCUpdateResult.NoData
         // If there's an update, use NCUpdateResult.NewData
         
-        let sharedDefaults = NSUserDefaults(suiteName: "group.org.wordpress")
-        let siteId = sharedDefaults.objectForKey("WordPressTodayWidgetSiteId") as NSNumber?
-        self.siteName = sharedDefaults.stringForKey("WordPressTodayWidgetSiteName") ?? ""
-        let timeZoneName = sharedDefaults.stringForKey("WordPressTodayWidgetTimeZone")
+        let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)
+        let siteId = sharedDefaults.objectForKey(WPStatsTodayWidgetUserDefaultsSiteIdKey) as NSNumber?
+        self.siteName = sharedDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
+        let timeZoneName = sharedDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey)
         let oauth2Token = self.getOAuth2Token()
         
         if siteId == nil || timeZoneName == nil || oauth2Token == nil {
@@ -120,7 +120,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         
         var error:NSError?
         
-        var oauth2Token:NSString? = SFHFKeychainUtils.getPasswordForUsername("OAuth2Token", andServiceName: "TodayWidget", accessGroup: "3TMU3BH3NK.org.wordpress", error: &error)
+        var oauth2Token:NSString? = SFHFKeychainUtils.getPasswordForUsername(WPStatsTodayWidgetOAuth2TokenKeychainUsername, andServiceName: WPStatsTodayWidgetOAuth2TokenKeychainServiceName, accessGroup: WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup, error: &error)
         
         return oauth2Token
     }
