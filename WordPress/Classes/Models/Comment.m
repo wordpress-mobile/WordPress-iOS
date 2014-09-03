@@ -1,5 +1,10 @@
 #import "Comment.h"
 #import "ContextManager.h"
+#import "Blog.h"
+#import "BasePost.h"
+#import "NSString+XMLExtensions.h"
+#import "NSString+HTML.h"
+#import "NSString+Helpers.h"
 
 NSString * const CommentUploadFailedNotification = @"CommentUploadFailed";
 
@@ -15,7 +20,24 @@ NSString * const CommentStatusDraft = @"draft";
 
 @dynamic blog;
 @dynamic post;
+@dynamic author;
+@dynamic author_email;
+@dynamic author_ip;
+@dynamic author_url;
+@dynamic authorAvatarURL;
+@dynamic commentID;
+@dynamic content;
+@dynamic dateCreated;
+@dynamic depth;
+@dynamic hierarchy;
+@dynamic link;
+@dynamic parentID;
+@dynamic postID;
+@dynamic postTitle;
+@dynamic status;
+@dynamic type;
 @synthesize isNew;
+@synthesize attributedContent;
 
 #pragma mark - Helper methods
 
@@ -74,7 +96,18 @@ NSString * const CommentStatusDraft = @"draft";
     return date;
 }
 
+
 #pragma mark - WPContentViewProvider protocol
+
+- (NSString *)titleForDisplay
+{
+    return [self.postTitle stringByDecodingXMLCharacters];
+}
+
+- (NSString *)authorForDisplay
+{
+    return [[self.author trim] length] > 0 ? [[self.author stringByDecodingXMLCharacters] trim] : [self.author_email trim];
+}
 
 - (NSString *)blogNameForDisplay
 {
@@ -89,5 +122,38 @@ NSString * const CommentStatusDraft = @"draft";
     }
     return status;
 }
+
+- (NSString *)contentForDisplay
+{
+    // Unescape HTML characters and add <br /> tags
+    NSString *commentContent = [[self.content stringByDecodingXMLCharacters] trim];
+    // Don't add <br /> tags after an HTML tag, as DTCoreText will handle that spacing for us
+    NSRegularExpression *removeNewlinesAfterHtmlTags = [NSRegularExpression regularExpressionWithPattern:@"(?<=\\>)\n\n" options:0 error:nil];
+    commentContent = [removeNewlinesAfterHtmlTags stringByReplacingMatchesInString:commentContent options:0 range:NSMakeRange(0, [commentContent length]) withTemplate:@""];
+    commentContent = [commentContent stringByReplacingOccurrencesOfString:@"\n" withString:@"<br />"];
+
+    return commentContent;
+}
+
+- (NSString *)contentPreviewForDisplay
+{
+    return [[[self.content stringByDecodingXMLCharacters] stringByStrippingHTML] stringByNormalizingWhitespace];
+}
+
+- (NSURL *)avatarURLForDisplay
+{
+    return [NSURL URLWithString:self.authorAvatarURL];
+}
+
+- (NSString *)gravatarEmailForDisplay
+{
+    return [self.author_email trim];
+}
+
+- (NSDate *)dateForDisplay
+{
+    return self.dateCreated;
+}
+
 
 @end
