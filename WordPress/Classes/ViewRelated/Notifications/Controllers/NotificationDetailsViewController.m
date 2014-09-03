@@ -491,7 +491,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     //  NOTE:
     //
     //  DTAttributedLabel doesn't allow us to use *any* object as a DTLinkAttribute instance.
-    //  So, we loose the range metadata: is it a post? stats? comment?.
+    //  So, we lose the range metadata: is it a post? stats? comment?.
     //  In this step, we attempt to match the URL with any NotificationRange instance, contained in the note,
     //  and thus, recover the metadata!
     //
