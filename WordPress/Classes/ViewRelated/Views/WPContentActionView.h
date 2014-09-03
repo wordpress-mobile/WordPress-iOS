@@ -9,6 +9,12 @@
 @interface WPContentActionView : UIView
 
 /**
+ The object displaying the short date by default
+ - (void)refreshDate:(NSTimer *)timer can be used to override the title
+ */
+@property (nonatomic, strong) UIButton *timeButton;
+
+/**
  The object specifying the content (text, images, etc.) to display.
  */
 @property (nonatomic, weak) id<WPContentViewProvider>contentProvider;

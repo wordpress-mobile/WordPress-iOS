@@ -26,22 +26,16 @@
 #import "BlogService.h"
 #import "ReaderSiteService.h"
 
-static CGFloat const RPVCHeaderHeightPhone = 10.0;
 static CGFloat const RPVCBlockedCellHeight = 66.0;
-static CGFloat const RPVCEstimatedRowHeightIPhone = 400.0;
-static CGFloat const RPVCEstimatedRowHeightIPad = 600.0;
 
 NSString * const BlockedCellIdentifier = @"BlockedCellIdentifier";
-NSString * const FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
-NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier";
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
-@interface ReaderPostsViewController ()<WPTableImageSourceDelegate, ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate, UIActionSheetDelegate>
+@interface ReaderPostsViewController ()<ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, assign) BOOL hasMoreContent;
 @property (nonatomic, assign) BOOL loadingMore;
 @property (nonatomic, assign) BOOL viewHasAppeared;
-@property (nonatomic, strong) WPTableImageSource *featuredImageSource;
 @property (nonatomic, assign) CGFloat keyboardOffset;
 @property (nonatomic, assign) CGFloat lastOffset;
 @property (nonatomic, strong) WPAnimatedBox *animatedBox;
@@ -49,10 +43,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @property (nonatomic, strong) InlineComposeView *inlineComposeView;
 @property (nonatomic, strong) ReaderCommentPublisher *commentPublisher;
 @property (nonatomic, readonly) ReaderTopic *currentTopic;
-@property (nonatomic, strong) ReaderPostTableViewCell *cellForLayout;
-@property (nonatomic, strong) NSLayoutConstraint *cellForLayoutWidthConstraint;
+
 @property (nonatomic) BOOL infiniteScrollEnabled;
-@property (nonatomic, strong) NSMutableDictionary *cachedRowHeights;
 @property (nonatomic, strong) NSNumber *siteIDToBlock;
 @property (nonatomic, strong) NSNumber *postIDThatInitiatedBlock;
 @property (nonatomic, strong) UIActionSheet *actionSheet;
@@ -70,7 +62,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)dealloc
 {
-    self.featuredImageSource.delegate = nil;
     self.inlineComposeView.delegate = nil;
     self.inlineComposeView = nil;
     self.commentPublisher = nil;
@@ -94,30 +85,11 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
     [super viewDidLoad];
 
-    self.cachedRowHeights = [NSMutableDictionary dictionary];
-
-    [self configureCellSeparatorStyle];
-
     self.incrementalLoadingSupported = YES;
-
-    [self.tableView registerClass:[ReaderBlockedTableViewCell class] forCellReuseIdentifier:BlockedCellIdentifier];
-    [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:NoFeaturedImageCellIdentifier];
-    [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:FeaturedImageCellIdentifier];
 
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
 
-    [self configureCellForLayout];
-
-    CGFloat maxWidth;
-    if (IS_IPHONE) {
-        maxWidth = MAX(CGRectGetWidth(self.tableView.bounds), CGRectGetHeight(self.tableView.bounds));
-    } else {
-        maxWidth = WPTableViewFixedWidth;
-    }
-
-    CGFloat maxHeight = maxWidth * WPContentViewMaxImageHeightPercentage;
-    self.featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
-    self.featuredImageSource.delegate = self;
+    [self.tableView registerClass:[ReaderBlockedTableViewCell class] forCellReuseIdentifier:BlockedCellIdentifier];
 
     // Topics button
     UIBarButtonItem *button = nil;
@@ -218,57 +190,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self configureNoResultsView];
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    CGFloat width;
-    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
-        width = CGRectGetWidth(self.tableView.window.frame);
-    } else {
-        width = CGRectGetHeight(self.tableView.window.frame);
-    }
-    [self updateCellForLayoutWidthConstraint:width];
-    if (IS_IPHONE) {
-        [self.cachedRowHeights removeAllObjects];
-    }
-}
-
 #pragma mark - Instance Methods
-
-- (void)configureCellSeparatorStyle
-{
-    // Setting the separator style will cause the table view to redraw all its cells.
-    // We want to avoid this when we first load the tableview as there is a performance
-    // cost.  As a work around, unset the delegate and datasource, and restore them
-    // after setting the style.
-    self.tableView.delegate = nil;
-    self.tableView.dataSource = nil;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-}
-
-- (void)configureCellForLayout
-{
-    NSString *CellIdentifier = @"CellForLayoutIdentifier";
-    [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:CellIdentifier];
-    self.cellForLayout = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    [self updateCellForLayoutWidthConstraint:CGRectGetWidth(self.tableView.bounds)];
-}
-
-- (void)updateCellForLayoutWidthConstraint:(CGFloat)width
-{
-    UIView *contentView = self.cellForLayout.contentView;
-    if (self.cellForLayoutWidthConstraint) {
-        [contentView removeConstraint:self.cellForLayoutWidthConstraint];
-    }
-    NSDictionary *views = NSDictionaryOfVariableBindings(contentView);
-    NSDictionary *metrics = @{@"width":@(width)};
-    self.cellForLayoutWidthConstraint = [[NSLayoutConstraint constraintsWithVisualFormat:@"[contentView(width)]"
-                                                                             options:0
-                                                                             metrics:metrics
-                                                                               views:views] firstObject];
-    [contentView addConstraint:self.cellForLayoutWidthConstraint];
-}
 
 - (ReaderTopic *)currentTopic
 {
@@ -700,7 +622,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
     ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
     BOOL shouldShowAttributionMenu = ([self isCurrentTopicFreshlyPressed] || (self.currentTopic.type != ReaderTopicTypeList)) ? YES : NO;
-    cell.postView.shouldShowAttributionMenu = shouldShowAttributionMenu;
+    [(ReaderPostContentView *)cell.postView setShouldShowAttributionMenu:shouldShowAttributionMenu];
     [cell configureCell:post];
     [self setImageForPost:post forCell:cell indexPath:indexPath];
     [self setAvatarForPost:post forCell:cell indexPath:indexPath];
@@ -725,50 +647,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [cell setLabelAttributedText:attributedStr];
 }
 
-
-- (CGSize)sizeForFeaturedImage
-{
-    CGSize imageSize = CGSizeZero;
-    imageSize.width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
-    imageSize.height = round(imageSize.width * WPContentViewMaxImageHeightPercentage);
-    return imageSize;
-}
-
-- (void)preloadImagesForCellsAfterIndexPath:(NSIndexPath *)indexPath
-{
-    NSInteger numberToPreload = 2; // keep the number small else they compete and slow each other down.
-    for (NSInteger i = 1; i <= numberToPreload; i++) {
-        NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:indexPath.row + i inSection:indexPath.section];
-        if ([self.tableView numberOfRowsInSection:indexPath.section] > nextIndexPath.row) {
-            ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:nextIndexPath];
-            NSURL *imageURL = [post featuredImageURLForDisplay];
-            if (!imageURL) {
-                // No image to feature.
-                continue;
-            }
-
-            UIImage *image = [self imageForURL:imageURL];
-            if (image) {
-                // already cached.
-                continue;
-            } else {
-                [self.featuredImageSource fetchImageForURL:imageURL
-                                                  withSize:[self sizeForFeaturedImage]
-                                                 indexPath:nextIndexPath
-                                                 isPrivate:post.isPrivate];
-            }
-        }
-    }
-}
-
-- (UIImage *)imageForURL:(NSURL *)imageURL
-{
-    if (!imageURL) {
-        return nil;
-    }
-    return [self.featuredImageSource imageForURL:imageURL withSize:[self sizeForFeaturedImage]];
-}
-
 - (void)setAvatarForPost:(ReaderPost *)post forCell:(ReaderPostTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
 {
     if ([cell isEqual:self.cellForLayout]) {
@@ -788,27 +666,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
                 [cell.postView setAvatarImage:image];
             }
         }];
-    }
-}
-
-- (void)setImageForPost:(ReaderPost *)post forCell:(ReaderPostTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
-{
-    if ([cell isEqual:self.cellForLayout]) {
-        return;
-    }
-
-    NSURL *imageURL = [post featuredImageURLForDisplay];
-    if (!imageURL) {
-        return;
-    }
-    UIImage *image = [self imageForURL:imageURL];
-    if (image) {
-        [cell.postView setFeaturedImage:image];
-    } else {
-        [self.featuredImageSource fetchImageForURL:imageURL
-                                          withSize:[self sizeForFeaturedImage]
-                                         indexPath:indexPath
-                                         isPrivate:post.isPrivate];
     }
 }
 
@@ -953,78 +810,33 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
     if ([post isSiteBlocked]) {
         cell = [tableView dequeueReusableCellWithIdentifier:BlockedCellIdentifier];
-    } else if ([post featuredImageURLForDisplay]) {
-        cell = [tableView dequeueReusableCellWithIdentifier:FeaturedImageCellIdentifier];
-    } else {
-        cell = [tableView dequeueReusableCellWithIdentifier:NoFeaturedImageCellIdentifier];
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        [self configureCell:cell atIndexPath:indexPath];
     }
-
-    cell.accessoryType = UITableViewCellAccessoryNone;
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-    [self configureCell:cell atIndexPath:indexPath];
+    else {
+        cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
+    }
 
     return cell;
 }
 
-- (void)cacheHeight:(CGFloat)height forIndexPath:(NSIndexPath *)indexPath
-{
-    NSString *key = [NSString stringWithFormat:@"%i", indexPath.row];
-    [self.cachedRowHeights setObject:@(height) forKey:key];
-}
-
-- (NSNumber *)cachedHeightForIndexPath:(NSIndexPath *)indexPath
-{
-    NSString *key = [NSString stringWithFormat:@"%i", indexPath.row];
-    return [self.cachedRowHeights numberForKey:key];
-}
-
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSNumber *height = [self cachedHeightForIndexPath:indexPath];
-    if (height) {
-        return [height floatValue];
-    }
-
     ReaderPost *post = [self.resultsController.fetchedObjects objectAtIndex:indexPath.row];
     if (post.isSiteBlocked) {
         return RPVCBlockedCellHeight;
     }
-    return IS_IPAD ? RPVCEstimatedRowHeightIPad : RPVCEstimatedRowHeightIPhone;
+    return [super tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSNumber *cachedHeight = [self cachedHeightForIndexPath:indexPath];
-    if (cachedHeight) {
-        return [cachedHeight floatValue];
-    }
-
     ReaderPost *post = [self.resultsController.fetchedObjects objectAtIndex:indexPath.row];
     if (post.isSiteBlocked) {
         return RPVCBlockedCellHeight;
     }
 
-    [self configureCell:self.cellForLayout atIndexPath:indexPath];
-    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
-    CGSize size = [self.cellForLayout sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
-    CGFloat height = ceil(size.height) + 1;
-
-    [self cacheHeight:height forIndexPath:indexPath];
-    return height;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return [[UIView alloc] initWithFrame:CGRectZero];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if (IS_IPHONE) {
-        return RPVCHeaderHeightPhone;
-    }
-    return [super tableView:tableView heightForHeaderInSection:section];
+    return [super tableView:tableView heightForRowAtIndexPath:indexPath];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1044,13 +856,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self.navigationController pushViewController:detailController animated:YES];
 
     [WPAnalytics track:WPAnalyticsStatReaderOpenedArticle];
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [super tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
-    // Preload here to avoid unnecessary preload calls when fetching cells for reasons other than for display.
-    [self preloadImagesForCellsAfterIndexPath:indexPath];
 }
 
 #pragma mark - NSFetchedResultsController overrides
@@ -1144,22 +949,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     return tabBarSize;
 }
-
-#pragma mark - WPTableImageSourceDelegate
-
-- (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath
-{
-    ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-
-    // Don't do anything if the cell is out of view or out of range
-    // (this is a safety check in case the Reader doesn't properly kill image requests when changing topics)
-    if (cell == nil) {
-        return;
-    }
-
-    [cell.postView setFeaturedImage:image];
-}
-
 
 #pragma mark - ActionSheet Delegate methods
 

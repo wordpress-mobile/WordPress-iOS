@@ -24,4 +24,15 @@
     return shortString;
 }
 
+- (NSString *)longString {
+    static NSDateFormatter *_dateFormatter = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _dateFormatter = [[NSDateFormatter alloc] init];
+        [_dateFormatter setDateFormat:@"MMM dd, yyyy, hh:mm a"];
+    });
+
+    return [_dateFormatter stringFromDate:self];
+}
+
 @end

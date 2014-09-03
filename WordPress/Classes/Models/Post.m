@@ -1,6 +1,17 @@
 #import "Post.h"
 #import "NSMutableDictionary+Helpers.h"
 #import "ContextManager.h"
+#import "WPAvatarSource.h"
+#import "NSString+Helpers.h"
+#import "NSString+XMLExtensions.h"
+
+NSUInteger const WPPostSummaryLength = 150;
+
+@interface Post() {
+    NSString *_summary;
+}
+
+@end
 
 @interface Post(InternalProperties)
 // We shouldn't need to store this, but if we don't send IDs on edits
@@ -34,6 +45,7 @@
 
 @dynamic geolocation, tags, postFormat;
 @dynamic categories;
+@dynamic authorAvatarURL;
 @synthesize specialType;
 
 #pragma mark - NSManagedObject subclass methods
@@ -52,33 +64,42 @@
     return @"postid";
 }
 
-- (void)updateFromDictionary:(NSDictionary *)postInfo
-{
-    self.postTitle      = [postInfo objectForKey:@"title"];
+- (void)updateFromDictionary:(NSDictionary *)postInfo {
+    self.postTitle = postInfo[@"title"];
     //keep attention: getPosts and getPost returning IDs in different types
-    if ([[postInfo objectForKey:@"postid"] isKindOfClass:[NSString class]]) {
-      self.postID         = [[postInfo objectForKey:@"postid"] numericValue];
+    if ([postInfo[@"postid"] isKindOfClass:[NSString class]]) {
+        self.postID = [postInfo[@"postid"] numericValue];
     } else {
-      self.postID         = [postInfo objectForKey:@"postid"];
+        self.postID = postInfo[@"postid"];
     }
 
-    self.content        = [postInfo objectForKey:@"description"];
-    if ([[postInfo objectForKey:@"date_created_gmt"] isKindOfClass:[NSDate class]]) {
-        self.date_created_gmt    = [postInfo objectForKey:@"date_created_gmt"];
+    self.content = postInfo[@"description"];
+    if ([postInfo[@"date_created_gmt"] isKindOfClass:[NSDate class]]) {
+        self.date_created_gmt = postInfo[@"date_created_gmt"];
     } else {
-        self.dateCreated = [postInfo objectForKey:@"dateCreated"];
+        self.dateCreated = postInfo[@"dateCreated"];
     }
-    self.status         = [postInfo objectForKey:@"post_status"];
-    NSString *password = [postInfo objectForKey:@"wp_password"];
+    self.status = postInfo[@"post_status"];
+    NSString *password = postInfo[@"wp_password"];
     if ([password isEqualToString:@""]) {
         password = nil;
     }
     self.password = password;
-    self.tags           = [postInfo objectForKey:@"mt_keywords"];
-    self.permaLink      = [postInfo objectForKey:@"permaLink"];
-    self.mt_excerpt        = [postInfo objectForKey:@"mt_excerpt"];
-    self.mt_text_more    = [postInfo objectForKey:@"mt_text_more"];
-    NSString *wp_more_text = [postInfo objectForKey:@"wp_more_text"];
+
+    if (postInfo[@"wp_author_display_name"]) {
+        self.author = postInfo[@"wp_author_display_name"];
+    }
+    else if (postInfo[@"author"]) {
+        NSDictionary *author = postInfo[@"author"];
+        self.author = author[@"name"];
+        self.authorAvatarURL = author[@"avatar_URL"];
+    }
+
+    self.tags = postInfo[@"mt_keywords"];
+    self.permaLink = postInfo[@"permaLink"];
+    self.mt_excerpt = postInfo[@"mt_excerpt"];
+    self.mt_text_more = postInfo[@"mt_text_more"];
+    NSString *wp_more_text = postInfo[@"wp_more_text"];
     if ([wp_more_text length] > 0) {
         wp_more_text = [@" " stringByAppendingString:wp_more_text]; // Give us a little padding.
     }
@@ -86,16 +107,16 @@
         self.content = [NSString stringWithFormat:@"%@\n\n<!--more%@-->\n\n%@", self.content, wp_more_text, self.mt_text_more];
         self.mt_text_more = nil;
     }
-    self.wp_slug        = [postInfo objectForKey:@"wp_slug"];
-    self.post_thumbnail = [[postInfo objectForKey:@"wp_post_thumbnail"] numericValue];
+    self.wp_slug = postInfo[@"wp_slug"];
+    self.post_thumbnail = [postInfo[@"wp_post_thumbnail"] numericValue];
     if (self.post_thumbnail != nil && [self.post_thumbnail intValue] == 0) {
         self.post_thumbnail = nil;
     }
-    self.postFormat        = [postInfo objectForKey:@"wp_post_format"];
+    self.postFormat = postInfo[@"wp_post_format"];
 
-    self.remoteStatus   = AbstractPostRemoteStatusSync;
-    if ([postInfo objectForKey:@"categories"]) {
-        [self setCategoriesFromNames:[postInfo objectForKey:@"categories"]];
+    self.remoteStatus = AbstractPostRemoteStatusSync;
+    if (postInfo[@"categories"]) {
+        [self setCategoriesFromNames:postInfo[@"categories"]];
     }
 
     self.latitudeID = nil;
@@ -149,11 +170,11 @@
 {
     NSDictionary *allFormats = self.blog.postFormats;
     NSString *formatText = self.postFormat;
-    if ([allFormats objectForKey:self.postFormat]) {
-        formatText = [allFormats objectForKey:self.postFormat];
+    if (allFormats[self.postFormat]) {
+        formatText = allFormats[self.postFormat];
     }
-    if ((formatText == nil || [formatText isEqualToString:@""]) && [allFormats objectForKey:@"standard"]) {
-        formatText = [allFormats objectForKey:@"standard"];
+    if ((formatText == nil || [formatText isEqualToString:@""]) && allFormats[@"standard"]) {
+        formatText = allFormats[@"standard"];
     }
     return formatText;
 }
@@ -254,6 +275,41 @@
     return false;
 }
 
+#pragma mark - Avatar
+
+- (UIImage *)cachedAvatarWithSize:(CGSize)size
+{
+    NSString *hash;
+    WPAvatarSourceType type = [self avatarSourceTypeWithHash:&hash];
+    if (!hash) {
+        return nil;
+    }
+    return [[WPAvatarSource sharedSource] cachedImageForAvatarHash:hash ofType:type withSize:size];
+}
+
+- (void)fetchAvatarWithSize:(CGSize)size success:(void (^)(UIImage *image))success
+{
+    NSString *hash;
+    WPAvatarSourceType type = [self avatarSourceTypeWithHash:&hash];
+
+    if (hash) {
+        [[WPAvatarSource sharedSource] fetchImageForAvatarHash:hash ofType:type withSize:size success:success];
+    } else if (success) {
+        success(nil);
+    }
+}
+
+- (WPAvatarSourceType)avatarSourceTypeWithHash:(NSString **)hash
+{
+    if (self.authorAvatarURL) {
+        NSURL *avatarURL = [NSURL URLWithString:self.authorAvatarURL];
+        if (avatarURL) {
+            return [[WPAvatarSource sharedSource] parseURL:avatarURL forAvatarHash:hash];
+        }
+    }
+    return WPAvatarSourceTypeUnknown;
+}
+
 #pragma mark - QuickPhoto
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification
 {
@@ -321,6 +377,28 @@
 - (void)setFeaturedImage:(Media *)featuredImage
 {
     self.post_thumbnail = featuredImage.mediaID;
+}
+
+- (NSURL *)featuredImageURLForDisplay
+{
+    return [NSURL URLWithString:self.featuredImage.remoteURL];
+}
+
+#pragma mark - WPContentViewProvider protocol
+
+- (NSString *)contentPreviewForDisplay
+{
+    if (!_summary) {
+        _summary = [self createSummaryFromContent:self.content];
+    }
+    return _summary;
+}
+
+- (NSString *)createSummaryFromContent:(NSString *)string
+{
+    string = [[[string stringByRemovingScriptsAndStrippingHTML] stringByDecodingXMLCharacters] trim];
+    string = [string stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]];
+    return [string stringByEllipsizingWithMaxLength:WPPostSummaryLength preserveWords:YES];
 }
 
 @end
@@ -400,7 +478,7 @@
     DDLogMethod();
     // XML-RPC doesn't like empty post thumbnail ID's for new posts, but it's required to delete them on edit. see #1395 and #1507
     NSMutableDictionary *xmlrpcDictionary = [NSMutableDictionary dictionaryWithDictionary:[self XMLRPCDictionary]];
-    if ([[xmlrpcDictionary objectForKey:@"wp_post_thumbnail"] isEqual:@""]) {
+    if ([xmlrpcDictionary[@"wp_post_thumbnail"] isEqual:@""]) {
         [xmlrpcDictionary removeObjectForKey:@"wp_post_thumbnail"];
     }
     NSArray *parameters = [self.blog getXMLRPCArgsWithExtra:xmlrpcDictionary];

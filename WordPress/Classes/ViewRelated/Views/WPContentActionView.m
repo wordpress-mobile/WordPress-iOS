@@ -9,7 +9,6 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
 
 @property (nonatomic, strong) NSMutableArray *currentActionButtons;
 @property (nonatomic, strong) UIView *borderView;
-@property (nonatomic, strong) UIButton *timeButton;
 @property (nonatomic, strong) NSTimer *dateRefreshTimer;
 @property (nonatomic, assign) BOOL needsUpdateButtonConstraints;
 @property (nonatomic, strong) NSMutableArray *buttonConstraints;

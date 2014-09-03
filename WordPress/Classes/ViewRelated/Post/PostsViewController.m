@@ -1,26 +1,26 @@
 #import "WPTableViewControllerSubclass.h"
 #import "PostsViewController.h"
 #import "EditPostViewController.h"
-#import "NewPostTableViewCell.h"
+#import "PostTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
 #import "Post.h"
 #import "Constants.h"
 #import "BlogService.h"
 #import "ContextManager.h"
+#import "WPTableImageSource.h"
 
 #define TAG_OFFSET 1010
 
-@interface PostsViewController () {
+@interface PostsViewController () <PostContentViewDelegate, UIAlertViewDelegate> {
     BOOL _addingNewPost;
 }
+
+@property (strong, nonatomic) NSIndexPath *indexPathToBeDeleted;
 
 @end
 
 @implementation PostsViewController
-
-@synthesize anyMorePosts, drafts;
-//@synthesize resultsController;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -141,21 +141,15 @@
 #pragma mark -
 #pragma mark TableView delegate
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+- (void)configureCell:(PostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    return nil;
-}
+    Post *post = (Post *)[self.resultsController objectAtIndexPath:indexPath];
 
-- (void)configureCell:(NewPostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
-    Post *apost = (Post*) [self.resultsController objectAtIndexPath:indexPath];
-    cell.contentProvider = apost;
-    if (apost.remoteStatus == AbstractPostRemoteStatusPushing) {
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    } else {
-        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-    }
-    cell.accessoryType = UITableViewCellAccessoryNone;
+    [cell configureCell:post];
+    [self setAvatarForPost:post forCell:cell indexPath:indexPath];
+    [self setImageForPost:post forCell:cell indexPath:indexPath];
+
+    cell.postView.delegate = self;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -170,28 +164,8 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
-    CGFloat width = MIN(WPTableViewFixedWidth, CGRectGetWidth(tableView.frame));
-    return [NewPostTableViewCell rowHeightForContentProvider:post andWidth:width];
-}
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return YES;
-}
-
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleDelete;
-}
-
-- (void)tableView:(UITableView *)tableView
-        commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
-        forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self deletePostAtIndexPath:indexPath];
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return NO;
 }
 
 #pragma mark -
@@ -302,9 +276,17 @@
     }
 }
 
-- (Class)cellClass
+- (Class)cellClass {
+    return [PostTableViewCell class];
+}
+
+#pragma mark - NSFetchedResultsController overrides
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-    return [NewPostTableViewCell class];
+    [super controllerDidChangeContent:controller];
+    // Index paths may have changed. We don't want callbacks for stale paths.
+    [self.featuredImageSource invalidateIndexPaths];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller
@@ -320,11 +302,84 @@
             _addingNewPost = NO;
         }
     }
+
+    if (type == NSFetchedResultsChangeInsert || type == NSFetchedResultsChangeDelete) {
+        [self.cachedRowHeights removeAllObjects];
+    }
 }
 
 - (BOOL)userCanCreateEntity
 {
     return YES;
+}
+
+#pragma mark - Instance Methods
+
+- (void)setAvatarForPost:(Post *)post forCell:(PostTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
+{
+    if ([cell isEqual:self.cellForLayout]) {
+        return;
+    }
+
+    CGSize imageSize = CGSizeMake(WPContentViewAuthorAvatarSize, WPContentViewAuthorAvatarSize);
+    UIImage *image = [post cachedAvatarWithSize:imageSize];
+    if (image) {
+        [cell.postView setAvatarImage:image];
+    } else {
+        [cell.postView setAvatarImage:[UIImage imageNamed:@"gravatar"]];
+        [post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
+            if (!image) {
+                return;
+            }
+            if (cell == [self.tableView cellForRowAtIndexPath:indexPath]) {
+                [cell.postView setAvatarImage:image];
+            }
+        }];
+    }
+}
+
+#pragma mark - PostContentView delegate methods
+
+- (void)postView:(PostContentView *)postView didReceiveEditAction:(id)sender
+{
+    PostTableViewCell *cell = (PostTableViewCell *)[PostTableViewCell cellForSubview:sender];
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
+    if (post.remoteStatus == AbstractPostRemoteStatusPushing) {
+        // Don't allow editing while pushing changes
+        return;
+    }
+
+    [self editPost:post];
+}
+
+- (void)postView:(PostContentView *)postView didReceiveDeleteAction:(id)sender
+{
+    PostTableViewCell *cell = (PostTableViewCell *)[PostTableViewCell cellForSubview:sender];
+    self.indexPathToBeDeleted = [self.tableView indexPathForCell:cell];
+
+    NSString *message = NSLocalizedString(@"Are you sure you wish to move this post to trash?", nil);
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete Post", nil)
+                                                        message:message
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                              otherButtonTitles:NSLocalizedString(@"Delete Post", nil), nil];
+    [alertView show];
+}
+
+#pragma mark - UIAlertView delegate methods
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        self.indexPathToBeDeleted = nil;
+    }
+    else if (buttonIndex == 1) {
+        if (self.indexPathToBeDeleted) {
+            [self deletePostAtIndexPath:self.indexPathToBeDeleted];
+            self.indexPathToBeDeleted = nil;
+        }
+    }
 }
 
 @end

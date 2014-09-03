@@ -18,14 +18,7 @@ const CGFloat WPContentAttributionMenuSize = 30.0;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _avatarImageView = [self imageViewForAvatar];
-        [self addSubview:self.avatarImageView];
-
-        _attributionNameLabel = [self labelForAttributionName];
-        [self addSubview:self.attributionNameLabel];
-
-        _attributionLinkButton = [self buttonForAttributionLink];
-        [self addSubview:self.attributionLinkButton];
+        [self setupSubviews];
 
         _attributionMenuButton = [self buttonForAttributionMenu];
         [self addSubview:self.attributionMenuButton];
@@ -45,10 +38,6 @@ const CGFloat WPContentAttributionMenuSize = 30.0;
 
 - (void)setContentProvider:(id<WPContentViewProvider>)contentProvider
 {
-    if (_contentProvider == contentProvider) {
-        return;
-    }
-
     _contentProvider = contentProvider;
     [self configureView];
 }
@@ -123,6 +112,17 @@ const CGFloat WPContentAttributionMenuSize = 30.0;
 }
 
 #pragma mark - Subview factories
+
+- (void)setupSubviews {
+    _avatarImageView = [self imageViewForAvatar];
+    [self addSubview:self.avatarImageView];
+
+    _attributionNameLabel = [self labelForAttributionName];
+    [self addSubview:self.attributionNameLabel];
+
+    _attributionLinkButton = [self buttonForAttributionLink];
+    [self addSubview:self.attributionLinkButton];
+}
 
 - (UILabel *)labelForAttributionName
 {
