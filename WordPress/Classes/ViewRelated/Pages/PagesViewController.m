@@ -72,9 +72,9 @@
 {
     UINavigationController *navController;
     if ([WPPostViewController isNewEditorEnabled]) {
-        EditPageViewController *editPageiewController = [[EditPageViewController alloc] initWithPost:apost
+        EditPageViewController *editPageViewController = [[EditPageViewController alloc] initWithPost:apost
                                                                                                  mode:kWPPostViewControllerModeEdit];
-        navController = [[UINavigationController alloc] initWithRootViewController:editPageiewController];
+        navController = [[UINavigationController alloc] initWithRootViewController:editPageViewController];
         navController.restorationIdentifier = WPEditorNavigationRestorationID;
         navController.restorationClass = [WPPostViewController class];
     } else {
