@@ -84,10 +84,10 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 - (void)saveSiteDetailsForTodayWidget
 {
     // Save the token and site ID to shared user defaults for use in the today widget
-    NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.org.wordpress"];
-    [sharedDefaults setObject:self.siteTimeZone.name forKey:@"WordPressTodayWidgetTimeZone"];
-    [sharedDefaults setObject:self.siteID forKey:@"WordPressTodayWidgetSiteId"];
-    [sharedDefaults setObject:self.blog.blogName forKey:@"WordPressTodayWidgetSiteName"];
+    NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
+    [sharedDefaults setObject:self.siteTimeZone.name forKey:WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey];
+    [sharedDefaults setObject:self.siteID forKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
+    [sharedDefaults setObject:self.blog.blogName forKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
     
     // Temporarily left this line in to support simulator testing
     if (TARGET_IPHONE_SIMULATOR) {
@@ -95,10 +95,10 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     }
     
     NSError *error;
-    [SFHFKeychainUtils storeUsername:@"OAuth2Token"
+    [SFHFKeychainUtils storeUsername:WPStatsTodayWidgetOAuth2TokenKeychainUsername
                          andPassword:self.oauth2Token
-                      forServiceName:@"TodayWidget"
-                         accessGroup:@"3TMU3BH3NK.org.wordpress"
+                      forServiceName:WPStatsTodayWidgetOAuth2TokenKeychainServiceName
+                         accessGroup:WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup
                       updateExisting:YES
                                error:&error];
     if (error) {
