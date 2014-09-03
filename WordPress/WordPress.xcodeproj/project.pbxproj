@@ -3013,7 +3013,7 @@
 					"-Wno-format",
 				);
 				PRODUCT_NAME = WordPress;
-				PROVISIONING_PROFILE = "110b8b6e-e00b-4f2b-b575-d67b8ff15620";
+				PROVISIONING_PROFILE = "2620245c-c732-40d7-8e3e-7ec072e86563";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -3057,7 +3057,7 @@
 					"-Wno-format",
 				);
 				PRODUCT_NAME = WordPress;
-				PROVISIONING_PROFILE = "208b315d-7015-4087-8379-7a7a02685e80";
+				PROVISIONING_PROFILE = "83f5ccad-a92d-4158-9cb6-d3428fbba51d";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
@@ -3118,7 +3118,7 @@
 					"-Wno-format-security",
 				);
 				PRODUCT_NAME = WordPress;
-				PROVISIONING_PROFILE = "208b315d-7015-4087-8379-7a7a02685e80";
+				PROVISIONING_PROFILE = "83f5ccad-a92d-4158-9cb6-d3428fbba51d";
 				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -3184,7 +3184,7 @@
 					"-Wno-format",
 				);
 				PRODUCT_NAME = WordPress;
-				PROVISIONING_PROFILE = "74FADB78-88AD-4CB2-9225-24AA1D4D5319";
+				PROVISIONING_PROFILE = "6adee31b-c4b4-47a9-9b73-6a52cf91584d";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
@@ -3333,6 +3333,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "17367b9c-c421-466b-b4f9-d4acb1cf9eb4";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
 			};
