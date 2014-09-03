@@ -43,7 +43,7 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"OCPartialMockObject[%@]", NSStringFromClass(mockedClass)];
+	return [NSString stringWithFormat:@"OCPartialMockObject(%@)", NSStringFromClass(mockedClass)];
 }
 
 - (NSObject *)realObject
@@ -116,7 +116,8 @@
     class_addMethod(subclass, @selector(class), myObjectClassImp, objectClassTypes);
 
     /* Adding forwarder for all instance methods to allow for verify after run */
-    NSArray *whiteList = @[@"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:"];
+    NSArray *whiteList = @[@"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:",
+            @"allowsWeakReference", @"_isDeallocating", @"retainWeakReference", @"_tryRetain"];
     [NSObject enumerateMethodsInClass:mockedClass usingBlock:^(SEL selector) {
         if(![whiteList containsObject:NSStringFromSelector(selector)])
             [self setupForwarderForSelector:selector];

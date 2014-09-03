@@ -1,0 +1,1 @@
+PODS_INTEGRATIONTESTS_SIMPERIUM_OTHER_LDFLAGS = -framework CFNetwork -framework CoreData -framework CoreGraphics -framework Foundation -framework MobileCoreServices -framework Security -framework SystemConfiguration -framework UIKit

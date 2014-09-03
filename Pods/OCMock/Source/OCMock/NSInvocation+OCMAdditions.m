@@ -20,6 +20,19 @@
 
 @implementation NSInvocation(OCMAdditions)
 
+- (BOOL)hasCharPointerArgument
+{
+    NSMethodSignature *signature = [self methodSignature];
+    for(int i = 0; i < [signature numberOfArguments]; i++)
+    {
+        const char *argType = OCMTypeWithoutQualifiers([signature getArgumentTypeAtIndex:i]);
+        if(strcmp(argType, "*") == 0)
+            return NO;
+    }
+    return YES;
+}
+
+
 - (id)getArgumentAtIndexAsObject:(int)argIndex
 {
 	const char *argType = OCMTypeWithoutQualifiers([[self methodSignature] getArgumentTypeAtIndex:argIndex]);
@@ -127,6 +140,7 @@
 			return [NSNumber numberWithBool:value];
 		}
 		case '^':
+        case '*':
         {
             void *value = NULL;
             [self getArgument:&value atIndex:argIndex];

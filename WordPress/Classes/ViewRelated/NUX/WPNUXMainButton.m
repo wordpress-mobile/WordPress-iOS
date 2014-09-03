@@ -46,6 +46,7 @@
 
     activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     activityIndicator.hidesWhenStopped = YES;
+    activityIndicator.accessibilityIdentifier = @"activityIndicator";
     [self addSubview:activityIndicator];
 }
 

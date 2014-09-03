@@ -54,6 +54,9 @@
 int ddLogLevel                                                  = LOG_LEVEL_INFO;
 static NSString * const WPTabBarRestorationID                   = @"WPTabBarID";
 static NSString * const WPBlogListNavigationRestorationID       = @"WPBlogListNavigationID";
+#if INTEGRATION_TESTING
+#import <Subliminal/Subliminal.h>
+#endif
 static NSString * const WPReaderNavigationRestorationID         = @"WPReaderNavigationID";
 static NSString * const WPNotificationsNavigationRestorationID  = @"WPNotificationsNavigationID";
 static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracking_enabled";
@@ -179,6 +182,10 @@ NSInteger const kMeTabIndex                                     = 2;
 
     [self.window makeKeyAndVisible];
     [self showWelcomeScreenIfNeededAnimated:NO];
+    
+#if INTEGRATION_TESTING
+    [[SLTestController sharedTestController] runTests:[SLTest allTests] withCompletionBlock:nil];
+#endif
 
     return YES;
 }
@@ -490,6 +497,7 @@ NSInteger const kMeTabIndex                                     = 2;
     blogListNavigationController.navigationBar.translucent = NO;
     blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-blogs"];
     blogListNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-blogs-filled"];
+    blogListNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"");
     blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
     self.blogListViewController.title = NSLocalizedString(@"Me", @"");
     [blogListNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];

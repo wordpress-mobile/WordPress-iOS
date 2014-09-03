@@ -41,9 +41,9 @@ PODS:
     - DTFoundation/Core
   - EmailChecker (0.1)
   - Google-Diff-Match-Patch (0.0.1)
-  - google-plus-ios-sdk (1.5.1)
+  - google-plus-ios-sdk (1.7.0)
   - Helpshift (4.5.0)
-  - HockeySDK (3.5.5)
+  - HockeySDK (3.5.6)
   - JRSwizzle (1.0)
   - MGImageUtilities (0.0.1)
   - Mixpanel (2.3.1)
@@ -53,7 +53,7 @@ PODS:
     - NSLogger
   - NSObject-SafeExpectations (0.0.2)
   - NSURL+IDN (0.1)
-  - OCMock (3.0)
+  - OCMock (3.0.2)
   - OHHTTPStubs (1.1.1)
   - Reachability (3.1.1)
   - Simperium (0.6.8):
@@ -66,6 +66,7 @@ PODS:
     - JRSwizzle
     - SocketRocket
   - SocketRocket (0.3.1-beta2)
+  - Subliminal (1.1.0)
   - SVProgressHUD (1.0)
   - Taplytics (1.3.12)
   - UIAlertView+Blocks (0.8.1)
@@ -109,6 +110,7 @@ DEPENDENCIES:
   - Reachability (= 3.1.1)
   - Simperium (= 0.6.8)
   - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`, branch `master`)
+  - Subliminal
   - SVProgressHUD (~> 1.0)
   - Taplytics (~> 1.3.10)
   - UIDeviceIdentifier (~> 0.1)
@@ -142,9 +144,9 @@ SPEC CHECKSUMS:
   DTFoundation: 126729614911ae7dbab3dcc1c078f189943bee66
   EmailChecker: e909e6d113fac7ad5e3c304fabce30fc4a79c80e
   Google-Diff-Match-Patch: 1f9c0b972c351d9c0a4fee137eb96896460477cd
-  google-plus-ios-sdk: 98d76ce1f1edbfe8730628aafe017301a734042c
+  google-plus-ios-sdk: f613bd712196b435ecc098eed75afb3364bca177
   Helpshift: 6c34462c4b94b8882e837a5bff7989c3118df15f
-  HockeySDK: f9af97c2f5df4eb6ca6d2a9c408f2ff498edd608
+  HockeySDK: 27d8b411208f9d3f70c8f6695a8defa2a3465721
   JRSwizzle: 30da7a2c539a4ebf954b16d15f6dd8221c9f6fa5
   MGImageUtilities: ce03a910781d7e189814d668af340bc1c0238363
   Mixpanel: 9cc470a58346f60da8ce2982096bcc72b5a7372b
@@ -152,11 +154,12 @@ SPEC CHECKSUMS:
   NSLogger-CocoaLumberjack-connector: 8f659ea51386f0a0e8c2643bf9273010a83a15f5
   NSObject-SafeExpectations: c31276ef7209016849fc4e5c8ed5ae5453e1e208
   NSURL+IDN: 22633c0149b86d6391f32f23776bc0e6ecc532e2
-  OCMock: 6e6041173cf801f458ef66ec1a8fa3d974947335
+  OCMock: b9836ab89d8d5e66cbe6333f93857037c310ee62
   OHHTTPStubs: d6ace2645e4744a0ad6c5a72940999a5632037fb
   Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
   Simperium: d84cfae63c9f5d252fc5a7e614233ee3afe50280
   SocketRocket: b809068861cb66d871eb93a428696b1eb5451318
+  Subliminal: ed7811c592f738e99e0d89b80dbbeb08af14f1bf
   SVProgressHUD: 5034c6e22b8c2ca3e09402e48d41ed0340aa1c50
   Taplytics: d8f820afa67a73fd1ddccb1bc6144d10f2c3ad61
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2

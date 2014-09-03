@@ -1,0 +1,646 @@
+#!/bin/sh
+
+#  For details and documentation:
+#  http://github.com/inkling/Subliminal
+#
+#  Copyright 2013-2014 Inkling Systems, Inc.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+
+
+# `subliminal-test` builds a scheme contained in an Xcode project or Xcode workspace, 
+# then tests the product using Subliminal.
+#
+# Execute `subliminal-test` with no arguments to print usage.
+
+
+print_usage_and_fail () {
+	echo """
+subliminal-test (-project <project_path> | -workspace <workspace_path>) 
+		( -sim_device <device_type> | -hw_id <udid> )
+		[-build_tool <tool_name>] [-scheme <scheme_name>] [-sdk <sdk>] [-replacement_bundle_id <id>] [--quiet_build]
+		[-sim_version <version>] [-timeout <timeout>] [-output <output_dir>] 
+		[-e <variable> <value>]
+
+\`subliminal-test\` builds a scheme contained in an Xcode project or Xcode workspace,
+then tests the product using Subliminal.
+
+\`subliminal-test\` returns failure in the following conditions, as indicated by their error codes:
+
+  * 1 - the tests did not finish
+  * 2 - one or more tests failed
+  * 3 - the tests ran in a focused state (see \`+[SLTest isFocused]\`), because then only a subset of tests may have run
+  * 4 - the tests ran using a predetermined seed (see \`-[SLTestController runTests:usingSeed:withCompletionBlock:]\`),
+  	because the predetermined test order may have masked test pollution
+
+Otherwise, \`subliminal-test\` returns success (0).
+
+\`subliminal-test\` expects to be run:
+
+  * alongside the other scripts that were originally in \`/Supporting Files/CI\`;
+  * with Subliminal having been installed on the test machine, using \`rake install DOCS=no\`;
+  * and with \`instruments\` having been \"pre-authorized\" to take control of the application,
+  	as described here: https://github.com/inkling/Subliminal/wiki/Continuous-Integration#faq.
+
+Also make sure that your \"Integration Tests\" scheme is shared (in Xcode, click \`Product -> Schemes -> Manage Schemes…\`
+and then click the \"Shared\" checkbox next to the scheme) and checked into source control:
+the server will not be able to autocreate the scheme, as you may have done locally.
+
+Required arguments:
+	-project <project_path>		Build the project at the specified path.
+					Either this or \`-workspace\` must be specified.
+
+	-workspace <workspace_path>	Build the workspace at the specified path.
+					Either this or \`-project\` must be specified.
+
+	-sim_device <device_type>	The type of device to simulate.
+					Acceptable values are listed by executing \`instruments -s devices\`:
+					given a listing like \"iPad - Simulator - iOS 7.1\", the device
+					type is the first dash-separated component, trimmed of spaces,
+					e.g. \"iPad\".
+
+					Note that (despite the response of \`instruments -s devices\`)
+					the iOS Simulator does not accept certain combinations 
+					of device type and SDK (as specified using the \`-sim_version\`
+					argument), e.g. \"iPhone\" and \"7.1\".
+
+					Either this or \`-hw_id\` must be specified.
+
+	-hw_id <udid>			The UDID of the hardware to target.
+					Either this or \`-sim_device\` must be specified.
+
+Optional build arguments:
+	-build_tool <tool_name>		The tool to use to build the scheme. Should be either \"xcrun xcodebuild\" 
+					or \"xctool\". Defaults to \"xcrun xcodebuild\".
+
+	-scheme <scheme_name>		The scheme to use to build the specified project or workspace.
+					Defaults to \"Integration Tests\".
+
+	-configuration <configuration>	The configuration to use to build the target specified by \`-scheme\`.
+					Defaults to \"Release\".
+
+	-sdk <sdk>			The SDK to use to build the specified project or workspace.
+					This should be an iOS Simulator SDK if \`-sim_device\` is specified, 
+					or an iOS device SDK if \`-hw_id\` is specified. Defaults to 
+					\"iphonesimulator\" (the latest iOS Simulator SDK installed) 
+					if \`-sim_device\` is specified, or \"iphoneos\" (the latest 
+					iOS device SDK) if \`-hw_id\` is specified.
+
+	-replacement_bundle_id <id>	The identifier to use to overwrite the product's bundle identifier.
+					When testing in-app purchase, this must be the identifier of your main app.
+					
+					This option should only be used when testing in the Simulator,
+					because two applications with the same identifier cannot be installed simultaneously, 
+					and devices cannot be programmatically reset. If this is set and tests are running 
+					in the Simulator, the Simulator will be reset after testing 
+					to avoid collisions on subsequent runs.
+
+	--quiet_build			If specified, the script will only log build output to the console 
+					if the build fails. Builds may be made less verbose, without hiding 
+					log output entirely, by using \`xctool\` as a build tool.
+
+Optional testing arguments:
+	-sim_version <version>		The version of the iOS Simulator SDK to test with, 
+					e.g. 6.1 or 7.1. Defaults to the latest iOS Simulator SDK 
+					installed. Ignored if \`-sim_device\` is not specified.
+
+					Note that the iOS Simulator does not accept certain combinations 
+					of device type and SDK, e.g. \"iPhone\" and \"7.1\".
+
+	-timeout <timeout>		The maximum duration for which to run the tests before aborting.
+					Specified in milliseconds and as a number rather than a string. Defaults to infinite.
+
+	-output <output_dir>		The directory to which to save Instruments' output, to aid in debugging test failures:
+
+					  * the run log, as an XML \`.plist\`;
+					  * screenshots taken when warnings or errors are logged;
+					  * and the run's \`.trace\` file, which can be opened in the Instruments GUI to view the run log and the screenshots.
+
+					Has no default value.
+
+	--verbose_logging		Enables UIAutomation's debug logs, which record every user interaction simulated 
+					by the Automation instrument. 
+
+	-e <variable> <value>		An environment variable setting. You may specify more than one.
+	"""
+	exit 1
+}
+
+# If we were invoked with no arguments, just print usage and exit
+if [[ -z $1 ]]; then
+	print_usage_and_fail
+fi
+
+# Determine this script's directory, so that the script
+# may look up and invoke supporting scripts
+SCRIPT_DIR=$(cd "$(dirname "$0")"; pwd)
+
+
+### Parse arguments
+
+# Defaults
+BUILD_TOOL="xcrun xcodebuild"
+SCHEME="Integration Tests"
+CONFIGURATION="Release"
+
+LOGIN_PASSWORD_DEPRECATION_MESSAGE="""\n
+WARNING: The \`--live\` and \`-login_password\` options have been deprecated\n
+as of Subliminal 1.1. https://github.com/inkling/Subliminal/wiki/Continuous-Integration#faq\n
+describes how to \"pre-authorize\" \`instruments\` so that \`subliminal-test\`\n
+may run un-attended without the current user's login password.\n
+\n
+In an upcoming release, \`subliminal-instrument\` will reject the \`--live\` and\n
+\`-login_password\` options and require that \`instruments\` be pre-authorized.
+"""
+
+while :
+do
+case $1 in
+	# Must check these before the single dash options (because -* would match them)
+	--live)
+		echo $LOGIN_PASSWORD_DEPRECATION_MESSAGE
+		shift 1;;
+
+    --quiet_build)
+		QUIET_BUILD=true
+		shift 1;;
+
+	--verbose_logging)
+		VERBOSE_LOGGING=true
+		shift 1;;
+
+	# Set argument, wait for value
+    -project|-workspace|-sim_device|-hw_id|-build_tool|-scheme|-configuration|-sdk|-replacement_bundle_id|-sim_version|-timeout|-output|-e)
+		if [[ -n "$CURRENT_ARG" ]]; then
+			echo "Missing value for argument: $CURRENT_ARG"
+			print_usage_and_fail
+		fi
+		case $1 in
+			# Set a placeholder for the real arg (the env var)
+			-e) CURRENT_ARG="$1";;
+			# Variables (apart from env vars) are capitalized in this script
+			*)	CURRENT_ARG=`echo ${1#-} | tr [[:lower:]] [[:upper:]]`;;
+		esac
+	    shift 1;;
+
+	-login_password)
+		echo $LOGIN_PASSWORD_DEPRECATION_MESSAGE
+		# While `-login_password` is deprecated, we still need to use it (if present)
+		# to try to authorize `instruments` in case the user has not yet pre-authorized `instruments`
+		CURRENT_ARG=LOGIN_PASSWORD
+		shift 1;;
+
+    -*)	
+		echo "Unrecognized argument: $1"
+    	print_usage_and_fail;;
+
+	# Set value for argument (unless end of command)
+	*)
+		if [[ -n "$1" ]]; then
+			if [[ -z "$CURRENT_ARG" ]]; then
+				echo "Value \"$1\" is missing argument"
+				print_usage_and_fail
+			elif [[ "$CURRENT_ARG" == "-e" ]]; then
+				# Replace the env var placeholder
+				CURRENT_ARG="export $1"
+			else
+				eval $CURRENT_ARG=\"$1\"
+				unset CURRENT_ARG;
+			fi
+		else
+			# end of command
+			break
+		fi
+		shift 1;;
+esac
+done
+
+# We reached the end of the command while still expecting an argument
+if [[ -n "$CURRENT_ARG" ]]; then
+	echo "Missing value for argument: $CURRENT_ARG"
+	print_usage_and_fail
+fi
+
+# Enforce required args
+if [[ ( -z "$PROJECT" && -z "$WORKSPACE" ) || 
+	  ( -z "$SIM_DEVICE" && -z "$HW_ID" ) ]]; then
+	echo "Missing required arguments"
+	print_usage_and_fail
+fi
+
+# resets the simulator, or uninstalls the app from the device 
+# (the best that we can do, given device support
+# --also probably better not to be as destructive as a reset on a device)
+# This function must be declared here to be called from `cleanup_and_exit`
+reset_simulator_or_device () {
+	local reset_success=0
+	
+	if [[ -n "$SIM_DEVICE" ]]; then
+		# Make sure to maintain the previously set device type/version
+		"$SCRIPT_DIR/simulator-set" --device "$SIM_DEVICE" --version "$SIM_VERSION" --reset
+		reset_success=$?
+		if [ $reset_success -eq 0 ]; then
+			echo "Successfully reset iOS Simulator."
+		else
+			echo "\nERROR: Could not reset the simulator."
+		fi
+	else
+		# `device-install` requires that we specify the app, 
+		# so if we haven't built it yet just return 
+		# (we obviously haven't installed it anyway)
+		[ -z "$APP" ] && return 0
+
+		# It's safe to ask `device-install.m` to uninstall the app even if 
+		# it's not currently installed, though (`device-install.m` will still return success)
+		local timeout_arg=`[[ -n "$TIMEOUT" ]] && echo "--timeout $TIMEOUT" || echo ""`
+		"$SCRIPT_DIR/device-install.m" --hw_id $HW_ID --app "$APP" $timeout_arg uninstall
+		reset_success=$?
+		if [ $reset_success -eq 0 ]; then
+			echo "\nSuccessfully uninstalled the application from the device."
+		else
+			echo "\nERROR: Could not uninstall the app from the device."
+		fi
+	fi
+	return $reset_success
+}
+
+# (Re)installs the application on the device
+# as instruments will not do this
+# Declared here just for proximity to `reset_simulator_or_device`
+reinstall_app_on_device () {
+	local reinstall_success=0
+	
+	# Uninstall app
+	echo ""
+	reset_simulator_or_device
+	reinstall_success=$?
+	[ $reinstall_success -eq 0 ] || return $reinstall_success
+	
+	# Install app
+	echo ""
+	local timeout_arg=`[[ -n "$TIMEOUT" ]] && echo "--timeout $TIMEOUT" || echo ""`
+	"$SCRIPT_DIR/device-install.m" --hw_id $HW_ID --app "$APP" $timeout_arg install
+	reinstall_success=$?
+	if [ $reinstall_success -eq 0 ]; then
+		echo "\nSuccessfully installed the application on the device."
+	else
+		echo "\nERROR: Could not install the application on the device."
+	fi
+	return $reinstall_success
+}
+
+# This function allows the script to abort at any point below without duplicating cleanup logic
+cleanup_and_exit () {
+	kill -9 $AUTHORIZE_INSTRUMENTS_PID 2> /dev/null
+	kill -9 $INSTRUMENTS_PID 2> /dev/null
+	kill -9 $KILL_INSTRUMENTS_PID 2> /dev/null
+
+	# Reset UIAutomation's debug logging if necessary
+	if [[ -z $VERBOSE_LOGGING ]] || ! $VERBOSE_LOGGING; then
+		if [[ -n "$VERBOSE_LOGGING_SETTING" ]]; then
+			defaults write com.apple.dt.InstrumentsCLI UIAVerboseLogging "$VERBOSE_LOGGING_SETTING"
+		else
+			defaults delete com.apple.dt.InstrumentsCLI UIAVerboseLogging 2> /dev/null
+		fi
+	fi
+
+	# Reset the project's bundle identifier if it was replaced
+	# And reset the simulator/device due to the risk of collision
+	if [[ -n "$REPLACEMENT_BUNDLE_ID" ]]; then
+		if [[ -n "$DEFAULT_BUNDLE_ID" ]]; then
+			echo "Setting target bundle identifier back to '$DEFAULT_BUNDLE_ID'..."
+
+			/usr/libexec/plistbuddy -c "Set :CFBundleIdentifier $DEFAULT_BUNDLE_ID" "$INFO_PLIST_PATH"
+		fi
+
+		if [[ -n "$SIM_DEVICE" ]]; then
+			echo "\nResetting simulator content and settings because the bundle identifier was replaced..."
+		else
+			echo "\nUninstalling application from the device because the bundle identifier was replaced..."
+		fi
+		reset_simulator_or_device
+	fi
+
+	# Remove temporary files
+	# This must be done after the device is potentially reset, 
+	# because that process requires access to the application being uninstalled
+	[[ -n "$BUILD_DIR" ]] && rm -rf "$BUILD_DIR"
+	[[ -n "$BUILD_LOG" ]] && rm -rf "$BUILD_LOG"
+	[[ -n "$RUN_DIR" ]] && rm -rf "$RUN_DIR"
+	echo ""
+
+	exit $1
+}
+trap "cleanup_and_exit 1" SIGINT SIGTERM
+
+
+### Build app
+
+QUIETLY=`([[ -n "$QUIET_BUILD" ]] && $QUIET_BUILD) && echo " (quietly)" || echo ""`
+echo "\n\nBuilding app$QUIETLY..."
+
+# Select the build source, taking care to escape spaces in the source using `printf`
+BUILD_SOURCE_ARG=`[[ -n "$PROJECT" ]] &&\
+	echo "-project "$(printf '%q' "$PROJECT") ||\
+	echo "-workspace "$(printf '%q' "$WORKSPACE")`
+
+if [[ -z "$SDK" ]]; then
+	SDK=`[[ -n "$SIM_DEVICE" ]] && echo "iphonesimulator" || echo "iphoneos"`
+fi
+
+# This is a function so that it may be called again if instruments hiccups; see below.
+build_app () {
+	# Clear build products from a prior run if any.
+	[[ -n "$BUILD_DIR" ]] && rm -rf "$BUILD_DIR"
+	[[ -n "$BUILD_LOG" ]] && rm -rf "$BUILD_LOG"
+
+	# Reset the project's bundle identifier if it was changed before a previous build
+	if [[ -n "$DEFAULT_BUNDLE_ID" ]]; then
+		/usr/libexec/plistbuddy -c "Set :CFBundleIdentifier $DEFAULT_BUNDLE_ID" "$INFO_PLIST_PATH"
+	fi
+
+	# Controlling where Xcode builds the app lets us determine where to point instruments to
+	BUILD_DIR=`mktemp -d /tmp/subliminal-test.build.XXXXXX`
+	if [ $? -ne 0 ]; then
+		echo "\nERROR: Could not create build directory."
+		return 1
+	fi
+
+	# Create a file to log the build output to if necessary
+	if [[ -n $QUIET_BUILD ]] && $QUIET_BUILD; then
+		BUILD_LOG=`mktemp /tmp/subliminal-test.build-log.XXXXXX`
+	fi
+
+	# Don't validate the product (its entitlements etc.)
+	# --this should not be necessary in the simulator
+	# and can cause problems when testing on device
+	build_base_command () {
+		$BUILD_TOOL\
+			$BUILD_SOURCE_ARG\
+			-scheme "$SCHEME"\
+			-configuration "$CONFIGURATION"\
+			-sdk "$SDK"\
+			SYMROOT="$BUILD_DIR"\
+			VALIDATE_PRODUCT=NO $1
+	}
+
+	# Change the app's bundle identifier if a replacement was specified
+	# Do this before building so that if we don't have to re-codesign the executable
+	# If we're building for device
+	if [[ -n "$REPLACEMENT_BUNDLE_ID" ]]; then
+		echo "\nSetting target bundle identifier to '$REPLACEMENT_BUNDLE_ID'..."
+
+		INFO_PLIST_PATH=`build_base_command -showBuildSettings | grep INFOPLIST_FILE | awk 'BEGIN {FS=" = ";} {print $2}'`
+		# Use `plistbuddy` because `INFO_PLIST_PATH` may be an absolute _or_ relative path
+		DEFAULT_BUNDLE_ID=`/usr/libexec/plistbuddy -c "Print :CFBundleIdentifier" "$INFO_PLIST_PATH"`
+		/usr/libexec/plistbuddy -c "Set :CFBundleIdentifier $REPLACEMENT_BUNDLE_ID" "$INFO_PLIST_PATH"
+	fi
+
+	# build in a subshell to conditionally redirect its output (and only its output)
+	# to the build log, if one has been created
+	(
+		[[ -e "$BUILD_LOG" ]] && exec >"$BUILD_LOG" 2>&1
+
+		build_base_command "clean build"
+	)
+
+	if [ $? -ne 0 ]; then
+		[[ -e "$BUILD_LOG" ]] && cat "$BUILD_LOG"
+
+		echo "\nERROR: Could not build application."
+		return 1
+	fi
+
+	# Note that instruments will install the app in the Simulator when launched
+	APP=`find "$BUILD_DIR" -name "*.app"`
+
+	return 0
+}
+build_app
+[ $? -eq 0 ] || cleanup_and_exit 1
+
+
+### (Prepare to) install app
+echo "\n\nPreparing to install app..."
+
+if [[ -n "$SIM_DEVICE" ]]; then
+	# Configure the simulator's properties
+	echo "\nConfiguring the simulator for testing..."
+
+	if [[ -n "$SIM_VERSION" ]]; then
+		echo "- Setting the version to $SIM_VERSION"
+	else
+		SIM_VERSION=`xcrun xcodebuild -showsdks | grep "iphonesimulator" | sort -r | head -n 1 | sed -E 's|^.*iphonesimulator(.*)$|\1|'`
+		echo "- Setting the version to $SIM_VERSION (Simulator version not specified--defaulting to latest simulator installed)"
+	fi
+
+	# We don't strictly need to set the device type here--instruments uses whatever
+	# device is specified when it is launched, not what was previously in use
+	# --but it's nice to see in the logs, also we need to reset the simulator anyway
+	echo "- Setting the device to \"$SIM_DEVICE\""
+	echo "- Resetting simulator content and settings"
+
+	"$SCRIPT_DIR/simulator-set" --device "$SIM_DEVICE" --version "$SIM_VERSION" --reset
+	if [ $? -ne 0 ]; then
+		echo "\nERROR: Could not configure the simulator."
+		cleanup_and_exit 1
+	fi
+	echo "Successfully configured the Simulator for testing."
+
+	# instruments will actually install the app in the simulator
+else
+	echo "\n\nInstalling app..."
+	reinstall_app_on_device
+	if [ $? -ne 0 ]; then
+		echo "\nERROR: Could not install the app on the device."
+		cleanup_and_exit 1
+	fi
+	echo "Successfully installed app."
+fi
+
+# Set paths to save instruments' output (at least temporarily)
+RUN_DIR=`mktemp -d /tmp/subliminal-test.run.XXXXXX`
+if [ $? -ne 0 ]; then
+	echo "\nERROR: Could not create temporary test results directory."
+	cleanup_and_exit 1
+fi
+TRACE_FILE="$RUN_DIR/Integration Tests.trace"
+RESULTS_DIR="$RUN_DIR/Automation Results"
+mkdir "$RESULTS_DIR"
+
+
+### Launch tests
+
+echo "\n\nLaunching tests...\n"
+
+# Temporarily disable UIAutomation's debug logging unless directed otherwise
+if [[ -z $VERBOSE_LOGGING ]] || ! $VERBOSE_LOGGING; then
+	VERBOSE_LOGGING_SETTING=`defaults read com.apple.dt.InstrumentsCLI UIAVerboseLogging 2> /dev/null`
+	defaults write com.apple.dt.InstrumentsCLI UIAVerboseLogging 4096
+fi
+
+# If `-login_password` was specified (i.e. the user has not yet pre-authorized `instruments`)
+# attempt to authorize instruments using the password
+if [[ -n "$LOGIN_PASSWORD" ]]; then
+	# First attempt to authorize `instruments` when it is launched: 
+	# in the background, monitor for, and dismiss, the dialog it shows
+	osascript "$SCRIPT_DIR/authorize_instruments.scpt" "$LOGIN_PASSWORD" &
+	# Track pid to be killed when the parent script ends
+	AUTHORIZE_INSTRUMENTS_PID=$!
+fi
+
+launch_instruments () {
+	# Second attempt to authorize `instruments` ourselves
+	# (in case the dialog does not show, as in certain CI environments 
+	# like Travis): enter the login password on the command line, 
+	# by piping the password, followed by a newline, to instruments
+	# (If the user did not supply a login password, this will just print a newline)
+
+	# Note that the Subliminal trace template includes the UIASCRIPT
+	# and the environment variables passed to this script
+	# are passed to instruments and the app by being exported at the top of this script
+	local timeout_arg=`[[ -n "$TIMEOUT" ]] && echo "-l $TIMEOUT" || echo ""`
+	local device=`[[ -n "$HW_ID" ]] && echo "$HW_ID" || echo "$SIM_DEVICE - Simulator - iOS $SIM_VERSION"`
+	printf "$LOGIN_PASSWORD\n" | "$SCRIPT_DIR/subliminal-instrument.sh"\
+		-D "$TRACE_FILE"\
+		$timeout_arg\
+		-w "$device"\
+		"$APP"\
+		-e UIARESULTSPATH "$RESULTS_DIR" &
+	INSTRUMENTS_PID=$!
+
+	RESULT_LOG="$RESULTS_DIR/Run 1/Automation Results.plist"
+
+    # Check that a timeout has been passed; if not, fall back on the default
+    if [ -z "$1" ]; then
+        LAUNCH_TIMEOUT=30
+    else
+        LAUNCH_TIMEOUT="$1"
+    fi
+
+	# Abort instruments if it hangs on launch; we'll attempt recovery below
+	kill_instruments_without_output () {
+		sleep $LAUNCH_TIMEOUT
+		if [ ! -e "$RESULT_LOG" ]; then
+			kill -9 $INSTRUMENTS_PID
+		fi
+	}
+
+	kill_instruments_without_output &
+	KILL_INSTRUMENTS_PID=$!
+
+	wait $INSTRUMENTS_PID 2> /dev/null
+	local instruments_exit_status=$? 
+	# instruments might have completed before the kill function awoke
+	kill $KILL_INSTRUMENTS_PID 2> /dev/null
+
+	return $instruments_exit_status
+}
+
+INSTRUMENTS_LAUNCH_TIMEOUTS=( 30 45 60 120 )
+(( INSTRUMENTS_RETRY_COUNT = 0 ))
+
+launch_instruments ${INSTRUMENTS_LAUNCH_TIMEOUTS[INSTRUMENTS_RETRY_COUNT]}
+while ([ ! -e "$RESULT_LOG" ] || grep -qi "Please relaunch the tests" "$RESULT_LOG") &&
+	  (( INSTRUMENTS_RETRY_COUNT < ${#INSTRUMENTS_LAUNCH_TIMEOUTS[@]} )); do
+	# Under poorly understood circumstances, in certain CI environments like Travis, 
+	# instruments may fail to run what otherwise appears to be a perfectly good app 
+	# (in that an app prepared exactly the same way may be run without error on another run), 
+	# doing one of the following:
+	# 
+	# * hanging on launch
+	# * launching but immediately aborting with a message like
+	#	"Recording cancelled : At least one target failed to launch; aborting run
+	#	Instruments Trace Error : Failed to start trace"
+	# * hanging part-way through the tests
+	#
+	# In the first two scenarios, there will be no result log; in the third,
+	# Subliminal will have aborted the run after writing the message above to the log.
+	#
+	# We retry three times, after resetting the simulator and rebuilding the app--
+	# these errors may be caused by instruments rejecting the build for some reason.
+	CURRENT_LAUNCH_TIMEOUT=${INSTRUMENTS_LAUNCH_TIMEOUTS[INSTRUMENTS_RETRY_COUNT]}
+	(( INSTRUMENTS_RETRY_COUNT++ ))
+	echo "\nInstruments hiccuped; retrying with clean build and a timeout of $CURRENT_LAUNCH_TIMEOUT seconds...\n"
+
+	build_app
+	[ $? -eq 0 ] || cleanup_and_exit 1
+
+	# Reset the simulator/reinstall the app on the device 
+	# in case instruments installed the app and then aborted
+	if [[ -n "$SIM_DEVICE" ]]; then
+		reset_simulator_or_device
+	else
+		reinstall_app_on_device
+	fi
+	[ $? -eq 0 ] || cleanup_and_exit 1
+
+	# Recreate the result files (even if the log wasn't written, the trace may be there)
+	# The trace is actually a directory though it's packaged like a file
+	rm -rf "$TRACE_FILE"
+	rm -rf "$RESULTS_DIR"
+	mkdir "$RESULTS_DIR"
+
+	echo "\nRelaunching tests...\n"
+
+	# note: `launch_instruments` must be the last call here so that we can check its exit status below
+	launch_instruments $CURRENT_LAUNCH_TIMEOUT
+done
+
+if [ $? -ne 0 ]; then
+	echo "\nERROR: Could not launch instruments. Aborting."
+	cleanup_and_exit 1
+fi
+
+
+### Process results
+
+echo "\n\nProcessing results..."
+
+# Parse test success or failure out of the result log
+TEST_STATUS=0
+grep -q "This was a focused run." "$RESULT_LOG"
+if [ $? -eq 0 ]; then
+	echo "\nERROR: Tests were committed with focus--fewer test cases may have run than normal."
+	TEST_STATUS=3
+else
+	grep -q "Tests were run in a predetermined order." "$RESULT_LOG"
+	if [ $? -eq 0 ]; then
+		echo "\nERROR: Tests were run in a predetermined order, possibly masking test pollution."
+		TEST_STATUS=4
+	fi
+fi
+
+if [ $TEST_STATUS -eq 0 ]; then
+	OVERALL_RESULT=`grep "Testing finished" "$RESULT_LOG"`
+	if [[ -z "$OVERALL_RESULT" ]]; then
+		echo "\nERROR: Tests did not finish."
+		TEST_STATUS=1
+	else
+		NUMBER_OF_FAILURES=`echo "$OVERALL_RESULT" | sed -E 's|.+with ([0-9]+) failure.+|\1|'`
+		if [ "$NUMBER_OF_FAILURES" -gt "0" ]; then
+			TEST_STATUS=2
+		fi
+	fi
+fi
+
+# Archive Instruments' output if the user specified an output directory
+if [[ -d "${OUTPUT}" ]]; then
+	echo "\nArchiving output to $OUTPUT..."
+	mv "$TRACE_FILE" "$OUTPUT"
+	mv "$RESULTS_DIR/Run 1" "$OUTPUT/Run Data"
+fi
+
+echo "\n\nRun complete."
+cleanup_and_exit $TEST_STATUS
