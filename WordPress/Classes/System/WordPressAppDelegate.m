@@ -158,6 +158,9 @@ NSInteger const kMeTabIndex                                     = 2;
         [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
         [self cleanUnusedMediaFileFromTmpDir];
     });
+    
+    // Configure Today Widget
+    [self determineIfTodayWidgetIsConfiguredAndShowAppropriately];
 
     CGRect bounds = [[UIScreen mainScreen] bounds];
     [self.window setFrame:bounds];
@@ -1242,7 +1245,20 @@ NSInteger const kMeTabIndex                                     = 2;
         // No need to check for welcome screen unless we are signing out
         [self logoutSimperiumAndResetNotifications];
         [self showWelcomeScreenIfNeededAnimated:NO];
+        [self removeTodayWidgetConfiguration];
     }
+}
+
+#pragma mark - Today Extension
+
+- (void)determineIfTodayWidgetIsConfiguredAndShowAppropriately
+{
+    [StatsViewController hideTodayWidgetIfNotConfigured];
+}
+
+- (void)removeTodayWidgetConfiguration
+{
+    [StatsViewController removeTodayWidgetConfiguration];
 }
 
 @end

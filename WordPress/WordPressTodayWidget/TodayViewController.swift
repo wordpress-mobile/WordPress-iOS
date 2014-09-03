@@ -17,16 +17,16 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         super.viewDidLoad()
         // Do any additional setup after loading the view from its nib.
         let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)
-        siteId = sharedDefaults.objectForKey(WPStatsTodayWidgetUserDefaultsSiteIdKey) as NSNumber?
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+
+        self.siteId = sharedDefaults.objectForKey(WPStatsTodayWidgetUserDefaultsSiteIdKey) as NSNumber?
+        self.siteName = sharedDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
+        self.visitorCount = userDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsVisitorCountKey) ?? ""
+        self.viewCount = userDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsViewCountKey) ?? ""
+        
         let oauth2Token = self.getOAuth2Token()
         visitorsLabel?.text = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
         viewsLabel?.text = NSLocalizedString("Views", comment: "Stats Views Label")
-        
-        if siteId == nil || oauth2Token == nil {
-            // Dynamically determine bundle ID so it doesn't have to be hardcoded
-            let bundle = NSBundle(forClass: TodayViewController.classForCoder())
-            NCWidgetController.widgetController().setHasContent(false, forWidgetWithBundleIdentifier: bundle.bundleIdentifier)
-        }
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -112,12 +112,6 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     }
     
     func getOAuth2Token() -> String? {
-        if UIDevice.currentDevice().model == "iPhone Simulator" {
-            let sharedDefaults = NSUserDefaults(suiteName: "group.org.wordpress")
-            let oauth2Token = sharedDefaults.stringForKey("WordPressTodayWidgetOAuth2Token")
-            return oauth2Token
-        }
-        
         var error:NSError?
         
         var oauth2Token:NSString? = SFHFKeychainUtils.getPasswordForUsername(WPStatsTodayWidgetOAuth2TokenKeychainUsername, andServiceName: WPStatsTodayWidgetOAuth2TokenKeychainServiceName, accessGroup: WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup, error: &error)
