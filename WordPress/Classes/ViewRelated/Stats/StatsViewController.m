@@ -10,6 +10,7 @@
 #import <NotificationCenter/NotificationCenter.h>
 #import "SettingsViewController.h"
 #import "SFHFKeychainUtils.h"
+#import "Constants.h"
 
 static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
@@ -32,7 +33,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 {
     [super viewDidLoad];
     
-    if (self.presentingViewController == nil) {
+    if (self.presentingViewController == nil && NSClassFromString(@"NCWidgetController")) {
+        // Not being presented modally & widgets exist (iOS 8)
         UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Today", @"") style:UIBarButtonItemStylePlain target:self action:@selector(makeSiteTodayWidgetSite:)];
         self.navigationItem.rightBarButtonItem = settingsButton;
     } else {
@@ -83,6 +85,11 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)saveSiteDetailsForTodayWidget
 {
+    // Safety check to ensure widgets are available (iOS 8+)
+    if (NSClassFromString(@"NCWidgetController") == nil) {
+        return;
+    }
+    
     // Save the token and site ID to shared user defaults for use in the today widget
     NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
     [sharedDefaults setObject:self.siteTimeZone.name forKey:WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey];
