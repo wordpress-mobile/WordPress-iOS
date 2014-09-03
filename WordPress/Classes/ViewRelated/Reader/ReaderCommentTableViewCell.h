@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
-#import "ReaderComment.h"
 #import "WPTableViewCell.h"
 
+@class Comment;
 @class ReaderCommentTableViewCell;
 
 @protocol ReaderCommentTableViewCellDelegate <NSObject>
@@ -16,12 +16,12 @@
 
 + (NSAttributedString *)convertHTMLToAttributedString:(NSString *)html withOptions:(NSDictionary *)options;
 
-+ (CGFloat)heightForComment:(ReaderComment *)comment
++ (CGFloat)heightForComment:(Comment *)comment
                       width:(CGFloat)width
                  tableStyle:(UITableViewStyle)tableStyle
               accessoryType:(UITableViewCellAccessoryType *)accessoryType;
 
-- (void)configureCell:(ReaderComment *)comment;
+- (void)configureCell:(Comment *)comment;
 
 - (void)setAvatar:(UIImage *)image;
 
