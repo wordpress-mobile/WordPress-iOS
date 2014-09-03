@@ -15,7 +15,7 @@
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
 #import "Media.h"
-#import "Note.h"
+#import "Notification.h"
 #import "NotificationsManager.h"
 #import "NSString+Helpers.h"
 #import "PocketAPI.h"
@@ -475,8 +475,9 @@ NSInteger const kMeTabIndex                                     = 2;
     readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
     self.readerPostsViewController.title = NSLocalizedString(@"Reader", nil);
     [readerNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
-
-    self.notificationsViewController = [[NotificationsViewController alloc] init];
+    
+    UIStoryboard *notificationsStoryboard = [UIStoryboard storyboardWithName:@"Notifications" bundle:nil];
+    self.notificationsViewController = [notificationsStoryboard instantiateInitialViewController];
     UINavigationController *notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
     notificationsNavigationController.navigationBar.translucent = NO;
     notificationsNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-notifications"];
@@ -753,7 +754,7 @@ NSInteger const kMeTabIndex                                     = 2;
 - (void)cleanUnusedMediaFileFromTmpDir
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-
+    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     [context performBlock:^{
 
@@ -940,17 +941,17 @@ NSInteger const kMeTabIndex                                     = 2;
 
 - (void)configureSimperium
 {
-    NSDictionary *bucketOverrides   = @{ @"NoteSimperium" : @"Note" };
-    ContextManager* manager         = [ContextManager sharedInstance];
-
+	ContextManager* manager         = [ContextManager sharedInstance];
+    NSDictionary *bucketOverrides   = @{ NSStringFromClass([Notification class]) : @"note20" };
+    
     self.simperium = [[Simperium alloc] initWithModel:manager.managedObjectModel
-                                              context:manager.mainContext
-                                          coordinator:manager.persistentStoreCoordinator
+											  context:manager.mainContext
+										  coordinator:manager.persistentStoreCoordinator
                                                 label:[NSString string]
                                       bucketOverrides:bucketOverrides];
 
 #ifdef DEBUG
-    self.simperium.verboseLoggingEnabled = YES;
+	self.simperium.verboseLoggingEnabled = YES;
 #endif
 }
 
