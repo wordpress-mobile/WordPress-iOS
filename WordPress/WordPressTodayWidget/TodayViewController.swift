@@ -15,16 +15,9 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view from its nib.
         let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-
         self.siteId = sharedDefaults.objectForKey(WPStatsTodayWidgetUserDefaultsSiteIdKey) as NSNumber?
-        self.siteName = sharedDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
-        self.visitorCount = userDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsVisitorCountKey) ?? ""
-        self.viewCount = userDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsViewCountKey) ?? ""
-        
-        let oauth2Token = self.getOAuth2Token()
+
         visitorsLabel?.text = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
         viewsLabel?.text = NSLocalizedString("Views", comment: "Stats Views Label")
     }
@@ -32,6 +25,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
 
+        // Manual state restoration
         var userDefaults = NSUserDefaults.standardUserDefaults()
         userDefaults.setObject(self.siteName, forKey: WPStatsTodayWidgetUserDefaultsSiteNameKey)
         userDefaults.setObject(self.visitorCount, forKey: WPStatsTodayWidgetUserDefaultsVisitorCountKey)
@@ -41,12 +35,13 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
+        // Manual state restoration
         let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)
         self.siteName = sharedDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
 
         let userDefaults = NSUserDefaults.standardUserDefaults()
-        self.visitorCount = userDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsVisitorCountKey) ?? ""
-        self.viewCount = userDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsViewCountKey) ?? ""
+        self.visitorCount = userDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsVisitorCountKey) ?? "0"
+        self.viewCount = userDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsViewCountKey) ?? "0"
         
         self.siteNameLabel?.text = self.siteName
         self.visitorsCountLabel?.text = self.visitorCount
