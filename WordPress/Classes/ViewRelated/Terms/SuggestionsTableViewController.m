@@ -6,11 +6,10 @@
 
 NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 
-@interface SuggestionsTableViewController () <UISearchBarDelegate, UISearchDisplayDelegate>
+@interface SuggestionsTableViewController () <UISearchBarDelegate>
 
 @property (nonatomic, strong) NSNumber *siteID;
 @property (nonatomic, strong) UISearchBar *searchBar;
-@property (nonatomic, strong) UISearchDisplayController *searchController;
 @property (nonatomic, strong) NSArray *searchResults;
 @property (nonatomic, strong) NSArray *suggestions;
 
@@ -44,15 +43,10 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
     self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectZero];
     [self.searchBar sizeToFit];
     self.searchBar.delegate = self;
+    self.searchBar.barTintColor = [WPStyleGuide readGrey];
     self.tableView.tableHeaderView = self.searchBar;
 
-    self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar
-                                                              contentsController:self];
-    self.searchController.searchResultsDataSource = self;
-    self.searchController.searchResultsDelegate = self;
-    self.searchController.delegate = self;
-
-    self.tableView.rowHeight = self.searchDisplayController.searchResultsTableView.rowHeight;
+    self.tableView.rowHeight = 50.0;
 
     UINib *nib = [UINib nibWithNibName:@"SuggestionsTableViewCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:CellIdentifier];
@@ -61,21 +55,22 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
+    [self updateSearchResults];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    [self.searchBar becomeFirstResponder];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(suggestionListUpdated:)
                                                  name:SuggestionListUpdatedNotification
                                                object:nil];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-
-    [self.searchBar becomeFirstResponder];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -97,11 +92,7 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
-        return [self.searchResults count];
-    } else {
-        return [self.suggestions count];
-    }
+    return self.searchResults.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -109,13 +100,7 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
     SuggestionsTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier
                                                                           forIndexPath:indexPath];
 
-    Suggestion *suggestion = nil;
-
-    if (tableView == self.searchController.searchResultsTableView) {
-        suggestion = [self.searchResults objectAtIndex:indexPath.row];
-    } else {
-        suggestion = [self.suggestions objectAtIndex:indexPath.row];
-    }
+    Suggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];
 
     cell.usernameLabel.text = [NSString stringWithFormat:@"@%@", suggestion.userLogin];
     cell.displayNameLabel.text = suggestion.displayName;
@@ -131,44 +116,12 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 {
     if ([self.delegate respondsToSelector:@selector(suggestionTableView:didSelectString:)])
     {
-        Suggestion *suggestion = nil;
-
-        if (tableView == self.searchController.searchResultsTableView) {
-            suggestion = [self.searchResults objectAtIndex:indexPath.row];
-        } else {
-            suggestion = [self.suggestions objectAtIndex:indexPath.row];
-        }
+        Suggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];
 
         [self.delegate suggestionTableView:self didSelectString:suggestion.userLogin];
     }
 
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-#pragma mark -
-
-- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
-{
-    [self filterContentForSearchText:searchString
-                               scope:[[controller.searchBar scopeButtonTitles]
-                                      objectAtIndex:[controller.searchBar selectedScopeButtonIndex]]];
-
-    return YES;
-}
-
-- (void)filterContentForSearchText:(NSString *)searchText scope:(NSString *)scope
-{
-    // strip any leading @ from searchText before searching
-    searchText = [searchText stringByReplacingOccurrencesOfString:@"@" withString:@""];
-
-    if (searchText.length > 0) {
-        NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"(displayName contains[c] %@) OR (userLogin contains[c] %@)",
-                                        searchText, searchText];
-        self.searchResults = [self.suggestions filteredArrayUsingPredicate:resultPredicate];
-    }
-    else {
-        self.searchResults = self.suggestions;
-    }
 }
 
 #pragma mark - UISearchBarDelegate methods
@@ -181,6 +134,11 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
     return YES;
 }
 
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    [self updateSearchResults];
+    [self.tableView reloadData];
+}
+
 #pragma mark - Suggestion list management
 
 - (void)suggestionListUpdated:(NSNotification *)notification
@@ -188,14 +146,10 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
     // only reload if the suggestion list is updated for the current site
     if ([notification.object isEqualToNumber:self.siteID]) {
         self.suggestions = [[SuggestionService shared] suggestionsForSiteID:self.siteID];
-        [self.tableView reloadData];
 
-        /**
-         This will trigger a reload for the search controller, for some reason
-         [self.searchController.searchResultsTableView reloadData]; doesn't work when there was
-         no result before the reload.
-         */
-        self.searchBar.text = self.searchBar.text;
+        [self updateSearchResults];
+
+        [self.tableView reloadData];
     }
 }
 
@@ -205,6 +159,21 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
         _suggestions = [[SuggestionService shared] suggestionsForSiteID:self.siteID];
     }
     return _suggestions;
+}
+
+- (void)updateSearchResults
+{
+    // strip any leading @ from searchText before searching
+    NSString *searchText = [[self.searchBar text] stringByReplacingOccurrencesOfString:@"@" withString:@""];
+
+    if (searchText.length > 0) {
+        NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"(displayName contains[c] %@) OR (userLogin contains[c] %@)",
+                                        searchText, searchText];
+        self.searchResults = [self.suggestions filteredArrayUsingPredicate:resultPredicate];
+    }
+    else {
+        self.searchResults = self.suggestions;
+    }
 }
 
 #pragma mark - Avatar helper
@@ -221,8 +190,7 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
             if (!image) {
                 return;
             }
-            if (cell == [self.tableView cellForRowAtIndexPath:indexPath]
-                || cell == [self.searchController.searchResultsTableView cellForRowAtIndexPath:indexPath]) {
+            if (cell == [self.tableView cellForRowAtIndexPath:indexPath]) {
                 [cell.avatarImageView setImage:image];
             }
         }];
