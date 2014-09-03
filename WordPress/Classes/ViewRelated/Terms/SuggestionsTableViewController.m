@@ -92,6 +92,11 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if (!self.suggestions)
+    {
+        return 1;
+    }
+
     return self.searchResults.count;
 }
 
@@ -99,6 +104,14 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 {
     SuggestionsTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier
                                                                           forIndexPath:indexPath];
+
+    if (!self.suggestions)
+    {
+        cell.usernameLabel.text = NSLocalizedString(@"Loading...", @"Suggestions loading message");
+        cell.displayNameLabel.text = nil;
+        [cell.avatarImageView setImage:nil];
+        return cell;
+    }
 
     Suggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];
 
@@ -114,6 +127,11 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (!self.suggestions)
+    {
+        return;
+    }
+
     if ([self.delegate respondsToSelector:@selector(suggestionTableView:didSelectString:)])
     {
         Suggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];
