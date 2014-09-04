@@ -77,8 +77,7 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
-    if ([self.delegate respondsToSelector:@selector(suggestionViewDidDisappear:)])
-    {
+    if ([self.delegate respondsToSelector:@selector(suggestionViewDidDisappear:)]) {
         [self.delegate suggestionViewDidDisappear:self];
     }
 }
@@ -92,8 +91,7 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (!self.suggestions)
-    {
+    if (!self.suggestions) {
         return 1;
     }
 
@@ -105,11 +103,11 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
     SuggestionsTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier
                                                                           forIndexPath:indexPath];
 
-    if (!self.suggestions)
-    {
+    if (!self.suggestions) {
         cell.usernameLabel.text = NSLocalizedString(@"Loading...", @"Suggestions loading message");
         cell.displayNameLabel.text = nil;
         [cell.avatarImageView setImage:nil];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
 
@@ -117,6 +115,7 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 
     cell.usernameLabel.text = [NSString stringWithFormat:@"@%@", suggestion.userLogin];
     cell.displayNameLabel.text = suggestion.displayName;
+    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
 
     [self setAvatarForSuggestion:suggestion forCell:cell indexPath:indexPath];
 
@@ -127,13 +126,11 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (!self.suggestions)
-    {
+    if (!self.suggestions) {
         return;
     }
 
-    if ([self.delegate respondsToSelector:@selector(suggestionTableView:didSelectString:)])
-    {
+    if ([self.delegate respondsToSelector:@selector(suggestionTableView:didSelectString:)]) {
         Suggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];
 
         [self.delegate suggestionTableView:self didSelectString:suggestion.userLogin];
