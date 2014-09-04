@@ -2,6 +2,7 @@
 #import "Blog.h"
 #import "RemotePost.h"
 #import "RemoteCategory.h"
+#import "NSMutableDictionary+Helpers.h"
 #import <WordPressApi.h>
 
 @interface PostServiceRemoteXMLRPC ()
@@ -45,6 +46,71 @@
                      NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
                      if (success) {
                          success([self remotePostsFromXMLRPCArray:responseObject]);
+                     }
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
+}
+
+- (void)createPost:(RemotePost *)post
+           forBlog:(Blog *)blog
+           success:(void (^)(RemotePost *))success
+           failure:(void (^)(NSError *))failure
+{
+    NSDictionary *extraParameters = [self parametersWithRemotePost:post];
+    NSArray *parameters = [blog getXMLRPCArgsWithExtra:extraParameters];
+    [self.api callMethod:@"metaWeblog.newPost"
+              parameters:parameters
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     if ([responseObject respondsToSelector:@selector(numericValue)]) {
+                         post.postID = [responseObject numericValue];
+                         // TODO: fetch individual post
+                         if (!post.date) {
+                             // Set the temporary date until we get it from the server so it sorts properly on the list
+                             post.date = [NSDate date];
+                         }
+                         if (success) {
+                             success(post);
+                         }
+                     } else if (failure) {
+                         NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"Invalid value returned for new post: %@", responseObject] forKey:NSLocalizedDescriptionKey];
+                         NSError *error = [NSError errorWithDomain:@"org.wordpress.iphone" code:0 userInfo:userInfo];
+                         failure(error);
+                     }
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
+}
+
+- (void)updatePost:(RemotePost *)post
+           forBlog:(Blog *)blog
+           success:(void (^)(RemotePost *))success
+           failure:(void (^)(NSError *))failure
+{
+    NSParameterAssert([post.postID integerValue] > 0);
+    if ([post.postID integerValue] <= 0) {
+        if (failure) {
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Can't edit a post if it's not in the server" forKey:NSLocalizedDescriptionKey];
+            NSError *error = [NSError errorWithDomain:@"org.wordpress.iphone" code:0 userInfo:userInfo];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failure(error);
+            });
+        }
+        return;
+    }
+
+    NSDictionary *extraParameters = [self parametersWithRemotePost:post];
+    NSArray *parameters = @[post.postID, blog.username, blog.password, extraParameters];
+    [self.api callMethod:@"metaWeblog.editPost"
+              parameters:parameters
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     // TODO: fetch individual post
+                     if (success) {
+                         success(post);
                      }
                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                      if (failure) {
@@ -115,6 +181,58 @@
     category.name = [xmlrpcCategory stringForKey:@"name"];
     category.parentID = [xmlrpcCategory numberForKey:@"parent"];
     return category;
+}
+
+- (NSDictionary *)parametersWithRemotePost:(RemotePost *)post
+{
+    BOOL existingPost = ([post.postID longLongValue] > 0);
+    NSMutableDictionary *postParams = [NSMutableDictionary dictionary];
+
+    [postParams setValueIfNotNil:post.title forKey:@"title"];
+    [postParams setValueIfNotNil:post.content forKey:@"description"];
+    [postParams setValueIfNotNil:post.date forKey:@"date_created_gmt"];
+    [postParams setValueIfNotNil:post.password forKey:@"wp_password"];
+    [postParams setValueIfNotNil:[post.URL absoluteString] forKey:@"permalink"];
+    [postParams setValueIfNotNil:post.excerpt forKey:@"mt_excerpt"];
+    [postParams setValueIfNotNil:post.slug forKey:@"wp_slug"];
+    // To remove a featured image, you have to send an empty string to the API
+    if (post.postThumbnailID == nil) {
+        // Including an empty string for wp_post_thumbnail generates
+        // an "Invalid attachment ID" error in the call to wp.newPage
+        if (existingPost) {
+            [postParams setValue:@"" forKey:@"wp_post_thumbnail"];
+        }
+    } else {
+        [postParams setValue:post.postThumbnailID forKey:@"wp_post_thumbnail"];
+    }
+
+    [postParams setValueIfNotNil:post.format forKey:@"wp_post_format"];
+    [postParams setValueIfNotNil:[post.tags componentsJoinedByString:@","] forKey:@"mt_keywords"];
+
+    if (existingPost && post.date == nil) {
+        // Change the date of an already published post to the current date/time. (publish immediately)
+        // Pass the current date so the post is updated correctly
+        [postParams setValue:[NSDate date] forKeyPath:@"date_created_gmt"];
+    }
+
+    if (post.categories) {
+        NSArray *categories = post.categories;
+        NSMutableArray *categoryNames = [NSMutableArray arrayWithCapacity:[categories count]];
+        for (RemoteCategory *cat in categories) {
+            [categoryNames addObject:cat.name];
+        }
+        [postParams setObject:categoryNames forKey:@"categories"];
+    }
+
+    if ([post.metadata count] > 0) {
+        [postParams setObject:post.metadata forKey:@"custom_fields"];
+    }
+
+    if (post.status == nil)
+        post.status = @"publish";
+    [postParams setObject:post.status forKey:@"post_status"];
+
+    return [NSDictionary dictionaryWithDictionary:postParams];
 }
 
 @end
