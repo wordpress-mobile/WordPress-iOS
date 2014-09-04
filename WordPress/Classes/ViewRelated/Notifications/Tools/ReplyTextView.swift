@@ -63,14 +63,6 @@ import Foundation
     }
     
     
-    // MARK: - Public Helpers
-    public func alignAtBottomOfSuperview() {
-        if let theSuperview = superview {
-            frame.origin.y = CGRectGetMaxY(theSuperview.bounds) - bounds.height
-        }
-    }
-    
-    
     // MARK: - UITextViewDelegate Methods
     public func textViewShouldBeginEditing(textView: UITextView!) -> Bool {
         // Prevent reacquiring the focus if the proxy is dismissed
@@ -139,10 +131,11 @@ import Foundation
         endEditing(true)
         return textView.resignFirstResponder()
     }
-    
+
     public override func layoutSubviews() {
+        // Force invalidate constraints
+        invalidateIntrinsicContentSize()
         super.layoutSubviews()
-        containerView.frame.size.width  = self.bounds.width
     }
     
     
@@ -151,11 +144,11 @@ import Foundation
         let topPadding      = textView.constraintForAttribute(.Top)     ?? textViewDefaultPadding
         let bottomPadding   = textView.constraintForAttribute(.Bottom)  ?? textViewDefaultPadding
         
-        // Calculate the new height
+        let screenWidth     = UIScreen.mainScreen().screenWidthAtCurrentOrientation()
         let textHeight      = floor(textView.contentSize.height + topPadding + bottomPadding)
         
         var newHeight       = min(max(textHeight, textViewMinHeight), textViewMaxHeight)
-        let intrinsicSize   = CGSize(width: frame.width, height: newHeight)
+        let intrinsicSize   = CGSize(width: screenWidth, height: newHeight)
         
         return intrinsicSize
     }
@@ -168,6 +161,11 @@ import Foundation
         // Load the nib + add its container view
         bundle = NSBundle.mainBundle().loadNibNamed("ReplyTextView", owner: self, options: nil)
         addSubview(containerView)
+        
+        // Setup Layout
+        setTranslatesAutoresizingMaskIntoConstraints(false)
+        containerView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        pinSubviewToAllEdges(containerView)
         
         // Setup the TextView
         textView.delegate               = self
@@ -190,11 +188,6 @@ import Foundation
         
         // Background
         layoutView.backgroundColor      = WPStyleGuide.Reply.backgroundColor
-        
-        // We want this view to stick at the bottom
-        contentMode                     = .BottomLeft
-        autoresizingMask                = .FlexibleWidth | .FlexibleHeight | .FlexibleTopMargin
-        containerView.autoresizingMask  = .FlexibleWidth | .FlexibleHeight
         
         // Setup the ProxyTextView: Prevent Recursion
         if isProxyTextView {
@@ -229,9 +222,10 @@ import Foundation
         if newSize.height == oldSize.height {
             return
         }
-        
-        frame.size.height   = newSize.height
-        invalidateIntrinsicContentSize()
+
+        updateConstraint(.Height, constant: newSize.height)
+        setNeedsLayout()
+        layoutIfNeeded()
     }
     
     private func refreshPlaceholder() {
