@@ -753,18 +753,18 @@ static CGFloat NotificationSectionSeparator     = 10;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
     
-    [service replyCommentWithID:block.metaCommentID
-                         siteID:block.metaSiteID
-                        content:content
-                        success:^() {
-                            NSString *message   = NSLocalizedString(@"Reply Sent!", @"The app successfully sent a comment");
-                            UIImage *image      = [UIImage imageNamed:NotificationSuccessToastImage];
-                            
-                            [WPToast showToastWithMessage:message andImage:image];
-                        }
-                        failure:^(NSError *error) {
-                            [self handleReplyErrorWithBlock:block content:content];
-                        }];
+    [service replyToCommentWithID:block.metaCommentID
+                           siteID:block.metaSiteID
+                          content:content
+                          success:^() {
+                              NSString *message   = NSLocalizedString(@"Reply Sent!", @"The app successfully sent a comment");
+                              UIImage *image      = [UIImage imageNamed:NotificationSuccessToastImage];
+                              
+                              [WPToast showToastWithMessage:message andImage:image];
+                          }
+                          failure:^(NSError *error) {
+                              [self handleReplyErrorWithBlock:block content:content];
+                          }];
     
     self.replyTextView.text = [NSString string];
     [self.replyTextView resignFirstResponder];

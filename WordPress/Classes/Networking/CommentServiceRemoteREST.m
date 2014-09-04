@@ -201,11 +201,11 @@
            }];
 }
 
-- (void)replyCommentWithID:(NSNumber *)commentID
-                    siteID:(NSNumber *)siteID
-                   content:(NSString *)content
-                   success:(void (^)())success
-                   failure:(void (^)(NSError *error))failure
+- (void)replyToCommentWithID:(NSNumber *)commentID
+                      siteID:(NSNumber *)siteID
+                     content:(NSString *)content
+                     success:(void (^)())success
+                     failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@/replies/new", siteID, commentID];
     NSDictionary *parameters = @{
