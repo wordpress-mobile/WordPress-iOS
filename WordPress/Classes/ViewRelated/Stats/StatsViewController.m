@@ -183,7 +183,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
                                  accessGroup:WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup
                                        error:nil];
     
-    // Turns the widget on for this site
+    // Turns the widget off for this site
     [[NCWidgetController widgetController] setHasContent:NO forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
 }
 
