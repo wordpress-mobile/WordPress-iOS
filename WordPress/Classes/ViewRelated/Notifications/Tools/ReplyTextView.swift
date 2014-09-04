@@ -35,7 +35,7 @@ import Foundation
         }
     }
     
-    public override var inputAccessoryView: UIView! {
+    public var proxyAccessoryView: UIView! {
         get {
             return proxyTextView
         }
@@ -73,6 +73,7 @@ import Foundation
     
     // MARK: - UITextViewDelegate Methods
     public func textViewShouldBeginEditing(textView: UITextView!) -> Bool {
+        // Prevent reacquiring the focus if the proxy is dismissed
         if isProxyDismissing {
             return false
         }
@@ -81,11 +82,10 @@ import Foundation
     }
     
     public func textViewDidBeginEditing(textView: UITextView!) {
-        
         if proxyTextView != nil {
             let delay = dispatch_time_t(0.1)
             dispatch_after(delay, dispatch_get_main_queue()) {
-                // FIX: Xcode beta 6 fails if the only sentence returns a value
+                // FIX: Xcode beta 7 fails if the only sentence returns a value
                 let result = self.proxyTextView?.becomeFirstResponder()
             }
 
@@ -137,7 +137,7 @@ import Foundation
     
     public override func resignFirstResponder() -> Bool {
         endEditing(true)
-        return super.resignFirstResponder()
+        return textView.resignFirstResponder()
     }
     
     public override func layoutSubviews() {
