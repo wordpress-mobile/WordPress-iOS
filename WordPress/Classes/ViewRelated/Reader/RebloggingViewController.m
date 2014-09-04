@@ -9,12 +9,14 @@
 #import "BlogService.h"
 #import "ContextManager.h"
 #import "WPToast.h"
+#import "WPTableImageSource.h"
+
 #import <WordPress-iOS-Shared/WPFontManager.h>
 
 CGFloat const ReblogViewPostMargin = 10;
 CGFloat const ReblogViewTextBottomInset = 30;
 
-@interface RebloggingViewController ()<UIPopoverControllerDelegate, UITextViewDelegate>
+@interface RebloggingViewController ()<UIPopoverControllerDelegate, UITextViewDelegate, WPTableImageSourceDelegate>
 
 @property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, strong) UIButton *titleBarButton;
@@ -31,6 +33,7 @@ CGFloat const ReblogViewTextBottomInset = 30;
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
 @property (nonatomic, strong) UIBarButtonItem *activityBarItem;
 @property (nonatomic, strong) UIBarButtonItem *publishBarItem;
+@property (nonatomic, strong) WPTableImageSource *featuredImageSource;
 
 @end
 
@@ -44,13 +47,11 @@ CGFloat const ReblogViewTextBottomInset = 30;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id)initWithPost:(id)post featuredImage:(id)image avatarImage:(UIImage *)avatarImage
+- (id)initWithPost:(ReaderPost *)post
 {
     self = [self init];
     if (self){
         self.post = post;
-        self.featuredImage = image;
-        self.avatarImage = avatarImage;
     }
     return self;
 }
@@ -62,7 +63,7 @@ CGFloat const ReblogViewTextBottomInset = 30;
     [self configureNavbar];
     [self configureView];
 
-	UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlePostViewTapped:)];
+    UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handlePostViewTapped:)];
     tgr.cancelsTouchesInView = YES;
     [self.postView addGestureRecognizer:tgr];
 }
@@ -212,8 +213,8 @@ CGFloat const ReblogViewTextBottomInset = 30;
     self.postView = [[ReaderPostSimpleContentView alloc] init];
     _postView.contentProvider = self.post;
     _postView.backgroundColor = [UIColor whiteColor];
-    [_postView setFeaturedImage:self.featuredImage];
     [_postView setAvatarImage:[self.post cachedAvatarWithSize:CGSizeMake(WPContentAttributionViewAvatarSize, WPContentAttributionViewAvatarSize)]];
+    [self fetchFeaturedImage];
 
     return _postView;
 }
@@ -312,6 +313,34 @@ CGFloat const ReblogViewTextBottomInset = 30;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)fetchFeaturedImage
+{
+    NSURL *imageURL = [self.post featuredImageURLForDisplay];
+    if (!imageURL) {
+        return;
+    }
+
+    if (!self.featuredImageSource) {
+        CGFloat maxWidth = MAX(CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds));;
+        CGFloat maxHeight = maxWidth * WPContentViewMaxImageHeightPercentage;
+        self.featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
+        self.featuredImageSource.delegate = self;
+    }
+
+    CGFloat width = CGRectGetWidth(self.view.bounds);
+    CGFloat height = round(width * WPContentViewMaxImageHeightPercentage);
+    CGSize size = CGSizeMake(width, height);
+
+    UIImage *image = [self.featuredImageSource imageForURL:imageURL withSize:size];
+    if(image) {
+        [self.postView setFeaturedImage:image];
+    } else {
+        [self.featuredImageSource fetchImageForURL:imageURL
+                                     withSize:size
+                                    indexPath:[NSIndexPath indexPathForRow:0 inSection:0]
+                                    isPrivate:self.post.isPrivate];
+    }
+}
 
 #pragma mark Nabar Button actions
 
@@ -326,31 +355,39 @@ CGFloat const ReblogViewTextBottomInset = 30;
     self.navigationItem.leftBarButtonItem.enabled = NO;
 
     self.navigationItem.rightBarButtonItem = self.activityBarItem;
-	[self.activityView startAnimating];
+    [self.activityView startAnimating];
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
 
     [service reblogPost:self.post toSite:[self.blog.blogID integerValue] note:[self.textView.text trim] success:^{
         [WPToast showToastWithMessage:NSLocalizedString(@"Reblogged", @"User reblogged a post.")
-							 andImage:[UIImage imageNamed:@"action_icon_replied"]];
+                             andImage:[UIImage imageNamed:@"action_icon_replied"]];
 
-		if ([self.delegate respondsToSelector:@selector(postWasReblogged:)]) {
-			[self.delegate postWasReblogged:self.post];
-		}
+        if ([self.delegate respondsToSelector:@selector(postWasReblogged:)]) {
+            [self.delegate postWasReblogged:self.post];
+        }
 
         [WPAnalytics track:WPAnalyticsStatReaderRebloggedArticle];
         [self dismiss];
 
     } failure:^(NSError *error) {
-		DDLogError(@"Error Reblogging Post : %@", [error localizedDescription]);
+        NSString *localizedDescription = [error localizedDescription];
+        DDLogError(@"Error Reblogging Post : %@", localizedDescription);
+
         [self.textView setEditable:YES];
         self.navigationItem.leftBarButtonItem.enabled = YES;
-		[self.activityView stopAnimating];
+        [self.activityView stopAnimating];
         self.navigationItem.rightBarButtonItem = self.publishBarItem;
 
-		// TODO: Failure reason.
-        [WPError showAlertWithTitle:NSLocalizedString(@"Reblog failed", nil) message:NSLocalizedString(@"There was a problem reblogging. Please try again.", nil)];
+        NSString *message;
+        if ([localizedDescription length]) {
+            message = localizedDescription;
+        } else {
+            message = NSLocalizedString(@"There was a problem reblogging. Please try again.", @"A generic error message stating there was a problem reblogging a post suggesting the user try again.");
+        }
+
+        [WPError showAlertWithTitle:NSLocalizedString(@"Could not reblog post", @"Error message title stating that an attempt to reblog a post failed.") message:message];
     }];
 }
 
@@ -407,7 +444,7 @@ CGFloat const ReblogViewTextBottomInset = 30;
 }
 
 
-#pragma mark Gesture Regonizer
+#pragma mark Gesture Recognizer
 
 - (void)handlePostViewTapped:(id)sender
 {
@@ -443,6 +480,14 @@ CGFloat const ReblogViewTextBottomInset = 30;
     if ([_textView.text isEqualToString:@""]) {
         self.textPromptLabel.hidden = NO;
     }
+}
+
+
+#pragma mark - WPTableImageSource Delegate
+
+- (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath
+{
+    [self.postView setFeaturedImage:image];
 }
 
 @end

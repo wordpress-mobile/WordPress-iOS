@@ -171,7 +171,8 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
         
         cell.textLabel.text				= [NSString decodeXMLCharactersIn:_note.subjectText];
         cell.textLabel.numberOfLines	= 0;
-        cell.textLabel.textAlignment	= NSTextAlignmentCenter;
+        cell.textLabel.textColor		= [UIColor blackColor];
+		cell.textLabel.font				= [WPStyleGuide regularTextFont];
         cell.accessoryType				= UITableViewCellAccessoryDisclosureIndicator;
 
         // Note that we're using this cell as a section header. Since 'didPressCellAtIndex:' method isn't gonna get called,
@@ -214,7 +215,8 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 			cell.actionButton.hidden	= YES;
 		}
         
-        cell.textLabel.text = noteItem.headerText;
+        cell.textLabel.text       = noteItem.headerText;
+        cell.detailTextLabel.text = [noteItem.headerLink stringByReplacingOccurrencesOfString:@"http://" withString:@""];;
 
 		// Handle the Icon
 		NSURL *iconURL = noteItem.iconURL;
@@ -252,8 +254,6 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 	
     BOOL isFollowing = item.action.following;
 	   
-    [WPAnalytics track:WPAnalyticsStatNotificationPerformedAction];
-    
 	// Hit the Backend
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
@@ -306,7 +306,7 @@ typedef void (^NoteToggleFollowBlock)(BOOL success);
 {
     if (indexPath.section == WPNotificationSectionsFollow) {
 		NoteBodyItem *item = self.filteredBodyItems[indexPath.row];
-		NSURL *blogURL = item.action.blogURL;
+        NSURL *blogURL =  [[NSURL alloc]initWithString:item.headerLink];
         if (blogURL) {
             WPWebViewController *webViewController = [[WPWebViewController alloc] init];
             if ([blogURL isWordPressDotComUrl]) {
