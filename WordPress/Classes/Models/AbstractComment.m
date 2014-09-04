@@ -41,6 +41,9 @@
 - (NSString *)contentForDisplay {
     // Unescape HTML characters and add <br /> tags
     NSString *commentContent = [[self.content stringByDecodingXMLCharacters] trim];
+    if (commentContent == nil) {
+        return @"";
+    }
     // Don't add <br /> tags after an HTML tag, as DTCoreText will handle that spacing for us
     NSRegularExpression *removeNewlinesAfterHtmlTags = [NSRegularExpression regularExpressionWithPattern:@"(?<=\\>)\n\n" options:0 error:nil];
     commentContent = [removeNewlinesAfterHtmlTags stringByReplacingMatchesInString:commentContent options:0 range:NSMakeRange(0, [commentContent length]) withTemplate:@""];

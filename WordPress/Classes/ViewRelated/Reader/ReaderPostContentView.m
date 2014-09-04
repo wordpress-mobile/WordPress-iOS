@@ -85,13 +85,15 @@
 
     NSMutableArray *actionButtons = [NSMutableArray array];
 
-    [actionButtons addObject:self.likeButton];
+    if(self.post.isLikesEnabled){
+        [actionButtons addObject:self.likeButton];
+    }
 
     if (self.post.commentsOpen) {
         [actionButtons addObject:self.commentButton];
     }
 
-    // Don't reblog private blogs
+    // Reblogging just for non private blogs
     if (![self privateContent]) {
         [actionButtons addObject:self.reblogButton];
     }

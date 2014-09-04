@@ -3,7 +3,7 @@
 #import <CoreLocation/CoreLocation.h>
 
 static LocationService *instance;
-static NSInteger const LocationHorizontalAccuracyThreshold = 50; // Meters
+static NSInteger const LocationHorizontalAccuracyThreshold = 100; // Meters
 static NSInteger const LocationServiceTimeoutDuration = 5; // Seconds
 NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 

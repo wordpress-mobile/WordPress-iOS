@@ -111,60 +111,6 @@
     }];
 }
 
-- (void)followSite:(NSUInteger)siteID success:(void (^)())success failure:(void(^)(NSError *error))failure {
-    NSString *path = [NSString stringWithFormat:@"sites/%d/follows/new", siteID];
-    [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) {
-            success();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
-- (void)unfollowSite:(NSUInteger)siteID success:(void (^)())success failure:(void(^)(NSError *error))failure {
-    NSString *path = [NSString stringWithFormat:@"sites/%d/follows/mine/delete", siteID];
-    [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) {
-            success();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
-- (void)followSiteAtURL:(NSString *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure {
-    NSString *path = @"read/following/mine/new";
-    NSDictionary *params = @{@"url": siteURL};
-    [self.api POST:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) {
-            success();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
-- (void)unfollowSiteAtURL:(NSString *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure {
-    NSString *path = @"read/following/mine/delete";
-    NSDictionary *params = @{@"url": siteURL};
-    [self.api POST:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) {
-            success();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
 - (void)reblogPost:(NSUInteger)postID fromSite:(NSUInteger)siteID toSite:(NSUInteger)targetSiteID note:(NSString *)note success:(void (^)(BOOL isReblogged))success failure:(void (^)(NSError *error))failure {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:@(targetSiteID) forKey:@"destination_site_id"];
 
@@ -259,6 +205,8 @@
     post.status = [self stringOrEmptyString:[dict stringForKey:@"status"]];
     post.summary = [self stringOrEmptyString:[dict stringForKey:@"excerpt"]];
     post.tags = [self tagsFromPostDictionary:dict];
+    post.isSharingEnabled = [[dict numberForKey:@"sharing_enabled"] boolValue];
+    post.isLikesEnabled = [[dict numberForKey:@"likes_enabled"] boolValue];
 
     return post;
 }
@@ -412,10 +360,10 @@
     NSString *featuredImage = @"";
 
     NSDictionary *featured_media = [dict dictionaryForKey:@"featured_media"];
-    if (featured_media && [[featured_media stringForKey:@"type"] isEqualToString:@"image"]) {
-        featuredImage = [self stringOrEmptyString:[featured_media stringForKey:@"uri"]];
-    } else if ([featuredImage length] == 0) {
+    if ([featuredImage length] == 0) {
         featuredImage = [dict stringForKey:@"featured_image"];
+    } else if ([[featured_media stringForKey:@"type"] isEqualToString:@"image"]) {
+        featuredImage = [self stringOrEmptyString:[featured_media stringForKey:@"uri"]];
     }
 
     // Values set in editorial trumps the rest
