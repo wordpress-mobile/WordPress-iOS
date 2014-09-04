@@ -18,12 +18,12 @@
 
 @implementation OCMLocation
 
-+ (id)locationWithTestCase:(id)aTestCase file:(NSString *)aFile line:(NSUInteger)aLine
++ (instancetype)locationWithTestCase:(id)aTestCase file:(NSString *)aFile line:(NSUInteger)aLine
 {
     return [[[OCMLocation alloc] initWithTestCase:aTestCase file:aFile line:aLine] autorelease];
 }
 
-- (id)initWithTestCase:(id)aTestCase file:(NSString *)aFile line:(NSUInteger)aLine
+- (instancetype)initWithTestCase:(id)aTestCase file:(NSString *)aFile line:(NSUInteger)aLine
 {
     self = [super init];
     testCase = aTestCase;
