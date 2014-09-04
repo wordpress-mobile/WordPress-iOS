@@ -368,6 +368,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
         newIndexPath = indexPath;
     }
 
+    [self invalidateRowHeightsCache];
+    
     switch(type) {
         case NSFetchedResultsChangeInsert:
             [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
@@ -739,6 +741,11 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
                             failure:(void (^)(NSError *))failure
 {
     AssertSubclassMethod();
+}
+
+- (void)invalidateRowHeightsCache
+{
+    // Optional: Override if needed
 }
 
 - (BOOL)isSyncing
