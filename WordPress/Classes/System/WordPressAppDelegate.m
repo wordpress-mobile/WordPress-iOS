@@ -241,6 +241,10 @@ NSInteger const kMeTabIndex                                     = 2;
                 NSString *debugType = [params stringForKey:@"type"];
                 NSString *debugKey = [params stringForKey:@"key"];
 
+                if ([[WordPressComApiCredentials debuggingKey] isEqualToString:@""] || [debugKey isEqualToString:@""]) {
+                    return NO;
+                }
+
                 if ([debugKey isEqualToString:[WordPressComApiCredentials debuggingKey]]) {
                     if ([debugType isEqualToString:@"crashlytics_crash"]) {
                         [[Crashlytics sharedInstance] crash];
