@@ -14,6 +14,7 @@ static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.w
 
 @property (nonatomic, copy) NSString *oauth2Token;
 @property (nonatomic, strong) NSNumber *siteId;
+@property (nonatomic, strong) NSTimeZone *siteTimeZone;
 @property (nonatomic, copy) NSString *statsPathPrefix;
 
 @end
@@ -22,12 +23,17 @@ static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.w
 
 }
 
-- (instancetype)initWithOAuth2Token:(NSString *)oauth2Token andSiteId:(NSNumber *)siteId
+- (instancetype)initWithOAuth2Token:(NSString *)oauth2Token siteId:(NSNumber *)siteId andSiteTimeZone:(NSTimeZone *)timeZone
 {
+    NSAssert(oauth2Token.length > 0, @"OAuth2 token must not be empty.");
+    NSAssert(siteId != nil, @"Site ID must not be nil.");
+    NSAssert(timeZone != nil, @"Timezone must not be nil.");
+    
     self = [super init];
     if (self) {
         _oauth2Token = oauth2Token;
         _siteId = siteId;
+        _siteTimeZone = timeZone;
         _statsPathPrefix = [NSString stringWithFormat:@"/sites/%@/stats", _siteId];
     }
 
@@ -39,6 +45,7 @@ static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.w
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
     formatter.dateFormat = @"yyyy-MM-dd";
+    formatter.timeZone = self.siteTimeZone;
 
     NSString *todayString = [formatter stringFromDate:today];
     NSString *yesterdayString = [formatter stringFromDate:yesterday];
@@ -179,6 +186,55 @@ static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.w
             failureHandler(error);
         }
     }];
+}
+
+
+// For simplicity of implementation (copy & paste), batch is being used here even though its not necessary
+- (void)fetchSummaryStatsForTodayWithCompletionHandler:(void (^)(WPStatsSummary *summary))completionHandler failureHandler:(void (^)(NSError *error))failureHandler
+{
+    NSArray *urls = @[
+                      [self urlForSummary],
+                      ];
+    
+    // This needs to eventually be replaced with an instance of WordPressComApi when it's decoupled from Core Data
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manager.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", self.oauth2Token]
+                     forHTTPHeaderField:@"Authorization"];
+    
+    [manager GET:[self urlForBatch]
+      parameters:@{ @"urls" : urls}
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             if (![responseObject isKindOfClass:[NSDictionary class]]) {
+                 if (failureHandler) {
+                     NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                                          code:NSURLErrorBadServerResponse
+                                                      userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"The server returned an empty response. This usually means you need to increase the memory limit for your site.", @"")}];
+                     failureHandler(error);
+                 }
+                 
+                 return;
+             }
+             
+             NSDictionary *batch = (NSDictionary *)responseObject;
+             
+             WPStatsSummary *statsSummary;
+             NSDictionary *statsSummaryDict = [batch dictionaryForKey:urls[0]];
+             if (statsSummaryDict) {
+                 statsSummary = [[WPStatsSummary alloc] initWithData:statsSummaryDict];
+             }
+             
+             if (completionHandler) {
+                 completionHandler(statsSummary);
+                 
+             }
+         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             DDLogError(@"Error with today summary stats: %@", error);
+             
+             if (failureHandler) {
+                 failureHandler(error);
+             }
+         }];
 }
 
 - (NSString *)urlForBatch

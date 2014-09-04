@@ -41,14 +41,14 @@
 	UIViewController *centerVC = [[DemoViewController alloc] initWithNibName:@"DemoViewController" bundle:nil];
 	centerVC.navigationItem.title = @"Center";
 	
-	// create a left and right "Hamburger" icon on center VC's navigationItem
-	UIImage *hamburgerIcon = [UIImage imageNamed:@"toolbar-icon-menu"];
-	centerVC.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:hamburgerIcon style:UIBarButtonItemStyleBordered target:self action:@selector(showLeftPanel:)];
-	centerVC.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:hamburgerIcon style:UIBarButtonItemStyleBordered target:self action:@selector(showRightPanel:)];
-	LoggingNavigationController *centerNav = [[LoggingNavigationController alloc] initWithRootViewController:centerVC];
-
 	// create a panel controller as root
 	_sidePanelController = [[DTSidePanelController alloc] init];
+    
+    // create a left and right "Hamburger" icon on center VC's navigationItem
+	UIImage *hamburgerIcon = [UIImage imageNamed:@"toolbar-icon-menu"];
+	centerVC.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:hamburgerIcon style:UIBarButtonItemStyleBordered target:_sidePanelController action:@selector(toggleLeftPanel:)];
+	centerVC.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:hamburgerIcon style:UIBarButtonItemStyleBordered target:_sidePanelController action:@selector(toggleRightPanel:)];
+	LoggingNavigationController *centerNav = [[LoggingNavigationController alloc] initWithRootViewController:centerVC];
 	
 	// left panel has fixed width, right panel width is variable
 	[_sidePanelController setWidth:200 forPanel:DTSidePanelControllerPanelLeft animated:NO];
@@ -106,30 +106,5 @@
 	
 	return YES;
 }
-
-#pragma mark - Actions
-
-- (void)showLeftPanel:(id)sender
-{
-	if (_sidePanelController.presentedPanel == DTSidePanelControllerPanelCenter)
-	{
-		[_sidePanelController presentPanel:DTSidePanelControllerPanelLeft animated:YES];
-	}
-	else
-	{
-		[_sidePanelController presentPanel:DTSidePanelControllerPanelCenter animated:YES];
-	}
-}
-
-- (void)showRightPanel:(id)sender
-{
-	if (_sidePanelController.presentedPanel == DTSidePanelControllerPanelCenter)
-	{
-		[_sidePanelController presentPanel:DTSidePanelControllerPanelRight animated:YES];
-	}
-	else
-	{
-		[_sidePanelController presentPanel:DTSidePanelControllerPanelCenter animated:YES];
-	}}
 
 @end

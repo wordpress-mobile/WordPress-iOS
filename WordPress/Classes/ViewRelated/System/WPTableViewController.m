@@ -38,53 +38,60 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
 @implementation WPTableViewController
 
-+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
     NSString *blogID = [coder decodeObjectForKey:WPBlogRestorationKey];
-    if (!blogID)
+    if (!blogID) {
         return nil;
-    
+    }
+
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:blogID]];
-    if (!objectID)
+    if (!objectID) {
         return nil;
-    
+    }
+
     NSError *error = nil;
     Blog *restoredBlog = (Blog *)[context existingObjectWithID:objectID error:&error];
     if (error || !restoredBlog) {
         return nil;
     }
-    
+
     WPTableViewController *viewController = [[self alloc] initWithStyle:UITableViewStyleGrouped];
     viewController.blog = restoredBlog;
-    
+
     return viewController;
 }
 
-- (id)initWithStyle:(UITableViewStyle)style {
+- (id)initWithStyle:(UITableViewStyle)style
+{
     self = [super initWithStyle:UITableViewStyleGrouped];
-    
+
     if (self) {
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
     }
-    
+
     return self;
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     _resultsController.delegate = nil;
     _editSiteViewController.delegate = nil;
-    
+
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc removeObserver:self];
 }
 
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
+{
     [coder encodeObject:[[self.blog.objectID URIRepresentation] absoluteString] forKey:WPBlogRestorationKey];
     [super encodeRestorableStateWithCoder:coder];
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
@@ -94,7 +101,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     self.tableView.allowsSelectionDuringEditing = YES;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self.tableView registerClass:[self cellClass] forCellReuseIdentifier:DefaultCellIdentifier];
-    
+
     if (IS_IPHONE) {
         // Account for 1 pixel header height
         UIEdgeInsets tableInset = [self.tableView contentInset];
@@ -107,12 +114,13 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
 
     [self configureNoResultsView];
-    
+
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(automaticallyRefreshIfAppropriate) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     CGSize contentSize = self.tableView.contentSize;
     if (contentSize.height > _savedScrollOffset.y) {
@@ -126,20 +134,23 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     [self configureNoResultsView];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-    
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
     [self automaticallyRefreshIfAppropriate];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     [super viewWillDisappear:animated];
     if (IS_IPHONE) {
         _savedScrollOffset = self.tableView.contentOffset;
     }
 }
 
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
+{
     [super setEditing:editing animated:animated];
 }
 
@@ -148,13 +159,13 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 - (NSString *)noResultsTitleText
 {
     NSString *ttl = NSLocalizedString(@"No %@ yet", @"A string format. The '%@' will be replaced by the relevant type of object, posts, pages or comments.");
-	ttl = [NSString stringWithFormat:ttl, [self.title lowercaseString]];
+    ttl = [NSString stringWithFormat:ttl, [self.title lowercaseString]];
     return ttl;
 }
 
 - (NSString *)noResultsMessageText
 {
-	return nil;
+    return nil;
 }
 
 - (UIView *)noResultsAccessoryView
@@ -169,7 +180,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
 #pragma mark - Property accessors
 
-- (void)setBlog:(Blog *)blog {
+- (void)setBlog:(Blog *)blog
+{
     if (_blog == blog) {
         return;
     }
@@ -184,7 +196,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
 }
 
-- (void)setInfiniteScrollEnabled:(BOOL)infiniteScrollEnabled {
+- (void)setInfiniteScrollEnabled:(BOOL)infiniteScrollEnabled
+{
     if (infiniteScrollEnabled == _infiniteScrollEnabled) {
         return;
     }
@@ -201,41 +214,47 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return [[self.resultsController sections] count];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
     return [sectionInfo name];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     id <NSFetchedResultsSectionInfo> sectionInfo = nil;
     sectionInfo = [[self.resultsController sections] objectAtIndex:section];
     return [sectionInfo numberOfObjects];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:DefaultCellIdentifier];
 
     if (self.tableView.isEditing) {
-		cell.accessoryType = UITableViewCellAccessoryNone;
-	} else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    } else {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
-    
+
     [self configureCell:cell atIndexPath:indexPath];
 
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-
+- (void)tableView:(UITableView *)tableView
+        willDisplayCell:(UITableViewCell *)cell
+        forRowAtIndexPath:(NSIndexPath *)indexPath
+{
     // Are we approaching the end of the table?
     if ((indexPath.section + 1 == [self numberOfSectionsInTableView:tableView]) && (indexPath.row + 4 >= [self tableView:tableView numberOfRowsInSection:indexPath.section]) && [self tableView:tableView numberOfRowsInSection:indexPath.section] > 10) {
         // Only 3 rows till the end of table
-        
+
         if ([self hasMoreContent] && !_isLoadingMore) {
             if (![self isSyncing] || self.incrementalLoadingSupported) {
                 [_activityFooter startAnimating];
@@ -252,11 +271,13 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     return CellHeight;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
     // Don't show section headers if there are no named sections, or if this is the first (and has no name)
     NSString *sectionTitle = [self tableView:tableView titleForHeaderInSection:section];
     BOOL firstTitleAndNoName = section == 0 && [sectionTitle length] == 0;
@@ -267,26 +288,31 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     return SectionHeaderHeight;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
     // remove footer height for all but last section
     return section == [[self.resultsController sections] count] - 1 ? UITableViewAutomaticDimension : 1.0;
 }
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     return UITableViewCellEditingStyleNone;
 }
 
-- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
     return NO;
 }
 
 #pragma mark - Fetched results controller
 
-- (UITableViewRowAnimation)tableViewRowAnimation {
-	return UITableViewRowAnimationFade;
+- (UITableViewRowAnimation)tableViewRowAnimation
+{
+    return UITableViewRowAnimationFade;
 }
 
-- (NSFetchedResultsController *)resultsController {
+- (NSFetchedResultsController *)resultsController
+{
     if (_resultsController != nil) {
         return _resultsController;
     }
@@ -297,22 +323,24 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
                                                                sectionNameKeyPath:[self sectionNameKeyPath]
                                                                         cacheName:nil];
     _resultsController.delegate = self;
-        
+
     NSError *error = nil;
     if (![_resultsController performFetch:&error]) {
         DDLogError(@"%@ couldn't fetch %@: %@", self, [self entityName], [error localizedDescription]);
         _resultsController = nil;
     }
-    
+
     return _resultsController;
 }
 
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
     _indexPathSelectedBeforeUpdates = [self.tableView indexPathForSelectedRow];
     [self.tableView beginUpdates];
 }
 
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
     [self.tableView endUpdates];
     if (_indexPathSelectedAfterUpdates) {
         [self.tableView selectRowAtIndexPath:_indexPathSelectedAfterUpdates animated:NO scrollPosition:UITableViewScrollPositionNone];
@@ -320,7 +348,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
         _indexPathSelectedBeforeUpdates = nil;
         _indexPathSelectedAfterUpdates = nil;
     }
-    
+
     [self configureNoResultsView];
 }
 
@@ -328,8 +356,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
    didChangeObject:(id)anObject
        atIndexPath:(NSIndexPath *)indexPath
      forChangeType:(NSFetchedResultsChangeType)type
-      newIndexPath:(NSIndexPath *)newIndexPath {
-
+      newIndexPath:(NSIndexPath *)newIndexPath
+{
     if (NSFetchedResultsChangeUpdate == type && newIndexPath && ![newIndexPath isEqual:indexPath]) {
         // Seriously, Apple?
         // http://developer.apple.com/library/ios/#releasenotes/iPhone/NSFetchedResultsChangeMoveReportedAsNSFetchedResultsChangeUpdate/_index.html
@@ -340,80 +368,84 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
         newIndexPath = indexPath;
     }
 
-    switch(type) {            
+    [self invalidateRowHeightsCache];
+    
+    switch(type) {
         case NSFetchedResultsChangeInsert:
-            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
+            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
             break;
-            
         case NSFetchedResultsChangeDelete:
-            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:[self tableViewRowAnimation]];
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:[self tableViewRowAnimation]];
             if ([_indexPathSelectedBeforeUpdates isEqual:indexPath]) {
                 [self.navigationController popToViewController:self animated:YES];
             }
             break;
-            
         case NSFetchedResultsChangeUpdate:
             [self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:newIndexPath];
             break;
-            
         case NSFetchedResultsChangeMove:
-            [self.tableView deleteRowsAtIndexPaths:[NSArray
-                                                       arrayWithObject:indexPath] withRowAnimation:[self tableViewRowAnimation]];
-            [self.tableView insertRowsAtIndexPaths:[NSArray
-                                                       arrayWithObject:newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:[self tableViewRowAnimation]];
+            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
             if ([_indexPathSelectedBeforeUpdates isEqual:indexPath] && _indexPathSelectedAfterUpdates == nil) {
                 _indexPathSelectedAfterUpdates = newIndexPath;
             }
             break;
-    }    
+        default:
+            break;
+    }
 }
 
-- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
-    switch(type) {
-        case NSFetchedResultsChangeInsert:
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:[self tableViewRowAnimation]];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:[self tableViewRowAnimation]];
-            break;
+- (void)controller:(NSFetchedResultsController *)controller
+        didChangeSection:(id )sectionInfo
+        atIndex:(NSUInteger)sectionIndex
+        forChangeType:(NSFetchedResultsChangeType)type
+{
+    if (type == NSFetchedResultsChangeInsert) {
+        [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:[self tableViewRowAnimation]];
+    } else if (type == NSFetchedResultsChangeDelete) {
+        [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:[self tableViewRowAnimation]];
     }
 }
 
 #pragma mark - UIRefreshControl Methods
 
-- (void)refresh {
+- (void)refresh
+{
     if (![self userCanRefresh]) {
         [self.refreshControl endRefreshing];
         return;
     }
-    
+
     _didTriggerRefresh = YES;
-	[self syncItemsViaUserInteraction];
     [self.noResultsView removeFromSuperview];
+    [self syncItemsViaUserInteraction];
 }
 
-- (BOOL)userCanRefresh {
+- (BOOL)userCanRefresh
+{
     return YES;
 }
 
 #pragma mark - UIScrollViewDelegate Methods
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
     _isScrolling = YES;
 }
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
     _isScrolling = NO;
 }
 
-- (void)sendUserToXMLOptionsFromAlert:(UIAlertView *)alertView {
+- (void)sendUserToXMLOptionsFromAlert:(UIAlertView *)alertView
+{
     NSString *path = nil;
     NSError *error = NULL;
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+writing.php" options:NSRegularExpressionCaseInsensitive error:&error];
     NSString *msg = [alertView message];
     NSRange rng = [regex rangeOfFirstMatchInString:msg options:0 range:NSMakeRange(0, [msg length])];
-    
+
     if (rng.location == NSNotFound) {
         path = self.blog.url;
         if (![path hasPrefix:@"http"]) {
@@ -423,11 +455,11 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
         }
         path = [path stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
         path = [path stringByAppendingFormat:@"/wp-admin/options-writing.php"];
-        
+
     } else {
         path = [msg substringWithRange:rng];
     }
-    
+
     WPWebViewController *webViewController = [[WPWebViewController alloc] init];
     webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(dismissModal:)];
     [webViewController setUrl:[NSURL URLWithString:path]];
@@ -447,7 +479,8 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
 #pragma mark - SettingsViewControllerDelegate
 
-- (void)controllerDidDismiss:(UIViewController *)controller cancelled:(BOOL)cancelled {
+- (void)controllerDidDismiss:(UIViewController *)controller cancelled:(BOOL)cancelled
+{
     if (self.editSiteViewController == controller) {
         _didPromptForCredentials = cancelled;
         self.editSiteViewController = nil;
@@ -456,28 +489,29 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
 #pragma mark - Private Methods
 
-- (void)automaticallyRefreshIfAppropriate {
+- (void)automaticallyRefreshIfAppropriate
+{
     // Only automatically refresh if the view is loaded and visible on the screen
     if (self.isViewLoaded == NO || self.view.window == nil) {
         DDLogVerbose(@"View is not visible and will not check for auto refresh.");
         return;
     }
-    
+
     // Do not start auto-sync if connection is down
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if (appDelegate.connectionAvailable == NO) {
         return;
     }
-    
+
     // Don't try to refresh if we just canceled editing credentials
     if (_didPromptForCredentials) {
         return;
     }
-    
+
     if ([self userCanRefresh] == NO) {
         return;
     }
-    
+
     NSDate *lastSynced = [self lastSyncDate];
     if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > WPTableViewControllerRefreshTimeout) {
         // Update in the background
@@ -485,79 +519,87 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
 }
 
-- (void)configureNoResultsView {
-    if (![self isViewLoaded]) {
+- (void)configureNoResultsView
+{
+    if (!self.isViewLoaded) {
         return;
     }
-    
+
     [self.noResultsView removeFromSuperview];
     [self.noResultsActivityIndicator stopAnimating];
     [self.noResultsActivityIndicator removeFromSuperview];
-    
-    if (self.resultsController && [[_resultsController fetchedObjects] count] == 0) {
-        if (self.isSyncing) {
-            // Show activity indicator view when syncing is occuring
-            // and the fetched results controller has no objects
-            
-            [self.noResultsActivityIndicator startAnimating];
-            self.noResultsActivityIndicator.center = [self.tableView convertPoint:self.tableView.center fromView:self.tableView.superview];
-            [self.tableView addSubview:self.noResultsActivityIndicator];
+
+    if (self.resultsController.fetchedObjects.count) {
+        return;
+    }
+
+    if (self.isSyncing) {
+        // Show activity indicator view when syncing is occuring and the fetched results controller has no objects
+        [self.noResultsActivityIndicator startAnimating];
+        self.noResultsActivityIndicator.center = [self.tableView convertPoint:self.tableView.center fromView:self.tableView.superview];
+        [self.tableView addSubview:self.noResultsActivityIndicator];
+
+    } else {
+        // Refresh the NoResultsView Properties
+        self.noResultsView.titleText        = self.noResultsTitleText;
+        self.noResultsView.messageText      = self.noResultsMessageText;
+        self.noResultsView.accessoryView    = self.noResultsAccessoryView;
+        self.noResultsView.buttonTitle      = self.noResultsButtonText;
+
+        // Show no results view if the fetched results controller has no objects and syncing is not happening.
+        if (![self.noResultsView isDescendantOfView:self.tableView]) {
+            [self.tableView addSubviewWithFadeAnimation:self.noResultsView];
         } else {
-            // Show no results view if the fetched results controller
-            // has no objects and syncing is not happening.
-            
-            
-            // only add and animate no results view if it isn't already
-            // in the table view
-            if (![self.noResultsView isDescendantOfView:self.tableView]) {
-                [self.tableView addSubviewWithFadeAnimation:self.noResultsView];
-            } else {
-                [self.noResultsView centerInSuperview];
-            }
+            [self.noResultsView centerInSuperview];
         }
     }
 }
 
-- (WPNoResultsView *)noResultsView {
-	
+- (WPNoResultsView *)noResultsView
+{
     if (!_noResultsView) {
-        _noResultsView = [WPNoResultsView noResultsViewWithTitle:[self noResultsTitleText] message:[self noResultsMessageText] accessoryView:[self noResultsAccessoryView] buttonTitle:[self noResultsButtonText]];
+        _noResultsView = [WPNoResultsView new];
         _noResultsView.delegate = self;
     }
-    
-	return _noResultsView;
+
+    return _noResultsView;
 }
 
-- (UIActivityIndicatorView *)noResultsActivityIndicator {
-    
+- (UIActivityIndicatorView *)noResultsActivityIndicator
+{
     if (!_noResultsActivityIndicator) {
         _noResultsActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         _noResultsActivityIndicator.hidesWhenStopped = YES;
         _noResultsActivityIndicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
         _noResultsActivityIndicator.center = [self.tableView convertPoint:self.tableView.center fromView:self.tableView.superview];
     }
-    
-	return _noResultsActivityIndicator;
+
+    return _noResultsActivityIndicator;
 }
 
-- (void)hideRefreshHeader {
+- (void)hideRefreshHeader
+{
     [self.refreshControl endRefreshing];
     _didTriggerRefresh = NO;
 }
 
-- (void)dismissModal:(id)sender {
+- (void)dismissModal:(id)sender
+{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)syncItems {
+- (void)syncItems
+{
     [self syncItemsViaUserInteraction:NO];
 }
 
-- (void)syncItemsViaUserInteraction {
+- (void)syncItemsViaUserInteraction
+{
     [self syncItemsViaUserInteraction:YES];
 }
 
-- (void)syncItemsViaUserInteraction:(BOOL)userInteraction {
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction
+{
     if ([self isSyncing]) {
         return;
     }
@@ -592,40 +634,44 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
                 [WPError showNetworkingAlertWithError:error];
             }
         } else {
-            [WPError showNetworkingAlertWithError:error];
+            if (error) {
+                [WPError showNetworkingAlertWithError:error];
+            }
         }
     }];
 }
 
-- (void)promptForPassword {
+- (void)promptForPassword
+{
     [self promptForPasswordWithMessage:nil];
 }
 
-- (void)promptForPasswordWithMessage:(NSString *)message {
+- (void)promptForPasswordWithMessage:(NSString *)message
+{
     if (message == nil) {
         message = NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"");
     }
     [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't Connect", @"") message:message];
-	
-	// bad login/pass combination
-	self.editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
-	self.editSiteViewController.isCancellable = YES;
-	self.editSiteViewController.delegate = self;
-	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.editSiteViewController];
+
+    // bad login/pass combination
+    self.editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
+    self.editSiteViewController.isCancellable = YES;
+    self.editSiteViewController.delegate = self;
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.editSiteViewController];
     navController.navigationBar.translucent = NO;
-	
-	if(IS_IPAD) {
-		navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-	}
-	
+
+    if (IS_IPAD) {
+        navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    }
+
     [self.navigationController presentViewController:navController animated:YES completion:nil];
 }
 
-
 #pragma mark - Infinite scrolling
 
-- (void)enableInfiniteScrolling {
+- (void)enableInfiniteScrolling
+{
     if (_activityFooter == nil) {
         CGRect rect = CGRectMake(145.0, 10.0, 30.0, 30.0);
         _activityFooter = [[UIActivityIndicatorView alloc] initWithFrame:rect];
@@ -640,18 +686,21 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     self.tableView.tableFooterView = footerView;
 }
 
-- (void)disableInfiniteScrolling {
+- (void)disableInfiniteScrolling
+{
     self.tableView.tableFooterView = nil;
     _activityFooter = nil;
 }
 
 #pragma mark - Subclass methods
 
-- (BOOL)userCanCreateEntity {
-	return NO;
+- (BOOL)userCanCreateEntity
+{
+    return NO;
 }
 
-- (NSManagedObjectContext *)managedObjectContext {
+- (NSManagedObjectContext *)managedObjectContext
+{
     return [[ContextManager sharedInstance] mainContext];
 }
 
@@ -660,51 +709,69 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wreturn-type"
 
-- (NSString *)entityName {
+- (NSString *)entityName
+{
     AssertSubclassMethod();
 }
 
-- (NSDate *)lastSyncDate {
+- (NSDate *)lastSyncDate
+{
     AssertSubclassMethod();
 }
 
-- (NSFetchRequest *)fetchRequest {
+- (NSFetchRequest *)fetchRequest
+{
     AssertNoBlogSubclassMethod();
 }
 
 #pragma clang diagnostic pop
 
-- (NSString *)sectionNameKeyPath {
+- (NSString *)sectionNameKeyPath
+{
     return nil;
 }
 
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
     AssertSubclassMethod();
 }
 
-- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
+- (void)syncItemsViaUserInteraction:(BOOL)userInteraction
+                            success:(void (^)())success
+                            failure:(void (^)(NSError *))failure
+{
     AssertSubclassMethod();
 }
 
-- (BOOL)isSyncing {
+- (void)invalidateRowHeightsCache
+{
+    // Optional: Override if needed
+}
+
+- (BOOL)isSyncing
+{
     return _isSyncing;
 }
 
-- (Class)cellClass {
+- (Class)cellClass
+{
     return [UITableViewCell class];
 }
 
-- (BOOL)hasMoreContent {
+- (BOOL)hasMoreContent
+{
     return NO;
 }
 
-- (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     AssertSubclassMethod();
 }
 
-- (void)resetResultsController {
-	_resultsController.delegate = nil;
-	_resultsController = nil;
+- (void)resetResultsController
+{
+    _resultsController.delegate = nil;
+    _resultsController = nil;
 }
 
 @end

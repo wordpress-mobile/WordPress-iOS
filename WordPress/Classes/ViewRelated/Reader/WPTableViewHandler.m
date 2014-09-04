@@ -11,9 +11,10 @@ static CGFloat const DefaultCellHeight = 44.0;
 @property (nonatomic, strong, readwrite) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) NSIndexPath *indexPathSelectedBeforeUpdates;
 @property (nonatomic, strong) NSIndexPath *indexPathSelectedAfterUpdates;
+@property (nonatomic, strong) NSMutableArray *sectionHeaders;
+@property (nonatomic, strong) NSMutableDictionary *cachedRowHeights;
 
 @end
-
 
 @implementation WPTableViewHandler
 
@@ -22,12 +23,16 @@ static CGFloat const DefaultCellHeight = 44.0;
 - (void)dealloc
 {
     _tableView.delegate = nil;
+    _tableView.dataSource = nil;
 }
 
 - (instancetype)initWithTableView:(UITableView *)tableView
 {
     self = [super init];
     if (self) {
+        _sectionHeaders = [NSMutableArray array];
+        _cachedRowHeights = [NSMutableDictionary dictionary];
+
         _tableView = tableView;
         _tableView.delegate = self;
         _tableView.dataSource = self;
@@ -37,17 +42,67 @@ static CGFloat const DefaultCellHeight = 44.0;
 }
 
 
+#pragma mark - Public Methods
+
+- (void)updateTitleForSection:(NSUInteger)section
+{
+    WPTableViewSectionHeaderView *sectionHeaderView = (WPTableViewSectionHeaderView *)[self tableView:self.tableView viewForHeaderInSection:section];
+    sectionHeaderView.title = [self titleForHeaderInSection:section];
+}
+
+- (void)clearCachedRowHeights
+{
+    [self.cachedRowHeights removeAllObjects];
+}
+
+
+#pragma mark - Private Methods
+
+- (void)cacheHeight:(CGFloat)height forIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *key = [NSString stringWithFormat:@"%i|%i", indexPath.section, indexPath.row];
+    [self.cachedRowHeights setObject:@(height) forKey:key];
+}
+
+- (CGFloat)cachedHeightForIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *key = [NSString stringWithFormat:@"%i|%i", indexPath.section, indexPath.row];
+    return [[self.cachedRowHeights numberForKey:key] floatValue];
+}
+
+- (void)refreshCachedRowHeightsForWidth:(CGFloat)width
+{
+    if (!self.cacheRowHeights || ![self.delegate respondsToSelector:@selector(tableView:heightForRowAtIndexPath:forWidth:)]) {
+        return;
+    }
+
+    NSMutableDictionary *cachedRowHeights = [NSMutableDictionary dictionary];
+    for (NSObject *obj in self.resultsController.fetchedObjects) {
+        NSIndexPath *indexPath = [self.resultsController indexPathForObject:obj];
+        CGFloat height = [self.delegate tableView:self.tableView heightForRowAtIndexPath:indexPath forWidth:width];
+
+        NSString *key = [NSString stringWithFormat:@"%i|%i", indexPath.section, indexPath.row];
+        [cachedRowHeights setObject:@(height) forKey:key];
+    }
+
+    self.cachedRowHeights = cachedRowHeights;
+}
+
+
 #pragma mark - Required Delegate Methods
 
-- (NSManagedObjectContext *)managedObjectContext {
+- (NSManagedObjectContext *)managedObjectContext
+{
     return [self.delegate managedObjectContext];
 }
 
-- (NSString *)entityName {
+- (NSString *)entityName
+{
     return [self.delegate entityName];
 }
 
-- (NSFetchRequest *)fetchRequest {
+- (NSFetchRequest *)fetchRequest
+{
     return [self.delegate fetchRequest];
 }
 
@@ -64,7 +119,8 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 #pragma mark - Optional Delegate Methods
 
-- (NSString *)sectionNameKeyPath {
+- (NSString *)sectionNameKeyPath
+{
     if ([self.delegate respondsToSelector:@selector(sectionNameKeyPath)]) {
         return [self.delegate sectionNameKeyPath];
     }
@@ -136,12 +192,92 @@ static CGFloat const DefaultCellHeight = 44.0;
     }
 }
 
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGFloat height = DefaultCellHeight;
+
+    if (self.cacheRowHeights) {
+        height = [self cachedHeightForIndexPath:indexPath];
+        if (height) {
+            return height;
+        }
+    }
+
+    if ([self.delegate respondsToSelector:@selector(tableView:estimatedHeightForRowAtIndexPath:)]) {
+        height = [self.delegate tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
+    }
+
+    return height;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([self.delegate respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)]) {
-        [self.delegate tableView:tableView heightForRowAtIndexPath:indexPath];
+    CGFloat height = DefaultCellHeight;
+
+    if (self.cacheRowHeights) {
+        height = [self cachedHeightForIndexPath:indexPath];
+        if (height) {
+            return height;
+        }
     }
-    return DefaultCellHeight;
+
+    if ([self.delegate respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)]) {
+        height = [self.delegate tableView:tableView heightForRowAtIndexPath:indexPath];
+        if (self.cacheRowHeights) {
+            [self cacheHeight:height forIndexPath:indexPath];
+        }
+    }
+
+    return height;
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([self.delegate respondsToSelector:@selector(tableView:shouldHighlightRowAtIndexPath:)]) {
+        return [self.delegate tableView:tableView shouldHighlightRowAtIndexPath:indexPath];
+    }
+    return YES;
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([self.delegate respondsToSelector:@selector(tableView:willSelectRowAtIndexPath:)]) {
+        [self.delegate tableView:tableView willSelectRowAtIndexPath:indexPath];
+    }
+    return indexPath;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([self.delegate respondsToSelector:@selector(tableView:willDisplayCell:forRowAtIndexPath:)]) {
+        [self.delegate tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if ([self.delegate respondsToSelector:@selector(tableView:viewForHeaderInSection:)]) {
+        return [self.delegate tableView:tableView viewForHeaderInSection:section];
+    }
+
+    if ([self.sectionHeaders count] > section) {
+        return [self.sectionHeaders objectAtIndex:section];
+    }
+    CGRect frame = CGRectMake(0.0, 0.0, CGRectGetWidth(self.tableView.bounds), 0.0);
+    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:frame];
+    header.title = [self titleForHeaderInSection:section];
+    [self.sectionHeaders addObject:header];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if ([self.delegate respondsToSelector:@selector(tableView:heightForHeaderInSection:)]) {
+        return [self.delegate tableView:tableView heightForHeaderInSection:section];
+    }
+
+    NSString *title = [self titleForHeaderInSection:section];
+    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.tableView.bounds)];
 }
 
 
@@ -167,20 +303,6 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 
 #pragma mark - TableView Delegate Methods
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    CGRect frame = CGRectMake(0.0, 0.0, CGRectGetWidth(self.tableView.bounds), 0.0);
-    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:frame];
-    header.title = [self titleForHeaderInSection:section];
-    return header;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    NSString *title = [self titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.tableView.bounds)];
-}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
@@ -260,18 +382,15 @@ static CGFloat const DefaultCellHeight = 44.0;
         case NSFetchedResultsChangeInsert:
             [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
             break;
-
         case NSFetchedResultsChangeDelete:
             [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:[self tableViewRowAnimation]];
             if ([_indexPathSelectedBeforeUpdates isEqual:indexPath]) {
                 [self deletingSelectedRowAtIndexPath:indexPath];
             }
             break;
-
         case NSFetchedResultsChangeUpdate:
             [self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:newIndexPath];
             break;
-
         case NSFetchedResultsChangeMove:
             [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:[self tableViewRowAnimation]];
             [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
@@ -279,19 +398,17 @@ static CGFloat const DefaultCellHeight = 44.0;
                 _indexPathSelectedAfterUpdates = newIndexPath;
             }
             break;
+        default:
+            break;
     }
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
 {
-    switch(type) {
-        case NSFetchedResultsChangeInsert:
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:[self tableViewRowAnimation]];
-            break;
-
-        case NSFetchedResultsChangeDelete:
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:[self tableViewRowAnimation]];
-            break;
+    if (type == NSFetchedResultsChangeInsert) {
+        [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:[self tableViewRowAnimation]];
+    } else if (type == NSFetchedResultsChangeDelete) {
+        [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:[self tableViewRowAnimation]];
     }
 }
 

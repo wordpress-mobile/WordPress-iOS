@@ -1,4 +1,3 @@
-#import "AsyncTestHelper.h"
 #import "CoreDataTestHelper.h"
 #import "ContextManager.h"
 #import "WPAccount.h"
@@ -33,6 +32,21 @@
 @end
 
 @implementation ReaderPostServiceTest
+
+- (void)setUp
+{
+    [super setUp];
+    
+}
+
+- (void)tearDown
+{
+    // Put teardown code here; it will be run once, after the last test case.
+    [super tearDown];
+    
+    [[CoreDataTestHelper sharedHelper] reset];
+    [CoreDataTestHelper sharedHelper].testExpectation = nil;
+}
 
 #pragma mark - Configuration
 
@@ -123,6 +137,10 @@
     dict = @{@"featured_media": @{@"type": @"video", @"uri":uri}};
     imagePath = [remoteService featuredImageFromPostDictionary:dict];
     XCTAssertTrue([@"" isEqualToString:imagePath], @"Non image media types should be ignored.");
+
+    dict = @{@"attachments": @{@"111": @{@"mime_type": @"image/jpg", @"width":@(2048), @"URL":uri}}};
+    imagePath = [remoteService featuredImageFromPostDictionary:dict];
+    XCTAssertTrue([uri isEqualToString:imagePath], @"Failed to retrieve the uri from attachments.");
 
     dict = [self editorialDictionaryWithKey:@"image" value:uri];
     imagePath = [remoteService featuredImageFromPostDictionary:dict];
@@ -268,15 +286,16 @@
     remotePost.isBlogPrivate = YES;
     ReaderPost *post = [service createOrReplaceFromRemotePost:remotePost forTopic:nil];
 
-    ATHStart();
+    XCTestExpectation *expectation = [self expectationWithDescription:@"reblog expectation"];
     [service reblogPost:post toSite:0 note:nil success:^{
         XCTFail(@"Posts from private blogs should not be rebloggable.");
-        ATHNotify();
+        [expectation fulfill];
     } failure:^(NSError *error) {
         XCTAssertTrue([error.domain isEqualToString:ReaderPostServiceErrorDomain], @"Reblogging a private post failed but not for the expected reason.");
-        ATHNotify();
+        [expectation fulfill];
     }];
-    ATHEnd();
+    
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
 
 @end

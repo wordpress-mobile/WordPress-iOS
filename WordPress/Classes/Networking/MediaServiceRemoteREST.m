@@ -8,7 +8,8 @@
 
 @implementation MediaServiceRemoteREST
 
-- (id)initWithApi:(WordPressComApi *)api {
+- (id)initWithApi:(WordPressComApi *)api
+{
     self = [super init];
     if (self) {
         _api = api;
@@ -21,7 +22,8 @@
                                      withFilename:(NSString *)filename
                                            toBlog:(Blog *)blog
                                           success:(void (^)(NSNumber *mediaID, NSString *url))success
-                                          failure:(void (^)(NSError *))failure {
+                                          failure:(void (^)(NSError *))failure
+{
     NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/new", blog.dotComID];
     NSMutableURLRequest *request = [self.api.requestSerializer multipartFormRequestWithMethod:@"POST" URLString:[[NSURL URLWithString:apiPath relativeToURL:self.api.baseURL] absoluteString] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         NSURL *url = [[NSURL alloc] initFileURLWithPath:path];

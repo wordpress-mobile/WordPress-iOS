@@ -1,8 +1,8 @@
 #import <UIKit/UIKit.h>
-#import "EditPostViewController.h"
+#import "WPPostViewController.h"
 
 @interface PostPreviewViewController : UIViewController <UIWebViewDelegate>
 
-- (id)initWithPost:(AbstractPost *)aPost;
+- (instancetype)initWithPost:(AbstractPost *)aPost;
 
 @end
