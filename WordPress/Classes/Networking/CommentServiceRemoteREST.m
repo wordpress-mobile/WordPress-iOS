@@ -23,6 +23,7 @@
 }
 
 
+
 #pragma mark Public methods
 
 #pragma mark Blog-centric methods
@@ -184,9 +185,33 @@
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", siteID, commentID];
     NSDictionary *parameters = @{
-                                 @"content": content,
-                                 @"context": @"edit",
-                                 };
+        @"content": content,
+        @"context": @"edit",
+    };
+    [self.api POST:path
+        parameters:parameters
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               if (success) {
+                   success();
+               }
+           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
+}
+
+- (void)replyToCommentWithID:(NSNumber *)commentID
+                      siteID:(NSNumber *)siteID
+                     content:(NSString *)content
+                     success:(void (^)())success
+                     failure:(void (^)(NSError *error))failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@/replies/new", siteID, commentID];
+    NSDictionary *parameters = @{
+        @"content": content,
+        @"context": @"edit",
+    };
     [self.api POST:path
         parameters:parameters
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
