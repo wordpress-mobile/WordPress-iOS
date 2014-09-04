@@ -23,9 +23,9 @@
     NSUInteger  line;
 }
 
-+ (id)locationWithTestCase:(id)aTestCase file:(NSString *)aFile line:(NSUInteger)aLine;
++ (instancetype)locationWithTestCase:(id)aTestCase file:(NSString *)aFile line:(NSUInteger)aLine;
 
-- (id)initWithTestCase:(id)aTestCase file:(NSString *)aFile line:(NSUInteger)aLine;
+- (instancetype)initWithTestCase:(id)aTestCase file:(NSString *)aFile line:(NSUInteger)aLine;
 
 - (id)testCase;
 - (NSString *)file;
