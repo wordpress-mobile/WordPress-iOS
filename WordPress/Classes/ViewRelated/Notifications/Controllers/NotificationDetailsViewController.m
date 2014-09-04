@@ -90,11 +90,11 @@ static CGFloat NotificationSectionSeparator     = 10;
     self.tableView.backgroundColor      = [WPStyleGuide itsEverywhereGrey];
 
     self.reuseIdentifierMap = @{
-        @(NoteBlockGroupTypesHeader)    : NoteBlockHeaderTableViewCell.reuseIdentifier,
-        @(NoteBlockGroupTypesText)      : NoteBlockTextTableViewCell.reuseIdentifier,
-        @(NoteBlockGroupTypesComment)   : NoteBlockCommentTableViewCell.reuseIdentifier,
-        @(NoteBlockGroupTypesImage)     : NoteBlockImageTableViewCell.reuseIdentifier,
-        @(NoteBlockGroupTypesUser)      : NoteBlockUserTableViewCell.reuseIdentifier
+        @(NoteBlockGroupTypeHeader)    : NoteBlockHeaderTableViewCell.reuseIdentifier,
+        @(NoteBlockGroupTypeText)      : NoteBlockTextTableViewCell.reuseIdentifier,
+        @(NoteBlockGroupTypeComment)   : NoteBlockCommentTableViewCell.reuseIdentifier,
+        @(NoteBlockGroupTypeImage)     : NoteBlockImageTableViewCell.reuseIdentifier,
+        @(NoteBlockGroupTypeUser)      : NoteBlockUserTableViewCell.reuseIdentifier
     };
     
     NSManagedObjectContext *context = self.note.managedObjectContext;
@@ -161,11 +161,11 @@ static CGFloat NotificationSectionSeparator     = 10;
     UITableView *tableView  = detailsViewController.tableView;
 
     _layoutCellMap = @{
-        @(NoteBlockGroupTypesHeader)    : [tableView dequeueReusableCellWithIdentifier:NoteBlockHeaderTableViewCell.reuseIdentifier],
-        @(NoteBlockGroupTypesText)      : [tableView dequeueReusableCellWithIdentifier:NoteBlockTextTableViewCell.reuseIdentifier],
-        @(NoteBlockGroupTypesComment)   : [tableView dequeueReusableCellWithIdentifier:NoteBlockCommentTableViewCell.reuseIdentifier],
-        @(NoteBlockGroupTypesImage)     : [tableView dequeueReusableCellWithIdentifier:NoteBlockImageTableViewCell.reuseIdentifier],
-        @(NoteBlockGroupTypesUser)      : [tableView dequeueReusableCellWithIdentifier:NoteBlockUserTableViewCell.reuseIdentifier]
+        @(NoteBlockGroupTypeHeader)    : [tableView dequeueReusableCellWithIdentifier:NoteBlockHeaderTableViewCell.reuseIdentifier],
+        @(NoteBlockGroupTypeText)      : [tableView dequeueReusableCellWithIdentifier:NoteBlockTextTableViewCell.reuseIdentifier],
+        @(NoteBlockGroupTypeComment)   : [tableView dequeueReusableCellWithIdentifier:NoteBlockCommentTableViewCell.reuseIdentifier],
+        @(NoteBlockGroupTypeImage)     : [tableView dequeueReusableCellWithIdentifier:NoteBlockImageTableViewCell.reuseIdentifier],
+        @(NoteBlockGroupTypeUser)      : [tableView dequeueReusableCellWithIdentifier:NoteBlockUserTableViewCell.reuseIdentifier]
     };
     
     return _layoutCellMap;
@@ -181,8 +181,8 @@ static CGFloat NotificationSectionSeparator     = 10;
     }
     
     // Attach the Reply component only if the noficiation has a comment, and it can be replied-to
-    NotificationBlockGroup *group   = [self.note blockGroupOfType:NoteBlockGroupTypesComment];
-    NotificationBlock *block        = [group blockOfType:NoteBlockTypesComment];
+    NotificationBlockGroup *group   = [self.note blockGroupOfType:NoteBlockGroupTypeComment];
+    NotificationBlock *block        = [group blockOfType:NoteBlockTypeComment];
     if (![block actionForKey:NoteActionReplyKey]) {
         return;
     }
@@ -305,7 +305,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NotificationBlockGroup *blockGroup      = [self blockGroupForIndexPath:indexPath];
-    NoteBlockTableViewCell *tableViewCell   = self.layoutCellMap[@(blockGroup.type)] ?: self.layoutCellMap[@(NoteBlockGroupTypesText)];
+    NoteBlockTableViewCell *tableViewCell   = self.layoutCellMap[@(blockGroup.type)] ?: self.layoutCellMap[@(NoteBlockGroupTypeText)];
     
     [self setupCell:tableViewCell blockGroup:blockGroup];
 
@@ -317,7 +317,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NotificationBlockGroup *blockGroup      = [self blockGroupForIndexPath:indexPath];
-    NSString *reuseIdentifier               = self.reuseIdentifierMap[@(blockGroup.type)] ?: self.reuseIdentifierMap[@(NoteBlockGroupTypesText)];
+    NSString *reuseIdentifier               = self.reuseIdentifierMap[@(blockGroup.type)] ?: self.reuseIdentifierMap[@(NoteBlockGroupTypeText)];
     NoteBlockTableViewCell *cell            = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
     
     [self setupCell:cell blockGroup:blockGroup];
@@ -330,15 +330,15 @@ static CGFloat NotificationSectionSeparator     = 10;
     NotificationBlockGroup *group = [self blockGroupForIndexPath:indexPath];
 
     // User Blocks: Push the associated blog, if any
-    if (group.type == NoteBlockGroupTypesUser) {
+    if (group.type == NoteBlockGroupTypeUser) {
         
-        NotificationBlock *block    = [group blockOfType:NoteBlockTypesUser];
+        NotificationBlock *block    = [group blockOfType:NoteBlockTypeUser];
         NSURL *homeURL              = [NSURL URLWithString:block.metaLinksHome];
         
         [self openURL:homeURL];
         
     // Header-Level: Push the resource associated with the note
-    } else if (group.type == NoteBlockGroupTypesHeader) {
+    } else if (group.type == NoteBlockGroupTypeHeader) {
 
         [self displayReaderWithPostId:self.note.metaPostID siteID:self.note.metaSiteID];
     }
@@ -350,16 +350,16 @@ static CGFloat NotificationSectionSeparator     = 10;
 - (void)setupCell:(NoteBlockTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
 {
     // Note: This is gonna look awesome in Swift
-    if (blockGroup.type == NoteBlockGroupTypesHeader) {
+    if (blockGroup.type == NoteBlockGroupTypeHeader) {
         [self setupHeaderCell:(NoteBlockHeaderTableViewCell *)cell blockGroup:blockGroup];
         
-    } else if (blockGroup.type == NoteBlockGroupTypesUser) {
+    } else if (blockGroup.type == NoteBlockGroupTypeUser) {
         [self setupUserCell:(NoteBlockUserTableViewCell *)cell blockGroup:blockGroup];
         
-    } else if (blockGroup.type == NoteBlockGroupTypesComment){
+    } else if (blockGroup.type == NoteBlockGroupTypeComment){
         [self setupCommentCell:(NoteBlockCommentTableViewCell *)cell blockGroup:blockGroup];
         
-    } else if (blockGroup.type == NoteBlockGroupTypesImage) {
+    } else if (blockGroup.type == NoteBlockGroupTypeImage) {
         [self setupImageCell:(NoteBlockImageTableViewCell *)cell blockGroup:blockGroup];
         
     } else {
@@ -369,8 +369,8 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 - (void)setupHeaderCell:(NoteBlockHeaderTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
 {
-    NotificationBlock *gravatarBlock    = [blockGroup blockOfType:NoteBlockTypesImage];
-    NotificationBlock *snippetBlock     = [blockGroup blockOfType:NoteBlockTypesText];
+    NotificationBlock *gravatarBlock    = [blockGroup blockOfType:NoteBlockTypeImage];
+    NotificationBlock *snippetBlock     = [blockGroup blockOfType:NoteBlockTypeText];
     NotificationMedia *media            = gravatarBlock.media.firstObject;
     
     cell.name                           = gravatarBlock.text;
@@ -406,8 +406,8 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 - (void)setupCommentCell:(NoteBlockCommentTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
 {
-    NotificationBlock *commentBlock = [blockGroup blockOfType:NoteBlockTypesComment];
-    NotificationBlock *userBlock    = [blockGroup blockOfType:NoteBlockTypesUser];
+    NotificationBlock *commentBlock = [blockGroup blockOfType:NoteBlockTypeComment];
+    NotificationBlock *userBlock    = [blockGroup blockOfType:NoteBlockTypeUser];
     NotificationMedia *media        = userBlock.media.firstObject;
     
     NSAssert(commentBlock, nil);

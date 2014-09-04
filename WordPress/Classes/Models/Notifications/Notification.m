@@ -202,7 +202,7 @@ NSString const *NotePostIdKey           = @"post_id";
 
 @interface NotificationBlock ()
 @property (nonatomic, strong, readwrite) NSMutableDictionary    *actionsOverride;
-@property (nonatomic, assign, readwrite) NoteBlockTypes         type;
+@property (nonatomic, assign, readwrite) NoteBlockType         type;
 @end
 
 
@@ -308,19 +308,19 @@ NSString const *NotePostIdKey           = @"post_id";
         
         //  User
         if ([rawDict[NoteTypeKey] isEqual:NoteBlockTypeUser]) {
-            block.type = NoteBlockTypesUser;
+            block.type = NoteBlockTypeUser;
             
         //  Comments
         } else if ([block.metaCommentID isEqual:notification.metaCommentID] && block.metaSiteID != nil) {
-            block.type = NoteBlockTypesComment;
+            block.type = NoteBlockTypeComment;
             
         //  Images
         } else if (media.isImage || media.isBadge) {
-            block.type = NoteBlockTypesImage;
+            block.type = NoteBlockTypeImage;
             
         //  Text
         } else {
-            block.type = NoteBlockTypesText;
+            block.type = NoteBlockTypeText;
         }
         
         
@@ -339,12 +339,12 @@ NSString const *NotePostIdKey           = @"post_id";
 
 @interface NotificationBlockGroup ()
 @property (nonatomic, strong) NSArray             *blocks;
-@property (nonatomic, assign) NoteBlockGroupTypes type;
+@property (nonatomic, assign) NoteBlockGroupType type;
 @end
 
 @implementation NotificationBlockGroup
 
-- (NotificationBlock *)blockOfType:(NoteBlockTypes)type
+- (NotificationBlock *)blockOfType:(NoteBlockType)type
 {
     for (NotificationBlock *block in self.blocks) {
         if (block.type == type) {
@@ -354,7 +354,7 @@ NSString const *NotePostIdKey           = @"post_id";
     return nil;
 }
 
-+ (NotificationBlockGroup *)groupWithBlocks:(NSArray *)blocks type:(NoteBlockGroupTypes)type
++ (NotificationBlockGroup *)groupWithBlocks:(NSArray *)blocks type:(NoteBlockGroupType)type
 {
     NotificationBlockGroup *group   = [self new];
     group.blocks                    = blocks;
@@ -374,15 +374,15 @@ NSString const *NotePostIdKey           = @"post_id";
     
     // Subject: Contains a User + Text Block
     if (rawBlocks == notification.subject) {
-        [groups addObject:[NotificationBlockGroup groupWithBlocks:blocks type:NoteBlockGroupTypesSubject]];
+        [groups addObject:[NotificationBlockGroup groupWithBlocks:blocks type:NoteBlockGroupTypeSubject]];
 
     // Header: Contains a User + Text Block
     } else if (rawBlocks == notification.header) {
-        [groups addObject:[NotificationBlockGroup groupWithBlocks:blocks type:NoteBlockGroupTypesHeader]];
+        [groups addObject:[NotificationBlockGroup groupWithBlocks:blocks type:NoteBlockGroupTypeHeader]];
         
     // Comment: Contains a User + Comment Block
     } else if (notification.isComment) {
-        [groups addObject:[NotificationBlockGroup groupWithBlocks:blocks type:NoteBlockGroupTypesComment]];
+        [groups addObject:[NotificationBlockGroup groupWithBlocks:blocks type:NoteBlockGroupTypeComment]];
        
     // Rest: 1-1 relationship
     } else {
@@ -543,7 +543,7 @@ NSString const *NotePostIdKey           = @"post_id";
 
 #pragma mark - Comment Helpers
 
-- (NotificationBlockGroup *)blockGroupOfType:(NoteBlockGroupTypes)type
+- (NotificationBlockGroup *)blockGroupOfType:(NoteBlockGroupType)type
 {
     for (NotificationBlockGroup *blockGroup in self.bodyBlockGroups) {
         if (blockGroup.type == type) {
