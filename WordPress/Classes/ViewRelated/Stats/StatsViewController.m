@@ -105,10 +105,10 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
                                error:&error];
     if (error) {
         DDLogError(@"Today Widget OAuth2Token error: %@", error);
+    } else {
+        // Turns the widget on for this site
+        [[NCWidgetController widgetController] setHasContent:YES forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
     }
-
-    // Turns the widget on for this site
-    [[NCWidgetController widgetController] setHasContent:YES forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
 }
 
 - (void)promptForJetpackCredentials
