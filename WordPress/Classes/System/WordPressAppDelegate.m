@@ -51,24 +51,33 @@
 #import "DDASLLogger.h"
 #endif
 
-int ddLogLevel = LOG_LEVEL_INFO;
-static NSString * const WPTabBarRestorationID = @"WPTabBarID";
-static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
-static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
-static NSString * const WPNotificationsNavigationRestorationID = @"WPNotificationsNavigationID";
-static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
-NSInteger const kReaderTabIndex = 0;
-NSInteger const kNotificationsTabIndex = 1;
-NSInteger const kMeTabIndex = 2;
+int ddLogLevel                                                  = LOG_LEVEL_INFO;
+static NSString * const WPTabBarRestorationID                   = @"WPTabBarID";
+static NSString * const WPBlogListNavigationRestorationID       = @"WPBlogListNavigationID";
+static NSString * const WPReaderNavigationRestorationID         = @"WPReaderNavigationID";
+static NSString * const WPNotificationsNavigationRestorationID  = @"WPNotificationsNavigationID";
+static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracking_enabled";
+
+NSInteger const kReaderTabIndex                                 = 0;
+NSInteger const kNotificationsTabIndex                          = 1;
+NSInteger const kMeTabIndex                                     = 2;
 
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
-@property (nonatomic, assign) BOOL listeningForBlogChanges;
-@property (nonatomic, strong) NotificationsViewController *notificationsViewController;
-@property (nonatomic, assign) UIBackgroundTaskIdentifier bgTask;
-@property (nonatomic, strong) DDFileLogger *fileLogger;
-@property (nonatomic, strong) Simperium *simperium;
+@property (nonatomic, strong, readwrite) UINavigationController         *navigationController;
+@property (nonatomic, strong, readwrite) UITabBarController             *tabBarController;
+@property (nonatomic, strong, readwrite) ReaderPostsViewController      *readerPostsViewController;
+@property (nonatomic, strong, readwrite) BlogListViewController         *blogListViewController;
+@property (nonatomic, strong, readwrite) NotificationsViewController    *notificationsViewController;
+@property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
+@property (nonatomic, strong, readwrite) Reachability                   *wpcomReachability;
+@property (nonatomic, strong, readwrite) DDFileLogger                   *fileLogger;
+@property (nonatomic, strong, readwrite) Simperium                      *simperium;
+@property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
+@property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
+@property (nonatomic, assign, readwrite) BOOL                           wpcomAvailable;
+@property (nonatomic, assign, readwrite) BOOL                           listeningForBlogChanges;
 
 @end
 
@@ -165,13 +174,7 @@ NSInteger const kMeTabIndex = 2;
 {
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
     
-    // Launched by tapping a notification
-    if (application.applicationState == UIApplicationStateActive) {
-        [NotificationsManager handleNotificationForApplicationLaunch:launchOptions];
-    }
-
     [self.window makeKeyAndVisible];
-    
     [self showWelcomeScreenIfNeededAnimated:NO];
     
     return YES;
@@ -216,8 +219,8 @@ NSInteger const kMeTabIndex = 2;
             NSDictionary *params = [[url query] dictionaryFromQueryString];
             
             if (params.count) {
-                NSUInteger blogId = [[params numberForKey:@"blogId"] integerValue];
-                NSUInteger postId = [[params numberForKey:@"postId"] integerValue];
+                NSNumber *blogId = [params numberForKey:@"blogId"];
+                NSNumber *postId = [params numberForKey:@"postId"];
                 
                 [self.readerPostsViewController.navigationController popToRootViewControllerAnimated:NO];
                 NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
@@ -435,15 +438,7 @@ NSInteger const kMeTabIndex = 2;
 
     // Create a background
     // (not strictly needed when white, but left here for possible customization)
-    UIColor *backgroundColor = [UIColor whiteColor];
-    CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
-    UIGraphicsBeginImageContext(rect.size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context, [backgroundColor CGColor]);
-    CGContextFillRect(context, rect);
-    UIImage *tabBackgroundImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    _tabBarController.tabBar.backgroundImage = tabBackgroundImage;
+    _tabBarController.tabBar.backgroundImage = [UIImage imageWithColor:[UIColor whiteColor]];
     
     self.readerPostsViewController = [[ReaderPostsViewController alloc] init];
     UINavigationController *readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerPostsViewController];
@@ -498,7 +493,8 @@ NSInteger const kMeTabIndex = 2;
     return _tabBarController;
 }
 
-- (void)showTabForIndex: (NSInteger)tabIndex {
+- (void)showTabForIndex:(NSInteger)tabIndex
+{
     [self.tabBarController setSelectedIndex:tabIndex];
 }
 

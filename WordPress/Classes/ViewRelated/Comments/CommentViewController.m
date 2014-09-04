@@ -12,6 +12,8 @@
 #import "WPFixedWidthScrollView.h"
 #import "WPTableViewCell.h"
 #import "DTLinkButton.h"
+#import "WPToast.h"
+#import "VerticallyStackedButton.h"
 
 CGFloat const CommentViewDeletePromptActionSheetTag = 501;
 CGFloat const CommentViewReplyToCommentViewControllerHasChangesActionSheetTag = 401;
@@ -59,30 +61,43 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     if (IS_IPAD) {
         scrollView.contentInset = UIEdgeInsetsMake(WPTableViewTopMargin, 0, WPTableViewTopMargin, 0);
         scrollView.contentWidth = WPTableViewFixedWidth;
-    };
+    } else {
+        scrollView.contentInset = UIEdgeInsetsMake(0, 0, WPTableViewTopMargin, 0);
+    }
     scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     self.view = scrollView;
     self.view.backgroundColor = [UIColor whiteColor];
     
-    self.trashButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-trash"] selectedImage:[UIImage imageNamed:@"icon-comments-trash-active"]];
-    self.trashButton.accessibilityLabel = NSLocalizedString(@"Move to trash", @"Spoken accessibility label.");
-    [self.trashButton addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
+    self.replyButton = [VerticallyStackedButton buttonWithType:UIButtonTypeSystem];
+    [self.replyButton setImage:[UIImage imageNamed:@"icon-comments-reply"] forState:UIControlStateNormal];
+    [self.replyButton setTitle:NSLocalizedString(@"Reply", @"Verb, reply to a comment") forState:UIControlStateNormal];
+    [self.replyButton setAccessibilityLabel: NSLocalizedString(@"Reply", @"Spoken accessibility label.")];
+    [self.replyButton addTarget:self action:@selector(replyAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.commentView addCustomActionButton:self.replyButton];
     
-    self.approveButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-approve"] selectedImage:[UIImage imageNamed:@"icon-comments-approve-active"]];
-    self.approveButton.accessibilityLabel = NSLocalizedString(@"Toggle approve or unapprove", @"Spoken accessibility label.");
+    self.approveButton = [VerticallyStackedButton buttonWithType:UIButtonTypeSystem];
+    [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-approve"] forState:UIControlStateNormal];
+    [self.approveButton setAccessibilityLabel:NSLocalizedString(@"Toggle approve or unapprove", @"Spoken accessibility label.")];
     [self.approveButton addTarget:self action:@selector(approveOrUnapproveAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.commentView addCustomActionButton:self.approveButton];
 
-    self.spamButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"icon-comments-flag"] selectedImage:[UIImage imageNamed:@"icon-comments-flag-active"]];
-    self.spamButton.accessibilityLabel = NSLocalizedString(@"Mark as spam", @"Spoken accessibility label.");
+    self.spamButton = [VerticallyStackedButton buttonWithType:UIButtonTypeSystem];
+    [self.spamButton setImage:[UIImage imageNamed:@"icon-comments-spam"] forState:UIControlStateNormal];
+    [self.spamButton setTitle:NSLocalizedString(@"Spam", @"Verb, mark a comment as spam") forState:UIControlStateNormal];
+    [self.spamButton setAccessibilityLabel:NSLocalizedString(@"Mark as spam", @"Spoken accessibility label.")];
     [self.spamButton addTarget:self action:@selector(spamAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.commentView addCustomActionButton:self.spamButton];
+    
+    self.trashButton = [VerticallyStackedButton buttonWithType:UIButtonTypeSystem];
+    [self.trashButton setImage:[UIImage imageNamed:@"icon-comments-trash"] forState:UIControlStateNormal];
+    [self.trashButton setTitle:NSLocalizedString(@"Trash", @"Verb, move a comment to the trash") forState:UIControlStateNormal];
+    [self.trashButton setAccessibilityLabel:NSLocalizedString(@"Move to trash", @"Spoken accessibility label.")];
+    [self.trashButton addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.commentView addCustomActionButton:self.trashButton];
 
     self.editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
-    self.editButton.accessibilityLabel = NSLocalizedString(@"Edit comment", @"Spoken accessibility label.");
+    [self.editButton setAccessibilityLabel:NSLocalizedString(@"Edit comment", @"Spoken accessibility label.")];
     self.navigationItem.rightBarButtonItem = self.editButton;
-    
-    self.replyButton = [self.commentView addActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-comment-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-comment-active"]];
-    self.replyButton.accessibilityLabel = NSLocalizedString(@"Reply", @"Spoken accessibility label.");
-    [self.replyButton addTarget:self action:@selector(replyAction:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:self.commentView];
 
@@ -150,16 +165,17 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)updateApproveButton {
     if ([self.comment.status isEqualToString:@"approve"]) {
+        [self.approveButton setTag:CommentViewUnapproveButtonTag];
         [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-unapprove"] forState:UIControlStateNormal];
-        [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-unapprove-active"] forState:UIControlStateSelected];
-        self.approveButton.tag = CommentViewUnapproveButtonTag;
-        self.approveButton.accessibilityLabel = NSLocalizedString(@"Approve", @"Spoken accessibility label.");
-    } else {
-        [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-approve"] forState:UIControlStateNormal];
-        [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-approve-active"] forState:UIControlStateSelected];
-        self.approveButton.tag = CommentViewApproveButtonTag;
-        self.approveButton.accessibilityLabel = NSLocalizedString(@"Unapprove", @"Spoken accessibility label.");
+        [self.approveButton setTitle:NSLocalizedString(@"Unapprove", @"Verb, unapprove a comment") forState:UIControlStateNormal];
+        [self.approveButton setAccessibilityLabel:NSLocalizedString(@"Approve", @"Spoken accessibility label.")];
+        return;
     }
+    
+    [self.approveButton setTag:CommentViewApproveButtonTag];
+    [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-approve"] forState:UIControlStateNormal];
+    [self.approveButton setTitle:NSLocalizedString(@"Approve", @"Verb, approve a comment") forState:UIControlStateNormal];
+    [self.approveButton setAccessibilityLabel:NSLocalizedString(@"Unapprove", @"Spoken accessibility label.")];
 }
 
 - (void)showComment:(Comment *)comment {
@@ -213,17 +229,58 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     [self presentViewController:navController animated:animate completion:nil];
 }
 
+- (void)updateStateOfActionButtons:(BOOL)state {
+    [self updateStateOfActionButton:self.spamButton toState:state];
+    [self updateStateOfActionButton:self.trashButton toState:state];
+    [self updateStateOfActionButton:self.approveButton toState:state];
+    [self updateStateOfActionButton:self.replyButton toState:state];
+}
+
+- (void)updateStateOfActionButton:(UIButton*)button toState:(BOOL)state {
+    button.enabled = state;
+}
 
 #pragma mark - Actions
 
 - (void)approveOrUnapproveAction:(id)sender {
-    UIBarButtonItem *barButton = sender;
+    UIButton *button = sender;
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    if (barButton.tag == CommentViewApproveButtonTag) {
-        [commentService approveComment:self.comment success:nil failure:nil];
+    [self updateStateOfActionButtons:NO];
+    
+    // Show an activity indicator in place of the button until the operation completes
+    UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [indicatorView setBackgroundColor:[UIColor whiteColor]];
+    indicatorView.frame = CGRectMake(-5.0f, 1.0f, button.frame.size.width + 10.0f, button.frame.size.height - 1.0f);
+    [button addSubview:indicatorView];
+    [indicatorView startAnimating];
+    if (button.tag == CommentViewApproveButtonTag) {
+        [commentService approveComment:self.comment
+                               success:^{
+                                   [self updateStateOfActionButtons:YES];
+                                   [indicatorView removeFromSuperview];
+                               }
+                               failure:^(NSError *error) {
+                                   self.comment.status = @"unapprove";
+                                   [self updateStateOfActionButtons:YES];
+                                   [indicatorView removeFromSuperview];
+                                   [WPError showAlertWithTitle:NSLocalizedString(@"Error", @"")
+                                                       message:NSLocalizedString(@"The comment could not be moderated.", @"Error message when comment could not be moderated")];
+                               }];
     } else {
-        [commentService unapproveComment:self.comment success:nil failure:nil];
+        [commentService unapproveComment:self.comment
+                                 success:^{
+                                     [self updateStateOfActionButtons:YES];
+                                     [indicatorView removeFromSuperview];
+                                 }
+                                 failure:^(NSError *error){
+                                     self.comment.status = @"approve";
+                                     [self updateStateOfActionButtons:YES];
+                                     [indicatorView removeFromSuperview];
+                                     [WPError showAlertWithTitle:NSLocalizedString(@"Error", @"")
+                                                         message:NSLocalizedString(@"The comment could not be moderated.", @"Error message when comment could not be moderated")];
+                                 }];
     }
+    
     [self updateApproveButton];
 }
 
@@ -356,25 +413,31 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 #pragma mark - InlineComposeViewDelegate methods
 
 - (void)composeView:(InlineComposeView *)view didSendText:(NSString *)text {
-
     self.reply.content = text;
+    
     // try to save it
-
     [[ContextManager sharedInstance] saveContext:self.reply.managedObjectContext];
 
-    [self.inlineComposeView clearText];
-    [self.inlineComposeView dismissComposer];
-
-    self.reply.status = CommentStatusApproved;
+    self.inlineComposeView.enabled = NO;
     self.transientReply = NO;
 
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:self.reply.managedObjectContext];
     [commentService uploadComment:self.reply success:^{
-        // the current modal experience shows success by dismissising the editor
-        // ideally we switch to an optimistic experience
+        self.reply.status = CommentStatusApproved;
+        
+        [self.inlineComposeView clearText];
+        self.inlineComposeView.enabled = YES;
+        [self.inlineComposeView dismissComposer];
+        
+        [WPToast showToastWithMessage:NSLocalizedString(@"Replied", @"User replied to a comment")
+                             andImage:[UIImage imageNamed:@"action_icon_replied"]];
+        
     } failure:^(NSError *error) {
         // reset to draft status, AppDelegate automatically shows UIAlert when comment fails
         self.reply.status = CommentStatusDraft;
+        
+        self.inlineComposeView.enabled = YES;
+        [self.inlineComposeView displayComposer];
 
         DDLogError(@"Could not reply to comment: %@", error);
     }];

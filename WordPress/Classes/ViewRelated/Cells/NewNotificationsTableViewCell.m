@@ -18,6 +18,9 @@
     // combine author and title
     NSString *title = [contentProvider titleForDisplay];
     NSString *content = [[contentProvider contentPreviewForDisplay] stringByNormalizingWhitespace];
+    if (title.length == 0) {
+        title = NSLocalizedString(@"(No Title)", nil);
+    }
     
     NSMutableAttributedString *attributedPostTitle = [[NSMutableAttributedString alloc] initWithString:title attributes:[[self class] titleAttributes]];
     

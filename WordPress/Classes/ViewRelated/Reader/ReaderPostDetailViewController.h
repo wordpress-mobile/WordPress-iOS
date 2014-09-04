@@ -4,9 +4,9 @@
 
 @interface ReaderPostDetailViewController : UITableViewController
 
-@property (nonatomic, strong) ReaderPost *post;
+@property (nonatomic, strong, readonly) ReaderPost *post;
 
-- (instancetype)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image avatarImage:(UIImage *)avatarImage;
-- (void)updateFeaturedImage:(UIImage *)image;
++ (instancetype)detailControllerWithPost:(ReaderPost *)post;
++ (instancetype)detailControllerWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID;
 
 @end
