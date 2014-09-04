@@ -19,22 +19,22 @@ extern NSString * NoteActionReplyKey;
 extern NSString * NoteActionApproveKey;
 extern NSString * NoteActionEditKey;
 
-typedef NS_ENUM(NSInteger, NoteBlockTypes)
+typedef NS_ENUM(NSInteger, NoteBlockType)
 {
-    NoteBlockTypesText,
-    NoteBlockTypesImage,                                    // BlockTypesImage: Includes Badges and Images
-    NoteBlockTypesUser,
-    NoteBlockTypesComment
+    NoteBlockTypeText,
+    NoteBlockTypeImage,                                    // BlockTypesImage: Includes Badges and Images
+    NoteBlockTypeUser,
+    NoteBlockTypeComment
 };
 
-typedef NS_ENUM(NSInteger, NoteBlockGroupTypes)
+typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 {
-    NoteBlockGroupTypesText     = NoteBlockTypesText,
-    NoteBlockGroupTypesImage    = NoteBlockTypesImage,
-    NoteBlockGroupTypesUser     = NoteBlockTypesUser,
-    NoteBlockGroupTypesComment  = NoteBlockTypesComment,    // Contains a User + Comment Block
-    NoteBlockGroupTypesSubject  = 20,                       // Contains a User + Text Block
-    NoteBlockGroupTypesHeader   = 30                        // Contains a User + Text Block
+    NoteBlockGroupTypeText     = NoteBlockTypeText,
+    NoteBlockGroupTypeImage    = NoteBlockTypeImage,
+    NoteBlockGroupTypeUser     = NoteBlockTypeUser,
+    NoteBlockGroupTypeComment  = NoteBlockTypeComment,    // Contains a User + Comment Block
+    NoteBlockGroupTypeSubject  = 20,                       // Contains a User + Text Block
+    NoteBlockGroupTypeHeader   = 30                        // Contains a User + Text Block
 };
 
 
@@ -75,7 +75,7 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupTypes)
 @property (nonatomic, assign,  readonly) BOOL                   isBadge;
 
 // Helpers
-- (NotificationBlockGroup *)blockGroupOfType:(NoteBlockGroupTypes)type;
+- (NotificationBlockGroup *)blockGroupOfType:(NoteBlockGroupType)type;
 - (NotificationRange *)notificationRangeWithUrl:(NSURL *)url;
 
 @end
@@ -89,9 +89,9 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupTypes)
 @interface NotificationBlockGroup : NSObject
 
 @property (nonatomic, strong, readonly) NSArray             *blocks;
-@property (nonatomic, assign, readonly) NoteBlockGroupTypes type;
+@property (nonatomic, assign, readonly) NoteBlockGroupType type;
 
-- (NotificationBlock *)blockOfType:(NoteBlockTypes)type;
+- (NotificationBlock *)blockOfType:(NoteBlockType)type;
 
 @end
 
@@ -109,7 +109,7 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupTypes)
 @property (nonatomic, strong, readonly) NSDictionary        *actions;
 
 // Derived Properties
-@property (nonatomic, assign, readonly) NoteBlockTypes      type;
+@property (nonatomic, assign, readonly) NoteBlockType      type;
 @property (nonatomic, strong, readonly) NSNumber            *metaSiteID;
 @property (nonatomic, strong, readonly) NSNumber            *metaCommentID;
 @property (nonatomic, strong, readonly) NSString            *metaLinksHome;
