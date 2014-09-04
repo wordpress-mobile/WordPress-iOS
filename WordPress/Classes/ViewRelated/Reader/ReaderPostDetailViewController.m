@@ -25,6 +25,7 @@
 #import "WPWebViewController.h"
 #import "SuggestionsTableViewController.h"
 #import "SuggestionService.h"
+#import "MentionDelegate.h"
 
 static CGFloat const SectionHeaderHeight = 25.0f;
 static CGFloat const TableViewTopMargin = 40;
@@ -45,7 +46,7 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
                                             NSFetchedResultsControllerDelegate,
                                             UIPopoverControllerDelegate,
                                             SuggestionsTableViewDelegate,
-                                            InlineComposeViewMentionDelegate>
+                                            MentionDelegate>
 
 @property (nonatomic, strong, readwrite) ReaderPost *post;
 @property (nonatomic, strong) UIPopoverController *popover;
@@ -967,9 +968,9 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
     self.popover = nil;
 }
 
-#pragma mark - InlineComposeViewMentionDelegate
+#pragma mark - MentionDelegate
 
-- (void)composeViewDidStartAtMention:(InlineComposeView *)view
+- (void)didStartAtMention:(UIView *)view
 {
     NSNumber *siteID = self.post.siteID;
     if (self.post.isWPCom && [[SuggestionService shared] shouldShowSuggestionsPageForSiteID:siteID]) {

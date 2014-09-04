@@ -86,6 +86,10 @@ NSString * const SuggestionListUpdatedNotification = @"SuggestionListUpdatedNoti
 
 - (BOOL)shouldShowSuggestionsPageForSiteID:(NSNumber *)siteID
 {
+    if (!siteID) {
+        return NO;
+    }
+
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
 
     NSArray *suggestions = [self.suggestionsCache objectForKey:siteID];

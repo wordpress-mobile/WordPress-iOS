@@ -27,6 +27,7 @@
 #import "ReaderSiteService.h"
 #import "SuggestionsTableViewController.h"
 #import "SuggestionService.h"
+#import "MentionDelegate.h"
 
 static CGFloat const RPVCHeaderHeightPhone = 10.0;
 static CGFloat const RPVCBlockedCellHeight = 66.0;
@@ -38,7 +39,7 @@ NSString * const FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
 NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier";
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
-@interface ReaderPostsViewController ()<WPTableImageSourceDelegate, ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate, UIActionSheetDelegate, SuggestionsTableViewDelegate, InlineComposeViewMentionDelegate>
+@interface ReaderPostsViewController ()<WPTableImageSourceDelegate, ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate, UIActionSheetDelegate, SuggestionsTableViewDelegate, MentionDelegate>
 
 @property (nonatomic, assign) BOOL hasMoreContent;
 @property (nonatomic, assign) BOOL loadingMore;
@@ -1184,9 +1185,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     actionSheet.delegate = nil;
 }
 
-#pragma mark - InlineComposeViewMentionDelegate
+#pragma mark - MentionDelegate
 
-- (void)composeViewDidStartAtMention:(InlineComposeView *)view
+- (void)didStartAtMention:(UIView *)view
 {
     NSNumber *siteID = self.commentPublisher.post.siteID;
     if (self.commentPublisher.post.isWPCom && [[SuggestionService shared] shouldShowSuggestionsPageForSiteID:siteID]) {

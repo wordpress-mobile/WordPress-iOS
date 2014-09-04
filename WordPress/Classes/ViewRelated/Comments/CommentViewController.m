@@ -17,6 +17,7 @@
 #import "SuggestionsTableViewController.h"
 #import "SuggestionService.h"
 #import "WPError.h"
+#import "MentionDelegate.h"
 
 #pragma mark ==========================================================================================
 #pragma mark Constants
@@ -39,7 +40,7 @@ typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
 
 @interface CommentViewController () <UIActionSheetDelegate, InlineComposeViewDelegate,
                                      WPContentViewDelegate, EditCommentViewControllerDelegate,
-                                     SuggestionsTableViewDelegate, InlineComposeViewMentionDelegate>
+                                     SuggestionsTableViewDelegate, MentionDelegate>
 
 @property (nonatomic, strong) CommentView               *commentView;
 @property (nonatomic, strong) UIButton                  *trashButton;
@@ -495,9 +496,9 @@ typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
     [self openInAppWebView:((DTLinkButton *)sender).URL];
 }
 
-#pragma mark - InlineComposeViewMentionDelegate
+#pragma mark - MentionDelegate
 
-- (void)composeViewDidStartAtMention:(InlineComposeView *)view
+- (void)didStartAtMention:(UIView *)view
 {
     NSNumber *siteID = self.comment.blog.blogID;
     if (self.comment.blog.isWPcom && [[SuggestionService shared] shouldShowSuggestionsPageForSiteID:siteID]) {

@@ -1,7 +1,7 @@
 import Foundation
 
 
-@objc public class ReplyTextView : UIView, UITextViewDelegate
+@objc public class ReplyTextView : UIView, UITextViewDelegate, MentionDelegate
 {
     // MARK: - Initializers
     public convenience init(width: CGFloat) {
@@ -28,6 +28,9 @@ import Foundation
     
     // MARK: - Public Properties
     public weak var delegate: UITextViewDelegate?
+    public weak var mentionDelegate: MentionDelegate?
+
+    public var shouldDeleteTagWithBackspace: Bool = false
     
     public var onReply: ((String) -> ())? {
         didSet {
@@ -105,6 +108,19 @@ import Foundation
     }
     
     public func textView(textView: UITextView!, shouldChangeTextInRange range: NSRange, replacementText text: String!) -> Bool {
+        if shouldDeleteTagWithBackspace {
+            if textView.deleteTagForTextChangeInRange(range, replacementText: text) {
+                return false
+            }
+        }
+
+        if (text == "@" && range.length == 0) {
+            // only handle the @ sign after a space character or if it's the first character
+            if (range.location == 0 || textView.text[range.location - 1] == " ") {
+                mentionDelegate?.didStartAtMention?(self)
+            }
+        }
+
         return delegate?.textView?(textView, shouldChangeTextInRange: range, replacementText: text) ?? true
     }
 

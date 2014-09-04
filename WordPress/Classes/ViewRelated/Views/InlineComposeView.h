@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 
 @class InlineComposeView;
+@protocol MentionDelegate;
 
 @protocol InlineComposeViewDelegate <UITextViewDelegate>
 
@@ -8,20 +9,10 @@
 
 @end
 
-@protocol InlineComposeViewMentionDelegate <NSObject>
-
-@optional
-/**
- Tells the delegate the user has typed @ sign. It will NOT work if the user replaces text.
- */
-- (void)composeViewDidStartAtMention:(InlineComposeView *)view;
-
-@end
-
 @interface InlineComposeView : UIView
 
 @property (nonatomic, weak) id <InlineComposeViewDelegate> delegate;
-@property (nonatomic, weak) id <InlineComposeViewMentionDelegate> mentionDelegate;
+@property (nonatomic, weak) id <MentionDelegate> mentionDelegate;
 @property (nonatomic, strong) NSString *placeholder;
 @property (nonatomic, weak) NSString *text;
 @property (nonatomic, weak) NSAttributedString *attributedText;

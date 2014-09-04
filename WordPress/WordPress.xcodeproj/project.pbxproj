@@ -45,6 +45,7 @@
 		311F2A19199961A700B74538 /* SuggestionsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 311F2A17199961A700B74538 /* SuggestionsTableViewCell.m */; };
 		311F2A211999627200B74538 /* SuggestionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311F2A201999627200B74538 /* SuggestionsTableViewController.m */; };
 		311F2A23199962F500B74538 /* SuggestionsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 311F2A22199962F500B74538 /* SuggestionsTableViewCell.xib */; };
+		3124341619B8CF5A00E97A27 /* String+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3124341519B8CF5A00E97A27 /* String+Helpers.swift */; };
 		3196E93519B8934900BB0122 /* UITextView+Mention.m in Sources */ = {isa = PBXBuildFile; fileRef = 3196E93419B8934900BB0122 /* UITextView+Mention.m */; };
 		31A336CE19ACA95E004ED107 /* SuggestionService.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A336CD19ACA95E004ED107 /* SuggestionService.m */; };
 		31EFBD6219B49E0200E1CF06 /* SuggestionServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 31EFBD6119B49E0200E1CF06 /* SuggestionServiceTest.m */; };
@@ -461,10 +462,12 @@
 		311F2A1F1999627200B74538 /* SuggestionsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SuggestionsTableViewController.h; path = Terms/SuggestionsTableViewController.h; sourceTree = "<group>"; };
 		311F2A201999627200B74538 /* SuggestionsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SuggestionsTableViewController.m; path = Terms/SuggestionsTableViewController.m; sourceTree = "<group>"; };
 		311F2A22199962F500B74538 /* SuggestionsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SuggestionsTableViewCell.xib; path = Resources/SuggestionsTableViewCell.xib; sourceTree = "<group>"; };
+		3124341519B8CF5A00E97A27 /* String+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Helpers.swift"; sourceTree = "<group>"; };
 		3196E93319B8934900BB0122 /* UITextView+Mention.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+Mention.h"; sourceTree = "<group>"; };
 		3196E93419B8934900BB0122 /* UITextView+Mention.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+Mention.m"; sourceTree = "<group>"; };
 		31A336CC19ACA95E004ED107 /* SuggestionService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuggestionService.h; sourceTree = "<group>"; };
 		31A336CD19ACA95E004ED107 /* SuggestionService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SuggestionService.m; sourceTree = "<group>"; };
+		31DDDB2419B8C65500D8A2BC /* MentionDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MentionDelegate.h; sourceTree = "<group>"; };
 		31EFBD6119B49E0200E1CF06 /* SuggestionServiceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SuggestionServiceTest.m; sourceTree = "<group>"; };
 		37022D8F1981BF9200F322B7 /* VerticallyStackedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerticallyStackedButton.h; sourceTree = "<group>"; };
 		37022D901981BF9200F322B7 /* VerticallyStackedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerticallyStackedButton.m; sourceTree = "<group>"; };
@@ -1402,6 +1405,7 @@
 			children = (
 				311F2A1F1999627200B74538 /* SuggestionsTableViewController.h */,
 				311F2A201999627200B74538 /* SuggestionsTableViewController.m */,
+				31DDDB2419B8C65500D8A2BC /* MentionDelegate.h */,
 			);
 			name = Terms;
 			sourceTree = "<group>";
@@ -2001,6 +2005,7 @@
 				B587796F19B799D800E57C5A /* NSDate+Helpers.swift */,
 				B587797019B799D800E57C5A /* NSIndexPath+Swift.swift */,
 				B587797119B799D800E57C5A /* NSParagraphStyle+Helpers.swift */,
+				3124341519B8CF5A00E97A27 /* String+Helpers.swift */,
 				B587797219B799D800E57C5A /* UIDevice+Helpers.swift */,
 				B587797319B799D800E57C5A /* UIImageView+Animations.swift */,
 				B587797419B799D800E57C5A /* UIImageView+Networking.swift */,
@@ -2651,6 +2656,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3124341619B8CF5A00E97A27 /* String+Helpers.swift in Sources */,
 				37022D931981C19000F322B7 /* VerticallyStackedButton.m in Sources */,
 				5D1D9C50198837D0009D13B7 /* RemoteReaderPost.m in Sources */,
 				5D1D9C51198837D0009D13B7 /* RemoteReaderSite.m in Sources */,
