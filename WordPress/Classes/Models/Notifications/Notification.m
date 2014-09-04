@@ -368,7 +368,7 @@ NSString const *NotePostIdKey           = @"post_id";
     NSMutableArray *groups  = [NSMutableArray array];
     
     // Don't proceed if there are no parsed blocks
-    if (!blocks) {
+    if (blocks.count == 0) {
         return nil;
     }
     
