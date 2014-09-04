@@ -361,7 +361,7 @@ CGFloat const ReblogViewTextBottomInset = 30;
 
     [service reblogPost:self.post toSite:[self.blog.blogID integerValue] note:[self.textView.text trim] success:^{
         [WPToast showToastWithMessage:NSLocalizedString(@"Reblogged", @"User reblogged a post.")
-                             andImage:[UIImage imageNamed:@"action_icon_replied"]];
+                             andImage:[UIImage imageNamed:@"action-icon-replied"]];
 
         if ([self.delegate respondsToSelector:@selector(postWasReblogged:)]) {
             [self.delegate postWasReblogged:self.post];

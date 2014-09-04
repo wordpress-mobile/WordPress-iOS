@@ -17,6 +17,11 @@ const CGFloat WPToastAnimationVisibleDuration = 0.35f;
     [[[self alloc] init] showToastWithMessage:message andImage:image];
 }
 
++ (void)showToastWithMessage:(NSString *)message andImageNamed:(NSString *)imageName
+{
+    [self showToastWithMessage:message andImage:[UIImage imageNamed:imageName]];
+}
+
 - (void)showToastWithMessage:(NSString *)message andImage:(UIImage *)image
 {
     UIViewController *parentViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
