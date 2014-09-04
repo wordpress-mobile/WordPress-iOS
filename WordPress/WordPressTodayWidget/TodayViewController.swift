@@ -48,11 +48,6 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         self.viewsCountLabel?.text = self.viewCount
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     @IBAction func launchContainingApp() {
         self.extensionContext!.openURL(NSURL(string: "wordpress://viewstats?siteId=\(siteId!)"), completionHandler: nil)
     }
