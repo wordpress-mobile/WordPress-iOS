@@ -196,7 +196,7 @@ install_resource "WordPress-iOS-Editor/Assets/editor.html"
 install_resource "WordPress-iOS-Editor/Assets/fastclick.js"
 install_resource "WordPress-iOS-Editor/Assets/jquery.mobile-events.min.js"
 install_resource "WordPress-iOS-Editor/Assets/ZSSRichTextEditor.js"
-install_resource "google-plus-ios-sdk/google-plus-ios-sdk-1.5.1/GooglePlus.bundle"
+install_resource "google-plus-ios-sdk/google-plus-ios-sdk-1.7.0/GooglePlus.bundle"
 install_resource "${BUILT_PRODUCTS_DIR}/HockeySDKResources.bundle"
 install_resource "${BUILT_PRODUCTS_DIR}/WordPress-iOS-Shared.bundle"
 
