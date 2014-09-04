@@ -36,11 +36,11 @@
 /**
  Adds a reply to a comment with commentID + siteID
  */
-- (void)replyCommentWithID:(NSNumber *)commentID
-                    siteID:(NSNumber *)siteID
-                   content:(NSString *)content
-                   success:(void (^)())success
-                   failure:(void (^)(NSError *error))failure;
+- (void)replyToCommentWithID:(NSNumber *)commentID
+                      siteID:(NSNumber *)siteID
+                     content:(NSString *)content
+                     success:(void (^)())success
+                     failure:(void (^)(NSError *error))failure;
 
 /**
  Moderate a comment with a commentID + siteID
