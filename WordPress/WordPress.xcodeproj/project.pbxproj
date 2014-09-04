@@ -45,6 +45,7 @@
 		311F2A19199961A700B74538 /* SuggestionsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 311F2A17199961A700B74538 /* SuggestionsTableViewCell.m */; };
 		311F2A211999627200B74538 /* SuggestionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311F2A201999627200B74538 /* SuggestionsTableViewController.m */; };
 		311F2A23199962F500B74538 /* SuggestionsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 311F2A22199962F500B74538 /* SuggestionsTableViewCell.xib */; };
+		3196E93519B8934900BB0122 /* UITextView+Mention.m in Sources */ = {isa = PBXBuildFile; fileRef = 3196E93419B8934900BB0122 /* UITextView+Mention.m */; };
 		31A336CE19ACA95E004ED107 /* SuggestionService.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A336CD19ACA95E004ED107 /* SuggestionService.m */; };
 		31EFBD6219B49E0200E1CF06 /* SuggestionServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 31EFBD6119B49E0200E1CF06 /* SuggestionServiceTest.m */; };
 		37022D931981C19000F322B7 /* VerticallyStackedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 37022D901981BF9200F322B7 /* VerticallyStackedButton.m */; };
@@ -460,6 +461,8 @@
 		311F2A1F1999627200B74538 /* SuggestionsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SuggestionsTableViewController.h; path = Terms/SuggestionsTableViewController.h; sourceTree = "<group>"; };
 		311F2A201999627200B74538 /* SuggestionsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SuggestionsTableViewController.m; path = Terms/SuggestionsTableViewController.m; sourceTree = "<group>"; };
 		311F2A22199962F500B74538 /* SuggestionsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SuggestionsTableViewCell.xib; path = Resources/SuggestionsTableViewCell.xib; sourceTree = "<group>"; };
+		3196E93319B8934900BB0122 /* UITextView+Mention.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+Mention.h"; sourceTree = "<group>"; };
+		3196E93419B8934900BB0122 /* UITextView+Mention.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+Mention.m"; sourceTree = "<group>"; };
 		31A336CC19ACA95E004ED107 /* SuggestionService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuggestionService.h; sourceTree = "<group>"; };
 		31A336CD19ACA95E004ED107 /* SuggestionService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SuggestionService.m; sourceTree = "<group>"; };
 		31EFBD6119B49E0200E1CF06 /* SuggestionServiceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SuggestionServiceTest.m; sourceTree = "<group>"; };
@@ -2126,6 +2129,8 @@
 				B548458119A258890077E7A5 /* UIActionSheet+Helpers.m */,
 				B57B99DC19A2DBF200506504 /* NSObject+Helpers.h */,
 				B57B99DD19A2DBF200506504 /* NSObject+Helpers.m */,
+				3196E93319B8934900BB0122 /* UITextView+Mention.h */,
+				3196E93419B8934900BB0122 /* UITextView+Mention.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -2783,6 +2788,7 @@
 				5DB4683B18A2E718004A89A9 /* LocationService.m in Sources */,
 				93740DCB17D8F86700C41B2F /* WPAlertView.m in Sources */,
 				E1D04D7E19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.m in Sources */,
+				3196E93519B8934900BB0122 /* UITextView+Mention.m in Sources */,
 				E1249B4B1940AECC0035E895 /* CommentServiceRemoteREST.m in Sources */,
 				E240859C183D82AE002EB0EF /* WPAnimatedBox.m in Sources */,
 				37B7924D16768FCC0021B3A4 /* NotificationSettingsViewController.m in Sources */,
