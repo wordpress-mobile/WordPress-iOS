@@ -256,6 +256,10 @@ NSInteger const kMeTabIndex                                     = 2;
 				
 				[WPPostViewController setNewEditorAvailable:available];
 				[WPPostViewController setNewEditorEnabled:enabled];
+                
+                if (available) {
+                    [WPAnalytics track:WPAnalyticsStatEditorEnabledNewVersion];
+                }
 				
 				[self showVisualEditorAvailableInSettingsAnimation:available];
 			}
