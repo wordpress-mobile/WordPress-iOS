@@ -641,11 +641,14 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
     
     if (upload) {
         NSString *postTitle = self.post.original.postTitle;
-        [self.post.original uploadWithSuccess:^{
-            DDLogInfo(@"post uploaded: %@", postTitle);
-        } failure:^(NSError *error) {
-            DDLogError(@"post failed: %@", [error localizedDescription]);
-        }];
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+        [postService uploadPost:(Post *)self.post.original
+                        success:^{
+                            DDLogInfo(@"post uploaded: %@", postTitle);
+                        } failure:^(NSError *error) {
+                            DDLogError(@"post failed: %@", [error localizedDescription]);
+                        }];
     }
     
     [self didSaveNewPost];

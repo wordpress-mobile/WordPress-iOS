@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@class Blog;
+@class Blog, RemotePost;
 
 @protocol PostServiceRemote <NSObject>
 
@@ -12,5 +12,16 @@
                 options:(NSDictionary *)options
                 success:(void (^)(NSArray *posts))success
                 failure:(void (^)(NSError *error))failure;
+
+- (void)createPost:(RemotePost *)post
+           forBlog:(Blog *)blog
+           success:(void (^)(RemotePost *post))success
+           failure:(void (^)(NSError *error))failure;
+
+- (void)updatePost:(RemotePost *)post
+           forBlog:(Blog *)blog
+           success:(void (^)(RemotePost *post))success
+           failure:(void (^)(NSError *error))failure;
+
 
 @end

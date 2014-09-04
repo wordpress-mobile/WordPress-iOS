@@ -16,4 +16,8 @@
                      success:(void (^)())success
                      failure:(void (^)(NSError *error))failure;
 
+- (void)uploadPost:(Post *)post
+           success:(void (^)())success
+           failure:(void (^)(NSError *error))failure;
+
 @end
