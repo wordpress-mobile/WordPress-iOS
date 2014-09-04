@@ -259,7 +259,7 @@ static NSInteger const MaximumNumberOfPictures = 5;
             BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
             [blogService flagBlogAsLastUsed:blog];
-            AbstractPost *newPost = [self newDraftForBlog:blog];
+            AbstractPost *newPost = [self createNewDraftForBlog:blog];
             AbstractPost *oldPost = self.post;
             
             NSString *content = oldPost.content;
