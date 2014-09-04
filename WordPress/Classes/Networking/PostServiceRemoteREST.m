@@ -55,6 +55,50 @@
           }];
 }
 
+- (void)createPost:(RemotePost *)post
+           forBlog:(Blog *)blog
+           success:(void (^)(RemotePost *))success
+           failure:(void (^)(NSError *))failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/new?context=edit", blog.dotComID];
+    NSDictionary *parameters = [self parametersWithRemotePost:post];
+
+    [self.api POST:path
+        parameters:parameters
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               RemotePost *post = [self remotePostFromJSONDictionary:responseObject];
+               if (success) {
+                   success(post);
+               }
+           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
+}
+
+- (void)updatePost:(RemotePost *)post
+           forBlog:(Blog *)blog
+           success:(void (^)(RemotePost *))success
+           failure:(void (^)(NSError *))failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@?context=edit", blog.dotComID, post.postID];
+    NSDictionary *parameters = [self parametersWithRemotePost:post];
+
+    [self.api POST:path
+        parameters:parameters
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               RemotePost *post = [self remotePostFromJSONDictionary:responseObject];
+               if (success) {
+                   success(post);
+               }
+           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
+}
+
 #pragma mark - Private methods
 
 - (NSArray *)remotePostsFromJSONArray:(NSArray *)jsonPosts {
@@ -110,6 +154,37 @@
     post.tags = [self tagNamesFromJSONDictionary:jsonPost[@"tags"]];
 
     return post;
+}
+
+- (NSDictionary *)parametersWithRemotePost:(RemotePost *)post
+{
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    parameters[@"title"] = post.title;
+    parameters[@"content"] = post.content;
+    parameters[@"status"] = post.status;
+    parameters[@"password"] = post.password ? post.password : @"";
+    parameters[@"type"] = post.type;
+
+    if (post.date) {
+        parameters[@"date"] = post.date;
+    }
+    if (post.excerpt) {
+        parameters[@"excerpt"] = post.excerpt;
+    }
+    if (post.slug) {
+        parameters[@"slug"] = post.slug;
+    }
+    if (post.parentID) {
+        parameters[@"parent"] = post.parentID;
+    }
+
+    parameters[@"categories"] = [post.categories valueForKey:@"categoryID"];
+    parameters[@"tags"] = post.tags ? post.tags : @[];
+    parameters[@"format"] = post.format ? post.format : @"standard";
+    parameters[@"featured_image"] = post.postThumbnailID ? [post.postThumbnailID stringValue] : @"";
+    // TODO: metadata
+    // Test what happens for nil and not present values
+    return [NSDictionary dictionaryWithDictionary:parameters];
 }
 
 - (NSString *)statusWithRemoteStatus:(NSString *)remoteStatus {

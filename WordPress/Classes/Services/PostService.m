@@ -102,6 +102,55 @@
     }];
 }
 
+- (void)uploadPost:(Post *)post
+           success:(void (^)())success
+           failure:(void (^)(NSError *error))failure
+{
+    id<PostServiceRemote> remote = [self remoteForBlog:post.blog];
+    RemotePost *remotePost = [self remotePostWithPost:post];
+
+    post.remoteStatus = AbstractPostRemoteStatusPushing;
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    NSManagedObjectID *postObjectID = post.objectID;
+    void (^successBlock)(RemotePost *post) = ^(RemotePost *post) {
+        [self.managedObjectContext performBlock:^{
+            Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
+            if (postInContext) {
+                [self updatePost:postInContext withRemotePost:post];
+                postInContext.remoteStatus = AbstractPostRemoteStatusSync;
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            }
+            if (success) {
+                success();
+            }
+        }];
+    };
+    void (^failureBlock)(NSError *error) = ^(NSError *error) {
+        [self.managedObjectContext performBlock:^{
+            Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
+            if (postInContext) {
+                postInContext.remoteStatus = AbstractPostRemoteStatusFailed;
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            }
+            if (failure) {
+                failure(error);
+            }
+        }];
+    };
+
+    if ([post.postID longLongValue] > 0) {
+        [remote updatePost:remotePost
+                   forBlog:post.blog
+                   success:successBlock
+                   failure:failureBlock];
+    } else {
+        [remote createPost:remotePost
+                   forBlog:post.blog
+                   success:successBlock
+                   failure:failureBlock];
+    }
+}
+
 #pragma mark -
 
 - (void)initializeDraft:(AbstractPost *)post {
@@ -175,6 +224,43 @@
         }
     }
     post.post_thumbnail = remotePost.postThumbnailID;
+}
+
+- (RemotePost *)remotePostWithPost:(Post *)post
+{
+    RemotePost *remotePost = [RemotePost new];
+    remotePost.postID = post.postID;
+    remotePost.date = post.date_created_gmt;
+    remotePost.title = post.postTitle;
+    remotePost.content = post.content;
+    remotePost.status = post.status;
+    remotePost.format = post.postFormat;
+    remotePost.tags = [post.tags componentsSeparatedByString:@","];
+    remotePost.categories = [self remoteCategoriesForPost:post];
+    remotePost.postThumbnailID = post.post_thumbnail;
+    remotePost.type = @"post";
+
+    // TODO: metadata/geolocation
+
+    return remotePost;
+}
+
+- (NSArray *)remoteCategoriesForPost:(Post *)post
+{
+    NSMutableArray *remoteCategories = [NSMutableArray arrayWithCapacity:post.categories.count];
+    for (Category *category in post.categories) {
+        [remoteCategories addObject:[self remoteCategoryWithCategory:category]];
+    }
+    return [NSArray arrayWithArray:remoteCategories];
+}
+
+- (RemoteCategory *)remoteCategoryWithCategory:(Category *)category
+{
+    RemoteCategory *remoteCategory = [RemoteCategory new];
+    remoteCategory.categoryID = category.categoryID;
+    remoteCategory.name = category.categoryName;
+    remoteCategory.parentID = category.parentID;
+    return remoteCategory;
 }
 
 - (void)updatePost:(Post *)post withRemoteCategories:(NSArray *)remoteCategories {
