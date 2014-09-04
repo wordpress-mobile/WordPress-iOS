@@ -7,9 +7,9 @@
 
 NSUInteger const WPPostSummaryLength = 150;
 
-@interface Post() {
-    NSString *_summary;
-}
+@interface Post ()
+
+@property (nonatomic, strong) NSString *summary;
 
 @end
 
@@ -47,6 +47,7 @@ NSUInteger const WPPostSummaryLength = 150;
 @dynamic categories;
 @dynamic authorAvatarURL;
 @synthesize specialType;
+@synthesize summary;
 
 #pragma mark - NSManagedObject subclass methods
 
@@ -388,10 +389,10 @@ NSUInteger const WPPostSummaryLength = 150;
 
 - (NSString *)contentPreviewForDisplay
 {
-    if (!_summary) {
-        _summary = [self createSummaryFromContent:self.content];
+    if (!self.summary) {
+        self.summary = [self createSummaryFromContent:self.content];
     }
-    return _summary;
+    return self.summary;
 }
 
 - (NSString *)createSummaryFromContent:(NSString *)string
