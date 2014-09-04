@@ -39,27 +39,29 @@
 # * Chinese (Taiwan) [zh-Hant]
 
 LANGS={
-  'da' => 'da', # Danish
-  'de' => 'de', # German
-  'es' => 'es', # Spanish
-  'fr' => 'fr', # French
-  'he' => 'he', # Hebrew
-  'hr' => 'hr', # Croatian
-  'hu' => 'hu', # Hungarian
-  'id' => 'id', # Indonesian
-  'it' => 'it', # Italian
-  'ja' => 'ja', # Japanese
-  'ko' => 'ko', # Korean
-  'nb' => 'nb', # Norwegian (Bokmål)
-  'nl' => 'nl', # Dutch
-  'pl' => 'pl', # Polish
-  'pt' => 'pt', # Portuguese
-  'ru' => 'ru', # Russian
-  'sv' => 'sv', # Swedish
-  'th' => 'th', # Thai
-  'tr' => 'tr', # Turkish
-  'zh-cn' => 'zh-Hans', # Chinese (Chine)
-  'zh-tw' => 'zh-Hant' # Chinese (Taiwan)
+  'da' => 'da',         # Danish
+  'de' => 'de',         # German
+  'es' => 'es',         # Spanish
+  'fr' => 'fr',         # French
+  'he' => 'he',         # Hebrew
+  'hr' => 'hr',         # Croatian
+  'hu' => 'hu',         # Hungarian
+  'id' => 'id',         # Indonesian
+  'it' => 'it',         # Italian
+  'ja' => 'ja',         # Japanese
+  'ko' => 'ko',         # Korean
+  'nb' => 'nb',         # Norwegian (Bokmål)
+  'nl' => 'nl',         # Dutch
+  'pl' => 'pl',         # Polish
+  'pt' => 'pt',         # Portuguese
+  'ru' => 'ru',         # Russian
+  'sv' => 'sv',         # Swedish
+  'th' => 'th',         # Thai
+  'tr' => 'tr',         # Turkish
+  'zh-cn' => 'zh-Hans', # Chinese (China)
+  'zh-tw' => 'zh-Hant', # Chinese (Taiwan)
+  'pt-br' => 'pt-BR',   # Portuguese (Brazil)
+  'en-gb' => 'en-GB',   # English (UK)
 }
 
 LANGS.each do |code,local|

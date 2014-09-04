@@ -1,7 +1,9 @@
 #import <Foundation/Foundation.h>
 
+
+
 @interface NSScanner (Helpers)
 
-- (NSString *)scanQuotedText;
+- (NSArray *)scanQuotedText;
 
 @end

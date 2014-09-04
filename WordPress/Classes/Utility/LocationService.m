@@ -3,7 +3,7 @@
 #import <CoreLocation/CoreLocation.h>
 
 static LocationService *instance;
-static NSInteger const LocationHorizontalAccuracyThreshold = 50; // Meters
+static NSInteger const LocationHorizontalAccuracyThreshold = 100; // Meters
 static NSInteger const LocationServiceTimeoutDuration = 5; // Seconds
 NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 
@@ -22,7 +22,8 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 
 @implementation LocationService
 
-+ (instancetype)sharedService {
++ (instancetype)sharedService
+{
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         instance = [[LocationService alloc] init];
@@ -30,7 +31,8 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     return instance;
 }
 
-- (id)init {
+- (id)init
+{
     self = [super init];
     if (self) {
         self.locationManager = [[CLLocationManager alloc] init];
@@ -46,7 +48,8 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 
 #pragma mark - Instance Methods
 
-- (BOOL)locationServicesDisabled {
+- (BOOL)locationServicesDisabled
+{
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     if (status == kCLAuthorizationStatusRestricted || status == kCLAuthorizationStatusDenied) {
         return YES;
@@ -54,7 +57,8 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     return NO;
 }
 
-- (void)getCurrentLocationAndAddress:(LocationServiceCompletionBlock)completionBlock {
+- (void)getCurrentLocationAndAddress:(LocationServiceCompletionBlock)completionBlock
+{
     if (completionBlock) {
         [self.completionBlocks addObject:completionBlock];
     }
@@ -63,7 +67,8 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     [self startUpdatingLocation];
 }
 
-- (void)getAddressForLocation:(CLLocation *)location completion:(LocationServiceCompletionBlock)completionBlock {
+- (void)getAddressForLocation:(CLLocation *)location completion:(LocationServiceCompletionBlock)completionBlock
+{
     if (completionBlock) {
         [self.completionBlocks addObject:completionBlock];
     }
@@ -99,7 +104,8 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     }];
 }
 
-- (BOOL)hasAddressForLocation:(CLLocation *)location {
+- (BOOL)hasAddressForLocation:(CLLocation *)location
+{
     if (self.lastGeocodedAddress != nil && [self.lastGeocodedLocation distanceFromLocation:location] <= LocationHorizontalAccuracyThreshold) {
         return YES;
     }
@@ -108,11 +114,13 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 
 #pragma mark - Private Methods
 
-- (void)getAddressForLocation:(CLLocation *)location {
+- (void)getAddressForLocation:(CLLocation *)location
+{
     [self getAddressForLocation:location completion:nil];
 }
 
-- (void)addressUpdated:(NSString *)address forLocation:(CLLocation *)location error:(NSError *)error {
+- (void)addressUpdated:(NSString *)address forLocation:(CLLocation *)location error:(NSError *)error
+{
     self.locationServiceRunning = NO;
     self.lastGeocodedAddress = address;
     self.lastGeocodedLocation = location;
@@ -125,7 +133,8 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     [self.completionBlocks removeAllObjects];
 }
 
-- (void)serviceFailed:(NSError *)error {
+- (void)serviceFailed:(NSError *)error
+{
     DDLogError(@"Error finding location: %@", error);
     [self stopUpdatingLocation];
     self.locationServiceRunning = NO;
@@ -136,7 +145,8 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     [self.completionBlocks removeAllObjects];
 }
 
-- (void)startUpdatingLocation {
+- (void)startUpdatingLocation
+{
     [self stopUpdatingLocation];
     self.locationServiceRunning = YES;
     [self.locationManager startUpdatingLocation];
@@ -147,14 +157,16 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
                                                         repeats:NO];
 }
 
-- (void)stopUpdatingLocation {
+- (void)stopUpdatingLocation
+{
     [self.locationManager stopUpdatingLocation];
     [self.timeoutClock invalidate];
     self.timeoutClock = nil;
     self.lastUpdatedLocation = nil;
 }
 
-- (void)timeoutUpdatingLocation {
+- (void)timeoutUpdatingLocation
+{
     CLLocation *lastLocation;
     [self stopUpdatingLocation];
 #if TARGET_IPHONE_SIMULATOR
@@ -173,11 +185,13 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 
 #pragma mark - CLLocationManager Delegate Methods
 
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
     [self serviceFailed:error];
 }
 
-- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+{
     CLLocation *location = [locations lastObject]; // The last item is the most recent.
 
 #if TARGET_IPHONE_SIMULATOR

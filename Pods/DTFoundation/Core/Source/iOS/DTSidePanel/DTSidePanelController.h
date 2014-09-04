@@ -28,8 +28,18 @@ typedef NS_ENUM(NSUInteger, DTSidePanelControllerPanel)
 	/**
 	 Panel to the right of the center panel
 	 */
-	DTSidePanelControllerPanelRight
+	DTSidePanelControllerPanelRight,
+    
+    /**
+     No panel
+     */
+    DTSidePanelControllerPanelNone
 };
+
+static NSString * const DTSidePanelLeftIdentifier = @"DTSidePanelLeft";
+static NSString * const DTSidePanelCenterIdentifier = @"DTSidePanelCenter";
+static NSString * const DTSidePanelRightIdentifier = @"DTSidePanelRight";
+static NSString * const DTSidePanelModalIdentifier = @"DTSidePanelModal";
 
 @class DTSidePanelController;
 
@@ -89,6 +99,22 @@ typedef NS_ENUM(NSUInteger, DTSidePanelControllerPanel)
 - (void)setWidth:(CGFloat)width forPanel:(DTSidePanelControllerPanel)panel animated:(BOOL)animated;
 
 /**
+ @name Actions
+ */
+
+/**
+ Toggles the left panel of the DTSidePanelController.
+ @param sender The object that initiated the action
+ */
+- (IBAction)toggleLeftPanel:(id)sender;
+
+/**
+ Toggles the right panel of the DTSidePanelController.
+ @param sender The object that initiated the action
+ */
+- (IBAction)toggleRightPanel:(id)sender;
+
+/**
  @name Properties
  */
 
@@ -111,5 +137,6 @@ typedef NS_ENUM(NSUInteger, DTSidePanelControllerPanel)
  The DTSidePanelControllerDelegate.
  */
 @property (nonatomic, DT_WEAK_PROPERTY) id <DTSidePanelControllerDelegate> sidePanelDelegate;
+
 
 @end
