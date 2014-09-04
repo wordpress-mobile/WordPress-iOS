@@ -14,7 +14,6 @@
 #import "ReachabilityUtils.h"
 #import "WPNUXUtility.h"
 #import "WPAccount.h"
-#import "Note.h"
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "BlogService.h"

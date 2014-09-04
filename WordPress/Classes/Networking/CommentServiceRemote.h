@@ -5,6 +5,19 @@
 
 @protocol CommentServiceRemote <NSObject>
 
+
+/**
+ Loads all of the comments associated with a blog
+ */
+- (void)getCommentsForBlog:(Blog *)blog
+                   success:(void (^)(NSArray *comments))success
+                   failure:(void (^)(NSError *error))failure;
+
+
+
+/**
+ Loads all of the comments associated with a blog
+ */
 - (void)getCommentsForBlog:(Blog *)blog
                    success:(void (^)(NSArray *comments))success
                    failure:(void (^)(NSError *error))failure;

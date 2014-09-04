@@ -1,16 +1,19 @@
 #import <UIKit/UIKit.h>
 #import "Comment.h"
 
-@class IOS7CorrectedTextView;
+
 @class EditCommentViewController;
 
-
 @protocol EditCommentViewControllerDelegate <NSObject>
-- (void)editCommentViewController:(EditCommentViewController *)sender finishedWithUpdates:(BOOL)hasUpdates;
+- (void)editCommentViewController:(EditCommentViewController *)sender didUpdateContent:(NSString *)newContent;
+- (void)editCommentViewControllerFinished:(EditCommentViewController *)sender;
 @end
 
 
 @interface EditCommentViewController : UIViewController
 @property (nonatomic,   weak) id<EditCommentViewControllerDelegate> delegate;
-@property (nonatomic, strong) Comment                               *comment;
+@property (nonatomic, strong) NSString                              *content;
+@property (nonatomic, assign) BOOL                                  interfaceEnabled;
+@property (nonatomic, strong) id                                    userInfo;
++ (instancetype)newEditCommentViewController;
 @end
