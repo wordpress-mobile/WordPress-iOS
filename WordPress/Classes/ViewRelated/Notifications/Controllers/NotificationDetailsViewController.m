@@ -193,7 +193,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     replyTextView.placeholder       = NSLocalizedString(@"Write a reply…", @"Placeholder text for inline compose view");
     replyTextView.replyText         = [NSLocalizedString(@"Reply", @"") uppercaseString];
     replyTextView.onReply           = ^(NSString *content) {
-        [weakSelf replyCommentWithContent:content block:block];
+        [weakSelf replyToCommentWithContent:content block:block];
     };
     self.replyTextView              = replyTextView;
     
@@ -748,7 +748,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     [self performSegueWithIdentifier:NSStringFromClass([EditCommentViewController class]) sender:block];
 }
 
-- (void)replyCommentWithContent:(NSString *)content block:(NotificationBlock *)block
+- (void)replyToCommentWithContent:(NSString *)content block:(NotificationBlock *)block
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
@@ -786,7 +786,7 @@ static CGFloat NotificationSectionSeparator     = 10;
                               return;
                           }
                           
-                          [self replyCommentWithContent:content block:block];
+                          [self replyToCommentWithContent:content block:block];
                       }];
 }
 
