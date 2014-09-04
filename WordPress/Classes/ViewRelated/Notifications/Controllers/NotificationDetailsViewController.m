@@ -87,6 +87,10 @@ static CGFloat NotificationSectionSeparator     = 10;
     self.restorationClass               = [self class];
     self.view.backgroundColor           = [WPStyleGuide itsEverywhereGrey];
     
+    // Don't show the notification title in the next-view's back button
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
+    
     self.tableView.backgroundColor      = [WPStyleGuide itsEverywhereGrey];
 
     self.reuseIdentifierMap = @{
