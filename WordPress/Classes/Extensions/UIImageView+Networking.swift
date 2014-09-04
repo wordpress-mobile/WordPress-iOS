@@ -11,8 +11,8 @@ extension UIImageView
     public func downloadImage(url: NSURL?, placeholderName: String?, success: ((UIImage) -> ())?, failure: ((NSError!) -> ())?) {
 
         // Placeholder, if possible
-        if let uwrappedPlaceholderName = placeholderName {
-            image = UIImage(named: uwrappedPlaceholderName)
+        if let unwrappedPlaceholderName = placeholderName {
+            image = UIImage(named: unwrappedPlaceholderName)
         }
 
         // Failsafe: Halt if the URL is empty
