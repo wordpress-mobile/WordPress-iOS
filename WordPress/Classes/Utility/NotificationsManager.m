@@ -1,5 +1,4 @@
 #import "NotificationsManager.h"
-#import "Note.h"
 #import "NotificationsViewController.h"
 
 #import "WordPressAppDelegate.h"
@@ -154,7 +153,7 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
         WordPressAppDelegate *appDelegate   = [WordPressAppDelegate sharedWordPressApplicationDelegate];
         
         [appDelegate showTabForIndex:kNotificationsTabIndex];
-        [appDelegate.notificationsViewController showDetailsForNoteWithID:notificationID animated:NO];
+        [appDelegate.notificationsViewController showDetailsForNoteWithID:notificationID];
     } else if (state == UIApplicationStateBackground) {
         if (completionHandler) {
             Simperium *simperium = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
@@ -224,7 +223,7 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
         WordPressAppDelegate *appDelegate   = [WordPressAppDelegate sharedWordPressApplicationDelegate];
 
         [appDelegate showTabForIndex:kNotificationsTabIndex];
-        [appDelegate.notificationsViewController showDetailsForNoteWithID:notificationID animated:NO];
+        [appDelegate.notificationsViewController showDetailsForNoteWithID:notificationID];
     }
 }
 
