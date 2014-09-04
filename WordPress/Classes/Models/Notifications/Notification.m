@@ -25,11 +25,9 @@ NSString const *NoteLinkTypeBlockquote  = @"blockquote";
 NSString const *NoteMediaTypeImage      = @"image";
 NSString const *NoteMediaTypeBadge      = @"badge";
 
-NSString const *NoteBlockTypeUser       = @"user";
-NSString const *NoteBlockTypeComment    = @"comment";
-
-NSString const *NoteTypeMatcher         = @"automattcher";
+NSString const *NoteTypeUser            = @"user";
 NSString const *NoteTypeComment         = @"comment";
+NSString const *NoteTypeMatcher         = @"automattcher";
 NSString const *NoteTypePost            = @"post";
 
 NSString const *NoteMetaKey             = @"meta";
@@ -307,7 +305,7 @@ NSString const *NotePostIdKey           = @"post_id";
         NotificationMedia *media    = [block.media firstObject];
         
         //  User
-        if ([rawDict[NoteTypeKey] isEqual:NoteBlockTypeUser]) {
+        if ([rawDict[NoteTypeKey] isEqual:NoteTypeUser]) {
             block.type = NoteBlockTypeUser;
             
         //  Comments
