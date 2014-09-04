@@ -249,18 +249,18 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 }
 
 // Replies
-- (void)replyCommentWithID:(NSNumber *)commentID
-                    siteID:(NSNumber *)siteID
-                   content:(NSString *)content
-                   success:(void (^)())success
-                   failure:(void (^)(NSError *error))failure
+- (void)replyToCommentWithID:(NSNumber *)commentID
+                      siteID:(NSNumber *)siteID
+                     content:(NSString *)content
+                     success:(void (^)())success
+                     failure:(void (^)(NSError *error))failure
 {
     CommentServiceRemoteREST *remote = [self remoteForREST];
-    [remote replyCommentWithID:commentID
-                        siteID:siteID
-                       content:content
-                       success:success
-                       failure:failure];
+    [remote replyToCommentWithID:commentID
+                          siteID:siteID
+                         content:content
+                         success:success
+                         failure:failure];
 }
 
 // Likes
