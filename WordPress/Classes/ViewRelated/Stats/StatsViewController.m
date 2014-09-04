@@ -37,7 +37,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
         // Not being presented modally & widgets exist (iOS 8)
         UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Today", @"") style:UIBarButtonItemStylePlain target:self action:@selector(makeSiteTodayWidgetSite:)];
         self.navigationItem.rightBarButtonItem = settingsButton;
-    } else {
+    } else if (self.presentingViewController != nil) {
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonTapped:)];
         self.navigationItem.rightBarButtonItem = doneButton;
         self.title = self.blog.blogName;
