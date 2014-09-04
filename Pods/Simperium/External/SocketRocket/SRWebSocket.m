@@ -34,9 +34,6 @@
 #import <CommonCrypto/CommonDigest.h>
 #import <Security/SecRandom.h>
 
-#import "base64.h"
-#import "NSData+SRB64Additions.h"
-
 #if OS_OBJECT_USE_OBJC_RETAIN_RELEASE
 #define sr_dispatch_retain(x)
 #define sr_dispatch_release(x)
@@ -48,7 +45,7 @@
 #endif
 
 #if !__has_feature(objc_arc) 
-#error SocketRocket muust be compiled with ARC enabled
+#error SocketRocket must be compiled with ARC enabled
 #endif
 
 
@@ -61,19 +58,6 @@ typedef enum  {
     SROpCodePong = 0xA,
     // B-F reserved.
 } SROpCode;
-
-typedef enum {
-    SRStatusCodeNormal = 1000,
-    SRStatusCodeGoingAway = 1001,
-    SRStatusCodeProtocolError = 1002,
-    SRStatusCodeUnhandledType = 1003,
-    // 1004 reserved.
-    SRStatusNoStatusReceived = 1005,
-    // 1004-1006 reserved.
-    SRStatusCodeInvalidUTF8 = 1007,
-    SRStatusCodePolicyViolated = 1008,
-    SRStatusCodeMessageTooBig = 1009,
-} SRStatusCode;
 
 typedef struct {
     BOOL fin;
@@ -88,9 +72,6 @@ typedef struct {
 static NSString *const SRWebSocketAppendToSecKeyString = @"258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
 
 static inline int32_t validate_dispatch_data_partial_string(NSData *data);
-
-// Simperium Fix: Commenting out unused method
-//static inline dispatch_queue_t log_queue();
 static inline void SRFastLog(NSString *format, ...);
 
 @interface NSData (SRWebSocket)
@@ -125,20 +106,12 @@ static inline void SRFastLog(NSString *format, ...);
 
 static NSString *newSHA1String(const char *bytes, size_t length) {
     uint8_t md[CC_SHA1_DIGEST_LENGTH];
-    
+
+    assert(length >= 0);
+    assert(length <= UINT32_MAX);
     CC_SHA1(bytes, (CC_LONG)length, md);
     
-    size_t buffer_size = ((sizeof(md) * 3 + 2) / 2);
-    
-    char *buffer =  (char *)malloc(buffer_size);
-    
-    int len = b64_ntop(md, CC_SHA1_DIGEST_LENGTH, buffer, buffer_size);
-    if (len == -1) {
-        free(buffer);
-        return nil;
-    } else{
-        return [[NSString alloc] initWithBytesNoCopy:buffer length:len encoding:NSASCIIStringEncoding freeWhenDone:YES];
-    }
+    return [[NSData dataWithBytes:md length:CC_SHA1_DIGEST_LENGTH] base64Encoding];
 }
 
 @implementation NSData (SRWebSocket)
@@ -527,7 +500,7 @@ static __strong NSData *CRLFCRLF;
         
     NSMutableData *keyBytes = [[NSMutableData alloc] initWithLength:16];
     SecRandomCopyBytes(kSecRandomDefault, keyBytes.length, keyBytes.mutableBytes);
-    _secKey = [keyBytes SR_stringByBase64Encoding];
+    _secKey = keyBytes.base64Encoding;
     assert([_secKey length] == 24);
     
     CFHTTPMessageSetHeaderFieldValue(request, CFSTR("Upgrade"), CFSTR("websocket"));
@@ -555,7 +528,8 @@ static __strong NSData *CRLFCRLF;
 
 - (void)_initializeStreams;
 {
-    unsigned int port = _url.port.unsignedIntValue;
+    assert(_url.port.unsignedIntValue <= UINT32_MAX);
+    uint32_t port = _url.port.unsignedIntValue;
     if (port == 0) {
         if (!_secure) {
             port = 80;
@@ -568,7 +542,7 @@ static __strong NSData *CRLFCRLF;
     CFReadStreamRef readStream = NULL;
     CFWriteStreamRef writeStream = NULL;
     
-    CFStreamCreatePairWithSocketToHost(NULL, (__bridge CFStringRef)host, (UInt32)port, &readStream, &writeStream);
+    CFStreamCreatePairWithSocketToHost(NULL, (__bridge CFStringRef)host, port, &readStream, &writeStream);
     
     _outputStream = CFBridgingRelease(writeStream);
     _inputStream = CFBridgingRelease(readStream);
@@ -923,7 +897,8 @@ static inline BOOL closeCodeIsValid(int closeCode) {
             }
         }
     } else {
-        [self _addConsumerWithDataLength:frame_header.payload_length callback:^(SRWebSocket *self, NSData *newData) {
+        assert(frame_header.payload_length <= SIZE_T_MAX);
+        [self _addConsumerWithDataLength:(size_t)frame_header.payload_length callback:^(SRWebSocket *self, NSData *newData) {
             if (isControlFrame) {
                 [self _handleFrameWithData:newData opCode:frame_header.opcode];
             } else {
@@ -1135,6 +1110,7 @@ static const uint8_t SRPayloadLenMask   = 0x7F;
     [self _pumpScanner];
 }
 
+
 - (void)_scheduleCleanup
 {
     @synchronized(self) {
@@ -1161,6 +1137,7 @@ static const uint8_t SRPayloadLenMask   = 0x7F;
         _selfRetain = nil;
     });
 }
+
 
 static const char CRLFCRLFBytes[] = {'\r', '\n', '\r', '\n'};
 
@@ -1480,13 +1457,13 @@ static const size_t SRFrameHeaderOverhead = 32;
                     self.readyState = SR_CLOSED;
                     [self _scheduleCleanup];
                 }
-                
+
                 if (!_sentClose && !_failed) {
                     _sentClose = YES;
                     // If we get closed in this state it's probably not clean because we should be sending this when we send messages
                     [self _performDelegateBlock:^{
                         if ([self.delegate respondsToSelector:@selector(webSocket:didCloseWithCode:reason:wasClean:)]) {
-                            [self.delegate webSocket:self didCloseWithCode:0 reason:@"Stream end encountered" wasClean:NO];
+                            [self.delegate webSocket:self didCloseWithCode:SRStatusCodeGoingAway reason:@"Stream end encountered" wasClean:NO];
                         }
                     }];
                 }
@@ -1643,17 +1620,6 @@ static const size_t SRFrameHeaderOverhead = 32;
 
 @end
 
-// Simperium Fix: Commenting out unused method
-//static inline dispatch_queue_t log_queue() {
-//    static dispatch_queue_t queue = 0;
-//    static dispatch_once_t onceToken;
-//    dispatch_once(&onceToken, ^{
-//        queue = dispatch_queue_create("fast log queue", DISPATCH_QUEUE_SERIAL);
-//    });
-//    
-//    return queue;
-//}
-
 //#define SR_ENABLE_LOG
 
 static inline void SRFastLog(NSString *format, ...)  {
@@ -1673,9 +1639,14 @@ static inline void SRFastLog(NSString *format, ...)  {
 #ifdef HAS_ICU
 
 static inline int32_t validate_dispatch_data_partial_string(NSData *data) {
+    if ([data length] > INT32_MAX) {
+        // INT32_MAX is the limit so long as this Framework is using 32 bit ints everywhere.
+        return -1;
+    }
+
+    int32_t size = (int32_t)[data length];
+
     const void * contents = [data bytes];
-    long size = [data length];
-    
     const uint8_t *str = (const uint8_t *)contents;
     
     UChar32 codepoint = 1;
@@ -1711,7 +1682,7 @@ static inline int32_t validate_dispatch_data_partial_string(NSData *data) {
         size = -1;
     }
     
-    return (int32_t)size;
+    return size;
 }
 
 #else

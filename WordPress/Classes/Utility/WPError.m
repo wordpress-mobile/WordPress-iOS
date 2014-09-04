@@ -16,7 +16,8 @@ NSInteger const SupportButtonIndex = 0;
 
 @implementation WPError
 
-+ (instancetype)internalInstance {
++ (instancetype)internalInstance
+{
     static WPError *instance;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -25,12 +26,13 @@ NSInteger const SupportButtonIndex = 0;
     return instance;
 }
 
-
-+ (void)showNetworkingAlertWithError:(NSError *)error {
++ (void)showNetworkingAlertWithError:(NSError *)error
+{
     [self showNetworkingAlertWithError:error title:nil];
 }
 
-+ (void)showNetworkingAlertWithError:(NSError *)error title:(NSString *)title {
++ (void)showNetworkingAlertWithError:(NSError *)error title:(NSString *)title
+{
     NSString *message = nil;
     NSString *customTitle = nil;
 
@@ -73,7 +75,7 @@ NSInteger const SupportButtonIndex = 0;
                     }
                 }
                 break;
-                
+
             default:
                 break;
         }
@@ -84,12 +86,12 @@ NSInteger const SupportButtonIndex = 0;
             return;
         }
     }
-    
+
     if (message == nil) {
         message = [error localizedDescription];
         message = [NSString decodeXMLCharactersIn:message];
     }
-    
+
     if (title == nil) {
         if (customTitle == nil) {
             title = NSLocalizedString(@"Error", @"Generic error alert title");
@@ -97,45 +99,49 @@ NSInteger const SupportButtonIndex = 0;
             title = customTitle;
         }
     }
-    
+
     [self showAlertWithTitle:title message:message];
 }
 
-+ (void)showXMLRPCErrorAlert:(NSError *)error {
++ (void)showXMLRPCErrorAlert:(NSError *)error
+{
     NSString *cleanedErrorMsg = [error localizedDescription];
-    
+
     //org.wordpress.iphone --> XML-RPC errors
     if ([error.domain isEqualToString:@"org.wordpress.iphone"] && error.code == 401){
         cleanedErrorMsg = NSLocalizedString(@"Sorry, you cannot access this feature. Please check your User Role on this site.", @"");
     }
-    
+
     // ignore HTTP auth canceled errors
     if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
         [WPError internalInstance].alertShowing = NO;
         return;
     }
-	
-	if ([cleanedErrorMsg rangeOfString:@"NSXMLParserErrorDomain"].location != NSNotFound) {
-		cleanedErrorMsg = NSLocalizedString(@"The app can't recognize the server response. Please, check the configuration of your site.", @"");
+
+    if ([cleanedErrorMsg rangeOfString:@"NSXMLParserErrorDomain"].location != NSNotFound) {
+        cleanedErrorMsg = NSLocalizedString(@"The app can't recognize the server response. Please, check the configuration of your site.", @"");
     }
-	
-	[self showAlertWithTitle:NSLocalizedString(@"Error", @"Generic popup title for any type of error.") message:cleanedErrorMsg];
+
+    [self showAlertWithTitle:NSLocalizedString(@"Error", @"Generic popup title for any type of error.") message:cleanedErrorMsg];
 }
 
-+ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message {
++ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message
+{
     [self showAlertWithTitle:title message:message withSupportButton:YES okPressedBlock:nil];
 }
 
-+ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message withSupportButton:(BOOL)showSupport {
++ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message withSupportButton:(BOOL)showSupport
+{
     [self showAlertWithTitle:title message:message withSupportButton:showSupport okPressedBlock:nil];
 }
 
-+ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message withSupportButton:(BOOL)showSupport okPressedBlock:(void (^)(UIAlertView *))okBlock {
++ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message withSupportButton:(BOOL)showSupport okPressedBlock:(void (^)(UIAlertView *))okBlock
+{
     if ([WPError internalInstance].alertShowing) {
         return;
     }
     [WPError internalInstance].alertShowing = YES;
-    
+
     DDLogInfo(@"Showing alert with title: %@ and message %@", title, message);
     NSString *supportText = showSupport ? NSLocalizedString(@"Need Help?", @"'Need help?' button label, links off to the WP for iOS FAQ.") : nil;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
@@ -149,7 +155,8 @@ NSInteger const SupportButtonIndex = 0;
 
 #pragma mark - UIAlertViewDelegate
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
     if (alertView.cancelButtonIndex == buttonIndex) {
         [SupportViewController showFromTabBar];
     } else if (_okPressedBlock) {

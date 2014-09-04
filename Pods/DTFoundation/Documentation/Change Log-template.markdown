@@ -3,6 +3,15 @@ Change Log
 
 This is the history of version updates.
 
+**Version 1.7.2**
+
+- FIXED: [DTAlertView] Completion blocks for the buttons are not executed on iOS 8
+- FIXED: [DTLog] Deprecation warnings with iOS 8 deployment target
+- FIXED: [DTProgressHUD] Warning about no rootViewController might show if instantiated in app's first run loop (<= iOS 7) 
+- FIXED: [DTSidePanelController] Horizontal swipe gesture interfering with edit gesture on table view
+- FIXED: [DTSidePanelController] Panel sizing issue resulting in black areas showing
+- ADDED: [DTSidePanelController] Support for creation via storyboard
+
 **Version 1.7.1**
 
 - ADDED: DTAnimatedGIF in separate static lib / subspec

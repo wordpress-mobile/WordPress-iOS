@@ -3,6 +3,8 @@
 
 #import "WPAnimatedImageResponseSerializer.h"
 
+static int ddLogLevel = LOG_LEVEL_INFO;
+
 NSString * const WPImageSourceErrorDomain = @"WPImageSourceErrorDomain";
 
 @implementation WPImageSource {

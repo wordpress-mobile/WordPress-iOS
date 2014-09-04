@@ -44,6 +44,16 @@ typedef void (^DTActionSheetBlock)(void);
  
  Since there can only be one cancel button a previously marked cancel button becomes a normal button.
  @param title The title of the new button.
+ @param block The block to execute when the button is tapped.
+ @returns The index of the new button. Button indices start at 0 and increase in the order they are added.
+ */
+- (NSInteger)addCancelButtonWithTitle:(NSString *)title block:(DTActionSheetBlock)block;
+
+/**
+ Adds a custom cancel button to the action sheet.
+ 
+ Since there can only be one cancel button a previously marked cancel button becomes a normal button.
+ @param title The title of the new button.
  @returns The index of the new button. Button indices start at 0 and increase in the order they are added.
  */ 
 - (NSInteger)addCancelButtonWithTitle:(NSString *)title;

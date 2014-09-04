@@ -26,8 +26,8 @@ extern NSString * const OP_OBJECT;
 extern NSString * const OP_STRING;
 
 @interface SPMember : NSObject {
-	NSString *keyName;
-	NSString *type;
+    NSString *keyName;
+    NSString *type;
     NSString *valueTransformerName;
     id modelDefaultValue;
 }
@@ -36,7 +36,7 @@ extern NSString * const OP_STRING;
 @property (nonatomic, readonly, strong) NSString *valueTransformerName;
 @property (nonatomic, readonly, strong) id modelDefaultValue;
 
-- (id)initFromDictionary:(NSDictionary *)dict;
+- (instancetype)initFromDictionary:(NSDictionary *)dict;
 - (id)defaultValue;
 - (NSDictionary *)diffForAddition:(id)data;
 - (NSDictionary *)diffForReplacement:(id)data;

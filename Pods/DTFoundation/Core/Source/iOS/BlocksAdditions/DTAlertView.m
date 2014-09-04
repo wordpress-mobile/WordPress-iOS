@@ -26,27 +26,53 @@
 
 
 // overwrite standard initializer so that we can set our own delegate
-- (id)init
-{
-	self = [super init];
-	if (self)
-	{
-		_actionsPerIndex = [[NSMutableDictionary alloc] init];
-		self.delegate = self;
-	}
-
-	return self;
-}
-
 - (void)dealloc
 {
 	_isDeallocating = YES;
 }
 
 // designated initializer
+- (id)init
+{
+    self = [super init];
+    if (self)
+    {
+        _actionsPerIndex = [[NSMutableDictionary alloc] init];
+        self.delegate = self;
+    }
+    return self;
+}
+
 - (id)initWithTitle:(NSString *)title message:(NSString *)message
 {
-	return [self initWithTitle:title message:message delegate:nil cancelButtonTitle:nil otherButtonTitles:nil];
+    return [self initWithTitle:title message:message delegate:nil cancelButtonTitle:nil otherButtonTitles:nil];
+}
+
+- (id)initWithTitle:(NSString *)title message:(NSString *)message delegate:(id)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSString *)otherButtonTitles, ...
+{
+	self = [self init];
+	if (self)
+	{
+        self.title = title;
+        self.message = message;
+        
+        if (otherButtonTitles != nil) {
+            [self addButtonWithTitle:otherButtonTitles];
+            va_list args;
+            va_start(args, otherButtonTitles);
+            NSString *title = nil;
+            while( (title = va_arg(args, NSString *)) ) {
+                [self addButtonWithTitle:title];
+            }
+            va_end(args);
+        }
+        if (cancelButtonTitle) {
+            [self addCancelButtonWithTitle:cancelButtonTitle block:nil];
+        }
+        
+        _externalDelegate = delegate;
+	}
+	return self;
 }
 
 - (NSInteger)addButtonWithTitle:(NSString *)title block:(DTAlertViewBlock)block
@@ -79,6 +105,14 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    NSNumber *key = [NSNumber numberWithInteger:buttonIndex];
+    
+	DTAlertViewBlock block = [_actionsPerIndex objectForKey:key];
+	if (block)
+	{
+		block();
+	}
+
 	if ([_externalDelegate respondsToSelector:@selector(alertView:clickedButtonAtIndex:)])
 	{
 		[_externalDelegate alertView:self clickedButtonAtIndex:buttonIndex];
@@ -124,15 +158,6 @@
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-	NSNumber *key = [NSNumber numberWithInteger:buttonIndex];
-
-	DTAlertViewBlock block = [_actionsPerIndex objectForKey:key];
-
-	if (block)
-	{
-		block();
-	}
-
 	if ([_externalDelegate respondsToSelector:@selector(alertView:didDismissWithButtonIndex:)])
 	{
 		[_externalDelegate alertView:self didDismissWithButtonIndex:buttonIndex];

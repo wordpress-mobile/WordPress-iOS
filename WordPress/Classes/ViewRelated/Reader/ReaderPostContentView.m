@@ -16,9 +16,9 @@
 
 #pragma mark - LifeCycle Methods
 
-- (instancetype)init
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [super init];
+    self = [super initWithFrame:frame];
     if (self) {
         // Action buttons
         _reblogButton = [super createActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-reblog-done"]];
@@ -36,12 +36,12 @@
     return self;
 }
 
-
 #pragma mark - Public Methods
 
 - (void)configurePost:(ReaderPost *)post
 {
     self.post = post;
+    self.shouldShowActions = post.isWPCom;
     self.contentProvider = post;
 }
 
@@ -72,29 +72,31 @@
     return self.post.isPrivate;
 }
 
-
 #pragma mark - Private Methods
 
 - (void)configureActionButtons
 {
     if (!self.shouldShowActions) {
+        self.actionButtons = @[];
         return;
     }
 
     NSMutableArray *actionButtons = [NSMutableArray array];
 
-    [actionButtons addObject:self.likeButton];
+    if (self.post.isLikesEnabled){
+        [actionButtons addObject:self.likeButton];
+    }
 
     if (self.post.commentsOpen) {
         [actionButtons addObject:self.commentButton];
     }
 
-    // Don't reblog private blogs
+    // Reblogging just for non private blogs
     if (![self privateContent]) {
         [actionButtons addObject:self.reblogButton];
     }
-    
-    self.actionView.actionButtons = actionButtons;
+
+    self.actionButtons = actionButtons;
 
     [self updateActionButtons];
 }
@@ -138,6 +140,9 @@
 {
     [super configureAttributionView];
     [self.attributionView selectAttributionButton:self.post.isFollowing];
+
+    BOOL hide = (self.shouldShowAttributionMenu && self.post.isWPCom)? NO : YES;
+    [self.attributionView hideAttributionMenu:hide];
 }
 
 - (WPContentAttributionView *)viewForAttributionView
@@ -148,7 +153,6 @@
     attrView.delegate = self;
     return attrView;
 }
-
 
 #pragma mark - Action Methods
 

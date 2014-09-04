@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/wordpress-mobile/WordPressCom-Stats-iOS.svg?branch=develop)](https://travis-ci.org/wordpress-mobile/WordPressCom-Stats-iOS)
+
 ![WordPress Logo](http://s.w.org/about/images/logos/wordpress-logo-hoz-rgb.png)
 
 # WordPressCom-Stats-iOS
@@ -90,4 +92,4 @@ http://make.wordpress.org/mobile/handbook/pathways/ios/how-to-contribute/
 
 ## License
 
-WordPressCom-Stats-iOS is available under the GPLv2 license. See the [LICENSE](https://raw.githubusercontent.com/wordpress-mobile/WordPressCom-Stats-iOS/develop/LICENSE) file for more info.
+WordPressCom-Stats-iOS is available under the MIT license. See the [LICENSE](https://raw.githubusercontent.com/wordpress-mobile/WordPressCom-Stats-iOS/develop/LICENSE) file for more info.

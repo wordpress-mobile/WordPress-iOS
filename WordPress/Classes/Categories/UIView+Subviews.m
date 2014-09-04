@@ -2,10 +2,10 @@
 
 @implementation UIView (Subviews)
 
-- (void)addSubviewWithFadeAnimation:(UIView *)subview {
-    
+- (void)addSubviewWithFadeAnimation:(UIView *)subview
+{
     CGFloat finalAlpha = subview.alpha;
-    
+
     subview.alpha = 0.0;
     [self addSubview:subview];
     [UIView animateWithDuration:0.2 animations:^{

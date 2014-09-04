@@ -8,7 +8,6 @@
 
 @end
 
-
 @implementation ReaderPostRichContentView
 
 #pragma mark - Life Cycle Methods
@@ -25,7 +24,6 @@
     [self.richTextView refreshMediaLayout];
 }
 
-
 #pragma mark - Private Methods
 
 - (UILabel *)viewForTitle
@@ -37,8 +35,10 @@
 
 - (UIView *)viewForContent
 {
+    // Minimal frame so internal DTAttriutedTextContentView gets layout.
+    CGRect frame = CGRectMake(0.0, 0.0, CGRectGetWidth(self.bounds), 1.0);
     CGFloat horizontalInnerPadding = WPContentViewHorizontalInnerPadding - 4.0;
-    WPRichTextView *richTextView = [[WPRichTextView alloc] init];
+    WPRichTextView *richTextView = [[WPRichTextView alloc] initWithFrame:frame];
     richTextView.translatesAutoresizingMaskIntoConstraints = NO;
     richTextView.delegate = self;
     richTextView.edgeInsets = UIEdgeInsetsMake(0.0, horizontalInnerPadding, 0.0, horizontalInnerPadding);
@@ -70,7 +70,6 @@
     return 0;
 }
 
-
 #pragma mark - Action Methods
 
 - (void)richTextView:(WPRichTextView *)richTextView didReceiveLinkAction:(NSURL *)linkURL
@@ -80,24 +79,24 @@
     }
 }
 
-- (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(ReaderImageView *)readerImageView
+- (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(WPRichTextImageControl *)imageControl
 {
     if ([self.delegate respondsToSelector:@selector(richTextView:didReceiveImageLinkAction:)]) {
-        [self.delegate richTextView:richTextView didReceiveImageLinkAction:readerImageView];
+        [self.delegate richTextView:richTextView didReceiveImageLinkAction:imageControl];
     }
 }
 
-- (void)richTextView:(WPRichTextView *)richTextView didReceiveVideoLinkAction:(ReaderVideoView *)readerVideoView
+- (void)richTextView:(WPRichTextView *)richTextView didReceiveVideoLinkAction:(WPRichTextVideoControl *)videoControl
 {
     if ([self.delegate respondsToSelector:@selector(richTextView:didReceiveVideoLinkAction:)]) {
-        [self.delegate richTextView:richTextView didReceiveVideoLinkAction:readerVideoView];
+        [self.delegate richTextView:richTextView didReceiveVideoLinkAction:videoControl];
     }
 }
 
-- (void)richTextViewDidLoadAllMedia:(WPRichTextView *)richTextView
+- (void)richTextViewDidLoadMediaBatch:(WPRichTextView *)richTextView
 {
-    if ([self.delegate respondsToSelector:@selector(richTextViewDidLoadAllMedia:)]) {
-        [self.delegate richTextViewDidLoadAllMedia:richTextView];
+    if ([self.delegate respondsToSelector:@selector(richTextViewDidLoadMediaBatch:)]) {
+        [self.delegate richTextViewDidLoadMediaBatch:richTextView];
     }
 }
 

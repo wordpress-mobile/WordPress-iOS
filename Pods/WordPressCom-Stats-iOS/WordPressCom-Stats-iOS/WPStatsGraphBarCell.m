@@ -2,19 +2,42 @@
 #import <WPStyleGuide.h>
 #import "WPStyleGuide+Stats.h"
 
+@interface WPStatsGraphBarCell ()
+
+@property (nonatomic, strong) NSMutableArray *barsWithColors;
+
+@end
+
 @implementation WPStatsGraphBarCell
 
 - (void)prepareForReuse
 {
     [super prepareForReuse];
+
+    [self.barsWithColors removeAllObjects];
     
     [self.contentView.subviews enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
         [view removeFromSuperview];
     }];
 }
 
+- (void)setSelected:(BOOL)selected
+{
+    [super setSelected:selected];
+    
+    [self.barsWithColors enumerateObjectsUsingBlock:^(NSDictionary *dict, NSUInteger idx, BOOL *stop) {
+        UIView *view = dict[@"view"];
+        UIColor *color = dict[@"color"];
+        UIColor *selectedColor = dict[@"selectedColor"];
+        
+        view.backgroundColor = self.isSelected ? selectedColor : color;
+    }];
+}
+
 - (void)finishedSettingProperties
 {
+    self.barsWithColors = [NSMutableArray new];
+    
     // Y axis line markers and values
     // Round up and extend past max value to the next 10s
     NSUInteger yAxisTicks = self.numberOfYValues;
@@ -35,6 +58,7 @@
     
     [self.categoryBars enumerateObjectsUsingBlock:^(NSDictionary *category, NSUInteger idx, BOOL *stop) {
         UIColor *color = category[@"color"];
+        UIColor *selectedColor = category[@"selectedColor"];
         NSInteger value = [category[@"value"] integerValue];
         NSString *name = category[@"name"];
         
@@ -47,13 +71,15 @@
         rect.origin.y = offsetY;
         
         UIView *view = [[UIView alloc] initWithFrame:rect];
-        view.backgroundColor = color;
+        view.backgroundColor = self.isSelected ? selectedColor : color;
         
         [self.contentView addSubview:view];
 
         [accessibilityValue appendString:[NSString stringWithFormat:@"%@ %@ ", name, @(value)]];
     
         inset += 2.0;
+        
+        [self.barsWithColors addObject:@{ @"view" : view, @"color" : color, @"selectedColor" : selectedColor }];
     }];
     
     UILabel *axisLabel = [self axisLabelWithText:self.barName];

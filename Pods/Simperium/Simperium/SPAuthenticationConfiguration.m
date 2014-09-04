@@ -20,16 +20,17 @@ static SPAuthenticationConfiguration *gInstance = NULL;
 
 + (instancetype)sharedInstance
 {
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
             gInstance = [[self alloc] init];
-	});
+    });
     
     return(gInstance);
 }
 
-- (id)init {
-    if ((self = [super init])) {
+- (instancetype)init {
+    self = [super init];
+    if (self) {
         _regularFontName = @"HelveticaNeue";
         _mediumFontName = @"HelveticaNeue-Medium";
         

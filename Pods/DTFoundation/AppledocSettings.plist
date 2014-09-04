@@ -45,6 +45,7 @@
 		<string>*.m</string>
 		<string>Core/Externals</string>
 		<string>Demo</string>
+		<string>build</string>
 	</array>
 	<key>--index-desc</key>
 	<string>Readme.markdown</string>

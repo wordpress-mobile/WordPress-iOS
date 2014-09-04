@@ -1,6 +1,8 @@
 #import "WPFontManager.h"
 #import <CoreText/CoreText.h>
 
+static int ddLogLevel = LOG_LEVEL_INFO;
+
 @implementation WPFontManager
 
 static NSString * const kBundle = @"WordPress-iOS-Shared.bundle";
