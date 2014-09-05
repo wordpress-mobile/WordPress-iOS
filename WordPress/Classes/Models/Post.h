@@ -1,11 +1,9 @@
 #import <CoreData/CoreData.h>
-#import "WordPressAppDelegate.h"
-#import "Category.h"
-#import "Coordinate.h"
 #import "AbstractPost.h"
-#import "Media.h"
 
-@interface Post :  AbstractPost
+@class Coordinate;
+
+@interface Post : AbstractPost
 
 ///-------------------------------
 /// @name Specific Post properties

@@ -2,6 +2,8 @@
 #import "WPLegacyEditPostViewController_Internal.h"
 #import "ContextManager.h"
 #import "Post.h"
+#import "Coordinate.h"
+#import "Media.h"
 #import "WPTableViewCell.h"
 #import "BlogSelectorViewController.h"
 #import "WPBlogSelectorButton.h"
@@ -11,6 +13,7 @@
 #import "MediaService.h"
 #import "WPMediaUploader.h"
 #import "WPUploadStatusView.h"
+#import "WordPressAppDelegate.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
