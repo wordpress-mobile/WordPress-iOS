@@ -151,6 +151,20 @@
     }
 }
 
+- (void)deletePost:(Post *)post
+           success:(void (^)())success
+           failure:(void (^)(NSError *error))failure
+{
+    NSNumber *postID = post.postID;
+    if (postID) {
+        RemotePost *remotePost = [self remotePostWithPost:post];
+        id<PostServiceRemote> remote = [self remoteForBlog:post.blog];
+        [remote deletePost:remotePost forBlog:post.blog success:success failure:failure];
+    }
+    [self.managedObjectContext deleteObject:post];
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+}
+
 #pragma mark -
 
 - (void)initializeDraft:(AbstractPost *)post {

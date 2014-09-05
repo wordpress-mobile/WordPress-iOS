@@ -190,12 +190,14 @@
 - (void)deletePostAtIndexPath:(NSIndexPath *)indexPath
 {
     Post *post = [self.resultsController objectAtIndexPath:indexPath];
-    [post deletePostWithSuccess:nil failure:^(NSError *error) {
-		if([error code] == 403) {
-			[self promptForPassword];
-		} else {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+    [postService deletePost:post success:nil failure:^(NSError *error) {
+        if([error code] == 403) {
+            [self promptForPassword];
+        } else {
             [WPError showXMLRPCErrorAlert:error];
-		}
+        }
         [self syncItems];
     }];
 }

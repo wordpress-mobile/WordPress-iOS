@@ -119,6 +119,25 @@
                  }];
 }
 
+- (void)deletePost:(RemotePost *)post
+           forBlog:(Blog *)blog
+           success:(void (^)())success
+           failure:(void (^)(NSError *))failure
+{
+    NSParameterAssert([post.postID longLongValue] > 0);
+    NSNumber *postID = post.postID;
+    if (postID) {
+        NSArray *parameters = @[@"unused", postID, blog.username, blog.password];
+        [self.api callMethod:@"metaWeblog.deletePost"
+                  parameters:parameters
+                     success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                         if (success) success();
+                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                         if (failure) failure(error);
+                     }];
+    }
+}
+
 #pragma mark - Private methods
 
 - (NSArray *)remotePostsFromXMLRPCArray:(NSArray *)xmlrpcArray {

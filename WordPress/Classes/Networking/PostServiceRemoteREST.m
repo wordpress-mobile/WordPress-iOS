@@ -99,6 +99,25 @@
            }];
 }
 
+- (void)deletePost:(RemotePost *)post
+           forBlog:(Blog *)blog
+           success:(void (^)())success
+           failure:(void (^)(NSError *))failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", blog.dotComID, post.postID];
+    [self.api POST:path
+        parameters:nil
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               if (success) {
+                   success();
+               }
+           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
+}
+
 #pragma mark - Private methods
 
 - (NSArray *)remotePostsFromJSONArray:(NSArray *)jsonPosts {
