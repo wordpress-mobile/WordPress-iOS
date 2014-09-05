@@ -1,5 +1,7 @@
 #import "PostService.h"
 #import "Post.h"
+#import "Coordinate.h"
+#import "Category.h"
 #import "Page.h"
 #import "PostServiceRemote.h"
 #import "PostServiceRemoteREST.h"
@@ -11,6 +13,7 @@
 
 NSString * const PostServiceTypePost = @"post";
 NSString * const PostServiceTypePage = @"page";
+NSString * const PostServiceTypeAny = @"any";
 
 @interface PostService ()
 
@@ -188,6 +191,9 @@ NSString * const PostServiceTypePage = @"page";
     for (RemotePost *remotePost in posts) {
         AbstractPost *post = [self findPostWithID:remotePost.postID inBlog:blog];
         if (!post) {
+            if ([postType isEqualToString:PostServiceTypeAny]) {
+                postType = remotePost.type;
+            }
             if ([postType isEqualToString:PostServiceTypePage]) {
                 post = [self createPageForBlog:blog];
             } else {
@@ -198,7 +204,7 @@ NSString * const PostServiceTypePage = @"page";
         [postsToKeep addObject:post];
     }
 
-    if (purge) {
+    if (purge && ! [postType isEqualToString:PostServiceTypeAny]) {
         NSFetchRequest *request;
         if ([postType isEqualToString:PostServiceTypePage]) {
             request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Page class])];

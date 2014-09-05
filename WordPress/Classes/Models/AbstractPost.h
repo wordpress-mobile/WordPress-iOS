@@ -28,8 +28,4 @@
 - (BOOL)hasCategories;
 - (BOOL)hasTags;
 
-+ (NSString *const)remoteUniqueIdentifier;
-+ (void)mergeNewPosts:(NSArray *)newObjects forBlog:(Blog *)blog;
-- (void)updateFromDictionary:(NSDictionary *)postInfo;
-
 @end
