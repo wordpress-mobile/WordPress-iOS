@@ -9,6 +9,8 @@
 #import <WordPressCom-Analytics-iOS/WPAnalytics.h>
 #import "ContextManager.h"
 #import "Post.h"
+#import "Coordinate.h"
+#import "Media.h"
 #import "WPTableViewCell.h"
 #import "BlogSelectorViewController.h"
 #import "WPBlogSelectorButton.h"
@@ -19,7 +21,7 @@
 #import "WPMediaUploader.h"
 #import "WPButtonForNavigationBar.h"
 #import "WPUploadStatusView.h"
-
+#import "WordPressAppDelegate.h"
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";

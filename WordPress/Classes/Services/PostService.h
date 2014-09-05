@@ -5,6 +5,7 @@
 
 extern NSString * const PostServiceTypePost;
 extern NSString * const PostServiceTypePage;
+extern NSString * const PostServiceTypeAny;
 
 @interface PostService : NSObject <LocalCoreDataService>
 
