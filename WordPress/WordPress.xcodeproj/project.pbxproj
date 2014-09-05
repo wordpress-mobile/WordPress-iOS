@@ -864,6 +864,7 @@
 		A25EBD86156E330600530E3D /* WPTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewController.m; sourceTree = "<group>"; };
 		A2787D0119002AB1000D6CA6 /* HelpshiftConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = HelpshiftConfig.plist; sourceTree = "<group>"; };
 		A284044518BFE7F300D982B6 /* WordPress 15.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 15.xcdatamodel"; sourceTree = "<group>"; };
+		A28F6FD119B61ACA00AADE55 /* SwiftPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = SwiftPlayground.playground; sourceTree = "<group>"; };
 		A2DC5B181953451B009584C3 /* WPNUXHelpBadgeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNUXHelpBadgeLabel.h; sourceTree = "<group>"; };
 		A2DC5B191953451B009584C3 /* WPNUXHelpBadgeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPNUXHelpBadgeLabel.m; sourceTree = "<group>"; };
 		ACBAB5FC0E121C7300F38795 /* PostSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostSettingsViewController.h; sourceTree = "<group>"; };
@@ -1315,6 +1316,8 @@
 				93E5283D19A7741A003A1A9C /* WordPressTodayWidget */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				A28F6FD119B61ACA00AADE55 /* SwiftPlayground.playground */,
+				45B71DE4113EDAA100D0A33C /* Entitlements.plist */,
 				93FA0F0118E451A80007903B /* LICENSE */,
 				EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */,
 				BB0E95DCE0724D3696D9F222 /* Pods-WordPressTest.xcconfig */,
