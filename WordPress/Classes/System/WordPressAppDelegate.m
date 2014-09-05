@@ -65,6 +65,11 @@ NSInteger const kReaderTabIndex                                 = 0;
 NSInteger const kNotificationsTabIndex                          = 1;
 NSInteger const kMeTabIndex                                     = 2;
 
+static NSString* const kWPNewPostURLParamTitleKey = @"title";
+static NSString* const kWPNewPostURLParamContentKey = @"content";
+static NSString* const kWPNewPostURLParamTagsKey = @"tags";
+static NSString* const kWPNewPostURLParamImageKey = @"image";
+
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
 @property (nonatomic, strong, readwrite) UINavigationController         *navigationController;
@@ -439,7 +444,11 @@ NSInteger const kMeTabIndex                                     = 2;
     {
         NSString* value = [parameters objectForKey:key];
         
-        value = [value stringByAddingHTMLEntities];
+        if ([key isEqualToString:kWPNewPostURLParamContentKey]) {
+            value = [value stringByRemovingScripts];
+        } else if ([key isEqualToString:kWPNewPostURLParamTagsKey]) {
+            value = [value stringByRemovingScriptsAndStrippingHTML];
+        }
         
         [sanitizedDictionary setObject:value forKey:key];
     }
@@ -618,10 +627,10 @@ NSInteger const kMeTabIndex                                     = 2;
             [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
             editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlog];
         } else {
-            editPostViewController = [[WPPostViewController alloc] initWithTitle:[options stringForKey:@"title"]
-                                                                      andContent:[options stringForKey:@"content"]
-                                                                         andTags:[options stringForKey:@"tags"]
-                                                                        andImage:[options stringForKey:@"image"]];
+            editPostViewController = [[WPPostViewController alloc] initWithTitle:[options stringForKey:kWPNewPostURLParamTitleKey]
+                                                                      andContent:[options stringForKey:kWPNewPostURLParamContentKey]
+                                                                         andTags:[options stringForKey:kWPNewPostURLParamTagsKey]
+                                                                        andImage:[options stringForKey:kWPNewPostURLParamImageKey]];
         }
         navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
         navController.restorationIdentifier = WPEditorNavigationRestorationID;
@@ -632,10 +641,10 @@ NSInteger const kMeTabIndex                                     = 2;
             [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
             editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithDraftForLastUsedBlog];
         } else {
-            editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithTitle:[options stringForKey:@"title"]
-                                                                      andContent:[options stringForKey:@"content"]
-                                                                         andTags:[options stringForKey:@"tags"]
-                                                                        andImage:[options stringForKey:@"image"]];
+            editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithTitle:[options stringForKey:kWPNewPostURLParamTitleKey]
+                                                                      andContent:[options stringForKey:kWPNewPostURLParamContentKey]
+                                                                         andTags:[options stringForKey:kWPNewPostURLParamTagsKey]
+                                                                        andImage:[options stringForKey:kWPNewPostURLParamImageKey]];
         }
         navController = [[UINavigationController alloc] initWithRootViewController:editPostLegacyViewController];
         navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
