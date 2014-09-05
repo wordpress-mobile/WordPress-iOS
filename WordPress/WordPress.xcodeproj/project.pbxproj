@@ -242,6 +242,7 @@
 		B532D4EB199D4357006E4DF6 /* NoteBlockTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B532D4E7199D4357006E4DF6 /* NoteBlockTableViewCell.swift */; };
 		B532D4EC199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B532D4E8199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift */; };
 		B532D4EE199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B532D4ED199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift */; };
+		B53FDF6D19B8C336000723B6 /* UIScreen+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53FDF6C19B8C336000723B6 /* UIScreen+Helpers.swift */; };
 		B548458219A258890077E7A5 /* UIActionSheet+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B548458119A258890077E7A5 /* UIActionSheet+Helpers.m */; };
 		B55853F31962337500FAF6C3 /* NSScanner+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B55853F21962337500FAF6C3 /* NSScanner+Helpers.m */; };
 		B55853F719630D5400FAF6C3 /* NSAttributedString+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = B55853F619630D5400FAF6C3 /* NSAttributedString+Util.m */; };
@@ -423,7 +424,7 @@
 		03958061100D6CFC00850742 /* WPLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLabel.m; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* WordPressAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressAppDelegate.h; sourceTree = "<group>"; };
-		1D3623250D0F684500981E51 /* WordPressAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WordPressAppDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		1D3623250D0F684500981E51 /* WordPressAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WordPressAppDelegate.m; sourceTree = "<group>"; usesTabs = 0; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		1D6058910D05DD3D006BFB54 /* WordPress.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WordPress.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		28A0AAE50D9B0CCF005BE974 /* WordPress_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPress_Prefix.pch; sourceTree = "<group>"; };
 		28AD735F0D9D9599002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = Resources/MainWindow.xib; sourceTree = "<group>"; };
@@ -436,8 +437,8 @@
 		296526FD105810E100597FA3 /* NSString+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Helpers.m"; sourceTree = "<group>"; };
 		296890770FE971DC00770264 /* Security.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		2F970F720DF92274006BD934 /* PostsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostsViewController.h; sourceTree = "<group>"; };
-		2F970F730DF92274006BD934 /* PostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PostsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		2F970F720DF92274006BD934 /* PostsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostsViewController.h; sourceTree = "<group>"; usesTabs = 0; };
+		2F970F730DF92274006BD934 /* PostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PostsViewController.m; sourceTree = "<group>"; usesTabs = 0; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		2F970F970DF929B8006BD934 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		2FAE97040E33B21600CA8540 /* defaultPostTemplate_old.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = defaultPostTemplate_old.html; path = Resources/HTML/defaultPostTemplate_old.html; sourceTree = "<group>"; };
 		2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "xhtml1-transitional.dtd"; path = "Resources/HTML/xhtml1-transitional.dtd"; sourceTree = "<group>"; };
@@ -473,8 +474,8 @@
 		46F84613185AEB38009D0DA5 /* WPContentViewSubclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPContentViewSubclass.h; sourceTree = "<group>"; };
 		46F8714D1838C41600BC149B /* NSDate+StringFormatting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+StringFormatting.h"; sourceTree = "<group>"; };
 		46F8714E1838C41600BC149B /* NSDate+StringFormatting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+StringFormatting.m"; sourceTree = "<group>"; };
-		5903AE1A19B60A98009D5354 /* WPButtonForNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPButtonForNavigationBar.m; sourceTree = "<group>"; };
-		5903AE1C19B60AB9009D5354 /* WPButtonForNavigationBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPButtonForNavigationBar.h; sourceTree = "<group>"; };
+		5903AE1A19B60A98009D5354 /* WPButtonForNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPButtonForNavigationBar.m; sourceTree = "<group>"; usesTabs = 0; };
+		5903AE1C19B60AB9009D5354 /* WPButtonForNavigationBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPButtonForNavigationBar.h; sourceTree = "<group>"; usesTabs = 0; };
 		59379AA2191904C200B49251 /* AnimatedGIFImageSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimatedGIFImageSerialization.h; sourceTree = "<group>"; };
 		59379AA3191904C200B49251 /* AnimatedGIFImageSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimatedGIFImageSerialization.m; sourceTree = "<group>"; };
 		5D0077A5182AE9DF00F865DB /* ReaderMediaQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderMediaQueue.h; sourceTree = "<group>"; };
@@ -492,8 +493,8 @@
 		5D12FE1D1988243700378BD6 /* RemoteReaderTopic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteReaderTopic.m; path = "Remote Objects/RemoteReaderTopic.m"; sourceTree = "<group>"; };
 		5D12FE201988245B00378BD6 /* RemoteReaderSite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteReaderSite.h; path = "Remote Objects/RemoteReaderSite.h"; sourceTree = "<group>"; };
 		5D12FE211988245B00378BD6 /* RemoteReaderSite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteReaderSite.m; path = "Remote Objects/RemoteReaderSite.m"; sourceTree = "<group>"; };
-		5D146EB9189857ED0068FDC6 /* FeaturedImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeaturedImageViewController.h; sourceTree = "<group>"; };
-		5D146EBA189857ED0068FDC6 /* FeaturedImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeaturedImageViewController.m; sourceTree = "<group>"; };
+		5D146EB9189857ED0068FDC6 /* FeaturedImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeaturedImageViewController.h; sourceTree = "<group>"; usesTabs = 0; };
+		5D146EBA189857ED0068FDC6 /* FeaturedImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeaturedImageViewController.m; sourceTree = "<group>"; usesTabs = 0; };
 		5D1945601979C3D5003EDDAD /* WPRichTextImageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPRichTextImageControl.h; sourceTree = "<group>"; };
 		5D1945611979C3D5003EDDAD /* WPRichTextImageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPRichTextImageControl.m; sourceTree = "<group>"; };
 		5D1945631979E091003EDDAD /* WPRichTextVideoControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPRichTextVideoControl.h; sourceTree = "<group>"; };
@@ -554,7 +555,7 @@
 		5D5D0026187DA9D30027CEF6 /* CategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoriesViewController.m; sourceTree = "<group>"; };
 		5D62BAD518AA88210044E5F7 /* PageSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageSettingsViewController.h; sourceTree = "<group>"; };
 		5D62BAD618AA88210044E5F7 /* PageSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageSettingsViewController.m; sourceTree = "<group>"; };
-		5D62BAD818AAAE9B0044E5F7 /* PostSettingsViewController_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PostSettingsViewController_Internal.h; sourceTree = "<group>"; };
+		5D62BAD818AAAE9B0044E5F7 /* PostSettingsViewController_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PostSettingsViewController_Internal.h; sourceTree = "<group>"; usesTabs = 0; };
 		5D69DBC3165428CA00A2D1F7 /* n.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = n.caf; path = Resources/Sounds/n.caf; sourceTree = "<group>"; };
 		5D6CF8B4193BD96E0041D28F /* WordPress 18.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 18.xcdatamodel"; sourceTree = "<group>"; };
 		5D839AA6187F0D6B00811F4A /* PostFeaturedImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostFeaturedImageCell.h; sourceTree = "<group>"; };
@@ -601,10 +602,10 @@
 		5DA5BF3B18E32DCF005F11F9 /* WPLoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLoadingView.h; sourceTree = "<group>"; };
 		5DA5BF3C18E32DCF005F11F9 /* WPLoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLoadingView.m; sourceTree = "<group>"; };
 		5DA5BF4B18E331D8005F11F9 /* WordPress 16.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 16.xcdatamodel"; sourceTree = "<group>"; };
-		5DB3BA0318D0E7B600F3F3E9 /* WPPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPPickerView.h; sourceTree = "<group>"; };
-		5DB3BA0418D0E7B600F3F3E9 /* WPPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPPickerView.m; sourceTree = "<group>"; };
-		5DB3BA0618D11D8D00F3F3E9 /* PublishDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishDatePickerView.h; sourceTree = "<group>"; };
-		5DB3BA0718D11D8D00F3F3E9 /* PublishDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishDatePickerView.m; sourceTree = "<group>"; };
+		5DB3BA0318D0E7B600F3F3E9 /* WPPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPPickerView.h; sourceTree = "<group>"; usesTabs = 0; };
+		5DB3BA0418D0E7B600F3F3E9 /* WPPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPPickerView.m; sourceTree = "<group>"; usesTabs = 0; };
+		5DB3BA0618D11D8D00F3F3E9 /* PublishDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishDatePickerView.h; sourceTree = "<group>"; usesTabs = 0; };
+		5DB3BA0718D11D8D00F3F3E9 /* PublishDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishDatePickerView.m; sourceTree = "<group>"; usesTabs = 0; };
 		5DB4683918A2E718004A89A9 /* LocationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationService.h; sourceTree = "<group>"; };
 		5DB4683A18A2E718004A89A9 /* LocationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationService.m; sourceTree = "<group>"; };
 		5DB6D8F618F5DA6300956529 /* WordPress 17.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 17.xcdatamodel"; sourceTree = "<group>"; };
@@ -640,8 +641,8 @@
 		5DF94E261962B97D00359241 /* NewCommentsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewCommentsTableViewCell.m; sourceTree = "<group>"; };
 		5DF94E291962B97D00359241 /* NewPostTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewPostTableViewCell.h; sourceTree = "<group>"; };
 		5DF94E2A1962B97D00359241 /* NewPostTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPostTableViewCell.m; sourceTree = "<group>"; };
-		5DF94E2E1962B99C00359241 /* PostSettingsSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostSettingsSelectionViewController.h; sourceTree = "<group>"; };
-		5DF94E2F1962B99C00359241 /* PostSettingsSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostSettingsSelectionViewController.m; sourceTree = "<group>"; };
+		5DF94E2E1962B99C00359241 /* PostSettingsSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostSettingsSelectionViewController.h; sourceTree = "<group>"; usesTabs = 0; };
+		5DF94E2F1962B99C00359241 /* PostSettingsSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostSettingsSelectionViewController.m; sourceTree = "<group>"; usesTabs = 0; };
 		5DF94E311962B9D800359241 /* WPAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WPAlertView.xib; path = Resources/WPAlertView.xib; sourceTree = "<group>"; };
 		5DF94E321962B9D800359241 /* WPAlertViewSideBySide.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WPAlertViewSideBySide.xib; path = Resources/WPAlertViewSideBySide.xib; sourceTree = "<group>"; };
 		5DF94E361962BAA700359241 /* WPContentActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPContentActionView.h; sourceTree = "<group>"; };
@@ -673,9 +674,9 @@
 		74BB6F1919AE7B9400FB7829 /* WPLegacyEditPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLegacyEditPageViewController.m; sourceTree = "<group>"; };
 		74C1C305199170930077A7DC /* PostDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PostDetailViewController.xib; path = Resources/PostDetailViewController.xib; sourceTree = "<group>"; };
 		74C1C30D199170EA0077A7DC /* PostDetailViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "PostDetailViewController~ipad.xib"; path = "Resources-iPad/PostDetailViewController~ipad.xib"; sourceTree = "<group>"; };
-		74D5FFD319ACDF6700389E8F /* WPLegacyEditPostViewController_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLegacyEditPostViewController_Internal.h; sourceTree = "<group>"; };
-		74D5FFD419ACDF6700389E8F /* WPLegacyEditPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLegacyEditPostViewController.h; sourceTree = "<group>"; };
-		74D5FFD519ACDF6700389E8F /* WPLegacyEditPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLegacyEditPostViewController.m; sourceTree = "<group>"; };
+		74D5FFD319ACDF6700389E8F /* WPLegacyEditPostViewController_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLegacyEditPostViewController_Internal.h; sourceTree = "<group>"; usesTabs = 0; };
+		74D5FFD419ACDF6700389E8F /* WPLegacyEditPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLegacyEditPostViewController.h; sourceTree = "<group>"; usesTabs = 0; };
+		74D5FFD519ACDF6700389E8F /* WPLegacyEditPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLegacyEditPostViewController.m; sourceTree = "<group>"; usesTabs = 0; };
 		83043E54126FA31400EC9953 /* MessageUI.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		8333FE0D11FF6EF200A495C1 /* EditSiteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditSiteViewController.xib; path = Resources/EditSiteViewController.xib; sourceTree = "<group>"; };
 		833AF259114575A50016DE8F /* PostAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostAnnotation.h; sourceTree = "<group>"; };
@@ -727,8 +728,8 @@
 		8527B15717CE98C5001CBA2E /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		852CD8AB190E0BC4006C9AED /* WPMediaSizing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPMediaSizing.h; sourceTree = "<group>"; };
 		852CD8AC190E0BC4006C9AED /* WPMediaSizing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPMediaSizing.m; sourceTree = "<group>"; };
-		85435BE8190F837500E868D0 /* WPUploadStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPUploadStatusView.h; sourceTree = "<group>"; };
-		85435BE9190F837500E868D0 /* WPUploadStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPUploadStatusView.m; sourceTree = "<group>"; };
+		85435BE8190F837500E868D0 /* WPUploadStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPUploadStatusView.h; sourceTree = "<group>"; usesTabs = 0; };
+		85435BE9190F837500E868D0 /* WPUploadStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPUploadStatusView.m; sourceTree = "<group>"; usesTabs = 0; };
 		857610D418C0377300EDF406 /* StatsWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsWebViewController.h; sourceTree = "<group>"; };
 		857610D518C0377300EDF406 /* StatsWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsWebViewController.m; sourceTree = "<group>"; };
 		858DE40D1730384F000AC628 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
@@ -816,12 +817,12 @@
 		A28F6FD119B61ACA00AADE55 /* SwiftPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = SwiftPlayground.playground; sourceTree = "<group>"; };
 		A2DC5B181953451B009584C3 /* WPNUXHelpBadgeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNUXHelpBadgeLabel.h; sourceTree = "<group>"; };
 		A2DC5B191953451B009584C3 /* WPNUXHelpBadgeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPNUXHelpBadgeLabel.m; sourceTree = "<group>"; };
-		ACBAB5FC0E121C7300F38795 /* PostSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostSettingsViewController.h; sourceTree = "<group>"; };
-		ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostSettingsViewController.m; sourceTree = "<group>"; };
-		ACBAB6840E1247F700F38795 /* PostPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostPreviewViewController.h; sourceTree = "<group>"; };
-		ACBAB6850E1247F700F38795 /* PostPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostPreviewViewController.m; sourceTree = "<group>"; };
-		ACC156CA0E10E67600D6E1A0 /* WPPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPPostViewController.h; sourceTree = "<group>"; };
-		ACC156CB0E10E67600D6E1A0 /* WPPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPPostViewController.m; sourceTree = "<group>"; };
+		ACBAB5FC0E121C7300F38795 /* PostSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostSettingsViewController.h; sourceTree = "<group>"; usesTabs = 0; };
+		ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostSettingsViewController.m; sourceTree = "<group>"; usesTabs = 0; };
+		ACBAB6840E1247F700F38795 /* PostPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostPreviewViewController.h; sourceTree = "<group>"; usesTabs = 0; };
+		ACBAB6850E1247F700F38795 /* PostPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostPreviewViewController.m; sourceTree = "<group>"; usesTabs = 0; };
+		ACC156CA0E10E67600D6E1A0 /* WPPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPPostViewController.h; sourceTree = "<group>"; usesTabs = 0; };
+		ACC156CB0E10E67600D6E1A0 /* WPPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPPostViewController.m; sourceTree = "<group>"; usesTabs = 0; };
 		ADF544C0195A0F620092213D /* CustomHighlightButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomHighlightButton.h; sourceTree = "<group>"; };
 		ADF544C1195A0F620092213D /* CustomHighlightButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomHighlightButton.m; sourceTree = "<group>"; };
 		B5134AF419B2C4F200FADE8C /* ReplyBezierView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyBezierView.swift; sourceTree = "<group>"; };
@@ -832,6 +833,7 @@
 		B532D4E7199D4357006E4DF6 /* NoteBlockTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteBlockTableViewCell.swift; sourceTree = "<group>"; };
 		B532D4E8199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteBlockTextTableViewCell.swift; sourceTree = "<group>"; };
 		B532D4ED199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteBlockImageTableViewCell.swift; sourceTree = "<group>"; };
+		B53FDF6C19B8C336000723B6 /* UIScreen+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScreen+Helpers.swift"; sourceTree = "<group>"; };
 		B548458019A258890077E7A5 /* UIActionSheet+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Helpers.h"; sourceTree = "<group>"; };
 		B548458119A258890077E7A5 /* UIActionSheet+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+Helpers.m"; sourceTree = "<group>"; };
 		B55853F11962337500FAF6C3 /* NSScanner+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScanner+Helpers.h"; sourceTree = "<group>"; };
@@ -871,7 +873,6 @@
 		B5E23BDE19AD0D00000D6879 /* NoteTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteTableViewCell.xib; sourceTree = "<group>"; };
 		B5F015C9195DFD7600F6ECF2 /* WordPressActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressActivity.h; sourceTree = "<group>"; };
 		B5F015CA195DFD7600F6ECF2 /* WordPressActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressActivity.m; sourceTree = "<group>"; };
-		B5F823D719B69715004E0AA6 /* WordPress 22.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 22.xcdatamodel"; sourceTree = "<group>"; };
 		B5FD4520199D0C9A00286FBB /* WordPress-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WordPress-Bridging-Header.h"; sourceTree = "<group>"; };
 		B5FD453F199D0F2800286FBB /* NotificationDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationDetailsViewController.h; sourceTree = "<group>"; };
 		B5FD4540199D0F2800286FBB /* NotificationDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = NotificationDetailsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -997,7 +998,7 @@
 		E18165FC14E4428B006CE885 /* loader.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = loader.html; path = Resources/HTML/loader.html; sourceTree = "<group>"; };
 		E183BD7217621D85000B0822 /* WPCookie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPCookie.h; sourceTree = "<group>"; };
 		E183BD7317621D86000B0822 /* WPCookie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPCookie.m; sourceTree = "<group>"; };
-		E183EC9B16B1C01D00C2EB11 /* WPPostViewController_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPPostViewController_Internal.h; sourceTree = "<group>"; };
+		E183EC9B16B1C01D00C2EB11 /* WPPostViewController_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPPostViewController_Internal.h; sourceTree = "<group>"; usesTabs = 0; };
 		E1863F9A1355E0AB0031BBC8 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E1874BFE161C5DBC0058BDC4 /* WordPress 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 7.xcdatamodel"; sourceTree = "<group>"; };
 		E18D8AE21397C51A00000861 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -1262,6 +1263,7 @@
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
@@ -1973,6 +1975,7 @@
 				B587797519B799D800E57C5A /* UITableView+Helpers.swift */,
 				B587797619B799D800E57C5A /* UITableViewCell+Helpers.swift */,
 				B587797719B799D800E57C5A /* UIView+Helpers.swift */,
+				B53FDF6C19B8C336000723B6 /* UIScreen+Helpers.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2644,6 +2647,7 @@
 				B5AB733D19901F85005F5044 /* WPNoResultsView+AnimatedBox.m in Sources */,
 				C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */,
 				B532D4EC199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift in Sources */,
+				B53FDF6D19B8C336000723B6 /* UIScreen+Helpers.swift in Sources */,
 				CC701659185A7513007B37DB /* InlineComposeView.m in Sources */,
 				59379AA4191904C200B49251 /* AnimatedGIFImageSerialization.m in Sources */,
 				E149D65119349E69006A843D /* MediaServiceRemoteXMLRPC.m in Sources */,
@@ -3400,7 +3404,6 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				B5F823D719B69715004E0AA6 /* WordPress 22.xcdatamodel */,
 				5D229A78199AB74F00685123 /* WordPress 21.xcdatamodel */,
 				DA67DF58196D8F6A005B5BC8 /* WordPress 20.xcdatamodel */,
 				B5B63F3F19621A9F001601C3 /* WordPress 19.xcdatamodel */,
@@ -3423,7 +3426,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = B5F823D719B69715004E0AA6 /* WordPress 22.xcdatamodel */;
+			currentVersion = 5D229A78199AB74F00685123 /* WordPress 21.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";

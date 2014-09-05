@@ -18,6 +18,7 @@
 #import "Notification.h"
 #import "NotificationsManager.h"
 #import "NSString+Helpers.h"
+#import "NSString+HTML.h"
 #import "PocketAPI.h"
 #import "ReaderPost.h"
 #import "UIDevice+WordPressIdentifier.h"
@@ -63,6 +64,11 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
 NSInteger const kReaderTabIndex                                 = 0;
 NSInteger const kNotificationsTabIndex                          = 1;
 NSInteger const kMeTabIndex                                     = 2;
+
+static NSString* const kWPNewPostURLParamTitleKey = @"title";
+static NSString* const kWPNewPostURLParamContentKey = @"content";
+static NSString* const kWPNewPostURLParamTagsKey = @"tags";
+static NSString* const kWPNewPostURLParamImageKey = @"image";
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
@@ -212,13 +218,7 @@ NSInteger const kMeTabIndex                                     = 2;
         DDLogInfo(@"Application launched with URL: %@", URLString);
 
         if ([URLString rangeOfString:@"newpost"].length) {
-            // Create a new post from data shared by a third party application.
-            NSDictionary *params = [[url query] dictionaryFromQueryString];
-            DDLogInfo(@"App launched for new post with params: %@", params);
-            if ([params count]) {
-                [self showPostTabWithOptions:params];
-                returnValue = YES;
-            }
+            returnValue = [self handleNewPostRequestWithURL:url];
         } else if ([URLString rangeOfString:@"viewpost"].length) {
             // View the post specified by the shared blog ID and post ID
             NSDictionary *params = [[url query] dictionaryFromQueryString];
@@ -260,6 +260,10 @@ NSInteger const kMeTabIndex                                     = 2;
 				
 				[WPPostViewController setNewEditorAvailable:available];
 				[WPPostViewController setNewEditorEnabled:enabled];
+                
+                if (available) {
+                    [WPAnalytics track:WPAnalyticsStatEditorEnabledNewVersion];
+                }
 				
 				[self showVisualEditorAvailableInSettingsAnimation:available];
 			}
@@ -392,6 +396,68 @@ NSInteger const kMeTabIndex                                     = 2;
     [NotificationsManager handleActionWithIdentifier:identifier forRemoteNotification:remoteNotification];
     
     completionHandler();
+}
+
+#pragma mark - OpenURL helpers
+
+/**
+ *  @brief      Handle the a new post request by URL.
+ *  
+ *  @param      url     The URL with the request info.  Cannot be nil.
+ *
+ *  @return     YES if the request was handled, NO otherwise.
+ */
+- (BOOL)handleNewPostRequestWithURL:(NSURL*)url
+{
+    NSParameterAssert([url isKindOfClass:[NSURL class]]);
+    
+    BOOL handled = NO;
+    
+    // Create a new post from data shared by a third party application.
+    NSDictionary *params = [[url query] dictionaryFromQueryString];
+    DDLogInfo(@"App launched for new post with params: %@", params);
+    
+    params = [self sanitizeNewPostParameters:params];
+    
+    if ([params count]) {
+        [self showPostTabWithOptions:params];
+        handled = YES;
+    }
+	
+    return handled;
+}
+
+/**
+ *	@brief		Sanitizes a 'new post' parameters dictionary.
+ *	@details	Prevent HTML injections like the one in:
+ *				https://github.com/wordpress-mobile/WordPress-iOS-Editor/issues/211
+ *
+ *	@param		parameters		The new post parameters to sanitize.  Cannot be nil.
+ *
+ *  @returns    The sanitized dictionary.
+ */
+- (NSDictionary*)sanitizeNewPostParameters:(NSDictionary*)parameters
+{
+    NSParameterAssert([parameters isKindOfClass:[NSDictionary class]]);
+	
+    NSUInteger parametersCount = [parameters count];
+    
+    NSMutableDictionary* sanitizedDictionary = [[NSMutableDictionary alloc] initWithCapacity:parametersCount];
+    
+    for (NSString* key in [parameters allKeys])
+    {
+        NSString* value = [parameters objectForKey:key];
+        
+        if ([key isEqualToString:kWPNewPostURLParamContentKey]) {
+            value = [value stringByRemovingScripts];
+        } else if ([key isEqualToString:kWPNewPostURLParamTagsKey]) {
+            value = [value stringByRemovingScriptsAndStrippingHTML];
+        }
+        
+        [sanitizedDictionary setObject:value forKey:key];
+    }
+    
+    return [NSDictionary dictionaryWithDictionary:sanitizedDictionary];
 }
 
 #pragma mark - Custom methods
@@ -565,10 +631,10 @@ NSInteger const kMeTabIndex                                     = 2;
             [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
             editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlog];
         } else {
-            editPostViewController = [[WPPostViewController alloc] initWithTitle:[options stringForKey:@"title"]
-                                                                      andContent:[options stringForKey:@"content"]
-                                                                         andTags:[options stringForKey:@"tags"]
-                                                                        andImage:[options stringForKey:@"image"]];
+            editPostViewController = [[WPPostViewController alloc] initWithTitle:[options stringForKey:kWPNewPostURLParamTitleKey]
+                                                                      andContent:[options stringForKey:kWPNewPostURLParamContentKey]
+                                                                         andTags:[options stringForKey:kWPNewPostURLParamTagsKey]
+                                                                        andImage:[options stringForKey:kWPNewPostURLParamImageKey]];
         }
         navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
         navController.restorationIdentifier = WPEditorNavigationRestorationID;
@@ -579,10 +645,10 @@ NSInteger const kMeTabIndex                                     = 2;
             [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
             editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithDraftForLastUsedBlog];
         } else {
-            editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithTitle:[options stringForKey:@"title"]
-                                                                      andContent:[options stringForKey:@"content"]
-                                                                         andTags:[options stringForKey:@"tags"]
-                                                                        andImage:[options stringForKey:@"image"]];
+            editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithTitle:[options stringForKey:kWPNewPostURLParamTitleKey]
+                                                                      andContent:[options stringForKey:kWPNewPostURLParamContentKey]
+                                                                         andTags:[options stringForKey:kWPNewPostURLParamTagsKey]
+                                                                        andImage:[options stringForKey:kWPNewPostURLParamImageKey]];
         }
         navController = [[UINavigationController alloc] initWithRootViewController:editPostLegacyViewController];
         navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
@@ -989,7 +1055,7 @@ NSInteger const kMeTabIndex                                     = 2;
                                       bucketOverrides:bucketOverrides];
 
 #ifdef DEBUG
-	self.simperium.verboseLoggingEnabled = YES;
+	self.simperium.verboseLoggingEnabled = false;
 #endif
 }
 
