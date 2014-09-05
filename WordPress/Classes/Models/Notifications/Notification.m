@@ -458,6 +458,15 @@ NSString const *NotePostIdKey           = @"post_id";
 {
     if (!_date) {
         _date = [NSDate dateWithISO8601String:self.timestamp];
+        
+        //  Failasfe:
+        //  If, for whatever reason, the date cannot be parsed, make sure we always return a date.
+        //  Otherwise notification-grouping might fail
+        //
+        if (_date == nil) {
+            DDLogError(@"Error: couldn't parse date [%@] for notification with id [%@]", self.timestamp, self.simperiumKey);
+            _date = [NSDate date];
+        }
     }
     
     return self.date;
