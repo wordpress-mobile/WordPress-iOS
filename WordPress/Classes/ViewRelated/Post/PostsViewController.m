@@ -126,7 +126,7 @@
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
-    [postService loadMorePostsForBlog:self.blog success:success failure:failure];    
+    [postService loadMorePostsOfType:PostServiceTypePost forBlog:self.blog success:success failure:failure];
 }
 
 #pragma mark -
@@ -289,7 +289,7 @@
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
-    [postService syncPostsForBlog:self.blog success:success failure:failure];
+    [postService syncPostsOfType:PostServiceTypePost forBlog:self.blog success:success failure:failure];
 }
 
 - (Class)cellClass {

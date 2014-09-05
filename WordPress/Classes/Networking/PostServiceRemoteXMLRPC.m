@@ -21,18 +21,21 @@
     return self;
 }
 
-- (void)getPostsForBlog:(Blog *)blog
-                success:(void (^)(NSArray *))success
-                failure:(void (^)(NSError *))failure {
-    [self getPostsForBlog:blog options:nil success:success failure:failure];
+- (void)getPostsOfType:(NSString *)postType
+               forBlog:(Blog *)blog
+               success:(void (^)(NSArray *))success
+               failure:(void (^)(NSError *))failure {
+    [self getPostsOfType:postType forBlog:blog options:nil success:success failure:failure];
 }
 
-- (void)getPostsForBlog:(Blog *)blog
-                options:(NSDictionary *)options
-                success:(void (^)(NSArray *posts))success
-                failure:(void (^)(NSError *error))failure {
+- (void)getPostsOfType:(NSString *)postType
+               forBlog:(Blog *)blog
+               options:(NSDictionary *)options
+               success:(void (^)(NSArray *posts))success
+               failure:(void (^)(NSError *error))failure {
     NSDictionary *extraParameters = @{
                                       @"number": @40,
+                                      @"post_type": postType,
                                       };
     if (options) {
         NSMutableDictionary *mutableParameters = [extraParameters mutableCopy];
@@ -126,9 +129,9 @@
 {
     NSParameterAssert([post.postID longLongValue] > 0);
     NSNumber *postID = post.postID;
-    if (postID) {
-        NSArray *parameters = @[@"unused", postID, blog.username, blog.password];
-        [self.api callMethod:@"metaWeblog.deletePost"
+    if ([postID longLongValue] > 0) {
+        NSArray *parameters = [blog getXMLRPCArgsWithExtra:postID];
+        [self.api callMethod:@"wp.deletePost"
                   parameters:parameters
                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
                          if (success) success();
@@ -207,6 +210,7 @@
     BOOL existingPost = ([post.postID longLongValue] > 0);
     NSMutableDictionary *postParams = [NSMutableDictionary dictionary];
 
+    [postParams setValueIfNotNil:post.type forKey:@"post_type"];
     [postParams setValueIfNotNil:post.title forKey:@"title"];
     [postParams setValueIfNotNil:post.content forKey:@"description"];
     [postParams setValueIfNotNil:post.date forKey:@"date_created_gmt"];
@@ -249,6 +253,10 @@
 
     if (post.status == nil)
         post.status = @"publish";
+
+    if ([post.type isEqualToString:@"page"]) {
+        [postParams setObject:post.status forKey:@"page_status"];
+    }
     [postParams setObject:post.status forKey:@"post_status"];
 
     return [NSDictionary dictionaryWithDictionary:postParams];
