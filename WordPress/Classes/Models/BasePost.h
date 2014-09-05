@@ -53,7 +53,4 @@ typedef enum {
 - (NSString *)remoteStatusText;
 + (NSString *)titleForRemoteStatus:(NSNumber *)remoteStatus;
 
-#pragma mark     Data Management
-- (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-
 @end

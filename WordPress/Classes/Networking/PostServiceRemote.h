@@ -23,5 +23,9 @@
            success:(void (^)(RemotePost *post))success
            failure:(void (^)(NSError *error))failure;
 
+- (void)deletePost:(RemotePost *)post
+           forBlog:(Blog *)blog
+           success:(void (^)())success
+           failure:(void (^)(NSError *error))failure;
 
 @end
