@@ -24,12 +24,12 @@
 }
 
 - (void)setInvocation:(NSInvocation *)anInvocation;
+- (NSInvocation *)recordedInvocation;
 
 - (void)setRecordedAsClassMethod:(BOOL)flag;
 - (BOOL)recordedAsClassMethod;
 
 - (void)setIgnoreNonObjectArgs:(BOOL)flag;
-
 
 - (BOOL)matchesSelector:(SEL)aSelector;
 - (BOOL)matchesInvocation:(NSInvocation *)anInvocation;

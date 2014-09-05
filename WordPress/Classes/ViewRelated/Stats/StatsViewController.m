@@ -7,10 +7,14 @@
 #import "ContextManager.h"
 #import "WPStatsViewController_Private.h"
 #import "BlogService.h"
+#import <NotificationCenter/NotificationCenter.h>
+#import "SettingsViewController.h"
+#import "SFHFKeychainUtils.h"
+#import "Constants.h"
 
 static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
-@interface StatsViewController ()
+@interface StatsViewController () <UIActionSheetDelegate>
 @property (nonatomic, assign) BOOL showingJetpackLogin;
 @end
 
@@ -25,11 +29,26 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     return self;
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    if (self.presentingViewController == nil && NSClassFromString(@"NCWidgetController")) {
+        // Not being presented modally & widgets exist (iOS 8)
+        UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Today", @"") style:UIBarButtonItemStylePlain target:self action:@selector(makeSiteTodayWidgetSite:)];
+        self.navigationItem.rightBarButtonItem = settingsButton;
+    } else if (self.presentingViewController != nil) {
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonTapped:)];
+        self.navigationItem.rightBarButtonItem = doneButton;
+        self.title = self.blog.blogName;
+    }
+}
+
 - (void)setBlog:(Blog *)blog
 {
     _blog = blog;
     DDLogInfo(@"Loading Stats for the following blog: %@", [blog url]);
-
+    
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if (!appDelegate.connectionAvailable) {
         [self showNoResultsWithTitle:NSLocalizedString(@"No Connection", @"") message:NSLocalizedString(@"An active internet connection is required to view stats", @"")];
@@ -64,6 +83,34 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     }
 }
 
+- (void)saveSiteDetailsForTodayWidget
+{
+    // Safety check to ensure widgets are available (iOS 8+)
+    if (NSClassFromString(@"NCWidgetController") == nil) {
+        return;
+    }
+    
+    // Save the token and site ID to shared user defaults for use in the today widget
+    NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
+    [sharedDefaults setObject:self.siteTimeZone.name forKey:WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey];
+    [sharedDefaults setObject:self.siteID forKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
+    [sharedDefaults setObject:self.blog.blogName forKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
+    
+    NSError *error;
+    [SFHFKeychainUtils storeUsername:WPStatsTodayWidgetOAuth2TokenKeychainUsername
+                         andPassword:self.oauth2Token
+                      forServiceName:WPStatsTodayWidgetOAuth2TokenKeychainServiceName
+                         accessGroup:WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup
+                      updateExisting:YES
+                               error:&error];
+    if (error) {
+        DDLogError(@"Today Widget OAuth2Token error: %@", error);
+    } else {
+        // Turns the widget on for this site
+        [[NCWidgetController widgetController] setHasContent:YES forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
+    }
+}
+
 - (void)promptForJetpackCredentials
 {
     if (self.showingJetpackLogin) {
@@ -95,6 +142,78 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     StatsWebViewController *vc = [[StatsWebViewController alloc] init];
     vc.blog = self.blog;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (IBAction)makeSiteTodayWidgetSite:(id)sender
+{
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You can display a single site's stats in the iOS Today/Notification Center view.", @"Action sheet title for setting Today Widget site to the current one")
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:NSLocalizedString(@"Use this site", @""), nil];
+    if (IS_IPAD) {
+        [actionSheet showFromBarButtonItem:sender animated:YES];
+    } else {
+        [actionSheet showFromTabBar:self.tabBarController.tabBar];
+    }
+}
+
+- (IBAction)doneButtonTapped:(id)sender
+{
+    if (self.dismissBlock) {
+        self.dismissBlock();
+    }
+}
+
+#pragma mark - Public Class methods
+
++ (void)removeTodayWidgetConfiguration
+{
+    if (NSClassFromString(@"NCWidgetController") == nil) {
+        return;
+    }
+    
+    NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
+    [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey];
+    [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
+    [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
+    
+    [SFHFKeychainUtils deleteItemForUsername:WPStatsTodayWidgetOAuth2TokenKeychainUsername
+                              andServiceName:WPStatsTodayWidgetOAuth2TokenKeychainServiceName
+                                 accessGroup:WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup
+                                       error:nil];
+    
+    // Turns the widget off for this site
+    [[NCWidgetController widgetController] setHasContent:NO forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
+}
+
++ (void)hideTodayWidgetIfNotConfigured
+{
+    if (NSClassFromString(@"NCWidgetController") == nil) {
+        return;
+    }
+
+    NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
+    NSString *siteId = [sharedDefaults stringForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
+    NSString *oauth2Token = [SFHFKeychainUtils getPasswordForUsername:WPStatsTodayWidgetOAuth2TokenKeychainUsername
+                                                       andServiceName:WPStatsTodayWidgetOAuth2TokenKeychainServiceName
+                                                          accessGroup:WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup
+                                                                error:nil];
+    
+    if (siteId.length == 0 || oauth2Token.length == 0) {
+        [[NCWidgetController widgetController] setHasContent:NO forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
+    } else {
+        [[NCWidgetController widgetController] setHasContent:YES forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
+    }
+}
+
+#pragma mark - UIActionSheetDelegate methods
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        [self saveSiteDetailsForTodayWidget];
+    }
 }
 
 #pragma mark - Restoration

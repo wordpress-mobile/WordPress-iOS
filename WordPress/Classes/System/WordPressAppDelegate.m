@@ -160,6 +160,9 @@ NSInteger const kMeTabIndex                                     = 2;
         [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
         [self cleanUnusedMediaFileFromTmpDir];
     });
+    
+    // Configure Today Widget
+    [self determineIfTodayWidgetIsConfiguredAndShowAppropriately];
 
     CGRect bounds = [[UIScreen mainScreen] bounds];
     [self.window setFrame:bounds];
@@ -222,7 +225,7 @@ NSInteger const kMeTabIndex                                     = 2;
         } else if ([URLString rangeOfString:@"viewpost"].length) {
             // View the post specified by the shared blog ID and post ID
             NSDictionary *params = [[url query] dictionaryFromQueryString];
-
+            
             if (params.count) {
                 NSNumber *blogId = [params numberForKey:@"blogId"];
                 NSNumber *postId = [params numberForKey:@"postId"];
@@ -231,8 +234,34 @@ NSInteger const kMeTabIndex                                     = 2;
                 NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
                 [self.tabBarController setSelectedIndex:readerTabIndex];
                 [self.readerPostsViewController openPost:postId onBlog:blogId];
-
+                
                 returnValue = YES;
+            }
+        } else if ([URLString rangeOfString:@"viewstats"].length) {
+            // View the post specified by the shared blog ID and post ID
+            NSDictionary *params = [[url query] dictionaryFromQueryString];
+            
+            if (params.count) {
+                NSNumber *siteId = [params numberForKey:@"siteId"];
+                
+                BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+                Blog *blog = [blogService blogByBlogId:siteId];
+                
+                if (blog) {
+                    returnValue = YES;
+                    
+                    StatsViewController *statsViewController = [[StatsViewController alloc] init];
+                    statsViewController.blog = blog;
+                    statsViewController.dismissBlock = ^{
+                        [self.tabBarController dismissViewControllerAnimated:YES completion:nil];
+                    };
+                    
+                    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:statsViewController];
+                    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+                    navController.navigationBar.translucent = NO;
+                    [self.tabBarController presentViewController:navController animated:YES completion:nil];
+                }
+                
             }
         } else if ([URLString rangeOfString:@"debugging"].length) {
             NSDictionary *params = [[url query] dictionaryFromQueryString];
@@ -1255,7 +1284,20 @@ NSInteger const kMeTabIndex                                     = 2;
         // No need to check for welcome screen unless we are signing out
         [self logoutSimperiumAndResetNotifications];
         [self showWelcomeScreenIfNeededAnimated:NO];
+        [self removeTodayWidgetConfiguration];
     }
+}
+
+#pragma mark - Today Extension
+
+- (void)determineIfTodayWidgetIsConfiguredAndShowAppropriately
+{
+    [StatsViewController hideTodayWidgetIfNotConfigured];
+}
+
+- (void)removeTodayWidgetConfiguration
+{
+    [StatsViewController removeTodayWidgetConfiguration];
 }
 
 #pragma mark - GUI animations
