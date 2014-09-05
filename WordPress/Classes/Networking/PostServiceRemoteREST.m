@@ -21,21 +21,26 @@
     return self;
 }
 
-- (void)getPostsForBlog:(Blog *)blog
-                success:(void (^)(NSArray *))success
-                failure:(void (^)(NSError *))failure {
-    [self getPostsForBlog:blog options:nil success:success failure:failure];
+- (void)getPostsOfType:(NSString *)postType
+               forBlog:(Blog *)blog
+               success:(void (^)(NSArray *))success
+               failure:(void (^)(NSError *))failure
+{
+    [self getPostsOfType:postType forBlog:blog options:nil success:success failure:failure];
 }
 
-- (void)getPostsForBlog:(Blog *)blog
-                options:(NSDictionary *)options
-                success:(void (^)(NSArray *))success
-                failure:(void (^)(NSError *))failure {
+- (void)getPostsOfType:(NSString *)postType
+               forBlog:(Blog *)blog
+               options:(NSDictionary *)options
+               success:(void (^)(NSArray *))success
+               failure:(void (^)(NSError *))failure
+{
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts", blog.dotComID];
     NSDictionary *parameters = @{
                                  @"status": @"any",
                                  @"context": @"edit",
                                  @"number": @40,
+                                 @"type": postType,
                                  };
     if (options) {
         NSMutableDictionary *mutableParameters = [parameters mutableCopy];
@@ -197,9 +202,15 @@
         parameters[@"parent"] = post.parentID;
     }
 
-    parameters[@"categories"] = [post.categories valueForKey:@"categoryID"];
-    parameters[@"tags"] = post.tags ? post.tags : @[];
-    parameters[@"format"] = post.format ? post.format : @"standard";
+    if (post.categories) {
+        parameters[@"categories"] = [post.categories valueForKey:@"categoryID"];
+    }
+    if (post.tags) {
+        parameters[@"tags"] = post.tags;
+    }
+    if (post.format) {
+        parameters[@"format"] = post.format;
+    }
     parameters[@"featured_image"] = post.postThumbnailID ? [post.postThumbnailID stringValue] : @"";
     // TODO: metadata
     // Test what happens for nil and not present values
