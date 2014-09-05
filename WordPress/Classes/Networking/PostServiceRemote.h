@@ -4,14 +4,16 @@
 
 @protocol PostServiceRemote <NSObject>
 
-- (void)getPostsForBlog:(Blog *)blog
+- (void)getPostsOfType:(NSString *)postType
+               forBlog:(Blog *)blog
                 success:(void (^)(NSArray *posts))success
                 failure:(void (^)(NSError *error))failure;
 
-- (void)getPostsForBlog:(Blog *)blog
-                options:(NSDictionary *)options
-                success:(void (^)(NSArray *posts))success
-                failure:(void (^)(NSError *error))failure;
+- (void)getPostsOfType:(NSString *)postType
+               forBlog:(Blog *)blog
+               options:(NSDictionary *)options
+               success:(void (^)(NSArray *posts))success
+               failure:(void (^)(NSError *error))failure;
 
 - (void)createPost:(RemotePost *)post
            forBlog:(Blog *)blog

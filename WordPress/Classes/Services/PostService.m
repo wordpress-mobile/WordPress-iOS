@@ -9,6 +9,9 @@
 #import "CategoryService.h"
 #import "ContextManager.h"
 
+NSString * const PostServiceTypePost = @"post";
+NSString * const PostServiceTypePage = @"page";
+
 @interface PostService ()
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
@@ -44,6 +47,7 @@
     NSAssert(self.managedObjectContext == blog.managedObjectContext, @"Blog's context should be the the same as the service's");
     Page *page = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Page class]) inManagedObjectContext:self.managedObjectContext];
     page.blog = blog;
+    page.remoteStatus = AbstractPostRemoteStatusSync;
     return page;
 }
 
@@ -53,27 +57,32 @@
     return page;
 }
 
-- (void)syncPostsForBlog:(Blog *)blog
-                 success:(void (^)())success
-                 failure:(void (^)(NSError *))failure {
+- (void)syncPostsOfType:(NSString *)postType
+                forBlog:(Blog *)blog
+                success:(void (^)())success
+                failure:(void (^)(NSError *))failure
+{
     id<PostServiceRemote> remote = [self remoteForBlog:blog];
-    [remote getPostsForBlog:blog
-                    success:^(NSArray *posts) {
-                        [self.managedObjectContext performBlock:^{
-                            [self mergePosts:posts forBlog:blog purgeExisting:YES completionHandler:success];
-                        }];
-                    } failure:^(NSError *error) {
-                        if (failure) {
-                            [self.managedObjectContext performBlock:^{
-                                failure(error);
-                            }];
-                        }
-                    }];
+    [remote getPostsOfType:postType
+                   forBlog:blog
+                   success:^(NSArray *posts) {
+                       [self.managedObjectContext performBlock:^{
+                           [self mergePosts:posts ofType:postType forBlog:blog purgeExisting:YES completionHandler:success];
+                       }];
+                   } failure:^(NSError *error) {
+                       if (failure) {
+                           [self.managedObjectContext performBlock:^{
+                               failure(error);
+                           }];
+                       }
+                   }];
 }
 
-- (void)loadMorePostsForBlog:(Blog *)blog
-                     success:(void (^)())success
-                     failure:(void (^)(NSError *))failure {
+- (void)loadMorePostsOfType:(NSString *)postType
+                    forBlog:(Blog *)blog
+                    success:(void (^)())success
+                    failure:(void (^)(NSError *))failure
+{
     id<PostServiceRemote> remote = [self remoteForBlog:blog];
     NSMutableDictionary *options = [NSMutableDictionary dictionary];
     if ([remote isKindOfClass:[PostServiceRemoteREST class]]) {
@@ -89,9 +98,11 @@
         postCount += 40;
         options[@"number"] = @(postCount);
     }
-    [remote getPostsForBlog:blog options:options success:^(NSArray *posts) {
+    [remote getPostsOfType:postType
+                   forBlog:blog
+                   success:^(NSArray *posts) {
         [self.managedObjectContext performBlock:^{
-            [self mergePosts:posts forBlog:blog purgeExisting:NO completionHandler:success];
+            [self mergePosts:posts ofType:postType forBlog:blog purgeExisting:NO completionHandler:success];
         }];
     } failure:^(NSError *error) {
         if (failure) {
@@ -102,7 +113,7 @@
     }];
 }
 
-- (void)uploadPost:(Post *)post
+- (void)uploadPost:(AbstractPost *)post
            success:(void (^)())success
            failure:(void (^)(NSError *error))failure
 {
@@ -151,12 +162,12 @@
     }
 }
 
-- (void)deletePost:(Post *)post
+- (void)deletePost:(AbstractPost *)post
            success:(void (^)())success
            failure:(void (^)(NSError *error))failure
 {
     NSNumber *postID = post.postID;
-    if (postID) {
+    if ([postID longLongValue] > 0) {
         RemotePost *remotePost = [self remotePostWithPost:post];
         id<PostServiceRemote> remote = [self remoteForBlog:post.blog];
         [remote deletePost:remotePost forBlog:post.blog success:success failure:failure];
@@ -172,21 +183,32 @@
     post.status = @"publish";
 }
 
-- (void)mergePosts:(NSArray *)posts forBlog:(Blog *)blog purgeExisting:(BOOL)purge completionHandler:(void (^)(void))completion {
+- (void)mergePosts:(NSArray *)posts ofType:(NSString *)postType forBlog:(Blog *)blog purgeExisting:(BOOL)purge completionHandler:(void (^)(void))completion {
     NSMutableArray *postsToKeep = [NSMutableArray array];
     for (RemotePost *remotePost in posts) {
-        Post *post = [self findPostWithID:remotePost.postID inBlog:blog];
+        AbstractPost *post = [self findPostWithID:remotePost.postID inBlog:blog];
         if (!post) {
-            post = [self createPostForBlog:blog];
+            if ([postType isEqualToString:PostServiceTypePage]) {
+                post = [self createPageForBlog:blog];
+            } else {
+                post = [self createPostForBlog:blog];
+            }
         }
         [self updatePost:post withRemotePost:remotePost];
         [postsToKeep addObject:post];
     }
 
     if (purge) {
-        NSSet *existingPosts = [blog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL)", @(AbstractPostRemoteStatusSync)]];
+        NSFetchRequest *request;
+        if ([postType isEqualToString:PostServiceTypePage]) {
+            request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Page class])];
+        } else {
+            request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Post class])];
+        }
+        request.predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL) AND (blog = %@)", @(AbstractPostRemoteStatusSync), blog];
+        NSArray *existingPosts = [self.managedObjectContext executeFetchRequest:request error:nil];
         if (existingPosts.count > 0) {
-            for (Post *post in existingPosts) {
+            for (AbstractPost *post in existingPosts) {
                 if(![postsToKeep containsObject:post]) {
                     DDLogInfo(@"Deleting Post: %@", post);
                     [self.managedObjectContext deleteObject:post];
@@ -202,12 +224,12 @@
     }
 }
 
-- (Post *)findPostWithID:(NSNumber *)postID inBlog:(Blog *)blog {
+- (AbstractPost *)findPostWithID:(NSNumber *)postID inBlog:(Blog *)blog {
     NSSet *posts = [blog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"original = NULL AND postID = %@", postID]];
     return [posts anyObject];
 }
 
-- (void)updatePost:(Post *)post withRemotePost:(RemotePost *)remotePost {
+- (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost {
     post.postID = remotePost.postID;
     post.author = remotePost.authorDisplayName;
     post.date_created_gmt = remotePost.date;
@@ -216,31 +238,37 @@
     post.content = remotePost.content;
     post.status = remotePost.status;
     post.password = remotePost.password;
-    post.postFormat = remotePost.format;
-    post.tags = [remotePost.tags componentsJoinedByString:@","];
-    [self updatePost:post withRemoteCategories:remotePost.categories];
+    post.post_thumbnail = remotePost.postThumbnailID;
+    if ([post isKindOfClass:[Page class]]) {
+        Page *pagePost = (Page *)post;
+        pagePost.parentID = remotePost.parentID;
+    } else if ([post isKindOfClass:[Post class]]) {
+        Post *postPost = (Post *)post;
+        postPost.postFormat = remotePost.format;
+        postPost.tags = [remotePost.tags componentsJoinedByString:@","];
+        [self updatePost:postPost withRemoteCategories:remotePost.categories];
 
-    if (remotePost.metadata) {
-        NSDictionary *latitudeDictionary = [self dictionaryWithKey:@"geo_latitude" inMetadata:remotePost.metadata];
-        NSDictionary *longitudeDictionary = [self dictionaryWithKey:@"geo_longitude" inMetadata:remotePost.metadata];
-        NSDictionary *geoPublicDictionary = [self dictionaryWithKey:@"geo_public" inMetadata:remotePost.metadata];
-        if (latitudeDictionary && longitudeDictionary) {
-            NSNumber *latitude = [latitudeDictionary numberForKey:@"value"];
-            NSNumber *longitude = [longitudeDictionary numberForKey:@"value"];
-            CLLocationCoordinate2D coord;
-			coord.latitude = [latitude doubleValue];
-			coord.longitude = [longitude doubleValue];
-			Coordinate *c = [[Coordinate alloc] initWithCoordinate:coord];
-            post.geolocation = c;
-            post.latitudeID = [latitudeDictionary stringForKey:@"id"];
-            post.longitudeID = [latitudeDictionary stringForKey:@"id"];
-            post.publicID = [geoPublicDictionary stringForKey:@"id"];
+        if (remotePost.metadata) {
+            NSDictionary *latitudeDictionary = [self dictionaryWithKey:@"geo_latitude" inMetadata:remotePost.metadata];
+            NSDictionary *longitudeDictionary = [self dictionaryWithKey:@"geo_longitude" inMetadata:remotePost.metadata];
+            NSDictionary *geoPublicDictionary = [self dictionaryWithKey:@"geo_public" inMetadata:remotePost.metadata];
+            if (latitudeDictionary && longitudeDictionary) {
+                NSNumber *latitude = [latitudeDictionary numberForKey:@"value"];
+                NSNumber *longitude = [longitudeDictionary numberForKey:@"value"];
+                CLLocationCoordinate2D coord;
+                coord.latitude = [latitude doubleValue];
+                coord.longitude = [longitude doubleValue];
+                Coordinate *c = [[Coordinate alloc] initWithCoordinate:coord];
+                postPost.geolocation = c;
+                postPost.latitudeID = [latitudeDictionary stringForKey:@"id"];
+                postPost.longitudeID = [latitudeDictionary stringForKey:@"id"];
+                postPost.publicID = [geoPublicDictionary stringForKey:@"id"];
+            }
         }
     }
-    post.post_thumbnail = remotePost.postThumbnailID;
 }
 
-- (RemotePost *)remotePostWithPost:(Post *)post
+- (RemotePost *)remotePostWithPost:(AbstractPost *)post
 {
     RemotePost *remotePost = [RemotePost new];
     remotePost.postID = post.postID;
@@ -248,13 +276,21 @@
     remotePost.title = post.postTitle;
     remotePost.content = post.content;
     remotePost.status = post.status;
-    remotePost.format = post.postFormat;
-    remotePost.tags = [post.tags componentsSeparatedByString:@","];
-    remotePost.categories = [self remoteCategoriesForPost:post];
     remotePost.postThumbnailID = post.post_thumbnail;
+    remotePost.password = post.password;
     remotePost.type = @"post";
-
-    // TODO: metadata/geolocation
+    if ([post isKindOfClass:[Page class]]) {
+        Page *pagePost = (Page *)post;
+        remotePost.parentID = pagePost.parentID;
+        remotePost.type = @"page";
+    }
+    if ([post isKindOfClass:[Post class]]) {
+        Post *postPost = (Post *)post;
+        remotePost.format = postPost.postFormat;
+        remotePost.tags = [postPost.tags componentsSeparatedByString:@","];
+        remotePost.categories = [self remoteCategoriesForPost:postPost];
+        // TODO: metadata/geolocation
+    }
 
     return remotePost;
 }
