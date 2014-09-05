@@ -470,7 +470,12 @@
         featuredImage = [self searchContentForImageToFeature:[dict stringForKey:@"content"]];
     }
 
-    return [self sanitizeFeaturedImageString:featuredImage];
+    featuredImage = [self sanitizeFeaturedImageString:featuredImage];
+    if ([featuredImage length] == 0) {
+        return nil;
+    }
+    
+    return featuredImage;
 }
 
 /**
