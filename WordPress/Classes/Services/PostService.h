@@ -20,4 +20,9 @@
            success:(void (^)())success
            failure:(void (^)(NSError *error))failure;
 
+
+- (void)deletePost:(Post *)post
+           success:(void (^)())success
+           failure:(void (^)(NSError *error))failure;
+
 @end
