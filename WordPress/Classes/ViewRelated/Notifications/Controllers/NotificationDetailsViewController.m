@@ -187,6 +187,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     // Attach the Reply component only if the noficiation has a comment, and it can be replied-to
     NotificationBlockGroup *group   = [self.note blockGroupOfType:NoteBlockGroupTypeComment];
     NotificationBlock *block        = [group blockOfType:NoteBlockTypeComment];
+    
     if (![block actionForKey:NoteActionReplyKey]) {
         return;
     }
@@ -201,16 +202,10 @@ static CGFloat NotificationSectionSeparator     = 10;
     };
     self.replyTextView              = replyTextView;
     
-    // Attach!
-    [self.view addSubview:replyTextView];
-    
-    // Adjust position + use an internal ReplaceTextView instance as inputAccessoryView
-    [replyTextView alignAtBottomOfSuperview];
-    
-    // Setup the Table Insets
-    UIEdgeInsets tableViewInsets    = self.tableView.contentInset;
-    tableViewInsets.bottom          += CGRectGetHeight(replyTextView.frame);
-    self.tableView.contentInset     = tableViewInsets;
+    // Attach the ReplyTextView at the very bottom
+    [self.view addSubview:self.replyTextView];
+    [self.view pinSubviewAtBottom:self.replyTextView];
+    [self.view pinSubview:self.tableView aboveSubview:self.replyTextView];
 }
 
 
