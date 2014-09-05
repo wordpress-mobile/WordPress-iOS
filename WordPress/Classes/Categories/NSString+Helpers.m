@@ -108,7 +108,7 @@ static NSString *const Ellipsis =  @"\u2026";
     return [self stringByReplacingOccurrencesOfString:@"<[^>]+>" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, self.length)];
 }
 
-- (NSString *)stringByRemovingScriptsAndStrippingHTML
+- (NSString *)stringByRemovingScripts
 {
     // Let's Cache the RegEx
     static NSRegularExpression *regex;
@@ -117,7 +117,7 @@ static NSString *const Ellipsis =  @"\u2026";
         NSString *pattern = @"<script[^>]*>[\\w\\W]*</script>";
         regex = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:nil];
     });
-
+    
     // Cleanup
     NSRange range = NSMakeRange(0, [self length]);
     NSMutableString *mString = [self mutableCopy];
@@ -125,7 +125,12 @@ static NSString *const Ellipsis =  @"\u2026";
     for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
         [mString replaceCharactersInRange:match.range withString:@""];
     }
-    return [mString stringByStrippingHTML];
+    return mString;
+}
+
+- (NSString *)stringByRemovingScriptsAndStrippingHTML
+{
+    return [[self stringByRemovingScripts] stringByStrippingHTML];
 }
 
 // A method to truncate a string at a predetermined length and append ellipsis to the end
