@@ -6,6 +6,7 @@ extern NSString * const ReaderTopicDidChangeNotification;
 extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 
 @class ReaderTopic;
+@class ReaderSite;
 
 @interface ReaderTopicService : NSObject <LocalCoreDataService>
 
@@ -69,5 +70,13 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  @return A `ReaderTopic` instance or nil.
  */
 - (ReaderTopic *)topicForFollowedSites;
+
+/**
+ Fetch the topic for a single followed site.
+
+ @param site The ReaderSite of the topic to return.
+ @return A `ReaderTopic` instance.
+ */
+- (ReaderTopic *)topicForSite:(ReaderSite *)site;
 
 @end
