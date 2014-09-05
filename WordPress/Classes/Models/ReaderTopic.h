@@ -2,8 +2,10 @@
 
 extern NSString *const ReaderTopicTypeList;
 extern NSString *const ReaderTopicTypeTag;
+extern NSString *const ReaderTopicTypeSite;
 
 @class WPAccount;
+@class ReaderSite;
 
 @interface ReaderTopic : NSManagedObject
 

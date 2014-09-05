@@ -7,6 +7,7 @@
 #import "RemoteReaderTopic.h"
 #import "WPAccount.h"
 #import "WordPressComApi.h"
+#import "ReaderSite.h"
 
 NSString * const ReaderTopicDidChangeViaUserInteractionNotification = @"ReaderTopicDidChangeViaUserInteractionNotification";
 NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotification";
@@ -296,6 +297,35 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     return (ReaderTopic *)[results firstObject];
 }
 
+- (ReaderTopic *)topicForSite:(ReaderSite *)site {
+    NSString *path = [NSString stringWithFormat:@"%@sites/%@/posts/", WordPressRestApiEndpointURL, site.siteID];
+
+    NSError *error;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderTopic"];
+    request.predicate = [NSPredicate predicateWithFormat:@"path LIKE %@", path];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"Failed to fetch topic for site: %@", error);
+        return nil;
+    }
+
+    ReaderTopic *topic = nil;
+    if (results.count > 0) {
+        topic = (ReaderTopic *)[results firstObject];
+    } else {
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"ReaderTopic"
+                                                  inManagedObjectContext:self.managedObjectContext];
+        topic = [[ReaderTopic alloc] initWithEntity:entity
+                                  insertIntoManagedObjectContext:self.managedObjectContext];
+    }
+
+    topic.topicID = site.siteID;
+    topic.type = ReaderTopicTypeSite;
+    topic.title = site.name;
+    topic.path = path;
+
+    return topic;
+}
 
 #pragma mark - Private Methods
 
@@ -431,7 +461,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
     if ([currentTopics count] > 0) {
         for (ReaderTopic *topic in currentTopics) {
-            if (![topicsToKeep containsObject:topic]) {
+            if (topic.type != ReaderTopicTypeSite && ![topicsToKeep containsObject:topic]) {
                 DDLogInfo(@"Deleting ReaderTopic: %@", topic);
                 if ([topic isEqual:self.currentTopic]) {
                     self.currentTopic = nil;

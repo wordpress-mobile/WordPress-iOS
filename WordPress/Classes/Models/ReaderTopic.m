@@ -1,7 +1,9 @@
 #import "ReaderTopic.h"
+#import "ReaderSite.h"
 
 NSString *const ReaderTopicTypeList = @"list";
 NSString *const ReaderTopicTypeTag = @"tag";
+NSString *const ReaderTopicTypeSite = @"site";
 
 @implementation ReaderTopic
 
