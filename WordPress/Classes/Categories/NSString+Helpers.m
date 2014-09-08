@@ -125,7 +125,51 @@ static NSString *const Ellipsis =  @"\u2026";
     for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
         [mString replaceCharactersInRange:match.range withString:@""];
     }
+    
+    [self removeHTMLEventAttributesFrom:mString];
+    
     return mString;
+}
+
+/**
+ *  @brief      Removes on* event attributes inside HTML tags from the string.
+ *  @details    You probably want to call stringByRemovingScripts instead of calling this method
+ *              directly.
+ *
+ *  @param      string      The string to remove the event attributes from.
+ */
+- (void)removeHTMLEventAttributesFrom:(NSMutableString*)string
+{
+    // Event attributes listed here: http://www.w3schools.com/tags/ref_eventattributes.asp
+    // Finds all HTML event attributes inside tags.
+    //
+    // The following regex matches "<* on*=*>", and returns the range of "on*=*"
+    //
+    static NSString* const eventAttributeRegexPattern = @"(?:<[^>]+? )(on[^=]*=[^>]*)(?:>)";
+    
+    NSRegularExpression *eventAttributeRegex = [NSRegularExpression regularExpressionWithPattern:eventAttributeRegexPattern
+                                                                                         options:NSRegularExpressionCaseInsensitive
+                                                                                           error:nil];
+    
+    NSRange range = NSMakeRange(0, [self length]);
+    NSMutableString *mString = [self mutableCopy];
+    NSArray *matches = [eventAttributeRegex matchesInString:mString
+                                                    options:NSRegularExpressionCaseInsensitive
+                                                      range:range];
+    for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
+        
+        // We're using an assert + conditional block here, since we should always have two ranges
+        // here, but it's fairly easy with regex expressions to make mistakes, so we wanna make sure
+        // we don't crash in release builds.
+        //
+        NSAssert([match numberOfRanges] == 2,
+                 @"The regex used should be returning two ranges exactly.");
+        if ([match numberOfRanges] > 1) {
+            NSRange capturingGroupRange = [match rangeAtIndex:1];
+            
+            [mString replaceCharactersInRange:capturingGroupRange withString:@""];
+        }
+    }
 }
 
 - (NSString *)stringByRemovingScriptsAndStrippingHTML
