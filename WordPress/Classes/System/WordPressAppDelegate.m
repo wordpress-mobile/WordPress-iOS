@@ -445,7 +445,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
         NSString* value = [parameters objectForKey:key];
         
         if ([key isEqualToString:kWPNewPostURLParamContentKey]) {
-            value = [value stringByRemovingScripts];
+            value = [value stringByStrippingHTML];
         } else if ([key isEqualToString:kWPNewPostURLParamTagsKey]) {
             value = [value stringByStrippingHTML];
         }
