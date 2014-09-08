@@ -82,21 +82,6 @@ typedef NS_ENUM(NSInteger, ZSSRichTextEditorToolbar) {
 - (void)insertImage:(NSString *)url alt:(NSString *)alt;
 
 /**
- *  Shows the insert link dialog with optional inputs
- *
- *  @param url   The URL for the link
- */
-- (void)showInsertLinkDialogWithLink:(NSString *)url;
-
-/**
- *  Inserts a link
- *
- *  @param url The URL for the link
- *  @param title The title for the link
- */
-- (void)insertLink:(NSString *)url;
-
-/**
  *  Dismisses the current AlertView
  */
 - (void)dismissAlertView;

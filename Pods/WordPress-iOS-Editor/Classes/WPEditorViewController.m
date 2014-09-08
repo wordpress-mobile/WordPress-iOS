@@ -1,11 +1,12 @@
 #import "WPEditorViewController.h"
 #import "WPEditorViewController_Internal.h"
+#import <MobileCoreServices/MobileCoreServices.h>
+#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
 #import <UIKit/UIKit.h>
 #import <WordPressCom-Analytics-iOS/WPAnalytics.h>
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
 #import <WordPress-iOS-Shared/WPTableViewCell.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
-#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
 
 #import "HRColorUtil.h"
 #import "UIWebView+GUIFixes.h"
@@ -1476,37 +1477,60 @@ typedef enum
 	if ([self.editorView isSelectionALink]) {
 		[self removeLink];
 	} else {
-		[self showInsertLinkDialogWithLink:self.editorView.selectedLinkURL];
+		[self showInsertLinkDialogWithLink:self.editorView.selectedLinkURL
+									 title:[self.editorView selectedText]];
 		[WPAnalytics track:WPAnalyticsStatEditorTappedLink];
 	}
 }
 
 - (void)showInsertLinkDialogWithLink:(NSString*)url
+							   title:(NSString*)title
 {
-    // Insert Button Title
-	NSString *insertButtonTitle = url ? NSLocalizedString(@"Update", nil) : NSLocalizedString(@"Insert", nil);
-    
-    self.alertView = [[UIAlertView alloc] initWithTitle:insertButtonTitle
+	BOOL isInsertingNewLink = (url == nil);
+	
+	if (!url) {
+		NSURL* pasteboardUrl = [self urlFromPasteboard];
+		
+		url = [pasteboardUrl absoluteString];
+	}
+	
+	NSString *insertButtonTitle = isInsertingNewLink ? NSLocalizedString(@"Insert", nil) : NSLocalizedString(@"Update", nil);
+	NSString *removeButtonTitle = isInsertingNewLink ? nil : NSLocalizedString(@"Remove Link", nil);
+	
+	self.alertView = [[UIAlertView alloc] initWithTitle:insertButtonTitle
 												message:nil
 											   delegate:self
 									  cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-									  otherButtonTitles:insertButtonTitle, nil];
-    self.alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+									  otherButtonTitles:insertButtonTitle, removeButtonTitle, nil];
+	
+	// The reason why we're setting a login & password style, is that it's the only style that
+	// supports having two edit fields.  We'll customize the password field to behave as we want.
+	//
+    self.alertView.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
     self.alertView.tag = WPLinkAlertViewTag;
-    UITextField *linkURL = [self.alertView textFieldAtIndex:0];
-    linkURL.placeholder = NSLocalizedString(@"URL (required)", nil);
+	
+	UITextField *linkURL = [self.alertView textFieldAtIndex:0];
+	
+	linkURL.clearButtonMode = UITextFieldViewModeAlways;
+	linkURL.placeholder = NSLocalizedString(@"URL", nil);
+	
     if (url) {
         linkURL.text = url;
     }
-
-    // Picker Button
-    UIButton *am = [UIButton buttonWithType:UIButtonTypeCustom];
-    am.frame = CGRectMake(0, 0, 25, 25);
-    [am setImage:[UIImage imageNamed:@"ZSSpicker.png"] forState:UIControlStateNormal];
-    [am addTarget:self action:@selector(showInsertURLAlternatePicker) forControlEvents:UIControlEventTouchUpInside];
-    linkURL.rightView = am;
-    linkURL.rightViewMode = UITextFieldViewModeAlways;
-    
+	
+	UITextField *linkNameTextField = [self.alertView textFieldAtIndex:1];
+	
+	linkNameTextField.clearButtonMode = UITextFieldViewModeAlways;
+	linkNameTextField.placeholder = NSLocalizedString(@"Link Name", nil);
+	linkNameTextField.secureTextEntry = NO;
+	linkNameTextField.autocapitalizationType = UITextAutocapitalizationTypeSentences;
+	linkNameTextField.autocorrectionType = UITextAutocorrectionTypeDefault;
+	linkNameTextField.spellCheckingType = UITextSpellCheckingTypeDefault;
+	
+	if (title) {
+		linkNameTextField.text = title;
+	}
+	
     __weak __typeof(self) weakSelf = self;
 
 	self.alertView.willPresentBlock = ^(UIAlertView* alertView) {
@@ -1516,15 +1540,24 @@ typedef enum
 	
 	self.alertView.tapBlock = ^(UIAlertView *alertView, NSInteger buttonIndex) {
 		[weakSelf.editorView focus];
+		[weakSelf.editorView restoreSelection];
 		
 		if (alertView.tag == WPLinkAlertViewTag) {
 			if (buttonIndex == 1) {
-				UITextField *linkURL = [alertView textFieldAtIndex:0];
-				if (!url) {
-					[weakSelf insertLink:linkURL.text];
-				} else {
-					[weakSelf updateLink:linkURL.text];
+				NSString *linkURL = [alertView textFieldAtIndex:0].text;
+				NSString *linkTitle = [alertView textFieldAtIndex:1].text;
+				
+				if ([linkTitle length] == 0) {
+					linkTitle = linkURL;
 				}
+				
+				if (isInsertingNewLink) {
+					[weakSelf insertLink:linkURL title:linkTitle];
+				} else {
+					[weakSelf updateLink:linkURL title:linkTitle];
+				}
+			} else if (buttonIndex == 2) {
+				[weakSelf removeLink];
 			}
 		}
     };
@@ -1543,13 +1576,15 @@ typedef enum
 }
 
 - (void)insertLink:(NSString *)url
+			 title:(NSString*)title
 {
-    [self.editorView insertLink:url];
+	[self.editorView insertLink:url title:title];
 }
 
 - (void)updateLink:(NSString *)url
+			 title:(NSString*)title
 {
-	[self.editorView updateLink:url];
+	[self.editorView updateLink:url title:title];
 }
 
 - (void)dismissAlertView
@@ -1687,6 +1722,53 @@ typedef enum
     }
 }
 
+#pragma mark - UIPasteboard interaction
+
+/**
+ *	@brief		Returns an URL from the general pasteboard.
+ *
+ *	@param		The URL or nil if no valid URL is found.
+ */
+- (NSURL*)urlFromPasteboard
+{
+	NSURL* url = nil;
+	
+	UIPasteboard* pasteboard = [UIPasteboard generalPasteboard];
+	
+	NSString* const kURLPasteboardType = (__bridge NSString*)kUTTypeURL;
+	NSString* const kTextPasteboardType = (__bridge NSString*)kUTTypeText;
+	
+	if ([pasteboard containsPasteboardTypes:@[kURLPasteboardType]]) {
+		url = [pasteboard valueForPasteboardType:kURLPasteboardType];
+	} else if ([pasteboard containsPasteboardTypes:@[kTextPasteboardType]]) {
+		NSString* urlString = [pasteboard valueForPasteboardType:kTextPasteboardType];
+		
+		NSURL* prevalidatedUrl = [NSURL URLWithString:urlString];
+		
+		if ([self isURLValid:prevalidatedUrl]) {
+			url = prevalidatedUrl;
+		}
+	}
+	
+	return url;
+}
+
+/**
+ *	@brief		Validates a URL.
+ *	@details	The validations we perform here are pretty basic.  But the idea of having this
+ *				method is to add any additional checks we want to perform, as we come up with them.
+ *
+ *	@parameter	url		The URL to validate.  You will usually call [NSURL URLWithString] to create
+ *						this URL from a string, before passing it to this method.  Cannot be nil.
+ */
+- (BOOL)isURLValid:(NSURL*)url
+{
+	NSParameterAssert([url isKindOfClass:[NSURL class]]);
+	
+	return url && url.scheme && url.host;
+}
+
+
 #pragma mark - UITextField Delegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
@@ -1772,10 +1854,13 @@ typedef enum
     }
 }
 
-- (BOOL)editorView:(WPEditorView*)editorView linkTapped:(NSURL *)url
+- (BOOL)editorView:(WPEditorView*)editorView
+		linkTapped:(NSURL *)url
+			 title:(NSString*)title
 {
 	if (self.isEditing) {
-		[self showInsertLinkDialogWithLink:url.absoluteString];
+		[self showInsertLinkDialogWithLink:url.absoluteString
+									 title:title];
 	}
 	
 	return YES;
