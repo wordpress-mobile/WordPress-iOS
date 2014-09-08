@@ -2,12 +2,7 @@
 #import "ReaderTopicService.h"
 #import "ReaderTopic.h"
 
-@interface SafeReaderTopicToReaderTopic()
-
-@property (nonatomic, strong) NSString *topicPath;
-
-@end
-
+NSString * const SavedTopicPathKey = @"SavedTopicPathKey";
 
 @implementation SafeReaderTopicToReaderTopic
 
@@ -15,16 +10,24 @@
 {
     ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:[manager sourceContext]];
     ReaderTopic *topic = [service currentTopic];
-    self.topicPath = topic.path;
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:topic.path forKey:SavedTopicPathKey];
+    [defaults synchronize];
 
     return YES;
 }
 
 - (BOOL)endEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError *__autoreleasing *)error
 {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *topicPath = [defaults stringForKey:SavedTopicPathKey];
+    [defaults removeObjectForKey:SavedTopicPathKey];
+    [defaults synchronize];
+
     NSManagedObjectContext *context = [manager destinationContext];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass([ReaderTopic class])];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"path = %@", self.topicPath];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"path = %@", topicPath];
 
     NSError *err;
     NSArray *results = [context executeFetchRequest:fetchRequest error:&err];
