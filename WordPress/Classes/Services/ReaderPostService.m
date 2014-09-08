@@ -900,7 +900,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  */
 - (NSString *)makePlainText:(NSString *)string
 {
-    return [[[string stringByRemovingScriptsAndStrippingHTML] stringByDecodingXMLCharacters] trim];
+    return [[[string stringByStrippingHTML] stringByDecodingXMLCharacters] trim];
 }
 
 /**
