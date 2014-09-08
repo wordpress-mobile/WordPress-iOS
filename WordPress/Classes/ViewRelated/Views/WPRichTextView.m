@@ -95,6 +95,17 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
 {
     self.textContentView.attributedString = attributedString;
     [self relayoutTextContentView];
+    
+    // Note:
+    // This is just a workaround to force DTCoreText to redraw its CATiledLayer. There are several scenarios in which
+    // DTAttributedTextContentView's drawLayer method may not even be executed, and thus, nothing will get displayed.
+    // This ensures a draw cycle is executed. Nuke me once we switch to Text Kit!
+    //
+    NSTimeInterval const refreshDelay = 0.1;
+    CGRect textViewBounds = self.textContentView.bounds;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(refreshDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.textContentView setNeedsDisplayInRect:textViewBounds];
+    });
 }
 
 #pragma mark - Private Methods
