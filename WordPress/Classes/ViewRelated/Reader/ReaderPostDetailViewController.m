@@ -345,25 +345,17 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 
 - (void)setupWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    ReaderPostService *service      = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    __weak __typeof(self) weakSelf  = self;
 
     [WPNoResultsView displayAnimatedBoxWithTitle:NSLocalizedString(@"Loading Post...", @"Text displayed while loading a post.")
                                          message:nil
                                             view:self.view];
 
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    ReaderPostService *service      = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    __weak __typeof(self) weakSelf  = self;
+
     [service deletePostsWithNoTopic];
     [service fetchPost:postID.integerValue forSite:siteID.integerValue success:^(ReaderPost *post) {
-        if (post.objectID.isTemporaryID) {
-            NSError *error;
-            BOOL obtainedID = [context obtainPermanentIDsForObjects:@[post] error:&error];
-            if (!obtainedID) {
-                DDLogError(@"Error obtaininga permanent ID for post. %@, %@", post, error);
-            }
-        }
-        [[ContextManager sharedInstance] saveContext:context];
-
 
         weakSelf.post = post;
         [weakSelf refreshAndSync];
