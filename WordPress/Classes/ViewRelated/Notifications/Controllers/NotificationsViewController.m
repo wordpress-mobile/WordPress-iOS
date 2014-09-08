@@ -190,8 +190,9 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
     // Reload
     [self.tableView reloadData];
 
-    // Reset the badge: the notifications are visible!
+    // Reset the badge: the notifications are visible! + Update Last Seen time
     [self resetApplicationBadge];
+    [self updateLastSeenTime];
 }
 
 
