@@ -10,7 +10,7 @@
             <plist version="1.0">
                 <dict>
                     <key>NSPersistenceFrameworkVersion</key>
-                    <integer>525</integer>
+                    <integer>481</integer>
                     <key>NSStoreModelVersionHashes</key>
                     <dict>
                         <key>XDDevAttributeMapping</key>
@@ -101,11 +101,11 @@
     <object type="XDDEVENTITYMAPPING" id="z114">
         <attribute name="sourcename" type="string">Theme</attribute>
         <attribute name="mappingtypename" type="string">Undefined</attribute>
-        <attribute name="mappingnumber" type="int16">13</attribute>
+        <attribute name="mappingnumber" type="int16">12</attribute>
         <attribute name="destinationname" type="string">Theme</attribute>
         <attribute name="autogenerateexpression" type="bool">1</attribute>
         <relationship name="mappingmodel" type="1/1" destination="XDDEVMAPPINGMODEL" idrefs="z228"></relationship>
-        <relationship name="attributemappings" type="0/0" destination="XDDEVATTRIBUTEMAPPING" idrefs="z171 z250 z273 z140 z158 z102 z293 z125 z175 z159 z309"></relationship>
+        <relationship name="attributemappings" type="0/0" destination="XDDEVATTRIBUTEMAPPING" idrefs="z158 z171 z140 z293 z175 z159 z309 z125 z273 z102 z250"></relationship>
         <relationship name="relationshipmappings" type="0/0" destination="XDDEVRELATIONSHIPMAPPING" idrefs="z257"></relationship>
     </object>
     <object type="XDDEVATTRIBUTEMAPPING" id="z115">
@@ -225,11 +225,11 @@
     <object type="XDDEVENTITYMAPPING" id="z138">
         <attribute name="sourcename" type="string">ReaderSite</attribute>
         <attribute name="mappingtypename" type="string">Undefined</attribute>
-        <attribute name="mappingnumber" type="int16">12</attribute>
+        <attribute name="mappingnumber" type="int16">11</attribute>
         <attribute name="destinationname" type="string">ReaderSite</attribute>
         <attribute name="autogenerateexpression" type="bool">1</attribute>
         <relationship name="mappingmodel" type="1/1" destination="XDDEVMAPPINGMODEL" idrefs="z228"></relationship>
-        <relationship name="attributemappings" type="0/0" destination="XDDEVATTRIBUTEMAPPING" idrefs="z110 z259 z217 z141 z185 z225 z288"></relationship>
+        <relationship name="attributemappings" type="0/0" destination="XDDEVATTRIBUTEMAPPING" idrefs="z110 z288 z225 z185 z259 z141 z217"></relationship>
         <relationship name="relationshipmappings" type="0/0" destination="XDDEVRELATIONSHIPMAPPING" idrefs="z222"></relationship>
     </object>
     <object type="XDDEVATTRIBUTEMAPPING" id="z139">
@@ -276,12 +276,12 @@
     <object type="XDDEVENTITYMAPPING" id="z149">
         <attribute name="sourcename" type="string">Blog</attribute>
         <attribute name="mappingtypename" type="string">Undefined</attribute>
-        <attribute name="mappingnumber" type="int16">14</attribute>
+        <attribute name="mappingnumber" type="int16">13</attribute>
         <attribute name="destinationname" type="string">Blog</attribute>
         <attribute name="autogenerateexpression" type="bool">1</attribute>
         <relationship name="mappingmodel" type="1/1" destination="XDDEVMAPPINGMODEL" idrefs="z228"></relationship>
-        <relationship name="attributemappings" type="0/0" destination="XDDEVATTRIBUTEMAPPING" idrefs="z168 z153 z197 z213 z254 z276 z127 z193 z210 z156 z169 z118 z180 z160 z316 z267 z280"></relationship>
-        <relationship name="relationshipmappings" type="0/0" destination="XDDEVRELATIONSHIPMAPPING" idrefs="z164 z242 z244 z312 z129 z220 z134"></relationship>
+        <relationship name="attributemappings" type="0/0" destination="XDDEVATTRIBUTEMAPPING" idrefs="z180 z156 z254 z153 z193 z316 z118 z127 z210 z168 z213 z160 z267 z197 z280 z169 z276"></relationship>
+        <relationship name="relationshipmappings" type="0/0" destination="XDDEVRELATIONSHIPMAPPING" idrefs="z164 z129 z244 z312 z220 z242 z134"></relationship>
     </object>
     <object type="XDDEVENTITYMAPPING" id="z150">
         <attribute name="sourcename" type="string">Post</attribute>

@@ -93,6 +93,7 @@
 		5D42A406175E76A7005CFF05 /* WPWebVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D42A404175E76A5005CFF05 /* WPWebVideoViewController.m */; };
 		5D44EB351986D695008B7175 /* ReaderSiteServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D44EB341986D695008B7175 /* ReaderSiteServiceRemote.m */; };
 		5D44EB381986D8BA008B7175 /* ReaderSiteService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D44EB371986D8BA008B7175 /* ReaderSiteService.m */; };
+		5D49B03B19BE3CAD00703A9B /* SafeReaderTopicToReaderTopic.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D49B03A19BE3CAD00703A9B /* SafeReaderTopicToReaderTopic.m */; };
 		5D4AD40F185FE64C00CDEE17 /* WPMainTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D4AD40E185FE64C00CDEE17 /* WPMainTabBarController.m */; };
 		5D51ADAF19A832AF00539C0B /* WordPress-20-21.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 5D51ADAE19A832AF00539C0B /* WordPress-20-21.xcmappingmodel */; };
 		5D577D33189127BE00B964C3 /* PostGeolocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D577D32189127BE00B964C3 /* PostGeolocationViewController.m */; };
@@ -544,6 +545,8 @@
 		5D44EB341986D695008B7175 /* ReaderSiteServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderSiteServiceRemote.m; sourceTree = "<group>"; };
 		5D44EB361986D8BA008B7175 /* ReaderSiteService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderSiteService.h; sourceTree = "<group>"; };
 		5D44EB371986D8BA008B7175 /* ReaderSiteService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderSiteService.m; sourceTree = "<group>"; };
+		5D49B03919BE3CAD00703A9B /* SafeReaderTopicToReaderTopic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SafeReaderTopicToReaderTopic.h; path = "20-21/SafeReaderTopicToReaderTopic.h"; sourceTree = "<group>"; };
+		5D49B03A19BE3CAD00703A9B /* SafeReaderTopicToReaderTopic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SafeReaderTopicToReaderTopic.m; path = "20-21/SafeReaderTopicToReaderTopic.m"; sourceTree = "<group>"; };
 		5D4AD40D185FE64C00CDEE17 /* WPMainTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPMainTabBarController.h; sourceTree = "<group>"; };
 		5D4AD40E185FE64C00CDEE17 /* WPMainTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPMainTabBarController.m; sourceTree = "<group>"; };
 		5D51ADAE19A832AF00539C0B /* WordPress-20-21.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "WordPress-20-21.xcmappingmodel"; sourceTree = "<group>"; };
@@ -1502,6 +1505,15 @@
 			path = Categories;
 			sourceTree = "<group>";
 		};
+		5D49B03519BE37CC00703A9B /* 20-21 */ = {
+			isa = PBXGroup;
+			children = (
+				5D49B03919BE3CAD00703A9B /* SafeReaderTopicToReaderTopic.h */,
+				5D49B03A19BE3CAD00703A9B /* SafeReaderTopicToReaderTopic.m */,
+			);
+			name = "20-21";
+			sourceTree = "<group>";
+		};
 		5D577D301891278D00B964C3 /* Geolocation */ = {
 			isa = PBXGroup;
 			children = (
@@ -2221,6 +2233,7 @@
 			isa = PBXGroup;
 			children = (
 				E1A03EDF17422DBC0085D192 /* 10-11 */,
+				5D49B03519BE37CC00703A9B /* 20-21 */,
 				E100C6BA1741472F00AE48D8 /* WordPress-11-12.xcmappingmodel */,
 				5D51ADAE19A832AF00539C0B /* WordPress-20-21.xcmappingmodel */,
 			);
@@ -2718,6 +2731,7 @@
 				5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */,
 				B55853F31962337500FAF6C3 /* NSScanner+Helpers.m in Sources */,
 				5D1945651979E091003EDDAD /* WPRichTextVideoControl.m in Sources */,
+				5D49B03B19BE3CAD00703A9B /* SafeReaderTopicToReaderTopic.m in Sources */,
 				5DEB61B8156FCD5200242C35 /* WPChromelessWebViewController.m in Sources */,
 				CC24E5EF1577D1EA00A6D5B5 /* WPFriendFinderViewController.m in Sources */,
 				5903AE1B19B60A98009D5354 /* WPButtonForNavigationBar.m in Sources */,
