@@ -131,6 +131,12 @@ import Foundation
         btnTrash.setTitle(trashTitle, forState: .Normal)
         btnTrash.setTitleColor(textNormalColor, forState: .Normal)
         btnTrash.accessibilityLabel = trashTitle
+        
+        // iPad: Use a bigger image size!
+        if UIDevice.isPad() {
+            gravatarImageView.updateConstraint(.Height, constant: gravatarImageSizePad.width)
+            gravatarImageView.updateConstraint(.Width,  constant: gravatarImageSizePad.height)
+        }
     }
     
     // MARK: - IBActions
@@ -230,13 +236,14 @@ import Foundation
     }
 
     // MARK: - Private Constants
-    private let separatorHeight                     : CGFloat   = 1
-    private let buttonWidth                         : CGFloat   = 55
-    private let buttonHeight                        : CGFloat   = 30
-    private let buttonTop                           : CGFloat   = 20
-    private let buttonTrailing                      : CGFloat   = 20
-    private let firstLineHeadIndent                 : CGFloat   = 43
-    private let placeholderName                     : String    = "gravatar"
+    private let gravatarImageSizePad                = CGSize(width: 36.0, height: 36.0)
+    private let separatorHeight                     = CGFloat(1)
+    private let buttonWidth                         = CGFloat(55)
+    private let buttonHeight                        = CGFloat(30)
+    private let buttonTop                           = CGFloat(20)
+    private let buttonTrailing                      = CGFloat(20)
+    private let firstLineHeadIndent                 = UIDevice.isPad() ? CGFloat(47) : CGFloat(43)
+    private let placeholderName                     = String("gravatar")
     
     // MARK: - Private Properties
     private var gravatarURL                         : NSURL?

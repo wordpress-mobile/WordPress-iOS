@@ -113,10 +113,10 @@ extension WPStyleGuide
         }
 
         //  Private
-        private static let subjectFontSize          = CGFloat(14)
-        private static let subjectLineSize          = CGFloat(18)
-        private static let blockFontSize            = CGFloat(14)
-        private static let blockLineSize            = CGFloat(20)
+        private static let subjectFontSize          = UIDevice.isPad() ? CGFloat(16) : CGFloat(14)
+        private static let subjectLineSize          = UIDevice.isPad() ? CGFloat(24) : CGFloat(18)
+        private static let blockFontSize            = UIDevice.isPad() ? CGFloat(16) : CGFloat(14)
+        private static let blockLineSize            = UIDevice.isPad() ? CGFloat(24) : CGFloat(20)
 
         private static let subjectParagraph         = NSMutableParagraphStyle(
             minLineHeight: subjectLineSize, maxLineHeight: subjectLineSize, lineBreakMode: .ByWordWrapping, alignment: .Left
