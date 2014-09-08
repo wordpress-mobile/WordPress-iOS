@@ -172,11 +172,6 @@ static NSString *const Ellipsis =  @"\u2026";
     }
 }
 
-- (NSString *)stringByRemovingScriptsAndStrippingHTML
-{
-    return [[self stringByRemovingScripts] stringByStrippingHTML];
-}
-
 // A method to truncate a string at a predetermined length and append ellipsis to the end
 
 - (NSString *)stringByEllipsizingWithMaxLength:(NSInteger)lengthlimit preserveWords:(BOOL)preserveWords
