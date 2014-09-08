@@ -778,14 +778,15 @@ cBIAAYagrxERxQAHAAgAFwAzADQANQBZAFoAWwBcAF0AXgBfAGAAYQBiAGMAZABlAGYAZwBoAIMAhACF
         <relationship name="entitymapping" type="1/1" destination="XDDEVENTITYMAPPING" idrefs="z114"></relationship>
     </object>
     <object type="XDDEVENTITYMAPPING" id="z258">
+        <attribute name="migrationpolicyclassname" type="string">SafeReaderTopicToReaderTopic</attribute>
         <attribute name="sourcename" type="string">ReaderTopic</attribute>
         <attribute name="mappingtypename" type="string">Undefined</attribute>
         <attribute name="mappingnumber" type="int16">9</attribute>
         <attribute name="destinationname" type="string">ReaderTopic</attribute>
         <attribute name="autogenerateexpression" type="bool">1</attribute>
         <relationship name="mappingmodel" type="1/1" destination="XDDEVMAPPINGMODEL" idrefs="z228"></relationship>
-        <relationship name="attributemappings" type="0/0" destination="XDDEVATTRIBUTEMAPPING" idrefs="z176 z188 z113 z303 z236 z145 z132"></relationship>
-        <relationship name="relationshipmappings" type="0/0" destination="XDDEVRELATIONSHIPMAPPING" idrefs="z296 z201"></relationship>
+        <relationship name="attributemappings" type="0/0" destination="XDDEVATTRIBUTEMAPPING" idrefs="z176 z188 z303 z145 z113 z132 z236"></relationship>
+        <relationship name="relationshipmappings" type="0/0" destination="XDDEVRELATIONSHIPMAPPING" idrefs="z201 z296"></relationship>
     </object>
     <object type="XDDEVATTRIBUTEMAPPING" id="z259">
         <attribute name="name" type="string">recordID</attribute>
