@@ -728,13 +728,12 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     if (tabBarController.selectedViewController == viewController) {
         if ([viewController isKindOfClass:[UINavigationController class]]) {
             UINavigationController *navController = (UINavigationController *)viewController;
-            if ([navController topViewController] == [[navController viewControllers] firstObject] &&
-                [[[navController topViewController] view] isKindOfClass:[UITableView class]]) {
+            if (navController.topViewController == navController.viewControllers.firstObject &&
+                [navController.topViewController.view isKindOfClass:[UITableView class]]) {
+                
                 UITableView *tableView = (UITableView *)[[navController topViewController] view];
-
-                if ([tableView numberOfSections] > 0 && [tableView numberOfRowsInSection:0] > 0) {
-                    [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-                }
+                CGPoint topOffset = CGPointMake(0.0f, -tableView.contentInset.top);
+                [tableView setContentOffset:topOffset animated:YES];
             }
         }
     }
