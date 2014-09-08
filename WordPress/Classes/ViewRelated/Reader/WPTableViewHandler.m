@@ -324,6 +324,11 @@ static CGFloat const DefaultCellHeight = 44.0;
         return _resultsController;
     }
 
+    NSFetchRequest *fetchRequest = [self fetchRequest];
+    if (!fetchRequest) {
+        return nil;
+    }
+    
     NSManagedObjectContext *moc = [self managedObjectContext];
     _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[self fetchRequest]
                                                              managedObjectContext:moc
