@@ -11,6 +11,8 @@
 // The editor object
 var zss_editor = {};
 
+zss_editor.defaultCallbackSeparator = ',';
+
 // If we are using iOS or desktop
 zss_editor.isUsingiOS = true;
 
@@ -54,9 +56,12 @@ zss_editor.init = function() {
 				
 		setTimeout(function() {
 			var targetNode = e.target;
-		   
+			var arguments = ['url=' + encodeURIComponent(targetNode.href),
+							 'title=' + encodeURIComponent(targetNode.innerHTML)];
+				   
 			if (targetNode.nodeName.toLowerCase() == 'a') {
-				zss_editor.callback('callback-link-tap', targetNode.href);
+				zss_editor.callback('callback-link-tap',
+									arguments.join(zss_editor.defaultCallbackSeparator));
 			}
 		}, 400);
 	});
@@ -105,7 +110,7 @@ zss_editor.stylesCallback = function(stylesArray) {
 	var stylesString = '';
 	
 	if (stylesArray.length > 0) {
-		stylesString = stylesArray.join(',');
+		stylesString = stylesArray.join(zss_editor.defaultCallbackSeparator);
 	}
 
 	zss_editor.callback("callback-selection-style", stylesString);
@@ -117,13 +122,19 @@ zss_editor.backuprange = function(){
     zss_editor.currentSelection = {"startContainer": range.startContainer, "startOffset":range.startOffset,"endContainer":range.endContainer, "endOffset":range.endOffset};
 }
 
-zss_editor.restorerange = function(){
+zss_editor.restoreRange = function(){
 	var selection = window.getSelection();
     selection.removeAllRanges();
     var range = document.createRange();
     range.setStart(zss_editor.currentSelection.startContainer, zss_editor.currentSelection.startOffset);
     range.setEnd(zss_editor.currentSelection.endContainer, zss_editor.currentSelection.endOffset);
     selection.addRange(range);
+}
+
+zss_editor.getSelectedText = function() {
+	var selection = window.getSelection();
+	
+	return selection.toString();
 }
 
 zss_editor.setBold = function() {
@@ -345,7 +356,7 @@ zss_editor.setOutdent = function() {
 }
 
 zss_editor.setTextColor = function(color) {
-    zss_editor.restorerange();
+    zss_editor.restoreRange();
 	document.execCommand("styleWithCSS", null, true);
 	document.execCommand('foreColor', false, color);
 	document.execCommand("styleWithCSS", null, false);
@@ -354,7 +365,7 @@ zss_editor.setTextColor = function(color) {
 }
 
 zss_editor.setBackgroundColor = function(color) {
-	zss_editor.restorerange();
+	zss_editor.restoreRange();
 	document.execCommand("styleWithCSS", null, true);
 	document.execCommand('hiliteColor', false, color);
 	document.execCommand("styleWithCSS", null, false);
@@ -363,34 +374,35 @@ zss_editor.setBackgroundColor = function(color) {
 
 // Needs addClass method
 
-zss_editor.insertLink = function(url) {
+zss_editor.insertLink = function(url, title) {
 
-    zss_editor.restorerange();
+    zss_editor.restoreRange();
 	
     var sel = document.getSelection();
-	if (sel.toString().length != 0) {
-        if (sel.rangeCount) {
-			
-			var el = document.createElement("a");
-    		el.setAttribute("href", url);
-			
-            var range = sel.getRangeAt(0).cloneRange();
-            range.surroundContents(el);
-            sel.removeAllRanges();
-            sel.addRange(range);
-        }
+	if (sel.rangeCount) {
+
+		var el = document.createElement("a");
+		el.setAttribute("href", url);
+		
+		var range = sel.getRangeAt(0).cloneRange();
+		range.surroundContents(el);
+		el.innerHTML = title;
+		sel.removeAllRanges();
+		sel.addRange(range);
 	}
+
 	zss_editor.sendEnabledStyles();
 }
 
-zss_editor.updateLink = function(url) {
+zss_editor.updateLink = function(url, title) {
 	
-    zss_editor.restorerange();
+    zss_editor.restoreRange();
 	
 	var currentLinkNode = zss_editor.closerParentNode('a');
 	
     if (currentLinkNode) {
 		currentLinkNode.setAttribute("href", url);
+		currentLinkNode.innerHTML = title;
     }
     zss_editor.sendEnabledStyles();
 }
@@ -408,7 +420,7 @@ zss_editor.unlink = function() {
 
 zss_editor.updateImage = function(url, alt) {
 
-    zss_editor.restorerange();
+    zss_editor.restoreRange();
 
     if (zss_editor.currentEditingImage) {
         var c = zss_editor.currentEditingImage;
@@ -460,7 +472,7 @@ zss_editor.prepareInsert = function() {
 }
 
 zss_editor.insertImage = function(url, alt) {
-	zss_editor.restorerange();
+	zss_editor.restoreRange();
 	var html = '<img src="'+url+'" alt="'+alt+'" />';
 	zss_editor.insertHTML(html);
 	zss_editor.sendEnabledStyles();
