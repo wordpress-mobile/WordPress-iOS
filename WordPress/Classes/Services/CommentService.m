@@ -181,6 +181,7 @@
     }
 
 	comment.status = status;
+    NSManagedObjectID *commentObjectID = comment.objectID;
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     id <CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
     RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
@@ -191,8 +192,11 @@
                         }
                     } failure:^(NSError *error) {
                         [self.managedObjectContext performBlock:^{
-                            comment.status = prevStatus;
-                            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                            Comment *commentInContext = (Comment *)[self.managedObjectContext existingObjectWithID:commentObjectID error:nil];
+                            if (commentInContext) {
+                                commentInContext.status = prevStatus;
+                                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                            }
                             if (failure) {
                                 dispatch_async(dispatch_get_main_queue(), ^{
                                     failure(error);
