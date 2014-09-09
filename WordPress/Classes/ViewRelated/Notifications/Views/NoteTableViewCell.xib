@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6206.9" systemVersion="14A343f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7026.1"/>
     </dependencies>
     <objects>
@@ -64,24 +65,17 @@
                 <constraints>
                     <constraint firstItem="SfC-6n-kyD" firstAttribute="leading" secondItem="wcv-fL-daS" secondAttribute="leading" id="3gF-DJ-y1E"/>
                     <constraint firstAttribute="trailing" secondItem="SfC-6n-kyD" secondAttribute="trailing" constant="12" id="6YI-0h-7xG"/>
-                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="wcv-fL-daS" secondAttribute="bottom" constant="12" id="AFb-po-J3Z"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="wcv-fL-daS" secondAttribute="bottom" priority="750" constant="12" id="AFb-po-J3Z"/>
                     <constraint firstItem="GgS-tD-1kB" firstAttribute="top" secondItem="SfC-6n-kyD" secondAttribute="top" constant="3" id="LJX-o9-vZJ"/>
                     <constraint firstAttribute="trailing" secondItem="wcv-fL-daS" secondAttribute="trailing" constant="12" id="MFS-Lb-Dh4"/>
                     <constraint firstItem="wfO-j3-kM6" firstAttribute="top" secondItem="9Ex-yA-LkS" secondAttribute="top" constant="42" id="NI5-rg-Yif"/>
-                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="GgS-tD-1kB" secondAttribute="bottom" constant="12" id="O3R-0F-z4J"/>
-                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="wfO-j3-kM6" secondAttribute="bottom" constant="8" id="SoC-7w-fOG"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="GgS-tD-1kB" secondAttribute="bottom" priority="750" constant="12" id="O3R-0F-z4J"/>
                     <constraint firstItem="GgS-tD-1kB" firstAttribute="top" secondItem="9Ex-yA-LkS" secondAttribute="top" constant="12" id="UVx-Pm-foz"/>
                     <constraint firstItem="GgS-tD-1kB" firstAttribute="leading" secondItem="9Ex-yA-LkS" secondAttribute="leading" constant="12" id="a80-yz-Nlv"/>
                     <constraint firstItem="SfC-6n-kyD" firstAttribute="leading" secondItem="GgS-tD-1kB" secondAttribute="trailing" constant="13" id="dT8-x1-JZI"/>
-                    <constraint firstItem="SfC-6n-kyD" firstAttribute="top" secondItem="9Ex-yA-LkS" secondAttribute="top" constant="12" id="gLA-vl-aV3"/>
                     <constraint firstItem="wcv-fL-daS" firstAttribute="top" secondItem="SfC-6n-kyD" secondAttribute="bottom" id="vFp-hy-O2S"/>
                     <constraint firstItem="wfO-j3-kM6" firstAttribute="leading" secondItem="9Ex-yA-LkS" secondAttribute="leading" constant="42" id="wvg-PE-czH"/>
                 </constraints>
-                <variation key="default">
-                    <mask key="constraints">
-                        <exclude reference="gLA-vl-aV3"/>
-                    </mask>
-                </variation>
             </tableViewCellContentView>
             <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
