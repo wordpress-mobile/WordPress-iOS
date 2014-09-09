@@ -1846,11 +1846,18 @@ typedef enum
 {
 	NSArray *items = self.leftToolbar.items;
 	
-    for (ZSSBarButtonItem *item in items) {
-        if ([styles containsObject:item.htmlProperty]) {
-			item.selected = YES;
-        } else {
-			item.selected = NO;
+    for (UIBarButtonItem *item in items) {
+        // Since we're using UIBarItem as negative separators, we need to make sure we don't try to
+        // use those here.
+        //
+        if ([item isKindOfClass:[ZSSBarButtonItem class]]) {
+            ZSSBarButtonItem* zssItem = (ZSSBarButtonItem*)item;
+            
+            if ([styles containsObject:zssItem.htmlProperty]) {
+                zssItem.selected = YES;
+            } else {
+                zssItem.selected = NO;
+            }
         }
     }
 }

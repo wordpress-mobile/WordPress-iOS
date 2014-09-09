@@ -1,7 +1,7 @@
 /*
  * LoggerClient.m
  *
- * version 1.5-RC2 22-NOV-2013
+ * version 1.5 09-SEP-2014
  *
  * Main implementation of the NSLogger client side code
  * Part of NSLogger (client side)
@@ -2087,7 +2087,17 @@ static void LoggerMessageAddTimestampAndThreadID(CFMutableDataRef encoder)
 					// optimize CPU use by computing the thread name once and storing it back
 					// in the thread dictionary
 					name = [thread description];
-					NSRange range = [name rangeOfString:@"num = "];
+                    NSArray *threadNumberPrefixes = @[ @"num = ", @"number = " ];
+                    NSRange range = NSMakeRange(NSNotFound, 0);
+                    
+                    for (NSString *threadNumberPrefix in threadNumberPrefixes)
+                    {
+                        range = [name rangeOfString:threadNumberPrefix];
+                        
+                        if (range.location != NSNotFound)
+                            break;
+                    }
+					
 					if (range.location != NSNotFound)
 					{
 						name = [NSString stringWithFormat:@"Thread %@",
@@ -2095,6 +2105,10 @@ static void LoggerMessageAddTimestampAndThreadID(CFMutableDataRef encoder)
 																							   [name length] - range.location - range.length - 1)]];
 						[threadDict setObject:name forKey:@"__$NSLoggerThreadName$__"];
 					}
+                    else
+                    {
+                        name = nil;
+                    }
 				}
 			}
 		}
