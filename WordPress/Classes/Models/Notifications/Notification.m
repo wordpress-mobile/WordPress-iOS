@@ -459,7 +459,7 @@ NSString const *NotePostIdKey           = @"post_id";
     if (!_date) {
         _date = [NSDate dateWithISO8601String:self.timestamp];
         
-        //  Failasfe:
+        //  Failsafe:
         //  If, for whatever reason, the date cannot be parsed, make sure we always return a date.
         //  Otherwise notification-grouping might fail
         //
