@@ -367,27 +367,42 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
         // It seems in some cases newIndexPath can be nil for updates
         newIndexPath = indexPath;
     }
-
-    [self invalidateRowHeightsCache];
     
     switch(type) {
         case NSFetchedResultsChangeInsert:
-            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
+            {
+                [self invalidateRowHeightsBelowIndexPath:newIndexPath];
+                [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
+            }
             break;
         case NSFetchedResultsChangeDelete:
-            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:[self tableViewRowAnimation]];
-            if ([_indexPathSelectedBeforeUpdates isEqual:indexPath]) {
-                [self.navigationController popToViewController:self animated:YES];
+            {
+                [self invalidateRowHeightsBelowIndexPath:indexPath];
+                [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:[self tableViewRowAnimation]];
+                if ([_indexPathSelectedBeforeUpdates isEqual:indexPath]) {
+                    [self.navigationController popToViewController:self animated:YES];
+                }
             }
             break;
         case NSFetchedResultsChangeUpdate:
-            [self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:newIndexPath];
+            {
+                [self invalidateRowHeightAtIndexPath:indexPath];
+                [self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:newIndexPath];
+            }
             break;
         case NSFetchedResultsChangeMove:
-            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:[self tableViewRowAnimation]];
-            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
-            if ([_indexPathSelectedBeforeUpdates isEqual:indexPath] && _indexPathSelectedAfterUpdates == nil) {
-                _indexPathSelectedAfterUpdates = newIndexPath;
+            {
+                NSIndexPath *lowerIndexPath = indexPath;
+                if ([indexPath compare:newIndexPath] == NSOrderedDescending) {
+                    lowerIndexPath = newIndexPath;
+                }
+                [self invalidateRowHeightsBelowIndexPath:lowerIndexPath];
+                
+                [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:[self tableViewRowAnimation]];
+                [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
+                if ([_indexPathSelectedBeforeUpdates isEqual:indexPath] && _indexPathSelectedAfterUpdates == nil) {
+                    _indexPathSelectedAfterUpdates = newIndexPath;
+                }
             }
             break;
         default:
@@ -743,7 +758,12 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     AssertSubclassMethod();
 }
 
-- (void)invalidateRowHeightsCache
+- (void)invalidateRowHeightsBelowIndexPath:(NSIndexPath *)indexPath
+{
+    // Optional: Override if needed
+}
+
+- (void)invalidateRowHeightAtIndexPath:(NSIndexPath *)indexPath
 {
     // Optional: Override if needed
 }
