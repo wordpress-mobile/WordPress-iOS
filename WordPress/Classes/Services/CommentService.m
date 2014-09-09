@@ -66,12 +66,17 @@
 // Sync comments
 - (void)syncCommentsForBlog:(Blog *)blog
                     success:(void (^)())success
-                    failure:(void (^)(NSError *error))failure {
+                    failure:(void (^)(NSError *error))failure
+{
+    NSManagedObjectID *blogObjectID = blog.objectID;
     id<CommentServiceRemote> remote = [self remoteForBlog:blog];
     [remote getCommentsForBlog:blog
                        success:^(NSArray *comments) {
                            [self.managedObjectContext performBlock:^{
-                               [self mergeComments:comments forBlog:blog completionHandler:success];
+                               Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:nil];
+                               if (blogInContext) {
+                                   [self mergeComments:comments forBlog:blogInContext completionHandler:success];
+                               }
                            }];
                        } failure:^(NSError *error) {
                            if (failure) {
@@ -231,9 +236,16 @@
     }
 }
 
-- (Comment *)findCommentWithID:(NSNumber *)commentID inBlog:(Blog *)blog {
-    NSSet *comments = [blog.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"commentID = %@", commentID]];
-    return [comments anyObject];
+- (Comment *)findCommentWithID:(NSNumber *)commentID inBlog:(Blog *)blog
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Comment class])];
+    request.predicate = [NSPredicate predicateWithFormat:@"commentID = %@ AND blog = %@", commentID, blog];
+    NSError *error = nil;
+    NSArray *comments = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"[CommentService findCommentWithID:%@ inBlog:%@] error: %@", commentID, blog, error);
+    }
+    return [comments firstObject];
 }
 
 - (void)updateComment:(Comment *)comment withRemoteComment:(RemoteComment *)remoteComment {
