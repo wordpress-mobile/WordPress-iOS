@@ -109,14 +109,15 @@ static NSString* const kDefaultCallbackParameterComponentSeparator = @"=";
 		htmlEditor = [self editorHTML];
 	}];
 	
-	NSBlockOperation* editorDidLoadOperation = [NSBlockOperation blockOperationWithBlock:^{
-		
-		__strong typeof(weakSelf) strongSelf = weakSelf;
-		
-		if (strongSelf) {
-			[strongSelf.webView loadHTMLString:htmlEditor baseURL:nil];
-		}
-	}];
+    NSBlockOperation* editorDidLoadOperation = [NSBlockOperation blockOperationWithBlock:^{
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+
+        if (strongSelf) {
+            NSURL* const kBaseURL = [NSURL URLWithString:@"http://"];
+            
+            [strongSelf.webView loadHTMLString:htmlEditor baseURL:kBaseURL];
+        }
+    }];
 	
 	[loadEditorOperation setCompletionBlock:^{
 		

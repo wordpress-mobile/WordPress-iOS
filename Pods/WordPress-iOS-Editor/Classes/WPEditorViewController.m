@@ -1680,11 +1680,11 @@ typedef enum
 			if (buttonIndex == 1) {
 				NSString *linkURL = [alertView textFieldAtIndex:0].text;
 				NSString *linkTitle = [alertView textFieldAtIndex:1].text;
-				
+                
 				if ([linkTitle length] == 0) {
 					linkTitle = linkURL;
 				}
-				
+                
 				if (isInsertingNewLink) {
 					[weakSelf insertLink:linkURL title:linkTitle];
 				} else {
