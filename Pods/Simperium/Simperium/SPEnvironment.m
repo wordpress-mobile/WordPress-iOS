@@ -17,7 +17,7 @@ NSString* const SPLibraryID                     = @"osx";
 #endif
 
 // TODO: Update this automatically via a script that looks at current git tag
-NSString* const SPLibraryVersion                = @"0.6.8";
+NSString* const SPLibraryVersion                = @"0.6.9";
 
 // SSL Certificate Expiration: '2016-09-07 02:36:04 +0000' expressed as seconds since 1970
 NSTimeInterval const SPCertificateExpiration    = 1473215764;
