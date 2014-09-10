@@ -1129,36 +1129,39 @@ static NSInteger const MaximumNumberOfPictures = 5;
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if ([actionSheet tag] == 201) {
+        if (buttonIndex == actionSheet.destructiveButtonIndex) {
+            [self actionSheetDiscardButtonPressed];
+        } else if (buttonIndex == actionSheet.cancelButtonIndex) {
+            [self actionSheetKeepEditingButtonPressed];
+        } else if (buttonIndex == actionSheet.firstOtherButtonIndex) {
+            [self actionSheetSaveDraftButtonPressed];
+        }
+    }
+    
     _currentActionSheet = nil;
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if ([actionSheet tag] == 201) {
-        // Discard
-        if (buttonIndex == 0) {
-            [self discardChangesAndDismiss];
-            [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
-        }
-        
-        if (buttonIndex == 1) {
-            // Cancel / Keep editing
-			if ([actionSheet numberOfButtons] == 2) {
-                
-				[actionSheet dismissWithClickedButtonIndex:0 animated:YES];
-				
-				[self startEditing];
-				
-                // Save draft
-			} else {
-                // If you tapped on a button labeled "Save Draft", you probably expect the post to be saved as a draft
-                if (![self.post hasRemote] && [self.post.status isEqualToString:@"publish"]) {
-                    self.post.status = @"draft";
-                }
-                DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
-				[self savePostAndDismissVC];
-			}
-        }
+#pragma mark - UIActionSheet helper methods
+
+- (void)actionSheetDiscardButtonPressed
+{
+    [self discardChangesAndDismiss];
+    [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
+}
+
+- (void)actionSheetKeepEditingButtonPressed
+{
+    [self startEditing];
+}
+
+- (void)actionSheetSaveDraftButtonPressed
+{
+    if (![self.post hasRemote] && [self.post.status isEqualToString:@"publish"]) {
+        self.post.status = @"draft";
     }
+    DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
+    [self savePostAndDismissVC];
 }
 
 #pragma mark - WPEditorViewControllerDelegate delegate
