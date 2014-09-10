@@ -60,7 +60,7 @@ import Foundation
                 
         backgroundColor             = WPStyleGuide.Notifications.blockBackgroundColor
         selectionStyle              = .None
-        textView.contentInset       = UIEdgeInsetsZero
+        textView.contentInset       = privateLabelInsets
         textView.textContainerInset = UIEdgeInsetsZero
         textView.backgroundColor    = UIColor.clearColor()
         textView.editable           = false
@@ -107,7 +107,8 @@ import Foundation
     // MARK: - Constants
     private let maxWidth            = WPTableViewFixedWidth
     private let privateLabelPadding = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
-
+    private let privateLabelInsets  = UIEdgeInsets(top: 1, left: -5, bottom: 0, right: 0)
+    
     // MARK: - Private
     private var gesturesRecognizer: UITapGestureRecognizer!
     
