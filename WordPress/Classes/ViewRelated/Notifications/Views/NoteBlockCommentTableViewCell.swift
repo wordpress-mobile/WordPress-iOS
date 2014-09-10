@@ -238,7 +238,7 @@ import Foundation
 
     
     // MARK: - Private Constants
-    private let gravatarImageSizePad                = CGSize(width: 36.0, height: 36.0)
+    private let gravatarImageSizePad                = CGSize(width: 37.0, height: 37.0)
     private let separatorHeight                     = CGFloat(1)
     private let buttonWidth                         = CGFloat(55)
     private let buttonHeight                        = CGFloat(30)
