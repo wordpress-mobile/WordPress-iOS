@@ -15,7 +15,7 @@ import Foundation
 
     public var attributedCommentText: NSAttributedString? {
         didSet {
-            refreshInterfaceStyle()
+            refreshApprovalColors()
         }
     }
     public var name: String? {
@@ -60,7 +60,7 @@ import Foundation
     public var isApproveOn: Bool = false {
         didSet {
             btnApprove.selected = isApproveOn
-            refreshInterfaceStyle()
+            refreshApprovalColors()
         }
     }
 
@@ -196,7 +196,7 @@ import Foundation
         setNeedsLayout()
     }
     
-    private func refreshInterfaceStyle() {
+    private func refreshApprovalColors() {
         // If Approval is not even enabled, let's consider this as approved!
         let isCommentApproved               = isApproveOn || !isApproveEnabled
         approvalStatusView.hidden           = isCommentApproved
