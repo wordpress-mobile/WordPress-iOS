@@ -111,6 +111,10 @@ extension WPStyleGuide
         public static func blockTimestampColorForComment(isApproved approved: Bool) -> UIColor {
             return approved ? blockQuotedColor : blockUnapprovedTextColor
         }
+        
+        public static func blockLinkColorForComment(isApproved approved: Bool) -> UIColor {
+            return approved ? blockLinkColor : blockUnapprovedTextColor
+        }
 
         //  Private
         private static let subjectFontSize          = UIDevice.isPad() ? CGFloat(16) : CGFloat(14)
