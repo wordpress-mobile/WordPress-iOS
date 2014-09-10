@@ -74,7 +74,7 @@ zss_editor.init = function() {
 		zss_editor.callback("callback-focus-out");
 	});
 	
-	editor.bind('keypress', function(e) {
+	editor.bind('keyup', function(e) {
 		zss_editor.sendEnabledStyles(e);
 		zss_editor.callback("callback-user-triggered-change");
 	});
