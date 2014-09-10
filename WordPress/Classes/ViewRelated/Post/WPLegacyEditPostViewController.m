@@ -26,6 +26,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
 @property (nonatomic, strong) UIView *uploadStatusView;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
+@property (nonatomic) BOOL dismissingEditView;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
 
 @end
@@ -148,6 +149,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    self.dismissingEditView = NO;
     [self refreshButtons];
 }
 
@@ -351,7 +353,8 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
     if (![self hasChanges]) {
         [WPAnalytics track:WPAnalyticsStatEditorClosed];
-        [self discardChangesAndDismiss];
+        [self discardChanges];
+        [self dismissEditView];
         return;
     }
 
@@ -582,15 +585,13 @@ static NSInteger const MaximumNumberOfPictures = 4;
     }];
 }
 
-- (void)discardChangesAndDismiss
+- (void)discardChanges
 {
     [self.post.original deleteRevision];
 
     if (self.editMode == EditPostViewControllerModeNewPost) {
         [self.post.original remove];
     }
-
-    [self dismissEditView];
 }
 
 - (void)dismissEditView
@@ -622,6 +623,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
     }
 
     [self savePost:YES];
+    [self dismissEditView];
 }
 
 - (void)savePost:(BOOL)upload
@@ -644,7 +646,6 @@ static NSInteger const MaximumNumberOfPictures = 4;
     }
 
     [self didSaveNewPost];
-    [self dismissEditView];
 }
 
 - (void)didSaveNewPost
@@ -892,6 +893,10 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
+    // iOS 8 fix...need to dismiss edit view here
+    if (self.dismissingEditView) {
+        [self dismissEditView];
+    }
     _currentActionSheet = nil;
 }
 
@@ -900,7 +905,8 @@ static NSInteger const MaximumNumberOfPictures = 4;
     if ([actionSheet tag] == 201) {
         // Discard
         if (buttonIndex == 0) {
-            [self discardChangesAndDismiss];
+            [self discardChanges];
+            self.dismissingEditView = YES;
             [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
         }
 
@@ -917,6 +923,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
                 }
                 DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
                 [self savePost:YES];
+                self.dismissingEditView = YES;
             }
         }
     }
