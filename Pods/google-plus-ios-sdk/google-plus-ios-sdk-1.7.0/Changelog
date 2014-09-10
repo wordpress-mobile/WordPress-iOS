@@ -1,0 +1,43 @@
+2014-05-22  -- v1.7.0
+- Support for one-time authorization code
+- Fixed bug where OAuth token sometimes expires without being able to refresh
+- Other bug fixes
+
+2014-01-28  -- v1.5.1
+- Allow using the reversed client ID for redirect URL scheme to sign in
+
+2013-12-12  -- v1.5.0
+- Suggested recipients based on affinity and relevance
+- Sharing to all Google contacts
+- Comprehensive list of contacts for search
+- Allow users to add people they are sharing with to a circle
+- Bug fixes
+
+2013-10-09  -- v1.4.1
+- Bug fixes
+
+2013-09-30  -- v1.4.0
+- Native sharebox
+- ID token support
+- Bug fixes
+
+2013-05-07  -- v1.3.0
+- Packaged as framework
+- Bug fixes
+
+2013-02-26  -- v1.2.1
+- Interactive posts on Google+ share
+- Improved sign-in and share APIs to use shared instances
+- Automatic retrieval of user identity upon sign-in
+- Expanded Google+ moments API support
+- Updated sample app
+
+2012-10-12  -- v1.1.0
+- Content deep linking on Google+ share
+- iOS6 support
+- Shortened class names
+- Bug fixes
+
+2012-06-25  -- v1.0.0
+- Google+ sign-in button, share plugin, and Google+ history integration library
+  with sample app.

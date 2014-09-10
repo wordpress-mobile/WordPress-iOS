@@ -7,8 +7,6 @@
 @property (nonatomic, copy, readwrite) UIColor *normalTintColor;
 @property (nonatomic, copy, readwrite) UIColor *selectedTintColor;
 
-#pragma mark - Memory related
-
 /**
  *	@brief		Calling this method makes sure all memory that can be released will be released.
  */

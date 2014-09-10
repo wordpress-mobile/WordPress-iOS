@@ -109,15 +109,14 @@ static NSString* const kDefaultCallbackParameterComponentSeparator = @"=";
 		htmlEditor = [self editorHTML];
 	}];
 	
-    NSBlockOperation* editorDidLoadOperation = [NSBlockOperation blockOperationWithBlock:^{
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-
-        if (strongSelf) {
-            NSURL* const kBaseURL = [NSURL URLWithString:@"http://"];
-            
-            [strongSelf.webView loadHTMLString:htmlEditor baseURL:kBaseURL];
-        }
-    }];
+	NSBlockOperation* editorDidLoadOperation = [NSBlockOperation blockOperationWithBlock:^{
+		
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		
+		if (strongSelf) {
+			[strongSelf.webView loadHTMLString:htmlEditor baseURL:nil];
+		}
+	}];
 	
 	[loadEditorOperation setCompletionBlock:^{
 		
@@ -472,21 +471,13 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 
 #pragma mark - URL & HTML utilities
 
-/**
- *  @brief      Adds slashes to the specified HTML string, to prevent injections when calling JS
- *              code.
- *
- *  @param      html        The HTML string to add slashes to.  Cannot be nil.
- *
- *  @returns    The HTML string with the added slashes.
- */
-- (NSString *)addSlashes:(NSString *)html
+- (NSString *)removeQuotesFromHTML:(NSString *)html
 {
-    html = [html stringByReplacingOccurrencesOfString:@"\\" withString:@"\\\\"];
     html = [html stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+    html = [html stringByReplacingOccurrencesOfString:@"“" withString:@"&quot;"];
+    html = [html stringByReplacingOccurrencesOfString:@"”" withString:@"&quot;"];
     html = [html stringByReplacingOccurrencesOfString:@"\r"  withString:@"\\r"];
     html = [html stringByReplacingOccurrencesOfString:@"\n"  withString:@"\\n"];
-    
     return html;
 }
 
@@ -641,7 +632,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 		self.preloadedHTML = html;
 	} else {
 		self.sourceView.text = html;
-		NSString *cleanedHTML = [self addSlashes:self.sourceView.text];
+		NSString *cleanedHTML = [self removeQuotesFromHTML:self.sourceView.text];
 		NSString *trigger = [NSString stringWithFormat:@"zss_editor.setHTML(\"%@\");", cleanedHTML];
 		[self.webView stringByEvaluatingJavaScriptFromString:trigger];
 		
@@ -654,7 +645,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 // Inserts HTML at the caret position
 - (void)insertHTML:(NSString *)html
 {
-    NSString *cleanedHTML = [self addSlashes:html];
+    NSString *cleanedHTML = [self removeQuotesFromHTML:html];
     NSString *trigger = [NSString stringWithFormat:@"zss_editor.insertHTML(\"%@\");", cleanedHTML];
     [self.webView stringByEvaluatingJavaScriptFromString:trigger];
 }
