@@ -902,10 +902,9 @@ static NSInteger const MaximumNumberOfPictures = 4;
         if (buttonIndex == 1) {
             // Cancel / Keep editing
             if ([actionSheet numberOfButtons] == 2) {
-                
                 [actionSheet dismissWithClickedButtonIndex:0 animated:YES];
-                // Save draft
             } else {
+                // Save draft
                 // If you tapped on a button labeled "Save Draft", you probably expect the post to be saved as a draft
                 if (![self.post hasRemote] && [self.post.status isEqualToString:@"publish"]) {
                     self.post.status = @"draft";
