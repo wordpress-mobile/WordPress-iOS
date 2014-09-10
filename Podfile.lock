@@ -56,12 +56,12 @@ PODS:
   - OCMock (3.1.1)
   - OHHTTPStubs (1.1.1)
   - Reachability (3.1.1)
-  - Simperium (0.6.8):
+  - Simperium (0.6.9):
     - Google-Diff-Match-Patch
     - JRSwizzle
     - Simperium/no-arc
     - SocketRocket
-  - Simperium/no-arc (0.6.8):
+  - Simperium/no-arc (0.6.9):
     - Google-Diff-Match-Patch
     - JRSwizzle
     - SocketRocket
@@ -109,12 +109,12 @@ DEPENDENCIES:
   - OCMock
   - OHHTTPStubs (= 1.1.1)
   - Reachability (= 3.1.1)
-  - Simperium (= 0.6.8)
+  - Simperium (= 0.6.9)
   - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`, branch `master`)
   - SVProgressHUD (~> 1.0)
   - Taplytics (~> 1.3.10)
   - UIDeviceIdentifier (~> 0.1)
-  - WordPress-iOS-Editor (from `https://github.com/wordpress-mobile/WordPress-iOS-Editor`, branch `develop`)
+  - WordPress-iOS-Editor (from `https://github.com/wordpress-mobile/WordPress-iOS-Editor`, branch `release/0.2.1`)
   - WordPress-iOS-Shared (= 0.1.1)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPressApi.git`)
   - WordPressCom-Analytics-iOS (= 0.0.5)
@@ -133,7 +133,7 @@ EXTERNAL SOURCES:
     :branch: master
     :git: https://github.com/jleandroperez/SocketRocket.git
   WordPress-iOS-Editor:
-    :branch: develop
+    :branch: release/0.2.1
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Editor
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPressApi.git
@@ -160,7 +160,7 @@ SPEC CHECKSUMS:
   OCMock: f6cb8c162ab9d5620dddf411282c7b2c0ee78854
   OHHTTPStubs: d6ace2645e4744a0ad6c5a72940999a5632037fb
   Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
-  Simperium: d84cfae63c9f5d252fc5a7e614233ee3afe50280
+  Simperium: 867d03e089318f0503606d6011490439a5804672
   SocketRocket: b809068861cb66d871eb93a428696b1eb5451318
   SVProgressHUD: 5034c6e22b8c2ca3e09402e48d41ed0340aa1c50
   Taplytics: d8f820afa67a73fd1ddccb1bc6144d10f2c3ad61
