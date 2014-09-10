@@ -6,8 +6,8 @@ import Foundation
     // MARK: - Public Properties
     public var onUrlClick: ((NSURL) -> Void)?
     public var attributedText: NSAttributedString? {
-        didSet {            
-            attributedLabel.attributedString = attributedText != nil ? attributedText! :  NSAttributedString()
+        didSet {
+            textView.attributedText = attributedText ??  NSAttributedString()
             setNeedsLayout()
         }
     }

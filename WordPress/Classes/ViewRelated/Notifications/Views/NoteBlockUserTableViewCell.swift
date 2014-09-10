@@ -22,12 +22,12 @@ import Foundation
     
     public var name: String? {
         didSet {
-            nameLabel.text  = name != nil ? name! : String()
+            nameLabel.text  = name ?? String()
         }
     }
     public var blogTitle: String? {
         didSet {
-            blogLabel.text  = blogTitle != nil ? blogTitle! :  String()
+            blogLabel.text  = blogTitle ?? String()
         }
     }
     
