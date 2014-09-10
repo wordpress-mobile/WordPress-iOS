@@ -442,7 +442,7 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
     
     if([segue.identifier isEqualToString:detailsSegueID]) {
         NotificationDetailsViewController *detailsViewController = segue.destinationViewController;
-        detailsViewController.note = note;
+        [detailsViewController setupWithNotification:note];
     
     } else if([segue.identifier isEqualToString:readerSegueID]) {
         ReaderPostDetailViewController *readerViewController = segue.destinationViewController;

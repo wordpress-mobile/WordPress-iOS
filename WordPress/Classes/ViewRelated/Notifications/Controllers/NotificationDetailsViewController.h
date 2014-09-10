@@ -5,5 +5,5 @@
 @class Notification;
 
 @interface NotificationDetailsViewController : UIViewController <UIViewControllerRestoration>
-@property (nonatomic, strong, readwrite) Notification *note;
+- (void)setupWithNotification:(Notification *)notification;
 @end
