@@ -13,6 +13,8 @@ public class WPDynamicHeightTextView : UITextView
         let maxWidth = (preferredMaxLayoutWidth != 0) ? preferredMaxLayoutWidth : frame.width
         let maxSize = CGSize(width: maxWidth, height: CGFloat.max)
         let requiredSize = sizeThatFits(maxSize)
-        return requiredSize
+        let roundedSize = CGSize(width: round(requiredSize.width), height: round(requiredSize.height))
+        
+        return roundedSize
     }
 }
