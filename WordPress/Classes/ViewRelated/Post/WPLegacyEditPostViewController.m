@@ -26,7 +26,6 @@ static NSInteger const MaximumNumberOfPictures = 4;
 @property (nonatomic, strong) UIView *uploadStatusView;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
-@property (nonatomic) BOOL dismissingEditView;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
 
 @end
@@ -149,7 +148,6 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    self.dismissingEditView = NO;
     [self refreshButtons];
 }
 
@@ -893,27 +891,18 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    // iOS 8 fix...need to dismiss edit view here
-    if (self.dismissingEditView) {
-        [self dismissEditView];
-    }
-    _currentActionSheet = nil;
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
     if ([actionSheet tag] == 201) {
         // Discard
         if (buttonIndex == 0) {
             [self discardChanges];
-            self.dismissingEditView = YES;
+            [self dismissEditView];
             [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
         }
-
+        
         if (buttonIndex == 1) {
             // Cancel / Keep editing
             if ([actionSheet numberOfButtons] == 2) {
-
+                
                 [actionSheet dismissWithClickedButtonIndex:0 animated:YES];
                 // Save draft
             } else {
@@ -923,10 +912,11 @@ static NSInteger const MaximumNumberOfPictures = 4;
                 }
                 DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
                 [self savePost:YES];
-                self.dismissingEditView = YES;
+                [self dismissEditView];
             }
         }
     }
+    _currentActionSheet = nil;
 }
 
 #pragma mark - WPLegacyEditorViewControllerDelegate delegate
