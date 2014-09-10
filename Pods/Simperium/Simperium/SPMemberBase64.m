@@ -31,23 +31,31 @@
 }
 
 - (id)getValueFromDictionary:(NSDictionary *)dict key:(NSString *)key object:(id<SPDiffable>)object {
-    id value = [dict objectForKey: key];
-    if (![value isKindOfClass:[NSString class]])
+    id value = dict[key];
+    if (![value isKindOfClass:[NSString class]]) {
         return value;
+    }
     
     // Convert from NSString (base64) to NSData
     NSData *data = [NSData sp_decodeBase64WithString:value];
-    id obj = (self.valueTransformerName ?
-              [[NSValueTransformer valueTransformerForName:self.valueTransformerName] reverseTransformedValue:data] :
-              [NSKeyedUnarchiver unarchiveObjectWithData:data]);
     
-    //NSLog(@"Simperium transforming base64 (%@) %@ from %@", keyName, obj, value);
+    // Make sure there's something to unarchive. Otherwise this will trigger a console warning
+    if (data.length == 0) {
+        return nil;
+    }
+    
+    id obj = nil;
+    
+    if (self.valueTransformerName) {
+        obj = [[NSValueTransformer valueTransformerForName:self.valueTransformerName] reverseTransformedValue:data];
+    } else {
+        obj = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    }
     
     // A nil value will be encoded as an empty string, so check for that
-    if (obj == nil || ([obj isKindOfClass:[NSString class]] && [obj length] == 0))
+    if (obj == nil || ([obj isKindOfClass:[NSString class]] && [obj length] == 0)) {
         return nil;
-    
-    //NSAssert2(obj != nil, @"Simperium error: Transformable %@ couldn't be parsed from base64: %@", keyName, value);
+    }
     
     return obj;
 }
@@ -73,7 +81,7 @@
     // Construct the diff in the expected format
     return [NSDictionary dictionaryWithObjectsAndKeys:
             OP_REPLACE, OP_OP,
-            [self stringValueFromTransformable: otherValue], OP_VALUE, nil];
+            [self stringValueFromTransformable:otherValue], OP_VALUE, nil];
 }
 
 - (id)applyDiff:(id)thisValue otherValue:(id)otherValue error:(NSError **)error {
