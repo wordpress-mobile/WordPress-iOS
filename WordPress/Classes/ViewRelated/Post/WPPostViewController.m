@@ -31,6 +31,8 @@ NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 
 static NSInteger const MaximumNumberOfPictures = 5;
 
+static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
+
 @interface WPPostViewController ()<UIPopoverControllerDelegate> {
     NSOperationQueue *_mediaUploadQueue;
 }
@@ -410,7 +412,7 @@ static NSInteger const MaximumNumberOfPictures = 5;
                                          otherButtonTitles:NSLocalizedString(@"Update Draft", @"Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post."), nil];
     }
     
-    actionSheet.tag = 201;
+    actionSheet.tag = kWPPostViewControllerSaveOnExitActionSheetTag;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
     if (IS_IPAD) {
         [actionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES];
@@ -1129,7 +1131,7 @@ static NSInteger const MaximumNumberOfPictures = 5;
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if ([actionSheet tag] == 201) {
+    if ([actionSheet tag] == kWPPostViewControllerSaveOnExitActionSheetTag) {
         if (buttonIndex == actionSheet.destructiveButtonIndex) {
             [self actionSheetDiscardButtonPressed];
         } else if (buttonIndex == actionSheet.cancelButtonIndex) {
