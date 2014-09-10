@@ -6,7 +6,7 @@ import Foundation
     // MARK: - Public Properties
     public var title: String? {
         didSet {
-            titleLabel.text = title != nil ? title!.uppercaseString : String()
+            titleLabel.text = title?.uppercaseString ?? String()
             setNeedsLayout()
         }
     }

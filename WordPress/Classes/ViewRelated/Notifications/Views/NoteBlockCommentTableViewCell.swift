@@ -20,12 +20,12 @@ import Foundation
     }
     public var name: String? {
         didSet {
-            nameLabel.text  = name != nil ? name! : String()
+            nameLabel.text  = name ?? String()
         }
     }
     public var timestamp: String? {
         didSet {
-            timestampLabel.text  = timestamp != nil ? timestamp! : String()
+            timestampLabel.text  = timestamp ?? String()
         }
     }
     public var isLikeEnabled: Bool = false {
