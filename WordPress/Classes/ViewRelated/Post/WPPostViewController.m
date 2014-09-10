@@ -40,6 +40,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 @property (nonatomic, strong) UIButton *titleBarButton;
 @property (nonatomic, strong) UIView *uploadStatusView;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
+@property (nonatomic, strong) UIBarButtonItem *cancelButton;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
 
@@ -415,7 +416,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
     actionSheet.tag = kWPPostViewControllerSaveOnExitActionSheetTag;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
     if (IS_IPAD) {
-        [actionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES];
+        [actionSheet showFromBarButtonItem:self.cancelButton animated:YES];
     } else {
         [actionSheet showFromToolbar:self.navigationController.toolbar];
     }
@@ -578,7 +579,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
                                                                                            target:nil
                                                                                            action:nil];
         negativeSeparator.width = -10;
-        NSArray* leftBarButtons = @[negativeSeparator, [self cancelBarButtonItem], negativeSeparator];
+        NSArray* leftBarButtons = @[negativeSeparator, self.cancelButton, negativeSeparator];
         [self.navigationItem setLeftBarButtonItems:leftBarButtons animated:YES];
 	} else {
         [self.navigationItem setLeftBarButtonItems:nil];
@@ -666,18 +667,19 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 	return button;
 }
 
-- (UIBarButtonItem*)cancelBarButtonItem
+- (UIBarButtonItem*)cancelButton
 {
-    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-x"
-                                                                  frame:CGRectMake(0.0f, 0.0f, 40.0f, 40.0f)
-                                                                 target:self
-                                                               selector:@selector(cancelEditing)];
+    if (!_cancelButton) {
+        WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-x"
+                                                                            frame:CGRectMake(0.0f, 0.0f, 40.0f, 40.0f)
+                                                                           target:self
+                                                                         selector:@selector(cancelEditing)];
+        cancelButton.removeDefaultLeftSpacing = YES;        
+        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
+        _cancelButton = button;
+    }
     
-    cancelButton.removeDefaultLeftSpacing = YES;
-    
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
-    
-	return button;
+	return _cancelButton;
 }
 
 - (UIBarButtonItem *)editBarButtonItem
