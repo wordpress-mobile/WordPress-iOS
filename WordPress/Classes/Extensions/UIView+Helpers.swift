@@ -42,13 +42,23 @@ extension UIView
     }
     
     public func updateConstraint(attribute: NSLayoutAttribute, constant: CGFloat) {
-        updateConstraintForView(self, attribute: attribute, constant: constant)
+        updateConstraintWithFirstItem(self, attribute: attribute, constant: constant)
     }
 
-    public func updateConstraintForView(fistItem: NSObject!, attribute: NSLayoutAttribute, constant: CGFloat) {
+    public func updateConstraintWithFirstItem(fistItem: NSObject!, attribute: NSLayoutAttribute, constant: CGFloat) {
         for constraint in constraints() as [NSLayoutConstraint] {
             if constraint.firstItem as NSObject == fistItem {
                 if constraint.firstAttribute == attribute || constraint.secondAttribute == attribute {
+                    constraint.constant = constant
+                }
+            }
+        }
+    }
+    
+    public func updateConstraintWithFirstItem(firstItem: NSObject!, secondItem: NSObject!, firstAttribute: NSLayoutAttribute, secondAttribute: NSLayoutAttribute, constant: CGFloat) {
+        for constraint in constraints() as [NSLayoutConstraint] {
+            if constraint.firstItem as NSObject == firstItem && constraint.secondItem as? NSObject == secondItem {
+                if constraint.firstAttribute == firstAttribute && constraint.secondAttribute == secondAttribute {
                     constraint.constant = constant
                 }
             }
