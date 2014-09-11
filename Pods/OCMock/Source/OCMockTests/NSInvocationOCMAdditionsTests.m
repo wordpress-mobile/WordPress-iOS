@@ -52,7 +52,7 @@
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it one argument (starts at index 2)
-	NSNumber *argument = [NSNumber numberWithInt:1];
+	NSNumber *argument = @1;
 	[invocation setArgument:&argument atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"isEqualToNumber:%d", 1];
@@ -80,7 +80,7 @@
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it two arguments
-	NSNumber *argumentOne = [NSNumber numberWithInt:1];
+	NSNumber *argumentOne = @1;
 	NSString *argumentTwo = @"TEST_STRING";
 	[invocation setArgument:&argumentOne atIndex:2];
 	[invocation setArgument:&argumentTwo atIndex:3];
@@ -96,7 +96,7 @@
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it one argument (starts at index 2)
-	NSArray *argument = [NSArray arrayWithObject:@"TEST_STRING"];
+	NSArray *argument = @[@"TEST_STRING"];
 	[invocation setArgument:&argument atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"addObjectsFromArray:%@", [argument description]];

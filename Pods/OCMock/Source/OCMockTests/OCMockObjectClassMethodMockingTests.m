@@ -18,7 +18,7 @@
 #import <OCMock/OCMock.h>
 #import "OCClassMockObject.h"
 #import "OCPartialMockObject.h"
-#import "OCMFunctions.h"
+
 
 #pragma mark   Helper classes
 
@@ -29,6 +29,18 @@
 @end
 
 @implementation TestClassWithClassMethods
+
+static NSUInteger initializeCallCount = 0;
+
++ (void)initialize
+{
+    initializeCallCount += 1;
+}
+
++ (NSUInteger)initializeCallCount
+{
+    return initializeCallCount;
+}
 
 + (NSString *)foo
 {
@@ -211,7 +223,7 @@
     XCTAssertEqualObjects(@"mocked-foo", [TestClassWithClassMethods foo], @"Should have stubbed class method 'foo'.");
     XCTAssertEqualObjects(@"mocked-bar", [TestClassWithClassMethods bar], @"Should have stubbed class method 'bar'.");
 
-    [mock release];
+    mock = nil;
 
     XCTAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should have 'unstubbed' class method 'foo'.");
     XCTAssertEqualObjects(@"Bar-ClassMethod", [TestClassWithClassMethods bar], @"Should have 'unstubbed' class method 'bar'.");
@@ -227,7 +239,7 @@
     XCTAssertEqualObjects(@"mocked-foo", [TestClassWithClassMethods foo], @"Should have stubbed class method 'foo'.");
     XCTAssertEqualObjects(@"mocked-bar", [TestClassWithClassMethods bar], @"Should have stubbed class method 'bar'.");
     
-    [mock release];
+    mock = nil;
     
     XCTAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo], @"Should have 'unstubbed' class method 'foo'.");
     XCTAssertEqualObjects(@"Bar-ClassMethod", [TestClassWithClassMethods bar], @"Should have 'unstubbed' class method 'bar'.");
@@ -235,10 +247,10 @@
 
 - (void)testSecondClassMockDeactivatesFirst
 {
-    id mock1 = [[[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class]] autorelease];
+    id mock1 = [[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class]];
     [[[mock1 stub] andReturn:@"mocked-foo-1"] foo];
 
-    id mock2 = [[[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class]] autorelease];
+    id mock2 = [[OCClassMockObject alloc] initWithClass:[TestClassWithClassMethods class]];
     XCTAssertEqualObjects(@"Foo-ClassMethod", [TestClassWithClassMethods foo]);
 
     [mock2 stopMocking];
@@ -274,6 +286,31 @@
 
     [[[mock expect] andForwardToRealObject] foo];
     XCTAssertThrows([mock foo]);
+}
+
+- (void)testInitializeIsNotCalledOnMockedClass
+{
+    NSUInteger countBefore = [TestClassWithClassMethods initializeCallCount];
+
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    [TestClassWithClassMethods foo];
+    [[mock verify] foo];
+
+    NSUInteger countAfter = [TestClassWithClassMethods initializeCallCount];
+
+    XCTAssertEqual(countBefore, countAfter, @"Creating a mock should not have resulted in call to +initialize");
+}
+
+- (void)testCanStubNSObjectClassMethodsIncludingAlloc
+{
+    TestClassWithClassMethods *dummyObject = [[TestClassWithClassMethods alloc] init];
+
+    id mock = [OCMockObject mockForClass:[TestClassWithClassMethods class]];
+    [[[mock stub] andReturn:dummyObject] new];
+
+    id newObject = [TestClassWithClassMethods new];
+
+    XCTAssertEqualObjects(dummyObject, newObject, @"Should have stubbed +new method");
 }
 
 

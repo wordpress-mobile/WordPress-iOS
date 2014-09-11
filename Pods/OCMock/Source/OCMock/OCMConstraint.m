@@ -19,7 +19,7 @@
 
 @implementation OCMConstraint
 
-+ (id)constraint
++ (instancetype)constraint
 {
 	return [[[self alloc] init] autorelease];
 }
@@ -34,7 +34,7 @@
     return [self retain];
 }
 
-+ (id)constraintWithSelector:(SEL)aSelector onObject:(id)anObject
++ (instancetype)constraintWithSelector:(SEL)aSelector onObject:(id)anObject
 {
 	OCMInvocationConstraint *constraint = [OCMInvocationConstraint constraint];
 	NSMethodSignature *signature = [anObject methodSignatureForSelector:aSelector]; 
@@ -47,7 +47,7 @@
 	return constraint;
 }
 
-+ (id)constraintWithSelector:(SEL)aSelector onObject:(id)anObject withValue:(id)aValue
++ (instancetype)constraintWithSelector:(SEL)aSelector onObject:(id)anObject withValue:(id)aValue
 {
 	OCMInvocationConstraint *constraint = [self constraintWithSelector:aSelector onObject:anObject];
 	if([[constraint->invocation methodSignature] numberOfArguments] < 4)
@@ -132,7 +132,7 @@
 
 @implementation OCMBlockConstraint
 
-- (id)initWithConstraintBlock:(BOOL (^)(id))aBlock
+- (instancetype)initWithConstraintBlock:(BOOL (^)(id))aBlock
 {
 	self = [super init];
 	block = [aBlock copy];

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		03C231581946D3CC00F90643 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C231571946D3CC00F90643 /* Foundation.framework */; };
-		03C2315A1946D3CC00F90643 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C231591946D3CC00F90643 /* CoreGraphics.framework */; };
 		03C2315C1946D3CC00F90643 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C2315B1946D3CC00F90643 /* UIKit.framework */; };
 		03C231621946D3CC00F90643 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 03C231601946D3CC00F90643 /* InfoPlist.strings */; };
 		03C231641946D3CC00F90643 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C231631946D3CC00F90643 /* main.m */; };
@@ -39,7 +38,6 @@
 /* Begin PBXFileReference section */
 		03C231541946D3CC00F90643 /* iOS7Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS7Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03C231571946D3CC00F90643 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		03C231591946D3CC00F90643 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		03C2315B1946D3CC00F90643 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		03C2315F1946D3CC00F90643 /* iOS7Example-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iOS7Example-Info.plist"; sourceTree = "<group>"; };
 		03C231611946D3CC00F90643 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -67,7 +65,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03C2315A1946D3CC00F90643 /* CoreGraphics.framework in Frameworks */,
 				03C2315C1946D3CC00F90643 /* UIKit.framework in Frameworks */,
 				03C231581946D3CC00F90643 /* Foundation.framework in Frameworks */,
 			);
@@ -111,7 +108,6 @@
 			children = (
 				03C231921946D45200F90643 /* libOCMock.a */,
 				03C231571946D3CC00F90643 /* Foundation.framework */,
-				03C231591946D3CC00F90643 /* CoreGraphics.framework */,
 				03C2315B1946D3CC00F90643 /* UIKit.framework */,
 				03C2317C1946D3CC00F90643 /* XCTest.framework */,
 			);

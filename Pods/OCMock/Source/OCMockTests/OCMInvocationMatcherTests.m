@@ -51,7 +51,7 @@
 
 - (void)testMatchesAliasedSelector
 {
-    OCMInvocationMatcher *matcher = [[[OCMInvocationMatcher alloc] init] autorelease];
+    OCMInvocationMatcher *matcher = [[OCMInvocationMatcher alloc] init];
     NSInvocation *recordedInvocation = [self invocationForTargetClass:[NSString class] selector:@selector(uppercaseString)];
     [matcher setInvocation:recordedInvocation];
 
@@ -65,7 +65,7 @@
     NSString *recorded = @"recorded";
     NSString *actual = @"actual";
 
-    OCMInvocationMatcher *matcher = [[[OCMInvocationMatcher alloc] init] autorelease];
+    OCMInvocationMatcher *matcher = [[OCMInvocationMatcher alloc] init];
     NSInvocation *recordedInvocation = [self invocationForTargetClass:[NSString class] selector:@selector(initWithString:)];
     [recordedInvocation setArgument:&recorded atIndex:2];
     [matcher setInvocation:recordedInvocation];
@@ -82,7 +82,7 @@
     NSString *arg1 = @"I (.*) mocks.";
     NSUInteger arg2 = NSRegularExpressionSearch;
 
-    OCMInvocationMatcher *matcher = [[[OCMInvocationMatcher alloc] init] autorelease];
+    OCMInvocationMatcher *matcher = [[OCMInvocationMatcher alloc] init];
     NSInvocation *recordedInvocation = [self invocationForTargetClass:[NSString class] selector:@selector(rangeOfString:options:)];
     [recordedInvocation setArgument:&any atIndex:2];
     [recordedInvocation setArgument:&zero atIndex:3];
@@ -101,7 +101,7 @@
     NSString *recorded = @"recorded";
     NSString *actual = @"actual";
 
-    OCMInvocationMatcher *matcher = [[[OCMInvocationMatcher alloc] init] autorelease];
+    OCMInvocationMatcher *matcher = [[OCMInvocationMatcher alloc] init];
     NSInvocation *recordedInvocation = [self invocationForTargetClass:[TestClassForRecorder class] selector:@selector(methodWithInt:andObject:)];
     [recordedInvocation setArgument:&arg1 atIndex:2];
     [recordedInvocation setArgument:&recorded atIndex:3];

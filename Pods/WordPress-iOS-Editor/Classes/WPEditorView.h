@@ -44,12 +44,14 @@
  *
  *	@param		editorView		The editor view.
  *	@param		url				The url that should be loaded.
+ *	@param		title			The title of the link that was tapped.
  *
  *	@return		YES if the tap was handled by the receiver and default handler should be supressed,
  *				NO if it wasn't.
  */
 - (BOOL)editorView:(WPEditorView*)editorView
-		linkTapped:(NSURL*)url;
+		linkTapped:(NSURL*)url
+			 title:(NSString*)title;
 
 /**
  *	@brief		Received when the selection is changed.
@@ -92,6 +94,7 @@ stylesForCurrentSelection:(NSArray*)styles;
 @property (nonatomic, copy, readwrite) NSString* placeholderHTMLString;
 
 #pragma mark - Selection
+@property (nonatomic, strong, readonly) NSString *selectedLinkTitle;
 @property (nonatomic, strong, readonly) NSString *selectedLinkURL;
 
 #pragma mark - Interaction
@@ -110,6 +113,11 @@ stylesForCurrentSelection:(NSArray*)styles;
  */
 - (void)redo;
 
+#pragma mark - Selection
+
+
+- (void)restoreSelection;
+
 /**
  *	@brief		Saves the current text selection.
  *	@details	The selection is restored automatically by some insert operations when called.
@@ -119,27 +127,30 @@ stylesForCurrentSelection:(NSArray*)styles;
 - (void)saveSelection;
 
 /**
- *	@brief		Inserts a link at the last saved selection.
+ *	@brief		Call this to retrieve the selected text.
  *
- *	@param		url		The url that will open when the link is clicked.
+ *	@returns	The selected text.
  */
-- (void)insertLink:(NSString *)url;
-
-/**
- *	@brief		Updates the link at the last saved selection.
- *
- *	@param		url		The url that will open when the link is clicked.
- */
-- (void)updateLink:(NSString *)url;
+- (NSString*)selectedText;
 
 - (void)setSelectedColor:(UIColor*)color
 					 tag:(int)tag;
-- (void)removeLink;
-- (void)quickLink;
+
+#pragma mark - Images
+
 - (void)insertImage:(NSString *)url alt:(NSString *)alt;
 - (void)updateImage:(NSString *)url alt:(NSString *)alt;
 
 #pragma mark - Links
+
+/**
+ *	@brief		Inserts a link at the last saved selection.
+ *
+ *	@param		url		The url that will open when the link is clicked.  Cannot be nil.
+ *	@param		title	The link title.  Cannot be nil.
+ */
+- (void)insertLink:(NSString *)url
+			 title:(NSString*)title;
 
 /**
  *	@brief		Call this method to know if the current selection is part of a link.
@@ -147,6 +158,18 @@ stylesForCurrentSelection:(NSArray*)styles;
  *	@return		YES if the current selection is part of a link.
  */
 - (BOOL)isSelectionALink;
+
+/**
+ *	@brief		Updates the link at the last saved selection.
+ *
+ *	@param		url		The url that will open when the link is clicked.  Cannot be nil.
+ *	@param		title	The link title.  Cannot be nil.
+ */
+- (void)updateLink:(NSString *)url
+			 title:(NSString*)title;
+
+- (void)quickLink;
+- (void)removeLink;
 
 #pragma mark - Editor focus
 

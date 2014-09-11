@@ -27,6 +27,7 @@
 		28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
 		28C286E10D94DF7D0034E888 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C286E00D94DF7D0034E888 /* RootViewController.m */; };
 		28F335F11007B36200424DE2 /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F335F01007B36200424DE2 /* RootViewController.xib */; };
+		5E2E834C197735D5006E5062 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DE954E12F2FFB0003852B7 /* UIKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +86,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E2E834C197735D5006E5062 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

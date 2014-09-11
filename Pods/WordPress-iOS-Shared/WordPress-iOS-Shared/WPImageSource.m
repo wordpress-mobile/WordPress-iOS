@@ -62,7 +62,17 @@ NSString * const WPImageSourceErrorDomain = @"WPImageSourceErrorDomain";
 - (void)startDownloadForURL:(NSURL *)url authToken:(NSString *)authToken {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSURL *requestURL = url;
-        if (authToken) {
+        NSString *token = nil;
+
+        /*
+         If the URL is not for a WordPress.com file, pretend we don't have an auth token
+         It could potentially get sent to a third party
+         */
+        if (authToken && [[requestURL host] hasSuffix:@"wordpress.com"]) {
+            token = authToken;
+        }
+
+        if (token) {
             if (![url.absoluteString hasPrefix:@"https"]) {
                 NSString *sslUrl = [url.absoluteString stringByReplacingOccurrencesOfString:@"http://" withString:@"https://"];
                 requestURL = [NSURL URLWithString:sslUrl];
@@ -70,8 +80,8 @@ NSString * const WPImageSourceErrorDomain = @"WPImageSourceErrorDomain";
         }
         
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:60];
-        if (authToken) {
-            [request addValue:[NSString stringWithFormat:@"Bearer %@", authToken] forHTTPHeaderField:@"Authorization"];
+        if (token) {
+            [request addValue:[NSString stringWithFormat:@"Bearer %@", token] forHTTPHeaderField:@"Authorization"];
         }
 
 		AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];

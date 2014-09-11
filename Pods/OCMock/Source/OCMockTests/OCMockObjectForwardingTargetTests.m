@@ -38,12 +38,6 @@
 
 @synthesize name = _name;
 
-- (void)dealloc
-{
-    [_name release];
-    [super dealloc];
-}
-
 @end
 
 
@@ -64,12 +58,6 @@
 - (instancetype)init
 {
     return [self initWithInternal:[[InternalObject alloc] init]];
-}
-
-- (void)dealloc
-{
-    [_internal release];
-    [super dealloc];
 }
 
 - (id)forwardingTargetForSelector:(SEL)selector

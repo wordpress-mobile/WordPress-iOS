@@ -31,6 +31,8 @@ NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 
 static NSInteger const MaximumNumberOfPictures = 5;
 
+static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
+
 @interface WPPostViewController ()<UIPopoverControllerDelegate> {
     NSOperationQueue *_mediaUploadQueue;
 }
@@ -38,6 +40,7 @@ static NSInteger const MaximumNumberOfPictures = 5;
 @property (nonatomic, strong) UIButton *titleBarButton;
 @property (nonatomic, strong) UIView *uploadStatusView;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
+@property (nonatomic, strong) UIBarButtonItem *cancelButton;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
 
@@ -410,10 +413,10 @@ static NSInteger const MaximumNumberOfPictures = 5;
                                          otherButtonTitles:NSLocalizedString(@"Update Draft", @"Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post."), nil];
     }
     
-    actionSheet.tag = 201;
+    actionSheet.tag = kWPPostViewControllerSaveOnExitActionSheetTag;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
     if (IS_IPAD) {
-        [actionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES];
+        [actionSheet showFromBarButtonItem:self.cancelButton animated:YES];
     } else {
         [actionSheet showFromToolbar:self.navigationController.toolbar];
     }
@@ -576,7 +579,7 @@ static NSInteger const MaximumNumberOfPictures = 5;
                                                                                            target:nil
                                                                                            action:nil];
         negativeSeparator.width = -10;
-        NSArray* leftBarButtons = @[negativeSeparator, [self cancelBarButtonItem], negativeSeparator];
+        NSArray* leftBarButtons = @[negativeSeparator, self.cancelButton, negativeSeparator];
         [self.navigationItem setLeftBarButtonItems:leftBarButtons animated:YES];
 	} else {
         [self.navigationItem setLeftBarButtonItems:nil];
@@ -664,18 +667,19 @@ static NSInteger const MaximumNumberOfPictures = 5;
 	return button;
 }
 
-- (UIBarButtonItem*)cancelBarButtonItem
+- (UIBarButtonItem*)cancelButton
 {
-    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-x"
-                                                                  frame:CGRectMake(0.0f, 0.0f, 40.0f, 40.0f)
-                                                                 target:self
-                                                               selector:@selector(cancelEditing)];
+    if (!_cancelButton) {
+        WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-x"
+                                                                            frame:CGRectMake(0.0f, 0.0f, 40.0f, 40.0f)
+                                                                           target:self
+                                                                         selector:@selector(cancelEditing)];
+        cancelButton.removeDefaultLeftSpacing = YES;        
+        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
+        _cancelButton = button;
+    }
     
-    cancelButton.removeDefaultLeftSpacing = YES;
-    
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
-    
-	return button;
+	return _cancelButton;
 }
 
 - (UIBarButtonItem *)editBarButtonItem
@@ -1129,36 +1133,39 @@ static NSInteger const MaximumNumberOfPictures = 5;
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if ([actionSheet tag] == kWPPostViewControllerSaveOnExitActionSheetTag) {
+        if (buttonIndex == actionSheet.destructiveButtonIndex) {
+            [self actionSheetDiscardButtonPressed];
+        } else if (buttonIndex == actionSheet.cancelButtonIndex) {
+            [self actionSheetKeepEditingButtonPressed];
+        } else if (buttonIndex == actionSheet.firstOtherButtonIndex) {
+            [self actionSheetSaveDraftButtonPressed];
+        }
+    }
+    
     _currentActionSheet = nil;
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if ([actionSheet tag] == 201) {
-        // Discard
-        if (buttonIndex == 0) {
-            [self discardChangesAndDismiss];
-            [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
-        }
-        
-        if (buttonIndex == 1) {
-            // Cancel / Keep editing
-			if ([actionSheet numberOfButtons] == 2) {
-                
-				[actionSheet dismissWithClickedButtonIndex:0 animated:YES];
-				
-				[self startEditing];
-				
-                // Save draft
-			} else {
-                // If you tapped on a button labeled "Save Draft", you probably expect the post to be saved as a draft
-                if (![self.post hasRemote] && [self.post.status isEqualToString:@"publish"]) {
-                    self.post.status = @"draft";
-                }
-                DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
-				[self savePostAndDismissVC];
-			}
-        }
+#pragma mark - UIActionSheet helper methods
+
+- (void)actionSheetDiscardButtonPressed
+{
+    [self discardChangesAndDismiss];
+    [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
+}
+
+- (void)actionSheetKeepEditingButtonPressed
+{
+    [self startEditing];
+}
+
+- (void)actionSheetSaveDraftButtonPressed
+{
+    if (![self.post hasRemote] && [self.post.status isEqualToString:@"publish"]) {
+        self.post.status = @"draft";
     }
+    DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
+    [self savePostAndDismissVC];
 }
 
 #pragma mark - WPEditorViewControllerDelegate delegate

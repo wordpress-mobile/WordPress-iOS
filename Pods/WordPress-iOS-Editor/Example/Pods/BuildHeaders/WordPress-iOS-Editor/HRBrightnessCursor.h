@@ -1,0 +1,1 @@
+../../../../Classes/HRBrightnessCursor.h

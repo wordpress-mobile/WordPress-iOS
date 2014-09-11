@@ -1,7 +1,38 @@
 Listing of notable changes by release. More detail is usually found in the Git 
 commit messages and/or the pull requests.
 
-OCMock 3.0 (2013-06-12)
+OCMock 3.1.1 (2014-08-23)
+
+* Fixed a recently introduced bug that resulted in class arguments and return
+  values not to be considered objects (Patrick Hartling, Max Shcheglov)
+	
+
+OCMock 3.1 (2014-08-22)
+
+* Converting number types to make andReturn more intuitive (Carl Lindberg)
+* Macros now silence warnings about unused return values (Gordon Fontenot)
+* Added isKindOfClass constraint (Ash Furrow)
+* Performance and stability improvements. As a result it is no longer possible
+  use verify-after-running to verify certain methods:
+  - All methods implemented by NSObject and categories on it
+  - Private methods in core Apple classes, ie. the class name has an NS or UI
+    prefix and the method has an underscore prefix and/or suffix.
+
+
+OCMock 3.0.2 (2014-07-07)
+
+* Fixed podspec
+
+
+OCMock 3.0.1 (2014-07-06)
+
+* Fixed bug that prevented stubs from returning nil
+* Fixed bug related to handling of weak references
+* Improved error message when trying to mock undefined method
+* Added support for matching of char* arguments
+
+
+OCMock 3.0 (2014-06-12)
 
 * Added macro for verify with delay
 * Fixed several critical bugs
