@@ -83,6 +83,12 @@ import Foundation
     }
     
     
+    // MARK: - Gestures Recognizers
+    public func backgroundWasTapped() {
+        becomeFirstResponder()
+    }
+    
+    
     // MARK: - View Methods
     public override func becomeFirstResponder() -> Bool {
         return textView.becomeFirstResponder()
@@ -155,9 +161,6 @@ import Foundation
         gestureRecognizers              = [recognizer]
     }
     
-    public func backgroundWasTapped() {
-        becomeFirstResponder()
-    }
     
     // MARK: - Refresh Helpers
     private func refreshInterface() {
@@ -170,14 +173,12 @@ import Foundation
     private func refreshSizeIfNeeded() {
         var newSize         = intrinsicContentSize()
         let oldSize         = frame.size
-        
+
         if newSize.height == oldSize.height {
             return
         }
-
-        updateConstraint(.Height, constant: newSize.height)
-        setNeedsLayout()
-        layoutIfNeeded()
+        
+        invalidateIntrinsicContentSize()
     }
     
     private func refreshPlaceholder() {
