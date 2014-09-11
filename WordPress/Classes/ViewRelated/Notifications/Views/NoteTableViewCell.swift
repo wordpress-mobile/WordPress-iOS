@@ -15,13 +15,13 @@ import Foundation
     }
     public var attributedSubject: NSAttributedString? {
         didSet {
-            subjectLabel.attributedText = attributedSubject != nil ? attributedSubject! : NSAttributedString()
+            subjectLabel.attributedText = attributedSubject ?? NSAttributedString()
             setNeedsLayout()
         }
     }
     public var attributedSnippet: NSAttributedString? {
         didSet {
-            snippetLabel.attributedText = attributedSnippet != nil ? attributedSnippet! : NSAttributedString()
+            snippetLabel.attributedText = attributedSnippet ?? NSAttributedString()
             refreshNumberOfLines()
             setNeedsLayout()
         }
