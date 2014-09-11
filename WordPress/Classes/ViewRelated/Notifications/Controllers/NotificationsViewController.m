@@ -47,6 +47,7 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
 @property (nonatomic, strong) NSDate                *pushNotificationDate;
 @property (nonatomic, strong) NSMutableDictionary   *cachedRowHeights;
 @property (nonatomic, strong) UINib                 *tableViewCellNib;
+@property (nonatomic, strong) NSDate                *lastReloadDate;
 @end
 
 #pragma mark ====================================================================================
@@ -66,14 +67,17 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        self.title                      = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
+        self.title = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
 
         // Watch for application badge number changes
-        NSString *badgeKeyPath          = NSStringFromSelector(@selector(applicationIconBadgeNumber));
+        NSString *badgeKeyPath = NSStringFromSelector(@selector(applicationIconBadgeNumber));
         [[UIApplication sharedApplication] addObserver:self forKeyPath:badgeKeyPath options:NSKeyValueObservingOptionNew context:nil];
         
         // Cache Row Heights!
-        self.cachedRowHeights           = [NSMutableDictionary dictionary];
+        self.cachedRowHeights = [NSMutableDictionary dictionary];
+        
+        // All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
+        self.lastReloadDate = [NSDate date];
     }
     
     return self;
@@ -117,9 +121,6 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
 {
     [super viewWillAppear:animated];
     
-    // Reload!
-    [self.tableView reloadData];
-
     // Listen to appDidBecomeActive Note
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(handleApplicationDidBecomeActiveNote:) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -129,11 +130,12 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
         [WPAnalytics track:WPAnalyticsStatNotificationsAccessed];
     });
 
-    // Badge + Metadata
+    // Refresh the UI
     [self updateLastSeenTime];
     [self resetApplicationBadge];
     [self showManageButtonIfNeeded];
     [self setupNotificationsBucketDelegate];
+    [self reloadResultsControllerIfNeeded];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -187,12 +189,10 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
         return;
     }
 
-    // Reload
-    [self.tableView reloadData];
-
-    // Reset the badge: the notifications are visible! + Update Last Seen time
+    // Reset the badge: the notifications are visible!
     [self resetApplicationBadge];
     [self updateLastSeenTime];
+    [self reloadResultsControllerIfNeeded];
 }
 
 
@@ -284,6 +284,23 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
     navigationController.modalPresentationStyle     = UIModalPresentationFormSheet;
 
     [self presentViewController:navigationController animated:YES completion:nil];
+}
+
+- (void)reloadResultsControllerIfNeeded
+{
+    // Note:
+    // NSFetchedResultsController groups notifications based on a transient property ("sectionIdentifier").
+    // Simply calling reloadData doesn't make the FRC recalculate the sections.
+    // For that reason, let's force a reload, only when 1 day has elapsed, and sections would have changed.
+    //
+    NSInteger daysElapsed = [[NSCalendar currentCalendar] daysElapsedSinceDate:self.lastReloadDate];
+    if (daysElapsed == 0) {
+        return;
+    }
+    
+    [self.resultsController performFetch:nil];
+    [self.tableView reloadData];
+    self.lastReloadDate = [NSDate date];
 }
 
 
@@ -425,7 +442,7 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
     
     if([segue.identifier isEqualToString:detailsSegueID]) {
         NotificationDetailsViewController *detailsViewController = segue.destinationViewController;
-        detailsViewController.note = note;
+        [detailsViewController setupWithNotification:note];
     
     } else if([segue.identifier isEqualToString:readerSegueID]) {
         ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
