@@ -87,6 +87,10 @@ static CGFloat NotificationSectionSeparator     = 10;
     self.restorationClass               = [self class];
     self.view.backgroundColor           = [WPStyleGuide itsEverywhereGrey];
     
+    // Don't show the notification title in the next-view's back button
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
+    
     self.tableView.backgroundColor      = [WPStyleGuide itsEverywhereGrey];
 
     self.reuseIdentifierMap = @{
@@ -183,6 +187,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     // Attach the Reply component only if the noficiation has a comment, and it can be replied-to
     NotificationBlockGroup *group   = [self.note blockGroupOfType:NoteBlockGroupTypeComment];
     NotificationBlock *block        = [group blockOfType:NoteBlockTypeComment];
+    
     if (![block actionForKey:NoteActionReplyKey]) {
         return;
     }
@@ -197,16 +202,10 @@ static CGFloat NotificationSectionSeparator     = 10;
     };
     self.replyTextView              = replyTextView;
     
-    // Attach!
-    [self.view addSubview:replyTextView];
-    
-    // Adjust position + use an internal ReplaceTextView instance as inputAccessoryView
-    [replyTextView alignAtBottomOfSuperview];
-    
-    // Setup the Table Insets
-    UIEdgeInsets tableViewInsets    = self.tableView.contentInset;
-    tableViewInsets.bottom          += CGRectGetHeight(replyTextView.frame);
-    self.tableView.contentInset     = tableViewInsets;
+    // Attach the ReplyTextView at the very bottom
+    [self.view addSubview:self.replyTextView];
+    [self.view pinSubviewAtBottom:self.replyTextView];
+    [self.view pinSubview:self.tableView aboveSubview:self.replyTextView];
 }
 
 
@@ -891,14 +890,14 @@ static CGFloat NotificationSectionSeparator     = 10;
     UIEdgeInsets newContentInsets           = self.tableView.contentInset;
     newContentInsets.bottom                 += bottomInset;
     
-    self.replyTextView.inputAccessoryView.alpha = 0;
+    self.replyTextView.proxyAccessoryView.alpha = 0;
     
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
     [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
 
-    self.tableView.contentInset             = newContentInsets;
-    self.replyTextView.inputAccessoryView.alpha  = 1;
+    self.tableView.contentInset                 = newContentInsets;
+    self.replyTextView.proxyAccessoryView.alpha = 1;
 
     [UIView commitAnimations];
     

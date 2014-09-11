@@ -32,7 +32,7 @@
 - (void)testMasterViewControllerDeletesItemsFromTableView
 {
     // Test set-up
-    
+
     MasterViewController *controller = [[MasterViewController alloc] init];
     NSIndexPath *dummyIndexPath = [NSIndexPath indexPathForRow:1 inSection:0];
     
@@ -46,7 +46,7 @@
     
     [controller tableView:tableViewMock commitEditingStyle:UITableViewCellEditingStyleDelete forRowAtIndexPath:dummyIndexPath];
     
-    // Verify that expectated methods were called
+    // Verify that expected methods were called
     
     OCMVerify([tableViewMock deleteRowsAtIndexPaths:[NSArray arrayWithObject:dummyIndexPath] withRowAnimation:UITableViewRowAnimationFade]);
 }

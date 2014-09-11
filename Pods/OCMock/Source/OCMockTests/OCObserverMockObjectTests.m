@@ -50,7 +50,7 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
 - (void)testAcceptsExpectedNotificationWithSpecifiedObjectAndUserInfo
 {
 	[center addMockObserver:mock name:TestNotificationOne object:nil];
-	NSDictionary *info = [NSDictionary dictionaryWithObject:@"foo" forKey:@"key"];
+	NSDictionary *info = @{@"key": @"foo"};
     [[mock expect] notificationWithName:TestNotificationOne object:self userInfo:info];
     
     [center postNotificationName:TestNotificationOne object:self userInfo:info];
@@ -121,9 +121,9 @@ static NSString *TestNotificationOne = @"TestNotificationOne";
 {
 	[center addMockObserver:mock name:TestNotificationOne object:nil];
     [[mock expect] notificationWithName:TestNotificationOne object:self 
-							   userInfo:[NSDictionary dictionaryWithObject:@"foo" forKey:@"key"]];
+							   userInfo:@{@"key": @"foo"}];
 	XCTAssertThrows([center postNotificationName:TestNotificationOne object:[NSString string] 
-									   userInfo:[NSDictionary dictionaryWithObject:@"bar" forKey:@"key"]]);
+									   userInfo:@{@"key": @"bar"}]);
 }
 
 - (void)testRaisesOnVerifyWhenExpectedNotificationIsNotSent

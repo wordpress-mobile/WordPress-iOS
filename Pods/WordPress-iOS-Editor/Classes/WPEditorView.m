@@ -4,6 +4,12 @@
 #import "HRColorUtil.h"
 #import "ZSSTextView.h"
 
+typedef void(^WPEditorViewCallbackParameterProcessingBlock)(NSString* parameterName, NSString* parameterValue);
+typedef void(^WPEditorViewNoParamsCompletionBlock)();
+
+static NSString* const kDefaultCallbackParameterSeparator = @",";
+static NSString* const kDefaultCallbackParameterComponentSeparator = @"=";
+
 @interface WPEditorView () <UITextViewDelegate, UIWebViewDelegate>
 
 #pragma mark - Misc state
@@ -219,8 +225,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
  */
 - (BOOL)handleWebViewCallbackURL:(NSURL*)url
 {
-	NSAssert([url isKindOfClass:[NSURL class]],
-			 @"Expected param url to be a non-nil, NSURL object.");
+	NSParameterAssert([url isKindOfClass:[NSURL class]]);
 
 	BOOL handled = NO;
 
@@ -258,9 +263,8 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 		
 		handled = YES;
 	} else if ([self isLinkTappedScheme:scheme]) {
-		if ([self.delegate respondsToSelector:@selector(editorView:linkTapped:)]) {
-			[self.delegate editorView:self linkTapped:url];
-		}
+		[self handleLinkTappedCallback:url];
+		handled = YES;
 	} else if ([self isSelectionStyleScheme:scheme]) {
 		NSString* styles = [[url resourceSpecifier] stringByReplacingOccurrencesOfString:@"//" withString:@""];
 		
@@ -282,6 +286,39 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 	}
 	
 	return handled;
+}
+
+/**
+ *	@brief		Handles a link tapped callback.
+ *
+ *	@param		url		The url with all the callback information.
+ */
+- (void)handleLinkTappedCallback:(NSURL*)url
+{
+	NSParameterAssert([url isKindOfClass:[NSURL class]]);
+	
+	static NSString* const kTappedUrlParameterName = @"url";
+	static NSString* const kTappedUrlTitleParameterName = @"title";
+	
+	__block NSURL* tappedUrl = nil;
+	__block NSString* tappedUrlTitle = nil;
+	
+	[self parseParametersFromCallbackURL:url
+		 andExecuteBlockForEachParameter:^(NSString *parameterName, NSString *parameterValue)
+	{
+		if ([parameterName isEqualToString:kTappedUrlParameterName]) {
+			tappedUrl = [NSURL URLWithString:[self stringByDecodingURLFormat:parameterValue]];
+		} else if ([parameterName isEqualToString:kTappedUrlTitleParameterName]) {
+			tappedUrlTitle = [self stringByDecodingURLFormat:parameterValue];
+		}
+	} onComplete:^{
+		
+		[self saveSelection];
+		
+		if ([self.delegate respondsToSelector:@selector(editorView:linkTapped:title:)]) {
+			[self.delegate editorView:self linkTapped:tappedUrl title:tappedUrlTitle];
+		}
+	}];
 }
 
 - (BOOL)isDOMLoadedScheme:(NSString*)scheme
@@ -328,7 +365,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 
 - (void)processStyles:(NSString *)styles
 {
-    NSArray *styleStrings = [styles componentsSeparatedByString:@","];
+    NSArray *styleStrings = [styles componentsSeparatedByString:kDefaultCallbackParameterSeparator];
     NSMutableArray *itemsModified = [[NSMutableArray alloc] init];
 	
 	self.selectedImageURL = nil;
@@ -359,6 +396,77 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 	{
 		[self.delegate editorView:self stylesForCurrentSelection:styleStrings];
 	}
+}
+
+#pragma mark - Callback parsing
+
+/**
+ *	@brief		Extract the components that make up a parameter.
+ *	@details	Should always be two (for example: 'value=65' would return @['value', '65']).
+ *
+ *	@param		parameter	The string parameter to parse.  Cannot be nil.
+ *
+ *	@returns	An array containing each component.
+ */
+- (NSArray*)componentsFromParameter:(NSString*)parameter
+{
+	NSParameterAssert([parameter isKindOfClass:[NSString class]]);
+	
+	NSArray* components = [parameter componentsSeparatedByString:kDefaultCallbackParameterComponentSeparator];
+	NSAssert([components count] == 2,
+			 @"We're expecting exactly two components here.");
+	
+	return components;
+}
+
+/**
+ *	@brief		This is a very helpful method for parsing through a callback's parameters and
+ *				performing custom processing when each parameter and value is identified.
+ *
+ *	@param		url					The callback URL to process.  Cannot be nil.
+ *	@param		block				Will be executed one time for each parameter identified by the
+ *									parser.  Cannot be nil.
+ *	@param		onCompleteBlock		The block to execute when the parsing finishes.  Can be nil.
+ */
+- (void)parseParametersFromCallbackURL:(NSURL*)url
+	   andExecuteBlockForEachParameter:(WPEditorViewCallbackParameterProcessingBlock)block
+							onComplete:(WPEditorViewNoParamsCompletionBlock)onCompleteBlock
+{
+	NSParameterAssert([url isKindOfClass:[NSURL class]]);
+	NSParameterAssert(block);
+	
+	NSArray* parameters = [self parametersFromCallbackURL:url];
+	NSAssert([parameters count] == 2,
+			 @"We're expecting exactly two parameters here.");
+	
+	for (NSString* parameter in parameters) {
+		NSAssert([parameter isKindOfClass:[NSString class]],
+				 @"We're expecting to have a non-nil NSString object here.");
+		
+		NSArray* components = [self componentsFromParameter:parameter];
+		
+		block([components objectAtIndex:0], [components objectAtIndex:1]);
+	}
+	
+	if (onCompleteBlock) {
+		onCompleteBlock();
+	}
+}
+
+/**
+ *	@brief		Extract the parameters that make up a callback URL.
+ *
+ *	@param		url		The callback URL to parse.  Cannot be nil.
+ *
+ *	@returns	An array containing each parameter.
+ */
+- (NSArray*)parametersFromCallbackURL:(NSURL*)url
+{
+	NSParameterAssert([url isKindOfClass:[NSURL class]]);
+	
+	NSArray* parameters = [[url resourceSpecifier] componentsSeparatedByString:kDefaultCallbackParameterSeparator];
+	
+	return parameters;
 }
 
 #pragma mark - URL & HTML utilities
@@ -411,29 +519,23 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
     }
 }
 
+#pragma mark - Selection
+
+- (void)restoreSelection
+{
+	[self.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.restoreRange();"];
+}
+
 - (void)saveSelection
 {
     [self.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.prepareInsert();"];
 }
 
-- (void)insertLink:(NSString *)url
+- (NSString*)selectedText
 {
-    NSString *trigger = [NSString stringWithFormat:@"zss_editor.insertLink(\"%@\");", url];
-    [self.webView stringByEvaluatingJavaScriptFromString:trigger];
+	NSString* selectedText = [self.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.getSelectedText();"];
 	
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
-}
-
-- (void)updateLink:(NSString *)url
-{
-    NSString *trigger = [NSString stringWithFormat:@"zss_editor.updateLink(\"%@\");", url];
-    [self.webView stringByEvaluatingJavaScriptFromString:trigger];
-	
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+	return selectedText;
 }
 
 - (void)setSelectedColor:(UIColor*)color tag:(int)tag
@@ -453,15 +555,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
     }
 }
 
-- (void)removeLink
-{
-    [self.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.unlink();"];
-}
-
-- (void)quickLink
-{
-    [self.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.quickLink();"];
-}
+#pragma mark - Images
 
 - (void)insertImage:(NSString *)url alt:(NSString *)alt
 {
@@ -477,9 +571,47 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 
 #pragma mark - Links
 
+- (void)insertLink:(NSString *)url
+			 title:(NSString*)title
+{
+	NSParameterAssert([url isKindOfClass:[NSString class]]);
+	NSParameterAssert([title isKindOfClass:[NSString class]]);
+	
+	NSString *trigger = [NSString stringWithFormat:@"zss_editor.insertLink(\"%@\",\"%@\");", url, title];
+	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
+	
+	if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
+		[self.delegate editorTextDidChange:self];
+	}
+}
+
 - (BOOL)isSelectionALink
 {
 	return self.selectedLinkURL != nil;
+}
+
+- (void)updateLink:(NSString *)url
+			 title:(NSString*)title
+{
+	NSParameterAssert([url isKindOfClass:[NSString class]]);
+	NSParameterAssert([title isKindOfClass:[NSString class]]);
+	
+	NSString *trigger = [NSString stringWithFormat:@"zss_editor.updateLink(\"%@\",\"%@\");", url, title];
+	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
+	
+	if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
+		[self.delegate editorTextDidChange:self];
+	}
+}
+
+- (void)removeLink
+{
+	[self.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.unlink();"];
+}
+
+- (void)quickLink
+{
+	[self.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.quickLink();"];
 }
 
 #pragma mark - Editor: HTML interaction

@@ -26,7 +26,9 @@
 + (id __autoreleasing *)anyObjectRef;
 + (id)isNil;
 + (id)isNotNil;
++ (id)isEqual:(id)value;
 + (id)isNotEqual:(id)value;
++ (id)isKindOfClass:(Class)cls;
 + (id)checkWithSelector:(SEL)selector onObject:(id)anObject;
 + (id)checkWithBlock:(BOOL (^)(id obj))block;
 

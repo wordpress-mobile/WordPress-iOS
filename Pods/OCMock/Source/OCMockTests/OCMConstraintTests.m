@@ -36,10 +36,9 @@
 - (void)testAnyAcceptsAnything
 {
 	OCMConstraint *constraint = [OCMAnyConstraint constraint];
-
 	XCTAssertTrue([constraint evaluate:@"foo"], @"Should have accepted a value.");
-	XCTAssertTrue([constraint evaluate:@"foo"], @"Should have accepted another value.");
-	XCTAssertTrue([constraint evaluate:@"foo"], @"Should have accepted nil.");
+	XCTAssertTrue([constraint evaluate:@"bar"], @"Should have accepted another value.");
+	XCTAssertTrue([constraint evaluate:nil], @"Should have accepted nil.");
 }
 
 - (void)testIsNilAcceptsOnlyNil

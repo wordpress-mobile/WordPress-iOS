@@ -21,7 +21,7 @@
 
 @implementation OCMReturnValueProvider
 
-- (id)initWithValue:(id)aValue
+- (instancetype)initWithValue:(id)aValue
 {
 	self = [super init];
 	returnValue = [aValue retain];
