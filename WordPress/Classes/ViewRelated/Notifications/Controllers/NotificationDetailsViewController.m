@@ -188,7 +188,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     NotificationBlockGroup *group   = [self.note blockGroupOfType:NoteBlockGroupTypeComment];
     NotificationBlock *block        = [group blockOfType:NoteBlockTypeComment];
     
-    if (![block actionForKey:NoteActionReplyKey]) {
+    if (![block isActionOn:NoteActionReplyKey]) {
         return;
     }
     
