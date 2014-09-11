@@ -463,10 +463,12 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     if ([self noBlogsAndNoWordPressDotComAccount]) {
         UIViewController *presenter = self.window.rootViewController;
         if (presenter.presentedViewController) {
-            [presenter dismissViewControllerAnimated:NO completion:nil];
+            [presenter dismissViewControllerAnimated:animated completion:^{
+                [self showWelcomeScreenAnimated:animated thenEditor:NO];
+            }];
+        } else {
+            [self showWelcomeScreenAnimated:animated thenEditor:NO];
         }
-
-        [self showWelcomeScreenAnimated:animated thenEditor:NO];
     }
 }
 
