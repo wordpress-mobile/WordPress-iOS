@@ -798,7 +798,7 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 {
     ReaderCommentTableViewCell *cell = (ReaderCommentTableViewCell *)aCell;
     cell.accessoryType = UITableViewCellAccessoryNone;
-    
+
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     [cell configureCell:comment];
     [self setAvatarForComment:comment forCell:cell indexPath:indexPath];
@@ -840,8 +840,8 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
     ReaderCommentTableViewCell *cell = (ReaderCommentTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:CommentCellIdentifier];
     if (!cell) {
         cell = [[ReaderCommentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CommentCellIdentifier];
-        cell.delegate = self;
     }
+    cell.delegate = self;
     cell.accessoryType = UITableViewCellAccessoryNone;
 
     [self configureCell:cell atIndexPath:indexPath];

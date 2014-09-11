@@ -1,0 +1,595 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
+	<data>
+		<int key="IBDocument.SystemTarget">1552</int>
+		<string key="IBDocument.SystemVersion">13B42</string>
+		<string key="IBDocument.InterfaceBuilderVersion">4514</string>
+		<string key="IBDocument.AppKitVersion">1265</string>
+		<string key="IBDocument.HIToolboxVersion">696.00</string>
+		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
+			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+			<string key="NS.object.0">3746</string>
+		</object>
+		<array key="IBDocument.IntegratedClassDependencies">
+			<string>IBProxyObject</string>
+			<string>IBUIButton</string>
+			<string>IBUILabel</string>
+			<string>IBUISwitch</string>
+			<string>IBUITableView</string>
+			<string>IBUIView</string>
+		</array>
+		<array key="IBDocument.PluginDependencies">
+			<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+		</array>
+		<object class="NSMutableDictionary" key="IBDocument.Metadata">
+			<string key="NS.key.0">PluginDependencyRecalculationVersion</string>
+			<integer value="1" key="NS.object.0"/>
+		</object>
+		<array class="NSMutableArray" key="IBDocument.RootObjects" id="1060557907">
+			<object class="IBProxyObject" id="180214417">
+				<string key="IBProxiedObjectIdentifier">IBFilesOwner</string>
+				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+			</object>
+			<object class="IBProxyObject" id="1020700003">
+				<string key="IBProxiedObjectIdentifier">IBFirstResponder</string>
+				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+			</object>
+			<object class="IBUITableView" id="555529146">
+				<reference key="NSNextResponder"/>
+				<int key="NSvFlags">274</int>
+				<array class="NSMutableArray" key="NSSubviews">
+					<object class="IBUIView" id="898871067">
+						<reference key="NSNextResponder" ref="555529146"/>
+						<int key="NSvFlags">292</int>
+						<array class="NSMutableArray" key="NSSubviews">
+							<object class="IBUIButton" id="560810122">
+								<reference key="NSNextResponder" ref="898871067"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrame">{{25, 34}, {112, 32}}</string>
+								<reference key="NSSuperview" ref="898871067"/>
+								<reference key="NSWindow"/>
+								<bool key="IBUIOpaque">NO</bool>
+								<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
+									<string key="IBUIAccessibilityLabel">share_button</string>
+								</object>
+								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<int key="IBUIContentHorizontalAlignment">0</int>
+								<int key="IBUIContentVerticalAlignment">0</int>
+								<object class="NSColor" key="IBUINormalTitleColor">
+									<int key="NSColorSpace">1</int>
+									<bytes key="NSRGB">MC41MjE1Njg2NTYgMC4wNTU3MzQ0MTc0NyAwLjA4MTU0NTQ3OTkzAA</bytes>
+								</object>
+								<object class="NSColor" key="IBUIHighlightedTitleColor" id="767755632">
+									<int key="NSColorSpace">3</int>
+									<bytes key="NSWhite">MQA</bytes>
+								</object>
+								<string key="IBUINormalTitle">Share</string>
+								<object class="NSColor" key="IBUINormalTitleShadowColor">
+									<int key="NSColorSpace">3</int>
+									<bytes key="NSWhite">MC41AA</bytes>
+								</object>
+								<object class="NSCustomResource" key="IBUINormalBackgroundImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">button_background.png</string>
+								</object>
+								<object class="IBUIFontDescription" key="IBUIFontDescription">
+									<int key="type">2</int>
+									<double key="pointSize">15</double>
+								</object>
+								<object class="NSFont" key="IBUIFont">
+									<string key="NSName">HelveticaNeue-Bold</string>
+									<double key="NSSize">15</double>
+									<int key="NSfFlags">16</int>
+								</object>
+							</object>
+							<object class="IBUILabel" id="573285529">
+								<reference key="NSNextResponder" ref="898871067"/>
+								<int key="NSvFlags">290</int>
+								<string key="NSFrame">{{20, 0}, {280, 21}}</string>
+								<reference key="NSSuperview" ref="898871067"/>
+								<reference key="NSWindow"/>
+								<bool key="IBUIOpaque">NO</bool>
+								<bool key="IBUIClipsSubviews">YES</bool>
+								<int key="IBUIContentMode">7</int>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<string key="IBUIText">Status:</string>
+								<object class="NSColor" key="IBUITextColor" id="256042056">
+									<int key="NSColorSpace">1</int>
+									<bytes key="NSRGB">MCAwIDAAA</bytes>
+									<string key="IBUIColorCocoaTouchKeyPath">darkTextColor</string>
+								</object>
+								<nil key="IBUIHighlightedColor"/>
+								<int key="IBUIBaselineAdjustment">1</int>
+								<float key="IBUIMinimumFontSize">14</float>
+								<object class="IBUIFontDescription" key="IBUIFontDescription">
+									<int key="type">1</int>
+									<double key="pointSize">14</double>
+								</object>
+								<object class="NSFont" key="IBUIFont">
+									<string key="NSName">HelveticaNeue</string>
+									<double key="NSSize">14</double>
+									<int key="NSfFlags">16</int>
+								</object>
+							</object>
+							<object class="IBUISwitch" id="823562199">
+								<reference key="NSNextResponder" ref="898871067"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrame">{{178, 30}, {94, 27}}</string>
+								<reference key="NSSuperview" ref="898871067"/>
+								<reference key="NSWindow"/>
+								<bool key="IBUIOpaque">NO</bool>
+								<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
+									<string key="IBUIAccessibilityLabel">native_sharebox_switch</string>
+								</object>
+								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<bool key="IBUIEnabled">NO</bool>
+								<int key="IBUIContentHorizontalAlignment">0</int>
+								<int key="IBUIContentVerticalAlignment">0</int>
+							</object>
+							<object class="IBUILabel" id="44293159">
+								<reference key="NSNextResponder" ref="898871067"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrame">{{151, 55}, {161, 22}}</string>
+								<reference key="NSSuperview" ref="898871067"/>
+								<reference key="NSWindow"/>
+								<bool key="IBUIOpaque">NO</bool>
+								<bool key="IBUIClipsSubviews">YES</bool>
+								<int key="IBUIContentMode">7</int>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<string key="IBUIText">Sign in to use native sharebox</string>
+								<reference key="IBUITextColor" ref="256042056"/>
+								<nil key="IBUIHighlightedColor"/>
+								<int key="IBUIBaselineAdjustment">0</int>
+								<int key="IBUITextAlignment">1</int>
+								<object class="IBUIFontDescription" key="IBUIFontDescription">
+									<int key="type">1</int>
+									<double key="pointSize">11</double>
+								</object>
+								<object class="NSFont" key="IBUIFont">
+									<string key="NSName">HelveticaNeue</string>
+									<double key="NSSize">11</double>
+									<int key="NSfFlags">16</int>
+								</object>
+								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
+							</object>
+						</array>
+						<string key="NSFrameSize">{320, 80}</string>
+						<reference key="NSSuperview" ref="555529146"/>
+						<reference key="NSWindow"/>
+						<object class="NSColor" key="IBUIBackgroundColor">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MQA</bytes>
+							<object class="NSColorSpace" key="NSCustomColorSpace">
+								<int key="NSID">2</int>
+							</object>
+						</object>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+					</object>
+				</array>
+				<string key="NSFrameSize">{320, 504}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
+				<reference key="IBUIBackgroundColor" ref="767755632"/>
+				<bool key="IBUIClipsSubviews">YES</bool>
+				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+				<bool key="IBUIAlwaysBounceVertical">YES</bool>
+				<int key="IBUISeparatorStyle">1</int>
+				<int key="IBUISectionIndexMinimumDisplayRowCount">0</int>
+				<bool key="IBUIShowsSelectionImmediatelyOnTouchBegin">YES</bool>
+				<float key="IBUIRowHeight">44</float>
+				<float key="IBUISectionHeaderHeight">22</float>
+				<float key="IBUISectionFooterHeight">22</float>
+				<reference key="IBUITableHeaderView" ref="898871067"/>
+			</object>
+		</array>
+		<object class="IBObjectContainer" key="IBDocument.Objects">
+			<bool key="usesAutoincrementingIDs">NO</bool>
+			<array class="NSMutableArray" key="connectionRecords">
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">nativeShareboxLabel</string>
+						<reference key="source" ref="180214417"/>
+						<reference key="destination" ref="44293159"/>
+					</object>
+					<string key="id">342</string>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">shareButton</string>
+						<reference key="source" ref="180214417"/>
+						<reference key="destination" ref="560810122"/>
+					</object>
+					<string key="id">177</string>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">shareStatus</string>
+						<reference key="source" ref="180214417"/>
+						<reference key="destination" ref="573285529"/>
+					</object>
+					<string key="id">178</string>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">useNativeSharebox</string>
+						<reference key="source" ref="180214417"/>
+						<reference key="destination" ref="823562199"/>
+					</object>
+					<string key="id">341</string>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">view</string>
+						<reference key="source" ref="180214417"/>
+						<reference key="destination" ref="555529146"/>
+					</object>
+					<string key="id">179</string>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">shareButton:</string>
+						<reference key="source" ref="560810122"/>
+						<reference key="destination" ref="180214417"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<string key="id">168</string>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">toggleUseNativeSharebox:</string>
+						<reference key="source" ref="823562199"/>
+						<reference key="destination" ref="180214417"/>
+						<int key="IBEventType">13</int>
+					</object>
+					<string key="id">344</string>
+				</object>
+			</array>
+			<object class="IBMutableOrderedSet" key="objectRecords">
+				<array key="orderedObjects">
+					<object class="IBObjectRecord">
+						<string key="id">0</string>
+						<array key="object" id="0"/>
+						<reference key="children" ref="1060557907"/>
+						<nil key="parent"/>
+					</object>
+					<object class="IBObjectRecord">
+						<string key="id">-1</string>
+						<reference key="object" ref="180214417"/>
+						<reference key="parent" ref="0"/>
+						<string key="objectName">File's Owner</string>
+					</object>
+					<object class="IBObjectRecord">
+						<string key="id">-2</string>
+						<reference key="object" ref="1020700003"/>
+						<reference key="parent" ref="0"/>
+					</object>
+					<object class="IBObjectRecord">
+						<string key="id">155</string>
+						<reference key="object" ref="555529146"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="898871067"/>
+						</array>
+						<reference key="parent" ref="0"/>
+					</object>
+					<object class="IBObjectRecord">
+						<string key="id">156</string>
+						<reference key="object" ref="898871067"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="560810122"/>
+							<reference ref="573285529"/>
+							<reference ref="823562199"/>
+							<reference ref="44293159"/>
+						</array>
+						<reference key="parent" ref="555529146"/>
+					</object>
+					<object class="IBObjectRecord">
+						<string key="id">161</string>
+						<reference key="object" ref="560810122"/>
+						<reference key="parent" ref="898871067"/>
+					</object>
+					<object class="IBObjectRecord">
+						<string key="id">162</string>
+						<reference key="object" ref="573285529"/>
+						<reference key="parent" ref="898871067"/>
+					</object>
+					<object class="IBObjectRecord">
+						<string key="id">201</string>
+						<reference key="object" ref="823562199"/>
+						<reference key="parent" ref="898871067"/>
+					</object>
+					<object class="IBObjectRecord">
+						<string key="id">228</string>
+						<reference key="object" ref="44293159"/>
+						<reference key="parent" ref="898871067"/>
+					</object>
+				</array>
+			</object>
+			<dictionary class="NSMutableDictionary" key="flattenedProperties">
+				<string key="-1.CustomClassName">ShareViewController</string>
+				<string key="-1.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<boolean value="NO" key="-1.showNotes"/>
+				<string key="-2.CustomClassName">UIResponder</string>
+				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<boolean value="NO" key="-2.showNotes"/>
+				<string key="155.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<reference key="155.IBUserGuides" ref="0"/>
+				<boolean value="NO" key="155.showNotes"/>
+				<string key="156.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<reference key="156.IBUserGuides" ref="0"/>
+				<boolean value="NO" key="156.showNotes"/>
+				<string key="161.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<reference key="161.IBUserGuides" ref="0"/>
+				<boolean value="NO" key="161.showNotes"/>
+				<string key="162.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<reference key="162.IBUserGuides" ref="0"/>
+				<boolean value="NO" key="162.showNotes"/>
+				<string key="201.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<reference key="201.IBUserGuides" ref="0"/>
+				<boolean value="NO" key="201.showNotes"/>
+				<string key="228.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<reference key="228.IBUserGuides" ref="0"/>
+				<boolean value="NO" key="228.showNotes"/>
+			</dictionary>
+			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
+			<nil key="activeLocalization"/>
+			<dictionary class="NSMutableDictionary" key="localizations"/>
+			<nil key="sourceID"/>
+		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">ShareViewController</string>
+					<string key="superclassName">UIViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="shareButton:">id</string>
+						<string key="shareToolbar:">id</string>
+						<string key="tapSampleImage:">UIButton</string>
+						<string key="toggleModifySettings:">ToggleSwitch</string>
+						<string key="toggleNativeShareboxSwitch:">UISwitch</string>
+						<string key="touchedResetBundle:">id</string>
+						<string key="touchedSetToLoadNextBundle:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="shareButton:">
+							<string key="name">shareButton:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="shareToolbar:">
+							<string key="name">shareToolbar:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="tapSampleImage:">
+							<string key="name">tapSampleImage:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="toggleModifySettings:">
+							<string key="name">toggleModifySettings:</string>
+							<string key="candidateClassName">ToggleSwitch</string>
+						</object>
+						<object class="IBActionInfo" key="toggleNativeShareboxSwitch:">
+							<string key="name">toggleNativeShareboxSwitch:</string>
+							<string key="candidateClassName">UISwitch</string>
+						</object>
+						<object class="IBActionInfo" key="touchedResetBundle:">
+							<string key="name">touchedResetBundle:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="touchedSetToLoadNextBundle:">
+							<string key="name">touchedSetToLoadNextBundle:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="addCallToActionLabel">UILabel</string>
+						<string key="addCallToActionSwitch">UISwitch</string>
+						<string key="addContentDeepLinkSwitch">UISwitch</string>
+						<string key="bundleField">UITextField</string>
+						<string key="callToActionDeepLinkIDText">UITextField</string>
+						<string key="callToActionLabelPicker">UIPickerView</string>
+						<string key="callToActionLabelText">UITextField</string>
+						<string key="callToActionURLText">UITextField</string>
+						<string key="contentDeepLinkDescription">UITextField</string>
+						<string key="contentDeepLinkID">UITextField</string>
+						<string key="contentDeepLinkThumbnailURL">UITextField</string>
+						<string key="contentDeepLinkTitle">UITextField</string>
+						<string key="defaultAddToCircleSwitch">UISwitch</string>
+						<string key="enableAddToCircleSwitch">UISwitch</string>
+						<string key="firstTimeAddToCircleSwitch">UISwitch</string>
+						<string key="forceWebSwitch">UISwitch</string>
+						<string key="latestBundleLabel">UILabel</string>
+						<string key="mediaSwitch">ToggleSwitch</string>
+						<string key="modifySettingsSwitch">ToggleSwitch</string>
+						<string key="nativeShareboxLabel">UILabel</string>
+						<string key="nativeShareboxSwitch">UISwitch</string>
+						<string key="sampleImageView1">UIButton</string>
+						<string key="sampleImageView2">UIButton</string>
+						<string key="sampleImageView3">UIButton</string>
+						<string key="sharePrefillText">UITextField</string>
+						<string key="shareScrollView">UIScrollView</string>
+						<string key="shareStatus">UILabel</string>
+						<string key="shareToolbar">UIToolbar</string>
+						<string key="showACLPickerFirstSwitch">UISwitch</string>
+						<string key="showcasedSuggestionCountText">UITextField</string>
+						<string key="suggestionsCountText">UITextField</string>
+						<string key="urlField">UITextField</string>
+						<string key="urlSwitch">UISwitch</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="addCallToActionLabel">
+							<string key="name">addCallToActionLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="addCallToActionSwitch">
+							<string key="name">addCallToActionSwitch</string>
+							<string key="candidateClassName">UISwitch</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="addContentDeepLinkSwitch">
+							<string key="name">addContentDeepLinkSwitch</string>
+							<string key="candidateClassName">UISwitch</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="bundleField">
+							<string key="name">bundleField</string>
+							<string key="candidateClassName">UITextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="callToActionDeepLinkIDText">
+							<string key="name">callToActionDeepLinkIDText</string>
+							<string key="candidateClassName">UITextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="callToActionLabelPicker">
+							<string key="name">callToActionLabelPicker</string>
+							<string key="candidateClassName">UIPickerView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="callToActionLabelText">
+							<string key="name">callToActionLabelText</string>
+							<string key="candidateClassName">UITextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="callToActionURLText">
+							<string key="name">callToActionURLText</string>
+							<string key="candidateClassName">UITextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="contentDeepLinkDescription">
+							<string key="name">contentDeepLinkDescription</string>
+							<string key="candidateClassName">UITextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="contentDeepLinkID">
+							<string key="name">contentDeepLinkID</string>
+							<string key="candidateClassName">UITextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="contentDeepLinkThumbnailURL">
+							<string key="name">contentDeepLinkThumbnailURL</string>
+							<string key="candidateClassName">UITextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="contentDeepLinkTitle">
+							<string key="name">contentDeepLinkTitle</string>
+							<string key="candidateClassName">UITextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="defaultAddToCircleSwitch">
+							<string key="name">defaultAddToCircleSwitch</string>
+							<string key="candidateClassName">UISwitch</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="enableAddToCircleSwitch">
+							<string key="name">enableAddToCircleSwitch</string>
+							<string key="candidateClassName">UISwitch</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="firstTimeAddToCircleSwitch">
+							<string key="name">firstTimeAddToCircleSwitch</string>
+							<string key="candidateClassName">UISwitch</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="forceWebSwitch">
+							<string key="name">forceWebSwitch</string>
+							<string key="candidateClassName">UISwitch</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="latestBundleLabel">
+							<string key="name">latestBundleLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mediaSwitch">
+							<string key="name">mediaSwitch</string>
+							<string key="candidateClassName">ToggleSwitch</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="modifySettingsSwitch">
+							<string key="name">modifySettingsSwitch</string>
+							<string key="candidateClassName">ToggleSwitch</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="nativeShareboxLabel">
+							<string key="name">nativeShareboxLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="nativeShareboxSwitch">
+							<string key="name">nativeShareboxSwitch</string>
+							<string key="candidateClassName">UISwitch</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="sampleImageView1">
+							<string key="name">sampleImageView1</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="sampleImageView2">
+							<string key="name">sampleImageView2</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="sampleImageView3">
+							<string key="name">sampleImageView3</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="sharePrefillText">
+							<string key="name">sharePrefillText</string>
+							<string key="candidateClassName">UITextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="shareScrollView">
+							<string key="name">shareScrollView</string>
+							<string key="candidateClassName">UIScrollView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="shareStatus">
+							<string key="name">shareStatus</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="shareToolbar">
+							<string key="name">shareToolbar</string>
+							<string key="candidateClassName">UIToolbar</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="showACLPickerFirstSwitch">
+							<string key="name">showACLPickerFirstSwitch</string>
+							<string key="candidateClassName">UISwitch</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="showcasedSuggestionCountText">
+							<string key="name">showcasedSuggestionCountText</string>
+							<string key="candidateClassName">UITextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="suggestionsCountText">
+							<string key="name">suggestionsCountText</string>
+							<string key="candidateClassName">UITextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="urlField">
+							<string key="name">urlField</string>
+							<string key="candidateClassName">UITextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="urlSwitch">
+							<string key="name">urlSwitch</string>
+							<string key="candidateClassName">UISwitch</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/ShareViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">ToggleSwitch</string>
+					<string key="superclassName">UISwitch</string>
+					<object class="NSMutableDictionary" key="toManyOutletInfosByName">
+						<string key="NS.key.0">toggledViews</string>
+						<object class="IBToManyOutletInfo" key="NS.object.0">
+							<string key="name">toggledViews</string>
+							<string key="candidateClassName">UIView</string>
+							<string key="collectionClassName">NSArray</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/ToggleSwitch.h</string>
+					</object>
+				</object>
+			</array>
+		</object>
+		<int key="IBDocument.localizationMode">0</int>
+		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
+		<bool key="IBDocument.previouslyAttemptedUpgradeToXcode5">YES</bool>
+		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
+			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
+			<real value="1552" key="NS.object.0"/>
+		</object>
+		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
+			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.InterfaceBuilder3</string>
+			<integer value="4600" key="NS.object.0"/>
+		</object>
+		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
+		<int key="IBDocument.defaultPropertyAccessControl">3</int>
+		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<string key="NS.key.0">button_background.png</string>
+			<string key="NS.object.0">{1, 1}</string>
+		</object>
+		<string key="IBCocoaTouchPluginVersion">3746</string>
+	</data>
+</archive>
