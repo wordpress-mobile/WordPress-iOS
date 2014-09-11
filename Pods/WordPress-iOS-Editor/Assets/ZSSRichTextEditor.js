@@ -738,5 +738,6 @@ zss_editor.enableEditing = function () {
 }
 
 zss_editor.disableEditing = function () {
+    zss_editor.blurEditor();
 	document.body.contentEditable = false;
 }
