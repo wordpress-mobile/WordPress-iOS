@@ -1,7 +1,0 @@
-platform :ios, '7.0'
-inhibit_all_warnings!
-
-target "WordPress-iOS-Shared-Example" do
-  pod "WordPress-iOS-Shared" # to test locally, add `:path => ".."` to pod declaration
-end
-
