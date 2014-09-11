@@ -71,7 +71,6 @@ static CGFloat NotificationSectionSeparator     = 10;
 @property (nonatomic, strong) Notification                  *note;
 
 // Keyboard Helpers
-@property (nonatomic, assign) CGFloat                       keyboardBottomDelta;
 @property (nonatomic, assign) BOOL                          isKeyboardVisible;
 @end
 
@@ -890,32 +889,32 @@ static CGFloat NotificationSectionSeparator     = 10;
         return;
     }
     
-    NSDictionary* userInfo                  = notification.userInfo;
+    NSDictionary* userInfo = notification.userInfo;
     
     // Convert the rect to view coordinates: enforce the current orientation!
-    CGRect kbRect                           = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    kbRect                                  = [self.view convertRect:kbRect fromView:nil];
+    CGRect kbRect = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    kbRect = [self.view convertRect:kbRect fromView:nil];
     
-    CGRect viewFrame                        = self.view.frame;
-    CGFloat bottomInset                     = CGRectGetHeight(kbRect) - (CGRectGetMaxY(kbRect) - CGRectGetHeight(viewFrame) + CGRectGetHeight(self.replyTextView.bounds));
-    
-    UIEdgeInsets newContentInsets           = self.tableView.contentInset;
-    newContentInsets.bottom                 += bottomInset;
-    
-    self.replyTextView.proxyAccessoryView.alpha = 0;
+    // Bottom Inset: Consider the tab bar!
+    CGRect viewFrame = self.view.frame;
+    CGFloat bottomInset = CGRectGetHeight(kbRect) - (CGRectGetMaxY(kbRect) - CGRectGetHeight(viewFrame));
     
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
     [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
 
-    self.tableView.contentInset                 = newContentInsets;
-    self.replyTextView.proxyAccessoryView.alpha = 1;
-
+    [self.view updateConstraintWithFirstItem:self.view
+                                  secondItem:self.replyTextView
+                              firstAttribute:NSLayoutAttributeBottom
+                             secondAttribute:NSLayoutAttributeBottom
+                                    constant:bottomInset];
+    
+    [self.view layoutIfNeeded];
+    
     [UIView commitAnimations];
     
-    self.keyboardBottomDelta                = bottomInset;
-    self.isKeyboardVisible                  = true;
-    self.tableGesturesRecognizer.enabled    = true;
+    self.isKeyboardVisible = true;
+    self.tableGesturesRecognizer.enabled = true;
 }
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification
@@ -924,20 +923,24 @@ static CGFloat NotificationSectionSeparator     = 10;
         return;
     }
     
-    NSDictionary* userInfo                  = notification.userInfo;
+    NSDictionary* userInfo = notification.userInfo;
     
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
     [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
     
-    UIEdgeInsets newContentInsets           = self.tableView.contentInset;
-    newContentInsets.bottom                 -= self.keyboardBottomDelta;
-    self.tableView.contentInset             = newContentInsets;
+    [self.view updateConstraintWithFirstItem:self.view
+                                  secondItem:self.replyTextView
+                              firstAttribute:NSLayoutAttributeBottom
+                             secondAttribute:NSLayoutAttributeBottom
+                                    constant:0];
+    
+    [self.view layoutIfNeeded];
     
     [UIView commitAnimations];
     
-    self.isKeyboardVisible                  = false;
-    self.tableGesturesRecognizer.enabled    = false;
+    self.isKeyboardVisible = false;
+    self.tableGesturesRecognizer.enabled = false;
 }
 
 
