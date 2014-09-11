@@ -67,6 +67,9 @@ static CGFloat NotificationSectionSeparator     = 10;
 @property (nonatomic, assign) NSInteger                     headerSectionIndex;
 @property (nonatomic, assign) NSInteger                     bodySectionIndex;
 
+// Model
+@property (nonatomic, strong) Notification                  *note;
+
 // Keyboard Helpers
 @property (nonatomic, assign) CGFloat                       keyboardBottomDelta;
 @property (nonatomic, assign) BOOL                          isKeyboardVisible;
@@ -92,7 +95,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     self.navigationItem.backBarButtonItem = backButton;
     
     self.tableView.backgroundColor      = [WPStyleGuide itsEverywhereGrey];
-
+    
     self.reuseIdentifierMap = @{
         @(NoteBlockGroupTypeHeader)    : NoteBlockHeaderTableViewCell.reuseIdentifier,
         @(NoteBlockGroupTypeText)      : NoteBlockTextTableViewCell.reuseIdentifier,
@@ -112,11 +115,11 @@ static CGFloat NotificationSectionSeparator     = 10;
 {
     [super viewWillAppear:animated];
     
-    [self reloadData];
-    
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [nc addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    [self.tableView deselectSelectedRowWithAnimation:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -146,6 +149,15 @@ static CGFloat NotificationSectionSeparator     = 10;
     [self.tableView reloadData];
     [self adjustTableStyleIfNeeded];
     [self attachReplyViewIfNeeded];
+}
+
+
+#pragma mark - Public Helpers
+
+- (void)setupWithNotification:(Notification *)notification
+{
+    self.note = notification;
+    [self reloadData];
 }
 
 
