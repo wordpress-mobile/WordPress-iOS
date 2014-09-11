@@ -1,28 +1,38 @@
 import Foundation
 
 
-@objc public class NoteBlockTextTableViewCell : NoteBlockTableViewCell, DTAttributedTextContentViewDelegate
+@objc public class NoteBlockTextTableViewCell : NoteBlockTableViewCell
 {
     // MARK: - Public Properties
     public var onUrlClick: ((NSURL) -> Void)?
     public var attributedText: NSAttributedString? {
-        didSet {            
-            attributedLabel.attributedString = attributedText != nil ? attributedText! :  NSAttributedString()
+        didSet {
+            textView.attributedText = attributedText ??  NSAttributedString()
             setNeedsLayout()
         }
     }
-    public var numberOfLines: Int {
-        return maxNumberOfLines
-    }
-    public var labelInsets: UIEdgeInsets {
-        return insets
-    }
     public var isBadge: Bool = false {
         didSet {
-            backgroundColor = isBadge ? WPStyleGuide.Notifications.badgeBackgroundColor : WPStyleGuide.Notifications.blockBackgroundColor
-            alignment       = isBadge ? .Center : .Left
+            if isBadge {
+                backgroundColor = WPStyleGuide.Notifications.badgeBackgroundColor
+                alignment       = .Center
+            } else {
+                backgroundColor = WPStyleGuide.Notifications.blockBackgroundColor
+                alignment       = .Left
+            }
         }
     }
+    public var linkColor: UIColor? {
+        didSet {
+            if let unwrappedLinkColor = linkColor {
+                textView.linkTextAttributes = [NSForegroundColorAttributeName : unwrappedLinkColor]
+            }
+        }
+    }
+    public var labelPadding: UIEdgeInsets {
+        return privateLabelPadding
+    }
+    
     
     //  TODO:
     //  Once NotificationDetailsViewController has been migrated to Swift, please, nuke this property, and make sure this class is fed
@@ -48,50 +58,60 @@ import Foundation
     public override func awakeFromNib() {
         super.awakeFromNib()
                 
-        backgroundColor                   = WPStyleGuide.Notifications.blockBackgroundColor
-        selectionStyle                    = .None
-
-        attributedLabel.backgroundColor   = UIColor.clearColor()
-        attributedLabel.numberOfLines     = numberOfLines
-        attributedLabel.delegate          = self
+        backgroundColor             = WPStyleGuide.Notifications.blockBackgroundColor
+        selectionStyle              = .None
+        textView.contentInset       = privateLabelInsets
+        textView.textContainerInset = UIEdgeInsetsZero
+        textView.backgroundColor    = UIColor.clearColor()
+        textView.editable           = false
+        textView.selectable         = false
+        textView.dataDetectorTypes  = .None
+        
+        // Setup a Gestures Recognizer: This way we'll handle links!
+        gesturesRecognizer          = UITapGestureRecognizer()
+        gesturesRecognizer.addTarget(self, action: "handleTap:")
+        textView.gestureRecognizers  = [gesturesRecognizer]
     }
     
     public override func layoutSubviews() {
+        // Calculate the TextView's width, before hitting layoutSubviews!
+        textView.preferredMaxLayoutWidth = min(bounds.width, maxWidth) - labelPadding.left - labelPadding.right
+        
         super.layoutSubviews()
-
-        // Manually update DTAttributedLabel's size
-        attributedLabel.layoutFrameHeightIsConstrainedByBounds = false
-        
-        let insets  = labelInsets
-        let width   = min(bounds.width, maxWidth) - insets.left - insets.right
-        var size    = attributedLabel.suggestedFrameSizeToFitEntireStringConstraintedToWidth(width)
-        attributedLabel.frame.size = size
     }
     
-    // MARK: - DTAttributedTextContentViewDelegate
-    public func attributedTextContentView(attributedTextContentView: DTAttributedTextContentView!, viewForLink url: NSURL!, identifier: String!, frame: CGRect) -> UIView! {
-        let linkButton                          = DTLinkButton(frame: frame)
-        
-        linkButton.URL                          = url
-        linkButton.showsTouchWhenHighlighted    = false
-        
-        linkButton.addTarget(self, action: Selector("buttonWasPressed:"), forControlEvents: .TouchUpInside)
-
-        return linkButton
-    }
     
-    // MARK: - IBActions
-    @IBAction public func buttonWasPressed(sender: DTLinkButton) {
-        if let listener = onUrlClick {
-            listener(sender.URL)
+    // MARK: - UITapGestureRecognizer Helpers
+    public func handleTap(recognizer: UITapGestureRecognizer) {
+
+        // Detect the location tapped
+        let textStorage = textView.textStorage
+        let layoutManager = textView.layoutManager
+        let textContainer = textView.textContainer
+        
+        let locationInTextView = recognizer.locationInView(textView)
+        let characterIndex = layoutManager.characterIndexForPoint(locationInTextView, inTextContainer: textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
+        
+        if characterIndex >= textStorage.length {
+            return
+        }
+        
+        // Load the NSURL instance, if any
+        let rawURL: AnyObject? = textView.textStorage.attribute(NSLinkAttributeName, atIndex: characterIndex, effectiveRange: nil)
+        if let unwrappedURL = rawURL as? NSURL {
+            onUrlClick?(unwrappedURL)
         }
     }
     
-    // MARK: - Private
+    
+    // MARK: - Constants
     private let maxWidth            = WPTableViewFixedWidth
-    private let insets              = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 14)
-    private let maxNumberOfLines    = 0
+    private let privateLabelPadding = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
+    private let privateLabelInsets  = UIEdgeInsets(top: 1, left: -5, bottom: 0, right: 0)
+    
+    // MARK: - Private
+    private var gesturesRecognizer: UITapGestureRecognizer!
     
     // MARK: - IBOutlets
-    @IBOutlet private weak var attributedLabel: DTAttributedLabel!
+    @IBOutlet private weak var textView: WPDynamicHeightTextView!
 }
