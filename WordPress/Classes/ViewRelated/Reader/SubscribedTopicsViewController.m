@@ -142,9 +142,9 @@
 
 - (NSFetchRequest *)fetchRequest
 {
-    NSString *predStr = @"topicID = 0 OR isSubscribed = YES";
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[self entityName]];
-    request.predicate = [NSPredicate predicateWithFormat:predStr];
+    request.predicate = [NSPredicate predicateWithFormat:@"(topicID = 0 OR isSubscribed = YES) AND (type != %@)",
+                         ReaderTopicTypeSite];
 
     NSSortDescriptor *sortDescriptorType = [NSSortDescriptor sortDescriptorWithKey:@"type" ascending:YES];
     NSSortDescriptor *sortDescriptorTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
