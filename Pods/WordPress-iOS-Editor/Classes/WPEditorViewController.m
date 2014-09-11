@@ -7,6 +7,7 @@
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
 #import <WordPress-iOS-Shared/WPTableViewCell.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
+#import <WordPress-iOS-Shared/UIColor+Helpers.h>
 
 #import "HRColorUtil.h"
 #import "UIWebView+GUIFixes.h"
@@ -15,10 +16,19 @@
 #import "WPInsetTextField.h"
 #import "ZSSBarButtonItem.h"
 
+// Keep an eye on this constant on different iOS versions
+static int kToolbarFirstItemExtraPadding = 6;
+static int kToolbarItemPadding = 10;
+static int kiPodToolbarMarginWidth = 16;
+
 CGFloat const EPVCTextfieldHeight = 44.0f;
 CGFloat const EPVCStandardOffset = 10.0;
 NSInteger const WPImageAlertViewTag = 91;
 NSInteger const WPLinkAlertViewTag = 92;
+
+static const CGFloat kWPEditorViewControllerToolbarButtonWidth = 40.0f;
+static const CGFloat kWPEditorViewControllerToolbarButtonHeight = 40.0f;
+static const CGFloat kWPEditorViewControllerToolbarHeight = 40.0f;
 
 typedef enum
 {
@@ -60,10 +70,7 @@ typedef enum
 
 @interface WPEditorViewController () <HRColorPickerViewControllerDelegate, UIAlertViewDelegate, UITextFieldDelegate, WPEditorViewDelegate>
 
-@property (nonatomic, strong) UIScrollView *toolBarScroll;
-@property (nonatomic, strong) UIToolbar *toolbar;
 @property (nonatomic, strong) NSString *htmlString;
-@property (nonatomic, strong) NSString *editorPlaceholderText;
 @property (nonatomic, strong) NSArray *editorItemsEnabled;
 @property (nonatomic, strong) UIAlertView *alertView;
 @property (nonatomic, strong) NSString *selectedImageURL;
@@ -71,10 +78,14 @@ typedef enum
 @property (nonatomic, strong) NSMutableArray *customBarButtonItems;
 @property (nonatomic) BOOL didFinishLoadingEditor;
 
-#pragma mark - Properties: Editability
+#pragma mark - Properties: First Setup On View Will Appear
+@property (nonatomic, assign, readwrite) BOOL isFirstSetupComplete;
+
+#pragma mark - Properties: Editing
 @property (nonatomic, assign, readwrite, getter=isEditingEnabled) BOOL editingEnabled;
 @property (nonatomic, assign, readwrite, getter=isEditing) BOOL editing;
 @property (nonatomic, assign, readwrite) BOOL wasEditing;
+@property (nonatomic, assign, readwrite) BOOL wasFocusOnEditorView;
 
 #pragma mark - Properties: Editor View
 @property (nonatomic, strong, readwrite) WPEditorView *editorView;
@@ -82,9 +93,14 @@ typedef enum
 #pragma mark - Properties: Title Text View
 @property (nonatomic, strong) WPInsetTextField *titleTextField;
 
-#pragma mark - Properties: Toolbar Holders
-@property (nonatomic, strong) UIView *rightToolbarHolder;
-@property (nonatomic, strong) UIView *toolbarHolder;
+#pragma mark - Properties: Toolbar
+@property (nonatomic, strong) UIView *mainToolbarHolder;
+@property (nonatomic, weak) UIView *mainToolbarHolderContent;
+@property (nonatomic, weak) UIView *mainToolbarHolderTopBorder;
+@property (nonatomic, weak) UIToolbar *leftToolbar;
+@property (nonatomic, weak) UIToolbar *rightToolbar;
+@property (nonatomic, weak) UIView *rightToolbarHolder;
+@property (nonatomic, weak) UIScrollView *toolbarScroll;
 
 #pragma mark - Properties: Toolbar items
 @property (nonatomic, strong, readwrite) UIBarButtonItem* htmlBarButtonItem;
@@ -106,7 +122,7 @@ typedef enum
 	
 	if (self)
 	{
-		_editing = YES;
+		[self sharedInitializationWithEditing:YES];
 	}
 	
 	return self;
@@ -117,14 +133,35 @@ typedef enum
 	self = [super init];
 	
 	if (self) {
+		
+		BOOL editing = NO;
+		
 		if (mode == kWPEditorViewControllerModePreview) {
-			_editing = NO;
+			editing = NO;
 		} else {
-			_editing = YES;
+			editing = YES;
 		}
+		
+		[self sharedInitializationWithEditing:editing];
 	}
 	
 	return self;
+}
+
+#pragma mark - Shared Initialization Code
+
+- (void)sharedInitializationWithEditing:(BOOL)editing
+{
+	if (editing == kWPEditorViewControllerModePreview) {
+		_editing = NO;
+	} else {
+		_editing = YES;
+	}
+    
+	_toolbarBackgroundColor = [UIColor whiteColor];
+    _toolbarBorderColor = [WPStyleGuide readGrey];
+    _toolbarItemTintColor = [WPStyleGuide textFieldPlaceholderGrey];
+	_toolbarItemSelectedTintColor = [WPStyleGuide baseDarkerBlue];
 }
 
 #pragma mark - UIViewController
@@ -132,39 +169,52 @@ typedef enum
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	
+    // It's important to set this up here, in case the main view of the VC is unloaded due to low
+    // memory (it can happen if the view is hidden).
+    //
+    self.isFirstSetupComplete = NO;
     self.didFinishLoadingEditor = NO;
-    
-	self.enabledToolbarItems = [self defaultToolbarItems];
+    self.enabledToolbarItems = [self defaultToolbarItems];
+    self.view.backgroundColor = [UIColor whiteColor];
+	
     [self buildTextViews];
     [self buildToolbar];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self.navigationController setToolbarHidden:YES animated:YES];
     [super viewWillAppear:animated];
 	
-    self.view.backgroundColor = [UIColor whiteColor];
+    if (!self.isFirstSetupComplete) {
+        self.isFirstSetupComplete = YES;
 
-    // When restoring state, the navigationController is nil when the view loads,
-    // so configure its appearance here instead.
-    self.navigationController.navigationBar.translucent = NO;
-
-    UIToolbar *toolbar = self.navigationController.toolbar;
-    toolbar.barTintColor = [WPStyleGuide itsEverywhereGrey];
-    toolbar.translucent = NO;
-    toolbar.barStyle = UIBarStyleDefault;
-    
-    for (UIView *view in self.navigationController.toolbar.subviews) {
-        [view setExclusiveTouch:YES];
+        // When restoring state, the navigationController is nil when the view loads,
+        // so configure its appearance here instead.
+        self.navigationController.navigationBar.translucent = NO;
+        
+        for (UIView *view in self.navigationController.toolbar.subviews) {
+            [view setExclusiveTouch:YES];
+        }
+        
+        if (self.isEditing) {
+            [self startEditing];
+        }
+    } else {
+        [self restoreEditSelection];
     }
-	
-	if (self.isEditing) {
-		[self startEditing];
-	}
-	
-    [self refreshUI];
+    
     [self.navigationController setToolbarHidden:YES animated:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    // It's important to save the edit selection before the view disappears, because as soon as it
+    // disappears the first responder is changed.
+    //
+    [self saveEditSelection];
 }
 
 #pragma mark - Default toolbar items
@@ -206,10 +256,15 @@ typedef enum
 		htmlBarButtonItem.accessibilityLabel = NSLocalizedString(@"Display HTML",
 																 @"Accessibility label for display HTML button on formatting toolbar.");
 		
-		WPEditorToolbarButton* customButton = [[WPEditorToolbarButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+        CGRect customButtonFrame = CGRectMake(0,
+                                              0,
+                                              kWPEditorViewControllerToolbarButtonWidth,
+                                              kWPEditorViewControllerToolbarButtonHeight);
+		
+		WPEditorToolbarButton* customButton = [[WPEditorToolbarButton alloc] initWithFrame:customButtonFrame];
 		[customButton setTitle:@"HTML" forState:UIControlStateNormal];
-		customButton.normalTintColor = self.barButtonItemDefaultColor;
-		customButton.selectedTintColor = self.barButtonItemSelectedDefaultColor;
+		customButton.normalTintColor = self.toolbarItemTintColor;
+		customButton.selectedTintColor = self.toolbarItemSelectedTintColor;
 		customButton.reversesTitleShadowWhenHighlighted = YES;
 		customButton.titleLabel.font = font;
 		[customButton addTarget:self
@@ -226,37 +281,73 @@ typedef enum
 
 - (UIView*)rightToolbarHolder
 {
-	if (!_rightToolbarHolder) {
+	UIView* rightToolbarHolder = _rightToolbarHolder;
+	
+	if (!rightToolbarHolder) {
 		
-		UIView *rightToolbarHolder = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width-44, 0, 44, 44)];
+		rightToolbarHolder = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame) - kWPEditorViewControllerToolbarButtonWidth,
+																	  0,
+																	  kWPEditorViewControllerToolbarButtonWidth,
+																	  kWPEditorViewControllerToolbarHeight)];
 		rightToolbarHolder.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 		rightToolbarHolder.clipsToBounds = YES;
 		
-		UIToolbar *htmlItemToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-		[rightToolbarHolder addSubview:htmlItemToolbar];
+		CGRect toolbarFrame = CGRectMake(0,
+										 0,
+										 CGRectGetWidth(rightToolbarHolder.frame),
+										 CGRectGetHeight(rightToolbarHolder.frame));
 		
-		static int kiPodToolbarMarginWidth = 16;
+		UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:toolbarFrame];
+		self.rightToolbar = toolbar;
+		
+		[rightToolbarHolder addSubview:toolbar];
 		
 		UIBarButtonItem *negativeSeparator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
 																						   target:nil
 																						   action:nil];
 		negativeSeparator.width = -kiPodToolbarMarginWidth;
 		
-		htmlItemToolbar.items = @[negativeSeparator, [self htmlBarButtonItem]];
-		htmlItemToolbar.barTintColor = [WPStyleGuide itsEverywhereGrey];
+		toolbar.items = @[negativeSeparator, [self htmlBarButtonItem]];
+		toolbar.barTintColor = self.toolbarBackgroundColor;
 		
-		UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0.6f, 44)];
-		line.backgroundColor = [UIColor lightGrayColor];
-		line.alpha = 0.7f;
-		[rightToolbarHolder addSubview:line];
-
-		_rightToolbarHolder = rightToolbarHolder;
+		static const CGFloat kDividerLineWidth = 0.6;
+		static const CGFloat kDividerLineHeight = 28;
+		
+		CGRect dividerLineFrame = CGRectMake(0,
+											 floorf((kWPEditorViewControllerToolbarHeight - kDividerLineHeight) / 2),
+											 kDividerLineWidth,
+											 kDividerLineHeight);
+		
+		UIView *dividerLine = [[UIView alloc] initWithFrame:dividerLineFrame];
+		dividerLine.backgroundColor = self.toolbarBorderColor;
+		dividerLine.alpha = 0.7f;
+		[rightToolbarHolder addSubview:dividerLine];
 	}
 	
-	return _rightToolbarHolder;
+	return rightToolbarHolder;
 }
 
-#pragma mark - Toolbar
+#pragma mark - Coloring
+
+- (void)setToolbarBackgroundColor:(UIColor *)toolbarBackgroundColor
+{
+	if (_toolbarBackgroundColor != toolbarBackgroundColor) {
+		_toolbarBackgroundColor = toolbarBackgroundColor;
+		
+		self.mainToolbarHolder.backgroundColor = toolbarBackgroundColor;
+		self.leftToolbar.barTintColor = toolbarBackgroundColor;
+		self.rightToolbar.barTintColor = toolbarBackgroundColor;
+	}
+}
+
+- (void)setToolbarBorderColor:(UIColor *)toolbarBorderColor
+{
+	if (_toolbarBorderColor != toolbarBorderColor) {
+		_toolbarBorderColor = toolbarBorderColor;
+		
+		self.mainToolbarHolderTopBorder.backgroundColor = toolbarBorderColor;
+	}
+}
 
 - (void)setEnabledToolbarItems:(ZSSRichTextEditorToolbar)enabledToolbarItems
 {
@@ -270,8 +361,8 @@ typedef enum
     _toolbarItemTintColor = toolbarItemTintColor;
     
     // Update the color
-    for (UIBarButtonItem *item in self.toolbar.items) {
-        item.tintColor = [self barButtonItemDefaultColor];
+    for (UIBarButtonItem *item in self.leftToolbar.items) {
+        item.tintColor = [self toolbarItemTintColor];
     }
 	
     self.htmlBarButtonItem.tintColor = toolbarItemTintColor;
@@ -282,15 +373,17 @@ typedef enum
     _toolbarItemSelectedTintColor = toolbarItemSelectedTintColor;
 }
 
+#pragma mark - Toolbar
+
 - (BOOL)hasSomeEnabledToolbarItems
 {
 	return !(self.enabledToolbarItems & ZSSRichTextEditorToolbarNone);
 }
 
-- (NSArray *)itemsForToolbar
+- (NSMutableArray *)itemsForToolbar
 {
     NSMutableArray *items = [[NSMutableArray alloc] init];
-    
+	
     if ([self hasSomeEnabledToolbarItems]) {
 		if ([self canShowInsertImageBarButton]) {
 			[items addObject:[self insertImageBarButton]];
@@ -421,7 +514,7 @@ typedef enum
 		}
 	}
 		
-    return [NSArray arrayWithArray:items];
+	return items;
 }
 
 #pragma mark - Toolbar: helper methods
@@ -611,15 +704,18 @@ typedef enum
 
 	UIImage* buttonImage = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 
-	WPEditorToolbarButton* customButton = [[WPEditorToolbarButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+	WPEditorToolbarButton* customButton = [[WPEditorToolbarButton alloc] initWithFrame:CGRectMake(0,
+																								  0,
+																								  kWPEditorViewControllerToolbarButtonWidth,
+																								  kWPEditorViewControllerToolbarButtonHeight)];
 	[customButton setImage:buttonImage forState:UIControlStateNormal];
-	customButton.normalTintColor = self.barButtonItemDefaultColor;
-	customButton.selectedTintColor = self.barButtonItemSelectedDefaultColor;
+	customButton.normalTintColor = self.toolbarItemTintColor;
+	customButton.selectedTintColor = self.toolbarItemSelectedTintColor;
 	[customButton addTarget:self
 					 action:selector
 		   forControlEvents:UIControlEventTouchUpInside];
 	barButtonItem.customView = customButton;
-
+	
 	return barButtonItem;
 }
 
@@ -1044,77 +1140,107 @@ typedef enum
 
 - (void)buildToolbar
 {
-    // Scrolling View
-    if (!self.toolBarScroll) {
-        self.toolBarScroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, IS_IPAD ? self.view.frame.size.width : self.view.frame.size.width - 44, 44)];
-        self.toolBarScroll.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-        self.toolBarScroll.showsHorizontalScrollIndicator = NO;
-    }
-    
-    // Toolbar with icons
-    if (!self.toolbar) {
-        self.toolbar = [[UIToolbar alloc] initWithFrame:CGRectZero];
-        self.toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        self.toolbar.backgroundColor = [UIColor whiteColor];
-    }
-    [self.toolBarScroll addSubview:self.toolbar];
-    self.toolBarScroll.autoresizingMask = self.toolbar.autoresizingMask;
-	
-    // Background Toolbar
-    UIToolbar *backgroundToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
-    backgroundToolbar.backgroundColor = [UIColor whiteColor];
-    backgroundToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	
-    // Parent holding view
-	if (!self.toolbarHolder) {
-		self.toolbarHolder = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 44)];
-		self.toolbarHolder.autoresizingMask = self.toolbar.autoresizingMask;
-		self.toolbarHolder.backgroundColor = [UIColor whiteColor];
-		[self.toolbarHolder addSubview:self.toolBarScroll];
-		[self.toolbarHolder insertSubview:backgroundToolbar atIndex:0];
+	if (!self.mainToolbarHolder) {
+		[self buildMainToolbarHolder];
 	}
 	
-    if (!IS_IPAD) {
-        [self.toolbarHolder addSubview:[self rightToolbarHolder]];
+    if (!self.toolbarScroll) {
+		[self buildToolbarScroll];
+    }
+    
+    if (!self.leftToolbar) {
+		[self buildLeftToolbar];
     }
 	
-	[self.editorView setInputAccessoryView:self.toolbarHolder];
-	self.titleTextField.inputAccessoryView = self.toolbarHolder;
+    if (!IS_IPAD) {
+        [self.mainToolbarHolderContent addSubview:[self rightToolbarHolder]];
+    }
+	
+	[self.editorView setInputAccessoryView:self.mainToolbarHolder];
     
     // Check to see if we have any toolbar items, if not, add them all
-    NSArray *items = [self itemsForToolbar];
+    NSMutableArray *items = [self itemsForToolbar];
     if (items.count == 0 && !(_enabledToolbarItems & ZSSRichTextEditorToolbarNone)) {
         _enabledToolbarItems = ZSSRichTextEditorToolbarAll;
         items = [self itemsForToolbar];
-    }
-    
-    // get the width before we add custom buttons
-    CGFloat toolbarWidth = items.count == 0 ? 0.0f : (CGFloat)(items.count * 55);
-    
+	}
+	
+	CGFloat toolbarWidth = items.count == 0 ? 0.0f : kToolbarFirstItemExtraPadding + (CGFloat)(items.count * kWPEditorViewControllerToolbarButtonWidth);
+	
     if (self.customBarButtonItems != nil)
     {
-        items = [items arrayByAddingObjectsFromArray:self.customBarButtonItems];
+		[items addObjectsFromArray:self.customBarButtonItems];
+		
         for(UIBarButtonItem *buttonItem in self.customBarButtonItems)
         {
             toolbarWidth += buttonItem.customView.frame.size.width + 11.0f;
         }
     }
-    for (UIBarButtonItem *item in items) {
-        item.tintColor = [self barButtonItemDefaultColor];
-    }
-    self.toolbar.items = items;
-    self.toolbar.frame = CGRectMake(0, 0, toolbarWidth, 44);
-	self.toolbar.barTintColor = [WPStyleGuide itsEverywhereGrey];
-    self.toolBarScroll.contentSize = CGSizeMake(self.toolbar.frame.size.width, 44);
+	
+	UIBarButtonItem *negativeSeparator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+																					   target:nil
+																					   action:nil];
+	negativeSeparator.width = -kToolbarItemPadding;
+	
+	// This code adds a negative separator between all the toolbar buttons
+	//
+	for (NSInteger i = [items count]; i >= 0; i--) {
+		[items insertObject:negativeSeparator atIndex:i];
+	}
+	
+    self.leftToolbar.items = items;
+    self.leftToolbar.frame = CGRectMake(0,
+										0,
+										toolbarWidth,
+										kWPEditorViewControllerToolbarHeight);
+    self.toolbarScroll.contentSize = CGSizeMake(CGRectGetWidth(self.leftToolbar.frame),
+												kWPEditorViewControllerToolbarHeight);
+}
+
+- (void)buildLeftToolbar
+{
+	NSAssert(!self.leftToolbar, @"This is supposed to be called only once.");
+	
+	UIToolbar* leftToolbar = [[UIToolbar alloc] initWithFrame:CGRectZero];
+	leftToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	leftToolbar.barTintColor = [self toolbarBackgroundColor];
+	leftToolbar.translucent = NO;
+	
+	[self.toolbarScroll addSubview:leftToolbar];
+	self.leftToolbar = leftToolbar;
+}
+
+- (void)buildMainToolbarHolder
+{
+	NSAssert(!self.mainToolbarHolder, @"This is supposed to be called only once.");
+	
+	UIView* mainToolbarHolder = [[UIView alloc] initWithFrame:CGRectMake(0,
+																		 CGRectGetHeight(self.view.frame),
+																		 CGRectGetWidth(self.view.frame),
+																		 kWPEditorViewControllerToolbarHeight)];
+	mainToolbarHolder.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	mainToolbarHolder.backgroundColor = self.toolbarBackgroundColor;
+	
+	CGRect subviewFrame = mainToolbarHolder.frame;
+	subviewFrame.origin = CGPointZero;
+	
+	UIView* mainToolbarHolderContent = [[UIView alloc] initWithFrame:subviewFrame];
+	
+	subviewFrame.size.height = 1.0f;
+	
+	UIView* mainToolbarHolderTopBorder = [[UIView alloc] initWithFrame:subviewFrame];
+	mainToolbarHolderTopBorder.backgroundColor = self.toolbarBorderColor;
+	
+	[mainToolbarHolder addSubview:mainToolbarHolderContent];
+	[mainToolbarHolder addSubview:mainToolbarHolderTopBorder];
+	
+	self.mainToolbarHolder = mainToolbarHolder;
+	self.mainToolbarHolderContent = mainToolbarHolderContent;
+	self.mainToolbarHolderTopBorder = mainToolbarHolderTopBorder;
 }
 
 - (void)buildTextViews
 {
-    if (!self.editorPlaceholderText) {
-        NSString *placeholderText = NSLocalizedString(@"Write your story here ...", @"Placeholder for the main body text.");
-        self.editorPlaceholderText = [NSString stringWithFormat:@"<div style=\"color:#A1BCCD;\">%@<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div>", placeholderText];
-    }
-    
     CGFloat viewWidth = CGRectGetWidth(self.view.frame);
     UIViewAutoresizing mask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     CGRect frame = CGRectMake(0.0f, 0.0f, viewWidth, EPVCTextfieldHeight);
@@ -1160,6 +1286,29 @@ typedef enum
     [self.view addSubview:self.editorView];
 }
 
+- (void)buildToolbarScroll
+{
+	NSAssert(!self.toolbarScroll, @"This is supposed to be called only once.");
+	
+	CGFloat scrollviewHeight = CGRectGetWidth(self.view.frame);
+ 
+	if (!IS_IPAD) {
+		scrollviewHeight -= kWPEditorViewControllerToolbarButtonWidth;
+	}
+	
+	CGRect toolbarScrollFrame = CGRectMake(0,
+										   0,
+										   scrollviewHeight,
+										   kWPEditorViewControllerToolbarHeight);
+	
+	UIScrollView* toolbarScroll = [[UIScrollView alloc] initWithFrame:toolbarScrollFrame];
+	toolbarScroll.showsHorizontalScrollIndicator = NO;
+	toolbarScroll.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	
+	[self.mainToolbarHolderContent addSubview:toolbarScroll];
+	self.toolbarScroll = toolbarScroll;
+}
+
 #pragma mark - Getters and Setters
 
 - (NSString*)titleText
@@ -1180,7 +1329,6 @@ typedef enum
 - (void)setBodyText:(NSString*)bodyText
 {
     [self.editorView setHtml:bodyText];
-    [self refreshUI];
 }
 
 #pragma mark - Actions
@@ -1193,18 +1341,6 @@ typedef enum
     [WPAnalytics track:WPAnalyticsStatEditorTappedImage];
 }
 
-#pragma mark - UI Refreshing
-
-- (void)refreshUI
-{
-    if (self.didFinishLoadingEditor) {
-		
-		if (!self.isEditing && [self isBodyTextEmpty]) {
-			[self.editorView setHtml:self.editorPlaceholderText];
-		}
-    }
-}
-
 #pragma mark - Editor and Misc Methods
 
 - (BOOL)isBodyTextEmpty
@@ -1214,14 +1350,6 @@ typedef enum
        || [[self.bodyText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""]
        || [[self.bodyText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@"<br>"]
        || [[self.bodyText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@"<br />"]) {
-        return YES;
-    }
-    return NO;
-}
-
-- (BOOL)isEditorPlaceholderTextVisible
-{
-    if([[self.bodyText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:self.editorPlaceholderText]) {
         return YES;
     }
     return NO;
@@ -1253,6 +1381,40 @@ typedef enum
 	{
 		[self.editorView disableEditing];
 	}
+    
+    [self.titleTextField endEditing:YES];
+}
+
+/**
+ *  @brief      Restored the previously saved edit selection.
+ *  @details    Will only really do anything if editing is enabled.
+ */
+- (void)restoreEditSelection
+{
+    if (self.isEditing) {
+        if (self.wasFocusOnEditorView) {
+            [self.editorView restoreSelection];
+        } else {
+            [self.titleTextField becomeFirstResponder];
+        }
+    }
+}
+
+/**
+ *  @brief      Saves the current edit selection, if any.
+ */
+- (void)saveEditSelection
+{
+    if (self.isEditing) {
+        if ([self.titleTextField isFirstResponder]) {
+            self.wasFocusOnEditorView = NO;
+        } else {
+            self.wasFocusOnEditorView = YES;
+            [self.editorView saveSelection];
+        }
+    } else {
+        self.wasFocusOnEditorView = NO;
+    }
 }
 
 - (void)startEditing
@@ -1265,9 +1427,7 @@ typedef enum
 	if (self.didFinishLoadingEditor)
 	{
 		[self enableEditing];
-		
 		[self.titleTextField becomeFirstResponder];
-
 		[self tellOurDelegateEditingDidBegin];
 	}
 }
@@ -1277,19 +1437,10 @@ typedef enum
 	self.editing = NO;
 	
 	[self disableEditing];
-    [self dismissKeyboard];
-    [self.view endEditing:YES];
-	
 	[self tellOurDelegateEditingDidEnd];
 }
 
 #pragma mark - Editor Interaction
-
-- (void)dismissKeyboard
-{
-	[self.editorView resignFirstResponder];
-    [self.view endEditing:YES];
-}
 
 - (void)showHTMLSource:(UIBarButtonItem *)barButtonItem
 {	
@@ -1301,7 +1452,7 @@ typedef enum
     } else {
 		[self.editorView showVisualEditor];
 		
-        barButtonItem.tintColor = [self barButtonItemDefaultColor];
+        barButtonItem.tintColor = [self toolbarItemTintColor];
         [self enableToolbarItems:YES shouldShowSourceButton:YES];
     }
     [WPAnalytics track:WPAnalyticsStatEditorTappedHTML];
@@ -1546,11 +1697,11 @@ typedef enum
 			if (buttonIndex == 1) {
 				NSString *linkURL = [alertView textFieldAtIndex:0].text;
 				NSString *linkTitle = [alertView textFieldAtIndex:1].text;
-				
+                
 				if ([linkTitle length] == 0) {
 					linkTitle = linkURL;
 				}
-				
+                
 				if (isInsertingNewLink) {
 					[weakSelf insertLink:linkURL title:linkTitle];
 				} else {
@@ -1600,8 +1751,8 @@ typedef enum
     }
     
     button.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:28.5f];
-    [button setTitleColor:[self barButtonItemDefaultColor] forState:UIControlStateNormal];
-    [button setTitleColor:[self barButtonItemSelectedDefaultColor] forState:UIControlStateHighlighted];
+    [button setTitleColor:self.toolbarItemTintColor forState:UIControlStateNormal];
+    [button setTitleColor:self.toolbarItemSelectedTintColor forState:UIControlStateHighlighted];
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
     [self.customBarButtonItems addObject:barButtonItem];
@@ -1654,7 +1805,6 @@ typedef enum
     UITextField *alt1 = [self.alertView textFieldAtIndex:1];
     alt1.secureTextEntry = NO;
     UIView *test = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-    test.backgroundColor = [UIColor redColor];
     alt1.rightView = test;
     alt1.placeholder = NSLocalizedString(@"Alt", nil);
     alt1.clearButtonMode = UITextFieldViewModeAlways;
@@ -1711,13 +1861,20 @@ typedef enum
 
 - (void)selectToolbarItemsForStyles:(NSArray*)styles
 {
-	NSArray *items = self.toolbar.items;
+	NSArray *items = self.leftToolbar.items;
 	
-    for (ZSSBarButtonItem *item in items) {
-        if ([styles containsObject:item.htmlProperty]) {
-			item.selected = YES;
-        } else {
-			item.selected = NO;
+    for (UIBarButtonItem *item in items) {
+        // Since we're using UIBarItem as negative separators, we need to make sure we don't try to
+        // use those here.
+        //
+        if ([item isKindOfClass:[ZSSBarButtonItem class]]) {
+            ZSSBarButtonItem* zssItem = (ZSSBarButtonItem*)item;
+            
+            if ([styles containsObject:zssItem.htmlProperty]) {
+                zssItem.selected = YES;
+            } else {
+                zssItem.selected = NO;
+            }
         }
     }
 }
@@ -1789,8 +1946,6 @@ typedef enum
 		
 		[self enableToolbarItems:NO
 		  shouldShowSourceButton:YES];
-		
-		[self refreshUI];
 	}
 }
     
@@ -1802,13 +1957,6 @@ typedef enum
         }
     }
     return YES;
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-	if (textField == self.titleTextField) {
-		[self refreshUI];
-	}
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -1838,8 +1986,6 @@ typedef enum
 	} else {
 		[self.editorView disableEditing];
 	}
-	
-    [self refreshUI];
 }
 
 - (void)editorView:(WPEditorView*)editorView
@@ -1920,7 +2066,7 @@ didFailLoadWithError:(NSError *)error
 - (void)enableToolbarItems:(BOOL)enable
 	shouldShowSourceButton:(BOOL)showSource
 {
-    NSArray *items = self.toolbar.items;
+    NSArray *items = self.leftToolbar.items;
 	
     for (ZSSBarButtonItem *item in items) {
         if (item.tag == kWPEditorViewControllerElementShowSourceBarButton) {
