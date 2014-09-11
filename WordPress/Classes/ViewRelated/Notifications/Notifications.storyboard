@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="14A343f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MbC-cA-c9S">
     <dependencies>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
@@ -127,7 +128,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GLh-mA-WVS" customClass="DTAttributedLabel">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GLh-mA-WVS" customClass="WPDynamicHeightTextView" customModule="WordPress" customModuleProvider="target">
                                                     <rect key="frame" x="12" y="4" width="296" height="35"/>
                                                     <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
                                                 </view>
@@ -142,7 +143,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="attributedLabel" destination="GLh-mA-WVS" id="qNi-br-Wyd"/>
+                                            <outlet property="textView" destination="GLh-mA-WVS" id="vt4-wS-IQt"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockCommentTableViewCell" rowHeight="110" id="FtC-SI-oJr" userLabel="Comment" customClass="NoteBlockCommentTableViewCell" customModule="WordPress">
@@ -192,7 +193,7 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N7y-ge-mMq" customClass="DTAttributedLabel">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N7y-ge-mMq" customClass="WPDynamicHeightTextView" customModule="WordPress" customModuleProvider="target">
                                                     <rect key="frame" x="12" y="20" width="296" height="29"/>
                                                     <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
                                                     <constraints>
@@ -303,7 +304,6 @@
                                         <connections>
                                             <outlet property="approvalSidebarView" destination="eXO-Zm-IMb" id="dIO-vO-5SQ"/>
                                             <outlet property="approvalStatusView" destination="g23-xL-FVr" id="YGK-1E-taO"/>
-                                            <outlet property="attributedLabel" destination="N7y-ge-mMq" id="Cou-VH-JAO"/>
                                             <outlet property="btnApprove" destination="dZU-ho-dbu" id="wQI-LZ-w9g"/>
                                             <outlet property="btnLike" destination="e1p-ec-Dn3" id="HMC-LX-m8X"/>
                                             <outlet property="btnMore" destination="Ab9-Eo-ue1" id="W9i-90-82S"/>
@@ -311,6 +311,7 @@
                                             <outlet property="gravatarImageView" destination="dAK-Dd-Cvw" id="QLC-K4-YZR"/>
                                             <outlet property="nameLabel" destination="uYt-ov-kC3" id="iUh-rH-6T4"/>
                                             <outlet property="separatorView" destination="WpC-gY-myP" id="upt-Qi-Clg"/>
+                                            <outlet property="textView" destination="N7y-ge-mMq" id="Cbg-kZ-aBg"/>
                                             <outlet property="timestampLabel" destination="Sed-4I-XCW" id="Sc4-Hw-skT"/>
                                         </connections>
                                     </tableViewCell>
