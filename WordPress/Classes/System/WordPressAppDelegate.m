@@ -70,7 +70,7 @@ static NSString* const kWPNewPostURLParamContentKey = @"content";
 static NSString* const kWPNewPostURLParamTagsKey = @"tags";
 static NSString* const kWPNewPostURLParamImageKey = @"image";
 
-@interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
+@interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate, HelpshiftDelegate>
 
 @property (nonatomic, strong, readwrite) UINavigationController         *navigationController;
 @property (nonatomic, strong, readwrite) UITabBarController             *tabBarController;
@@ -127,6 +127,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [SupportViewController checkIfFeedbackShouldBeEnabled];
 
     [Helpshift installForApiKey:[WordPressComApiCredentials helpshiftAPIKey] domainName:[WordPressComApiCredentials helpshiftDomainName] appID:[WordPressComApiCredentials helpshiftAppId]];
+    [[Helpshift sharedInstance] setDelegate:self];
     [SupportViewController checkIfHelpshiftShouldBeEnabled];
 
     NSNumber *usage_tracking = [[NSUserDefaults standardUserDefaults] valueForKey:kUsageTrackingDefaultsKey];
@@ -1352,5 +1353,15 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 		});
 	}];
 }
+
+#pragma mark - Helpshift Delegate
+
+- (void) didReceiveInAppNotificationWithMessageCount:(NSInteger)count;
+{
+    if (count > 0) {
+        [WPAnalytics track:WPAnalyticsStatSupportReceivedResponseFromSupport];
+    }
+}
+
 
 @end
