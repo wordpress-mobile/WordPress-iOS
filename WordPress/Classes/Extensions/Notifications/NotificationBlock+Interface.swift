@@ -40,10 +40,6 @@ extension NotificationBlock
         
         theString.applyAttributesToQuotes(WPStyleGuide.Notifications.blockBoldStyle)
         
-        //  Note: CoreText doesn't work with NSLinkAttributeName
-        //      DTLinkAttribute     = "NSLinkAttributeName"
-        //      NSLinkAttributeName = "NSLink"
-        //
         for range in ranges as [NotificationRange] {
             if range.isPost {
                 theString.addAttributes(WPStyleGuide.Notifications.blockItalicsStyle, range: range.range)
@@ -52,7 +48,7 @@ extension NotificationBlock
             }
 
             if range.url != nil {
-                theString.addAttribute(DTLinkAttribute, value: range.url, range: range.range)
+                theString.addAttribute(NSLinkAttributeName, value: range.url, range: range.range)
                 theString.addAttribute(NSForegroundColorAttributeName, value: WPStyleGuide.Notifications.blockLinkColor, range: range.range)
             }
         }

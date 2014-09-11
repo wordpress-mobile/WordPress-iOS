@@ -15,17 +15,17 @@ import Foundation
 
     public var attributedCommentText: NSAttributedString? {
         didSet {
-            refreshInterfaceStyle()
+            refreshApprovalColors()
         }
     }
     public var name: String? {
         didSet {
-            nameLabel.text  = name != nil ? name! : String()
+            nameLabel.text  = name ?? String()
         }
     }
     public var timestamp: String? {
         didSet {
-            timestampLabel.text  = timestamp != nil ? timestamp! : String()
+            timestampLabel.text  = timestamp ?? String()
         }
     }
     public var isLikeEnabled: Bool = false {
@@ -60,7 +60,7 @@ import Foundation
     public var isApproveOn: Bool = false {
         didSet {
             btnApprove.selected = isApproveOn
-            refreshInterfaceStyle()
+            refreshApprovalColors()
         }
     }
 
@@ -196,13 +196,14 @@ import Foundation
         setNeedsLayout()
     }
     
-    private func refreshInterfaceStyle() {
+    private func refreshApprovalColors() {
         // If Approval is not even enabled, let's consider this as approved!
         let isCommentApproved               = isApproveOn || !isApproveEnabled
         approvalStatusView.hidden           = isCommentApproved
         separatorView.backgroundColor       = WPStyleGuide.Notifications.blockSeparatorColorForComment(isApproved: isCommentApproved)
         nameLabel.textColor                 = WPStyleGuide.Notifications.blockTextColorForComment(isApproved: isCommentApproved)
         timestampLabel.textColor            = WPStyleGuide.Notifications.blockTimestampColorForComment(isApproved: isCommentApproved)
+        super.linkColor                     = WPStyleGuide.Notifications.blockLinkColorForComment(isApproved: isCommentApproved)
         super.attributedText                = isCommentApproved ? attributedCommentApprovedText : attributedCommentUnapprovedText
     }
     
@@ -212,7 +213,7 @@ import Foundation
         if attributedCommentText == nil {
             return nil
         }
-            
+        
         let unwrappedMutableString  = attributedCommentText!.mutableCopy() as NSMutableAttributedString
         let range                   = NSRange(location: 0, length: min(1, unwrappedMutableString.length))
         let paragraph               = WPStyleGuide.Notifications.blockParagraphStyleWithIndentation(firstLineHeadIndent)
@@ -235,8 +236,9 @@ import Foundation
         return unwrappedMutableString
     }
 
+    
     // MARK: - Private Constants
-    private let gravatarImageSizePad                = CGSize(width: 36.0, height: 36.0)
+    private let gravatarImageSizePad                = CGSize(width: 37.0, height: 37.0)
     private let separatorHeight                     = CGFloat(1)
     private let buttonWidth                         = CGFloat(55)
     private let buttonHeight                        = CGFloat(30)
