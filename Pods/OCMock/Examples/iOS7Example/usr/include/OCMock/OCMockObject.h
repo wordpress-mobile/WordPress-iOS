@@ -17,17 +17,18 @@
 #import <Foundation/Foundation.h>
 
 @class OCMLocation;
-@class OCMockRecorder;
+@class OCMInvocationStub;
+@class OCMStubRecorder;
 @class OCMInvocationMatcher;
+@class OCMInvocationExpectation;
 
 
 @interface OCMockObject : NSProxy
 {
 	BOOL			isNice;
 	BOOL			expectationOrderMatters;
-	NSMutableArray	*recorders;
+	NSMutableArray	*stubs;
 	NSMutableArray	*expectations;
-	NSMutableArray	*rejections;
 	NSMutableArray	*exceptions;
     NSMutableArray  *invocations;
 }
@@ -53,13 +54,14 @@
 - (id)verifyAtLocation:(OCMLocation *)location;
 
 - (void)verifyWithDelay:(NSTimeInterval)delay;
+- (void)verifyWithDelay:(NSTimeInterval)delay atLocation:(OCMLocation *)location;
 
 - (void)stopMocking;
 
 // internal use only
 
-- (void)prepareForMockingMethod:(SEL)aSelector;
-- (void)prepareForMockingClassMethod:(SEL)aSelector;
+- (void)addStub:(OCMInvocationStub *)aStub;
+- (void)addExpectation:(OCMInvocationExpectation *)anExpectation;
 
 - (BOOL)handleInvocation:(NSInvocation *)anInvocation;
 - (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation;

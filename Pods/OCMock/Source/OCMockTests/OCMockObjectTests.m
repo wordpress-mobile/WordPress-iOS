@@ -16,11 +16,15 @@
 
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
-
+#import "OCMBoxedReturnValueProvider.h"
 
 // --------------------------------------------------------------------------------------
 //	Helper classes and protocols for testing
 // --------------------------------------------------------------------------------------
+
+@interface OCMBoxedReturnValueProvider (Private)
+- (BOOL)isMethodReturnType:(const char *)returnType compatibleWithValueType:(const char *)valueType;
+@end
 
 @interface TestClassWithSelectorMethod : NSObject
 
@@ -30,22 +34,7 @@
 
 @implementation TestClassWithSelectorMethod
 
-- (void)doWithSelector:(SEL)aSelector
-{
-}
-
-@end
-
-
-@interface TestClassWithTypeQualifierMethod : NSObject
-
-- (void)aSpecialMethod:(byref in void *)someArg;
-
-@end
-
-@implementation TestClassWithTypeQualifierMethod
-
-- (void)aSpecialMethod:(byref in void *)someArg
+- (void)doWithSelector:(__unused SEL)aSelector
 {
 }
 
@@ -67,6 +56,43 @@
 
 @end
 
+@interface TestClassWithOpaquePointerMethod : NSObject
+typedef struct TestOpaque *OpaquePtr;
+
+- (OpaquePtr)opaquePtrValue;
+
+@end
+
+@implementation TestClassWithOpaquePointerMethod
+
+typedef struct TestOpaque {
+    int i;
+    int j;
+} TestOpaque;
+
+TestOpaque myOpaque;
+
+- (OpaquePtr)opaquePtrValue
+{
+    myOpaque.i = 3;
+    myOpaque.i = 4;
+    return &myOpaque;
+}
+
+@end
+
+@interface TestClassWithProperty : NSObject
+
+@property (nonatomic, retain) NSString *title;
+
+@end
+
+@implementation TestClassWithProperty
+
+@synthesize title;
+
+@end
+
 
 @interface NotificationRecorderForTesting : NSObject
 {
@@ -81,13 +107,11 @@
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[notification release];
-	[super dealloc];
 }
 
 - (void)receiveNotification:(NSNotification *)aNotification
 {
-	notification = [aNotification retain];
+	notification = aNotification;
 }
 
 @end
@@ -214,7 +238,7 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testAcceptsStubbedMethodWithPointerArgument
 {
-	NSError *error;
+    NSError __autoreleasing *error;
 	[[[mock stub] andReturnValue:@YES] writeToFile:[OCMArg any] atomically:YES encoding:NSMacOSRomanStringEncoding error:&error];
 
 	XCTAssertTrue([mock writeToFile:@"foo" atomically:YES encoding:NSMacOSRomanStringEncoding error:&error]);
@@ -233,12 +257,32 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testAcceptsStubbedMethodWithAnyPointerArgument
 {
-    [[[mock stub] andReturn:@"foo"] initWithCharacters:[OCMArg anyPointer] length:3];
+    [[mock stub] getCharacters:[OCMArg anyPointer]];
+    
+    unichar buffer[10];
+    XCTAssertNoThrow([mock getCharacters:buffer], @"Should have stubbed method.");
+}
 
-    unichar characters[] = { 'b', 'a', 'r' };
-    id result = [mock initWithCharacters:characters length:3];
 
-    XCTAssertEqualObjects(@"foo", result, @"Should have mocked method.");
+- (void)testAcceptsStubbedMethodWithMatchingCharPointer
+{
+    char buffer[10] = "foo";
+    [[[mock stub] andReturnValue:@YES] getCString:buffer maxLength:10 encoding:NSASCIIStringEncoding];
+
+    BOOL result = [mock getCString:buffer maxLength:10 encoding:NSASCIIStringEncoding];
+
+    XCTAssertEqual(YES, result, @"Should have stubbed method.");
+}
+
+- (void)testAcceptsStubbedMethodWithAnyPointerArgumentForCharPointer
+{
+
+    [[[mock stub] andReturnValue:@YES] getCString:[OCMArg anyPointer] maxLength:10 encoding:NSASCIIStringEncoding];
+
+    char buffer[10] = "foo";
+    BOOL result = [mock getCString:buffer maxLength:10 encoding:NSASCIIStringEncoding];
+
+    XCTAssertEqual(YES, result, @"Should have stubbed method.");
 }
 
 
@@ -268,17 +312,17 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testAcceptsStubbedMethodWithPointerPointerArgument
 {
-	NSError *error = nil;
-	[[mock stub] initWithContentsOfFile:@"foo.txt" encoding:NSASCIIStringEncoding error:&error];
-	[mock initWithContentsOfFile:@"foo.txt" encoding:NSASCIIStringEncoding error:&error];
+	NSError __autoreleasing *error = nil;
+    [[mock stub] writeToFile:@"foo.txt" atomically:NO encoding:NSASCIIStringEncoding error:&error];
+    [mock writeToFile:@"foo.txt" atomically:NO encoding:NSASCIIStringEncoding error:&error];
 }
 
 
 - (void)testRaisesExceptionWhenMethodWithWrongPointerPointerArgumentIsCalled
 {
 	NSError *error = nil, *error2;
-	[[mock stub] initWithContentsOfFile:@"foo.txt" encoding:NSASCIIStringEncoding error:&error];
-	XCTAssertThrows([mock initWithContentsOfFile:@"foo.txt" encoding:NSASCIIStringEncoding error:&error2], @"Should have raised.");
+    [[mock stub] writeToFile:@"foo.txt" atomically:NO encoding:NSASCIIStringEncoding error:&error];
+	XCTAssertThrows([mock writeToFile:@"foo.txt" atomically:NO encoding:NSASCIIStringEncoding error:&error2], @"Should have raised.");
 }
 
 
@@ -362,11 +406,94 @@ static NSString *TestNotification = @"TestNotification";
 	XCTAssertEqual(42, returnValue, @"Should have returned stubbed value.");
 }
 
+- (void)testReturnsStubbedUnsignedLongReturnValue
+{
+    mock = [OCMockObject mockForClass:[NSNumber class]];
+    [[[mock expect] andReturnValue:@42LU] unsignedLongValue];
+    unsigned long returnValue = [mock unsignedLongValue];
+    XCTAssertEqual(returnValue, 42LU, @"Should have returned stubbed value.");
+
+    [[[mock expect] andReturnValue:@42] unsignedLongValue];
+    returnValue = [mock unsignedLongValue];
+    XCTAssertEqual(returnValue, 42LU, @"Should have returned stubbed value.");
+
+    [[[mock expect] andReturnValue:@42.0] unsignedLongValue];
+    returnValue = [mock unsignedLongValue];
+    XCTAssertEqual(returnValue, 42LU, @"Should have returned stubbed value.");
+
+    [[[mock expect] andReturnValue:OCMOCK_VALUE((char)42)] unsignedLongValue];
+    returnValue = [mock unsignedLongValue];
+    XCTAssertEqual(returnValue, 42LU, @"Should have returned stubbed value.");
+
+    [[[mock expect] andReturnValue:OCMOCK_VALUE((float)42)] unsignedLongValue];
+    returnValue = [mock unsignedLongValue];
+    XCTAssertEqual(returnValue, 42LU, @"Should have returned stubbed value.");
+
+    [[[mock expect] andReturnValue:OCMOCK_VALUE((float)42.5)] unsignedLongValue];
+    XCTAssertThrows([mock unsignedLongValue], @"Should not be able to convert non-integer float to long");
+
+#if !__LP64__
+    [[[mock expect] andReturnValue:OCMOCK_VALUE((long long)LLONG_MAX)] unsignedLongValue];
+    XCTAssertThrows([mock unsignedLongValue], @"Should not be able to convert large long long to long");
+#endif
+}
+
+- (void)testReturnsStubbedBoolReturnValue
+{
+    [[[mock expect] andReturnValue:@YES] boolValue];
+    BOOL returnValue = [mock boolValue];
+    XCTAssertEqual(returnValue, YES, @"Should have returned stubbed value.");
+
+    [[[mock expect] andReturnValue:OCMOCK_VALUE(YES)] boolValue];
+    returnValue = [mock boolValue];
+    XCTAssertEqual(returnValue, YES, @"Should have returned stubbed value.");
+
+    [[[mock expect] andReturnValue:OCMOCK_VALUE(1)] boolValue];
+    returnValue = [mock boolValue];
+    XCTAssertEqual(returnValue, YES, @"Should have returned stubbed value.");
+
+    [[[mock expect] andReturnValue:OCMOCK_VALUE(300)] boolValue];
+    XCTAssertThrows([mock boolValue], @"Should not be able to convert large integer into BOOL");
+}
+
 - (void)testRaisesWhenBoxedValueTypesDoNotMatch
 {
-	[[[mock stub] andReturnValue:@42.0] intValue];
+	[[[mock stub] andReturnValue:[NSValue valueWithRange:NSMakeRange(0, 0)]] intValue];
 
 	XCTAssertThrows([mock intValue], @"Should have raised an exception.");
+}
+
+- (void)testOpaqueStructComparison
+{
+    TestClassWithOpaquePointerMethod *obj = [TestClassWithOpaquePointerMethod new];
+    OpaquePtr val = [obj opaquePtrValue];
+    id mockVal = [OCMockObject partialMockForObject:obj];
+    [[[mockVal stub] andReturnValue:OCMOCK_VALUE(val)] opaquePtrValue];
+    OpaquePtr val2 = [obj opaquePtrValue];
+    XCTAssertEqual(val, val2);
+
+    // from https://github.com/erikdoe/ocmock/pull/97
+    const char *type1 =
+    "r^{GURL={basic_string<char, std::__1::char_traits<char>, std::__1::alloca"
+    "tor<char> >={__compressed_pair<std::__1::basic_string<char, std::__1::cha"
+    "r_traits<char>, std::__1::allocator<char> >::__rep, std::__1::allocator<c"
+    "har> >={__rep}}}B{Parsed={Component=ii}{Component=ii}{Component=ii}{Compo"
+    "nent=ii}{Component=ii}{Component=ii}{Component=ii}{Component=ii}^{Parsed}"
+    "}{scoped_ptr<GURL, base::DefaultDeleter<GURL> >={scoped_ptr_impl<GURL, ba"
+    "se::DefaultDeleter<GURL> >={Data=^{GURL}}}}}";
+
+    const char *type2 =
+    "r^{GURL={basic_string<char, std::__1::char_traits<char>, std::__1::alloca"
+    "tor<char> >={__compressed_pair<std::__1::basic_string<char, std::__1::cha"
+    "r_traits<char>, std::__1::allocator<char> >::__rep, std::__1::allocator<c"
+    "har> >={__rep=(?={__long=II*}{__short=(?=Cc)[11c]}{__raw=[3L]})}}}B{Parse"
+    "d={Component=ii}{Component=ii}{Component=ii}{Component=ii}{Component=ii}{"
+    "Component=ii}{Component=ii}{Component=ii}^{Parsed}}{scoped_ptr<GURL, base"
+    "::DefaultDeleter<GURL> >={scoped_ptr_impl<GURL, base::DefaultDeleter<GURL"
+    "> >={Data=^{GURL}}}}}";
+
+    OCMBoxedReturnValueProvider *boxed = [OCMBoxedReturnValueProvider new];
+    XCTAssertTrue([boxed isMethodReturnType:type1 compatibleWithValueType:type2]);
 }
 
 - (void)testReturnsStubbedNilReturnValue
@@ -376,6 +503,15 @@ static NSString *TestNotification = @"TestNotification";
 	id returnValue = [mock uppercaseString];
 
 	XCTAssertNil(returnValue, @"Should have returned stubbed value, which is nil.");
+}
+
+- (void)testReturnsStubbedValueForProperty
+{
+    TestClassWithProperty *myMock = [OCMockObject mockForClass:[TestClassWithProperty class]];
+
+    [[[(id)myMock stub] andReturn:@"stubbed title"] title];
+
+    XCTAssertEqualObjects(@"stubbed title", myMock.title);
 }
 
 
@@ -393,7 +529,7 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testPostsNotificationWhenAskedTo
 {
-	NotificationRecorderForTesting *observer = [[[NotificationRecorderForTesting alloc] init] autorelease];
+	NotificationRecorderForTesting *observer = [[NotificationRecorderForTesting alloc] init];
 	[[NSNotificationCenter defaultCenter] addObserver:observer selector:@selector(receiveNotification:) name:TestNotification object:nil];
 
 	NSNotification *notification = [NSNotification notificationWithName:TestNotification object:self];
@@ -408,7 +544,7 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testPostsNotificationInAdditionToReturningValue
 {
-	NotificationRecorderForTesting *observer = [[[NotificationRecorderForTesting alloc] init] autorelease];
+	NotificationRecorderForTesting *observer = [[NotificationRecorderForTesting alloc] init];
 	[[NSNotificationCenter defaultCenter] addObserver:observer selector:@selector(receiveNotification:) name:TestNotification object:nil];
 
 	NSNotification *notification = [NSNotification notificationWithName:TestNotification object:self];
@@ -637,11 +773,9 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testFailsVerifyExpectedMethodsWithoutDelay
 {
-    [mock retain];
     dispatch_async(dispatch_queue_create("mockqueue", nil), ^{
         [NSThread sleepForTimeInterval:0.1];
         [mock lowercaseString];
-        [mock release];
     });
     
 	[[mock expect] lowercaseString];
@@ -656,12 +790,9 @@ static NSString *TestNotification = @"TestNotification";
 
 - (void)testAcceptsAndVerifiesExpectedMethodsWithDelayBlockTimeout
 {
-    [mock retain];
-    
     dispatch_async(dispatch_queue_create("mockqueue", nil), ^{
         [NSThread sleepForTimeInterval:1];
         [mock lowercaseString];
-        [mock release];
     });
     
 	[[mock expect] lowercaseString];
@@ -720,59 +851,16 @@ static NSString *TestNotification = @"TestNotification";
     XCTAssertThrows([mock uppercaseString], @"Should have complained about rejected method being called.");
 }
 
-
-// --------------------------------------------------------------------------------------
-//	mocks should honour the NSObject contract, etc.
-// --------------------------------------------------------------------------------------
-
-- (void)testRespondsToValidSelector
+- (void)testUncalledRejectStubDoesNotCountAsExpectation
 {
-	XCTAssertTrue([mock respondsToSelector:@selector(lowercaseString)]);
-}
+    mock = [OCMockObject niceMockForClass:[NSString class]];
 
-- (void)testDoesNotRespondToInvalidSelector
-{
-    // We use a selector that's not implemented by the mock, which is an NSString
-	XCTAssertFalse([mock respondsToSelector:@selector(arrayWithArray:)]);
-}
+    [[mock expect] lowercaseString];
+    [[mock reject] uppercaseString];
+    [mock lowercaseString];
 
-- (void)testCanStubValueForKeyMethod
-{
-	id returnValue;
+    XCTAssertNoThrow([mock verify], @"Should not have any unmet expectations.");
 
-	mock = [OCMockObject mockForClass:[NSObject class]];
-	[[[mock stub] andReturn:@"SomeValue"] valueForKey:@"SomeKey"];
-
-	returnValue = [mock valueForKey:@"SomeKey"];
-
-	XCTAssertEqualObjects(@"SomeValue", returnValue, @"Should have returned value that was set up.");
-}
-
-- (void)testForwardsIsKindOfClass
-{
-    XCTAssertTrue([mock isKindOfClass:[NSString class]], @"Should have pretended to be the mocked class.");
-}
-
-- (void)testWorksWithTypeQualifiers
-{
-    id myMock = [OCMockObject mockForClass:[TestClassWithTypeQualifierMethod class]];
-
-    XCTAssertNoThrow([[myMock expect] aSpecialMethod:"foo"], @"Should not complain about method with type qualifiers.");
-    XCTAssertNoThrow([myMock aSpecialMethod:"foo"], @"Should not complain about method with type qualifiers.");
-}
-
-- (void)testAdjustsRetainCountWhenStubbingMethodsThatCreateObjects
-{
-    NSString *objectToReturn = [NSString stringWithFormat:@"This is not a %@.", @"string constant"];
-    [[[mock stub] andReturn:objectToReturn] mutableCopy];
-
-    NSUInteger retainCountBefore = [objectToReturn retainCount];
-    id returnedObject = [mock mutableCopy];
-    [returnedObject release]; // the expectation is that we have to call release after a copy
-    NSUInteger retainCountAfter = [objectToReturn retainCount];
-
-    XCTAssertEqualObjects(objectToReturn, returnedObject, @"Should not stubbed copy method");
-    XCTAssertEqual(retainCountBefore, retainCountAfter, @"Should have incremented retain count in copy stub.");
 }
 
 
@@ -817,32 +905,6 @@ static NSString *TestNotification = @"TestNotification";
 }
 
 
-- (void)testMockShouldNotRaiseWhenDescribing
-{
-    mock = [OCMockObject mockForClass:[NSObject class]];
-
-    XCTAssertNoThrow(NSLog(@"Testing description handling dummy methods... %@ %@ %@ %@ %@",
-                          @{@"foo": mock},
-                          @[mock],
-                          [NSSet setWithObject:mock],
-                          [mock description],
-                          mock),
-                    @"asking for the description of a mock shouldn't cause a test to fail.");
-}
-
-- (void)testPartialMockShouldNotRaiseWhenDescribing
-{
-    mock = [OCMockObject partialMockForObject:[[NSObject alloc] init]];
-    
-    XCTAssertNoThrow(NSLog(@"Testing description handling dummy methods... %@ %@ %@ %@ %@",
-                          @{@"bar": mock},
-                          @[mock],
-                          [NSSet setWithObject:mock],
-                          [mock description],
-                          mock),
-                    @"asking for the description of a mock shouldn't cause a test to fail.");
-    [mock stopMocking];
-}
-
-
 @end
+
+

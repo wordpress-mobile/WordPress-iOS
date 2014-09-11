@@ -1,0 +1,26 @@
+This Google+ iOS SDK allows users to sign in and share with Google+ from
+third-party apps.  The SDK also provides Google+ APIs for the app to access
+the list of people in user-selected circles and to read and write user's app
+activities.  The SDK contains the following files:
+
+README  -- This file.
+
+Changelog  -- The versions and changes of the SDK.
+
+GooglePlus.framework/  -- The Google+ SDK framework.
+
+GooglePlus.bundle/  -- Resources to be included in your app.
+
+GoogleOpenSource.framework/ -- A framework containing all the open source files
+                               used by the SDK.
+                               Either add this framework or add individual
+                               files in OpenSource/ directory into your project.
+
+OpenSource/  -- Google open source files used by the SDK.
+                This contains the same code as in GoogleOpenSource.framework.
+                If you're not adding GoogleOpenSource.framework, add the files
+                you need from this directory into your project.
+
+SampleCode/  -- Sample code for your reference only.
+                Do not include this in your project.
+   GooglePlusSample.xcodeproj/  -- The Xcode project.

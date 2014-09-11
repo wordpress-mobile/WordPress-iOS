@@ -120,7 +120,7 @@
     [[mock expect] lowercaseString];
 
     shouldCaptureFailure = YES;
-    OCMVerifyAllWithDelay(mock, 1); const char *expectedFile = __FILE__; int expectedLine = __LINE__;
+    OCMVerifyAllWithDelay(mock, 0.05); const char *expectedFile = __FILE__; int expectedLine = __LINE__;
     shouldCaptureFailure = NO;
 
     XCTAssertNotNil(reportedDescription, @"Should have recorded a failure with description.");
@@ -145,7 +145,7 @@
 
     OCMStub([mock boolValue]).andReturn(YES);
 
-    XCTAssertEqual(1, [mock boolValue], @"Should have returned stubbed value");
+    XCTAssertEqual(YES, [mock boolValue], @"Should have returned stubbed value");
 }
 
 - (void)testSetsUpStubsWithStructureReturnValues
@@ -156,8 +156,17 @@
     OCMStub([mock rangeOfString:[OCMArg any]]).andReturn(expected);
 
     NSRange actual = [mock rangeOfString:@"substring"];
-    XCTAssertEqual(123, actual.location, @"Should have returned stubbed value");
-    XCTAssertEqual(456, actual.length, @"Should have returned stubbed value");
+    XCTAssertEqual((NSUInteger)123, actual.location, @"Should have returned stubbed value");
+    XCTAssertEqual((NSUInteger)456, actual.length, @"Should have returned stubbed value");
+}
+
+- (void)testSetsUpStubReturningNilForIdReturnType
+{
+    id mock = OCMClassMock([NSString class]);
+
+    OCMStub([mock lowercaseString]).andReturn(nil);
+
+    XCTAssertNil([mock lowercaseString], @"Should have returned stubbed value");
 }
 
 - (void)testSetsUpExceptionThrowing
@@ -203,7 +212,7 @@
 
 - (void)testCanChainPropertyBasedActions
 {
-    id mock = OCMPartialMock([[[TestClassForMacroTesting alloc] init] autorelease]);
+    id mock = OCMPartialMock([[TestClassForMacroTesting alloc] init]);
 
     __block BOOL didCallBlock = NO;
     void (^theBlock)(NSInvocation *) = ^(NSInvocation *invocation)

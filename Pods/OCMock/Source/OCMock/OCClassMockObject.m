@@ -18,8 +18,7 @@
 #import "OCClassMockObject.h"
 #import "NSObject+OCMAdditions.h"
 #import "OCMFunctions.h"
-#import "OCMMacroState.h"
-
+#import "OCMInvocationStub.h"
 
 @implementation OCClassMockObject
 
@@ -41,7 +40,7 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"OCMockObject[%@]", NSStringFromClass(mockedClass)];
+	return [NSString stringWithFormat:@"OCMockObject(%@)", NSStringFromClass(mockedClass)];
 }
 
 - (Class)mockedClass
@@ -63,6 +62,13 @@
     OCMSetAssociatedMockForClass(nil, mockedClass);
     OCMSetIsa(mockedClass, originalMetaClass);
     originalMetaClass = nil;
+}
+
+- (void)addStub:(OCMInvocationStub *)aStub
+{
+    [super addStub:aStub];
+    if([aStub recordedAsClassMethod])
+        [self setupForwarderForClassMethodSelector:[[aStub recordedInvocation] selector]];
 }
 
 
@@ -93,24 +99,49 @@
     IMP myForwardIMP = method_getImplementation(myForwardMethod);
     class_addMethod(newMetaClass, @selector(forwardInvocation:), myForwardIMP, method_getTypeEncoding(myForwardMethod));
 
-    /* adding forwarder for all class methods (instance methods on meta class) to allow for verify after run */
-    NSArray *whiteList = @[@"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:"];
-    [NSObject enumerateMethodsInClass:originalMetaClass usingBlock:^(SEL selector) {
-            if(![whiteList containsObject:NSStringFromSelector(selector)])
-                [self setupForwarderForClassMethodSelector:selector];
+    /* create a dummy initialize method */
+    Method myDummyInitializeMethod = class_getInstanceMethod([self mockObjectClass], @selector(initializeForClassObject));
+    const char *initializeTypes = method_getTypeEncoding(myDummyInitializeMethod);
+    IMP myDummyInitializeIMP = method_getImplementation(myDummyInitializeMethod);
+    class_addMethod(newMetaClass, @selector(initialize), myDummyInitializeIMP, initializeTypes);
+
+    /* adding forwarder for most class methods (instance methods on meta class) to allow for verify after run */
+    NSArray *methodBlackList = @[@"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:", @"isBlock",
+            @"instanceMethodForwarderForSelector:", @"instanceMethodSignatureForSelector:"];
+    [NSObject enumerateMethodsInClass:originalMetaClass usingBlock:^(Class cls, SEL sel) {
+        if((cls == object_getClass([NSObject class])) || (cls == [NSObject class]) || (cls == object_getClass(cls)))
+            return;
+        NSString *className = NSStringFromClass(cls);
+        NSString *selName = NSStringFromSelector(sel);
+        if(([className hasPrefix:@"NS"] || [className hasPrefix:@"UI"]) &&
+           ([selName hasPrefix:@"_"] || [selName hasSuffix:@"_"]))
+            return;
+        if([methodBlackList containsObject:selName])
+            return;
+        @try
+        {
+            [self setupForwarderForClassMethodSelector:sel];
+        }
+        @catch(NSException *e)
+        {
+            // ignore for now
+        }
     }];
 }
 
 - (void)setupForwarderForClassMethodSelector:(SEL)selector
 {
+    SEL aliasSelector = OCMAliasForOriginalSelector(selector);
+    if(class_getClassMethod(mockedClass, aliasSelector) != NULL)
+        return;
+
     Method originalMethod = class_getClassMethod(mockedClass, selector);
     IMP originalIMP = method_getImplementation(originalMethod);
     const char *types = method_getTypeEncoding(originalMethod);
 
     Class metaClass = object_getClass(mockedClass);
-    IMP forwarderIMP = [metaClass instanceMethodForwarderForSelector:selector];
+    IMP forwarderIMP = [originalMetaClass instanceMethodForwarderForSelector:selector];
     class_replaceMethod(metaClass, selector, forwarderIMP, types);
-    SEL aliasSelector = OCMAliasForOriginalSelector(selector);
     class_addMethod(metaClass, aliasSelector, originalIMP, types);
 }
 
@@ -130,33 +161,17 @@
     }
 }
 
+- (void)initializeForClassObject
+{
+    // we really just want to have an implementation so that the superclass's is not called
+}
+
 
 #pragma mark  Proxy API
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {
-    OCMMacroState *macroState = [OCMMacroState globalState];
-    if(macroState != nil)
-    {
-        if([macroState hasSwitchedToClassMethod])
-        {
-            return [mockedClass methodSignatureForSelector:aSelector];
-        }
-        else
-        {
-            NSMethodSignature *signature = [mockedClass instanceMethodSignatureForSelector:aSelector];
-            if((signature == nil) && [mockedClass respondsToSelector:aSelector])
-            {
-                [macroState switchToClassMethod];
-                signature = [mockedClass methodSignatureForSelector:aSelector];
-            }
-            return signature;
-        }
-    }
-    else
-    {
-        return [mockedClass instanceMethodSignatureForSelector:aSelector];
-    }
+    return [mockedClass instanceMethodSignatureForSelector:aSelector];
 }
 
 - (Class)mockObjectClass

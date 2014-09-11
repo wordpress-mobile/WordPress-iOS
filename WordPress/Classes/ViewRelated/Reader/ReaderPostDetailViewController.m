@@ -345,18 +345,17 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 
 - (void)setupWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    ReaderPostService *service      = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    __weak __typeof(self) weakSelf  = self;
 
     [WPNoResultsView displayAnimatedBoxWithTitle:NSLocalizedString(@"Loading Post...", @"Text displayed while loading a post.")
                                          message:nil
                                             view:self.view];
 
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    ReaderPostService *service      = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    __weak __typeof(self) weakSelf  = self;
+
     [service deletePostsWithNoTopic];
     [service fetchPost:postID.integerValue forSite:siteID.integerValue success:^(ReaderPost *post) {
-
-        [[ContextManager sharedInstance] saveContext:context];
 
         weakSelf.post = post;
         [weakSelf refreshAndSync];
@@ -452,6 +451,9 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 
     [self refreshPostView];
     [self refreshHeightForTableHeaderView];
+
+    // Refresh incase the post needed to be fetched.
+    [self.tableView reloadData];
 
     // Enable Share action only when the post is fully loaded
     self.shareButton.enabled = self.isLoaded;
@@ -779,6 +781,10 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 
 - (NSFetchRequest *)fetchRequest
 {
+    if (!self.post) {
+        return nil;
+    }
+    
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:[self entityName]];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = %@", self.post];
 
@@ -792,7 +798,7 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 {
     ReaderCommentTableViewCell *cell = (ReaderCommentTableViewCell *)aCell;
     cell.accessoryType = UITableViewCellAccessoryNone;
-    
+
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     [cell configureCell:comment];
     [self setAvatarForComment:comment forCell:cell indexPath:indexPath];
@@ -834,8 +840,8 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
     ReaderCommentTableViewCell *cell = (ReaderCommentTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:CommentCellIdentifier];
     if (!cell) {
         cell = [[ReaderCommentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CommentCellIdentifier];
-        cell.delegate = self;
     }
+    cell.delegate = self;
     cell.accessoryType = UITableViewCellAccessoryNone;
 
     [self configureCell:cell atIndexPath:indexPath];

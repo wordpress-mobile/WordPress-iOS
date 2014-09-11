@@ -16,6 +16,7 @@
 
 #import <XCTest/XCTest.h>
 #import "OCMArg.h"
+#import "OCMConstraint.h"
 
 #if TARGET_OS_IPHONE
 #define NSRect CGRect
@@ -44,6 +45,15 @@
     XCTAssertEqualObjects(OCMOCK_VALUE(NSZeroRect), [NSValue valueWithRect:NSZeroRect]);
 #endif
     XCTAssertEqualObjects(OCMOCK_VALUE([@"0123456789" rangeOfString:@"56789"]), [NSValue valueWithRange:range]);
+}
+
+- (void)testIsKindOfClassCheck
+{
+    OCMBlockConstraint *constraint = [OCMArg isKindOfClass:[NSString class]];
+    
+	XCTAssertTrue([constraint evaluate:@"foo"], @"Should have accepted \"foo\".");
+	XCTAssertFalse([constraint evaluate:[NSArray array]], @"Should not have accepted other value.");
+	XCTAssertFalse([constraint evaluate:nil], @"Should not have accepted nil.");
 }
 
 @end
