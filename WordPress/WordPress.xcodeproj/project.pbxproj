@@ -41,6 +41,10 @@
 		30AF6CF513C2289600A29C00 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30AF6CF413C2289600A29C00 /* AboutViewController.xib */; };
 		30AF6CFD13C230C600A29C00 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30AF6CFC13C230C600A29C00 /* AboutViewController.m */; };
 		30EABE0918A5903400B73A9C /* WPBlogTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 30EABE0818A5903400B73A9C /* WPBlogTableViewCell.m */; };
+		31AB060B19C1D58B00290C39 /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31AB060A19C1D58B00290C39 /* CommentTableViewCell.swift */; };
+		31D95BEA19C0690F00E98D93 /* ACommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D95BE919C0690F00E98D93 /* ACommentViewController.m */; };
+		31D95BEE19C08F4000E98D93 /* CommentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 31D95BED19C08F4000E98D93 /* CommentTableViewCell.xib */; };
+		31D95BF019C0A71200E98D93 /* CommentTableViewHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 31D95BEF19C0A71200E98D93 /* CommentTableViewHeaderCell.xib */; };
 		37022D931981C19000F322B7 /* VerticallyStackedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 37022D901981BF9200F322B7 /* VerticallyStackedButton.m */; };
 		3716E401167296D30035F8C4 /* ToastView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3716E400167296D30035F8C4 /* ToastView.xib */; };
 		37245ADC13FC23FF006CDBE3 /* WPWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37245ADB13FC23FF006CDBE3 /* WPWebViewController.xib */; };
@@ -450,6 +454,11 @@
 		30AF6CFC13C230C600A29C00 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AboutViewController.m; path = ../System/AboutViewController.m; sourceTree = "<group>"; };
 		30EABE0718A5903400B73A9C /* WPBlogTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPBlogTableViewCell.h; sourceTree = "<group>"; };
 		30EABE0818A5903400B73A9C /* WPBlogTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPBlogTableViewCell.m; sourceTree = "<group>"; };
+		31AB060A19C1D58B00290C39 /* CommentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
+		31D95BE819C0690F00E98D93 /* ACommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACommentViewController.h; sourceTree = "<group>"; };
+		31D95BE919C0690F00E98D93 /* ACommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACommentViewController.m; sourceTree = "<group>"; };
+		31D95BED19C08F4000E98D93 /* CommentTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentTableViewCell.xib; sourceTree = "<group>"; };
+		31D95BEF19C0A71200E98D93 /* CommentTableViewHeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentTableViewHeaderCell.xib; sourceTree = "<group>"; };
 		37022D8F1981BF9200F322B7 /* VerticallyStackedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerticallyStackedButton.h; sourceTree = "<group>"; };
 		37022D901981BF9200F322B7 /* VerticallyStackedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerticallyStackedButton.m; sourceTree = "<group>"; };
 		3716E400167296D30035F8C4 /* ToastView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ToastView.xib; path = Resources/ToastView.xib; sourceTree = "<group>"; };
@@ -2068,6 +2077,11 @@
 				C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */,
 				2906F80F110CDA8900169D56 /* EditCommentViewController.h */,
 				2906F810110CDA8900169D56 /* EditCommentViewController.m */,
+				31D95BE819C0690F00E98D93 /* ACommentViewController.h */,
+				31D95BE919C0690F00E98D93 /* ACommentViewController.m */,
+				31AB060A19C1D58B00290C39 /* CommentTableViewCell.swift */,
+				31D95BED19C08F4000E98D93 /* CommentTableViewCell.xib */,
+				31D95BEF19C0A71200E98D93 /* CommentTableViewHeaderCell.xib */,
 			);
 			path = Comments;
 			sourceTree = "<group>";
@@ -2494,6 +2508,7 @@
 				8333FE0E11FF6EF200A495C1 /* EditSiteViewController.xib in Resources */,
 				74C1C306199170930077A7DC /* PostDetailViewController.xib in Resources */,
 				5DF94E331962B9D800359241 /* WPAlertView.xib in Resources */,
+				31D95BEE19C08F4000E98D93 /* CommentTableViewCell.xib in Resources */,
 				8362C1041201E7CE00599347 /* WebSignupViewController-iPad.xib in Resources */,
 				83CAD4211235F9F4003DFA20 /* MediaObjectView.xib in Resources */,
 				3768BEF213041E7900E7C9A9 /* BetaFeedbackViewController.xib in Resources */,
@@ -2515,6 +2530,7 @@
 				5DA5BF4218E32DCF005F11F9 /* MediaBrowserViewController.xib in Resources */,
 				5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */,
 				85D80558171630B30075EEAC /* DotCom-Languages.plist in Resources */,
+				31D95BF019C0A71200E98D93 /* CommentTableViewHeaderCell.xib in Resources */,
 				B51D9A7E19634D4400CA857B /* Noticons-Regular.otf in Resources */,
 				5DC02A3718E4C5BD009A1765 /* ThemeBrowserViewController.xib in Resources */,
 				A2787D0219002AB1000D6CA6 /* HelpshiftConfig.plist in Resources */,
@@ -2753,6 +2769,7 @@
 				E13EB7A5157D230000885780 /* WordPressComApi.m in Sources */,
 				5D5D0027187DA9D30027CEF6 /* CategoriesViewController.m in Sources */,
 				5DF7389A1965FB3C00393584 /* WPTableViewHandler.m in Sources */,
+				31D95BEA19C0690F00E98D93 /* ACommentViewController.m in Sources */,
 				E1E4CE0B1773C59B00430844 /* WPAvatarSource.m in Sources */,
 				FD75DDAD15B021C80043F12C /* UIViewController+Rotation.m in Sources */,
 				CC0E20AE15B87DA100D3468B /* WPWebBridge.m in Sources */,
@@ -2852,6 +2869,7 @@
 				5D42A3FC175E75EE005CFF05 /* ReaderPostsViewController.m in Sources */,
 				E1556CF2193F6FE900FC52EA /* CommentService.m in Sources */,
 				5D42A3FD175E75EE005CFF05 /* ReaderPostTableViewCell.m in Sources */,
+				31AB060B19C1D58B00290C39 /* CommentTableViewCell.swift in Sources */,
 				5DB3BA0518D0E7B600F3F3E9 /* WPPickerView.m in Sources */,
 				5D42A400175E75EE005CFF05 /* ReaderVideoView.m in Sources */,
 				5D42A405175E76A7005CFF05 /* WPImageViewController.m in Sources */,

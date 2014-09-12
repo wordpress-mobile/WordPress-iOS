@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment defaultVersion="1792" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CommentTableViewCell" rowHeight="110" id="kpS-Jl-NuA" userLabel="Comment" customClass="CommentTableViewCell" customModule="WordPress">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="110"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kpS-Jl-NuA" id="lfs-jX-pL2">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="84"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Eed-rU-I3g" userLabel="Approval Status">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="57"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nq3-FR-5ko" userLabel="Approval Sidebar">
+                                <rect key="frame" x="0.0" y="0.0" width="3" height="57"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="3" id="Bds-5F-4kA"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="nq3-FR-5ko" firstAttribute="leading" secondItem="Eed-rU-I3g" secondAttribute="leading" id="1tY-1V-AOT"/>
+                            <constraint firstAttribute="bottom" secondItem="nq3-FR-5ko" secondAttribute="bottom" id="4xX-bB-sKE"/>
+                            <constraint firstItem="nq3-FR-5ko" firstAttribute="top" secondItem="Eed-rU-I3g" secondAttribute="top" id="AU3-tp-xto"/>
+                        </constraints>
+                    </view>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="D7v-ea-mVv">
+                        <rect key="frame" x="12" y="12" width="32" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="32" id="Lm1-Dv-YPI"/>
+                            <constraint firstAttribute="height" constant="32" id="TzI-BH-Z26"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qGg-oJ-Ufr">
+                        <rect key="frame" x="54" y="8" width="188" height="14.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="188" id="9ec-Mq-EXp"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Timestamp" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SEJ-fG-mep">
+                        <rect key="frame" x="242" y="8" width="64" height="14.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0IA-MO-7Wd" customClass="WPDynamicHeightTextView" customModule="WordPress" customModuleProvider="target">
+                        <rect key="frame" x="12" y="20" width="296" height="29"/>
+                        <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="250" constant="28" id="nMc-jO-3z5"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JcK-7z-99n" userLabel="Separator View">
+                        <rect key="frame" x="12" y="57" width="296" height="1"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="NW4-24-JGL"/>
+                        </constraints>
+                    </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qXy-qG-kDb" customClass="VerticallyStackedButton">
+                        <rect key="frame" x="245" y="69" width="55" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="QnG-U7-dtk"/>
+                            <constraint firstAttribute="width" constant="55" id="Xy0-4f-pA2"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <state key="normal" title="More" image="notifications-more">
+                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="moreWasPressed:" destination="kpS-Jl-NuA" eventType="touchUpInside" id="gvm-Kr-A4E"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hQv-0F-LN5" customClass="VerticallyStackedButton">
+                        <rect key="frame" x="170" y="69" width="55" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="55" id="Vb7-pP-luV"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <state key="normal" title="Trash" image="notifications-trash">
+                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="trashWasPressed:" destination="kpS-Jl-NuA" eventType="touchUpInside" id="5lf-jS-bF9"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GmS-gL-gtp" customClass="VerticallyStackedButton">
+                        <rect key="frame" x="95" y="69" width="55" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="55" id="FSU-ar-71J"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <state key="normal" title="Approve" image="notifications-approve">
+                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <state key="selected" image="notifications-approved"/>
+                        <state key="highlighted" image="notifications-approved"/>
+                        <connections>
+                            <action selector="approveWasPressed:" destination="kpS-Jl-NuA" eventType="touchUpInside" id="YSd-qx-yXb"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oKH-Dv-iWe" customClass="VerticallyStackedButton">
+                        <rect key="frame" x="20" y="69" width="55" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="55" id="HXB-LP-Vcz"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <state key="normal" title="Like" image="notifications-like">
+                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <state key="selected" image="notifications-liked"/>
+                        <state key="highlighted" image="notifications-liked"/>
+                        <connections>
+                            <action selector="likeWasPressed:" destination="kpS-Jl-NuA" eventType="touchUpInside" id="Ihn-7Z-Nmd"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="SEJ-fG-mep" firstAttribute="leading" secondItem="qGg-oJ-Ufr" secondAttribute="trailing" id="1lG-lF-az4"/>
+                    <constraint firstItem="qGg-oJ-Ufr" firstAttribute="leading" secondItem="D7v-ea-mVv" secondAttribute="trailing" constant="10" id="28o-JP-c66"/>
+                    <constraint firstAttribute="trailing" secondItem="Eed-rU-I3g" secondAttribute="trailing" id="3Uz-0b-ss7"/>
+                    <constraint firstItem="JcK-7z-99n" firstAttribute="leading" secondItem="0IA-MO-7Wd" secondAttribute="leading" id="4B6-Lo-Ds1"/>
+                    <constraint firstItem="D7v-ea-mVv" firstAttribute="leading" secondItem="lfs-jX-pL2" secondAttribute="leading" constant="12" id="4k8-KI-zBm"/>
+                    <constraint firstItem="Eed-rU-I3g" firstAttribute="top" secondItem="lfs-jX-pL2" secondAttribute="top" id="9hQ-4e-9iL"/>
+                    <constraint firstItem="0IA-MO-7Wd" firstAttribute="top" secondItem="SEJ-fG-mep" secondAttribute="bottom" constant="-2" id="FuK-ub-boP"/>
+                    <constraint firstItem="D7v-ea-mVv" firstAttribute="top" secondItem="qGg-oJ-Ufr" secondAttribute="top" constant="4" id="Hnc-tk-aRm"/>
+                    <constraint firstItem="JcK-7z-99n" firstAttribute="top" secondItem="Eed-rU-I3g" secondAttribute="bottom" id="IqU-5l-v6M"/>
+                    <constraint firstItem="hQv-0F-LN5" firstAttribute="height" secondItem="qXy-qG-kDb" secondAttribute="height" id="MKS-iH-eiM"/>
+                    <constraint firstItem="D7v-ea-mVv" firstAttribute="top" secondItem="lfs-jX-pL2" secondAttribute="top" constant="12" id="MUn-IZ-Z2N"/>
+                    <constraint firstItem="SEJ-fG-mep" firstAttribute="top" secondItem="qGg-oJ-Ufr" secondAttribute="top" id="O7w-9e-wi0"/>
+                    <constraint firstAttribute="trailing" secondItem="qXy-qG-kDb" secondAttribute="trailing" constant="20" id="T5T-KQ-Huc"/>
+                    <constraint firstItem="qXy-qG-kDb" firstAttribute="leading" secondItem="hQv-0F-LN5" secondAttribute="trailing" constant="20" id="TSW-RS-xJ6"/>
+                    <constraint firstItem="Eed-rU-I3g" firstAttribute="leading" secondItem="lfs-jX-pL2" secondAttribute="leading" id="Y33-ve-YCq"/>
+                    <constraint firstItem="qXy-qG-kDb" firstAttribute="bottom" secondItem="oKH-Dv-iWe" secondAttribute="bottom" id="a73-wY-yTm"/>
+                    <constraint firstItem="qXy-qG-kDb" firstAttribute="top" secondItem="0IA-MO-7Wd" secondAttribute="bottom" constant="20" id="dEH-J2-2zg"/>
+                    <constraint firstAttribute="trailing" secondItem="SEJ-fG-mep" secondAttribute="trailing" constant="14" id="dG7-nk-71I"/>
+                    <constraint firstItem="qXy-qG-kDb" firstAttribute="height" secondItem="oKH-Dv-iWe" secondAttribute="height" id="daI-Tq-r64"/>
+                    <constraint firstItem="GmS-gL-gtp" firstAttribute="leading" secondItem="oKH-Dv-iWe" secondAttribute="trailing" constant="20" id="fpz-VJ-2dG"/>
+                    <constraint firstItem="JcK-7z-99n" firstAttribute="trailing" secondItem="0IA-MO-7Wd" secondAttribute="trailing" id="gXB-Qp-d6Y"/>
+                    <constraint firstAttribute="bottom" secondItem="qXy-qG-kDb" secondAttribute="bottom" constant="10" id="gqT-Um-1gO"/>
+                    <constraint firstItem="hQv-0F-LN5" firstAttribute="bottom" secondItem="qXy-qG-kDb" secondAttribute="bottom" id="hnz-pL-Ndz"/>
+                    <constraint firstItem="JcK-7z-99n" firstAttribute="top" secondItem="0IA-MO-7Wd" secondAttribute="bottom" constant="8" id="iAH-5b-kLG"/>
+                    <constraint firstItem="GmS-gL-gtp" firstAttribute="height" secondItem="qXy-qG-kDb" secondAttribute="height" id="iXG-rt-nbl"/>
+                    <constraint firstItem="hQv-0F-LN5" firstAttribute="leading" secondItem="GmS-gL-gtp" secondAttribute="trailing" constant="20" id="ic9-q0-wo9"/>
+                    <constraint firstItem="0IA-MO-7Wd" firstAttribute="leading" secondItem="lfs-jX-pL2" secondAttribute="leading" constant="12" id="pBc-Yv-n2N"/>
+                    <constraint firstItem="GmS-gL-gtp" firstAttribute="bottom" secondItem="qXy-qG-kDb" secondAttribute="bottom" id="pbA-Xc-aDk"/>
+                    <constraint firstAttribute="trailing" secondItem="0IA-MO-7Wd" secondAttribute="trailing" constant="12" id="xAH-lw-jWe"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="approvalSidebarView" destination="nq3-FR-5ko" id="lfr-Ur-JYH"/>
+                <outlet property="approvalStatusView" destination="Eed-rU-I3g" id="HFL-nq-tj8"/>
+                <outlet property="btnApprove" destination="GmS-gL-gtp" id="fjI-Cq-VfM"/>
+                <outlet property="btnLike" destination="oKH-Dv-iWe" id="Cg6-W7-AZv"/>
+                <outlet property="btnMore" destination="qXy-qG-kDb" id="6P9-z8-bZS"/>
+                <outlet property="btnTrash" destination="hQv-0F-LN5" id="j2p-H0-NpA"/>
+                <outlet property="gravatarImageView" destination="D7v-ea-mVv" id="9P1-AW-MPb"/>
+                <outlet property="nameLabel" destination="qGg-oJ-Ufr" id="e3c-UF-76A"/>
+                <outlet property="separatorView" destination="JcK-7z-99n" id="YSe-9U-cCW"/>
+                <outlet property="textView" destination="0IA-MO-7Wd" id="cHM-Kh-JEB"/>
+                <outlet property="timestampLabel" destination="SEJ-fG-mep" id="aoB-TE-zjT"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="notifications-approve" width="21" height="21"/>
+        <image name="notifications-approved" width="21" height="21"/>
+        <image name="notifications-like" width="21" height="21"/>
+        <image name="notifications-liked" width="21" height="21"/>
+        <image name="notifications-more" width="21" height="21"/>
+        <image name="notifications-trash" width="21" height="21"/>
+    </resources>
+</document>

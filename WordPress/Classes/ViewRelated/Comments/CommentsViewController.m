@@ -10,6 +10,8 @@
 #import "ContextManager.h"
 #import "CommentService.h"
 
+#import "ACommentViewController.h"
+
 @interface CommentsViewController ()
 
 @property (nonatomic,strong) NSIndexPath *currentIndexPath;
@@ -114,7 +116,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
         self.currentIndexPath = indexPath;
         self.lastSelectedCommentID = comment.commentID; //store the latest user selection
 
-        CommentViewController *vc = [[CommentViewController alloc] init];
+        ACommentViewController *vc = [[ACommentViewController alloc] initWithStyle:UITableViewStyleGrouped];
         vc.comment = comment;
         [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
 
