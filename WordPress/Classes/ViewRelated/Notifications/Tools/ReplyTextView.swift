@@ -108,14 +108,19 @@ import Foundation
     
     // MARK: - Autolayout Helpers
     public override func intrinsicContentSize() -> CGSize {
-        let topPadding      = textView.constraintForAttribute(.Top)     ?? textViewDefaultPadding
-        let bottomPadding   = textView.constraintForAttribute(.Bottom)  ?? textViewDefaultPadding
+        // Make sure contentSize returns... the real content size
+        textView.layoutIfNeeded()
         
-        let screenWidth     = UIScreen.mainScreen().screenWidthAtCurrentOrientation()
-        let textHeight      = floor(textView.contentSize.height + topPadding + bottomPadding)
+        // Calculate the entire control's size
+        let topPadding      = textView.constraintForAttribute(.Top)    ?? textViewDefaultPadding
+        let bottomPadding   = textView.constraintForAttribute(.Bottom) ?? textViewDefaultPadding
+        
+        let contentHeight   = textView.contentSize.height
+        let fullWidth       = frame.width
+        let textHeight      = floor(contentHeight + topPadding + bottomPadding)
 
         var newHeight       = min(max(textHeight, textViewMinHeight), textViewMaxHeight)
-        let intrinsicSize   = CGSize(width: screenWidth, height: newHeight)
+        let intrinsicSize   = CGSize(width: fullWidth, height: newHeight)
 
         return intrinsicSize
     }
@@ -142,6 +147,7 @@ import Foundation
         textView.font                   = WPStyleGuide.Reply.textFont
         textView.textColor              = WPStyleGuide.Reply.textColor
         textView.textContainer.lineFragmentPadding  = 0
+        textView.layoutManager.allowsNonContiguousLayout = false
         
         // Disable QuickType
         textView.autocorrectionType     = .No
@@ -180,7 +186,7 @@ import Foundation
         if newSize.height == oldSize.height {
             return
         }
-        
+
         invalidateIntrinsicContentSize()
     }
     
