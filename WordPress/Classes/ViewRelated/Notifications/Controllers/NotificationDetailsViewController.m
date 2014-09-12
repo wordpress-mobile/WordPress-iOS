@@ -69,9 +69,6 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 // Model
 @property (nonatomic, strong) Notification                  *note;
-
-// Keyboard Helpers
-@property (nonatomic, assign) BOOL                          isKeyboardVisible;
 @end
 
 
@@ -886,10 +883,6 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 - (void)handleKeyboardWillShow:(NSNotification *)notification
 {
-    if (self.isKeyboardVisible) {
-        return;
-    }
-    
     NSDictionary* userInfo = notification.userInfo;
     
     // Convert the rect to view coordinates: enforce the current orientation!
@@ -913,16 +906,10 @@ static CGFloat NotificationSectionSeparator     = 10;
     [self.view layoutIfNeeded];
     
     [UIView commitAnimations];
-    
-    self.isKeyboardVisible = true;
 }
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification
 {
-    if (!self.isKeyboardVisible) {
-        return;
-    }
-    
     NSDictionary* userInfo = notification.userInfo;
     
     [UIView beginAnimations:nil context:nil];
@@ -938,8 +925,6 @@ static CGFloat NotificationSectionSeparator     = 10;
     [self.view layoutIfNeeded];
     
     [UIView commitAnimations];
-    
-    self.isKeyboardVisible = false;
 }
 
 
