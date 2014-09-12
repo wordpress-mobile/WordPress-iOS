@@ -53,7 +53,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 #pragma mark Private
 #pragma mark ==========================================================================================
 
-@interface NotificationDetailsViewController () <EditCommentViewControllerDelegate>
+@interface NotificationDetailsViewController () <EditCommentViewControllerDelegate, UITextViewDelegate>
 
 // Outlets
 @property (nonatomic,   weak) IBOutlet UITableView          *tableView;
@@ -211,6 +211,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     replyTextView.onReply           = ^(NSString *content) {
         [weakSelf replyToCommentWithContent:content block:block];
     };
+    replyTextView.delegate          = self;
     self.replyTextView              = replyTextView;
     
     // Attach the ReplyTextView at the very bottom
@@ -914,7 +915,6 @@ static CGFloat NotificationSectionSeparator     = 10;
     [UIView commitAnimations];
     
     self.isKeyboardVisible = true;
-    self.tableGesturesRecognizer.enabled = true;
 }
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification
@@ -940,6 +940,18 @@ static CGFloat NotificationSectionSeparator     = 10;
     [UIView commitAnimations];
     
     self.isKeyboardVisible = false;
+}
+
+
+#pragma mark - UITextViewDelegate
+
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    self.tableGesturesRecognizer.enabled = true;
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
     self.tableGesturesRecognizer.enabled = false;
 }
 
