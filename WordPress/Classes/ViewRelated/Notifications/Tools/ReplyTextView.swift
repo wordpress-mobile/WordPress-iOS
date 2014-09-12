@@ -143,6 +143,9 @@ import Foundation
         textView.textColor              = WPStyleGuide.Reply.textColor
         textView.textContainer.lineFragmentPadding  = 0
         
+        // Disable QuickType
+        textView.autocorrectionType     = .No
+        
         // Placeholder
         placeholderLabel.font           = WPStyleGuide.Reply.textFont
         placeholderLabel.textColor      = WPStyleGuide.Reply.placeholderColor
