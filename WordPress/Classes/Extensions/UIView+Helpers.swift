@@ -47,7 +47,7 @@ extension UIView
 
     public func updateConstraintWithFirstItem(fistItem: NSObject!, attribute: NSLayoutAttribute, constant: CGFloat) {
         for constraint in constraints() as [NSLayoutConstraint] {
-            if constraint.firstItem as NSObject == fistItem {
+            if constraint.firstItem as NSObject == firstItem {
                 if constraint.firstAttribute == attribute || constraint.secondAttribute == attribute {
                     constraint.constant = constant
                 }
