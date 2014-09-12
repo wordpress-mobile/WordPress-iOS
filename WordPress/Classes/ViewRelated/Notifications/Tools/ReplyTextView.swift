@@ -193,6 +193,8 @@ import Foundation
     private func refreshScrollPosition() {
         // FIX: In iOS 8, scrollRectToVisible causes a weird flicker
         if UIDevice.isOS8() {
+            // FIX: Force layout right away. This prevents the TextView from "Jumping"
+            textView.layoutIfNeeded()
             textView.scrollRangeToVisible(textView.selectedRange)
         } else {
             let selectedRangeStart      = textView.selectedTextRange?.start ?? UITextPosition()
