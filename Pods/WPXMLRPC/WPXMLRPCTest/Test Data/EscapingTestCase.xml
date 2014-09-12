@@ -1,8 +1,0 @@
-<?xml version='1.0'?>
-<methodResponse>
-    <params>
-        <param>
-            <value>Are &lt; &amp; &gt; escaped correctly?</value>
-        </param>
-    </params>
-</methodResponse>
