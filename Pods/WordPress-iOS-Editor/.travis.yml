@@ -1,4 +1,0 @@
-language: objective-c
-xcode_workspace: ./Example/EditorDemo.xcworkspace
-xcode_scheme: EditorDemo
-xcode_sdk: iphonesimulator7.1

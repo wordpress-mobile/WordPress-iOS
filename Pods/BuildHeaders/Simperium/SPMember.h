@@ -1,1 +1,0 @@
-../../Simperium/Simperium/SPMember.h
