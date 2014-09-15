@@ -142,12 +142,6 @@
     post.authorEmail = [jsonPost[@"author"] stringForKey:@"email"];
     post.authorURL = jsonPost[@"author"][@"URL"];
     post.date = [NSDate dateWithWordPressComJSONString:jsonPost[@"date"]];
-    // FIXME: the API returns invalid dates for drafts
-    // Use the last modified date until this is resolved, otherwise drafts get
-    // pushed to the end of the posts list
-    if (post.date == nil) {
-        post.date = [NSDate dateWithWordPressComJSONString:jsonPost[@"modified"]];
-    }
     post.title = jsonPost[@"title"];
     post.URL = [NSURL URLWithString:jsonPost[@"URL"]];
     post.shortURL = [NSURL URLWithString:jsonPost[@"short_URL"]];
