@@ -5,8 +5,8 @@
 #import <WordPress-iOS-Shared/WPFontManager.h>
 
 static const CGFloat CommentContentViewAvatarSize = 32.0;
-static const CGFloat CommentContentViewContentViewOffsetTop = 16.0;
-static const CGFloat CommentContentViewContentViewOffsetBottom = 20.0;
+static const CGFloat CommentContentViewContentViewOffsetTop = 17.0;
+static const CGFloat CommentContentViewContentViewOffsetBottom = 19.0;
 
 @interface CommentContentView()<DTAttributedTextContentViewDelegate>
 
@@ -26,6 +26,7 @@ static const CGFloat CommentContentViewContentViewOffsetBottom = 20.0;
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
         [self constructSubviews];
         [self configureConstraints];
     }
@@ -54,8 +55,8 @@ static const CGFloat CommentContentViewContentViewOffsetBottom = 20.0;
 
 - (CGSize)sizeThatFits:(CGSize)size
 {
-    CGFloat height = CommentContentViewContentViewOffsetTop + CommentContentViewContentViewOffsetBottom;
-    height += self.textContentView.intrinsicContentSize.height;
+    CGFloat height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:size.width].height;
+    height = height + CommentContentViewContentViewOffsetTop + CommentContentViewContentViewOffsetBottom;
     return CGSizeMake(size.width, ceil(height));
 }
 
@@ -74,20 +75,20 @@ static const CGFloat CommentContentViewContentViewOffsetBottom = 20.0;
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_avatarImageView(avatarSize)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-1-[_avatarImageView(avatarSize)]"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-40-[_authorButton]-[_timeButton]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-40-[_authorButton]-[_timeButton]-1-|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_authorButton]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_authorButton(16)]"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_timeButton]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_timeButton(16)]"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
@@ -96,7 +97,7 @@ static const CGFloat CommentContentViewContentViewOffsetBottom = 20.0;
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-16-[_textContentView]-40-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-offsetTop-[_textContentView(>=1)]-offsetBottom@200-|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
@@ -105,7 +106,7 @@ static const CGFloat CommentContentViewContentViewOffsetBottom = 20.0;
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_replyButton]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_replyButton(16)]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
@@ -128,6 +129,7 @@ static const CGFloat CommentContentViewContentViewOffsetBottom = 20.0;
     self.replyButton = [self buttonForReplyButton];
     [self addSubview:self.replyButton];
 
+    [self sendSubviewToBack:self.textContentView];
 }
 
 
@@ -145,7 +147,8 @@ static const CGFloat CommentContentViewContentViewOffsetBottom = 20.0;
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    button.titleLabel.font = [WPStyleGuide subtitleFont];
+// TODO : Create a comment font and add it to WPStyleGuide
+    button.titleLabel.font = [WPFontManager openSansBoldFontOfSize:14.0];
     button.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     [button addTarget:self action:@selector(handleAuthorTapped:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -157,14 +160,17 @@ static const CGFloat CommentContentViewContentViewOffsetBottom = 20.0;
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    button.titleLabel.font = [WPStyleGuide subtitleFont];
+    button.titleLabel.font = [WPFontManager openSansRegularFontOfSize:14.0];
     [button setTitleEdgeInsets: UIEdgeInsetsMake(0, 2, 0, -2)];
 
     // Disable it for now (could be used for permalinks in the future)
     [button setImage:[UIImage imageNamed:@"reader-postaction-time"] forState:UIControlStateDisabled];
-    [button setTitleColor:[UIColor colorWithRed:170.0/255.0 green:170.0/255.0 blue:170.0/255.0 alpha:1.0] forState:UIControlStateDisabled];
-    [button setTitleColor:[UIColor colorWithRed:177.0/255.0 green:198.0/255.0 blue:212.0/255.0 alpha:1.0] forState:UIControlStateDisabled];
+
+    [button setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateNormal];
+    [button setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateDisabled];
     [button setEnabled:NO];
+
+    [button setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 
     return button;
 }
@@ -177,11 +183,11 @@ static const CGFloat CommentContentViewContentViewOffsetBottom = 20.0;
     DTAttributedTextContentView *textContentView = [[DTAttributedTextContentView alloc] initWithFrame:self.bounds];
     textContentView.translatesAutoresizingMaskIntoConstraints = NO;
     textContentView.delegate = self;
-    textContentView.backgroundColor = [UIColor whiteColor];
     textContentView.shouldDrawImages = NO;
     textContentView.shouldDrawLinks = NO;
     textContentView.relayoutMask = DTAttributedTextContentViewRelayoutOnWidthChanged | DTAttributedTextContentViewRelayoutOnHeightChanged;
-
+    textContentView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+//    textContentView.backgroundColor = [UIColor redColor];
     return textContentView;
 }
 
@@ -190,8 +196,12 @@ static const CGFloat CommentContentViewContentViewOffsetBottom = 20.0;
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    button.titleLabel.font = [WPStyleGuide subtitleFont];
-    [button setTitle:@"Reply" forState:UIControlStateNormal];
+    button.titleLabel.font = [WPFontManager openSansRegularFontOfSize:14.0];
+
+    NSString *title = NSLocalizedString(@"Reply", @"Title of the reply button.");
+    [button setTitle:title forState:UIControlStateNormal];
+    [button setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateNormal];
+    [button setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateDisabled];
 
     return button;
 }
@@ -225,8 +235,8 @@ static const CGFloat CommentContentViewContentViewOffsetBottom = 20.0;
         [self.authorButton setTitleColor:[WPStyleGuide jazzyOrange] forState:UIControlStateNormal];
         [self.authorButton setTitleColor:[WPStyleGuide jazzyOrange] forState:UIControlStateDisabled];
     } else {
-        [self.authorButton setTitleColor:[WPStyleGuide buttonActionColor] forState:UIControlStateNormal];
-        [self.authorButton setTitleColor:[WPStyleGuide whisperGrey] forState:UIControlStateDisabled];
+        [self.authorButton setTitleColor:[WPStyleGuide littleEddieGrey] forState:UIControlStateNormal];
+        [self.authorButton setTitleColor:[WPStyleGuide littleEddieGrey] forState:UIControlStateDisabled];
     }
 }
 
@@ -266,17 +276,51 @@ static const CGFloat CommentContentViewContentViewOffsetBottom = 20.0;
         string = @"";
     }
 
-    UIFont *font = [WPFontManager openSansRegularFontOfSize:14.0];
-// TODO: Fix line height
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    [style setLineHeightMultiple:1.0];
-    [style setFirstLineHeadIndent:40.0];
+    // remove trailing br tags
+    NSRange prng = [string rangeOfString:@"/p>" options:NSBackwardsSearch];
+    if (prng.location != NSNotFound) {
+        string = [string substringToIndex:prng.location + 3];
+    }
 
-    NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
-                                 NSFontAttributeName : font};
-    NSMutableAttributedString *attributedSummary = [[NSMutableAttributedString alloc] initWithString:string
-                                                                                          attributes:attributes];
-    return attributedSummary;
+    // The first line of text should be indented 40 points so text does not overlap
+    // the author's avatar. A paragraph style won't work because only the first line
+    // of the first paragraph should intent. As a work around, insert a 40px wide
+    // image to achieve the spacing.
+    NSString *spacer = @"<img src=\"\" width=\"40\" height=\"10\">";
+
+    if ([string hasPrefix:@"<"]) {
+        NSRange rng = [string rangeOfString:@">"];
+        if (rng.location == NSNotFound) {
+            string = [NSString stringWithFormat:@"%@%@", spacer, string];
+        } else {
+            NSInteger index = rng.location + 1;
+            string = [NSString stringWithFormat:@"%@%@%@", [string substringToIndex:index], spacer, [string substringFromIndex:index]];
+        }
+    } else {
+        string = [NSString stringWithFormat:@"%@%@", spacer, string];
+    }
+
+
+
+
+    NSString *defaultStyles = @"blockquote {width: 100%; display: block; font-style: italic;}";
+    DTCSSStylesheet *cssStylesheet = [[DTCSSStylesheet alloc] initWithStyleBlock:defaultStyles];
+    NSDictionary *options = @{
+             DTDefaultFontFamily:@"Open Sans",
+             DTDefaultLineHeightMultiplier:@1.52,
+             DTDefaultFontSize:@14.0,
+             DTDefaultTextColor:[WPStyleGuide littleEddieGrey],
+             DTDefaultLinkColor:[WPStyleGuide baseLighterBlue],
+             DTDefaultLinkHighlightColor:[WPStyleGuide midnightBlue],
+             DTDefaultLinkDecoration:@NO,
+             DTDefaultStyleSheet:cssStylesheet
+             };
+
+    NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
+    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithHTMLData:data
+                                                                              options:options
+                                                                   documentAttributes:nil];
+    return attributedString;
 }
 
 

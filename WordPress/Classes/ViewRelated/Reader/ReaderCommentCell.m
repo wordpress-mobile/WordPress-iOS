@@ -12,10 +12,11 @@ static const CGFloat ReaderCommentCellSidePadding = 12.0;
 
 @property (nonatomic, strong) Comment *comment;
 @property (nonatomic, strong) UIView *borderView;
+@property (nonatomic, strong) UIView *nestingView;
 @property (nonatomic, strong) CommentContentView *commentContentView;
 @property (nonatomic, strong) NSLayoutConstraint *zeroTopMarginConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *defaultTopMarginConstraint;
-
+@property (nonatomic, strong) NSLayoutConstraint *leftIndentationConstraint;
 @end
 
 
@@ -26,15 +27,20 @@ static const CGFloat ReaderCommentCellSidePadding = 12.0;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // TODO: configure background
-//        self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"nested-comment-background"]];
+        self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+
+        _nestingView = [[UIView alloc] initWithFrame:self.bounds];
+        _nestingView.translatesAutoresizingMaskIntoConstraints = NO;
+        _nestingView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background-comment-nesting"]];
+        [self.contentView addSubview:_nestingView];
 
         // configure top border
         _borderView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.bounds), 1)];
         _borderView.translatesAutoresizingMaskIntoConstraints = NO;
-        _borderView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
+        _borderView.backgroundColor = [WPStyleGuide readGrey];
         [self.contentView addSubview:_borderView];
 
-        _commentContentView = [[CommentContentView alloc] init];
+        _commentContentView = [[CommentContentView alloc] initWithFrame:self.bounds];
         _commentContentView.translatesAutoresizingMaskIntoConstraints = NO;
         [self.contentView addSubview:_commentContentView];
 
@@ -46,7 +52,11 @@ static const CGFloat ReaderCommentCellSidePadding = 12.0;
 
 - (CGSize)sizeThatFits:(CGSize)size
 {
-    CGSize commentContentViewSize = [self.commentContentView sizeThatFits:size];
+    // Adjust width for indentation and padding
+    CGFloat adjustedWidth = size.width - (ReaderCommentCellSidePadding * 2);
+    adjustedWidth -= (self.indentationWidth * self.indentationLevel);
+
+    CGSize commentContentViewSize = [self.commentContentView sizeThatFits:CGSizeMake(adjustedWidth, size.height)];
     CGFloat desiredHeight = commentContentViewSize.height + ReaderCommentCellBottomPadding;
     if (self.indentationLevel == 0) {
         desiredHeight += ReaderCommentCellTopPadding;
@@ -72,10 +82,14 @@ static const CGFloat ReaderCommentCellSidePadding = 12.0;
     self.comment = comment;
 
     self.indentationWidth = ReaderCommentCellIndentationWidth;
-//    self.indentationLevel = MIN(ReaderCommentCellMaxIndentationLevel, [comment.depth integerValue]);
+    self.indentationLevel = MIN(ReaderCommentCellMaxIndentationLevel, [comment.depth integerValue]);
+
+    self.borderView.hidden = self.indentationLevel != 0;
+    self.leftIndentationConstraint.constant = ReaderCommentCellSidePadding + (self.indentationLevel * self.indentationWidth);
+
+    [self configureCommentContentTopPadding];
 
     self.commentContentView.contentProvider = comment;
-    [self configureCommentContentTopPadding];
 
     // Highlighting the author of the post
 //    NSString *authorUrl = comment.author_url;
@@ -93,19 +107,30 @@ static const CGFloat ReaderCommentCellSidePadding = 12.0;
                                @"bottomPadding":bottomPadding};
 
     UIView *contentView = self.contentView;
-    NSDictionary *views = NSDictionaryOfVariableBindings(contentView, _commentContentView, _borderView);
+    NSDictionary *views = NSDictionaryOfVariableBindings(contentView, _commentContentView, _borderView, _nestingView);
     // Border View
+
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_nestingView][_commentContentView]"
+                                                                             options:0
+                                                                             metrics:metrics
+                                                                               views:views]];
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_nestingView]|"
+                                                                             options:0
+                                                                             metrics:metrics
+                                                                               views:views]];
+
+
     [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(sidePadding)-[_borderView]-(sidePadding)-|"
                                                                              options:0
                                                                              metrics:metrics
                                                                                views:views]];
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_borderView(12)]"
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_borderView(1)]"
                                                                              options:0
                                                                              metrics:metrics
                                                                                views:views]];
 
 
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(sidePadding)-[_commentContentView]-(sidePadding)-|"
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_commentContentView]-(sidePadding)-|"
                                                                              options:0
                                                                              metrics:metrics
                                                                                views:views]];
@@ -114,13 +139,22 @@ static const CGFloat ReaderCommentCellSidePadding = 12.0;
                                                                              options:0
                                                                              metrics:metrics
                                                                                views:views]];
+
+    self.leftIndentationConstraint = [NSLayoutConstraint constraintWithItem:self.commentContentView
+                                                                  attribute:NSLayoutAttributeLeft
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:self.contentView
+                                                                  attribute:NSLayoutAttributeLeft
+                                                                 multiplier:1.0
+                                                                   constant:ReaderCommentCellSidePadding];
+    [self.contentView addConstraint:self.leftIndentationConstraint];
 }
 
 - (void)configureCommentContentTopPadding
 {
     if (!self.zeroTopMarginConstraint) {
         self.zeroTopMarginConstraint = [NSLayoutConstraint constraintWithItem:self.commentContentView
-                                                                    attribute:NSLayoutAttributeTopMargin
+                                                                    attribute:NSLayoutAttributeTop
                                                                     relatedBy:NSLayoutRelationEqual
                                                                        toItem:self.contentView
                                                                     attribute:NSLayoutAttributeTop
@@ -130,7 +164,7 @@ static const CGFloat ReaderCommentCellSidePadding = 12.0;
 
     if (!self.defaultTopMarginConstraint) {
         self.defaultTopMarginConstraint = [NSLayoutConstraint constraintWithItem:self.commentContentView
-                                                                       attribute:NSLayoutAttributeTopMargin
+                                                                       attribute:NSLayoutAttributeTop
                                                                        relatedBy:NSLayoutRelationEqual
                                                                           toItem:self.contentView
                                                                        attribute:NSLayoutAttributeTop
@@ -150,15 +184,16 @@ static const CGFloat ReaderCommentCellSidePadding = 12.0;
     }
 
     // Remove the old constraint if necessary.
-    if ([self.constraints indexOfObject:constraintToRemove] != NSNotFound) {
-        [self removeConstraint:constraintToRemove];
+    if ([self.contentView.constraints indexOfObject:constraintToRemove] != NSNotFound) {
+        [self.contentView removeConstraint:constraintToRemove];
     }
 
     // Add the new constraint and update if necessary.
-    if ([self.constraints indexOfObject:constraintToAdd] == NSNotFound) {
-        [self addConstraint:constraintToAdd];
+    if ([self.contentView.constraints indexOfObject:constraintToAdd] == NSNotFound) {
+        [self.contentView addConstraint:constraintToAdd];
     }
-    [self setNeedsUpdateConstraints];
+
+    [self.contentView setNeedsUpdateConstraints];
 }
 
 

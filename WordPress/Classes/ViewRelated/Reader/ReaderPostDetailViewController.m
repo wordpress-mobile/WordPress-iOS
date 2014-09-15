@@ -415,7 +415,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         self.syncHelper.delegate = self;
     }
 
-    [self configureInfiniteScroll];
+    if([self isViewLoaded]) {
+        [self configureInfiniteScroll];
+    }
 }
 
 - (UIBarButtonItem *)shareButton
@@ -854,8 +856,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     [self configureCell:self.cellForLayout atIndexPath:indexPath];
     CGSize size = [self.cellForLayout sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
-    CGFloat height = ceil(size.height) + 1;
-
+    CGFloat height = ceil(size.height);
     return height;
 }
 
