@@ -177,12 +177,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-    
-    // Remove the nav bar shadow
-    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
-    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
-	
+    [super viewDidLoad];	
     [self createRevisionOfPost];
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
     
