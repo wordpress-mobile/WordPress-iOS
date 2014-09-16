@@ -6,9 +6,14 @@
 @property (nonatomic, weak, readwrite) UIView* bottomLineView;
 @end
 
-static const CGFloat kAnimationDuration = 0.1;
+static const CGFloat kAnimationDurationFast = 0.1;
+static CGFloat kAnimationDurationNormal = 0.3;
+static CGFloat kHighlightedAlpha = 0.2f;
+static CGFloat kNormalAlpha = 1.0f;
+
 static const int kBottomLineHMargin = 4;
 static const int kBottomLineHeight = 2;
+
 
 @implementation WPEditorToolbarButton
 
@@ -26,6 +31,8 @@ static const int kBottomLineHeight = 2;
 	self = [super initWithFrame:frame];
 	
 	if (self) {
+		[self setupAnimations];
+		
 		[self addTarget:self
 				 action:@selector(touchUpInside:)
 	   forControlEvents:UIControlEventTouchUpInside];
@@ -43,10 +50,45 @@ static const int kBottomLineHeight = 2;
 	}
 }
 
+#pragma mark - Animations
+
+- (void)setupAnimations
+{
+	self.adjustsImageWhenHighlighted = NO;
+	
+	[self addTarget:self action:@selector(touchDown:) forControlEvents:UIControlEventTouchDown];
+	[self addTarget:self action:@selector(touchDragInside:) forControlEvents:UIControlEventTouchDragInside];
+	[self addTarget:self action:@selector(touchDragOutside:) forControlEvents:UIControlEventTouchDragOutside];
+}
+
 #pragma mark - Touch handling
+
+- (void)touchDown:(id)sender
+{
+	[self setAlpha:kHighlightedAlpha];
+}
+
+- (void)touchDragInside:(id)sender
+{
+	[UIView animateWithDuration:kAnimationDurationNormal
+					 animations:
+     ^{
+         [self setAlpha:kHighlightedAlpha];
+     }];
+}
+
+- (void)touchDragOutside:(id)sender
+{
+	[UIView animateWithDuration:kAnimationDurationNormal
+					 animations:
+     ^{
+		 [self setAlpha:kNormalAlpha];
+	 }];
+}
 
 - (void)touchUpInside:(id)sender
 {
+	[self setAlpha:kNormalAlpha];
 	self.selected = !self.selected;
 }
 
@@ -87,7 +129,7 @@ static const int kBottomLineHeight = 2;
 	CGRect newFrame = self.bottomLineView.frame;
 	newFrame.origin.y -= kBottomLineHeight;
 	
-	[UIView animateWithDuration:kAnimationDuration animations:^{
+	[UIView animateWithDuration:kAnimationDurationFast animations:^{
 		self.bottomLineView.frame = newFrame;
 	}];
 }
@@ -98,7 +140,7 @@ static const int kBottomLineHeight = 2;
 		CGRect newFrame = self.bottomLineView.frame;
 		newFrame.origin.y = self.frame.size.height;
 		
-		[UIView animateWithDuration:kAnimationDuration animations:^{
+		[UIView animateWithDuration:kAnimationDurationFast animations:^{
 			self.bottomLineView.frame = newFrame;
 		}];
 	}
