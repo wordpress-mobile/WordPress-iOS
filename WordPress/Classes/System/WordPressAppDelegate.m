@@ -1358,12 +1358,16 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 
 #pragma mark - Helpshift Delegate
 
-- (void) didReceiveInAppNotificationWithMessageCount:(NSInteger)count;
+- (void)didReceiveInAppNotificationWithMessageCount:(NSInteger)count;
 {
     if (count > 0) {
         [WPAnalytics track:WPAnalyticsStatSupportReceivedResponseFromSupport];
     }
 }
 
+- (void)didReceiveNotificationCount:(NSInteger)count
+{
+    // Note: Empty method, just so silence compiler warning.
+}
 
 @end
