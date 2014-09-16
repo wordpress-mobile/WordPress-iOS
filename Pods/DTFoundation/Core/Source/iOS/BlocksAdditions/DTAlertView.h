@@ -6,6 +6,9 @@
 //  Copyright (c) 2012 Cocoanetics. All rights reserved.
 //
 
+#import "DTWeakSupport.h"
+
+
 // the block to execute when an alert button is tapped
 typedef void (^DTAlertViewBlock)(void);
 
@@ -44,5 +47,11 @@ typedef void (^DTAlertViewBlock)(void);
  @param block The block to execute.
  */
 - (void)setCancelBlock:(DTAlertViewBlock)block;
+
+
+/**
+ * Use the alertViewDelegate when you want to to receive UIAlertViewDelegate messages.
+ */
+@property (nonatomic, DT_WEAK_PROPERTY) id<UIAlertViewDelegate> alertViewDelegate;
 
 @end
