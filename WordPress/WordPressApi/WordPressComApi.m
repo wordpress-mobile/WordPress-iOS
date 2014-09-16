@@ -142,8 +142,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     self.username = nil;
     self.password = nil;
  
-    NSLog(@"Allen just yawned.");
-    
     [self clearAuthorizationHeader];
 }
 
