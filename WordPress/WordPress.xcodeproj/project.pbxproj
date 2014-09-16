@@ -3161,7 +3161,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					NS_BLOCK_ASSERTIONS,
 					INTERNAL_BUILD,
 					"${inherited}",
 				);
