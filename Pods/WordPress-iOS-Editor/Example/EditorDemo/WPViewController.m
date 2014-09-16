@@ -13,6 +13,28 @@
     [self setTitleText:@"I'm editing a post!"];
     [self setBodyText:htmlParam];
 	self.delegate = self;
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit"
+                                                                             style:UIBarButtonItemStyleBordered
+                                                                            target:self
+                                                                            action:@selector(editTouchedUpInside)];
+}
+
+#pragma mark - Navigation Bar
+
+- (void)editTouchedUpInside
+{
+    if (self.isEditing) {
+        [self stopEditing];
+    } else {
+        [self startEditing];
+    }
+}
+
+#pragma mark - IBActions
+
+- (IBAction)exit:(UIStoryboardSegue*)segue
+{
 }
 
 #pragma mark - WPEditorViewControllerDelegate
