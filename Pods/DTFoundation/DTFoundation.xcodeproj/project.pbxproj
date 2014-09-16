@@ -372,6 +372,19 @@
 		FAB1726E16301F0D00B44EDC /* DTFoundationConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = FAB1726A16301F0D00B44EDC /* DTFoundationConstants.m */; };
 		FAB1726F16301F0D00B44EDC /* DTFoundationConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = FAB1726A16301F0D00B44EDC /* DTFoundationConstants.m */; };
 		FAB1727116301F0D00B44EDC /* DTFoundationConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = FAB1726A16301F0D00B44EDC /* DTFoundationConstants.m */; };
+		FAC284D519B84B5F0010C385 /* libDTFoundation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A70B4CE71486637E00873A4A /* libDTFoundation.a */; };
+		FAC284D619B84B5F0010C385 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAF37A6F17AFE098009AC27C /* QuickLook.framework */; };
+		FAC284D919B84B5F0010C385 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F4DFF8147FD08900F4059A /* UIKit.framework */; };
+		FAC284DA19B84B5F0010C385 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F4DFFA147FD08F00F4059A /* Foundation.framework */; };
+		FAC284DB19B84B5F0010C385 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE5B9311610A38200CA0D99 /* CoreGraphics.framework */; };
+		FAC284DC19B84B5F0010C385 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAB1725D163004FF00B44EDC /* QuartzCore.framework */; };
+		FAC284F719B84BFC0010C385 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FAC284EC19B84BFC0010C385 /* Default-568h@2x.png */; };
+		FAC284F819B84BFC0010C385 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = FAC284ED19B84BFC0010C385 /* Default.png */; };
+		FAC284F919B84BFC0010C385 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FAC284EE19B84BFC0010C385 /* Default@2x.png */; };
+		FAC284FA19B84BFC0010C385 /* ActionSheetStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAC284EF19B84BFC0010C385 /* ActionSheetStoryboard.storyboard */; };
+		FAC284FB19B84BFC0010C385 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC284F219B84BFC0010C385 /* AppDelegate.m */; };
+		FAC284FC19B84BFC0010C385 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC284F319B84BFC0010C385 /* main.m */; };
+		FAC284FD19B84BFC0010C385 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC284F519B84BFC0010C385 /* ViewController.m */; };
 		FAF37A2117AFDD93009AC27C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F4DFF8147FD08900F4059A /* UIKit.framework */; };
 		FAF37A2217AFDD93009AC27C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F4DFFA147FD08F00F4059A /* Foundation.framework */; };
 		FAF37A2317AFDD93009AC27C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE5B9311610A38200CA0D99 /* CoreGraphics.framework */; };
@@ -463,6 +476,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = A70B4CE61486637E00873A4A;
 			remoteInfo = "Static Library";
+		};
+		FAC284C919B84B5F0010C385 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7F4DF9A147FB61500F4059A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A70B4CE61486637E00873A4A;
+			remoteInfo = "Static Library";
+		};
+		FAC284CB19B84B5F0010C385 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7F4DF9A147FB61500F4059A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A7E383D9160DFF8600CF72D6;
+			remoteInfo = "DTZipArchive (iOS)";
 		};
 		FAF37A5817AFDF5D009AC27C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -886,6 +913,18 @@
 		FAB172AB163024E200B44EDC /* ArraySample.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ArraySample.plist; sourceTree = "<group>"; };
 		FAB172AD163027C700B44EDC /* NSDictionaryDTErrorTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDictionaryDTErrorTest.h; sourceTree = "<group>"; };
 		FAB172AE163027C700B44EDC /* NSDictionaryDTErrorTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDictionaryDTErrorTest.m; sourceTree = "<group>"; };
+		FAC284E619B84B5F0010C385 /* DTActionSheet Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DTActionSheet Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FAC284E919B84BFC0010C385 /* DTActionSheetDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DTActionSheetDemo-Info.plist"; sourceTree = "<group>"; };
+		FAC284EA19B84BFC0010C385 /* DTActionSheetDemo-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DTActionSheetDemo-Prefix.pch"; sourceTree = "<group>"; };
+		FAC284EC19B84BFC0010C385 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		FAC284ED19B84BFC0010C385 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		FAC284EE19B84BFC0010C385 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		FAC284EF19B84BFC0010C385 /* ActionSheetStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ActionSheetStoryboard.storyboard; sourceTree = "<group>"; };
+		FAC284F119B84BFC0010C385 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		FAC284F219B84BFC0010C385 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		FAC284F319B84BFC0010C385 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		FAC284F419B84BFC0010C385 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		FAC284F519B84BFC0010C385 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		FAE5B9311610A38200CA0D99 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		FAF37A2017AFDD93009AC27C /* DTZipArchive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DTZipArchive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAF37A3F17AFDE9E009AC27C /* DTZipArchiveDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DTZipArchiveDemo-Info.plist"; sourceTree = "<group>"; };
@@ -1094,6 +1133,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FAC284D419B84B5F0010C385 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAC284D519B84B5F0010C385 /* libDTFoundation.a in Frameworks */,
+				FAC284D619B84B5F0010C385 /* QuickLook.framework in Frameworks */,
+				FAC284D919B84B5F0010C385 /* UIKit.framework in Frameworks */,
+				FAC284DA19B84B5F0010C385 /* Foundation.framework in Frameworks */,
+				FAC284DB19B84B5F0010C385 /* CoreGraphics.framework in Frameworks */,
+				FAC284DC19B84B5F0010C385 /* QuartzCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FAF37A1D17AFDD93009AC27C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1159,6 +1211,7 @@
 				A7D9D64C1758C8E600C29B6F /* DTReachability */,
 				A70D74BF1743AF5400E6E626 /* DTSidePanels */,
 				FAF37A3917AFDE9E009AC27C /* DTZipArchiveDemo */,
+				FAC284E819B84BFC0010C385 /* DTActionSheetDemo */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -1719,6 +1772,7 @@
 				F88FF6A51920AAB600120808 /* DTProgressHUD Demo.app */,
 				A78381C31963F8D700AF09D3 /* DTAnimatedGIF Demo.app */,
 				A7AC21AF196417830009E1B9 /* libDTAnimatedGIF.a */,
+				FAC284E619B84B5F0010C385 /* DTActionSheet Demo.app */,
 			);
 			name = Products;
 			path = ../..;
@@ -1792,6 +1846,40 @@
 				F88FF6D91920F1AF00120808 /* UIView+DTActionHandlers.m */,
 			);
 			path = BlocksAdditions;
+			sourceTree = "<group>";
+		};
+		FAC284E819B84BFC0010C385 /* DTActionSheetDemo */ = {
+			isa = PBXGroup;
+			children = (
+				FAC284E919B84BFC0010C385 /* DTActionSheetDemo-Info.plist */,
+				FAC284EA19B84BFC0010C385 /* DTActionSheetDemo-Prefix.pch */,
+				FAC284EB19B84BFC0010C385 /* Resources */,
+				FAC284F019B84BFC0010C385 /* Source */,
+			);
+			path = DTActionSheetDemo;
+			sourceTree = "<group>";
+		};
+		FAC284EB19B84BFC0010C385 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FAC284EC19B84BFC0010C385 /* Default-568h@2x.png */,
+				FAC284ED19B84BFC0010C385 /* Default.png */,
+				FAC284EE19B84BFC0010C385 /* Default@2x.png */,
+				FAC284EF19B84BFC0010C385 /* ActionSheetStoryboard.storyboard */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		FAC284F019B84BFC0010C385 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				FAC284F119B84BFC0010C385 /* AppDelegate.h */,
+				FAC284F219B84BFC0010C385 /* AppDelegate.m */,
+				FAC284F319B84BFC0010C385 /* main.m */,
+				FAC284F419B84BFC0010C385 /* ViewController.h */,
+				FAC284F519B84BFC0010C385 /* ViewController.m */,
+			);
+			path = Source;
 			sourceTree = "<group>";
 		};
 		FAF37A3917AFDE9E009AC27C /* DTZipArchiveDemo */ = {
@@ -2378,6 +2466,25 @@
 			productReference = FA9CB80C17ABDEF200A596C5 /* libDTASN1.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		FAC284C719B84B5F0010C385 /* DTActionSheet Demo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FAC284E219B84B5F0010C385 /* Build configuration list for PBXNativeTarget "DTActionSheet Demo" */;
+			buildPhases = (
+				FAC284CC19B84B5F0010C385 /* Sources */,
+				FAC284D419B84B5F0010C385 /* Frameworks */,
+				FAC284DD19B84B5F0010C385 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FAC284C819B84B5F0010C385 /* PBXTargetDependency */,
+				FAC284CA19B84B5F0010C385 /* PBXTargetDependency */,
+			);
+			name = "DTActionSheet Demo";
+			productName = DTZipArchiveDemo;
+			productReference = FAC284E619B84B5F0010C385 /* DTActionSheet Demo.app */;
+			productType = "com.apple.product-type.application";
+		};
 		FAF37A1F17AFDD93009AC27C /* DTZipArchive Demo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = FAF37A3817AFDD93009AC27C /* Build configuration list for PBXNativeTarget "DTZipArchive Demo" */;
@@ -2454,6 +2561,7 @@
 				A7D9D62C1758C89800C29B6F /* DTReachability Demo */,
 				A70D74CF1743AFBC00E6E626 /* DTSidePanels Demo */,
 				FAF37A1F17AFDD93009AC27C /* DTZipArchive Demo */,
+				FAC284C719B84B5F0010C385 /* DTActionSheet Demo */,
 				A7917C76191A312600964D63 /* Unit Tests */,
 			);
 		};
@@ -2533,6 +2641,17 @@
 				F88FF6BB1920ABA000120808 /* Images.xcassets in Resources */,
 				F88FF6B91920ABA000120808 /* Main_iPad.storyboard in Resources */,
 				F88FF6BA1920ABA000120808 /* Main_iPhone.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FAC284DD19B84B5F0010C385 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAC284F919B84BFC0010C385 /* Default@2x.png in Resources */,
+				FAC284FA19B84BFC0010C385 /* ActionSheetStoryboard.storyboard in Resources */,
+				FAC284F819B84BFC0010C385 /* Default.png in Resources */,
+				FAC284F719B84BFC0010C385 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2919,6 +3038,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FAC284CC19B84B5F0010C385 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAC284FD19B84BFC0010C385 /* ViewController.m in Sources */,
+				FAC284FB19B84BFC0010C385 /* AppDelegate.m in Sources */,
+				FAC284FC19B84BFC0010C385 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FAF37A1C17AFDD93009AC27C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2985,6 +3114,16 @@
 			isa = PBXTargetDependency;
 			target = A70B4CE61486637E00873A4A /* Static Library */;
 			targetProxy = F88FF6CA1920AF1F00120808 /* PBXContainerItemProxy */;
+		};
+		FAC284C819B84B5F0010C385 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A70B4CE61486637E00873A4A /* Static Library */;
+			targetProxy = FAC284C919B84B5F0010C385 /* PBXContainerItemProxy */;
+		};
+		FAC284CA19B84B5F0010C385 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A7E383D9160DFF8600CF72D6 /* DTZipArchive (iOS) */;
+			targetProxy = FAC284CB19B84B5F0010C385 /* PBXContainerItemProxy */;
 		};
 		FAF37A5917AFDF5D009AC27C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4455,6 +4594,63 @@
 			};
 			name = Release;
 		};
+		FAC284E319B84B5F0010C385 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_PREFIX_HEADER = "Demo/DTActionSheetDemo/DTActionSheetDemo-Prefix.pch";
+				INFOPLIST_FILE = "Demo/DTActionSheetDemo/DTActionSheetDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "DTActionSheet Demo";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		FAC284E419B84B5F0010C385 /* Coverage */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_PREFIX_HEADER = "Demo/DTActionSheetDemo/DTActionSheetDemo-Prefix.pch";
+				INFOPLIST_FILE = "Demo/DTActionSheetDemo/DTActionSheetDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "DTActionSheet Demo";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Coverage;
+		};
+		FAC284E519B84B5F0010C385 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PREFIX_HEADER = "Demo/DTActionSheetDemo/DTActionSheetDemo-Prefix.pch";
+				INFOPLIST_FILE = "Demo/DTActionSheetDemo/DTActionSheetDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "DTActionSheet Demo";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 		FAF37A3617AFDD93009AC27C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4732,6 +4928,16 @@
 				FA9CB81517ABDEF200A596C5 /* Debug */,
 				A70ED6BD17F98468008A801A /* Coverage */,
 				FA9CB81617ABDEF200A596C5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FAC284E219B84B5F0010C385 /* Build configuration list for PBXNativeTarget "DTActionSheet Demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FAC284E319B84B5F0010C385 /* Debug */,
+				FAC284E419B84B5F0010C385 /* Coverage */,
+				FAC284E519B84B5F0010C385 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

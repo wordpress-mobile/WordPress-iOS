@@ -1,0 +1,91 @@
+/* 
+  HelpshiftLocalizable.strings
+  Helpshift
+
+  Copyright (c) 2014 Helpshift,Inc., All rights reserved.
+*/
+
+
+"Rate our App" = "Rate our App";
+"If you love our app, please take a moment to rate it in the App Store" = "If you love our app, please take a moment to rate it in the App Store";
+"Rate" = "Rate";
+"Send Feedback" = "Send Feedback";
+"No Internet!" = "No Internet!";
+"No working Internet connection is found." = "No working Internet connection is found.";
+"Take a screenshot on your iPhone" = "Take a screenshot on your iPhone";
+"Take a screenshot on your iPad" = "Take a screenshot on your iPad";
+"Go to the screen you want a screenshot of, hold down the power button and the home button on your iPhone, at the same time." = "Go to the screen you want a screenshot of, hold down the power button and the home button on your iPhone, at the same time.";
+"Go to the screen you want a screenshot of, hold down the power button and the home button on your iPad, at the same time." = "Go to the screen you want a screenshot of, hold down the power button and the home button on your iPad, at the same time.";
+"That's it, your screenshot is now in your iPhone gallery!" = "That's it, your screenshot is now in your iPhone gallery!";
+"That's it, your screenshot is now in your iPad gallery!" = "That's it, your screenshot is now in your iPad gallery!";
+"Take screenshot" = "Take screenshot";
+"Opening Gallery..." = "Opening Gallery...";
+"Screenshot sent" = "Screenshot sent";
+"Your message was not sent.Tap \"Try Again\" to send this message?" = "Your message was not sent.Tap \"Try Again\" to send this message?";
+"No faqs found in this section" = "No faqs found in this section";
+"Could not fetch faqs" = "Could not fetch faqs";
+"We could not fetch the required data" = "We could not fetch the required data";
+"FAQ" = "FAQ";
+"Can't find what you were looking for?" = "Can't find what you were looking for?";
+"Sorry to hear that. Could you please tell us a little bit more about the problem you are facing?" = "Sorry to hear that. Could you please tell us a little bit more about the problem you are facing?";
+"We're happy to help you!" = "We're happy to help you!";
+"Describe your problem" = "Describe your problem";
+"Email invalid" = "Email invalid";
+"Please provide a valid email address." = "Please provide a valid email address.";
+"Invalid Entry" = "Invalid Entry";
+"Please enter a brief description of the issue you are facing." = "Please enter a brief description of the issue you are facing.";
+"Question" = "Question";
+"Was this helpful?" = "Was this helpful?";
+"You found this helpful." = "You found this helpful.";
+"You didn't find this helpful." = "You didn't find this helpful.";
+"Try Again" = "Try Again";
+"Cancel" = "Cancel";
+"REVIEW" = "REVIEW";
+"Send" = "Send";
+"Ok, attach" = "Ok, attach";
+"Learn how" = "Learn how";
+"YES" = "YES";
+"NO" = "NO";
+"Accepted review request" = "Accepted review request";
+"SEND" = "SEND";
+"OK" = "OK";
+"Close" = "Close";
+"Loading..." = "Loading...";
+"Help" = "Help";
+"Sending failed!" = "Sending failed!";
+"Screenshot could not be sent. Image is too large, try again with another image" = "Screenshot could not be sent. Image is too large, try again with another image";
+"Name invalid" = "Name invalid";
+"Please provide a name." = "Please provide a name.";
+"New message from Support" = "New message from Support";
+"new messages from Support" = "new messages from Support";
+"No FAQs found" = "No FAQs found";
+"Conversation" = "Conversation";
+"Name" = "Name";
+"Email (optional)" = "Email (optional)";
+"Email" = "Email";
+"Sending your message..." = "Sending your message...";
+"Message send failure." = "Message send failure.";
+"Please check your network connection and try again." = "Please check your network connection and try again.";
+"CONTACT US" = "CONTACT US";
+"Back" = "Back";
+"YES, THANKS!" = "YES, THANKS!";
+"START A NEW CONVERSATION" = "START A NEW CONVERSATION";
+"New Conversation" = "New Conversation";
+"What's on your mind?" = "What's on your mind?";
+"Thanks for contacting us." = "Thanks for contacting us.";
+"Your message has been received." = "Your message has been received.";
+"What else can we help you with?" = "What else can we help you with?";
+"Would you like to review the app?" = "Would you like to review the app?";
+"This conversation has ended." = "This conversation has ended.";
+"What's your feedback about our customer support?" = "What's your feedback about our customer support?";
+"Service Rating" = "Service Rating";
+"Hated it" = "Hated it";
+"Loved it" = "Loved it";
+"Any other feedback? (optional)" = "Any other feedback? (optional)";
+"Thanks for messaging us!" = "Thanks for messaging us!";
+"Did we answer all your questions?" = "Did we answer all your questions?";
+"Preview" = "Preview";
+"Your Rating:" = "Your Rating:";
+"Thanks for rating us." = "Thanks for rating us.";
+"Your feedback has been received." = "Your feedback has been received.";
+"or" = "or";
