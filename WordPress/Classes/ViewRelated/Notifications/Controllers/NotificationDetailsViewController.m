@@ -129,6 +129,12 @@ static CGFloat NotificationSectionSeparator     = 10;
     [nc removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    [self adjustTableStyleIfNeeded];
+}
+
 - (void)reloadData
 {
     // Hide the header, if needed
@@ -227,14 +233,18 @@ static CGFloat NotificationSectionSeparator     = 10;
     
     // Badge Notifications should be centered, and display no cell separators
     if (self.note.isBadge) {
-        CGFloat offsetY = (self.view.frame.size.height - self.tableView.contentSize.height) * 0.5f;
-        contentInset    = UIEdgeInsetsMake(offsetY, 0, 0, 0);
+        // Center only if the container view is big enough!
+        if (self.view.frame.size.height > self.tableView.contentSize.height) {
+            CGFloat offsetY = (self.view.frame.size.height - self.tableView.contentSize.height) * 0.5f;
+            contentInset    = UIEdgeInsetsMake(offsetY, 0, 0, 0);
+        }
         separator       = UITableViewCellSeparatorStyleNone;
     }
     
     self.tableView.contentInset     = contentInset;
     self.tableView.separatorStyle   = separator;
 }
+
 
 
 #pragma mark - UIViewController Restoration
