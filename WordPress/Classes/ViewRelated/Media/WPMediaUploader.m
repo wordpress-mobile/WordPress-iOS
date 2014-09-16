@@ -42,7 +42,7 @@ NSString *const WPMediaUploaderUploadOperation = @"upload_operation";
 - (void)uploadMedia:(Media *)media
 {
     [self uploadMedia:media withSuccess:^{
-        if ([media isDeleted]) {
+        if ([media isDeleted] || media.managedObjectContext == nil) {
             DDLogWarn(@"Media uploader found deleted media while uploading (%@)", media);
             return;
         }
