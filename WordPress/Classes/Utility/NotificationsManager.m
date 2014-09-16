@@ -143,6 +143,7 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
     }
 
     if ([[userInfo stringForKey:@"origin"] isEqualToString:@"helpshift"]) {
+        [WPAnalytics track:WPAnalyticsStatSupportReceivedResponseFromSupport];
         UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
         [[Helpshift sharedInstance] handleRemoteNotification:userInfo withController:rootViewController];
         return;
