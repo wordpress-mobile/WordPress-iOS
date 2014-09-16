@@ -1,0 +1,91 @@
+/*
+ HelpshiftLocalizable.strings
+ Helpshift
+ 
+ Copyright (c) 2014 Helpshift,Inc., All rights reserved.
+*/
+
+
+"Rate our App" = "Avalie nosso App";
+"If you love our app, please take a moment to rate it in the App Store" = "Se você adora nosso app, por favor, disponibilize um momento para avaliá-lo na App Store";
+"Rate" = "Avaliar";
+"Send Feedback" = "Enviar Comentário";
+"No Internet!" = "Sem Internet!";
+"No working Internet connection is found." = "Nenhuma conexão de Internet encontrada.";
+"Take a screenshot on your iPhone" = "Fazer uma captura de tela no seu iPhone";
+"Take a screenshot on your iPad" = "Fazer uma captura de tela no seu iPad";
+"Go to the screen you want a screenshot of, hold down the power button and the home button on your iPhone, at the same time." = "Vá até a tela que você quer capturar e mantenha pressionados o botão liga / desliga e o botão home do seu iPhone ao mesmo tempo.";
+"Go to the screen you want a screenshot of, hold down the power button and the home button on your iPad, at the same time." = "Vá até a tela que você quer capturar e mantenha pressionados o botão liga / desliga e o botão home do seu iPad ao mesmo tempo.";
+"That's it, your screenshot is now in your iPhone gallery!" = "É isso, agora você tem uma captura da sua tela na galeria do iPhone!";
+"That's it, your screenshot is now in your iPad gallery!" = "É isso, agora você tem uma captura da sua tela na galeria do iPad!";
+"Take screenshot" = "Fazer captura de tela";
+"Opening Gallery..." = "Abrindo Galeria...";
+"Screenshot sent" = "Captura de tela enviada";
+"Your message was not sent.Tap \"Try Again\" to send this message?" = "Sua mensagem não foi enviada.Tocar em Tentar Novamente para enviar esta mensagem?";
+"No faqs found in this section" = "Nenhuma Pergunta Frequente encontrada nesta seção";
+"Could not fetch faqs" = "Não foi possível encontrar Perguntas Frequentes";
+"We could not fetch the required data" = "Nós não poderíamos ir buscar os dados necessários";
+"FAQ" = "Perguntas Frequentes";
+"Can't find what you were looking for?" = "Não consegue encontrar o que estava procurando?";
+"Sorry to hear that. Could you please tell us a little bit more about the problem you are facing?" = "Triste por ouvir isso. Você poderia nos contar um pouco mais sobre o problema que você está enfrentando?";
+"We're happy to help you!" = "Estamos felizes em ajudar";
+"Describe your problem" = "Descreva seu problema";
+"Email invalid" = "E-mail inválido";
+"Please provide a valid email address." = "Por favor, forneça um endereço de e-mail válido.";
+"Invalid Entry" = "Entrada inválida";
+"Please enter a brief description of the issue you are facing." = "Por favor, digite uma breve descrição do problema que você está enfrentando.";
+"Question" = "Pergunta";
+"Was this helpful?" = "Isto foi útil?";
+"You found this helpful." = "Você achou isto útil.";
+"You didn't find this helpful." = "Você não achou isto útil.";
+"Try Again" = "Tentar novamente";
+"Cancel" = "Cancelar";
+"REVIEW" = "REVER";
+"Send" = "Enviar";
+"Ok, attach" = "OK, anex ar";
+"Learn how" = "Saiba como";
+"YES" = "SIM";
+"NO" = "NÃO";
+"Accepted review request" = "Aceitou pedido de revisão";
+"SEND" = "Enviar";
+"OK" = "Ok";
+"Close" = "Fechar";
+"Loading..." = "Carregando...";
+"Help" = "Ajuda";
+"Sending failed!" = "Envio falhou!";
+"Screenshot could not be sent. Image is too large, try again with another image" = "Não foi possível enviar a captura de tela. A imagem é muito grande, tente novamente com outra imagem";
+"Name invalid" = "Nome inválido";
+"Please provide a name." = "Forneça um nome";
+"New message from Support" = "Nova mensagem de apoio";
+"new messages from Support" = "novas mensagens de apoio";
+"No FAQs found" = "não FAQs encontrado";
+"Conversation" = "Conversa";
+"Name" = "Nome";
+"Email (optional)" = "E-mail (opcional)";
+"Email" = "E-mail";
+"Sending your message..." = "Enviando sua mensagem...";
+"Message send failure." = "Falha ao enviar mensagem.";
+"Please check your network connection and try again." = "Por favor, confira sua conexão de rede e tente novamente.";
+"CONTACT US" = "CONTATE-NOS";
+"Back" = "Voltar";
+"YES, THANKS!" = "SIM, OBRIGADO!";
+"START A NEW CONVERSATION" = "INICIAR UMA NOVA CONVERSA";
+"New Conversation" = "Nova Conversa";
+"What's on your mind?" = "No que você está pensando?";
+"Thanks for contacting us." = "Obrigado por contatar-nos.";
+"Your message has been received." = "Sua mensagem foi recebida.";
+"What else can we help you with?" = "Com o que mais podemos ajudá-lo?";
+"Would you like to review the app?" = "Gostaria de fazer uma análise da aplicação?";
+"This conversation has ended." = "Esta conversa terminou.";
+"What's your feedback about our customer support?" = "Qual é a sua opinião sobre o nosso serviço de apoio ao cliente?";
+"Service Rating" = "Avaliação do serviço";
+"Hated it" = "Detestei";
+"Loved it" = "Adorei";
+"Any other feedback? (optional)" = "Mais algum comentário? (opcional)";
+"Thanks for messaging us!" = "Obrigado por nos contactar!";
+"Did we answer all your questions?" = "Respondemos a todas as suas questões?";
+"Preview" = "Pré-visualização";
+"Your Rating:" = "A sua avaliação:";
+"Thanks for rating us." = "Obrigado por nos avaliar.";
+"Your feedback has been received." = "O seu feedback foi recebido.";
+"or" = "ou";

@@ -56,6 +56,16 @@ typedef NS_ENUM(NSInteger, ZSSRichTextEditorToolbar) {
 @property (nonatomic) ZSSRichTextEditorToolbar enabledToolbarItems;
 
 /**
+ *  Color to tint the toolbar items
+ */
+@property (nonatomic, strong) UIColor *toolbarItemTintColor;
+
+/**
+ *  Color to tint selected items
+ */
+@property (nonatomic, strong) UIColor *toolbarItemSelectedTintColor;
+
+/**
  *  Shows the insert image dialog with optinal inputs
  *
  *  @param url The URL for the image
