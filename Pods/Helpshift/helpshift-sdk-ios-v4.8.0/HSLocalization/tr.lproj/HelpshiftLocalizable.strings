@@ -1,0 +1,91 @@
+/*
+  HelpshiftLocalizable.strings
+  Helpshift
+ 
+  Copyright (c) 2014 Helpshift,Inc., All rights reserved.
+*/
+
+
+"Rate our App" = "Uygulamamıza puan verin";
+"If you love our app, please take a moment to rate it in the App Store" = "Uygulamamızı beğendiyseniz, lütfen App Store'da puan verin";
+"Rate" = "Puan Ver";
+"Send Feedback" = "Geri Bildirim Gönder";
+"No Internet!" = "İnternet Yok!";
+"No working Internet connection is found." = "Çalışan bir İnternet bağlantısı bulunamadı.";
+"Take a screenshot on your iPhone" = "iPhone'nunuzdan ekran görüntüsü alın";
+"Take a screenshot on your iPad" = "iPad'inizden ekran görüntüsü alın";
+"Go to the screen you want a screenshot of, hold down the power button and the home button on your iPhone, at the same time." = "Ekran görüntüsü almak istediğiniz ekrana gidin ve iPhone'un güç düğmesi ile ana ekran düğmesine aynı anda basın.";
+"Go to the screen you want a screenshot of, hold down the power button and the home button on your iPad, at the same time." = "Ekran görüntüsü almak istediğiniz ekrana gidin ve iPad'in güç düğmesi ile ana ekran düğmesine aynı anda basın.";
+"That's it, your screenshot is now in your iPhone gallery!" = "Bu kadar basit. Ekran görüntüsü artık iPhone'unuzun fotoğraf galerisine kaydedildi!";
+"That's it, your screenshot is now in your iPad gallery!" = "Bu kadar basit. Ekran görüntüsü artık iPad'inizin fotoğraf galerisine kaydedildi!";
+"Take screenshot" = "Ekran görüntüsü al";
+"Opening Gallery..." = "Fotoğraflar açılıyor...";
+"Screenshot sent" = "Ekran görüntüsü gönderildi";
+"Your message was not sent.Tap \"Try Again\" to send this message?" = "Mesajınız gönderilemedi. Göndermeyi tekrar denemek için, \"Tekrar Dene\" üzerine dokunmak ister misiniz?";
+"No faqs found in this section" = "Bu bölümde hiçbir soru bulunamadı";
+"Could not fetch faqs" = "Sorular alınamadı";
+"We could not fetch the required data" = "Gerekli verileri alamadık";
+"FAQ" = "Sıkça Sorulan Sorular";
+"Can't find what you were looking for?" = "Aradığınızı bulamadınız mı?";
+"Sorry to hear that. Could you please tell us a little bit more about the problem you are facing?" = "Bunu duyduğumuza üzüldük. Yaşadığınız sorunla ilgili biraz daha bilgi verebilir misiniz?";
+"We're happy to help you!" = "Yardımcı olmaktan memnuniyet duyacağız!";
+"Describe your problem" = "Sorununuzu açıklayın";
+"Email invalid" = "E-posta geçersiz";
+"Please provide a valid email address." = "Lütfen geçerli bir e-posta adresi verin.";
+"Invalid Entry" = "Geçersiz Giriş";
+"Please enter a brief description of the issue you are facing." = "Lütfen yaşadığınız sorunu kısaca açıklayın.";
+"Question" = "Soru";
+"Was this helpful?" = "Bu bilgi faydalı oldu mu?";
+"You found this helpful." = "Bu bilgiyi faydalı buldunuz.";
+"You didn't find this helpful." = "Bu bilgiyi faydalı bulmadınız.";
+"Try Again" = "Tekrar Dene";
+"Cancel" = "İptal";
+"REVIEW" = "DEĞERLENDİR";
+"Send" = "Gönder";
+"Ok, attach" = "Tamam, ekle";
+"Learn how" = "Nasıl olduğunu öğrenin";
+"YES" = "EVET";
+"NO" = "HAYIR";
+"Accepted review request" = "Değerlendirme isteği kabul edildi";
+"SEND" = "GÖNDER";
+"OK" = "TAMAM";
+"Close" = "Kapat";
+"Loading..." = "Yükleniyor...";
+"Help" = "Yardım";
+"Sending failed!" = "Gönderme başarısız!";
+"Screenshot could not be sent. Image is too large, try again with another image" = "Ekran görüntüsü gönderilemedi. Dosya çok büyük, başka bir dosya ile tekrar deneyin";
+"Name invalid" = "Ad geçersiz";
+"Please provide a name." = "Lütfen bir ad girin.";
+"New message from Support" = "Destek'ten yeni mesajınız var";
+"new messages from Support" = "Destek'ten yeni mesajlarınız var";
+"No FAQs found" = "Hiçbir soru bulunamadı";
+"Conversation" = "Sohbet";
+"Name" = "Adınız";
+"Email (optional)" = "E-posta (isteğe bağlı)";
+"Email" = "E-posta";
+"Sending your message..." = "Mesajınız gönderiliyor...";
+"Message send failure." = "Mesaj gönderme başarısız.";
+"Please check your network connection and try again." = "Lütfen ağ bağlantınızı kontrol edip tekrar deneyin.";
+"CONTACT US" = "BİZE ULAŞIN";
+"Back" = "Geri";
+"YES, THANKS!" = "EVET, TEŞEKKÜRLER!";
+"START A NEW CONVERSATION" = "YENİ BİR SOHBET BAŞLAT";
+"New Conversation" = "Yeni Sohbet";
+"What's on your mind?" = "Bize ne danışmak istiyorsunuz?";
+"Thanks for contacting us." = "Bize ulaştığınız için teşekkür ederiz.";
+"Your message has been received." = "Mesajınız alındı.";
+"What else can we help you with?" = "Yardımcı olabileceğimiz başka bir konu var mı?";
+"Would you like to review the app?" = "Uygulamayı değerlendirmek istiyor musunuz?";
+"This conversation has ended." = "Bu konuşma sona erdi.";
+"What's your feedback about our customer support?" = "Müşteri desteğimize ilişkin geribildiriminiz nedir?";
+"Service Rating" = "Hizmet Derecelendirmesi";
+"Hated it" = "Hiç beğenmedim";
+"Loved it" = "Çok beğendim";
+"Any other feedback? (optional)" = "Başka bir geribildirim? (isteğe bağlı)";
+"Thanks for messaging us!" = "Bize mesaj gönderdiğiniz için teşekkürler!";
+"Did we answer all your questions?" = "Tüm sorularınızı yanıtladık mı?";
+"Preview" = "Önizleme";
+"Your Rating:" = "Derecelendirmeniz:";
+"Thanks for rating us." = "Bizi derecelendirdiğiniz için teşekkür ederiz.";
+"Your feedback has been received." = "Geribildiriminiz alındı.";
+"or" = "veya";
