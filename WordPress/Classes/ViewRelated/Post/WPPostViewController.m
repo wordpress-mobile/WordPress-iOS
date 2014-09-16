@@ -1042,6 +1042,11 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 
 - (void)insertMedia:(Media *)media
 {
+    NSAssert(_post != nil, @"The post should not be nil here.");
+    NSAssert(!_post.isFault, @"The post should not be a fault here here.");
+    NSAssert(_post.managedObjectContext != nil,
+             @"The post's MOC should not be nil here.");
+    
 	NSString *prefix = @"<br /><br />";
     
 	if(self.post.content == nil || [self.post.content isEqualToString:@""]) {
