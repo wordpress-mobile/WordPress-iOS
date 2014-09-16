@@ -1,0 +1,90 @@
+/* 
+  HelpshiftLocalizable.strings
+  Helpshift
+
+  Copyright (c) 2014 Helpshift,Inc., All rights reserved.
+*/
+
+
+"Rate our App" = "Оцените наше приложение";
+"If you love our app, please take a moment to rate it in the App Store" = "Если приложение нравится, пожалуйста, оцените его в App Store";
+"Rate" = "Оценить";
+"Send Feedback" = "Отправить отзыв";
+"No Internet!" = "Нет Интернета!";
+"No working Internet connection is found." = "Не обнаружено рабочего подключения к Интернету!";
+"Take a screenshot on your iPhone" = "Снять скриншот на свой iPhone";
+"Take a screenshot on your iPad" = "Снять скриншот на свой iPad";
+"Go to the screen you want a screenshot of, hold down the power button and the home button on your iPhone, at the same time." = "Перейдите на экран, скриншот которого хотите снять, нажмите и удерживайте кнопку питания и главную кнопку на iPhone одновременно.";
+"Go to the screen you want a screenshot of, hold down the power button and the home button on your iPad, at the same time." = "Перейдите на экран, скриншот которого хотите снять, нажмите и удерживайте кнопку питания и главную кнопку на iPad одновременно.";
+"That's it, your screenshot is now in your iPhone gallery!" = "Вот и всё, теперь скриншот находится в галерее iPhone!";
+"That's it, your screenshot is now in your iPad gallery!" = "Вот и всё, теперь скриншот находится в галерее iPad!";
+"Take screenshot" = "Снять скриншот";
+"Opening Gallery..." = "Идёт открытие галереи...";
+"Screenshot sent" = "Скриншот отправлен";
+"Your message was not sent.Tap \"Try Again\" to send this message?" = "Ваше сообщение не отправлено. Повторить попытку отправки сообщения?";
+"No faqs found in this section" = "В этом разделе нет вопросов-ответов";
+"Could not fetch faqs" = "Невозможно загрузить вопросы-ответы";
+"We could not fetch the required data" = "Мы не смогли загрузить необходимые данные";
+"FAQ" = "Вопрос-ответ";
+"Can't find what you were looking for?" = "Не нашли нужного ответа?";
+"Sorry to hear that. Could you please tell us a little bit more about the problem you are facing?" = "Жаль об этом слышать. Не могли бы вы рассказать немного подробнее о проблеме, с которой столкнулись?";
+"We're happy to help you!" = "Мы рады вам помочь!";
+"Describe your problem" = "Найти решение";
+"Email invalid" = "Некорректная эл.почта";
+"Please provide a valid email address." = "Введите корректный адрес эл.почты.";
+"Invalid Entry" = "Некорректная запись";
+"Please enter a brief description of the issue you are facing." = "Пожалуйста, введите краткое описание проблемы, с которой вы столкнулись.";
+"Question" = "Вопрос";
+"Was this helpful?" = "Это было полезно?";
+"You found this helpful." = "Вы считаете это полезным.";
+"You didn't find this helpful." = "Вы не считаете это полезным.";
+"Try Again" = "Повторить попытку";
+"Cancel" = "Отмена";
+"REVIEW" = "ОЦЕНИТЬ";
+"Send" = "Отправить";
+"Ok, attach" = "Прикрепить";
+"Learn how" = "Узнать как";
+"YES" = "ДА";
+"NO" = "НЕТ";
+"Accepted review request" = "Принять запрос на оценку";
+"SEND" = "Отправить";
+"OK" = "OK";
+"Close" = "Закрыть";
+"Loading..." = "Идёт загрузка...";
+"Help" = "Справка";
+"Sending failed!" = "Отправка не удалась!";
+"Screenshot could not be sent. Image is too large, try again with another image" = "Скриншот не может быть отправлен. Изображение слишком большое, попробуйте еще раз с другим изображением";
+"Name invalid" = "Некорректное имя";
+"Please provide a name." = "Пожалуйста, укажите имя.";
+"New message from Support" = "Новое сообщение от поддержки";
+"new messages from Support" = "новых сообщений от поддержки";
+"No FAQs found" = "Не найдено ни одного ответа";
+"Conversation" = "Диалог";
+"Name" = "Имя";
+"Email (optional)" = "Эл. почта (необязательно)";
+"Sending your message..." = "Отправка сообщения...";
+"Message send failure." = "Ошибка отправки сообщения.";
+"Please check your network connection and try again." = "Проверьте сетевое подключение и повторите попытку.";
+"CONTACT US" = "НАПИШИТЕ НАМ";
+"Back" = "Назад";
+"YES, THANKS!" = "ДА, СПАСИБО!";
+"START A NEW CONVERSATION" = "НАЧАТЬ НОВЫЙ ДИАЛОГ";
+"New Conversation" = "Новый диалог";
+"What's on your mind?" = "О чем вы хотите спросить?";
+"Thanks for contacting us." = "Спасибо за обращение.";
+"Your message has been received." = "Ваше сообщение получено.";
+"What else can we help you with?" = "Чем еще мы можем вам помочь?";
+"Would you like to review the app?" = "Не хотели бы вы оставить отзыв о приложении?";
+"This conversation has ended." = "Разговор завершен.";
+"What's your feedback about our customer support?" = "Каков ваш отзыв о нашей клиентской поддержке?";
+"Service Rating" = "Оценка обслуживания";
+"Hated it" = "Отвратительно";
+"Loved it" = "Замечательно";
+"Any other feedback? (optional)" = "Иной отзыв? (по желанию)";
+"Thanks for messaging us!" = "Спасибо за обращение к нам!";
+"Did we answer all your questions?" = "Мы ответили на все ваши вопросы?";
+"Preview" = "Предпросмотр";
+"Your Rating:" = "Ваша оценка:";
+"Thanks for rating us." = "Спасибо за оценку.";
+"Your feedback has been received." = "Ваш отзыв был получен.";
+"or" = "или";

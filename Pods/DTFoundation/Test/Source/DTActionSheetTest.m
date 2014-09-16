@@ -57,5 +57,18 @@
     XCTAssertTrue(blockExecuted, @"The ok button block should be executed");
 }
 
+- (void)testInitMethod_delegate {
+	
+	__block BOOL blockExecuted = NO;
+	DTActionSheet *actionSheet = [[DTActionSheet alloc] initWithTitle:@"Test title"];
+	[actionSheet addCancelButtonWithTitle:@"Cancel" block:nil];
+	[actionSheet addButtonWithTitle:@"Ok" block:^{
+		blockExecuted = YES;
+	}];
+	
+	[actionSheet.delegate actionSheet:actionSheet clickedButtonAtIndex:actionSheet.numberOfButtons -1 ];
+	XCTAssertTrue(blockExecuted, @"The ok button block should be executed");
+}
+
 
 @end
