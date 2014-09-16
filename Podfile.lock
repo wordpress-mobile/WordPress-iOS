@@ -43,7 +43,7 @@ PODS:
   - Google-Diff-Match-Patch (0.0.1)
   - google-plus-ios-sdk (1.7.0)
   - Helpshift (4.8.0)
-  - HockeySDK (3.5.6)
+  - HockeySDK (3.5.7)
   - JRSwizzle (1.0)
   - MGImageUtilities (0.0.1)
   - Mixpanel (2.3.1)
@@ -149,7 +149,7 @@ SPEC CHECKSUMS:
   Google-Diff-Match-Patch: 1f9c0b972c351d9c0a4fee137eb96896460477cd
   google-plus-ios-sdk: f613bd712196b435ecc098eed75afb3364bca177
   Helpshift: cb3f909e33f53a1b4f617a743ed24fdbfdb507f3
-  HockeySDK: 27d8b411208f9d3f70c8f6695a8defa2a3465721
+  HockeySDK: f0e874d1c6833163ee0c4e423606faf33ad04071
   JRSwizzle: 30da7a2c539a4ebf954b16d15f6dd8221c9f6fa5
   MGImageUtilities: ce03a910781d7e189814d668af340bc1c0238363
   Mixpanel: 9cc470a58346f60da8ce2982096bcc72b5a7372b
