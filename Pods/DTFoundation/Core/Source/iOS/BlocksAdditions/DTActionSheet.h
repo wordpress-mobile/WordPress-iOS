@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 Cocoanetics. All rights reserved.
 //
 
+#import "DTWeakSupport.h"
+
 // the block to execute when an option button is tapped
 typedef void (^DTActionSheetBlock)(void);
 
@@ -19,7 +21,7 @@ typedef void (^DTActionSheetBlock)(void);
  Initializes the action sheet using the specified title. 
  @param title The title
  */
-- (id)initWithTitle:(NSString *)title;
+- (instancetype)initWithTitle:(NSString *)title;
 
 /**
  Adds a custom button to the action sheet.
@@ -57,5 +59,10 @@ typedef void (^DTActionSheetBlock)(void);
  @returns The index of the new button. Button indices start at 0 and increase in the order they are added.
  */ 
 - (NSInteger)addCancelButtonWithTitle:(NSString *)title;
+
+/**
+ * Use the actionSheetDelegate when you want to to receive UIActionSheetDelegate messages.
+ */
+@property (nonatomic, DT_WEAK_PROPERTY) id<UIActionSheetDelegate> actionSheetDelegate;
 
 @end
