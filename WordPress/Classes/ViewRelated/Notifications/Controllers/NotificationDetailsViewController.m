@@ -899,8 +899,8 @@ static CGFloat NotificationSectionSeparator     = 10;
 
     [self.view updateConstraintWithFirstItem:self.view
                                   secondItem:self.replyTextView
-                              firstAttribute:NSLayoutAttributeBottom
-                             secondAttribute:NSLayoutAttributeBottom
+                          firstItemAttribute:NSLayoutAttributeBottom
+                         secondItemAttribute:NSLayoutAttributeBottom
                                     constant:bottomInset];
     
     [self.view layoutIfNeeded];
@@ -918,8 +918,8 @@ static CGFloat NotificationSectionSeparator     = 10;
     
     [self.view updateConstraintWithFirstItem:self.view
                                   secondItem:self.replyTextView
-                              firstAttribute:NSLayoutAttributeBottom
-                             secondAttribute:NSLayoutAttributeBottom
+                          firstItemAttribute:NSLayoutAttributeBottom
+                         secondItemAttribute:NSLayoutAttributeBottom
                                     constant:0];
     
     [self.view layoutIfNeeded];
