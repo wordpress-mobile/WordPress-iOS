@@ -1,0 +1,91 @@
+/*
+ HelpshiftLocalizable.strings
+ Helpshift
+ 
+ Copyright (c) 2014 Helpshift,Inc., All rights reserved.
+*/
+
+
+"Rate our App" = "给应用评分";
+"If you love our app, please take a moment to rate it in the App Store" = "如果你喜欢我们的应用，请花点时间在App Store给它评个分";
+"Rate" = "评分";
+"Send Feedback" = "发送反馈";
+"No Internet!" = "无网络！";
+"No working Internet connection is found." = "未发现网络连接。";
+"Take a screenshot on your iPhone" = "在你的iPhone上捕获屏幕截图";
+"Take a screenshot on your iPad" = "在你的iPad上捕获屏幕截图";
+"Go to the screen you want a screenshot of, hold down the power button and the home button on your iPhone, at the same time." = "转至你要捕获截图的屏幕，同时按下iPhone上的电源按钮和主页按钮。";
+"Go to the screen you want a screenshot of, hold down the power button and the home button on your iPad, at the same time." = "转至你要捕获截图的屏幕，同时按下iPad上的电源按钮和主页按钮。";
+"That's it, your screenshot is now in your iPhone gallery!" = "就是这样，你的屏幕截图在iPhone图库中啦！";
+"That's it, your screenshot is now in your iPad gallery!" = "就是这样，你的屏幕截图在iPad图库中啦！";
+"Take screenshot" = "捕获屏幕截图";
+"Opening Gallery..." = "正在打开图库…";
+"Screenshot sent" = "已发送屏幕截图";
+"Your message was not sent.Tap \"Try Again\" to send this message?" = "未发送你的消息。点击‘重试’发送此消息吗？";
+"No faqs found in this section" = "此部分未找到常见问题解答";
+"Could not fetch faqs" = "无法获取常见问题解答";
+"We could not fetch the required data" = "我们无法获取所需的数据";
+"FAQ" = "常见问题";
+"Can't find what you were looking for?" = "无法找到你搜索的内容吗？";
+"Sorry to hear that. Could you please tell us a little bit more about the problem you are facing?" = "听到这个消息很抱歉。可以向我们详细说明你面临的问题吗？";
+"We're happy to help you!" = "我们很乐意帮忙";
+"Describe your problem" = "描述你的问题";
+"Email invalid" = "电子邮件无效";
+"Please provide a valid email address." = "请提供有效电子邮件地址。";
+"Invalid Entry" = "无效输入";
+"Please enter a brief description of the issue you are facing." = "请输入你面临的问题简介";
+"Question" = "问题";
+"Was this helpful?" = "这有帮助吗？";
+"You found this helpful." = "你发现这有帮助。";
+"You didn't find this helpful." = "你发现这无帮助。";
+"Try Again" = "重试";
+"Cancel" = "取消";
+"REVIEW" = "评价";
+"Send" = "发送";
+"Ok, attach" = "好，附加";
+"Learn how" = "了解如何";
+"YES" = "是";
+"NO" = "否";
+"Accepted review request" = "已接受评价请求";
+"SEND" = "发送";
+"OK" = "确认";
+"Close" = "关闭";
+"Loading..." = "载入中…";
+"Help" = "帮助";
+"Sending failed!" = "发送失败！";
+"Screenshot could not be sent. Image is too large, try again with another image" = "截图无法发送。图片太大，再次尝试与另一图像";
+"Name invalid" = "命名无效";
+"Please provide a name." = "请提供一个名称。";
+"New message from Support" = "的新消息从支持";
+"new messages from Support" = "新的消息支持";
+"No FAQs found" = "没有找到常见问题";
+"Conversation" = "会话";
+"Name" = "姓名";
+"Email (optional)" = "电子邮件(可选)";
+"Email" = "电子邮件";
+"Sending your message..." = "正在发送你的信息...";
+"Message send failure." = "信息发送失败。";
+"Please check your network connection and try again." = "请检查你的网络连接并重试。";
+"CONTACT US" = "联系我们";
+"Back" = "返回";
+"YES, THANKS!" = "是的，谢谢!";
+"START A NEW CONVERSATION" = "开始一个新会话";
+"New Conversation" = "新会话";
+"What's on your mind?" = "有什么问题或反馈吗?";
+"Thanks for contacting us." = "感谢联系我们。";
+"Your message has been received." = "你的信息已收到。";
+"What else can we help you with?" = "还有其他需要帮助的吗?";
+"Would you like to review the app?" = "您要评价本应用吗?";
+"This conversation has ended." = "此会话已结束。";
+"What's your feedback about our customer support?" = "您对我们的客户支持有何反馈意见？";
+"Service Rating" = "服务评分";
+"Hated it" = "很不满意";
+"Loved it" = "很满意";
+"Any other feedback? (optional)" = "有其他反馈吗？（可选）";
+"Thanks for messaging us!" = "感谢您向我们发送消息！";
+"Did we answer all your questions?" = "我们是否已回答您的全部问题？";
+"Preview" = "预览";
+"Your Rating:" = "您的评级：";
+"Thanks for rating us." = "感谢您为我们评级。";
+"Your feedback has been received." = "已收到您的反馈。";
+"or" = "或";

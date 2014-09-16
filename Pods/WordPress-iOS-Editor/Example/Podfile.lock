@@ -1,0 +1,72 @@
+PODS:
+  - AFNetworking (2.3.1):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+    - AFNetworking/UIKit
+  - AFNetworking/NSURLConnection (2.3.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.3.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.3.1)
+  - AFNetworking/Security (2.3.1)
+  - AFNetworking/Serialization (2.3.1)
+  - AFNetworking/UIKit (2.3.1):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+  - CocoaLumberjack (1.8.1):
+    - CocoaLumberjack/Extensions
+  - CocoaLumberjack/Core (1.8.1)
+  - CocoaLumberjack/Extensions (1.8.1):
+    - CocoaLumberjack/Core
+  - DTCoreText (1.6.13):
+    - DTFoundation/Core (~> 1.7.1)
+    - DTFoundation/DTAnimatedGIF (~> 1.7.1)
+    - DTFoundation/DTHTMLParser (~> 1.7.1)
+    - DTFoundation/UIKit (~> 1.7.1)
+  - DTFoundation/Core (1.7.2)
+  - DTFoundation/DTAnimatedGIF (1.7.2)
+  - DTFoundation/DTHTMLParser (1.7.2):
+    - DTFoundation/Core
+  - DTFoundation/UIKit (1.7.2):
+    - DTFoundation/Core
+  - UIAlertView+Blocks (0.8.1)
+  - WordPress-iOS-Editor (0.2.0):
+    - CocoaLumberjack (~> 1.8.1)
+    - UIAlertView+Blocks
+    - WordPress-iOS-Shared (~> 0.1.0)
+    - WordPressCom-Analytics-iOS (~> 0.0.4)
+  - WordPress-iOS-Shared (0.1.0):
+    - AFNetworking (~> 2.3.1)
+    - CocoaLumberjack (~> 1.8.1)
+    - DTCoreText (= 1.6.13)
+  - WordPressCom-Analytics-iOS (0.0.4)
+
+DEPENDENCIES:
+  - CocoaLumberjack (~> 1.8.1)
+  - UIAlertView+Blocks
+  - WordPress-iOS-Editor (from `../`)
+  - WordPress-iOS-Shared (~> 0.1.0)
+  - WordPressCom-Analytics-iOS (~> 0.0.4)
+
+EXTERNAL SOURCES:
+  WordPress-iOS-Editor:
+    :path: ../
+
+SPEC CHECKSUMS:
+  AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
+  CocoaLumberjack: 9d198d6e19909b3b113a38c5f06f7bb8eedd0427
+  DTCoreText: 84eb8ba2e70448fdd9d837540e371f9f587b65ba
+  DTFoundation: 126729614911ae7dbab3dcc1c078f189943bee66
+  UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
+  WordPress-iOS-Editor: 2f3fe9a249dfc10ed254f11f62f326dcb5ab5623
+  WordPress-iOS-Shared: 0cdb2cc94ec0da4aef40fa561a7b3fd5eec8749a
+  WordPressCom-Analytics-iOS: a15aef24435a332b3b87cc61adb9a1a12d22658b
+
+COCOAPODS: 0.33.1

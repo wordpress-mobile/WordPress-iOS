@@ -22,6 +22,7 @@
 @end
 
 
+
 @implementation DTAlertViewTest
 
 - (void)testInitMethods {
@@ -37,6 +38,7 @@
 
     blockExecuted = NO;
     alertView = [[DTAlertView alloc] initWithTitle:@"Foo" message:@"bar"];
+		[alertView addCancelButtonWithTitle:@"Cancel" block:nil];
     [alertView addButtonWithTitle:@"Ok" block:^{
         blockExecuted = YES;
     }];
@@ -54,6 +56,21 @@
     [alertView alertView:alertView clickedButtonAtIndex:alertView.numberOfButtons - 1];
     
     XCTAssertTrue(blockExecuted, @"The ok button block should be executed");
+	
+}
+
+- (void)testInitMethod_delegate {
+	
+	__block BOOL blockExecuted = NO;
+	DTAlertView *alertView = [[DTAlertView alloc] initWithTitle:@"Foo" message:@"bar"];
+	[alertView addCancelButtonWithTitle:@"Cancel" block:nil];
+	[alertView addButtonWithTitle:@"Ok" block:^{
+		blockExecuted = YES;
+	}];
+	
+	[alertView.delegate alertView:alertView	clickedButtonAtIndex:alertView.numberOfButtons - 1];
+	XCTAssertTrue(blockExecuted, @"The ok button block should be executed");
+
 }
 
 

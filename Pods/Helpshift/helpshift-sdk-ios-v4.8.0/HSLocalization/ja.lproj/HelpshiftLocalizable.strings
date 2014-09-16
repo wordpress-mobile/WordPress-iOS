@@ -1,0 +1,91 @@
+/*
+ HelpshiftLocalizable.strings
+ Helpshift
+ 
+ Copyright (c) 2014 Helpshift,Inc., All rights reserved.
+*/
+
+
+"Rate our App" = "アプリを評価";
+"If you love our app, please take a moment to rate it in the App Store" = "アプリをお気に召したら、少々お時間を割いてApp Storeで評価してください";
+"Rate" = "評価";
+"Send Feedback" = "フィードバック送信";
+"No Internet!" = "インターネットがありません！";
+"No working Internet connection is found." = "インターネット接続がありません。";
+"Take a screenshot on your iPhone" = "iPhoneでスクリーンショットを撮影";
+"Take a screenshot on your iPad" = "iPadでスクリーンショットを撮影";
+"Go to the screen you want a screenshot of, hold down the power button and the home button on your iPhone, at the same time." = "スクリーンショットが欲しい画面に行き、iPhoneのホームボタンと電源ボタンを同時にホールドしてください。";
+"Go to the screen you want a screenshot of, hold down the power button and the home button on your iPad, at the same time." = "スクリーンショットが欲しい画面に行き、iPadのホームボタンと電源ボタンを同時にホールドしてください。";
+"That's it, your screenshot is now in your iPhone gallery!" = "そうです、スクリーンショットはiPhoneギャラリーにあります!";
+"That's it, your screenshot is now in your iPad gallery!" = "そうです、スクリーンショットはiPadギャラリーにあります!";
+"Take screenshot" = "スクリーンショットを撮影";
+"Opening Gallery..." = "ギャラリーを開いています...";
+"Screenshot sent" = "スクリーンショットが送信されました";
+"Your message was not sent.Tap \"Try Again\" to send this message?" = "メッセージが送信されました。 \"再試行\" をタップしてこのメッセージを送信しますか?";
+"No faqs found in this section" = "このセクションではよくある質問がありません";
+"Could not fetch faqs" = "よくある質問が取得できませんでした";
+"We could not fetch the required data" = "必要なデータが取得できませんでした";
+"FAQ" = "よくある質問";
+"Can't find what you were looking for?" = "お探しのものが見つかりませんか?";
+"Sorry to hear that. Could you please tell us a little bit more about the problem you are facing?" = "申し訳ございませんが、直面されている問題についてもう少し詳しく教えていただけませんか?";
+"We're happy to help you!" = "当社は喜んでユーザーの皆様をサポートします!";
+"Describe your problem" = "問題を説明してください";
+"Email invalid" = "メールが無効です";
+"Please provide a valid email address." = "有効なメールアドレスを入力してください。";
+"Invalid Entry" = "入力が無効です";
+"Please enter a brief description of the issue you are facing." = "直面されている問題を簡単に説明してください。";
+"Question" = "質問";
+"Was this helpful?" = "お役に立ちましたか?";
+"You found this helpful." = "役に立ちました。";
+"You didn't find this helpful." = "役に立ちませんでした。";
+"Try Again" = "再試行";
+"Cancel" = "キャンセル";
+"REVIEW" = "レビュー";
+"Send" = "送信";
+"Ok, attach" = "OK、添付";
+"Learn how" = "方法を知る";
+"YES" = "はい";
+"NO" = "いいえ";
+"Accepted review request" = "レビューリクエストを受け取りました";
+"SEND" = "送信";
+"OK" = "OK";
+"Close" = "終了";
+"Loading..." = "読み込み中...";
+"Help" = "ヘルプ";
+"Sending failed!" = "送信失敗!";
+"Screenshot could not be sent. Image is too large, try again with another image" = "スクリーンショットが送信できませんでした。画像が大きすぎます。他の画像で再試行してください。";
+"Name invalid" = "名前が無効です";
+"Please provide a name." = "名前を入力してください。";
+"New message from Support" = "サポートからの新規メッセージ";
+"new messages from Support" = "サポートからの新規メッセージ";
+"No FAQs found" = "よくある質問が見つかりませんでした";
+"Conversation" = "会話";
+"Name" = "氏名";
+"Email (optional)" = "メール（任意）";
+"Email" = "メール";
+"Sending your message..." = "メッセージ送信中です...";
+"Message send failure." = "メッセージ送信に失敗しました。";
+"Please check your network connection and try again." = "ネットワーク接続をご確認の上、再試行してください。";
+"CONTACT US" = "お問い合わせ";
+"Back" = "戻る";
+"YES, THANKS!" = "はい、ありがとう！";
+"START A NEW CONVERSATION" = "新しい会話を始める";
+"New Conversation" = "新しい会話";
+"What's on your mind?" = "何を考えていますか?";
+"Thanks for contacting us." = "ご連絡ありがとうございます。";
+"Your message has been received." = "メッセージが受領されました。";
+"What else can we help you with?" = "他にお手伝いできることはありますか?";
+"Would you like to review the app?" = "アプリを評価しますか？";
+"This conversation has ended." = "この会話は終了しました。";
+"What's your feedback about our customer support?" = "弊社のカスタマーサポートに関するご意見をお聞かせください。";
+"Service Rating" = "サービスに対する評価";
+"Hated it" = "非常に悪かった";
+"Loved it" = "非常に良かった";
+"Any other feedback? (optional)" = "その他のご意見はありますか? (任意)";
+"Thanks for messaging us!" = "送信いただきありがとうございます!";
+"Did we answer all your questions?" = "問題はすべて解決しましたか?";
+"Preview" = "プレビュー";
+"Your Rating:" = "お客様のご評価:";
+"Thanks for rating us." = "ご評価ありがとうございます。";
+"Your feedback has been received." = "ご意見お受けしました。";
+"or" = "又は";

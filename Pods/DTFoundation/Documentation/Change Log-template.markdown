@@ -3,6 +3,11 @@ Change Log
 
 This is the history of version updates.
 
+**Version 1.7.3**
+
+- FIXED: [DTAlertView] Completion blocks for the buttons are not executed on iOS 8 GM
+- FIXED: [DTActionSheet] Completion blocks for the buttons are not executed on iOS 8 GM
+
 **Version 1.7.2**
 
 - FIXED: [DTAlertView] Completion blocks for the buttons are not executed on iOS 8

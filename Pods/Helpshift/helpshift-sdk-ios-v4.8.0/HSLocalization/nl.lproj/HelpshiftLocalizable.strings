@@ -1,0 +1,91 @@
+/* 
+  HelpshiftLocalizable.strings
+  Helpshift
+
+  Copyright (c) 2014 Helpshift,Inc., All rights reserved.
+*/
+
+
+"Rate our App" = "Beoordeel onze App";
+"If you love our app, please take a moment to rate it in the App Store" = "Als je onze app leuk vindt, neem dan even de tijd deze in de App winkel te beoordelen";
+"Rate" = "Beoordelen";
+"Send Feedback" = "Feedback verzenden";
+"No Internet!" = "Geen Internet!";
+"No working Internet connection is found." = "Geen Internetverbinding aangetroffen.";
+"Take a screenshot on your iPhone" = "Neem een screenshot op je iPhone";
+"Take a screenshot on your iPad" = "Neem een screenshot op je iPad";
+"Go to the screen you want a screenshot of, hold down the power button and the home button on your iPhone, at the same time." = "Ga naar het scherm waar je een screenshot van wilt of houd de stroomknop en de startknop van je iPhone tegelijk ingedrukt.";
+"Go to the screen you want a screenshot of, hold down the power button and the home button on your iPad, at the same time." = "Ga naar het scherm waar je een screenshot van wilt of houd de stroomknop en de startpagina op je iPad tegelijk ingedrukt.";
+"That's it, your screenshot is now in your iPhone gallery!" = "Goed zo, je creenshot is nu in je iPhone galerij!";
+"That's it, your screenshot is now in your iPad gallery!" = "Goed zo, je screenshot is nu in je iPad galerij!";
+"Take screenshot" = "Screenshot nemen";
+"Opening Gallery..." = "Galerij aan het openen...";
+"Screenshot sent" = "Screenshot verzonden";
+"Your message was not sent.Tap \"Try Again\" to send this message?" = "Je bericht was niet verzonden.Tik \"Nogmaals Proberen\" om dit bericht te versturen?";
+"No faqs found in this section" = "Geen veelgestelde vragen aangetroffen in dit onderdeel";
+"Could not fetch faqs" = "Kon veelgestelde vragen niet ophalen";
+"We could not fetch the required data" = "We konden de vereiste gegevens niet ophalen";
+"FAQ" = "FAQ";
+"Can't find what you were looking for?" = "Kun je niet vinden wat je zoekt?";
+"Sorry to hear that. Could you please tell us a little bit more about the problem you are facing?" = "Dat spijt ons. Kun je ons wat meer over het probleem vertellen?";
+"We're happy to help you!" = "We helpen je graag!";
+"Describe your problem" = "Beschrijf je probleem";
+"Email invalid" = "Email ongeldig";
+"Please provide a valid email address." = "Geef een geldig emailadres op.";
+"Invalid Entry" = "Ongeldige Invoer";
+"Please enter a brief description of the issue you are facing." = "Voer een korte beschrijving in van het probleem dat je ervaart.";
+"Question" = "Vraag";
+"Was this helpful?" = "Was dit nuttig?";
+"You found this helpful." = "Je vond dit nuttig.";
+"You didn't find this helpful." = "Je vond dit niet nuttig.";
+"Try Again" = "Nogmaals Proberen";
+"Cancel" = "Annuleren";
+"REVIEW" = "VOORBEELD";
+"Send" = "Verzenden";
+"Ok, attach" = "Ok, toevoegen";
+"Learn how" = "Leer hoe";
+"YES" = "JA";
+"NO" = "NEE";
+"Accepted review request" = "Voorbeeld verzoek geaccepteerd";
+"SEND" = "VERZENDEN";
+"OK" = "OK";
+"Close" = "Sluiten";
+"Loading..." = "Opladen...";
+"Help" = "Help";
+"Sending failed!" = "Verzenden mislukt!";
+"Screenshot could not be sent. Image is too large, try again with another image" = "Screenshot kon niet verzonden worden. Afbeelding is te groot, probeer het nogmaals met een andere afbeelding";
+"Name invalid" = "Naam ongeldig";
+"Please provide a name." = "Geef een naam op.";
+"New message from Support" = "Nieuw bericht van Support";
+"new messages from Support" = "nieuwe berichten van Support";
+"No FAQs found" = "Geen Veelgestelde Vragen gevonden";
+"Conversation" = "Conversatie";
+"Name" = "Naam";
+"Email (optional)" = "Email (optioneel)";
+"Email" = "Email";
+"Sending your message..." = "Je bericht wordt verzonden...";
+"Message send failure." = "Bericht verzenden mislukt.";
+"Please check your network connection and try again." = "Controleer je netwerkverbinding en probeer het nogmaals.";
+"CONTACT US" = "CONTACT ONS";
+"Back" = "Terug";
+"YES, THANKS!" = "JA< BEDANKT!";
+"START A NEW CONVERSATION" = "BEGIN EEN NIEUW GESPREK";
+"New Conversation" = "Nieuw Gesprek";
+"What's on your mind?" = "Wat is het probleem?";
+"Thanks for contacting us." = "Dank voor het contact opnemen met ons.";
+"Your message has been received." = "Je bericht is ontvangen.";
+"What else can we help you with?" = "Waarmee kunnen we je nog meer helpen?";
+"Would you like to review the app?" = "Wil je de app beoordelen?";
+"This conversation has ended." = "Deze conversatie is beëindigt.";
+"What's your feedback about our customer support?" = "Wat is uw feedback over onze klantenservice?";
+"Service Rating" = "Beoordeling van de service";
+"Hated it" = "Vreselijk";
+"Loved it" = "Geweldig";
+"Any other feedback? (optional)" = "Enige andere feedback? (Optioneel)";
+"Thanks for messaging us!" = "Bedankt voor uw bericht!";
+"Did we answer all your questions?" = "Hebben wij al uw vragen kunnen beantwoorden?";
+"Preview" = "Voorbeeldweergave";
+"Your Rating:" = "Uw beoordeling:";
+"Thanks for rating us." = "Bedankt voor het beoordelen.";
+"Your feedback has been received." = "Uw feedback is ontvangen.";
+"or" = "of";
