@@ -6,7 +6,7 @@ buildscript {
 				mavenCentral()
     }
     dependencies {
-        classpath group: 'org.openbakery', name: 'xcodePlugin', version: '0.9.11'
+        classpath group: 'org.openbakery', name: 'xcodePlugin', version: '0.9.+'
     }
 }
 apply plugin: 'xcode'
@@ -19,26 +19,6 @@ xcodebuild {
 
 
 }
-
-
-task documentation(type:Exec) {
-
-	def documentationDirectory = new File('build/documentation')
-	def appledoc = new File(documentationDirectory, 'appledoc')
-
-	doFirst {
-		documentationDirectory.mkdirs()
-		def zip = new File(documentationDirectory, 'appledoc.zip')
-		ant.get(src: 'https://github.com/tomaz/appledoc/releases/download/v2.2-963/appledoc.zip', dest: documentationDirectory, verbose:true)
-		ant.unzip(src: zip,  dest:documentationDirectory)
-		ant.chmod(file: appledoc, perm:"+x")
-	}
-
-	workingDir "."
-	commandLine appledoc.absolutePath, '--print-settings', '--output', documentationDirectory.absolutePath, '--ignore', 'build',  '.'
-	
-}
-
 
 
 task continuous(dependsOn: 'test')

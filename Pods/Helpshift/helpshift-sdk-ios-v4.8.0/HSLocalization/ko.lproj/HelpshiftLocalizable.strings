@@ -1,0 +1,92 @@
+/*
+ HelpshiftLocalizable.strings
+ Helpshift
+ 
+ Copyright (c) 2014 Helpshift,Inc., All rights reserved.
+*/
+
+
+"Rate our App" = "앱 평가";
+"If you love our app, please take a moment to rate it in the App Store" = "앱이 마음에 드시면 잠시 시간을 내어 App Store에서 평가해주세요";
+"Rate" = "평가";
+"Send Feedback" = "피드백 전송";
+"No Internet!" = "인터넷 연결 없음!";
+"No working Internet connection is found." = "정상적인 인터넷 연결을 찾을 수 없습니다.";
+"Take a screenshot on your iPhone" = "iPhone에서 스크린샷을 찍으세요";
+"Take a screenshot on your iPad" = "iPad에서 스크린샷을 찍으세요";
+"Go to the screen you want a screenshot of, hold down the power button and the home button on your iPhone, at the same time." = "스크린샷을 찍고 싶은 화면으로 이동하고, iPhone의 전원 버튼과 홈 버튼을 동시에 길게 누르세요.";
+"Go to the screen you want a screenshot of, hold down the power button and the home button on your iPad, at the same time." = "스크린샷을 찍고 싶은 화면으로 이동하고, iPad의 전원 버튼과 홈 버튼을 동시에 길게 누르세요.";
+"That's it, your screenshot is now in your iPhone gallery!" = "스크린 샷이 정상적으로 iPhone 갤러리에 등록되었습니다!";
+"That's it, your screenshot is now in your iPad gallery!" = "스크린 샷이 정상적으로 iPad 갤러리에 등록되었습니다!";
+"Take screenshot" = "스크린샷 촬영";
+"Opening Gallery..." = "갤러리 여는 중...";
+"Screenshot sent" = "스크린샷 전송 완료";
+"Your message was not sent.Tap \"Try Again\" to send this message?" = "메시지가 전송되지 않았습니다. \"다시 시도\"를 탭하여 이 메시지를 전송하시겠습니까?";
+"No faqs found in this section" = "이 영역에서 FAQ를 찾을 수 없음";
+"Could not fetch faqs" = "FAQ를 가져올 수 없음";
+"We could not fetch the required data" = "필요한 데이터를 가져올 수 없습니다";
+"FAQ" = "FAQ";
+"Can't find what you were looking for?" = "찾고 계신 내용이 없나요?";
+"Sorry to hear that. Could you please tell us a little bit more about the problem you are facing?" = "문제가 발생했다니 죄송합니다. 발생한 문제에 대해 좀 더 자세히 설명해주시겠습니까?";
+"We're happy to help you!" = "기꺼이 도와드리겠습니다!";
+"Describe your problem" = "문제를 설명해주세요";
+"Email invalid" = "잘못된 이메일";
+"Please provide a valid email address." = "올바른 이메일 주소를 입력하세요.";
+"Invalid Entry" = "잘못된 입력사항";
+"Please enter a brief description of the issue you are facing." = "발생한 문제에 대해 간략히 설명해주세요.";
+"Question" = "질문";
+"Was this helpful?" = "도움이 되는 내용인가요?";
+"You found this helpful." = "도움이 되는 내용입니다.";
+"You didn't find this helpful." = "도움이 되지 않는 내용입니다.";
+"Try Again" = "다시 시도";
+"Cancel" = "취소";
+"REVIEW" = "리뷰";
+"Send" = "전송";
+"Ok, attach" = "예, 첨부";
+"Learn how" = "방법 알아보기";
+"YES" = "예";
+"NO" = "아니요";
+"Accepted review request" = "리뷰 요청 수락함";
+"SEND" = "전송";
+"OK" = "확인";
+"Close" = "닫기";
+"Loading..." = "로딩 중...";
+"Help" = "도움말";
+"Sending failed!" = "전송 실패!";
+"Screenshot could not be sent. Image is too large, try again with another image" = "스크린샷을 전송할 수 없습니다. 이미지가 너무 크기 때문에 다른 이미지로 다시 시도하세요";
+"Name invalid" = "잘못된 이름";
+"Please provide a name." = "이름을 입력하세요.";
+"New message from Support" = "지원팀이 보낸 새 메시지";
+"new messages from Support" = "개의 지원팀의 새 메시지";
+"No FAQs found" = "FAQ를 찾을 수 없음";
+"Conversation" = "대화";
+"Name" = "이름";
+"Email (optional)" = "이메일(선택사항)";
+"Email" = "이메일";
+"Sending your message..." = "메시지 전송 중...";
+"Message send failure." = "메시지 전송 실패.";
+"Please check your network connection and try again." = "네트워크 연결을 확인하고 다시 시도하세요.";
+"CONTACT US" = "연락하기";
+"Back" = "뒤로";
+"You ended the conversation above." = "위의 대화를 종료하셨습니다.";
+"YES, THANKS!" = "예, 감사합니다!";
+"START A NEW CONVERSATION" = "새로운 대화 시작";
+"New Conversation" = "새로운 대화";
+"What's on your mind?" = "무슨 도움이 필요하세요?";
+"Thanks for contacting us." = "연락해주셔서 감사합니다.";
+"Your message has been received." = "메시지가 수신되었습니다.";
+"What else can we help you with?" = "또 도와드릴 것이 있습니까?";
+"Would you like to review the app?" = "앱의 리뷰를 작성하시겠습니까?";
+"This conversation has ended." = "이 대화는 종료되었습니다.";
+"What's your feedback about our customer support?" = "저희 고객 지원에 관해 어떻게 느끼셨나요?";
+"Service Rating" = "서비스 평가";
+"Hated it" = "엉망이었어요";
+"Loved it" = "아주 좋았어요";
+"Any other feedback? (optional)" = "다른 의견이 있으신가요? (선택사항)";
+"Thanks for messaging us!" = "의견을 주셔서 감사합니다!";
+"Did we answer all your questions?" = "귀하의 모든 질문에 대해 답변해 드렸나요?";
+"Preview" = "미리 보기";
+"Your Rating:" = "사용자 평가:";
+"Thanks for rating us." = "평가해 주셔서 감사합니다.";
+"Your feedback has been received." = "귀하의 의견을 받았습니다.";
+"or" = "또는";

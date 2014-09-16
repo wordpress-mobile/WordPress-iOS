@@ -7,7 +7,7 @@
 //
 
 #import "DTAlertView.h"
-#import "DTWeakSupport.h"
+#import "DTLog.h"
 
 @interface DTAlertView() <UIAlertViewDelegate>
 
@@ -15,20 +15,15 @@
 
 @implementation DTAlertView
 {
-	DT_WEAK_VARIABLE id <UIAlertViewDelegate> _externalDelegate;
-
 	NSMutableDictionary *_actionsPerIndex;
 
 	DTAlertViewBlock _cancelBlock;
-
-	BOOL _isDeallocating;
 }
 
-
-// overwrite standard initializer so that we can set our own delegate
 - (void)dealloc
 {
-	_isDeallocating = YES;
+	[super setDelegate:nil];
+	self.alertViewDelegate = nil;
 }
 
 // designated initializer
@@ -38,7 +33,7 @@
     if (self)
     {
         _actionsPerIndex = [[NSMutableDictionary alloc] init];
-        self.delegate = self;
+        [super setDelegate:self];
     }
     return self;
 }
@@ -70,7 +65,7 @@
             [self addCancelButtonWithTitle:cancelButtonTitle block:nil];
         }
         
-        _externalDelegate = delegate;
+        self.alertViewDelegate = delegate;
 	}
 	return self;
 }
@@ -113,9 +108,9 @@
 		block();
 	}
 
-	if ([_externalDelegate respondsToSelector:@selector(alertView:clickedButtonAtIndex:)])
+	if ([self.alertViewDelegate respondsToSelector:@selector(alertView:clickedButtonAtIndex:)])
 	{
-		[_externalDelegate alertView:self clickedButtonAtIndex:buttonIndex];
+		[self.alertViewDelegate alertView:self clickedButtonAtIndex:buttonIndex];
 	}
 }
 
@@ -126,85 +121,64 @@
 		_cancelBlock();
 	}
 
-	if ([_externalDelegate respondsToSelector:@selector(alertViewCancel:)])
+	if ([self.alertViewDelegate respondsToSelector:@selector(alertViewCancel:)])
 	{
-		[_externalDelegate alertViewCancel:self];
+		[self.alertViewDelegate alertViewCancel:self];
 	}
 }
 
 - (void)willPresentAlertView:(UIAlertView *)alertView
 {
-	if ([_externalDelegate respondsToSelector:@selector(willPresentAlertView:)])
+	if ([self.alertViewDelegate respondsToSelector:@selector(willPresentAlertView:)])
 	{
-		[_externalDelegate willPresentAlertView:self];
+		[self.alertViewDelegate willPresentAlertView:self];
 	}
 }
 
 - (void)didPresentAlertView:(UIAlertView *)alertView
 {
-	if ([_externalDelegate respondsToSelector:@selector(didPresentAlertView:)])
+	if ([self.alertViewDelegate respondsToSelector:@selector(didPresentAlertView:)])
 	{
-		[_externalDelegate didPresentAlertView:self];
+		[self.alertViewDelegate didPresentAlertView:self];
 	}
 }
 
 - (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-	if ([_externalDelegate respondsToSelector:@selector(alertView:willDismissWithButtonIndex:)])
+	if ([self.alertViewDelegate respondsToSelector:@selector(alertView:willDismissWithButtonIndex:)])
 	{
-		[_externalDelegate alertView:self willDismissWithButtonIndex:buttonIndex];
+		[self.alertViewDelegate alertView:self willDismissWithButtonIndex:buttonIndex];
 	}
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-	if ([_externalDelegate respondsToSelector:@selector(alertView:didDismissWithButtonIndex:)])
+	if ([self.alertViewDelegate respondsToSelector:@selector(alertView:didDismissWithButtonIndex:)])
 	{
-		[_externalDelegate alertView:self didDismissWithButtonIndex:buttonIndex];
+		[self.alertViewDelegate alertView:self didDismissWithButtonIndex:buttonIndex];
 	}
 }
 
 - (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView
 {
-	if ([_externalDelegate respondsToSelector:@selector(alertViewShouldEnableFirstOtherButton:)])
+	if ([self.alertViewDelegate respondsToSelector:@selector(alertViewShouldEnableFirstOtherButton:)])
 	{
-		return [_externalDelegate alertViewShouldEnableFirstOtherButton:self];
+		return [self.alertViewDelegate alertViewShouldEnableFirstOtherButton:self];
 	}
 
 	return YES;
 }
 
+
 #pragma mark - Properties
 
-- (id <UIAlertViewDelegate>)delegate
-{
-	return _externalDelegate;
-}
 
 - (void)setDelegate:(id <UIAlertViewDelegate>)delegate
 {
-	if (delegate == self)
+	if (delegate)
 	{
-		[super setDelegate:self];
-	}
-	else if (delegate == nil)
-	{
-		// UIAlertView dealloc sets delegate to nil
-		if (_isDeallocating)
-		{
-			[super setDelegate:nil];
-		}
-		else
-		{
-			[super setDelegate:self];
-			_externalDelegate = nil;
-		}
-	}
-	else
-	{
-		_externalDelegate = delegate;
+		DTLogWarning(@"Calling setDelegate is not supported! Use setAlertViewDelegate instead");
 	}
 }
-
 
 @end
