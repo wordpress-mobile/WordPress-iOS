@@ -109,15 +109,14 @@ static NSString* const kDefaultCallbackParameterComponentSeparator = @"=";
 		htmlEditor = [self editorHTML];
 	}];
 	
-    NSBlockOperation* editorDidLoadOperation = [NSBlockOperation blockOperationWithBlock:^{
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-
-        if (strongSelf) {
-            NSURL* const kBaseURL = [NSURL URLWithString:@"http://"];
-            
-            [strongSelf.webView loadHTMLString:htmlEditor baseURL:kBaseURL];
-        }
-    }];
+	NSBlockOperation* editorDidLoadOperation = [NSBlockOperation blockOperationWithBlock:^{
+		
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		
+		if (strongSelf) {
+			[strongSelf.webView loadHTMLString:htmlEditor baseURL:nil];
+		}
+	}];
 	
 	[loadEditorOperation setCompletionBlock:^{
 		
@@ -173,11 +172,11 @@ static NSString* const kDefaultCallbackParameterComponentSeparator = @"=";
  */
 - (void)refreshPlaceholder:(NSString*)placeholder
 {
-	BOOL shouldHidePlaceholder = self.isShowingPlaceholder && self.isEditing;
+	BOOL shouldHidePlaceholer = self.isShowingPlaceholder && self.isEditing;
 	
-	if (shouldHidePlaceholder) {
+	if (shouldHidePlaceholer) {
 		self.showingPlaceholder = NO;
-        [self setHtml:@"" refreshPlaceholder:NO];
+		[self setHtml:@""];
 	} else {
 		BOOL shouldShowPlaceholder = (!self.isShowingPlaceholder && self.resourcesLoaded && !self.isEditing
 									  && ([[self getHTML] length] == 0
@@ -185,7 +184,7 @@ static NSString* const kDefaultCallbackParameterComponentSeparator = @"=";
 		
 		if (shouldShowPlaceholder) {
 			self.showingPlaceholder = YES;
-			[self setHtml:self.placeholderHTMLString refreshPlaceholder:NO];
+			[self setHtml:self.placeholderHTMLString];
 		}
 	}
 }
@@ -472,21 +471,13 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 
 #pragma mark - URL & HTML utilities
 
-/**
- *  @brief      Adds slashes to the specified HTML string, to prevent injections when calling JS
- *              code.
- *
- *  @param      html        The HTML string to add slashes to.  Cannot be nil.
- *
- *  @returns    The HTML string with the added slashes.
- */
-- (NSString *)addSlashes:(NSString *)html
+- (NSString *)removeQuotesFromHTML:(NSString *)html
 {
-    html = [html stringByReplacingOccurrencesOfString:@"\\" withString:@"\\\\"];
     html = [html stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+    html = [html stringByReplacingOccurrencesOfString:@"“" withString:@"&quot;"];
+    html = [html stringByReplacingOccurrencesOfString:@"”" withString:@"&quot;"];
     html = [html stringByReplacingOccurrencesOfString:@"\r"  withString:@"\\r"];
     html = [html stringByReplacingOccurrencesOfString:@"\n"  withString:@"\\n"];
-    
     return html;
 }
 
@@ -637,21 +628,15 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 
 - (void)setHtml:(NSString *)html
 {
-    [self setHtml:html refreshPlaceholder:YES];
-}
-
--    (void)setHtml:(NSString *)html
-refreshPlaceholder:(BOOL)refreshPlaceholder
-{
 	if (!self.resourcesLoaded) {
 		self.preloadedHTML = html;
 	} else {
 		self.sourceView.text = html;
-		NSString *cleanedHTML = [self addSlashes:self.sourceView.text];
+		NSString *cleanedHTML = [self removeQuotesFromHTML:self.sourceView.text];
 		NSString *trigger = [NSString stringWithFormat:@"zss_editor.setHTML(\"%@\");", cleanedHTML];
 		[self.webView stringByEvaluatingJavaScriptFromString:trigger];
 		
-		if (refreshPlaceholder) {
+		if ([html length] == 0) {
 			[self refreshPlaceholder];
 		}
 	}
@@ -660,19 +645,14 @@ refreshPlaceholder:(BOOL)refreshPlaceholder
 // Inserts HTML at the caret position
 - (void)insertHTML:(NSString *)html
 {
-    NSString *cleanedHTML = [self addSlashes:html];
+    NSString *cleanedHTML = [self removeQuotesFromHTML:html];
     NSString *trigger = [NSString stringWithFormat:@"zss_editor.insertHTML(\"%@\");", cleanedHTML];
     [self.webView stringByEvaluatingJavaScriptFromString:trigger];
 }
 
 - (NSString *)getHTML
 {
-    NSString *html = nil;
-    
-    if (!self.isShowingPlaceholder) {
-        html = [self.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.getHTML();"];
-    }
-    
+    NSString *html = [self.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.getHTML();"];
 	return html;
 }
 
