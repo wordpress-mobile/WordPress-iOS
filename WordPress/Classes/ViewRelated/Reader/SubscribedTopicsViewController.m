@@ -221,6 +221,7 @@
 - (void)tableViewDidChangeContent:(UITableView *)tableView
 {
     [self updateSelectedTopic];
+    self.topicChangedBlock();
 }
 
 - (BOOL)isEditable
