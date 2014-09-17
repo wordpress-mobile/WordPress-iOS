@@ -216,10 +216,6 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 	
 	[[UIApplication sharedApplication] setStatusBarHidden:NO
 											withAnimation:UIStatusBarAnimationSlide];
-    
-    // Put the nav bar shadow back
-    [self.navigationController.navigationBar setShadowImage:nil];
-    [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
 }
 
 #pragma mark - Actions
