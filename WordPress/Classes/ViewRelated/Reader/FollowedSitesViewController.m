@@ -218,4 +218,9 @@ static CGFloat const FollowSitesRowHeight = 54.0;
     [self configureNoResultsView];
 }
 
+- (BOOL)isEditable
+{
+    return true;
+}
+
 @end

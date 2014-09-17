@@ -223,4 +223,9 @@
     [self updateSelectedTopic];
 }
 
+- (BOOL)isEditable
+{
+    return [self.tableView numberOfSections] > 1 ? YES : NO;
+}
+
 @end
