@@ -337,6 +337,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 - (void)toggleSignInFormAction:(id)sender
 {
     _userIsDotCom = !_userIsDotCom;
+    _passwordText.returnKeyType = _userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
@@ -445,7 +446,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _passwordText.font = [WPNUXUtility textFieldFont];
         _passwordText.delegate = self;
         _passwordText.secureTextEntry = YES;
-        _passwordText.returnKeyType = UIReturnKeyDone;
+        _passwordText.returnKeyType = _userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
         _passwordText.showSecureTextEntryToggle = YES;
         _passwordText.showTopLineSeparator = YES;
         _passwordText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
@@ -461,7 +462,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _siteUrlText.adjustsFontSizeToFitWidth = YES;
         _siteUrlText.delegate = self;
         _siteUrlText.keyboardType = UIKeyboardTypeURL;
-        _siteUrlText.returnKeyType = UIReturnKeyGo;
+        _siteUrlText.returnKeyType = UIReturnKeyDone;
         _siteUrlText.autocorrectionType = UITextAutocorrectionTypeNo;
         _siteUrlText.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _siteUrlText.showTopLineSeparator = YES;
