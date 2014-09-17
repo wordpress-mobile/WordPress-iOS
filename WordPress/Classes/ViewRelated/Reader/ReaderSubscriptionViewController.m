@@ -172,7 +172,11 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
 
     // Lazy load controllers.
     if ([placeholder.identifier isEqualToString:SubscribedTopicsPageIdentifier]) {
-        placeholder.controller = [[SubscribedTopicsViewController alloc] init];
+        SubscribedTopicsViewController *topicsViewController = [[SubscribedTopicsViewController alloc] init];
+        topicsViewController.topicChangedBlock = ^(){
+            [self configureNavbar];
+        };
+        placeholder.controller = topicsViewController;
 
     } else if ([placeholder.identifier isEqualToString:RecommendedTopicsPageIdentifier]) {
         placeholder.controller = [[RecommendedTopicsViewController alloc] init];
@@ -355,7 +359,8 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
     // Edit button
     UIViewController *controller = [self currentViewController];
     if ([controller conformsToProtocol:@protocol(ReaderEditableSubscriptionPage)]) {
-        if ( [(SubscribedTopicsViewController *)controller isEditable] ) {
+        id <ReaderEditableSubscriptionPage> editableSubscriptionPageController = (id <ReaderEditableSubscriptionPage>)controller;
+        if ( [editableSubscriptionPageController isEditable] ) {
             self.navigationItem.rightBarButtonItem = self.editButtonItem;
         } else {
             self.navigationItem.rightBarButtonItem = nil;
