@@ -220,7 +220,7 @@ static CGFloat const FollowSitesRowHeight = 54.0;
 
 - (BOOL)isEditable
 {
-    return true;
+     return [self.tableView numberOfRowsInSection:0] > 0 ? YES : NO;
 }
 
 @end
