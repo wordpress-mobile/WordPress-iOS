@@ -57,14 +57,18 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSMutableDictionary* map            = [[self class] blockMap];
-    id mapKey                           = [NSValue valueWithPointer:(__bridge const void *)(actionSheet)];
-    UIActionSheetCompletion completion  = [map objectForKey:mapKey];
-    NSString *title                     = [self buttonTitleAtIndex:buttonIndex];
-    
-    completion(title);
-
-    [map removeObjectForKey:mapKey];
+    id mapKey       = [NSValue valueWithPointer:(__bridge const void *)(actionSheet)];
+    NSString *title = [self buttonTitleAtIndex:buttonIndex];
+ 
+    // Dispatch Async: Let's give the ActionSheet some time to get dismissed before hitting the callback
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSMutableDictionary* map            = [[self class] blockMap];
+        UIActionSheetCompletion completion  = [map objectForKey:mapKey];
+        if (completion) {
+            completion(title);
+            [map removeObjectForKey:mapKey];
+        }
+    });
 }
 
 
