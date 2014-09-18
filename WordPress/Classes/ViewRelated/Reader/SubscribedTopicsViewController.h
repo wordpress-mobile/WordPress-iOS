@@ -4,6 +4,5 @@
 typedef void (^TopicChanged)();
 
 @interface SubscribedTopicsViewController : UIViewController<ReaderEditableSubscriptionPage>
-- (BOOL) isEditable;
 @property (nonatomic, copy) TopicChanged topicChangedBlock;
 @end
