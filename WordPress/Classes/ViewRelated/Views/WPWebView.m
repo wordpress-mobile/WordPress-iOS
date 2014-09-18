@@ -142,7 +142,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     webView.scalesPageToFit = YES;
     webView.backgroundColor = [UIColor colorWithHue:0.0 saturation:0.0 brightness:1.0 alpha:1.0];
-    NSString *hex = [NSString stringWithFormat:@"document.body.style.background = '#%@';", [[WPStyleGuide itsEverywhereGrey] hexStringForWebViews] ];
+    NSString *hex = [NSString stringWithFormat:@"document.body.style.background = '#%@';", [[WPStyleGuide itsEverywhereGrey] colorToHexString] ];
     [webView stringByEvaluatingJavaScriptFromString:hex];
 
     [self addSubview:webView];

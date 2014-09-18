@@ -1,16 +1,8 @@
-//
-//  UIColor+HTML.m
-//  WordPress
-//
-//  Created by Matt Husby on 9/18/14.
-//  Copyright (c) 2014 WordPress. All rights reserved.
-//
-
 #import "UIColor+HTML.h"
 
 @implementation UIColor (HTML)
 
-- (NSString *)hexStringForWebViews
+- (NSString *)colorToHexString
 {
     // Taken from http://stackoverflow.com/questions/8689424/uicolor-to-hexadecimal-web-color
     
