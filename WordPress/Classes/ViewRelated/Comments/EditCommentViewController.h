@@ -1,5 +1,4 @@
 #import <UIKit/UIKit.h>
-#import "Comment.h"
 
 
 @class EditCommentViewController;
