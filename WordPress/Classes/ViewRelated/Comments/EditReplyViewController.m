@@ -3,10 +3,6 @@
 
 
 
-@interface EditReplyViewController ()
-
-@end
-
 @implementation EditReplyViewController
 
 - (void)viewDidLoad
