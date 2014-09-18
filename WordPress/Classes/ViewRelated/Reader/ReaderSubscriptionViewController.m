@@ -173,7 +173,7 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
     // Lazy load controllers.
     if ([placeholder.identifier isEqualToString:SubscribedTopicsPageIdentifier]) {
         SubscribedTopicsViewController *topicsViewController = [[SubscribedTopicsViewController alloc] init];
-        topicsViewController.topicChangedBlock = ^(){
+        topicsViewController.topicListChangedBlock = ^(){
             [self configureNavbar];
         };
         placeholder.controller = topicsViewController;
