@@ -3,19 +3,36 @@
 #import "CommentService.h"
 #import "ContextManager.h"
 #import "IOS7CorrectedTextView.h"
+#import "WordPress-Swift.h"
 
 
+
+#pragma mark ==========================================================================================
+#pragma mark Constants
+#pragma mark ==========================================================================================
+
+static UIEdgeInsets EditCommentInsetsPad = {5, 15, 5, 13};
+static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
+
+
+#pragma mark ==========================================================================================
+#pragma mark Private Methods
+#pragma mark ==========================================================================================
 
 @interface EditCommentViewController() <UIActionSheetDelegate>
 
-@property (nonatomic, strong) NSString                          *pristineText;
-@property (nonatomic, assign) CGRect                            keyboardFrame;
+@property (nonatomic, strong) NSString *pristineText;
+@property (nonatomic, assign) CGRect   keyboardFrame;
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification;
 - (void)handleKeyboardWillHide:(NSNotification *)notification;
 
 @end
 
+
+#pragma mark ==========================================================================================
+#pragma mark EditCommentViewController
+#pragma mark ==========================================================================================
 
 @implementation EditCommentViewController
 
@@ -31,6 +48,7 @@
     self.title = NSLocalizedString(@"Edit Comment", @"");
     
     self.textView.font = [WPStyleGuide regularTextFont];
+    self.textView.textContainerInset = [UIDevice isPad] ? EditCommentInsetsPad : EditCommentInsetsPhone;
     
     [self showCancelBarButton];
     [self showSaveBarButton];
