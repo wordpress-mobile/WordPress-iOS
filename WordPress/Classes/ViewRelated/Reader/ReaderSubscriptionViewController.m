@@ -360,7 +360,7 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
     UIViewController *controller = [self currentViewController];
     if ([controller conformsToProtocol:@protocol(ReaderEditableSubscriptionPage)]) {
         id <ReaderEditableSubscriptionPage> editableSubscriptionPageController = (id <ReaderEditableSubscriptionPage>)controller;
-        if ( [editableSubscriptionPageController isEditable] ) {
+        if ([editableSubscriptionPageController isEditable]) {
             self.navigationItem.rightBarButtonItem = self.editButtonItem;
         } else {
             self.navigationItem.rightBarButtonItem = nil;
