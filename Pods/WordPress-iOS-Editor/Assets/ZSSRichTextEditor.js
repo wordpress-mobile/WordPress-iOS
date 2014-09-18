@@ -76,6 +76,7 @@ zss_editor.init = function() {
 	
 	editor.bind('keypress', function(e) {
 		zss_editor.sendEnabledStyles(e);
+        zss_editor.formatNewLine(e);
 		zss_editor.callback("callback-user-triggered-change");
 	});
 
@@ -580,6 +581,18 @@ zss_editor.parentTags = function() {
 	return parentTags;
 }
 
+zss_editor.formatNewLine = function(e) {
+    // Check to see if the enter key is pressed
+    if(e.keyCode == '13') {
+        var currentNode = zss_editor.closerParentNode('blockquote');
+        if (!currentNode && !zss_editor.isCommandEnabled('insertOrderedList') &&
+            !zss_editor.isCommandEnabled('insertUnorderedList')) {
+            document.execCommand('formatBlock', false, 'p');
+            e.PreventDefault();
+        }
+    }
+}
+
 zss_editor.sendEnabledStyles = function(e) {
 	
 	var items = [];
@@ -734,10 +747,10 @@ zss_editor.blurEditor = function() {
 }
 
 zss_editor.enableEditing = function () {
-	document.body.contentEditable = true;
+	$('#zss_editor_content').contentEditable = true;
 }
 
 zss_editor.disableEditing = function () {
     zss_editor.blurEditor();
-	document.body.contentEditable = false;
+	$('#zss_editor_content').contentEditable = false;
 }

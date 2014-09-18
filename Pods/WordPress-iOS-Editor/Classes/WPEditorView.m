@@ -178,10 +178,11 @@ static NSString* const kDefaultCallbackParameterComponentSeparator = @"=";
 	if (shouldHidePlaceholder) {
 		self.showingPlaceholder = NO;
         [self setHtml:@"" refreshPlaceholder:NO];
-	} else {
-		BOOL shouldShowPlaceholder = (!self.isShowingPlaceholder && self.resourcesLoaded && !self.isEditing
-									  && ([[self getHTML] length] == 0
-										  || [[self getHTML] isEqualToString:@"<br>"]));
+    } else {
+        BOOL shouldShowPlaceholder = (!self.isShowingPlaceholder
+                                      && self.resourcesLoaded
+                                      && !self.isEditing
+                                      && [self isBodyEmpty]);
 		
 		if (shouldShowPlaceholder) {
 			self.showingPlaceholder = YES;
@@ -630,9 +631,13 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
  *
  *	@returns	YES if the editor has no content.
  */
-- (BOOL)editorIsEmpty
+- (BOOL)isBodyEmpty
 {
-	return [[self getHTML] length] == 0;
+    NSString* html = [self getHTML];
+    
+    BOOL isEmpty = [html length] == 0 || [html isEqualToString:@"<br>"];
+    
+    return isEmpty;
 }
 
 - (void)setHtml:(NSString *)html
