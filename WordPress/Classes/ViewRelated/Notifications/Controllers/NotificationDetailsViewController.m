@@ -17,6 +17,7 @@
 #import "ReaderPostDetailViewController.h"
 #import "StatsViewController.h"
 #import "EditCommentViewController.h"
+#import "EditReplyViewController.h"
 
 #import "WordPress-Swift.h"
 
@@ -53,7 +54,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 #pragma mark Private
 #pragma mark ==========================================================================================
 
-@interface NotificationDetailsViewController () <EditCommentViewControllerDelegate, UITextViewDelegate>
+@interface NotificationDetailsViewController () <EditCommentViewControllerDelegate, EditReplyViewControllerDelegate, UITextViewDelegate>
 
 // Outlets
 @property (nonatomic,   weak) IBOutlet UITableView          *tableView;
@@ -89,7 +90,8 @@ static CGFloat NotificationSectionSeparator     = 10;
     // Don't show the notification title in the next-view's back button
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
-    
+
+    self.tableView.separatorStyle       = self.note.isBadge ? UITableViewCellSeparatorStyleNone : UITableViewCellSeparatorStyleSingleLine;
     self.tableView.backgroundColor      = [WPStyleGuide itsEverywhereGrey];
     
     self.reuseIdentifierMap = @{
@@ -132,7 +134,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    [self adjustTableStyleIfNeeded];
+    [self adjustTableInsetsIfNeeded];
 }
 
 - (void)reloadData
@@ -149,8 +151,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     }
     
     [self.tableView reloadData];
-    [self adjustTableStyleIfNeeded];
-    [self attachReplyViewIfNeeded];
+    [self adjustTableInsetsIfNeeded];
 }
 
 
@@ -159,6 +160,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 - (void)setupWithNotification:(Notification *)notification
 {
     self.note = notification;
+    [self attachReplyViewIfNeeded];
     [self reloadData];
 }
 
@@ -194,7 +196,8 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 - (void)attachReplyViewIfNeeded
 {
-    if (self.replyTextView) {
+    // iPad: We've got a different UI!
+    if ([UIDevice isPad]) {
         return;
     }
     
@@ -212,7 +215,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     replyTextView.placeholder       = NSLocalizedString(@"Write a reply…", @"Placeholder text for inline compose view");
     replyTextView.replyText         = [NSLocalizedString(@"Reply", @"") uppercaseString];
     replyTextView.onReply           = ^(NSString *content) {
-        [weakSelf replyToCommentWithContent:content block:block];
+        [weakSelf sendReplyWithContent:content block:block];
     };
     replyTextView.delegate          = self;
     self.replyTextView              = replyTextView;
@@ -226,10 +229,9 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 #pragma mark - Style Helpers
 
-- (void)adjustTableStyleIfNeeded
+- (void)adjustTableInsetsIfNeeded
 {
-    UIEdgeInsets contentInset               = IS_IPAD ? NotificationTableInsetsPad : NotificationTableInsetsPhone;
-    UITableViewCellSeparatorStyle separator = UITableViewCellSeparatorStyleSingleLine;
+    UIEdgeInsets contentInset = IS_IPAD ? NotificationTableInsetsPad : NotificationTableInsetsPhone;
     
     // Badge Notifications should be centered, and display no cell separators
     if (self.note.isBadge) {
@@ -238,13 +240,10 @@ static CGFloat NotificationSectionSeparator     = 10;
             CGFloat offsetY = (self.view.frame.size.height - self.tableView.contentSize.height) * 0.5f;
             contentInset    = UIEdgeInsetsMake(offsetY, 0, 0, 0);
         }
-        separator       = UITableViewCellSeparatorStyleNone;
     }
     
-    self.tableView.contentInset     = contentInset;
-    self.tableView.separatorStyle   = separator;
+    self.tableView.contentInset = contentInset;
 }
-
 
 
 #pragma mark - UIViewController Restoration
@@ -433,6 +432,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     
     __weak __typeof(self) weakSelf  = self;
     
+    cell.isReplyEnabled             = [UIDevice isPad] && [commentBlock isActionOn:NoteActionReplyKey];
     cell.isLikeEnabled              = [commentBlock isActionEnabled:NoteActionLikeKey];
     cell.isApproveEnabled           = [commentBlock isActionEnabled:NoteActionApproveKey];
     cell.isTrashEnabled             = [commentBlock isActionEnabled:NoteActionTrashKey];
@@ -447,6 +447,10 @@ static CGFloat NotificationSectionSeparator     = 10;
 
     cell.onUrlClick                 = ^(NSURL *url){
         [weakSelf openURL:url];
+    };
+    
+    cell.onReplyClick               = ^(){
+        [weakSelf editReplyWithBlock:commentBlock];
     };
     
     cell.onLikeClick                = ^(){
@@ -761,12 +765,17 @@ static CGFloat NotificationSectionSeparator     = 10;
                       tapBlock:completion];
 }
 
+- (void)editReplyWithBlock:(NotificationBlock *)block
+{
+    [self performSegueWithIdentifier:NSStringFromClass([EditReplyViewController class]) sender:block];
+}
+
 - (void)editCommentWithBlock:(NotificationBlock *)block
 {
     [self performSegueWithIdentifier:NSStringFromClass([EditCommentViewController class]) sender:block];
 }
 
-- (void)replyToCommentWithContent:(NSString *)content block:(NotificationBlock *)block
+- (void)sendReplyWithContent:(NSString *)content block:(NotificationBlock *)block
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
@@ -804,8 +813,25 @@ static CGFloat NotificationSectionSeparator     = 10;
                               return;
                           }
                           
-                          [self replyToCommentWithContent:content block:block];
+                          [self sendReplyWithContent:content block:block];
                       }];
+}
+
+
+#pragma mark - EditReplyViewControllerDelegate
+
+- (void)editReplyViewController:(EditReplyViewController *)sender didFinishWithContent:(NSString *)newContent
+{
+    NotificationBlock *block = sender.userInfo;
+    
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self sendReplyWithContent:newContent block:block];
+    }];
+}
+
+- (void)editReplyViewControllerFinished:(EditReplyViewController *)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -865,6 +891,14 @@ static CGFloat NotificationSectionSeparator     = 10;
         
         ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
         [readerViewController setupWithPostID:postID siteID:siteID];
+        
+    } else if ([segue.identifier isEqualToString:NSStringFromClass([EditReplyViewController class])]) {
+        NotificationBlock *block                        = sender;
+        
+        UINavigationController *navigationController    = segue.destinationViewController;
+        EditReplyViewController *replyViewController    = (EditReplyViewController *)navigationController.topViewController;
+        replyViewController.replyDelegate               = self;
+        replyViewController.userInfo                    = block;
         
     } else if ([segue.identifier isEqualToString:NSStringFromClass([EditCommentViewController class])]) {
         NotificationBlock *block                        = sender;
