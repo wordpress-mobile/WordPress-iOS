@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="14A343f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MbC-cA-c9S">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="14A361c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MbC-cA-c9S">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
@@ -26,7 +26,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tfv-il-pov" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="324" y="-840"/>
+            <point key="canvasLocation" x="208" y="-1943"/>
         </scene>
         <!--Reader Post Details-->
         <scene sceneID="ET8-9p-ZLz">
@@ -45,7 +45,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="h51-jr-fqU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1573" y="-1271"/>
+            <point key="canvasLocation" x="1573" y="-1203"/>
         </scene>
         <!--WebView-->
         <scene sceneID="1zS-D4-F1Z">
@@ -206,39 +206,42 @@
                                                         <constraint firstAttribute="height" constant="1" id="BUp-fs-LKw"/>
                                                     </constraints>
                                                 </view>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ab9-Eo-ue1" customClass="VerticallyStackedButton">
-                                                    <rect key="frame" x="245" y="69" width="55" height="30"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kdg-f8-pBH" userLabel="Reply" customClass="VerticallyStackedButton">
+                                                    <rect key="frame" x="120" y="69.5" width="20" height="30"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="30" id="qlj-w2-KrE"/>
-                                                        <constraint firstAttribute="width" constant="55" id="xMy-8x-DnT"/>
+                                                        <constraint firstAttribute="width" constant="20" id="Jbk-z2-z1U"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                                    <state key="normal" title="More" image="notifications-more">
+                                                    <state key="normal" title="Like" image="notifications-reply">
                                                         <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
+                                                    <state key="selected" image="notifications-reply-highlighted"/>
+                                                    <state key="highlighted" image="notifications-reply-highlighted"/>
                                                     <connections>
-                                                        <action selector="moreWasPressed:" destination="FtC-SI-oJr" eventType="touchUpInside" id="5Ga-UK-Pu7"/>
+                                                        <action selector="replyWasPressed:" destination="FtC-SI-oJr" eventType="touchUpInside" id="HJw-Pe-Axk"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q3a-Aa-VqY" customClass="VerticallyStackedButton">
-                                                    <rect key="frame" x="170" y="69" width="55" height="30"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e1p-ec-Dn3" customClass="VerticallyStackedButton">
+                                                    <rect key="frame" x="160" y="69.5" width="20" height="30"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="55" id="aqK-WO-00U"/>
+                                                        <constraint firstAttribute="width" constant="20" id="jzW-8y-eL4"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                                    <state key="normal" title="Trash" image="notifications-trash">
+                                                    <state key="normal" title="Like" image="notifications-like">
                                                         <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
+                                                    <state key="selected" image="notifications-liked"/>
+                                                    <state key="highlighted" image="notifications-liked"/>
                                                     <connections>
-                                                        <action selector="trashWasPressed:" destination="FtC-SI-oJr" eventType="touchUpInside" id="Qe4-mZ-Jkb"/>
+                                                        <action selector="likeWasPressed:" destination="FtC-SI-oJr" eventType="touchUpInside" id="c0t-Kd-Ydq"/>
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dZU-ho-dbu" customClass="VerticallyStackedButton">
-                                                    <rect key="frame" x="95" y="69" width="55" height="30"/>
+                                                    <rect key="frame" x="200" y="69.5" width="20" height="30"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="55" id="oj5-pk-p8y"/>
+                                                        <constraint firstAttribute="width" constant="20" id="oj5-pk-p8y"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                     <state key="normal" title="Approve" image="notifications-approve">
@@ -251,20 +254,33 @@
                                                         <action selector="approveWasPressed:" destination="FtC-SI-oJr" eventType="touchUpInside" id="YLu-SY-nNP"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e1p-ec-Dn3" customClass="VerticallyStackedButton">
-                                                    <rect key="frame" x="20" y="69" width="55" height="30"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q3a-Aa-VqY" customClass="VerticallyStackedButton">
+                                                    <rect key="frame" x="240" y="69.5" width="20" height="30"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="55" id="jzW-8y-eL4"/>
+                                                        <constraint firstAttribute="width" constant="20" id="aqK-WO-00U"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                                    <state key="normal" title="Like" image="notifications-like">
+                                                    <state key="normal" title="Trash" image="notifications-trash">
                                                         <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
-                                                    <state key="selected" image="notifications-liked"/>
-                                                    <state key="highlighted" image="notifications-liked"/>
                                                     <connections>
-                                                        <action selector="likeWasPressed:" destination="FtC-SI-oJr" eventType="touchUpInside" id="c0t-Kd-Ydq"/>
+                                                        <action selector="trashWasPressed:" destination="FtC-SI-oJr" eventType="touchUpInside" id="Qe4-mZ-Jkb"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ab9-Eo-ue1" customClass="VerticallyStackedButton">
+                                                    <rect key="frame" x="280" y="69" width="20" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="qlj-w2-KrE"/>
+                                                        <constraint firstAttribute="width" constant="20" id="xMy-8x-DnT"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                    <state key="normal" title="More" image="notifications-more">
+                                                        <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="moreWasPressed:" destination="FtC-SI-oJr" eventType="touchUpInside" id="5Ga-UK-Pu7"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -286,6 +302,8 @@
                                                 <constraint firstItem="dZU-ho-dbu" firstAttribute="leading" secondItem="e1p-ec-Dn3" secondAttribute="trailing" constant="20" id="UiB-vh-iqC"/>
                                                 <constraint firstItem="dZU-ho-dbu" firstAttribute="height" secondItem="Ab9-Eo-ue1" secondAttribute="height" id="XtU-md-pNL"/>
                                                 <constraint firstItem="N7y-ge-mMq" firstAttribute="top" secondItem="Sed-4I-XCW" secondAttribute="bottom" constant="-2" id="YbY-OI-O0N"/>
+                                                <constraint firstItem="e1p-ec-Dn3" firstAttribute="leading" secondItem="Kdg-f8-pBH" secondAttribute="trailing" constant="20" id="b2s-KS-NoV"/>
+                                                <constraint firstItem="Ab9-Eo-ue1" firstAttribute="height" secondItem="Kdg-f8-pBH" secondAttribute="height" id="cEQ-M6-kgb"/>
                                                 <constraint firstItem="q3a-Aa-VqY" firstAttribute="height" secondItem="Ab9-Eo-ue1" secondAttribute="height" id="cI9-cM-OYE"/>
                                                 <constraint firstItem="WpC-gY-myP" firstAttribute="top" secondItem="g23-xL-FVr" secondAttribute="bottom" id="cha-cK-B2r"/>
                                                 <constraint firstItem="g23-xL-FVr" firstAttribute="top" secondItem="7qg-ok-Rbo" secondAttribute="top" id="g5b-GJ-nr2"/>
@@ -293,6 +311,7 @@
                                                 <constraint firstItem="uYt-ov-kC3" firstAttribute="leading" secondItem="dAK-Dd-Cvw" secondAttribute="trailing" constant="10" id="n5G-wD-KRZ"/>
                                                 <constraint firstItem="Ab9-Eo-ue1" firstAttribute="top" secondItem="N7y-ge-mMq" secondAttribute="bottom" constant="20" id="pOK-8H-PLa"/>
                                                 <constraint firstItem="WpC-gY-myP" firstAttribute="top" secondItem="N7y-ge-mMq" secondAttribute="bottom" constant="8" id="prj-ah-8ZK"/>
+                                                <constraint firstItem="Ab9-Eo-ue1" firstAttribute="bottom" secondItem="Kdg-f8-pBH" secondAttribute="bottom" id="u1Z-Hp-9XN"/>
                                                 <constraint firstItem="Ab9-Eo-ue1" firstAttribute="leading" secondItem="q3a-Aa-VqY" secondAttribute="trailing" constant="20" id="vhg-mW-OJq"/>
                                                 <constraint firstAttribute="trailing" secondItem="N7y-ge-mMq" secondAttribute="trailing" constant="12" id="voR-xo-QDx"/>
                                                 <constraint firstAttribute="bottom" secondItem="Ab9-Eo-ue1" secondAttribute="bottom" constant="10" id="wQc-o4-BEX"/>
@@ -306,6 +325,7 @@
                                             <outlet property="btnApprove" destination="dZU-ho-dbu" id="wQI-LZ-w9g"/>
                                             <outlet property="btnLike" destination="e1p-ec-Dn3" id="HMC-LX-m8X"/>
                                             <outlet property="btnMore" destination="Ab9-Eo-ue1" id="W9i-90-82S"/>
+                                            <outlet property="btnReply" destination="Kdg-f8-pBH" id="k4P-Wf-dFk"/>
                                             <outlet property="btnTrash" destination="q3a-Aa-VqY" id="vN5-93-aA4"/>
                                             <outlet property="gravatarImageView" destination="dAK-Dd-Cvw" id="QLC-K4-YZR"/>
                                             <outlet property="nameLabel" destination="uYt-ov-kC3" id="iUh-rH-6T4"/>
@@ -424,6 +444,7 @@
                         <segue destination="Bbj-DX-KQ7" kind="push" identifier="WPWebViewController" id="ygK-a3-WEJ"/>
                         <segue destination="xj3-6N-2Jy" kind="push" identifier="ReaderPostDetailViewController" id="ODX-zz-S1G"/>
                         <segue destination="mbQ-aI-Ljq" kind="modal" identifier="EditCommentViewController" id="mxi-NV-wnN"/>
+                        <segue destination="0Dr-rw-GgC" kind="modal" identifier="EditReplyViewController" id="a4w-pE-GzR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jzQ-hT-Ajt" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -434,7 +455,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="795" y="-840.5"/>
+            <point key="canvasLocation" x="815" y="-1943"/>
         </scene>
         <!--Edit Comment View Controller-->
         <scene sceneID="m2s-6B-KjD">
@@ -474,6 +495,34 @@
             </objects>
             <point key="canvasLocation" x="1573" y="-1943"/>
         </scene>
+        <!--Edit Reply View Controller-->
+        <scene sceneID="0MT-Nu-diq">
+            <objects>
+                <viewController id="NYI-eK-vkH" customClass="EditReplyViewController" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="hYE-JJ-BNF"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ozk-OB-o22" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2105" y="-2623"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="T7A-2D-7EJ">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="formSheet" id="0Dr-rw-GgC" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="RqC-Rc-BIj">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="NYI-eK-vkH" kind="relationship" relationship="rootViewController" id="JFG-Mi-oVV"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sfo-NV-eP8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1573" y="-2623"/>
+        </scene>
     </scenes>
     <resources>
         <image name="left.png" width="85" height="85"/>
@@ -482,6 +531,8 @@
         <image name="notifications-like" width="21" height="21"/>
         <image name="notifications-liked" width="21" height="21"/>
         <image name="notifications-more" width="21" height="21"/>
+        <image name="notifications-reply" width="21" height="21"/>
+        <image name="notifications-reply-highlighted" width="21" height="19"/>
         <image name="notifications-trash" width="21" height="21"/>
         <image name="reader-postaction-follow.png" width="21" height="21"/>
     </resources>
