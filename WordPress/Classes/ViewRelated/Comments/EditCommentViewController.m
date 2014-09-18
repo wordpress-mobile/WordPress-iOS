@@ -1,4 +1,4 @@
-#import "EditCommentViewController.h"
+#import "EditCommentViewController+Internals.h"
 #import "CommentViewController.h"
 #import "CommentService.h"
 #import "ContextManager.h"
@@ -8,7 +8,6 @@
 
 @interface EditCommentViewController() <UIActionSheetDelegate>
 
-@property (nonatomic,   weak) IBOutlet IOS7CorrectedTextView    *textView;
 @property (nonatomic, strong) NSString                          *pristineText;
 @property (nonatomic, assign) CGRect                            keyboardFrame;
 
@@ -185,8 +184,6 @@
 
 - (void)btnSavePressed
 {
-    self.interfaceEnabled   = NO;
-    [self.textView resignFirstResponder];
     [self finishWithUpdates];
 }
 
