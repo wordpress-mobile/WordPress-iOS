@@ -471,9 +471,6 @@
     }
 
     featuredImage = [self sanitizeFeaturedImageString:featuredImage];
-    if ([featuredImage length] == 0) {
-        return nil;
-    }
     
     return featuredImage;
 }
