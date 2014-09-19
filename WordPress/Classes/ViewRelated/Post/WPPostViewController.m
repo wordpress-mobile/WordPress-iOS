@@ -177,8 +177,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-	
+    [super viewDidLoad];	
     [self createRevisionOfPost];
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
     
@@ -537,7 +536,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 
 - (void)refreshNavigationBar
 {
-	[self refreshNavigationBarButtons];
+    [self refreshNavigationBarButtons];
 	
     // Configure the custom title view, or just set the navigationItem title.
     // Only show the blog selector in the nav title view if we're editing a new post
