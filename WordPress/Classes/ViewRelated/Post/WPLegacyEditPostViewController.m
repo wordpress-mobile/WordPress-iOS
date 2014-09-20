@@ -351,7 +351,8 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
     if (![self hasChanges]) {
         [WPAnalytics track:WPAnalyticsStatEditorClosed];
-        [self discardChangesAndDismiss];
+        [self discardChanges];
+        [self dismissEditView];
         return;
     }
 
@@ -582,15 +583,13 @@ static NSInteger const MaximumNumberOfPictures = 4;
     }];
 }
 
-- (void)discardChangesAndDismiss
+- (void)discardChanges
 {
     [self.post.original deleteRevision];
 
     if (self.editMode == EditPostViewControllerModeNewPost) {
         [self.post.original remove];
     }
-
-    [self dismissEditView];
 }
 
 - (void)dismissEditView
@@ -622,6 +621,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
     }
 
     [self savePost:YES];
+    [self dismissEditView];
 }
 
 - (void)savePost:(BOOL)upload
@@ -644,7 +644,6 @@ static NSInteger const MaximumNumberOfPictures = 4;
     }
 
     [self didSaveNewPost];
-    [self dismissEditView];
 }
 
 - (void)didSaveNewPost
@@ -892,34 +891,31 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    _currentActionSheet = nil;
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
     if ([actionSheet tag] == 201) {
         // Discard
         if (buttonIndex == 0) {
-            [self discardChangesAndDismiss];
+            [self discardChanges];
+            [self dismissEditView];
             [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
         }
-
+        
         if (buttonIndex == 1) {
             // Cancel / Keep editing
             if ([actionSheet numberOfButtons] == 2) {
-
                 [actionSheet dismissWithClickedButtonIndex:0 animated:YES];
-                // Save draft
             } else {
+                // Save draft
                 // If you tapped on a button labeled "Save Draft", you probably expect the post to be saved as a draft
                 if (![self.post hasRemote] && [self.post.status isEqualToString:@"publish"]) {
                     self.post.status = @"draft";
                 }
                 DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
                 [self savePost:YES];
+                [self dismissEditView];
             }
         }
     }
+    _currentActionSheet = nil;
 }
 
 #pragma mark - WPLegacyEditorViewControllerDelegate delegate

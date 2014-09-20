@@ -12,7 +12,7 @@ Handbook: http://make.wordpress.org/mobile/handbook/
 
 ### Style guide
 
-https://github.com/wordpress-mobile/WordPress-iOS/wiki/WordPress-for-iOS-Style-Guide
+https://github.com/wordpress-mobile/WordPress-iOS/wiki/WordPress-for-iOS-Objective-C-Style-Guide
 
 ### To report an issue
 
