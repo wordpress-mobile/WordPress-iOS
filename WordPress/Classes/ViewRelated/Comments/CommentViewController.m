@@ -398,7 +398,9 @@ typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
 {
     CGRect keyboardRect         = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     UIScrollView *scrollView    = (UIScrollView *)self.view;
-    scrollView.contentInset     = UIEdgeInsetsMake(0.f, 0.f, CGRectGetHeight(keyboardRect), 0.f);
+    UIEdgeInsets insets         = scrollView.contentInset;
+    insets.bottom               = CGRectGetHeight(keyboardRect);
+    scrollView.contentInset     = insets;
 
     [self.view addGestureRecognizer:self.tapGesture];
 }
@@ -406,7 +408,9 @@ typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
 - (void)handleKeyboardWillHide:(NSNotification *)notification
 {
     UIScrollView *scrollView    = (UIScrollView *)self.view;
-    scrollView.contentInset     = UIEdgeInsetsZero;
+    UIEdgeInsets insets         = scrollView.contentInset;
+    insets.bottom               = 0.0f;
+    scrollView.contentInset     = insets;
 
     [self.view removeGestureRecognizer:self.tapGesture];
 }
