@@ -210,9 +210,9 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                                                  }
                                                  return;
                                              }
-                                             
+
                                              [self mergeHierarchicalComments:comments forPage:page forPost:aPost];
-                                             
+
                                              if (success) {
                                                  success([comments count]);
                                              }
@@ -344,6 +344,23 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 
 #pragma mark - Private methods
 
+// Deletes orphaned comments. Does not save context.
+- (void)deleteUnownedComments
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass([Comment class])];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = NULL && blog = NULL"];
+
+    NSError *error;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        DDLogError(@"Error fetching orphaned comments: %@", error);
+    }
+    for (Comment *comment in results) {
+        [self.managedObjectContext deleteObject:comment];
+    }
+}
+
+
 #pragma mark - Blog centric methods
 // Generic moderation
 - (void)moderateComment:(Comment *)comment
@@ -404,6 +421,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
         }
     }
 
+    [self deleteUnownedComments];
     [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext];
 
     if (completion) {
@@ -483,6 +501,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 
     // Remove deleted comments
     [self deleteCommentsMissingFromHierarchicalComments:commentsToKeep forPage:page forPost:post];
+    [self deleteUnownedComments];
 
     [self.managedObjectContext performBlock:^{
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];

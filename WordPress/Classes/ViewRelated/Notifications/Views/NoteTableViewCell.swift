@@ -15,13 +15,13 @@ import Foundation
     }
     public var attributedSubject: NSAttributedString? {
         didSet {
-            subjectLabel.attributedText = attributedSubject != nil ? attributedSubject! : NSAttributedString()
+            subjectLabel.attributedText = attributedSubject ?? NSAttributedString()
             setNeedsLayout()
         }
     }
     public var attributedSnippet: NSAttributedString? {
         didSet {
-            snippetLabel.attributedText = attributedSnippet != nil ? attributedSnippet! : NSAttributedString()
+            snippetLabel.attributedText = attributedSnippet ?? NSAttributedString()
             refreshNumberOfLines()
             setNeedsLayout()
         }
@@ -53,7 +53,9 @@ import Foundation
     // MARK: - View Methods
     public override func awakeFromNib() {
         super.awakeFromNib()
-        
+
+        contentView.autoresizingMask    = .FlexibleHeight | .FlexibleWidth
+
         iconImageView.image             = UIImage(named: placeholderName)
         
         noticonView.layer.cornerRadius  = noticonRadius
@@ -69,7 +71,6 @@ import Foundation
     public override func layoutSubviews() {
         refreshLabelPreferredMaxLayoutWidth()
         super.layoutSubviews()
-        contentView.layoutIfNeeded()
     }
 
     public override func setSelected(selected: Bool, animated: Bool) {

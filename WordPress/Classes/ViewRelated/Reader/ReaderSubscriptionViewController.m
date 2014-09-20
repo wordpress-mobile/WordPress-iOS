@@ -449,6 +449,7 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
     searchBar.translatesAutoresizingMaskIntoConstraints = NO;
     searchBar.placeholder = NSLocalizedString(@"Enter a tag or URL to follow", @"Placeholder text prompting the user to type the name of the tag or URL they would like to follow.");
     searchBar.translucent = NO;
+    searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     searchBar.barTintColor = [WPStyleGuide itsEverywhereGrey];
     searchBar.backgroundImage = [[UIImage alloc] init];
     [searchBar setImage:[UIImage imageNamed:@"icon-reader-tag"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];

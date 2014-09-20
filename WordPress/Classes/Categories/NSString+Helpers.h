@@ -8,6 +8,5 @@
 - (NSMutableDictionary *)dictionaryFromQueryString;
 - (NSString *)stringByReplacingHTMLEmoticonsWithEmoji;
 - (NSString *)stringByStrippingHTML;
-- (NSString *)stringByRemovingScriptsAndStrippingHTML;
 - (NSString *)stringByEllipsizingWithMaxLength:(NSInteger)lengthlimit preserveWords:(BOOL)preserveWords;
 @end

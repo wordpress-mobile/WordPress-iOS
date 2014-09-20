@@ -145,7 +145,7 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    [self invalidateRowHeightsCache];
+    [self invalidateAllRowHeights];
 }
 
 
@@ -190,8 +190,9 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
     // Reload
     [self.tableView reloadData];
 
-    // Reset the badge: the notifications are visible!
+    // Reset the badge: the notifications are visible! + Update Last Seen time
     [self resetApplicationBadge];
+    [self updateLastSeenTime];
 }
 
 
@@ -224,11 +225,6 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
     SPBucket *notesBucket           = [simperium bucketForName:self.entityName];
     notesBucket.delegate            = self;
     notesBucket.notifyWhileIndexing = YES;
-}
-
-- (void)invalidateRowHeightsCache
-{
-    [self.cachedRowHeights removeAllObjects];
 }
 
 - (void)resetApplicationBadge
@@ -316,6 +312,34 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
 }
 
 
+#pragma mark - Row Height Cache
+
+- (void)invalidateAllRowHeights
+{
+    [self.cachedRowHeights removeAllObjects];
+}
+
+- (void)invalidateRowHeightAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.cachedRowHeights removeObjectForKey:indexPath.toString];
+}
+
+- (void)invalidateRowHeightsBelowIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *nukedPathKey = indexPath.toString;
+    NSMutableArray *invalidKeys = [NSMutableArray array];
+    
+    for (NSString *key in self.cachedRowHeights.allKeys) {
+        if ([key compare:nukedPathKey] == NSOrderedDescending) {
+            [invalidKeys addObject:key];
+        }
+    }
+    
+    [self.cachedRowHeights removeObjectForKey:nukedPathKey];
+    [self.cachedRowHeights removeObjectsForKeys:invalidKeys];
+}
+
+
 #pragma mark - UITableViewDelegate
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -385,7 +409,7 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         return;
     }
-    
+
     // At last, push the details
     [self showDetailsForNotification:note];
 }
