@@ -193,7 +193,7 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
     
     actionSheet.delegate = self;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-    [actionSheet showInView:self.view];
+    [actionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:true];
 }
 
 - (void)btnDonePressed
