@@ -232,6 +232,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 - (void)reloadData
 {
     [self configureContentView:self.contentProvider];
+    [self setNeedsLayout];
 }
 
 - (void)reset
