@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="14A361c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MbC-cA-c9S">
     <dependencies>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
@@ -26,7 +27,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tfv-il-pov" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="208" y="-1943"/>
+            <point key="canvasLocation" x="236" y="-556"/>
         </scene>
         <!--Reader Post Details-->
         <scene sceneID="ET8-9p-ZLz">
@@ -443,8 +444,6 @@
                         <segue destination="8p8-88-FGK" kind="push" identifier="StatsViewController" id="EAn-K1-ofm"/>
                         <segue destination="Bbj-DX-KQ7" kind="push" identifier="WPWebViewController" id="ygK-a3-WEJ"/>
                         <segue destination="xj3-6N-2Jy" kind="push" identifier="ReaderPostDetailViewController" id="ODX-zz-S1G"/>
-                        <segue destination="mbQ-aI-Ljq" kind="modal" identifier="EditCommentViewController" id="mxi-NV-wnN"/>
-                        <segue destination="0Dr-rw-GgC" kind="modal" identifier="EditReplyViewController" id="a4w-pE-GzR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jzQ-hT-Ajt" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -455,17 +454,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="815" y="-1943"/>
-        </scene>
-        <!--Edit Comment View Controller-->
-        <scene sceneID="m2s-6B-KjD">
-            <objects>
-                <viewController id="Z8E-fW-R9r" customClass="EditCommentViewController" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="fjJ-SD-3V5"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2gx-Yp-uBF" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2105" y="-1943"/>
+            <point key="canvasLocation" x="843" y="-556"/>
         </scene>
         <!--StatsView-->
         <scene sceneID="iWL-VB-TOS">
@@ -476,52 +465,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KeQ-Nv-SGg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1573" y="141"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="hCh-QL-YuM">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="formSheet" id="mbQ-aI-Ljq" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="6az-Sd-DTy">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="Z8E-fW-R9r" kind="relationship" relationship="rootViewController" id="r1h-PM-Frn"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="6nQ-WO-Z5O" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1573" y="-1943"/>
-        </scene>
-        <!--Edit Reply View Controller-->
-        <scene sceneID="0MT-Nu-diq">
-            <objects>
-                <viewController id="NYI-eK-vkH" customClass="EditReplyViewController" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="hYE-JJ-BNF"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ozk-OB-o22" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2105" y="-2623"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="T7A-2D-7EJ">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="formSheet" id="0Dr-rw-GgC" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="RqC-Rc-BIj">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="NYI-eK-vkH" kind="relationship" relationship="rootViewController" id="JFG-Mi-oVV"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="sfo-NV-eP8" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1573" y="-2623"/>
         </scene>
     </scenes>
     <resources>
