@@ -55,20 +55,17 @@
 
 #pragma mark - Private Methods
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    id mapKey       = [NSValue valueWithPointer:(__bridge const void *)(actionSheet)];
-    NSString *title = [self buttonTitleAtIndex:buttonIndex];
- 
-    // Dispatch Async: Let's give the ActionSheet some time to get dismissed before hitting the callback
-    dispatch_async(dispatch_get_main_queue(), ^{
-        NSMutableDictionary* map            = [[self class] blockMap];
-        UIActionSheetCompletion completion  = [map objectForKey:mapKey];
-        if (completion) {
-            completion(title);
-            [map removeObjectForKey:mapKey];
-        }
-    });
+    id mapKey                           = [NSValue valueWithPointer:(__bridge const void *)(actionSheet)];
+    NSString *title                     = [self buttonTitleAtIndex:buttonIndex];
+    NSMutableDictionary* map            = [[self class] blockMap];
+    
+    UIActionSheetCompletion completion  = [map objectForKey:mapKey];
+    if (completion) {
+        completion(title);
+        [map removeObjectForKey:mapKey];
+    }
 }
 
 
