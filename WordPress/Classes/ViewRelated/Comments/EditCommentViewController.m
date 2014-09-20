@@ -226,7 +226,7 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
 
 #pragma mark - Static Helpers
 
-+ (instancetype)newEditCommentViewController
++ (instancetype)newEditViewController
 {
     return [[[self class] alloc] initWithNibName:NSStringFromClass([self class]) bundle:nil];
 }
