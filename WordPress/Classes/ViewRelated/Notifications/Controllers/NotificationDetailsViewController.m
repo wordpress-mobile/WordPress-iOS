@@ -783,29 +783,22 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 - (void)sendReplyWithContent:(NSString *)content block:(NotificationBlock *)block
 {
+    NSString *successMessage        = NSLocalizedString(@"Reply Sent!", @"The app successfully sent a comment");
+    NSString *sendingMessage        = NSLocalizedString(@"Sending...", @"The app is uploading a comment");
+    UIImage *successImage           = [UIImage imageNamed:NotificationSuccessToastImage];
+    UIImage *sendingImage           = [UIImage imageNamed:NotificationReplyToastImage];
+    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
     
-    [service replyToCommentWithID:block.metaCommentID
-                           siteID:block.metaSiteID
-                          content:content
-                          success:^() {
-                              NSString *message   = NSLocalizedString(@"Reply Sent!", @"The app successfully sent a comment");
-                              UIImage *image      = [UIImage imageNamed:NotificationSuccessToastImage];
-                              
-                              [WPToast showToastWithMessage:message andImage:image];
-                          }
-                          failure:^(NSError *error) {
-                              [self handleReplyErrorWithBlock:block content:content];
-                          }];
+    [service replyToCommentWithID:block.metaCommentID siteID:block.metaSiteID content:content success:^(){
+        [WPToast showToastWithMessage:successMessage andImage:successImage];
+        
+    } failure:^(NSError *error) {
+        [self handleReplyErrorWithBlock:block content:content];
+    }];
     
-    self.replyTextView.text = [NSString string];
-    [self.replyTextView resignFirstResponder];
-    
-    NSString *message   = NSLocalizedString(@"Sending...", @"The app is uploading a comment");
-    UIImage *image      = [UIImage imageNamed:NotificationReplyToastImage];
-    
-    [WPToast showToastWithMessage:message andImage:image];
+    [WPToast showToastWithMessage:sendingMessage andImage:sendingImage];
 }
 
 - (void)handleReplyErrorWithBlock:(NotificationBlock *)block content:(NSString *)content
