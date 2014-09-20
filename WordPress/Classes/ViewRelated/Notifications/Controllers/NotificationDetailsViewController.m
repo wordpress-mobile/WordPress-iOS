@@ -215,7 +215,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     replyTextView.placeholder       = NSLocalizedString(@"Write a reply…", @"Placeholder text for inline compose view");
     replyTextView.replyText         = [NSLocalizedString(@"Reply", @"") uppercaseString];
     replyTextView.onReply           = ^(NSString *content) {
-        [weakSelf sendReplyWithContent:content block:block];
+        [weakSelf sendReplyWithBlock:block content:content];
     };
     replyTextView.delegate          = self;
     self.replyTextView              = replyTextView;
@@ -781,7 +781,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     [self performSegueWithIdentifier:NSStringFromClass([EditCommentViewController class]) sender:block];
 }
 
-- (void)sendReplyWithContent:(NSString *)content block:(NotificationBlock *)block
+- (void)sendReplyWithBlock:(NotificationBlock *)block content:(NSString *)content
 {
     NSString *successMessage        = NSLocalizedString(@"Reply Sent!", @"The app successfully sent a comment");
     NSString *sendingMessage        = NSLocalizedString(@"Sending...", @"The app is uploading a comment");
@@ -803,7 +803,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 - (void)handleReplyErrorWithBlock:(NotificationBlock *)block content:(NSString *)content
 {
-    [UIAlertView showWithTitle:NSLocalizedString(@"Sorry", nil)
+    [UIAlertView showWithTitle:nil
                        message:NSLocalizedString(@"There has been an unexpected error while sending your comment reply", nil)
              cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
              otherButtonTitles:@[ NSLocalizedString(@"Retry", nil) ]
@@ -812,7 +812,7 @@ static CGFloat NotificationSectionSeparator     = 10;
                               return;
                           }
                           
-                          [self sendReplyWithContent:content block:block];
+                          [self sendReplyWithBlock:block content:content];
                       }];
 }
 
