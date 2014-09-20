@@ -545,6 +545,9 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
             }
             
             respDict = [NSDictionary dictionaryWithObjects:supportedValues forKeys:supportedKeys];
+        } else if (postFormats.count > 0) {
+            // The dict contains the post formats at the top level (not in a supported array)
+            respDict = [NSDictionary dictionaryWithObjects:[postFormats allValues] forKeys:[postFormats allKeys]];
         }
         blog.postFormats = respDict;
 
