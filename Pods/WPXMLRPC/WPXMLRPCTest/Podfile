@@ -1,9 +1,0 @@
-target 'WPXMLRPCTest-OSX' do
-  platform :osx
-  pod 'CTidy', '~> 0.3'
-end
-
-target 'WPXMLRPCTest-iOS' do
-  platform :ios
-  pod 'CTidy', '~> 0.3'
-end

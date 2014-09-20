@@ -83,6 +83,13 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         }
 
         ReaderPost *post = [self createOrReplaceFromRemotePost:remotePost forTopic:nil];
+
+        NSError *error;
+        BOOL obtainedID = [self.managedObjectContext obtainPermanentIDsForObjects:@[post] error:&error];
+        if (!obtainedID) {
+            DDLogError(@"Error obtaining a permanent ID for post. %@, %@", post, error);
+        }
+
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         success(post);
 
@@ -900,7 +907,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  */
 - (NSString *)makePlainText:(NSString *)string
 {
-    return [[[string stringByRemovingScriptsAndStrippingHTML] stringByDecodingXMLCharacters] trim];
+    return [[[string stringByStrippingHTML] stringByDecodingXMLCharacters] trim];
 }
 
 /**

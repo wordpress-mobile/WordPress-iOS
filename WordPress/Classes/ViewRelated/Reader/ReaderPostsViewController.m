@@ -798,7 +798,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     NSURL *imageURL = [post featuredImageURLForDisplay];
-    if (!imageURL) {
+    if ([[imageURL absoluteString] length] == 0) {
         return;
     }
     UIImage *image = [self imageForURL:imageURL];

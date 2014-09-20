@@ -9,6 +9,7 @@
 #import "VideoThumbnailServiceRemote.h"
 
 static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
+static CGSize const WPRichTextMinimumSize = {1, 1};
 
 @interface WPRichTextView()<DTAttributedTextContentViewDelegate, WPTableImageSourceDelegate>
 
@@ -105,13 +106,17 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
 - (void)configureConstraints
 {
     NSDictionary *views = NSDictionaryOfVariableBindings(_textContentView);
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_textContentView]|"
+    NSDictionary *metrics = @{
+        @"minWidth"  : @(WPRichTextMinimumSize.width),
+        @"minHeight" : @(WPRichTextMinimumSize.height)
+    };
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_textContentView(>=minWidth)]|"
                                                                  options:0
-                                                                 metrics:nil
+                                                                 metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_textContentView]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_textContentView(>=minHeight)]|"
                                                                  options:0
-                                                                 metrics:nil
+                                                                 metrics:metrics
                                                                    views:views]];
     [self setNeedsUpdateConstraints];
 }
