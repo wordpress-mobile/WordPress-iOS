@@ -1,4 +1,4 @@
-#import "EditCommentViewController+Internals.h"
+#import "EditCommentViewController.h"
 #import "CommentViewController.h"
 #import "CommentService.h"
 #import "ContextManager.h"
@@ -21,6 +21,7 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
 
 @interface EditCommentViewController() <UIActionSheetDelegate>
 
+@property (nonatomic,   weak) IBOutlet IOS7CorrectedTextView *textView;
 @property (nonatomic, strong) NSString *pristineText;
 @property (nonatomic, assign) CGRect   keyboardFrame;
 
@@ -210,15 +211,15 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
 
 - (void)finishWithUpdates
 {
-    if ([self.delegate respondsToSelector:@selector(editCommentViewController:didUpdateContent:)]) {
-        [self.delegate editCommentViewController:self didUpdateContent:self.textView.text];
+    if (self.onCompletion) {
+        self.onCompletion(true, self.textView.text);
     }
 }
 
 - (void)finishWithoutUpdates
 {
-    if ([self.delegate respondsToSelector:@selector(editCommentViewControllerFinished:)]) {
-        [self.delegate editCommentViewControllerFinished:self];
+    if (self.onCompletion) {
+        self.onCompletion(false, self.pristineText);
     }
 }
 
