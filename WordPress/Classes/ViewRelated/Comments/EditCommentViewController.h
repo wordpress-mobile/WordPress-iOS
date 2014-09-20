@@ -8,5 +8,5 @@ typedef void (^EditCommentCompletion)(BOOL hasNewContent, NSString *newContent);
 @property (nonatomic,   copy) EditCommentCompletion onCompletion;
 @property (nonatomic, strong) NSString              *content;
 @property (nonatomic, assign) BOOL                  interfaceEnabled;
-+ (instancetype)newEditCommentViewController;
++ (instancetype)newEditViewController;
 @end
