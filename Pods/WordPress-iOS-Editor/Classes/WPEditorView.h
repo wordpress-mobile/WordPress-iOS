@@ -93,6 +93,11 @@ stylesForCurrentSelection:(NSArray*)styles;
  */
 @property (nonatomic, copy, readwrite) NSString* placeholderHTMLString;
 
+/**
+ *	@brief		The placeholder HTML string color.
+ */
+@property (nonatomic, copy, readwrite) UIColor* placeholderHTMLStringColor;
+
 #pragma mark - Selection
 @property (nonatomic, strong, readonly) NSString *selectedLinkTitle;
 @property (nonatomic, strong, readonly) NSString *selectedLinkURL;

@@ -151,45 +151,6 @@ static NSString* const kDefaultCallbackParameterComponentSeparator = @"=";
 	}
 }
 
-#pragma mark - Placeholder
-
-/**
- *	@brief		Refreshes the placeholder text, by either showing it or hiding it according to
- *				several conditions.
- */
-- (void)refreshPlaceholder
-{
-	[self refreshPlaceholder:self.placeholderHTMLString];
-}
-
-/**
- *	@brief		Refreshes the specified placeholder text, by either showing it or hiding it
- *				according to several conditions.
- *	@details	Same as refreshPlaceholder, but uses the received parameter instead of the property.
- *				This is a convenience method in case the caller already has a reference to the
- *				placeholder text and is not intended as a way to bypass the placeholder property.
- *
- *	@param		placeholder		The placeholder text to show, if conditions are met.
- */
-- (void)refreshPlaceholder:(NSString*)placeholder
-{
-	BOOL shouldHidePlaceholder = self.isShowingPlaceholder && self.isEditing;
-	
-	if (shouldHidePlaceholder) {
-		self.showingPlaceholder = NO;
-        [self setHtml:@"" refreshPlaceholder:NO];
-	} else {
-		BOOL shouldShowPlaceholder = (!self.isShowingPlaceholder && self.resourcesLoaded && !self.isEditing
-									  && ([[self getHTML] length] == 0
-										  || [[self getHTML] isEqualToString:@"<br>"]));
-		
-		if (shouldShowPlaceholder) {
-			self.showingPlaceholder = YES;
-			[self setHtml:self.placeholderHTMLString refreshPlaceholder:NO];
-		}
-	}
-}
-
 #pragma mark - UIWebViewDelegate
 
 -            (BOOL)webView:(UIWebView *)webView
@@ -234,59 +195,82 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 	
 	NSLog(@"WebEditor callback received: %@", url);
 	
-	if ([self isUserTriggeredChangeScheme:scheme]) {
-		[self refreshPlaceholder];
-
-		if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-			[self.delegate editorTextDidChange:self];
-		}
-
-		handled = YES;
-	} else if ([self isFocusInScheme:scheme]){
-		self.editing = YES;
-
-		[self refreshPlaceholder];
-		
-		if ([self.delegate respondsToSelector:@selector(editorView:focusChanged:)]) {
-			[self.delegate editorView:self focusChanged:YES];
-		}
-		
-		handled = YES;
-	} else if ([self isFocusOutScheme:scheme]){
-		
-		self.editing = NO;
-		
-		[self refreshPlaceholder];
-		
-		if ([self.delegate respondsToSelector:@selector(editorView:focusChanged:)]) {
-			[self.delegate editorView:self focusChanged:YES];
-		}
-		
-		handled = YES;
-	} else if ([self isLinkTappedScheme:scheme]) {
-		[self handleLinkTappedCallback:url];
-		handled = YES;
-	} else if ([self isSelectionStyleScheme:scheme]) {
-		NSString* styles = [[url resourceSpecifier] stringByReplacingOccurrencesOfString:@"//" withString:@""];
-		
-		[self processStyles:styles];
-		handled = YES;
-	} else if ([self isDOMLoadedScheme:scheme]) {
-
-		self.resourcesLoaded = YES;
-		self.editorInteractionQueue = nil;
-		
-		// DRM: it's important to call this after resourcesLoaded has been set to YES.
-		[self setHtml:self.preloadedHTML];
-		
-		if ([self.delegate respondsToSelector:@selector(editorViewDidFinishLoadingDOM:)]) {
-			[self.delegate editorViewDidFinishLoadingDOM:self];
-		}
-		
-		handled = YES;
-	}
+    if (scheme) {
+        if ([self isFocusInScheme:scheme]){
+            [self handleFocusInCallback:url];
+            handled = YES;
+        } else if ([self isFocusOutScheme:scheme]){
+            [self handleFocusOutCallback:url];
+            handled = YES;
+        } else if ([self isInputCallbackScheme:scheme]) {
+            [self handleInputCallback:url];
+            handled = YES;
+        } else if ([self isLinkTappedScheme:scheme]) {
+            [self handleLinkTappedCallback:url];
+            handled = YES;
+        } else if ([self isSelectionStyleScheme:scheme]) {
+            [self handleSelectionStyleCallback:url];
+            handled = YES;
+        } else if ([self isDOMLoadedScheme:scheme]) {
+            [self handleDOMLoadedCallback:url];
+            handled = YES;
+        }
+    }
 	
 	return handled;
+}
+
+/**
+ *	@brief		Handles a DOM loaded callback.
+ *
+ *	@param		url		The url with all the callback information.
+ */
+- (void)handleDOMLoadedCallback:(NSURL*)url
+{
+    NSParameterAssert([url isKindOfClass:[NSURL class]]);
+    
+    self.resourcesLoaded = YES;
+    self.editorInteractionQueue = nil;
+    
+    // DRM: it's important to call this after resourcesLoaded has been set to YES.
+    [self setHtml:self.preloadedHTML];
+    [self setPlaceholderHTMLStringInJavascript];
+    [self setPlaceholderHTMLStringColorInJavascript];
+    
+    if ([self.delegate respondsToSelector:@selector(editorViewDidFinishLoadingDOM:)]) {
+        [self.delegate editorViewDidFinishLoadingDOM:self];
+    }
+}
+
+- (void)handleFocusInCallback:(NSURL*)url
+{
+    NSParameterAssert([url isKindOfClass:[NSURL class]]);
+    
+    [self callDelegateFocusChanged:YES];
+}
+
+/**
+ *	@brief		Handles a focus out callback.
+ *
+ *	@param		url		The url with all the callback information.
+ */
+- (void)handleFocusOutCallback:(NSURL*)url
+{
+    NSParameterAssert([url isKindOfClass:[NSURL class]]);
+    
+    [self callDelegateFocusChanged:NO];
+}
+
+/**
+ *	@brief		Handles a key pressed callback.
+ *
+ *	@param		url		The url with all the callback information.
+ */
+- (void)handleInputCallback:(NSURL*)url
+{
+    NSParameterAssert([url isKindOfClass:[NSURL class]]);
+    
+    [self callDelegateEditorTextDidChange];
 }
 
 /**
@@ -322,6 +306,16 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 	}];
 }
 
+- (void)handleSelectionStyleCallback:(NSURL*)url
+{
+    NSParameterAssert([url isKindOfClass:[NSURL class]]);
+    
+    NSString* styles = [[url resourceSpecifier] stringByReplacingOccurrencesOfString:@"//" withString:@""];
+    
+    [self processStyles:styles];
+}
+
+
 - (BOOL)isDOMLoadedScheme:(NSString*)scheme
 {
 	static NSString* const kCallbackScheme = @"callback-dom-loaded";
@@ -345,6 +339,9 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 
 - (BOOL)isLinkTappedScheme:(NSString*)scheme
 {
+    NSAssert([scheme isKindOfClass:[NSString class]],
+             @"We're expecting a non-nil string object here.");
+    
 	static NSString* const kCallbackScheme = @"callback-link-tap";
 	
 	return [scheme isEqualToString:kCallbackScheme];
@@ -357,9 +354,9 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 	return [scheme isEqualToString:kCallbackScheme];
 }
 
-- (BOOL)isUserTriggeredChangeScheme:(NSString*)scheme
+- (BOOL)isInputCallbackScheme:(NSString*)scheme
 {
-	static NSString* const kCallbackScheme = @"callback-user-triggered-change";
+	static NSString* const kCallbackScheme = @"callback-input";
 	
 	return [scheme isEqualToString:kCallbackScheme];
 }
@@ -391,7 +388,6 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
     }
 	
     styleStrings = [NSArray arrayWithArray:itemsModified];
-    NSLog(@"%@", styleStrings);
     
 	if ([self.delegate respondsToSelector:@selector(editorView:stylesForCurrentSelection:)])
 	{
@@ -495,17 +491,47 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
     NSString *result = [string stringByReplacingOccurrencesOfString:@"+" withString:@" "];
     result = [result stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     return result;
-}\
+}
 
 #pragma mark - Setters
 
 - (void)setPlaceholderHTMLString:(NSString *)placeholderHTMLString
-{
+{    
 	if (_placeholderHTMLString != placeholderHTMLString) {
 		_placeholderHTMLString = placeholderHTMLString;
 		
-		[self refreshPlaceholder:placeholderHTMLString];
+        if (self.resourcesLoaded) {
+            [self setPlaceholderHTMLStringInJavascript];
+        }
 	}
+}
+
+- (void)setPlaceholderHTMLStringInJavascript
+{
+    NSString* string = [self addSlashes:self.placeholderHTMLString];
+    
+    string = [NSString stringWithFormat:@"zss_editor.setBodyPlaceholder(\"%@\");", string];
+    [self.webView stringByEvaluatingJavaScriptFromString:string];
+}
+
+- (void)setPlaceholderHTMLStringColor:(UIColor *)placeholderHTMLStringColor
+{
+    if (_placeholderHTMLStringColor != placeholderHTMLStringColor) {
+        _placeholderHTMLStringColor = placeholderHTMLStringColor;
+        
+        if (self.resourcesLoaded) {
+            [self setPlaceholderHTMLStringColorInJavascript];
+        }
+    }
+}
+
+- (void)setPlaceholderHTMLStringColorInJavascript
+{
+    int hexColor = HexColorFromUIColor(self.placeholderHTMLStringColor);
+    NSString* hexColorStr = [NSString stringWithFormat:@"#%06x", hexColor];
+    
+    NSString* string = [NSString stringWithFormat:@"zss_editor.setBodyPlaceholderColor(\"%@\");", hexColorStr];
+    [self.webView stringByEvaluatingJavaScriptFromString:string];
 }
 
 #pragma mark - Interaction
@@ -514,18 +540,14 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 {
     [self.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.undo();"];
 	
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self callDelegateEditorTextDidChange];
 }
 
 - (void)redo
 {
     [self.webView stringByEvaluatingJavaScriptFromString:@"zss_editor.redo();"];
 	
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self callDelegateEditorTextDidChange];
 }
 
 #pragma mark - Selection
@@ -559,9 +581,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 	
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
 	
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    [self callDelegateEditorTextDidChange];
 }
 
 #pragma mark - Images
@@ -589,9 +609,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 	NSString *trigger = [NSString stringWithFormat:@"zss_editor.insertLink(\"%@\",\"%@\");", url, title];
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
 	
-	if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-		[self.delegate editorTextDidChange:self];
-	}
+    [self callDelegateEditorTextDidChange];
 }
 
 - (BOOL)isSelectionALink
@@ -608,9 +626,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 	NSString *trigger = [NSString stringWithFormat:@"zss_editor.updateLink(\"%@\",\"%@\");", url, title];
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
 	
-	if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-		[self.delegate editorTextDidChange:self];
-	}
+    [self callDelegateEditorTextDidChange];
 }
 
 - (void)removeLink
@@ -630,18 +646,16 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
  *
  *	@returns	YES if the editor has no content.
  */
-- (BOOL)editorIsEmpty
+- (BOOL)isBodyEmpty
 {
-	return [[self getHTML] length] == 0;
+    NSString* html = [self getHTML];
+    
+    BOOL isEmpty = [html length] == 0 || [html isEqualToString:@"<br>"];
+    
+    return isEmpty;
 }
 
 - (void)setHtml:(NSString *)html
-{
-    [self setHtml:html refreshPlaceholder:YES];
-}
-
--    (void)setHtml:(NSString *)html
-refreshPlaceholder:(BOOL)refreshPlaceholder
 {
 	if (!self.resourcesLoaded) {
 		self.preloadedHTML = html;
@@ -650,10 +664,6 @@ refreshPlaceholder:(BOOL)refreshPlaceholder
 		NSString *cleanedHTML = [self addSlashes:self.sourceView.text];
 		NSString *trigger = [NSString stringWithFormat:@"zss_editor.setHTML(\"%@\");", cleanedHTML];
 		[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-		
-		if (refreshPlaceholder) {
-			[self refreshPlaceholder];
-		}
 	}
 }
 
@@ -727,7 +737,7 @@ refreshPlaceholder:(BOOL)refreshPlaceholder
 }
 
 - (void)enableEditing
-{	
+{
 	NSString *js = [NSString stringWithFormat:@"zss_editor.enableEditing();"];
 	[self.webView stringByEvaluatingJavaScriptFromString:js];
 }
@@ -747,198 +757,176 @@ refreshPlaceholder:(BOOL)refreshPlaceholder
 {
     NSString *trigger = @"zss_editor.setJustifyLeft();";
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+    
+    [self callDelegateEditorTextDidChange];
 }
 
 - (void)alignCenter
 {
     NSString *trigger = @"zss_editor.setJustifyCenter();";
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+
+    [self callDelegateEditorTextDidChange];
 }
 
 - (void)alignRight
 {
     NSString *trigger = @"zss_editor.setJustifyRight();";
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+
+    [self callDelegateEditorTextDidChange];
 }
 
 - (void)alignFull
 {
     NSString *trigger = @"zss_editor.setJustifyFull();";
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+
+    [self callDelegateEditorTextDidChange];
 }
 
 - (void)setBold
 {
     NSString *trigger = @"zss_editor.setBold();";
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+
+    [self callDelegateEditorTextDidChange];
 }
 
 - (void)setBlockQuote
 {
     NSString *trigger = @"zss_editor.setBlockquote();";
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+
+    [self callDelegateEditorTextDidChange];
 }
 
 - (void)setItalic
 {
     NSString *trigger = @"zss_editor.setItalic();";
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+
+    [self callDelegateEditorTextDidChange];
 }
 
 - (void)setSubscript
 {
     NSString *trigger = @"zss_editor.setSubscript();";
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+
+    [self callDelegateEditorTextDidChange];
 }
 
 - (void)setUnderline
 {
     NSString *trigger = @"zss_editor.setUnderline();";
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+
+    [self callDelegateEditorTextDidChange];
 }
 
 - (void)setSuperscript
 {
     NSString *trigger = @"zss_editor.setSuperscript();";
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+
+    [self callDelegateEditorTextDidChange];
 }
 
 - (void)setStrikethrough
 {
     NSString *trigger = @"zss_editor.setStrikeThrough();";
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+
+    [self callDelegateEditorTextDidChange];
 }
 
 - (void)setUnorderedList
 {
     NSString *trigger = @"zss_editor.setUnorderedList();";
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+
+    [self callDelegateEditorTextDidChange];
 }
 
 - (void)setOrderedList
 {
     NSString *trigger = @"zss_editor.setOrderedList();";
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+
+    [self callDelegateEditorTextDidChange];
 }
 
 - (void)setHR
 {
     NSString *trigger = @"zss_editor.setHorizontalRule();";
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+
+    [self callDelegateEditorTextDidChange];
 }
 
 - (void)setIndent
 {
     NSString *trigger = @"zss_editor.setIndent();";
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+
+    [self callDelegateEditorTextDidChange];
 }
 
 - (void)setOutdent
 {
     NSString *trigger = @"zss_editor.setOutdent();";
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+
+    [self callDelegateEditorTextDidChange];
 }
 
 - (void)heading1
 {
     NSString *trigger = @"zss_editor.setHeading('h1');";
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+
+    [self callDelegateEditorTextDidChange];
 }
 
 - (void)heading2
 {
     NSString *trigger = @"zss_editor.setHeading('h2');";
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+
+    [self callDelegateEditorTextDidChange];
 }
 
 - (void)heading3
 {
     NSString *trigger = @"zss_editor.setHeading('h3');";
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+
+    [self callDelegateEditorTextDidChange];
 }
 
 - (void)heading4
 {
     NSString *trigger = @"zss_editor.setHeading('h4');";
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+
+    [self callDelegateEditorTextDidChange];
 }
 
 - (void)heading5
 {
     NSString *trigger = @"zss_editor.setHeading('h5');";
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+
+    [self callDelegateEditorTextDidChange];
 }
 
 - (void)heading6
 {
     NSString *trigger = @"zss_editor.setHeading('h6');";
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+
+    [self callDelegateEditorTextDidChange];
 }
 
 
@@ -946,9 +934,8 @@ refreshPlaceholder:(BOOL)refreshPlaceholder
 {
     NSString *trigger = @"zss_editor.removeFormating();";
 	[self.webView stringByEvaluatingJavaScriptFromString:trigger];
-    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
-        [self.delegate editorTextDidChange:self];
-    }
+
+    [self callDelegateEditorTextDidChange];
 }
 
 #pragma mark - Keyboard notifications
@@ -1006,5 +993,26 @@ refreshPlaceholder:(BOOL)refreshPlaceholder
 	self.sourceView.scrollIndicatorInsets = UIEdgeInsetsZero;
 }
 
+#pragma mark - Delegate calls
+
+/**
+ *  @brief      Call's the delegate editorTextDidChange: method.
+ */
+- (void)callDelegateEditorTextDidChange
+{
+    if ([self.delegate respondsToSelector: @selector(editorTextDidChange:)]) {
+        [self.delegate editorTextDidChange:self];
+    }
+}
+
+/**
+ *  @brief      Call's the delegate editorView:focusChanged: method.
+ */
+- (void)callDelegateFocusChanged:(BOOL)focusGained
+{
+    if ([self.delegate respondsToSelector:@selector(editorView:focusChanged:)]) {
+        [self.delegate editorView:self focusChanged:focusGained];
+    }
+}
 
 @end

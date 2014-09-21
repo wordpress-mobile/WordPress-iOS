@@ -3,7 +3,6 @@
 @class WPLegacyEditorViewController;
 
 @protocol WPLegacyEditorViewControllerDelegate <NSObject>
-
 @optional
 
 - (BOOL)editorShouldBeginEditing:(WPLegacyEditorViewController *)editorController;
@@ -14,7 +13,6 @@
 - (void)editorDidPressSettings:(WPLegacyEditorViewController *)editorController;
 - (void)editorDidPressMedia:(WPLegacyEditorViewController *)editorController;
 - (void)editorDidPressPreview:(WPLegacyEditorViewController *)editorController;
-
 @end
 
 @interface WPLegacyEditorViewController : UIViewController
