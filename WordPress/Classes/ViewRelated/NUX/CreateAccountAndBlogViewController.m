@@ -329,14 +329,29 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 
     // Add Terms of Service Label
     if (_TOSLabel == nil) {
+        
+        // Build the string in two parts so the coloring of "Terms of Service." doesn't break when it gets translated
+        NSString *plainTosText = NSLocalizedString(@"By creating an account you agree to the fascinating Terms of Service.", @"NUX Create Account TOS Label");
+        NSString *tosFindText = NSLocalizedString(@"Terms of Service", @"'Terms of Service' should be the same text that is in 'NUX Create Account TOS Label'");
+        
+        NSMutableAttributedString *tosText = [[NSMutableAttributedString alloc] initWithString:plainTosText];
+        [tosText addAttribute:NSForegroundColorAttributeName
+                        value:[WPNUXUtility tosLabelColor]
+                        range:NSMakeRange(0, [tosText length])];
+
+        if ([plainTosText rangeOfString:tosFindText options:NSCaseInsensitiveSearch].location != NSNotFound ) {
+            [tosText addAttribute:NSForegroundColorAttributeName
+                            value:[UIColor whiteColor]
+                            range:[plainTosText rangeOfString:tosFindText options:NSCaseInsensitiveSearch]];
+        }
+
         _TOSLabel = [[UILabel alloc] init];
         _TOSLabel.userInteractionEnabled = YES;
         _TOSLabel.textAlignment = NSTextAlignmentCenter;
-        _TOSLabel.text = NSLocalizedString(@"By creating an account you agree to the fascinating Terms of Service.", @"NUX Create Account TOS Label");
+        _TOSLabel.attributedText = tosText;
         _TOSLabel.numberOfLines = 0;
         _TOSLabel.backgroundColor = [UIColor clearColor];
         _TOSLabel.font = [WPNUXUtility tosLabelFont];
-        _TOSLabel.textColor = [WPNUXUtility tosLabelColor];
         _TOSLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         [self.view addSubview:_TOSLabel];
 
