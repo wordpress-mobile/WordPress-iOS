@@ -611,7 +611,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     NSRange range = [self.currentTopic.path rangeOfString:@"following"];
     if (range.location != NSNotFound) {
-        return NSLocalizedString(@"You're not following any sites yet.", @"");
+        return NSLocalizedString(@"You are not following any sites yet.", @"");
     }
 
     range = [self.currentTopic.path rangeOfString:@"liked"];

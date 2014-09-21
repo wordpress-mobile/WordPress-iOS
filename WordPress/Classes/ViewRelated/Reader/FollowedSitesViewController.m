@@ -109,7 +109,7 @@ static CGFloat const FollowSitesRowHeight = 54.0;
     }
 
     NSString *title = NSLocalizedString(@"No Sites", @"Title of a message explaining that the user is not currently following any blogs in their reader.");
-    NSString *message = NSLocalizedString(@"You're not following any sites yet.  Why not follow one now?", @"A suggestion to the user that they try following a site in their reader.");
+    NSString *message = NSLocalizedString(@"You are not following any sites yet. Why not follow one now?", @"A suggestion to the user that they try following a site in their reader.");
     _noResultsView = [WPNoResultsView noResultsViewWithTitle:title
                                                      message:message
                                                accessoryView:nil
