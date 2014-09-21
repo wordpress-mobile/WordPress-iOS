@@ -22,12 +22,12 @@ import Foundation
     
     public var name: String? {
         didSet {
-            nameLabel.text  = name != nil ? name! : String()
+            nameLabel.text  = name ?? String()
         }
     }
     public var blogTitle: String? {
         didSet {
-            blogLabel.text  = blogTitle != nil ? blogTitle! :  String()
+            blogLabel.text  = blogTitle ?? String()
         }
     }
     
@@ -55,6 +55,7 @@ import Foundation
 
         backgroundColor                     = WPStyleGuide.Notifications.blockBackgroundColor
         accessoryType                       = .None
+        contentView.autoresizingMask        = .FlexibleHeight | .FlexibleWidth
         
         nameLabel.font                      = WPStyleGuide.Notifications.blockBoldFont
         nameLabel.textColor                 = WPStyleGuide.Notifications.blockTextColor
@@ -62,6 +63,12 @@ import Foundation
         blogLabel.font                      = WPStyleGuide.Notifications.blockRegularFont
         blogLabel.textColor                 = WPStyleGuide.Notifications.blockSubtitleColor
         blogLabel.adjustsFontSizeToFitWidth = false;
+        
+        // iPad: Use a bigger image size!
+        if UIDevice.isPad() {
+            gravatarImageView.updateConstraint(.Height, constant: gravatarImageSizePad.width)
+            gravatarImageView.updateConstraint(.Width,  constant: gravatarImageSizePad.height)
+        }
     }
     
     // MARK: - IBActions
@@ -73,7 +80,8 @@ import Foundation
     }
     
     // MARK: - Private
-    private let placeholderName:                    String = "gravatar"
+    private let gravatarImageSizePad                = CGSize(width: 54.0, height: 54.0)
+    private let placeholderName                     = String("gravatar")
     private var gravatarURL:                        NSURL?
     
     // MARK: - IBOutlets
