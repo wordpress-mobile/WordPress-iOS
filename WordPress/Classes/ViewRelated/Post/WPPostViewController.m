@@ -957,14 +957,25 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
     }
 }
 
-// Save changes to core data
+/**
+ *  @brief      Save changes to core data
+ */
 - (void)autosaveContent
 {
-    self.post.postTitle = self.titleText;
+    [self autosaveContentWithTitle:self.titleText];
+}
+
+/**
+ *  @brief      Save changes to core data, with the specified title.
+ *  @details    This is necessary at this time for handling title changes by the user.
+ */
+- (void)autosaveContentWithTitle:(NSString*)title
+{
+    self.post.postTitle = title;
     
     self.post.content = self.bodyText;
-	if ([self.post.content rangeOfString:@"<!--more-->"].location != NSNotFound)
-		self.post.mt_text_more = @"";
+    if ([self.post.content rangeOfString:@"<!--more-->"].location != NSNotFound)
+        self.post.mt_text_more = @"";
     
     if ( self.post.original.password != nil ) { //original post was password protected
         if ( self.post.password == nil || [self.post.password isEqualToString:@""] ) { //removed the password
@@ -1191,9 +1202,10 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 											withAnimation:UIStatusBarAnimationSlide];
 }
 
-- (void)editorTitleDidChange:(WPEditorViewController *)editorController
+- (void)editorViewController:(WPEditorViewController *)editorController
+             titleWillChange:(NSString *)title
 {
-    [self autosaveContent];
+    [self autosaveContentWithTitle:title];
     [self refreshNavigationBarButtons];
 }
 
