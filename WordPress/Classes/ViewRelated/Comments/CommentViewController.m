@@ -236,10 +236,11 @@ typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
     
     editViewController.content                      = self.comment.content;
     editViewController.onCompletion                 = ^(BOOL hasNewContent, NSString *newContent) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-        if (hasNewContent) {
-            [self updateComment:self.comment withContent:newContent];
-        }
+        [self dismissViewControllerAnimated:YES completion:^{
+            if (hasNewContent) {
+                [self updateComment:self.comment withContent:newContent];
+            }
+        }];
     };
     
     UINavigationController *navController           = [[UINavigationController alloc] initWithRootViewController:editViewController];
