@@ -3,21 +3,21 @@
 
 @class WPEditorViewController;
 
-@protocol WPEditorViewControllerDelegate <NSObject>
-
 typedef enum
 {
-	kWPEditorViewControllerModePreview = 0,
-	kWPEditorViewControllerModeEdit
+    kWPEditorViewControllerModePreview = 0,
+    kWPEditorViewControllerModeEdit
 }
 WPEditorViewControllerMode;
 
+@protocol WPEditorViewControllerDelegate <NSObject>
 @optional
 
 - (void)editorDidBeginEditing:(WPEditorViewController *)editorController;
 - (void)editorDidEndEditing:(WPEditorViewController *)editorController;
 
-- (void)editorTitleDidChange:(WPEditorViewController *)editorController;
+- (void)editorViewController:(WPEditorViewController *)editorController
+             titleWillChange:(NSString*)title;
 - (void)editorTextDidChange:(WPEditorViewController *)editorController;
 
 - (void)editorDidPressMedia:(WPEditorViewController *)editorController;
