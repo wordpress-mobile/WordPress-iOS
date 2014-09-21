@@ -70,6 +70,18 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
     [self enableSaveIfNeeded];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    // FIX FIX:
+    // iOS 8 is resigning first responder when the presentedViewController is effectively removed from screen.
+    // This creates a UX glitch, as a side effect (two animations!!)
+    if ([UIDevice isOS8]) {
+        [self.textView resignFirstResponder];
+    }
+}
+
 
 #pragma mark - View Helpers
 
@@ -210,7 +222,7 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
 #pragma mark - Helper Methods
 
 - (void)finishWithUpdates
-{
+{    
     if (self.onCompletion) {
         self.onCompletion(true, self.textView.text);
     }

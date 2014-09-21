@@ -779,10 +779,11 @@ static CGFloat NotificationSectionSeparator     = 10;
     EditReplyViewController *editViewController     = [EditReplyViewController newEditViewController];
     
     editViewController.onCompletion                 = ^(BOOL hasNewContent, NSString *newContent) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-        if (hasNewContent) {
-            [self sendReplyWithBlock:block content:newContent];
-        }
+        [self dismissViewControllerAnimated:YES completion:^{
+            if (hasNewContent) {
+                [self sendReplyWithBlock:block content:newContent];
+            }
+        }];
     };
     
     UINavigationController *navController           = [[UINavigationController alloc] initWithRootViewController:editViewController];
@@ -835,10 +836,11 @@ static CGFloat NotificationSectionSeparator     = 10;
     
     editViewController.content                      = block.text;
     editViewController.onCompletion                 = ^(BOOL hasNewContent, NSString *newContent) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-        if (hasNewContent) {
-            [self updateCommentWithBlock:block content:newContent];
-        }
+        [self dismissViewControllerAnimated:YES completion:^{
+            if (hasNewContent) {
+                [self updateCommentWithBlock:block content:newContent];
+            }
+        }];
     };
     
     UINavigationController *navController           = [[UINavigationController alloc] initWithRootViewController:editViewController];
