@@ -221,6 +221,12 @@
 - (void)tableViewDidChangeContent:(UITableView *)tableView
 {
     [self updateSelectedTopic];
+    self.topicListChangedBlock();
+}
+
+- (BOOL)isEditable
+{
+    return [self.tableView numberOfSections] > 1 ? YES : NO;
 }
 
 @end
