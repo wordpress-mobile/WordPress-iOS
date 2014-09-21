@@ -177,8 +177,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-	
+    [super viewDidLoad];	
     [self createRevisionOfPost];
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
     
@@ -537,7 +536,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 
 - (void)refreshNavigationBar
 {
-	[self refreshNavigationBarButtons];
+    [self refreshNavigationBarButtons];
 	
     // Configure the custom title view, or just set the navigationItem title.
     // Only show the blog selector in the nav title view if we're editing a new post
@@ -1042,6 +1041,11 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 
 - (void)insertMedia:(Media *)media
 {
+    NSAssert(_post != nil, @"The post should not be nil here.");
+    NSAssert(!_post.isFault, @"The post should not be a fault here here.");
+    NSAssert(_post.managedObjectContext != nil,
+             @"The post's MOC should not be nil here.");
+    
 	NSString *prefix = @"<br /><br />";
     
 	if(self.post.content == nil || [self.post.content isEqualToString:@""]) {
