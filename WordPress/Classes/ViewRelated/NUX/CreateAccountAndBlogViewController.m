@@ -332,7 +332,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
         
         // Build the string in two parts so the coloring of "Terms of Service." doesn't break when it gets translated
         NSString *plainTosText = NSLocalizedString(@"By creating an account you agree to the fascinating Terms of Service.", @"NUX Create Account TOS Label");
-        NSString *tosFindText = NSLocalizedString(@"Terms of Service", @"NUX Create Account TOS");
+        NSString *tosFindText = NSLocalizedString(@"Terms of Service", @"'Terms of Service' should be the same text that is in 'NUX Create Account TOS Label'");
         
         NSMutableAttributedString *tosText = [[NSMutableAttributedString alloc] initWithString:plainTosText];
         [tosText addAttribute:NSForegroundColorAttributeName
