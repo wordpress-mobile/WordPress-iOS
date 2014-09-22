@@ -145,6 +145,8 @@
         topicName = [topicName stringByReplacingOccurrencesOfString:@"--" withString:@"-"];
     }
 
+    topicName = [topicName stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
+
     return topicName;
 }
 

@@ -210,9 +210,9 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                                                  }
                                                  return;
                                              }
-                                             
-                                             [self mergeHierarchicalComments:comments forPost:aPost];
-                                             
+
+                                             [self mergeHierarchicalComments:comments forPage:page forPost:aPost];
+
                                              if (success) {
                                                  success([comments count]);
                                              }
@@ -224,6 +224,12 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                                      }];
 }
 
+- (NSInteger)numberOfHierarchicalPagesSyncedforPost:(ReaderPost *)post
+{
+    NSSet *topComments = [post.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"parentID = NULL"]];
+    CGFloat page = [topComments count] / WPTopLevelHierarchicalCommentsPerPage;
+    return (NSInteger)ceil(page);
+}
 
 #pragma mark - REST Helpers
 
@@ -240,6 +246,21 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                         content:content
                         success:success
                         failure:failure];
+}
+
+// Replies
+- (void)replyToCommentWithID:(NSNumber *)commentID
+                      siteID:(NSNumber *)siteID
+                     content:(NSString *)content
+                     success:(void (^)())success
+                     failure:(void (^)(NSError *error))failure
+{
+    CommentServiceRemoteREST *remote = [self remoteForREST];
+    [remote replyToCommentWithID:commentID
+                          siteID:siteID
+                         content:content
+                         success:success
+                         failure:failure];
 }
 
 // Likes
@@ -323,6 +344,23 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 
 #pragma mark - Private methods
 
+// Deletes orphaned comments. Does not save context.
+- (void)deleteUnownedComments
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass([Comment class])];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = NULL && blog = NULL"];
+
+    NSError *error;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        DDLogError(@"Error fetching orphaned comments: %@", error);
+    }
+    for (Comment *comment in results) {
+        [self.managedObjectContext deleteObject:comment];
+    }
+}
+
+
 #pragma mark - Blog centric methods
 // Generic moderation
 - (void)moderateComment:(Comment *)comment
@@ -383,6 +421,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
         }
     }
 
+    [self deleteUnownedComments];
     [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext];
 
     if (completion) {
@@ -434,7 +473,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     return arr;
 }
 
-- (void)mergeHierarchicalComments:(NSArray *)comments forPost:(ReaderPost *)post
+- (void)mergeHierarchicalComments:(NSArray *)comments forPage:(NSUInteger)page forPost:(ReaderPost *)post
 {
     if (![comments count]) {
         return;
@@ -461,7 +500,8 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     }
 
     // Remove deleted comments
-    [self deleteCommentsMissingFromHierarchicalComments:commentsToKeep forPost:post];
+    [self deleteCommentsMissingFromHierarchicalComments:commentsToKeep forPage:page forPost:post];
+    [self deleteUnownedComments];
 
     [self.managedObjectContext performBlock:^{
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -469,12 +509,19 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 }
 
 // Does not save context
-- (void)deleteCommentsMissingFromHierarchicalComments:(NSArray *)commentsToKeep forPost:(ReaderPost *)post
+- (void)deleteCommentsMissingFromHierarchicalComments:(NSArray *)commentsToKeep forPage:(NSUInteger)page forPost:(ReaderPost *)post
 {
-    // Remove deleted comments
     NSString *entityName = NSStringFromClass([Comment class]);
-    NSString *starting = [[commentsToKeep firstObject] hierarchy];
-    NSString *ending = [[commentsToKeep lastObject] hierarchy];
+
+    // Remove deleted comments
+    Comment *firstComment = [self firstCommentForPage:page forPost:post];
+    Comment *lastComment = [self lastCommentForPage:page forPost:post];
+    NSString *starting = firstComment.hierarchy;
+    NSString *ending = lastComment.hierarchy;
+
+    if (!starting || !ending) {
+        return;
+    }
 
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:entityName];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = %@ AND hierarchy >= %@ AND hierarchy <= %@", post, starting, ending];
@@ -492,6 +539,53 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
             [self.managedObjectContext deleteObject:comment];
         }
     }
+}
+
+- (NSArray *)topLevelCommentsForPage:(NSUInteger)page forPost:(ReaderPost *)post
+{
+    NSString *entityName = NSStringFromClass([Comment class]);
+
+    // Retrieve the starting and ending comments for the specified page.
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:entityName];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = %@", post];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"hierarchy" ascending:YES];
+    fetchRequest.sortDescriptors = @[sortDescriptor];
+    [fetchRequest setFetchLimit:WPTopLevelHierarchicalCommentsPerPage];
+    NSUInteger offset = WPTopLevelHierarchicalCommentsPerPage * (page - 1);
+    [fetchRequest setFetchOffset:offset];
+
+    NSError *error = nil;
+    NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        DDLogError(@"Error fetching top level comments for page %i : %@", page, error);
+    }
+    return fetchedObjects;
+}
+
+- (Comment *)firstCommentForPage:(NSUInteger)page forPost:(ReaderPost *)post
+{
+    NSArray *comments = [self topLevelCommentsForPage:page forPost:post];
+    return [comments firstObject];
+}
+
+- (Comment *)lastCommentForPage:(NSUInteger)page forPost:(ReaderPost *)post
+{
+    NSArray *comments = [self topLevelCommentsForPage:page forPost:post];
+    Comment *lastParentComment = [comments lastObject];
+
+    NSString *entityName = NSStringFromClass([Comment class]);
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:entityName];
+    NSString *wildCard = [NSString stringWithFormat:@"%@*", lastParentComment.hierarchy];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = %@ AND hierarchy LIKE %@", post, wildCard];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"hierarchy" ascending:YES];
+    fetchRequest.sortDescriptors = @[sortDescriptor];
+
+    NSError *error = nil;
+    NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        DDLogError(@"Error fetching last comment for page %i : %@", page, error);
+    }
+    return [fetchedObjects lastObject];
 }
 
 - (Comment *)findCommentWithID:(NSNumber *)commentID fromPost:(ReaderPost *)post

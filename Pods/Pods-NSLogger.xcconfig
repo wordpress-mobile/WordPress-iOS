@@ -1,2 +1,0 @@
-PODS_NSLOGGER_GCC_PREPROCESSOR_DEFINITIONS = ${inherited} NSLOGGER_BUILD_USERNAME="${USER}"
-PODS_NSLOGGER_OTHER_LDFLAGS = -framework CFNetwork -framework SystemConfiguration
