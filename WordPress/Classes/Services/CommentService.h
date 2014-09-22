@@ -54,6 +54,11 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
                                 success:(void (^)(NSInteger count))success
                                 failure:(void (^)(NSError *error))failure;
 
+// Counts and returns the total number of pages of hierarchcial comments synced for a post.
+// A partial set still counts as a page.
+- (NSInteger)numberOfHierarchicalPagesSyncedforPost:(ReaderPost *)post;
+
+
 /**
     REST Helpers:
     =============
@@ -62,12 +67,19 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
     to allow Comment Interaction in scenarios in which the Comment / Blog instances may not be available.
 */
 
-// Edit Comment
+// Edit comment
 - (void)updateCommentWithID:(NSNumber *)commentID
                      siteID:(NSNumber *)siteID
                     content:(NSString *)content
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure;
+
+// Reply to comment
+- (void)replyToCommentWithID:(NSNumber *)commentID
+                      siteID:(NSNumber *)siteID
+                     content:(NSString *)content
+                     success:(void (^)())success
+                     failure:(void (^)(NSError *error))failure;
 
 // Like comment
 - (void)likeCommentWithID:(NSNumber *)commentID
