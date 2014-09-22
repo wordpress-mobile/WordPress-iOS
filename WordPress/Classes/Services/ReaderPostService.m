@@ -83,6 +83,13 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         }
 
         ReaderPost *post = [self createOrReplaceFromRemotePost:remotePost forTopic:nil];
+
+        NSError *error;
+        BOOL obtainedID = [self.managedObjectContext obtainPermanentIDsForObjects:@[post] error:&error];
+        if (!obtainedID) {
+            DDLogError(@"Error obtaining a permanent ID for post. %@, %@", post, error);
+        }
+
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         success(post);
 
@@ -221,7 +228,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         if (follow) {
             [siteService followSiteAtURL:post.blogURL success:successBlock failure:failureBlock];
         } else {
-            [siteService followSiteAtURL:post.blogURL success:successBlock failure:failureBlock];
+            [siteService unfollowSiteAtURL:post.blogURL success:successBlock failure:failureBlock];
         }
     } else {
         NSString *description = NSLocalizedString(@"Could not toggle Follow: missing blogURL attribute", @"An error description explaining that Follow could not be toggled due to a missing blogURL attribute.");
@@ -867,11 +874,16 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 - (NSString *)formatSummary:(NSString *)summary
 {
     summary = [self makePlainText:summary];
-    NSRange rng = [summary rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@".?!"] options:NSBackwardsSearch];
-    if (rng.location == NSNotFound || rng.location < ReaderPostServiceSummaryLength) {
-        return summary;
+
+    NSString *continueReading = NSLocalizedString(@"Continue reading", @"Part of a prompt suggesting that there is more content for the user to read.");
+    continueReading = [NSString stringWithFormat:@"%@ →", continueReading];
+
+    NSRange rng = [summary rangeOfString:continueReading options:NSCaseInsensitiveSearch];
+    if (rng.location != NSNotFound) {
+        summary = [summary substringToIndex:rng.location];
     }
-    return [summary substringToIndex:(rng.location + 1)];
+
+    return summary;
 }
 
 /**
@@ -895,7 +907,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  */
 - (NSString *)makePlainText:(NSString *)string
 {
-    return [[[string stringByRemovingScriptsAndStrippingHTML] stringByDecodingXMLCharacters] trim];
+    return [[[string stringByStrippingHTML] stringByDecodingXMLCharacters] trim];
 }
 
 /**

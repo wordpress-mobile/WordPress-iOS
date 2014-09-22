@@ -15,9 +15,10 @@
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
 #import "Media.h"
-#import "Note.h"
+#import "Notification.h"
 #import "NotificationsManager.h"
 #import "NSString+Helpers.h"
+#import "NSString+HTML.h"
 #import "PocketAPI.h"
 #import "ReaderPost.h"
 #import "UIDevice+WordPressIdentifier.h"
@@ -28,11 +29,13 @@
 #import "WPImageOptimizer.h"
 #import "ReaderPostService.h"
 #import "ReaderTopicService.h"
+#import "SVProgressHUD.h"
 
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
 #import "PostsViewController.h"
-#import "EditPostViewController.h"
+#import "WPPostViewController.h"
+#import "WPLegacyEditPostViewController.h"
 #import "LoginViewController.h"
 #import "NotificationsViewController.h"
 #import "ReaderPostsViewController.h"
@@ -61,6 +64,11 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
 NSInteger const kReaderTabIndex                                 = 0;
 NSInteger const kNotificationsTabIndex                          = 1;
 NSInteger const kMeTabIndex                                     = 2;
+
+static NSString* const kWPNewPostURLParamTitleKey = @"title";
+static NSString* const kWPNewPostURLParamContentKey = @"content";
+static NSString* const kWPNewPostURLParamTagsKey = @"tags";
+static NSString* const kWPNewPostURLParamImageKey = @"image";
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
@@ -210,13 +218,7 @@ NSInteger const kMeTabIndex                                     = 2;
         DDLogInfo(@"Application launched with URL: %@", URLString);
 
         if ([URLString rangeOfString:@"newpost"].length) {
-            // Create a new post from data shared by a third party application.
-            NSDictionary *params = [[url query] dictionaryFromQueryString];
-            DDLogInfo(@"App launched for new post with params: %@", params);
-            if ([params count]) {
-                [self showPostTabWithOptions:params];
-                returnValue = YES;
-            }
+            returnValue = [self handleNewPostRequestWithURL:url];
         } else if ([URLString rangeOfString:@"viewpost"].length) {
             // View the post specified by the shared blog ID and post ID
             NSDictionary *params = [[url query] dictionaryFromQueryString];
@@ -239,12 +241,32 @@ NSInteger const kMeTabIndex                                     = 2;
                 NSString *debugType = [params stringForKey:@"type"];
                 NSString *debugKey = [params stringForKey:@"key"];
 
+                if ([[WordPressComApiCredentials debuggingKey] isEqualToString:@""] || [debugKey isEqualToString:@""]) {
+                    return NO;
+                }
+
                 if ([debugKey isEqualToString:[WordPressComApiCredentials debuggingKey]]) {
                     if ([debugType isEqualToString:@"crashlytics_crash"]) {
                         [[Crashlytics sharedInstance] crash];
                     }
                 }
             }
+		} else if ([[url host] isEqualToString:@"editor"]) {
+			NSDictionary* params = [[url query] dictionaryFromQueryString];
+			
+			if (params.count > 0) {
+				BOOL available = [[params objectForKey:kWPEditorConfigURLParamAvailable] boolValue];
+				BOOL enabled = [[params objectForKey:kWPEditorConfigURLParamEnabled] boolValue];
+				
+				[WPPostViewController setNewEditorAvailable:available];
+				[WPPostViewController setNewEditorEnabled:enabled];
+                
+                if (available) {
+                    [WPAnalytics track:WPAnalyticsStatEditorEnabledNewVersion];
+                }
+				
+				[self showVisualEditorAvailableInSettingsAnimation:available];
+			}
         }
     }
 
@@ -289,7 +311,7 @@ NSInteger const kMeTabIndex                                     = 2;
     if ([rootViewController.presentedViewController isKindOfClass:[UINavigationController class]]) {
         UINavigationController *navController = (UINavigationController *)rootViewController.presentedViewController;
         UIViewController *firstViewController = [navController.viewControllers firstObject];
-        if ([firstViewController isKindOfClass:[EditPostViewController class]]) {
+        if ([firstViewController isKindOfClass:[WPPostViewController class]]) {
             return @"Post Editor";
         } else if ([firstViewController isKindOfClass:[LoginViewController class]]) {
             return @"Login View";
@@ -376,6 +398,68 @@ NSInteger const kMeTabIndex                                     = 2;
     completionHandler();
 }
 
+#pragma mark - OpenURL helpers
+
+/**
+ *  @brief      Handle the a new post request by URL.
+ *  
+ *  @param      url     The URL with the request info.  Cannot be nil.
+ *
+ *  @return     YES if the request was handled, NO otherwise.
+ */
+- (BOOL)handleNewPostRequestWithURL:(NSURL*)url
+{
+    NSParameterAssert([url isKindOfClass:[NSURL class]]);
+    
+    BOOL handled = NO;
+    
+    // Create a new post from data shared by a third party application.
+    NSDictionary *params = [[url query] dictionaryFromQueryString];
+    DDLogInfo(@"App launched for new post with params: %@", params);
+    
+    params = [self sanitizeNewPostParameters:params];
+    
+    if ([params count]) {
+        [self showPostTabWithOptions:params];
+        handled = YES;
+    }
+	
+    return handled;
+}
+
+/**
+ *	@brief		Sanitizes a 'new post' parameters dictionary.
+ *	@details	Prevent HTML injections like the one in:
+ *				https://github.com/wordpress-mobile/WordPress-iOS-Editor/issues/211
+ *
+ *	@param		parameters		The new post parameters to sanitize.  Cannot be nil.
+ *
+ *  @returns    The sanitized dictionary.
+ */
+- (NSDictionary*)sanitizeNewPostParameters:(NSDictionary*)parameters
+{
+    NSParameterAssert([parameters isKindOfClass:[NSDictionary class]]);
+	
+    NSUInteger parametersCount = [parameters count];
+    
+    NSMutableDictionary* sanitizedDictionary = [[NSMutableDictionary alloc] initWithCapacity:parametersCount];
+    
+    for (NSString* key in [parameters allKeys])
+    {
+        NSString* value = [parameters objectForKey:key];
+        
+        if ([key isEqualToString:kWPNewPostURLParamContentKey]) {
+            value = [value stringByStrippingHTML];
+        } else if ([key isEqualToString:kWPNewPostURLParamTagsKey]) {
+            value = [value stringByStrippingHTML];
+        }
+        
+        [sanitizedDictionary setObject:value forKey:key];
+    }
+    
+    return [NSDictionary dictionaryWithDictionary:sanitizedDictionary];
+}
+
 #pragma mark - Custom methods
 
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated
@@ -444,6 +528,8 @@ NSInteger const kMeTabIndex                                     = 2;
     [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[WPStyleGuide wordPressBlue]];
     [[UIToolbar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[UIColor darkGrayColor]];
+    
+    [[UIToolbar appearanceWhenContainedIn:[WPEditorViewController class], nil] setBarTintColor:[UIColor whiteColor]];
 }
 
 #pragma mark - Tab bar methods
@@ -475,8 +561,9 @@ NSInteger const kMeTabIndex                                     = 2;
     readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
     self.readerPostsViewController.title = NSLocalizedString(@"Reader", nil);
     [readerNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
-
-    self.notificationsViewController = [[NotificationsViewController alloc] init];
+    
+    UIStoryboard *notificationsStoryboard = [UIStoryboard storyboardWithName:@"Notifications" bundle:nil];
+    self.notificationsViewController = [notificationsStoryboard instantiateInitialViewController];
     UINavigationController *notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
     notificationsNavigationController.navigationBar.translucent = NO;
     notificationsNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-notifications"];
@@ -537,21 +624,39 @@ NSInteger const kMeTabIndex                                     = 2;
         [presenter dismissViewControllerAnimated:NO completion:nil];
     }
 
-    EditPostViewController *editPostViewController;
-    if (!options) {
-        [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
-        editPostViewController = [[EditPostViewController alloc] initWithDraftForLastUsedBlog];
+    UINavigationController *navController;
+    if ([WPPostViewController isNewEditorEnabled]) {
+        WPPostViewController *editPostViewController;
+        if (!options) {
+            [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
+            editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlog];
+        } else {
+            editPostViewController = [[WPPostViewController alloc] initWithTitle:[options stringForKey:kWPNewPostURLParamTitleKey]
+                                                                      andContent:[options stringForKey:kWPNewPostURLParamContentKey]
+                                                                         andTags:[options stringForKey:kWPNewPostURLParamTagsKey]
+                                                                        andImage:[options stringForKey:kWPNewPostURLParamImageKey]];
+        }
+        navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+        navController.restorationIdentifier = WPEditorNavigationRestorationID;
+        navController.restorationClass = [WPPostViewController class];
     } else {
-        editPostViewController = [[EditPostViewController alloc] initWithTitle:[options stringForKey:@"title"]
-                                                                    andContent:[options stringForKey:@"content"]
-                                                                       andTags:[options stringForKey:@"tags"]
-                                                                      andImage:[options stringForKey:@"image"]];
+        WPLegacyEditPostViewController *editPostLegacyViewController;
+        if (!options) {
+            [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
+            editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithDraftForLastUsedBlog];
+        } else {
+            editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithTitle:[options stringForKey:kWPNewPostURLParamTitleKey]
+                                                                      andContent:[options stringForKey:kWPNewPostURLParamContentKey]
+                                                                         andTags:[options stringForKey:kWPNewPostURLParamTagsKey]
+                                                                        andImage:[options stringForKey:kWPNewPostURLParamImageKey]];
+        }
+        navController = [[UINavigationController alloc] initWithRootViewController:editPostLegacyViewController];
+        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
+        navController.restorationClass = [WPLegacyEditPostViewController class];
     }
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+        
     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
     navController.navigationBar.translucent = NO;
-    navController.restorationIdentifier = WPEditorNavigationRestorationID;
-    navController.restorationClass = [EditPostViewController class];
     [navController setToolbarHidden:NO]; // Make the toolbar visible here to avoid a weird left/right transition when the VC appears.
     [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
 }
@@ -627,13 +732,12 @@ NSInteger const kMeTabIndex                                     = 2;
     if (tabBarController.selectedViewController == viewController) {
         if ([viewController isKindOfClass:[UINavigationController class]]) {
             UINavigationController *navController = (UINavigationController *)viewController;
-            if ([navController topViewController] == [[navController viewControllers] firstObject] &&
-                [[[navController topViewController] view] isKindOfClass:[UITableView class]]) {
+            if (navController.topViewController == navController.viewControllers.firstObject &&
+                [navController.topViewController.view isKindOfClass:[UITableView class]]) {
+                
                 UITableView *tableView = (UITableView *)[[navController topViewController] view];
-
-                if ([tableView numberOfSections] > 0 && [tableView numberOfRowsInSection:0] > 0) {
-                    [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-                }
+                CGPoint topOffset = CGPointMake(0.0f, -tableView.contentInset.top);
+                [tableView setContentOffset:topOffset animated:YES];
             }
         }
     }
@@ -753,7 +857,7 @@ NSInteger const kMeTabIndex                                     = 2;
 - (void)cleanUnusedMediaFileFromTmpDir
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-
+    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     [context performBlock:^{
 
@@ -940,17 +1044,17 @@ NSInteger const kMeTabIndex                                     = 2;
 
 - (void)configureSimperium
 {
-    NSDictionary *bucketOverrides   = @{ @"NoteSimperium" : @"Note" };
-    ContextManager* manager         = [ContextManager sharedInstance];
-
+	ContextManager* manager         = [ContextManager sharedInstance];
+    NSDictionary *bucketOverrides   = @{ NSStringFromClass([Notification class]) : @"note20" };
+    
     self.simperium = [[Simperium alloc] initWithModel:manager.managedObjectModel
-                                              context:manager.mainContext
-                                          coordinator:manager.persistentStoreCoordinator
+											  context:manager.mainContext
+										  coordinator:manager.persistentStoreCoordinator
                                                 label:[NSString string]
                                       bucketOverrides:bucketOverrides];
 
 #ifdef DEBUG
-    self.simperium.verboseLoggingEnabled = YES;
+	self.simperium.verboseLoggingEnabled = false;
 #endif
 }
 
@@ -1217,6 +1321,40 @@ NSInteger const kMeTabIndex                                     = 2;
         [self logoutSimperiumAndResetNotifications];
         [self showWelcomeScreenIfNeededAnimated:NO];
     }
+}
+
+#pragma mark - GUI animations
+
+- (void)showVisualEditorAvailableInSettingsAnimation:(BOOL)available
+{
+	UIView* notificationView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	notificationView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
+	notificationView.alpha = 0.0f;
+	
+	[self.window addSubview:notificationView];
+	
+	[UIView animateWithDuration:0.2f animations:^{
+		notificationView.alpha = 1.0f;
+	} completion:^(BOOL finished) {
+		
+		NSString* statusString = nil;
+		
+		if (available) {
+			statusString = NSLocalizedString(@"Visual Editor added to Settings", nil);
+		} else {
+			statusString = NSLocalizedString(@"Visual Editor removed from Settings", nil);
+		}
+		
+		[SVProgressHUD showSuccessWithStatus:statusString];
+		
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+			[UIView animateWithDuration:0.2f animations:^{
+				notificationView.alpha = 0.0f;
+			} completion:^(BOOL finished) {
+				[notificationView removeFromSuperview];
+			}];
+		});
+	}];
 }
 
 @end

@@ -11,7 +11,6 @@
 @property (nonatomic,   weak) IBOutlet IOS7CorrectedTextView    *textView;
 @property (nonatomic, strong) NSString                          *pristineText;
 @property (nonatomic, assign) CGRect                            keyboardFrame;
-@property (nonatomic, assign) BOOL                              interfaceEnabled;
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification;
 - (void)handleKeyboardWillHide:(NSNotification *)notification;
@@ -46,12 +45,13 @@
 {
     [super viewWillAppear:animated];
 
-    self.textView.text  = self.comment.content;
-    self.pristineText   = self.textView.text;
+    self.textView.text  = self.content;
+    self.pristineText   = self.content;
     
     [self.textView becomeFirstResponder];
     [self enableSaveIfNeeded];
 }
+
 
 #pragma mark - View Helpers
 
@@ -148,22 +148,12 @@
 }
 
 
-#pragma mark - Helper Methods
-
-- (void)dismissWithUpdates:(BOOL)hasUpdates
-{    
-    if ([self.delegate respondsToSelector:@selector(editCommentViewController:finishedWithUpdates:)]) {
-        [self.delegate editCommentViewController:self finishedWithUpdates:hasUpdates];
-    }
-}
-
-
 #pragma mark - UIActionSheet delegate methods
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == actionSheet.destructiveButtonIndex) {
-        [self dismissWithUpdates:NO];
+        [self finishWithoutUpdates];
     }
 }
 
@@ -173,7 +163,7 @@
 - (void)btnCancelPressed
 {
     if (self.hasChanges == NO) {
-        [self dismissWithUpdates:NO];
+        [self finishWithoutUpdates];
         return;
     }
 
@@ -195,28 +185,34 @@
 
 - (void)btnSavePressed
 {
+    self.interfaceEnabled   = NO;
     [self.textView resignFirstResponder];
-    
-    [self setInterfaceEnabled:NO];
-    self.comment.content = self.textView.text;
-    
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
-    
-    [commentService uploadComment:self.comment success:^{
-        [self dismissWithUpdates:YES];
-    } failure:^(NSError *error) {
-        NSString *message = NSLocalizedString(@"There has been an error. Please, try again later", @"Error displayed if a comment fails to get updated");
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                            message:message
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"Accept", nil)
-                                                  otherButtonTitles:nil,
-                                  nil];
-        [alertView show];
-        
-        [self setInterfaceEnabled:YES];
-    }];
+    [self finishWithUpdates];
+}
+
+
+#pragma mark - Helper Methods
+
+- (void)finishWithUpdates
+{
+    if ([self.delegate respondsToSelector:@selector(editCommentViewController:didUpdateContent:)]) {
+        [self.delegate editCommentViewController:self didUpdateContent:self.textView.text];
+    }
+}
+
+- (void)finishWithoutUpdates
+{
+    if ([self.delegate respondsToSelector:@selector(editCommentViewControllerFinished:)]) {
+        [self.delegate editCommentViewControllerFinished:self];
+    }
+}
+
+
+#pragma mark - Static Helpers
+
++ (instancetype)newEditCommentViewController
+{
+    return [[[self class] alloc] initWithNibName:NSStringFromClass([self class]) bundle:nil];
 }
 
 @end

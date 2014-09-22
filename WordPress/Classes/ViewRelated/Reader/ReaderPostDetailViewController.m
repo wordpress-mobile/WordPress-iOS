@@ -371,18 +371,17 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)setupWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    ReaderPostService *service      = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    __weak __typeof(self) weakSelf  = self;
 
     [WPNoResultsView displayAnimatedBoxWithTitle:NSLocalizedString(@"Loading Post...", @"Text displayed while loading a post.")
                                          message:nil
                                             view:self.view];
 
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    ReaderPostService *service      = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    __weak __typeof(self) weakSelf  = self;
+
     [service deletePostsWithNoTopic];
     [service fetchPost:postID.integerValue forSite:siteID.integerValue success:^(ReaderPost *post) {
-
-        [[ContextManager sharedInstance] saveContext:context];
 
         weakSelf.post = post;
         [weakSelf refreshAndSync];
@@ -480,6 +479,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
     [self refreshPostView];
     [self refreshHeightForTableHeaderView];
+
+    // Refresh incase the post needed to be fetched.
+    [self.tableView reloadData];
 
     // Enable Share action only when the post is fully loaded
     self.shareButton.enabled = self.isLoaded;
@@ -781,10 +783,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(NSInteger))success failure:(void (^)(NSError *))failure
 {
     [self.activityFooter startAnimating];
-    NSSet *topComments = [self.post.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"parentID = NULL"]];
-    NSUInteger page = ([topComments count] / WPTopLevelHierarchicalCommentsPerPage) + 1;
 
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    NSInteger page = [service numberOfHierarchicalPagesSyncedforPost:self.post] + 1;
     [service syncHierarchicalCommentsForPost:self.post page:page success:success failure:failure];
 }
 
@@ -808,6 +809,10 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (NSFetchRequest *)fetchRequest
 {
+    if (!self.post) {
+        return nil;
+    }
+    
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:[self entityName]];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = %@", self.post];
 
@@ -819,8 +824,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)configureCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath
 {
-    ReaderCommentCell *cell = (ReaderCommentCell *)aCell;
 
+    ReaderCommentCell *cell = (ReaderCommentCell *)aCell;
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     [cell configureCell:comment];
 
