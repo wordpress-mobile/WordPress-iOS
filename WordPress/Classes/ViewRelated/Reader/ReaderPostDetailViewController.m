@@ -825,9 +825,16 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)configureCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath
 {
-
     ReaderCommentCell *cell = (ReaderCommentCell *)aCell;
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    if (indexPath.row > 0) {
+        NSIndexPath *previousPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section];
+        Comment *previousComment = [self.tableViewHandler.resultsController objectAtIndexPath:previousPath];
+        if (previousComment.depth > comment.depth) {
+            cell.needsTopPadding = YES;
+        }
+    }
+
     [cell configureCell:comment];
 
     if ([cell isEqual:self.cellForLayout]) {
