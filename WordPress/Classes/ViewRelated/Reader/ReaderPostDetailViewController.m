@@ -614,6 +614,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     if ([self.view.gestureRecognizers containsObject:self.tapOffKeyboardGesture]) {
         [self.view removeGestureRecognizer:self.tapOffKeyboardGesture];
     }
+
     [self.inlineComposeView dismissComposer];
 }
 
@@ -885,56 +886,28 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         case 3:
             cellIdentifier = CommentDepth3CellIdentifier;
             break;
-        case 4:
+        default:
             cellIdentifier = CommentDepth4CellIdentifier;
-            break;
     }
 
     ReaderCommentCell *cell = (ReaderCommentCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     cell.delegate = self;
     cell.accessoryType = UITableViewCellAccessoryNone;
+    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 
     [self configureCell:cell atIndexPath:indexPath];
 
     return cell;
 }
 
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-
-    // if a row is already selected don't allow selection of another
-    if (self.inlineComposeView.isDisplayed) {
-        if (comment == self.commentPublisher.comment) {
-            [self.inlineComposeView toggleComposer];
-        }
-        return nil;
-    }
-
-    self.commentPublisher.post = self.post;
-    self.commentPublisher.comment = comment;
-    
-    if ([self canComment]) {
-        [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
-
-        [self.inlineComposeView displayComposer];
-    }
-
-    return indexPath;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (![self canComment]) {
-        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-        return;
-    }
-
-    [self.tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewRowAnimationTop animated:YES];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    return NO;
     // if we selected the already active comment allow highlight
     // so we can toggle the inline composer
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
@@ -995,7 +968,22 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)commentCell:(UITableViewCell *)cell replyToComment:(Comment *)comment
 {
-    // TODO: show the comment reply form
+    // if a row is already selected don't allow selection of another
+    if (self.inlineComposeView.isDisplayed) {
+        [self.inlineComposeView toggleComposer];
+        return;
+    }
+
+    self.commentPublisher.post = self.post;
+    self.commentPublisher.comment = comment;
+
+    if ([self canComment]) {
+        [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
+
+        [self.inlineComposeView displayComposer];
+    }
+
+    [self.tableView selectRowAtIndexPath:[self.tableView indexPathForCell:cell] animated:YES scrollPosition:UITableViewScrollPositionTop];
 }
 
 
