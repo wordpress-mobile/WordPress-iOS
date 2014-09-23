@@ -12,6 +12,7 @@
 @interface ReaderCommentCell : WPTableViewCell
 
 @property (nonatomic, weak) id<ReaderCommentCellDelegate> delegate;
+@property (nonatomic) BOOL needsTopPadding;
 
 - (void)configureCell:(Comment *)comment;
 - (void)setAvatarImage:(UIImage *)avatarImage;

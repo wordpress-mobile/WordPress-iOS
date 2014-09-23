@@ -15,8 +15,7 @@ static const CGFloat ReaderCommentCellSidePadding = 12.0;
 @property (nonatomic, strong) UIView *borderView;
 @property (nonatomic, strong) UIView *nestingView;
 @property (nonatomic, strong) CommentContentView *commentContentView;
-@property (nonatomic, strong) NSLayoutConstraint *zeroTopMarginConstraint;
-@property (nonatomic, strong) NSLayoutConstraint *defaultTopMarginConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *topMarginConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *leftIndentationConstraint;
 
 @end
@@ -48,8 +47,8 @@ static const CGFloat ReaderCommentCellSidePadding = 12.0;
         [self.contentView addSubview:_commentContentView];
 
         [self configureConstraints];
-        [self configureCommentContentTopPadding];
     }
+
     return self;
 }
 
@@ -61,7 +60,7 @@ static const CGFloat ReaderCommentCellSidePadding = 12.0;
 
     CGSize commentContentViewSize = [self.commentContentView sizeThatFits:CGSizeMake(adjustedWidth, size.height)];
     CGFloat desiredHeight = commentContentViewSize.height + ReaderCommentCellBottomPadding;
-    if (self.indentationLevel == 0) {
+    if (self.indentationLevel == 0 || self.needsTopPadding) {
         desiredHeight += ReaderCommentCellTopPadding;
     }
     return CGSizeMake(size.width, desiredHeight);
@@ -71,6 +70,7 @@ static const CGFloat ReaderCommentCellSidePadding = 12.0;
 {
     [super prepareForReuse];
 
+    self.needsTopPadding = NO;
     self.indentationLevel = 0;
     [self.commentContentView reset];
 }
@@ -89,8 +89,7 @@ static const CGFloat ReaderCommentCellSidePadding = 12.0;
 
     self.borderView.hidden = self.indentationLevel != 0;
     self.leftIndentationConstraint.constant = ReaderCommentCellSidePadding + (self.indentationLevel * self.indentationWidth);
-
-    [self configureCommentContentTopPadding];
+    self.topMarginConstraint.constant = (self.indentationLevel == 0 || self.needsTopPadding) ? ReaderCommentCellTopPadding : 0.0;
 
     self.commentContentView.contentProvider = comment;
 
@@ -152,52 +151,15 @@ static const CGFloat ReaderCommentCellSidePadding = 12.0;
                                                                  multiplier:1.0
                                                                    constant:ReaderCommentCellSidePadding];
     [self.contentView addConstraint:self.leftIndentationConstraint];
-}
 
-- (void)configureCommentContentTopPadding
-{
-    if (!self.zeroTopMarginConstraint) {
-        self.zeroTopMarginConstraint = [NSLayoutConstraint constraintWithItem:self.commentContentView
-                                                                    attribute:NSLayoutAttributeTop
-                                                                    relatedBy:NSLayoutRelationEqual
-                                                                       toItem:self.contentView
-                                                                    attribute:NSLayoutAttributeTop
-                                                                   multiplier:1.0
-                                                                     constant:0];
-    }
-
-    if (!self.defaultTopMarginConstraint) {
-        self.defaultTopMarginConstraint = [NSLayoutConstraint constraintWithItem:self.commentContentView
-                                                                       attribute:NSLayoutAttributeTop
-                                                                       relatedBy:NSLayoutRelationEqual
-                                                                          toItem:self.contentView
-                                                                       attribute:NSLayoutAttributeTop
-                                                                      multiplier:1.0
-                                                                        constant:ReaderCommentCellTopPadding];
-    }
-
-    NSLayoutConstraint *constraintToAdd;
-    NSLayoutConstraint *constraintToRemove;
-
-    if (self.indentationLevel == 0) {
-        constraintToAdd = self.defaultTopMarginConstraint;
-        constraintToRemove = self.zeroTopMarginConstraint;
-    } else {
-        constraintToRemove = self.defaultTopMarginConstraint;
-        constraintToAdd = self.zeroTopMarginConstraint;
-    }
-
-    // Remove the old constraint if necessary.
-    if ([self.contentView.constraints indexOfObject:constraintToRemove] != NSNotFound) {
-        [self.contentView removeConstraint:constraintToRemove];
-    }
-
-    // Add the new constraint and update if necessary.
-    if ([self.contentView.constraints indexOfObject:constraintToAdd] == NSNotFound) {
-        [self.contentView addConstraint:constraintToAdd];
-    }
-
-    [self.contentView setNeedsUpdateConstraints];
+    self.topMarginConstraint = [NSLayoutConstraint constraintWithItem:self.commentContentView
+                                                            attribute:NSLayoutAttributeTop
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:self.contentView
+                                                            attribute:NSLayoutAttributeTop
+                                                           multiplier:1.0
+                                                             constant:ReaderCommentCellTopPadding];
+    [self.contentView addConstraint:self.topMarginConstraint];
 }
 
 
