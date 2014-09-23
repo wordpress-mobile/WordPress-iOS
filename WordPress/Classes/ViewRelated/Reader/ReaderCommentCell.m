@@ -1,8 +1,9 @@
 #import "ReaderCommentCell.h"
 #import "Comment.h"
 #import "CommentContentView.h"
+#import "ReaderPost.h"
 
-static const NSInteger ReaderCommentCellMaxIndentationLevel = 5;
+static const NSInteger ReaderCommentCellMaxIndentationLevel = 4;
 static const CGFloat ReaderCommentCellIndentationWidth = 16.0;
 static const CGFloat ReaderCommentCellTopPadding = 12.0;
 static const CGFloat ReaderCommentCellBottomPadding = 20.0;
@@ -17,6 +18,7 @@ static const CGFloat ReaderCommentCellSidePadding = 12.0;
 @property (nonatomic, strong) NSLayoutConstraint *zeroTopMarginConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *defaultTopMarginConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *leftIndentationConstraint;
+
 @end
 
 
@@ -42,6 +44,7 @@ static const CGFloat ReaderCommentCellSidePadding = 12.0;
 
         _commentContentView = [[CommentContentView alloc] initWithFrame:self.bounds];
         _commentContentView.translatesAutoresizingMaskIntoConstraints = NO;
+        _commentContentView.delegate = self;
         [self.contentView addSubview:_commentContentView];
 
         [self configureConstraints];
@@ -92,10 +95,11 @@ static const CGFloat ReaderCommentCellSidePadding = 12.0;
     self.commentContentView.contentProvider = comment;
 
     // Highlighting the author of the post
-//    NSString *authorUrl = comment.author_url;
-//    if ([authorUrl isEqualToString:comment.post.authorURL]) {
-//        [self.commentContentView highlightAuthor:YES];
-//    }
+    NSString *authorUrl = comment.author_url;
+    ReaderPost *post = (ReaderPost *)comment.post;
+    if ([authorUrl isEqualToString:post.authorURL]) {
+        [self.commentContentView highlightAuthor:YES];
+    }
 }
 
 
