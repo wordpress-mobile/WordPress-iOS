@@ -8,7 +8,6 @@
 #import "CustomHighlightButton.h"
 #import "InlineComposeView.h"
 #import "ReaderCommentPublisher.h"
-//#import "ReaderCommentTableViewCell.h"
 #import "ReaderCommentCell.h"
 #import "ReaderPost.h"
 #import "ReaderPostRichContentView.h"
@@ -39,7 +38,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 @interface ReaderPostDetailViewController ()<
                                             ReaderCommentPublisherDelegate,
-//                                            ReaderCommentTableViewCellDelegate,
                                             ReaderCommentCellDelegate,
                                             ReaderPostContentViewDelegate,
                                             RebloggingViewControllerDelegate,
@@ -147,7 +145,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
     [self.inlineComposeView dismissComposer];
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
@@ -160,6 +157,15 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         // No need to refresh on iPad when using a fixed width.
         [self.postView refreshMediaLayout];
         [self refreshHeightForTableHeaderView];
+
+        // DTCoreText can be cranky about refreshing its rendered text when its
+        // frame changes, even when setting its relayoutMask. Setting setNeedsLayout
+        // on the cell prior to reloading seems to force the cell's
+        // DTAttributedTextContentView to behave.
+        for (UITableViewCell *cell in [self.tableView visibleCells]) {
+            [cell setNeedsLayout];
+        }
+        [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 
     // Make sure a selected comment is visible after rotating.
