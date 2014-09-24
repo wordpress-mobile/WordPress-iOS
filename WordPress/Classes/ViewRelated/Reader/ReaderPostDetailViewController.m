@@ -833,11 +833,20 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     ReaderCommentCell *cell = (ReaderCommentCell *)aCell;
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    if (indexPath.row > 0) {
+
+    if (comment.depth > 0 && indexPath.row > 0) {
         NSIndexPath *previousPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section];
         Comment *previousComment = [self.tableViewHandler.resultsController objectAtIndexPath:previousPath];
-        if (previousComment.depth > comment.depth) {
-            cell.needsTopPadding = YES;
+        if (previousComment.depth < comment.depth) {
+            cell.isFirstNestedComment = YES;
+        }
+    }
+
+    if (indexPath.row < [self.tableView numberOfRowsInSection:indexPath.section] - 1) {
+        NSIndexPath *nextPath = [NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section];
+        Comment *nextComment = [self.tableViewHandler.resultsController objectAtIndexPath:nextPath];
+        if (nextComment.depth == 0) {
+            cell.needsExtraPadding = YES;
         }
     }
 
@@ -906,7 +915,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     ReaderCommentCell *cell = (ReaderCommentCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     cell.delegate = self;
     cell.accessoryType = UITableViewCellAccessoryNone;
-    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+//    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+
+    
 
     [self configureCell:cell atIndexPath:indexPath];
 
