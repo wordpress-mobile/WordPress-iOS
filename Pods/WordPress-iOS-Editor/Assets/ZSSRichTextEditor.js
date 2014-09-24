@@ -28,6 +28,12 @@ zss_editor.currentEditingLink;
 // The objects that are enabled
 zss_editor.enabledItems = {};
 
+// The placeholder text to show when editing if the body is empty.
+zss_editor.bodyPlaceholder = '';
+
+// The placeholder text color
+zss_editor.bodyPlaceholderColor = '';
+
 /**
  * The initializer function that must be called onLoad
  */
@@ -65,25 +71,49 @@ zss_editor.init = function() {
 			}
 		}, 400);
 	});
-	
-	editor.bind('focus', function(e) {
+    
+    editor.bind('focus', function(e) {
+        editor.css('color', '');
+                
 		zss_editor.callback("callback-focus-in");
 	});
 	
-	editor.bind('blur', function(e) {
-		zss_editor.callback("callback-focus-out");
+    editor.bind('blur', function(e) {
+                
+        // IMPORTANT: sometimes HTML leaves some <br> tags or &nbsp; when the user deletes all
+        // text from a contentEditable field.  This code makes sure no such 'garbage' survives.
+        //
+        if (editor.text().length == 0) {
+            editor.empty();
+        }
+                
+        if (zss_editor.bodyPlaceholderColor) {
+            zss_editor.refreshPlaceholderColor();
+        }
+                
+        zss_editor.callback("callback-focus-out");
 	});
 	
-	editor.bind('keypress', function(e) {
-		zss_editor.sendEnabledStyles(e);
+    editor.bind('keydown', function(e) {
         zss_editor.formatNewLine(e);
-		zss_editor.callback("callback-user-triggered-change");
 	});
+    
+    editor.bind('input', function(e) {
+        zss_editor.inputCallback();
+    });
 
 }//end
 
+// MARK: - Logging
+
 zss_editor.log = function(msg) {
 	zss_editor.callback(callback-log, msg);
+}
+
+// MARK: - Callbacks
+
+zss_editor.inputCallback = function() {
+    zss_editor.callback("callback-input");
 }
 
 zss_editor.domLoadedCallback = function() {
@@ -92,7 +122,7 @@ zss_editor.domLoadedCallback = function() {
 }
 
 zss_editor.callback = function(callbackScheme, callbackPath) {
-	
+    
 	var url =  callbackScheme + ":";
  
 	if (callbackPath) {
@@ -100,10 +130,27 @@ zss_editor.callback = function(callbackScheme, callbackPath) {
 	}
 	
 	if (zss_editor.isUsingiOS) {
-		window.location = url;
+        zss_editor.callbackThroughIFrame(url);
 	} else {
 		console.log(url);
 	}
+}
+
+/**
+ *  @brief      Executes a callback by loading it into an IFrame.
+ *  @details    The reason why we're using this instead of window.location is that window.location
+ *              can sometimes fail silently when called multiple times in rapid succession.
+ *              Found here:
+ *              http://stackoverflow.com/questions/10010342/clicking-on-a-link-inside-a-webview-that-will-trigger-a-native-ios-screen-with/10080969#10080969
+ *
+ *  @param      url     The callback URL.
+ */
+zss_editor.callbackThroughIFrame = function(url) {
+    var iframe = document.createElement("IFRAME");
+    iframe.setAttribute("src", url);
+    document.documentElement.appendChild(iframe);
+    iframe.parentNode.removeChild(iframe);
+    iframe = null;
 }
 
 zss_editor.stylesCallback = function(stylesArray) {
@@ -116,6 +163,15 @@ zss_editor.stylesCallback = function(stylesArray) {
 
 	zss_editor.callback("callback-selection-style", stylesString);
 }
+
+// MARK: - Placeholder
+
+zss_editor.refreshPlaceholderColor = function() {
+    var placeholderDiv = $('div[placeholderText][contenteditable=true]:empty:not(:focus)');
+    placeholderDiv.css('color', zss_editor.bodyPlaceholderColor);
+}
+
+// MARK: - Selection
 
 zss_editor.backuprange = function(){
 	var selection = window.getSelection();
@@ -137,6 +193,8 @@ zss_editor.getSelectedText = function() {
 	
 	return selection.toString();
 }
+
+// MARK: - Styles
 
 zss_editor.setBold = function() {
 	document.execCommand('bold', false, null);
@@ -222,52 +280,6 @@ zss_editor.setBlockquote = function() {
 	}
 
 	 zss_editor.sendEnabledStyles();
-
-	/* DRM: the following code has been disabled for the time being, but it's a good starting point
-	 for being able to apply blockquote to your selection only.
-	 
-	var formatBlock = document.queryCommandValue('formatBlock');
-	
-	if (formatBlock.length > 0 && formatBlock.toLowerCase() == "blockquote") {
-
-		var selection = document.getSelection();
-		alert(selection);
-		var range = selection.getRangeAt(0).cloneRange();
-		alert(range);
-		var container = range.commonAncestorContainer;
-		
-		alert(container.nodeName);
-		
-		while (container && container.elementName != "blockquote")
-		{
-			container = container.parentElement();
-		}
-		
-		if (container) {
-			container.contents().unwrap();
-		}
-	} else {
-		var selection = document.getSelection();
-		
-		if (selection) {
-			if (selection.rangeCount) {
-				
-				var elementName = "blockquote";
-				var el = document.createElement(elementName);
-				
-				var range = selection.getRangeAt(0).cloneRange();
-				range.surroundContents(el);
-				
-				range.selectNodeContents(el)
-				
-				selection.removeAllRanges();
-				selection.addRange(range);
-			}
-		}
-	}
-	
-	zss_editor.sendEnabledStyles();
-	 */
 }
 
 zss_editor.removeFormating = function() {
@@ -479,9 +491,16 @@ zss_editor.insertImage = function(url, alt) {
 	zss_editor.sendEnabledStyles();
 }
 
+zss_editor.isBodyEmpty = function() {
+    var html = zss_editor.getHTML();
+    var isEmpty = (html.length == 0 || html == "<br>");
+    
+    return isEmpty;
+}
+
 zss_editor.setHTML = function(html) {
-	var editor = $('#zss_editor_content');
-	editor.html(html);
+    var editor = $('#zss_editor_content');
+    editor.html(html);
 }
 
 zss_editor.insertHTML = function(html) {
@@ -527,58 +546,6 @@ zss_editor.getHTML = function() {
 
 zss_editor.isCommandEnabled = function(commandName) {
 	return document.queryCommandState(commandName);
-}
-
-zss_editor.closerParentNode = function(nodeName) {
-	
-	nodeName = nodeName.toLowerCase();
-	
-	var parentNode = null;
-	var selection = window.getSelection();
-	var range = selection.getRangeAt(0).cloneRange();
-	
-	var currentNode = range.commonAncestorContainer;
-	
-	while (currentNode) {
-		
-		if (currentNode.nodeName == document.body.nodeName) {
-			break;
-		}
-		
-		if (currentNode.nodeName.toLowerCase() == nodeName
-			&& currentNode.nodeType == document.ELEMENT_NODE) {
-			parentNode = currentNode;
-			
-			break;
-		}
-		
-		currentNode = currentNode.parentElement;
-	}
-	
-	return parentNode;
-}
-
-zss_editor.parentTags = function() {
-	
-	var parentTags = [];
-	var selection = window.getSelection();
-	var range = selection.getRangeAt(0);
-	
-	var currentNode = range.commonAncestorContainer;
-	while (currentNode) {
-		
-		if (currentNode.nodeName == document.body.nodeName) {
-			break;
-		}
-		
-		if (currentNode.nodeType == document.ELEMENT_NODE) {
-			parentTags.push(currentNode);
-		}
-		
-		currentNode = currentNode.parentElement;
-	}
-	
-	return parentTags;
 }
 
 zss_editor.formatNewLine = function(e) {
@@ -728,6 +695,73 @@ zss_editor.sendEnabledStyles = function(e) {
 	zss_editor.stylesCallback(items);
 }
 
+// MARK: - Placeholder
+
+zss_editor.setBodyPlaceholder = function(placeholder) {
+    $('#zss_editor_content').attr('placeholderText', placeholder);
+}
+
+zss_editor.setBodyPlaceholderColor = function(color) {
+    zss_editor.bodyPlaceholderColor = color;
+    zss_editor.refreshPlaceholderColor()
+}
+
+// MARK: - Parent nodes & tags
+
+zss_editor.closerParentNode = function(nodeName) {
+    
+    nodeName = nodeName.toLowerCase();
+    
+    var parentNode = null;
+    var selection = window.getSelection();
+    var range = selection.getRangeAt(0).cloneRange();
+    
+    var currentNode = range.commonAncestorContainer;
+    
+    while (currentNode) {
+        
+        if (currentNode.nodeName == document.body.nodeName) {
+            break;
+        }
+        
+        if (currentNode.nodeName.toLowerCase() == nodeName
+            && currentNode.nodeType == document.ELEMENT_NODE) {
+            parentNode = currentNode;
+            
+            break;
+        }
+        
+        currentNode = currentNode.parentElement;
+    }
+    
+    return parentNode;
+}
+
+zss_editor.parentTags = function() {
+    
+    var parentTags = [];
+    var selection = window.getSelection();
+    var range = selection.getRangeAt(0);
+    
+    var currentNode = range.commonAncestorContainer;
+    while (currentNode) {
+        
+        if (currentNode.nodeName == document.body.nodeName) {
+            break;
+        }
+        
+        if (currentNode.nodeType == document.ELEMENT_NODE) {
+            parentTags.push(currentNode);
+        }
+        
+        currentNode = currentNode.parentElement;
+    }
+    
+    return parentTags;
+}
+
+// MARK: - Focus
+
 zss_editor.isFocused = function() {
 
 	return $('#zss_editor_content').is(":focus");
@@ -746,11 +780,18 @@ zss_editor.blurEditor = function() {
 	}
 }
 
+// MARK: - Editing
+
 zss_editor.enableEditing = function () {
-	$('#zss_editor_content').contentEditable = true;
+    $('#zss_editor_content').attr('contenteditable', true);
 }
 
 zss_editor.disableEditing = function () {
+    // IMPORTANT: we're blurring the editor before making it non-editable since that ensures
+    // that the iOS keyboard is dismissed through an animation, as opposed to being immediately
+    // removed from the screen.
+    //
     zss_editor.blurEditor();
-	$('#zss_editor_content').contentEditable = false;
+    
+    $('#zss_editor_content').attr('contenteditable', false);
 }
