@@ -845,7 +845,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     if (indexPath.row < [self.tableView numberOfRowsInSection:indexPath.section] - 1) {
         NSIndexPath *nextPath = [NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section];
         Comment *nextComment = [self.tableViewHandler.resultsController objectAtIndexPath:nextPath];
-        if (nextComment.depth == 0) {
+        if ([nextComment.depth integerValue] == 0) {
             cell.needsExtraPadding = YES;
         }
     }
@@ -916,8 +916,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     cell.delegate = self;
     cell.accessoryType = UITableViewCellAccessoryNone;
 //    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-
-    
 
     [self configureCell:cell atIndexPath:indexPath];
 
