@@ -418,7 +418,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
     actionSheet.tag = kWPPostViewControllerSaveOnExitActionSheetTag;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
     if (IS_IPAD) {
-        [actionSheet showFromBarButtonItem:_cancelButton animated:YES];
+        [actionSheet showFromBarButtonItem:self.cancelButton animated:YES];
     } else {
         [actionSheet showFromToolbar:self.navigationController.toolbar];
     }
