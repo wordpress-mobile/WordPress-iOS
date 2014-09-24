@@ -679,7 +679,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 
 - (UIBarButtonItem*)cancelChevronButton
 {
-    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-left-chevron"
+    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-chevron"
                                                                         frame:CGRectMake(0.0f, 0.0f, 40.0f, 40.0f)
                                                                        target:self
                                                                      selector:@selector(cancelEditing)];
