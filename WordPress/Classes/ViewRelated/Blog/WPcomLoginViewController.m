@@ -198,6 +198,7 @@
             passwordCell.textField.keyboardType = UIKeyboardTypeDefault;
             passwordCell.textField.secureTextEntry = YES;
             passwordCell.textField.tag = 1;
+            passwordCell.textField.returnKeyType = UIReturnKeyDone;
             passwordCell.textField.delegate = self;
             if (isSigningIn) {
                 [passwordCell.textField resignFirstResponder];
