@@ -3,7 +3,7 @@ import Foundation
 
 @objc public class NoteBlockCommentTableViewCell : NoteBlockTextTableViewCell
 {
-    public typealias EventHandler = (() -> Void)
+    public typealias EventHandler = ((sender: AnyObject) -> Void)
 
     // MARK: - Public Properties
     public var onLikeClick:         EventHandler?
@@ -142,29 +142,29 @@ import Foundation
     // MARK: - IBActions
     @IBAction public func likeWasPressed(sender: AnyObject) {
         let handler = isLikeOn ? onUnlikeClick : onLikeClick
-        hitEventHandler(handler)
+        hitEventHandler(handler, sender: sender)
         isLikeOn = !isLikeOn
     }
     
     @IBAction public func approveWasPressed(sender: AnyObject) {
         let handler = isApproveOn ? onUnapproveClick : onApproveClick
-        hitEventHandler(handler)
+        hitEventHandler(handler, sender: sender)
         isApproveOn = !isApproveOn
     }
     
     @IBAction public func trashWasPressed(sender: AnyObject) {
-        hitEventHandler(onTrashClick)
+        hitEventHandler(onTrashClick, sender: sender)
     }
     
     @IBAction public func moreWasPressed(sender: AnyObject) {
-        hitEventHandler(onMoreClick)
+        hitEventHandler(onMoreClick, sender: sender)
     }
     
     
     // MARK: - Private Methods
-    private func hitEventHandler(handler: EventHandler?) {
+    private func hitEventHandler(handler: EventHandler?, sender: AnyObject) {
         if let listener = handler {
-            listener()
+            listener(sender: sender)
         }
     }
     
