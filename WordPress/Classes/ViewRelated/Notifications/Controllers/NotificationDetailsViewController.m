@@ -276,7 +276,8 @@ static CGFloat NotificationSectionSeparator     = 10;
     NotificationDetailsViewController *vc   = [storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
     vc.restorationIdentifier                = [identifierComponents lastObject];
     vc.restorationClass                     = [NotificationDetailsViewController class];
-    vc.note                                 = restoredNotification;
+    
+    [vc setupWithNotification:restoredNotification];
     
     return vc;
 }

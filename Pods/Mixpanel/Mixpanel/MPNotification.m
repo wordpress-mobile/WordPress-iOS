@@ -27,7 +27,7 @@ NSString *const MPNotificationTypeTakeover = @"takeover";
         NSLog(@"invalid notif id: %@", ID);
         return nil;
     }
-    
+
     NSNumber *messageID = object[@"message_id"];
     if (!([messageID isKindOfClass:[NSNumber class]] && [messageID integerValue] > 0)) {
         NSLog(@"invalid notif message id: %@", messageID);
@@ -94,6 +94,12 @@ NSString *const MPNotificationTypeTakeover = @"takeover";
         }
     }
 
+    NSArray *supportedOrientations = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"UISupportedInterfaceOrientations"];
+    if (![supportedOrientations containsObject:@"UIInterfaceOrientationPortrait"] && [type isEqualToString:@"takeover"]) {
+        NSLog(@"takeover notifications are not supported in landscape-only apps.");
+        return nil;
+    }
+
     return [[MPNotification alloc] initWithID:[ID unsignedIntegerValue]
                                     messageID:[messageID unsignedIntegerValue]
                                           type:type
@@ -149,7 +155,7 @@ NSString *const MPNotificationTypeTakeover = @"takeover";
         NSData *imageData = [NSData dataWithContentsOfURL:_imageURL options:NSDataReadingMappedIfSafe error:&error];
         if (error || !imageData) {
             NSLog(@"image failed to load from URL: %@", _imageURL);
-            return NO;
+            return nil;
         }
         _image = imageData;
     }
