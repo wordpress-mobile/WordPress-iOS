@@ -218,6 +218,9 @@ static const CGFloat CommentContentViewContentOffsetLeft = 40.0;
     [button setTitleColor:[WPStyleGuide jazzyOrange] forState:UIControlStateHighlighted];
     [button setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateDisabled];
 
+    [button setImage:[UIImage imageNamed:@"icon-reader-comment-reply"] forState:UIControlStateNormal];
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, 4, 0, -4);
+
     [button addTarget:self action:@selector(handleReplyTapped:) forControlEvents:UIControlEventTouchUpInside];
 
     return button;
