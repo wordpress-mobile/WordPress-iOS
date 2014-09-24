@@ -44,6 +44,9 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
 
+#pragma mark - Bar Button Items
+@property (nonatomic, strong, readwrite) UIBarButtonItem *saveBarButtonItem;
+
 @end
 
 @implementation WPPostViewController
@@ -195,7 +198,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 	
     // Display the "back" chevron without text
     self.navigationController.navigationBar.topItem.title = @"";
-	[self refreshNavigationBar];
+    [self refreshNavigationBar:NO];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -383,7 +386,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 		if (self.editMode == EditPostViewControllerModeNewPost) {
 			[self discardChangesAndDismiss];
 		} else {
-			[self refreshNavigationBar];
+            [self refreshNavigationBar:YES];
             [self discardChanges];
 		}
         return;
@@ -534,9 +537,9 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 
 #pragma mark - UI Manipulation
 
-- (void)refreshNavigationBar
+- (void)refreshNavigationBar:(BOOL)editingChanged
 {
-    [self refreshNavigationBarButtons];
+    [self refreshNavigationBarButtons:editingChanged];
 	
     // Configure the custom title view, or just set the navigationItem title.
     // Only show the blog selector in the nav title view if we're editing a new post
@@ -564,13 +567,20 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
     }
 }
 
-- (void)refreshNavigationBarButtons
+/**
+ *  @brief      Refreshes the navigation bar buttons.
+ *  
+ *  @param      editingChanged      Should be YES if this call is triggered by an editing status
+ *                                  change (ie: it it's triggered by the VC going into edit mode
+ *                                  or vice-versa).
+ */
+- (void)refreshNavigationBarButtons:(BOOL)editingChanged
 {
-    [self refreshNavigationBarLeftButton];
-    [self refreshNavigationBarRightButton];
+    [self refreshNavigationBarLeftButtons:editingChanged];
+    [self refreshNavigationBarRightButtons:editingChanged];
 }
 
-- (void)refreshNavigationBarLeftButton
+- (void)refreshNavigationBarLeftButtons:(BOOL)editingChanged
 {
 	if ([self isEditing]) {
         
@@ -586,15 +596,22 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 	}
 }
 
-- (void)refreshNavigationBarRightButton
+- (void)refreshNavigationBarRightButtons:(BOOL)editingChanged
 {
 	if ([self isEditing]) {
-		NSArray* rightBarButtons = @[[self saveBarButtonItem],
-									 [self optionsBarButtonItem],
-									 [self previewBarButtonItem]];
-		
-		[self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
-		
+        
+        UIBarButtonItem* saveBarButtonItem = [self saveBarButtonItem];
+        
+        if (editingChanged) {
+            NSArray* rightBarButtons = @[saveBarButtonItem,
+                                         [self optionsBarButtonItem],
+                                         [self previewBarButtonItem]];
+            
+            [self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
+        } else {
+            saveBarButtonItem.title = [self saveBarButtonItemTitle];
+        }
+
 		BOOL updateEnabled = self.hasChanges || self.post.remoteStatus == AbstractPostRemoteStatusFailed;
 		[self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];
 		
@@ -725,28 +742,40 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 
 - (UIBarButtonItem *)saveBarButtonItem
 {
-	NSString *buttonTitle;
-	
-	if(![self.post hasRemote] || ![self.post.status isEqualToString:self.post.original.status]) {
-		if ([self.post.status isEqualToString:@"publish"] && ([self.post.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
-			buttonTitle = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
-			
-		} else if ([self.post.status isEqualToString:@"publish"]){
-			buttonTitle = NSLocalizedString(@"Post", @"Publish button label.");
-			
-		} else {
-			buttonTitle = NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).");
-		}
-	} else {
-		buttonTitle = NSLocalizedString(@"Update", @"Update button label (saving content, ex: Post, Page, Comment).");
-	}
-	
-	UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
-																   style:[WPStyleGuide barButtonStyleForDone]
-																  target:self
-																  action:@selector(saveAction)];
-	
-	return saveButton;
+    if (!_saveBarButtonItem) {
+        NSString *buttonTitle = [self saveBarButtonItemTitle];
+
+        UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
+                                                                       style:[WPStyleGuide barButtonStyleForDone]
+                                                                      target:self
+                                                                      action:@selector(saveAction)];
+        
+        _saveBarButtonItem = saveButton;
+    }
+
+	return _saveBarButtonItem;
+}
+
+- (NSString*)saveBarButtonItemTitle
+{
+    NSString *buttonTitle = nil;
+    
+    if(![self.post hasRemote] || ![self.post.status isEqualToString:self.post.original.status]) {
+        if ([self.post.status isEqualToString:@"publish"] && ([self.post.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
+            buttonTitle = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
+            
+        } else if ([self.post.status isEqualToString:@"publish"]){
+            buttonTitle = NSLocalizedString(@"Post", @"Publish button label.");
+            
+        } else {
+            buttonTitle = NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).");
+        }
+    } else {
+        buttonTitle = NSLocalizedString(@"Update", @"Update button label (saving content, ex: Post, Page, Comment).");
+    }
+    NSAssert([buttonTitle isKindOfClass:[NSString class]], @"Expected to have a title at this point.");
+    
+    return buttonTitle;
 }
 
 - (UIButton *)titleBarButton
@@ -1193,7 +1222,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 												withAnimation:UIStatusBarAnimationSlide];
 	}
     
-    [self refreshNavigationBarButtons];
+    [self refreshNavigationBarButtons:YES];
 }
 
 - (void)editorDidEndEditing:(WPEditorViewController *)editorController
@@ -1206,13 +1235,13 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
              titleWillChange:(NSString *)title
 {
     [self autosaveContentWithTitle:title];
-    [self refreshNavigationBarButtons];
+    [self refreshNavigationBarButtons:NO];
 }
 
 - (void)editorTextDidChange:(WPEditorViewController *)editorController
 {
     [self autosaveContent];
-    [self refreshNavigationBarButtons];
+    [self refreshNavigationBarButtons:NO];
 }
 
 - (void)editorDidPressSettings:(WPEditorViewController *)editorController
@@ -1276,7 +1305,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([object isEqual:_mediaUploadQueue]) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self refreshNavigationBar];
+            [self refreshNavigationBar:NO];
         });
     }
 }
