@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>ZSSRichTextEditor</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <script>
     /*! jQuery v2.0.3 | (c) 2005, 2013 jQuery Foundation, Inc. | jquery.org/license
     //@ sourceMappingURL=jquery-2.0.3.min.map
@@ -795,34 +795,45 @@ function style_html(html_source, options) {
 
     <style type="text/css">
         * {outline: 0px solid transparent; -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-touch-callout: none;}
+        
+        html {
+            box-sizing: border-box;
+            min-height: 100vh !important;
+        }
+        
         html, body {
             padding:0;
             margin:0;
             font-family:OpenSans, sans-serif;
             font-size:1em;
             color:#2D2D2D;
-            height: 100%;
         }
-    
+
         body {
-            padding: 10px 10px 50px;
             overflow-y: scroll;
             -webkit-overflow-scrolling: touch;
+            height: auto;
+            min-height: initial;
         }
     
 		img {max-width: 100%; width: auto; height: auto;}
         img.zs_active {border: 2px dashed #000;}
         
+        div[contenteditable] {
+            padding: 10px 10px 0px 10px;
+            box-sizing: border-box;
+            min-height: 100vh;
+        }
+        
         div[placeholderText][contenteditable=true]:empty:not(:focus):before {
             content: attr(placeholderText);
             float: left;
             margin-left: 2px;
-            color: attr(placeholderTextColor color);
         }
     </style>
   </head>
   <body>
-      <div contenteditable="true" id="zss_editor_content" placeholderTextColor='#0000FF' style="">
+      <div contenteditable="true" id="zss_editor_content" style="">
         <!--content-->
       </div>
   </body>
