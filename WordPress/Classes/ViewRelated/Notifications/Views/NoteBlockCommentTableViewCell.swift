@@ -175,8 +175,8 @@ import Foundation
         
         button.updateConstraint(.Width, constant: width)
         
-        contentView.updateConstraintForView(button, attribute: .Trailing, constant: trailing)
-        contentView.updateConstraintForView(button, attribute: .Leading,  constant: trailing)
+        contentView.updateConstraintWithFirstItem(button, attribute: .Trailing, constant: trailing)
+        contentView.updateConstraintWithFirstItem(button, attribute: .Leading,  constant: trailing)
         
         button.hidden   = !isVisible
         button.enabled  = isVisible
@@ -191,7 +191,7 @@ import Foundation
         let moreTop             = hasButtonsEnabled ? buttonTop     : CGFloat.min
         let moreHeight          = hasButtonsEnabled ? buttonHeight  : CGFloat.min
         
-        contentView.updateConstraintForView(btnMore, attribute: .Top, constant: moreTop)
+        contentView.updateConstraintWithFirstItem(btnMore, attribute: .Top, constant: moreTop)
         btnMore.updateConstraint(.Height, constant: moreHeight)
         setNeedsLayout()
     }
