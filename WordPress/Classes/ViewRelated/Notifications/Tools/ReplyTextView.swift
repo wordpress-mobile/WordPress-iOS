@@ -29,8 +29,11 @@ import Foundation
     public var onReply: ((String) -> ())?
     
     public var text: String! {
-        didSet {
-            textView.text = text
+        get {
+            return textView.text
+        }
+        set {
+            textView.text = newValue
             refreshInterface()
         }
     }
@@ -75,6 +78,8 @@ import Foundation
             // only handle the @ sign after a space character or if it's the first character
             if (range.location == 0 || textView.text[range.location - 1] == " ") {
                 mentionDelegate?.didStartAtMention?(self)
+                textView.text = textView.text.stringByAppendingString(text)
+                return false
             }
         }
 
