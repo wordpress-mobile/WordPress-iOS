@@ -66,8 +66,9 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 	
     Blog *blog = [blogService lastUsedOrFirstBlog];
-	Post *post = [Post newDraftForBlog:blog];
-	
+    [self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
+
+    Post *post = [Post newDraftForBlog:blog];
     return [self initWithPost:post
 						 mode:kWPPostViewControllerModeEdit];
 }
