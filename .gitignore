@@ -36,15 +36,7 @@ $RECYCLE.BIN/
 
 # Project
 /Entitlements.plist
-Pods/Documentation
-Pods/Pods.xcodeproj/*.mode1v3
-Pods/Pods.xcodeproj/*.mode2v3
-Pods/Pods.xcodeproj/*.pbxuser
-Pods/Pods.xcodeproj/*.perspectivev3
-Pods/Pods.xcodeproj/project.xcworkspace
-Pods/Pods.xcodeproj/xcuserdata
-Pods/Documentation/
-Pods/resources-to-copy-WordPress.txt
+Pods/
 WordPress.xcworkspace/*.mode1v3
 WordPress.xcworkspace/*.mode2v3
 WordPress.xcworkspace/*.pbxuser

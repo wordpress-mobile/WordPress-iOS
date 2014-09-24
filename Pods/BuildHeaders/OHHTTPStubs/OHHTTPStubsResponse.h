@@ -1,1 +1,0 @@
-../../OHHTTPStubs/OHHTTPStubs/OHHTTPStubsResponse.h
