@@ -1,1 +1,0 @@
-../../HockeySDK/Classes/BITHockeyBaseViewController.h
