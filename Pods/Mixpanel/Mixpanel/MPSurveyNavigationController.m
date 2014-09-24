@@ -88,27 +88,27 @@
                          CAKeyframeAnimation *anim = [CAKeyframeAnimation animationWithKeyPath:@"transform.translation.y"];
                          anim.duration = duration;
                          anim.keyTimes = keyTimes;
-                         CGFloat y1 = _header.bounds.origin.y - _header.bounds.size.height;
-                         CGFloat y2 = _header.bounds.origin.y;
+                         CGFloat y1 = self.header.bounds.origin.y - self.header.bounds.size.height;
+                         CGFloat y2 = self.header.bounds.origin.y;
                          anim.values = @[@(y1), @(y2), @(y2)];
-                         [_header.layer addAnimation:anim forKey:nil];
+                         [self.header.layer addAnimation:anim forKey:nil];
 
                          // slide question container and footer up
                          anim = [CAKeyframeAnimation animationWithKeyPath:@"transform.translation.y"];
                          anim.duration = duration;
                          anim.keyTimes = keyTimes;
-                         y1 = _containerView.bounds.origin.y + _containerView.bounds.size.height + _footer.bounds.size.height;
-                         y2 = _containerView.bounds.origin.y;
+                         y1 = self.containerView.bounds.origin.y + self.containerView.bounds.size.height + self.footer.bounds.size.height;
+                         y2 = self.containerView.bounds.origin.y;
                          anim.values = @[@(y1), @(y1), @(y2)];
-                         [_containerView.layer addAnimation:anim forKey:nil];
+                         [self.containerView.layer addAnimation:anim forKey:nil];
 
                          anim = [CAKeyframeAnimation animationWithKeyPath:@"transform.translation.y"];
                          anim.duration = duration;
                          anim.keyTimes = keyTimes;
-                         y1 = _footer.bounds.origin.y + _containerView.bounds.size.height + _footer.bounds.size.height;
-                         y2 = _footer.bounds.origin.y;
+                         y1 = self.footer.bounds.origin.y + self.containerView.bounds.size.height + self.footer.bounds.size.height;
+                         y2 = self.footer.bounds.origin.y;
                          anim.values = @[@(y1), @(y1), @(y2)];
-                         [_footer.layer addAnimation:anim forKey:nil];
+                         [self.footer.layer addAnimation:anim forKey:nil];
 
                      }
                      completion:nil];
@@ -205,8 +205,8 @@
                                     CAAnimationGroup *group;
                                     NSArray *keyTimes;
 
-                                    CGFloat slideDistance = _containerView.bounds.size.width * 1.3f;
-                                    CGFloat dropDistance = _containerView.bounds.size.height / 4.0f;
+                                    CGFloat slideDistance = self.containerView.bounds.size.width * 1.3f;
+                                    CGFloat dropDistance = self.containerView.bounds.size.height / 4.0f;
 
                                     if (forward) {
 
@@ -300,7 +300,7 @@
                                 completion:^(BOOL finished){
                                     [toController didMoveToParentViewController:self];
                                     [fromController removeFromParentViewController];
-                                    _currentQuestionController = toController;
+                                    self.currentQuestionController = toController;
                                     [[UIApplication sharedApplication] endIgnoringInteractionEvents];
                                 }];
         [self updatePageNumber:index];

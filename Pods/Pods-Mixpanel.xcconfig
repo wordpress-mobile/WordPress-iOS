@@ -1,1 +1,1 @@
-PODS_MIXPANEL_OTHER_LDFLAGS = -framework Accelerate -framework CoreGraphics -framework CoreTelephony -framework Foundation -framework QuartzCore -framework SystemConfiguration -framework UIKit
+PODS_MIXPANEL_OTHER_LDFLAGS = -licucore -framework Accelerate -framework CoreGraphics -framework CoreTelephony -framework Foundation -framework QuartzCore -framework SystemConfiguration -framework UIKit
