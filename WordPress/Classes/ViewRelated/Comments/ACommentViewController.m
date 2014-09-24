@@ -147,27 +147,43 @@ static NSInteger const CVCSectionSeparatorHeight = 10;
 
 - (void)likeComment
 {
-    // TODO: like comment
+    __typeof(self) __weak weakSelf = self;
+
+    [self.commentService likeCommentWithID:self.comment.commentID siteID:self.comment.blog.blogID success:nil failure:^(NSError *error) {
+        [weakSelf.tableView reloadData];
+    }];
 }
 
 - (void)unlikeComment
 {
-    // TODO: unlike comment
+    __typeof(self) __weak weakSelf = self;
+
+    [self.commentService unlikeCommentWithID:self.comment.commentID siteID:self.comment.blog.blogID success:nil failure:^(NSError *error) {
+        [weakSelf.tableView reloadData];
+    }];
 }
 
 - (void)approveComment
 {
-    // TODO: approve comment
+    __typeof(self) __weak weakSelf = self;
+
+    [self.commentService approveComment:self.comment success:nil failure:^(NSError *error) {
+        [weakSelf.tableView reloadData];
+    }];
 }
 
 - (void)unapproveComment
 {
-    // TODO: unapprove comment
+    __typeof(self) __weak weakSelf = self;
+
+    [self.commentService unapproveComment:self.comment success:nil failure:^(NSError *error) {
+        [weakSelf.tableView reloadData];
+    }];
 }
 
 - (void)trashComment
 {
-//    __typeof(self) __weak weakSelf = self;
+    __typeof(self) __weak weakSelf = self;
 
     // Callback Block
     UIAlertViewCompletionBlock completion = ^(UIAlertView *alertView, NSInteger buttonIndex) {
@@ -175,9 +191,10 @@ static NSInteger const CVCSectionSeparatorHeight = 10;
             return;
         }
 
-        // TODO: trash comment
+        CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+        [commentService deleteComment:weakSelf.comment success:nil failure:nil];
 
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        // Note: the parent class of CommentsViewController will pop this as a result of NSFetchedResultsChangeDelete
     };
 
     // Show the alertView
