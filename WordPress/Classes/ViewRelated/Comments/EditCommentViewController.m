@@ -3,20 +3,37 @@
 #import "CommentService.h"
 #import "ContextManager.h"
 #import "IOS7CorrectedTextView.h"
+#import "WordPress-Swift.h"
 
 
+
+#pragma mark ==========================================================================================
+#pragma mark Constants
+#pragma mark ==========================================================================================
+
+static UIEdgeInsets EditCommentInsetsPad = {5, 15, 5, 13};
+static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
+
+
+#pragma mark ==========================================================================================
+#pragma mark Private Methods
+#pragma mark ==========================================================================================
 
 @interface EditCommentViewController() <UIActionSheetDelegate>
 
-@property (nonatomic,   weak) IBOutlet IOS7CorrectedTextView    *textView;
-@property (nonatomic, strong) NSString                          *pristineText;
-@property (nonatomic, assign) CGRect                            keyboardFrame;
+@property (nonatomic,   weak) IBOutlet IOS7CorrectedTextView *textView;
+@property (nonatomic, strong) NSString *pristineText;
+@property (nonatomic, assign) CGRect   keyboardFrame;
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification;
 - (void)handleKeyboardWillHide:(NSNotification *)notification;
 
 @end
 
+
+#pragma mark ==========================================================================================
+#pragma mark EditCommentViewController
+#pragma mark ==========================================================================================
 
 @implementation EditCommentViewController
 
@@ -32,6 +49,7 @@
     self.title = NSLocalizedString(@"Edit Comment", @"");
     
     self.textView.font = [WPStyleGuide regularTextFont];
+    self.textView.textContainerInset = [UIDevice isPad] ? EditCommentInsetsPad : EditCommentInsetsPhone;
     
     [self showCancelBarButton];
     [self showSaveBarButton];
@@ -50,6 +68,18 @@
     
     [self.textView becomeFirstResponder];
     [self enableSaveIfNeeded];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    // FIX FIX:
+    // iOS 8 is resigning first responder when the presentedViewController is effectively removed from screen.
+    // This creates a UX glitch, as a side effect (two animations!!)
+    if ([UIDevice isOS8]) {
+        [self.textView resignFirstResponder];
+    }
 }
 
 
@@ -175,7 +205,7 @@
     
     actionSheet.delegate = self;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-    [actionSheet showInView:self.view];
+    [actionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:true];
 }
 
 - (void)btnDonePressed
@@ -185,8 +215,6 @@
 
 - (void)btnSavePressed
 {
-    self.interfaceEnabled   = NO;
-    [self.textView resignFirstResponder];
     [self finishWithUpdates];
 }
 
@@ -194,23 +222,23 @@
 #pragma mark - Helper Methods
 
 - (void)finishWithUpdates
-{
-    if ([self.delegate respondsToSelector:@selector(editCommentViewController:didUpdateContent:)]) {
-        [self.delegate editCommentViewController:self didUpdateContent:self.textView.text];
+{    
+    if (self.onCompletion) {
+        self.onCompletion(true, self.textView.text);
     }
 }
 
 - (void)finishWithoutUpdates
 {
-    if ([self.delegate respondsToSelector:@selector(editCommentViewControllerFinished:)]) {
-        [self.delegate editCommentViewControllerFinished:self];
+    if (self.onCompletion) {
+        self.onCompletion(false, self.pristineText);
     }
 }
 
 
 #pragma mark - Static Helpers
 
-+ (instancetype)newEditCommentViewController
++ (instancetype)newEditViewController
 {
     return [[[self class] alloc] initWithNibName:NSStringFromClass([self class]) bundle:nil];
 }

@@ -15,6 +15,8 @@
 #import "WPToast.h"
 #import "VerticallyStackedButton.h"
 #import "WPError.h"
+#import "UIAlertView+Blocks.h"
+#import "WordPressAppDelegate.h"
 
 
 
@@ -38,8 +40,7 @@ typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
 #pragma mark Private
 #pragma mark ==========================================================================================
 
-@interface CommentViewController () <UIActionSheetDelegate, InlineComposeViewDelegate,
-                                     WPContentViewDelegate, EditCommentViewControllerDelegate>
+@interface CommentViewController () <UIActionSheetDelegate, InlineComposeViewDelegate, WPContentViewDelegate>
 
 @property (nonatomic, strong) CommentView               *commentView;
 @property (nonatomic, strong) UIButton                  *trashButton;
@@ -213,21 +214,6 @@ typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
     // Note: the parent class of CommentsViewController will pop this as a result of NSFetchedResultsChangeDelete
 }
 
-- (void)showEditCommentViewWithAnimation:(BOOL)animate
-{
-	EditCommentViewController *editViewController   = [EditCommentViewController newEditCommentViewController];
-    
-	editViewController.content                      = self.comment.content;
-    editViewController.delegate                     = self;
-    
-    UINavigationController *navController           = [[UINavigationController alloc] initWithRootViewController:editViewController];
-    navController.modalPresentationStyle            = UIModalPresentationFormSheet;
-    navController.modalTransitionStyle              = UIModalTransitionStyleCoverVertical;
-    navController.navigationBar.translucent         = NO;
-    
-    [self presentViewController:navController animated:animate completion:nil];
-}
-
 - (void)updateStateOfActionButtons:(BOOL)state
 {
     [self updateStateOfActionButton:self.spamButton toState:state];
@@ -242,40 +228,66 @@ typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
 }
 
 
-#pragma mark - EditCommentViewControllerDelegate
+#pragma mark - Comment Edition
 
-- (void)editCommentViewController:(EditCommentViewController *)sender didUpdateContent:(NSString *)newContent
+- (void)showEditCommentViewWithAnimation:(BOOL)animate
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
-    __typeof(self) __weak weakSelf  = self;
-
-    sender.interfaceEnabled = NO;
+    EditCommentViewController *editViewController   = [EditCommentViewController newEditViewController];
     
-    [commentService uploadComment:self.comment
-                          success:^(void) {
-                              weakSelf.comment.content = newContent;
-                              [weakSelf reloadData];
-                              [weakSelf dismissViewControllerAnimated:YES completion:nil];
-                          }
-                          failure:^(NSError *error) {
-                              NSString *message = NSLocalizedString(@"Couldn't Update Comment. Please, try again later",
-                                                                    @"Error displayed if a comment fails to get updated");
-
-                              UIAlertView *alertView  = [[UIAlertView alloc] initWithTitle:nil
-                                                                                   message:message
-                                                                                  delegate:nil
-                                                                         cancelButtonTitle:NSLocalizedString(@"Accept", nil)
-                                                                         otherButtonTitles:nil,
-                                                         nil];
-                              [alertView show];
-                              sender.interfaceEnabled = YES;
-                          }];
+    editViewController.content                      = self.comment.content;
+    editViewController.onCompletion                 = ^(BOOL hasNewContent, NSString *newContent) {
+        [self dismissViewControllerAnimated:YES completion:^{
+            if (hasNewContent) {
+                [self updateComment:self.comment withContent:newContent];
+            }
+        }];
+    };
+    
+    UINavigationController *navController           = [[UINavigationController alloc] initWithRootViewController:editViewController];
+    navController.modalPresentationStyle            = UIModalPresentationFormSheet;
+    navController.modalTransitionStyle              = UIModalTransitionStyleCoverVertical;
+    navController.navigationBar.translucent         = NO;
+    
+    [self presentViewController:navController animated:animate completion:nil];
 }
 
-- (void)editCommentViewControllerFinished:(EditCommentViewController *)sender
+- (void)updateComment:(Comment *)comment withContent:(NSString *)content
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    // Set the new Content Data
+    comment.content = content;
+    [self reloadData];
+    
+    // Hit the backend
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
+    
+    [commentService uploadComment:comment
+                          success:^{
+                                        // The comment might have changed its approval status!
+                                        [self reloadData];
+                                    } failure:^(NSError *error) {
+                                        [self handleUpdateCommentError:error comment:comment content:content];
+                                    }];
+}
+
+- (void)handleUpdateCommentError:(NSError *)error comment:(Comment *)comment content:(NSString *)content
+{
+    NSString *message = NSLocalizedString(@"There has been an unexpected error while editing your comment",
+                                          @"Error displayed if a comment fails to get updated");
+    
+    [UIAlertView showWithTitle:nil
+                       message:message
+             cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+             otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
+                      tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                                    if (buttonIndex == alertView.cancelButtonIndex) {
+                                        [comment.managedObjectContext refreshObject:comment mergeChanges:false];
+                                        [self reloadData];
+                                    } else {
+                                        [self updateComment:comment withContent:content];
+                                    }
+                                }
+    ];
 }
 
 
@@ -387,7 +399,9 @@ typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
 {
     CGRect keyboardRect         = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     UIScrollView *scrollView    = (UIScrollView *)self.view;
-    scrollView.contentInset     = UIEdgeInsetsMake(0.f, 0.f, CGRectGetHeight(keyboardRect), 0.f);
+    UIEdgeInsets insets         = scrollView.contentInset;
+    insets.bottom               = CGRectGetHeight(keyboardRect);
+    scrollView.contentInset     = insets;
 
     [self.view addGestureRecognizer:self.tapGesture];
 }
@@ -395,7 +409,9 @@ typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
 - (void)handleKeyboardWillHide:(NSNotification *)notification
 {
     UIScrollView *scrollView    = (UIScrollView *)self.view;
-    scrollView.contentInset     = UIEdgeInsetsZero;
+    UIEdgeInsets insets         = scrollView.contentInset;
+    insets.bottom               = 0.0f;
+    scrollView.contentInset     = insets;
 
     [self.view removeGestureRecognizer:self.tapGesture];
 }

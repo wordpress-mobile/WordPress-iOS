@@ -246,6 +246,8 @@
 		B532D4EE199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B532D4ED199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift */; };
 		B53FDF6D19B8C336000723B6 /* UIScreen+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53FDF6C19B8C336000723B6 /* UIScreen+Helpers.swift */; };
 		B548458219A258890077E7A5 /* UIActionSheet+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B548458119A258890077E7A5 /* UIActionSheet+Helpers.m */; };
+		B5509A9319CA38B3006D2E49 /* EditReplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5509A9219CA38B3006D2E49 /* EditReplyViewController.m */; };
+		B5509A9519CA3B9F006D2E49 /* EditReplyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5509A9419CA3B9F006D2E49 /* EditReplyViewController.xib */; };
 		B55853F31962337500FAF6C3 /* NSScanner+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B55853F21962337500FAF6C3 /* NSScanner+Helpers.m */; };
 		B55853F719630D5400FAF6C3 /* NSAttributedString+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = B55853F619630D5400FAF6C3 /* NSAttributedString+Util.m */; };
 		B55853FC19630E7900FAF6C3 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = B55853F919630E7900FAF6C3 /* Notification.m */; };
@@ -835,6 +837,9 @@
 		B53FDF6C19B8C336000723B6 /* UIScreen+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScreen+Helpers.swift"; sourceTree = "<group>"; };
 		B548458019A258890077E7A5 /* UIActionSheet+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Helpers.h"; sourceTree = "<group>"; };
 		B548458119A258890077E7A5 /* UIActionSheet+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+Helpers.m"; sourceTree = "<group>"; };
+		B5509A9119CA38B3006D2E49 /* EditReplyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditReplyViewController.h; sourceTree = "<group>"; };
+		B5509A9219CA38B3006D2E49 /* EditReplyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditReplyViewController.m; sourceTree = "<group>"; };
+		B5509A9419CA3B9F006D2E49 /* EditReplyViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditReplyViewController.xib; path = Resources/EditReplyViewController.xib; sourceTree = "<group>"; };
 		B55853F11962337500FAF6C3 /* NSScanner+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScanner+Helpers.h"; sourceTree = "<group>"; };
 		B55853F21962337500FAF6C3 /* NSScanner+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScanner+Helpers.m"; sourceTree = "<group>"; };
 		B55853F419630AF900FAF6C3 /* Noticons-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Noticons-Regular.otf"; sourceTree = "<group>"; };
@@ -2048,6 +2053,7 @@
 		C50E78130E71648100991509 /* Comments */ = {
 			isa = PBXGroup;
 			children = (
+				B5509A9419CA3B9F006D2E49 /* EditReplyViewController.xib */,
 				2906F811110CDA8900169D56 /* EditCommentViewController.xib */,
 			);
 			name = Comments;
@@ -2063,6 +2069,8 @@
 				C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */,
 				2906F80F110CDA8900169D56 /* EditCommentViewController.h */,
 				2906F810110CDA8900169D56 /* EditCommentViewController.m */,
+				B5509A9119CA38B3006D2E49 /* EditReplyViewController.h */,
+				B5509A9219CA38B3006D2E49 /* EditReplyViewController.m */,
 			);
 			path = Comments;
 			sourceTree = "<group>";
@@ -2505,6 +2513,7 @@
 				CC70165B185A7536007B37DB /* InlineComposeView.xib in Resources */,
 				3716E401167296D30035F8C4 /* ToastView.xib in Resources */,
 				5DA5BF3E18E32DCF005F11F9 /* EditMediaViewController.xib in Resources */,
+				B5509A9519CA3B9F006D2E49 /* EditReplyViewController.xib in Resources */,
 				5DA5BF4218E32DCF005F11F9 /* MediaBrowserViewController.xib in Resources */,
 				5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */,
 				85D80558171630B30075EEAC /* DotCom-Languages.plist in Resources */,
@@ -2690,6 +2699,7 @@
 				8370D10A11FA499A009D650F /* WPTableViewActivityCell.m in Sources */,
 				5DA5BF4518E32DCF005F11F9 /* ThemeBrowserCell.m in Sources */,
 				93C486501810442200A24725 /* SupportViewController.m in Sources */,
+				B5509A9319CA38B3006D2E49 /* EditReplyViewController.m in Sources */,
 				5DA5BF3D18E32DCF005F11F9 /* EditMediaViewController.m in Sources */,
 				83FEFC7611FF6C5A0078B462 /* EditSiteViewController.m in Sources */,
 				838C672E1210C3C300B09CA3 /* Post.m in Sources */,
