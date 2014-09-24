@@ -450,28 +450,28 @@ static CGFloat NotificationSectionSeparator     = 10;
         [weakSelf openURL:url];
     };
     
-    cell.onLikeClick                = ^(){
+    cell.onLikeClick                = ^(UIButton * sender){
         [weakSelf likeCommentWithBlock:commentBlock];
     };
     
-    cell.onUnlikeClick              = ^(){
+    cell.onUnlikeClick              = ^(UIButton * sender){
         [weakSelf unlikeCommentWithBlock:commentBlock];
     };
     
-    cell.onApproveClick             = ^(){
+    cell.onApproveClick             = ^(UIButton * sender){
         [weakSelf approveCommentWithBlock:commentBlock];
     };
 
-    cell.onUnapproveClick             = ^(){
+    cell.onUnapproveClick           = ^(UIButton * sender){
         [weakSelf unapproveCommentWithBlock:commentBlock];
     };
     
-    cell.onTrashClick               = ^(){
+    cell.onTrashClick               = ^(UIButton * sender){
         [weakSelf trashCommentWithBlock:commentBlock];
     };
     
-    cell.onMoreClick                = ^(){
-        [weakSelf displayMoreActionsWithBlock:commentBlock];
+    cell.onMoreClick                = ^(UIButton * sender){
+        [weakSelf displayMoreActionsWithBlock:commentBlock sender:sender];
     };
     
     [cell downloadGravatarWithURL:media.mediaURL];
@@ -573,7 +573,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     return success;
 }
 
-- (void)displayMoreActionsWithBlock:(NotificationBlock *)block
+- (void)displayMoreActionsWithBlock:(NotificationBlock *)block sender:(UIButton *)sender
 {
     NSString *editTitle     = NSLocalizedString(@"Edit Comment", @"Edit a comment");
     NSString *spamTitle     = NSLocalizedString(@"Mark as Spam", @"Mark a comment as spam");
@@ -604,7 +604,11 @@ static CGFloat NotificationSectionSeparator     = 10;
                                                                 }
                                                             }];
     
-    [actionSheet showInView:self.view.window];
+    if ([UIDevice isPad]) {
+        [actionSheet showFromRect:sender.bounds inView:sender animated:true];
+    } else {
+        [actionSheet showInView:self.view.window];
+    }
 }
 
 
