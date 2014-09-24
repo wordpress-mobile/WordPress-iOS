@@ -29,7 +29,10 @@ static const CGFloat ReaderCommentCellBottomPaddingMore = -20.0;
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        // TODO: configure background
+        UIView *selectedBackgroundView = [[UIView alloc] initWithFrame:self.bounds];
+        selectedBackgroundView.backgroundColor = [UIColor whiteColor];
+        self.selectedBackgroundView = selectedBackgroundView;
+
         self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 
         _nestingView = [[UIView alloc] initWithFrame:self.bounds];
