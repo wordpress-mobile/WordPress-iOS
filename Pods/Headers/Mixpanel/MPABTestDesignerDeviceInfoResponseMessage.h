@@ -1,0 +1,1 @@
+../../Mixpanel/Mixpanel/MPABTestDesignerDeviceInfoResponseMessage.h
