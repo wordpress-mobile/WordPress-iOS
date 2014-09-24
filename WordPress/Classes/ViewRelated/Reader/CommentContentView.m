@@ -5,7 +5,7 @@
 #import <WordPress-iOS-Shared/WPFontManager.h>
 
 static const CGFloat CommentContentViewAvatarSize = 32.0;
-static const CGFloat CommentContentViewContentViewOffsetTop = 15.0;
+static const CGFloat CommentContentViewContentViewOffsetTop = 36.0;
 static const CGFloat CommentContentViewContentViewOffsetBottom = 19.0;
 static const CGFloat CommentContentViewContentOffsetLeft = 40.0;
 
@@ -66,8 +66,7 @@ static const CGFloat CommentContentViewContentOffsetLeft = 40.0;
 
 - (CGSize)sizeThatFits:(CGSize)size
 {
-    CGFloat width = size.width - CommentContentViewContentOffsetLeft;
-    CGFloat height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:width].height;
+    CGFloat height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:size.width].height;
     height = height + CommentContentViewContentViewOffsetTop + CommentContentViewContentViewOffsetBottom;
     return CGSizeMake(size.width, ceil(height));
 }
@@ -84,6 +83,7 @@ static const CGFloat CommentContentViewContentOffsetLeft = 40.0;
                               @"offsetLeft" : @(CommentContentViewContentOffsetLeft)
                               };
 
+    // Avatar
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_avatarImageView(avatarSize)]"
                                                                  options:0
                                                                  metrics:metrics
@@ -93,33 +93,35 @@ static const CGFloat CommentContentViewContentOffsetLeft = 40.0;
                                                                  metrics:metrics
                                                                    views:views]];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-offsetLeft-[_authorButton]-(>=1)-[_timeButton]-1-|"
+    // Author and date
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-offsetLeft-[_authorButton]-(>=1)-|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_authorButton(16)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-offsetLeft-[_timeButton]-(>=1)-|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_timeButton(16)]"
-                                                                 options:0
-                                                                 metrics:metrics
-                                                                   views:views]];
-
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-offsetLeft-[_textContentView]|"
-                                                                 options:0
-                                                                 metrics:metrics
-                                                                   views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-offsetTop-[_textContentView(>=1)]-offsetBottom@200-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_authorButton(16)]-3-[_timeButton(16)]"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-offsetLeft-[_replyButton]"
+    // Content
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_textContentView]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_replyButton(16)]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-offsetTop-[_textContentView(>=1)]"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_replyButton]"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView][_replyButton(16)]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
@@ -176,11 +178,6 @@ static const CGFloat CommentContentViewContentOffsetLeft = 40.0;
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     button.titleLabel.font = [WPFontManager openSansRegularFontOfSize:14.0];
     button.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    [button setTitleEdgeInsets: UIEdgeInsetsMake(0, 2, 0, -2)];
-    [button setContentEdgeInsets:UIEdgeInsetsMake(-5, 0, 0, 0)];
-
-    // Disable it for now (could be used for permalinks in the future)
-    [button setImage:[UIImage imageNamed:@"reader-postaction-time"] forState:UIControlStateDisabled];
 
     [button setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateNormal];
     [button setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateDisabled];
@@ -266,7 +263,6 @@ static const CGFloat CommentContentViewContentOffsetLeft = 40.0;
 {
     NSString *title = [[self.contentProvider dateForDisplay] shortString];
     [self.timeButton setTitle:title forState:UIControlStateNormal | UIControlStateDisabled];
-    [self.timeButton sizeToFit];
 }
 
 - (void)configureContentView

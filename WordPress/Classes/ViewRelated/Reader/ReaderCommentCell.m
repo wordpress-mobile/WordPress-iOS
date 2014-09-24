@@ -7,8 +7,8 @@ static const NSInteger ReaderCommentCellMaxIndentationLevel = 4;
 static const CGFloat ReaderCommentCellIndentationWidth = 16.0;
 static const CGFloat ReaderCommentCellSidePadding = 12.0;
 static const CGFloat ReaderCommentCellTopPadding = 12.0;
-static const CGFloat ReaderCommentCellBottomPadding = 8.0;
-static const CGFloat ReaderCommentCellBottomPaddingMore = 20.0;
+static const CGFloat ReaderCommentCellBottomPadding = -8.0;
+static const CGFloat ReaderCommentCellBottomPaddingMore = -20.0;
 
 @interface ReaderCommentCell()<CommentContentViewDelegate>
 
@@ -68,13 +68,12 @@ static const CGFloat ReaderCommentCellBottomPaddingMore = 20.0;
     CGSize commentContentViewSize = [self.commentContentView sizeThatFits:CGSizeMake(adjustedWidth, size.height)];
     CGFloat desiredHeight = commentContentViewSize.height + ReaderCommentCellTopPadding;
     if (self.needsExtraPadding) {
-        desiredHeight += ReaderCommentCellBottomPaddingMore;
+        desiredHeight += fabs(ReaderCommentCellBottomPaddingMore);
     } else {
-        desiredHeight += ReaderCommentCellBottomPadding;
+        desiredHeight += fabs(ReaderCommentCellBottomPadding);
     }
     return CGSizeMake(size.width, desiredHeight);
 }
-
 
 - (void)setAvatarImage:(UIImage *)avatarImage
 {
@@ -172,12 +171,12 @@ static const CGFloat ReaderCommentCellBottomPaddingMore = 20.0;
     [self.contentView addConstraint:self.leftIndentationConstraint];
 
     self.bottomMarginConstraint = [NSLayoutConstraint constraintWithItem:self.commentContentView
-                                                               attribute:NSLayoutAttributeTop
+                                                               attribute:NSLayoutAttributeBottom
                                                                relatedBy:NSLayoutRelationEqual
                                                                   toItem:self.contentView
-                                                               attribute:NSLayoutAttributeTop
+                                                               attribute:NSLayoutAttributeBottom
                                                               multiplier:1.0
-                                                                constant:ReaderCommentCellBottomPadding];
+                                                                constant:-ReaderCommentCellBottomPadding];
     [self.contentView addConstraint:self.bottomMarginConstraint];
 }
 
