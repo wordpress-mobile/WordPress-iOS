@@ -56,7 +56,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 #pragma mark Private
 #pragma mark ==========================================================================================
 
-@interface NotificationDetailsViewController () <EditCommentViewControllerDelegate, SuggestionsTableViewDelegate, MentionDelegate>
+@interface NotificationDetailsViewController () <EditCommentViewControllerDelegate, UITextViewDelegate, SuggestionsTableViewDelegate, MentionDelegate>
 
 // Outlets
 @property (nonatomic,   weak) IBOutlet UITableView          *tableView;
@@ -70,9 +70,8 @@ static CGFloat NotificationSectionSeparator     = 10;
 @property (nonatomic, assign) NSInteger                     headerSectionIndex;
 @property (nonatomic, assign) NSInteger                     bodySectionIndex;
 
-// Keyboard Helpers
-@property (nonatomic, assign) CGFloat                       keyboardBottomDelta;
-@property (nonatomic, assign) BOOL                          isKeyboardVisible;
+// Model
+@property (nonatomic, strong) Notification                  *note;
 @end
 
 
@@ -95,7 +94,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     self.navigationItem.backBarButtonItem = backButton;
     
     self.tableView.backgroundColor      = [WPStyleGuide itsEverywhereGrey];
-
+    
     self.reuseIdentifierMap = @{
         @(NoteBlockGroupTypeHeader)    : NoteBlockHeaderTableViewCell.reuseIdentifier,
         @(NoteBlockGroupTypeText)      : NoteBlockTextTableViewCell.reuseIdentifier,
@@ -115,11 +114,11 @@ static CGFloat NotificationSectionSeparator     = 10;
 {
     [super viewWillAppear:animated];
     
-    [self reloadData];
-    
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [nc addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    [self.tableView deselectSelectedRowWithAnimation:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -131,6 +130,12 @@ static CGFloat NotificationSectionSeparator     = 10;
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [nc removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    [self adjustTableStyleIfNeeded];
 }
 
 - (void)reloadData
@@ -149,6 +154,15 @@ static CGFloat NotificationSectionSeparator     = 10;
     [self.tableView reloadData];
     [self adjustTableStyleIfNeeded];
     [self attachReplyViewIfNeeded];
+}
+
+
+#pragma mark - Public Helpers
+
+- (void)setupWithNotification:(Notification *)notification
+{
+    self.note = notification;
+    [self reloadData];
 }
 
 
@@ -205,6 +219,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     };
     replyTextView.shouldDeleteTagWithBackspace = YES;
     replyTextView.mentionDelegate   = self;
+    replyTextView.delegate          = self;
     self.replyTextView              = replyTextView;
     
     // Attach the ReplyTextView at the very bottom
@@ -223,14 +238,18 @@ static CGFloat NotificationSectionSeparator     = 10;
     
     // Badge Notifications should be centered, and display no cell separators
     if (self.note.isBadge) {
-        CGFloat offsetY = (self.view.frame.size.height - self.tableView.contentSize.height) * 0.5f;
-        contentInset    = UIEdgeInsetsMake(offsetY, 0, 0, 0);
+        // Center only if the container view is big enough!
+        if (self.view.frame.size.height > self.tableView.contentSize.height) {
+            CGFloat offsetY = (self.view.frame.size.height - self.tableView.contentSize.height) * 0.5f;
+            contentInset    = UIEdgeInsetsMake(offsetY, 0, 0, 0);
+        }
         separator       = UITableViewCellSeparatorStyleNone;
     }
     
     self.tableView.contentInset     = contentInset;
     self.tableView.separatorStyle   = separator;
 }
+
 
 
 #pragma mark - UIViewController Restoration
@@ -262,7 +281,8 @@ static CGFloat NotificationSectionSeparator     = 10;
     NotificationDetailsViewController *vc   = [storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
     vc.restorationIdentifier                = [identifierComponents lastObject];
     vc.restorationClass                     = [NotificationDetailsViewController class];
-    vc.note                                 = restoredNotification;
+    
+    [vc setupWithNotification:restoredNotification];
     
     return vc;
 }
@@ -879,58 +899,61 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 - (void)handleKeyboardWillShow:(NSNotification *)notification
 {
-    if (self.isKeyboardVisible) {
-        return;
-    }
-    
-    NSDictionary* userInfo                  = notification.userInfo;
+    NSDictionary* userInfo = notification.userInfo;
     
     // Convert the rect to view coordinates: enforce the current orientation!
-    CGRect kbRect                           = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    kbRect                                  = [self.view convertRect:kbRect fromView:nil];
+    CGRect kbRect = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    kbRect = [self.view convertRect:kbRect fromView:nil];
     
-    CGRect viewFrame                        = self.view.frame;
-    CGFloat bottomInset                     = CGRectGetHeight(kbRect) - (CGRectGetMaxY(kbRect) - CGRectGetHeight(viewFrame) + CGRectGetHeight(self.replyTextView.bounds));
-    
-    UIEdgeInsets newContentInsets           = self.tableView.contentInset;
-    newContentInsets.bottom                 += bottomInset;
-    
-    self.replyTextView.proxyAccessoryView.alpha = 0;
+    // Bottom Inset: Consider the tab bar!
+    CGRect viewFrame = self.view.frame;
+    CGFloat bottomInset = CGRectGetHeight(kbRect) - (CGRectGetMaxY(kbRect) - CGRectGetHeight(viewFrame));
     
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
     [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
 
-    self.tableView.contentInset                 = newContentInsets;
-    self.replyTextView.proxyAccessoryView.alpha = 1;
-
-    [UIView commitAnimations];
+    [self.view updateConstraintWithFirstItem:self.view
+                                  secondItem:self.replyTextView
+                          firstItemAttribute:NSLayoutAttributeBottom
+                         secondItemAttribute:NSLayoutAttributeBottom
+                                    constant:bottomInset];
     
-    self.keyboardBottomDelta                = bottomInset;
-    self.isKeyboardVisible                  = true;
-    self.tableGesturesRecognizer.enabled    = true;
+    [self.view layoutIfNeeded];
+    
+    [UIView commitAnimations];
 }
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification
 {
-    if (!self.isKeyboardVisible) {
-        return;
-    }
-    
-    NSDictionary* userInfo                  = notification.userInfo;
+    NSDictionary* userInfo = notification.userInfo;
     
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
     [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
     
-    UIEdgeInsets newContentInsets           = self.tableView.contentInset;
-    newContentInsets.bottom                 -= self.keyboardBottomDelta;
-    self.tableView.contentInset             = newContentInsets;
+    [self.view updateConstraintWithFirstItem:self.view
+                                  secondItem:self.replyTextView
+                          firstItemAttribute:NSLayoutAttributeBottom
+                         secondItemAttribute:NSLayoutAttributeBottom
+                                    constant:0];
+    
+    [self.view layoutIfNeeded];
     
     [UIView commitAnimations];
-    
-    self.isKeyboardVisible                  = false;
-    self.tableGesturesRecognizer.enabled    = false;
+}
+
+
+#pragma mark - UITextViewDelegate
+
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    self.tableGesturesRecognizer.enabled = true;
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    self.tableGesturesRecognizer.enabled = false;
 }
 
 
@@ -939,6 +962,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 - (IBAction)dismissKeyboardIfNeeded:(id)sender
 {
     // Dismiss the reply field when tapping on the tableView
+    self.replyTextView.text = [NSString string];
     [self.view endEditing:YES];
 }
 
