@@ -33,8 +33,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 {
     [super viewDidLoad];
     
-    if (self.presentingViewController == nil && NSClassFromString(@"NCWidgetController")) {
-        // Not being presented modally & widgets exist (iOS 8)
+    if (self.presentingViewController == nil && WIDGETS_EXIST) {
         UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Today", @"") style:UIBarButtonItemStylePlain target:self action:@selector(makeSiteTodayWidgetSite:)];
         self.navigationItem.rightBarButtonItem = settingsButton;
     } else if (self.presentingViewController != nil) {
@@ -85,8 +84,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)saveSiteDetailsForTodayWidget
 {
-    // Safety check to ensure widgets are available (iOS 8+)
-    if (NSClassFromString(@"NCWidgetController") == nil) {
+    if (!WIDGETS_EXIST) {
         return;
     }
     
