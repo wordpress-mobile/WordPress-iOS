@@ -413,6 +413,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
             }
         } else if (indexPath.row == 1) {
             if (self.helpshiftEnabled) {
+                [WPAnalytics track:WPAnalyticsStatSupportOpenedHelpshiftScreen];
                 [self prepareAndDisplayHelpshiftWindowOfType:kHelpshiftWindowTypeConversation];
             } else {
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ios.forums.wordpress.org"]];
