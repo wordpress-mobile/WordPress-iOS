@@ -551,6 +551,13 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
         case WPAnalyticsStatSelectedInstallJetpack:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Selected Install Jetpack"];
             break;
+        case WPAnalyticsStatSupportOpenedHelpshiftScreen:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Support - Opened Helpshift Screen"];
+            [instructions addSuperPropertyToFlag:@"opened_helpshift_screen"];
+            break;
+        case WPAnalyticsStatSupportReceivedResponseFromSupport:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyFlagger:@"received_response_from_support"];
+            break;
         default:
             break;
     }

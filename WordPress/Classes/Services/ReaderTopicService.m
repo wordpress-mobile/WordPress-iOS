@@ -278,7 +278,7 @@ static NSString * const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopi
 {
     NSError *error;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
-    request.predicate = [NSPredicate predicateWithFormat:@"title CONTAINS[c] %@", topicName];
+    request.predicate = [NSPredicate predicateWithFormat:@"title LIKE[c] %@", topicName];
 
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
     request.sortDescriptors = @[sortDescriptor];
