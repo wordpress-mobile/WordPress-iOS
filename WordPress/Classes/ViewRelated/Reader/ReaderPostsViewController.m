@@ -25,6 +25,9 @@
 #import "UIView+Subviews.h"
 #import "BlogService.h"
 #import "ReaderSiteService.h"
+#import "SuggestionsTableViewController.h"
+#import "SuggestionService.h"
+#import "MentionDelegate.h"
 
 static CGFloat const RPVCHeaderHeightPhone = 10.0;
 static CGFloat const RPVCBlockedCellHeight = 66.0;
@@ -36,7 +39,7 @@ NSString * const FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
 NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier";
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
-@interface ReaderPostsViewController ()<WPTableImageSourceDelegate, ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate, UIActionSheetDelegate>
+@interface ReaderPostsViewController ()<WPTableImageSourceDelegate, ReaderCommentPublisherDelegate, RebloggingViewControllerDelegate, UIActionSheetDelegate, SuggestionsTableViewDelegate, MentionDelegate>
 
 @property (nonatomic, assign) BOOL hasMoreContent;
 @property (nonatomic, assign) BOOL loadingMore;
@@ -147,6 +150,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
     [self.inlineComposeView setButtonTitle:NSLocalizedString(@"Post", nil)];
+    self.inlineComposeView.shouldDeleteTagWithBackspace = YES;
+    self.inlineComposeView.mentionDelegate = self;
     self.commentPublisher = [[ReaderCommentPublisher alloc] initWithComposer:self.inlineComposeView];
 
     self.commentPublisher.delegate = self;
@@ -159,9 +164,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [super viewWillAppear:animated];
 
     [self updateTitle];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 
     if (self.noResultsView && self.animatedBox) {
         [self.animatedBox prepareAnimation:NO];
@@ -293,61 +295,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     NSInteger tabIndex = [self.tabBarController.viewControllers indexOfObject:self.navigationController];
     UITabBarItem *tabItem = [[[self.tabBarController tabBar] items] objectAtIndex:tabIndex];
     tabItem.title = NSLocalizedString(@"Reader", @"Description of the Reader tab");
-}
-
-- (void)handleKeyboardDidShow:(NSNotification *)notification
-{
-    if (self.inlineComposeView.isDisplayed) {
-        return;
-    }
-
-    UIView *view = self.view.superview;
-    CGRect frame = view.frame;
-    CGRect startFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
-    CGRect endFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-
-    // Figure out the difference between the bottom of this view, and the top of the keyboard.
-    // This should account for any toolbars.
-    CGPoint point = [view.window convertPoint:startFrame.origin toView:view];
-    self.keyboardOffset = point.y - (frame.origin.y + frame.size.height);
-
-    // if we're upside down, we need to adjust the origin.
-    if (endFrame.origin.x == 0 && endFrame.origin.y == 0) {
-        endFrame.origin.y = endFrame.origin.x += MIN(endFrame.size.height, endFrame.size.width);
-    }
-
-    point = [view.window convertPoint:endFrame.origin toView:view];
-    CGSize tabBarSize = [self tabBarSize];
-    frame.size.height = point.y + tabBarSize.height;
-
-    [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-        view.frame = frame;
-    } completion:^(BOOL finished) {
-        // BUG: When dismissing a modal view, and the keyboard is showing again, the animation can get clobbered in some cases.
-        // When this happens the view is set to the dimensions of its wrapper view, hiding content that should be visible
-        // above the keyboard.
-        // For now use a fallback animation.
-        if (!CGRectEqualToRect(view.frame, frame)) {
-            [UIView animateWithDuration:0.3 animations:^{
-                view.frame = frame;
-            }];
-        }
-    }];
-}
-
-- (void)handleKeyboardWillHide:(NSNotification *)notification
-{
-    if (self.inlineComposeView.isDisplayed) {
-        return;
-    }
-
-    UIView *view = self.view.superview;
-    CGRect frame = view.frame;
-    CGRect keyFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-
-    CGPoint point = [view.window convertPoint:keyFrame.origin toView:view];
-    frame.size.height = point.y - (frame.origin.y + self.keyboardOffset);
-    view.frame = frame;
 }
 
 - (ReaderPost *)postFromCellSubview:(UIView *)subview
@@ -1178,6 +1125,32 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
     self.actionSheet = nil;
     actionSheet.delegate = nil;
+}
+
+#pragma mark - MentionDelegate
+
+- (void)didStartAtMention:(UIView *)view
+{
+    NSNumber *siteID = self.commentPublisher.post.siteID;
+    if (self.commentPublisher.post.isWPCom && [[SuggestionService shared] shouldShowSuggestionsPageForSiteID:siteID]) {
+        SuggestionsTableViewController *suggestionsController = [[SuggestionsTableViewController alloc] initWithSiteID:siteID];
+        suggestionsController.delegate = self;
+        [self.navigationController pushViewController:suggestionsController animated:YES];
+    }
+}
+
+#pragma mark - SuggestionsTableViewDelegate
+
+- (void)suggestionTableView:(SuggestionsTableViewController *)suggestionsTableViewController
+            didSelectString:(NSString *)string
+{
+    self.inlineComposeView.text = [self.inlineComposeView.text stringByAppendingString:string];
+}
+
+- (void)suggestionViewDidDisappear:(SuggestionsTableViewController *)suggestionsController
+{
+    suggestionsController.delegate = nil;
+    [self.inlineComposeView becomeFirstResponder];
 }
 
 @end

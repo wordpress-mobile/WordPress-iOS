@@ -17,4 +17,7 @@
 #import "WPTableViewCell.h"
 #import "WPTableViewSectionHeaderView.h"
 
+#import "UITextView+Mention.h"
+#import "MentionDelegate.h"
+
 #import <DTCoreText/DTCoreText.h>

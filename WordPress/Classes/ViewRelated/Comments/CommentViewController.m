@@ -14,9 +14,10 @@
 #import "DTLinkButton.h"
 #import "WPToast.h"
 #import "VerticallyStackedButton.h"
+#import "SuggestionsTableViewController.h"
+#import "SuggestionService.h"
 #import "WPError.h"
-
-
+#import "MentionDelegate.h"
 
 #pragma mark ==========================================================================================
 #pragma mark Constants
@@ -33,13 +34,13 @@ typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
     CommentViewButtonTagUnapprove
 };
 
-
 #pragma mark ==========================================================================================
 #pragma mark Private
 #pragma mark ==========================================================================================
 
 @interface CommentViewController () <UIActionSheetDelegate, InlineComposeViewDelegate,
-                                     WPContentViewDelegate, EditCommentViewControllerDelegate>
+                                     WPContentViewDelegate, EditCommentViewControllerDelegate,
+                                     SuggestionsTableViewDelegate, MentionDelegate>
 
 @property (nonatomic, strong) CommentView               *commentView;
 @property (nonatomic, strong) UIButton                  *trashButton;
@@ -123,12 +124,18 @@ typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
 
     [self.view addSubview:self.commentView];
 
-    self.inlineComposeView                  = [[InlineComposeView alloc] initWithFrame:CGRectZero];
-    self.inlineComposeView.delegate         = self;
+    self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
+    self.inlineComposeView.delegate = self;
+    self.inlineComposeView.shouldDeleteTagWithBackspace = YES;
+    self.inlineComposeView.mentionDelegate = self;
     [self.view addSubview:self.inlineComposeView];
 
     // For tapping to dismiss the keyboard
     self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+
+    // Don't show current title in the next-view back button
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
     
     [self reloadData];
 }
@@ -487,6 +494,32 @@ typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
 - (void)contentView:(WPContentView *)contentView didReceiveLinkAction:(id)sender
 {
     [self openInAppWebView:((DTLinkButton *)sender).URL];
+}
+
+#pragma mark - MentionDelegate
+
+- (void)didStartAtMention:(UIView *)view
+{
+    NSNumber *siteID = self.comment.blog.blogID;
+    if (self.comment.blog.isWPcom && [[SuggestionService shared] shouldShowSuggestionsPageForSiteID:siteID]) {
+        SuggestionsTableViewController *suggestionsController = [[SuggestionsTableViewController alloc] initWithSiteID:siteID];
+        suggestionsController.delegate = self;
+        [self.navigationController pushViewController:suggestionsController animated:YES];
+    }
+}
+
+#pragma mark - SuggestionsTableViewDelegate
+
+- (void)suggestionTableView:(SuggestionsTableViewController *)suggestionsTableViewController
+            didSelectString:(NSString *)string
+{
+    self.inlineComposeView.text = [self.inlineComposeView.text stringByAppendingString:string];
+}
+
+- (void)suggestionViewDidDisappear:(SuggestionsTableViewController *)suggestionsController
+{
+    suggestionsController.delegate = nil;
+    [self.inlineComposeView becomeFirstResponder];
 }
 
 @end

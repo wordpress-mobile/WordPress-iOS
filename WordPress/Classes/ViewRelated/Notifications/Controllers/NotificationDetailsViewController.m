@@ -27,6 +27,9 @@
 #import "NSObject+Helpers.h"
 #import "NSDate+StringFormatting.h"
 
+#import "SuggestionService.h"
+#import "SuggestionsTableViewController.h"
+#import "MentionDelegate.h"
 
 
 #pragma mark ==========================================================================================
@@ -53,7 +56,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 #pragma mark Private
 #pragma mark ==========================================================================================
 
-@interface NotificationDetailsViewController () <EditCommentViewControllerDelegate, UITextViewDelegate>
+@interface NotificationDetailsViewController () <EditCommentViewControllerDelegate, UITextViewDelegate, SuggestionsTableViewDelegate, MentionDelegate>
 
 // Outlets
 @property (nonatomic,   weak) IBOutlet UITableView          *tableView;
@@ -214,6 +217,8 @@ static CGFloat NotificationSectionSeparator     = 10;
     replyTextView.onReply           = ^(NSString *content) {
         [weakSelf replyToCommentWithContent:content block:block];
     };
+    replyTextView.shouldDeleteTagWithBackspace = YES;
+    replyTextView.mentionDelegate   = self;
     replyTextView.delegate          = self;
     self.replyTextView              = replyTextView;
     
@@ -959,6 +964,39 @@ static CGFloat NotificationSectionSeparator     = 10;
     // Dismiss the reply field when tapping on the tableView
     self.replyTextView.text = [NSString string];
     [self.view endEditing:YES];
+}
+
+#pragma mark - MentionDelegate
+
+- (void)didStartAtMention:(UIView *)view
+{
+    NSNumber *siteID = self.note.metaSiteID;
+    if (!siteID) {
+        return;
+    }
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:context];
+    Blog *blog = [service blogByBlogId:siteID];
+    if (blog && blog.isWPcom && [[SuggestionService shared] shouldShowSuggestionsPageForSiteID:siteID]) {
+        SuggestionsTableViewController *suggestionsController = [[SuggestionsTableViewController alloc] initWithSiteID:siteID];
+        suggestionsController.delegate = self;
+        [self.navigationController pushViewController:suggestionsController animated:YES];
+    }
+}
+
+#pragma mark - SuggestionsTableViewDelegate
+
+- (void)suggestionTableView:(SuggestionsTableViewController *)suggestionsTableViewController
+            didSelectString:(NSString *)string
+{
+    self.replyTextView.text = [self.replyTextView.text stringByAppendingString:string];
+}
+
+- (void)suggestionViewDidDisappear:(SuggestionsTableViewController *)suggestionsController
+{
+    suggestionsController.delegate = nil;
+    [self.replyTextView becomeFirstResponder];
 }
 
 @end

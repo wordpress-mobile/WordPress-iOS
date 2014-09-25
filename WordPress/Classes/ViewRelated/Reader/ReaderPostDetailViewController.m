@@ -23,6 +23,9 @@
 #import "WPTableViewHandler.h"
 #import "WPWebVideoViewController.h"
 #import "WPWebViewController.h"
+#import "SuggestionsTableViewController.h"
+#import "SuggestionService.h"
+#import "MentionDelegate.h"
 
 static CGFloat const SectionHeaderHeight = 25.0f;
 static CGFloat const TableViewTopMargin = 40;
@@ -46,7 +49,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
                                             WPTableImageSourceDelegate,
                                             WPTableViewHandlerDelegate,
                                             NSFetchedResultsControllerDelegate,
-                                            UIPopoverControllerDelegate >
+                                            UIPopoverControllerDelegate,
+                                            SuggestionsTableViewDelegate,
+                                            MentionDelegate>
 
 @property (nonatomic, strong, readwrite) ReaderPost *post;
 @property (nonatomic, strong) UIPopoverController *popover;
@@ -285,6 +290,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
     [self.inlineComposeView setButtonTitle:NSLocalizedString(@"Post", nil)];
+    self.inlineComposeView.shouldDeleteTagWithBackspace = YES;
+    self.inlineComposeView.mentionDelegate = self;
     [self.view addSubview:self.inlineComposeView];
 
     // Comment composer responds to the inline compose view to publish comments
@@ -1021,6 +1028,32 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
     self.popover = nil;
+}
+
+#pragma mark - MentionDelegate
+
+- (void)didStartAtMention:(UIView *)view
+{
+    NSNumber *siteID = self.post.siteID;
+    if (self.post.isWPCom && [[SuggestionService shared] shouldShowSuggestionsPageForSiteID:siteID]) {
+        SuggestionsTableViewController *suggestionsController = [[SuggestionsTableViewController alloc] initWithSiteID:siteID];
+        suggestionsController.delegate = self;
+        [self.navigationController pushViewController:suggestionsController animated:YES];
+    }
+}
+
+#pragma mark - SuggestionsTableViewDelegate
+
+- (void)suggestionTableView:(SuggestionsTableViewController *)suggestionsTableViewController
+            didSelectString:(NSString *)string
+{
+    self.inlineComposeView.text = [self.inlineComposeView.text stringByAppendingString:string];
+}
+
+- (void)suggestionViewDidDisappear:(SuggestionsTableViewController *)suggestionsController
+{
+    suggestionsController.delegate = nil;
+    [self.inlineComposeView becomeFirstResponder];
 }
 
 @end
