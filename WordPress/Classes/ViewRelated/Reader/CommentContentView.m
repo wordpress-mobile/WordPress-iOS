@@ -2,12 +2,16 @@
 #import <DTCoreText/DTCoreText.h>
 #import "DTTiledLayerWithoutFade.h"
 #import "NSDate+StringFormatting.h"
-#import <WordPress-iOS-Shared/WPFontManager.h>
+
+//#import <WordPress-iOS-Shared/WPFontManager.h>
+#import "WordPress-Swift.h"
 
 static const CGFloat CommentContentViewAvatarSize = 32.0;
 static const CGFloat CommentContentViewContentViewOffsetTop = 36.0;
 static const CGFloat CommentContentViewContentViewOffsetBottom = 19.0;
 static const CGFloat CommentContentViewContentOffsetLeft = 40.0;
+static const UIEdgeInsets AuthorButtonEdgeInsets = {-5.0f, 0.0f, 0.0f, 0.0f};
+static const UIEdgeInsets ReplyButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0f};
 
 @interface CommentContentView()<DTAttributedTextContentViewDelegate>
 
@@ -163,11 +167,13 @@ static const CGFloat CommentContentViewContentOffsetLeft = 40.0;
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 // TODO : Create a comment font and add it to WPStyleGuide
-    button.titleLabel.font = [WPFontManager openSansBoldFontOfSize:14.0];
+//    button.titleLabel.font = [WPFontManager openSansBoldFontOfSize:14.0];
+    button.titleLabel.font = [WPStyleGuide commentTitleFont];
     button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     button.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     [button addTarget:self action:@selector(handleAuthorTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [button setContentEdgeInsets:UIEdgeInsetsMake(-5, 0, 0, 0)];
+    button.contentEdgeInsets = AuthorButtonEdgeInsets;
+
     return button;
 }
 
@@ -176,7 +182,9 @@ static const CGFloat CommentContentViewContentOffsetLeft = 40.0;
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    button.titleLabel.font = [WPFontManager openSansRegularFontOfSize:14.0];
+//    button.titleLabel.font = [WPFontManager openSansRegularFontOfSize:14.0];
+    button.titleLabel.font = [WPStyleGuide commentBodyFont];
+
     button.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 
     [button setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateNormal];
@@ -210,7 +218,7 @@ static const CGFloat CommentContentViewContentOffsetLeft = 40.0;
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    button.titleLabel.font = [WPFontManager openSansRegularFontOfSize:14.0];
+    button.titleLabel.font = [WPStyleGuide commentBodyFont];
 
     NSString *title = NSLocalizedString(@"Reply", @"Title of the reply button.");
     [button setTitle:title forState:UIControlStateNormal];
@@ -219,7 +227,7 @@ static const CGFloat CommentContentViewContentOffsetLeft = 40.0;
     [button setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateDisabled];
 
     [button setImage:[UIImage imageNamed:@"icon-reader-comment-reply"] forState:UIControlStateNormal];
-    button.titleEdgeInsets = UIEdgeInsetsMake(0, 4, 0, -4);
+    button.titleEdgeInsets = ReplyButtonEdgeInsets;
 
     [button addTarget:self action:@selector(handleReplyTapped:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -303,19 +311,21 @@ static const CGFloat CommentContentViewContentOffsetLeft = 40.0;
         string = [string substringToIndex:prng.location + 3];
     }
 
-    NSString *defaultStyles = @"blockquote {width: 100%; display: block; font-style: italic;}";
-    DTCSSStylesheet *cssStylesheet = [[DTCSSStylesheet alloc] initWithStyleBlock:defaultStyles];
-    NSDictionary *options = @{
-             DTDefaultFontFamily:@"Open Sans",
-             DTDefaultLineHeightMultiplier:@1.52,
-             DTDefaultFontSize:@14.0,
-             DTDefaultTextColor:[WPStyleGuide littleEddieGrey],
-             DTDefaultLinkColor:[WPStyleGuide baseLighterBlue],
-             DTDefaultLinkHighlightColor:[WPStyleGuide midnightBlue],
-             DTDefaultLinkDecoration:@NO,
-             DTDefaultStyleSheet:cssStylesheet
-             };
+//    NSString *defaultStyles = @"blockquote {width: 100%; display: block; font-style: italic;}";
+//    DTCSSStylesheet *cssStylesheet = [[DTCSSStylesheet alloc] initWithStyleBlock:defaultStyles];
+//    NSDictionary *options = @{
+//             DTDefaultFontFamily:@"Open Sans",
+//             DTDefaultLineHeightMultiplier:@1.52,
+//             DTDefaultFontSize:@14.0,
+//             DTDefaultTextColor:[WPStyleGuide littleEddieGrey],
+//             DTDefaultLinkColor:[WPStyleGuide baseLighterBlue],
+//             DTDefaultLinkHighlightColor:[WPStyleGuide midnightBlue],
+//             DTDefaultLinkDecoration:@NO,
+//             DTDefaultStyleSheet:cssStylesheet
+//             };
 
+
+    NSDictionary *options = [WPStyleGuide commentDTCoreTextOptions];
     NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
     NSAttributedString *attributedString = [[NSAttributedString alloc] initWithHTMLData:data
                                                                               options:options
