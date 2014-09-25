@@ -2,11 +2,11 @@ import UIKit
 import NotificationCenter
 
 class TodayViewController: UIViewController, NCWidgetProviding {
-    @IBOutlet var siteNameLabel: UILabel?
-    @IBOutlet var visitorsCountLabel: UILabel?
-    @IBOutlet var visitorsLabel: UILabel?
-    @IBOutlet var viewsCountLabel: UILabel?
-    @IBOutlet var viewsLabel: UILabel?
+    @IBOutlet var siteNameLabel: UILabel!
+    @IBOutlet var visitorsCountLabel: UILabel!
+    @IBOutlet var visitorsLabel: UILabel!
+    @IBOutlet var viewsCountLabel: UILabel!
+    @IBOutlet var viewsLabel: UILabel!
     
     var siteName: String = ""
     var visitorCount: String = ""
