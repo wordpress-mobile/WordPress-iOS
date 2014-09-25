@@ -915,7 +915,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     ReaderCommentCell *cell = (ReaderCommentCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     cell.delegate = self;
     cell.accessoryType = UITableViewCellAccessoryNone;
-//    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 
     [self configureCell:cell atIndexPath:indexPath];
 
@@ -930,14 +929,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return NO;
-    // if we selected the already active comment allow highlight
-    // so we can toggle the inline composer
-    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    if (comment == self.commentPublisher.comment) {
-        return YES;
-    }
-
-    return !self.inlineComposeView.isDisplayed;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
