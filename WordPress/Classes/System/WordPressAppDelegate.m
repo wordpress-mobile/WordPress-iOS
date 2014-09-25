@@ -70,7 +70,7 @@ static NSString* const kWPNewPostURLParamContentKey = @"content";
 static NSString* const kWPNewPostURLParamTagsKey = @"tags";
 static NSString* const kWPNewPostURLParamImageKey = @"image";
 
-@interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
+@interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate, HelpshiftDelegate>
 
 @property (nonatomic, strong, readwrite) UINavigationController         *navigationController;
 @property (nonatomic, strong, readwrite) UITabBarController             *tabBarController;
@@ -127,6 +127,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [SupportViewController checkIfFeedbackShouldBeEnabled];
 
     [Helpshift installForApiKey:[WordPressComApiCredentials helpshiftAPIKey] domainName:[WordPressComApiCredentials helpshiftDomainName] appID:[WordPressComApiCredentials helpshiftAppId]];
+    [[Helpshift sharedInstance] setDelegate:self];
     [SupportViewController checkIfHelpshiftShouldBeEnabled];
 
     NSNumber *usage_tracking = [[NSUserDefaults standardUserDefaults] valueForKey:kUsageTrackingDefaultsKey];
@@ -166,6 +167,9 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
         [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
         [self cleanUnusedMediaFileFromTmpDir];
     });
+    
+    // Configure Today Widget
+    [self determineIfTodayWidgetIsConfiguredAndShowAppropriately];
 
     CGRect bounds = [[UIScreen mainScreen] bounds];
     [self.window setFrame:bounds];
@@ -222,7 +226,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
         } else if ([URLString rangeOfString:@"viewpost"].length) {
             // View the post specified by the shared blog ID and post ID
             NSDictionary *params = [[url query] dictionaryFromQueryString];
-
+            
             if (params.count) {
                 NSNumber *blogId = [params numberForKey:@"blogId"];
                 NSNumber *postId = [params numberForKey:@"postId"];
@@ -231,8 +235,34 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
                 NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
                 [self.tabBarController setSelectedIndex:readerTabIndex];
                 [self.readerPostsViewController openPost:postId onBlog:blogId];
-
+                
                 returnValue = YES;
+            }
+        } else if ([URLString rangeOfString:@"viewstats"].length) {
+            // View the post specified by the shared blog ID and post ID
+            NSDictionary *params = [[url query] dictionaryFromQueryString];
+            
+            if (params.count) {
+                NSNumber *siteId = [params numberForKey:@"siteId"];
+                
+                BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+                Blog *blog = [blogService blogByBlogId:siteId];
+                
+                if (blog) {
+                    returnValue = YES;
+                    
+                    StatsViewController *statsViewController = [[StatsViewController alloc] init];
+                    statsViewController.blog = blog;
+                    statsViewController.dismissBlock = ^{
+                        [self.tabBarController dismissViewControllerAnimated:YES completion:nil];
+                    };
+                    
+                    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:statsViewController];
+                    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+                    navController.navigationBar.translucent = NO;
+                    [self.tabBarController presentViewController:navController animated:YES completion:nil];
+                }
+                
             }
         } else if ([URLString rangeOfString:@"debugging"].length) {
             NSDictionary *params = [[url query] dictionaryFromQueryString];
@@ -467,10 +497,12 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     if ([self noBlogsAndNoWordPressDotComAccount]) {
         UIViewController *presenter = self.window.rootViewController;
         if (presenter.presentedViewController) {
-            [presenter dismissViewControllerAnimated:NO completion:nil];
+            [presenter dismissViewControllerAnimated:animated completion:^{
+                [self showWelcomeScreenAnimated:animated thenEditor:NO];
+            }];
+        } else {
+            [self showWelcomeScreenAnimated:animated thenEditor:NO];
         }
-
-        [self showWelcomeScreenAnimated:animated thenEditor:NO];
     }
 }
 
@@ -508,6 +540,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 
     [[UINavigationBar appearance] setBarTintColor:[WPStyleGuide wordPressBlue]];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+
     [[UINavigationBar appearanceWhenContainedIn:[MFMailComposeViewController class], nil] setBarTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearanceWhenContainedIn:[MFMailComposeViewController class], nil] setTintColor:defaultTintColor];
 
@@ -515,9 +548,10 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [[UITabBar appearance] setTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
 
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [WPFontManager openSansBoldFontOfSize:16.0]} ];
-// temporarily removed to fix transparent UINavigationBar within Helpshift
-//    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"transparent-point"] forBarMetrics:UIBarMetricsDefault];
-//    [[UINavigationBar appearance] setShadowImage:[UIImage imageNamed:@"transparent-point"]];
+
+    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageWithColor:[WPStyleGuide wordPressBlue]] forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setShadowImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"007eb1"]]];
+
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor lightGrayColor]} forState:UIControlStateDisabled];
     [[UIToolbar appearance] setBarTintColor:[WPStyleGuide wordPressBlue]];
@@ -1320,7 +1354,20 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
         // No need to check for welcome screen unless we are signing out
         [self logoutSimperiumAndResetNotifications];
         [self showWelcomeScreenIfNeededAnimated:NO];
+        [self removeTodayWidgetConfiguration];
     }
+}
+
+#pragma mark - Today Extension
+
+- (void)determineIfTodayWidgetIsConfiguredAndShowAppropriately
+{
+    [StatsViewController hideTodayWidgetIfNotConfigured];
+}
+
+- (void)removeTodayWidgetConfiguration
+{
+    [StatsViewController removeTodayWidgetConfiguration];
 }
 
 #pragma mark - GUI animations
@@ -1355,6 +1402,20 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 			}];
 		});
 	}];
+}
+
+#pragma mark - Helpshift Delegate
+
+- (void)didReceiveInAppNotificationWithMessageCount:(NSInteger)count;
+{
+    if (count > 0) {
+        [WPAnalytics track:WPAnalyticsStatSupportReceivedResponseFromSupport];
+    }
+}
+
+- (void)didReceiveNotificationCount:(NSInteger)count
+{
+    // Note: Empty method, just so silence compiler warning.
 }
 
 @end
