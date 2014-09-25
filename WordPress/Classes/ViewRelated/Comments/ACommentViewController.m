@@ -4,15 +4,17 @@
 #import "ContextManager.h"
 #import "UIAlertView+Blocks.h"
 #import "WordPress-Swift.h"
+#import "UIActionSheet+Helpers.h"
 #import "Comment.h"
 #import "BasePost.h"
+#import "EditCommentViewController.h"
 
 static NSString *const CVCHeaderCellIdentifier = @"CommentTableViewHeaderCell";
 static NSString *const CVCCommentCellIdentifier = @"CommentTableViewCell";
 static NSInteger const CVCHeaderSectionIndex = 0;
 static NSInteger const CVCSectionSeparatorHeight = 10;
 
-@interface ACommentViewController ()
+@interface ACommentViewController () <EditCommentViewControllerDelegate>
 
 @property (nonatomic, strong) NoteBlockHeaderTableViewCell *headerLayoutCell;
 @property (nonatomic, strong) CommentTableViewCell *bodyLayoutCell;
@@ -191,8 +193,7 @@ static NSInteger const CVCSectionSeparatorHeight = 10;
             return;
         }
 
-        CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-        [commentService deleteComment:weakSelf.comment success:nil failure:nil];
+        [weakSelf.commentService deleteComment:weakSelf.comment success:nil failure:nil];
 
         // Note: the parent class of CommentsViewController will pop this as a result of NSFetchedResultsChangeDelete
     };
@@ -210,7 +211,99 @@ static NSInteger const CVCSectionSeparatorHeight = 10;
 
 - (void)displayMoreActions
 {
+    NSString *editTitle = NSLocalizedString(@"Edit Comment", @"Edit a comment");
+    NSString *spamTitle = NSLocalizedString(@"Mark as Spam", @"Mark a comment as spam");
+    NSString *cancelTitle = NSLocalizedString(@"Cancel", nil);
 
+    NSArray *otherButtonTitles = @[editTitle, spamTitle];
+
+    // Render the actionSheet
+    __typeof(self) __weak weakSelf = self;
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                    cancelButtonTitle:cancelTitle
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:otherButtonTitles
+                                                           completion:^(NSString *buttonTitle) {
+                                                               if ([buttonTitle isEqualToString:editTitle]) {
+                                                                   [weakSelf editComment];
+                                                               } else if ([buttonTitle isEqualToString:spamTitle]) {
+                                                                   [weakSelf spamComment];
+                                                               }
+                                                           }];
+
+    [actionSheet showInView:self.view.window];
+}
+
+- (void)editComment
+{
+    EditCommentViewController *editViewController = [EditCommentViewController newEditCommentViewController];
+    editViewController.content = self.comment.content;
+    editViewController.delegate = self;
+
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editViewController];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    navController.navigationBar.translucent = NO;
+
+    [self presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)spamComment
+{
+    __typeof(self) __weak weakSelf = self;
+
+    UIAlertViewCompletionBlock completion = ^(UIAlertView *alertView, NSInteger buttonIndex) {
+        if (buttonIndex == alertView.cancelButtonIndex) {
+            return;
+        }
+
+        [weakSelf.commentService spamComment:self.comment success:nil failure:nil];
+    };
+
+    NSString *message = NSLocalizedString(@"Are you sure you want to mark this comment as Spam?",
+                                          @"Message asking for confirmation before marking a comment as spam");
+
+    [UIAlertView showWithTitle:NSLocalizedString(@"Confirm", @"Confirm")
+                       message:message
+             cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+             otherButtonTitles:@[NSLocalizedString(@"Spam", @"Spam")]
+                      tapBlock:completion];
+}
+
+#pragma mark - EditCommentViewControllerDelegate
+
+- (void)editCommentViewController:(EditCommentViewController *)sender didUpdateContent:(NSString *)newContent
+{
+    sender.interfaceEnabled = NO;
+
+    __typeof(self) __weak weakSelf = self;
+
+    [self.commentService updateCommentWithID:self.comment.commentID
+                                      siteID:self.comment.blog.blogID
+                                     content:newContent
+                                     success:^{
+                                         weakSelf.comment.content = newContent;
+                                         [weakSelf.tableView reloadData];
+                                         [weakSelf dismissViewControllerAnimated:YES completion:nil];
+                                     }
+                                     failure:^(NSError *error) {
+                                         NSString *message = NSLocalizedString(@"Couldn't Update Comment. Please, try again later",
+                                                                               @"Error displayed if a comment fails to get updated");
+
+                                         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                                                             message:message
+                                                                                            delegate:nil
+                                                                                   cancelButtonTitle:NSLocalizedString(@"Accept", nil)
+                                                                                   otherButtonTitles:nil,
+                                                                   nil];
+                                         [alertView show];
+                                         sender.interfaceEnabled = YES;
+                                     }];
+}
+
+- (void)editCommentViewControllerFinished:(EditCommentViewController *)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Setter/Getters
