@@ -8,8 +8,8 @@
 {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"Edit Reply", @"");
-    self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"Send", @"");
+    self.title = NSLocalizedString(@"Edit Reply", @"Comment Reply Screen title");
+    self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"Send", @"Verb, submit a comment reply");
     self.content = [NSString string];
 }
 
