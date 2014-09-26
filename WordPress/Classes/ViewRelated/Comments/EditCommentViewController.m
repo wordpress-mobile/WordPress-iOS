@@ -37,6 +37,16 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
 
 @implementation EditCommentViewController
 
+#pragma mark - Static Helpers
+
++ (instancetype)newEditViewController
+{
+    return [[[self class] alloc] initWithNibName:NSStringFromClass([self class]) bundle:nil];
+}
+
+
+#pragma mark - Lifecycle
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -233,14 +243,6 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
     if (self.onCompletion) {
         self.onCompletion(false, self.pristineText);
     }
-}
-
-
-#pragma mark - Static Helpers
-
-+ (instancetype)newEditViewController
-{
-    return [[[self class] alloc] initWithNibName:NSStringFromClass([self class]) bundle:nil];
 }
 
 @end
