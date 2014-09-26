@@ -608,9 +608,7 @@ static CGFloat NotificationSectionSeparator     = 10;
                                                             }];
     
     if ([UIDevice isPad]) {
-        // Translate the sender frame to the view coordinate system. (sender.superview == the cell!)
-        CGRect originRect = [self.view convertRect:sender.frame fromView:sender.superview];
-        [actionSheet showFromRect:originRect inView:self.view animated:true];
+        [actionSheet showFromRect:sender.bounds inView:sender animated:true];
     } else {
         [actionSheet showInView:self.view.window];
     }
