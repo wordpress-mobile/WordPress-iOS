@@ -49,7 +49,11 @@
         NSInteger value = [category[@"value"] integerValue];
         NSString *name = category[@"name"];
         
-        CGFloat percentHeight = value / self.maximumY;
+        CGFloat percentHeight = 0.0;
+        if (self.maximumY != 0.0) {
+            percentHeight = value / self.maximumY;
+        }
+        
         CGFloat height = floorf((CGRectGetHeight(self.contentView.bounds) - 20.0) * percentHeight);
         CGFloat offsetY = CGRectGetHeight(self.contentView.bounds) - (height + 20.0);
         
