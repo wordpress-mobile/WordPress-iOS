@@ -3,7 +3,6 @@
 @protocol WPTableViewHandlerDelegate <NSObject>
 
 - (NSManagedObjectContext *)managedObjectContext;
-- (NSString *)entityName;
 - (NSFetchRequest *)fetchRequest;
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -21,6 +20,7 @@
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (void)deletingSelectedRowAtIndexPath:(NSIndexPath *)indexPath;
 - (void)tableViewDidChangeContent:(UITableView *)tableView;
+- (void)tableViewWillChangeContent:(UITableView *)tableView;
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath;
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
