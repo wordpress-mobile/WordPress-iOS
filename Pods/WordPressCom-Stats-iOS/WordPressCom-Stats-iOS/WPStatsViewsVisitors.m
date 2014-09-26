@@ -69,7 +69,7 @@ NSString *const StatsPointCountKey = @"count";
             self.dateFormatter.dateFormat = @"yyyy-MM-dd";
             NSDate *d = [self.dateFormatter dateFromString:name];
             self.dateFormatter.dateFormat = @"LLL dd";
-            niceName = [self.dateFormatter stringFromDate:d];
+            niceName = [self.dateFormatter stringFromDate:d] ?: @"";
             break;
         }
         case StatsViewsVisitorsUnitWeek:
@@ -78,7 +78,7 @@ NSString *const StatsPointCountKey = @"count";
             self.dateFormatter.dateFormat = @"yyyy'W'MM'W'dd";
             NSDate *d = [self.dateFormatter dateFromString:name];
             self.dateFormatter.dateFormat = @"LLL dd";
-            niceName = [self.dateFormatter stringFromDate:d];
+            niceName = [self.dateFormatter stringFromDate:d] ?: @"";
             break;
         }
         case StatsViewsVisitorsUnitMonth:
@@ -86,13 +86,17 @@ NSString *const StatsPointCountKey = @"count";
             self.dateFormatter.dateFormat = @"yyyy-MM-dd";
             NSDate *d = [self.dateFormatter dateFromString:name];
             self.dateFormatter.dateFormat = @"LLL yyyy"; // L is stand-alone month
-            niceName = [self.dateFormatter stringFromDate:d];
+            niceName = [self.dateFormatter stringFromDate:d] ?: @"";
             break;
         }
         default:
         {
             niceName = @"";
         }
+    }
+    
+    if (niceName.length == 0) {
+        DDLogWarn(@"Unparsable date/time passed into nicePointName: %@ for unit: %@", name, @(unit));
     }
     
     return @{StatsPointNameKey : niceName};

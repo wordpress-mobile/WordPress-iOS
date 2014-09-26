@@ -19,6 +19,7 @@ static NSString *const CategoryBarCell = @"CategoryBarCell";
 static NSString *const LegendView = @"LegendView";
 static NSString *const FooterView = @"FooterView";
 static NSString *const GraphBackgroundView = @"GraphBackgroundView";
+static NSInteger const RecommendedYAxisTicks = 7;
 
 @implementation WPStatsGraphViewController
 
@@ -29,6 +30,7 @@ static NSString *const GraphBackgroundView = @"GraphBackgroundView";
     if (self) {
         _flowLayout = layout;
         _numberOfYValues = 7;
+        _maximumY = 0;
     }
     return self;
 }
@@ -140,7 +142,7 @@ static NSString *const GraphBackgroundView = @"GraphBackgroundView";
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat width = 30.0f;
-    CGFloat height = CGRectGetHeight(collectionView.frame) - 25.0;
+    CGFloat height = CGRectGetHeight(collectionView.frame) - 24.0;
     
     CGSize size = CGSizeMake(width, height);
     
@@ -192,8 +194,23 @@ static NSString *const GraphBackgroundView = @"GraphBackgroundView";
             maximumY = [number floatValue];
         }
     }
-    
-    self.maximumY = maximumY;
+
+    // Y axis line markers and values
+    // Round up and extend past max value to the next step
+    NSUInteger yAxisTicks = RecommendedYAxisTicks;
+    NSUInteger stepValue = 1;
+
+    if (maximumY > 0) {
+        CGFloat s = (CGFloat)maximumY/(CGFloat)yAxisTicks;
+        long len = (long)(double)log10(s);
+        long div = (long)(double)pow(10, len);
+        stepValue = ceil(s / div) * div;
+
+        // Adjust yAxisTicks to accomodate ticks and maximum without too much padding
+        yAxisTicks = ceil( maximumY / stepValue ) + 1;
+        self.maximumY = stepValue * yAxisTicks;
+        self.numberOfYValues = yAxisTicks;
+    }
     
     NSUInteger countViews = [categoryData[StatsViewsCategory] count];
     NSUInteger countVisitors = [categoryData[StatsVisitorsCategory] count];

@@ -16,4 +16,7 @@ extern NSString *const StatsPointCountKey;
 - (void)addViewsVisitorsWithData:(NSDictionary *)data unit:(WPStatsViewsVisitorsUnit)unit;
 - (NSDictionary *)viewsVisitorsForUnit:(WPStatsViewsVisitorsUnit)unit;
 
+// Opened up for unit testing
+- (NSDictionary *)nicePointNames:(NSString *)name forUnit:(WPStatsViewsVisitorsUnit)unit;
+
 @end
