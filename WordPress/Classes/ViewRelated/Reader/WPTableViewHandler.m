@@ -306,6 +306,23 @@ static CGFloat const DefaultCellHeight = 44.0;
 }
 
 
+#pragma mark - UIScrollViewDelegate Methods
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    if ([self.delegate respondsToSelector:@selector(scrollViewWillBeginDragging:)]) {
+        [self.delegate scrollViewWillBeginDragging:scrollView];
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if ([self.delegate respondsToSelector:@selector(scrollViewDidEndDecelerating::)]) {
+        [self.delegate scrollViewDidEndDecelerating:scrollView];
+    }
+}
+
+
 #pragma mark - Fetched results controller
 
 - (UITableViewRowAnimation)tableViewRowAnimation
