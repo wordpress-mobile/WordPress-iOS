@@ -41,7 +41,7 @@ PODS:
     - DTFoundation/Core
   - EmailChecker (0.1)
   - Google-Diff-Match-Patch (0.0.1)
-  - google-plus-ios-sdk (1.7.0)
+  - google-plus-ios-sdk (1.7.1)
   - Helpshift (4.8.0)
   - HockeySDK (3.5.7)
   - JRSwizzle (1.0)
@@ -148,7 +148,7 @@ SPEC CHECKSUMS:
   DTFoundation: 360bc65ab44f588611f47324b8cfb0f18e04b263
   EmailChecker: e909e6d113fac7ad5e3c304fabce30fc4a79c80e
   Google-Diff-Match-Patch: 1f9c0b972c351d9c0a4fee137eb96896460477cd
-  google-plus-ios-sdk: f613bd712196b435ecc098eed75afb3364bca177
+  google-plus-ios-sdk: bb7b918c2ee0d5f5e389c4fddc06d71995481f67
   Helpshift: cb3f909e33f53a1b4f617a743ed24fdbfdb507f3
   HockeySDK: f0e874d1c6833163ee0c4e423606faf33ad04071
   JRSwizzle: 30da7a2c539a4ebf954b16d15f6dd8221c9f6fa5
@@ -169,7 +169,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 1944dd25ee46fbc592740148ab47d543f80f0bba
   WordPress-iOS-Editor: 1f4410ffd766061cff8a1a5cf3c66926235e31bb
   WordPress-iOS-Shared: 44463dbfdc0fa6bd40fa38eeff14d8e0fe9a7d9c
-  WordPressApi: 2e05a82014171bc6f9d6cdab580cc16e9c5f2c6c
+  WordPressApi: 6216cef116f627f07d1a519b8d04dd7acada0d20
   WordPressCom-Analytics-iOS: 8a61cd361b7d27c23917e70d237af4d990b4f785
   WordPressCom-Stats-iOS: 3330ca827ccf9ae609ac05c3af210e6cef427f1b
   wpxmlrpc: a56b534ad0eb7db28a580eabb68a4a3d3426f6d7
