@@ -231,7 +231,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 - (void)adjustTableInsetsIfNeeded
 {
-    UIEdgeInsets contentInset = IS_IPAD ? NotificationTableInsetsPad : NotificationTableInsetsPhone;
+    UIEdgeInsets contentInset = [UIDevice isPad] ? NotificationTableInsetsPad : NotificationTableInsetsPhone;
     
     // Badge Notifications should be centered, and display no cell separators
     if (self.note.isBadge) {
