@@ -277,8 +277,8 @@ typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
     
     [UIAlertView showWithTitle:nil
                        message:message
-             cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-             otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
+             cancelButtonTitle:NSLocalizedString(@"Cancel", @"Verb, Cancel an action")
+             otherButtonTitles:@[ NSLocalizedString(@"Try Again", @"Retry an action that failed") ]
                       tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
                                     if (buttonIndex == alertView.cancelButtonIndex) {
                                         [comment.managedObjectContext refreshObject:comment mergeChanges:false];
