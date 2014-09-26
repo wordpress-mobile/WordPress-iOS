@@ -3,9 +3,10 @@ import Foundation
 
 @objc public class NoteBlockCommentTableViewCell : NoteBlockTextTableViewCell
 {
-    public typealias EventHandler = (() -> Void)
+    public typealias EventHandler = ((sender: AnyObject) -> Void)
 
     // MARK: - Public Properties
+    public var onReplyClick:        EventHandler?
     public var onLikeClick:         EventHandler?
     public var onUnlikeClick:       EventHandler?
     public var onApproveClick:      EventHandler?
@@ -26,6 +27,12 @@ import Foundation
     public var timestamp: String? {
         didSet {
             timestampLabel.text  = timestamp ?? String()
+        }
+    }
+    public var isReplyEnabled: Bool = false {
+        didSet {
+            refreshButtonSize(btnReply, isVisible: isReplyEnabled)
+            refreshBottomSpacing()
         }
     }
     public var isLikeEnabled: Bool = false {
@@ -104,9 +111,14 @@ import Foundation
 
         let approveNormalTitle              = NSLocalizedString("Approve", comment: "Approve a comment")
         let approveSelectedTitle            = NSLocalizedString("Approved", comment: "Unapprove a comment")
-        
+
+        let replyTitle                      = NSLocalizedString("Reply",  comment: "Verb, reply to a comment")
         let moreTitle                       = NSLocalizedString("More",  comment: "Verb, display More actions for a comment")
         let trashTitle                      = NSLocalizedString("Trash", comment: "Move a comment to the trash")
+        
+        btnReply.setTitle(replyTitle, forState: .Normal)
+        btnReply.setTitleColor(textNormalColor, forState: .Normal)
+        btnReply.accessibilityLabel = replyTitle
         
         btnLike.setTitle(likeNormalTitle,           forState: .Normal)
         btnLike.setTitle(likeSelectedTitle,         forState: .Highlighted)
@@ -140,31 +152,35 @@ import Foundation
     }
     
     // MARK: - IBActions
+    @IBAction public func replyWasPressed(sender: AnyObject) {
+        hitEventHandler(onReplyClick, sender: sender)
+    }
+    
     @IBAction public func likeWasPressed(sender: AnyObject) {
         let handler = isLikeOn ? onUnlikeClick : onLikeClick
-        hitEventHandler(handler)
+        hitEventHandler(handler, sender: sender)
         isLikeOn = !isLikeOn
     }
     
     @IBAction public func approveWasPressed(sender: AnyObject) {
         let handler = isApproveOn ? onUnapproveClick : onApproveClick
-        hitEventHandler(handler)
+        hitEventHandler(handler, sender: sender)
         isApproveOn = !isApproveOn
     }
     
     @IBAction public func trashWasPressed(sender: AnyObject) {
-        hitEventHandler(onTrashClick)
+        hitEventHandler(onTrashClick, sender: sender)
     }
     
     @IBAction public func moreWasPressed(sender: AnyObject) {
-        hitEventHandler(onMoreClick)
+        hitEventHandler(onMoreClick, sender: sender)
     }
     
     
     // MARK: - Private Methods
-    private func hitEventHandler(handler: EventHandler?) {
+    private func hitEventHandler(handler: EventHandler?, sender: AnyObject) {
         if let listener = handler {
-            listener()
+            listener(sender: sender)
         }
     }
     
@@ -257,6 +273,7 @@ import Foundation
     @IBOutlet private weak var nameLabel            : UILabel!
     @IBOutlet private weak var timestampLabel       : UILabel!
     @IBOutlet private weak var separatorView        : UIView!
+    @IBOutlet private weak var btnReply             : UIButton!
     @IBOutlet private weak var btnLike              : UIButton!
     @IBOutlet private weak var btnApprove           : UIButton!
     @IBOutlet private weak var btnTrash             : UIButton!
