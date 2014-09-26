@@ -61,7 +61,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @property (nonatomic, strong) ReaderCommentPublisher *commentPublisher;
 @property (nonatomic, readonly) ReaderTopic *currentTopic;
 @property (nonatomic, strong) ReaderPostTableViewCell *cellForLayout;
-@property (nonatomic, strong) NSLayoutConstraint *cellForLayoutWidthConstraint;
 @property (nonatomic, strong) NSNumber *siteIDToBlock;
 @property (nonatomic, strong) NSNumber *postIDThatInitiatedBlock;
 @property (nonatomic, strong) UIActionSheet *actionSheet;
@@ -199,7 +198,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         width = MAX(width, height);
     }
 
-    [self updateCellForLayoutWidthConstraint:width];
     [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
 }
 
@@ -239,7 +237,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     NSString *CellIdentifier = @"CellForLayoutIdentifier";
     [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:CellIdentifier];
     self.cellForLayout = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    [self updateCellForLayoutWidthConstraint:CGRectGetWidth(self.tableView.bounds)];
 }
 
 - (void)configureFeaturedImageSource
@@ -295,22 +292,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     // Comment composer responds to the inline compose view to publish comments
     self.commentPublisher = [[ReaderCommentPublisher alloc] initWithComposer:self.inlineComposeView];
     self.commentPublisher.delegate = self;
-}
-
-- (void)updateCellForLayoutWidthConstraint:(CGFloat)width
-{
-    // TODO: instead of replacing the constraint just update its constant.
-    UIView *contentView = self.cellForLayout.contentView;
-    if (self.cellForLayoutWidthConstraint) {
-        [contentView removeConstraint:self.cellForLayoutWidthConstraint];
-    }
-    NSDictionary *views = NSDictionaryOfVariableBindings(contentView);
-    NSDictionary *metrics = @{@"width":@(width)};
-    self.cellForLayoutWidthConstraint = [[NSLayoutConstraint constraintsWithVisualFormat:@"[contentView(width)]"
-                                                                                 options:0
-                                                                                 metrics:metrics
-                                                                                   views:views] firstObject];
-    [contentView addConstraint:self.cellForLayoutWidthConstraint];
 }
 
 - (void)configureNoResultsView
@@ -554,7 +535,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     NSNumber *siteIDToBlock = self.siteIDToBlock;
     self.siteIDToBlock = nil;
 
-//    [self.cachedRowHeights removeAllObjects];
+    [self.tableViewHandler clearCachedRowHeights];
+
     NSManagedObjectContext *derivedContext = [[ContextManager sharedInstance] newDerivedContext];
     ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:derivedContext];
     [service flagSiteWithID:siteIDToBlock asBlocked:YES success:^{
@@ -572,7 +554,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)unblockSiteForPost:(ReaderPost *)post
 {
-//    [self.cachedRowHeights removeAllObjects];
+    [self.tableViewHandler clearCachedRowHeights];
+
     NSManagedObjectContext *derivedContext = [[ContextManager sharedInstance] newDerivedContext];
     ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:derivedContext];
     [service flagSiteWithID:post.siteID asBlocked:NO success:^{
@@ -842,7 +825,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)updateAndPerformFetchRequest
 {
-//    [self.cachedRowHeights removeAllObjects];
+    [self.tableViewHandler clearCachedRowHeights];
+
     NSError *error;
     [self.tableViewHandler.resultsController.fetchRequest setPredicate:[self predicateForFetchRequest]];
     [self.tableViewHandler.resultsController performFetch:&error];
@@ -918,15 +902,21 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    CGFloat width = [UIDevice isPad] ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
+    return [self tableView:tableView heightForRowAtIndexPath:indexPath forWidth:width];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath forWidth:(CGFloat)width
+{
     ReaderPost *post = [self.tableViewHandler.resultsController.fetchedObjects objectAtIndex:indexPath.row];
     if (post.isSiteBlocked) {
         return RPVCBlockedCellHeight;
     }
 
     [self configureCell:self.cellForLayout atIndexPath:indexPath];
-    CGFloat width = [UIDevice isPad] ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
     CGSize size = [self.cellForLayout sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
-    return ceil(size.height) + 1;
+    CGFloat height = ceil(size.height);
+    return height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1089,6 +1079,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
                                   animated:YES];
 }
 
+
 #pragma mark - RebloggingViewController Delegate Methods
 
 - (void)postWasReblogged:(ReaderPost *)post
@@ -1146,6 +1137,16 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
     self.actionSheet = nil;
     actionSheet.delegate = nil;
+}
+
+
+#pragma mark - UIScrollView Delegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    if ([self.refreshControl isRefreshing]) {
+        [self.refreshControl endRefreshing];
+    }
 }
 
 @end
