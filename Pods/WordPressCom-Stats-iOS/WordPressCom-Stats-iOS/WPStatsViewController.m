@@ -483,7 +483,11 @@ typedef NS_ENUM(NSInteger, TotalFollowersShareRow) {
                 [(WPStatsNoResultsCell *)cell configureForSection:indexPath.section];
             } else {
                 cell = [self.tableView dequeueReusableCellWithIdentifier:ResultRowCellIdentifier];
-                [(WPStatsTwoColumnCell *)cell insertData:[self resultForIndexPath:indexPath]];
+                WPStatsTitleCountItem *statsTitleCountItem = [self resultForIndexPath:indexPath];
+                if ( [statsTitleCountItem.title isEqualToString:@"encrypted_search_terms"] ) {
+                    statsTitleCountItem.title = NSLocalizedString( @"Unknown search terms", @"Unknown (encrypted) search term for title count item" );
+                }
+                [(WPStatsTwoColumnCell *)cell insertData:statsTitleCountItem];
             }
         }
     }
