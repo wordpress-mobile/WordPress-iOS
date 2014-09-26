@@ -37,19 +37,6 @@
 - (void)finishedSettingProperties
 {
     self.barsWithColors = [NSMutableArray new];
-    
-    // Y axis line markers and values
-    // Round up and extend past max value to the next 10s
-    NSUInteger yAxisTicks = self.numberOfYValues;
-    NSUInteger stepValue = 1;
-    
-    if (self.maximumY > 0) {
-        CGFloat s = (CGFloat)self.maximumY/(CGFloat)yAxisTicks;
-        long len = (long)(double)log10(s);
-        long div = (long)(double)pow(10, len);
-        stepValue = ceil(s / div) * div;
-    }
-    self.maximumY = stepValue * yAxisTicks;
 
     // For each subsequent category, inset the bar a set amount
     __block CGFloat inset = 0.0;
@@ -62,7 +49,11 @@
         NSInteger value = [category[@"value"] integerValue];
         NSString *name = category[@"name"];
         
-        CGFloat percentHeight = value / self.maximumY;
+        CGFloat percentHeight = 0.0;
+        if (self.maximumY != 0.0) {
+            percentHeight = value / self.maximumY;
+        }
+        
         CGFloat height = floorf((CGRectGetHeight(self.contentView.bounds) - 20.0) * percentHeight);
         CGFloat offsetY = CGRectGetHeight(self.contentView.bounds) - (height + 20.0);
         
