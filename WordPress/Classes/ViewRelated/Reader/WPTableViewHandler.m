@@ -96,11 +96,6 @@ static CGFloat const DefaultCellHeight = 44.0;
     return [self.delegate managedObjectContext];
 }
 
-- (NSString *)entityName
-{
-    return [self.delegate entityName];
-}
-
 - (NSFetchRequest *)fetchRequest
 {
     return [self.delegate fetchRequest];
@@ -338,7 +333,7 @@ static CGFloat const DefaultCellHeight = 44.0;
 
     NSError *error = nil;
     if (![_resultsController performFetch:&error]) {
-        DDLogError(@"%@ couldn't fetch %@: %@", self, [self entityName], [error localizedDescription]);
+        DDLogError(@"%@ couldn't fetch %@: %@", self, [[self fetchRequest] entityName], [error localizedDescription]);
         _resultsController = nil;
     }
 
@@ -347,6 +342,10 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
+    if ([self.delegate respondsToSelector:@selector(tableViewWillChangeContent:)]) {
+        [self.delegate tableViewWillChangeContent:self.tableView];
+    }
+
     self.indexPathSelectedBeforeUpdates = [self.tableView indexPathForSelectedRow];
     [self.tableView beginUpdates];
 }
