@@ -281,6 +281,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [topicsButton setImage:image forState:UIControlStateNormal];
     topicsButton.frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
     [topicsButton addTarget:self action:@selector(topicsAction:) forControlEvents:UIControlEventTouchUpInside];
+
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:topicsButton];
+    [button setAccessibilityLabel:NSLocalizedString(@"Topics", @"Accessibility label for the topics button. The user does not see this text but it can be spoken by a screen reader.")];
+    self.navigationItem.rightBarButtonItem = button;
+
+    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:button forNavigationItem:self.navigationItem];
 }
 
 - (void)configureCommentPublisher
@@ -535,14 +541,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     NSNumber *siteIDToBlock = self.siteIDToBlock;
     self.siteIDToBlock = nil;
 
-    [self.tableViewHandler clearCachedRowHeights];
-
-    NSManagedObjectContext *derivedContext = [[ContextManager sharedInstance] newDerivedContext];
-    ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:derivedContext];
+    __weak __typeof(self) weakSelf = self;
+    ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     [service flagSiteWithID:siteIDToBlock asBlocked:YES success:^{
         // Nothing to do.
     } failure:^(NSError *error) {
-        self.postIDThatInitiatedBlock = nil;
+        [weakSelf.tableView reloadData];
+        weakSelf.postIDThatInitiatedBlock = nil;
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Blocking Site", @"Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader.")
                                                             message:[error localizedDescription]
                                                            delegate:nil
@@ -554,14 +559,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)unblockSiteForPost:(ReaderPost *)post
 {
-    [self.tableViewHandler clearCachedRowHeights];
-
-    NSManagedObjectContext *derivedContext = [[ContextManager sharedInstance] newDerivedContext];
-    ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:derivedContext];
+    __weak __typeof(self) weakSelf = self;
+    ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     [service flagSiteWithID:post.siteID asBlocked:NO success:^{
         // Nothing to do.
-        self.postIDThatInitiatedBlock = nil;
+        weakSelf.postIDThatInitiatedBlock = nil;
     } failure:^(NSError *error) {
+        [self.tableView reloadData];
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Unblocking Site", @"Title of a prompt letting the user know there was an error trying to unblock a site from appearing in the reader.")
                                                             message:[error localizedDescription]
                                                            delegate:nil
@@ -620,10 +624,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     [self.tableView setContentOffset:CGPointMake(0, 0) animated:NO];
 
-    // TODO: invalidate row heights
+    [self.tableViewHandler clearCachedRowHeights];
     [self updateAndPerformFetchRequest];
-
-    [self.tableView reloadData];
+//    [self.tableView reloadData];
     [self refresh];
 
     [WPAnalytics track:WPAnalyticsStatReaderLoadedTag withProperties:[self tagPropertyForStats]];
@@ -638,7 +641,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [[[ReaderTopicService alloc] initWithManagedObjectContext:context] deleteAllTopics];
     [[[ReaderPostService alloc] initWithManagedObjectContext:context] deletePostsWithNoTopic];
 
-    // TODO: invalidate row heights
+    [self.tableViewHandler clearCachedRowHeights];
     [self updateAndPerformFetchRequest];
     [self.navigationController popToViewController:self animated:NO];
 
@@ -825,8 +828,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)updateAndPerformFetchRequest
 {
-    [self.tableViewHandler clearCachedRowHeights];
-
     NSError *error;
     [self.tableViewHandler.resultsController.fetchRequest setPredicate:[self predicateForFetchRequest]];
     [self.tableViewHandler.resultsController performFetch:&error];
