@@ -32,7 +32,7 @@ pod 'SocketRocket', :git => 'https://github.com/jleandroperez/SocketRocket.git',
 pod 'Simperium', '0.6.9'
 
 target 'WordPressTodayWidget', :exclusive => true do
-    pod 'WordPressCom-Stats-iOS', '0.1.2'
+    pod 'WordPressCom-Stats-iOS', '0.1.4'
 end
 
 target :WordPressTest, :exclusive => true do
