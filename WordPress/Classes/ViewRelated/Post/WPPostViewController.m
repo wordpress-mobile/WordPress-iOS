@@ -30,7 +30,7 @@ NSString *const kWPEditorConfigURLParamAvailable = @"available";
 NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 
 static NSInteger const MaximumNumberOfPictures = 5;
-
+static CGFloat const kNavigationBarButtonSpacer = 15.0;
 static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 
 @interface WPPostViewController ()<UIPopoverControllerDelegate> {
@@ -598,13 +598,19 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 
 - (void)refreshNavigationBarRightButtons:(BOOL)editingChanged
 {
-	if ([self isEditing]) {
-        
+    UIBarButtonItem *separator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                                                               target:nil
+                                                                               action:nil];
+    separator.width = kNavigationBarButtonSpacer;
+    
+    if ([self isEditing]) {
         UIBarButtonItem* saveBarButtonItem = [self saveBarButtonItem];
         
         if (editingChanged) {
             NSArray* rightBarButtons = @[saveBarButtonItem,
+                                         separator,
                                          [self optionsBarButtonItem],
+                                         separator,
                                          [self previewBarButtonItem]];
             
             [self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
@@ -623,7 +629,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 		[self.navigationItem.rightBarButtonItem setTitleTextAttributes:titleTextAttributes forState:controlState];
 	} else {
 		NSArray* rightBarButtons = @[[self editBarButtonItem],
-									 [self optionsBarButtonItem],
+                                     separator, separator,
 									 [self previewBarButtonItem]];
 		
 		[self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
