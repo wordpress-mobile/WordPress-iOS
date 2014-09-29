@@ -14,7 +14,7 @@ static NSString *const CVCCommentCellIdentifier = @"CommentTableViewCell";
 static NSInteger const CVCHeaderSectionIndex = 0;
 static NSInteger const CVCSectionSeparatorHeight = 10;
 
-@interface ACommentViewController () <EditCommentViewControllerDelegate>
+@interface ACommentViewController ()
 
 @property (nonatomic, strong) NoteBlockHeaderTableViewCell *headerLayoutCell;
 @property (nonatomic, strong) CommentTableViewCell *bodyLayoutCell;
@@ -101,6 +101,12 @@ static NSInteger const CVCSectionSeparatorHeight = 10;
 
 - (void)setupCommentCell:(CommentTableViewCell *)cell
 {
+    cell.isReplyEnabled = [UIDevice isPad];
+    cell.isLikeEnabled = YES;
+    cell.isApproveEnabled = YES;
+    cell.isTrashEnabled = YES;
+    cell.isMoreEnabled = YES;
+
     cell.name = self.comment.author;
     cell.timestamp = [self.comment.dateCreated shortString];
     cell.isApproveOn = [self.comment.status isEqualToString:@"approve"];
@@ -113,28 +119,28 @@ static NSInteger const CVCSectionSeparatorHeight = 10;
         [weakSelf openWebViewWithURL:url];
     };
 
-    cell.onLikeClick = ^(){
+    cell.onLikeClick = ^(UIButton *sender){
         [weakSelf likeComment];
     };
 
-    cell.onUnlikeClick = ^(){
+    cell.onUnlikeClick = ^(UIButton *sender){
         [weakSelf unlikeComment];
     };
 
-    cell.onApproveClick = ^(){
+    cell.onApproveClick = ^(UIButton *sender){
         [weakSelf approveComment];
     };
 
-    cell.onUnapproveClick = ^(){
+    cell.onUnapproveClick = ^(UIButton *sender){
         [weakSelf unapproveComment];
     };
 
-    cell.onTrashClick = ^(){
+    cell.onTrashClick = ^(UIButton *sender){
         [weakSelf trashComment];
     };
 
-    cell.onMoreClick = ^(){
-        [weakSelf displayMoreActions];
+    cell.onMoreClick = ^(UIButton *sender){
+        [weakSelf displayMoreActionsForSender:sender];
     };
 }
 
@@ -209,7 +215,7 @@ static NSInteger const CVCSectionSeparatorHeight = 10;
                       tapBlock:completion];
 }
 
-- (void)displayMoreActions
+- (void)displayMoreActionsForSender:(UIButton *)sender
 {
     NSString *editTitle = NSLocalizedString(@"Edit Comment", @"Edit a comment");
     NSString *spamTitle = NSLocalizedString(@"Mark as Spam", @"Mark a comment as spam");
@@ -231,21 +237,11 @@ static NSInteger const CVCSectionSeparatorHeight = 10;
                                                                }
                                                            }];
 
-    [actionSheet showInView:self.view.window];
-}
-
-- (void)editComment
-{
-    EditCommentViewController *editViewController = [EditCommentViewController newEditCommentViewController];
-    editViewController.content = self.comment.content;
-    editViewController.delegate = self;
-
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editViewController];
-    navController.modalPresentationStyle = UIModalPresentationFormSheet;
-    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    navController.navigationBar.translucent = NO;
-
-    [self presentViewController:navController animated:YES completion:nil];
+    if ([UIDevice isPad]) {
+        [actionSheet showFromRect:sender.bounds inView:sender animated:true];
+    } else {
+        [actionSheet showInView:self.view.window];
+    }
 }
 
 - (void)spamComment
@@ -270,12 +266,31 @@ static NSInteger const CVCSectionSeparatorHeight = 10;
                       tapBlock:completion];
 }
 
-#pragma mark - EditCommentViewControllerDelegate
+#pragma mark - Editing comment
 
-- (void)editCommentViewController:(EditCommentViewController *)sender didUpdateContent:(NSString *)newContent
+- (void)editComment
 {
-    sender.interfaceEnabled = NO;
+    EditCommentViewController *editViewController = [EditCommentViewController newEditViewController];
 
+    editViewController.content = self.comment.content;
+    editViewController.onCompletion = ^(BOOL hasNewContent, NSString *newContent) {
+        [self dismissViewControllerAnimated:YES completion:^{
+            if (hasNewContent) {
+                [self updateCommentForNewContent:newContent];
+            }
+        }];
+    };
+
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editViewController];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    navController.navigationBar.translucent = NO;
+
+    [self presentViewController:navController animated:true completion:nil];
+}
+
+- (void)updateCommentForNewContent:(NSString *)newContent
+{
     __typeof(self) __weak weakSelf = self;
 
     [self.commentService updateCommentWithID:self.comment.commentID
@@ -287,23 +302,18 @@ static NSInteger const CVCSectionSeparatorHeight = 10;
                                          [weakSelf dismissViewControllerAnimated:YES completion:nil];
                                      }
                                      failure:^(NSError *error) {
-                                         NSString *message = NSLocalizedString(@"Couldn't Update Comment. Please, try again later",
-                                                                               @"Error displayed if a comment fails to get updated");
-
-                                         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                                             message:message
-                                                                                            delegate:nil
-                                                                                   cancelButtonTitle:NSLocalizedString(@"Accept", nil)
-                                                                                   otherButtonTitles:nil,
-                                                                   nil];
-                                         [alertView show];
-                                         sender.interfaceEnabled = YES;
+                                         [UIAlertView showWithTitle:nil
+                                                            message:NSLocalizedString(@"There has been an unexpected error while updating your comment", nil)
+                                                  cancelButtonTitle:NSLocalizedString(@"Give Up", nil)
+                                                  otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
+                                                           tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                                                               if (buttonIndex == alertView.cancelButtonIndex) {
+                                                                   [self.tableView reloadData];
+                                                               } else {
+                                                                   [self updateCommentForNewContent:newContent];
+                                                               }
+                                                           }];
                                      }];
-}
-
-- (void)editCommentViewControllerFinished:(EditCommentViewController *)sender
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Setter/Getters
