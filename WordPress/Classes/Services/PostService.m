@@ -267,7 +267,7 @@ NSString * const PostServiceTypeAny = @"any";
                 Coordinate *c = [[Coordinate alloc] initWithCoordinate:coord];
                 postPost.geolocation = c;
                 postPost.latitudeID = [latitudeDictionary stringForKey:@"id"];
-                postPost.longitudeID = [latitudeDictionary stringForKey:@"id"];
+                postPost.longitudeID = [longitudeDictionary stringForKey:@"id"];
                 postPost.publicID = [geoPublicDictionary stringForKey:@"id"];
             }
         }
