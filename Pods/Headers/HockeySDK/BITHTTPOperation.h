@@ -1,1 +1,0 @@
-../../HockeySDK/Classes/BITHTTPOperation.h

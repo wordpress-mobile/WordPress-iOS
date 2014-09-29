@@ -366,7 +366,14 @@ CGFloat const blavatarImageViewSize = 43.f;
                                                  cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
                                             destructiveButtonTitle:NSLocalizedString(@"Sign Out", @"")otherButtonTitles:nil, nil ];
                 actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-                [actionSheet showInView:self.view];
+
+                if (IS_IPAD) {
+                    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                    [actionSheet showFromRect:[cell bounds] inView:cell animated:YES];
+                } else {
+                    [actionSheet showInView:self.view];
+                }
+
             } else if (indexPath.row == [self rowForNotifications]) {
                 NotificationSettingsViewController *notificationSettingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
                 [self.navigationController pushViewController:notificationSettingsViewController animated:YES];

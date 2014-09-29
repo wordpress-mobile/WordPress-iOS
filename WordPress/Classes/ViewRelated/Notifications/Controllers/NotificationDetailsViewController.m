@@ -17,6 +17,7 @@
 #import "ReaderPostDetailViewController.h"
 #import "StatsViewController.h"
 #import "EditCommentViewController.h"
+#import "EditReplyViewController.h"
 
 #import "WordPress-Swift.h"
 
@@ -53,7 +54,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 #pragma mark Private
 #pragma mark ==========================================================================================
 
-@interface NotificationDetailsViewController () <EditCommentViewControllerDelegate>
+@interface NotificationDetailsViewController () <UITextViewDelegate>
 
 // Outlets
 @property (nonatomic,   weak) IBOutlet UITableView          *tableView;
@@ -67,9 +68,8 @@ static CGFloat NotificationSectionSeparator     = 10;
 @property (nonatomic, assign) NSInteger                     headerSectionIndex;
 @property (nonatomic, assign) NSInteger                     bodySectionIndex;
 
-// Keyboard Helpers
-@property (nonatomic, assign) CGFloat                       keyboardBottomDelta;
-@property (nonatomic, assign) BOOL                          isKeyboardVisible;
+// Model
+@property (nonatomic, strong) Notification                  *note;
 @end
 
 
@@ -87,8 +87,13 @@ static CGFloat NotificationSectionSeparator     = 10;
     self.restorationClass               = [self class];
     self.view.backgroundColor           = [WPStyleGuide itsEverywhereGrey];
     
-    self.tableView.backgroundColor      = [WPStyleGuide itsEverywhereGrey];
+    // Don't show the notification title in the next-view's back button
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
 
+    self.tableView.separatorStyle       = self.note.isBadge ? UITableViewCellSeparatorStyleNone : UITableViewCellSeparatorStyleSingleLine;
+    self.tableView.backgroundColor      = [WPStyleGuide itsEverywhereGrey];
+    
     self.reuseIdentifierMap = @{
         @(NoteBlockGroupTypeHeader)    : NoteBlockHeaderTableViewCell.reuseIdentifier,
         @(NoteBlockGroupTypeText)      : NoteBlockTextTableViewCell.reuseIdentifier,
@@ -108,11 +113,11 @@ static CGFloat NotificationSectionSeparator     = 10;
 {
     [super viewWillAppear:animated];
     
-    [self reloadData];
-    
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [nc addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    [self.tableView deselectSelectedRowWithAnimation:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -124,6 +129,12 @@ static CGFloat NotificationSectionSeparator     = 10;
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [nc removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    [self adjustTableInsetsIfNeeded];
 }
 
 - (void)reloadData
@@ -140,8 +151,17 @@ static CGFloat NotificationSectionSeparator     = 10;
     }
     
     [self.tableView reloadData];
-    [self adjustTableStyleIfNeeded];
+    [self adjustTableInsetsIfNeeded];
+}
+
+
+#pragma mark - Public Helpers
+
+- (void)setupWithNotification:(Notification *)notification
+{
+    self.note = notification;
     [self attachReplyViewIfNeeded];
+    [self reloadData];
 }
 
 
@@ -176,14 +196,16 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 - (void)attachReplyViewIfNeeded
 {
-    if (self.replyTextView) {
+    // iPad: We've got a different UI!
+    if ([UIDevice isPad]) {
         return;
     }
     
     // Attach the Reply component only if the noficiation has a comment, and it can be replied-to
     NotificationBlockGroup *group   = [self.note blockGroupOfType:NoteBlockGroupTypeComment];
     NotificationBlock *block        = [group blockOfType:NoteBlockTypeComment];
-    if (![block actionForKey:NoteActionReplyKey]) {
+    
+    if (![block isActionOn:NoteActionReplyKey]) {
         return;
     }
     
@@ -193,39 +215,34 @@ static CGFloat NotificationSectionSeparator     = 10;
     replyTextView.placeholder       = NSLocalizedString(@"Write a reply…", @"Placeholder text for inline compose view");
     replyTextView.replyText         = [NSLocalizedString(@"Reply", @"") uppercaseString];
     replyTextView.onReply           = ^(NSString *content) {
-        [weakSelf replyToCommentWithContent:content block:block];
+        [weakSelf sendReplyWithBlock:block content:content];
     };
+    replyTextView.delegate          = self;
     self.replyTextView              = replyTextView;
     
-    // Attach!
-    [self.view addSubview:replyTextView];
-    
-    // Adjust position + use an internal ReplaceTextView instance as inputAccessoryView
-    [replyTextView alignAtBottomOfSuperview];
-    
-    // Setup the Table Insets
-    UIEdgeInsets tableViewInsets    = self.tableView.contentInset;
-    tableViewInsets.bottom          += CGRectGetHeight(replyTextView.frame);
-    self.tableView.contentInset     = tableViewInsets;
+    // Attach the ReplyTextView at the very bottom
+    [self.view addSubview:self.replyTextView];
+    [self.view pinSubviewAtBottom:self.replyTextView];
+    [self.view pinSubview:self.tableView aboveSubview:self.replyTextView];
 }
 
 
 #pragma mark - Style Helpers
 
-- (void)adjustTableStyleIfNeeded
+- (void)adjustTableInsetsIfNeeded
 {
-    UIEdgeInsets contentInset               = IS_IPAD ? NotificationTableInsetsPad : NotificationTableInsetsPhone;
-    UITableViewCellSeparatorStyle separator = UITableViewCellSeparatorStyleSingleLine;
+    UIEdgeInsets contentInset = [UIDevice isPad] ? NotificationTableInsetsPad : NotificationTableInsetsPhone;
     
     // Badge Notifications should be centered, and display no cell separators
     if (self.note.isBadge) {
-        CGFloat offsetY = (self.view.frame.size.height - self.tableView.contentSize.height) * 0.5f;
-        contentInset    = UIEdgeInsetsMake(offsetY, 0, 0, 0);
-        separator       = UITableViewCellSeparatorStyleNone;
+        // Center only if the container view is big enough!
+        if (self.view.frame.size.height > self.tableView.contentSize.height) {
+            CGFloat offsetY = (self.view.frame.size.height - self.tableView.contentSize.height) * 0.5f;
+            contentInset    = UIEdgeInsetsMake(offsetY, 0, 0, 0);
+        }
     }
     
-    self.tableView.contentInset     = contentInset;
-    self.tableView.separatorStyle   = separator;
+    self.tableView.contentInset = contentInset;
 }
 
 
@@ -258,7 +275,8 @@ static CGFloat NotificationSectionSeparator     = 10;
     NotificationDetailsViewController *vc   = [storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
     vc.restorationIdentifier                = [identifierComponents lastObject];
     vc.restorationClass                     = [NotificationDetailsViewController class];
-    vc.note                                 = restoredNotification;
+    
+    [vc setupWithNotification:restoredNotification];
     
     return vc;
 }
@@ -415,6 +433,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     
     __weak __typeof(self) weakSelf  = self;
     
+    cell.isReplyEnabled             = [UIDevice isPad] && [commentBlock isActionOn:NoteActionReplyKey];
     cell.isLikeEnabled              = [commentBlock isActionEnabled:NoteActionLikeKey];
     cell.isApproveEnabled           = [commentBlock isActionEnabled:NoteActionApproveKey];
     cell.isTrashEnabled             = [commentBlock isActionEnabled:NoteActionTrashKey];
@@ -431,30 +450,34 @@ static CGFloat NotificationSectionSeparator     = 10;
         [weakSelf openURL:url];
     };
     
-    cell.onLikeClick                = ^(){
+    cell.onReplyClick               = ^(UIButton * sender){
+        [weakSelf editReplyWithBlock:commentBlock];
+    };
+    
+    cell.onLikeClick                = ^(UIButton * sender){
         [weakSelf likeCommentWithBlock:commentBlock];
     };
     
-    cell.onUnlikeClick              = ^(){
+    cell.onUnlikeClick              = ^(UIButton * sender){
         [weakSelf unlikeCommentWithBlock:commentBlock];
     };
     
-    cell.onApproveClick             = ^(){
+    cell.onApproveClick             = ^(UIButton * sender){
         [weakSelf approveCommentWithBlock:commentBlock];
     };
 
-    cell.onUnapproveClick             = ^(){
+    cell.onUnapproveClick           = ^(UIButton * sender){
         [weakSelf unapproveCommentWithBlock:commentBlock];
     };
     
-    cell.onTrashClick               = ^(){
+    cell.onTrashClick               = ^(UIButton * sender){
         [weakSelf trashCommentWithBlock:commentBlock];
     };
     
-    cell.onMoreClick                = ^(){
-        [weakSelf displayMoreActionsWithBlock:commentBlock];
+    cell.onMoreClick                = ^(UIButton * sender){
+        [weakSelf displayMoreActionsWithBlock:commentBlock sender:sender];
     };
-    
+
     [cell downloadGravatarWithURL:media.mediaURL];
 }
 
@@ -554,7 +577,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     return success;
 }
 
-- (void)displayMoreActionsWithBlock:(NotificationBlock *)block
+- (void)displayMoreActionsWithBlock:(NotificationBlock *)block sender:(UIButton *)sender
 {
     NSString *editTitle     = NSLocalizedString(@"Edit Comment", @"Edit a comment");
     NSString *spamTitle     = NSLocalizedString(@"Mark as Spam", @"Mark a comment as spam");
@@ -585,7 +608,11 @@ static CGFloat NotificationSectionSeparator     = 10;
                                                                 }
                                                             }];
     
-    [actionSheet showInView:self.view.window];
+    if ([UIDevice isPad]) {
+        [actionSheet showFromRect:sender.bounds inView:sender animated:true];
+    } else {
+        [actionSheet showInView:self.view.window];
+    }
 }
 
 
@@ -743,88 +770,116 @@ static CGFloat NotificationSectionSeparator     = 10;
                       tapBlock:completion];
 }
 
-- (void)editCommentWithBlock:(NotificationBlock *)block
+
+#pragma mark - Replying Comments
+
+- (void)editReplyWithBlock:(NotificationBlock *)block
 {
-    [self performSegueWithIdentifier:NSStringFromClass([EditCommentViewController class]) sender:block];
+    EditReplyViewController *editViewController     = [EditReplyViewController newEditViewController];
+    
+    editViewController.onCompletion                 = ^(BOOL hasNewContent, NSString *newContent) {
+        [self dismissViewControllerAnimated:YES completion:^{
+            if (hasNewContent) {
+                [self sendReplyWithBlock:block content:newContent];
+            }
+        }];
+    };
+    
+    UINavigationController *navController           = [[UINavigationController alloc] initWithRootViewController:editViewController];
+    navController.modalPresentationStyle            = UIModalPresentationFormSheet;
+    navController.modalTransitionStyle              = UIModalTransitionStyleCoverVertical;
+    navController.navigationBar.translucent         = NO;
+    
+    [self presentViewController:navController animated:true completion:nil];
 }
 
-- (void)replyToCommentWithContent:(NSString *)content block:(NotificationBlock *)block
+- (void)sendReplyWithBlock:(NotificationBlock *)block content:(NSString *)content
 {
+    NSString *successMessage        = NSLocalizedString(@"Reply Sent!", @"The app successfully sent a comment");
+    NSString *sendingMessage        = NSLocalizedString(@"Sending...", @"The app is uploading a comment");
+    UIImage *successImage           = [UIImage imageNamed:NotificationSuccessToastImage];
+    UIImage *sendingImage           = [UIImage imageNamed:NotificationReplyToastImage];
+    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
     
-    [service replyToCommentWithID:block.metaCommentID
-                           siteID:block.metaSiteID
-                          content:content
-                          success:^() {
-                              NSString *message   = NSLocalizedString(@"Reply Sent!", @"The app successfully sent a comment");
-                              UIImage *image      = [UIImage imageNamed:NotificationSuccessToastImage];
-                              
-                              [WPToast showToastWithMessage:message andImage:image];
-                          }
-                          failure:^(NSError *error) {
-                              [self handleReplyErrorWithBlock:block content:content];
-                          }];
+    [service replyToCommentWithID:block.metaCommentID siteID:block.metaSiteID content:content success:^(){
+        [WPToast showToastWithMessage:successMessage andImage:successImage];
+        
+    } failure:^(NSError *error) {
+        [self handleReplyErrorWithBlock:block content:content];
+    }];
     
-    self.replyTextView.text = [NSString string];
-    [self.replyTextView resignFirstResponder];
-    
-    NSString *message   = NSLocalizedString(@"Sending...", @"The app is uploading a comment");
-    UIImage *image      = [UIImage imageNamed:NotificationReplyToastImage];
-    
-    [WPToast showToastWithMessage:message andImage:image];
+    [WPToast showToastWithMessage:sendingMessage andImage:sendingImage];
 }
 
 - (void)handleReplyErrorWithBlock:(NotificationBlock *)block content:(NSString *)content
 {
-    [UIAlertView showWithTitle:NSLocalizedString(@"Sorry", nil)
-                       message:NSLocalizedString(@"There has been an unexpected error while sending your comment reply", nil)
-             cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-             otherButtonTitles:@[ NSLocalizedString(@"Retry", nil) ]
+    [UIAlertView showWithTitle:nil
+                       message:NSLocalizedString(@"There has been an unexpected error while sending your reply", nil)
+             cancelButtonTitle:NSLocalizedString(@"Give Up", nil)
+             otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
                       tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                          if (buttonIndex == alertView.cancelButtonIndex) {
-                              return;
+                          if (buttonIndex != alertView.cancelButtonIndex) {
+                              [self sendReplyWithBlock:block content:content];
                           }
-                          
-                          [self replyToCommentWithContent:content block:block];
                       }];
 }
 
 
-#pragma mark - EditCommentViewControllerDelegate
+#pragma mark - Editing Comments
 
-- (void)editCommentViewController:(EditCommentViewController *)sender didUpdateContent:(NSString *)newContent
+- (void)editCommentWithBlock:(NotificationBlock *)block
 {
-    NSAssert([sender.userInfo isKindOfClass:[NotificationBlock class]], nil);
+    EditCommentViewController *editViewController   = [EditCommentViewController newEditViewController];
     
+    editViewController.content                      = block.text;
+    editViewController.onCompletion                 = ^(BOOL hasNewContent, NSString *newContent) {
+        [self dismissViewControllerAnimated:YES completion:^{
+            if (hasNewContent) {
+                [self updateCommentWithBlock:block content:newContent];
+            }
+        }];
+    };
+    
+    UINavigationController *navController           = [[UINavigationController alloc] initWithRootViewController:editViewController];
+    navController.modalPresentationStyle            = UIModalPresentationFormSheet;
+    navController.modalTransitionStyle              = UIModalTransitionStyleCoverVertical;
+    navController.navigationBar.translucent         = NO;
+    
+    [self presentViewController:navController animated:true completion:nil];
+
+}
+
+- (void)updateCommentWithBlock:(NotificationBlock *)block content:(NSString *)content
+{
     // Local Override: Temporary hack until Simperium reflects the REST op
-    NotificationBlock *block        = sender.userInfo;
-    block.textOverride              = newContent;
+    block.textOverride = content;
     [self reloadData];
     
     // Hit the backend
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
-    __typeof(self) __weak weakSelf  = self;
     
-    [service updateCommentWithID:block.metaCommentID siteID:block.metaSiteID content:newContent success:nil failure:^(NSError *error) {
-        [UIAlertView showWithTitle:nil
-                           message:NSLocalizedString(@"Couldn't Update Comment. Please, try again later",
-                                                     @"Error displayed if a comment fails to get updated")
-                 cancelButtonTitle:NSLocalizedString(@"Accept", nil)
-                 otherButtonTitles:nil
-                          tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                      block.textOverride = nil;
-                      [weakSelf reloadData];
-                 }];
+    [service updateCommentWithID:block.metaCommentID siteID:block.metaSiteID content:content success:nil failure:^(NSError *error) {
+        [self handleCommentUpdateErrorWithBlock:block content:content];
     }];
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)editCommentViewControllerFinished:(EditCommentViewController *)sender
+- (void)handleCommentUpdateErrorWithBlock:(NotificationBlock *)block content:(NSString *)content
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [UIAlertView showWithTitle:nil
+                       message:NSLocalizedString(@"There has been an unexpected error while updating your comment", nil)
+             cancelButtonTitle:NSLocalizedString(@"Give Up", nil)
+             otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
+                      tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                          if (buttonIndex == alertView.cancelButtonIndex) {
+                              block.textOverride = nil;
+                              [self reloadData];
+                          } else {
+                              [self updateCommentWithBlock:block content:content];
+                          }
+                      }];
 }
 
 
@@ -847,15 +902,6 @@ static CGFloat NotificationSectionSeparator     = 10;
         
         ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
         [readerViewController setupWithPostID:postID siteID:siteID];
-        
-    } else if ([segue.identifier isEqualToString:NSStringFromClass([EditCommentViewController class])]) {
-        NotificationBlock *block                        = sender;
-        
-        UINavigationController *navigationController    = segue.destinationViewController;
-        EditCommentViewController *editViewController   = (EditCommentViewController *)navigationController.topViewController;
-        editViewController.delegate                     = self;
-        editViewController.content                      = block.text;
-        editViewController.userInfo                     = block;
     }
 }
 
@@ -875,58 +921,61 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 - (void)handleKeyboardWillShow:(NSNotification *)notification
 {
-    if (self.isKeyboardVisible) {
-        return;
-    }
-    
-    NSDictionary* userInfo                  = notification.userInfo;
+    NSDictionary* userInfo = notification.userInfo;
     
     // Convert the rect to view coordinates: enforce the current orientation!
-    CGRect kbRect                           = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    kbRect                                  = [self.view convertRect:kbRect fromView:nil];
+    CGRect kbRect = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    kbRect = [self.view convertRect:kbRect fromView:nil];
     
-    CGRect viewFrame                        = self.view.frame;
-    CGFloat bottomInset                     = CGRectGetHeight(kbRect) - (CGRectGetMaxY(kbRect) - CGRectGetHeight(viewFrame) + CGRectGetHeight(self.replyTextView.bounds));
-    
-    UIEdgeInsets newContentInsets           = self.tableView.contentInset;
-    newContentInsets.bottom                 += bottomInset;
-    
-    self.replyTextView.inputAccessoryView.alpha = 0;
+    // Bottom Inset: Consider the tab bar!
+    CGRect viewFrame = self.view.frame;
+    CGFloat bottomInset = CGRectGetHeight(kbRect) - (CGRectGetMaxY(kbRect) - CGRectGetHeight(viewFrame));
     
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
     [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
 
-    self.tableView.contentInset             = newContentInsets;
-    self.replyTextView.inputAccessoryView.alpha  = 1;
-
-    [UIView commitAnimations];
+    [self.view updateConstraintWithFirstItem:self.view
+                                  secondItem:self.replyTextView
+                          firstItemAttribute:NSLayoutAttributeBottom
+                         secondItemAttribute:NSLayoutAttributeBottom
+                                    constant:bottomInset];
     
-    self.keyboardBottomDelta                = bottomInset;
-    self.isKeyboardVisible                  = true;
-    self.tableGesturesRecognizer.enabled    = true;
+    [self.view layoutIfNeeded];
+    
+    [UIView commitAnimations];
 }
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification
 {
-    if (!self.isKeyboardVisible) {
-        return;
-    }
-    
-    NSDictionary* userInfo                  = notification.userInfo;
+    NSDictionary* userInfo = notification.userInfo;
     
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
     [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
     
-    UIEdgeInsets newContentInsets           = self.tableView.contentInset;
-    newContentInsets.bottom                 -= self.keyboardBottomDelta;
-    self.tableView.contentInset             = newContentInsets;
+    [self.view updateConstraintWithFirstItem:self.view
+                                  secondItem:self.replyTextView
+                          firstItemAttribute:NSLayoutAttributeBottom
+                         secondItemAttribute:NSLayoutAttributeBottom
+                                    constant:0];
+    
+    [self.view layoutIfNeeded];
     
     [UIView commitAnimations];
-    
-    self.isKeyboardVisible                  = false;
-    self.tableGesturesRecognizer.enabled    = false;
+}
+
+
+#pragma mark - UITextViewDelegate
+
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    self.tableGesturesRecognizer.enabled = true;
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    self.tableGesturesRecognizer.enabled = false;
 }
 
 
@@ -935,6 +984,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 - (IBAction)dismissKeyboardIfNeeded:(id)sender
 {
     // Dismiss the reply field when tapping on the tableView
+    self.replyTextView.text = [NSString string];
     [self.view endEditing:YES];
 }
 

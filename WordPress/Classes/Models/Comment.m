@@ -155,5 +155,14 @@ NSString * const CommentStatusDraft = @"draft";
     return self.dateCreated;
 }
 
+- (NSURL *)authorURL
+{
+    if (self.author_url) {
+        return [NSURL URLWithString:self.author_url];
+    }
+
+    return nil;
+}
+
 
 @end
