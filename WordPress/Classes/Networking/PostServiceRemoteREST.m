@@ -206,9 +206,28 @@
         parameters[@"format"] = post.format;
     }
     parameters[@"featured_image"] = post.postThumbnailID ? [post.postThumbnailID stringValue] : @"";
-    // TODO: metadata
+    parameters[@"metadata"] = [self metadataForPost:post];
+
     // Test what happens for nil and not present values
     return [NSDictionary dictionaryWithDictionary:parameters];
+}
+
+- (NSArray *)metadataForPost:(RemotePost *)post {
+    NSMutableArray *metadata = [NSMutableArray arrayWithCapacity:post.metadata.count];
+    for (NSDictionary *meta in post.metadata) {
+        NSNumber *metaID = [meta objectForKey:@"id"];
+        NSString *metaValue = [meta objectForKey:@"value"];
+        NSString *operation = @"update";
+        if (metaID && !metaValue) {
+            operation = @"delete";
+        } else if (!metaID && metaValue) {
+            operation = @"add";
+        }
+        NSMutableDictionary *modifiedMeta = [meta mutableCopy];
+        modifiedMeta[@"operation"] = operation;
+        [metadata addObject:[NSDictionary dictionaryWithDictionary:modifiedMeta]];
+    }
+    return [NSArray arrayWithArray:metadata];
 }
 
 - (NSString *)statusWithRemoteStatus:(NSString *)remoteStatus {
