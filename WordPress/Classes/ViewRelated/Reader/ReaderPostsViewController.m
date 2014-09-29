@@ -610,7 +610,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)refresh
 {
-//    [self.refreshControl endRefreshing];
 //    [self.noResultsView removeFromSuperview];
     [self syncItemsWithUserInteraction:YES];
 }
@@ -626,7 +625,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     [self.tableViewHandler clearCachedRowHeights];
     [self updateAndPerformFetchRequest];
-//    [self.tableView reloadData];
     [self refresh];
 
     [WPAnalytics track:WPAnalyticsStatReaderLoadedTag withProperties:[self tagPropertyForStats]];
@@ -687,11 +685,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)syncItemsWithSuccess:(void (^)(NSInteger))success failure:(void (^)(NSError *))failure
 {
     DDLogMethod();
+    __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [service fetchPostsForTopic:self.currentTopic earlierThan:[NSDate date] success:^(NSInteger count) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.postIDThatInitiatedBlock = nil;
+            weakSelf.postIDThatInitiatedBlock = nil;
+            weakSelf.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
             if (success) {
                 success(count);
             }
@@ -708,11 +708,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)backfillItemsWithSuccess:(void (^)(NSInteger))success failure:(void (^)(NSError *))failure
 {
     DDLogMethod();
+    __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [service backfillPostsForTopic:self.currentTopic success:^(NSInteger count) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.postIDThatInitiatedBlock = nil;
+            weakSelf.postIDThatInitiatedBlock = nil;
             if (success) {
                 success(count);
             }
@@ -739,9 +740,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(NSInteger))success failure:(void (^)(NSError *))failure
 {
     DDLogMethod();
-//    if ([self.tableViewHandler.resultsController.fetchedObjects count] == 0) {
-//        return;
-//    }
+    if ([self.tableViewHandler.resultsController.fetchedObjects count] == 0) {
+        return;
+    }
+
     if (self.currentTopic == nil) {
         if (failure) {
             failure(nil);
@@ -773,16 +775,41 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)syncContentEnded
 {
+    if (self.tableViewHandler.shouldRefreshTableViewPreservingOffset) {
+        // This is tricky since the relevant delegate methods are not triggered
+        // if there are no changes in the data model. This can happen if the user
+        // pulls to refresh, then immedately pulls to refresh again.  To handle
+        // case, call clean up after a short delay just to be safe.
+        [self performSelector:@selector(cleanupAfterRefresh) withObject:self afterDelay:0.5];
+        return;
+    }
+    [self cleanupAfterRefresh];
+}
+
+- (void)cleanupAfterRefresh
+{
     [self.refreshControl endRefreshing];
     [self.activityFooter stopAnimating];
+
+    // Always reset the flag after a refresh, just to be safe.
+    self.tableViewHandler.shouldRefreshTableViewPreservingOffset = NO;
 }
 
 
 #pragma mark - WPTableViewHelper Delegate Methods
 
-- (void)tableViewWillChangeContent:(UITableView *)tableView
+- (void)tableViewHandlerWillRefreshTableViewPreservingOffset:(WPTableViewHandler *)tableViewHandler
 {
-    // ???:
+    [UIView performWithoutAnimation:^{
+        [self cleanupAfterRefresh];
+    }];
+}
+
+- (void)tableViewHandlerDidRefreshTableViewPreservingOffset:(WPTableViewHandler *)tableViewHandler
+{
+    if ([self.tableView contentOffset].y < 0) {
+        [self.tableView setContentOffset:CGPointZero animated:YES];
+    }
 }
 
 - (void)tableViewDidChangeContent:(UITableView *)tableView
@@ -793,7 +820,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         [self.actionSheet dismissWithClickedButtonIndex:[self.actionSheet cancelButtonIndex] animated:YES];
     }
     [self.featuredImageSource invalidateIndexPaths];
-//    [self.tableView reloadData];
+    self.tableViewHandler.shouldRefreshTableViewPreservingOffset = NO;
 //    [self configureNoResultsView];
 }
 
