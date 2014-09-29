@@ -69,6 +69,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 	if (self)
 	{
         _authToken = authToken;
+        self.requestSerializer = [AFJSONRequestSerializer serializer];
 		
         [self setAuthorizationHeaderWithToken:_authToken];
 		

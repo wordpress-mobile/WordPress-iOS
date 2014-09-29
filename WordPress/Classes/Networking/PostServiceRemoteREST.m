@@ -184,7 +184,7 @@
     parameters[@"type"] = post.type;
 
     if (post.date) {
-        parameters[@"date"] = post.date;
+        parameters[@"date"] = [post.date WordPressComJSONString];
     }
     if (post.excerpt) {
         parameters[@"excerpt"] = post.excerpt;
