@@ -175,7 +175,6 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     CGRect bounds = [[UIScreen mainScreen] bounds];
     [self.window setFrame:bounds];
     [self.window setBounds:bounds]; // for good measure.
-    self.window.backgroundColor = [UIColor blackColor];
     self.window.rootViewController = self.tabBarController;
 
     return YES;
@@ -536,6 +535,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 - (void)customizeAppearance
 {
     UIColor *defaultTintColor = self.window.tintColor;
+    self.window.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     self.window.tintColor = [WPStyleGuide wordPressBlue];
 
     [[UINavigationBar appearance] setBarTintColor:[WPStyleGuide wordPressBlue]];
