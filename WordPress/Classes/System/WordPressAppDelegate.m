@@ -18,6 +18,7 @@
 #import "Notification.h"
 #import "NotificationsManager.h"
 #import "NSString+Helpers.h"
+#import "NSString+HTML.h"
 #import "PocketAPI.h"
 #import "ReaderPost.h"
 #import "UIDevice+WordPressIdentifier.h"
@@ -64,7 +65,12 @@ NSInteger const kReaderTabIndex                                 = 0;
 NSInteger const kNotificationsTabIndex                          = 1;
 NSInteger const kMeTabIndex                                     = 2;
 
-@interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
+static NSString* const kWPNewPostURLParamTitleKey = @"title";
+static NSString* const kWPNewPostURLParamContentKey = @"content";
+static NSString* const kWPNewPostURLParamTagsKey = @"tags";
+static NSString* const kWPNewPostURLParamImageKey = @"image";
+
+@interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate, HelpshiftDelegate>
 
 @property (nonatomic, strong, readwrite) UINavigationController         *navigationController;
 @property (nonatomic, strong, readwrite) UITabBarController             *tabBarController;
@@ -121,6 +127,7 @@ NSInteger const kMeTabIndex                                     = 2;
     [SupportViewController checkIfFeedbackShouldBeEnabled];
 
     [Helpshift installForApiKey:[WordPressComApiCredentials helpshiftAPIKey] domainName:[WordPressComApiCredentials helpshiftDomainName] appID:[WordPressComApiCredentials helpshiftAppId]];
+    [[Helpshift sharedInstance] setDelegate:self];
     [SupportViewController checkIfHelpshiftShouldBeEnabled];
 
     NSNumber *usage_tracking = [[NSUserDefaults standardUserDefaults] valueForKey:kUsageTrackingDefaultsKey];
@@ -160,6 +167,9 @@ NSInteger const kMeTabIndex                                     = 2;
         [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
         [self cleanUnusedMediaFileFromTmpDir];
     });
+    
+    // Configure Today Widget
+    [self determineIfTodayWidgetIsConfiguredAndShowAppropriately];
 
     CGRect bounds = [[UIScreen mainScreen] bounds];
     [self.window setFrame:bounds];
@@ -212,17 +222,11 @@ NSInteger const kMeTabIndex                                     = 2;
         DDLogInfo(@"Application launched with URL: %@", URLString);
 
         if ([URLString rangeOfString:@"newpost"].length) {
-            // Create a new post from data shared by a third party application.
-            NSDictionary *params = [[url query] dictionaryFromQueryString];
-            DDLogInfo(@"App launched for new post with params: %@", params);
-            if ([params count]) {
-                [self showPostTabWithOptions:params];
-                returnValue = YES;
-            }
+            returnValue = [self handleNewPostRequestWithURL:url];
         } else if ([URLString rangeOfString:@"viewpost"].length) {
             // View the post specified by the shared blog ID and post ID
             NSDictionary *params = [[url query] dictionaryFromQueryString];
-
+            
             if (params.count) {
                 NSNumber *blogId = [params numberForKey:@"blogId"];
                 NSNumber *postId = [params numberForKey:@"postId"];
@@ -231,8 +235,34 @@ NSInteger const kMeTabIndex                                     = 2;
                 NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
                 [self.tabBarController setSelectedIndex:readerTabIndex];
                 [self.readerPostsViewController openPost:postId onBlog:blogId];
-
+                
                 returnValue = YES;
+            }
+        } else if ([URLString rangeOfString:@"viewstats"].length) {
+            // View the post specified by the shared blog ID and post ID
+            NSDictionary *params = [[url query] dictionaryFromQueryString];
+            
+            if (params.count) {
+                NSNumber *siteId = [params numberForKey:@"siteId"];
+                
+                BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+                Blog *blog = [blogService blogByBlogId:siteId];
+                
+                if (blog) {
+                    returnValue = YES;
+                    
+                    StatsViewController *statsViewController = [[StatsViewController alloc] init];
+                    statsViewController.blog = blog;
+                    statsViewController.dismissBlock = ^{
+                        [self.tabBarController dismissViewControllerAnimated:YES completion:nil];
+                    };
+                    
+                    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:statsViewController];
+                    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+                    navController.navigationBar.translucent = NO;
+                    [self.tabBarController presentViewController:navController animated:YES completion:nil];
+                }
+                
             }
         } else if ([URLString rangeOfString:@"debugging"].length) {
             NSDictionary *params = [[url query] dictionaryFromQueryString];
@@ -260,6 +290,10 @@ NSInteger const kMeTabIndex                                     = 2;
 				
 				[WPPostViewController setNewEditorAvailable:available];
 				[WPPostViewController setNewEditorEnabled:enabled];
+                
+                if (available) {
+                    [WPAnalytics track:WPAnalyticsStatEditorEnabledNewVersion];
+                }
 				
 				[self showVisualEditorAvailableInSettingsAnimation:available];
 			}
@@ -394,6 +428,68 @@ NSInteger const kMeTabIndex                                     = 2;
     completionHandler();
 }
 
+#pragma mark - OpenURL helpers
+
+/**
+ *  @brief      Handle the a new post request by URL.
+ *  
+ *  @param      url     The URL with the request info.  Cannot be nil.
+ *
+ *  @return     YES if the request was handled, NO otherwise.
+ */
+- (BOOL)handleNewPostRequestWithURL:(NSURL*)url
+{
+    NSParameterAssert([url isKindOfClass:[NSURL class]]);
+    
+    BOOL handled = NO;
+    
+    // Create a new post from data shared by a third party application.
+    NSDictionary *params = [[url query] dictionaryFromQueryString];
+    DDLogInfo(@"App launched for new post with params: %@", params);
+    
+    params = [self sanitizeNewPostParameters:params];
+    
+    if ([params count]) {
+        [self showPostTabWithOptions:params];
+        handled = YES;
+    }
+	
+    return handled;
+}
+
+/**
+ *	@brief		Sanitizes a 'new post' parameters dictionary.
+ *	@details	Prevent HTML injections like the one in:
+ *				https://github.com/wordpress-mobile/WordPress-iOS-Editor/issues/211
+ *
+ *	@param		parameters		The new post parameters to sanitize.  Cannot be nil.
+ *
+ *  @returns    The sanitized dictionary.
+ */
+- (NSDictionary*)sanitizeNewPostParameters:(NSDictionary*)parameters
+{
+    NSParameterAssert([parameters isKindOfClass:[NSDictionary class]]);
+	
+    NSUInteger parametersCount = [parameters count];
+    
+    NSMutableDictionary* sanitizedDictionary = [[NSMutableDictionary alloc] initWithCapacity:parametersCount];
+    
+    for (NSString* key in [parameters allKeys])
+    {
+        NSString* value = [parameters objectForKey:key];
+        
+        if ([key isEqualToString:kWPNewPostURLParamContentKey]) {
+            value = [value stringByStrippingHTML];
+        } else if ([key isEqualToString:kWPNewPostURLParamTagsKey]) {
+            value = [value stringByStrippingHTML];
+        }
+        
+        [sanitizedDictionary setObject:value forKey:key];
+    }
+    
+    return [NSDictionary dictionaryWithDictionary:sanitizedDictionary];
+}
+
 #pragma mark - Custom methods
 
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated
@@ -401,10 +497,12 @@ NSInteger const kMeTabIndex                                     = 2;
     if ([self noBlogsAndNoWordPressDotComAccount]) {
         UIViewController *presenter = self.window.rootViewController;
         if (presenter.presentedViewController) {
-            [presenter dismissViewControllerAnimated:NO completion:nil];
+            [presenter dismissViewControllerAnimated:animated completion:^{
+                [self showWelcomeScreenAnimated:animated thenEditor:NO];
+            }];
+        } else {
+            [self showWelcomeScreenAnimated:animated thenEditor:NO];
         }
-
-        [self showWelcomeScreenAnimated:animated thenEditor:NO];
     }
 }
 
@@ -442,6 +540,7 @@ NSInteger const kMeTabIndex                                     = 2;
 
     [[UINavigationBar appearance] setBarTintColor:[WPStyleGuide wordPressBlue]];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+
     [[UINavigationBar appearanceWhenContainedIn:[MFMailComposeViewController class], nil] setBarTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearanceWhenContainedIn:[MFMailComposeViewController class], nil] setTintColor:defaultTintColor];
 
@@ -449,9 +548,10 @@ NSInteger const kMeTabIndex                                     = 2;
     [[UITabBar appearance] setTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
 
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [WPFontManager openSansBoldFontOfSize:16.0]} ];
-// temporarily removed to fix transparent UINavigationBar within Helpshift
-//    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"transparent-point"] forBarMetrics:UIBarMetricsDefault];
-//    [[UINavigationBar appearance] setShadowImage:[UIImage imageNamed:@"transparent-point"]];
+
+    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageWithColor:[WPStyleGuide wordPressBlue]] forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setShadowImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"007eb1"]]];
+
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor lightGrayColor]} forState:UIControlStateDisabled];
     [[UIToolbar appearance] setBarTintColor:[WPStyleGuide wordPressBlue]];
@@ -565,10 +665,10 @@ NSInteger const kMeTabIndex                                     = 2;
             [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
             editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlog];
         } else {
-            editPostViewController = [[WPPostViewController alloc] initWithTitle:[options stringForKey:@"title"]
-                                                                      andContent:[options stringForKey:@"content"]
-                                                                         andTags:[options stringForKey:@"tags"]
-                                                                        andImage:[options stringForKey:@"image"]];
+            editPostViewController = [[WPPostViewController alloc] initWithTitle:[options stringForKey:kWPNewPostURLParamTitleKey]
+                                                                      andContent:[options stringForKey:kWPNewPostURLParamContentKey]
+                                                                         andTags:[options stringForKey:kWPNewPostURLParamTagsKey]
+                                                                        andImage:[options stringForKey:kWPNewPostURLParamImageKey]];
         }
         navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
         navController.restorationIdentifier = WPEditorNavigationRestorationID;
@@ -579,10 +679,10 @@ NSInteger const kMeTabIndex                                     = 2;
             [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
             editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithDraftForLastUsedBlog];
         } else {
-            editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithTitle:[options stringForKey:@"title"]
-                                                                      andContent:[options stringForKey:@"content"]
-                                                                         andTags:[options stringForKey:@"tags"]
-                                                                        andImage:[options stringForKey:@"image"]];
+            editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithTitle:[options stringForKey:kWPNewPostURLParamTitleKey]
+                                                                      andContent:[options stringForKey:kWPNewPostURLParamContentKey]
+                                                                         andTags:[options stringForKey:kWPNewPostURLParamTagsKey]
+                                                                        andImage:[options stringForKey:kWPNewPostURLParamImageKey]];
         }
         navController = [[UINavigationController alloc] initWithRootViewController:editPostLegacyViewController];
         navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
@@ -666,13 +766,12 @@ NSInteger const kMeTabIndex                                     = 2;
     if (tabBarController.selectedViewController == viewController) {
         if ([viewController isKindOfClass:[UINavigationController class]]) {
             UINavigationController *navController = (UINavigationController *)viewController;
-            if ([navController topViewController] == [[navController viewControllers] firstObject] &&
-                [[[navController topViewController] view] isKindOfClass:[UITableView class]]) {
+            if (navController.topViewController == navController.viewControllers.firstObject &&
+                [navController.topViewController.view isKindOfClass:[UITableView class]]) {
+                
                 UITableView *tableView = (UITableView *)[[navController topViewController] view];
-
-                if ([tableView numberOfSections] > 0 && [tableView numberOfRowsInSection:0] > 0) {
-                    [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-                }
+                CGPoint topOffset = CGPointMake(0.0f, -tableView.contentInset.top);
+                [tableView setContentOffset:topOffset animated:YES];
             }
         }
     }
@@ -989,7 +1088,7 @@ NSInteger const kMeTabIndex                                     = 2;
                                       bucketOverrides:bucketOverrides];
 
 #ifdef DEBUG
-	self.simperium.verboseLoggingEnabled = YES;
+	self.simperium.verboseLoggingEnabled = false;
 #endif
 }
 
@@ -1255,7 +1354,20 @@ NSInteger const kMeTabIndex                                     = 2;
         // No need to check for welcome screen unless we are signing out
         [self logoutSimperiumAndResetNotifications];
         [self showWelcomeScreenIfNeededAnimated:NO];
+        [self removeTodayWidgetConfiguration];
     }
+}
+
+#pragma mark - Today Extension
+
+- (void)determineIfTodayWidgetIsConfiguredAndShowAppropriately
+{
+    [StatsViewController hideTodayWidgetIfNotConfigured];
+}
+
+- (void)removeTodayWidgetConfiguration
+{
+    [StatsViewController removeTodayWidgetConfiguration];
 }
 
 #pragma mark - GUI animations
@@ -1290,6 +1402,20 @@ NSInteger const kMeTabIndex                                     = 2;
 			}];
 		});
 	}];
+}
+
+#pragma mark - Helpshift Delegate
+
+- (void)didReceiveInAppNotificationWithMessageCount:(NSInteger)count;
+{
+    if (count > 0) {
+        [WPAnalytics track:WPAnalyticsStatSupportReceivedResponseFromSupport];
+    }
+}
+
+- (void)didReceiveNotificationCount:(NSInteger)count
+{
+    // Note: Empty method, just so silence compiler warning.
 }
 
 @end

@@ -433,6 +433,10 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             [instructions setCurrentDateForPeopleProperty:@"$created"];
             [instructions addSuperPropertyToFlag:@"created_account_on_mobile"];
             break;
+        case WPAnalyticsStatEditorEnabledNewVersion:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Enabled New Version"];
+            [instructions addSuperPropertyToFlag:@"enabled_new_editor"];
+            break;
         case WPAnalyticsStatSharedItemViaEmail:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_shared_via_email"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_shared_item_via_email"];
@@ -546,6 +550,13 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             break;
         case WPAnalyticsStatSelectedInstallJetpack:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Selected Install Jetpack"];
+            break;
+        case WPAnalyticsStatSupportOpenedHelpshiftScreen:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Support - Opened Helpshift Screen"];
+            [instructions addSuperPropertyToFlag:@"opened_helpshift_screen"];
+            break;
+        case WPAnalyticsStatSupportReceivedResponseFromSupport:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyFlagger:@"received_response_from_support"];
             break;
         default:
             break;

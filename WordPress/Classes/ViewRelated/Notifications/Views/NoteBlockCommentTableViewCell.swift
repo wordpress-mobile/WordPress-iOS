@@ -3,9 +3,10 @@ import Foundation
 
 @objc public class NoteBlockCommentTableViewCell : NoteBlockTextTableViewCell
 {
-    public typealias EventHandler = (() -> Void)
+    public typealias EventHandler = ((sender: AnyObject) -> Void)
 
     // MARK: - Public Properties
+    public var onReplyClick:        EventHandler?
     public var onLikeClick:         EventHandler?
     public var onUnlikeClick:       EventHandler?
     public var onApproveClick:      EventHandler?
@@ -15,17 +16,23 @@ import Foundation
 
     public var attributedCommentText: NSAttributedString? {
         didSet {
-            refreshInterfaceStyle()
+            refreshApprovalColors()
         }
     }
     public var name: String? {
         didSet {
-            nameLabel.text  = name != nil ? name! : String()
+            nameLabel.text  = name ?? String()
         }
     }
     public var timestamp: String? {
         didSet {
-            timestampLabel.text  = timestamp != nil ? timestamp! : String()
+            timestampLabel.text  = timestamp ?? String()
+        }
+    }
+    public var isReplyEnabled: Bool = false {
+        didSet {
+            refreshButtonSize(btnReply, isVisible: isReplyEnabled)
+            refreshBottomSpacing()
         }
     }
     public var isLikeEnabled: Bool = false {
@@ -60,7 +67,7 @@ import Foundation
     public var isApproveOn: Bool = false {
         didSet {
             btnApprove.selected = isApproveOn
-            refreshInterfaceStyle()
+            refreshApprovalColors()
         }
     }
 
@@ -104,9 +111,14 @@ import Foundation
 
         let approveNormalTitle              = NSLocalizedString("Approve", comment: "Approve a comment")
         let approveSelectedTitle            = NSLocalizedString("Approved", comment: "Unapprove a comment")
-        
+
+        let replyTitle                      = NSLocalizedString("Reply",  comment: "Verb, reply to a comment")
         let moreTitle                       = NSLocalizedString("More",  comment: "Verb, display More actions for a comment")
         let trashTitle                      = NSLocalizedString("Trash", comment: "Move a comment to the trash")
+        
+        btnReply.setTitle(replyTitle, forState: .Normal)
+        btnReply.setTitleColor(textNormalColor, forState: .Normal)
+        btnReply.accessibilityLabel = replyTitle
         
         btnLike.setTitle(likeNormalTitle,           forState: .Normal)
         btnLike.setTitle(likeSelectedTitle,         forState: .Highlighted)
@@ -131,34 +143,44 @@ import Foundation
         btnTrash.setTitle(trashTitle, forState: .Normal)
         btnTrash.setTitleColor(textNormalColor, forState: .Normal)
         btnTrash.accessibilityLabel = trashTitle
+        
+        // iPad: Use a bigger image size!
+        if UIDevice.isPad() {
+            gravatarImageView.updateConstraint(.Height, constant: gravatarImageSizePad.width)
+            gravatarImageView.updateConstraint(.Width,  constant: gravatarImageSizePad.height)
+        }
     }
     
     // MARK: - IBActions
+    @IBAction public func replyWasPressed(sender: AnyObject) {
+        hitEventHandler(onReplyClick, sender: sender)
+    }
+    
     @IBAction public func likeWasPressed(sender: AnyObject) {
         let handler = isLikeOn ? onUnlikeClick : onLikeClick
-        hitEventHandler(handler)
+        hitEventHandler(handler, sender: sender)
         isLikeOn = !isLikeOn
     }
     
     @IBAction public func approveWasPressed(sender: AnyObject) {
         let handler = isApproveOn ? onUnapproveClick : onApproveClick
-        hitEventHandler(handler)
+        hitEventHandler(handler, sender: sender)
         isApproveOn = !isApproveOn
     }
     
     @IBAction public func trashWasPressed(sender: AnyObject) {
-        hitEventHandler(onTrashClick)
+        hitEventHandler(onTrashClick, sender: sender)
     }
     
     @IBAction public func moreWasPressed(sender: AnyObject) {
-        hitEventHandler(onMoreClick)
+        hitEventHandler(onMoreClick, sender: sender)
     }
     
     
     // MARK: - Private Methods
-    private func hitEventHandler(handler: EventHandler?) {
+    private func hitEventHandler(handler: EventHandler?, sender: AnyObject) {
         if let listener = handler {
-            listener()
+            listener(sender: sender)
         }
     }
     
@@ -169,8 +191,8 @@ import Foundation
         
         button.updateConstraint(.Width, constant: width)
         
-        contentView.updateConstraintForView(button, attribute: .Trailing, constant: trailing)
-        contentView.updateConstraintForView(button, attribute: .Leading,  constant: trailing)
+        contentView.updateConstraintWithFirstItem(button, attribute: .Trailing, constant: trailing)
+        contentView.updateConstraintWithFirstItem(button, attribute: .Leading,  constant: trailing)
         
         button.hidden   = !isVisible
         button.enabled  = isVisible
@@ -185,18 +207,19 @@ import Foundation
         let moreTop             = hasButtonsEnabled ? buttonTop     : CGFloat.min
         let moreHeight          = hasButtonsEnabled ? buttonHeight  : CGFloat.min
         
-        contentView.updateConstraintForView(btnMore, attribute: .Top, constant: moreTop)
+        contentView.updateConstraintWithFirstItem(btnMore, attribute: .Top, constant: moreTop)
         btnMore.updateConstraint(.Height, constant: moreHeight)
         setNeedsLayout()
     }
     
-    private func refreshInterfaceStyle() {
+    private func refreshApprovalColors() {
         // If Approval is not even enabled, let's consider this as approved!
         let isCommentApproved               = isApproveOn || !isApproveEnabled
         approvalStatusView.hidden           = isCommentApproved
         separatorView.backgroundColor       = WPStyleGuide.Notifications.blockSeparatorColorForComment(isApproved: isCommentApproved)
         nameLabel.textColor                 = WPStyleGuide.Notifications.blockTextColorForComment(isApproved: isCommentApproved)
         timestampLabel.textColor            = WPStyleGuide.Notifications.blockTimestampColorForComment(isApproved: isCommentApproved)
+        super.linkColor                     = WPStyleGuide.Notifications.blockLinkColorForComment(isApproved: isCommentApproved)
         super.attributedText                = isCommentApproved ? attributedCommentApprovedText : attributedCommentUnapprovedText
     }
     
@@ -206,7 +229,7 @@ import Foundation
         if attributedCommentText == nil {
             return nil
         }
-            
+        
         let unwrappedMutableString  = attributedCommentText!.mutableCopy() as NSMutableAttributedString
         let range                   = NSRange(location: 0, length: min(1, unwrappedMutableString.length))
         let paragraph               = WPStyleGuide.Notifications.blockParagraphStyleWithIndentation(firstLineHeadIndent)
@@ -229,14 +252,16 @@ import Foundation
         return unwrappedMutableString
     }
 
+    
     // MARK: - Private Constants
-    private let separatorHeight                     : CGFloat   = 1
-    private let buttonWidth                         : CGFloat   = 55
-    private let buttonHeight                        : CGFloat   = 30
-    private let buttonTop                           : CGFloat   = 20
-    private let buttonTrailing                      : CGFloat   = 20
-    private let firstLineHeadIndent                 : CGFloat   = 43
-    private let placeholderName                     : String    = "gravatar"
+    private let gravatarImageSizePad                = CGSize(width: 37.0, height: 37.0)
+    private let separatorHeight                     = CGFloat(1)
+    private let buttonWidth                         = CGFloat(55)
+    private let buttonHeight                        = CGFloat(30)
+    private let buttonTop                           = CGFloat(20)
+    private let buttonTrailing                      = CGFloat(20)
+    private let firstLineHeadIndent                 = UIDevice.isPad() ? CGFloat(47) : CGFloat(43)
+    private let placeholderName                     = String("gravatar")
     
     // MARK: - Private Properties
     private var gravatarURL                         : NSURL?
@@ -248,6 +273,7 @@ import Foundation
     @IBOutlet private weak var nameLabel            : UILabel!
     @IBOutlet private weak var timestampLabel       : UILabel!
     @IBOutlet private weak var separatorView        : UIView!
+    @IBOutlet private weak var btnReply             : UIButton!
     @IBOutlet private weak var btnLike              : UIButton!
     @IBOutlet private weak var btnApprove           : UIButton!
     @IBOutlet private weak var btnTrash             : UIButton!

@@ -44,9 +44,11 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < 30000 && TARGET_IPHONE_SIMULATOR
 
-+ (NSString *) getPasswordForUsername:(NSString *)username
-                       andServiceName:(NSString *)serviceName
-                                error:(NSError **) error
+
++ (NSString *)getPasswordForUsername:(NSString *)username
+                      andServiceName:(NSString *)serviceName
+                         accessGroup:(NSString *)accessGroup
+                               error:(NSError **)error
 {
     if (!username || !serviceName) {
         *error = [NSError errorWithDomain: SFHFKeychainUtilsErrorDomain code: -2000 userInfo: nil];
@@ -101,11 +103,12 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
     return passwordString;
 }
 
-+ (void)storeUsername:(NSString *) username
++ (BOOL)storeUsername:(NSString *)username
           andPassword:(NSString *)password
        forServiceName:(NSString *)serviceName
+          accessGroup:(NSString *)accessGroup
        updateExisting:(BOOL)updateExisting
-                error:(NSError **) error
+                error:(NSError **)error
 {
     if (!username || !password || !serviceName) {
         *error = [NSError errorWithDomain: SFHFKeychainUtilsErrorDomain code: -2000 userInfo: nil];
@@ -145,7 +148,11 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
     }
 }
 
-+ (void) deleteItemForUsername:(NSString *) username andServiceName:(NSString *) serviceName error:(NSError **) error
+
++ (void)deleteItemForUsername:(NSString *)username
+               andServiceName:(NSString *)serviceName
+                  accessGroup:(NSString *)accessGroup
+                        error:(NSError **)error
 {
     if (!username || !serviceName) {
         *error = [NSError errorWithDomain: SFHFKeychainUtilsErrorDomain code: 2000 userInfo: nil];
@@ -208,7 +215,10 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
 
 #else
 
-+ (NSString *)getPasswordForUsername:(NSString *)username andServiceName:(NSString *)serviceName error:(NSError **)error
++ (NSString *)getPasswordForUsername:(NSString *)username
+                      andServiceName:(NSString *)serviceName
+                         accessGroup:(NSString *)accessGroup
+                               error:(NSError **)error
 {
     if (!username || !serviceName) {
         if (error != nil) {
@@ -227,6 +237,14 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
     NSArray *objects = [[[NSArray alloc] initWithObjects: (NSString *) kSecClassGenericPassword, username, serviceName, nil] autorelease];
 
     NSMutableDictionary *query = [[[NSMutableDictionary alloc] initWithObjects: objects forKeys: keys] autorelease];
+    
+#if TARGET_IPHONE_SIMULATOR
+    // Ignore access group if running in simulator
+#else
+    if (accessGroup.length > 0) {
+        query[(id)kSecAttrAccessGroup] = accessGroup;
+    }
+#endif
 
     // First do a query for attributes, in case we already have a Keychain item with no password data set.
     // One likely way such an incorrect item could have come about is due to the previous (incorrect)
@@ -301,6 +319,7 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
 + (BOOL)storeUsername:(NSString *)username
           andPassword:(NSString *)password
        forServiceName:(NSString *)serviceName
+          accessGroup:(NSString *)accessGroup
        updateExisting:(BOOL)updateExisting
                 error:(NSError **)error
 {
@@ -313,7 +332,10 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
 
     // See if we already have a password entered for these credentials.
     NSError *getError = nil;
-    NSString *existingPassword = [SFHFKeychainUtils getPasswordForUsername: username andServiceName: serviceName error:&getError];
+    NSString *existingPassword = [SFHFKeychainUtils getPasswordForUsername:username
+                                                            andServiceName:serviceName
+                                                               accessGroup:accessGroup
+                                                                     error:&getError];
 
     if ([getError code] == -1999) {
         // There is an existing entry without a password properly stored (possibly as a result of the previous incorrect version of this code.
@@ -321,7 +343,7 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
 
         getError = nil;
 
-        [self deleteItemForUsername: username andServiceName: serviceName error: &getError];
+        [self deleteItemForUsername:username andServiceName:serviceName accessGroup:accessGroup error:&getError];
 
         if ([getError code] != noErr) {
             if (error != nil) {
@@ -363,11 +385,19 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
                                  kSecAttrAccessibleAfterFirstUnlock,
                                  nil] autorelease];
 
-            NSDictionary *query = [[[NSDictionary alloc] initWithObjects: objects forKeys: keys] autorelease];
+            NSMutableDictionary *query = [[[NSMutableDictionary alloc] initWithObjects: objects forKeys: keys] autorelease];
+            
+#if TARGET_IPHONE_SIMULATOR
+            // Ignore access group if running in simulator
+#else
+            if (accessGroup.length > 0) {
+                query[(id)kSecAttrAccessGroup] = accessGroup;
+            }
+#endif
             NSDictionary *attributesToUpdate = @{(NSString *)kSecValueData:
                                                      [password dataUsingEncoding: NSUTF8StringEncoding]};
 
-            status = SecItemUpdate((CFDictionaryRef) query,
+            status = SecItemUpdate((CFDictionaryRef) [NSDictionary dictionaryWithDictionary:query],
                                    (CFDictionaryRef) @{(NSString*)kSecValueData: attributesToUpdate});
         }
     } else {
@@ -390,9 +420,17 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
                              [password dataUsingEncoding: NSUTF8StringEncoding],
                              nil] autorelease];
 
-        NSDictionary *query = [[[NSDictionary alloc] initWithObjects: objects forKeys: keys] autorelease];
+        NSMutableDictionary *query = [[[NSMutableDictionary alloc] initWithObjects: objects forKeys: keys] autorelease];
+        
+#if TARGET_IPHONE_SIMULATOR
+        // Ignore access group if running in simulator
+#else
+        if (accessGroup.length > 0) {
+            query[(id)kSecAttrAccessGroup] = accessGroup;
+        }
+#endif
 
-        status = SecItemAdd((CFDictionaryRef) query, NULL);
+        status = SecItemAdd((CFDictionaryRef) [NSDictionary dictionaryWithDictionary:query], NULL);
     }
 
     if (status != noErr) {
@@ -407,7 +445,10 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
     return YES;
 }
 
-+ (BOOL)deleteItemForUsername:(NSString *)username andServiceName:(NSString *)serviceName error:(NSError **)error
++ (BOOL)deleteItemForUsername:(NSString *)username
+               andServiceName:(NSString *)serviceName
+                  accessGroup:(NSString *)accessGroup
+                        error:(NSError **)error
 {
     if (!username || !serviceName) {
         if (error != nil) {
@@ -423,9 +464,17 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
     NSArray *keys = [[[NSArray alloc] initWithObjects: (NSString *) kSecClass, kSecAttrAccount, kSecAttrService, kSecReturnAttributes, nil] autorelease];
     NSArray *objects = [[[NSArray alloc] initWithObjects: (NSString *) kSecClassGenericPassword, username, serviceName, kCFBooleanTrue, nil] autorelease];
 
-    NSDictionary *query = [[[NSDictionary alloc] initWithObjects: objects forKeys: keys] autorelease];
+    NSMutableDictionary *query = [[[NSMutableDictionary alloc] initWithObjects: objects forKeys: keys] autorelease];
+    
+#if TARGET_IPHONE_SIMULATOR
+    // Ignore access group if running in simulator
+#else
+    if (accessGroup.length > 0) {
+        query[(id)kSecAttrAccessGroup] = accessGroup;
+    }
+#endif
 
-    OSStatus status = SecItemDelete((CFDictionaryRef) query);
+    OSStatus status = SecItemDelete((CFDictionaryRef) [NSDictionary dictionaryWithDictionary:query]);
 
     if (status != noErr) {
         if (error != nil) {
@@ -439,5 +488,40 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
 }
 
 #endif
+
++ (NSString *)getPasswordForUsername:(NSString *)username
+                      andServiceName:(NSString *)serviceName
+                               error:(NSError **)error
+{
+    return [self getPasswordForUsername:username
+                         andServiceName:serviceName
+                            accessGroup:nil
+                                  error:error];
+}
+
++ (BOOL)storeUsername:(NSString *)username
+          andPassword:(NSString *)password
+       forServiceName:(NSString *)serviceName
+       updateExisting:(BOOL)updateExisting
+                error:(NSError **)error
+{
+    return [self storeUsername:username
+                   andPassword:password
+                forServiceName:serviceName
+                   accessGroup:nil
+                updateExisting:updateExisting
+                         error:error];
+}
+
++ (BOOL)deleteItemForUsername:(NSString *)username
+               andServiceName:(NSString *)serviceName
+                        error:(NSError **)error
+{
+    return [self deleteItemForUsername:username
+                 andServiceName:serviceName
+                    accessGroup:nil
+                          error:error];
+}
+
 
 @end

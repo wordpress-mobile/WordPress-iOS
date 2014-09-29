@@ -316,7 +316,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     if (indexPath.section == SettingsSectionFAQForums) {
         if (indexPath.row == 0) {
             cell.textLabel.text = NSLocalizedString(@"WordPress Help Center", @"");
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [WPStyleGuide configureTableViewActionCell:cell];
         } else if (indexPath.row == 1) {
             if (self.helpshiftEnabled) {
                 cell.textLabel.text = NSLocalizedString(@"Contact Us", nil);
@@ -338,7 +338,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
                 }
             } else {
                 cell.textLabel.text = NSLocalizedString(@"WordPress Forums", @"");
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                [WPStyleGuide configureTableViewActionCell:cell];
             }
         }
     } else if (indexPath.section == SettingsSectionFeedback) {
@@ -413,6 +413,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
             }
         } else if (indexPath.row == 1) {
             if (self.helpshiftEnabled) {
+                [WPAnalytics track:WPAnalyticsStatSupportOpenedHelpshiftScreen];
                 [self prepareAndDisplayHelpshiftWindowOfType:kHelpshiftWindowTypeConversation];
             } else {
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ios.forums.wordpress.org"]];

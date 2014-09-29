@@ -19,88 +19,45 @@ import Foundation
         setupView()
     }
     
-    private init(frame: CGRect, isProxy: Bool) {
-        super.init(frame: frame)
-        isProxyTextView = isProxy
-        setupView()
-    }
-    
     
     // MARK: - Public Properties
     public weak var delegate: UITextViewDelegate?
     
-    public var onReply: ((String) -> ())? {
-        didSet {
-            refreshProxyTextView()
-        }
-    }
-    
-    public override var inputAccessoryView: UIView! {
-        get {
-            return proxyTextView
-        }
-    }
+    public var onReply: ((String) -> ())?
     
     public var text: String! {
         didSet {
             textView.text = text
             refreshInterface()
-            refreshProxyTextView()
         }
     }
     public var placeholder: String! {
         didSet {
             placeholderLabel.text = placeholder
-            refreshProxyTextView()
         }
     }
 
     public var replyText: String! {
         didSet {
             replyButton.setTitle(replyText, forState: .Normal)
-            refreshProxyTextView()
-        }
-    }
-    
-    
-    // MARK: - Public Helpers
-    public func alignAtBottomOfSuperview() {
-        if let theSuperview = superview {
-            frame.origin.y = CGRectGetMaxY(theSuperview.bounds) - bounds.height
         }
     }
     
     
     // MARK: - UITextViewDelegate Methods
     public func textViewShouldBeginEditing(textView: UITextView!) -> Bool {
-        if isProxyDismissing {
-            return false
-        }
-        
         return delegate?.textViewShouldBeginEditing?(textView) ?? true
     }
     
     public func textViewDidBeginEditing(textView: UITextView!) {
-        
-        if proxyTextView != nil {
-            let delay = dispatch_time_t(0.1)
-            dispatch_after(delay, dispatch_get_main_queue()) {
-                // FIX: Xcode beta 6 fails if the only sentence returns a value
-                let result = self.proxyTextView?.becomeFirstResponder()
-            }
-
-        } else {
-            delegate?.textViewDidBeginEditing?(textView)
-        }
+        delegate?.textViewDidBeginEditing?(textView)
     }
     
     public func textViewShouldEndEditing(textView: UITextView!) -> Bool {
-        isProxyDismissing = self.textView != textView
         return delegate?.textViewShouldEndEditing?(textView) ?? true
     }
 
     public func textViewDidEndEditing(textView: UITextView!) {
-        isProxyDismissing = false
         delegate?.textViewDidEndEditing?(textView)
     }
     
@@ -109,11 +66,7 @@ import Foundation
     }
 
     public func textViewDidChange(textView: UITextView!) {
-        // Don't overwork if this is the proxyTextView
-        if (textView == self.textView) {
-            refreshInterface()
-        }
-        
+        refreshInterface()
         delegate?.textViewDidChange?(textView)
     }
     
@@ -125,8 +78,22 @@ import Foundation
     // MARK: - IBActions
     @IBAction private func btnReplyPressed() {
         if let handler = onReply {
-            handler(textView.text)
+            // Load the new text
+            let newText = textView.text
+            textView.resignFirstResponder()
+            
+            // Cleanup + Shrink
+            text = String()
+            
+            // Hit the handler
+            handler(newText)
         }
+    }
+    
+    
+    // MARK: - Gestures Recognizers
+    public func backgroundWasTapped() {
+        becomeFirstResponder()
     }
     
     
@@ -137,26 +104,32 @@ import Foundation
     
     public override func resignFirstResponder() -> Bool {
         endEditing(true)
-        return super.resignFirstResponder()
+        return textView.resignFirstResponder()
     }
-    
+
     public override func layoutSubviews() {
+        // Force invalidate constraints
+        invalidateIntrinsicContentSize()
         super.layoutSubviews()
-        containerView.frame.size.width  = self.bounds.width
     }
     
     
     // MARK: - Autolayout Helpers
     public override func intrinsicContentSize() -> CGSize {
-        let topPadding      = textView.constraintForAttribute(.Top)     ?? textViewDefaultPadding
-        let bottomPadding   = textView.constraintForAttribute(.Bottom)  ?? textViewDefaultPadding
+        // Make sure contentSize returns... the real content size
+        textView.layoutIfNeeded()
         
-        // Calculate the new height
-        let textHeight      = floor(textView.contentSize.height + topPadding + bottomPadding)
+        // Calculate the entire control's size
+        let topPadding      = textView.constraintForAttribute(.Top)    ?? textViewDefaultPadding
+        let bottomPadding   = textView.constraintForAttribute(.Bottom) ?? textViewDefaultPadding
         
+        let contentHeight   = textView.contentSize.height
+        let fullWidth       = frame.width
+        let textHeight      = floor(contentHeight + topPadding + bottomPadding)
+
         var newHeight       = min(max(textHeight, textViewMinHeight), textViewMaxHeight)
-        let intrinsicSize   = CGSize(width: frame.width, height: newHeight)
-        
+        let intrinsicSize   = CGSize(width: fullWidth, height: newHeight)
+
         return intrinsicSize
     }
     
@@ -169,6 +142,11 @@ import Foundation
         bundle = NSBundle.mainBundle().loadNibNamed("ReplyTextView", owner: self, options: nil)
         addSubview(containerView)
         
+        // Setup Layout
+        setTranslatesAutoresizingMaskIntoConstraints(false)
+        containerView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        pinSubviewToAllEdges(containerView)
+
         // Setup the TextView
         textView.delegate               = self
         textView.scrollsToTop           = false
@@ -177,6 +155,10 @@ import Foundation
         textView.font                   = WPStyleGuide.Reply.textFont
         textView.textColor              = WPStyleGuide.Reply.textColor
         textView.textContainer.lineFragmentPadding  = 0
+        textView.layoutManager.allowsNonContiguousLayout = false
+        
+        // Disable QuickType
+        textView.autocorrectionType     = .No
         
         // Placeholder
         placeholderLabel.font           = WPStyleGuide.Reply.textFont
@@ -190,29 +172,12 @@ import Foundation
         
         // Background
         layoutView.backgroundColor      = WPStyleGuide.Reply.backgroundColor
-        
-        // We want this view to stick at the bottom
-        contentMode                     = .BottomLeft
-        autoresizingMask                = .FlexibleWidth | .FlexibleHeight | .FlexibleTopMargin
-        containerView.autoresizingMask  = .FlexibleWidth | .FlexibleHeight
-        
-        // Setup the ProxyTextView: Prevent Recursion
-        if isProxyTextView {
-            return
-        }
-        
-        let proxyTextView               = ReplyTextView(frame: bounds, isProxy: true)
-        proxyTextView.delegate          = self
-        textView.inputAccessoryView     = proxyTextView
-        self.proxyTextView              = proxyTextView
-        
+
+        // Recognizers
         let recognizer                  = UITapGestureRecognizer(target: self, action: "backgroundWasTapped")
         gestureRecognizers              = [recognizer]
     }
     
-    public func backgroundWasTapped() {
-        becomeFirstResponder()
-    }
     
     // MARK: - Refresh Helpers
     private func refreshInterface() {
@@ -225,12 +190,11 @@ import Foundation
     private func refreshSizeIfNeeded() {
         var newSize         = intrinsicContentSize()
         let oldSize         = frame.size
-        
+
         if newSize.height == oldSize.height {
             return
         }
-        
-        frame.size.height   = newSize.height
+
         invalidateIntrinsicContentSize()
     }
     
@@ -246,6 +210,8 @@ import Foundation
     private func refreshScrollPosition() {
         // FIX: In iOS 8, scrollRectToVisible causes a weird flicker
         if UIDevice.isOS8() {
+            // FIX: Force layout right away. This prevents the TextView from "Jumping"
+            textView.layoutIfNeeded()
             textView.scrollRangeToVisible(textView.selectedRange)
         } else {
             let selectedRangeStart      = textView.selectedTextRange?.start ?? UITextPosition()
@@ -255,14 +221,6 @@ import Foundation
         }
     }
     
-    private func refreshProxyTextView() {
-        // Swift is not allowing us to do this in didSet. Not cool.
-        proxyTextView?.placeholder  = placeholder
-        proxyTextView?.replyText    = replyText
-        proxyTextView?.text         = text
-        proxyTextView?.onReply      = onReply
-    }
-
     
     // MARK: - Constants
     private let textViewDefaultPadding:     CGFloat         = 12
@@ -271,9 +229,6 @@ import Foundation
     
     // MARK: - Private Properties
     private var bundle:                     NSArray?
-    private var proxyTextView:              ReplyTextView?
-    private var isProxyTextView:            Bool            = false
-    private var isProxyDismissing:          Bool            = false
     
     // MARK: - IBOutlets
     @IBOutlet private var textView:         UITextView!

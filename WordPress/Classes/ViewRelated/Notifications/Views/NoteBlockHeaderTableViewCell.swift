@@ -6,12 +6,12 @@ import Foundation
     // MARK: - Public Properties
     public var name: String? {
         didSet {
-            nameLabel.text  = name != nil ? name! : String()
+            nameLabel.text  = name ?? String()
         }
     }
     public var snippet: String? {
         didSet {
-            snippetLabel.text = snippet != nil ? snippet! :  String()
+            snippetLabel.text = snippet ?? String()
         }
     }
     
@@ -43,11 +43,18 @@ import Foundation
         nameLabel.textColor             = WPStyleGuide.Notifications.blockTextColor
         snippetLabel.font               = WPStyleGuide.Notifications.blockItalicsFont
         snippetLabel.textColor          = WPStyleGuide.Notifications.blockQuotedColor
+
+        // iPad: Use a bigger image size!
+        if UIDevice.isPad() {
+            gravatarImageView.updateConstraint(.Height, constant: gravatarImageSizePad.width)
+            gravatarImageView.updateConstraint(.Width,  constant: gravatarImageSizePad.height)
+        }
     }
     
 
     // MARK: - Private
-    private let placeholderName:                    String = "gravatar"
+    private let gravatarImageSizePad                = CGSize(width: 36.0, height: 36.0)
+    private let placeholderName                     = String("gravatar")
     private var gravatarURL:                        NSURL?
     
     // MARK: - IBOutlets

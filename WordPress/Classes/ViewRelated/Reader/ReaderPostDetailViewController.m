@@ -8,7 +8,7 @@
 #import "CustomHighlightButton.h"
 #import "InlineComposeView.h"
 #import "ReaderCommentPublisher.h"
-#import "ReaderCommentTableViewCell.h"
+#import "ReaderCommentCell.h"
 #import "ReaderPost.h"
 #import "ReaderPostRichContentView.h"
 #import "ReaderPostService.h"
@@ -29,11 +29,16 @@ static CGFloat const TableViewTopMargin = 40;
 static CGFloat const EstimatedCommentRowHeight = 150.0;
 static CGFloat const CommentAvatarSize = 32.0;
 
-static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
+static NSString *CommentDepth0CellIdentifier = @"CommentDepth0CellIdentifier";
+static NSString *CommentDepth1CellIdentifier = @"CommentDepth1CellIdentifier";
+static NSString *CommentDepth2CellIdentifier = @"CommentDepth2CellIdentifier";
+static NSString *CommentDepth3CellIdentifier = @"CommentDepth3CellIdentifier";
+static NSString *CommentDepth4CellIdentifier = @"CommentDepth4CellIdentifier";
+static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 @interface ReaderPostDetailViewController ()<
                                             ReaderCommentPublisherDelegate,
-                                            ReaderCommentTableViewCellDelegate,
+                                            ReaderCommentCellDelegate,
                                             ReaderPostContentViewDelegate,
                                             RebloggingViewControllerDelegate,
                                             WPContentSyncHelperDelegate,
@@ -54,6 +59,9 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 @property (nonatomic, strong) WPTableImageSource *featuredImageSource;
 @property (nonatomic, strong) WPContentSyncHelper *syncHelper;
 @property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
+
+@property (nonatomic, strong) ReaderCommentCell *cellForLayout;
+@property (nonatomic, strong) NSLayoutConstraint *cellForLayoutWidthConstraint;
 
 @end
 
@@ -88,6 +96,8 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 {
     [super viewDidLoad];
 
+    self.tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
+
     if (self.tableViewHandler) {
         self.tableViewHandler.delegate = nil;
     }
@@ -95,11 +105,10 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
     self.tableViewHandler.cacheRowHeights = YES;
     self.tableViewHandler.delegate = self;
 
-    self.tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
+    [self configureCellForLayout];
     [self configureInfiniteScroll];
     [self configureTableView];
     [self configureNavbar];
-    [self configureToolbar];
     [self configureCommentPublisher];
 
     [self configurePostView];
@@ -136,7 +145,6 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 
     [self.inlineComposeView dismissComposer];
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
@@ -149,6 +157,15 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
         // No need to refresh on iPad when using a fixed width.
         [self.postView refreshMediaLayout];
         [self refreshHeightForTableHeaderView];
+
+        // DTCoreText can be cranky about refreshing its rendered text when its
+        // frame changes, even when setting its relayoutMask. Setting setNeedsLayout
+        // on the cell prior to reloading seems to force the cell's
+        // DTAttributedTextContentView to behave.
+        for (UITableViewCell *cell in [self.tableView visibleCells]) {
+            [cell setNeedsLayout];
+        }
+        [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 
     // Make sure a selected comment is visible after rotating.
@@ -161,10 +178,6 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-    if (IS_IPAD) {
-        return;
-    }
-
     // Refresh cached row heights based on the width for the new orientation.
     // Must happen before the table view calculates its content size / offset
     // for the new orientation.
@@ -176,12 +189,37 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
     } else {
         width = MAX(width, height);
     }
+    [self updateCellForLayoutWidthConstraint:width];
 
-    [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
+    if (IS_IPHONE) {
+        [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
+    }
 }
 
 
 #pragma mark - Configuration
+
+- (void)configureCellForLayout
+{
+    [self.tableView registerClass:[ReaderCommentCell class] forCellReuseIdentifier:CommentLayoutCellIdentifier];
+    self.cellForLayout = [self.tableView dequeueReusableCellWithIdentifier:CommentLayoutCellIdentifier];
+    [self updateCellForLayoutWidthConstraint:CGRectGetWidth(self.tableView.bounds)];
+}
+
+- (void)updateCellForLayoutWidthConstraint:(CGFloat)width
+{
+    UIView *contentView = self.cellForLayout.contentView;
+    if (self.cellForLayoutWidthConstraint) {
+        [contentView removeConstraint:self.cellForLayoutWidthConstraint];
+    }
+    NSDictionary *views = NSDictionaryOfVariableBindings(contentView);
+    NSDictionary *metrics = @{@"width":@(width)};
+    self.cellForLayoutWidthConstraint = [[NSLayoutConstraint constraintsWithVisualFormat:@"[contentView(width)]"
+                                                                                 options:0
+                                                                                 metrics:metrics
+                                                                                   views:views] firstObject];
+    [contentView addConstraint:self.cellForLayoutWidthConstraint];
+}
 
 - (void)configureInfiniteScroll
 {
@@ -198,7 +236,7 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
     }
 }
 
-- (void)setAvatarForComment:(Comment *)comment forCell:(ReaderCommentTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
+- (void)setAvatarForComment:(Comment *)comment forCell:(ReaderCommentCell *)cell indexPath:(NSIndexPath *)indexPath
 {
     WPAvatarSource *source = [WPAvatarSource sharedSource];
 
@@ -209,15 +247,15 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 
     UIImage *image = [source cachedImageForAvatarHash:hash ofType:type withSize:size];
     if (image) {
-        [cell setAvatar:image];
+        [cell setAvatarImage:image];
         return;
     }
 
-    [cell setAvatar:[UIImage imageNamed:@"default-identicon"]];
+    [cell setAvatarImage:[UIImage imageNamed:@"default-identicon"]];
     if (hash) {
         [source fetchImageForAvatarHash:hash ofType:type withSize:size success:^(UIImage *image) {
             if (cell == [self.tableView cellForRowAtIndexPath:indexPath]) {
-                [cell setAvatar:image];
+                [cell setAvatarImage:image];
             }
         }];
     }
@@ -225,10 +263,14 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 
 - (void)configureTableView
 {
+    [self.tableView registerClass:[ReaderCommentCell class] forCellReuseIdentifier:CommentDepth0CellIdentifier];
+    [self.tableView registerClass:[ReaderCommentCell class] forCellReuseIdentifier:CommentDepth1CellIdentifier];
+    [self.tableView registerClass:[ReaderCommentCell class] forCellReuseIdentifier:CommentDepth2CellIdentifier];
+    [self.tableView registerClass:[ReaderCommentCell class] forCellReuseIdentifier:CommentDepth3CellIdentifier];
+    [self.tableView registerClass:[ReaderCommentCell class] forCellReuseIdentifier:CommentDepth4CellIdentifier];
+
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
-
-    [self.tableView registerClass:[ReaderCommentTableViewCell class] forCellReuseIdentifier:CommentCellIdentifier];
 }
 
 - (void)configureNavbar
@@ -237,15 +279,6 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.shareButton forNavigationItem:self.navigationItem];
-}
-
-- (void)configureToolbar
-{
-    UIToolbar *toolbar = self.navigationController.toolbar;
-    toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
-    toolbar.tintColor = [UIColor whiteColor];
-    toolbar.translucent = NO;
-
 }
 
 - (void)configureCommentPublisher
@@ -258,7 +291,6 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
     self.commentPublisher = [[ReaderCommentPublisher alloc] initWithComposer:self.inlineComposeView];
     self.commentPublisher.delegate = self;
 }
-
 
 - (void)configurePostView
 {
@@ -345,18 +377,17 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 
 - (void)setupWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    ReaderPostService *service      = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    __weak __typeof(self) weakSelf  = self;
 
     [WPNoResultsView displayAnimatedBoxWithTitle:NSLocalizedString(@"Loading Post...", @"Text displayed while loading a post.")
                                          message:nil
                                             view:self.view];
 
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    ReaderPostService *service      = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    __weak __typeof(self) weakSelf  = self;
+
     [service deletePostsWithNoTopic];
     [service fetchPost:postID.integerValue forSite:siteID.integerValue success:^(ReaderPost *post) {
-
-        [[ContextManager sharedInstance] saveContext:context];
 
         weakSelf.post = post;
         [weakSelf refreshAndSync];
@@ -389,7 +420,9 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
         self.syncHelper.delegate = self;
     }
 
-    [self configureInfiniteScroll];
+    if([self isViewLoaded]) {
+        [self configureInfiniteScroll];
+    }
 }
 
 - (UIBarButtonItem *)shareButton
@@ -452,6 +485,9 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 
     [self refreshPostView];
     [self refreshHeightForTableHeaderView];
+
+    // Refresh incase the post needed to be fetched.
+    [self.tableView reloadData];
 
     // Enable Share action only when the post is fully loaded
     self.shareButton.enabled = self.isLoaded;
@@ -584,6 +620,7 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
     if ([self.view.gestureRecognizers containsObject:self.tapOffKeyboardGesture]) {
         [self.view removeGestureRecognizer:self.tapOffKeyboardGesture];
     }
+
     [self.inlineComposeView dismissComposer];
 }
 
@@ -779,6 +816,10 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 
 - (NSFetchRequest *)fetchRequest
 {
+    if (!self.post) {
+        return nil;
+    }
+    
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:[self entityName]];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = %@", self.post];
 
@@ -790,11 +831,31 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 
 - (void)configureCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath
 {
-    ReaderCommentTableViewCell *cell = (ReaderCommentTableViewCell *)aCell;
-    cell.accessoryType = UITableViewCellAccessoryNone;
-    
+    ReaderCommentCell *cell = (ReaderCommentCell *)aCell;
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+
+    if (comment.depth > 0 && indexPath.row > 0) {
+        NSIndexPath *previousPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section];
+        Comment *previousComment = [self.tableViewHandler.resultsController objectAtIndexPath:previousPath];
+        if (previousComment.depth < comment.depth) {
+            cell.isFirstNestedComment = YES;
+        }
+    }
+
+    if (indexPath.row < [self.tableView numberOfRowsInSection:indexPath.section] - 1) {
+        NSIndexPath *nextPath = [NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section];
+        Comment *nextComment = [self.tableViewHandler.resultsController objectAtIndexPath:nextPath];
+        if ([nextComment.depth integerValue] == 0) {
+            cell.needsExtraPadding = YES;
+        }
+    }
+
     [cell configureCell:comment];
+
+    if ([cell isEqual:self.cellForLayout]) {
+        return;
+    }
+    
     [self setAvatarForComment:comment forCell:cell indexPath:indexPath];
 }
 
@@ -821,21 +882,38 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath forWidth:(CGFloat)width
 {
-    Comment *comment = [self.tableViewHandler.resultsController.fetchedObjects objectAtIndex:indexPath.row];
-    return [ReaderCommentTableViewCell heightForComment:comment
-                                                  width:width
-                                             tableStyle:tableView.style
-                                          accessoryType:UITableViewCellAccessoryNone];
+    [self configureCell:self.cellForLayout atIndexPath:indexPath];
+    CGSize size = [self.cellForLayout sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
+    CGFloat height = ceil(size.height);
+    return height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    Comment *comment = (Comment *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    NSInteger depth = [comment.depth integerValue];
 
-    ReaderCommentTableViewCell *cell = (ReaderCommentTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:CommentCellIdentifier];
-    if (!cell) {
-        cell = [[ReaderCommentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CommentCellIdentifier];
-        cell.delegate = self;
+    NSString *cellIdentifier;
+
+    switch (depth) {
+        case 0:
+            cellIdentifier = CommentDepth0CellIdentifier;
+            break;
+        case 1:
+            cellIdentifier = CommentDepth1CellIdentifier;
+            break;
+        case 2:
+            cellIdentifier = CommentDepth2CellIdentifier;
+            break;
+        case 3:
+            cellIdentifier = CommentDepth3CellIdentifier;
+            break;
+        default:
+            cellIdentifier = CommentDepth4CellIdentifier;
     }
+
+    ReaderCommentCell *cell = (ReaderCommentCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    cell.delegate = self;
     cell.accessoryType = UITableViewCellAccessoryNone;
 
     [self configureCell:cell atIndexPath:indexPath];
@@ -843,50 +921,14 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
     return cell;
 }
 
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-
-    // if a row is already selected don't allow selection of another
-    if (self.inlineComposeView.isDisplayed) {
-        if (comment == self.commentPublisher.comment) {
-            [self.inlineComposeView toggleComposer];
-        }
-        return nil;
-    }
-
-    self.commentPublisher.post = self.post;
-    self.commentPublisher.comment = comment;
-    
-    if ([self canComment]) {
-        [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
-
-        [self.inlineComposeView displayComposer];
-    }
-
-    return indexPath;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (![self canComment]) {
-        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-        return;
-    }
-
-    [self.tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewRowAnimationTop animated:YES];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // if we selected the already active comment allow highlight
-    // so we can toggle the inline composer
-    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    if (comment == self.commentPublisher.comment) {
-        return YES;
-    }
-
-    return !self.inlineComposeView.isDisplayed;
+    return NO;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -928,13 +970,33 @@ static NSString *CommentCellIdentifier = @"CommentCellIdentifier";
 }
 
 
-#pragma mark - ReaderCommentTableViewCellDelegate methods
+#pragma mark - ReaderCommentCell Delegate methods
 
-- (void)readerCommentTableViewCell:(ReaderCommentTableViewCell *)cell didTapURL:(NSURL *)url
+- (void)commentCell:(UITableViewCell *)cell linkTapped:(NSURL *)url
 {
     WPWebViewController *controller = [[WPWebViewController alloc] init];
     [controller setUrl:url];
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)commentCell:(UITableViewCell *)cell replyToComment:(Comment *)comment
+{
+    // if a row is already selected don't allow selection of another
+    if (self.inlineComposeView.isDisplayed) {
+        [self.inlineComposeView toggleComposer];
+        return;
+    }
+
+    self.commentPublisher.post = self.post;
+    self.commentPublisher.comment = comment;
+
+    if ([self canComment]) {
+        [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
+
+        [self.inlineComposeView displayComposer];
+    }
+
+    [self.tableView selectRowAtIndexPath:[self.tableView indexPathForCell:cell] animated:YES scrollPosition:UITableViewScrollPositionTop];
 }
 
 

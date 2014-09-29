@@ -1,1 +1,0 @@
-../../MGImageUtilities/Classes/UIImage+Tint.h
