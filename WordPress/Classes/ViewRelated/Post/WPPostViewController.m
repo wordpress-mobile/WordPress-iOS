@@ -30,7 +30,7 @@ NSString *const kWPEditorConfigURLParamAvailable = @"available";
 NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 
 static NSInteger const MaximumNumberOfPictures = 5;
-static NSInteger const kNavigationBarButtonSpacer = 15;
+static CGFloat const kNavigationBarButtonSpacer = 15.0;
 static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 
 @interface WPPostViewController ()<UIPopoverControllerDelegate> {
