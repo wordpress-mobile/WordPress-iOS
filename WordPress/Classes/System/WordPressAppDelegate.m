@@ -85,6 +85,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
 @property (nonatomic, assign, readwrite) BOOL                           wpcomAvailable;
 @property (nonatomic, assign, readwrite) BOOL                           listeningForBlogChanges;
+@property (nonatomic, strong, readwrite) NSDate                         *applicationOpenedTime;
 
 @end
 
@@ -311,9 +312,8 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-
-    [WPAnalytics track:WPAnalyticsStatApplicationClosed withProperties:@{@"last_visible_screen": [self currentlySelectedScreen]}];
-    [WPAnalytics endSession];
+    
+    [self trackApplicationClosed];
 
     // Let the app finish any uploads that are in progress
     UIApplication *app = [UIApplication sharedApplication];
@@ -380,7 +380,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [WPAnalytics track:WPAnalyticsStatApplicationOpened];
+    [self trackApplicationOpened];
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder
@@ -564,6 +564,29 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [[UIToolbar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[UIColor darkGrayColor]];
     
     [[UIToolbar appearanceWhenContainedIn:[WPEditorViewController class], nil] setBarTintColor:[UIColor whiteColor]];
+}
+
+#pragma mark - Tracking methods
+
+- (void)trackApplicationClosed
+{
+    NSMutableDictionary *analyticsProperties = [NSMutableDictionary new];
+    analyticsProperties[@"last_visible_screen"] = [self currentlySelectedScreen];
+    if (self.applicationOpenedTime != nil) {
+        NSDate *applicationClosedTime = [NSDate date];
+        NSTimeInterval timeInApp = round([applicationClosedTime timeIntervalSinceDate:self.applicationOpenedTime]);
+        analyticsProperties[@"time_in_app"] = @(timeInApp);
+        self.applicationOpenedTime = nil;
+    }
+    
+    [WPAnalytics track:WPAnalyticsStatApplicationClosed withProperties:analyticsProperties];
+    [WPAnalytics endSession];
+}
+
+- (void)trackApplicationOpened
+{
+    self.applicationOpenedTime = [NSDate date];
+    [WPAnalytics track:WPAnalyticsStatApplicationOpened];
 }
 
 #pragma mark - Tab bar methods
