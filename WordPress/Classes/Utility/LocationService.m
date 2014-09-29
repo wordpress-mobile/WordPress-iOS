@@ -56,7 +56,6 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     }
     if (status == kCLAuthorizationStatusNotDetermined) {
         [self.locationManager requestWhenInUseAuthorization];
-        return NO;
     }
     return NO;
 }
