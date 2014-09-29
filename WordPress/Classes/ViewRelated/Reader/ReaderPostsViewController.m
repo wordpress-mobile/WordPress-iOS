@@ -128,8 +128,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
     [super viewWillAppear:animated];
 
-    // TODO: Title should be updated when topic loads/updates, not when view appears
     [self updateTitle];
+
+    [self configureNoResultsView];
 
     if (self.noResultsView && self.animatedBox) {
         [self.animatedBox prepareAnimation:NO];
@@ -311,28 +312,31 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         return;
     }
 
+    if (!self.noResultsView) {
+        self.noResultsView = [[WPNoResultsView alloc] init];
+    }
+
+NSLog(@"Configure No Results View");
     [self.noResultsView removeFromSuperview];
+
+    if ([self.tableViewHandler.resultsController.fetchedObjects count] > 0) {
+        return;
+    }
 
     // Refresh the NoResultsView Properties
     self.noResultsView.titleText        = self.noResultsTitleText;
     self.noResultsView.messageText      = self.noResultsMessageText;
     self.noResultsView.accessoryView    = self.noResultsAccessoryView;
-//    self.noResultsView.buttonTitle      = self.noResultsButtonText;
 
-    if ([self.tableViewHandler.resultsController.fetchedObjects count] > 0) {
-        return;
-    }
-//    if (!self.tableViewHandler.resultsController || (self.tableViewHandler.resultsController.fetchedObjects.count > 0)) {
-//        return;
-//    }
-
-    // only add and animate no results view if it isn't already
+    // Only add and animate no results view if it isn't already
     // in the table view
     if (![self.noResultsView isDescendantOfView:self.tableView]) {
         [self.tableView addSubviewWithFadeAnimation:self.noResultsView];
     } else {
         [self.noResultsView centerInSuperview];
     }
+
+    [self.tableView sendSubviewToBack:self.noResultsView];
 }
 
 - (NSString *)noResultsTitleText
@@ -615,7 +619,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)refresh
 {
-//    [self.noResultsView removeFromSuperview];
     [self syncItemsWithUserInteraction:YES];
 }
 
@@ -659,10 +662,11 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction
 {
     DDLogMethod();
+    [self configureNoResultsView];
+
     NSManagedObjectContext *context = [self managedObjectContext];
     AccountService *service = [[AccountService alloc] initWithManagedObjectContext:context];
     if ([service numberOfAccounts] == 0) {
-        [self configureNoResultsView];
         return;
     }
 
@@ -670,17 +674,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         __weak __typeof(self) weakSelf = self;
         ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
         [topicService fetchReaderMenuWithSuccess:^{
-            // TODO: Changing the topic means we need to also change the fetch request.
             [weakSelf updateAndPerformFetchRequest];
-
-            // TODO: There should be a better way to update the title.
             [weakSelf updateTitle];
-
             [weakSelf.syncHelper syncContentWithUserInteraction:userInteraction];
         } failure:^(NSError *error) {
             DDLogError(@"Error refreshing topics: %@", error);
         }];
-        // TODO : Configure no results view to show fetching posts or fetching topics?
         return;
     }
 
@@ -736,6 +735,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
     DDLogMethod();
     if (userInteraction) {
+        [self configureNoResultsView];
         [self syncItemsWithSuccess:success failure:failure];
     } else {
         [self backfillItemsWithSuccess:success failure:failure];
@@ -798,6 +798,15 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     // Always reset the flag after a refresh, just to be safe.
     self.tableViewHandler.shouldRefreshTableViewPreservingOffset = NO;
+
+    [self.noResultsView removeFromSuperview];
+    if ([[self.tableViewHandler.resultsController fetchedObjects] count] == 0) {
+        // This is a special case.  Core data can be a bit slow about notifying
+        // NSFetchedResultsController delegates about changes to the fetched results.
+        // To compensate, call configureNoResultsView after a short delay.
+        // It will be redisplayed if necessary.
+        [self performSelector:@selector(configureNoResultsView) withObject:self afterDelay:0.1];
+    }
 }
 
 
@@ -826,7 +835,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
     [self.featuredImageSource invalidateIndexPaths];
     self.tableViewHandler.shouldRefreshTableViewPreservingOffset = NO;
-//    [self configureNoResultsView];
+    [self configureNoResultsView];
 }
 
 - (NSPredicate *)predicateForFetchRequest
