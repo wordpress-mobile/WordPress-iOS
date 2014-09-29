@@ -35,6 +35,7 @@ static CGFloat const RPVCHeaderHeightPhone = 10.0;
 static CGFloat const RPVCBlockedCellHeight = 66.0;
 static CGFloat const RPVCEstimatedRowHeightIPhone = 400.0;
 static CGFloat const RPVCEstimatedRowHeightIPad = 600.0;
+static NSInteger RPVCRefreshInterval = 300; // 5 minutes
 
 
 NSString * const BlockedCellIdentifier = @"BlockedCellIdentifier";
@@ -153,7 +154,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         self.viewHasAppeared = YES;
     }
 
-    // TODO: Is this needed?
+    [self syncIfAppropriate];
+
     // Delay box animation after the view appears
     double delayInSeconds = 0.3;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -658,6 +660,20 @@ NSLog(@"Configure No Results View");
 
 
 #pragma mark - Sync methods
+
+- (void)syncIfAppropriate
+{
+    // Do not start auto-sync if connection is down
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    if (appDelegate.connectionAvailable == NO) {
+        return;
+    }
+
+    NSDate *lastSynced = self.currentTopic.lastSynced;
+    if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > RPVCRefreshInterval) {
+        [self refresh];
+    }
+}
 
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction
 {
