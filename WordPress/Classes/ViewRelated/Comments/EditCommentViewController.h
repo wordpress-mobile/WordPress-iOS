@@ -1,19 +1,12 @@
 #import <UIKit/UIKit.h>
-#import "Comment.h"
 
 
-@class EditCommentViewController;
 
-@protocol EditCommentViewControllerDelegate <NSObject>
-- (void)editCommentViewController:(EditCommentViewController *)sender didUpdateContent:(NSString *)newContent;
-- (void)editCommentViewControllerFinished:(EditCommentViewController *)sender;
-@end
-
+typedef void (^EditCommentCompletion)(BOOL hasNewContent, NSString *newContent);
 
 @interface EditCommentViewController : UIViewController
-@property (nonatomic,   weak) id<EditCommentViewControllerDelegate> delegate;
-@property (nonatomic, strong) NSString                              *content;
-@property (nonatomic, assign) BOOL                                  interfaceEnabled;
-@property (nonatomic, strong) id                                    userInfo;
-+ (instancetype)newEditCommentViewController;
+@property (nonatomic,   copy) EditCommentCompletion onCompletion;
+@property (nonatomic, strong) NSString              *content;
+@property (nonatomic, assign) BOOL                  interfaceEnabled;
++ (instancetype)newEditViewController;
 @end

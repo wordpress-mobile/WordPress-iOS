@@ -6,5 +6,9 @@
 @interface StatsViewController : WPStatsViewController
 
 @property (nonatomic, weak) Blog *blog;
+@property (nonatomic, copy) void (^dismissBlock)();
+
++ (void)removeTodayWidgetConfiguration;
++ (void)hideTodayWidgetIfNotConfigured;
 
 @end

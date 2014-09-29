@@ -34,6 +34,8 @@ NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 
 static NSInteger const MaximumNumberOfPictures = 5;
 
+static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
+
 @interface WPPostViewController ()<UIPopoverControllerDelegate> {
     NSOperationQueue *_mediaUploadQueue;
 }
@@ -41,8 +43,12 @@ static NSInteger const MaximumNumberOfPictures = 5;
 @property (nonatomic, strong) UIButton *titleBarButton;
 @property (nonatomic, strong) UIView *uploadStatusView;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
+@property (nonatomic, strong) UIBarButtonItem *cancelButton;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
+
+#pragma mark - Bar Button Items
+@property (nonatomic, strong, readwrite) UIBarButtonItem *saveBarButtonItem;
 
 @end
 
@@ -178,8 +184,7 @@ static NSInteger const MaximumNumberOfPictures = 5;
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-	
+    [super viewDidLoad];	
     [self createRevisionOfPost];
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
     
@@ -197,7 +202,7 @@ static NSInteger const MaximumNumberOfPictures = 5;
 	
     // Display the "back" chevron without text
     self.navigationController.navigationBar.topItem.title = @"";
-	[self refreshNavigationBar];
+    [self refreshNavigationBar:NO];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -385,7 +390,7 @@ static NSInteger const MaximumNumberOfPictures = 5;
 		if (self.editMode == EditPostViewControllerModeNewPost) {
 			[self discardChangesAndDismiss];
 		} else {
-			[self refreshNavigationBar];
+            [self refreshNavigationBar:YES];
             [self discardChanges];
 		}
         return;
@@ -414,10 +419,10 @@ static NSInteger const MaximumNumberOfPictures = 5;
                                          otherButtonTitles:NSLocalizedString(@"Update Draft", @"Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post."), nil];
     }
     
-    actionSheet.tag = 201;
+    actionSheet.tag = kWPPostViewControllerSaveOnExitActionSheetTag;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
     if (IS_IPAD) {
-        [actionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES];
+        [actionSheet showFromBarButtonItem:self.cancelButton animated:YES];
     } else {
         [actionSheet showFromToolbar:self.navigationController.toolbar];
     }
@@ -541,9 +546,9 @@ static NSInteger const MaximumNumberOfPictures = 5;
 
 #pragma mark - UI Manipulation
 
-- (void)refreshNavigationBar
+- (void)refreshNavigationBar:(BOOL)editingChanged
 {
-	[self refreshNavigationBarButtons];
+    [self refreshNavigationBarButtons:editingChanged];
 	
     // Configure the custom title view, or just set the navigationItem title.
     // Only show the blog selector in the nav title view if we're editing a new post
@@ -571,13 +576,20 @@ static NSInteger const MaximumNumberOfPictures = 5;
     }
 }
 
-- (void)refreshNavigationBarButtons
+/**
+ *  @brief      Refreshes the navigation bar buttons.
+ *  
+ *  @param      editingChanged      Should be YES if this call is triggered by an editing status
+ *                                  change (ie: it it's triggered by the VC going into edit mode
+ *                                  or vice-versa).
+ */
+- (void)refreshNavigationBarButtons:(BOOL)editingChanged
 {
-    [self refreshNavigationBarLeftButton];
-    [self refreshNavigationBarRightButton];
+    [self refreshNavigationBarLeftButtons:editingChanged];
+    [self refreshNavigationBarRightButtons:editingChanged];
 }
 
-- (void)refreshNavigationBarLeftButton
+- (void)refreshNavigationBarLeftButtons:(BOOL)editingChanged
 {
 	if ([self isEditing]) {
         
@@ -585,7 +597,7 @@ static NSInteger const MaximumNumberOfPictures = 5;
                                                                                            target:nil
                                                                                            action:nil];
         negativeSeparator.width = -10;
-        NSArray* leftBarButtons = @[negativeSeparator, [self cancelBarButtonItem], negativeSeparator];
+        NSArray* leftBarButtons = @[negativeSeparator, self.cancelButton, negativeSeparator];
         [self.navigationItem setLeftBarButtonItems:leftBarButtons animated:YES];
 	} else {
         [self.navigationItem setLeftBarButtonItems:nil];
@@ -593,15 +605,22 @@ static NSInteger const MaximumNumberOfPictures = 5;
 	}
 }
 
-- (void)refreshNavigationBarRightButton
+- (void)refreshNavigationBarRightButtons:(BOOL)editingChanged
 {
 	if ([self isEditing]) {
-		NSArray* rightBarButtons = @[[self saveBarButtonItem],
-									 [self optionsBarButtonItem],
-									 [self previewBarButtonItem]];
-		
-		[self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
-		
+        
+        UIBarButtonItem* saveBarButtonItem = [self saveBarButtonItem];
+        
+        if (editingChanged) {
+            NSArray* rightBarButtons = @[saveBarButtonItem,
+                                         [self optionsBarButtonItem],
+                                         [self previewBarButtonItem]];
+            
+            [self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
+        } else {
+            saveBarButtonItem.title = [self saveBarButtonItemTitle];
+        }
+
 		BOOL updateEnabled = self.hasChanges || self.post.remoteStatus == AbstractPostRemoteStatusFailed;
 		[self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];
 		
@@ -673,18 +692,19 @@ static NSInteger const MaximumNumberOfPictures = 5;
 	return button;
 }
 
-- (UIBarButtonItem*)cancelBarButtonItem
+- (UIBarButtonItem*)cancelButton
 {
-    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-x"
-                                                                  frame:CGRectMake(0.0f, 0.0f, 40.0f, 40.0f)
-                                                                 target:self
-                                                               selector:@selector(cancelEditing)];
+    if (!_cancelButton) {
+        WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-x"
+                                                                            frame:CGRectMake(0.0f, 0.0f, 40.0f, 40.0f)
+                                                                           target:self
+                                                                         selector:@selector(cancelEditing)];
+        cancelButton.removeDefaultLeftSpacing = YES;        
+        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
+        _cancelButton = button;
+    }
     
-    cancelButton.removeDefaultLeftSpacing = YES;
-    
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
-    
-	return button;
+	return _cancelButton;
 }
 
 - (UIBarButtonItem *)editBarButtonItem
@@ -731,28 +751,40 @@ static NSInteger const MaximumNumberOfPictures = 5;
 
 - (UIBarButtonItem *)saveBarButtonItem
 {
-	NSString *buttonTitle;
-	
-	if(![self.post hasRemote] || ![self.post.status isEqualToString:self.post.original.status]) {
-		if ([self.post.status isEqualToString:@"publish"] && ([self.post.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
-			buttonTitle = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
-			
-		} else if ([self.post.status isEqualToString:@"publish"]){
-			buttonTitle = NSLocalizedString(@"Post", @"Publish button label.");
-			
-		} else {
-			buttonTitle = NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).");
-		}
-	} else {
-		buttonTitle = NSLocalizedString(@"Update", @"Update button label (saving content, ex: Post, Page, Comment).");
-	}
-	
-	UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
-																   style:[WPStyleGuide barButtonStyleForDone]
-																  target:self
-																  action:@selector(saveAction)];
-	
-	return saveButton;
+    if (!_saveBarButtonItem) {
+        NSString *buttonTitle = [self saveBarButtonItemTitle];
+
+        UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
+                                                                       style:[WPStyleGuide barButtonStyleForDone]
+                                                                      target:self
+                                                                      action:@selector(saveAction)];
+        
+        _saveBarButtonItem = saveButton;
+    }
+
+	return _saveBarButtonItem;
+}
+
+- (NSString*)saveBarButtonItemTitle
+{
+    NSString *buttonTitle = nil;
+    
+    if(![self.post hasRemote] || ![self.post.status isEqualToString:self.post.original.status]) {
+        if ([self.post.status isEqualToString:@"publish"] && ([self.post.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
+            buttonTitle = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
+            
+        } else if ([self.post.status isEqualToString:@"publish"]){
+            buttonTitle = NSLocalizedString(@"Post", @"Publish button label.");
+            
+        } else {
+            buttonTitle = NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).");
+        }
+    } else {
+        buttonTitle = NSLocalizedString(@"Update", @"Update button label (saving content, ex: Post, Page, Comment).");
+    }
+    NSAssert([buttonTitle isKindOfClass:[NSString class]], @"Expected to have a title at this point.");
+    
+    return buttonTitle;
 }
 
 - (UIButton *)titleBarButton
@@ -966,14 +998,25 @@ static NSInteger const MaximumNumberOfPictures = 5;
     }
 }
 
-// Save changes to core data
+/**
+ *  @brief      Save changes to core data
+ */
 - (void)autosaveContent
 {
-    self.post.postTitle = self.titleText;
+    [self autosaveContentWithTitle:self.titleText];
+}
+
+/**
+ *  @brief      Save changes to core data, with the specified title.
+ *  @details    This is necessary at this time for handling title changes by the user.
+ */
+- (void)autosaveContentWithTitle:(NSString*)title
+{
+    self.post.postTitle = title;
     
     self.post.content = self.bodyText;
-	if ([self.post.content rangeOfString:@"<!--more-->"].location != NSNotFound)
-		self.post.mt_text_more = @"";
+    if ([self.post.content rangeOfString:@"<!--more-->"].location != NSNotFound)
+        self.post.mt_text_more = @"";
     
     if ( self.post.original.password != nil ) { //original post was password protected
         if ( self.post.password == nil || [self.post.password isEqualToString:@""] ) { //removed the password
@@ -1050,6 +1093,11 @@ static NSInteger const MaximumNumberOfPictures = 5;
 
 - (void)insertMedia:(Media *)media
 {
+    NSAssert(_post != nil, @"The post should not be nil here.");
+    NSAssert(!_post.isFault, @"The post should not be a fault here here.");
+    NSAssert(_post.managedObjectContext != nil,
+             @"The post's MOC should not be nil here.");
+    
 	NSString *prefix = @"<br /><br />";
     
 	if(self.post.content == nil || [self.post.content isEqualToString:@""]) {
@@ -1141,36 +1189,39 @@ static NSInteger const MaximumNumberOfPictures = 5;
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if ([actionSheet tag] == kWPPostViewControllerSaveOnExitActionSheetTag) {
+        if (buttonIndex == actionSheet.destructiveButtonIndex) {
+            [self actionSheetDiscardButtonPressed];
+        } else if (buttonIndex == actionSheet.cancelButtonIndex) {
+            [self actionSheetKeepEditingButtonPressed];
+        } else if (buttonIndex == actionSheet.firstOtherButtonIndex) {
+            [self actionSheetSaveDraftButtonPressed];
+        }
+    }
+    
     _currentActionSheet = nil;
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if ([actionSheet tag] == 201) {
-        // Discard
-        if (buttonIndex == 0) {
-            [self discardChangesAndDismiss];
-            [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
-        }
-        
-        if (buttonIndex == 1) {
-            // Cancel / Keep editing
-			if ([actionSheet numberOfButtons] == 2) {
-                
-				[actionSheet dismissWithClickedButtonIndex:0 animated:YES];
-				
-				[self startEditing];
-				
-                // Save draft
-			} else {
-                // If you tapped on a button labeled "Save Draft", you probably expect the post to be saved as a draft
-                if (![self.post hasRemote] && [self.post.status isEqualToString:@"publish"]) {
-                    self.post.status = @"draft";
-                }
-                DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
-				[self savePostAndDismissVC];
-			}
-        }
+#pragma mark - UIActionSheet helper methods
+
+- (void)actionSheetDiscardButtonPressed
+{
+    [self discardChangesAndDismiss];
+    [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
+}
+
+- (void)actionSheetKeepEditingButtonPressed
+{
+    [self startEditing];
+}
+
+- (void)actionSheetSaveDraftButtonPressed
+{
+    if (![self.post hasRemote] && [self.post.status isEqualToString:@"publish"]) {
+        self.post.status = @"draft";
     }
+    DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
+    [self savePostAndDismissVC];
 }
 
 #pragma mark - WPEditorViewControllerDelegate delegate
@@ -1183,7 +1234,7 @@ static NSInteger const MaximumNumberOfPictures = 5;
 												withAnimation:UIStatusBarAnimationSlide];
 	}
     
-    [self refreshNavigationBarButtons];
+    [self refreshNavigationBarButtons:YES];
 }
 
 - (void)editorDidEndEditing:(WPEditorViewController *)editorController
@@ -1192,16 +1243,17 @@ static NSInteger const MaximumNumberOfPictures = 5;
 											withAnimation:UIStatusBarAnimationSlide];
 }
 
-- (void)editorTitleDidChange:(WPEditorViewController *)editorController
+- (void)editorViewController:(WPEditorViewController *)editorController
+             titleWillChange:(NSString *)title
 {
-    [self autosaveContent];
-    [self refreshNavigationBarButtons];
+    [self autosaveContentWithTitle:title];
+    [self refreshNavigationBarButtons:NO];
 }
 
 - (void)editorTextDidChange:(WPEditorViewController *)editorController
 {
     [self autosaveContent];
-    [self refreshNavigationBarButtons];
+    [self refreshNavigationBarButtons:NO];
 }
 
 - (void)editorDidPressSettings:(WPEditorViewController *)editorController
@@ -1265,7 +1317,7 @@ static NSInteger const MaximumNumberOfPictures = 5;
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([object isEqual:_mediaUploadQueue]) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self refreshNavigationBar];
+            [self refreshNavigationBar:NO];
         });
     }
 }

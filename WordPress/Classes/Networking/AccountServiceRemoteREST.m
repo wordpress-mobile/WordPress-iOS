@@ -49,10 +49,10 @@
 - (RemoteBlog *)remoteBlogFromJSONDictionary:(NSDictionary *)jsonBlog
 {
     RemoteBlog *blog = [RemoteBlog new];
-    blog.ID = jsonBlog[@"ID"];
-    blog.title = jsonBlog[@"name"];
-    blog.url = jsonBlog[@"URL"];
-    blog.xmlrpc = jsonBlog[@"meta"][@"links"][@"xmlrpc"];
+    blog.ID =  [jsonBlog numberForKey:@"ID"];
+    blog.title = [jsonBlog stringForKey:@"name"];
+    blog.url = [jsonBlog stringForKey:@"URL"];
+    blog.xmlrpc = [jsonBlog stringForKeyPath:@"meta.links.xmlrpc"];
     return blog;
 }
 
