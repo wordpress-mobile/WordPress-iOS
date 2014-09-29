@@ -11,6 +11,10 @@
       "filename" : "Safari@2x.png"
     },
     {
+      "idiom" : "universal",
+      "scale" : "3x"
+    },
+    {
       "idiom" : "ipad",
       "scale" : "1x",
       "filename" : "Safari~ipad.png"
