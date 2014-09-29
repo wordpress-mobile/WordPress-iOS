@@ -79,6 +79,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     return [[WordPressAppDelegate sharedWordPressApplicationDelegate] readerPostsViewController];
 }
 
+
 #pragma mark - Life Cycle methods
 
 - (void)dealloc
@@ -90,6 +91,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
     self = [super init];
     if (self) {
+        Class aClass = [ReaderPostsViewController class];
+        self.restorationIdentifier = NSStringFromClass(aClass);
+        self.restorationClass = aClass;
+
         _syncHelper = [[WPContentSyncHelper alloc] init];
         _syncHelper.delegate = self;
 
