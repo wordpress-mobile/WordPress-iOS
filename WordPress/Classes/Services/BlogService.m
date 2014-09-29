@@ -530,20 +530,24 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
             return;
         }
 
-        NSDictionary *respDict = postFormats;
-        if ([respDict objectForKey:@"supported"] && [[respDict objectForKey:@"supported"] isKindOfClass:[NSArray class]]) {
-            NSMutableArray *supportedKeys = [NSMutableArray arrayWithArray:[respDict objectForKey:@"supported"]];
+        NSDictionary *respDict;
+        if ([postFormats objectForKey:@"supported"] && [[postFormats objectForKey:@"supported"] isKindOfClass:[NSArray class]]) {
+            NSMutableArray *supportedKeys = [NSMutableArray arrayWithArray:[postFormats objectForKey:@"supported"]];
             // Standard isn't included in the list of supported formats? Maybe it will be one day?
             if (![supportedKeys containsObject:@"standard"]) {
                 [supportedKeys addObject:@"standard"];
             }
 
-            NSDictionary *allFormats = [respDict objectForKey:@"all"];
+            NSDictionary *allFormats = [postFormats objectForKey:@"all"];
             NSMutableArray *supportedValues = [NSMutableArray array];
             for (NSString *key in supportedKeys) {
                 [supportedValues addObject:[allFormats objectForKey:key]];
             }
-            respDict = @{supportedValues: supportedKeys};
+            
+            respDict = [NSDictionary dictionaryWithObjects:supportedValues forKeys:supportedKeys];
+        } else if (postFormats.count > 0) {
+            // The dict contains the post formats at the top level (not in a supported array)
+            respDict = [NSDictionary dictionaryWithObjects:[postFormats allValues] forKeys:[postFormats allKeys]];
         }
         blog.postFormats = respDict;
 
