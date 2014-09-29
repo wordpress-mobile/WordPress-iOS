@@ -1,5 +1,7 @@
 #import <Foundation/Foundation.h>
 
+@class WPTableViewHandler;
+
 @protocol WPTableViewHandlerDelegate <NSObject>
 
 - (NSManagedObjectContext *)managedObjectContext;
@@ -27,9 +29,10 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section;
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section;
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath;
-
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView;
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView;
+- (void)tableViewHandlerWillRefreshTableViewPreservingOffset:(WPTableViewHandler *)tableViewHandler;
+- (void)tableViewHandlerDidRefreshTableViewPreservingOffset:(WPTableViewHandler *)tableViewHandler;
 
 @end
 
@@ -40,6 +43,8 @@
 @property (nonatomic, strong, readonly) NSFetchedResultsController *resultsController;
 @property (nonatomic, weak) id<WPTableViewHandlerDelegate> delegate;
 @property (nonatomic) BOOL cacheRowHeights;
+@property (nonatomic, readonly) BOOL isScrolling;
+@property (nonatomic) BOOL shouldRefreshTableViewPreservingOffset;
 
 - (instancetype)initWithTableView:(UITableView *)tableView;
 - (void)updateTitleForSection:(NSUInteger)section;
