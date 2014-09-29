@@ -13,4 +13,5 @@
 @optional
 - (BOOL)unreadStatusForDisplay;
 - (NSURL *)featuredImageURLForDisplay;
+- (NSURL *)authorURL;
 @end
