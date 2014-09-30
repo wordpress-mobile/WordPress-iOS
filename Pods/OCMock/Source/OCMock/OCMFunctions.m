@@ -39,7 +39,7 @@ BOOL OCMIsObjectType(const char *objCType)
 {
     objCType = OCMTypeWithoutQualifiers(objCType);
 
-    if(strcmp(objCType, @encode(id)) == 0)
+    if(strcmp(objCType, @encode(id)) == 0 || strcmp(objCType, @encode(Class)) == 0)
         return YES;
 
     // if the returnType is a typedef to an object, it has the form ^{OriginClass=#}
@@ -47,6 +47,11 @@ BOOL OCMIsObjectType(const char *objCType)
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regexString options:0 error:NULL];
     NSString *type = [NSString stringWithCString:objCType encoding:NSASCIIStringEncoding];
     if([regex numberOfMatchesInString:type options:0 range:NSMakeRange(0, type.length)] > 0)
+        return YES;
+
+    // if the return type is a block we treat it like an object
+    // TODO: if the runtime were to encode the block's argument and/or return types, this test would not be sufficient
+    if(strcmp(objCType, @encode(void(^)())) == 0)
         return YES;
 
     return NO;
@@ -61,6 +66,103 @@ const char *OCMTypeWithoutQualifiers(const char *objCType)
 }
 
 
+/*
+ * Sometimes an external type is an opaque struct (which will have an @encode of "{structName}"
+ * or "{structName=}") but the actual method return type, or property type, will know the contents
+ * of the struct (so will have an objcType of say "{structName=iiSS}".  This function will determine
+ * those are equal provided they have the same structure name, otherwise everything else will be
+ * compared textually.  This can happen particularly for pointers to such structures, which still
+ * encode what is being pointed to.
+ *
+ * For some types some runtime functions throw exceptions, which is why we wrap this in an
+ * exception handler just below.
+ */
+static BOOL OCMEqualTypesAllowingOpaqueStructsInternal(const char *type1, const char *type2)
+{
+    type1 = OCMTypeWithoutQualifiers(type1);
+    type2 = OCMTypeWithoutQualifiers(type2);
+
+    switch (type1[0])
+    {
+        case '{':
+        case '(':
+        {
+            if (type2[0] != type1[0])
+                return NO;
+            char endChar = type1[0] == '{'? '}' : ')';
+
+            const char *type1End = strchr(type1, endChar);
+            const char *type2End = strchr(type2, endChar);
+            const char *type1Equals = strchr(type1, '=');
+            const char *type2Equals = strchr(type2, '=');
+
+            /* Opaque types either don't have an equals sign (just the name and the end brace), or
+             * empty content after the equals sign.
+             * We want that to compare the same as a type of the same name but with the content.
+             */
+            BOOL type1Opaque = (type1Equals == NULL || (type1End < type1Equals) || type1Equals[1] == endChar);
+            BOOL type2Opaque = (type2Equals == NULL || (type2End < type2Equals) || type2Equals[1] == endChar);
+            const char *type1NameEnd = (type1Equals == NULL || (type1End < type1Equals)) ? type1End : type1Equals;
+            const char *type2NameEnd = (type1Equals == NULL || (type2End < type2Equals)) ? type2End : type2Equals;
+            intptr_t type1NameLen = type1NameEnd - type1;
+            intptr_t type2NameLen = type2NameEnd - type2;
+
+            /* If the names are not equal, return NO */
+            if (type1NameLen != type2NameLen || strncmp(type1, type2, type1NameLen))
+                return NO;
+
+            /* If the same name, and at least one is opaque, that is close enough. */
+            if (type1Opaque || type2Opaque)
+                return YES;
+
+            /* Otherwise, compare all the elements.  Use NSGetSizeAndAlignment to walk through the struct elements. */
+            type1 = type1Equals + 1;
+            type2 = type2Equals + 1;
+            while (type1[0] != endChar && type1[0] != '\0')
+            {
+                if (!OCMEqualTypesAllowingOpaqueStructs(type1, type2))
+                    return NO;
+                type1 = NSGetSizeAndAlignment(type1, NULL, NULL);
+                type2 = NSGetSizeAndAlignment(type2, NULL, NULL);
+            }
+            return YES;
+        }
+        case '^':
+            /* for a pointer, make sure the other is a pointer, then recursively compare the rest */
+            if (type2[0] != type1[0])
+                return NO;
+            return OCMEqualTypesAllowingOpaqueStructs(type1 + 1, type2 + 1);
+
+        case '\0':
+            return type2[0] == '\0';
+
+        default:
+        {
+            // Move the type pointers past the current types, then compare that region
+            const char *afterType1 =  NSGetSizeAndAlignment(type1, NULL, NULL);
+            const char *afterType2 =  NSGetSizeAndAlignment(type2, NULL, NULL);
+            intptr_t type1Len = afterType1 - type1;
+            intptr_t type2Len = afterType2 - type2;
+
+            return (type1Len == type2Len && (strncmp(type1, type2, type1Len) == 0));
+        }
+    }
+}
+
+BOOL OCMEqualTypesAllowingOpaqueStructs(const char *type1, const char *type2)
+{
+    @try
+    {
+        return OCMEqualTypesAllowingOpaqueStructsInternal(type1, type2);
+    }
+    @catch (NSException *e)
+    {
+        /* Probably a bitfield or something that NSGetSizeAndAlignment chokes on, oh well */
+        return NO;
+    }
+}
+
+
 #pragma mark  Creating classes
 
 Class OCMCreateSubclass(Class class, void *ref)
@@ -70,6 +172,7 @@ Class OCMCreateSubclass(Class class, void *ref)
     objc_registerClassPair(subclass);
     return subclass;
 }
+
 
 #pragma mark  Directly manipulating the isa pointer (look away)
 
@@ -87,7 +190,7 @@ Class OCMGetIsa(id object)
 #pragma mark  Alias for renaming real methods
 
 NSString *OCMRealMethodAliasPrefix = @"ocmock_replaced_";
-
+const char *OCMRealMethodAliasPrefixCString = "ocmock_replaced_";
 
 BOOL OCMIsAliasSelector(SEL selector)
 {
@@ -96,9 +199,11 @@ BOOL OCMIsAliasSelector(SEL selector)
 
 SEL OCMAliasForOriginalSelector(SEL selector)
 {
-    NSString *string = NSStringFromSelector(selector);
-    return NSSelectorFromString([OCMRealMethodAliasPrefix stringByAppendingString:string]);
-
+    char aliasName[2048];
+    const char *originalName = sel_getName(selector);
+    strlcpy(aliasName, OCMRealMethodAliasPrefixCString, sizeof(aliasName));
+    strlcat(aliasName, originalName, sizeof(aliasName));
+    return sel_registerName(aliasName);
 }
 
 SEL OCMOriginalSelectorForAlias(SEL selector)
@@ -108,6 +213,7 @@ SEL OCMOriginalSelectorForAlias(SEL selector)
     NSString *string = NSStringFromSelector(selector);
     return NSSelectorFromString([string substringFromIndex:[OCMRealMethodAliasPrefix length]]);
 }
+
 
 #pragma mark  Wrappers around associative references
 

@@ -1,1 +1,0 @@
-PODS_INTEGRATIONTESTS_WORDPRESSAPI_OTHER_LDFLAGS = -framework Foundation -framework Security -framework UIKit

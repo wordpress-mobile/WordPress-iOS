@@ -3,15 +3,27 @@
 #import "CommentService.h"
 #import "ContextManager.h"
 #import "IOS7CorrectedTextView.h"
+#import "WordPress-Swift.h"
 
 
+
+#pragma mark ==========================================================================================
+#pragma mark Constants
+#pragma mark ==========================================================================================
+
+static UIEdgeInsets EditCommentInsetsPad = {5, 15, 5, 13};
+static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
+
+
+#pragma mark ==========================================================================================
+#pragma mark Private Methods
+#pragma mark ==========================================================================================
 
 @interface EditCommentViewController() <UIActionSheetDelegate>
 
-@property (nonatomic,   weak) IBOutlet IOS7CorrectedTextView    *textView;
-@property (nonatomic, strong) NSString                          *pristineText;
-@property (nonatomic, assign) CGRect                            keyboardFrame;
-@property (nonatomic, assign) BOOL                              interfaceEnabled;
+@property (nonatomic,   weak) IBOutlet IOS7CorrectedTextView *textView;
+@property (nonatomic, strong) NSString *pristineText;
+@property (nonatomic, assign) CGRect   keyboardFrame;
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification;
 - (void)handleKeyboardWillHide:(NSNotification *)notification;
@@ -19,7 +31,21 @@
 @end
 
 
+#pragma mark ==========================================================================================
+#pragma mark EditCommentViewController
+#pragma mark ==========================================================================================
+
 @implementation EditCommentViewController
+
+#pragma mark - Static Helpers
+
++ (instancetype)newEditViewController
+{
+    return [[[self class] alloc] initWithNibName:NSStringFromClass([self class]) bundle:nil];
+}
+
+
+#pragma mark - Lifecycle
 
 - (void)dealloc
 {
@@ -33,6 +59,7 @@
     self.title = NSLocalizedString(@"Edit Comment", @"");
     
     self.textView.font = [WPStyleGuide regularTextFont];
+    self.textView.textContainerInset = [UIDevice isPad] ? EditCommentInsetsPad : EditCommentInsetsPhone;
     
     [self showCancelBarButton];
     [self showSaveBarButton];
@@ -46,12 +73,25 @@
 {
     [super viewWillAppear:animated];
 
-    self.textView.text  = self.comment.content;
-    self.pristineText   = self.textView.text;
+    self.textView.text  = self.content;
+    self.pristineText   = self.content;
     
     [self.textView becomeFirstResponder];
     [self enableSaveIfNeeded];
 }
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    // FIX FIX:
+    // iOS 8 is resigning first responder when the presentedViewController is effectively removed from screen.
+    // This creates a UX glitch, as a side effect (two animations!!)
+    if ([UIDevice isOS8]) {
+        [self.textView resignFirstResponder];
+    }
+}
+
 
 #pragma mark - View Helpers
 
@@ -148,22 +188,12 @@
 }
 
 
-#pragma mark - Helper Methods
-
-- (void)dismissWithUpdates:(BOOL)hasUpdates
-{    
-    if ([self.delegate respondsToSelector:@selector(editCommentViewController:finishedWithUpdates:)]) {
-        [self.delegate editCommentViewController:self finishedWithUpdates:hasUpdates];
-    }
-}
-
-
 #pragma mark - UIActionSheet delegate methods
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == actionSheet.destructiveButtonIndex) {
-        [self dismissWithUpdates:NO];
+        [self finishWithoutUpdates];
     }
 }
 
@@ -173,7 +203,7 @@
 - (void)btnCancelPressed
 {
     if (self.hasChanges == NO) {
-        [self dismissWithUpdates:NO];
+        [self finishWithoutUpdates];
         return;
     }
 
@@ -185,7 +215,7 @@
     
     actionSheet.delegate = self;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-    [actionSheet showInView:self.view];
+    [actionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:true];
 }
 
 - (void)btnDonePressed
@@ -195,28 +225,24 @@
 
 - (void)btnSavePressed
 {
-    [self.textView resignFirstResponder];
-    
-    [self setInterfaceEnabled:NO];
-    self.comment.content = self.textView.text;
-    
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
-    
-    [commentService uploadComment:self.comment success:^{
-        [self dismissWithUpdates:YES];
-    } failure:^(NSError *error) {
-        NSString *message = NSLocalizedString(@"There has been an error. Please, try again later", @"Error displayed if a comment fails to get updated");
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                            message:message
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"Accept", nil)
-                                                  otherButtonTitles:nil,
-                                  nil];
-        [alertView show];
-        
-        [self setInterfaceEnabled:YES];
-    }];
+    [self finishWithUpdates];
+}
+
+
+#pragma mark - Helper Methods
+
+- (void)finishWithUpdates
+{    
+    if (self.onCompletion) {
+        self.onCompletion(true, self.textView.text);
+    }
+}
+
+- (void)finishWithoutUpdates
+{
+    if (self.onCompletion) {
+        self.onCompletion(false, self.pristineText);
+    }
 }
 
 @end

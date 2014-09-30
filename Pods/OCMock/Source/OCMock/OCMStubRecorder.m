@@ -26,12 +26,6 @@
 #import "OCMFunctions.h"
 #import "OCMInvocationStub.h"
 
-@interface NSObject(HCMatcherDummy)
-- (BOOL)matches:(id)item;
-@end
-
-#pragma mark  -
-
 
 @implementation OCMStubRecorder
 

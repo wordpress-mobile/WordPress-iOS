@@ -232,6 +232,7 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
 - (void)reloadData
 {
     [self configureContentView:self.contentProvider];
+    [self setNeedsLayout];
 }
 
 - (void)reset
@@ -442,6 +443,10 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     [self.actionButtons addObject:button];
 
     return button;
+}
+
+- (UIButton *)addActionButtonWithImageName:(NSString *)buttonImageName selectedImageName:(NSString *)selectedImageName {
+    return [self addActionButtonWithImage:[UIImage imageNamed:buttonImageName] selectedImage:[UIImage imageNamed:selectedImageName]];
 }
 
 - (void)addCustomActionButton:(UIButton*)actionButton {

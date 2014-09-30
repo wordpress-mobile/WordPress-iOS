@@ -1,1 +1,1 @@
-../../google-plus-ios-sdk/google-plus-ios-sdk-1.7.0/GooglePlus.framework/Versions/A/Headers/GPPSignInButton.h
+../../google-plus-ios-sdk/google-plus-ios-sdk-1.7.1/GooglePlus.framework/Versions/A/Headers/GPPSignInButton.h

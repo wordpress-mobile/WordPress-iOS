@@ -15,42 +15,47 @@
  */
 
 #import "OCMBoxedReturnValueProvider.h"
-#import <objc/runtime.h>
+#import "OCMFunctions.h"
+#import "NSValue+OCMAdditions.h"
 
 @implementation OCMBoxedReturnValueProvider
 
 - (void)handleInvocation:(NSInvocation *)anInvocation
 {
 	const char *returnType = [[anInvocation methodSignature] methodReturnType];
-	const char *valueType = [(NSValue *)returnValue objCType];
-    if(![self isMethodReturnType:returnType compatibleWithValueType:valueType])
+    NSUInteger returnTypeSize = [[anInvocation methodSignature] methodReturnLength];
+    char valueBuffer[returnTypeSize];
+    NSValue *returnValueAsNSValue = (NSValue *)returnValue;
+
+    if([self isMethodReturnType:returnType compatibleWithValueType:[returnValueAsNSValue objCType]])
+    {
+        [returnValueAsNSValue getValue:valueBuffer];
+        [anInvocation setReturnValue:valueBuffer];
+    }
+    else if([returnValueAsNSValue getBytes:valueBuffer objCType:returnType])
+    {
+        [anInvocation setReturnValue:valueBuffer];
+    }
+    else
     {
         [NSException raise:NSInvalidArgumentException
-                    format:@"Return value does not match method signature; signature declares '%s' but value is '%s'.", returnType, valueType];
+                    format:@"Return value cannot be used for method; method signature declares '%s' but value is '%s'.", returnType, [returnValueAsNSValue objCType]];
     }
-
-    void *buffer = malloc([[anInvocation methodSignature] methodReturnLength]);
-	[returnValue getValue:buffer];
-	[anInvocation setReturnValue:buffer];
-	free(buffer);
 }
 
 
 - (BOOL)isMethodReturnType:(const char *)returnType compatibleWithValueType:(const char *)valueType
 {
-      /* Allow void* for methods that return id, mainly to be able to handle nil */
-    if(strcmp(returnType, @encode(id)) == 0 && strcmp(valueType, @encode(void *)) == 0)
-        return YES;
-
-     /* ARM64 uses 'B' for BOOLs in method signatures but 'c' in NSValue; that case should match */
-    if(returnType[0] == 'B' && valueType[0] == 'c')
-        return YES;
-
     /* Same types are obviously compatible */
     if(strcmp(returnType, valueType) == 0)
         return YES;
 
-    return NO;
+    /* Allow void* for methods that return id, mainly to be able to handle nil */
+    if(strcmp(returnType, @encode(id)) == 0 && strcmp(valueType, @encode(void *)) == 0)
+        return YES;
+
+    return OCMEqualTypesAllowingOpaqueStructs(returnType, valueType);
 }
+
 
 @end

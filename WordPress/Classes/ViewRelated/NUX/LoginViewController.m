@@ -14,7 +14,6 @@
 #import "ReachabilityUtils.h"
 #import "WPNUXUtility.h"
 #import "WPAccount.h"
-#import "Note.h"
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "BlogService.h"
@@ -340,6 +339,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 - (void)toggleSignInFormAction:(id)sender
 {
     _userIsDotCom = !_userIsDotCom;
+    _passwordText.returnKeyType = _userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
@@ -432,6 +432,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _usernameText.placeholder = NSLocalizedString(@"Username / Email", @"NUX First Walkthrough Page 2 Username Placeholder");
         _usernameText.font = [WPNUXUtility textFieldFont];
         _usernameText.adjustsFontSizeToFitWidth = YES;
+        _usernameText.returnKeyType = UIReturnKeyNext;
         _usernameText.delegate = self;
         _usernameText.autocorrectionType = UITextAutocorrectionTypeNo;
         _usernameText.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -448,6 +449,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _passwordText.font = [WPNUXUtility textFieldFont];
         _passwordText.delegate = self;
         _passwordText.secureTextEntry = YES;
+        _passwordText.returnKeyType = _userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
         _passwordText.showSecureTextEntryToggle = YES;
         _passwordText.showTopLineSeparator = YES;
         _passwordText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
@@ -464,7 +466,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _siteUrlText.adjustsFontSizeToFitWidth = YES;
         _siteUrlText.delegate = self;
         _siteUrlText.keyboardType = UIKeyboardTypeURL;
-        _siteUrlText.returnKeyType = UIReturnKeyGo;
+        _siteUrlText.returnKeyType = UIReturnKeyDone;
         _siteUrlText.autocorrectionType = UITextAutocorrectionTypeNo;
         _siteUrlText.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _siteUrlText.showTopLineSeparator = YES;

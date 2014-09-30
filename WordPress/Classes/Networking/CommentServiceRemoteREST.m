@@ -6,7 +6,9 @@
 #import <NSObject+SafeExpectations.h>
 
 @interface CommentServiceRemoteREST ()
+
 @property (nonatomic, strong) WordPressComApi *api;
+
 @end
 
 @implementation CommentServiceRemoteREST
@@ -19,6 +21,12 @@
     }
     return self;
 }
+
+
+
+#pragma mark Public methods
+
+#pragma mark Blog-centric methods
 
 - (void)getCommentsForBlog:(Blog *)blog
                    success:(void (^)(NSArray *))success
@@ -142,6 +150,31 @@
 }
 
 
+#pragma mark Post-centric methods
+
+- (void)syncHierarchicalCommentsForPost:(NSNumber *)postID
+                               fromSite:(NSNumber *)siteID
+                                   page:(NSUInteger)page
+                                 number:(NSUInteger)number
+                                success:(void (^)(NSArray *comments))success
+                                failure:(void (^)(NSError *error))failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/replies?order=ASC&hierarchical=1&page=%d&number=%d", siteID, postID, page, number];
+
+    [self.api GET:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (success) {
+            NSDictionary *dict = (NSDictionary *)responseObject;
+            NSArray *comments = [self remoteCommentsFromJSONArray:[dict arrayForKey:@"comments"]];
+            success(comments);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+
 #pragma mark - Public Methods
 
 - (void)updateCommentWithID:(NSNumber *)commentID
@@ -152,9 +185,33 @@
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", siteID, commentID];
     NSDictionary *parameters = @{
-                                 @"content": content,
-                                 @"context": @"edit",
-                                 };
+        @"content": content,
+        @"context": @"edit",
+    };
+    [self.api POST:path
+        parameters:parameters
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               if (success) {
+                   success();
+               }
+           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
+}
+
+- (void)replyToCommentWithID:(NSNumber *)commentID
+                      siteID:(NSNumber *)siteID
+                     content:(NSString *)content
+                     success:(void (^)())success
+                     failure:(void (^)(NSError *error))failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@/replies/new", siteID, commentID];
+    NSDictionary *parameters = @{
+        @"content": content,
+        @"context": @"edit",
+    };
     [self.api POST:path
         parameters:parameters
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -262,7 +319,6 @@
         [comments addObject:[self remoteCommentFromJSONDictionary:jsonComment]];
     }
     return [NSArray arrayWithArray:comments];
-
 }
 
 - (RemoteComment *)remoteCommentFromJSONDictionary:(NSDictionary *)jsonDictionary
@@ -273,6 +329,7 @@
     // Email might be `false`, turn into `nil`
     comment.authorEmail = [jsonDictionary[@"author"] stringForKey:@"email"];
     comment.authorUrl = jsonDictionary[@"author"][@"URL"];
+    comment.authorAvatarURL = [jsonDictionary stringForKeyPath:@"author.avatar_URL"];
     comment.commentID = jsonDictionary[@"ID"];
     comment.content = jsonDictionary[@"content"];
     comment.date = [NSDate dateWithWordPressComJSONString:jsonDictionary[@"date"]];

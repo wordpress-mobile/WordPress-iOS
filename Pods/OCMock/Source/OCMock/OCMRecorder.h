@@ -26,8 +26,8 @@
     OCMInvocationMatcher *invocationMatcher;
 }
 
-- (id)init;
-- (id)initWithMockObject:(OCMockObject *)aMockObject;
+- (instancetype)init;
+- (instancetype)initWithMockObject:(OCMockObject *)aMockObject;
 
 - (void)setMockObject:(OCMockObject *)aMockObject;
 

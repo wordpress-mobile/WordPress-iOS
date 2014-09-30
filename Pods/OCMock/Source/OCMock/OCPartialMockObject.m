@@ -20,6 +20,7 @@
 #import "NSMethodSignature+OCMAdditions.h"
 #import "NSObject+OCMAdditions.h"
 #import "OCMFunctions.h"
+#import "OCMInvocationStub.h"
 
 
 @implementation OCPartialMockObject
@@ -81,6 +82,13 @@
     [super stopMocking];
 }
 
+- (void)addStub:(OCMInvocationStub *)aStub
+{
+    [super addStub:aStub];
+    if(![aStub recordedAsClassMethod])
+        [self setupForwarderForSelector:[[aStub recordedInvocation] selector]];
+}
+
 - (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation
 {
 	[anInvocation invokeWithTarget:realObject];
@@ -115,29 +123,47 @@
     IMP myObjectClassImp = method_getImplementation(myObjectClassMethod);
     class_addMethod(subclass, @selector(class), myObjectClassImp, objectClassTypes);
 
-    /* Adding forwarder for all instance methods to allow for verify after run */
-    NSArray *whiteList = @[@"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:",
-            @"allowsWeakReference", @"_isDeallocating", @"retainWeakReference", @"_tryRetain"];
-    [NSObject enumerateMethodsInClass:mockedClass usingBlock:^(SEL selector) {
-        if(![whiteList containsObject:NSStringFromSelector(selector)])
-            [self setupForwarderForSelector:selector];
+    /* Adding forwarder for most instance methods to allow for verify after run */
+    NSArray *methodBlackList = @[@"class", @"forwardingTargetForSelector:", @"methodSignatureForSelector:", @"forwardInvocation:",
+            @"allowsWeakReference", @"retainWeakReference", @"isBlock"];
+    [NSObject enumerateMethodsInClass:mockedClass usingBlock:^(Class cls, SEL sel) {
+        if((cls == [NSObject class]) || (cls == [NSProxy class]))
+            return;
+        NSString *className = NSStringFromClass(cls);
+        NSString *selName = NSStringFromSelector(sel);
+        if(([className hasPrefix:@"NS"] || [className hasPrefix:@"UI"]) &&
+           ([selName hasPrefix:@"_"] || [selName hasSuffix:@"_"]))
+            return;
+        if([methodBlackList containsObject:selName])
+            return;
+        @try
+        {
+            [self setupForwarderForSelector:sel];
+        }
+        @catch(NSException *e)
+        {
+            // ignore for now
+        }
     }];
 }
 
-- (void)setupForwarderForSelector:(SEL)selector
+- (void)setupForwarderForSelector:(SEL)sel
 {
-    Method originalMethod = class_getInstanceMethod(mockedClass, selector);
+    SEL aliasSelector = OCMAliasForOriginalSelector(sel);
+    if(class_getInstanceMethod(object_getClass(realObject), aliasSelector) != NULL)
+        return;
+
+    Method originalMethod = class_getInstanceMethod(mockedClass, sel);
 	IMP originalIMP = method_getImplementation(originalMethod);
     const char *types = method_getTypeEncoding(originalMethod);
     /* Might be NULL if the selector is forwarded to another class */
     // TODO: check the fallback implementation is actually sufficient
     if(types == NULL)
-        types = ([[mockedClass instanceMethodSignatureForSelector:selector] fullObjCTypes]);
+        types = ([[mockedClass instanceMethodSignatureForSelector:sel] fullObjCTypes]);
 
     Class subclass = object_getClass([self realObject]);
-    IMP forwarderIMP = [subclass instanceMethodForwarderForSelector:selector];
-    class_replaceMethod(subclass, selector, forwarderIMP, types);
-	SEL aliasSelector = OCMAliasForOriginalSelector(selector);
+    IMP forwarderIMP = [mockedClass instanceMethodForwarderForSelector:sel];
+    class_replaceMethod(subclass, sel, forwarderIMP, types);
 	class_addMethod(subclass, aliasSelector, originalIMP, types);
 }
 

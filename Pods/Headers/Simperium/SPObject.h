@@ -1,1 +1,0 @@
-../../Simperium/Simperium/SPObject.h

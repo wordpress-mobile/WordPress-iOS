@@ -1,8 +1,11 @@
 #import <Foundation/Foundation.h>
 #import "LocalCoreDataService.h"
 
+extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
+
 @class Blog;
 @class Comment;
+@class ReaderPost;
 
 @interface CommentService : NSObject <LocalCoreDataService>
 
@@ -45,6 +48,16 @@
               success:(void (^)())success
               failure:(void (^)(NSError *error))failure;
 
+// Sync a list of comments sorted by hierarchy
+- (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
+                                   page:(NSUInteger)page
+                                success:(void (^)(NSInteger count))success
+                                failure:(void (^)(NSError *error))failure;
+
+// Counts and returns the total number of pages of hierarchcial comments synced for a post.
+// A partial set still counts as a page.
+- (NSInteger)numberOfHierarchicalPagesSyncedforPost:(ReaderPost *)post;
+
 
 /**
     REST Helpers:
@@ -54,12 +67,19 @@
     to allow Comment Interaction in scenarios in which the Comment / Blog instances may not be available.
 */
 
-// Edit Comment
+// Edit comment
 - (void)updateCommentWithID:(NSNumber *)commentID
                      siteID:(NSNumber *)siteID
                     content:(NSString *)content
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure;
+
+// Reply to comment
+- (void)replyToCommentWithID:(NSNumber *)commentID
+                      siteID:(NSNumber *)siteID
+                     content:(NSString *)content
+                     success:(void (^)())success
+                     failure:(void (^)(NSError *error))failure;
 
 // Like comment
 - (void)likeCommentWithID:(NSNumber *)commentID

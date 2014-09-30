@@ -6,6 +6,7 @@
 #import "ReaderSubscriptionViewController.h"
 #import "ReaderPostDetailViewController.h"
 #import "ReaderPost.h"
+#import "ReaderTopic.h"
 #import "WordPressAppDelegate.h"
 #import "NSString+XMLExtensions.h"
 #import "WPAccount.h"
@@ -462,10 +463,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     ReaderPost *post = [self postFromCellSubview:followButton];
 
-    if (![post isFollowable]) {
-        return;
-    }
-
     if (!post.isFollowing) {
         [WPAnalytics track:WPAnalyticsStatReaderFollowedSite];
     }
@@ -614,7 +611,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     NSRange range = [self.currentTopic.path rangeOfString:@"following"];
     if (range.location != NSNotFound) {
-        return NSLocalizedString(@"You're not following any sites yet.", @"");
+        return NSLocalizedString(@"You are not following any sites yet.", @"");
     }
 
     range = [self.currentTopic.path rangeOfString:@"liked"];
@@ -801,7 +798,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     NSURL *imageURL = [post featuredImageURLForDisplay];
-    if (!imageURL) {
+    if ([[imageURL absoluteString] length] == 0) {
         return;
     }
     UIImage *image = [self imageForURL:imageURL];

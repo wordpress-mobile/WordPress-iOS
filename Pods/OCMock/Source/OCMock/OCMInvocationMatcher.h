@@ -24,6 +24,7 @@
 }
 
 - (void)setInvocation:(NSInvocation *)anInvocation;
+- (NSInvocation *)recordedInvocation;
 
 - (void)setRecordedAsClassMethod:(BOOL)flag;
 - (BOOL)recordedAsClassMethod;

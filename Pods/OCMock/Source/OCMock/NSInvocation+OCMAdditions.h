@@ -20,28 +20,28 @@
 
 - (BOOL)hasCharPointerArgument;
 
-- (id)getArgumentAtIndexAsObject:(int)argIndex;
+- (id)getArgumentAtIndexAsObject:(NSInteger)argIndex;
 
 - (NSString *)invocationDescription;
 
-- (NSString *)argumentDescriptionAtIndex:(int)argIndex;
+- (NSString *)argumentDescriptionAtIndex:(NSInteger)argIndex;
 
-- (NSString *)objectDescriptionAtIndex:(int)anInt;
-- (NSString *)charDescriptionAtIndex:(int)anInt;
-- (NSString *)unsignedCharDescriptionAtIndex:(int)anInt;
-- (NSString *)intDescriptionAtIndex:(int)anInt;
-- (NSString *)unsignedIntDescriptionAtIndex:(int)anInt;
-- (NSString *)shortDescriptionAtIndex:(int)anInt;
-- (NSString *)unsignedShortDescriptionAtIndex:(int)anInt;
-- (NSString *)longDescriptionAtIndex:(int)anInt;
-- (NSString *)unsignedLongDescriptionAtIndex:(int)anInt;
-- (NSString *)longLongDescriptionAtIndex:(int)anInt;
-- (NSString *)unsignedLongLongDescriptionAtIndex:(int)anInt;
-- (NSString *)doubleDescriptionAtIndex:(int)anInt;
-- (NSString *)floatDescriptionAtIndex:(int)anInt;
-- (NSString *)structDescriptionAtIndex:(int)anInt;
-- (NSString *)pointerDescriptionAtIndex:(int)anInt;
-- (NSString *)cStringDescriptionAtIndex:(int)anInt;
-- (NSString *)selectorDescriptionAtIndex:(int)anInt;
+- (NSString *)objectDescriptionAtIndex:(NSInteger)anInt;
+- (NSString *)charDescriptionAtIndex:(NSInteger)anInt;
+- (NSString *)unsignedCharDescriptionAtIndex:(NSInteger)anInt;
+- (NSString *)intDescriptionAtIndex:(NSInteger)anInt;
+- (NSString *)unsignedIntDescriptionAtIndex:(NSInteger)anInt;
+- (NSString *)shortDescriptionAtIndex:(NSInteger)anInt;
+- (NSString *)unsignedShortDescriptionAtIndex:(NSInteger)anInt;
+- (NSString *)longDescriptionAtIndex:(NSInteger)anInt;
+- (NSString *)unsignedLongDescriptionAtIndex:(NSInteger)anInt;
+- (NSString *)longLongDescriptionAtIndex:(NSInteger)anInt;
+- (NSString *)unsignedLongLongDescriptionAtIndex:(NSInteger)anInt;
+- (NSString *)doubleDescriptionAtIndex:(NSInteger)anInt;
+- (NSString *)floatDescriptionAtIndex:(NSInteger)anInt;
+- (NSString *)structDescriptionAtIndex:(NSInteger)anInt;
+- (NSString *)pointerDescriptionAtIndex:(NSInteger)anInt;
+- (NSString *)cStringDescriptionAtIndex:(NSInteger)anInt;
+- (NSString *)selectorDescriptionAtIndex:(NSInteger)anInt;
 
 @end

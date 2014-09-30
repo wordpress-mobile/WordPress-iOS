@@ -14,32 +14,51 @@
 #import "DTLinkButton.h"
 #import "WPToast.h"
 #import "VerticallyStackedButton.h"
+#import "WPError.h"
+#import "UIAlertView+Blocks.h"
+#import "WordPressAppDelegate.h"
+
+
+
+#pragma mark ==========================================================================================
+#pragma mark Constants
+#pragma mark ==========================================================================================
+
+static NSString *const CommentImageNameTrashNormal          = @"icon-comments-trash";
+static NSString *const CommentImageNameSpamNormal           = @"icon-comments-spam";
+static NSString *const CommentImageNameApproveNormal        = @"icon-comments-approve";
+static NSString *const CommentImageNameUnapproveNormal      = @"icon-comments-unapprove";
+static NSString *const CommentImageNameReplyNormal          = @"icon-comments-reply";
 
 typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
     CommentViewButtonTagApprove,
     CommentViewButtonTagUnapprove
 };
 
-typedef NS_ENUM(NSInteger, CommentViewActionIndex) {
-    CommentViewActionIndexDelete = 0
-};
 
-                
-@interface CommentViewController () <UIActionSheetDelegate, InlineComposeViewDelegate, WPContentViewDelegate, EditCommentViewControllerDelegate>
+#pragma mark ==========================================================================================
+#pragma mark Private
+#pragma mark ==========================================================================================
 
-@property (nonatomic, strong) CommentView *commentView;
-@property (nonatomic, strong) UIButton *trashButton;
-@property (nonatomic, strong) UIButton *approveButton;
-@property (nonatomic, strong) UIButton *spamButton;
-@property (nonatomic, strong) UIBarButtonItem *editButton;
-@property (nonatomic, strong) UIButton *replyButton;
-@property (nonatomic, strong) InlineComposeView *inlineComposeView;
-@property (nonatomic, strong) Comment *reply;
-@property (nonatomic, strong) EditCommentViewController *editCommentViewController;
-@property (nonatomic, assign) BOOL transientReply;
-@property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
+@interface CommentViewController () <UIActionSheetDelegate, InlineComposeViewDelegate, WPContentViewDelegate>
+
+@property (nonatomic, strong) CommentView               *commentView;
+@property (nonatomic, strong) UIButton                  *trashButton;
+@property (nonatomic, strong) UIButton                  *approveButton;
+@property (nonatomic, strong) UIButton                  *spamButton;
+@property (nonatomic, strong) UIBarButtonItem           *editButton;
+@property (nonatomic, strong) UIButton                  *replyButton;
+@property (nonatomic, strong) InlineComposeView         *inlineComposeView;
+@property (nonatomic, strong) Comment                   *reply;
+@property (nonatomic, assign) BOOL                      transientReply;
+@property (nonatomic, strong) UITapGestureRecognizer    *tapGesture;
 
 @end
+
+
+#pragma mark ==========================================================================================
+#pragma mark CommentViewController
+#pragma mark ==========================================================================================
 
 @implementation CommentViewController
 
@@ -55,80 +74,82 @@ typedef NS_ENUM(NSInteger, CommentViewActionIndex) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.commentView                    = [[CommentView alloc] initWithFrame:self.view.frame];
+    self.commentView.contentProvider    = self.comment;
+    self.commentView.delegate           = self;
+    
+    WPFixedWidthScrollView *scrollView  = [[WPFixedWidthScrollView alloc] initWithRootView:self.commentView];
+    scrollView.alwaysBounceVertical     = YES;
+    scrollView.keyboardDismissMode      = UIScrollViewKeyboardDismissModeInteractive;
 
-    self.commentView = [[CommentView alloc] initWithFrame:self.view.frame];
-    self.commentView.contentProvider = self.comment;
-    self.commentView.delegate = self;
-
-    WPFixedWidthScrollView *scrollView = [[WPFixedWidthScrollView alloc] initWithRootView:self.commentView];
-    scrollView.alwaysBounceVertical = YES;
     if (IS_IPAD) {
-        scrollView.contentInset = UIEdgeInsetsMake(WPTableViewTopMargin, 0, WPTableViewTopMargin, 0);
-        scrollView.contentWidth = WPTableViewFixedWidth;
-    } else {
-        scrollView.contentInset = UIEdgeInsetsMake(0, 0, WPTableViewTopMargin, 0);
-    }
-    scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+        scrollView.contentInset         = UIEdgeInsetsMake(WPTableViewTopMargin, 0, WPTableViewTopMargin, 0);
+        scrollView.contentWidth         = WPTableViewFixedWidth;
+    };
+
     self.view = scrollView;
     self.view.backgroundColor = [UIColor whiteColor];
 
     self.replyButton = [VerticallyStackedButton buttonWithType:UIButtonTypeSystem];
-    [self.replyButton setImage:[UIImage imageNamed:@"icon-comments-reply"] forState:UIControlStateNormal];
+    [self.replyButton setImage:[UIImage imageNamed:CommentImageNameReplyNormal] forState:UIControlStateNormal];
     [self.replyButton setTitle:NSLocalizedString(@"Reply", @"Verb, reply to a comment") forState:UIControlStateNormal];
     [self.replyButton setAccessibilityLabel: NSLocalizedString(@"Reply", @"Spoken accessibility label.")];
     [self.replyButton addTarget:self action:@selector(replyAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.commentView addCustomActionButton:self.replyButton];
     
     self.approveButton = [VerticallyStackedButton buttonWithType:UIButtonTypeSystem];
-    [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-approve"] forState:UIControlStateNormal];
+    [self.approveButton setImage:[UIImage imageNamed:CommentImageNameApproveNormal] forState:UIControlStateNormal];
     [self.approveButton setAccessibilityLabel:NSLocalizedString(@"Toggle approve or unapprove", @"Spoken accessibility label.")];
     [self.approveButton addTarget:self action:@selector(approveOrUnapproveAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.commentView addCustomActionButton:self.approveButton];
 
     self.spamButton = [VerticallyStackedButton buttonWithType:UIButtonTypeSystem];
-    [self.spamButton setImage:[UIImage imageNamed:@"icon-comments-spam"] forState:UIControlStateNormal];
+    [self.spamButton setImage:[UIImage imageNamed:CommentImageNameSpamNormal] forState:UIControlStateNormal];
     [self.spamButton setTitle:NSLocalizedString(@"Spam", @"Verb, mark a comment as spam") forState:UIControlStateNormal];
     [self.spamButton setAccessibilityLabel:NSLocalizedString(@"Mark as spam", @"Spoken accessibility label.")];
     [self.spamButton addTarget:self action:@selector(spamAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.commentView addCustomActionButton:self.spamButton];
     
     self.trashButton = [VerticallyStackedButton buttonWithType:UIButtonTypeSystem];
-    [self.trashButton setImage:[UIImage imageNamed:@"icon-comments-trash"] forState:UIControlStateNormal];
+    [self.trashButton setImage:[UIImage imageNamed:CommentImageNameTrashNormal] forState:UIControlStateNormal];
     [self.trashButton setTitle:NSLocalizedString(@"Trash", @"Verb, move a comment to the trash") forState:UIControlStateNormal];
     [self.trashButton setAccessibilityLabel:NSLocalizedString(@"Move to trash", @"Spoken accessibility label.")];
     [self.trashButton addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.commentView addCustomActionButton:self.trashButton];
 
-    self.editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
-    [self.editButton setAccessibilityLabel:NSLocalizedString(@"Edit comment", @"Spoken accessibility label.")];
-    self.navigationItem.rightBarButtonItem = self.editButton;
+    self.editButton                         = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
+    self.editButton.accessibilityLabel      = NSLocalizedString(@"Edit comment", @"Spoken accessibility label.");
+    self.navigationItem.rightBarButtonItem  = self.editButton;
 
     [self.view addSubview:self.commentView];
 
-    self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
-    self.inlineComposeView.delegate = self;
+    self.inlineComposeView                  = [[InlineComposeView alloc] initWithFrame:CGRectZero];
+    self.inlineComposeView.delegate         = self;
     [self.view addSubview:self.inlineComposeView];
-
-    if (self.comment) {
-        [self showComment:self.comment];
-   }
 
     // For tapping to dismiss the keyboard
     self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+    
+    [self reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
+    [nc addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [nc removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 
     // Get rid of any transient reply if popping the view
     // (ideally transient replies should be handled more cleanly)
@@ -145,21 +166,20 @@ typedef NS_ENUM(NSInteger, CommentViewActionIndex) {
 {
     if ([self.comment.status isEqualToString:@"approve"]) {
         [self.approveButton setTag:CommentViewButtonTagUnapprove];
-        [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-unapprove"] forState:UIControlStateNormal];
+        [self.approveButton setImage:[UIImage imageNamed:CommentImageNameUnapproveNormal] forState:UIControlStateNormal];
         [self.approveButton setTitle:NSLocalizedString(@"Unapprove", @"Verb, unapprove a comment") forState:UIControlStateNormal];
         [self.approveButton setAccessibilityLabel:NSLocalizedString(@"Approve", @"Spoken accessibility label.")];
         return;
     }
     
     [self.approveButton setTag:CommentViewButtonTagApprove];
-    [self.approveButton setImage:[UIImage imageNamed:@"icon-comments-approve"] forState:UIControlStateNormal];
+    [self.approveButton setImage:[UIImage imageNamed:CommentImageNameApproveNormal] forState:UIControlStateNormal];
     [self.approveButton setTitle:NSLocalizedString(@"Approve", @"Verb, approve a comment") forState:UIControlStateNormal];
     [self.approveButton setAccessibilityLabel:NSLocalizedString(@"Unapprove", @"Spoken accessibility label.")];
 }
 
-- (void)showComment:(Comment *)comment
+- (void)reloadData
 {
-    self.comment = comment;
     [self.commentView reloadData];
     [self updateApproveButton];
 }
@@ -173,9 +193,11 @@ typedef NS_ENUM(NSInteger, CommentViewActionIndex) {
     } else {
         postTitle = NSLocalizedString(@"(No Title)", nil);
     }
-    NSString *postTitleOn = NSLocalizedString(@"on ", @"(Comment) on (Post Title)");
-    NSString *combinedString = [postTitleOn stringByAppendingString:postTitle];
-    NSRange titleRange = [combinedString rangeOfString:postTitle];
+    
+    NSString *postTitleOn                       = NSLocalizedString(@"on ", @"(Comment) on (Post Title)");
+    NSString *combinedString                    = [postTitleOn stringByAppendingString:postTitle];
+    NSRange titleRange                          = [combinedString rangeOfString:postTitle];
+    
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:combinedString];
     [attributedString addAttribute:NSForegroundColorAttributeName value:[WPStyleGuide newKidOnTheBlockBlue] range:titleRange];
 
@@ -192,21 +214,6 @@ typedef NS_ENUM(NSInteger, CommentViewActionIndex) {
     // Note: the parent class of CommentsViewController will pop this as a result of NSFetchedResultsChangeDelete
 }
 
-- (void)showEditCommentViewWithAnimation:(BOOL)animate
-{
-    NSString *nibName = NSStringFromClass([EditCommentViewController class]);
-    self.editCommentViewController = [[EditCommentViewController alloc] initWithNibName:nibName
-                                                                                 bundle:nil];
-    self.editCommentViewController.delegate = self;
-    self.editCommentViewController.comment  = self.comment;
-
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.editCommentViewController];
-    navController.modalPresentationStyle = UIModalPresentationFormSheet;
-    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    navController.navigationBar.translucent = NO;
-    [self presentViewController:navController animated:animate completion:nil];
-}
-
 - (void)updateStateOfActionButtons:(BOOL)state
 {
     [self updateStateOfActionButton:self.spamButton toState:state];
@@ -221,14 +228,66 @@ typedef NS_ENUM(NSInteger, CommentViewActionIndex) {
 }
 
 
-#pragma mark - EditCommentViewController Delegate
+#pragma mark - Comment Edition
 
-- (void)editCommentViewController:(EditCommentViewController *)sender finishedWithUpdates:(BOOL)hasUpdates
+- (void)showEditCommentViewWithAnimation:(BOOL)animate
 {
-    if (hasUpdates) {
-        [self showComment:sender.comment];
-    }
-    [self dismissViewControllerAnimated:YES completion:nil];
+    EditCommentViewController *editViewController   = [EditCommentViewController newEditViewController];
+    
+    editViewController.content                      = self.comment.content;
+    editViewController.onCompletion                 = ^(BOOL hasNewContent, NSString *newContent) {
+        [self dismissViewControllerAnimated:YES completion:^{
+            if (hasNewContent) {
+                [self updateComment:self.comment withContent:newContent];
+            }
+        }];
+    };
+    
+    UINavigationController *navController           = [[UINavigationController alloc] initWithRootViewController:editViewController];
+    navController.modalPresentationStyle            = UIModalPresentationFormSheet;
+    navController.modalTransitionStyle              = UIModalTransitionStyleCoverVertical;
+    navController.navigationBar.translucent         = NO;
+    
+    [self presentViewController:navController animated:animate completion:nil];
+}
+
+- (void)updateComment:(Comment *)comment withContent:(NSString *)content
+{
+    // Set the new Content Data
+    comment.content = content;
+    [self reloadData];
+    
+    // Hit the backend
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
+    
+    [commentService uploadComment:comment
+                          success:^{
+                                        // The comment might have changed its approval status!
+                                        [self reloadData];
+                                    } failure:^(NSError *error) {
+                                        [self handleUpdateCommentError:error comment:comment content:content];
+                                    }];
+}
+
+- (void)handleUpdateCommentError:(NSError *)error comment:(Comment *)comment content:(NSString *)content
+{
+    NSString *message = NSLocalizedString(@"There has been an unexpected error while editing your comment",
+                                          @"Error displayed if a comment fails to get updated");
+    
+    [UIAlertView showWithTitle:nil
+                       message:message
+             cancelButtonTitle:NSLocalizedString(@"Cancel", @"Verb, Cancel an action")
+             otherButtonTitles:@[ NSLocalizedString(@"Try Again", @"Retry an action that failed") ]
+                      tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                                    if (buttonIndex == alertView.cancelButtonIndex) {
+                                        [comment.managedObjectContext refreshObject:comment mergeChanges:false];
+                                        [self reloadData];
+                                    } else {
+                                        [self updateComment:comment withContent:content];
+                                    }
+                                }
+    ];
 }
 
 
@@ -289,6 +348,7 @@ typedef NS_ENUM(NSInteger, CommentViewActionIndex) {
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
                                                destructiveButtonTitle:NSLocalizedString(@"Delete", @"")
                                                     otherButtonTitles:nil];
+
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
     [actionSheet showFromToolbar:self.navigationController.toolbar];
 }
@@ -306,20 +366,22 @@ typedef NS_ENUM(NSInteger, CommentViewActionIndex) {
 
 - (void)replyAction:(id)sender
 {
-    if (self.commentsViewController.blog.isSyncingComments) {
-        [self showSyncInProgressAlert];
+	if (self.commentsViewController.blog.isSyncingComments) {
+		[self showSyncInProgressAlert];
+        return;
+	}
+    
+    if(self.inlineComposeView.isDisplayed) {
+        [self.inlineComposeView dismissComposer];
     } else {
-        if (self.inlineComposeView.isDisplayed) {
-            [self.inlineComposeView dismissComposer];
-        } else {
-            CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-            self.reply = [commentService restoreReplyForComment:self.comment];
-            self.transientReply = YES;
-            self.inlineComposeView.text = self.reply.content;
-            [self.inlineComposeView displayComposer];
-        }
+        CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+        self.reply = [commentService restoreReplyForComment:self.comment];
+        self.transientReply = YES;
+        self.inlineComposeView.text = self.reply.content;
+        [self.inlineComposeView displayComposer];
     }
 }
+
 
 #pragma mark - Gesture Actions
 
@@ -330,28 +392,36 @@ typedef NS_ENUM(NSInteger, CommentViewActionIndex) {
     }
 }
 
+
 #pragma mark - Notification Handlers
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification
 {
-    CGRect keyboardRect = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    UIScrollView *scrollView = (UIScrollView *)self.view;
-    scrollView.contentInset = UIEdgeInsetsMake(0.f, 0.f, CGRectGetHeight(keyboardRect), 0.f);
+    CGRect keyboardRect         = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    UIScrollView *scrollView    = (UIScrollView *)self.view;
+    UIEdgeInsets insets         = scrollView.contentInset;
+    insets.bottom               = CGRectGetHeight(keyboardRect);
+    scrollView.contentInset     = insets;
+
     [self.view addGestureRecognizer:self.tapGesture];
 }
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification
 {
-    UIScrollView *scrollView = (UIScrollView *)self.view;
-    scrollView.contentInset = UIEdgeInsetsMake(0.f, 0.f, 0.f, 0.f);
+    UIScrollView *scrollView    = (UIScrollView *)self.view;
+    UIEdgeInsets insets         = scrollView.contentInset;
+    insets.bottom               = 0.0f;
+    scrollView.contentInset     = insets;
+
     [self.view removeGestureRecognizer:self.tapGesture];
 }
+
 
 #pragma mark - UIActionSheet delegate methods
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == CommentViewActionIndexDelete) {
+    if (buttonIndex == actionSheet.destructiveButtonIndex) {
         [self deleteComment];
     }
 }
@@ -359,32 +429,22 @@ typedef NS_ENUM(NSInteger, CommentViewActionIndex) {
 
 #pragma mark UIWebView delegate methods
 
-- (BOOL)webView:(UIWebView *)inWeb
-    shouldStartLoadWithRequest:(NSURLRequest *)inRequest
-    navigationType:(UIWebViewNavigationType)inType
-{
-    if (inType == UIWebViewNavigationTypeLinkClicked) {
-        [self openInAppWebView:[inRequest URL]];
-        return NO;
-    }
-    return YES;
-}
-
 - (void)openInAppWebView:(NSURL*)url
 {
     Blog *blog = [[self comment] blog];
-
-    if ([[url description] length] > 0) {
-        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-        webViewController.url = url;
-
-        if (blog.isPrivate && [blog isWPcom]) {
-            webViewController.username = blog.username;
-            webViewController.password = blog.password;
-        }
-
-        [self.navigationController pushViewController:webViewController animated:YES];
+	if (url.description.length == 0) {
+        return;
     }
+    
+    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+    webViewController.url = url;
+    
+    if (blog.isPrivate && [blog isWPcom]) {
+        webViewController.username = blog.username;
+        webViewController.password = blog.password;
+    }
+    
+    [self.navigationController pushViewController:webViewController animated:YES];
 }
 
 - (void)showSyncInProgressAlert
@@ -399,7 +459,6 @@ typedef NS_ENUM(NSInteger, CommentViewActionIndex) {
 {
     self.reply.content = text;
 
-    // try to save it
     [[ContextManager sharedInstance] saveContext:self.reply.managedObjectContext];
 
     self.inlineComposeView.enabled = NO;
@@ -414,7 +473,7 @@ typedef NS_ENUM(NSInteger, CommentViewActionIndex) {
         [self.inlineComposeView dismissComposer];
 
         [WPToast showToastWithMessage:NSLocalizedString(@"Replied", @"User replied to a comment")
-                             andImage:[UIImage imageNamed:@"action_icon_replied"]];
+                             andImage:[UIImage imageNamed:@"action-icon-replied"]];
 
     } failure:^(NSError *error) {
         // reset to draft status, AppDelegate automatically shows UIAlert when comment fails
@@ -427,7 +486,6 @@ typedef NS_ENUM(NSInteger, CommentViewActionIndex) {
     }];
 }
 
-// when the reply changes, save it to the comment
 - (void)textViewDidChange:(UITextView *)textView
 {
     self.reply.content = self.inlineComposeView.text;

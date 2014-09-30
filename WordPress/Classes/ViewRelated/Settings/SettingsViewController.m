@@ -28,6 +28,7 @@
 #import "LoginViewController.h"
 #import "SupportViewController.h"
 #import "WPAccount.h"
+#import "WPPostViewController.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "SupportViewController.h"
 #import "ContextManager.h"
@@ -39,6 +40,7 @@
 typedef enum {
     SettingsSectionWpcom = 0,
     SettingsSectionMedia,
+    SettingsSectionEditor,
     SettingsSectionInfo,
     SettingsSectionCount
 } SettingsSection;
@@ -87,6 +89,7 @@ CGFloat const blavatarImageViewSize = 43.f;
     [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
 }
 
+
 #pragma mark - Custom Getter
 
 - (void)handleOptimizeImagesChanged:(id)sender
@@ -95,8 +98,13 @@ CGFloat const blavatarImageViewSize = 43.f;
     [WPImageOptimizer setShouldOptimizeImages:aSwitch.on];
 }
 
-- (void)dismiss
+- (void)handleEditorChanged:(id)sender
 {
+    UISwitch *aSwitch = (UISwitch *)sender;
+    [WPPostViewController setNewEditorEnabled:aSwitch.on];
+}
+
+- (void)dismiss {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -142,6 +150,15 @@ CGFloat const blavatarImageViewSize = 43.f;
 
         case SettingsSectionMedia:
             return 1;
+        
+		case SettingsSectionEditor: {
+			if (![WPPostViewController isNewEditorAvailable]) {
+				return 0;
+			} else {
+				return 1;
+			}
+		}
+		
         case SettingsSectionInfo:
             return 2;
         default:
@@ -151,16 +168,35 @@ CGFloat const blavatarImageViewSize = 43.f;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
-    header.fixedWidth = 0.0;
-    header.title = [self titleForHeaderInSection:section];
-    return header;
+	if (section == SettingsSectionEditor && ![WPPostViewController isNewEditorAvailable]) {
+		return nil;
+	} else {
+		WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+		header.fixedWidth = 0.0;
+		header.title = [self titleForHeaderInSection:section];
+		return header;
+	}
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    NSString *title = [self titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+	if (section == SettingsSectionEditor && ![WPPostViewController isNewEditorAvailable]) {
+		return 1;
+	} else {
+		NSString *title = [self titleForHeaderInSection:section];
+		return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+	}
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+	static const CGFloat kDefaultFooterHeight = 16.0f;
+	
+	if (section == SettingsSectionEditor && ![WPPostViewController isNewEditorAvailable]) {
+		return 1;
+	} else {
+		return kDefaultFooterHeight;
+	}
 }
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section
@@ -171,6 +207,9 @@ CGFloat const blavatarImageViewSize = 43.f;
     } else if (section == SettingsSectionMedia) {
         return NSLocalizedString(@"Media", @"Title label for the media settings section in the app settings");
 
+    } else if (section == SettingsSectionEditor) {
+        return NSLocalizedString(@"Editor", @"Title label for the editor settings section in the app settings");
+		
     } else if (section == SettingsSectionInfo) {
         return NSLocalizedString(@"App Info", @"Title label for the application information section in the app settings");
     }
@@ -216,6 +255,13 @@ CGFloat const blavatarImageViewSize = 43.f;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
         aSwitch.on = [WPImageOptimizer shouldOptimizeImages];
+        
+    } else if (indexPath.section == SettingsSectionEditor){
+        cell.textLabel.text = NSLocalizedString(@"Visual Editor", @"Option to enable the visual editor");
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
+        aSwitch.on = [WPPostViewController isNewEditorEnabled];
+        
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 0) {
             // About
@@ -247,8 +293,11 @@ CGFloat const blavatarImageViewSize = 43.f;
             cellStyle = UITableViewCellStyleDefault;
         }
     } else if (indexPath.section == SettingsSectionMedia) {
-        cellIdentifier = @"Media";
-        cellStyle = UITableViewCellStyleDefault;
+            cellIdentifier = @"Media";
+            cellStyle = UITableViewCellStyleDefault;
+    } else if (indexPath.section == SettingsSectionEditor) {
+            cellIdentifier = @"Editor";
+            cellStyle = UITableViewCellStyleDefault;
     }
 
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -259,6 +308,12 @@ CGFloat const blavatarImageViewSize = 43.f;
     if (indexPath.section == SettingsSectionMedia) {
         UISwitch *optimizeImagesSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
         [optimizeImagesSwitch addTarget:self action:@selector(handleOptimizeImagesChanged:) forControlEvents:UIControlEventValueChanged];
+        cell.accessoryView = optimizeImagesSwitch;
+    }
+    
+    if (indexPath.section == SettingsSectionEditor) {
+        UISwitch *optimizeImagesSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
+        [optimizeImagesSwitch addTarget:self action:@selector(handleEditorChanged:) forControlEvents:UIControlEventValueChanged];
         cell.accessoryView = optimizeImagesSwitch;
     }
 
@@ -288,6 +343,7 @@ CGFloat const blavatarImageViewSize = 43.f;
     return cell;
 }
 
+
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -310,7 +366,14 @@ CGFloat const blavatarImageViewSize = 43.f;
                                                  cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
                                             destructiveButtonTitle:NSLocalizedString(@"Sign Out", @"") otherButtonTitles:nil];
                 actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-                [actionSheet showInView:self.view];
+
+                if (IS_IPAD) {
+                    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                    [actionSheet showFromRect:[cell bounds] inView:cell animated:YES];
+                } else {
+                    [actionSheet showInView:self.view];
+                }
+
             } else if (indexPath.row == [self rowForNotifications]) {
                 NotificationSettingsViewController *notificationSettingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
                 [self.navigationController pushViewController:notificationSettingsViewController animated:YES];

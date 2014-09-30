@@ -1,50 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13E28" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="AbstractComment" representedClassName="AbstractComment" isAbstract="YES">
-        <attribute name="author" optional="YES" attributeType="String">
-            <userInfo/>
-        </attribute>
-        <attribute name="author_email" optional="YES" attributeType="String">
-            <userInfo/>
-        </attribute>
-        <attribute name="author_ip" optional="YES" attributeType="String">
-            <userInfo/>
-        </attribute>
-        <attribute name="author_url" optional="YES" attributeType="String">
-            <userInfo/>
-        </attribute>
-        <attribute name="commentID" optional="YES" attributeType="Integer 32">
-            <userInfo/>
-        </attribute>
-        <attribute name="content" optional="YES" attributeType="String">
-            <userInfo/>
-        </attribute>
-        <attribute name="dateCreated" optional="YES" attributeType="Date">
-            <userInfo/>
-        </attribute>
-        <attribute name="link" optional="YES" attributeType="String">
-            <userInfo/>
-        </attribute>
-        <attribute name="parentID" optional="YES" attributeType="Integer 32">
-            <userInfo/>
-        </attribute>
-        <attribute name="postID" optional="YES" attributeType="Integer 32">
-            <userInfo/>
-        </attribute>
-        <attribute name="postTitle" optional="YES" attributeType="String">
-            <userInfo/>
-        </attribute>
-        <attribute name="status" optional="YES" attributeType="String" indexed="YES">
-            <userInfo/>
-        </attribute>
-        <attribute name="type" optional="YES" attributeType="String">
-            <userInfo/>
-        </attribute>
-        <userInfo/>
-    </entity>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6220.17" systemVersion="14A343f" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <relationship name="blog" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="posts" inverseEntity="Blog" indexed="YES" syncable="YES"/>
-        <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Comment" inverseName="post" inverseEntity="Comment" indexed="YES" syncable="YES"/>
         <relationship name="media" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Media" inverseName="posts" inverseEntity="Media" indexed="YES" syncable="YES"/>
         <relationship name="original" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="AbstractPost" inverseName="revision" inverseEntity="AbstractPost" indexed="YES" syncable="YES"/>
         <relationship name="revision" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="AbstractPost" inverseName="original" inverseEntity="AbstractPost" indexed="YES" syncable="YES"/>
@@ -97,6 +54,7 @@
         <attribute name="wp_slug" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
+        <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Comment" inverseName="post" inverseEntity="Comment" syncable="YES"/>
         <userInfo/>
     </entity>
     <entity name="Blog" representedClassName="Blog">
@@ -185,13 +143,52 @@
         </relationship>
         <userInfo/>
     </entity>
-    <entity name="Comment" representedClassName="Comment" parentEntity="AbstractComment" syncable="YES">
-        <relationship name="blog" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="comments" inverseEntity="Blog" indexed="YES">
+    <entity name="Comment" representedClassName="Comment">
+        <attribute name="author" optional="YES" attributeType="String">
             <userInfo/>
-        </relationship>
-        <relationship name="post" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="AbstractPost" inverseName="comments" inverseEntity="AbstractPost" indexed="YES">
+        </attribute>
+        <attribute name="author_email" optional="YES" attributeType="String">
             <userInfo/>
-        </relationship>
+        </attribute>
+        <attribute name="author_ip" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="author_url" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="authorAvatarURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="commentID" optional="YES" attributeType="Integer 32">
+            <userInfo/>
+        </attribute>
+        <attribute name="content" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="dateCreated" optional="YES" attributeType="Date">
+            <userInfo/>
+        </attribute>
+        <attribute name="depth" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="hierarchy" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="link" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="parentID" optional="YES" attributeType="Integer 32">
+            <userInfo/>
+        </attribute>
+        <attribute name="postID" optional="YES" attributeType="Integer 32">
+            <userInfo/>
+        </attribute>
+        <attribute name="postTitle" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="status" optional="YES" attributeType="String" indexed="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="type" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="comments" inverseEntity="Blog" syncable="YES"/>
+        <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BasePost" inverseName="comments" inverseEntity="BasePost" syncable="YES"/>
+        <userInfo/>
     </entity>
     <entity name="Media" representedClassName="Media">
         <attribute name="caption" optional="YES" attributeType="String" syncable="YES"/>
@@ -258,16 +255,20 @@
         <attribute name="latest_note_time" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="simperiumKey" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="NoteSimperium" representedClassName="Note" syncable="YES">
+    <entity name="Notification" representedClassName="Notification" syncable="YES">
         <attribute name="body" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="ghostData" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="header" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="meta" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="noticon" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="read" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="simperiumKey" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="subject" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="timestamp" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="unread" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Page" representedClassName="Page" parentEntity="AbstractPost">
         <attribute name="parentID" optional="YES" attributeType="Integer 32" defaultValueString="0">
@@ -299,14 +300,6 @@
         </relationship>
         <userInfo/>
     </entity>
-    <entity name="ReaderComment" representedClassName="ReaderComment" parentEntity="AbstractComment">
-        <attribute name="authorAvatarURL" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="depth" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <relationship name="childComments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ReaderComment" inverseName="parentComment" inverseEntity="ReaderComment" indexed="YES" syncable="YES"/>
-        <relationship name="parentComment" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderComment" inverseName="childComments" inverseEntity="ReaderComment" indexed="YES" syncable="YES"/>
-        <relationship name="post" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderPost" inverseName="comments" inverseEntity="ReaderPost" indexed="YES" syncable="YES"/>
-        <userInfo/>
-    </entity>
     <entity name="ReaderPost" representedClassName="ReaderPost" parentEntity="BasePost" syncable="YES">
         <attribute name="authorAvatarURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="authorDisplayName" optional="YES" attributeType="String" syncable="YES"/>
@@ -335,7 +328,6 @@
         <attribute name="storedComment" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="summary" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tags" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderComment" inverseName="post" inverseEntity="ReaderComment" indexed="YES" syncable="YES"/>
         <relationship name="topic" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderTopic" inverseName="posts" inverseEntity="ReaderTopic" syncable="YES"/>
     </entity>
     <entity name="ReaderSite" representedClassName="ReaderSite" syncable="YES">
@@ -373,24 +365,22 @@
         <attribute name="version" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="themes" inverseEntity="Blog" syncable="YES"/>
     </entity>
-    <fetchRequest name="UnreadNotes" entity="NoteSimperium" predicateString="unread == 1"/>
+    <fetchRequest name="UnreadNotes" entity="Notification" predicateString="unread == 1"/>
     <elements>
-        <element name="AbstractComment" positionX="0" positionY="0" width="128" height="240"/>
-        <element name="AbstractPost" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="AbstractPost" positionX="0" positionY="0" width="128" height="105"/>
         <element name="Account" positionX="0" positionY="0" width="128" height="150"/>
-        <element name="BasePost" positionX="0" positionY="0" width="128" height="240"/>
+        <element name="BasePost" positionX="0" positionY="0" width="128" height="253"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="450"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="Comment" positionX="0" positionY="0" width="128" height="75"/>
+        <element name="Comment" positionX="0" positionY="0" width="128" height="313"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="343"/>
         <element name="Meta" positionX="9" positionY="153" width="128" height="105"/>
-        <element name="NoteSimperium" positionX="0" positionY="0" width="128" height="178"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="150"/>
-        <element name="ReaderComment" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="480"/>
+        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="463"/>
         <element name="ReaderSite" positionX="9" positionY="153" width="128" height="163"/>
         <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="180"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
+        <element name="Notification" positionX="18" positionY="162" width="128" height="240"/>
     </elements>
 </model>

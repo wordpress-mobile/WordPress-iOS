@@ -85,7 +85,7 @@
 
 #pragma mark  Initialisers, description, accessors, etc.
 
-- (id)init
+- (instancetype)init
 {
 	// no [super init], we're inheriting from NSProxy
 	expectationOrderMatters = NO;
@@ -270,12 +270,14 @@
 {
     [invocations addObject:anInvocation];
 
-    NSUInteger idx = [stubs indexOfObjectPassingTest:^BOOL(id s, NSUInteger i, BOOL *stop) {
-        return [(OCMInvocationStub *)s handleInvocation:anInvocation];
-    }];
-    if(idx == NSNotFound)
-   		return NO;
-    OCMInvocationStub *stub = [stubs objectAtIndex:idx];
+    OCMInvocationStub *stub = nil;
+    for(stub in stubs)
+    {
+        if([stub handleInvocation:anInvocation])
+            break;
+    }
+    if(stub == nil)
+        return NO;
 
 	if([expectations containsObject:stub])
 	{

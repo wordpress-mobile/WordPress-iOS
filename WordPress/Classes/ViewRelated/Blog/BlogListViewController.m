@@ -142,6 +142,8 @@ CGFloat const blavatarImageSize = 50.f;
     return ([[self.resultsController sections] count] > 1);
 }
 
+#pragma mark - Public methods
+
 - (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar
 {
     return [self numSites] == 1;

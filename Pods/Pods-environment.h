@@ -88,25 +88,25 @@
 #define COCOAPODS_POD_AVAILABLE_DTFoundation_Core
 #define COCOAPODS_VERSION_MAJOR_DTFoundation_Core 1
 #define COCOAPODS_VERSION_MINOR_DTFoundation_Core 7
-#define COCOAPODS_VERSION_PATCH_DTFoundation_Core 2
+#define COCOAPODS_VERSION_PATCH_DTFoundation_Core 3
 
 // DTFoundation/DTAnimatedGIF
 #define COCOAPODS_POD_AVAILABLE_DTFoundation_DTAnimatedGIF
 #define COCOAPODS_VERSION_MAJOR_DTFoundation_DTAnimatedGIF 1
 #define COCOAPODS_VERSION_MINOR_DTFoundation_DTAnimatedGIF 7
-#define COCOAPODS_VERSION_PATCH_DTFoundation_DTAnimatedGIF 2
+#define COCOAPODS_VERSION_PATCH_DTFoundation_DTAnimatedGIF 3
 
 // DTFoundation/DTHTMLParser
 #define COCOAPODS_POD_AVAILABLE_DTFoundation_DTHTMLParser
 #define COCOAPODS_VERSION_MAJOR_DTFoundation_DTHTMLParser 1
 #define COCOAPODS_VERSION_MINOR_DTFoundation_DTHTMLParser 7
-#define COCOAPODS_VERSION_PATCH_DTFoundation_DTHTMLParser 2
+#define COCOAPODS_VERSION_PATCH_DTFoundation_DTHTMLParser 3
 
 // DTFoundation/UIKit
 #define COCOAPODS_POD_AVAILABLE_DTFoundation_UIKit
 #define COCOAPODS_VERSION_MAJOR_DTFoundation_UIKit 1
 #define COCOAPODS_VERSION_MINOR_DTFoundation_UIKit 7
-#define COCOAPODS_VERSION_PATCH_DTFoundation_UIKit 2
+#define COCOAPODS_VERSION_PATCH_DTFoundation_UIKit 3
 
 // EmailChecker
 #define COCOAPODS_POD_AVAILABLE_EmailChecker
@@ -123,14 +123,14 @@
 // Helpshift
 #define COCOAPODS_POD_AVAILABLE_Helpshift
 #define COCOAPODS_VERSION_MAJOR_Helpshift 4
-#define COCOAPODS_VERSION_MINOR_Helpshift 5
+#define COCOAPODS_VERSION_MINOR_Helpshift 8
 #define COCOAPODS_VERSION_PATCH_Helpshift 0
 
 // HockeySDK
 #define COCOAPODS_POD_AVAILABLE_HockeySDK
 #define COCOAPODS_VERSION_MAJOR_HockeySDK 3
 #define COCOAPODS_VERSION_MINOR_HockeySDK 5
-#define COCOAPODS_VERSION_PATCH_HockeySDK 6
+#define COCOAPODS_VERSION_PATCH_HockeySDK 7
 
 // JRSwizzle
 #define COCOAPODS_POD_AVAILABLE_JRSwizzle
@@ -153,7 +153,7 @@
 // NSLogger
 #define COCOAPODS_POD_AVAILABLE_NSLogger
 #define COCOAPODS_VERSION_MAJOR_NSLogger 1
-#define COCOAPODS_VERSION_MINOR_NSLogger 2
+#define COCOAPODS_VERSION_MINOR_NSLogger 5
 #define COCOAPODS_VERSION_PATCH_NSLogger 0
 
 // NSLogger-CocoaLumberjack-connector
@@ -190,13 +190,13 @@
 #define COCOAPODS_POD_AVAILABLE_Simperium
 #define COCOAPODS_VERSION_MAJOR_Simperium 0
 #define COCOAPODS_VERSION_MINOR_Simperium 6
-#define COCOAPODS_VERSION_PATCH_Simperium 8
+#define COCOAPODS_VERSION_PATCH_Simperium 9
 
 // Simperium/no-arc
 #define COCOAPODS_POD_AVAILABLE_Simperium_no_arc
 #define COCOAPODS_VERSION_MAJOR_Simperium_no_arc 0
 #define COCOAPODS_VERSION_MINOR_Simperium_no_arc 6
-#define COCOAPODS_VERSION_PATCH_Simperium_no_arc 8
+#define COCOAPODS_VERSION_PATCH_Simperium_no_arc 9
 
 // SocketRocket
 #define COCOAPODS_POD_AVAILABLE_SocketRocket
@@ -220,19 +220,19 @@
 #define COCOAPODS_POD_AVAILABLE_UIDeviceIdentifier
 #define COCOAPODS_VERSION_MAJOR_UIDeviceIdentifier 0
 #define COCOAPODS_VERSION_MINOR_UIDeviceIdentifier 4
-#define COCOAPODS_VERSION_PATCH_UIDeviceIdentifier 2
+#define COCOAPODS_VERSION_PATCH_UIDeviceIdentifier 3
 
 // WordPress-iOS-Editor
 #define COCOAPODS_POD_AVAILABLE_WordPress_iOS_Editor
 #define COCOAPODS_VERSION_MAJOR_WordPress_iOS_Editor 0
-#define COCOAPODS_VERSION_MINOR_WordPress_iOS_Editor 1
-#define COCOAPODS_VERSION_PATCH_WordPress_iOS_Editor 7
+#define COCOAPODS_VERSION_MINOR_WordPress_iOS_Editor 2
+#define COCOAPODS_VERSION_PATCH_WordPress_iOS_Editor 1
 
 // WordPress-iOS-Shared
 #define COCOAPODS_POD_AVAILABLE_WordPress_iOS_Shared
 #define COCOAPODS_VERSION_MAJOR_WordPress_iOS_Shared 0
 #define COCOAPODS_VERSION_MINOR_WordPress_iOS_Shared 1
-#define COCOAPODS_VERSION_PATCH_WordPress_iOS_Shared 0
+#define COCOAPODS_VERSION_PATCH_WordPress_iOS_Shared 1
 
 // WordPressApi
 #define COCOAPODS_POD_AVAILABLE_WordPressApi
@@ -244,19 +244,19 @@
 #define COCOAPODS_POD_AVAILABLE_WordPressCom_Analytics_iOS
 #define COCOAPODS_VERSION_MAJOR_WordPressCom_Analytics_iOS 0
 #define COCOAPODS_VERSION_MINOR_WordPressCom_Analytics_iOS 0
-#define COCOAPODS_VERSION_PATCH_WordPressCom_Analytics_iOS 3
+#define COCOAPODS_VERSION_PATCH_WordPressCom_Analytics_iOS 6
 
 // WordPressCom-Stats-iOS
 #define COCOAPODS_POD_AVAILABLE_WordPressCom_Stats_iOS
 #define COCOAPODS_VERSION_MAJOR_WordPressCom_Stats_iOS 0
-#define COCOAPODS_VERSION_MINOR_WordPressCom_Stats_iOS 0
-#define COCOAPODS_VERSION_PATCH_WordPressCom_Stats_iOS 7
+#define COCOAPODS_VERSION_MINOR_WordPressCom_Stats_iOS 1
+#define COCOAPODS_VERSION_PATCH_WordPressCom_Stats_iOS 2
 
 // google-plus-ios-sdk
 #define COCOAPODS_POD_AVAILABLE_google_plus_ios_sdk
 #define COCOAPODS_VERSION_MAJOR_google_plus_ios_sdk 1
 #define COCOAPODS_VERSION_MINOR_google_plus_ios_sdk 7
-#define COCOAPODS_VERSION_PATCH_google_plus_ios_sdk 0
+#define COCOAPODS_VERSION_PATCH_google_plus_ios_sdk 1
 
 // wpxmlrpc
 #define COCOAPODS_POD_AVAILABLE_wpxmlrpc

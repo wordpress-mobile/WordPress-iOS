@@ -2,7 +2,7 @@
 #import "PostSettingsViewController_Internal.h"
 
 #import "CategoriesViewController.h"
-#import "EditPostViewController_Internal.h"
+#import "WPPostViewController_Internal.h"
 #import "FeaturedImageViewController.h"
 #import "LocationService.h"
 #import "NSString+XMLExtensions.h"
@@ -118,7 +118,15 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 {
     [super viewWillAppear:animated];
 
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
     [self.navigationController setToolbarHidden:YES];
+    
+    // Do not hide the status bar on iPads
+    if (!IS_IPAD) {
+        [[UIApplication sharedApplication] setStatusBarHidden:YES
+                                                withAnimation:nil];
+    }
+    
     [self reloadData];
 }
 
@@ -778,6 +786,10 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     __weak PostSettingsSelectionViewController *weakVc = vc;
     vc.onItemSelected = ^(NSString *visibility) {
         [weakVc dismiss];
+        
+        NSAssert(_apost != nil, @"The post should not be nil here.");
+        NSAssert(!_apost.isFault, @"The post should not be a fault here here.");
+        NSAssert(_apost.managedObjectContext != nil, @"The post's MOC should not be nil here.");
 
         if ([visibility isEqualToString:NSLocalizedString(@"Private", @"Post privacy status in the Post Editor/Settings area (compare with WP core translations).")]) {
             self.apost.status = @"private";
@@ -792,7 +804,16 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
                 }
             }
             if ([visibility isEqualToString:NSLocalizedString(@"Password protected", @"Post password protection in the Post Editor/Settings area (compare with WP core translations).")]) {
+                
                 NSString *password = @"";
+                
+                NSAssert(_apost.original != nil,
+                         @"We're expecting to have a reference to the original post here.");
+                NSAssert(!_apost.original.isFault,
+                         @"The original post should not be a fault here here.");
+                NSAssert(_apost.original.managedObjectContext != nil,
+                         @"The original post's MOC should not be nil here.");
+                
                 if (self.apost.original.password) {
                     // restore the original password
                     password = self.apost.original.password;
