@@ -267,12 +267,14 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         CGFloat width = CGRectGetWidth(self.tableView.bounds);
         UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, width, 50.0)];
         footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        CGRect frame = self.activityFooter.frame;
+        frame.origin.x = (width - CGRectGetWidth(frame))/2;
+        self.activityFooter.frame = frame;
         [footerView addSubview:self.activityFooter];
         self.tableView.tableFooterView = footerView;
 
     } else {
         self.tableView.tableFooterView = nil;
-        self.activityFooter = nil;
     }
 }
 
