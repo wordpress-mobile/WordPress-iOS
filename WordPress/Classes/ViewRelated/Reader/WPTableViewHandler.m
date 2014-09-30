@@ -365,6 +365,11 @@ static CGFloat const DefaultCellHeight = 44.0;
     }
 }
 
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    self.isScrolling = decelerate;
+}
+
 
 #pragma mark - Fetched results controller
 
