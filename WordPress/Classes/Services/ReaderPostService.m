@@ -661,7 +661,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
     NSDate *newestDate = startingDate;
     NSDate *oldestDate = ((ReaderPost *)[posts lastObject]).sortDate;
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@ AND sortDate >= %@ AND sortDate <= %@", topic, oldestDate, newestDate];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@ AND sortDate > %@ AND sortDate < %@", topic, oldestDate, newestDate];
 
     [fetchRequest setPredicate:pred];
 
