@@ -53,8 +53,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 @property (nonatomic, assign) BOOL viewHasAppeared;
 @property (nonatomic, strong) WPTableImageSource *featuredImageSource;
-
-@property (nonatomic, assign) CGFloat lastOffset;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, strong) WPAnimatedBox *animatedBox;
 @property (nonatomic, strong) UIGestureRecognizer *tapOffKeyboardGesture;
@@ -66,9 +64,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @property (nonatomic, strong) NSNumber *postIDThatInitiatedBlock;
 @property (nonatomic, strong) UIActionSheet *actionSheet;
 @property (nonatomic, strong) WPNoResultsView *noResultsView;
-
 @property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
 @property (nonatomic, strong) WPContentSyncHelper *syncHelper;
+@property (nonatomic) BOOL shouldSkipRowAnimation;
 
 @end
 
@@ -636,6 +634,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     [self.tableViewHandler clearCachedRowHeights];
     [self updateAndPerformFetchRequest];
+    [self.tableView reloadData];
     [self refresh];
 
     [WPAnalytics track:WPAnalyticsStatReaderLoadedTag withProperties:[self tagPropertyForStats]];
@@ -751,6 +750,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(NSInteger))success failure:(void (^)(NSError *))failure
 {
     DDLogMethod();
+    self.shouldSkipRowAnimation = NO;
     if (userInteraction) {
         [self configureNoResultsView];
         [self syncItemsWithSuccess:success failure:failure];
@@ -777,10 +777,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     ReaderPost *post = self.tableViewHandler.resultsController.fetchedObjects.lastObject;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
 
+    __weak __typeof(self) weakSelf = self;
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [service fetchPostsForTopic:self.currentTopic earlierThan:post.sortDate success:^(NSInteger count){
         if (success) {
             dispatch_async(dispatch_get_main_queue(), ^{
+                weakSelf.shouldSkipRowAnimation = YES;
                 success(count);
             });
         }
@@ -853,6 +855,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self.featuredImageSource invalidateIndexPaths];
     self.tableViewHandler.shouldRefreshTableViewPreservingOffset = NO;
     [self configureNoResultsView];
+
+    if (self.shouldSkipRowAnimation) {
+        // short circuit any row animation when loading more.
+        [self.tableView reloadData];
+        self.shouldSkipRowAnimation = NO;
+    }
 }
 
 - (NSPredicate *)predicateForFetchRequest
