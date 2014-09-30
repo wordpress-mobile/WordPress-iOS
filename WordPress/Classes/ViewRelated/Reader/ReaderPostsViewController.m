@@ -318,9 +318,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         self.noResultsView = [[WPNoResultsView alloc] init];
     }
 
-    [self.noResultsView removeFromSuperview];
-
     if ([self.tableViewHandler.resultsController.fetchedObjects count] > 0) {
+        [self.noResultsView removeFromSuperview];
         return;
     }
 
