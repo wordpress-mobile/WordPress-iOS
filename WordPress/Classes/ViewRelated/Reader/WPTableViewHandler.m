@@ -521,7 +521,7 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 - (void)preserveRowInfoBeforeContentChanges
 {
-    self.fetchedResultsBeforeChange = [self.resultsController fetchedObjects];
+    self.fetchedResultsBeforeChange = [[self.resultsController fetchedObjects] copy];
     NSMutableArray *indexPaths = [NSMutableArray array];
     NSMutableArray *rowHeights = [NSMutableArray array];
     for (NSManagedObject *object in self.fetchedResultsBeforeChange) {
@@ -609,7 +609,6 @@ static CGFloat const DefaultCellHeight = 44.0;
 
     // Set the tableview to the new offset
     CGPoint newOffset = CGPointMake([self.tableView contentOffset].x, rowHeights);
-
     [self.tableView setContentOffset:newOffset];
 
     // Notify the delegate that a refresh has occured. Allows the delegate
@@ -672,7 +671,8 @@ static CGFloat const DefaultCellHeight = 44.0;
         NSIndexPath *path = [self.resultsController indexPathForObject:object];
 
         // Get the height from the delegate method so we can respect height caching.
-        rowHeights += [self tableView:self.tableView heightForRowAtIndexPath:path];
+        CGFloat height = [self tableView:self.tableView heightForRowAtIndexPath:path];
+        rowHeights += height;
     }
     return rowHeights;
 }
