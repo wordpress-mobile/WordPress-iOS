@@ -10,6 +10,7 @@
 #import "RemoteCategory.h"
 #import "CategoryService.h"
 #import "ContextManager.h"
+#import "NSDate+WordPressJSON.h"
 
 NSString * const PostServiceTypePost = @"post";
 NSString * const PostServiceTypePage = @"page";
@@ -92,9 +93,8 @@ NSString * const PostServiceTypeAny = @"any";
         NSSet *postsWithDate = [blog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"date_created_gmt != NULL"]];
         NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"date_created_gmt" ascending:YES];
         Post *oldestPost = [[postsWithDate sortedArrayUsingDescriptors:@[sortDescriptor]] firstObject];
-        // FIXME: convert date to JSON format?
         if (oldestPost.date_created_gmt) {
-            options[@"before"] = oldestPost.date_created_gmt;
+            options[@"before"] = [oldestPost.date_created_gmt WordPressComJSONString];
         }
     } else if ([remote isKindOfClass:[PostServiceRemoteXMLRPC class]]) {
         NSUInteger postCount = [blog.posts count];
@@ -103,6 +103,7 @@ NSString * const PostServiceTypeAny = @"any";
     }
     [remote getPostsOfType:postType
                    forBlog:blog
+                   options:options
                    success:^(NSArray *posts) {
         [self.managedObjectContext performBlock:^{
             [self mergePosts:posts ofType:postType forBlog:blog purgeExisting:NO completionHandler:success];

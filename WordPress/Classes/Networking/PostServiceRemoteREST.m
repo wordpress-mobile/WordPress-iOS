@@ -160,7 +160,7 @@
     post.type = jsonPost[@"type"];
     post.format = jsonPost[@"format"];
 
-    // FIXME: remove conversion once API is fixed
+    // FIXME: remove conversion once API is fixed #38-io
     // metadata should always be an array but it's returning false when there are no custom fields
     post.metadata = [jsonPost arrayForKey:@"metadata"];
     // post.metadata = jsonPost[@"metadata"];
