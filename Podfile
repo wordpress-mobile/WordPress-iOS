@@ -1,3 +1,5 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
 xcodeproj 'WordPress/WordPress.xcodeproj'
 
 inhibit_all_warnings!
