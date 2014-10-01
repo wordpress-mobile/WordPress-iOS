@@ -55,16 +55,17 @@
 
 #pragma mark - Private Methods
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    NSMutableDictionary* map            = [[self class] blockMap];
     id mapKey                           = [NSValue valueWithPointer:(__bridge const void *)(actionSheet)];
-    UIActionSheetCompletion completion  = [map objectForKey:mapKey];
     NSString *title                     = [self buttonTitleAtIndex:buttonIndex];
+    NSMutableDictionary* map            = [[self class] blockMap];
     
-    completion(title);
-
-    [map removeObjectForKey:mapKey];
+    UIActionSheetCompletion completion  = [map objectForKey:mapKey];
+    if (completion) {
+        completion(title);
+        [map removeObjectForKey:mapKey];
+    }
 }
 
 
