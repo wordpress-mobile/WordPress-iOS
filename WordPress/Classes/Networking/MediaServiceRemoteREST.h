@@ -1,8 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "MediaServiceRemote.h"
+#import "ServiceRemoteREST.h"
 
-@class WordPressComApi;
-
-@interface MediaServiceRemoteREST : NSObject <MediaServiceRemote>
-- (id)initWithApi:(WordPressComApi *)api;
+@interface MediaServiceRemoteREST : NSObject <MediaServiceRemote, ServiceRemoteREST>
 @end

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PostDetailViewController">
+            <connections>
+                <outlet property="previewWebView" destination="EiL-ik-mxU" id="VhD-hc-c0m"/>
+                <outlet property="tagsLabel" destination="yiQ-xx-aaF" id="D8M-fS-fQC"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EiL-ik-mxU">
+                    <rect key="frame" x="0.0" y="0.0" width="768" height="955"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                </webView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yiQ-xx-aaF">
+                    <rect key="frame" x="8" y="955" width="751" height="69"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="69" id="CHa-Sn-9yp"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="EiL-ik-mxU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Cu5-06-Yhc"/>
+                <constraint firstAttribute="bottom" secondItem="yiQ-xx-aaF" secondAttribute="bottom" id="H74-gO-xFs"/>
+                <constraint firstAttribute="trailing" secondItem="EiL-ik-mxU" secondAttribute="trailing" id="O2f-hf-3S4"/>
+                <constraint firstItem="EiL-ik-mxU" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Plm-Gw-AgR"/>
+                <constraint firstItem="yiQ-xx-aaF" firstAttribute="top" secondItem="EiL-ik-mxU" secondAttribute="bottom" id="SO7-H5-FUq"/>
+                <constraint firstAttribute="trailing" secondItem="yiQ-xx-aaF" secondAttribute="trailing" constant="9" id="Z3C-cI-Tr8"/>
+                <constraint firstItem="yiQ-xx-aaF" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="m8n-bc-ndR"/>
+            </constraints>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+        </view>
+    </objects>
+</document>

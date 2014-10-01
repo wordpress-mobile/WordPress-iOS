@@ -2,11 +2,10 @@
 #import "ContextManager.h"
 #import "NSString+Util.h"
 #import "ReaderPost.h"
-#import "ReaderComment.h"
+#import "Comment.h"
 #import "WPToast.h"
 #import "WPAccount.h"
 #import "AccountService.h"
-
 
 @interface ReaderCommentPublisher ()
 
@@ -16,27 +15,25 @@
 
 @implementation ReaderCommentPublisher
 
-- (id)initWithComposer:(InlineComposeView *)composeView andPost:(ReaderPost *)post {
+- (void)dealloc
+{
+    _composeView.delegate = nil;
+}
+
+- (id)initWithComposer:(InlineComposeView *)composeView
+{
     self = [super init];
     if (self) {
         _composeView = composeView;
         _composeView.delegate = self;
-
-        _post = post;
     }
     return self;
 }
 
-- (void)dealloc {
-    self.post = nil;
-    self.comment = nil;
-    self.composeView.delegate = nil;
-    self.composeView = nil;
-}
-
 #pragma mark - Accessors
 
-- (void)setComment:(ReaderComment *)comment {
+- (void)setComment:(Comment *)comment
+{
     if (_comment == comment) {
         return;
     }
@@ -73,7 +70,8 @@
 
 }
 
-- (void)setPost:(ReaderPost *)post {
+- (void)setPost:(ReaderPost *)post
+{
     if (_post == post) {
         return;
     }
@@ -87,8 +85,8 @@
 
 #pragma mark - InlineComposeViewDelegate
 
-- (void)composeView:(InlineComposeView *)view didSendText:(NSString *)text {
-
+- (void)composeView:(InlineComposeView *)view didSendText:(NSString *)text
+{
     [self publishComment:text];
 
 }
@@ -96,31 +94,32 @@
 #pragma mark - Networking
 
 // Determine the path for the endpoint we're using to post to.
-- (NSString *)pathForContext {
-	if (self.comment != nil) {
-		return [NSString stringWithFormat:@"sites/%@/comments/%@/replies/new", self.post.siteID, self.comment.commentID];
-	} else {
-		return [NSString stringWithFormat:@"sites/%@/posts/%@/replies/new", self.post.siteID, self.post.postID];
-	}
+- (NSString *)pathForContext
+{
+    if (self.comment != nil) {
+        return [NSString stringWithFormat:@"sites/%@/comments/%@/replies/new", self.post.siteID, self.comment.commentID];
+    }
+
+    return [NSString stringWithFormat:@"sites/%@/posts/%@/replies/new", self.post.siteID, self.post.postID];
 }
 
 // Attempt to publish the comment using the REST API
-- (void)publishComment:(NSString *)commentText {
-
+- (void)publishComment:(NSString *)commentText
+{
     // check for empty comments, TODO: punt this to the inline composer?
     NSString *str = [commentText trim];
-	if ([str length] == 0) {
-		return;
-	}
+    if ([str length] == 0) {
+        return;
+    }
 
     self.composeView.enabled = NO;
-	NSDictionary *params = @{@"content":str};
+    NSDictionary *params = @{@"content":str};
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-	[[defaultAccount restApi] POST:[self pathForContext] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[defaultAccount restApi] POST:[self pathForContext] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
         [self.composeView clearText];
         self.composeView.enabled = YES;
@@ -129,9 +128,9 @@
         // clear the draft comment for this post if there is one
         self.post.storedComment = nil;
 
-	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
-		DDLogError(@"Error Commenting from Reader : %@", [error localizedDescription]);
+        DDLogError(@"Error Commenting from Reader : %@", [error localizedDescription]);
 
         if ([self.delegate respondsToSelector:@selector(commentPublisherDidFailPublishingComment:)]) {
             [self.delegate commentPublisherDidPublishComment:self];
@@ -139,19 +138,20 @@
 
         self.composeView.enabled = YES;
 
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Comment failed", @"")
-															message:NSLocalizedString(@"There was a problem commenting. Please try again.", @"")
-														   delegate:nil
-												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-												  otherButtonTitles:nil];
-		[alertView show];
-	}];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Comment failed", @"")
+                                                            message:NSLocalizedString(@"There was a problem commenting. Please try again.", @"")
+                                                           delegate:nil
+                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                  otherButtonTitles:nil];
+        [alertView show];
+    }];
 
 }
 
 #pragma mark - UITextViewDelegate
 
-- (void)textViewDidEndEditing:(UITextView *)textView {
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
     // if we have a comment, store the draft in the post, yeah, it's weird
     // TODO: support storing draft replies for all comments and the post
     NSString *text = textView.text;

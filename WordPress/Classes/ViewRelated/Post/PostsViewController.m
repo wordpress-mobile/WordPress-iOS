@@ -1,6 +1,7 @@
 #import "WPTableViewControllerSubclass.h"
 #import "PostsViewController.h"
-#import "EditPostViewController.h"
+#import "WPLegacyEditPostViewController.h"
+#import "WPPostViewController.h"
 #import "NewPostTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
@@ -69,8 +70,9 @@
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:composeButtonItem forNavigationItem:self.navigationItem];
     
     self.infiniteScrollEnabled = YES;
-    
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    
+    [self updatePostFormats];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -151,8 +153,8 @@
 		// Don't allow editing while pushing changes
 		return;
 	}
-
-    [self editPost:post];
+    
+    [self viewPost:post];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];    
 }
 
@@ -185,7 +187,8 @@
 #pragma mark -
 #pragma mark Custom methods
 
-- (void)deletePostAtIndexPath:(NSIndexPath *)indexPath{
+- (void)deletePostAtIndexPath:(NSIndexPath *)indexPath
+{
     Post *post = [self.resultsController objectAtIndexPath:indexPath];
     [post deletePostWithSuccess:nil failure:^(NSError *error) {
 		if([error code] == 403) {
@@ -197,7 +200,8 @@
     }];
 }
 
-- (void)showAddPostView {
+- (void)showAddPostView
+{
     [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"posts_view" }];
 
     _addingNewPost = YES;
@@ -205,18 +209,56 @@
     [self editPost:post];
 }
 
-- (void)editPost:(AbstractPost *)apost {
-    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:apost];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-    [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
-    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-    navController.restorationIdentifier = WPEditorNavigationRestorationID;
-    navController.restorationClass = [EditPostViewController class];
-    [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
+- (void)editPost:(AbstractPost *)apost
+{
+    UINavigationController *navController;
+    if ([WPPostViewController isNewEditorEnabled]) {
+        WPPostViewController *postViewController = [[WPPostViewController alloc] initWithPost:apost
+                                                                                         mode:kWPPostViewControllerModeEdit];
+        navController = [[UINavigationController alloc] initWithRootViewController:postViewController];
+        navController.restorationIdentifier = WPEditorNavigationRestorationID;
+        navController.restorationClass = [WPPostViewController class];
+    } else {
+        WPLegacyEditPostViewController *editPostViewController = [[WPLegacyEditPostViewController alloc] initWithPost:apost];
+        navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
+        navController.restorationClass = [WPLegacyEditPostViewController class];
+    }
+    
+	[navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
+	navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+	[self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)viewPost:(AbstractPost *)apost
+{
+    if ([WPPostViewController isNewEditorEnabled]) {
+        WPPostViewController *postViewController = [[WPPostViewController alloc] initWithPost:apost
+                                                                                         mode:kWPPostViewControllerModePreview];
+        postViewController.restorationIdentifier = WPEditorNavigationRestorationID;
+        [self.navigationController pushViewController:postViewController animated:YES];
+    } else {
+        // In legacy mode, view means edit
+        WPLegacyEditPostViewController *editPostViewController = [[WPLegacyEditPostViewController alloc] initWithPost:apost];
+        editPostViewController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+        [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
+        navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+        [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
+    }
 }
 
 - (void)setBlog:(Blog *)blog {
     [super setBlog:blog];
+}
+
+- (void)updatePostFormats
+{    
+    if (!self.isSyncing && (!self.blog.postFormats || self.blog.postFormats.count <= 1)) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+        [blogService syncPostFormatsForBlog:self.blog success:nil failure:nil];
+    }
 }
 
 #pragma mark -

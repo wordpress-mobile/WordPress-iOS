@@ -1,15 +1,14 @@
 #import <UIKit/UIKit.h>
-#import "ReaderPost.h"
-#import "ReaderPostView.h"
-#import "ReaderCommentTableViewCell.h"
 
-@interface ReaderPostDetailViewController : UITableViewController<UITableViewDataSource, UITableViewDelegate, ReaderPostViewDelegate, ReaderCommentTableViewCellDelegate, NSFetchedResultsControllerDelegate>
-@property (nonatomic, strong) ReaderPost *post;
-@property (nonatomic, assign) BOOL showInlineActionBar;
+@class ReaderPost;
 
-- (id)initWithPost:(ReaderPost *)post featuredImage:(UIImage *)image avatarImage:(UIImage *)avatarImage;
-- (id)initWithPost:(ReaderPost *)post avatarImageURL:(NSURL *)avatarImageURL;
+@interface ReaderPostDetailViewController : UITableViewController
 
-- (void)updateFeaturedImage:(UIImage *)image;
+@property (nonatomic, strong, readonly) ReaderPost *post;
+
+- (void)setupWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID;
+
++ (instancetype)detailControllerWithPost:(ReaderPost *)post;
++ (instancetype)detailControllerWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID;
 
 @end

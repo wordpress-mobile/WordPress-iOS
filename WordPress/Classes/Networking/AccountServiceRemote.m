@@ -2,7 +2,8 @@
 #import <WordPressApi/WordPressApi.h>
 
 @implementation RemoteBlog
-- (NSString *)debugDescription {
+- (NSString *)debugDescription
+{
     NSDictionary *properties = @{
                                  @"ID": self.ID,
                                  @"title": self.title,

@@ -1,12 +1,20 @@
 #import <Foundation/Foundation.h>
 #import "LocalCoreDataService.h"
 
-@class Blog, WPAccount;
+@class Blog;
+@class WPAccount;
 
 @interface BlogService : NSObject <LocalCoreDataService>
 
+
+/**
+ Returns the blog that matches with a given blogID
+ */
 - (Blog *)blogByBlogId:(NSNumber *)blogID;
 
+/**
+ Stores the blog's URL in NSUserDefaults, for later retrieval
+ */
 - (void)flagBlogAsLastUsed:(Blog *)blog;
 
 /**
@@ -57,7 +65,6 @@
 - (void)syncPagesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
 - (void)syncCategoriesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)syncOptionsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)syncCommentsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)syncMediaLibraryForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)syncPostFormatsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure;
 
@@ -78,6 +85,13 @@
 - (NSInteger)blogCountVisibleForAllAccounts;
 
 - (NSArray *)blogsForAllAccounts;
+
+/*! Determine timezone for blog from blog options.  If no timezone information is stored on
+ *  the device, then assume GMT+0 is the default.
+ *  
+ *  \param blog     The blog/site to determine the timezone for.
+ */
+- (NSTimeZone *)timeZoneForBlog:(Blog *)blog;
 
 
 @end

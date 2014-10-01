@@ -1,11 +1,12 @@
 #import "EditPageViewController.h"
-#import "EditPostViewController_Internal.h"
+#import "WPPostViewController_Internal.h"
 #import "AbstractPost.h"
 #import "PageSettingsViewController.h"
 
 @implementation EditPageViewController
 
-- (NSString *)editorTitle {
+- (NSString *)editorTitle
+{
     NSString *title = @"";
     if (self.editMode == EditPostViewControllerModeNewPost) {
         title = NSLocalizedString(@"New Page", @"New Page Editor screen title.");
@@ -20,16 +21,19 @@
     return title;
 }
 
-- (void)didSaveNewPost {
+- (void)didSaveNewPost
+{
     // Noop.
     // The superclass triggers a tab switch with this method which we don't want for pages.
 }
 
-- (Class)classForSettingsViewController {
+- (Class)classForSettingsViewController
+{
     return [PageSettingsViewController class];
 }
 
-- (void)geotagNewPost {
+- (void)geotagNewPost
+{
     // Noop. Pages do not support geolocation.
 }
 

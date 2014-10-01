@@ -21,18 +21,17 @@ static NSString *const SourceFacebook = @"Facebook";
 
 @implementation WPFriendFinderViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    
-    [self loadURL:kMobileReaderFFURL];
-    
+
+    [self loadURL:WPMobileReaderFFURL];
+
     // register for a notification
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(facebookDidLogIn:) name:FacebookLoginNotificationName object:nil];
     [nc addObserver:self selector:@selector(facebookDidNotLogIn:) name:FacebookNoLoginNotificationName object:nil];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                           target:self
-                                                                                           action:@selector(dismissFriendFinder:)];
+
     self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.activityView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin;
     CGRect f1 = self.activityView.frame;
@@ -40,25 +39,23 @@ static NSString *const SourceFacebook = @"Facebook";
     f1.origin.x = (f2.size.width / 2.0f) - (f1.size.width / 2.0f);
     f1.origin.y = (f2.size.height / 2.0f) - (f1.size.height / 2.0f);
     self.activityView.frame = f1;
-    
+
     [self.view addSubview:self.activityView];
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     self.activityView = nil;
 }
 
-- (void)dismissFriendFinder:(id)sender {
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)configureFriendFinder:(id)config {
+- (void)configureFriendFinder:(id)config
+{
     NSDictionary *settings = (NSDictionary *)config;
     NSArray *sources = (NSArray *)[settings objectForKey:@"sources"];
-    
+
     NSMutableArray *available = [NSMutableArray arrayWithObjects:@"address-book", @"facebook", nil];
-    
+
     if ([sources containsObject:@"twitter"]){
         [available addObject:@"twitter"];
     }
@@ -68,17 +65,19 @@ static NSString *const SourceFacebook = @"Facebook";
     [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.enableSources(%@)", json]];
 }
 
-- (void)authorizeSource:(NSString *)source {
+- (void)authorizeSource:(NSString *)source
+{
     if ([source isEqualToString:@"address-book"]) {
         [self findEmails];
     } else if ([source isEqualToString:@"twitter"]) {
         [self findTwitterFriends];
-    } else if ([source isEqualToString:@"facebook"]){
+    } else if ([source isEqualToString:@"facebook"]) {
         [self findFacebookFriends];
     }
 }
 
-- (void)findEmails {
+- (void)findEmails
+{
     ABAddressBookRef addressBookForAccessCheck = ABAddressBookCreateWithOptions(NULL, NULL);
     if (addressBookForAccessCheck) {
         addressBookForAccessCheck = CFAutorelease(addressBookForAccessCheck);
@@ -119,19 +118,17 @@ static NSString *const SourceFacebook = @"Facebook";
     }
 }
 
-- (void)findTwitterFriends {
+- (void)findTwitterFriends
+{
     ACAccountStore *store = [[ACAccountStore alloc] init];
-    ACAccountType *twitterAccountType = 
+    ACAccountType *twitterAccountType =
     [store accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-    
+
     [store requestAccessToAccountsWithType:twitterAccountType options:nil completion:^(BOOL granted, NSError *error) {
-        
+
         if (granted) {
-            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                                    @"true", @"stringify_ids",
-                                    @"-1", @"cursor",
-                                    nil];
-            
+            NSDictionary *params = @{@"stringify_ids": @"true",
+                                     @"cursor": @"-1"};
             NSURL *followingURL = [NSURL URLWithString:@"https://api.twitter.com/1.1/friends/ids.json"];
             NSArray *twitterAccounts = [store accountsWithAccountType:twitterAccountType];
             if (twitterAccounts.count == 0) {
@@ -158,15 +155,18 @@ static NSString *const SourceFacebook = @"Facebook";
     }];
 }
 
-- (void)facebookDidLogIn:(NSNotification *)notification {
+- (void)facebookDidLogIn:(NSNotification *)notification
+{
     [self findFacebookFriends];
 }
 
-- (void)facebookDidNotLogIn:(NSNotification *)notification {
+- (void)facebookDidNotLogIn:(NSNotification *)notification
+{
     [self.webView stringByEvaluatingJavaScriptFromString:@"FriendFinder.findByFacebookID()"];
 }
 
-- (void)findFacebookFriends {
+- (void)findFacebookFriends
+{
     ACAccountStore *store = [[ACAccountStore alloc] init];
 
     NSDictionary *options = @{
@@ -186,7 +186,7 @@ static NSString *const SourceFacebook = @"Facebook";
                 request.account = account;
                 [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
                     NSDictionary *response = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
-                    if (response && [response isKindOfClass:[NSDictionary class]]) {
+                    if ([response isKindOfClass:[NSDictionary class]]) {
                         NSArray *friends = response[@"data"];
                         if (friends != nil) {
                             dispatch_async(dispatch_get_main_queue(), ^{
@@ -255,17 +255,20 @@ static NSString *const SourceFacebook = @"Facebook";
 
 #pragma mark - UIWebView Delegate Methods
 
-- (void)webViewDidStartLoad:(UIWebView *)webView {
+- (void)webViewDidStartLoad:(UIWebView *)webView
+{
     if ([[[webView stringByEvaluatingJavaScriptFromString:@"document.body.innerHTML.length"] numericValue] integerValue] == 0) {
         [self.activityView startAnimating];
     }
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
     [self.activityView stopAnimating];
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
     [self.activityView stopAnimating];
 }
 

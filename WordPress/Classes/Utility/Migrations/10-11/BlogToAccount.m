@@ -2,23 +2,23 @@
 #import <NSURL+IDN.h>
 #import "SFHFKeychainUtils.h"
 #import "WPAccount.h"
-
-static NSString * const DefaultDotcomAccountDefaultsKey = @"AccountDefaultDotcom";
-static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
+#import "Constants.h"
 
 @implementation BlogToAccount {
     NSString *_defaultWpcomUsername;
 }
 
-- (BOOL)beginEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
-	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
-	return YES;
+- (BOOL)beginEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error
+{
+    DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+    return YES;
 }
 
-- (BOOL)endEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
-	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+- (BOOL)endEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error
+{
+    DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 
-    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:WPComDefaultAccountUsernameKey];
     if (!username) {
         // There is no default WordPress.com account, nothing to do here
         return YES;
@@ -43,7 +43,8 @@ static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
         NSError *error;
         NSString *password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:oldKey error:&error];
         if (password) {
-            if ([SFHFKeychainUtils storeUsername:username andPassword:password forServiceName:newKey updateExisting:YES error:&error]) {
+            if ([SFHFKeychainUtils storeUsername:username andPassword:password 
+                                  forServiceName:newKey updateExisting:YES error:&error]) {
                 [SFHFKeychainUtils deleteItemForUsername:username andServiceName:oldKey error:&error];
             }
         }
@@ -53,15 +54,18 @@ static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
     }
 
     NSURL *accountURL = [[account objectID] URIRepresentation];
-    [[NSUserDefaults standardUserDefaults] setURL:accountURL forKey:DefaultDotcomAccountDefaultsKey];
+    [[NSUserDefaults standardUserDefaults] setURL:accountURL forKey:WPComDefaultAccountUrlKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-	return YES;
+    return YES;
 }
 
-- (BOOL)performCustomValidationForEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
-	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
-	return YES;
+- (BOOL)performCustomValidationForEntityMapping:(NSEntityMapping *)mapping
+                                        manager:(NSMigrationManager *)manager
+                                          error:(NSError **)error
+{
+    DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+    return YES;
 }
 
 - (BOOL)createDestinationInstancesForSourceInstance:(NSManagedObject *)source
@@ -69,9 +73,9 @@ static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
                                             manager:(NSMigrationManager *)manager
                                               error:(NSError **)error
 {
-	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+    DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 
-	NSManagedObjectContext *destMOC = [manager destinationContext];
+    NSManagedObjectContext *destMOC = [manager destinationContext];
     BOOL isWpcom = [self blogIsWpcom:source];
     NSString *xmlrpc = [source valueForKey:@"xmlrpc"];
     if (isWpcom) {
@@ -130,7 +134,7 @@ static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
                                           manager:(NSMigrationManager*)manager
                                             error:(NSError**)error
 {
-	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+    DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 
     NSArray *sourceBlogs = [manager sourceInstancesForEntityMappingNamed:@"BlogToAccount" destinationInstances:@[source]];
     NSArray *destBlogs = [manager destinationInstancesForEntityMappingNamed:@"BlogToBlog" sourceInstances:sourceBlogs];
@@ -142,29 +146,31 @@ static NSString * const WPComXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
 
 #pragma mark - Helpers
 
-- (BOOL)blogIsWpcom:(NSManagedObject *)blog {
+- (BOOL)blogIsWpcom:(NSManagedObject *)blog
+{
     NSDictionary *options = [blog valueForKey:@"options"];
-    if (options && [options count] > 0) {
+    if ([options count] > 0) {
         NSDictionary *option = [options dictionaryForKey:@"wordpress.com"];
         if ([[option numberForKey:@"value"] boolValue]) {
             return YES;
         }
     }
     NSRange range = [[blog valueForKey:@"xmlrpc"] rangeOfString:@"wordpress.com"];
-	return (range.location != NSNotFound);
+    return (range.location != NSNotFound);
 }
 
-- (NSString *)hostUrlForBlog:(NSManagedObject *)blog {
+- (NSString *)hostUrlForBlog:(NSManagedObject *)blog
+{
     NSString *url = [blog valueForKey:@"url"];
     NSError *error = nil;
     NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"http(s?)://" options:NSRegularExpressionCaseInsensitive error:&error];
     NSString *result = [NSString stringWithFormat:@"%@", [protocol stringByReplacingMatchesInString:[NSURL IDNDecodedHostname:url] options:0 range:NSMakeRange(0, [[NSURL IDNDecodedHostname:url] length]) withTemplate:@""]];
 
-    if([result hasSuffix:@"/"])
+    if ([result hasSuffix:@"/"]) {
         result = [result substringToIndex:[result length] - 1];
+    }
 
     return result;
 }
-
 
 @end

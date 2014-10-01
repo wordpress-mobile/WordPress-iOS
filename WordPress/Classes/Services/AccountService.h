@@ -98,5 +98,6 @@ extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
 
 - (void)syncBlogsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure;
 
+- (NSUInteger)numberOfAccounts;
 
 @end

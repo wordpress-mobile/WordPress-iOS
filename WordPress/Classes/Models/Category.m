@@ -1,8 +1,11 @@
 #import "Category.h"
 
 @implementation Category
-@dynamic categoryID, categoryName, parentID, posts;
-@dynamic blog;
 
+@dynamic categoryID;
+@dynamic categoryName;
+@dynamic parentID;
+@dynamic posts;
+@dynamic blog;
 
 @end

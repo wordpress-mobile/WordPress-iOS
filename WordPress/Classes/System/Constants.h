@@ -1,5 +1,21 @@
-static NSString *const kMobileReaderURL	= @"https://en.wordpress.com/reader/mobile/v2/?chrome=no";
-static NSString *const kMobileReaderDetailURL = @"https://en.wordpress.com/reader/mobile/v2/?template=details";
-static NSString *const kMobileReaderFFURL = @"https://en.wordpress.com/reader/mobile/v2/?template=friendfinder";
+#import <Foundation/Foundation.h>
 
-static NSString *const kXML_RPC_ERROR_OCCURS = @"kXML_RPC_ERROR_OCCURS";
+extern NSString *const WPMobileReaderURL;
+extern NSString *const WPMobileReaderDetailURL;
+extern NSString *const WPMobileReaderFFURL;
+
+extern NSString *const WPComXMLRPCUrl;
+extern NSString *const WPComDefaultAccountUrlKey;
+extern NSString *const WPComDefaultAccountUsernameKey;
+
+extern NSString *const WPNotificationsJetpackInformationURL;
+
+extern NSString *const WPAppGroupName;
+extern NSString *const WPStatsTodayWidgetOAuth2TokenKeychainUsername;
+extern NSString *const WPStatsTodayWidgetOAuth2TokenKeychainServiceName;
+extern NSString *const WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup;
+extern NSString *const WPStatsTodayWidgetUserDefaultsSiteIdKey;
+extern NSString *const WPStatsTodayWidgetUserDefaultsSiteNameKey;
+extern NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey;
+extern NSString *const WPStatsTodayWidgetUserDefaultsViewCountKey;
+extern NSString *const WPStatsTodayWidgetUserDefaultsVisitorCountKey;

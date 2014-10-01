@@ -13,6 +13,7 @@
 
 	// 3rd Party
     #import <AFNetworking/AFNetworking.h>
+	#import <CocoaLumberjack/DDLog.h>
     #import <NSObject+SafeExpectations.h>
     #import "DDLog.h"
 
@@ -20,7 +21,7 @@
     #import "NSString+Util.h"
     #import "WPError.h"
     #import "UIColor+Helpers.h"
-    #import "WPAnalytics.h"
+    #import <WordPressCom-Analytics-iOS/WPAnalytics.h>
     #import "WPStyleGuide.h"
 
 #ifndef IS_IPAD
@@ -31,6 +32,10 @@
 #endif
 #ifndef IS_RETINA
 #define IS_RETINA ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2)
+#endif
+
+#ifndef WIDGETS_EXIST
+#define WIDGETS_EXIST (NSClassFromString(@"NCWidgetController") != nil)
 #endif
 
 #define AssertSubclassMethod() NSAssert(NO, @"You must override %@ in a subclass", NSStringFromSelector(_cmd))

@@ -1,10 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "BlogServiceRemote.h"
+#import "ServiceRemoteREST.h"
 
-@class WordPressComApi;
-
-@interface BlogServiceRemoteREST : NSObject<BlogServiceRemote>
-
-- (id)initWithApi:(WordPressComApi *)api;
-
+@interface BlogServiceRemoteREST : NSObject<BlogServiceRemote, ServiceRemoteREST>
 @end

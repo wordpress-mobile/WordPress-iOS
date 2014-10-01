@@ -8,24 +8,35 @@ static const CGFloat CompressionQuality = 0.7;
 
 @implementation WPImageOptimizer (Private)
 
-- (NSData *)rawDataFromAssetRepresentation:(ALAssetRepresentation *)representation {
-    CGImageRef sourceImage = [self imageFromAssetRepresentation:representation];
+- (NSData *)rawDataFromAssetRepresentation:(ALAssetRepresentation *)representation
+{
+    CGImageRef sourceImage = [self newImageFromAssetRepresentation:representation];
     NSDictionary *metadata = representation.metadata;
     NSString *type = representation.UTI;
     NSData *optimizedData = [self dataWithImage:sourceImage compressionQuality:1.0  type:type andMetadata:metadata];
+
+    CGImageRelease(sourceImage);
+    sourceImage = nil;
+
     return optimizedData;
 }
 
-- (NSData *)optimizedDataFromAssetRepresentation:(ALAssetRepresentation *)representation {
-    CGImageRef sourceImage = [self imageFromAssetRepresentation:representation];
+- (NSData *)optimizedDataFromAssetRepresentation:(ALAssetRepresentation *)representation
+{
+    CGImageRef sourceImage = [self newImageFromAssetRepresentation:representation];
     CGImageRef resizedImage = [self resizedImageWithImage:sourceImage scale:representation.scale orientation:representation.orientation];
     NSDictionary *metadata = [self metadataFromRepresentation:representation];
     NSString *type = representation.UTI;
     NSData *optimizedData = [self dataWithImage:resizedImage compressionQuality:CompressionQuality type:type andMetadata:metadata];
+
+    CGImageRelease(sourceImage);
+    sourceImage = nil;
+
     return optimizedData;
 }
 
-- (CGImageRef)imageFromAssetRepresentation:(ALAssetRepresentation *)representation {
+- (CGImageRef)newImageFromAssetRepresentation:(ALAssetRepresentation *)representation
+{
     CGImageRef fullResolutionImage = CGImageRetain(representation.fullResolutionImage);
     NSString *adjustmentXMP = [representation.metadata objectForKey:@"AdjustmentXMP"];
 
@@ -37,12 +48,10 @@ static const CGFloat CompressionQuality = 0.7;
     if (adjustmentXMPData) {
         filters = [CIFilter filterArrayFromSerializedXMP:adjustmentXMPData inputImageExtent:extend error:&error];
     }
-    if (filters)
-    {
+    if (filters) {
         CIImage *image = [CIImage imageWithCGImage:fullResolutionImage];
         CIContext *context = [CIContext contextWithOptions:nil];
-        for (CIFilter *filter in filters)
-        {
+        for (CIFilter *filter in filters) {
             [filter setValue:image forKey:kCIInputImageKey];
             image = [filter outputImage];
         }
@@ -53,7 +62,8 @@ static const CGFloat CompressionQuality = 0.7;
     return fullResolutionImage;
 }
 
-- (CGImageRef)resizedImageWithImage:(CGImageRef)image scale:(CGFloat)scale orientation:(UIImageOrientation)orientation {
+- (CGImageRef)resizedImageWithImage:(CGImageRef)image scale:(CGFloat)scale orientation:(UIImageOrientation)orientation
+{
     UIImage *originalImage = [UIImage imageWithCGImage:image scale:scale orientation:orientation];
     CGSize originalSize = originalImage.size;
     CGSize newSize = [self sizeWithinLimitsForSize:originalSize];
@@ -63,14 +73,16 @@ static const CGFloat CompressionQuality = 0.7;
     return resizedImage.CGImage;
 }
 
-- (CGSize)sizeWithinLimitsForSize:(CGSize)originalSize {
+- (CGSize)sizeWithinLimitsForSize:(CGSize)originalSize
+{
     CGFloat widthRatio = MIN(SizeLimit.width, originalSize.width) / originalSize.width;
     CGFloat heightRatio = MIN(SizeLimit.height, originalSize.height) / originalSize.height;
     CGFloat ratio = MIN(widthRatio, heightRatio);
     return CGSizeMake(round(ratio * originalSize.width), round(ratio * originalSize.height));
 }
 
-- (NSDictionary *)metadataFromRepresentation:(ALAssetRepresentation *)representation {
+- (NSDictionary *)metadataFromRepresentation:(ALAssetRepresentation *)representation
+{
     NSString * const orientationKey = @"Orientation";
     NSString * const xmpKey = @"AdjustmentXMP";
     NSString * const tiffKey = @"{TIFF}";
@@ -92,7 +104,11 @@ static const CGFloat CompressionQuality = 0.7;
     return [NSDictionary dictionaryWithDictionary:metadata];
 }
 
-- (NSData *)dataWithImage:(CGImageRef)image compressionQuality:(CGFloat)quality type:(NSString *)type andMetadata:(NSDictionary *)metadata {
+- (NSData *)dataWithImage:(CGImageRef)image
+       compressionQuality:(CGFloat)quality 
+                     type:(NSString *)type
+              andMetadata:(NSDictionary *)metadata
+{
     NSMutableData *destinationData = [NSMutableData data];
 
     NSDictionary *properties = @{(__bridge NSString *)kCGImageDestinationLossyCompressionQuality: @(quality)};
