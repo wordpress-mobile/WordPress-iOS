@@ -772,94 +772,12 @@ fi
 				</array>
 				<key>OTHER_LDFLAGS</key>
 				<array>
+					<string>$(inherited)</string>
 					<string>-ObjC</string>
-					<string>-l"Helpshift"</string>
-					<string>-l"Pods-AFNetworking"</string>
-					<string>-l"Pods-CTAssetsPickerController"</string>
-					<string>-l"Pods-CocoaLumberjack"</string>
-					<string>-l"Pods-CrashlyticsLumberjack"</string>
-					<string>-l"Pods-DTCoreText"</string>
-					<string>-l"Pods-DTFoundation"</string>
-					<string>-l"Pods-EmailChecker"</string>
-					<string>-l"Pods-Google-Diff-Match-Patch"</string>
-					<string>-l"Pods-Helpshift"</string>
-					<string>-l"Pods-HockeySDK"</string>
-					<string>-l"Pods-JRSwizzle"</string>
-					<string>-l"Pods-MGImageUtilities"</string>
-					<string>-l"Pods-Mixpanel"</string>
-					<string>-l"Pods-NSLogger"</string>
-					<string>-l"Pods-NSLogger-CocoaLumberjack-connector"</string>
-					<string>-l"Pods-NSObject-SafeExpectations"</string>
-					<string>-l"Pods-NSURL+IDN"</string>
-					<string>-l"Pods-Reachability"</string>
-					<string>-l"Pods-SVProgressHUD"</string>
-					<string>-l"Pods-Simperium"</string>
-					<string>-l"Pods-SocketRocket"</string>
-					<string>-l"Pods-Taplytics"</string>
-					<string>-l"Pods-UIAlertView+Blocks"</string>
-					<string>-l"Pods-UIDeviceIdentifier"</string>
-					<string>-l"Pods-WordPress-iOS-Editor"</string>
-					<string>-l"Pods-WordPress-iOS-Shared"</string>
-					<string>-l"Pods-WordPressApi"</string>
-					<string>-l"Pods-WordPressCom-Analytics-iOS"</string>
-					<string>-l"Pods-WordPressCom-Stats-iOS"</string>
-					<string>-l"Pods-google-plus-ios-sdk"</string>
-					<string>-l"Pods-wpxmlrpc"</string>
 					<string>-l"c++"</string>
 					<string>-l"iconv"</string>
-					<string>-l"icucore"</string>
 					<string>-l"sqlite3.0"</string>
-					<string>-l"xml2"</string>
 					<string>-l"z"</string>
-					<string>-framework</string>
-					<string>"Accelerate"</string>
-					<string>-framework</string>
-					<string>"AddressBook"</string>
-					<string>-framework</string>
-					<string>"AssetsLibrary"</string>
-					<string>-framework</string>
-					<string>"CFNetwork"</string>
-					<string>-framework</string>
-					<string>"CoreData"</string>
-					<string>-framework</string>
-					<string>"CoreGraphics"</string>
-					<string>-framework</string>
-					<string>"CoreLocation"</string>
-					<string>-framework</string>
-					<string>"CoreMotion"</string>
-					<string>-framework</string>
-					<string>"CoreTelephony"</string>
-					<string>-framework</string>
-					<string>"CoreText"</string>
-					<string>-framework</string>
-					<string>"CrashReporter"</string>
-					<string>-framework</string>
-					<string>"Crashlytics"</string>
-					<string>-framework</string>
-					<string>"Foundation"</string>
-					<string>-framework</string>
-					<string>"GoogleOpenSource"</string>
-					<string>-framework</string>
-					<string>"GooglePlus"</string>
-					<string>-framework</string>
-					<string>"ImageIO"</string>
-					<string>-framework</string>
-					<string>"MediaPlayer"</string>
-					<string>-framework</string>
-					<string>"MobileCoreServices"</string>
-					<string>-framework</string>
-					<string>"QuartzCore"</string>
-					<string>-framework</string>
-					<string>"Security"</string>
-					<string>-framework</string>
-					<string>"SystemConfiguration"</string>
-					<string>-framework</string>
-					<string>"Taplytics"</string>
-					<string>-framework</string>
-					<string>"UIKit"</string>
-					<string>-weak_framework</string>
-					<string>"AdSupport"</string>
-					<string>$(inherited)</string>
 				</array>
 				<key>PRODUCT_NAME</key>
 				<string>WordPress</string>
@@ -940,94 +858,12 @@ fi
 				</array>
 				<key>OTHER_LDFLAGS</key>
 				<array>
+					<string>$(inherited)</string>
 					<string>-ObjC</string>
-					<string>-l"Helpshift"</string>
-					<string>-l"Pods-AFNetworking"</string>
-					<string>-l"Pods-CTAssetsPickerController"</string>
-					<string>-l"Pods-CocoaLumberjack"</string>
-					<string>-l"Pods-CrashlyticsLumberjack"</string>
-					<string>-l"Pods-DTCoreText"</string>
-					<string>-l"Pods-DTFoundation"</string>
-					<string>-l"Pods-EmailChecker"</string>
-					<string>-l"Pods-Google-Diff-Match-Patch"</string>
-					<string>-l"Pods-Helpshift"</string>
-					<string>-l"Pods-HockeySDK"</string>
-					<string>-l"Pods-JRSwizzle"</string>
-					<string>-l"Pods-MGImageUtilities"</string>
-					<string>-l"Pods-Mixpanel"</string>
-					<string>-l"Pods-NSLogger"</string>
-					<string>-l"Pods-NSLogger-CocoaLumberjack-connector"</string>
-					<string>-l"Pods-NSObject-SafeExpectations"</string>
-					<string>-l"Pods-NSURL+IDN"</string>
-					<string>-l"Pods-Reachability"</string>
-					<string>-l"Pods-SVProgressHUD"</string>
-					<string>-l"Pods-Simperium"</string>
-					<string>-l"Pods-SocketRocket"</string>
-					<string>-l"Pods-Taplytics"</string>
-					<string>-l"Pods-UIAlertView+Blocks"</string>
-					<string>-l"Pods-UIDeviceIdentifier"</string>
-					<string>-l"Pods-WordPress-iOS-Editor"</string>
-					<string>-l"Pods-WordPress-iOS-Shared"</string>
-					<string>-l"Pods-WordPressApi"</string>
-					<string>-l"Pods-WordPressCom-Analytics-iOS"</string>
-					<string>-l"Pods-WordPressCom-Stats-iOS"</string>
-					<string>-l"Pods-google-plus-ios-sdk"</string>
-					<string>-l"Pods-wpxmlrpc"</string>
 					<string>-l"c++"</string>
 					<string>-l"iconv"</string>
-					<string>-l"icucore"</string>
 					<string>-l"sqlite3.0"</string>
-					<string>-l"xml2"</string>
 					<string>-l"z"</string>
-					<string>-framework</string>
-					<string>"Accelerate"</string>
-					<string>-framework</string>
-					<string>"AddressBook"</string>
-					<string>-framework</string>
-					<string>"AssetsLibrary"</string>
-					<string>-framework</string>
-					<string>"CFNetwork"</string>
-					<string>-framework</string>
-					<string>"CoreData"</string>
-					<string>-framework</string>
-					<string>"CoreGraphics"</string>
-					<string>-framework</string>
-					<string>"CoreLocation"</string>
-					<string>-framework</string>
-					<string>"CoreMotion"</string>
-					<string>-framework</string>
-					<string>"CoreTelephony"</string>
-					<string>-framework</string>
-					<string>"CoreText"</string>
-					<string>-framework</string>
-					<string>"CrashReporter"</string>
-					<string>-framework</string>
-					<string>"Crashlytics"</string>
-					<string>-framework</string>
-					<string>"Foundation"</string>
-					<string>-framework</string>
-					<string>"GoogleOpenSource"</string>
-					<string>-framework</string>
-					<string>"GooglePlus"</string>
-					<string>-framework</string>
-					<string>"ImageIO"</string>
-					<string>-framework</string>
-					<string>"MediaPlayer"</string>
-					<string>-framework</string>
-					<string>"MobileCoreServices"</string>
-					<string>-framework</string>
-					<string>"QuartzCore"</string>
-					<string>-framework</string>
-					<string>"Security"</string>
-					<string>-framework</string>
-					<string>"SystemConfiguration"</string>
-					<string>-framework</string>
-					<string>"Taplytics"</string>
-					<string>-framework</string>
-					<string>"UIKit"</string>
-					<string>-weak_framework</string>
-					<string>"AdSupport"</string>
-					<string>$(inherited)</string>
 				</array>
 				<key>PRODUCT_NAME</key>
 				<string>WordPress</string>
@@ -1619,94 +1455,12 @@ fi
 				</array>
 				<key>OTHER_LDFLAGS</key>
 				<array>
+					<string>$(inherited)</string>
 					<string>-ObjC</string>
-					<string>-l"Helpshift"</string>
-					<string>-l"Pods-AFNetworking"</string>
-					<string>-l"Pods-CTAssetsPickerController"</string>
-					<string>-l"Pods-CocoaLumberjack"</string>
-					<string>-l"Pods-CrashlyticsLumberjack"</string>
-					<string>-l"Pods-DTCoreText"</string>
-					<string>-l"Pods-DTFoundation"</string>
-					<string>-l"Pods-EmailChecker"</string>
-					<string>-l"Pods-Google-Diff-Match-Patch"</string>
-					<string>-l"Pods-Helpshift"</string>
-					<string>-l"Pods-HockeySDK"</string>
-					<string>-l"Pods-JRSwizzle"</string>
-					<string>-l"Pods-MGImageUtilities"</string>
-					<string>-l"Pods-Mixpanel"</string>
-					<string>-l"Pods-NSLogger"</string>
-					<string>-l"Pods-NSLogger-CocoaLumberjack-connector"</string>
-					<string>-l"Pods-NSObject-SafeExpectations"</string>
-					<string>-l"Pods-NSURL+IDN"</string>
-					<string>-l"Pods-Reachability"</string>
-					<string>-l"Pods-SVProgressHUD"</string>
-					<string>-l"Pods-Simperium"</string>
-					<string>-l"Pods-SocketRocket"</string>
-					<string>-l"Pods-Taplytics"</string>
-					<string>-l"Pods-UIAlertView+Blocks"</string>
-					<string>-l"Pods-UIDeviceIdentifier"</string>
-					<string>-l"Pods-WordPress-iOS-Editor"</string>
-					<string>-l"Pods-WordPress-iOS-Shared"</string>
-					<string>-l"Pods-WordPressApi"</string>
-					<string>-l"Pods-WordPressCom-Analytics-iOS"</string>
-					<string>-l"Pods-WordPressCom-Stats-iOS"</string>
-					<string>-l"Pods-google-plus-ios-sdk"</string>
-					<string>-l"Pods-wpxmlrpc"</string>
 					<string>-l"c++"</string>
 					<string>-l"iconv"</string>
-					<string>-l"icucore"</string>
 					<string>-l"sqlite3.0"</string>
-					<string>-l"xml2"</string>
 					<string>-l"z"</string>
-					<string>-framework</string>
-					<string>"Accelerate"</string>
-					<string>-framework</string>
-					<string>"AddressBook"</string>
-					<string>-framework</string>
-					<string>"AssetsLibrary"</string>
-					<string>-framework</string>
-					<string>"CFNetwork"</string>
-					<string>-framework</string>
-					<string>"CoreData"</string>
-					<string>-framework</string>
-					<string>"CoreGraphics"</string>
-					<string>-framework</string>
-					<string>"CoreLocation"</string>
-					<string>-framework</string>
-					<string>"CoreMotion"</string>
-					<string>-framework</string>
-					<string>"CoreTelephony"</string>
-					<string>-framework</string>
-					<string>"CoreText"</string>
-					<string>-framework</string>
-					<string>"CrashReporter"</string>
-					<string>-framework</string>
-					<string>"Crashlytics"</string>
-					<string>-framework</string>
-					<string>"Foundation"</string>
-					<string>-framework</string>
-					<string>"GoogleOpenSource"</string>
-					<string>-framework</string>
-					<string>"GooglePlus"</string>
-					<string>-framework</string>
-					<string>"ImageIO"</string>
-					<string>-framework</string>
-					<string>"MediaPlayer"</string>
-					<string>-framework</string>
-					<string>"MobileCoreServices"</string>
-					<string>-framework</string>
-					<string>"QuartzCore"</string>
-					<string>-framework</string>
-					<string>"Security"</string>
-					<string>-framework</string>
-					<string>"SystemConfiguration"</string>
-					<string>-framework</string>
-					<string>"Taplytics"</string>
-					<string>-framework</string>
-					<string>"UIKit"</string>
-					<string>-weak_framework</string>
-					<string>"AdSupport"</string>
-					<string>$(inherited)</string>
 				</array>
 				<key>PRODUCT_NAME</key>
 				<string>WordPress</string>
@@ -8820,94 +8574,12 @@ fi
 				</array>
 				<key>OTHER_LDFLAGS</key>
 				<array>
+					<string>$(inherited)</string>
 					<string>-ObjC</string>
-					<string>-l"Helpshift"</string>
-					<string>-l"Pods-AFNetworking"</string>
-					<string>-l"Pods-CTAssetsPickerController"</string>
-					<string>-l"Pods-CocoaLumberjack"</string>
-					<string>-l"Pods-CrashlyticsLumberjack"</string>
-					<string>-l"Pods-DTCoreText"</string>
-					<string>-l"Pods-DTFoundation"</string>
-					<string>-l"Pods-EmailChecker"</string>
-					<string>-l"Pods-Google-Diff-Match-Patch"</string>
-					<string>-l"Pods-Helpshift"</string>
-					<string>-l"Pods-HockeySDK"</string>
-					<string>-l"Pods-JRSwizzle"</string>
-					<string>-l"Pods-MGImageUtilities"</string>
-					<string>-l"Pods-Mixpanel"</string>
-					<string>-l"Pods-NSLogger"</string>
-					<string>-l"Pods-NSLogger-CocoaLumberjack-connector"</string>
-					<string>-l"Pods-NSObject-SafeExpectations"</string>
-					<string>-l"Pods-NSURL+IDN"</string>
-					<string>-l"Pods-Reachability"</string>
-					<string>-l"Pods-SVProgressHUD"</string>
-					<string>-l"Pods-Simperium"</string>
-					<string>-l"Pods-SocketRocket"</string>
-					<string>-l"Pods-Taplytics"</string>
-					<string>-l"Pods-UIAlertView+Blocks"</string>
-					<string>-l"Pods-UIDeviceIdentifier"</string>
-					<string>-l"Pods-WordPress-iOS-Editor"</string>
-					<string>-l"Pods-WordPress-iOS-Shared"</string>
-					<string>-l"Pods-WordPressApi"</string>
-					<string>-l"Pods-WordPressCom-Analytics-iOS"</string>
-					<string>-l"Pods-WordPressCom-Stats-iOS"</string>
-					<string>-l"Pods-google-plus-ios-sdk"</string>
-					<string>-l"Pods-wpxmlrpc"</string>
 					<string>-l"c++"</string>
 					<string>-l"iconv"</string>
-					<string>-l"icucore"</string>
 					<string>-l"sqlite3.0"</string>
-					<string>-l"xml2"</string>
 					<string>-l"z"</string>
-					<string>-framework</string>
-					<string>"Accelerate"</string>
-					<string>-framework</string>
-					<string>"AddressBook"</string>
-					<string>-framework</string>
-					<string>"AssetsLibrary"</string>
-					<string>-framework</string>
-					<string>"CFNetwork"</string>
-					<string>-framework</string>
-					<string>"CoreData"</string>
-					<string>-framework</string>
-					<string>"CoreGraphics"</string>
-					<string>-framework</string>
-					<string>"CoreLocation"</string>
-					<string>-framework</string>
-					<string>"CoreMotion"</string>
-					<string>-framework</string>
-					<string>"CoreTelephony"</string>
-					<string>-framework</string>
-					<string>"CoreText"</string>
-					<string>-framework</string>
-					<string>"CrashReporter"</string>
-					<string>-framework</string>
-					<string>"Crashlytics"</string>
-					<string>-framework</string>
-					<string>"Foundation"</string>
-					<string>-framework</string>
-					<string>"GoogleOpenSource"</string>
-					<string>-framework</string>
-					<string>"GooglePlus"</string>
-					<string>-framework</string>
-					<string>"ImageIO"</string>
-					<string>-framework</string>
-					<string>"MediaPlayer"</string>
-					<string>-framework</string>
-					<string>"MobileCoreServices"</string>
-					<string>-framework</string>
-					<string>"QuartzCore"</string>
-					<string>-framework</string>
-					<string>"Security"</string>
-					<string>-framework</string>
-					<string>"SystemConfiguration"</string>
-					<string>-framework</string>
-					<string>"Taplytics"</string>
-					<string>-framework</string>
-					<string>"UIKit"</string>
-					<string>-weak_framework</string>
-					<string>"AdSupport"</string>
-					<string>$(inherited)</string>
 				</array>
 				<key>PRODUCT_NAME</key>
 				<string>WordPress</string>
