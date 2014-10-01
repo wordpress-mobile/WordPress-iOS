@@ -2,7 +2,7 @@
 
 @class Comment;
 
-@interface ACommentViewController : UITableViewController
+@interface ACommentViewController : UIViewController
 
 @property (nonatomic, strong) Comment *comment;
 

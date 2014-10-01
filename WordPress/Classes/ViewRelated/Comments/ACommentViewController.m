@@ -18,10 +18,14 @@ static NSString *const CVCCommentCellIdentifier = @"CommentTableViewCell";
 static NSInteger const CVCHeaderSectionIndex = 0;
 static NSInteger const CVCSectionSeparatorHeight = 10;
 
-@interface ACommentViewController ()
+@interface ACommentViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
+
+@property (nonatomic, strong) UITableView *tableView;
 
 @property (nonatomic, strong) NoteBlockHeaderTableViewCell *headerLayoutCell;
 @property (nonatomic, strong) CommentTableViewCell *bodyLayoutCell;
+
+@property (nonatomic, strong) ReplyTextView *replyTextView;
 
 @property (nonatomic, strong) CommentService *commentService;
 
@@ -33,12 +37,86 @@ static NSInteger const CVCSectionSeparatorHeight = 10;
 {
     [super loadView];
 
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+    self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.estimatedRowHeight = 44.0;
+    [self.tableView addGestureRecognizer:[[UITapGestureRecognizer alloc]
+                                          initWithTarget:self
+                                          action:@selector(dismissKeyboardIfNeeded:)]];
+    [self.view addSubview:self.tableView];
+
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+
     UINib *headerCellNib = [UINib nibWithNibName:@"CommentTableViewHeaderCell" bundle:nil];
     UINib *bodyCellNib = [UINib nibWithNibName:@"CommentTableViewCell" bundle:nil];
     [self.tableView registerNib:headerCellNib forCellReuseIdentifier:CVCHeaderCellIdentifier];
     [self.tableView registerNib:bodyCellNib forCellReuseIdentifier:CVCCommentCellIdentifier];
     self.headerLayoutCell = [self.tableView dequeueReusableCellWithIdentifier:CVCHeaderCellIdentifier];
     self.bodyLayoutCell = [self.tableView dequeueReusableCellWithIdentifier:CVCCommentCellIdentifier];
+
+    [self attachReplyViewIfNeeded];
+
+    [self setupAutolayoutConstraints];
+}
+
+- (void)attachReplyViewIfNeeded
+{
+    if (![self shouldAttachReplyTextView]) {
+        return;
+    }
+
+    __typeof(self) __weak weakSelf = self;
+
+    ReplyTextView *replyTextView = [[ReplyTextView alloc] initWithWidth:CGRectGetWidth(self.view.frame)];
+    replyTextView.placeholder = NSLocalizedString(@"Write a reply…", @"Placeholder text for inline compose view");
+    replyTextView.replyText = [NSLocalizedString(@"Reply", @"") uppercaseString];
+    replyTextView.onReply = ^(NSString *content) {
+        [weakSelf sendReplyWithNewContent:content];
+    };
+    replyTextView.delegate = self;
+    self.replyTextView = replyTextView;
+    [self.view addSubview:self.replyTextView];
+}
+
+- (void)setupAutolayoutConstraints
+{
+    NSDictionary *views = @{@"tableView": self.tableView, @"replyTextView": self.replyTextView};
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[tableView]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:views]];
+    if ([self shouldAttachReplyTextView]) {
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tableView][replyTextView]|"
+                                                                          options:0
+                                                                          metrics:nil
+                                                                            views:views]];
+    }
+    else {
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tableView]|"
+                                                                          options:0
+                                                                          metrics:nil
+                                                                            views:views]];
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [nc addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    [self.replyTextView resignFirstResponder];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Table view data source
@@ -383,6 +461,70 @@ static NSInteger const CVCSectionSeparatorHeight = 10;
         _commentService = [[CommentService alloc] initWithManagedObjectContext:context];
     }
     return _commentService;
+}
+
+#pragma mark - Keyboard Management
+
+- (void)handleKeyboardWillShow:(NSNotification *)notification
+{
+    NSDictionary* userInfo = notification.userInfo;
+
+    // Convert the rect to view coordinates: enforce the current orientation!
+    CGRect kbRect = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    kbRect = [self.view convertRect:kbRect fromView:nil];
+
+    // Bottom Inset: Consider the tab bar!
+    CGRect viewFrame = self.view.frame;
+    CGFloat bottomInset = CGRectGetHeight(kbRect) - (CGRectGetMaxY(kbRect) - CGRectGetHeight(viewFrame));
+
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
+    [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
+
+    [self.view updateConstraintWithFirstItem:self.view
+                                  secondItem:self.replyTextView
+                          firstItemAttribute:NSLayoutAttributeBottom
+                         secondItemAttribute:NSLayoutAttributeBottom
+                                    constant:bottomInset];
+
+    [self.view layoutIfNeeded];
+
+    [UIView commitAnimations];
+}
+
+- (void)handleKeyboardWillHide:(NSNotification *)notification
+{
+    NSDictionary* userInfo = notification.userInfo;
+
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
+    [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
+
+    [self.view updateConstraintWithFirstItem:self.view
+                                  secondItem:self.replyTextView
+                          firstItemAttribute:NSLayoutAttributeBottom
+                         secondItemAttribute:NSLayoutAttributeBottom
+                                    constant:0];
+
+    [self.view layoutIfNeeded];
+
+    [UIView commitAnimations];
+}
+
+#pragma mark - Gestures Recognizer Delegate
+
+- (void)dismissKeyboardIfNeeded:(id)sender
+{
+    // Dismiss the reply field when tapping on the tableView
+    [self.view endEditing:YES];
+}
+
+#pragma mark - Helpers
+
+- (BOOL)shouldAttachReplyTextView
+{
+    // iPad: We've got a different UI!
+    return !([UIDevice isPad]);
 }
 
 @end

@@ -116,7 +116,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
         self.currentIndexPath = indexPath;
         self.lastSelectedCommentID = comment.commentID; //store the latest user selection
 
-        ACommentViewController *vc = [[ACommentViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        ACommentViewController *vc = [ACommentViewController new];
         vc.comment = comment;
         [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
 
