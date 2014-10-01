@@ -203,16 +203,35 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     // Kick this off on a background thread so as to not slow down the app initialization
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         if ([WordPressComApiCredentials lookbackToken].length > 0) {
-            [Lookback_Weak setupWithAppToken:[WordPressComApiCredentials lookbackToken]];
-            [Lookback_Weak lookback].shakeToRecord = YES;
+            [Lookback setupWithAppToken:[WordPressComApiCredentials lookbackToken]];
+            
+            // Setup Lookback to fire when the user holds down with three fingers for around 3 seconds
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(lookbackGestureRecognized:)];
+                recognizer.minimumPressDuration = 3;
+                recognizer.cancelsTouchesInView = NO;
+#if TARGET_IPHONE_SIMULATOR
+                recognizer.numberOfTouchesRequired = 2;
+#else
+                recognizer.numberOfTouchesRequired = 3;
+#endif
+                [[UIApplication sharedApplication].keyWindow addGestureRecognizer:recognizer];
+            });
             
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
             AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
             WPAccount *account = [accountService defaultWordPressComAccount];
-            [Lookback_Weak lookback].userIdentifier = account.username;
+            [Lookback lookback].userIdentifier = account.username;
         }
     });
 #endif
+}
+
+- (void)lookbackGestureRecognized:(UILongPressGestureRecognizer *)sender
+{
+    if (sender.state == UIGestureRecognizerStateBegan) {
+        [LookbackRecordingViewController presentOntoScreenAnimated:YES];
+    }
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
