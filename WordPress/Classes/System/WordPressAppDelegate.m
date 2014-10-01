@@ -10,6 +10,7 @@
 #import <Simperium/Simperium.h>
 #import <Helpshift/Helpshift.h>
 #import <Taplytics/Taplytics.h>
+#import <Lookback/Lookback.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
 
 #import "WordPressAppDelegate.h"
@@ -191,8 +192,27 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 
     [self.window makeKeyAndVisible];
     [self showWelcomeScreenIfNeededAnimated:NO];
+    [self setupLookback];
 
     return YES;
+}
+
+- (void)setupLookback
+{
+#if defined(DEBUG) || defined(INTERNAL_BETA)
+    // Kick this off on a background thread so as to not slow down the app initialization
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        if ([WordPressComApiCredentials lookbackToken].length > 0) {
+            [Lookback_Weak setupWithAppToken:[WordPressComApiCredentials lookbackToken]];
+            [Lookback_Weak lookback].shakeToRecord = YES;
+            
+            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+            WPAccount *account = [accountService defaultWordPressComAccount];
+            [Lookback_Weak lookback].userIdentifier = account.username;
+        }
+    });
+#endif
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
