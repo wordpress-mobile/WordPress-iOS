@@ -285,7 +285,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     // Topics button
     UIImage *image = [UIImage imageNamed:@"icon-reader-topics"];
     CustomHighlightButton *topicsButton = [CustomHighlightButton buttonWithType:UIButtonTypeCustom];
-    topicsButton.tintColor = [UIColor colorWithWhite:1.0 alpha:0.5];
+    topicsButton.tintColor = [WPStyleGuide navbarButtonTintColor];
     [topicsButton setImage:image forState:UIControlStateNormal];
     topicsButton.frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
     [topicsButton addTarget:self action:@selector(topicsAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -629,7 +629,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
     [self updateTitle];
 
-    [self.tableView setContentOffset:CGPointMake(0, 0) animated:NO];
+    [self.tableView setContentOffset:CGPointZero animated:NO];
 
     [self.tableViewHandler clearCachedRowHeights];
     [self updateAndPerformFetchRequest];
