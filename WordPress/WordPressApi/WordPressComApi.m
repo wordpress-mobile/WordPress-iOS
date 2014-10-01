@@ -93,10 +93,10 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     [operation setCompletionBlockWithSuccess:success failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSError *newError = error;
         if (operation.response.statusCode >= 400) {
-            NSString *errorMessage = [operation.responseObject objectForKey:@"message"];
+            NSString *errorMessage = [operation.responseObject stringForKey:@"message"];
             NSUInteger errorCode = WordPressComApiErrorJSON;
             if ([operation.responseObject objectForKey:@"error"] && errorMessage) {
-                NSString *errorString = [operation.responseObject objectForKey:@"error"];
+                NSString *errorString = [operation.responseObject stringForKey:@"error"];
                 if ([errorString isEqualToString:@"invalid_token"]) {
                     errorCode = WordPressComApiErrorInvalidToken;
                 } else if ([errorString isEqualToString:@"authorization_required"]) {

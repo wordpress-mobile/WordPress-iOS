@@ -16,7 +16,7 @@ extern NSString * const ReaderPostServiceErrorDomain;
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 - (void)fetchPostsForTopic:(ReaderTopic *)topic
-                   success:(void (^)(BOOL hasMore))success
+                   success:(void (^)(NSInteger count))success
                    failure:(void (^)(NSError *error))failure;
 
 /**
@@ -29,7 +29,7 @@ extern NSString * const ReaderPostServiceErrorDomain;
  */
 - (void)fetchPostsForTopic:(ReaderTopic *)topic
                earlierThan:(NSDate *)date
-                   success:(void (^)(BOOL hasMore))success
+                   success:(void (^)(NSInteger count))success
                    failure:(void (^)(NSError *error))failure;
 
 /**
@@ -53,7 +53,7 @@ extern NSString * const ReaderPostServiceErrorDomain;
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 - (void)backfillPostsForTopic:(ReaderTopic *)topic
-                      success:(void (^)(BOOL hasMore))success
+                      success:(void (^)(NSInteger count))success
                       failure:(void (^)(NSError *error))failure;
 
 /**
