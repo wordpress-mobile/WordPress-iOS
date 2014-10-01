@@ -3,6 +3,8 @@
 #import "ReachabilityUtils.h"
 #import "AFHTTPRequestOperation.h"
 #import "WordPressAppDelegate.h"
+#import "UIColor+HTML.h"
+#import <WPStyleGuide.h>
 
 NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequestNotification";
 
@@ -139,8 +141,9 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     self.webView = [[UIWebView alloc] initWithFrame:frame];
     webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     webView.scalesPageToFit = YES;
-    webView.backgroundColor = [UIColor colorWithHue:0.0 saturation:0.0 brightness:0.95 alpha:1.0];
-    [webView stringByEvaluatingJavaScriptFromString:@"document.body.style.background = '#F2F2F2';"];
+    webView.backgroundColor = [UIColor colorWithHue:0.0 saturation:0.0 brightness:1.0 alpha:1.0];
+    NSString *hex = [NSString stringWithFormat:@"document.body.style.background = '#%@';", [[WPStyleGuide itsEverywhereGrey] colorToHexString] ];
+    [webView stringByEvaluatingJavaScriptFromString:hex];
 
     [self addSubview:webView];
     webView.delegate = self;
