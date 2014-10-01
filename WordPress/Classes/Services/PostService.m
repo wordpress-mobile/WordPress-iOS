@@ -346,7 +346,7 @@ NSString * const PostServiceTypeAny = @"any";
             latitudeDictionary[@"id"] = [post.latitudeID numericValue];
         }
         if (c) {
-            latitudeDictionary[@"name"] = @"geo_latitude";
+            latitudeDictionary[@"key"] = @"geo_latitude";
             latitudeDictionary[@"value"] = @(c.latitude);
         }
         [metadata addObject:latitudeDictionary];
@@ -357,7 +357,7 @@ NSString * const PostServiceTypeAny = @"any";
             longitudeDictionary[@"id"] = [post.longitudeID numericValue];
         }
         if (c) {
-            longitudeDictionary[@"name"] = @"geo_longitude";
+            longitudeDictionary[@"key"] = @"geo_longitude";
             longitudeDictionary[@"value"] = @(c.longitude);
         }
         [metadata addObject:longitudeDictionary];
@@ -368,7 +368,7 @@ NSString * const PostServiceTypeAny = @"any";
             publicDictionary[@"id"] = [post.publicID numericValue];
         }
         if (c) {
-            publicDictionary[@"name"] = @"geo_public";
+            publicDictionary[@"key"] = @"geo_public";
             publicDictionary[@"value"] = @1;
         }
         [metadata addObject:publicDictionary];
