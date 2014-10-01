@@ -33,7 +33,7 @@ NSString *const kWPEditorConfigURLParamAvailable = @"available";
 NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 
 static NSInteger const MaximumNumberOfPictures = 5;
-
+static CGFloat const kNavigationBarButtonSpacer = 15.0;
 static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 
 @interface WPPostViewController ()<UIPopoverControllerDelegate> {
@@ -67,11 +67,11 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-	PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
 
     Blog *blog = [blogService lastUsedOrFirstBlog];
-	Post *post = [postService createDraftPostForBlog:blog];
-	
+    [self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
+    Post *post = [postService createDraftPostForBlog:blog];
     return [self initWithPost:post
 						 mode:kWPPostViewControllerModeEdit];
 }
@@ -591,29 +591,45 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 
 - (void)refreshNavigationBarLeftButtons:(BOOL)editingChanged
 {
-	if ([self isEditing]) {
-        
+	if ([self isEditing] && !self.post.hasRemote) {
+        // Editing a new post
+        [self.navigationItem setLeftBarButtonItems:nil];
         UIBarButtonItem *negativeSeparator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
                                                                                            target:nil
                                                                                            action:nil];
         negativeSeparator.width = -10;
-        NSArray* leftBarButtons = @[negativeSeparator, self.cancelButton, negativeSeparator];
-        [self.navigationItem setLeftBarButtonItems:leftBarButtons animated:YES];
+        NSArray* leftBarButtons = @[negativeSeparator, self.cancelXButton, negativeSeparator];
+        [self.navigationItem setLeftBarButtonItems:leftBarButtons animated:NO];
+    } else if ([self isEditing] && self.post.hasRemote) {
+        // Editing an existing post (draft or published)
+        [self.navigationItem setLeftBarButtonItems:nil];
+        UIBarButtonItem *negativeSeparator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                                                                           target:nil
+                                                                                           action:nil];
+        negativeSeparator.width = -10;
+        NSArray* leftBarButtons = @[negativeSeparator, self.cancelChevronButton, negativeSeparator];
+        [self.navigationItem setLeftBarButtonItems:leftBarButtons animated:NO];
 	} else {
         [self.navigationItem setLeftBarButtonItems:nil];
-        [self.navigationItem setLeftBarButtonItem:self.navigationItem.backBarButtonItem animated:YES];
+        [self.navigationItem setLeftBarButtonItem:self.navigationItem.backBarButtonItem animated:NO];
 	}
 }
 
 - (void)refreshNavigationBarRightButtons:(BOOL)editingChanged
 {
-	if ([self isEditing]) {
-        
+    UIBarButtonItem *separator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                                                               target:nil
+                                                                               action:nil];
+    separator.width = kNavigationBarButtonSpacer;
+    
+    if ([self isEditing]) {
         UIBarButtonItem* saveBarButtonItem = [self saveBarButtonItem];
         
         if (editingChanged) {
             NSArray* rightBarButtons = @[saveBarButtonItem,
+                                         separator,
                                          [self optionsBarButtonItem],
+                                         separator,
                                          [self previewBarButtonItem]];
             
             [self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
@@ -632,7 +648,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 		[self.navigationItem.rightBarButtonItem setTitleTextAttributes:titleTextAttributes forState:controlState];
 	} else {
 		NSArray* rightBarButtons = @[[self editBarButtonItem],
-									 [self optionsBarButtonItem],
+                                     separator, separator,
 									 [self previewBarButtonItem]];
 		
 		[self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
@@ -692,18 +708,27 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 	return button;
 }
 
-- (UIBarButtonItem*)cancelButton
+- (UIBarButtonItem*)cancelChevronButton
 {
-    if (!_cancelButton) {
-        WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-x"
-                                                                            frame:CGRectMake(0.0f, 0.0f, 40.0f, 40.0f)
-                                                                           target:self
-                                                                         selector:@selector(cancelEditing)];
-        cancelButton.removeDefaultLeftSpacing = YES;        
-        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
-        _cancelButton = button;
-    }
-    
+    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-chevron"
+                                                                        frame:CGRectMake(0.0f, 0.0f, 40.0f, 40.0f)
+                                                                       target:self
+                                                                     selector:@selector(cancelEditing)];
+    cancelButton.removeDefaultLeftSpacing = YES;
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
+    _cancelButton = button;
+    return _cancelButton;
+}
+
+- (UIBarButtonItem*)cancelXButton
+{
+    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-x"
+                                                                        frame:CGRectMake(0.0f, 0.0f, 40.0f, 40.0f)
+                                                                       target:self
+                                                                     selector:@selector(cancelEditing)];
+    cancelButton.removeDefaultLeftSpacing = YES;        
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
+    _cancelButton = button;
 	return _cancelButton;
 }
 
