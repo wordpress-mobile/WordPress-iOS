@@ -592,7 +592,11 @@ NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 
 - (void)dismissEditView
 {
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    if (self.activityDelegate) {
+		[self.activityDelegate editPostViewDismissed];
+	} else{
+		[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+	}
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 

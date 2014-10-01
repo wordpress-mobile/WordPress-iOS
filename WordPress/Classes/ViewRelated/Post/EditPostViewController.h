@@ -8,6 +8,8 @@ extern NSString *const WPEditorNavigationRestorationID;
 
 @interface EditPostViewController : WPEditorViewController <UINavigationControllerDelegate, CTAssetsPickerControllerDelegate, WPEditorViewControllerDelegate>
 
+@property (nonatomic, weak) id <WPEditorViewControllerDelegate> activityDelegate;
+
 /*
  Initialize the editor with the specified post.
  @param post The post to edit.
