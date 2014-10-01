@@ -53,6 +53,7 @@ CGFloat const blavatarImageViewSize = 43.f;
 @interface SettingsViewController () <UIActionSheetDelegate>
 
 @property (nonatomic, strong) UIBarButtonItem *doneButton;
+@property (nonatomic, assign) BOOL showInternalBetaSection;
 
 @end
 
@@ -70,6 +71,12 @@ CGFloat const blavatarImageViewSize = 43.f;
     self.title = NSLocalizedString(@"Settings", @"App Settings");
     self.doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
     self.navigationItem.rightBarButtonItem = self.doneButton;
+    
+#if defined(DEBUG) || defined(INTERNAL_BETA)
+    self.showInternalBetaSection = YES;
+#else
+    self.showInternalBetaSection = NO;
+#endif
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultAccountDidChange:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 
@@ -173,11 +180,10 @@ CGFloat const blavatarImageViewSize = 43.f;
         case SettingsSectionInfo:
             return 2;
         case SettingsSectionInternalBeta:
-#if defined(DEBUG) || defined(INTERNAL_BETA)
-            return 1;
-#else
-            return 0;
-#endif
+            if (self.showInternalBetaSection)
+                return 1;
+            else
+                return 0;
         default:
             return 0;
             
@@ -232,7 +238,11 @@ CGFloat const blavatarImageViewSize = 43.f;
     } else if (section == SettingsSectionInfo) {
         return NSLocalizedString(@"App Info", @"Title label for the application information section in the app settings");
     } else if (section == SettingsSectionInternalBeta) {
-        return NSLocalizedString(@"Internal Beta", @"");
+        if (self.showInternalBetaSection) {
+            return NSLocalizedString(@"Internal Beta", @"");
+        } else {
+            return @"";
+        }
     }
 
     return nil;
