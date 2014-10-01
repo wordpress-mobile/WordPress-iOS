@@ -70,8 +70,9 @@
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:composeButtonItem forNavigationItem:self.navigationItem];
     
     self.infiniteScrollEnabled = YES;
-    
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    
+    [self updatePostFormats];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -249,6 +250,15 @@
 
 - (void)setBlog:(Blog *)blog {
     [super setBlog:blog];
+}
+
+- (void)updatePostFormats
+{    
+    if (!self.isSyncing && (!self.blog.postFormats || self.blog.postFormats.count <= 1)) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+        [blogService syncPostFormatsForBlog:self.blog success:nil failure:nil];
+    }
 }
 
 #pragma mark -
