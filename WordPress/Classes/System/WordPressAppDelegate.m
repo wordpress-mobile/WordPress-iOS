@@ -204,6 +204,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         if ([WordPressComApiCredentials lookbackToken].length > 0) {
             [Lookback setupWithAppToken:[WordPressComApiCredentials lookbackToken]];
+            [Lookback lookback].shakeToRecord = [[NSUserDefaults standardUserDefaults] boolForKey:WPInternalBetaShakeToPullUpFeedbackKey];
             
             // Setup Lookback to fire when the user holds down with three fingers for around 3 seconds
             dispatch_async(dispatch_get_main_queue(), ^{
