@@ -82,12 +82,13 @@ static NSInteger const CVCSectionSeparatorHeight = 10;
 
 - (void)setupAutolayoutConstraints
 {
-    NSDictionary *views = @{@"tableView": self.tableView, @"replyTextView": self.replyTextView};
+    NSMutableDictionary *views = [@{@"tableView": self.tableView} mutableCopy];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[tableView]|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];
     if ([self shouldAttachReplyTextView]) {
+        views[@"replyTextView"] = self.replyTextView;
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tableView][replyTextView]|"
                                                                           options:0
                                                                           metrics:nil
