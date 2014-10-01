@@ -359,10 +359,9 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
     UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
     if ([self supportedInterfaceOrientations] == UIInterfaceOrientationMaskPortrait) {
         viewHeight = CGRectGetHeight([UIScreen mainScreen].bounds);
-    }
-    else if (UIDeviceOrientationIsLandscape(orientation)) {
+    } else if (UIDeviceOrientationIsLandscape(orientation)) {
         viewHeight = CGRectGetWidth([UIScreen mainScreen].bounds);
-    }else{
+    } else {
         viewHeight = CGRectGetHeight([UIScreen mainScreen].bounds);
     }
     
