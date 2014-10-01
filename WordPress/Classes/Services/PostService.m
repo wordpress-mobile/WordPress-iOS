@@ -255,6 +255,10 @@ NSString * const PostServiceTypeAny = @"any";
         postPost.tags = [remotePost.tags componentsJoinedByString:@","];
         [self updatePost:postPost withRemoteCategories:remotePost.categories];
 
+        Coordinate *geolocation = nil;
+        NSString *latitudeID = nil;
+        NSString *longitudeID = nil;
+        NSString *publicID = nil;
         if (remotePost.metadata) {
             NSDictionary *latitudeDictionary = [self dictionaryWithKey:@"geo_latitude" inMetadata:remotePost.metadata];
             NSDictionary *longitudeDictionary = [self dictionaryWithKey:@"geo_longitude" inMetadata:remotePost.metadata];
@@ -265,13 +269,16 @@ NSString * const PostServiceTypeAny = @"any";
                 CLLocationCoordinate2D coord;
                 coord.latitude = [latitude doubleValue];
                 coord.longitude = [longitude doubleValue];
-                Coordinate *c = [[Coordinate alloc] initWithCoordinate:coord];
-                postPost.geolocation = c;
-                postPost.latitudeID = [latitudeDictionary stringForKey:@"id"];
-                postPost.longitudeID = [longitudeDictionary stringForKey:@"id"];
-                postPost.publicID = [geoPublicDictionary stringForKey:@"id"];
+                geolocation = [[Coordinate alloc] initWithCoordinate:coord];
+                latitudeID = [latitudeDictionary stringForKey:@"id"];
+                longitudeID = [longitudeDictionary stringForKey:@"id"];
+                publicID = [geoPublicDictionary stringForKey:@"id"];
             }
         }
+        postPost.geolocation = geolocation;
+        postPost.latitudeID = latitudeID;
+        postPost.longitudeID = longitudeID;
+        postPost.publicID = publicID;
     }
 }
 
