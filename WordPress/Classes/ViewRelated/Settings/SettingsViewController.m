@@ -36,12 +36,15 @@
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "WPImageOptimizer.h"
+#import "Constants.h"
+#import <Lookback/Lookback.h>
 
 typedef enum {
     SettingsSectionWpcom = 0,
     SettingsSectionMedia,
     SettingsSectionEditor,
     SettingsSectionInfo,
+    SettingsSectionInternalBeta,
     SettingsSectionCount
 } SettingsSection;
 
@@ -104,6 +107,14 @@ CGFloat const blavatarImageViewSize = 43.f;
     [WPPostViewController setNewEditorEnabled:aSwitch.on];
 }
 
+- (void)handleShakeToPullUpFeedbackChanged:(id)sender
+{
+    UISwitch *aSwitch = (UISwitch *)sender;
+    BOOL shakeForFeedback = aSwitch.on;
+    [[NSUserDefaults standardUserDefaults] setBool:shakeForFeedback forKey:WPInternalBetaShakeToPullUpFeedbackKey];
+    [Lookback lookback].shakeToRecord = shakeForFeedback;
+}
+
 - (void)dismiss {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -161,8 +172,16 @@ CGFloat const blavatarImageViewSize = 43.f;
 		
         case SettingsSectionInfo:
             return 2;
+        case SettingsSectionInternalBeta:
+#if defined(DEBUG) || defined(INTERNAL_BETA)
+            return 1;
+#else
+            return 0;
+#endif
         default:
             return 0;
+            
+            
     }
 }
 
@@ -212,6 +231,8 @@ CGFloat const blavatarImageViewSize = 43.f;
 		
     } else if (section == SettingsSectionInfo) {
         return NSLocalizedString(@"App Info", @"Title label for the application information section in the app settings");
+    } else if (section == SettingsSectionInternalBeta) {
+        return NSLocalizedString(@"Internal Beta", @"");
     }
 
     return nil;
@@ -272,6 +293,11 @@ CGFloat const blavatarImageViewSize = 43.f;
             cell.textLabel.text = NSLocalizedString(@"Support", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
+    } else if (indexPath.section == SettingsSectionInternalBeta) {
+        cell.textLabel.text = NSLocalizedString(@"Shake for Feedback", @"Option to allow the user to shake the device to pull up the feedback mechanism");
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
+        aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:WPInternalBetaShakeToPullUpFeedbackKey];
     }
 }
 
@@ -315,6 +341,12 @@ CGFloat const blavatarImageViewSize = 43.f;
         UISwitch *optimizeImagesSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
         [optimizeImagesSwitch addTarget:self action:@selector(handleEditorChanged:) forControlEvents:UIControlEventValueChanged];
         cell.accessoryView = optimizeImagesSwitch;
+    }
+    
+    if (indexPath.section == SettingsSectionInternalBeta) {
+        UISwitch *toggleShakeToPullUpFeedbackSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
+        [toggleShakeToPullUpFeedbackSwitch addTarget:self action:@selector(handleShakeToPullUpFeedbackChanged:) forControlEvents:UIControlEventValueChanged];
+        cell.accessoryView = toggleShakeToPullUpFeedbackSwitch;
     }
 
     return cell;
