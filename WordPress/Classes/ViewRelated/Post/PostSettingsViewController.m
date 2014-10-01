@@ -118,7 +118,15 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 {
     [super viewWillAppear:animated];
 
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
     [self.navigationController setToolbarHidden:YES];
+    
+    // Do not hide the status bar on iPads
+    if (!IS_IPAD) {
+        [[UIApplication sharedApplication] setStatusBarHidden:YES
+                                                withAnimation:nil];
+    }
+    
     [self reloadData];
 }
 
