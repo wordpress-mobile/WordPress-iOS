@@ -434,7 +434,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
             for (NSString *key in supportedKeys) {
                 [supportedValues addObject:[allFormats objectForKey:key]];
             }
-            respDict = @{supportedValues: supportedKeys};
+            respDict = [NSDictionary dictionaryWithObjects:supportedValues forKeys:supportedKeys];
         }
         blog.postFormats = respDict;
 
