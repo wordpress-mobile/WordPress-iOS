@@ -7,8 +7,12 @@
 #import "UIActionSheet+Helpers.h"
 #import "Comment.h"
 #import "BasePost.h"
+#import "WPToast.h"
 #import "EditCommentViewController.h"
+#import "EditReplyViewController.h"
 
+static NSString *const CVCReplyToastImage = @"action-icon-replied";
+static NSString *const CVCSuccessToastImage = @"action-icon-success";
 static NSString *const CVCHeaderCellIdentifier = @"CommentTableViewHeaderCell";
 static NSString *const CVCCommentCellIdentifier = @"CommentTableViewCell";
 static NSInteger const CVCHeaderSectionIndex = 0;
@@ -117,6 +121,10 @@ static NSInteger const CVCSectionSeparatorHeight = 10;
 
     cell.onUrlClick = ^(NSURL *url){
         [weakSelf openWebViewWithURL:url];
+    };
+
+    cell.onReplyClick = ^(UIButton *sender) {
+        [weakSelf editReply];
     };
 
     cell.onLikeClick = ^(UIButton *sender){
@@ -314,6 +322,56 @@ static NSInteger const CVCSectionSeparatorHeight = 10;
                                                                }
                                                            }];
                                      }];
+}
+
+#pragma mark - Replying Comments for iPad
+
+- (void)editReply
+{
+    __typeof(self) __weak weakSelf = self;
+
+    EditReplyViewController *editViewController = [EditReplyViewController newEditViewController];
+
+    editViewController.onCompletion = ^(BOOL hasNewContent, NSString *newContent) {
+        [self dismissViewControllerAnimated:YES completion:^{
+            if (hasNewContent) {
+                [weakSelf sendReplyWithNewContent:newContent];
+            }
+        }];
+    };
+
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editViewController];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    navController.navigationBar.translucent = NO;
+    [self presentViewController:navController animated:true completion:nil];
+}
+
+- (void)sendReplyWithNewContent:(NSString *)content
+{
+    NSString *successMessage = NSLocalizedString(@"Reply Sent!", @"The app successfully sent a comment");
+    NSString *sendingMessage = NSLocalizedString(@"Sending...", @"The app is uploading a comment");
+    UIImage *successImage = [UIImage imageNamed:CVCSuccessToastImage];
+    UIImage *sendingImage = [UIImage imageNamed:CVCReplyToastImage];
+
+    __typeof(self) __weak weakSelf = self;
+
+    [self.commentService replyToCommentWithID:self.comment.commentID siteID:self.comment.blog.blogID content:content success:^(){
+        [WPToast showToastWithMessage:successMessage andImage:successImage];
+
+    } failure:^(NSError *error) {
+        [UIAlertView showWithTitle:nil
+                           message:NSLocalizedString(@"There has been an unexpected error while sending your reply", nil)
+                 cancelButtonTitle:NSLocalizedString(@"Give Up", nil)
+                 otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
+                          tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                              if (buttonIndex != alertView.cancelButtonIndex) {
+                                  [weakSelf sendReplyWithNewContent:content];
+                              }
+                          }];
+    }];
+
+    [WPToast showToastWithMessage:sendingMessage andImage:sendingImage];
 }
 
 #pragma mark - Setter/Getters
