@@ -122,7 +122,10 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 - (NSURL *)featuredImageURL
 {
-    return [NSURL URLWithString:self.featuredImage];
+    if ([self.featuredImage length]) {
+        return [NSURL URLWithString:self.featuredImage];
+    }
+    return nil;
 }
 
 - (BOOL)contentIncludesFeaturedImage

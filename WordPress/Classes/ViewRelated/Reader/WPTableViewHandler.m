@@ -1,6 +1,7 @@
 #import "WPTableViewHandler.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "WPTableViewCell.h"
+#import "WordPress-Swift.h"
 
 static NSString * const DefaultCellIdentifier = @"DefaultCellIdentifier";
 static CGFloat const DefaultCellHeight = 44.0;
@@ -13,6 +14,12 @@ static CGFloat const DefaultCellHeight = 44.0;
 @property (nonatomic, strong) NSIndexPath *indexPathSelectedAfterUpdates;
 @property (nonatomic, strong) NSMutableArray *sectionHeaders;
 @property (nonatomic, strong) NSMutableDictionary *cachedRowHeights;
+@property (nonatomic, readwrite) BOOL isScrolling;
+@property (nonatomic) BOOL willRefreshTableViewPreservingOffset;
+@property (nonatomic) BOOL needsRefreshAfterScroll;
+@property (nonatomic, strong) NSArray *fetchedResultsBeforeChange;
+@property (nonatomic, strong) NSArray *fetchedResultsIndexPathsBeforeChange;
+@property (nonatomic, strong) NSArray *rowHeightsBeforeChange;
 
 @end
 
@@ -58,16 +65,14 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 #pragma mark - Private Methods
 
-- (void)cacheHeight:(CGFloat)height forIndexPath:(NSIndexPath *)indexPath
+- (void)cacheRowHeight:(CGFloat)height forIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *key = [NSString stringWithFormat:@"%i|%i", indexPath.section, indexPath.row];
-    [self.cachedRowHeights setObject:@(height) forKey:key];
+    [self.cachedRowHeights setObject:@(height) forKey:[indexPath toString]];
 }
 
-- (CGFloat)cachedHeightForIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)cachedRowHeightForIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *key = [NSString stringWithFormat:@"%i|%i", indexPath.section, indexPath.row];
-    return [[self.cachedRowHeights numberForKey:key] floatValue];
+    return [[self.cachedRowHeights numberForKey:[indexPath toString]] floatValue];
 }
 
 - (void)refreshCachedRowHeightsForWidth:(CGFloat)width
@@ -81,11 +86,37 @@ static CGFloat const DefaultCellHeight = 44.0;
         NSIndexPath *indexPath = [self.resultsController indexPathForObject:obj];
         CGFloat height = [self.delegate tableView:self.tableView heightForRowAtIndexPath:indexPath forWidth:width];
 
-        NSString *key = [NSString stringWithFormat:@"%i|%i", indexPath.section, indexPath.row];
-        [cachedRowHeights setObject:@(height) forKey:key];
+        [cachedRowHeights setObject:@(height) forKey:[indexPath toString]];
     }
 
     self.cachedRowHeights = cachedRowHeights;
+}
+
+- (void)invalidateCachedRowHeightsBelowIndexPath:(NSIndexPath *)indexPath
+{
+    if (!self.cacheRowHeights) {
+        return;
+    }
+
+    NSString *nukedPathKey = indexPath.toString;
+    NSMutableArray *invalidKeys = [NSMutableArray array];
+
+    for (NSString *key in [self.cachedRowHeights allKeys]) {
+        if ([key compare:nukedPathKey] == NSOrderedDescending) {
+            [invalidKeys addObject:key];
+        }
+    }
+
+    [self.cachedRowHeights removeObjectForKey:nukedPathKey];
+    [self.cachedRowHeights removeObjectsForKeys:invalidKeys];
+}
+
+- (void)invalidateCachedRowHeightAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (!self.cacheRowHeights) {
+        return;
+    }
+    [self.cachedRowHeights removeObjectForKey:indexPath.toString];
 }
 
 
@@ -94,11 +125,6 @@ static CGFloat const DefaultCellHeight = 44.0;
 - (NSManagedObjectContext *)managedObjectContext
 {
     return [self.delegate managedObjectContext];
-}
-
-- (NSString *)entityName
-{
-    return [self.delegate entityName];
 }
 
 - (NSFetchRequest *)fetchRequest
@@ -197,10 +223,15 @@ static CGFloat const DefaultCellHeight = 44.0;
     CGFloat height = DefaultCellHeight;
 
     if (self.cacheRowHeights) {
-        height = [self cachedHeightForIndexPath:indexPath];
+        height = [self cachedRowHeightForIndexPath:indexPath];
         if (height) {
             return height;
         }
+    }
+
+    if (self.willRefreshTableViewPreservingOffset) {
+        // when refreshing this way we need to calculate actual heights not estimated heights.
+        return [self tableView:tableView heightForRowAtIndexPath:indexPath];
     }
 
     if ([self.delegate respondsToSelector:@selector(tableView:estimatedHeightForRowAtIndexPath:)]) {
@@ -215,7 +246,7 @@ static CGFloat const DefaultCellHeight = 44.0;
     CGFloat height = DefaultCellHeight;
 
     if (self.cacheRowHeights) {
-        height = [self cachedHeightForIndexPath:indexPath];
+        height = [self cachedRowHeightForIndexPath:indexPath];
         if (height) {
             return height;
         }
@@ -224,7 +255,7 @@ static CGFloat const DefaultCellHeight = 44.0;
     if ([self.delegate respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)]) {
         height = [self.delegate tableView:tableView heightForRowAtIndexPath:indexPath];
         if (self.cacheRowHeights) {
-            [self cacheHeight:height forIndexPath:indexPath];
+            [self cacheRowHeight:height forIndexPath:indexPath];
         }
     }
 
@@ -311,6 +342,35 @@ static CGFloat const DefaultCellHeight = 44.0;
 }
 
 
+#pragma mark - UIScrollViewDelegate Methods
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    self.isScrolling = YES;
+    if ([self.delegate respondsToSelector:@selector(scrollViewWillBeginDragging:)]) {
+        [self.delegate scrollViewWillBeginDragging:scrollView];
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    self.isScrolling = NO;
+    if (self.needsRefreshAfterScroll) {
+        self.needsRefreshAfterScroll = NO;
+        [self refreshTableViewPreservingOffset];
+    }
+
+    if ([self.delegate respondsToSelector:@selector(scrollViewDidEndDecelerating::)]) {
+        [self.delegate scrollViewDidEndDecelerating:scrollView];
+    }
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    self.isScrolling = decelerate;
+}
+
+
 #pragma mark - Fetched results controller
 
 - (UITableViewRowAnimation)tableViewRowAnimation
@@ -338,7 +398,7 @@ static CGFloat const DefaultCellHeight = 44.0;
 
     NSError *error = nil;
     if (![_resultsController performFetch:&error]) {
-        DDLogError(@"%@ couldn't fetch %@: %@", self, [self entityName], [error localizedDescription]);
+        DDLogError(@"%@ couldn't fetch %@: %@", self, [[self fetchRequest] entityName], [error localizedDescription]);
         _resultsController = nil;
     }
 
@@ -347,15 +407,34 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
+    if (self.shouldRefreshTableViewPreservingOffset) {
+        // Calls to beginUpdates and endUpdates must be balanced.
+        // Since the public prop could be changed while rows are being updated,
+        // use a private prop to check if updates should happen or not.
+        self.willRefreshTableViewPreservingOffset = YES;
+        [self preserveRowInfoBeforeContentChanges];
+        return;
+    }
+
+    if ([self.delegate respondsToSelector:@selector(tableViewWillChangeContent:)]) {
+        [self.delegate tableViewWillChangeContent:self.tableView];
+    }
+
     self.indexPathSelectedBeforeUpdates = [self.tableView indexPathForSelectedRow];
     [self.tableView beginUpdates];
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
+    if (self.willRefreshTableViewPreservingOffset) {
+        [self refreshTableViewPreservingOffset];
+        self.willRefreshTableViewPreservingOffset = NO;
+        return;
+    }
+
     [self.tableView endUpdates];
     if (self.indexPathSelectedAfterUpdates) {
-        [self.tableView selectRowAtIndexPath:_indexPathSelectedAfterUpdates animated:NO scrollPosition:UITableViewScrollPositionNone];
+        [self.tableView selectRowAtIndexPath:self.indexPathSelectedAfterUpdates animated:NO scrollPosition:UITableViewScrollPositionNone];
 
         self.indexPathSelectedBeforeUpdates = nil;
         self.indexPathSelectedAfterUpdates = nil;
@@ -372,12 +451,16 @@ static CGFloat const DefaultCellHeight = 44.0;
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath
 {
+    if (self.willRefreshTableViewPreservingOffset) {
+        return;
+    }
 
     if (NSFetchedResultsChangeUpdate == type && newIndexPath && ![newIndexPath isEqual:indexPath]) {
         // Seriously, Apple?
         // http://developer.apple.com/library/ios/#releasenotes/iPhone/NSFetchedResultsChangeMoveReportedAsNSFetchedResultsChangeUpdate/_index.html
         type = NSFetchedResultsChangeMove;
     }
+
     if (newIndexPath == nil) {
         // It seems in some cases newIndexPath can be nil for updates
         newIndexPath = indexPath;
@@ -385,23 +468,40 @@ static CGFloat const DefaultCellHeight = 44.0;
 
     switch(type) {
         case NSFetchedResultsChangeInsert:
+        {
+            [self invalidateCachedRowHeightsBelowIndexPath:newIndexPath];
             [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
+        }
             break;
         case NSFetchedResultsChangeDelete:
+        {
+            [self invalidateCachedRowHeightsBelowIndexPath:indexPath];
             [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:[self tableViewRowAnimation]];
-            if ([_indexPathSelectedBeforeUpdates isEqual:indexPath]) {
+            if ([self.indexPathSelectedBeforeUpdates isEqual:indexPath]) {
                 [self deletingSelectedRowAtIndexPath:indexPath];
             }
+        }
             break;
         case NSFetchedResultsChangeUpdate:
-            [self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:newIndexPath];
+        {
+            [self invalidateCachedRowHeightAtIndexPath:indexPath];
+            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:[self tableViewRowAnimation]];
+        }
             break;
         case NSFetchedResultsChangeMove:
+        {
+            NSIndexPath *lowerIndexPath = indexPath;
+            if ([indexPath compare:newIndexPath] == NSOrderedDescending) {
+                lowerIndexPath = newIndexPath;
+            }
+            [self invalidateCachedRowHeightsBelowIndexPath:lowerIndexPath];
+
             [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:[self tableViewRowAnimation]];
             [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
-            if ([_indexPathSelectedBeforeUpdates isEqual:indexPath] && _indexPathSelectedAfterUpdates == nil) {
-                _indexPathSelectedAfterUpdates = newIndexPath;
+            if ([self.indexPathSelectedBeforeUpdates isEqual:indexPath] && self.indexPathSelectedAfterUpdates == nil) {
+                self.indexPathSelectedAfterUpdates = newIndexPath;
             }
+        }
             break;
         default:
             break;
@@ -410,11 +510,183 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
 {
+    if (self.willRefreshTableViewPreservingOffset) {
+        return;
+    }
+
     if (type == NSFetchedResultsChangeInsert) {
         [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:[self tableViewRowAnimation]];
     } else if (type == NSFetchedResultsChangeDelete) {
         [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:[self tableViewRowAnimation]];
     }
+}
+
+
+#pragma mark - Refresh and Preserve Offset Methods
+
+- (void)preserveRowInfoBeforeContentChanges
+{
+    self.fetchedResultsBeforeChange = [[self.resultsController fetchedObjects] copy];
+    NSMutableArray *indexPaths = [NSMutableArray array];
+    NSMutableArray *rowHeights = [NSMutableArray array];
+    for (NSManagedObject *object in self.fetchedResultsBeforeChange) {
+        NSIndexPath *indexPath = [self.resultsController indexPathForObject:object];
+        [indexPaths addObject:indexPath];
+        CGFloat height = [self tableView:self.tableView heightForRowAtIndexPath:indexPath];
+        [rowHeights addObject:@(height)];
+    }
+    self.rowHeightsBeforeChange = rowHeights;
+    self.fetchedResultsIndexPathsBeforeChange = indexPaths;
+}
+
+- (void)refreshTableViewPreservingOffset
+{
+    // Wait to refresh until scrolling stops
+    if (self.isScrolling) {
+        self.needsRefreshAfterScroll = YES;
+        return;
+    }
+    self.shouldRefreshTableViewPreservingOffset = NO;
+
+    // Make sure its necessary to account for previously existing rows.
+    // We check here vs in `controllerWillChangeContent:` in order to reload
+    // the table view if necessary.
+    if ([self.fetchedResultsBeforeChange count] == 0) {
+        [self.tableView reloadData];
+        [self discardPreservedRowInfo];
+        return;
+    }
+
+    // Get the current visible index paths before reloading data.
+    NSArray *visibleIndexPaths = [self.tableView indexPathsForVisibleRows];
+
+    // Get the delta of the current offset and the sum of the preserved row
+    // heights, up to but not including the first visible row.
+    CGFloat offsetHeightDelta = [self contentOffsetAndPreservedRowHeightDelta];
+
+    // Notify the delegate that a refresh is about to occur. Allows the delegate
+    // perform any final clean up, e.g. dismissing a UIRefreshControl.
+    if ([self.delegate respondsToSelector:@selector(tableViewHandlerWillRefreshTableViewPreservingOffset:)]) {
+        [self.delegate tableViewHandlerWillRefreshTableViewPreservingOffset:self];
+    }
+
+    // Reload the tableview.
+    [self clearCachedRowHeights];
+    [self.tableView reloadData];
+
+    // Find the indexPath of the first visible object after changes
+    // If the first object was deleted, try the next in line of the previously
+    // visible objects until a match is found.
+    CGFloat heightAdjustment = 0;
+    NSIndexPath *newIndexPath = nil;
+    for (NSInteger i = 0; i < [visibleIndexPaths count]; i++) {
+        NSIndexPath *path = visibleIndexPaths[i];
+        NSInteger index = [self.fetchedResultsIndexPathsBeforeChange indexOfObject:path];
+        NSManagedObject *obj = self.fetchedResultsBeforeChange[index];
+        newIndexPath = [self.resultsController indexPathForObject:obj];
+        if (newIndexPath) {
+            break;
+        }
+
+        // Visible cell not found. Add its height to the adjustment.
+        NSNumber *height = self.rowHeightsBeforeChange[i];
+        heightAdjustment += [height floatValue];
+    }
+
+    // If none of the previously visible objects exist, find the first object
+    // preceding the first visible cell instead.
+    if (!newIndexPath) {
+        heightAdjustment = 0; // Discard any height adjustment.
+        newIndexPath = [self indexPathForFirstObjectPrecedingPreservedVisibleIndexPath:[visibleIndexPaths firstObject]];
+    }
+
+    // Fail safe. If the new index path is nil set the offset to 0 and clean up.
+    if (!newIndexPath) {
+        [self.tableView setContentOffset:CGPointZero];
+        [self discardPreservedRowInfo];
+        return;
+    }
+
+    // Now that we know the new location. Get the sum of the row heights for all
+    // preceeding rows. Add the delta and any adjustment.
+    CGFloat rowHeights = [self totalHeightForRowsAboveIndexPath:newIndexPath];
+    rowHeights += (offsetHeightDelta + heightAdjustment);
+
+    // Set the tableview to the new offset
+    CGPoint newOffset = CGPointMake([self.tableView contentOffset].x, rowHeights);
+    [self.tableView setContentOffset:newOffset];
+
+    // Notify the delegate that a refresh has occured. Allows the delegate
+    // perform any corrections to the offset, e.g. a negative offset due to a content
+    // change that was not a post inserted above the previous zero visible index.
+    if ([self.delegate respondsToSelector:@selector(tableViewHandlerDidRefreshTableViewPreservingOffset:)]) {
+        [self.delegate tableViewHandlerDidRefreshTableViewPreservingOffset:self];
+    }
+
+    // Clean up
+    [self discardPreservedRowInfo];
+}
+
+- (CGFloat)contentOffsetAndPreservedRowHeightDelta
+{
+    // Get the current scroll offset
+    CGPoint offset = [[self tableView] contentOffset];
+
+    NSArray *visibleIndexPaths = [self.tableView indexPathsForVisibleRows];
+    NSIndexPath *firstVisibleIndexPath = [visibleIndexPaths firstObject];
+
+    // Get the sum of the height of all cells up to but not including the first visible cell
+    CGFloat rowHeights = 0;
+    for (NSInteger i = 0; i < [self.fetchedResultsIndexPathsBeforeChange count]; i++) {
+        NSIndexPath *path = self.fetchedResultsIndexPathsBeforeChange[i];
+        if ([firstVisibleIndexPath compare:path] == NSOrderedDescending) {
+            NSNumber *height = self.rowHeightsBeforeChange[i];
+            rowHeights += [height floatValue];
+        }
+    }
+
+    // Get the delta between the sum of the row heights and the current offset
+    // offset.y should be the greater of the two.
+    CGFloat offsetHeightDelta = offset.y - rowHeights;
+    return offsetHeightDelta;
+}
+
+- (NSIndexPath *)indexPathForFirstObjectPrecedingPreservedVisibleIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger index = [self.fetchedResultsIndexPathsBeforeChange indexOfObject:indexPath];
+    NSArray *arr = [self.fetchedResultsIndexPathsBeforeChange subarrayWithRange:NSMakeRange(0, index)];
+    for (NSInteger  i = [arr count] -1; i > 0; i-- ) {
+        NSManagedObject *obj = self.fetchedResultsBeforeChange[i];
+        NSIndexPath *newIndexPath = [self.resultsController indexPathForObject:obj];
+        if (newIndexPath) {
+            return newIndexPath;
+        }
+    }
+    return nil;
+}
+
+- (CGFloat)totalHeightForRowsAboveIndexPath:(NSIndexPath *)indexPath
+{
+    // Get the sum of the row heights for all preceeding rows.
+    NSManagedObject *lastObject = [self.resultsController objectAtIndexPath:indexPath];
+    NSInteger index = [[self.resultsController fetchedObjects] indexOfObject:lastObject];
+    CGFloat rowHeights = 0;
+    for (NSInteger i = 0; i < index; i++) {
+        NSManagedObject *object = [self.resultsController.fetchedObjects objectAtIndex:i];
+        NSIndexPath *path = [self.resultsController indexPathForObject:object];
+
+        // Get the height from the delegate method so we can respect height caching.
+        CGFloat height = [self tableView:self.tableView heightForRowAtIndexPath:path];
+        rowHeights += height;
+    }
+    return rowHeights;
+}
+
+- (void)discardPreservedRowInfo
+{
+    self.rowHeightsBeforeChange = nil;
+    self.fetchedResultsBeforeChange = nil;
+    self.fetchedResultsIndexPathsBeforeChange = nil;
 }
 
 @end
