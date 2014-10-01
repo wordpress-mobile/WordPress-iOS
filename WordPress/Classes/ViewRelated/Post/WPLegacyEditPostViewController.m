@@ -319,7 +319,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
 - (void)showPreview
 {
-    PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.post];
+    PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.post shouldHideStatusBar:NO];
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     [self.navigationController pushViewController:vc animated:YES];
