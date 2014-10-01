@@ -78,7 +78,15 @@ import Foundation
     // MARK: - IBActions
     @IBAction private func btnReplyPressed() {
         if let handler = onReply {
-            handler(textView.text)
+            // Load the new text
+            let newText = textView.text
+            textView.resignFirstResponder()
+            
+            // Cleanup + Shrink
+            text = String()
+            
+            // Hit the handler
+            handler(newText)
         }
     }
     
