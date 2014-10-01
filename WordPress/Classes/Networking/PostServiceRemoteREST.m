@@ -163,6 +163,10 @@
     // FIXME: remove conversion once API is fixed #38-io
     // metadata should always be an array but it's returning false when there are no custom fields
     post.metadata = [jsonPost arrayForKey:@"metadata"];
+    // Or even worse, in some cases (Jetpack sites?) is an array containing false
+    post.metadata = [post.metadata filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+        return [evaluatedObject isKindOfClass:[NSDictionary class]];
+    }]];
     // post.metadata = jsonPost[@"metadata"];
 
     NSDictionary *categories = jsonPost[@"categories"];
