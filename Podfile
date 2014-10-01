@@ -1,3 +1,5 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
 xcodeproj 'WordPress/WordPress.xcodeproj'
 
 inhibit_all_warnings!
@@ -5,7 +7,7 @@ inhibit_all_warnings!
 platform :ios, '7.0'
 pod 'AFNetworking',	'~> 2.3.1'
 pod 'Reachability',	'3.1.1'
-pod 'NSURL+IDN', :podspec => 'https://raw.github.com/koke/NSURL-IDN/master/Podfile'
+pod 'NSURL+IDN', '0.3'
 pod 'DTCoreText',   '1.6.13'
 pod 'UIDeviceIdentifier', '~> 0.1'
 pod 'SVProgressHUD', '~> 1.0'
@@ -40,6 +42,6 @@ target :WordPressTest, :exclusive => true do
   pod 'OCMock'
 end
 
-target :'IntegrationTests', :exclusive => true do
+target :'IntegrationTests' do
   pod 'Subliminal'
 end
