@@ -59,8 +59,7 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
 {
     CGFloat padding = IS_IPHONE ? RPTVCHorizontalOuterPadding : 0;
     CGFloat innerWidth = size.width - (padding * 2);
-    CGFloat innerHeight = size.height - RPTVCVerticalOuterPadding;
-    CGSize postViewSize = [self.postView sizeThatFits:CGSizeMake(innerWidth, innerHeight)];
+    CGSize postViewSize = [self.postView sizeThatFits:CGSizeMake(innerWidth, size.height)];
     CGFloat desiredHeight = postViewSize.height + RPTVCVerticalOuterPadding;
 
     return CGSizeMake(size.width, desiredHeight);
