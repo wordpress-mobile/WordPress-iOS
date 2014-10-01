@@ -15,4 +15,5 @@
 + (NSString *)helpshiftAppId;
 + (NSString *)taplyticsAPIKey;
 + (NSString *)debuggingKey;
++ (NSString *)lookbackToken;
 @end
