@@ -153,7 +153,7 @@
     if ([post.password isEmpty]) {
         post.password = nil;
     }
-    post.parentID = jsonPost[@"parent"];
+    post.parentID = [jsonPost numberForKeyPath:@"parent.ID"];
     // post_thumbnail can be null, which will transform to NSNull, so we need to add the extra check
     NSDictionary *postThumbnail = [jsonPost dictionaryForKey:@"post_thumbnail"];
     post.postThumbnailID = [postThumbnail numberForKey:@"ID"];
