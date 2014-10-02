@@ -11,6 +11,7 @@
 #import "AccountService.h"
 #import "WPAccount.h"
 #import "CommentService.h"
+#import "BlogService.h"
 
 #import <Helpshift/Helpshift.h>
 #import <Simperium/Simperium.h>
@@ -413,7 +414,17 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
     } else if ([targetToOpen isEqualToString:@"notifications"]) {
         [appDelegate showTabForIndex:kNotificationsTabIndex];
     } else if ([targetToOpen isEqualToString:@"stats"]) {
-        // Open Stats
+        [self openStatsForLastUsedOrFirstWPComBlog];
+    }
+}
+
++ (void)openStatsForLastUsedOrFirstWPComBlog
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    Blog *blog = [blogService lastUsedOrFirstWPcomBlog];
+    if (blog != nil && [blog isWPcom]) {
+        [[WordPressAppDelegate sharedWordPressApplicationDelegate] switchMeTabToStatsViewForBlog:blog];
     }
 }
 
