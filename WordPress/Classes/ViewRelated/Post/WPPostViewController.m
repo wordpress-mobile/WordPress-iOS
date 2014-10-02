@@ -1017,16 +1017,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
  */
 - (void)autosaveContent
 {
-    [self autosaveContentWithTitle:self.titleText];
-}
-
-/**
- *  @brief      Save changes to core data, with the specified title.
- *  @details    This is necessary at this time for handling title changes by the user.
- */
-- (void)autosaveContentWithTitle:(NSString*)title
-{
-    self.post.postTitle = title;
+    self.post.postTitle = self.titleText;
     
     self.post.content = self.bodyText;
     if ([self.post.content rangeOfString:@"<!--more-->"].location != NSNotFound)
@@ -1257,10 +1248,9 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 											withAnimation:UIStatusBarAnimationSlide];
 }
 
-- (void)editorViewController:(WPEditorViewController *)editorController
-             titleWillChange:(NSString *)title
+- (void)editorTitleDidChange:(WPEditorViewController *)editorController
 {
-    [self autosaveContentWithTitle:title];
+    [self autosaveContent];
     [self refreshNavigationBarButtons:NO];
 }
 
@@ -1283,6 +1273,11 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 - (void)editorDidPressPreview:(WPEditorViewController *)editorController
 {
     [self showPreview];
+}
+
+- (void)editorDidFinishLoadingDOM:(WPEditorViewController *)editorController
+{
+    [self refreshUIForCurrentPost];
 }
 
 #pragma mark - CTAssetsPickerController delegate
