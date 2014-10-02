@@ -470,6 +470,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _siteUrlText.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _siteUrlText.showTopLineSeparator = YES;
         _siteUrlText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+        _siteUrlText.accessibilityIdentifier = @"SiteURL";
         // insert URL field below password field to hide when signing into
         // WP.com account
         [_mainView insertSubview:_siteUrlText belowSubview:_passwordText];
@@ -536,6 +537,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
             toggleTitle = NSLocalizedString(@"Sign in to WordPress.com", nil);
         }
         [_toggleSignInForm setTitle:toggleTitle forState:UIControlStateNormal];
+        _toggleSignInForm.accessibilityIdentifier = @"ToggleSignInForm";
     }
 
     if (!defaultAccount) {

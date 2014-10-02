@@ -7,7 +7,7 @@ NSString * const #{name}Password = @"#{password}";
 EOF
 end
 
-def print_class(one_step_user, one_step_password, two_step_user, two_step_password, self_hosted_user, self_hosted_password, self_hosted_site)
+def print_class(one_step_user, one_step_password, two_step_user, two_step_password, self_hosted_user, self_hosted_password, self_hosted_site_url, self_hosted_site_name)
   print <<-EOF
 #import "WordPressTestCredentials.h"
 EOF
@@ -15,7 +15,8 @@ EOF
   print_credentials("twoStep", two_step_user, two_step_password);
   print_credentials("selfHosted", self_hosted_user, self_hosted_password);
   print <<-EOF
-NSString * const selfHostedSite = @"#{self_hosted_site}";
+NSString * const selfHostedSiteURL = @"#{self_hosted_site_url}";
+NSString * const selfHostedSiteName = @"#{self_hosted_site_name}";
 EOF
 end
 
@@ -37,7 +38,8 @@ two_step_user = nil
 two_step_password = nil
 self_hosted_user = nil
 self_hosted_password = nil
-self_hosted_site = nil
+self_hosted_site_url = nil
+self_hosted_site_name = nil
 File.open(path) do |f|
   f.each_line do |l|
     (k,v) = l.split("=")
@@ -53,12 +55,14 @@ File.open(path) do |f|
       self_hosted_user = v.chomp
     elsif k == "selfHostedPassword"
       self_hosted_password = v.chomp
-    elsif k == "selfHostedSite"
-      self_hosted_site = v.chomp
+    elsif k == "selfHostedSiteURL"
+      self_hosted_site_url = v.chomp
+    elsif k == "selfHostedSiteName"
+      self_hosted_site_name = v.chomp
     else
       $stderr.puts "warning: Unknown key #{k}"
     end
   end
 end
 
-print_class(one_step_user, one_step_password, two_step_user, two_step_password, self_hosted_user, self_hosted_password, self_hosted_site)
+print_class(one_step_user, one_step_password, two_step_user, two_step_password, self_hosted_user, self_hosted_password, self_hosted_site_url, self_hosted_site_name)
