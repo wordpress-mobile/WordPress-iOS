@@ -605,7 +605,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     _tabBarController.delegate = self;
     _tabBarController.restorationIdentifier = WPTabBarRestorationID;
     [_tabBarController.tabBar setTranslucent:NO];
-
+    _tabBarController.tabBar.accessibilityIdentifier = @"MainTabBar";
     // Create a background
     // (not strictly needed when white, but left here for possible customization)
     _tabBarController.tabBar.backgroundImage = [UIImage imageWithColor:[UIColor whiteColor]];
