@@ -15,7 +15,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)
+        let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)!
         self.siteId = sharedDefaults.objectForKey(WPStatsTodayWidgetUserDefaultsSiteIdKey) as NSNumber?
 
         visitorsLabel?.text = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
@@ -36,7 +36,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         super.viewWillAppear(animated)
 
         // Manual state restoration
-        let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)
+        let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)!
         self.siteName = sharedDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
 
         let userDefaults = NSUserDefaults.standardUserDefaults()
@@ -49,7 +49,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     }
     
     @IBAction func launchContainingApp() {
-        self.extensionContext!.openURL(NSURL(string: "wordpress://viewstats?siteId=\(siteId!)"), completionHandler: nil)
+        self.extensionContext!.openURL(NSURL(string: "wordpress://viewstats?siteId=\(siteId!)")!, completionHandler: nil)
     }
     
     func widgetPerformUpdateWithCompletionHandler(completionHandler: ((NCUpdateResult) -> Void)!) {
@@ -59,7 +59,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         // If there's no update required, use NCUpdateResult.NoData
         // If there's an update, use NCUpdateResult.NewData
         
-        let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)
+        let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)!
         let siteId = sharedDefaults.objectForKey(WPStatsTodayWidgetUserDefaultsSiteIdKey) as NSNumber?
         self.siteName = sharedDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
         let timeZoneName = sharedDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey)
@@ -85,8 +85,8 @@ class TodayViewController: UIViewController, NCWidgetProviding {
             numberFormatter.numberStyle = NSNumberFormatterStyle.DecimalStyle
             numberFormatter.maximumFractionDigits = 0
             
-            self.visitorCount = numberFormatter.stringFromNumber(wpStatsSummary.visitorCountToday)
-            self.viewCount = numberFormatter.stringFromNumber(wpStatsSummary.viewCountToday)
+            self.visitorCount = numberFormatter.stringFromNumber(wpStatsSummary.visitorCountToday)!
+            self.viewCount = numberFormatter.stringFromNumber(wpStatsSummary.viewCountToday)!
             
             self.siteNameLabel?.text = self.siteName
             self.visitorsCountLabel?.text = self.visitorCount
