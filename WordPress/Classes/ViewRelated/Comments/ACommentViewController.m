@@ -185,7 +185,7 @@ static NSInteger const CVCSectionSeparatorHeight = 10;
 - (void)setupCommentCell:(CommentTableViewCell *)cell
 {
     cell.isReplyEnabled = [UIDevice isPad];
-    cell.isLikeEnabled = YES;
+    cell.isLikeEnabled = self.comment.blog.isWPcom;
     cell.isApproveEnabled = YES;
     cell.isTrashEnabled = YES;
     cell.isMoreEnabled = YES;
@@ -194,6 +194,7 @@ static NSInteger const CVCSectionSeparatorHeight = 10;
     cell.timestamp = [self.comment.dateCreated shortString];
     cell.isApproveOn = [self.comment.status isEqualToString:@"approve"];
     cell.commentText = self.comment.content;
+    cell.isLikeOn = [self.comment.liked boolValue];
     [cell downloadGravatarWithURL:self.comment.avatarURLForDisplay];
 
     __weak __typeof(self) weakSelf = self;
