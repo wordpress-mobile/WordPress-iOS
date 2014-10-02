@@ -148,6 +148,12 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
         [[Helpshift sharedInstance] handleRemoteNotification:userInfo withController:rootViewController];
         return;
     }
+    
+    if ([[userInfo stringForKey:@"origin"] isEqualToString:@"mp"]) {
+        [self handleMixpanelPushNotification:userInfo];
+        return;
+    }
+    
 
     if (state == UIApplicationStateInactive) {
         NSString *notificationID            = [[userInfo numberForKey:@"note_id"] stringValue];
@@ -394,6 +400,21 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
     [commentReplyWithLikeCategory setActions:@[commentLikeAction, commentReplyAction] forContext:UIUserNotificationActionContextDefault];
 
     return [NSSet setWithObjects:commentApproveCategory, commentReplyCategory, commentLikeCategory, commentReplyWithLikeCategory, nil];
+}
+
+#pragma mark - Mixpanel A/B Tests
+
++ (void)handleMixpanelPushNotification:(NSDictionary *)userInfo
+{
+    NSString *targetToOpen = [userInfo stringForKey:@"open"];
+    WordPressAppDelegate *appDelegate   = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    if ([targetToOpen isEqualToString:@"reader"]) {
+        [appDelegate showTabForIndex:kReaderTabIndex];
+    } else if ([targetToOpen isEqualToString:@"notifications"]) {
+        [appDelegate showTabForIndex:kNotificationsTabIndex];
+    } else if ([targetToOpen isEqualToString:@"stats"]) {
+        // Open Stats
+    }
 }
 
 @end
