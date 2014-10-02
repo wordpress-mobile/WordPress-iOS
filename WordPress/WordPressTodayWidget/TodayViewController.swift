@@ -85,8 +85,8 @@ class TodayViewController: UIViewController, NCWidgetProviding {
             numberFormatter.numberStyle = NSNumberFormatterStyle.DecimalStyle
             numberFormatter.maximumFractionDigits = 0
             
-            self.visitorCount = numberFormatter.stringFromNumber(wpStatsSummary.visitorCountToday)!
-            self.viewCount = numberFormatter.stringFromNumber(wpStatsSummary.viewCountToday)!
+            self.visitorCount = numberFormatter.stringFromNumber(wpStatsSummary.visitorCountToday) ?? ""
+            self.viewCount = numberFormatter.stringFromNumber(wpStatsSummary.viewCountToday) ?? ""
             
             self.siteNameLabel?.text = self.siteName
             self.visitorsCountLabel?.text = self.visitorCount
