@@ -345,7 +345,6 @@
 		E16AB92E14D978240047A2E5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		E16AB93414D978240047A2E5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E16AB93214D978240047A2E5 /* InfoPlist.strings */; };
 		E174F6E6172A73960004F23A /* WPAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E105E9CE1726955600C0D9E7 /* WPAccount.m */; };
-		E1756E651694A99400D9EC00 /* WordPressComApiCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = E1756E641694A99400D9EC00 /* WordPressComApiCredentials.m */; };
 		E18165FD14E4428B006CE885 /* loader.html in Resources */ = {isa = PBXBuildFile; fileRef = E18165FC14E4428B006CE885 /* loader.html */; };
 		E183BD7417621D87000B0822 /* WPCookie.m in Sources */ = {isa = PBXBuildFile; fileRef = E183BD7317621D86000B0822 /* WPCookie.m */; };
 		E183EC9C16B215FE00C2EB11 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */; };
@@ -416,6 +415,8 @@
 		FD9A948C12FAEA2300438F94 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FD9A948B12FAEA2300438F94 /* DateUtils.m */; };
 		FEA64EDF0F7E4616BA835081 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69187343EC8F435684EFFAF1 /* libPods.a */; };
 		FF0DB7D219DC5A2900E81D5B /* LoginTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0DB7D119DC5A2900E81D5B /* LoginTests.m */; };
+		FFB92F4E19DD9D0C00469835 /* WordPressComApiCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = E1756E641694A99400D9EC00 /* WordPressComApiCredentials.m */; };
+		FFB92F5019DD9E0800469835 /* WordPressTestCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB92F4B19DD9BAA00469835 /* WordPressTestCredentials.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1185,6 +1186,10 @@
 		FF0DB7CD19DC5A2900E81D5B /* UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF0DB7D019DC5A2900E81D5B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FF0DB7D119DC5A2900E81D5B /* LoginTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginTests.m; sourceTree = "<group>"; };
+		FFB92F4519DD89DF00469835 /* gencredentials.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = gencredentials.rb; sourceTree = "<group>"; };
+		FFB92F4619DD8CDA00469835 /* WordPressTestCredentials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressTestCredentials.h; sourceTree = "<group>"; };
+		FFB92F4719DD958E00469835 /* WordPressTestCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressTestCredentials.m; sourceTree = "<group>"; };
+		FFB92F4B19DD9BAA00469835 /* WordPressTestCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressTestCredentials.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2458,6 +2463,7 @@
 		E1756E661694AA1500D9EC00 /* Derived Sources */ = {
 			isa = PBXGroup;
 			children = (
+				FFB92F4B19DD9BAA00469835 /* WordPressTestCredentials.m */,
 				E1756E641694A99400D9EC00 /* WordPressComApiCredentials.m */,
 			);
 			name = "Derived Sources";
@@ -2537,8 +2543,11 @@
 		FF0DB7CE19DC5A2900E81D5B /* UITests */ = {
 			isa = PBXGroup;
 			children = (
+				FFB92F4519DD89DF00469835 /* gencredentials.rb */,
 				FF0DB7D119DC5A2900E81D5B /* LoginTests.m */,
 				FF0DB7CF19DC5A2900E81D5B /* Supporting Files */,
+				FFB92F4619DD8CDA00469835 /* WordPressTestCredentials.h */,
+				FFB92F4719DD958E00469835 /* WordPressTestCredentials.m */,
 			);
 			path = UITests;
 			sourceTree = "<group>";
@@ -2622,6 +2631,7 @@
 			buildConfigurationList = FF0DB7D919DC5A2900E81D5B /* Build configuration list for PBXNativeTarget "UITests" */;
 			buildPhases = (
 				C5EB685006C9F4EF1C5DC149 /* Check Pods Manifest.lock */,
+				FFB92F4419DD893D00469835 /* Generate Test Credentials */,
 				FF0DB7C919DC5A2900E81D5B /* Sources */,
 				FF0DB7CA19DC5A2900E81D5B /* Frameworks */,
 				FF0DB7CB19DC5A2900E81D5B /* Resources */,
@@ -2957,6 +2967,23 @@
 			shellPath = /bin/sh;
 			shellScript = "[ -f ~/.wpcom_app_credentials ] && source ~/.wpcom_app_credentials\n \n if [ \"x$CRASHLYTICS_API_KEY\" != \"x\" ]; then\n ./Crashlytics.framework/run $CRASHLYTICS_API_KEY\n else\n echo \"warning: Crashytics API Key not found\"\n fi";
 		};
+		FFB92F4419DD893D00469835 /* Generate Test Credentials */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/UITests/gencredentials.rb",
+			);
+			name = "Generate Test Credentials";
+			outputPaths = (
+				/tmp/WordPress.build/WordPressTestCredentials.m,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "DERIVED_TMP_DIR=/tmp/WordPress.build\ncp ${SOURCE_ROOT}/UITests/WordPressTestCredentials.m ${DERIVED_TMP_DIR}/WordPressTestCredentials.m\n\necho \"Generating credentials file in ${DERIVED_TMP_DIR}/WordPressTestCredentials.m\"\nruby ${SOURCE_ROOT}/UITests/gencredentials.rb > ${DERIVED_TMP_DIR}/WordPressTestCredentials.m";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -3111,7 +3138,6 @@
 				37B7924D16768FCC0021B3A4 /* NotificationSettingsViewController.m in Sources */,
 				B5CC05F91962186D00975CAC /* Meta.m in Sources */,
 				5D20A6531982D56600463A91 /* FollowedSitesViewController.m in Sources */,
-				E1756E651694A99400D9EC00 /* WordPressComApiCredentials.m in Sources */,
 				5D8D53F119250412003C8859 /* BlogSelectorViewController.m in Sources */,
 				5D3D559718F88C3500782892 /* ReaderPostService.m in Sources */,
 				B532D4EE199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift in Sources */,
@@ -3221,6 +3247,7 @@
 				857610D618C0377300EDF406 /* StatsWebViewController.m in Sources */,
 				5D08B90419648C3400D5B381 /* ReaderSubscriptionViewController.m in Sources */,
 				E1D086E2194214C600F0CC19 /* NSDate+WordPressJSON.m in Sources */,
+				FFB92F4E19DD9D0C00469835 /* WordPressComApiCredentials.m in Sources */,
 				5D839AAB187F0D8000811F4A /* PostGeolocationCell.m in Sources */,
 				A2DC5B1A1953451B009584C3 /* WPNUXHelpBadgeLabel.m in Sources */,
 				B532D4EA199D4357006E4DF6 /* NoteBlockHeaderTableViewCell.swift in Sources */,
@@ -3265,6 +3292,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FFB92F5019DD9E0800469835 /* WordPressTestCredentials.m in Sources */,
 				FF0DB7D219DC5A2900E81D5B /* LoginTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
