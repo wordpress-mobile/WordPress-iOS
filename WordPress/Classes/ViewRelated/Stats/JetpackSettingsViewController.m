@@ -100,6 +100,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
             [_skipButton setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateNormal];
             [_skipButton addTarget:self action:@selector(skipAction:) forControlEvents:UIControlEventTouchUpInside];
             [_skipButton sizeToFit];
+            _skipButton.accessibilityIdentifier = @"Skip";
             [self.view addSubview:_skipButton];
         } else {
             UIBarButtonItem *skipButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Skip", @"") style:UIBarButtonItemStylePlain target:self action:@selector(skip:)];

@@ -15,4 +15,5 @@ extern NSString * const twoStepPassword;
 
 extern NSString * const selfHostedUser;
 extern NSString * const selfHostedPassword;
-extern NSString * const selfHostedSite;
+extern NSString * const selfHostedSiteURL;
+extern NSString * const selfHostedSiteName;

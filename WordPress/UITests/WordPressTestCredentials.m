@@ -15,4 +15,5 @@ NSString * const twoStepPassword = @"";
 
 NSString * const selfHostedUser = @"";
 NSString * const selfHostedPassword = @"";
-NSString * const selfHostedSite = @"";
+NSString * const selfHostedSiteURL = @"";
+NSString * const selfHostedSiteName = @"";
