@@ -104,7 +104,8 @@ CGFloat const blavatarImageSize = 50.f;
     [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
     self.tableView.allowsSelectionDuringEditing = YES;
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
-
+    self.navigationItem.leftBarButtonItem.accessibilityIdentifier = @"EditButton";
+    
     // Trigger the blog sync when loading the view, which should more or less be once when the app launches
     // We could do this on the app delegate, but the blogs list feels like a better place for it.
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];

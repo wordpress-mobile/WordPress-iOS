@@ -64,6 +64,27 @@
     [self logout];
 }
 
+- (void)testSelfHostedLoginWithJetPack
+{
+    [tester tapViewWithAccessibilityLabel:@"ToggleSignInForm"];
+    [tester enterText:selfHostedUser intoViewWithAccessibilityLabel:@"Username"];
+    [tester enterText:selfHostedPassword intoViewWithAccessibilityLabel:@"Password"];
+    [tester enterText:selfHostedSiteURL intoViewWithAccessibilityLabel:@"SiteURL"];
+    [tester tapViewWithAccessibilityLabel:@"SignIn"];
+    
+    [tester waitForTimeInterval:3];
+    [tester tapViewWithAccessibilityLabel:@"Skip"];
+    
+    [tester waitForTimeInterval:3];
+    // Verify that the login succeeded
+    [tester waitForViewWithAccessibilityLabel:@"MainTabBar"];
+    
+    [tester tapViewWithAccessibilityLabel:@"EditButton"];
+    
+    [tester tapViewWithAccessibilityLabel:[NSString stringWithFormat:@"Delete %@, %@", selfHostedSiteName, selfHostedSiteURL]];
+    [tester tapViewWithAccessibilityLabel:@"Remove"];
+}
+
 - (void)logout
 {
     [tester tapViewWithAccessibilityLabel:@"SettingsButton"];
