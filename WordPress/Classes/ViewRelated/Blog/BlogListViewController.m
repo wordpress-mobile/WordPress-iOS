@@ -84,6 +84,7 @@ CGFloat const blavatarImageSize = 50.f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.view.accessibilityIdentifier = @"MeView";
     self.settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Settings", nil)
                                                            style:UIBarButtonItemStylePlain
                                                           target:self
@@ -103,6 +104,7 @@ CGFloat const blavatarImageSize = 50.f;
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:AddSiteCellIdentifier];
     [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
     self.tableView.allowsSelectionDuringEditing = YES;
+    self.tableView.accessibilityIdentifier = @"TableBlogList";
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
     self.navigationItem.leftBarButtonItem.accessibilityIdentifier = @"EditButton";
     
@@ -349,6 +351,7 @@ CGFloat const blavatarImageSize = 50.f;
             visibilitySwitch.on = blog.visible;
             visibilitySwitch.tag = indexPath.row;
             [visibilitySwitch addTarget:self action:@selector(visibilitySwitchAction:) forControlEvents:UIControlEventValueChanged];
+            visibilitySwitch.accessibilityIdentifier = [NSString stringWithFormat:@"Switch-Visibility-%@", blog.blogName];
             cell.accessoryView = visibilitySwitch;
 
             // Make textLabel light gray if blog is not-visible
