@@ -36,6 +36,8 @@
     [tester waitForTimeInterval:3];
     // Verify that the login succeeded
     [tester waitForViewWithAccessibilityLabel:@"GenericErrorMessage"];
+    
+    [tester tapViewWithAccessibilityLabel:@"OK"];
 }
 
 - (void)testSimpleLogin
