@@ -637,7 +637,9 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
     self.blogListViewController.title = NSLocalizedString(@"Me", @"");
     [blogListNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
-
+    blogListNavigationController.tabBarItem.accessibilityIdentifier = @"MeTabButton";
+    
+    
     UIImage *image = [UIImage imageNamed:@"icon-tab-newpost"];
     image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     UIViewController *postsViewController = [[UIViewController alloc] init];
