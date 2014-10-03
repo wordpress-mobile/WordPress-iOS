@@ -205,7 +205,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
-	
+	[self refreshNavigationBarButtons:NO];
 	if (self.isEditing) {
 		if ([self shouldHideStatusBarWhileTyping]) {
 			[[UIApplication sharedApplication] setStatusBarHidden:YES
