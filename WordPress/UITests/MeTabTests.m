@@ -1,15 +1,8 @@
-//
-//  LoginTests.m
-//  LoginTests
-//
-//  Created by Sergio Estevao on 01/10/2014.
-//  Copyright (c) 2014 WordPress. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 #import <KIF/KIF.h>
 #import "WordPressTestCredentials.h"
+#import "UIWindow-KIFAdditions.h"
 
 @interface MeTabTests : KIFTestCase
 
@@ -104,6 +97,34 @@
     [tester tapViewWithAccessibilityLabel:@"Edit Site"];
     [tester waitForTimeInterval:2];
     [tester tapViewWithAccessibilityLabel:@"Back"];
+    [tester waitForTimeInterval:2];
+}
+
+- (void) testMePostsPages {
+    [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester waitForTimeInterval:2];
+    [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"TableBlogList"];
+    
+    [tester tapViewWithAccessibilityLabel:@"Posts"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"addpost"];
+    [tester waitForTimeInterval:2];
+    
+    [tester enterText:@"KIF Test Post" intoViewWithAccessibilityLabel:@"Title"];
+    [tester waitForTimeInterval:2];
+
+    [[[[UIApplication sharedApplication] keyWindow] firstResponder] resignFirstResponder];
+    
+    [tester enterTextIntoCurrentFirstResponder:@"KIF Test Post Content" ];
+    [tester waitForTimeInterval:2];
+
+    [[[[UIApplication sharedApplication] keyWindow] firstResponder] resignFirstResponder];
+    
+    [tester tapViewWithAccessibilityLabel:@"Publish"];
     [tester waitForTimeInterval:2];
 }
 
