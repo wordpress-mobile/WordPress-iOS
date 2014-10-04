@@ -25,3 +25,5 @@ NSString *const WPStatsTodayWidgetUserDefaultsSiteNameKey = @"WordPressTodayWidg
 NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey = @"WordPressTodayWidgetTimeZone";
 NSString *const WPStatsTodayWidgetUserDefaultsViewCountKey = @"TodayViewCount";
 NSString *const WPStatsTodayWidgetUserDefaultsVisitorCountKey = @"TodayVisitorCount";
+
+NSString *const WPInternalBetaShakeToPullUpFeedbackKey = @"InternalBetaShakeToPullUpFeedback";

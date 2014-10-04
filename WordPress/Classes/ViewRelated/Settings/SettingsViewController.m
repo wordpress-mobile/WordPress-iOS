@@ -36,12 +36,15 @@
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "WPImageOptimizer.h"
+#import "Constants.h"
+#import <Lookback/Lookback.h>
 
 typedef enum {
     SettingsSectionWpcom = 0,
     SettingsSectionMedia,
     SettingsSectionEditor,
     SettingsSectionInfo,
+    SettingsSectionInternalBeta,
     SettingsSectionCount
 } SettingsSection;
 
@@ -50,6 +53,7 @@ CGFloat const blavatarImageViewSize = 43.f;
 @interface SettingsViewController () <UIActionSheetDelegate>
 
 @property (nonatomic, strong) UIBarButtonItem *doneButton;
+@property (nonatomic, assign) BOOL showInternalBetaSection;
 
 @end
 
@@ -67,6 +71,12 @@ CGFloat const blavatarImageViewSize = 43.f;
     self.title = NSLocalizedString(@"Settings", @"App Settings");
     self.doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
     self.navigationItem.rightBarButtonItem = self.doneButton;
+    
+#ifdef LOOKBACK_ENABLED
+    self.showInternalBetaSection = YES;
+#else
+    self.showInternalBetaSection = NO;
+#endif
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultAccountDidChange:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 
@@ -102,6 +112,14 @@ CGFloat const blavatarImageViewSize = 43.f;
 {
     UISwitch *aSwitch = (UISwitch *)sender;
     [WPPostViewController setNewEditorEnabled:aSwitch.on];
+}
+
+- (void)handleShakeToPullUpFeedbackChanged:(id)sender
+{
+    UISwitch *aSwitch = (UISwitch *)sender;
+    BOOL shakeForFeedback = aSwitch.on;
+    [[NSUserDefaults standardUserDefaults] setBool:shakeForFeedback forKey:WPInternalBetaShakeToPullUpFeedbackKey];
+    [Lookback lookback].shakeToRecord = shakeForFeedback;
 }
 
 - (void)dismiss {
@@ -161,8 +179,17 @@ CGFloat const blavatarImageViewSize = 43.f;
 		
         case SettingsSectionInfo:
             return 2;
+        case SettingsSectionInternalBeta:
+            if (self.showInternalBetaSection) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
         default:
             return 0;
+            
+            
     }
 }
 
@@ -212,6 +239,12 @@ CGFloat const blavatarImageViewSize = 43.f;
 		
     } else if (section == SettingsSectionInfo) {
         return NSLocalizedString(@"App Info", @"Title label for the application information section in the app settings");
+    } else if (section == SettingsSectionInternalBeta) {
+        if (self.showInternalBetaSection) {
+            return NSLocalizedString(@"Internal Beta", @"");
+        } else {
+            return @"";
+        }
     }
 
     return nil;
@@ -272,6 +305,11 @@ CGFloat const blavatarImageViewSize = 43.f;
             cell.textLabel.text = NSLocalizedString(@"Support", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
+    } else if (indexPath.section == SettingsSectionInternalBeta) {
+        cell.textLabel.text = NSLocalizedString(@"Shake for Feedback", @"Option to allow the user to shake the device to pull up the feedback mechanism");
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
+        aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:WPInternalBetaShakeToPullUpFeedbackKey];
     }
 }
 
@@ -315,6 +353,12 @@ CGFloat const blavatarImageViewSize = 43.f;
         UISwitch *optimizeImagesSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
         [optimizeImagesSwitch addTarget:self action:@selector(handleEditorChanged:) forControlEvents:UIControlEventValueChanged];
         cell.accessoryView = optimizeImagesSwitch;
+    }
+    
+    if (indexPath.section == SettingsSectionInternalBeta) {
+        UISwitch *toggleShakeToPullUpFeedbackSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
+        [toggleShakeToPullUpFeedbackSwitch addTarget:self action:@selector(handleShakeToPullUpFeedbackChanged:) forControlEvents:UIControlEventValueChanged];
+        cell.accessoryView = toggleShakeToPullUpFeedbackSwitch;
     }
 
     return cell;
