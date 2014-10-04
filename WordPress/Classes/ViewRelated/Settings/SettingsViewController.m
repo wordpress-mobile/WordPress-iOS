@@ -180,10 +180,12 @@ CGFloat const blavatarImageViewSize = 43.f;
         case SettingsSectionInfo:
             return 2;
         case SettingsSectionInternalBeta:
-            if (self.showInternalBetaSection)
+            if (self.showInternalBetaSection) {
                 return 1;
-            else
+            }
+            else {
                 return 0;
+            }
         default:
             return 0;
             
