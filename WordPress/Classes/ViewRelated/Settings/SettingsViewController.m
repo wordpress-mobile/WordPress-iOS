@@ -72,7 +72,7 @@ CGFloat const blavatarImageViewSize = 43.f;
     self.doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
     self.navigationItem.rightBarButtonItem = self.doneButton;
     
-#if defined(DEBUG) || defined(INTERNAL_BETA)
+#ifdef LOOKBACK_ENABLED
     self.showInternalBetaSection = YES;
 #else
     self.showInternalBetaSection = NO;

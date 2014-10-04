@@ -199,7 +199,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 
 - (void)setupLookback
 {
-#if defined(DEBUG) || defined(INTERNAL_BETA)
+#ifdef LOOKBACK_ENABLED
     // Kick this off on a background thread so as to not slow down the app initialization
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         if ([WordPressComApiCredentials lookbackToken].length > 0) {
