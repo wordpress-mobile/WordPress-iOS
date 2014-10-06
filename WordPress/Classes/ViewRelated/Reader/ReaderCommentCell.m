@@ -200,4 +200,18 @@ static const CGFloat ReaderCommentCellBottomPaddingMore = -20.0;
     }
 }
 
+- (void)handleLikeTapped:(id<WPContentViewProvider>)contentProvider
+{
+    if ([self.delegate respondsToSelector:@selector(commentCell:likeComment:)]) {
+        [self.delegate commentCell:self likeComment:self.comment];
+    }
+}
+
+- (void)handleUnlikeTapped:(id<WPContentViewProvider>)contentProvider
+{
+    if ([self.delegate respondsToSelector:@selector(commentCell:unlikeComment:)]) {
+        [self.delegate commentCell:self unlikeComment:self.comment];
+    }
+}
+
 @end

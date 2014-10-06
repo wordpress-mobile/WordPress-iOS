@@ -12,6 +12,7 @@ static const CGFloat CommentContentViewContentViewOffsetBottom = 19.0;
 static const CGFloat CommentContentViewContentOffsetLeft = 40.0;
 static const UIEdgeInsets AuthorButtonEdgeInsets = {-5.0f, 0.0f, 0.0f, 0.0f};
 static const UIEdgeInsets ReplyButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0f};
+static const UIEdgeInsets LikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0f};
 
 @interface CommentContentView()<DTAttributedTextContentViewDelegate>
 
@@ -20,6 +21,8 @@ static const UIEdgeInsets ReplyButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0f};
 @property (nonatomic, strong) UIButton *timeButton;
 @property (nonatomic, strong) DTAttributedTextContentView *textContentView;
 @property (nonatomic, strong) UIButton *replyButton;
+@property (nonatomic, strong) UIButton *likeButton;
+@property (nonatomic, strong) UILabel *numberOfLikesLabel;
 
 @end
 
@@ -63,6 +66,12 @@ static const UIEdgeInsets ReplyButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0f};
     [self.avatarImageView setImage:image];
 }
 
+- (void)setLikeCount:(NSInteger)likeCount {
+    _likeCount = likeCount;
+
+    [self updateNumberOfLikesLabel];
+}
+
 - (void)reset
 {
     [self setContentProvider:nil];
@@ -80,7 +89,7 @@ static const UIEdgeInsets ReplyButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0f};
 
 - (void)configureConstraints
 {
-    NSDictionary *views = NSDictionaryOfVariableBindings(_avatarImageView, _authorButton, _timeButton, _textContentView, _replyButton);
+    NSDictionary *views = NSDictionaryOfVariableBindings(_avatarImageView, _authorButton, _timeButton, _textContentView, _replyButton, _likeButton, _numberOfLikesLabel);
     NSDictionary *metrics = @{@"avatarSize": @(CommentContentViewAvatarSize),
                               @"offsetTop" : @(CommentContentViewContentViewOffsetTop),
                               @"offsetBottom" : @(CommentContentViewContentViewOffsetBottom),
@@ -121,11 +130,19 @@ static const UIEdgeInsets ReplyButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0f};
                                                                  metrics:metrics
                                                                    views:views]];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_replyButton]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_replyButton]-20-[_likeButton]-[_numberOfLikesLabel]"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView][_replyButton(16)]|"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView][_likeButton(16)]|"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView][_numberOfLikesLabel(16)]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
@@ -147,6 +164,12 @@ static const UIEdgeInsets ReplyButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0f};
 
     self.replyButton = [self buttonForReplyButton];
     [self addSubview:self.replyButton];
+
+    self.likeButton = [self buttonForLikeButton];
+    [self addSubview:self.likeButton];
+
+    self.numberOfLikesLabel = [self labelForNumberOfLikes];
+    [self addSubview:self.numberOfLikesLabel];
 
     [self sendSubviewToBack:self.textContentView];
 }
@@ -232,6 +255,43 @@ static const UIEdgeInsets ReplyButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0f};
     [button addTarget:self action:@selector(handleReplyTapped:) forControlEvents:UIControlEventTouchUpInside];
 
     return button;
+}
+
+- (UIButton *)buttonForLikeButton
+{
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.translatesAutoresizingMaskIntoConstraints = NO;
+    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    button.titleLabel.font = [WPStyleGuide commentBodyFont];
+
+    NSString *title = NSLocalizedString(@"Like", @"Title of the like button.");
+    NSString *selectedTitle = NSLocalizedString(@"Liked", @"Title of the like button seleced version.");
+    [button setTitle:title forState:UIControlStateNormal];
+    [button setTitle:selectedTitle forState:UIControlStateSelected];
+    [button setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateNormal];
+    [button setTitleColor:[WPStyleGuide jazzyOrange] forState:UIControlStateHighlighted];
+    [button setTitleColor:[WPStyleGuide jazzyOrange] forState:UIControlStateSelected];
+    [button setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateDisabled];
+
+    [button setImage:[UIImage imageNamed:@"icon-reader-comment-like"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"icon-reader-comment-liked"] forState:UIControlStateSelected];
+    [button setImage:[UIImage imageNamed:@"icon-reader-comment-liked"] forState:UIControlStateHighlighted];
+    button.titleEdgeInsets = LikeButtonEdgeInsets;
+
+    [button addTarget:self action:@selector(handleLikeTapped:) forControlEvents:UIControlEventTouchUpInside];
+
+    return button;
+}
+
+- (UILabel *)labelForNumberOfLikes
+{
+    UILabel *label = [UILabel new];
+    label.translatesAutoresizingMaskIntoConstraints = NO;
+    label.textAlignment = NSTextAlignmentLeft;
+    label.font = [WPStyleGuide commentBodyFont];
+    label.textColor = [WPStyleGuide allTAllShadeGrey];
+
+    return label;
 }
 
 
@@ -359,6 +419,29 @@ static const UIEdgeInsets ReplyButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0f};
     }
 }
 
+- (void)handleLikeTapped:(id)sender
+{
+    /**
+     Like button state and like count is changed here for temporarily to be responsive. Once the actual
+     like/unlike request has completed, it should refresh the state of label/button according to success/error.
+     */
+    if (self.likeButton.selected) {
+        // unlike
+        self.likeButton.selected = NO;
+        self.likeCount = MAX(self.likeCount - 1, 0); // MAX is just for sanity check
+        if ([self.delegate respondsToSelector:@selector(handleUnlikeTapped:)]) {
+            [self.delegate handleUnlikeTapped:self.contentProvider];
+        }
+    }
+    else {
+        // like
+        self.likeButton.selected = YES;
+        self.likeCount = self.likeCount + 1;
+        if ([self.delegate respondsToSelector:@selector(handleLikeTapped:)]) {
+            [self.delegate handleLikeTapped:self.contentProvider];
+        }
+    }
+}
 
 #pragma mark - DTAttributedTextContentView Delegate Methods
 
@@ -396,6 +479,23 @@ static const UIEdgeInsets ReplyButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0f};
     [button addTarget:self action:@selector(handleLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
     
     return button;
+}
+
+#pragma mark - Helper
+
+- (void)updateNumberOfLikesLabel {
+    if (self.likeCount == 0) {
+        self.numberOfLikesLabel.hidden = YES;
+    }
+    else {
+        self.numberOfLikesLabel.hidden = NO;
+        if (self.likeCount == 1) {
+            self.numberOfLikesLabel.text = [NSString stringWithFormat:@"\u00B7 1 %@", NSLocalizedString(@"Like", nil)];
+        }
+        else {
+            self.numberOfLikesLabel.text = [NSString stringWithFormat:@"\u00B7 %d %@", self.likeCount, NSLocalizedString(@"Likes", nil)];
+        }
+    }
 }
 
 @end

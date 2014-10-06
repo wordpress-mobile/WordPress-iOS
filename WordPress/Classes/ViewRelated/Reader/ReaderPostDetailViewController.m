@@ -999,6 +999,15 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self.tableView selectRowAtIndexPath:[self.tableView indexPathForCell:cell] animated:YES scrollPosition:UITableViewScrollPositionTop];
 }
 
+- (void)commentCell:(UITableViewCell *)cell likeComment:(Comment *)comment
+{
+    //TODO: like
+}
+
+- (void)commentCell:(UITableViewCell *)cell unlikeComment:(Comment *)comment
+{
+    //TODO: unlike
+}
 
 #pragma mark - WPTableImageSource Delegate
 
