@@ -54,7 +54,7 @@
      - Sign In
      */
     XCTAssertEqual(1, [table numberOfRowsInSection:0]);
-    XCTAssertEqualObjects(@"wpcom-sign-in", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Sign In", cell.accessibilityIdentifier);
 
 
     // Sign In
@@ -73,9 +73,9 @@
      */
     XCTAssertEqual(2, [table numberOfRowsInSection:0]);
     cell = [self tableView:table cellForRow:0];
-    XCTAssertEqualObjects(@"wpcom-username", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Username", cell.accessibilityIdentifier);
     cell = [self tableView:table cellForRow:1];
-    XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Sign Out", cell.accessibilityIdentifier);
 
     [[NSUserDefaults standardUserDefaults] setObject:@"aFakeAPNSToken" forKey:NotificationsDeviceToken];
     [table reloadData];
@@ -89,11 +89,11 @@
      */
     XCTAssertEqual(3, [table numberOfRowsInSection:0]);
     cell = [self tableView:table cellForRow:0];
-    XCTAssertEqualObjects(@"wpcom-username", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Username", cell.accessibilityIdentifier);
     cell = [self tableView:table cellForRow:1];
-    XCTAssertEqualObjects(@"wpcom-manage-notifications", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Manage Notifications", cell.accessibilityIdentifier);
     cell = [self tableView:table cellForRow:2];
-    XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Sign Out", cell.accessibilityIdentifier);
 
     saveExpectation = [self expectationWithDescription:@"Context save expectation"];
     [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
@@ -120,11 +120,11 @@
      */
     XCTAssertEqual(3, [table numberOfRowsInSection:0]);
     cell = [self tableView:table cellForRow:0];
-    XCTAssertEqualObjects(@"wpcom-username", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Username", cell.accessibilityIdentifier);
     cell = [self tableView:table cellForRow:1];
-    XCTAssertEqualObjects(@"wpcom-manage-notifications", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Manage Notifications", cell.accessibilityIdentifier);
     cell = [self tableView:table cellForRow:2];
-    XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Sign Out", cell.accessibilityIdentifier);
     
     saveExpectation = [self expectationWithDescription:@"Context save expectation"];
     [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
@@ -153,11 +153,11 @@
      */
     XCTAssertEqual(3, [table numberOfRowsInSection:0]);
     cell = [self tableView:table cellForRow:0];
-    XCTAssertEqualObjects(@"wpcom-username", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Username", cell.accessibilityIdentifier);
     cell = [self tableView:table cellForRow:1];
-    XCTAssertEqualObjects(@"wpcom-manage-notifications", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Manage Notifications", cell.accessibilityIdentifier);
     cell = [self tableView:table cellForRow:2];
-    XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Sign Out", cell.accessibilityIdentifier);
 
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:NotificationsDeviceToken];
     [table reloadData];
@@ -170,9 +170,9 @@
      */
     XCTAssertEqual(2, [table numberOfRowsInSection:0]);
     cell = [self tableView:table cellForRow:0];
-    XCTAssertEqualObjects(@"wpcom-username", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Username", cell.accessibilityIdentifier);
     cell = [self tableView:table cellForRow:1];
-    XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Sign Out", cell.accessibilityIdentifier);
 }
 
 - (SettingsViewController *)settingsViewController {

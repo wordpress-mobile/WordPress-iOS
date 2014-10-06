@@ -21,9 +21,9 @@
 
 - (void)testUnsuccessfulLogin
 {
-    [tester enterText:@"unknow@unknow.com" intoViewWithAccessibilityLabel:@"Username"];
+    [tester enterText:@"unknow@unknow.com" intoViewWithAccessibilityLabel:@"Username / Email"];
     [tester enterText:@"failpassword" intoViewWithAccessibilityLabel:@"Password"];
-    [tester tapViewWithAccessibilityLabel:@"SignIn"];
+    [tester tapViewWithAccessibilityLabel:@"Sign In"];
     
     [tester waitForTimeInterval:3];
     // Verify that the login succeeded
@@ -34,46 +34,46 @@
 
 - (void)testSimpleLogin
 {
-    [tester enterText:oneStepUser intoViewWithAccessibilityLabel:@"Username"];
+    [tester enterText:oneStepUser intoViewWithAccessibilityLabel:@"Username / Email"];
     [tester enterText:oneStepPassword intoViewWithAccessibilityLabel:@"Password"];
-    [tester tapViewWithAccessibilityLabel:@"SignIn"];
+    [tester tapViewWithAccessibilityLabel:@"Sign In"];
     
     [tester waitForTimeInterval:3];
     // Verify that the login succeeded
-    [tester waitForViewWithAccessibilityLabel:@"MainTabBar"];
+    [tester waitForViewWithAccessibilityLabel:@"Main Navigation"];
     
     [self logout];
 }
 
 - (void)testTwoStepLogin
 {
-    [tester enterText:twoStepUser intoViewWithAccessibilityLabel:@"Username"];
+    [tester enterText:twoStepUser intoViewWithAccessibilityLabel:@"Username / Email"];
     [tester enterText:twoStepPassword intoViewWithAccessibilityLabel:@"Password"];
-    [tester tapViewWithAccessibilityLabel:@"SignIn"];
+    [tester tapViewWithAccessibilityLabel:@"Sign In"];
     
     [tester waitForTimeInterval:3];
     // Verify that the login succeeded
-    [tester waitForViewWithAccessibilityLabel:@"MainTabBar"];
+    [tester waitForViewWithAccessibilityLabel:@"Main Navigation"];
     
     [self logout];
 }
 
 - (void)testSelfHostedLoginWithJetPack
 {
-    [tester tapViewWithAccessibilityLabel:@"ToggleSignInForm"];
-    [tester enterText:selfHostedUser intoViewWithAccessibilityLabel:@"Username"];
+    [tester tapViewWithAccessibilityLabel:@"Add Self-Hosted Site"];
+    [tester enterText:selfHostedUser intoViewWithAccessibilityLabel:@"Username / Email"];
     [tester enterText:selfHostedPassword intoViewWithAccessibilityLabel:@"Password"];
-    [tester enterText:selfHostedSiteURL intoViewWithAccessibilityLabel:@"SiteURL"];
-    [tester tapViewWithAccessibilityLabel:@"SignIn"];
+    [tester enterText:selfHostedSiteURL intoViewWithAccessibilityLabel:@"Site Address (URL)"];
+    [tester tapViewWithAccessibilityLabel:@"Add Site"];
     
     [tester waitForTimeInterval:3];
     [tester tapViewWithAccessibilityLabel:@"Skip"];
     
     [tester waitForTimeInterval:3];
     // Verify that the login succeeded
-    [tester waitForViewWithAccessibilityLabel:@"MainTabBar"];
+    [tester waitForViewWithAccessibilityLabel:@"Main Navigation"];
     
-    [tester tapViewWithAccessibilityLabel:@"EditButton"];
+    [tester tapViewWithAccessibilityLabel:@"Edit"];
     
     [tester tapViewWithAccessibilityLabel:[NSString stringWithFormat:@"Delete %@, %@", selfHostedSiteName, selfHostedSiteURL]];
     [tester tapViewWithAccessibilityLabel:@"Remove"];
@@ -81,8 +81,13 @@
 
 - (void)logout
 {
-    [tester tapViewWithAccessibilityLabel:@"SettingsButton"];
-    [tester tapViewWithAccessibilityLabel:@"wpcom-sign-out"];
+    [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester waitForTimeInterval:2];
+    [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester waitForTimeInterval:2];
+
+    [tester tapViewWithAccessibilityLabel:@"Settings"];
+    [tester tapViewWithAccessibilityLabel:@"Sign Out"];
     [tester tapViewWithAccessibilityLabel:@"Sign Out"];
     
     [tester waitForTimeInterval:3];
