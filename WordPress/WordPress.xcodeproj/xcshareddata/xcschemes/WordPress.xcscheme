@@ -27,7 +27,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FF0DB7CC19DC5A2900E81D5B"
+               BlueprintIdentifier = "FF388D5E19E2949E00BD4246"
                BuildableName = "UITests.xctest"
                BlueprintName = "UITests"
                ReferencedContainer = "container:WordPress.xcodeproj">
@@ -45,7 +45,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FF0DB7CC19DC5A2900E81D5B"
+               BlueprintIdentifier = "FF388D5E19E2949E00BD4246"
                BuildableName = "UITests.xctest"
                BlueprintName = "UITests"
                ReferencedContainer = "container:WordPress.xcodeproj">
