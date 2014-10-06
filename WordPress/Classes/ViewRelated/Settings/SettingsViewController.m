@@ -266,20 +266,20 @@ CGFloat const blavatarImageViewSize = 43.f;
                 cell.detailTextLabel.text = [defaultAccount username];
                 cell.detailTextLabel.textColor = [UIColor UIColorFromHex:0x888888];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                cell.accessibilityIdentifier = @"wpcom-username";
+                cell.accessibilityIdentifier = @"Username";
             } else if (indexPath.row == [self rowForNotifications]) {
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 cell.textLabel.text = NSLocalizedString(@"Manage Notifications", @"");
-                cell.accessibilityIdentifier = @"wpcom-manage-notifications";
+                cell.accessibilityIdentifier = @"Manage Notifications";
             } else {
                 cell.textLabel.textAlignment = NSTextAlignmentCenter;
                 cell.textLabel.text = NSLocalizedString(@"Sign Out", @"Sign out from WordPress.com");
-                cell.accessibilityIdentifier = @"wpcom-sign-out";
+                cell.accessibilityIdentifier = @"Sign Out";
             }
         } else {
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
             cell.textLabel.text = NSLocalizedString(@"Sign In", @"Sign in to WordPress.com");
-            cell.accessibilityIdentifier = @"wpcom-sign-in";
+            cell.accessibilityIdentifier = @"Sign In";
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         }
 

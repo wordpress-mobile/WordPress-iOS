@@ -84,14 +84,13 @@ CGFloat const blavatarImageSize = 50.f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.accessibilityIdentifier = @"MeView";
     self.settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Settings", nil)
                                                            style:UIBarButtonItemStylePlain
                                                           target:self
                                                           action:@selector(showSettings:)];
     
     self.navigationItem.rightBarButtonItem = self.settingsButton;
-    self.navigationItem.rightBarButtonItem.accessibilityIdentifier = @"SettingsButton";
+    self.navigationItem.rightBarButtonItem.accessibilityIdentifier = @"Settings";
     // Remove one-pixel gap resulting from a top-aligned grouped table view
     if (IS_IPHONE) {
         UIEdgeInsets tableInset = [self.tableView contentInset];
@@ -104,9 +103,9 @@ CGFloat const blavatarImageSize = 50.f;
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:AddSiteCellIdentifier];
     [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
     self.tableView.allowsSelectionDuringEditing = YES;
-    self.tableView.accessibilityIdentifier = @"TableBlogList";
+    self.tableView.accessibilityIdentifier = @"Blogs";
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    self.navigationItem.leftBarButtonItem.accessibilityIdentifier = @"EditButton";
+    self.navigationItem.leftBarButtonItem.accessibilityIdentifier = @"Edit";
     
     // Trigger the blog sync when loading the view, which should more or less be once when the app launches
     // We could do this on the app delegate, but the blogs list feels like a better place for it.

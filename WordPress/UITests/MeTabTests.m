@@ -12,23 +12,23 @@
 
 - (void)beforeAll
 {
-    [tester clearTextFromViewWithAccessibilityLabel:@"Username"];
+    [tester clearTextFromViewWithAccessibilityLabel:@"Username / Email"];
     [tester clearTextFromViewWithAccessibilityLabel:@"Password"];
     
-    [tester enterText:oneStepUser intoViewWithAccessibilityLabel:@"Username"];
+    [tester enterText:oneStepUser intoViewWithAccessibilityLabel:@"Username / Email"];
     [tester enterText:oneStepPassword intoViewWithAccessibilityLabel:@"Password"];
-    [tester tapViewWithAccessibilityLabel:@"SignIn"];
+    [tester tapViewWithAccessibilityLabel:@"Sign In"];
     
     [tester waitForTimeInterval:3];
     // Verify that the login succeeded
-    [tester waitForViewWithAccessibilityLabel:@"MainTabBar"];
+    [tester waitForViewWithAccessibilityLabel:@"Main Navigation"];
 }
 
 - (void)afterAll
 {
     [tester tapViewWithAccessibilityLabel:@"Me"];
-    [tester tapViewWithAccessibilityLabel:@"SettingsButton"];
-    [tester tapViewWithAccessibilityLabel:@"wpcom-sign-out"];
+    [tester tapViewWithAccessibilityLabel:@"Settings"];
+    [tester tapViewWithAccessibilityLabel:@"Sign Out"];
     [tester tapViewWithAccessibilityLabel:@"Sign Out"];
     [tester waitForTimeInterval:3];
 }
@@ -39,7 +39,7 @@
     [tester waitForTimeInterval:2];
     [tester tapViewWithAccessibilityLabel:@"Me"];
     [tester waitForTimeInterval:2];
-    [tester waitForViewWithAccessibilityLabel:@"MeView"];
+    [tester waitForViewWithAccessibilityLabel:@"Blogs"];
 }
 
 - (void)testHideBlog
@@ -48,17 +48,17 @@
     [tester waitForTimeInterval:2];
     [tester tapViewWithAccessibilityLabel:@"Me"];
     [tester waitForTimeInterval:2];
-    [tester tapViewWithAccessibilityLabel:@"EditButton"];
+    [tester tapViewWithAccessibilityLabel:@"Edit"];
     
     [tester setOn:NO forSwitchWithAccessibilityLabel:[NSString stringWithFormat:@"Switch-Visibility-%@", oneStepUser]];
     
-    [tester tapViewWithAccessibilityLabel:@"EditButton"];
+    [tester tapViewWithAccessibilityLabel:@"Edit"];
     
-    [tester tapViewWithAccessibilityLabel:@"EditButton"];
+    [tester tapViewWithAccessibilityLabel:@"Edit"];
     
     [tester setOn:YES forSwitchWithAccessibilityLabel:[NSString stringWithFormat:@"Switch-Visibility-%@", oneStepUser]];
 
-    [tester tapViewWithAccessibilityLabel:@"EditButton"];
+    [tester tapViewWithAccessibilityLabel:@"Edit"];
 }
 
 - (void)testMeNavigation
@@ -68,7 +68,7 @@
     [tester tapViewWithAccessibilityLabel:@"Me"];
     [tester waitForTimeInterval:2];
 
-    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"TableBlogList"];
+    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"Blogs"];
     
     [tester tapViewWithAccessibilityLabel:@"Posts"];
     [tester waitForTimeInterval:2];
@@ -106,12 +106,12 @@
     [tester tapViewWithAccessibilityLabel:@"Me"];
     [tester waitForTimeInterval:2];
     
-    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"TableBlogList"];
+    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"Blogs"];
     
     [tester tapViewWithAccessibilityLabel:@"Posts"];
     [tester waitForTimeInterval:2];
     
-    [tester tapViewWithAccessibilityLabel:@"addpost"];
+    [tester tapViewWithAccessibilityLabel:@"New Post"];
     [tester waitForTimeInterval:2];
     
     [tester enterText:@"KIF Test Post" intoViewWithAccessibilityLabel:@"Title"];
