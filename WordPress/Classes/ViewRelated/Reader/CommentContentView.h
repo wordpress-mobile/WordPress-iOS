@@ -5,6 +5,8 @@
 @optional
 - (void)handleLinkTapped:(NSURL *)url;
 - (void)handleReplyTapped:(id<WPContentViewProvider>)contentProvider;
+- (void)handleLikeTapped:(id<WPContentViewProvider>)contentProvider;
+- (void)handleUnlikeTapped:(id<WPContentViewProvider>)contentProvider;
 @end
 
 @interface CommentContentView : UIView
@@ -18,6 +20,11 @@
  The object specifying the content (text, images, etc.) to display.
  */
 @property (nonatomic, weak) id<WPContentViewProvider> contentProvider;
+
+/**
+ Number of likes for the comment. It will set the numberOfLikes label.
+ */
+@property (nonatomic, assign) NSInteger likeCount;
 
 /**
  Resets the content view's appearance.
