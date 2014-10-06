@@ -116,7 +116,7 @@ DEPENDENCIES:
   - SVProgressHUD (~> 1.0)
   - Taplytics (~> 1.3.10)
   - UIDeviceIdentifier (~> 0.1)
-  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, commit `3673de05d98fabee59fd0a74c13ded9ba54ed860`, branch `release/0.2.2`)
+  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, commit `cb03818c8a927abd1b52d2d364115d773fc26c9b`, branch `release/0.2.2`)
   - WordPress-iOS-Shared (= 0.1.1)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPressApi.git`)
   - WordPressCom-Analytics-iOS (= 0.0.6)
@@ -134,7 +134,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/jleandroperez/SocketRocket.git
   WordPress-iOS-Editor:
     :branch: release/0.2.2
-    :commit: 3673de05d98fabee59fd0a74c13ded9ba54ed860
+    :commit: cb03818c8a927abd1b52d2d364115d773fc26c9b
     :git: git://github.com/wordpress-mobile/WordPress-iOS-Editor
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPressApi.git
