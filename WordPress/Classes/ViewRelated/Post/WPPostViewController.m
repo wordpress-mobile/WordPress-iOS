@@ -32,6 +32,8 @@ NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 static NSInteger const MaximumNumberOfPictures = 5;
 static CGFloat const kNavigationBarButtonSpacer = 15.0;
 static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
+static NSDictionary *kDisabledButtonBarStyle;
+static NSDictionary *kEnabledButtonBarStyle;
 
 @interface WPPostViewController ()<UIPopoverControllerDelegate> {
     NSOperationQueue *_mediaUploadQueue;
@@ -40,12 +42,13 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 @property (nonatomic, strong) UIButton *titleBarButton;
 @property (nonatomic, strong) UIView *uploadStatusView;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
-@property (nonatomic, strong) UIBarButtonItem *cancelButton;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
 
 #pragma mark - Bar Button Items
-@property (nonatomic, strong, readwrite) UIBarButtonItem *saveBarButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *cancelButton;
+@property (nonatomic, strong) UIBarButtonItem *editBarButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *saveBarButtonItem;
 
 @end
 
@@ -181,7 +184,11 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];	
+    [super viewDidLoad];
+    
+    kDisabledButtonBarStyle = @{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.25]};
+    kEnabledButtonBarStyle = @{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor whiteColor]};
+    
     [self createRevisionOfPost];
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
     
@@ -615,10 +622,8 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
     separator.width = kNavigationBarButtonSpacer;
     
     if ([self isEditing]) {
-        UIBarButtonItem* saveBarButtonItem = [self saveBarButtonItem];
-        
         if (editingChanged) {
-            NSArray* rightBarButtons = @[saveBarButtonItem,
+            NSArray* rightBarButtons = @[self.saveBarButtonItem,
                                          separator,
                                          [self optionsBarButtonItem],
                                          separator,
@@ -626,7 +631,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
             
             [self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
         } else {
-            saveBarButtonItem.title = [self saveBarButtonItemTitle];
+            self.saveBarButtonItem.title = [self saveBarButtonItemTitle];
         }
 
 		BOOL updateEnabled = self.hasChanges || self.post.remoteStatus == AbstractPostRemoteStatusFailed;
@@ -639,7 +644,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 		titleTextAttributes = @{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName : color};
 		[self.navigationItem.rightBarButtonItem setTitleTextAttributes:titleTextAttributes forState:controlState];
 	} else {
-		NSArray* rightBarButtons = @[[self editBarButtonItem],
+		NSArray* rightBarButtons = @[self.editBarButtonItem,
                                      separator, separator,
 									 [self previewBarButtonItem]];
 		
@@ -726,15 +731,22 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 
 - (UIBarButtonItem *)editBarButtonItem
 {
-	NSString* buttonTitle = NSLocalizedString(@"Edit",
-											  @"Label for the button to edit the current post.");
-	
-	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
-															   style:UIBarButtonItemStylePlain
-															  target:self
-															  action:@selector(startEditing)];
-	
-	return button;
+    if (!_editBarButtonItem) {
+        NSString* buttonTitle = NSLocalizedString(@"Edit",
+                                                  @"Label for the button to edit the current post.");
+        
+        UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:self
+                                                                  action:@selector(startEditing)];
+        
+        // Seems to be an issue witht the appearance proxy not being respected, so resetting these here
+        [editButton setTitleTextAttributes:kEnabledButtonBarStyle forState:UIControlStateNormal];
+        [editButton setTitleTextAttributes:kDisabledButtonBarStyle forState:UIControlStateDisabled];
+        _editBarButtonItem = editButton;
+    }
+    
+	return _editBarButtonItem;
 }
 
 - (UIBarButtonItem *)optionsBarButtonItem
@@ -776,6 +788,9 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
                                                                       target:self
                                                                       action:@selector(saveAction)];
         
+        // Seems to be an issue witht the appearance proxy not being respected, so resetting these here
+        [saveButton setTitleTextAttributes:kEnabledButtonBarStyle forState:UIControlStateNormal];
+        [saveButton setTitleTextAttributes:kDisabledButtonBarStyle forState:UIControlStateDisabled];
         _saveBarButtonItem = saveButton;
     }
 
