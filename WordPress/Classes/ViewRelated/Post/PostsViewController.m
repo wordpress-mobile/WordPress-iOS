@@ -58,7 +58,7 @@
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"Posts", @"");
-
+    self.tableView.accessibilityIdentifier = @"Posts";
     UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
     [button setImage:image forState:UIControlStateNormal];
@@ -145,6 +145,7 @@
 		cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 	}
     cell.accessoryType = UITableViewCellAccessoryNone;
+    cell.accessibilityIdentifier = @"PostCell";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
