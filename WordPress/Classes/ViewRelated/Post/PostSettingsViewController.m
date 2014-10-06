@@ -472,6 +472,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         cell.textLabel.text = NSLocalizedString(@"Categories", @"Label for the categories field. Should be the same as WP core.");
         cell.detailTextLabel.text = [NSString decodeXMLCharactersIn:[self.post categoriesText]];
         cell.tag = PostSettingsRowCategories;
+        cell.accessibilityIdentifier = @"Categories";
 
     } else if (indexPath.row == PostSettingsRowTags) {
         // Tags
