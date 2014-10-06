@@ -6,11 +6,7 @@ import Foundation
     // MARK: - Public Properties
     public var read: Bool = false {
         didSet {
-            if read {
-                backgroundColor = WPStyleGuide.Notifications.noteBackgroundReadColor
-            } else {
-                backgroundColor = WPStyleGuide.Notifications.noteBackgroundUnreadColor
-            }
+            refreshBackgrounds()
         }
     }
     public var attributedSubject: NSAttributedString? {
@@ -70,19 +66,10 @@ import Foundation
     
     public override func layoutSubviews() {
         refreshLabelPreferredMaxLayoutWidth()
+        refreshBackgrounds()
         super.layoutSubviews()
     }
 
-    public override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        refreshBackgrounds()
-    }
-    
-    public override func setHighlighted(highlighted: Bool, animated: Bool) {
-        super.setHighlighted(highlighted, animated: animated)
-        refreshBackgrounds()
-    }
-    
     // MARK: - Private Methods
     private func refreshLabelPreferredMaxLayoutWidth() {
         let maxWidthLabel                    = frame.width - subjectPaddingRight - subjectLabel.frame.minX
@@ -92,8 +79,10 @@ import Foundation
     
     private func refreshBackgrounds() {
         if read {
+            backgroundColor             = WPStyleGuide.Notifications.noteBackgroundReadColor
             noticonView.backgroundColor = WPStyleGuide.Notifications.noticonReadColor
         } else {
+            backgroundColor             = WPStyleGuide.Notifications.noteBackgroundUnreadColor
             noticonView.backgroundColor = WPStyleGuide.Notifications.noticonUnreadColor
         }
     }
