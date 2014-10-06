@@ -100,7 +100,7 @@
     [tester waitForTimeInterval:2];
 }
 
-- (void) testMePostsPages {
+- (void) testMeAddPost {
     [tester tapViewWithAccessibilityLabel:@"Me"];
     [tester waitForTimeInterval:2];
     [tester tapViewWithAccessibilityLabel:@"Me"];
@@ -127,6 +127,26 @@
     [tester tapViewWithAccessibilityLabel:@"Publish"];
     [tester waitForTimeInterval:2];
 }
+
+- (void) testMeRemovePost {
+    [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester waitForTimeInterval:2];
+    [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"Blogs"];
+    
+    [tester tapViewWithAccessibilityLabel:@"Posts"];
+    [tester waitForTimeInterval:3];
+
+    [tester swipeViewWithAccessibilityLabel:@"PostCell" inDirection:KIFSwipeDirectionLeft];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Delete"];
+    [tester waitForTimeInterval:2];
+}
+
+
 
 
 @end
