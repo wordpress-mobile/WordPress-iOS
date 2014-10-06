@@ -64,7 +64,7 @@
     [button setImage:image forState:UIControlStateNormal];
     [button addTarget:self action:@selector(showAddPostView) forControlEvents:UIControlEventTouchUpInside];
     button.accessibilityLabel = [self newPostAccessibilityLabel];
-    button.accessibilityIdentifier = @"addpost";
+    button.accessibilityIdentifier = @"New Post";
     UIBarButtonItem *composeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
 
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:composeButtonItem forNavigationItem:self.navigationItem];
