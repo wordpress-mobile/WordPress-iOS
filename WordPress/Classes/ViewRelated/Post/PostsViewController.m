@@ -58,7 +58,8 @@
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"Posts", @"");
-    self.tableView.accessibilityIdentifier = @"Posts";
+    self.tableView.accessibilityIdentifier = @"PostsTable";
+    self.tableView.isAccessibilityElement = YES;
     UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
     [button setImage:image forState:UIControlStateNormal];
