@@ -343,7 +343,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 - (void)showSettings
 {
     Post *post = (Post *)self.post;
-    PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post];
+    PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post shouldHideStatusBar:YES];
 	vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
