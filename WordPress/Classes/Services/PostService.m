@@ -202,7 +202,7 @@ NSString * const PostServiceTypeAny = @"any";
 }
 
 - (void)mergePosts:(NSArray *)posts ofType:(NSString *)postType forBlog:(Blog *)blog purgeExisting:(BOOL)purge completionHandler:(void (^)(void))completion {
-    NSMutableArray *postsToKeep = [NSMutableArray array];
+    NSMutableSet *postsToKeep = [NSMutableSet setWithCapacity:posts.count];
     for (RemotePost *remotePost in posts) {
         AbstractPost *post = [self findPostWithID:remotePost.postID inBlog:blog];
         if (!post) {
@@ -228,13 +228,11 @@ NSString * const PostServiceTypeAny = @"any";
         }
         request.predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL) AND (blog = %@)", @(AbstractPostRemoteStatusSync), blog];
         NSArray *existingPosts = [self.managedObjectContext executeFetchRequest:request error:nil];
-        if (existingPosts.count > 0) {
-            for (AbstractPost *post in existingPosts) {
-                if(![postsToKeep containsObject:post]) {
-                    DDLogInfo(@"Deleting Post: %@", post);
-                    [self.managedObjectContext deleteObject:post];
-                }
-            }
+        NSMutableSet *postsToDelete = [NSMutableSet setWithArray:existingPosts];
+        [postsToDelete minusSet:postsToKeep];
+        for (AbstractPost *post in postsToDelete) {
+            DDLogInfo(@"Deleting Post: %@", post);
+            [self.managedObjectContext deleteObject:post];
         }
     }
 
