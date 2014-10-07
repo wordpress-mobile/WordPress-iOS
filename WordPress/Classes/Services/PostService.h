@@ -12,6 +12,9 @@ extern NSString * const PostServiceTypeAny;
 - (Post *)createDraftPostForBlog:(Blog *)blog;
 - (Page *)createDraftPageForBlog:(Blog *)blog;
 
++ (Post *)createDraftPostInMainContextForBlog:(Blog *)blog;
++ (Page *)createDraftPageInMainContextForBlog:(Blog *)blog;
+
 - (void)syncPostsOfType:(NSString *)postType
                 forBlog:(Blog *)blog
                 success:(void (^)())success

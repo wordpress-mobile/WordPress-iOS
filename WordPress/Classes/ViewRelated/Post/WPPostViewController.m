@@ -67,11 +67,10 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
 
     Blog *blog = [blogService lastUsedOrFirstBlog];
     [self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
-    Post *post = [postService createDraftPostForBlog:blog];
+    Post *post = [PostService createDraftPostInMainContextForBlog:blog];
     return [self initWithPost:post
 						 mode:kWPPostViewControllerModeEdit];
 }
@@ -481,8 +480,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 }
 
 - (AbstractPost *)createNewDraftForBlog:(Blog *)blog {
-    PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    return [postService createDraftPostForBlog:blog];
+    return [PostService createDraftPostInMainContextForBlog:blog];
 }
 
 - (void)geotagNewPost {

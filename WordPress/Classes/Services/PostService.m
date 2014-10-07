@@ -24,13 +24,17 @@ NSString * const PostServiceTypeAny = @"any";
 
 @implementation PostService
 
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context {
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context {
     self = [super init];
     if (self) {
         _managedObjectContext = context;
     }
 
     return self;
+}
+
++ (instancetype)serviceWithMainContext {
+    return [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
 }
 
 - (Post *)createPostForBlog:(Blog *)blog {
@@ -47,6 +51,11 @@ NSString * const PostServiceTypeAny = @"any";
     return post;
 }
 
++ (Post *)createDraftPostInMainContextForBlog:(Blog *)blog {
+    PostService *service = [PostService serviceWithMainContext];
+    return [service createDraftPostForBlog:blog];
+}
+
 - (Page *)createPageForBlog:(Blog *)blog {
     NSAssert(self.managedObjectContext == blog.managedObjectContext, @"Blog's context should be the the same as the service's");
     Page *page = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Page class]) inManagedObjectContext:self.managedObjectContext];
@@ -59,6 +68,11 @@ NSString * const PostServiceTypeAny = @"any";
     Page *page = [self createPageForBlog:blog];
     [self initializeDraft:page];
     return page;
+}
+
++ (Page *)createDraftPageInMainContextForBlog:(Blog *)blog {
+    PostService *service = [PostService serviceWithMainContext];
+    return [service createDraftPageForBlog:blog];
 }
 
 - (void)syncPostsOfType:(NSString *)postType

@@ -105,10 +105,9 @@ static NSInteger const MaximumNumberOfPictures = 4;
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
 
     Blog *blog = [blogService lastUsedOrFirstBlog];
-    return [self initWithPost:[postService createDraftPostForBlog:blog]];
+    return [self initWithPost:[PostService createDraftPostInMainContextForBlog:blog]];
 }
 
 - (id)initWithPost:(AbstractPost *)post
@@ -397,8 +396,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
 #pragma mark - Instance Methods
 
 - (AbstractPost *)createNewDraftForBlog:(Blog *)blog {
-    PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    return [postService createDraftPostForBlog:blog];
+    return [PostService createDraftPostInMainContextForBlog:blog];
 }
 
 - (void)geotagNewPost
