@@ -83,6 +83,10 @@ static NSString *const CVCCommentCellIdentifier = @"CommentTableViewCell";
                                                                           options:0
                                                                           metrics:nil
                                                                             views:views]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[replyTextView]|"
+                                                                          options:0
+                                                                          metrics:nil
+                                                                            views:views]];
     }
     else {
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tableView]|"
