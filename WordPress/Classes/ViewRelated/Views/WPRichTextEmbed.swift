@@ -7,6 +7,7 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
 
     // MARK: Properties
 
+    var fixedHeight : CGFloat = 0.0
     var attachmentSize = CGSizeZero
     var documentSize = CGSizeZero
     var success : successBlock?
@@ -67,10 +68,17 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
 
     func contentSize() -> CGSize {
         // embeds, unlike images, typically have no intrinsic content size that we can use to fall back on
+        if (fixedHeight > 0) {
+            return CGSizeMake(CGFloat(CGFLOAT_WIDTH_UNKNOWN), fixedHeight)
+        }
         return CGSizeZero
     }
 
     func contentRatio() -> CGFloat {
+        if (fixedHeight > 0) {
+            return 0.0
+        }
+
         if !CGSizeEqualToSize(attachmentSize, CGSizeZero) {
             return attachmentSize.width / attachmentSize.height
         }
@@ -82,6 +90,9 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
         return 0.0
     }
 
+    func loadHTMLString(html: NSString) {
+        webView.loadHTMLString(html, baseURL: nil)
+    }
 
     // MARK: WebView delegate methods
 
