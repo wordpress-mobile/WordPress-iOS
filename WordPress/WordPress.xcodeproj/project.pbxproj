@@ -10119,6 +10119,17 @@ sh ../run-oclint.sh</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
+		<key>B50DCBA619E4222C00EEAFA3</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>wrapper.xcdatamodel</string>
+			<key>path</key>
+			<string>WordPress 22.xcdatamodel</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
 		<key>B5134AF419B2C4F200FADE8C</key>
 		<dict>
 			<key>fileEncoding</key>
@@ -12579,6 +12590,7 @@ sh ../run-oclint.sh</string>
 		<dict>
 			<key>children</key>
 			<array>
+				<string>B50DCBA619E4222C00EEAFA3</string>
 				<string>5D229A78199AB74F00685123</string>
 				<string>DA67DF58196D8F6A005B5BC8</string>
 				<string>B5B63F3F19621A9F001601C3</string>
@@ -12602,7 +12614,7 @@ sh ../run-oclint.sh</string>
 				<string>E125443D12BF5A7200D87A0A</string>
 			</array>
 			<key>currentVersion</key>
-			<string>5D229A78199AB74F00685123</string>
+			<string>B50DCBA619E4222C00EEAFA3</string>
 			<key>isa</key>
 			<string>XCVersionGroup</string>
 			<key>name</key>
