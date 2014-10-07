@@ -392,7 +392,6 @@ fi
 				<string>ACBAB6860E1247F700F38795</string>
 				<string>C58349C51806F95100B64089</string>
 				<string>C56636E91868D0CE00226AAB</string>
-				<string>5DF94E241962B90300359241</string>
 				<string>313AE4A019E3F20400AAFABE</string>
 				<string>A0E293F10E21027E00C6919C</string>
 				<string>B5AB733D19901F85005F5044</string>
@@ -1764,7 +1763,7 @@ fi
 			<key>lastKnownFileType</key>
 			<string>sourcecode.c.h</string>
 			<key>path</key>
-			<string>ACommentViewController.h</string>
+			<string>CommentViewController.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -1777,7 +1776,7 @@ fi
 			<key>lastKnownFileType</key>
 			<string>sourcecode.c.objc</string>
 			<key>path</key>
-			<string>ACommentViewController.m</string>
+			<string>CommentViewController.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -5412,39 +5411,6 @@ fi
 			<string>CommentsTableViewDelegate.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
-		</dict>
-		<key>5DF94E221962B90300359241</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>CommentViewController.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>5DF94E231962B90300359241</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>CommentViewController.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>5DF94E241962B90300359241</key>
-		<dict>
-			<key>fileRef</key>
-			<string>5DF94E231962B90300359241</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
 		</dict>
 		<key>5DF94E251962B97D00359241</key>
 		<dict>
@@ -11584,8 +11550,6 @@ sh ../run-oclint.sh</string>
 			<key>children</key>
 			<array>
 				<string>5DF94E211962B90300359241</string>
-				<string>5DF94E221962B90300359241</string>
-				<string>5DF94E231962B90300359241</string>
 				<string>C533CF330E6D3ADA000C3DE8</string>
 				<string>C533CF340E6D3ADA000C3DE8</string>
 				<string>313AE49B19E3F20400AAFABE</string>
