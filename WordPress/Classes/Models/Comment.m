@@ -36,6 +36,8 @@ NSString * const CommentStatusDraft = @"draft";
 @dynamic postTitle;
 @dynamic status;
 @dynamic type;
+@dynamic isLiked;
+@dynamic likeCount;
 @synthesize isNew;
 @synthesize attributedContent;
 
