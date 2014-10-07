@@ -186,8 +186,8 @@ static NSDictionary *kEnabledButtonBarStyle;
 {
     [super viewDidLoad];
     
-    kDisabledButtonBarStyle = @{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.25]};
-    kEnabledButtonBarStyle = @{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor whiteColor]};
+    kDisabledButtonBarStyle = @{NSFontAttributeName: [WPStyleGuide regularTextFontSemiBold], NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.25]};
+    kEnabledButtonBarStyle = @{NSFontAttributeName: [WPStyleGuide regularTextFontSemiBold], NSForegroundColorAttributeName: [UIColor whiteColor]};
     
     [self createRevisionOfPost];
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
@@ -635,14 +635,7 @@ static NSDictionary *kEnabledButtonBarStyle;
         }
 
 		BOOL updateEnabled = self.hasChanges || self.post.remoteStatus == AbstractPostRemoteStatusFailed;
-		[self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];
-		
-		// Seems to be a bug with UIBarButtonItem respecting the UIControlStateDisabled text color
-		NSDictionary *titleTextAttributes;
-		UIColor *color = updateEnabled ? [UIColor whiteColor] : [UIColor colorWithWhite:1.0 alpha:0.5];
-		UIControlState controlState = updateEnabled ? UIControlStateNormal : UIControlStateDisabled;
-		titleTextAttributes = @{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName : color};
-		[self.navigationItem.rightBarButtonItem setTitleTextAttributes:titleTextAttributes forState:controlState];
+		[self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];		
 	} else {
 		NSArray* rightBarButtons = @[self.editBarButtonItem,
                                      separator, separator,
