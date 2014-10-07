@@ -47,6 +47,8 @@
 		313AE4A319E3F20400AAFABE /* CommentTableViewHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 313AE49F19E3F20400AAFABE /* CommentTableViewHeaderCell.xib */; };
 		319D6E7B19E447500013871C /* Suggestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 319D6E7A19E447500013871C /* Suggestion.m */; };
 		319D6E7E19E447C80013871C /* SuggestionService.m in Sources */ = {isa = PBXBuildFile; fileRef = 319D6E7D19E447C80013871C /* SuggestionService.m */; };
+		319D6E8119E44C680013871C /* SuggestionsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 319D6E8019E44C680013871C /* SuggestionsTableView.m */; };
+		319D6E8519E44F7F0013871C /* SuggestionsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 319D6E8419E44F7F0013871C /* SuggestionsTableViewCell.m */; };
 		37022D931981C19000F322B7 /* VerticallyStackedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 37022D901981BF9200F322B7 /* VerticallyStackedButton.m */; };
 		3716E401167296D30035F8C4 /* ToastView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3716E400167296D30035F8C4 /* ToastView.xib */; };
 		37245ADC13FC23FF006CDBE3 /* WPWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37245ADB13FC23FF006CDBE3 /* WPWebViewController.xib */; };
@@ -510,6 +512,10 @@
 		319D6E7A19E447500013871C /* Suggestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Suggestion.m; sourceTree = "<group>"; };
 		319D6E7C19E447C80013871C /* SuggestionService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuggestionService.h; sourceTree = "<group>"; };
 		319D6E7D19E447C80013871C /* SuggestionService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SuggestionService.m; sourceTree = "<group>"; };
+		319D6E7F19E44C680013871C /* SuggestionsTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SuggestionsTableView.h; path = Suggestions/SuggestionsTableView.h; sourceTree = "<group>"; };
+		319D6E8019E44C680013871C /* SuggestionsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SuggestionsTableView.m; path = Suggestions/SuggestionsTableView.m; sourceTree = "<group>"; };
+		319D6E8319E44F7F0013871C /* SuggestionsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SuggestionsTableViewCell.h; path = Suggestions/SuggestionsTableViewCell.h; sourceTree = "<group>"; };
+		319D6E8419E44F7F0013871C /* SuggestionsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SuggestionsTableViewCell.m; path = Suggestions/SuggestionsTableViewCell.m; sourceTree = "<group>"; };
 		37022D8F1981BF9200F322B7 /* VerticallyStackedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerticallyStackedButton.h; sourceTree = "<group>"; };
 		37022D901981BF9200F322B7 /* VerticallyStackedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerticallyStackedButton.m; sourceTree = "<group>"; };
 		3716E400167296D30035F8C4 /* ToastView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ToastView.xib; path = Resources/ToastView.xib; sourceTree = "<group>"; };
@@ -1486,6 +1492,17 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		319D6E8219E44C7B0013871C /* Suggestions */ = {
+			isa = PBXGroup;
+			children = (
+				319D6E7F19E44C680013871C /* SuggestionsTableView.h */,
+				319D6E8019E44C680013871C /* SuggestionsTableView.m */,
+				319D6E8319E44F7F0013871C /* SuggestionsTableViewCell.h */,
+				319D6E8419E44F7F0013871C /* SuggestionsTableViewCell.m */,
+			);
+			name = Suggestions;
+			sourceTree = "<group>";
+		};
 		37195B7F166A5DDC005F2292 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
@@ -1874,6 +1891,7 @@
 				5DA5BF4A18E32DE2005F11F9 /* Media */,
 				EC4696A80EA74DAC0040EE8E /* Pages */,
 				AC3439790E11434600E5D79B /* Post */,
+				319D6E8219E44C7B0013871C /* Suggestions */,
 				CCB3A03814C8DD5100D43C3F /* Reader */,
 				3792259E12F6DBCC00F2176A /* Stats */,
 				5D87E10D15F512380012C595 /* Settings */,
@@ -2900,6 +2918,7 @@
 				93C1148518EDF6E100DAC95C /* BlogService.m in Sources */,
 				B55853F719630D5400FAF6C3 /* NSAttributedString+Util.m in Sources */,
 				ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */,
+				319D6E8119E44C680013871C /* SuggestionsTableView.m in Sources */,
 				ACBAB6860E1247F700F38795 /* PostPreviewViewController.m in Sources */,
 				C58349C51806F95100B64089 /* IOS7CorrectedTextView.m in Sources */,
 				C56636E91868D0CE00226AAB /* StatsViewController.m in Sources */,
@@ -3137,6 +3156,7 @@
 				5D839AAB187F0D8000811F4A /* PostGeolocationCell.m in Sources */,
 				A2DC5B1A1953451B009584C3 /* WPNUXHelpBadgeLabel.m in Sources */,
 				B532D4EA199D4357006E4DF6 /* NoteBlockHeaderTableViewCell.swift in Sources */,
+				319D6E8519E44F7F0013871C /* SuggestionsTableViewCell.m in Sources */,
 				E1AC282D18282423004D394C /* SFHFKeychainUtils.m in Sources */,
 				319D6E7E19E447C80013871C /* SuggestionService.m in Sources */,
 			);
