@@ -70,6 +70,9 @@
 				<string>03958061100D6CFC00850742</string>
 				<string>5DF94E3C1962BAA700359241</string>
 				<string>5DF94E3D1962BAA700359241</string>
+				<string>5D7B414319E482C9007D9EC7</string>
+				<string>5D7B414419E482C9007D9EC7</string>
+				<string>5D7B414519E482C9007D9EC7</string>
 				<string>5DF94E3E1962BAA700359241</string>
 				<string>5DF94E3F1962BAA700359241</string>
 				<string>5DF94E401962BAA700359241</string>
@@ -78,10 +81,6 @@
 				<string>5DEB61B3156FCD3400242C35</string>
 				<string>ADF544C0195A0F620092213D</string>
 				<string>ADF544C1195A0F620092213D</string>
-				<string>5D1945601979C3D5003EDDAD</string>
-				<string>5D1945611979C3D5003EDDAD</string>
-				<string>5D1945631979E091003EDDAD</string>
-				<string>5D1945641979E091003EDDAD</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
@@ -458,6 +457,7 @@ fi
 				<string>B587798119B799D800E57C5A</string>
 				<string>B587798019B799D800E57C5A</string>
 				<string>B587797E19B799D800E57C5A</string>
+				<string>5D7B414719E482C9007D9EC7</string>
 				<string>30AF6CFD13C230C600A29C00</string>
 				<string>E1F80825146420B000726BC7</string>
 				<string>B587798619B799EB00E57C5A</string>
@@ -471,6 +471,7 @@ fi
 				<string>5DF94E501962BAEB00359241</string>
 				<string>93C1147F18EC5DD500DAC95C</string>
 				<string>B548458219A258890077E7A5</string>
+				<string>5D7B414819E482C9007D9EC7</string>
 				<string>85435BEA190F837500E868D0</string>
 				<string>8514DDA7190E2AB3009B6421</string>
 				<string>E13F23C314FE84600081D9CC</string>
@@ -480,7 +481,6 @@ fi
 				<string>A25EBD87156E330600530E3D</string>
 				<string>5DEB61B4156FCD3400242C35</string>
 				<string>B55853F31962337500FAF6C3</string>
-				<string>5D1945651979E091003EDDAD</string>
 				<string>5D49B03B19BE3CAD00703A9B</string>
 				<string>5DEB61B8156FCD5200242C35</string>
 				<string>CC24E5EF1577D1EA00A6D5B5</string>
@@ -522,7 +522,6 @@ fi
 				<string>5DCC4CD819A50CC0003E548C</string>
 				<string>93C4864F181043D700A24725</string>
 				<string>CC70165E185BB97A007B37DB</string>
-				<string>5D11E3261979E76D00E70992</string>
 				<string>859F761D18F2159800EF8D5D</string>
 				<string>B57B99DE19A2DBF200506504</string>
 				<string>E1523EB516D3B305002C5A36</string>
@@ -544,6 +543,7 @@ fi
 				<string>E23EEC5E185A72C100F4DE2A</string>
 				<string>8525398B171761D9003F6B32</string>
 				<string>E1D04D8119374EAF002FADD7</string>
+				<string>5D7B414619E482C9007D9EC7</string>
 				<string>85149741171E13DF00B87F3F</string>
 				<string>858DE40F1730384F000AC628</string>
 				<string>B5CC05F61962150600975CAC</string>
@@ -615,7 +615,6 @@ fi
 				<string>B587797C19B799D800E57C5A</string>
 				<string>5D119DA3176FBE040073D83A</string>
 				<string>5DF59C0B1770AE3A00171208</string>
-				<string>5D1945621979C3D5003EDDAD</string>
 				<string>E1F5A1BC1771C90A00E0495F</string>
 				<string>851734431798C64700A30E27</string>
 				<string>5DF738971965FACD00393584</string>
@@ -2653,39 +2652,6 @@ fi
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>5D11E3241979E76D00E70992</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>VideoThumbnailServiceRemote.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>5D11E3251979E76D00E70992</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>VideoThumbnailServiceRemote.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>5D11E3261979E76D00E70992</key>
-		<dict>
-			<key>fileRef</key>
-			<string>5D11E3251979E76D00E70992</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
 		<key>5D12FE1A1988243700378BD6</key>
 		<dict>
 			<key>fileEncoding</key>
@@ -2831,72 +2797,6 @@ fi
 		<dict>
 			<key>fileRef</key>
 			<string>5D146EBA189857ED0068FDC6</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>5D1945601979C3D5003EDDAD</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>WPRichTextImageControl.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>5D1945611979C3D5003EDDAD</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>WPRichTextImageControl.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>5D1945621979C3D5003EDDAD</key>
-		<dict>
-			<key>fileRef</key>
-			<string>5D1945611979C3D5003EDDAD</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>5D1945631979E091003EDDAD</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>WPRichTextVideoControl.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>5D1945641979E091003EDDAD</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>WPRichTextVideoControl.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>5D1945651979E091003EDDAD</key>
-		<dict>
-			<key>fileRef</key>
-			<string>5D1945641979E091003EDDAD</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
@@ -3938,6 +3838,66 @@ fi
 			<string>WordPress 18.xcdatamodel</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
+		</dict>
+		<key>5D7B414319E482C9007D9EC7</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>path</key>
+			<string>WPRichTextEmbed.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>5D7B414419E482C9007D9EC7</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>path</key>
+			<string>WPRichTextImage.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>5D7B414519E482C9007D9EC7</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>path</key>
+			<string>WPRichTextMediaAttachment.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>5D7B414619E482C9007D9EC7</key>
+		<dict>
+			<key>fileRef</key>
+			<string>5D7B414319E482C9007D9EC7</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>5D7B414719E482C9007D9EC7</key>
+		<dict>
+			<key>fileRef</key>
+			<string>5D7B414419E482C9007D9EC7</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>5D7B414819E482C9007D9EC7</key>
+		<dict>
+			<key>fileRef</key>
+			<string>5D7B414519E482C9007D9EC7</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
 		</dict>
 		<key>5D7DEA2819D488DD0032EE77</key>
 		<dict>
@@ -6975,8 +6935,6 @@ fi
 				<string>E18EE95019349EC300B0A40C</string>
 				<string>E1249B481940AE610035E895</string>
 				<string>E1249B471940AE550035E895</string>
-				<string>5D11E3241979E76D00E70992</string>
-				<string>5D11E3251979E76D00E70992</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
@@ -10190,17 +10148,6 @@ sh ../run-oclint.sh</string>
 			<string>Pods-WordPressTest.debug.xcconfig</string>
 			<key>path</key>
 			<string>../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.debug.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>B50DCBA619E4222C00EEAFA3</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.xcdatamodel</string>
-			<key>path</key>
-			<string>WordPress 22.xcdatamodel</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
