@@ -18,6 +18,7 @@
 #import "StatsViewController.h"
 #import "EditCommentViewController.h"
 #import "EditReplyViewController.h"
+#import "SuggestionsTableView.h"
 
 #import "WordPress-Swift.h"
 
@@ -60,6 +61,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 @property (nonatomic,   weak) IBOutlet UITableView          *tableView;
 @property (nonatomic,   weak) IBOutlet UIGestureRecognizer  *tableGesturesRecognizer;
 @property (nonatomic, strong) ReplyTextView                 *replyTextView;
+@property (nonatomic, strong) SuggestionsTableView          *suggestionsTableView;
 
 // Table Helpers
 @property (nonatomic, strong) NSDictionary                  *layoutCellMap;
@@ -224,6 +226,15 @@ static CGFloat NotificationSectionSeparator     = 10;
     [self.view addSubview:self.replyTextView];
     [self.view pinSubviewAtBottom:self.replyTextView];
     [self.view pinSubview:self.tableView aboveSubview:self.replyTextView];
+    
+    // TODO don't hardcode site ID
+    SuggestionsTableView *suggestionsTableView = [[SuggestionsTableView alloc] initWithWidth:CGRectGetWidth(self.view.frame)
+                                                                                   andSiteID:@54117];
+    // TODO add a mentions delegate to avoid collision with other tableviews callbacks
+    // suggestionsTableView.delegate              = self;
+    self.suggestionsTableView                  = suggestionsTableView;
+    [self.view addSubview:self.suggestionsTableView];
+    [self.view pinSubviewAtBottom:self.suggestionsTableView];
 }
 
 
@@ -978,6 +989,51 @@ static CGFloat NotificationSectionSeparator     = 10;
     self.tableGesturesRecognizer.enabled = false;
 }
 
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    // TODO: Make this a helper method on suggestionstableview
+    // that takes the textview, range and text and returns the "currentWord"
+    unsigned long currentLocation = range.location;
+    bool done = false;
+    NSMutableString *currentWord = [NSMutableString new];
+    
+    // if they just typed a space, nothing to do
+    // if they just typed a line feed, fall through too
+    
+    if ([text isEqualToString:@" "]) {
+        // fall through
+    } else if ([text isEqualToString:@"\n"]) {
+        // fall through
+    } else {
+        do {
+            currentLocation--;
+            
+            if (-1 == currentLocation) {
+                // we've run out of text, so we're done
+                done = true;
+            } else {
+                // get the character at that location
+                // TODO: Better handle characters like .-)( etc
+                NSRange charRange = NSMakeRange(currentLocation, 1);
+                NSString *charAtRange = [textView.text substringWithRange:charRange];
+                if ([charAtRange isEqualToString:@" "]) {
+                    done = true;
+                } else if ([charAtRange isEqualToString:@"\n"]) {
+                    done = true;
+                } else {
+                    [currentWord insertString:charAtRange atIndex:0];
+                }
+            }
+        } while (!done);
+        
+        // Lastly, add whatever they just typed
+        [currentWord appendString:text];
+    }
+
+    [_suggestionsTableView filterSuggestionsForKeyPress:text inWord:currentWord];
+    
+    return YES;
+}
 
 #pragma mark - Gestures Recognizer Delegate
 
