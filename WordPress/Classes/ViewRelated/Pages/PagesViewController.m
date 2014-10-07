@@ -102,8 +102,7 @@
 }
 
 - (void)showAddPostView {
-    PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    Page *post = [postService createDraftPageForBlog:self.blog];
+    Page *post = [PostService createDraftPageInMainContextForBlog:self.blog];
     [self editPost:post];
 }
 
