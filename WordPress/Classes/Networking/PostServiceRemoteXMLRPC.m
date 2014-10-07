@@ -78,7 +78,7 @@
                              success(post);
                          }
                      } else if (failure) {
-                         NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"Invalid value returned for new post: %@", responseObject] forKey:NSLocalizedDescriptionKey];
+                         NSDictionary *userInfo = @{NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Invalid value returned for new post: %@", responseObject]};
                          NSError *error = [NSError errorWithDomain:@"org.wordpress.iphone" code:0 userInfo:userInfo];
                          failure(error);
                      }
@@ -97,7 +97,7 @@
     NSParameterAssert([post.postID integerValue] > 0);
     if ([post.postID integerValue] <= 0) {
         if (failure) {
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Can't edit a post if it's not in the server" forKey:NSLocalizedDescriptionKey];
+            NSDictionary *userInfo = @{NSLocalizedDescriptionKey: @"Can't edit a post if it's not in the server"};
             NSError *error = [NSError errorWithDomain:@"org.wordpress.iphone" code:0 userInfo:userInfo];
             dispatch_async(dispatch_get_main_queue(), ^{
                 failure(error);
