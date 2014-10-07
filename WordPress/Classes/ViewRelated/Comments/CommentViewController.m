@@ -323,12 +323,13 @@ static NSString *const CVCCommentCellIdentifier = @"CommentTableViewCell";
 - (void)editComment
 {
     EditCommentViewController *editViewController = [EditCommentViewController newEditViewController];
-
     editViewController.content = self.comment.content;
+
+    __typeof(self) __weak weakSelf = self;
     editViewController.onCompletion = ^(BOOL hasNewContent, NSString *newContent) {
         [self dismissViewControllerAnimated:YES completion:^{
             if (hasNewContent) {
-                [self updateCommentForNewContent:newContent];
+                [weakSelf updateCommentForNewContent:newContent];
             }
         }];
     };
@@ -360,9 +361,9 @@ static NSString *const CVCCommentCellIdentifier = @"CommentTableViewCell";
                                                   otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
                                                            tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
                                                                if (buttonIndex == alertView.cancelButtonIndex) {
-                                                                   [self.tableView reloadData];
+                                                                   [weakSelf.tableView reloadData];
                                                                } else {
-                                                                   [self updateCommentForNewContent:newContent];
+                                                                   [weakSelf updateCommentForNewContent:newContent];
                                                                }
                                                            }];
                                      }];
