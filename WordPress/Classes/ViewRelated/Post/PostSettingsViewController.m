@@ -112,6 +112,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
     // Compensate for the first section's height of 1.0f
     self.tableView.contentInset = UIEdgeInsetsMake(-1.0f, 0, 0, 0);
+    
+    self.tableView.accessibilityIdentifier = @"SettingsTable";
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -524,7 +526,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         // Publish Status
         cell = [self getWPTableViewCell];
         cell.textLabel.text = NSLocalizedString(@"Status", @"The status of the post. Should be the same as in core WP.");
-
+        cell.accessibilityIdentifier = @"Status";
         if (([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending)
             && ([self.apost.status isEqualToString:@"publish"])) {
             cell.detailTextLabel.text = NSLocalizedString(@"Scheduled", @"If a post is scheduled for later, this string is used for the post's status. Should use the same translation as core WP.");
