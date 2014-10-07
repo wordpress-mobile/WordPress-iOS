@@ -239,7 +239,7 @@
     [tester waitForTimeInterval:2];
 }
 
-- (void) testMePostSetDraft {
+- (void) testMePostToggleStatus {
     [tester tapViewWithAccessibilityLabel:@"Me"];
     [tester waitForTimeInterval:2];
     [tester tapViewWithAccessibilityLabel:@"Me"];
@@ -265,6 +265,23 @@
     [tester waitForTimeInterval:2];
     
     [tester tapViewWithAccessibilityLabel:@"Save"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
+    
+    [tester tapViewWithAccessibilityLabel:@"Options"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Status"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Published"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Back"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Publish"];
     [tester waitForTimeInterval:2];
     
 }
