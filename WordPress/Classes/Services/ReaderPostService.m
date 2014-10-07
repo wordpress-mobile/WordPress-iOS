@@ -53,7 +53,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
 #pragma mark - Fetch Methods
 
-- (void)fetchPostsForTopic:(ReaderTopic *)topic earlierThan:(NSDate *)date success:(void (^)(NSInteger count))success failure:(void (^)(NSError *error))failure
+- (void)fetchPostsForTopic:(ReaderTopic *)topic earlierThan:(NSDate *)date success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *topicObjectID = topic.objectID;
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
@@ -69,7 +69,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
                                   }];
 }
 
-- (void)fetchPostsForTopic:(ReaderTopic *)topic success:(void (^)(NSInteger count))success failure:(void (^)(NSError *error))failure
+- (void)fetchPostsForTopic:(ReaderTopic *)topic success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
 {
     [self fetchPostsForTopic:topic earlierThan:[NSDate date] success:success failure:failure];
 }
@@ -100,7 +100,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     }];
 }
 
-- (void)backfillPostsForTopic:(ReaderTopic *)topic success:(void (^)(NSInteger count))success failure:(void (^)(NSError *error))failure
+- (void)backfillPostsForTopic:(ReaderTopic *)topic success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *topicObjectID = topic.objectID;
     ReaderPost *post = [self newestPostForTopic:topicObjectID];
@@ -496,7 +496,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 - (void)fetchPostsToBackfillTopic:(NSManagedObjectID *)topicObjectID
                       earlierThan:(NSDate *)date
                     backfillState:(ReaderPostServiceBackfillState *)state
-                          success:(void (^)(NSInteger count))success
+                          success:(void (^)(NSInteger count, BOOL hasMore))success
                           failure:(void (^)(NSError *error))failure
 {
     NSError *error;
@@ -536,7 +536,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 - (void)processBackfillPostsForTopic:(NSManagedObjectID *)topicObjectID
                                posts:(NSArray *)posts
                        backfillState:(ReaderPostServiceBackfillState *)state
-                             success:(void (^)(NSInteger count))success
+                             success:(void (^)(NSInteger count, BOOL hasMore))success
                              failure:(void (^)(NSError *error))failure
 {
     state.backfillBatchNumber++;
@@ -570,7 +570,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 - (void)mergePosts:(NSArray *)posts
        earlierThan:(NSDate *)date
           forTopic:(NSManagedObjectID *)topicObjectID
-    callingSuccess:(void (^)(NSInteger count))success
+    callingSuccess:(void (^)(NSInteger count, BOOL hasMore))success
 {
     // Use a performBlock here so the work to merge does not block the main thread.
     [self.managedObjectContext performBlock:^{
@@ -580,7 +580,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         if (error || !readerTopic) {
             // if there was an error or the topic was deleted just bail.
             if (success) {
-                success(NO);
+                success(0, NO);
             }
             return;
         }
@@ -602,7 +602,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         }];
 
         if (success) {
-            success(postsCount);
+            BOOL hasMore = ((postsCount > 0 ) && ([self numberOfPostsForTopic:readerTopic] < ReaderPostServiceMaxPosts));
+            success(postsCount, hasMore);
         }
     }];
 }
