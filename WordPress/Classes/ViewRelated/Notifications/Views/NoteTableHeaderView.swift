@@ -19,7 +19,7 @@ import Foundation
     
     // MARK: - Public Methods
     public class func headerHeight() -> CGFloat {
-        let cellHeight: CGFloat = 26
+        let cellHeight = CGFloat(26)
         return cellHeight
     }
     
