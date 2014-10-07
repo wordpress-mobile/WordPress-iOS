@@ -10193,6 +10193,17 @@ sh ../run-oclint.sh</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
+		<key>B50DCBA619E4222C00EEAFA3</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>wrapper.xcdatamodel</string>
+			<key>path</key>
+			<string>WordPress 22.xcdatamodel</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
 		<key>B5134AF419B2C4F200FADE8C</key>
 		<dict>
 			<key>fileEncoding</key>
