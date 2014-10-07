@@ -353,5 +353,38 @@
     
 }
 
+- (void) testMePostFormat {
+    [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester waitForTimeInterval:2];
+    [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"Blogs"];
+    
+    [tester tapViewWithAccessibilityLabel:@"Posts"];
+    [tester waitForTimeInterval:5];
+
+    NSArray * formats = @[@"Aside", @"Status", @"Image", @"Quote", @"Link", @"Standard"];
+    
+    for (NSString * format in formats){
+        [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
+        
+        [tester tapViewWithAccessibilityLabel:@"Options"];
+        [tester waitForTimeInterval:2];
+        
+        [tester tapViewWithAccessibilityLabel:@"Post Format"];
+        [tester waitForTimeInterval:2];
+        
+        [tester tapViewWithAccessibilityLabel:format];
+        [tester waitForTimeInterval:2];
+        
+        [tester tapViewWithAccessibilityLabel:@"Back"];
+        [tester waitForTimeInterval:2];
+        
+        [tester tapViewWithAccessibilityLabel:@"Update"];
+        [tester waitForTimeInterval:5];
+    }
+}
+
 
 @end
