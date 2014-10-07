@@ -14,6 +14,9 @@
 static NSString *const CVCReplyToastImage = @"action-icon-replied";
 static NSString *const CVCSuccessToastImage = @"action-icon-success";
 static NSString *const CVCCommentCellIdentifier = @"CommentTableViewCell";
+static CGFloat const CVCSectionHeaderHeight = 40;
+static NSInteger const CVCNumberOfRows = 1;
+static NSInteger const CVCNumberOfSections = 1;
 
 @interface CommentViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
 
@@ -118,12 +121,12 @@ static NSString *const CVCCommentCellIdentifier = @"CommentTableViewCell";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return CVCNumberOfSections;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return CVCNumberOfRows;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -138,7 +141,8 @@ static NSString *const CVCCommentCellIdentifier = @"CommentTableViewCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 1.0;
+    // we don't want to show a space between navigation bar and the first cell for iPhone
+    return [UIDevice isPad] ? CVCSectionHeaderHeight : CGFLOAT_MIN;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
