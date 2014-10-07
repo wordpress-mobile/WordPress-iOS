@@ -251,8 +251,9 @@
         [postParams setObject:post.metadata forKey:@"custom_fields"];
     }
 
-    if (post.status == nil)
+    if (post.status == nil) {
         post.status = @"publish";
+    }
 
     if ([post.type isEqualToString:@"page"]) {
         [postParams setObject:post.status forKey:@"page_status"];
