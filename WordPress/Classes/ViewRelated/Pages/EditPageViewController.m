@@ -42,8 +42,7 @@
 }
 
 - (AbstractPost *)createNewDraftForBlog:(Blog *)blog {
-    PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    return [postService createDraftPageForBlog:blog];
+    return [PostService createDraftPageInMainContextForBlog:blog];
 }
 
 @end

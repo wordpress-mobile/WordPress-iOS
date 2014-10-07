@@ -208,8 +208,7 @@
     [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"posts_view" }];
 
     _addingNewPost = YES;
-    PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    Post *post = [postService createDraftPostForBlog:self.blog];
+    Post *post = [PostService createDraftPostInMainContextForBlog:self.blog];
     [self editPost:post];
 }
 
