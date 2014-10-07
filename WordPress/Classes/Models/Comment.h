@@ -42,7 +42,8 @@ extern NSString * const CommentStatusDraft;
 @property (nonatomic, strong) NSString *postTitle;
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *type;
-@property (nonatomic, strong) NSNumber *liked;
+@property (nonatomic) BOOL isLiked;
+@property (nonatomic, strong) NSNumber *likeCount;
 
 @property (nonatomic, strong) NSAttributedString *attributedContent;
 @property (nonatomic, assign) BOOL isNew;

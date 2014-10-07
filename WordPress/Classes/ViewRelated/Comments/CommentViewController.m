@@ -194,7 +194,7 @@ static NSInteger const CVCSectionSeparatorHeight = 10;
     cell.timestamp = [self.comment.dateCreated shortString];
     cell.isApproveOn = [self.comment.status isEqualToString:@"approve"];
     cell.commentText = self.comment.content;
-    cell.isLikeOn = [self.comment.liked boolValue];
+    cell.isLikeOn = self.comment.isLiked;
     [cell downloadGravatarWithURL:self.comment.avatarURLForDisplay];
 
     __weak __typeof(self) weakSelf = self;
