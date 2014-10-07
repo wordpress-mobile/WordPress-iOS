@@ -19,6 +19,8 @@ static CGSize const WPRichTextMinimumSize = {1, 1};
 @property (nonatomic, strong) WPTableImageSource *imageSource;
 @property (nonatomic, strong) NSDate *dateOfLastMediaRefresh;
 @property (nonatomic) BOOL needsCheckPendingDownloadsAfterDelay;
+@property (nonatomic, strong, readwrite) NSAttributedString *attributedString;
+
 @end
 
 @implementation WPRichTextView
@@ -97,6 +99,18 @@ static CGSize const WPRichTextMinimumSize = {1, 1};
     [self relayoutTextContentView];
 }
 
+- (void)setContent:(NSString *)content
+{
+    if ([content isEqualToString:_content]) {
+        return;
+    }
+    _content = content;
+
+    NSData *data = [_content dataUsingEncoding:NSUTF8StringEncoding];
+    self.attributedString = [[NSAttributedString alloc] initWithHTMLData:data
+                                                                 options:[WPStyleGuide defaultDTCoreTextOptions]
+                                                      documentAttributes:nil];
+}
 
 #pragma mark - Private Methods
 
@@ -160,17 +174,10 @@ static CGSize const WPRichTextMinimumSize = {1, 1};
     }
 }
 
-- (void)imageLinkAction:(WPRichTextImageControl *)sender
+- (void)imageLinkAction:(WPRichTextImage *)sender
 {
     if ([self.delegate respondsToSelector:@selector(richTextView:didReceiveImageLinkAction:)]) {
         [self.delegate richTextView:self didReceiveImageLinkAction:sender];
-    }
-}
-
-- (void)videoLinkAction:(WPRichTextVideoControl *)sender
-{
-    if ([self.delegate respondsToSelector:@selector(richTextView:didReceiveVideoLinkAction:)]) {
-        [self.delegate richTextView:self didReceiveVideoLinkAction:sender];
     }
 }
 
@@ -561,23 +568,24 @@ static CGSize const WPRichTextMinimumSize = {1, 1};
 
 - (NSString *)HTMLForAttachmentWithSrc:(NSString *)src andTag:(NSString *)tag
 {
-    NSString *rawContentString = [self.attributedString string];
+    NSString *rawContentString = self.content;
 
     NSRange rng = [rawContentString rangeOfString:src];
     if (rng.location == NSNotFound) {
-        // badness
-        return @"";
+        return @""; // Empty string to avoid swift optionals
     }
 
     NSRange starting = [rawContentString rangeOfString:[NSString stringWithFormat:@"<%@", tag]
-                                               options:NSBackwardsSearch
+                                               options:NSBackwardsSearch | NSCaseInsensitiveSearch
                                                  range:NSMakeRange(0, rng.location)];
 
     NSRange ending = [rawContentString rangeOfString:[NSString stringWithFormat:@"%@>", tag]
-                                             options:nil
+                                             options:NSCaseInsensitiveSearch
                                                range:NSMakeRange(rng.location, [rawContentString length] - rng.location)];
 
-    NSString *html = [rawContentString substringWithRange:NSMakeRange(starting.location, ending.location + ending.length)];
+    NSInteger length = (ending.location + ending.length) - starting.location;
+    NSRange tagRange = NSMakeRange(starting.location, length);
+    NSString *html = [rawContentString substringWithRange:tagRange];
 
     return html;
 }

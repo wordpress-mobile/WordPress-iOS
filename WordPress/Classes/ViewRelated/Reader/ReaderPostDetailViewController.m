@@ -17,11 +17,8 @@
 #import "WPAvatarSource.h"
 #import "WPImageViewController.h"
 #import "WPNoResultsView+AnimatedBox.h"
-#import "WPRichTextVideoControl.h"
-#import "WPRichTextImageControl.h"
 #import "WPTableImageSource.h"
 #import "WPTableViewHandler.h"
-#import "WPWebVideoViewController.h"
 #import "WPWebViewController.h"
 
 static CGFloat const SectionHeaderHeight = 25.0f;
@@ -704,7 +701,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(WPRichTextImageControl *)imageControl
+- (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(WPRichTextImage *)imageControl
 {
     UIViewController *controller;
 
@@ -739,39 +736,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }
 }
 
-- (void)richTextView:(WPRichTextView *)richTextView didReceiveVideoLinkAction:(WPRichTextVideoControl *)videoControl
-{
-    if (!videoControl.isHTMLContent) {
-        MPMoviePlayerViewController *controller = [[MPMoviePlayerViewController alloc] initWithContentURL:videoControl.contentURL];
-
-        // Remove the movie player view controller from the "playback did finish" notification observers
-        [[NSNotificationCenter defaultCenter] removeObserver:controller
-                                                        name:MPMoviePlayerPlaybackDidFinishNotification
-                                                      object:controller.moviePlayer];
-
-        // Register this class as an observer instead
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(moviePlaybackDidFinish:)
-                                                     name:MPMoviePlayerPlaybackDidFinishNotification
-                                                   object:controller.moviePlayer];
-
-        controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        controller.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self presentViewController:controller animated:YES completion:nil];
-
-    } else {
-        // Should either be an iframe, or an object embed. In either case a src attribute should have been parsed for the contentURL.
-        // Assume this is content we can show and try to load it.
-        UIViewController *controller = [[WPWebVideoViewController alloc] initWithURL:videoControl.contentURL];
-        controller.title = (videoControl.title != nil) ? videoControl.title : @"Video";
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-        navController.navigationBar.translucent = NO;
-        navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        navController.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self presentViewController:navController animated:YES completion:nil];
-    }
-}
-
 - (void)richTextViewDidLoadMediaBatch:(WPRichTextView *)richTextView
 {
     [self.postView layoutIfNeeded];
@@ -789,6 +753,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(NSInteger))success failure:(void (^)(NSError *))failure
 {
+    return;
     [self.activityFooter startAnimating];
 
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
