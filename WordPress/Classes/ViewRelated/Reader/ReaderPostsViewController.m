@@ -701,18 +701,18 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self.syncHelper syncContentWithUserInteraction:userInteraction];
 }
 
-- (void)syncItemsWithSuccess:(void (^)(NSInteger))success failure:(void (^)(NSError *))failure
+- (void)syncItemsWithSuccess:(void (^)(NSInteger, BOOL))success failure:(void (^)(NSError *))failure
 {
     DDLogMethod();
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service fetchPostsForTopic:self.currentTopic earlierThan:[NSDate date] success:^(NSInteger count) {
+    [service fetchPostsForTopic:self.currentTopic earlierThan:[NSDate date] success:^(NSInteger count, BOOL hasMore) {
         dispatch_async(dispatch_get_main_queue(), ^{
             weakSelf.postIDThatInitiatedBlock = nil;
             weakSelf.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
             if (success) {
-                success(count);
+                success(count, hasMore);
             }
         });
     } failure:^(NSError *error) {
@@ -724,17 +724,17 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }];
 }
 
-- (void)backfillItemsWithSuccess:(void (^)(NSInteger))success failure:(void (^)(NSError *))failure
+- (void)backfillItemsWithSuccess:(void (^)(NSInteger, BOOL))success failure:(void (^)(NSError *))failure
 {
     DDLogMethod();
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service backfillPostsForTopic:self.currentTopic success:^(NSInteger count) {
+    [service backfillPostsForTopic:self.currentTopic success:^(NSInteger count, BOOL hasMore) {
         dispatch_async(dispatch_get_main_queue(), ^{
             weakSelf.postIDThatInitiatedBlock = nil;
             if (success) {
-                success(count);
+                success(count, hasMore);
             }
         });
     } failure:^(NSError *error) {
@@ -746,7 +746,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }];
 }
 
-- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(NSInteger))success failure:(void (^)(NSError *))failure
+- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(NSInteger, BOOL))success failure:(void (^)(NSError *))failure
 {
     DDLogMethod();
     self.shouldSkipRowAnimation = NO;
@@ -758,7 +758,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 }
 
-- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(NSInteger))success failure:(void (^)(NSError *))failure
+- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(NSInteger, BOOL))success failure:(void (^)(NSError *))failure
 {
     DDLogMethod();
     if ([self.tableViewHandler.resultsController.fetchedObjects count] == 0) {
@@ -778,11 +778,11 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     __weak __typeof(self) weakSelf = self;
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service fetchPostsForTopic:self.currentTopic earlierThan:post.sortDate success:^(NSInteger count){
+    [service fetchPostsForTopic:self.currentTopic earlierThan:post.sortDate success:^(NSInteger count, BOOL hasMore){
         if (success) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 weakSelf.shouldSkipRowAnimation = YES;
-                success(count);
+                success(count, hasMore);
             });
         }
     } failure:^(NSError *error) {
