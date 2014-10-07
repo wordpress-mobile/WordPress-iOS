@@ -548,6 +548,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         cell.textLabel.text = NSLocalizedString(@"Visibility", @"The visibility settings of the post. Should be the same as in core WP.");
         cell.detailTextLabel.text = [self titleForVisibility];
         cell.tag = PostSettingsRowVisibility;
+        cell.accessibilityIdentifier = @"Visibility";
 
     } else {
         // Password
@@ -560,8 +561,9 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
         cell = textCell;
         cell.tag = PostSettingsRowPassword;
-
+        
         self.passwordTextField = textCell.textField;
+        self.passwordTextField.accessibilityIdentifier = @"Password Value";
     }
 
     return cell;

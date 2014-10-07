@@ -286,6 +286,72 @@
     
 }
 
+- (void) testMePostVisibility {
+    [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester waitForTimeInterval:2];
+    [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"Blogs"];
+    
+    [tester tapViewWithAccessibilityLabel:@"Posts"];
+    [tester waitForTimeInterval:5];
+    
+    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
+    
+    [tester tapViewWithAccessibilityLabel:@"Options"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Visibility"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Private"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Back"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Save"];
+    [tester waitForTimeInterval:5];
+    
+    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
+    
+    [tester tapViewWithAccessibilityLabel:@"Options"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Visibility"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Password protected"];
+    [tester waitForTimeInterval:2];
+    
+    [tester clearTextFromAndThenEnterText:@"Testing123" intoViewWithAccessibilityLabel:@"Password Value" ];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Back"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Publish"];
+    [tester waitForTimeInterval:5];
+    
+    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
+    
+    [tester tapViewWithAccessibilityLabel:@"Options"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Visibility"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Public"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Back"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Update"];
+    [tester waitForTimeInterval:2];
+    
+}
 
 
 @end
