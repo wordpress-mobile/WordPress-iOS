@@ -112,5 +112,6 @@ import Foundation
     private let maxWidth        = CGFloat(600)
     
     // MARK - Outlets
-    private var imageView:  UIImageView!
+    private var imageView:          UIImageView!
+    private var titleLabel:         UILabel!
 }
