@@ -179,6 +179,32 @@
     
 }
 
+- (void) testMePostSetTag {
+    [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester waitForTimeInterval:2];
+    [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"Blogs"];
+    
+    [tester tapViewWithAccessibilityLabel:@"Posts"];
+    [tester waitForTimeInterval:5];
+    
+    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
+    
+    [tester tapViewWithAccessibilityLabel:@"Options"];
+    [tester waitForTimeInterval:2];
+    
+    [tester clearTextFromAndThenEnterText:@"iOS, KIF" intoViewWithAccessibilityLabel:@"Tags Value"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Back"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Update"];
+    [tester waitForTimeInterval:2];
+}
+
 
 
 

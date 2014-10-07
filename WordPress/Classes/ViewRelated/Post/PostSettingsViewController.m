@@ -482,6 +482,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         textCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:(NSLocalizedString(@"Comma separated", @"Placeholder text for the tags field. Should be the same as WP core.")) attributes:(@{NSForegroundColorAttributeName: [WPStyleGuide textFieldPlaceholderGrey]})];
         textCell.textField.secureTextEntry = NO;
         textCell.textField.clearButtonMode = UITextFieldViewModeNever;
+        textCell.textField.accessibilityIdentifier = @"Tags Value";
         cell = textCell;
         cell.tag = PostSettingsRowTags;
 
