@@ -13,20 +13,13 @@
 
 static NSString *const CVCReplyToastImage = @"action-icon-replied";
 static NSString *const CVCSuccessToastImage = @"action-icon-success";
-static NSString *const CVCHeaderCellIdentifier = @"CommentTableViewHeaderCell";
 static NSString *const CVCCommentCellIdentifier = @"CommentTableViewCell";
-static NSInteger const CVCHeaderSectionIndex = 0;
-static NSInteger const CVCSectionSeparatorHeight = 10;
 
 @interface CommentViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
-
-@property (nonatomic, strong) NoteBlockHeaderTableViewCell *headerLayoutCell;
 @property (nonatomic, strong) CommentTableViewCell *bodyLayoutCell;
-
 @property (nonatomic, strong) ReplyTextView *replyTextView;
-
 @property (nonatomic, strong) CommentService *commentService;
 
 @end
@@ -49,11 +42,8 @@ static NSInteger const CVCSectionSeparatorHeight = 10;
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
-    UINib *headerCellNib = [UINib nibWithNibName:@"CommentTableViewHeaderCell" bundle:nil];
     UINib *bodyCellNib = [UINib nibWithNibName:@"CommentTableViewCell" bundle:nil];
-    [self.tableView registerNib:headerCellNib forCellReuseIdentifier:CVCHeaderCellIdentifier];
     [self.tableView registerNib:bodyCellNib forCellReuseIdentifier:CVCCommentCellIdentifier];
-    self.headerLayoutCell = [self.tableView dequeueReusableCellWithIdentifier:CVCHeaderCellIdentifier];
     self.bodyLayoutCell = [self.tableView dequeueReusableCellWithIdentifier:CVCCommentCellIdentifier];
 
     [self attachReplyViewIfNeeded];
@@ -124,7 +114,7 @@ static NSInteger const CVCSectionSeparatorHeight = 10;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -134,11 +124,6 @@ static NSInteger const CVCSectionSeparatorHeight = 10;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == CVCHeaderSectionIndex) {
-        NoteBlockHeaderTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CVCHeaderCellIdentifier];
-        [self setupHeaderCell:cell];
-        return cell;
-    }
     CommentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CVCCommentCellIdentifier
                                                                  forIndexPath:indexPath];
     [self setupCommentCell:cell];
@@ -149,38 +134,17 @@ static NSInteger const CVCSectionSeparatorHeight = 10;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return (section == CVCHeaderSectionIndex) ? CGFLOAT_MIN : CVCSectionSeparatorHeight;
+    return 1.0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell;
-    if (indexPath.section == CVCHeaderSectionIndex) {
-        [self setupHeaderCell:self.headerLayoutCell];
-        cell = self.headerLayoutCell;
-    }
-    else {
-        [self setupCommentCell:self.bodyLayoutCell];
-        cell = self.bodyLayoutCell;
-    }
+    [self setupCommentCell:self.bodyLayoutCell];
 
-    CGFloat height = [cell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
-
-    return height;
+    return [self.bodyLayoutCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
 }
 
 #pragma mark - Setup Cells
-
-- (void)setupHeaderCell:(NoteBlockHeaderTableViewCell *)cell
-{
-    // TODO: figure out why self.comment.post is nil and how we can get that information
-//    cell.name = self.comment.post.author;
-//    cell.snippet = self.comment.post.content;
-//
-//    if ([self.comment.post respondsToSelector:@selector(authorAvatarURL)]) {
-//        [cell downloadGravatarWithURL:[self.comment.post performSelector:@selector(authorAvatarURL)]];
-//    }
-}
 
 - (void)setupCommentCell:(CommentTableViewCell *)cell
 {
