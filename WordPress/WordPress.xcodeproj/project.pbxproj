@@ -756,6 +756,19 @@ fi
 				<string>YES</string>
 				<key>GCC_PREFIX_HEADER</key>
 				<string>WordPress_Prefix.pch</string>
+				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
+				<array>
+					<string>$(inherited)</string>
+					<string>COCOAPODS=1</string>
+					<string>$(inherited)</string>
+					<string>BITHOCKEY_VERSION="@\"3.5.7\""</string>
+					<string>BITHOCKEY_C_VERSION="\"3.5.7\""</string>
+					<string>BITHOCKEY_BUILD="@\"32\""</string>
+					<string>BITHOCKEY_C_BUILD="\"32\""</string>
+					<string>${inherited}</string>
+					<string>NSLOGGER_BUILD_USERNAME="${USER}"</string>
+					<string>LOOKBACK_ENABLED</string>
+				</array>
 				<key>GCC_SYMBOLS_PRIVATE_EXTERN</key>
 				<string>NO</string>
 				<key>GCC_THUMB_SUPPORT</key>
@@ -8563,6 +8576,7 @@ fi
 				<array>
 					<string>$(inherited)</string>
 					<string>INTERNAL_BUILD</string>
+					<string>LOOKBACK_ENABLED</string>
 				</array>
 				<key>GCC_SYMBOLS_PRIVATE_EXTERN</key>
 				<string>NO</string>
