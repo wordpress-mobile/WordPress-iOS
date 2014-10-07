@@ -339,6 +339,8 @@
     comment.postTitle = [jsonDictionary stringForKeyPath:@"post.title"];
     comment.status = [self statusWithRemoteStatus:jsonDictionary[@"status"]];
     comment.type = jsonDictionary[@"type"];
+    comment.isLiked = [[jsonDictionary numberForKey:@"i_like"] boolValue];
+    comment.likeCount = [jsonDictionary numberForKey:@"like_count"];
 
     return comment;
 }
