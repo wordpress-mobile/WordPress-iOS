@@ -168,7 +168,8 @@
         </attribute>
         <attribute name="depth" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="hierarchy" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="liked" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isLiked" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="likeCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="link" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
@@ -373,7 +374,7 @@
         <element name="BasePost" positionX="0" positionY="0" width="128" height="253"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="450"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="Comment" positionX="0" positionY="0" width="128" height="328"/>
+        <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="343"/>
         <element name="Meta" positionX="9" positionY="153" width="128" height="105"/>
         <element name="Notification" positionX="18" positionY="162" width="128" height="240"/>

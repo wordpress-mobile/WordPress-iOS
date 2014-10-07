@@ -612,7 +612,8 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     comment.postTitle = remoteComment.postTitle;
     comment.status = remoteComment.status;
     comment.type = remoteComment.type;
-    comment.liked = remoteComment.liked;
+    comment.isLiked = remoteComment.isLiked;
+    comment.likeCount = remoteComment.likeCount;
 }
 
 - (RemoteComment *)remoteCommentWithComment:(Comment *)comment
@@ -631,7 +632,8 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     remoteComment.postTitle = comment.postTitle;
     remoteComment.status = comment.status;
     remoteComment.type = comment.type;
-    remoteComment.liked = comment.liked;
+    remoteComment.isLiked = comment.isLiked;
+    remoteComment.likeCount = comment.likeCount;
     return remoteComment;
 }
 
