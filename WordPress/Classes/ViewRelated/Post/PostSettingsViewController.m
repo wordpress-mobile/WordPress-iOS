@@ -576,7 +576,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     cell.textLabel.text = NSLocalizedString(@"Post Format", @"The post formats available for the post. Should be the same as in core WP.");
     cell.detailTextLabel.text = self.post.postFormatText;
     cell.tag = PostSettingsRowFormat;
-
+    cell.accessibilityIdentifier = @"Post Format";
     return cell;
 }
 
