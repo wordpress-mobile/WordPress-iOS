@@ -17,21 +17,22 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 
 @implementation SuggestionsTableView
 
-- (id)initWithFrame:(CGRect)frame andSiteID:(NSNumber *)siteID
+
+- (id)initWithWidth:(CGFloat)width andSiteID:(NSNumber *)siteID
 {    
-    self = [super initWithFrame:frame];
+    // TODO: Start with height of 0, let VC pin our top
+    self = [super initWithFrame:CGRectMake(0.f, 0.f, width, 240.f)];
     if (self) {
         UINib *nib = [UINib nibWithNibName:@"SuggestionsTableViewCell" bundle:nil];
         [self registerNib:nib forCellReuseIdentifier:CellIdentifier];
 
         _siteID = siteID;
+        _suggestions = [[SuggestionService shared] suggestionsForSiteID:_siteID];
         _searchText = @"";
-        _suggestions = [[NSArray alloc] init];
-        _searchResults = [[NSArray alloc] init];
         
         [self setDataSource:self];
         
-        [self updateSearchResultsForText:@""];
+        [self showSuggestions:NO]; // initially hidden please
     }
     
     return self;
