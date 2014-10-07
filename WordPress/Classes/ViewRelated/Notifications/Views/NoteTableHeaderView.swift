@@ -38,15 +38,15 @@ import Foundation
     public override func layoutSubviews() {
         super.layoutSubviews()
         let width = frame.width
-        if (width > maxWidth) {
+        if width > maxWidth {
             frame.origin.x  = (width - maxWidth) * 0.5;
         }
         
         frame.size.height       = cellHeight
-        imageView.frame.origin  = imageOrigin
+        imageView.frame.origin      = imageOrigin
         
-        titleLabel.frame.origin = titleOrigin
-        titleLabel.frame.size   = CGSize(width: bounds.width - imageOrigin.x * 2 - imageView.frame.width, height: titleHeight)
+        titleLabel.frame.origin     = titleOrigin
+        titleLabel.frame.size       = CGSize(width: bounds.width - imageOrigin.x * 2 - imageView.frame.width, height: titleHeight)
     }
 
     // MARK - Private Helpers
@@ -71,15 +71,13 @@ import Foundation
 
     
     // MARK - Constants
-    private let imageOrigin = CGPoint(x: 10, y: 5)
-    private let titleOrigin = CGPoint(x: 30, y: 4)
-    private let titleHeight = CGFloat(16)
-    private let imageName   = "reader-postaction-time"
+    private let imageOrigin     = CGPoint(x: 10, y: 5)
+    private let titleOrigin     = CGPoint(x: 30, y: 4)
+    private let titleHeight     = CGFloat(16)
+    private let imageName       = "reader-postaction-time"
     
-    private let cellHeight  = CGFloat(25)
-    private let maxWidth    = CGFloat(600)
+    private let maxWidth        = CGFloat(600)
     
     // MARK - Outlets
     private var imageView:  UIImageView!
-    private var titleLabel: UILabel!
 }
