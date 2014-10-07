@@ -12,14 +12,7 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
     var documentSize = CGSizeZero
     var success : successBlock?
     var linkURL : NSURL?
-    var contentURL : NSURL? {
-        didSet {
-            if let url = contentURL? {
-                let request = NSURLRequest(URL: url)
-                webView.loadRequest(request)
-            }
-        }
-    }
+    var contentURL : NSURL?
 
     private var webView : UIWebView
 
@@ -90,8 +83,15 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
         return 0.0
     }
 
+    func loadContentURL(url: NSURL) {
+        contentURL = url
+        let request = NSURLRequest(URL: url)
+        webView.loadRequest(request)
+    }
+
     func loadHTMLString(html: NSString) {
-        webView.loadHTMLString(html, baseURL: nil)
+        var htmlString = NSString(format: "<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0\" /></head><body>%@</body></html>", html)
+        webView.loadHTMLString(htmlString, baseURL: nil)
     }
 
     // MARK: WebView delegate methods

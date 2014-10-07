@@ -318,12 +318,10 @@ static CGSize const WPRichTextMinimumSize = {1, 1};
 
     CGSize originalSize = media.frame.size;
     CGSize displaySize = [self displaySizeForMedia:media];
-
     frameChanged = !CGSizeEqualToSize(originalSize, displaySize);
 
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
-
     // update all attachments that matchin this URL (possibly multiple images with same size)
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
     for (DTTextAttachment *attachment in [self.textContentView.layoutFrame textAttachmentsWithPredicate:pred]) {
         attachment.originalSize = originalSize;
         attachment.displaySize = displaySize;
@@ -524,7 +522,7 @@ static CGSize const WPRichTextMinimumSize = {1, 1};
 - (WPRichTextEmbed *)mediaViewForIframeAttachment:(DTTextAttachment *)attachment withFrame:(CGRect)frame
 {
     WPRichTextEmbed *embed = [self embedForAttachment:attachment withFrame:frame];
-    embed.contentURL = attachment.contentURL;
+    [embed loadContentURL:attachment.contentURL];
     return embed;
 }
 
@@ -548,6 +546,7 @@ static CGSize const WPRichTextMinimumSize = {1, 1};
 - (WPRichTextEmbed *)embedForAttachment:(DTTextAttachment *)attachment withFrame:(CGRect)frame
 {
     WPRichTextEmbed *embed = [[WPRichTextEmbed alloc] initWithFrame:CGRectMake(0.0, 0.0, 1.0, 1.0)];
+    embed.contentURL = attachment.contentURL;
     embed.attachmentSize = frame.size;
     embed.success = ^(WPRichTextEmbed *embedControl){
         NSInteger index = [self.mediaArray indexOfObject:embedControl];
