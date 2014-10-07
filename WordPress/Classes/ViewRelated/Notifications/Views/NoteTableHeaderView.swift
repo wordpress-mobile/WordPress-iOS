@@ -42,7 +42,7 @@ import Foundation
             frame.origin.x  = (width - maxWidth) * 0.5;
         }
         
-        frame.size.height       = cellHeight
+        frame.size.height           = NoteTableHeaderView.headerHeight()
         imageView.frame.origin      = imageOrigin
         
         titleLabel.frame.origin     = titleOrigin
