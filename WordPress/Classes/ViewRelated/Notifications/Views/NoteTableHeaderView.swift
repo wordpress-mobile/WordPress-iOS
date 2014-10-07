@@ -11,6 +11,12 @@ import Foundation
         }
     }
     
+    public var separatorColor: UIColor? {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
     // MARK: - Public Methods
     public class func headerHeight() -> CGFloat {
         let cellHeight: CGFloat = 26
@@ -49,6 +55,32 @@ import Foundation
         titleLabel.frame.size       = CGSize(width: bounds.width - imageOrigin.x * 2 - imageView.frame.width, height: titleHeight)
     }
 
+    public override func drawRect(rect: CGRect) {
+        super.drawRect(rect)
+        
+        // Draw Separators: proceed only if the color is set!
+        if separatorColor == nil {
+            return
+        }
+        
+        let unwrappedSeparatorColor = separatorColor!
+        
+        let ctx = UIGraphicsGetCurrentContext()
+        
+        unwrappedSeparatorColor.set()
+        CGContextSetLineWidth(ctx, separatorHeight)
+
+        // Top Separator
+        CGContextMoveToPoint(ctx, 0, 0)
+        CGContextAddLineToPoint(ctx, bounds.width, 0)
+
+        // Bottom Separator
+        CGContextMoveToPoint(ctx, 0, bounds.height)
+        CGContextAddLineToPoint(ctx, bounds.width, bounds.height)
+        
+        CGContextStrokePath(ctx)
+    }
+    
     // MARK - Private Helpers
     private func setupSubviews() {
         backgroundColor             = WPStyleGuide.Notifications.headerBackgroundColor
@@ -76,6 +108,7 @@ import Foundation
     private let titleHeight     = CGFloat(16)
     private let imageName       = "reader-postaction-time"
     
+    private let separatorHeight = CGFloat(1)
     private let maxWidth        = CGFloat(600)
     
     // MARK - Outlets

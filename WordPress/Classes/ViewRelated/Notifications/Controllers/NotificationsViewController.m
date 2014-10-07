@@ -375,6 +375,7 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
     
     NoteTableHeaderView *headerView = [[NoteTableHeaderView alloc] initWithWidth:CGRectGetWidth(tableView.bounds)];
     headerView.title                = [Notification descriptionForSectionIdentifier:sectionInfo.name];
+    headerView.separatorColor       = self.tableView.separatorColor;
     
     return headerView;
 }
