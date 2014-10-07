@@ -4,7 +4,6 @@
 #import "DTAttributedTextContentView.h"
 #import "WPTableImageSource.h"
 #import "UIImage+Util.h"
-#import "VideoThumbnailServiceRemote.h"
 #import "WordPress-Swift.h"
 
 static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
