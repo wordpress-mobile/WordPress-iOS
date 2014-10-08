@@ -7,6 +7,8 @@
 
 - (void)configureTodayWidgetWithSiteID:(NSNumber *)siteID blogName:(NSString *)blogName siteTimeZone:(NSTimeZone *)timeZone andOAuth2Token:(NSString *)oauth2Token
 {
+    NSLog(@"******************* CONFIGURING WIDGET FOR SITE ID %@", siteID);
+    
     NSAssert(siteID != nil, @"Site ID should not be nil");
     NSAssert(blogName != nil, @"Blog name should not be nil");
     NSAssert(timeZone != nil, @"Timezone should not be nil");
@@ -65,6 +67,16 @@
         return;
     }
     
+    BOOL widgetIsConfigured = [self widgetIsConfigured];
+    if (!widgetIsConfigured) {
+        [[NCWidgetController widgetController] setHasContent:NO forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
+    } else {
+        [[NCWidgetController widgetController] setHasContent:YES forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
+    }
+}
+
+- (BOOL)widgetIsConfigured
+{
     NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
     NSString *siteId = [sharedDefaults stringForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
     NSString *oauth2Token = [SFHFKeychainUtils getPasswordForUsername:WPStatsTodayWidgetOAuth2TokenKeychainUsername
@@ -73,9 +85,9 @@
                                                                 error:nil];
     
     if (siteId.length == 0 || oauth2Token.length == 0) {
-        [[NCWidgetController widgetController] setHasContent:NO forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
+        return NO;
     } else {
-        [[NCWidgetController widgetController] setHasContent:YES forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
+        return YES;
     }
 }
 
