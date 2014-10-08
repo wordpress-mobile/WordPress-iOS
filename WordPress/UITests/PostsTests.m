@@ -4,6 +4,7 @@
 #import "WordPressTestCredentials.h"
 #import "UIWindow-KIFAdditions.h"
 #import "WPUITestCase.h"
+#import "NSError-KIFAdditions.h"
 
 @interface PostsTests : WPUITestCase
 
@@ -26,10 +27,10 @@
     [tester tapViewWithAccessibilityLabel:@"Me"];
     [tester waitForTimeInterval:2];
     [tester tapViewWithAccessibilityLabel:@"Me"];
-    [tester waitForTimeInterval:2];
+    [tester waitForTimeInterval:5];
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"Blogs"];
     [tester tapViewWithAccessibilityLabel:@"Posts"];
-    [tester waitForTimeInterval:2];
+    [tester waitForTimeInterval:10];
 
 }
 
@@ -218,6 +219,8 @@
 }
 
 - (void) testSetFormat {
+    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
+    
     NSArray * formats = @[@"Aside", @"Status", @"Image", @"Quote", @"Link", @"Standard"];
     
     for (NSString * format in formats){
@@ -238,6 +241,58 @@
         [tester tapViewWithAccessibilityLabel:@"Update"];
         [tester waitForTimeInterval:5];
     }
+}
+
+- (void) testSetFeaturedImage {
+    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
+    
+    [tester tapViewWithAccessibilityLabel:@"Options"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Set Featured Image"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Camera Roll"];
+    
+    [tester waitForTimeInterval:5];
+
+    UIAccessibilityElement * collectionView = nil;
+    UIView * view = nil;
+    if ([tester tryFindingAccessibilityElement:&collectionView view:&view withElementMatchingPredicate:[NSPredicate predicateWithFormat:@"accessibilityLabel BEGINSWITH %@", @"Photo, "] tappable:YES error:nil]){
+
+        [tester tapAccessibilityElement:collectionView inView:view];
+    } else {
+        [tester failWithError:[NSError KIFErrorWithFormat:@"Unable to find photo element"] stopTest:YES];
+    }
+    
+    [tester waitForTimeInterval:15];
+    
+    [tester tapViewWithAccessibilityLabel:@"Back"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Update"];
+    [tester waitForTimeInterval:5];
+    
+    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
+    
+    [tester tapViewWithAccessibilityLabel:@"Options"];
+    [tester waitForTimeInterval:5];
+    
+    [tester tapViewWithAccessibilityLabel:@"Current Featured Image"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Remove Featured Image"];
+    [tester waitForTimeInterval:2];
+
+    [tester tapViewWithAccessibilityLabel:@"Remove"];
+    [tester waitForTimeInterval:2];
+
+    [tester tapViewWithAccessibilityLabel:@"Back"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Update"];
+    [tester waitForTimeInterval:5];
+
 }
 
 
