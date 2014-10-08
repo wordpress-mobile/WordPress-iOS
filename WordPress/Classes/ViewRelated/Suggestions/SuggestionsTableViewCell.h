@@ -3,9 +3,6 @@
 extern NSInteger const SuggestionsTableViewCellAvatarSize;
 
 @interface SuggestionsTableViewCell : UITableViewCell
-{
-    NSString *reuseID;
-}
 
 @property (nonatomic, strong) UILabel *usernameLabel;
 @property (nonatomic, strong) UILabel *displayNameLabel;
