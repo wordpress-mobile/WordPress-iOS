@@ -1,7 +1,6 @@
 #import "SuggestionsTableView.h"
 #import "SuggestionsTableViewCell.h"
 #import "Suggestion.h"
-#import "UIImageView+AFNetworking.h"
 #import "SuggestionService.h"
 
 NSString * const CellIdentifier = @"SuggestionsTableViewCell";
