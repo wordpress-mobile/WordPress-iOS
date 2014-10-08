@@ -7,6 +7,8 @@
 #import "AccountServiceRemoteREST.h"
 #import "AccountServiceRemoteXMLRPC.h"
 #import "WPAnalyticsTrackerMixpanel.h"
+#import "BlogService.h"
+#import "TodayExtensionService.h"
 
 #import "NSString+XMLExtensions.h"
 
@@ -254,6 +256,26 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     [remote getBlogsWithSuccess:^(NSArray *blogs) {
         [self.managedObjectContext performBlock:^{
             [self mergeBlogs:blogs withAccount:account completion:success];
+            
+            Blog *defaultBlog = account.defaultBlog;
+            TodayExtensionService *service = [TodayExtensionService new];
+            BOOL widgetIsConfigured = [service widgetIsConfigured];
+            
+            if (!widgetIsConfigured && defaultBlog != nil && account.isWpcom) {
+                BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
+                NSNumber *siteId = defaultBlog.blogID;
+                NSString *blogName = defaultBlog.blogName;
+                NSTimeZone *timeZone = [blogService timeZoneForBlog:defaultBlog];
+                NSString *oauth2Token = account.authToken;
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    TodayExtensionService *service = [TodayExtensionService new];
+                    [service configureTodayWidgetWithSiteID:siteId
+                                                   blogName:blogName
+                                               siteTimeZone:timeZone
+                                             andOAuth2Token:oauth2Token];
+                });
+            }
         }];
     } failure:^(NSError *error) {
         DDLogError(@"Error syncing blogs: %@", error);

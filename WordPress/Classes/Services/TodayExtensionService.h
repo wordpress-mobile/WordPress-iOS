@@ -6,4 +6,6 @@
 - (void)removeTodayWidgetConfiguration;
 - (void)hideTodayWidgetIfNotConfigured;
 
+- (BOOL)widgetIsConfigured;
+
 @end
