@@ -62,8 +62,45 @@ import Foundation
     }
     
     public func textView(textView: UITextView!, shouldChangeTextInRange range: NSRange, replacementText text: String!) -> Bool {
-        // TODO: If the delegate implements SuggestionsDelegate didTypeInWord, figure out the word and fire that too
-        return delegate?.textView?(textView, shouldChangeTextInRange: range, replacementText: text) ?? true
+        let shouldChange = delegate?.textView?(textView, shouldChangeTextInRange: range, replacementText: text) ?? true
+        
+        // TODO: We can't use enumerateSubstringsInRange because it eats things like
+        // leading @ symbols - but this impl is janky - let's see if there is a better
+        // way to do this
+        
+        if shouldChange {
+            if let suggestionsDelegate = delegate as? SuggestionsDelegate {
+                if suggestionsDelegate.respondsToSelector(Selector("didTypeInWord:")) {
+                    let textViewText: NSString = textView.text
+                    var currentLocation = range.location
+                    var lastWordTyped: NSMutableString = "";
+                    var done = false
+                    do {
+                        currentLocation--
+                        if currentLocation < 0 {
+                            done = true
+                        } else {
+                            var charRange = NSMakeRange(currentLocation, 1)
+                            var charAtRange: NSString = textViewText.substringWithRange(charRange)
+                            if charAtRange.isEqualToString(" ") {
+                                done = true
+                            } else if charAtRange.isEqualToString("\n") {
+                                done = true
+                            } else { 
+                                lastWordTyped.insertString(charAtRange, atIndex: 0)
+                            }
+                        }
+                    } while !done
+                
+                    // lastly, add whatever they just typed
+                    lastWordTyped.appendString(text)
+                
+                    suggestionsDelegate.didTypeInWord?(lastWordTyped)
+                }
+            }
+        }
+        
+        return shouldChange
     }
 
     public func textViewDidChange(textView: UITextView!) {
