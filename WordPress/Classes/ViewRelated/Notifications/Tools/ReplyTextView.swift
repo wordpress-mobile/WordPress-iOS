@@ -1,7 +1,7 @@
 import Foundation
 
 
-@objc public class ReplyTextView : UIView, UITextViewDelegate
+@objc public class ReplyTextView : UIView, UITextViewDelegate, SuggestableView
 {
     // MARK: - Initializers
     public convenience init(width: CGFloat) {
@@ -62,6 +62,7 @@ import Foundation
     }
     
     public func textView(textView: UITextView!, shouldChangeTextInRange range: NSRange, replacementText text: String!) -> Bool {
+        // TODO: If the delegate implements SuggestionsDelegate didTypeInWord, figure out the word and fire that too
         return delegate?.textView?(textView, shouldChangeTextInRange: range, replacementText: text) ?? true
     }
 
@@ -74,6 +75,10 @@ import Foundation
         return delegate?.textView?(textView, shouldInteractWithURL: URL, inRange: characterRange) ?? true
     }
     
+    // MARK: - SuggestableView methods
+    public func replaceRecentlyTypedWord(word: String!, withSuggestion suggestion: String!) {
+        // TODO - IMPLEMENT
+    }
     
     // MARK: - IBActions
     @IBAction private func btnReplyPressed() {

@@ -55,7 +55,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 #pragma mark Private
 #pragma mark ==========================================================================================
 
-@interface NotificationDetailsViewController () <UITextViewDelegate>
+@interface NotificationDetailsViewController () <UITextViewDelegate, SuggestionsDelegate>
 
 // Outlets
 @property (nonatomic,   weak) IBOutlet UITableView          *tableView;
@@ -989,50 +989,16 @@ static CGFloat NotificationSectionSeparator     = 10;
     self.tableGesturesRecognizer.enabled = false;
 }
 
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-{
-    // TODO: Make this a helper method on suggestionstableview
-    // that takes the textview, range and text and returns the "currentWord"
-    unsigned long currentLocation = range.location;
-    bool done = false;
-    NSMutableString *currentWord = [NSMutableString new];
-    
-    // if they just typed a space, nothing to do
-    // if they just typed a line feed, fall through too
-    
-    if ([text isEqualToString:@" "]) {
-        // fall through
-    } else if ([text isEqualToString:@"\n"]) {
-        // fall through
-    } else {
-        do {
-            currentLocation--;
-            
-            if (-1 == currentLocation) {
-                // we've run out of text, so we're done
-                done = true;
-            } else {
-                // get the character at that location
-                // TODO: Better handle characters like .-)( etc
-                NSRange charRange = NSMakeRange(currentLocation, 1);
-                NSString *charAtRange = [textView.text substringWithRange:charRange];
-                if ([charAtRange isEqualToString:@" "]) {
-                    done = true;
-                } else if ([charAtRange isEqualToString:@"\n"]) {
-                    done = true;
-                } else {
-                    [currentWord insertString:charAtRange atIndex:0];
-                }
-            }
-        } while (!done);
-        
-        // Lastly, add whatever they just typed
-        [currentWord appendString:text];
-    }
+#pragma mark - SuggestionsDelegate
 
-    [self.suggestionsTableView filterSuggestionsForText:currentWord];
-    
-    return YES;
+- (void)didTypeInWord:(NSString *)word
+{
+    [self.suggestionsTableView showSuggestionsForWord:word];
+}
+
+- (void)didSelectSuggestion:(NSString *)suggestion forSearchText:(NSString *)text
+{
+    [self.replyTextView replaceRecentlyTypedWord:text withSuggestion:suggestion];
 }
 
 #pragma mark - Gestures Recognizer Delegate

@@ -51,10 +51,10 @@ CGFloat const RowHeight = 50.0f;
 
 #pragma mark - Public methods
 
-- (void)filterSuggestionsForText:(NSString *)text
+- (void)showSuggestionsForWord:(NSString *)word
 {
-    if ([text hasPrefix:@"@"]) {
-        self.searchText = [text substringFromIndex:1];
+    if ([word hasPrefix:@"@"]) {
+        self.searchText = [word substringFromIndex:1];
         if (self.searchText.length > 0) {
             NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"(displayName contains[c] %@) OR (userLogin contains[c] %@)",
                                             self.searchText, self.searchText];
@@ -132,7 +132,7 @@ CGFloat const RowHeight = 50.0f;
     // only reload if the suggestion list is updated for the current site
     if ([notification.object isEqualToNumber:self.siteID]) {
         self.suggestions = [[SuggestionService shared] suggestionsForSiteID:self.siteID];
-        [self filterSuggestionsForText:self.searchText];
+        [self showSuggestionsForWord:self.searchText];
     }
 }
 
