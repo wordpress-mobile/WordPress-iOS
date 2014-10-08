@@ -56,28 +56,21 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 - (void)filterSuggestionsForText:(NSString *)text
 {
     if ([text hasPrefix:@"@"]) {
-        [self updateSearchResultsForText:[text substringFromIndex:1]];
+        self.searchText = [text substringFromIndex:1];
+        if (self.searchText.length > 0) {
+            NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"(displayName contains[c] %@) OR (userLogin contains[c] %@)",
+                                            _searchText, _searchText];
+            self.searchResults = [self.suggestions filteredArrayUsingPredicate:resultPredicate];
+        } else {
+            self.searchResults = self.suggestions;
+        }
+        
         [self reloadData];
         [self showSuggestions:YES];
     } else {
-        [self updateSearchResultsForText:@""];
-        [self reloadData];
-        [self showSuggestions:NO];
-    }
-}
-
-- (void)updateSearchResultsForText:(NSString *)text
-{
-    // Save how we got here
-    _searchText = text;
-    
-    if (_searchText.length > 0) {
-        NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"(displayName contains[c] %@) OR (userLogin contains[c] %@)",
-                                        _searchText, _searchText];
-        self.searchResults = [self.suggestions filteredArrayUsingPredicate:resultPredicate];
-    }
-    else {
+        self.searchText = @"";
         self.searchResults = self.suggestions;
+        [self showSuggestions:NO];
     }
 }
 
@@ -89,7 +82,6 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
         self.hidden = NO;
         [self.superview bringSubviewToFront:self];
     } else {
-        [self updateSearchResultsForText:@""];
         self.hidden = YES;
         [self.superview sendSubviewToBack:self];
     }
@@ -143,7 +135,7 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
     if ([notification.object isEqualToNumber:_siteID]) {
         self.suggestions = [[SuggestionService shared] suggestionsForSiteID:_siteID];
         
-        [self updateSearchResultsForText:_searchText];
+        [self filterSuggestionsForText:self.searchText];
         
         [self reloadData];
     }
