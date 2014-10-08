@@ -33,6 +33,16 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
         [self setDataSource:self];
         
         [self showSuggestions:NO]; // initially hidden please
+
+        self.rowHeight = 50.0;
+        
+        // suppress display of blank rows
+        self.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(suggestionListUpdated:)
+                                                     name:SuggestionListUpdatedNotification
+                                                   object:nil];
     }
     
     return self;
@@ -40,25 +50,9 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 
 - (void)dealloc
 {
-    self.delegate = nil;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{   
-    self.rowHeight = 50.0;
-    
-    // suppress display of blank rows
-    self.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(suggestionListUpdated:)
-                                                 name:SuggestionListUpdatedNotification
-                                               object:nil];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    self.delegate = nil;
 }
 
 - (void)filterSuggestionsForKeyPress:(NSString *)keypress inWord:(NSString *)word
