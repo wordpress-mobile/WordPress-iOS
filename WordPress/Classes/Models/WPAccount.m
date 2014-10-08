@@ -12,6 +12,7 @@
 @dynamic isWpcom;
 @dynamic blogs;
 @dynamic jetpackBlogs;
+@dynamic defaultBlog;
 
 #pragma mark - NSManagedObject subclass methods
 
