@@ -34,10 +34,7 @@ CGFloat const RowHeight = 50.0f;
         [self showSuggestions:NO]; // initially hidden please
 
         [self setRowHeight:RowHeight];
-        
-        // suppress display of blank rows
-        self.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-        
+                
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(suggestionListUpdated:)
                                                      name:SuggestionListUpdatedNotification
@@ -60,7 +57,7 @@ CGFloat const RowHeight = 50.0f;
         self.searchText = [text substringFromIndex:1];
         if (self.searchText.length > 0) {
             NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"(displayName contains[c] %@) OR (userLogin contains[c] %@)",
-                                            _searchText, _searchText];
+                                            self.searchText, self.searchText];
             self.searchResults = [self.suggestions filteredArrayUsingPredicate:resultPredicate];
         } else {
             self.searchResults = self.suggestions;
@@ -133,19 +130,16 @@ CGFloat const RowHeight = 50.0f;
 - (void)suggestionListUpdated:(NSNotification *)notification
 {
     // only reload if the suggestion list is updated for the current site
-    if ([notification.object isEqualToNumber:_siteID]) {
-        self.suggestions = [[SuggestionService shared] suggestionsForSiteID:_siteID];
-        
+    if ([notification.object isEqualToNumber:self.siteID]) {
+        self.suggestions = [[SuggestionService shared] suggestionsForSiteID:self.siteID];
         [self filterSuggestionsForText:self.searchText];
-        
-        [self reloadData];
     }
 }
 
 - (NSArray *)suggestions
 {
     if (!_suggestions) {
-        _suggestions = [[SuggestionService shared] suggestionsForSiteID:_siteID];
+        _suggestions = [[SuggestionService shared] suggestionsForSiteID:self.siteID];
     }
     return _suggestions;
 }
