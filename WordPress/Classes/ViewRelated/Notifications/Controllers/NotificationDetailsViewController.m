@@ -988,4 +988,10 @@ static CGFloat NotificationSectionSeparator     = 10;
     [self.view endEditing:YES];
 }
 
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)oth
+{
+    // Note: the tableViewGestureRecognizer may compete with another GestureRecognizer. Make sure it doesn't get cancelled
+    return true;
+}
+
 @end
