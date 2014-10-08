@@ -9,13 +9,16 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
 
     var fixedHeight : CGFloat = 0.0
     var attachmentSize = CGSizeZero
-    var documentSize = CGSizeZero
+    var documentSize : CGSize {
+        get {
+            return webView.scrollView.contentSize;
+        }
+    }
     var success : successBlock?
     var linkURL : NSURL?
     var contentURL : NSURL?
 
-    private var webView : UIWebView
-
+    var webView : UIWebView
 
     // MARK: LifeCycle
 
@@ -60,11 +63,20 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
     // MARK: Public Methods
 
     func contentSize() -> CGSize {
+        if webView.superview == nil {
+            return CGSizeMake(1.0, 1.0)
+        }
+
         // embeds, unlike images, typically have no intrinsic content size that we can use to fall back on
         if (fixedHeight > 0) {
             return CGSizeMake(CGFloat(CGFLOAT_WIDTH_UNKNOWN), fixedHeight)
         }
-        return CGSizeZero
+
+        if !CGSizeEqualToSize(attachmentSize, CGSizeZero) {
+            return attachmentSize
+        }
+
+        return documentSize
     }
 
     func contentRatio() -> CGFloat {
@@ -99,22 +111,12 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
     func webViewDidFinishLoad(webView: UIWebView) {
         // Add the webView as a subview if it hasn't been already.
         if webView.superview == nil {
-            // The scrollWidth/scrollHeight is not a reliable way of getting the
-            // minimum width/height of the web content without scrolling. Chances
-            // of a good width/height go up while the starting frame is small so
-            // we'll only update once.
-            var scrollWidth = webView.stringByEvaluatingJavaScriptFromString("document.body.scrollWidth")?.toInt()
-            var scrollHeight = webView.stringByEvaluatingJavaScriptFromString("document.body.scrollHeight")?.toInt()
-            var width = 0
-            var height = 0
-            if scrollWidth != nil {
-                width = scrollWidth!
-            }
-            if scrollHeight != nil {
-                height = scrollHeight!
-            }
-
-            documentSize = CGSizeMake(CGFloat(width), CGFloat(height))
+            // Make sure that any viewport meta tag does not have a min scale incase we're display smaller than the device width.
+            var viewport = "viewport = document.querySelector('meta[name=viewport]'); " +
+                            "if (viewport) {" +
+                                "viewport.setAttribute('content', 'width=available-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');" +
+                            "}"
+            webView.stringByEvaluatingJavaScriptFromString(viewport);
 
             webView.frame = bounds
             addSubview(webView)
