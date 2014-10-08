@@ -601,6 +601,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
         if (self.featuredImage) {
             [featuredImageCell setImage:self.featuredImage];
+            featuredImageCell.accessibilityIdentifier = @"Current Featured Image";
         } else {
             [self loadFeaturedImage:indexPath];
             [featuredImageCell showLoadingSpinner:YES];
