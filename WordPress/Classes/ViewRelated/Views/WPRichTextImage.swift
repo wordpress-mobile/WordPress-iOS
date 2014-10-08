@@ -12,9 +12,9 @@ class WPRichTextImage : UIControl, WPRichTextMediaAttachment {
     // MARK: Lifecycle
 
     override init(frame: CGRect) {
-        imageView = UIImageView(frame: CGRectMake(0, 0, CGRectGetWidth(frame), CGRectGetHeight(frame)));
-        imageView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
-        imageView.contentMode = UIViewContentMode.ScaleAspectFit
+        imageView = UIImageView(frame: CGRectMake(0, 0, frame.width, frame.height));
+        imageView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        imageView.contentMode = .ScaleAspectFit
 
         super.init(frame: frame);
 
@@ -44,7 +44,7 @@ class WPRichTextImage : UIControl, WPRichTextMediaAttachment {
     }
 
 
-    // TODO: Public Methods
+    // MARK: Public Methods
 
     func contentSize() -> CGSize {
         if let size = imageView.image?.size {
