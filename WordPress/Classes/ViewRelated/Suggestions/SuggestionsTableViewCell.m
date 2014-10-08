@@ -33,10 +33,12 @@ NSInteger const SuggestionsTableViewCellAvatarSize = 32;
                                 @"displayname": _displayNameLabel,
                                 @"avatar": _avatarImageView };
         
+        NSDictionary *metrics = @{@"avatarsize": @(SuggestionsTableViewCellAvatarSize) };
+        
         // Horizontal spacing
-        NSArray *horizConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[avatar(32)]-16-[username]-[displayname]-|"
+        NSArray *horizConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[avatar(avatarsize)]-16-[username]-[displayname]-|"
                                                                             options:0
-                                                                            metrics:nil
+                                                                            metrics:metrics
                                                                               views:views];
         [self.contentView addConstraints:horizConstraints];
                 
