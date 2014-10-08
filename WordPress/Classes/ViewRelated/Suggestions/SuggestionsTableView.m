@@ -49,8 +49,6 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    self.delegate = nil;
 }
 
 - (void)filterSuggestionsForKeyPress:(NSString *)keypress inWord:(NSString *)word
