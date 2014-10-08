@@ -14,7 +14,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
-               BuildableName = "WordPress.app"
+               BuildableName = "WordPress2.app"
                BlueprintName = "WordPress"
                ReferencedContainer = "container:WordPress.xcodeproj">
             </BuildableReference>
@@ -27,7 +27,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FF388D5E19E2949E00BD4246"
+               BlueprintIdentifier = "FFF96F3219E57D9400DFC821"
                BuildableName = "UITests.xctest"
                BlueprintName = "UITests"
                ReferencedContainer = "container:WordPress.xcodeproj">
@@ -45,7 +45,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FF388D5E19E2949E00BD4246"
+               BlueprintIdentifier = "FFF96F3219E57D9400DFC821"
                BuildableName = "UITests.xctest"
                BlueprintName = "UITests"
                ReferencedContainer = "container:WordPress.xcodeproj">
@@ -66,7 +66,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
-            BuildableName = "WordPress.app"
+            BuildableName = "WordPress2.app"
             BlueprintName = "WordPress"
             ReferencedContainer = "container:WordPress.xcodeproj">
          </BuildableReference>
@@ -85,7 +85,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
-            BuildableName = "WordPress.app"
+            BuildableName = "WordPress2.app"
             BlueprintName = "WordPress"
             ReferencedContainer = "container:WordPress.xcodeproj">
          </BuildableReference>
@@ -103,7 +103,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
-            BuildableName = "WordPress.app"
+            BuildableName = "WordPress2.app"
             BlueprintName = "WordPress"
             ReferencedContainer = "container:WordPress.xcodeproj">
          </BuildableReference>
