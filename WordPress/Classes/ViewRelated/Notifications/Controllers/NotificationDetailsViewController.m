@@ -1030,7 +1030,7 @@ static CGFloat NotificationSectionSeparator     = 10;
         [currentWord appendString:text];
     }
 
-    [_suggestionsTableView filterSuggestionsForKeyPress:text inWord:currentWord];
+    [self.suggestionsTableView filterSuggestionsForText:currentWord];
     
     return YES;
 }

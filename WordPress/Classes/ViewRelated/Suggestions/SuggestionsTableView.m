@@ -51,24 +51,18 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)filterSuggestionsForKeyPress:(NSString *)keypress inWord:(NSString *)word
-{    
-    if ([keypress isEqualToString:@"@"]) {
-        if ([keypress isEqualToString:word]) {
-            [self updateSearchResultsForText:@""];
-            [self reloadData];
-            [self showSuggestions:YES];
-        }
+#pragma mark - Public methods
+
+- (void)filterSuggestionsForText:(NSString *)text
+{
+    if ([text hasPrefix:@"@"]) {
+        [self updateSearchResultsForText:[text substringFromIndex:1]];
+        [self reloadData];
+        [self showSuggestions:YES];
     } else {
-        if ([word hasPrefix:@"@"]) {
-            [self updateSearchResultsForText:[word substringFromIndex:1]];
-            [self reloadData];
-            [self showSuggestions:YES];
-        } else {
-            [self updateSearchResultsForText:@""];
-            [self reloadData];
-            [self showSuggestions:NO];
-        }
+        [self updateSearchResultsForText:@""];
+        [self reloadData];
+        [self showSuggestions:NO];
     }
 }
 
@@ -86,6 +80,8 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
         self.searchResults = self.suggestions;
     }
 }
+
+#pragma mark - Private (helper) methods
 
 - (void)showSuggestions:(BOOL)show
 {
