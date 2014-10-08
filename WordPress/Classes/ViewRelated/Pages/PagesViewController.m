@@ -3,6 +3,7 @@
 #import "WPLegacyEditPageViewController.h"
 #import "WPTableViewControllerSubclass.h"
 #import "BlogService.h"
+#import "PostService.h"
 #import "ContextManager.h"
 #import "PageSettingsViewController.h"
 
@@ -56,16 +57,8 @@
                             failure:(void (^)(NSError *))failure
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    __block BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-
-    [blogService syncPagesForBlog:self.blog
-                          success:^{
-                              blogService = nil;
-                          }
-                          failure:^(NSError *error) {
-                              blogService = nil;
-                          }
-                         loadMore:NO];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+    [postService syncPostsOfType:PostServiceTypePage forBlog:self.blog success:success failure:failure];
 }
 
 - (void)editPost:(AbstractPost *)apost
@@ -109,7 +102,7 @@
 }
 
 - (void)showAddPostView {
-    Page *post = [Page newDraftForBlog:self.blog];
+    Page *post = [PostService createDraftPageInMainContextForBlog:self.blog];
     [self editPost:post];
 }
 
@@ -154,11 +147,8 @@
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    [blogService syncPagesForBlog:self.blog
-                          success:success
-                          failure:failure
-                         loadMore:YES];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+    [postService loadMorePostsOfType:PostServiceTypePage forBlog:self.blog success:success failure:failure];
 }
 
 #pragma mark -
@@ -166,7 +156,7 @@
 
 - (NSString *)entityName
 {
-    return @"Page";
+    return NSStringFromClass([Page class]);
 }
 
 @end
