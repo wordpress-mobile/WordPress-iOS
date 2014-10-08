@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment defaultVersion="1792" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CommentTableViewCell" rowHeight="110" id="aWm-2n-Yyt" userLabel="Comment" customClass="CommentTableViewCell" customModule="WordPress">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="110"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aWm-2n-Yyt" id="gJB-Y2-luG">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="84"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2a8-kZ-dtg" userLabel="Approval Status">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="57"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EgY-Ji-ux6" userLabel="Approval Sidebar">
+                                <rect key="frame" x="0.0" y="0.0" width="3" height="57"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="3" id="vjd-F7-0Qz"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="EgY-Ji-ux6" firstAttribute="leading" secondItem="2a8-kZ-dtg" secondAttribute="leading" id="DEX-zs-naB"/>
+                            <constraint firstAttribute="bottom" secondItem="EgY-Ji-ux6" secondAttribute="bottom" id="KXF-e8-R1r"/>
+                            <constraint firstItem="EgY-Ji-ux6" firstAttribute="top" secondItem="2a8-kZ-dtg" secondAttribute="top" id="o4S-3R-rHz"/>
+                        </constraints>
+                    </view>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Uzq-R1-hOl">
+                        <rect key="frame" x="12" y="12" width="32" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="32" id="Lox-tU-gA1"/>
+                            <constraint firstAttribute="width" constant="32" id="hVb-90-1yy"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ov3-m4-60n">
+                        <rect key="frame" x="54" y="8" width="188" height="14.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="188" id="0Of-4p-FgC"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Timestamp" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t9B-Nt-x4I">
+                        <rect key="frame" x="242" y="8" width="64" height="14.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XDQ-3E-dPq" customClass="WPDynamicHeightTextView" customModule="WordPress" customModuleProvider="target">
+                        <rect key="frame" x="12" y="20" width="296" height="29"/>
+                        <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="250" constant="28" id="cmZ-j2-AYv"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sWg-gn-kMt" userLabel="Separator View">
+                        <rect key="frame" x="12" y="57" width="296" height="1"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="wal-x3-oqD"/>
+                        </constraints>
+                    </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rpS-xR-Lhp" userLabel="Reply" customClass="VerticallyStackedButton">
+                        <rect key="frame" x="120" y="69.5" width="20" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="N4g-KD-92q"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <state key="normal" title="Like" image="notifications-reply">
+                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <state key="selected" image="notifications-reply-highlighted"/>
+                        <state key="highlighted" image="notifications-reply-highlighted"/>
+                        <connections>
+                            <action selector="replyWasPressed:" destination="aWm-2n-Yyt" eventType="touchUpInside" id="y3J-ux-iww"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BFD-bE-oTT" customClass="VerticallyStackedButton">
+                        <rect key="frame" x="160" y="69.5" width="20" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="vT9-0y-uHY"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <state key="normal" title="Like" image="notifications-like">
+                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <state key="selected" image="notifications-liked"/>
+                        <state key="highlighted" image="notifications-liked"/>
+                        <connections>
+                            <action selector="likeWasPressed:" destination="aWm-2n-Yyt" eventType="touchUpInside" id="kN3-Dd-r7m"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cvw-tc-IdJ" customClass="VerticallyStackedButton">
+                        <rect key="frame" x="200" y="69.5" width="20" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="Bn4-BK-QdA"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <state key="normal" title="Approve" image="notifications-approve">
+                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <state key="selected" image="notifications-approved"/>
+                        <state key="highlighted" image="notifications-approved"/>
+                        <connections>
+                            <action selector="approveWasPressed:" destination="aWm-2n-Yyt" eventType="touchUpInside" id="8Dz-F3-aSL"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zv6-lF-9H1" customClass="VerticallyStackedButton">
+                        <rect key="frame" x="240" y="69.5" width="20" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="cCZ-oo-F2Q"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <state key="normal" title="Trash" image="notifications-trash">
+                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="trashWasPressed:" destination="aWm-2n-Yyt" eventType="touchUpInside" id="VVC-B0-U52"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4JC-3g-jiZ" customClass="VerticallyStackedButton">
+                        <rect key="frame" x="280" y="69" width="20" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="LKQ-Y9-Xyv"/>
+                            <constraint firstAttribute="width" constant="20" id="yF1-M7-0Gv"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <state key="normal" title="More" image="notifications-more">
+                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="moreWasPressed:" destination="aWm-2n-Yyt" eventType="touchUpInside" id="4FE-HP-ZlJ"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="2a8-kZ-dtg" firstAttribute="top" secondItem="gJB-Y2-luG" secondAttribute="top" id="1Z7-Dz-ogk"/>
+                    <constraint firstAttribute="trailing" secondItem="4JC-3g-jiZ" secondAttribute="trailing" constant="20" id="1qw-23-C06"/>
+                    <constraint firstItem="4JC-3g-jiZ" firstAttribute="bottom" secondItem="rpS-xR-Lhp" secondAttribute="bottom" id="2U4-cO-GbN"/>
+                    <constraint firstItem="2a8-kZ-dtg" firstAttribute="leading" secondItem="gJB-Y2-luG" secondAttribute="leading" id="2fj-M7-7sn"/>
+                    <constraint firstItem="zv6-lF-9H1" firstAttribute="height" secondItem="4JC-3g-jiZ" secondAttribute="height" id="56M-xK-vqg"/>
+                    <constraint firstItem="sWg-gn-kMt" firstAttribute="top" secondItem="XDQ-3E-dPq" secondAttribute="bottom" constant="8" id="8uU-pL-9Lm"/>
+                    <constraint firstItem="cvw-tc-IdJ" firstAttribute="leading" secondItem="BFD-bE-oTT" secondAttribute="trailing" constant="20" id="9JY-8i-aXV"/>
+                    <constraint firstItem="4JC-3g-jiZ" firstAttribute="leading" secondItem="zv6-lF-9H1" secondAttribute="trailing" constant="20" id="Dhs-Vk-Fsi"/>
+                    <constraint firstItem="cvw-tc-IdJ" firstAttribute="height" secondItem="4JC-3g-jiZ" secondAttribute="height" id="FZO-X9-1aL"/>
+                    <constraint firstAttribute="trailing" secondItem="2a8-kZ-dtg" secondAttribute="trailing" id="IAN-dP-U3d"/>
+                    <constraint firstItem="zv6-lF-9H1" firstAttribute="bottom" secondItem="4JC-3g-jiZ" secondAttribute="bottom" id="IRJ-2b-vpq"/>
+                    <constraint firstItem="4JC-3g-jiZ" firstAttribute="bottom" secondItem="BFD-bE-oTT" secondAttribute="bottom" id="Kc0-La-FBo"/>
+                    <constraint firstItem="XDQ-3E-dPq" firstAttribute="top" secondItem="t9B-Nt-x4I" secondAttribute="bottom" constant="-2" id="Mcj-CO-eai"/>
+                    <constraint firstItem="sWg-gn-kMt" firstAttribute="trailing" secondItem="XDQ-3E-dPq" secondAttribute="trailing" id="N2E-Ac-hq9"/>
+                    <constraint firstItem="4JC-3g-jiZ" firstAttribute="height" secondItem="rpS-xR-Lhp" secondAttribute="height" id="OVu-Ob-ZQk"/>
+                    <constraint firstItem="t9B-Nt-x4I" firstAttribute="leading" secondItem="ov3-m4-60n" secondAttribute="trailing" id="XQd-qt-laP"/>
+                    <constraint firstAttribute="trailing" secondItem="XDQ-3E-dPq" secondAttribute="trailing" constant="12" id="XUn-xk-N0b"/>
+                    <constraint firstItem="t9B-Nt-x4I" firstAttribute="top" secondItem="ov3-m4-60n" secondAttribute="top" id="XYD-Lo-CMW"/>
+                    <constraint firstItem="4JC-3g-jiZ" firstAttribute="top" secondItem="XDQ-3E-dPq" secondAttribute="bottom" constant="20" id="b29-XL-zM6"/>
+                    <constraint firstItem="ov3-m4-60n" firstAttribute="leading" secondItem="Uzq-R1-hOl" secondAttribute="trailing" constant="10" id="bgr-0U-wcs"/>
+                    <constraint firstItem="Uzq-R1-hOl" firstAttribute="top" secondItem="ov3-m4-60n" secondAttribute="top" constant="4" id="cOF-vl-Oo0"/>
+                    <constraint firstItem="zv6-lF-9H1" firstAttribute="leading" secondItem="cvw-tc-IdJ" secondAttribute="trailing" constant="20" id="dKf-x4-axX"/>
+                    <constraint firstItem="Uzq-R1-hOl" firstAttribute="top" secondItem="gJB-Y2-luG" secondAttribute="top" constant="12" id="esg-ID-dnv"/>
+                    <constraint firstItem="sWg-gn-kMt" firstAttribute="top" secondItem="2a8-kZ-dtg" secondAttribute="bottom" id="fab-WU-i6M"/>
+                    <constraint firstAttribute="bottom" secondItem="4JC-3g-jiZ" secondAttribute="bottom" constant="10" id="gog-vt-wEj"/>
+                    <constraint firstItem="cvw-tc-IdJ" firstAttribute="bottom" secondItem="4JC-3g-jiZ" secondAttribute="bottom" id="h5w-6U-NKF"/>
+                    <constraint firstItem="BFD-bE-oTT" firstAttribute="leading" secondItem="rpS-xR-Lhp" secondAttribute="trailing" constant="20" id="hhd-at-ptM"/>
+                    <constraint firstItem="XDQ-3E-dPq" firstAttribute="leading" secondItem="gJB-Y2-luG" secondAttribute="leading" constant="12" id="hsf-za-gKV"/>
+                    <constraint firstItem="4JC-3g-jiZ" firstAttribute="height" secondItem="BFD-bE-oTT" secondAttribute="height" id="nKp-9P-Eee"/>
+                    <constraint firstItem="sWg-gn-kMt" firstAttribute="leading" secondItem="XDQ-3E-dPq" secondAttribute="leading" id="wrp-bq-9Ou"/>
+                    <constraint firstAttribute="trailing" secondItem="t9B-Nt-x4I" secondAttribute="trailing" constant="14" id="yPv-au-ZSD"/>
+                    <constraint firstItem="Uzq-R1-hOl" firstAttribute="leading" secondItem="gJB-Y2-luG" secondAttribute="leading" constant="12" id="ziU-RM-X6t"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="approvalSidebarView" destination="EgY-Ji-ux6" id="RlF-Pc-9to"/>
+                <outlet property="approvalStatusView" destination="2a8-kZ-dtg" id="2TZ-v9-HMS"/>
+                <outlet property="btnApprove" destination="cvw-tc-IdJ" id="rvW-aR-l8E"/>
+                <outlet property="btnLike" destination="BFD-bE-oTT" id="1Fa-Da-c2D"/>
+                <outlet property="btnMore" destination="4JC-3g-jiZ" id="ORP-sJ-de9"/>
+                <outlet property="btnReply" destination="rpS-xR-Lhp" id="i3f-IF-9hI"/>
+                <outlet property="btnTrash" destination="zv6-lF-9H1" id="uGv-Y2-jq0"/>
+                <outlet property="gravatarImageView" destination="Uzq-R1-hOl" id="IFE-3A-emM"/>
+                <outlet property="nameLabel" destination="ov3-m4-60n" id="Bvg-74-jzh"/>
+                <outlet property="separatorView" destination="sWg-gn-kMt" id="Ugk-zf-N3q"/>
+                <outlet property="textView" destination="XDQ-3E-dPq" id="oOC-Jm-YOM"/>
+                <outlet property="timestampLabel" destination="t9B-Nt-x4I" id="6xd-FE-pCL"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="notifications-approve" width="21" height="21"/>
+        <image name="notifications-approved" width="21" height="21"/>
+        <image name="notifications-like" width="21" height="21"/>
+        <image name="notifications-liked" width="21" height="21"/>
+        <image name="notifications-more" width="21" height="21"/>
+        <image name="notifications-reply" width="21" height="21"/>
+        <image name="notifications-reply-highlighted" width="21" height="19"/>
+        <image name="notifications-trash" width="21" height="21"/>
+    </resources>
+</document>
