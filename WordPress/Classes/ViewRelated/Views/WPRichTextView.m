@@ -8,6 +8,7 @@
 
 static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
 static CGSize const WPRichTextMinimumSize = {1, 1};
+static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
 
 @interface WPRichTextView()<DTAttributedTextContentViewDelegate, WPTableImageSourceDelegate>
 
@@ -230,26 +231,33 @@ static CGSize const WPRichTextMinimumSize = {1, 1};
 
 - (CGSize)displaySizeForMedia:(id<WPRichTextMediaAttachment>)media
 {
-    // Images get special treatment cos we do not want them to scale.
-    if ([media isKindOfClass:[WPRichTextImage class]]) {
-        return [self displaySizeForImage:[media contentSize]];
+    CGSize size = [media contentSize];
+    if (CGSizeEqualToSize(size, CGSizeMake(1.0, 1.0))) {
+        return size;
     }
 
+    // Images get special treatment cos we do not want them to scale.
+    if ([media isKindOfClass:[WPRichTextImage class]]) {
+        return [self displaySizeForImage:size];
+    }
+
+    return [self displaySizeForEmbed:(WPRichTextEmbed *)media];
+}
+
+- (CGSize)displaySizeForEmbed:(WPRichTextEmbed *)embed
+{
     // If we know the content ratio, use the view's width and compute the height.
     // Otherwise use a defaut ratio of 16:9 (1.778)
-    CGFloat ratio = [media contentRatio];
+    CGFloat ratio = [embed contentRatio];
     if (ratio == 0.0) {
-        ratio = 1.778;
+        ratio = WPRichTextDefaultEmbedRatio;
     }
 
     CGFloat width = CGRectGetWidth(self.bounds) - (self.edgeInsets.left + self.edgeInsets.right);
     CGFloat height = ceilf(width / ratio);
 
-    if ([media isKindOfClass:[WPRichTextEmbed class]]) {
-        WPRichTextEmbed *embed = (WPRichTextEmbed *)media;
-        if (embed.fixedHeight > 0) {
-            height = embed.fixedHeight;
-        }
+    if (embed.fixedHeight > 0) {
+        height = embed.fixedHeight;
     }
 
     return CGSizeMake(width, height);
@@ -257,10 +265,6 @@ static CGSize const WPRichTextMinimumSize = {1, 1};
 
 - (CGSize)displaySizeForImage:(CGSize)size
 {
-    if (CGSizeEqualToSize(size, CGSizeMake(1.0, 1.0))) {
-        return size;
-    }
-
     CGFloat width = size.width;
     CGFloat height = size.height;
     CGFloat ratio = width / height;
