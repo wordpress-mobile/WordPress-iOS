@@ -228,6 +228,7 @@
 		93C486511810445D00A24725 /* ActivityLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93069F55176237A4000C966D /* ActivityLogViewController.m */; };
 		93CD939319099BE70049096E /* authtoken.json in Resources */ = {isa = PBXBuildFile; fileRef = 93CD939219099BE70049096E /* authtoken.json */; };
 		93D6D64A1924FDAD00A4F44A /* CategoryServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 93D6D6471924FDAD00A4F44A /* CategoryServiceRemote.m */; };
+		93DEB88219E5BF7100F9546D /* TodayExtensionService.m in Sources */ = {isa = PBXBuildFile; fileRef = 93DEB88119E5BF7100F9546D /* TodayExtensionService.m */; };
 		93E3D3C819ACE8E300B1C509 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 292CECFF1027259000BD407D /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		93E5283C19A7741A003A1A9C /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93E5283B19A7741A003A1A9C /* NotificationCenter.framework */; };
 		93E5284119A7741A003A1A9C /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E5284019A7741A003A1A9C /* TodayViewController.swift */; };
@@ -851,6 +852,8 @@
 		93CD939219099BE70049096E /* authtoken.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = authtoken.json; sourceTree = "<group>"; };
 		93D6D6461924FDAD00A4F44A /* CategoryServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryServiceRemote.h; sourceTree = "<group>"; };
 		93D6D6471924FDAD00A4F44A /* CategoryServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryServiceRemote.m; sourceTree = "<group>"; };
+		93DEB88019E5BF7100F9546D /* TodayExtensionService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayExtensionService.h; sourceTree = "<group>"; };
+		93DEB88119E5BF7100F9546D /* TodayExtensionService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayExtensionService.m; sourceTree = "<group>"; };
 		93E5283A19A7741A003A1A9C /* WordPressTodayWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WordPressTodayWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		93E5283B19A7741A003A1A9C /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		93E5283F19A7741A003A1A9C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -2008,6 +2011,8 @@
 				5D44EB371986D8BA008B7175 /* ReaderSiteService.m */,
 				5DBCD9D318F35D7500B32229 /* ReaderTopicService.h */,
 				5DBCD9D418F35D7500B32229 /* ReaderTopicService.m */,
+				93DEB88019E5BF7100F9546D /* TodayExtensionService.h */,
+				93DEB88119E5BF7100F9546D /* TodayExtensionService.m */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -3058,6 +3063,7 @@
 				5D42A3DF175E7452005CFF05 /* AbstractPost.m in Sources */,
 				5D42A3E0175E7452005CFF05 /* BasePost.m in Sources */,
 				E1249B4319408C910035E895 /* RemoteComment.m in Sources */,
+				93DEB88219E5BF7100F9546D /* TodayExtensionService.m in Sources */,
 				5D42A3E2175E7452005CFF05 /* ReaderPost.m in Sources */,
 				5D42A3F8175E75EE005CFF05 /* ReaderImageView.m in Sources */,
 				B587797F19B799D800E57C5A /* UIImageView+Networking.swift in Sources */,

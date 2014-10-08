@@ -292,6 +292,11 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
         blog.url = remoteBlog.url;
         blog.blogName = [remoteBlog.title stringByDecodingXMLCharacters];
         blog.blogID = remoteBlog.ID;
+
+        // If non-WPcom then always default or if first from remote (assuming .com)
+        if (!account.isWpcom || [blogs indexOfObject:remoteBlog] == 0) {
+            account.defaultBlog = blog;
+        }
     }
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
