@@ -23,8 +23,7 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
     // TODO: Start with height of 0, let VC pin our top
     self = [super initWithFrame:CGRectMake(0.f, 0.f, width, 240.f)];
     if (self) {
-        UINib *nib = [UINib nibWithNibName:@"SuggestionsTableViewCell" bundle:nil];
-        [self registerNib:nib forCellReuseIdentifier:CellIdentifier];
+        [self registerClass:[SuggestionsTableViewCell class] forCellReuseIdentifier:CellIdentifier];
 
         _siteID = siteID;
         _suggestions = [[SuggestionService shared] suggestionsForSiteID:_siteID];
