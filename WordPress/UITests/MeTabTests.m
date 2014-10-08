@@ -183,7 +183,7 @@
     [tester tapViewWithAccessibilityLabel:@"Options"];
     [tester waitForTimeInterval:2];
     
-    [tester clearTextFromAndThenEnterText:@"iOS, KIF" intoViewWithAccessibilityLabel:@"Tags Value"];
+    [tester clearTextFromAndThenEnterText:[NSString stringWithFormat:@"iOS, KIF, %ld", random()] intoViewWithAccessibilityLabel:@"Tags Value"];
     [tester waitForTimeInterval:2];
     
     [tester tapViewWithAccessibilityLabel:@"Back"];
