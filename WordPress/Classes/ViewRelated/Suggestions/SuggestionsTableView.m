@@ -4,6 +4,7 @@
 #import "SuggestionService.h"
 
 NSString * const CellIdentifier = @"SuggestionsTableViewCell";
+CGFloat const RowHeight = 50.0f;
 
 @interface SuggestionsTableView ()
 
@@ -32,7 +33,7 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
         
         [self showSuggestions:NO]; // initially hidden please
 
-        self.rowHeight = 50.0;
+        [self setRowHeight:RowHeight];
         
         // suppress display of blank rows
         self.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
