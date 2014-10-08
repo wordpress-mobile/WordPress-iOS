@@ -3,6 +3,7 @@
 #import "NSString+Helpers.h"
 #import "WPPostViewController_Internal.h"
 #import "Post.h"
+#import "Category.h"
 
 @interface PostPreviewViewController ()
 

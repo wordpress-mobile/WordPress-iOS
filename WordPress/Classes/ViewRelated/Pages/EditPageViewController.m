@@ -1,6 +1,10 @@
 #import "EditPageViewController.h"
 #import "WPPostViewController_Internal.h"
 #import "AbstractPost.h"
+#import "ContextManager.h"
+#import "PostService.h"
+#import "Page.h"
+#import "Blog.h"
 #import "PageSettingsViewController.h"
 
 @implementation EditPageViewController
@@ -35,6 +39,10 @@
 - (void)geotagNewPost
 {
     // Noop. Pages do not support geolocation.
+}
+
+- (AbstractPost *)createNewDraftForBlog:(Blog *)blog {
+    return [PostService createDraftPageInMainContextForBlog:blog];
 }
 
 @end
