@@ -2,7 +2,7 @@
 
 @interface SuggestionsTableView : UITableView <UITableViewDataSource>
 
--(id)initWithWidth:(CGFloat)width andSiteID:(NSNumber *)siteID;
--(void)filterSuggestionsForKeyPress:(NSString *)keypress inWord:(NSString *)word;
+- (id)initWithWidth:(CGFloat)width andSiteID:(NSNumber *)siteID;
+- (void)filterSuggestionsForText:(NSString *)text;
 
 @end
