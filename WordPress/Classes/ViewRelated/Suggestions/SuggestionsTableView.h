@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-@protocol SuggestionsDelegate
+@protocol SuggestionsDelegate <NSObject>
 
 @optional
 
