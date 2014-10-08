@@ -223,7 +223,7 @@
     [tester tapViewWithAccessibilityLabel:@"Back"];
     [tester waitForTimeInterval:2];
     
-    [tester tapViewWithAccessibilityLabel:@"Back"];
+    [tester tapViewWithAccessibilityLabel:@"Close"];
     [tester waitForTimeInterval:2];
 }
 
