@@ -3,13 +3,12 @@
 #import "DTTiledLayerWithoutFade.h"
 #import "DTAttributedTextContentView.h"
 #import "WPTableImageSource.h"
-#import "WPRichTextImageControl.h"
-#import "WPRichTextVideoControl.h"
 #import "UIImage+Util.h"
-#import "VideoThumbnailServiceRemote.h"
+#import "WordPress-Swift.h"
 
 static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
 static CGSize const WPRichTextMinimumSize = {1, 1};
+static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
 
 @interface WPRichTextView()<DTAttributedTextContentViewDelegate, WPTableImageSourceDelegate>
 
@@ -21,6 +20,8 @@ static CGSize const WPRichTextMinimumSize = {1, 1};
 @property (nonatomic, strong) WPTableImageSource *imageSource;
 @property (nonatomic, strong) NSDate *dateOfLastMediaRefresh;
 @property (nonatomic) BOOL needsCheckPendingDownloadsAfterDelay;
+@property (nonatomic, strong, readwrite) NSAttributedString *attributedString;
+
 @end
 
 @implementation WPRichTextView
@@ -68,6 +69,7 @@ static CGSize const WPRichTextMinimumSize = {1, 1};
     [self.textContentView relayoutText];
 }
 
+
 #pragma mark - Public methods
 
 - (CGSize)intrinsicContentSize
@@ -96,6 +98,19 @@ static CGSize const WPRichTextMinimumSize = {1, 1};
 {
     self.textContentView.attributedString = attributedString;
     [self relayoutTextContentView];
+}
+
+- (void)setContent:(NSString *)content
+{
+    if ([content isEqualToString:_content]) {
+        return;
+    }
+    _content = content;
+
+    NSData *data = [_content dataUsingEncoding:NSUTF8StringEncoding];
+    self.attributedString = [[NSAttributedString alloc] initWithHTMLData:data
+                                                                 options:[WPStyleGuide defaultDTCoreTextOptions]
+                                                      documentAttributes:nil];
 }
 
 #pragma mark - Private Methods
@@ -150,19 +165,6 @@ static CGSize const WPRichTextMinimumSize = {1, 1};
     return _imageSource;
 }
 
-- (WPRichTextImageControl *)imageControlForAttachment:(DTImageTextAttachment *)imageAttachment
-{
-    WPRichTextImageControl *imageControl = [[WPRichTextImageControl alloc] initWithFrame:CGRectZero];
-
-    if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
-        [imageControl.imageView setImage:imageAttachment.image];
-    }
-
-    CGSize size = [self displaySizeForImage:imageControl.imageView.image];
-    imageControl.frame = CGRectMake(0.0, 0.0, size.width, size.height);
-
-    return imageControl;
-}
 
 #pragma mark - Event Handlers
 
@@ -173,19 +175,13 @@ static CGSize const WPRichTextMinimumSize = {1, 1};
     }
 }
 
-- (void)imageLinkAction:(WPRichTextImageControl *)sender
+- (void)imageLinkAction:(WPRichTextImage *)sender
 {
     if ([self.delegate respondsToSelector:@selector(richTextView:didReceiveImageLinkAction:)]) {
         [self.delegate richTextView:self didReceiveImageLinkAction:sender];
     }
 }
 
-- (void)videoLinkAction:(WPRichTextVideoControl *)sender
-{
-    if ([self.delegate respondsToSelector:@selector(richTextView:didReceiveVideoLinkAction:)]) {
-        [self.delegate richTextView:self didReceiveVideoLinkAction:sender];
-    }
-}
 
 #pragma mark - DTAttributedTextContentView Layout Wrangling
 
@@ -233,14 +229,44 @@ static CGSize const WPRichTextMinimumSize = {1, 1};
     return CGSizeMake(side, side);
 }
 
-- (CGSize)displaySizeForImage:(UIImage *)image
+- (CGSize)displaySizeForMedia:(id<WPRichTextMediaAttachment>)media
 {
-    if (!image) {
-        return CGSizeMake(1.0, 1.0);
+    CGSize size = [media contentSize];
+    if (CGSizeEqualToSize(size, CGSizeMake(1.0, 1.0))) {
+        return size;
     }
 
-    CGFloat width = image.size.width;
-    CGFloat height = image.size.height;
+    // Images get special treatment cos we do not want them to scale.
+    if ([media isKindOfClass:[WPRichTextImage class]]) {
+        return [self displaySizeForImage:size];
+    }
+
+    return [self displaySizeForEmbed:(WPRichTextEmbed *)media];
+}
+
+- (CGSize)displaySizeForEmbed:(WPRichTextEmbed *)embed
+{
+    // If we know the content ratio, use the view's width and compute the height.
+    // Otherwise use a defaut ratio of 16:9 (1.778)
+    CGFloat ratio = [embed contentRatio];
+    if (ratio == 0.0) {
+        ratio = WPRichTextDefaultEmbedRatio;
+    }
+
+    CGFloat width = CGRectGetWidth(self.bounds) - (self.edgeInsets.left + self.edgeInsets.right);
+    CGFloat height = ceilf(width / ratio);
+
+    if (embed.fixedHeight > 0) {
+        height = embed.fixedHeight;
+    }
+
+    return CGSizeMake(width, height);
+}
+
+- (CGSize)displaySizeForImage:(CGSize)size
+{
+    CGFloat width = size.width;
+    CGFloat height = size.height;
     CGFloat ratio = width / height;
 
     CGFloat maxWidth = CGRectGetWidth(self.bounds) - (self.edgeInsets.left + self.edgeInsets.right);
@@ -269,18 +295,17 @@ static CGSize const WPRichTextMinimumSize = {1, 1};
         if (index >= [self.mediaArray count]) {
             continue;
         }
-        WPRichTextImageControl *imageControl = [self.mediaArray objectAtIndex:index];
-        [arr addObject:imageControl];
+        [arr addObject:self.mediaArray[index]];
     }
     [self refreshLayoutForMediaInArray:arr];
 }
 
-- (void)refreshLayoutForMediaInArray:(NSArray *)images
+- (void)refreshLayoutForMediaInArray:(NSArray *)media
 {
     BOOL frameChanged = NO;
 
-    for (WPRichTextImageControl *imageControl in images) {
-        if ([self updateLayoutForMediaItem:imageControl]) {
+    for (id<WPRichTextMediaAttachment>item in media) {
+        if ([self updateLayoutForMediaItem:item]) {
             frameChanged = YES;
         }
     }
@@ -290,19 +315,17 @@ static CGSize const WPRichTextMinimumSize = {1, 1};
     }
 }
 
-- (BOOL)updateLayoutForMediaItem:(WPRichTextImageControl *)imageControl
+- (BOOL)updateLayoutForMediaItem:(id<WPRichTextMediaAttachment>)media
 {
     BOOL frameChanged = NO;
-    NSURL *url = imageControl.contentURL;
+    NSURL *url = media.contentURL;
 
-    CGSize originalSize = imageControl.frame.size;
-    CGSize displaySize = [self displaySizeForImage:imageControl.imageView.image];
-
+    CGSize originalSize = media.frame.size;
+    CGSize displaySize = [self displaySizeForMedia:media];
     frameChanged = !CGSizeEqualToSize(originalSize, displaySize);
 
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
-
     // update all attachments that matchin this URL (possibly multiple images with same size)
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
     for (DTTextAttachment *attachment in [self.textContentView.layoutFrame textAttachmentsWithPredicate:pred]) {
         attachment.originalSize = originalSize;
         attachment.displaySize = displaySize;
@@ -321,12 +344,13 @@ static CGSize const WPRichTextMinimumSize = {1, 1};
     [self invalidateIntrinsicContentSize];
 }
 
+
 #pragma mark - WPTableImageSource Delegate Methods
 
 - (void)tableImageSource:(WPTableImageSource *)tableImageSource imageFailedforIndexPath:(NSIndexPath *)indexPath error:(NSError *)error
 {
     [self.mediaIndexPathsPendingDownload removeObject:indexPath];
-    [self checkPendingImageDownloads];
+    [self checkPendingMediaDownloads];
 }
 
 - (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath
@@ -335,15 +359,18 @@ static CGSize const WPRichTextMinimumSize = {1, 1};
     if (index >= [self.mediaArray count]) {
         return;
     }
-    WPRichTextImageControl *imageControl = [self.mediaArray objectAtIndex:index];
+    WPRichTextImage *imageControl = [self.mediaArray objectAtIndex:index];
     [imageControl.imageView setImage:image];
 
     [self.mediaIndexPathsPendingDownload removeObject:indexPath];
     [self.mediaIndexPathsNeedingLayout addObject:indexPath];
-    [self checkPendingImageDownloads];
+    [self checkPendingMediaDownloads];
 }
 
-- (void)checkPendingImageDownloads
+
+#pragma mark - Pending Download / Layout 
+
+- (void)checkPendingMediaDownloads
 {
     if (!self.dateOfLastMediaRefresh) {
         self.dateOfLastMediaRefresh = [NSDate distantPast];
@@ -367,7 +394,7 @@ static CGSize const WPRichTextMinimumSize = {1, 1};
         // Keep this in mind when making future changes.
         dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(WPRichTextMinimumIntervalBetweenMediaRefreshes * NSEC_PER_SEC));
         dispatch_after(when, dispatch_get_main_queue(), ^{
-            [self checkPendingImageDownloadsIfNeeded];
+            [self checkPendingMediaDownloadsIfNeeded];
         });
         return;
     }
@@ -382,14 +409,15 @@ static CGSize const WPRichTextMinimumSize = {1, 1};
     }
 }
 
-- (void)checkPendingImageDownloadsIfNeeded
+- (void)checkPendingMediaDownloadsIfNeeded
 {
     // If the flag is no longer set there is nothing to do.
     if (!self.needsCheckPendingDownloadsAfterDelay) {
         return;
     }
-    [self checkPendingImageDownloads];
+    [self checkPendingMediaDownloads];
 }
+
 
 #pragma mark - DTCoreAttributedTextContentView Delegate Methods
 
@@ -422,7 +450,7 @@ static CGSize const WPRichTextMinimumSize = {1, 1};
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttachment:(DTTextAttachment *)attachment frame:(CGRect)frame
 {
     if (!attachment.contentURL) {
-        return nil;
+        return [self imagePlaceholderForAttachment:attachment];
     }
 
     // DTAttributedTextContentView will perform its first render pass with the original width and height (if specified) of the image.
@@ -431,68 +459,138 @@ static CGSize const WPRichTextMinimumSize = {1, 1};
     [self refreshLayoutAfterDelay];
 
     if ([attachment isKindOfClass:[DTImageTextAttachment class]]) {
-
-        DTImageTextAttachment *imageAttachment = (DTImageTextAttachment *)attachment;
-        WPRichTextImageControl *imageControl = [self imageControlForAttachment:imageAttachment];
-        imageControl.contentURL = attachment.contentURL;
-        imageControl.linkURL = attachment.hyperLinkURL;
-        [imageControl addTarget:self action:@selector(imageLinkAction:) forControlEvents:UIControlEventTouchUpInside];
-
-        [self.mediaArray addObject:imageControl];
-
-        if (!imageControl.imageView.image) {
-            NSUInteger index = [self.mediaArray count] - 1;
-            NSIndexPath *indexPath = [NSIndexPath indexPathWithIndex:index];
-
-            [self.mediaIndexPathsPendingDownload addObject:indexPath];
-            [self.imageSource fetchImageForURL:imageControl.contentURL
-                                      withSize:[self maxImageDisplaySize]
-                                     indexPath:indexPath
-                                     isPrivate:self.privateContent];
-        }
-
-        return imageControl;
-
+        return [self imageForAttachment:attachment];
     }
 
-    WPRichTextVideoControl *videoControl = [[WPRichTextVideoControl alloc] initWithFrame:CGRectMake(0.0, 0.0, 1.0, 1.0)];
+    if ([attachment isKindOfClass:[DTIframeTextAttachment class]]) {
+        return [self mediaViewForIframeAttachment:attachment withFrame:frame];
+    }
 
     if ([attachment isKindOfClass:[DTVideoTextAttachment class]]) {
-        videoControl.isHTMLContent = NO;
-    } else if ([attachment isKindOfClass:[DTIframeTextAttachment class]]) {
-        videoControl.isHTMLContent = YES;
-    } else if ([attachment isKindOfClass:[DTObjectTextAttachment class]]) {
-        videoControl.isHTMLContent = YES;
-    } else {
-        return nil; // Can't handle whatever this is :P
+        return [self mediaViewForVideoAttachment:attachment withFrame:frame];
     }
 
-    videoControl.contentURL = attachment.contentURL;
-    [videoControl addTarget:self action:@selector(videoLinkAction:) forControlEvents:UIControlEventTouchUpInside];
+    if ([attachment isKindOfClass:[DTObjectTextAttachment class]]) {
+        return [self mediaViewForObjectAttachment:attachment withFrame:frame];
+    }
 
-    [self.mediaArray addObject:videoControl];
-    NSUInteger index = [self.mediaArray count] - 1;
-    NSIndexPath *indexPath = [NSIndexPath indexPathWithIndex:index];
+    return [self imagePlaceholderForAttachment:attachment];
+}
 
-    VideoThumbnailServiceRemote *service = [[VideoThumbnailServiceRemote alloc] init];
-    [service getThumbnailForVideoAtURL:videoControl.contentURL
-                               success:^(NSURL *thumbnailURL, NSString *title) {
-                                   videoControl.title = title;
-                                   [self.mediaIndexPathsPendingDownload addObject:indexPath];
-                                   [self.imageSource fetchImageForURL:thumbnailURL
-                                                             withSize:[self maxImageDisplaySize]
-                                                            indexPath:indexPath
-                                                            isPrivate:NO];
-                               }
-                               failure:^(NSError *error) {
-                                   DDLogError(@"Error retriving video thumbnail: %@", error);
-                                   CGFloat side = 200.0;
-                                   UIImage *blankImage = [UIImage imageWithColor:[UIColor blackColor] havingSize:CGSizeMake(side, side)];
-                                   videoControl.imageView.image = blankImage;
-                                   [self updateLayoutForMediaItem:videoControl];
-                               }];
 
-    return videoControl;
+#pragma mark - Attachment creation
+
+- (WPRichTextImage *)imagePlaceholderForAttachment:(DTTextAttachment *)attachment
+{
+    WPRichTextImage *imageControl = [[WPRichTextImage alloc] initWithFrame:CGRectMake(0.0, 0.0, 1.0, 1.0)];
+    [imageControl.imageView setImage:[UIImage imageWithColor:self.backgroundColor havingSize:CGSizeMake(1.0, 1.0)]];
+    imageControl.contentURL = attachment.contentURL;
+    [self.mediaArray addObject:imageControl];
+    return imageControl;
+}
+
+- (WPRichTextImage *)imageForAttachment:(DTTextAttachment *)attachment
+{
+    DTImageTextAttachment *imageAttachment = (DTImageTextAttachment *)attachment;
+    WPRichTextImage *imageControl = [[WPRichTextImage alloc] initWithFrame:CGRectZero];
+
+    CGSize size;
+    if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
+        [imageControl.imageView setImage:imageAttachment.image];
+        size = [self displaySizeForImage:imageAttachment.image.size];
+    } else {
+        size = CGSizeMake(1.0, 1.0);
+    }
+    imageControl.frame = CGRectMake(0.0, 0.0, size.width, size.height);
+
+    imageControl.contentURL = attachment.contentURL;
+    imageControl.linkURL = attachment.hyperLinkURL;
+    [imageControl addTarget:self action:@selector(imageLinkAction:) forControlEvents:UIControlEventTouchUpInside];
+
+    [self.mediaArray addObject:imageControl];
+
+    if (!imageControl.imageView.image) {
+        NSUInteger index = [self.mediaArray indexOfObject:imageControl];
+        NSIndexPath *indexPath = [NSIndexPath indexPathWithIndex:index];
+
+        [self.mediaIndexPathsPendingDownload addObject:indexPath];
+        [self.imageSource fetchImageForURL:imageControl.contentURL
+                                  withSize:[self maxImageDisplaySize]
+                                 indexPath:indexPath
+                                 isPrivate:self.privateContent];
+    }
+
+    return imageControl;
+}
+
+- (WPRichTextEmbed *)mediaViewForIframeAttachment:(DTTextAttachment *)attachment withFrame:(CGRect)frame
+{
+    WPRichTextEmbed *embed = [self embedForAttachment:attachment withFrame:frame];
+    [embed loadContentURL:attachment.contentURL];
+    return embed;
+}
+
+- (UIView *)mediaViewForVideoAttachment:(DTTextAttachment *)attachment withFrame:(CGRect)frame
+{
+    // Get the raw html for the attachment.
+    NSString *html = [self HTMLForAttachmentWithSrc:[attachment.contentURL absoluteString] andTag:@"video"];
+    WPRichTextEmbed *embed = [self embedForAttachment:attachment withFrame:frame];
+    [embed loadHTMLString:html];
+    return embed;
+}
+
+- (UIView *)mediaViewForObjectAttachment:(DTTextAttachment *)attachment withFrame:(CGRect)frame
+{
+    NSString *html = [self HTMLForAttachmentWithSrc:[attachment.contentURL absoluteString] andTag:@"object"];
+    WPRichTextEmbed *embed = [self embedForAttachment:attachment withFrame:frame];
+    [embed loadHTMLString:html];
+    return embed;
+}
+
+- (WPRichTextEmbed *)embedForAttachment:(DTTextAttachment *)attachment withFrame:(CGRect)frame
+{
+    WPRichTextEmbed *embed = [[WPRichTextEmbed alloc] initWithFrame:CGRectMake(0.0, 0.0, 1.0, 1.0)];
+    embed.contentURL = attachment.contentURL;
+    embed.attachmentSize = frame.size;
+    embed.success = ^(WPRichTextEmbed *embedControl){
+        NSInteger index = [self.mediaArray indexOfObject:embedControl];
+        NSIndexPath *indexPath = [NSIndexPath indexPathWithIndex:index];
+        [self.mediaIndexPathsNeedingLayout addObject:indexPath];
+        [self checkPendingMediaDownloads];
+    };
+    [self.mediaArray addObject:embed];
+
+    NSString *width = [attachment.attributes stringForKey:@"width"];
+    NSString *height = [attachment.attributes stringForKey:@"height"];
+    if ([width hasSuffix:@"%"] && ![height hasSuffix:@"%"]) {
+        embed.fixedHeight = CGRectGetHeight(frame);
+    }
+
+    return embed;
+}
+
+- (NSString *)HTMLForAttachmentWithSrc:(NSString *)src andTag:(NSString *)tag
+{
+    NSString *rawContentString = self.content;
+
+    NSRange rng = [rawContentString rangeOfString:src];
+    if (rng.location == NSNotFound) {
+        return @""; // Empty string to avoid swift optionals
+    }
+
+    NSRange starting = [rawContentString rangeOfString:[NSString stringWithFormat:@"<%@", tag]
+                                               options:NSBackwardsSearch | NSCaseInsensitiveSearch
+                                                 range:NSMakeRange(0, rng.location)];
+
+    NSRange ending = [rawContentString rangeOfString:[NSString stringWithFormat:@"%@>", tag]
+                                             options:NSCaseInsensitiveSearch
+                                               range:NSMakeRange(rng.location, [rawContentString length] - rng.location)];
+
+    NSInteger length = (ending.location + ending.length) - starting.location;
+    NSRange tagRange = NSMakeRange(starting.location, length);
+    NSString *html = [rawContentString substringWithRange:tagRange];
+
+    return html;
 }
 
 @end

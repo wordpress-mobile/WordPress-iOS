@@ -993,12 +993,14 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     static NSRegularExpression *regexVideoPress;
     static NSRegularExpression *regexMp4;
     static NSRegularExpression *regexSrc;
+    static NSRegularExpression *regexPoster;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSError *error;
         regexVideoPress = [NSRegularExpression regularExpressionWithPattern:@"<div.*class=\"video-player[\\S\\s]+?<div.*class=\"videopress-placeholder[\\s\\S]*?</noscript>" options:NSRegularExpressionCaseInsensitive error:&error];
         regexMp4 = [NSRegularExpression regularExpressionWithPattern:@"mp4[\\s\\S]+?mp4" options:NSRegularExpressionCaseInsensitive error:&error];
         regexSrc = [NSRegularExpression regularExpressionWithPattern:@"http\\S+mp4" options:NSRegularExpressionCaseInsensitive error:&error];
+        regexPoster = [NSRegularExpression regularExpressionWithPattern:@"<img.*class=\"videopress-poster[\\s\\S]*?>" options:NSRegularExpressionCaseInsensitive error:&error];
     });
 
     // Find instances of VideoPress markup.
@@ -1026,14 +1028,44 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         NSString *src = [mp4 substringWithRange:srcMatch];
         src = [src stringByReplacingOccurrencesOfString:@"\\/" withString:@"/"];
 
+        NSString *height = @"200"; // default
+        NSString *placeholder = @"";
+        NSRange posterMatch = [regexPoster rangeOfFirstMatchInString:string options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [string length])];
+        if (posterMatch.location != NSNotFound) {
+            NSString *poster = [string substringWithRange:posterMatch];
+            NSString *value = [self parseValueForAttriuteNamed:@"height" inElement:poster];
+            if (value) {
+                height = value;
+            }
+
+            value = [self parseValueForAttriuteNamed:@"src" inElement:poster];
+            if (value) {
+                placeholder = value;
+            }
+        }
+
         // Compose a video tag to replace the default markup.
-        NSString *fmt = @"<video src=\"%@\"><source src=\"%@\" type=\"video/mp4\"></video>";
-        NSString *vid = [NSString stringWithFormat:fmt, src, src];
+        NSString *fmt = @"<video src=\"%@\" controls width=\"100%%\" height=\"%@\" poster=\"%@\"><source src=\"%@\" type=\"video/mp4\"></video>";
+        NSString *vid = [NSString stringWithFormat:fmt, src, height, placeholder, src];
 
         [mstr replaceCharactersInRange:match.range withString:vid];
     }
 
     return mstr;
+}
+
+- (NSString *)parseValueForAttriuteNamed:(NSString *)attribute inElement:(NSString *)element
+{
+    NSString *value = @"";
+    NSString *attrStr = [NSString stringWithFormat:@"%@=\"", attribute];
+    NSRange attrRange = [element rangeOfString:attrStr];
+    if (attrRange.location != NSNotFound) {
+        NSInteger location = attrRange.location + attrRange.length;
+        NSInteger length = [element length] - location;
+        NSRange ending = [element rangeOfString:@"\"" options:NSCaseInsensitiveSearch range:NSMakeRange(location, length)];
+        value = [element substringWithRange:NSMakeRange(location, ending.location - location)];
+    }
+    return value;
 }
 
 /**
