@@ -28,7 +28,7 @@
  * view controller can prompt them to replace recently typed text with the
  * suggested text the user picked
  */
-- (void)replaceRecentlyTypedWord:(NSString *)word withSuggestion:(NSString *)suggestion;
+- (void)replaceTextAtCaret:(NSString *)text withSuggestion:(NSString *)suggestion;
 
 @end
 
