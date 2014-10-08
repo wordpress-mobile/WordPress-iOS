@@ -3,8 +3,9 @@
 #import <KIF/KIF.h>
 #import "WordPressTestCredentials.h"
 #import "UIWindow-KIFAdditions.h"
+#import "WPUITestCase.h"
 
-@interface MeTabTests : KIFTestCase
+@interface MeTabTests : WPUITestCase
 
 @end
 
@@ -12,25 +13,12 @@
 
 - (void)beforeAll
 {
-    [tester clearTextFromViewWithAccessibilityLabel:@"Username / Email"];
-    [tester clearTextFromViewWithAccessibilityLabel:@"Password"];
-    
-    [tester enterText:oneStepUser intoViewWithAccessibilityLabel:@"Username / Email"];
-    [tester enterText:oneStepPassword intoViewWithAccessibilityLabel:@"Password"];
-    [tester tapViewWithAccessibilityLabel:@"Sign In"];
-    
-    [tester waitForTimeInterval:3];
-    // Verify that the login succeeded
-    [tester waitForViewWithAccessibilityLabel:@"Main Navigation"];
+    [self login];
 }
 
 - (void)afterAll
 {
-    [tester tapViewWithAccessibilityLabel:@"Me"];
-    [tester tapViewWithAccessibilityLabel:@"Settings"];
-    [tester tapViewWithAccessibilityLabel:@"Sign Out"];
-    [tester tapViewWithAccessibilityLabel:@"Sign Out"];
-    [tester waitForTimeInterval:3];
+    [self logout];
 }
 
 - (void)testMeTab

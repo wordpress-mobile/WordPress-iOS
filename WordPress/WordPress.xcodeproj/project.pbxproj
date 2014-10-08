@@ -419,6 +419,7 @@
 		FF388D7219E294BB00BD4246 /* LoginTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FF388D6D19E294BB00BD4246 /* LoginTests.m */; };
 		FF388D7319E294BB00BD4246 /* MeTabTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FF388D6E19E294BB00BD4246 /* MeTabTests.m */; };
 		FF7B6AFA19E29DDE00169E36 /* WordPressTestCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7B6AF919E29DDE00169E36 /* WordPressTestCredentials.m */; };
+		FFF96F2B19E5521400DFC821 /* WPUITestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F2A19E5521400DFC821 /* WPUITestCase.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1193,6 +1194,8 @@
 		FF388D6F19E294BB00BD4246 /* WordPressTestCredentials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressTestCredentials.h; sourceTree = "<group>"; };
 		FF388D7019E294BB00BD4246 /* WordPressTestCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressTestCredentials.m; sourceTree = "<group>"; };
 		FF7B6AF919E29DDE00169E36 /* WordPressTestCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressTestCredentials.m; sourceTree = "<group>"; };
+		FFF96F2A19E5521400DFC821 /* WPUITestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPUITestCase.m; sourceTree = "<group>"; };
+		FFF96F2C19E5523D00DFC821 /* WPUITestCase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPUITestCase.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2552,6 +2555,8 @@
 				FF388D6F19E294BB00BD4246 /* WordPressTestCredentials.h */,
 				FF388D7019E294BB00BD4246 /* WordPressTestCredentials.m */,
 				FF388D6119E2949E00BD4246 /* Supporting Files */,
+				FFF96F2A19E5521400DFC821 /* WPUITestCase.m */,
+				FFF96F2C19E5523D00DFC821 /* WPUITestCase.h */,
 			);
 			path = UITests;
 			sourceTree = "<group>";
@@ -3282,6 +3287,7 @@
 				FF388D7219E294BB00BD4246 /* LoginTests.m in Sources */,
 				FF388D7319E294BB00BD4246 /* MeTabTests.m in Sources */,
 				FF7B6AFA19E29DDE00169E36 /* WordPressTestCredentials.m in Sources */,
+				FFF96F2B19E5521400DFC821 /* WPUITestCase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
