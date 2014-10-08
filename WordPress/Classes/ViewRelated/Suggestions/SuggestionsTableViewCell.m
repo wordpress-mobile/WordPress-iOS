@@ -7,7 +7,7 @@ NSInteger const SuggestionsTableViewCellAvatarSize = 32;
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {        
+    if (self) {
         _usernameLabel = [[UILabel alloc] init];
         [_usernameLabel setTextColor:[WPStyleGuide wordPressBlue]];
         [_usernameLabel setFont:[WPStyleGuide regularTextFont]];
@@ -39,13 +39,7 @@ NSInteger const SuggestionsTableViewCellAvatarSize = 32;
                                                                             metrics:nil
                                                                               views:views];
         [self.contentView addConstraints:horizConstraints];
-        
-        // Vertical height constraint
-        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[contentview(==48)]"
-                                                                                 options:0
-                                                                                 metrics:nil
-                                                                                   views:views]];
-        
+                
         // Vertically constrain centers of each element
         [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_usernameLabel
                                                                      attribute:NSLayoutAttributeCenterY
@@ -70,7 +64,6 @@ NSInteger const SuggestionsTableViewCellAvatarSize = 32;
                                                                      attribute:NSLayoutAttributeCenterY
                                                                     multiplier:1.0
                                                                       constant:0]];
-        
         
     }
     return self;
