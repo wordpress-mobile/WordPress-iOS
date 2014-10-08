@@ -7,9 +7,7 @@ NSInteger const SuggestionsTableViewCellAvatarSize = 32;
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        reuseID = reuseIdentifier;
-        
+    if (self) {        
         _usernameLabel = [[UILabel alloc] init];
         [_usernameLabel setTextColor:[WPStyleGuide wordPressBlue]];
         [_usernameLabel setFont:[WPStyleGuide regularTextFont]];
