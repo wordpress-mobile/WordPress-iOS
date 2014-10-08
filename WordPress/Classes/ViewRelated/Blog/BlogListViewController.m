@@ -13,6 +13,7 @@
 #import "WPTableViewSectionHeaderView.h"
 #import "AccountService.h"
 #import "BlogService.h"
+#import "TodayExtensionService.h"
 
 static NSString *const AddSiteCellIdentifier = @"AddSiteCell";
 static NSString *const BlogCellIdentifier = @"BlogCell";
@@ -111,7 +112,25 @@ CGFloat const blavatarImageSize = 50.f;
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
         WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-        [accountService syncBlogsForAccount:defaultAccount success:nil failure:nil];
+        [accountService syncBlogsForAccount:defaultAccount success:^{
+            Blog *defaultBlog = defaultAccount.defaultBlog;
+            
+            if (defaultBlog) {
+                BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+                NSNumber *siteId = defaultBlog.blogID;
+                NSString *blogName = defaultBlog.blogName;
+                NSTimeZone *timeZone = [blogService timeZoneForBlog:defaultBlog];
+                NSString *oauth2Token = defaultAccount.authToken;
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    TodayExtensionService *service = [TodayExtensionService new];
+                    [service configureTodayWidgetWithSiteID:siteId
+                                                   blogName:blogName
+                                               siteTimeZone:timeZone
+                                             andOAuth2Token:oauth2Token];
+                });
+            }
+        } failure:nil];
     }];
 }
 
