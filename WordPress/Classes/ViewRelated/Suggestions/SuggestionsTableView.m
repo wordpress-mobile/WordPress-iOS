@@ -61,7 +61,7 @@ NSString * const CellIdentifier = @"SuggestionsTableViewCell";
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
--(void)filterSuggestionsForKeyPress:(NSString *)keypress inWord:(NSString *)word
+- (void)filterSuggestionsForKeyPress:(NSString *)keypress inWord:(NSString *)word
 {    
     if ([keypress isEqualToString:@"@"]) {
         if ([keypress isEqualToString:word]) {
