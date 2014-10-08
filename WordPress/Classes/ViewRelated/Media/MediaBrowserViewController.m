@@ -1,6 +1,7 @@
 #import "MediaBrowserViewController.h"
 #import "Blog.h"
 #import "MediaBrowserCell.h"
+#import "Coordinate.h"
 #import "Media.h"
 #import "MediaSearchFilterHeaderView.h"
 #import "EditMediaViewController.h"

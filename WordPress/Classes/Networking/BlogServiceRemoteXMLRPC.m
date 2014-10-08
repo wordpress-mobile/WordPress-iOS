@@ -20,55 +20,6 @@
     return self;
 }
 
-- (void)syncPostsAndMetadataForBlog:(Blog *)blog
-                  categoriesSuccess:(CategoriesHandler)categoriesSuccess
-                     optionsSuccess:(OptionsHandler)optionsSuccess
-                 postFormatsSuccess:(PostFormatsHandler)postFormatsSuccess
-                       postsSuccess:(PostsHandler)postsSuccess
-                     overallSuccess:(void (^)(void))overallSuccess
-                            failure:(void (^)(NSError *))failure
-{
-    WPXMLRPCRequestOperation *operation;
-    NSMutableArray *operations = [NSMutableArray arrayWithCapacity:4];
-    operation = [self operationForOptionsWithBlog:blog success:optionsSuccess failure:nil];
-    [operations addObject:operation];
-    operation = [self operationForPostFormatsWithBlog:blog success:postFormatsSuccess failure:nil];
-    [operations addObject:operation];
-    operation = [self operationForCategoriesWithBlog:blog success:categoriesSuccess failure:nil];
-    [operations addObject:operation];
-
-    // TODO :: Replace this if with a check for nil postsSuccess & do the conditional in the layer up from remote
-    if (!blog.isSyncingPosts) {
-        operation = [self operationForPostsWithBlog:blog batchSize:40 loadMore:NO success:postsSuccess failure:nil];
-        [operations addObject:operation];
-        blog.isSyncingPosts = YES;
-    }
-
-    AFHTTPRequestOperation *combinedOperation = [blog.api combinedHTTPRequestOperationWithOperations:operations success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (overallSuccess) {
-            overallSuccess();
-        }
-
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-    [self.api enqueueHTTPRequestOperation:combinedOperation];
-}
-
-- (void)syncPostsForBlog:(Blog *)blog batchSize:(NSUInteger)batchSize loadMore:(BOOL)more success:(PostsHandler)success failure:(void (^)(NSError *))failure
-{
-    WPXMLRPCRequestOperation *operation = [self operationForPostsWithBlog:blog batchSize:batchSize loadMore:more success:success failure:failure];
-    [blog.api enqueueXMLRPCRequestOperation:operation];
-}
-
-- (void)syncPagesForBlog:(Blog *)blog batchSize:(NSUInteger)batchSize loadMore:(BOOL)more success:(PagesHandler)success failure:(void (^)(NSError *))failure
-{
-    WPXMLRPCRequestOperation *operation = [self operationForPagesWithBlog:blog batchSize:batchSize loadMore:more success:success failure:failure];
-    [blog.api enqueueXMLRPCRequestOperation:operation];
-}
-
 - (void)syncCategoriesForBlog:(Blog *)blog success:(CategoriesHandler)success failure:(void (^)(NSError *))failure
 {
     WPXMLRPCRequestOperation *operation = [self operationForCategoriesWithBlog:blog success:success failure:failure];
@@ -93,15 +44,13 @@
     [blog.api enqueueXMLRPCRequestOperation:operation];
 }
 
-- (void)syncBlogContentAndMetadata:(Blog *)blog
-                 categoriesSuccess:(CategoriesHandler)categoriesSuccess
-                      mediaSuccess:(MediaHandler)mediaSuccess
-                    optionsSuccess:(OptionsHandler)optionsSuccess
-                      pagesSuccess:(PagesHandler)pagesSuccess
-                postFormatsSuccess:(PostFormatsHandler)postFormatsSuccess
-                      postsSuccess:(PostsHandler)postsSuccess
-                    overallSuccess:(void (^)(void))overallSuccess
-                           failure:(void (^)(NSError *error))failure
+- (void)syncBlogMetadata:(Blog *)blog
+       categoriesSuccess:(CategoriesHandler)categoriesSuccess
+            mediaSuccess:(MediaHandler)mediaSuccess
+          optionsSuccess:(OptionsHandler)optionsSuccess
+      postFormatsSuccess:(PostFormatsHandler)postFormatsSuccess
+          overallSuccess:(void (^)(void))overallSuccess
+                 failure:(void (^)(NSError *error))failure
 {
 
     WPXMLRPCRequestOperation *operation;
@@ -112,19 +61,6 @@
     [operations addObject:operation];
     operation = [self operationForCategoriesWithBlog:blog success:categoriesSuccess failure:nil];
     [operations addObject:operation];
-
-    if (!blog.isSyncingPosts) {
-        operation = [self operationForPostsWithBlog:blog batchSize:40 loadMore:NO success:postsSuccess failure:nil];
-        [operations addObject:operation];
-        blog.isSyncingPosts = YES;
-    }
-
-    if (!blog.isSyncingPages) {
-        // TODO :: Make batch size a parameter
-        operation = [self operationForPagesWithBlog:blog batchSize:40 loadMore:NO success:pagesSuccess failure:nil];
-        [operations addObject:operation];
-        blog.isSyncingPages = YES;
-    }
 
     if (!blog.isSyncingMedia) {
         operation = [self operationForMediaLibraryWithBlog:blog success:mediaSuccess failure:nil];
