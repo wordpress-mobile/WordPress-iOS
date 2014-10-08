@@ -113,7 +113,7 @@ import Foundation
     }
     
     // MARK: - SuggestableView methods
-    public func replaceRecentlyTypedWord(word: String!, withSuggestion suggestion: String!) {
+    public func replaceTextAtCaret(text: String!, withSuggestion suggestion: String!) {
         // TODO - IMPLEMENT
     }
     

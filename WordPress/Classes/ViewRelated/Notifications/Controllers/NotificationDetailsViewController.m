@@ -998,7 +998,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 - (void)didSelectSuggestion:(NSString *)suggestion forSearchText:(NSString *)text
 {
-    [self.replyTextView replaceRecentlyTypedWord:text withSuggestion:suggestion];
+    [self.replyTextView replaceTextAtCaret:text withSuggestion:suggestion];
 }
 
 #pragma mark - Gestures Recognizer Delegate
