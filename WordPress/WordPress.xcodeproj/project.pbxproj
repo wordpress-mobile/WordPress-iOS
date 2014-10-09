@@ -429,6 +429,7 @@
 		FFF96F4B19E57DAF00DFC821 /* PostsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F4319E57DAF00DFC821 /* PostsTests.m */; };
 		FFF96F4D19E57DAF00DFC821 /* WPUITestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F4719E57DAF00DFC821 /* WPUITestCase.m */; };
 		FFF96F4F19E57DBF00DFC821 /* WordPressTestCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F4E19E57DBF00DFC821 /* WordPressTestCredentials.m */; };
+		FFF96F5119E5914200DFC821 /* PagesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F5019E5914200DFC821 /* PagesTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1221,6 +1222,7 @@
 		FFF96F4619E57DAF00DFC821 /* WPUITestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPUITestCase.h; sourceTree = "<group>"; };
 		FFF96F4719E57DAF00DFC821 /* WPUITestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPUITestCase.m; sourceTree = "<group>"; };
 		FFF96F4E19E57DBF00DFC821 /* WordPressTestCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressTestCredentials.m; sourceTree = "<group>"; };
+		FFF96F5019E5914200DFC821 /* PagesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PagesTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2592,6 +2594,7 @@
 				FFF96F4119E57DAF00DFC821 /* LoginTests.m */,
 				FFF96F4219E57DAF00DFC821 /* MeTabTests.m */,
 				FFF96F4319E57DAF00DFC821 /* PostsTests.m */,
+				FFF96F5019E5914200DFC821 /* PagesTests.m */,
 				FFF96F4419E57DAF00DFC821 /* WordPressTestCredentials.h */,
 				FFF96F4519E57DAF00DFC821 /* WordPressTestCredentials.m */,
 				FFF96F4619E57DAF00DFC821 /* WPUITestCase.h */,
@@ -3336,6 +3339,7 @@
 				FFF96F4919E57DAF00DFC821 /* LoginTests.m in Sources */,
 				FFF96F4A19E57DAF00DFC821 /* MeTabTests.m in Sources */,
 				FFF96F4D19E57DAF00DFC821 /* WPUITestCase.m in Sources */,
+				FFF96F5119E5914200DFC821 /* PagesTests.m in Sources */,
 				FFF96F4F19E57DBF00DFC821 /* WordPressTestCredentials.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
