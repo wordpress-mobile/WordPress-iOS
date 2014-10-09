@@ -307,6 +307,7 @@ static NSDictionary *kEnabledButtonBarStyle;
         }
         
         [self refreshUIForCurrentPost];
+        [self refreshNavigationBarButtons:NO];
         dismissHandler();
     };
     
