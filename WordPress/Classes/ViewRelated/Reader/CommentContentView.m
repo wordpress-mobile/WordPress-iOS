@@ -427,25 +427,8 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
 
 - (void)handleLikeTapped:(id)sender
 {
-    /**
-     Like button state and like count is changed here for temporarily to be responsive. Once the actual
-     like/unlike request has completed, it should refresh the state of label/button according to success/error.
-     */
-    if (self.isLiked) {
-        // unlike
-        self.isLiked = NO;
-        self.likeCount = MAX(self.likeCount - 1, 0); // MAX is just for sanity check
-        if ([self.delegate respondsToSelector:@selector(handleUnlikeTapped:)]) {
-            [self.delegate handleUnlikeTapped:self.contentProvider];
-        }
-    }
-    else {
-        // like
-        self.isLiked = YES;
-        self.likeCount = self.likeCount + 1;
-        if ([self.delegate respondsToSelector:@selector(handleLikeTapped:)]) {
-            [self.delegate handleLikeTapped:self.contentProvider];
-        }
+    if ([self.delegate respondsToSelector:@selector(toggleLikeStatus:)]) {
+        [self.delegate toggleLikeStatus:self.contentProvider];
     }
 }
 
