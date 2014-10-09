@@ -103,6 +103,8 @@ static NSString* NotificationSettingMutedUntilKey   = @"mute_until";
         } else {
             _notificationMutePreferences = [NSMutableDictionary dictionary];
         }
+        
+        [self resetMuteIfNeeded];
         [self.tableView reloadData];
     }
 }
@@ -145,7 +147,29 @@ static NSString* NotificationSettingMutedUntilKey   = @"mute_until";
     [super viewWillDisappear:animated];
 }
 
-- (void)didReceiveMemoryWarning
+
+#pragma mark - Helpers
+
+- (void)resetMuteIfNeeded
+{
+    NSString *muteValue = self.notificationMutePreferences[NotificationSettingValueKey];
+    if (!muteValue) {
+        return;
+    }
+    
+    NSDate* mutedUntilValue = [NSDate dateWithTimeIntervalSince1970:muteValue.doubleValue];
+    
+    if ([mutedUntilValue laterDate:[NSDate date]] == mutedUntilValue) {
+        return;
+    }
+    
+    // The date is in the past: Remove it
+    [self.notificationMutePreferences removeObjectForKey:NotificationSettingValueKey];
+    self.notificationPreferences[NotificationSettingMutedUntilKey] = self.notificationMutePreferences;
+    
+    [self save];
+}
+
 - (void)save
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -222,11 +246,6 @@ static NSString* NotificationSettingMutedUntilKey   = @"mute_until";
                     [formatter setTimeStyle:NSDateFormatterShortStyle];
                     cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Off Until %@", @""),[formatter stringFromDate:mutedUntilValue]];
                 } else {
-                    //date is in the past. Remove it.
-                    hasChanges = YES;
-                    [_notificationMutePreferences removeObjectForKey:@"value"];
-                    [_notificationPreferences setValue:_notificationMutePreferences forKey:@"mute_until"];
-                    [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
                     cell.detailTextLabel.text = NSLocalizedString(@"On", @"");
                 }
             }
