@@ -46,6 +46,7 @@ static NSDictionary *kEnabledButtonBarStyle;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
 
 #pragma mark - Bar Button Items
+@property (nonatomic, strong) UIBarButtonItem *secondaryleftHandUIBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *negativeSeparator;
 @property (nonatomic, strong) UIBarButtonItem *cancelButton;
 @property (nonatomic, strong) UIBarButtonItem *editBarButtonItem;
@@ -313,26 +314,20 @@ static NSDictionary *kEnabledButtonBarStyle;
                                                                                    selectedCompletion:selectedCompletion
                                                                                      cancelCompletion:dismissHandler];
     vc.title = NSLocalizedString(@"Select Site", @"");
-
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     navController.navigationBar.translucent = NO;
     navController.navigationBar.barStyle = UIBarStyleBlack;
     
     if (IS_IPAD) {
         vc.preferredContentSize = CGSizeMake(320.0, 500);
-        
-        CGRect titleRect = self.navigationItem.titleView.frame;
-        titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
-
         self.blogSelectorPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
         self.blogSelectorPopover.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
         self.blogSelectorPopover.delegate = self;
-        [self.blogSelectorPopover presentPopoverFromRect:titleRect inView:self.navigationController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        [self.blogSelectorPopover presentPopoverFromBarButtonItem:self.secondaryleftHandUIBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 
     } else {
         navController.modalPresentationStyle = UIModalPresentationPageSheet;
         navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        
         [self presentViewController:navController animated:YES completion:nil];
     }
 }
@@ -817,10 +812,12 @@ static NSDictionary *kEnabledButtonBarStyle;
                                                                                       attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
         
         [blogButton setAttributedTitle:titleText forState:UIControlStateNormal];
+        [blogButton sizeToFit];
         aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:blogButton];
     }
     
-    return aUIButtonBarItem;
+    _secondaryleftHandUIBarButtonItem = aUIButtonBarItem;
+    return _secondaryleftHandUIBarButtonItem;
 }
 
 - (UIButton *)blogPickerButton
