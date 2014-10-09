@@ -30,8 +30,8 @@ NSString *const kWPEditorConfigURLParamAvailable = @"available";
 NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 
 static NSInteger const MaximumNumberOfPictures = 5;
-static CGFloat const kNavigationBarButtonSpacer = 15.0;
 static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
+static CGFloat const kSpacingBetweeenNavbarButtons = 20.0f;
 static NSDictionary *kDisabledButtonBarStyle;
 static NSDictionary *kEnabledButtonBarStyle;
 
@@ -39,16 +39,19 @@ static NSDictionary *kEnabledButtonBarStyle;
     NSOperationQueue *_mediaUploadQueue;
 }
 
-@property (nonatomic, strong) UIButton *titleBarButton;
+@property (nonatomic, strong) UIButton *blogPickerButton;
 @property (nonatomic, strong) UIView *uploadStatusView;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
 
 #pragma mark - Bar Button Items
+@property (nonatomic, strong) UIBarButtonItem *negativeSeparator;
 @property (nonatomic, strong) UIBarButtonItem *cancelButton;
 @property (nonatomic, strong) UIBarButtonItem *editBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *saveBarButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *previewBarButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *optionsBarButtonItem;
 
 @end
 
@@ -189,6 +192,10 @@ static NSDictionary *kEnabledButtonBarStyle;
     kDisabledButtonBarStyle = @{NSFontAttributeName: [WPStyleGuide regularTextFontSemiBold], NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.25]};
     kEnabledButtonBarStyle = @{NSFontAttributeName: [WPStyleGuide regularTextFontSemiBold], NSForegroundColorAttributeName: [UIColor whiteColor]};
     
+    // This is a trick to kick the starting UIButtonBarItem to the left
+    self.negativeSeparator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    self.negativeSeparator .width = -12;
+    
     [self createRevisionOfPost];
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
     
@@ -206,7 +213,7 @@ static NSDictionary *kEnabledButtonBarStyle;
 	
     // Display the "back" chevron without text
     self.navigationController.navigationBar.topItem.title = @"";
-    [self refreshNavigationBar:NO];
+    [self refreshNavigationBarButtons:NO];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -394,7 +401,7 @@ static NSDictionary *kEnabledButtonBarStyle;
 		if (self.editMode == EditPostViewControllerModeNewPost) {
 			[self discardChangesAndDismiss];
 		} else {
-            [self refreshNavigationBar:YES];
+            [self refreshNavigationBarButtons:YES];
             [self discardChanges];
 		}
         return;
@@ -545,36 +552,6 @@ static NSDictionary *kEnabledButtonBarStyle;
 
 #pragma mark - UI Manipulation
 
-- (void)refreshNavigationBar:(BOOL)editingChanged
-{
-    [self refreshNavigationBarButtons:editingChanged];
-	
-    // Configure the custom title view, or just set the navigationItem title.
-    // Only show the blog selector in the nav title view if we're editing a new post
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    NSInteger blogCount = [blogService blogCountForAllAccounts];
-    
-    if (_mediaUploadQueue.operationCount > 0) {
-        self.navigationItem.titleView = self.uploadStatusView;
-    } else if(blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
-        self.navigationItem.titleView = nil;
-    } else {
-        UIButton *titleButton = self.titleBarButton;
-        self.navigationItem.titleView = titleButton;
-        
-        
-        NSString *blogName = [self.post.blog.blogName length] == 0 ? self.post.blog.url : self.post.blog.blogName;
-        
-        NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", blogName]
-                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
-
-        [titleButton setAttributedTitle:titleText forState:UIControlStateNormal];
-        
-        [titleButton sizeToFit];
-    }
-}
-
 /**
  *  @brief      Refreshes the navigation bar buttons.
  *  
@@ -590,23 +567,27 @@ static NSDictionary *kEnabledButtonBarStyle;
 
 - (void)refreshNavigationBarLeftButtons:(BOOL)editingChanged
 {
-	if ([self isEditing] && !self.post.hasRemote) {
+    UIBarButtonItem *secondaryleftHandButton = self.secondaryleftHandUIBarButtonItem;
+    
+    if ([self isEditing] && !self.post.hasRemote) {
         // Editing a new post
         [self.navigationItem setLeftBarButtonItems:nil];
-        UIBarButtonItem *negativeSeparator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-                                                                                           target:nil
-                                                                                           action:nil];
-        negativeSeparator.width = -10;
-        NSArray* leftBarButtons = @[negativeSeparator, self.cancelXButton, negativeSeparator];
+        NSArray* leftBarButtons;
+        if (secondaryleftHandButton) {
+            leftBarButtons = @[self.negativeSeparator, self.cancelXButton, secondaryleftHandButton];
+        } else {
+            leftBarButtons = @[self.negativeSeparator, self.cancelXButton];
+        }
         [self.navigationItem setLeftBarButtonItems:leftBarButtons animated:NO];
     } else if ([self isEditing] && self.post.hasRemote) {
         // Editing an existing post (draft or published)
         [self.navigationItem setLeftBarButtonItems:nil];
-        UIBarButtonItem *negativeSeparator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-                                                                                           target:nil
-                                                                                           action:nil];
-        negativeSeparator.width = -10;
-        NSArray* leftBarButtons = @[negativeSeparator, self.cancelChevronButton, negativeSeparator];
+        NSArray* leftBarButtons;
+        if (secondaryleftHandButton) {
+            leftBarButtons = @[self.negativeSeparator, self.cancelChevronButton, secondaryleftHandButton];
+        } else {
+            leftBarButtons = @[self.negativeSeparator, self.cancelChevronButton];
+        }
         [self.navigationItem setLeftBarButtonItems:leftBarButtons animated:NO];
 	} else {
         [self.navigationItem setLeftBarButtonItems:nil];
@@ -616,17 +597,10 @@ static NSDictionary *kEnabledButtonBarStyle;
 
 - (void)refreshNavigationBarRightButtons:(BOOL)editingChanged
 {
-    UIBarButtonItem *separator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-                                                                               target:nil
-                                                                               action:nil];
-    separator.width = kNavigationBarButtonSpacer;
-    
     if ([self isEditing]) {
         if (editingChanged) {
             NSArray* rightBarButtons = @[self.saveBarButtonItem,
-                                         separator,
                                          [self optionsBarButtonItem],
-                                         separator,
                                          [self previewBarButtonItem]];
             
             [self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
@@ -638,7 +612,6 @@ static NSDictionary *kEnabledButtonBarStyle;
 		[self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];		
 	} else {
 		NSArray* rightBarButtons = @[self.editBarButtonItem,
-                                     separator, separator,
 									 [self previewBarButtonItem]];
 		
 		[self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
@@ -701,10 +674,13 @@ static NSDictionary *kEnabledButtonBarStyle;
 - (UIBarButtonItem*)cancelChevronButton
 {
     WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-chevron"
-                                                                        frame:CGRectMake(0.0f, 0.0f, 40.0f, 40.0f)
+                                                                        frame:CGRectMake(0.0f, 0.0f, 30.0f, 30.0f)
                                                                        target:self
                                                                      selector:@selector(cancelEditing)];
     cancelButton.removeDefaultLeftSpacing = YES;
+    cancelButton.removeDefaultRightSpacing = YES;
+    cancelButton.rightSpacing = 5.0f;
+    
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     _cancelButton = button;
     return _cancelButton;
@@ -713,10 +689,13 @@ static NSDictionary *kEnabledButtonBarStyle;
 - (UIBarButtonItem*)cancelXButton
 {
     WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-x"
-                                                                        frame:CGRectMake(0.0f, 0.0f, 40.0f, 40.0f)
+                                                                        frame:CGRectMake(0.0f, 0.0f, 30.0f, 30.0f)
                                                                        target:self
                                                                      selector:@selector(cancelEditing)];
-    cancelButton.removeDefaultLeftSpacing = YES;        
+    cancelButton.removeDefaultLeftSpacing = YES;
+    cancelButton.removeDefaultRightSpacing = YES;
+    cancelButton.rightSpacing = 5.0f;
+    
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     _cancelButton = button;
 	return _cancelButton;
@@ -744,31 +723,38 @@ static NSDictionary *kEnabledButtonBarStyle;
 
 - (UIBarButtonItem *)optionsBarButtonItem
 {
-	WPButtonForNavigationBar *button = [self buttonForBarWithImageNamed:@"icon-posts-editor-options"
-																  frame:CGRectMake(0.0f, 0.0f, 40.0f, 40.0f)
-																 target:self
-															   selector:@selector(showSettings)];
-
-	button.removeDefaultRightSpacing = YES;
-	button.rightSpacing = 5.0f;
-	
-	UIBarButtonItem* barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-	
-	return barButtonItem;
+	if (!_optionsBarButtonItem) {
+        WPButtonForNavigationBar *button = [self buttonForBarWithImageNamed:@"icon-posts-editor-options"
+                                                                      frame:CGRectMake(0.0f, 0.0f, 30.0f, 30.0f)
+                                                                     target:self
+                                                                   selector:@selector(showSettings)];
+        
+        button.removeDefaultRightSpacing = YES;
+        button.rightSpacing = kSpacingBetweeenNavbarButtons / 2.0f;
+        button.removeDefaultLeftSpacing = YES;
+        button.leftSpacing = kSpacingBetweeenNavbarButtons / 2.0f;
+        _optionsBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    }
+    
+	return _optionsBarButtonItem;
 }
 
 - (UIBarButtonItem *)previewBarButtonItem
 {
-	WPButtonForNavigationBar* button = [self buttonForBarWithImageNamed:@"icon-posts-editor-preview"
-                                                                  frame:CGRectMake(0.0f, 0.0f, 40.0f, 40.0f)
-																 target:self
-															   selector:@selector(showPreview)];
+	if (!_previewBarButtonItem) {
+        WPButtonForNavigationBar* button = [self buttonForBarWithImageNamed:@"icon-posts-editor-preview"
+                                                                      frame:CGRectMake(0.0f, 0.0f, 30.0f, 30.0f)
+                                                                     target:self
+                                                                   selector:@selector(showPreview)];
+        
+        button.removeDefaultRightSpacing = YES;
+        button.rightSpacing = kSpacingBetweeenNavbarButtons / 2.0f;
+        button.removeDefaultLeftSpacing = YES;
+        button.leftSpacing = kSpacingBetweeenNavbarButtons / 2.0f;
+        _previewBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    }
 	
-	button.removeDefaultRightSpacing = YES;
-	
-	UIBarButtonItem* barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-	
-	return barButtonItem;
+	return _previewBarButtonItem;
 }
 
 - (UIBarButtonItem *)saveBarButtonItem
@@ -812,28 +798,41 @@ static NSDictionary *kEnabledButtonBarStyle;
     return buttonTitle;
 }
 
-- (UIButton *)titleBarButton
+- (UIBarButtonItem *)secondaryleftHandUIBarButtonItem
 {
-    if (_titleBarButton) {
-        return _titleBarButton;
-    }
-    UIButton *titleButton = [WPBlogSelectorButton buttonWithType:UIButtonTypeSystem];
-    titleButton.frame = CGRectMake(0.0f, 0.0f, 200.0f, 33.0f);
-    titleButton.titleLabel.numberOfLines = 1;
-    titleButton.titleLabel.textColor = [UIColor whiteColor];
-    titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    titleButton.titleLabel.adjustsFontSizeToFitWidth = NO;
-    titleButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-    titleButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-    [titleButton setImage:[UIImage imageNamed:@"icon-navbar-dropdown.png"] forState:UIControlStateNormal];
-    [titleButton addTarget:self action:@selector(showBlogSelectorPrompt) forControlEvents:UIControlEventTouchUpInside];
-    [titleButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 10)];
-    [titleButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
-    [titleButton setAccessibilityHint:NSLocalizedString(@"Tap to select which blog to post to", nil)];
-
-    _titleBarButton = titleButton;
+    UIBarButtonItem *aUIButtonBarItem;
     
-    return _titleBarButton;
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    NSInteger blogCount = [blogService blogCountForAllAccounts];
+    
+    if (_mediaUploadQueue.operationCount > 0) {
+        aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:self.uploadStatusView];
+    } else if(blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
+        aUIButtonBarItem = nil;
+    } else {
+        UIButton *blogButton = self.blogPickerButton;
+        NSString *blogName = [self.post.blog.blogName length] == 0 ? self.post.blog.url : self.post.blog.blogName;
+        NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", blogName]
+                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
+        
+        [blogButton setAttributedTitle:titleText forState:UIControlStateNormal];
+        aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:blogButton];
+    }
+    
+    return aUIButtonBarItem;
+}
+
+- (UIButton *)blogPickerButton
+{
+    if (!_blogPickerButton) {
+        CGFloat titleButtonWidth = (IS_IPAD) ? 300.0f : 170.0f;
+        UIButton *button = [WPBlogSelectorButton buttonWithFrame:CGRectMake(0.0f, 0.0f, titleButtonWidth , 30.0f) buttonStyle:WPBlogSelectorButtonTypeSingleLine];
+        [button addTarget:self action:@selector(showBlogSelectorPrompt) forControlEvents:UIControlEventTouchUpInside];
+        _blogPickerButton = button;
+    }
+    
+    return _blogPickerButton;
 }
 
 - (UIView *)uploadStatusView
@@ -841,7 +840,7 @@ static NSDictionary *kEnabledButtonBarStyle;
     if (_uploadStatusView) {
         return _uploadStatusView;
     }
-    WPUploadStatusView *uploadStatusView = [[WPUploadStatusView alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, 33.0)];
+    WPUploadStatusView *uploadStatusView = [[WPUploadStatusView alloc] initWithFrame:CGRectMake(0.0, 0.0, (IS_IPAD) ? 260.0f : 180.0f, 33.0)];
     uploadStatusView.tappedView = ^{
         [self showCancelMediaUploadPrompt];
     };
@@ -1334,7 +1333,7 @@ static NSDictionary *kEnabledButtonBarStyle;
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([object isEqual:_mediaUploadQueue]) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self refreshNavigationBar:NO];
+            [self refreshNavigationBarButtons:NO];
         });
     }
 }
