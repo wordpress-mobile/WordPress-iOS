@@ -84,7 +84,7 @@ NSString * const SuggestionListUpdatedNotification = @"SuggestionListUpdatedNoti
     }];
 }
 
-- (BOOL)shouldShowSuggestionsPageForSiteID:(NSNumber *)siteID
+- (BOOL)shouldShowSuggestionsForSiteID:(NSNumber *)siteID
 {
     if (!siteID) {
         return NO;
