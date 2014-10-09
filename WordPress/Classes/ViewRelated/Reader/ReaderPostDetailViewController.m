@@ -963,26 +963,38 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self.tableView selectRowAtIndexPath:[self.tableView indexPathForCell:cell] animated:YES scrollPosition:UITableViewScrollPositionTop];
 }
 
-- (void)commentCell:(ReaderCommentCell *)cell likeComment:(Comment *)comment
+- (void)commentCell:(ReaderCommentCell *)cell toggleLikeStatusForComment:(Comment *)comment
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
 
-    [commentService likeCommentWithID:comment.commentID siteID:self.post.siteID success:nil failure:^(NSError *error) {
+    [self toggleLikeStatusAndSaveComment:comment commentCell:cell];
+
+    __weak __typeof(self) weakSelf = self;
+
+    // This block will reverse the like/unlike action
+    void (^failureBlock)(NSError *) = ^(NSError *error) {
         DDLogError(@"Error while liking comment: %@", error);
-        [cell configureCell:comment];
-    }];
+
+        [weakSelf toggleLikeStatusAndSaveComment:comment commentCell:cell];
+    };
+
+    if (comment.isLiked) {
+        [commentService likeCommentWithID:comment.commentID siteID:self.post.siteID success:nil failure:failureBlock];
+    }
+    else {
+        [commentService unlikeCommentWithID:comment.commentID siteID:self.post.siteID success:nil failure:failureBlock];
+    }
 }
 
-- (void)commentCell:(ReaderCommentCell *)cell unlikeComment:(Comment *)comment
+- (void)toggleLikeStatusAndSaveComment:(Comment *)comment commentCell:(ReaderCommentCell *)cell
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+    comment.isLiked = !comment.isLiked;
+    comment.likeCount = @([comment.likeCount intValue] + (comment.isLiked ? 1 : -1));
 
-    [commentService unlikeCommentWithID:comment.commentID siteID:self.post.siteID success:nil failure:^(NSError *error) {
-        DDLogError(@"Error while liking comment: %@", error);
-        [cell configureCell:comment];
-    }];
+    [[ContextManager sharedInstance] saveContext:[[ContextManager sharedInstance] mainContext]];
+
+    [cell configureCell:comment];
 }
 
 #pragma mark - WPTableImageSource Delegate

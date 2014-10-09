@@ -5,8 +5,7 @@
 @optional
 - (void)handleLinkTapped:(NSURL *)url;
 - (void)handleReplyTapped:(id<WPContentViewProvider>)contentProvider;
-- (void)handleLikeTapped:(id<WPContentViewProvider>)contentProvider;
-- (void)handleUnlikeTapped:(id<WPContentViewProvider>)contentProvider;
+- (void)toggleLikeStatus:(id<WPContentViewProvider>)contentProvider;
 @end
 
 @interface CommentContentView : UIView
