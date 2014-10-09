@@ -8,6 +8,6 @@ extern NSString * const SuggestionListUpdatedNotification;
 
 - (NSArray *)suggestionsForSiteID:(NSNumber *)siteID;
 - (void)updateSuggestionsForSiteID:(NSNumber *)siteID;
-- (BOOL)shouldShowSuggestionsPageForSiteID:(NSNumber *)siteID;
+- (BOOL)shouldShowSuggestionsForSiteID:(NSNumber *)siteID;
 
 @end

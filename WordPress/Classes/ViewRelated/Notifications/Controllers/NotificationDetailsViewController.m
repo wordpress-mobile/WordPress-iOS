@@ -18,7 +18,9 @@
 #import "StatsViewController.h"
 #import "EditCommentViewController.h"
 #import "EditReplyViewController.h"
+
 #import "SuggestionsTableView.h"
+#import "SuggestionService.h"
 
 #import "WordPress-Swift.h"
 
@@ -227,12 +229,19 @@ static CGFloat NotificationSectionSeparator     = 10;
     [self.view pinSubviewAtBottom:self.replyTextView];
     [self.view pinSubview:self.tableView aboveSubview:self.replyTextView];
     
-    SuggestionsTableView *suggestionsTableView = [[SuggestionsTableView alloc] initWithWidth:CGRectGetWidth(self.view.frame)
-                                                                                   andSiteID:self.note.metaSiteID];
-    suggestionsTableView.suggestionsDelegate   = self;
-    self.suggestionsTableView                  = suggestionsTableView;
-    [self.view addSubview:self.suggestionsTableView];
-    [self.view pinSubviewAtBottom:self.suggestionsTableView];
+    // Attach the SuggestionTableView for WPCOM blogs
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
+    Blog *blog                      = [service blogByBlogId:self.note.metaSiteID];
+    
+    if (blog.isWPcom && [[SuggestionService shared] shouldShowSuggestionsForSiteID:self.note.metaSiteID]) {
+        SuggestionsTableView *suggestionsTableView = [[SuggestionsTableView alloc] initWithWidth:CGRectGetWidth(self.view.frame)
+                                                                                       andSiteID:self.note.metaSiteID];
+        suggestionsTableView.suggestionsDelegate   = self;
+        self.suggestionsTableView                  = suggestionsTableView;
+        [self.view addSubview:self.suggestionsTableView];
+        [self.view pinSubviewAtBottom:self.suggestionsTableView];
+    }
 }
 
 
