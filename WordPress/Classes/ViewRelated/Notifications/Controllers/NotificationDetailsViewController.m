@@ -240,7 +240,6 @@ static CGFloat NotificationSectionSeparator     = 10;
         suggestionsTableView.suggestionsDelegate   = self;
         self.suggestionsTableView                  = suggestionsTableView;
         [self.view addSubview:self.suggestionsTableView];
-        [self.view pinSubviewAtBottom:self.suggestionsTableView];
     }
 }
 
