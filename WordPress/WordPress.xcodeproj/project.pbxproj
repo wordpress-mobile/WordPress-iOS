@@ -423,7 +423,6 @@
 		FD75DDAD15B021C80043F12C /* UIViewController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = FD75DDAC15B021C80043F12C /* UIViewController+Rotation.m */; };
 		FD9A948C12FAEA2300438F94 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FD9A948B12FAEA2300438F94 /* DateUtils.m */; };
 		FEA64EDF0F7E4616BA835081 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69187343EC8F435684EFFAF1 /* libPods.a */; };
-		FFF96F5B19E697B500DFC821 /* UITests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F5A19E697B500DFC821 /* UITests.m */; };
 		FFF96F6C19E697CD00DFC821 /* gencredentials.rb in Resources */ = {isa = PBXBuildFile; fileRef = FFF96F6319E697CD00DFC821 /* gencredentials.rb */; };
 		FFF96F6E19E697CD00DFC821 /* MeTabTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F6519E697CD00DFC821 /* MeTabTests.m */; };
 		FFF96F6F19E697CD00DFC821 /* PagesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F6619E697CD00DFC821 /* PagesTests.m */; };
@@ -1211,7 +1210,6 @@
 		FDFB011916B1EA1C00F589A8 /* WordPress 10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 10.xcdatamodel"; sourceTree = "<group>"; };
 		FFF96F5619E697B500DFC821 /* UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFF96F5919E697B500DFC821 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FFF96F5A19E697B500DFC821 /* UITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UITests.m; sourceTree = "<group>"; };
 		FFF96F6319E697CD00DFC821 /* gencredentials.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = gencredentials.rb; sourceTree = "<group>"; };
 		FFF96F6419E697CD00DFC821 /* LoginTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginTests.m; sourceTree = "<group>"; };
 		FFF96F6519E697CD00DFC821 /* MeTabTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeTabTests.m; sourceTree = "<group>"; };
@@ -2595,7 +2593,6 @@
 				FFF96F6919E697CD00DFC821 /* WordPressTestCredentials.m */,
 				FFF96F6A19E697CD00DFC821 /* WPUITestCase.h */,
 				FFF96F6B19E697CD00DFC821 /* WPUITestCase.m */,
-				FFF96F5A19E697B500DFC821 /* UITests.m */,
 				FFF96F5819E697B500DFC821 /* Supporting Files */,
 			);
 			path = UITests;
@@ -3335,7 +3332,6 @@
 				FFF96F7419E697DD00DFC821 /* WordPressTestCredentials.m in Sources */,
 				FFF96F6E19E697CD00DFC821 /* MeTabTests.m in Sources */,
 				FFF96F7019E697CD00DFC821 /* PostsTests.m in Sources */,
-				FFF96F5B19E697B500DFC821 /* UITests.m in Sources */,
 				FFF96F7519E6991400DFC821 /* LoginTests.m in Sources */,
 				FFF96F6F19E697CD00DFC821 /* PagesTests.m in Sources */,
 				FFF96F7219E697CD00DFC821 /* WPUITestCase.m in Sources */,
