@@ -584,7 +584,7 @@ NSString const *NotePostIdKey           = @"post_id";
 - (BOOL)isUnapprovedComment
 {
     NotificationBlockGroup *group = [self blockGroupOfType:NoteBlockGroupTypeComment];
-    if (group) {
+    if (group && [group blockOfType:NoteBlockTypeComment]) {
         NotificationBlock *block  = [group blockOfType:NoteBlockTypeComment];
         return [block isActionEnabled:NoteActionApproveKey] && ![block isActionOn:NoteActionApproveKey];
     }
