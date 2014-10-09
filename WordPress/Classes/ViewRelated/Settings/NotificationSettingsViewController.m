@@ -23,11 +23,6 @@
 BOOL hasChanges;
 @synthesize showCloseButton;
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -90,74 +85,6 @@ BOOL hasChanges;
         }
         [self.tableView reloadData];
     }
-    [self setupToolbarButtons];
-}
-
-- (void)setupToolbarButtons
-{
-    return; //Do not show the toolbar with 'mute blogs' option for now
-
-    bool toolbarVisible = NO;
-    bool muteAvailable = NO;
-
-    //show the mute/unmute button only when there are 10+ blogs
-    if (_notificationPrefArray && _mutedBlogsArray && [_mutedBlogsArray count] > 10){
-
-        if ([[_notificationPreferences allKeys] indexOfObject:@"muted_blogs"] != NSNotFound) {
-            toolbarVisible = YES;
-            NSDictionary *mutedBlogsDictionary = [_notificationPreferences objectForKey:@"muted_blogs"];
-            NSArray *mutedBlogsArray = [mutedBlogsDictionary objectForKey:@"value"];
-            int i=0;
-            for ( ; i < [mutedBlogsArray count]; i++) {
-                NSDictionary *currentPreference = [mutedBlogsArray objectAtIndex:i];
-                NSNumber *muted = [currentPreference valueForKey:@"value"];
-                if ([muted boolValue] == NO){
-                    muteAvailable = YES; //One blog is not muted
-                    break;
-                }
-            }
-        }
-    }
-
-    if ( toolbarVisible == YES ) {
-
-        NSString *buttonLabel = muteAvailable ? NSLocalizedString(@"Mute all sites", @"") : NSLocalizedString(@"Unmute all sites", @"");
-
-        self.muteUnmuteBarButton = [[UIBarButtonItem alloc] initWithTitle:buttonLabel
-                                                                    style:[WPStyleGuide barButtonStyleForBordered]
-                                                                   target:self
-                                                                   action:@selector(muteUnmutedButtonClicked:)];
-        self.muteUnmuteBarButton.tag = muteAvailable;
-
-        self.toolbarItems = @[self.muteUnmuteBarButton];
-    }
-
-    self.navigationController.toolbarHidden = ! toolbarVisible;
-}
-
-- (void)muteUnmutedButtonClicked:(id)sender
-{
-    bool muted = self.muteUnmuteBarButton.tag;
-
-    if (_notificationPreferences) {
-        _notificationPrefArray = [[_notificationPreferences allKeys] mutableCopy];
-        if ([_notificationPrefArray indexOfObject:@"muted_blogs"] != NSNotFound) {
-            NSMutableDictionary *mutedBlogsDictionary = [[_notificationPreferences objectForKey:@"muted_blogs"] mutableCopy];
-            NSMutableArray *mutedBlogsArray = [[mutedBlogsDictionary objectForKey:@"value"] mutableCopy];
-            int i=0;
-            for ( ; i < [mutedBlogsArray count]; i++) {
-                NSMutableDictionary *updatedPreference = [[mutedBlogsArray objectAtIndex:i] mutableCopy];
-                [updatedPreference setValue:[NSNumber numberWithBool:muted] forKey:@"value"];
-                [mutedBlogsArray setObject:updatedPreference atIndexedSubscript:i];
-            }
-            [mutedBlogsDictionary setValue:mutedBlogsArray forKey:@"value"];
-            [_notificationPreferences setValue:mutedBlogsDictionary forKey:@"muted_blogs"];
-        }
-
-        [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
-        hasChanges = YES;
-        [self reloadNotificationSettings];
-    }
 }
 
 - (void)notificationSettingChanged:(id)sender
@@ -188,7 +115,6 @@ BOOL hasChanges;
 
     [_notificationPreferences setValue:mutedBlogsDictionary forKey:@"muted_blogs"];
     [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
-    [self setupToolbarButtons];
 }
 
 - (void)dismiss
