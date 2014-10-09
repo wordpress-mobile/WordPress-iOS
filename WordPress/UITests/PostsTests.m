@@ -256,11 +256,11 @@
     
     [tester waitForTimeInterval:5];
 
-    UIAccessibilityElement * collectionView = nil;
-    UIView * view = nil;
-    if ([tester tryFindingAccessibilityElement:&collectionView view:&view withElementMatchingPredicate:[NSPredicate predicateWithFormat:@"accessibilityLabel BEGINSWITH %@", @"Photo, "] tappable:YES error:nil]){
+    UIAccessibilityElement * photoCellAccessibilityElement = nil;
+    UIView * photoCell = nil;
+    if ([tester tryFindingAccessibilityElement:&photoCellAccessibilityElement view:&photoCell withElementMatchingPredicate:[NSPredicate predicateWithFormat:@"accessibilityLabel BEGINSWITH %@", @"Photo, "] tappable:YES error:nil]){
 
-        [tester tapAccessibilityElement:collectionView inView:view];
+        [tester tapAccessibilityElement:photoCellAccessibilityElement inView:photoCell];
     } else {
         [tester failWithError:[NSError KIFErrorWithFormat:@"Unable to find photo element"] stopTest:YES];
     }
