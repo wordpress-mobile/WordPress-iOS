@@ -18,10 +18,9 @@ CGFloat const RowHeight = 50.0f;
 @implementation SuggestionsTableView
 
 
-- (id)initWithWidth:(CGFloat)width andSiteID:(NSNumber *)siteID
+- (id)initWithSiteID:(NSNumber *)siteID
 {    
-    // TODO: Start with height of 0, let VC pin our top
-    self = [super initWithFrame:CGRectMake(0.f, 0.f, width, 240.f)];
+    self = [super initWithFrame:CGRectZero];
     if (self) {
         [self registerClass:[SuggestionsTableViewCell class] forCellReuseIdentifier:CellIdentifier];
 
