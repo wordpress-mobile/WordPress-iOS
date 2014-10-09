@@ -158,6 +158,10 @@ static NSString* NotificationSettingForever         = @"forever";
         return;
     }
     
+    if ([muteValue isEqualToString:NotificationSettingForever]) {
+        return;
+    }
+    
     NSDate* mutedUntilValue = [NSDate dateWithTimeIntervalSince1970:muteValue.doubleValue];
     
     if ([mutedUntilValue laterDate:[NSDate date]] == mutedUntilValue) {
