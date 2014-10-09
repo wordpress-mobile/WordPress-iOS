@@ -62,7 +62,6 @@ static NSString* NotificationSettingMutedUntilKey   = @"mute_until";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    hasChanges = NO;
     
     self.notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:NotificationSettingPreferencesKey] mutableCopy];
     
@@ -110,17 +109,15 @@ static NSString* NotificationSettingMutedUntilKey   = @"mute_until";
 
 - (void)notificationSettingChanged:(UISwitch *)sender
 {
-    hasChanges = YES;
     NSMutableDictionary *updatedPreference = [[_notificationPreferences objectForKey:[_notificationPrefArray objectAtIndex:sender.tag]] mutableCopy];
     [updatedPreference setValue:[NSNumber numberWithBool:sender.on] forKey:NotificationSettingValueKey];
     [_notificationPreferences setValue:updatedPreference forKey:[_notificationPrefArray objectAtIndex:sender.tag]];
 
-    [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
+    [self save];
 }
 
 - (void)muteBlogSettingChanged:(UISwitch *)sender
 {
-    hasChanges = YES;
     NSMutableDictionary *updatedPreference = [[_mutedBlogsArray objectAtIndex:sender.tag] mutableCopy];
     [updatedPreference setValue:[NSNumber numberWithBool:!sender.on] forKey:NotificationSettingValueKey];
 
@@ -131,7 +128,7 @@ static NSString* NotificationSettingMutedUntilKey   = @"mute_until";
 
     [_notificationPreferences setValue:mutedBlogsDictionary forKey:NotificationSettingMutedBlogsKey];
 
-    [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
+    [self save];
 }
 
 - (void)dismiss
@@ -142,16 +139,20 @@ static NSString* NotificationSettingMutedUntilKey   = @"mute_until";
 - (void)viewWillDisappear:(BOOL)animated
 {
     self.navigationController.toolbarHidden = YES;
-    if (hasChanges){
+    if (self.hasChanges){
         [NotificationsManager saveNotificationSettings];
     }
     [super viewWillDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning
+- (void)save
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setValue:self.notificationPreferences forKey:NotificationSettingPreferencesKey];
+    [userDefaults synchronize];
+    
+    self.hasChanges = YES;
 }
 
 #pragma mark - Table view data source
@@ -338,7 +339,6 @@ static NSString* NotificationSettingMutedUntilKey   = @"mute_until";
         //Notifications were muted.
         //buttonIndex == 0 -> Turn on, cancel otherwise.
         if (buttonIndex == 0) {
-            hasChanges = YES;
             muteDictionary = [NSMutableDictionary dictionary];
             [muteDictionary setObject:@"0" forKey:NotificationSettingValueKey];
         } else {
@@ -399,13 +399,12 @@ static NSString* NotificationSettingMutedUntilKey   = @"mute_until";
                 return; //cancel
         }
 
-        hasChanges = YES;
         muteDictionary = [NSMutableDictionary dictionary];
         [muteDictionary setObject:mute_until_value forKey:NotificationSettingValueKey];
     }
 
-    [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
     [_notificationPreferences setValue:muteDictionary forKey:NotificationSettingMutedUntilKey];
+    [self save];
     [self reloadNotificationSettings];
 }
 
