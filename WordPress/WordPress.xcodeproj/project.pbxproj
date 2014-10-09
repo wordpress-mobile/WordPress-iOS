@@ -431,6 +431,7 @@
 		FFF96F7419E697DD00DFC821 /* WordPressTestCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F7319E697DD00DFC821 /* WordPressTestCredentials.m */; };
 		FFF96F7519E6991400DFC821 /* LoginTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F6419E697CD00DFC821 /* LoginTests.m */; };
 		FFF96F7719E6A7B800DFC821 /* CommentsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F7619E6A7B800DFC821 /* CommentsTests.m */; };
+		FFF96F7919E6C75E00DFC821 /* StatsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F7819E6C75E00DFC821 /* StatsTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1222,6 +1223,7 @@
 		FFF96F6B19E697CD00DFC821 /* WPUITestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPUITestCase.m; sourceTree = "<group>"; };
 		FFF96F7319E697DD00DFC821 /* WordPressTestCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressTestCredentials.m; sourceTree = "<group>"; };
 		FFF96F7619E6A7B800DFC821 /* CommentsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsTests.m; sourceTree = "<group>"; };
+		FFF96F7819E6C75E00DFC821 /* StatsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2591,6 +2593,7 @@
 				FFF96F6519E697CD00DFC821 /* MeTabTests.m */,
 				FFF96F6619E697CD00DFC821 /* PagesTests.m */,
 				FFF96F7619E6A7B800DFC821 /* CommentsTests.m */,
+				FFF96F7819E6C75E00DFC821 /* StatsTests.m */,
 				FFF96F6719E697CD00DFC821 /* PostsTests.m */,
 				FFF96F6819E697CD00DFC821 /* WordPressTestCredentials.h */,
 				FFF96F6919E697CD00DFC821 /* WordPressTestCredentials.m */,
@@ -3333,6 +3336,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FFF96F7419E697DD00DFC821 /* WordPressTestCredentials.m in Sources */,
+				FFF96F7919E6C75E00DFC821 /* StatsTests.m in Sources */,
 				FFF96F7719E6A7B800DFC821 /* CommentsTests.m in Sources */,
 				FFF96F6E19E697CD00DFC821 /* MeTabTests.m in Sources */,
 				FFF96F7019E697CD00DFC821 /* PostsTests.m in Sources */,
