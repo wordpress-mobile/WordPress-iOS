@@ -155,11 +155,11 @@ static NSString* NotificationSettingMutedUntilKey   = @"mute_until";
     self.hasChanges = YES;
 }
 
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
     if (_notificationPrefArray) {
         NSString *mute_value = [_notificationMutePreferences objectForKey:NotificationSettingValueKey];
         if (mute_value && ![mute_value isEqualToString:@"0"]){
@@ -178,7 +178,6 @@ static NSString* NotificationSettingMutedUntilKey   = @"mute_until";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
     switch (section) {
         case 0:
             return 1;
@@ -297,7 +296,9 @@ static NSString* NotificationSettingMutedUntilKey   = @"mute_until";
     return NSLocalizedString(@"Sites", @"");
 }
 
+
 #pragma mark - Table view delegate
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0){
@@ -326,8 +327,9 @@ static NSString* NotificationSettingMutedUntilKey   = @"mute_until";
     }
 }
 
-#pragma mark -
-#pragma mark Action Sheet Delegate Methods
+
+#pragma mark - Action Sheet Delegate Methods
+
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     [actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
