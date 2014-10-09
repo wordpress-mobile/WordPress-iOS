@@ -230,8 +230,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     // TODO don't hardcode site ID
     SuggestionsTableView *suggestionsTableView = [[SuggestionsTableView alloc] initWithWidth:CGRectGetWidth(self.view.frame)
                                                                                    andSiteID:@54117];
-    // TODO add a mentions delegate to avoid collision with other tableviews callbacks
-    // suggestionsTableView.delegate              = self;
+    suggestionsTableView.suggestionsDelegate   = self;
     self.suggestionsTableView                  = suggestionsTableView;
     [self.view addSubview:self.suggestionsTableView];
     [self.view pinSubviewAtBottom:self.suggestionsTableView];

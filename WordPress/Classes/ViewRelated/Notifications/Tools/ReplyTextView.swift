@@ -114,7 +114,14 @@ import Foundation
     
     // MARK: - SuggestableView methods
     public func replaceTextAtCaret(text: String!, withSuggestion suggestion: String!) {
-        // TODO - IMPLEMENT
+        NSLog("in ReplyTextView replaceTextAtCaret, replacing %@ with %@", text, suggestion)
+        // Grow the selection at the caret by the length of the text being replaced
+        // TODO: Figure out why this isn't working (it is getting called - I've confirmed that)
+        let nstext: NSString = text;
+        var selectedRange: UITextRange = textView.selectedTextRange!
+        var newPosition: UITextPosition = textView.positionFromPosition(selectedRange.start, offset: -nstext.length)!
+        var newRange: UITextRange = textView.textRangeFromPosition(newPosition, toPosition: selectedRange.start)
+        textView.replaceRange(newRange, withText: text)
     }
     
     // MARK: - IBActions

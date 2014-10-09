@@ -30,6 +30,7 @@ CGFloat const RowHeight = 50.0f;
         _searchText = @"";
         
         [self setDataSource:self];
+        [self setDelegate:self];
         
         [self showSuggestions:NO]; // initially hidden please
 
@@ -123,6 +124,15 @@ CGFloat const RowHeight = 50.0f;
     [self setAvatarForSuggestion:suggestion forCell:cell indexPath:indexPath];
     
     return cell;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    Suggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];
+    [self showSuggestions:NO];
+    [self.suggestionsDelegate didSelectSuggestion:suggestion.userLogin forSearchText:self.searchText];    
 }
 
 #pragma mark - Suggestion list management
