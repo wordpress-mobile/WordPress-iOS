@@ -31,6 +31,7 @@ import Foundation
             noticonLabel.text = noticon ?? String()
         }
     }
+    public var unapproved: Bool = false
     
     // MARK: - Public Methods
     public func downloadGravatarWithURL(url: NSURL?) {
@@ -70,17 +71,8 @@ import Foundation
     
     public override func layoutSubviews() {
         refreshLabelPreferredMaxLayoutWidth()
+        refreshBackgrounds()
         super.layoutSubviews()
-    }
-
-    public override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        refreshBackgrounds()
-    }
-    
-    public override func setHighlighted(highlighted: Bool, animated: Bool) {
-        super.setHighlighted(highlighted, animated: animated)
-        refreshBackgrounds()
     }
     
     // MARK: - Private Methods
@@ -91,7 +83,9 @@ import Foundation
     }
     
     private func refreshBackgrounds() {
-        if read {
+        if unapproved {
+            noticonView.backgroundColor = WPStyleGuide.Notifications.noticonUnmoderatedColor
+        } else if read {
             noticonView.backgroundColor = WPStyleGuide.Notifications.noticonReadColor
         } else {
             noticonView.backgroundColor = WPStyleGuide.Notifications.noticonUnreadColor
