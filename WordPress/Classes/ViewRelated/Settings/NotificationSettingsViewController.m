@@ -15,13 +15,21 @@
 @property (nonatomic, strong) EGORefreshTableHeaderView *refreshHeaderView;
 @property (readwrite, nonatomic, strong) NSDate *lastRefreshDate;
 @property (readwrite, getter = isRefreshing) BOOL refreshing;
+#pragma mark ==========================================================================================
+#pragma mark Private
+#pragma mark ==========================================================================================
+
+@interface NotificationSettingsViewController () <UIActionSheetDelegate>
+
+@property (nonatomic, strong) NSMutableDictionary   *notificationPreferences;
+@property (nonatomic, strong) NSMutableDictionary   *notificationMutePreferences;
+@property (nonatomic, strong) NSMutableArray        *notificationPrefArray;
+@property (nonatomic, strong) NSMutableArray        *mutedBlogsArray;
+@property (nonatomic, assign) BOOL                  hasChanges;
 
 @end
 
-@implementation NotificationSettingsViewController
 
-BOOL hasChanges;
-@synthesize showCloseButton;
 
 
 - (void)viewDidLoad
