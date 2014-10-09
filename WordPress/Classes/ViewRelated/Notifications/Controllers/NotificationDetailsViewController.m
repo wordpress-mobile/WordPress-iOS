@@ -247,11 +247,7 @@ static CGFloat NotificationSectionSeparator     = 10;
                                                                           options:0
                                                                           metrics:nil
                                                                             views:views]];
-        // TODO: Manage the suggestionstableview height dynamically
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[suggestionsview(200)]"
-                                                                          options:0
-                                                                          metrics:nil
-                                                                            views:views]];
+        
         // Pin the suggestions view on top of the reply box
         [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.suggestionsTableView
                                                              attribute:NSLayoutAttributeBottom
@@ -1025,6 +1021,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 - (void)didSelectSuggestion:(NSString *)suggestion forSearchText:(NSString *)text
 {
     [self.replyTextView replaceTextAtCaret:text withSuggestion:suggestion];
+    [self.suggestionsTableView showSuggestionsForWord:@""];
 }
 
 #pragma mark - Gestures Recognizer Delegate
