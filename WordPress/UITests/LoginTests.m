@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
-#import <KIF/KIF.h>
+#import d<KIF/KIF.h>
 #import "WordPressTestCredentials.h"
 
 @interface LoginTests : KIFTestCase
