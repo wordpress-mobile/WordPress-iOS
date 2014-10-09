@@ -66,10 +66,17 @@ static const UIEdgeInsets LikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0f};
     [self.avatarImageView setImage:image];
 }
 
-- (void)setLikeCount:(NSInteger)likeCount {
+- (void)setLikeCount:(NSInteger)likeCount
+{
     _likeCount = likeCount;
 
     [self updateNumberOfLikesLabel];
+}
+
+- (void)setIsLiked:(BOOL)isLiked
+{
+    _isLiked = isLiked;
+    self.likeButton.selected = isLiked;
 }
 
 - (void)reset
@@ -425,9 +432,9 @@ static const UIEdgeInsets LikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0f};
      Like button state and like count is changed here for temporarily to be responsive. Once the actual
      like/unlike request has completed, it should refresh the state of label/button according to success/error.
      */
-    if (self.likeButton.selected) {
+    if (self.isLiked) {
         // unlike
-        self.likeButton.selected = NO;
+        self.isLiked = NO;
         self.likeCount = MAX(self.likeCount - 1, 0); // MAX is just for sanity check
         if ([self.delegate respondsToSelector:@selector(handleUnlikeTapped:)]) {
             [self.delegate handleUnlikeTapped:self.contentProvider];
@@ -435,7 +442,7 @@ static const UIEdgeInsets LikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0f};
     }
     else {
         // like
-        self.likeButton.selected = YES;
+        self.isLiked = YES;
         self.likeCount = self.likeCount + 1;
         if ([self.delegate respondsToSelector:@selector(handleLikeTapped:)]) {
             [self.delegate handleLikeTapped:self.contentProvider];
@@ -485,16 +492,13 @@ static const UIEdgeInsets LikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0f};
 
 - (void)updateNumberOfLikesLabel {
     if (self.likeCount == 0) {
-        self.numberOfLikesLabel.hidden = YES;
+        self.numberOfLikesLabel.text = @"";
+    }
+    else if (self.likeCount == 1) {
+        self.numberOfLikesLabel.text = [NSString stringWithFormat:@"\u00B7 1 %@", NSLocalizedString(@"Like", nil)];
     }
     else {
-        self.numberOfLikesLabel.hidden = NO;
-        if (self.likeCount == 1) {
-            self.numberOfLikesLabel.text = [NSString stringWithFormat:@"\u00B7 1 %@", NSLocalizedString(@"Like", nil)];
-        }
-        else {
-            self.numberOfLikesLabel.text = [NSString stringWithFormat:@"\u00B7 %d %@", self.likeCount, NSLocalizedString(@"Likes", nil)];
-        }
+        self.numberOfLikesLabel.text = [NSString stringWithFormat:@"\u00B7 %d %@", self.likeCount, NSLocalizedString(@"Likes", nil)];
     }
 }
 
