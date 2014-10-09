@@ -10,6 +10,17 @@
 #import "NotificationsManager.h"
 
 
+
+#pragma mark ==========================================================================================
+#pragma mark Constants
+#pragma mark ==========================================================================================
+
+static NSString* NotificationSettingPreferencesKey  = @"notification_preferences";
+static NSString* NotificationSettingValueKey        = @"value";
+static NSString* NotificationSettingMutedBlogsKey   = @"muted_blogs";
+static NSString* NotificationSettingMutedUntilKey   = @"mute_until";
+
+
 #pragma mark ==========================================================================================
 #pragma mark Private
 #pragma mark ==========================================================================================
@@ -52,7 +63,9 @@
 {
     [super viewWillAppear:animated];
     hasChanges = NO;
-    _notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
+    
+    self.notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:NotificationSettingPreferencesKey] mutableCopy];
+    
     if (_notificationPreferences) {
         [self reloadNotificationSettings];
     } else {
@@ -76,16 +89,18 @@
 
 - (void)reloadNotificationSettings
 {
-    _notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
+    _notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:NotificationSettingPreferencesKey] mutableCopy];
     if (_notificationPreferences) {
         _notificationPrefArray = [[_notificationPreferences allKeys] mutableCopy];
-        if ([_notificationPrefArray indexOfObject:@"muted_blogs"] != NSNotFound) {
-            [_notificationPrefArray removeObjectAtIndex:[_notificationPrefArray indexOfObject:@"muted_blogs"]];
-            _mutedBlogsArray = [[[_notificationPreferences objectForKey:@"muted_blogs"] objectForKey:@"value"] mutableCopy];
+        if ([_notificationPrefArray indexOfObject:NotificationSettingMutedBlogsKey] != NSNotFound) {
+            [_notificationPrefArray removeObjectAtIndex:[_notificationPrefArray indexOfObject:NotificationSettingMutedBlogsKey]];
+            _mutedBlogsArray = [[[_notificationPreferences objectForKey:NotificationSettingMutedBlogsKey] objectForKey:NotificationSettingValueKey] mutableCopy];
         }
-        if ([_notificationPrefArray indexOfObject:@"mute_until"] != NSNotFound) {
-            [_notificationPrefArray removeObjectAtIndex:[_notificationPrefArray indexOfObject:@"mute_until"]];
-            _notificationMutePreferences = [[_notificationPreferences objectForKey:@"mute_until"] mutableCopy];
+        
+        if ([_notificationPrefArray indexOfObject:NotificationSettingMutedUntilKey] != NSNotFound) {
+            [_notificationPrefArray removeObjectAtIndex:[_notificationPrefArray indexOfObject:NotificationSettingMutedUntilKey]];
+            _notificationMutePreferences = [[_notificationPreferences objectForKey:NotificationSettingMutedUntilKey] mutableCopy];
+            
         } else {
             _notificationMutePreferences = [NSMutableDictionary dictionary];
         }
@@ -93,33 +108,29 @@
     }
 }
 
-- (void)notificationSettingChanged:(id)sender
+- (void)notificationSettingChanged:(UISwitch *)sender
 {
     hasChanges = YES;
-    UISwitch *cellSwitch = (UISwitch *)sender;
+    NSMutableDictionary *updatedPreference = [[_notificationPreferences objectForKey:[_notificationPrefArray objectAtIndex:sender.tag]] mutableCopy];
+    [updatedPreference setValue:[NSNumber numberWithBool:sender.on] forKey:NotificationSettingValueKey];
+    [_notificationPreferences setValue:updatedPreference forKey:[_notificationPrefArray objectAtIndex:sender.tag]];
 
-    NSMutableDictionary *updatedPreference = [[_notificationPreferences objectForKey:[_notificationPrefArray objectAtIndex:cellSwitch.tag]] mutableCopy];
-
-    [updatedPreference setValue:[NSNumber numberWithBool:cellSwitch.on] forKey:@"value"];
-
-    [_notificationPreferences setValue:updatedPreference forKey:[_notificationPrefArray objectAtIndex:cellSwitch.tag]];
     [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
 }
 
-- (void)muteBlogSettingChanged:(id)sender
+- (void)muteBlogSettingChanged:(UISwitch *)sender
 {
     hasChanges = YES;
-    UISwitch *cellSwitch = (UISwitch *)sender;
+    NSMutableDictionary *updatedPreference = [[_mutedBlogsArray objectAtIndex:sender.tag] mutableCopy];
+    [updatedPreference setValue:[NSNumber numberWithBool:!sender.on] forKey:NotificationSettingValueKey];
 
-    NSMutableDictionary *updatedPreference = [[_mutedBlogsArray objectAtIndex:cellSwitch.tag] mutableCopy];
-    [updatedPreference setValue:[NSNumber numberWithBool:!cellSwitch.on] forKey:@"value"];
+    [_mutedBlogsArray setObject:updatedPreference atIndexedSubscript:sender.tag];
 
-    [_mutedBlogsArray setObject:updatedPreference atIndexedSubscript:cellSwitch.tag];
+    NSMutableDictionary *mutedBlogsDictionary = [[_notificationPreferences objectForKey:NotificationSettingMutedBlogsKey] mutableCopy];
+    [mutedBlogsDictionary setValue:_mutedBlogsArray forKey:NotificationSettingValueKey];
 
-    NSMutableDictionary *mutedBlogsDictionary = [[_notificationPreferences objectForKey:@"muted_blogs"] mutableCopy];
-    [mutedBlogsDictionary setValue:_mutedBlogsArray forKey:@"value"];
+    [_notificationPreferences setValue:mutedBlogsDictionary forKey:NotificationSettingMutedBlogsKey];
 
-    [_notificationPreferences setValue:mutedBlogsDictionary forKey:@"muted_blogs"];
     [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
 }
 
@@ -149,7 +160,7 @@
 {
     // Return the number of sections.
     if (_notificationPrefArray) {
-        NSString *mute_value = [_notificationMutePreferences objectForKey:@"value"];
+        NSString *mute_value = [_notificationMutePreferences objectForKey:NotificationSettingValueKey];
         if (mute_value && ![mute_value isEqualToString:@"0"]){
             return 1;
         }
@@ -196,8 +207,8 @@
 
         DDLogInfo(@"muteDictionary: %@", _notificationMutePreferences);
 
-        if (_notificationMutePreferences && [_notificationMutePreferences objectForKey:@"value"] != nil) {
-            NSString *mute_value = [_notificationMutePreferences objectForKey:@"value"];
+        if (_notificationMutePreferences && [_notificationMutePreferences objectForKey:NotificationSettingValueKey] != nil) {
+            NSString *mute_value = [_notificationMutePreferences objectForKey:NotificationSettingValueKey];
             if ([mute_value isEqualToString:@"forever"]){
                 cell.detailTextLabel.text = NSLocalizedString(@"Off", @"");
             } else {
@@ -246,7 +257,7 @@
         NSDictionary *notificationPreference = [_notificationPreferences objectForKey:[_notificationPrefArray objectAtIndex:indexPath.row]];
 
         cell.textLabel.text = [[notificationPreference objectForKey:@"desc"] stringByDecodingXMLCharacters];
-        cellSwitch.on = [[notificationPreference objectForKey:@"value"] boolValue];
+        cellSwitch.on = [[notificationPreference objectForKey:NotificationSettingValueKey] boolValue];
     } else {
         [cellSwitch addTarget:self action:@selector(muteBlogSettingChanged:) forControlEvents:UIControlEventValueChanged];
         NSDictionary *muteBlogSetting = [_mutedBlogsArray objectAtIndex:indexPath.row];
@@ -255,7 +266,7 @@
             blogName = [muteBlogSetting objectForKey:@"url"];
         }
         cell.textLabel.text = [blogName stringByDecodingXMLCharacters];
-        cellSwitch.on = ![[muteBlogSetting objectForKey:@"value"] boolValue];
+        cellSwitch.on = ![[muteBlogSetting objectForKey:NotificationSettingValueKey] boolValue];
     }
     [WPStyleGuide configureTableViewCell:cell];
     return cell;
@@ -291,7 +302,7 @@
     if (indexPath.section == 0){
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         UIActionSheet *actionSheet;
-        if ([_notificationMutePreferences objectForKey:@"value"] != nil) {
+        if ([_notificationMutePreferences objectForKey:NotificationSettingValueKey] != nil) {
             //Notifications were muted
             actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Notifications", @"")
                                                       delegate:self
@@ -329,7 +340,7 @@
         if (buttonIndex == 0) {
             hasChanges = YES;
             muteDictionary = [NSMutableDictionary dictionary];
-            [muteDictionary setObject:@"0" forKey:@"value"];
+            [muteDictionary setObject:@"0" forKey:NotificationSettingValueKey];
         } else {
             return; //cancel
         }
@@ -390,11 +401,11 @@
 
         hasChanges = YES;
         muteDictionary = [NSMutableDictionary dictionary];
-        [muteDictionary setObject:mute_until_value forKey:@"value"];
+        [muteDictionary setObject:mute_until_value forKey:NotificationSettingValueKey];
     }
 
-    [_notificationPreferences setValue:muteDictionary forKey:@"mute_until"];
     [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
+    [_notificationPreferences setValue:muteDictionary forKey:NotificationSettingMutedUntilKey];
     [self reloadNotificationSettings];
 }
 
