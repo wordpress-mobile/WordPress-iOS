@@ -4,14 +4,15 @@
 #import "SuggestionService.h"
 
 NSString * const CellIdentifier = @"SuggestionsTableViewCell";
-CGFloat const RowHeight = 50.0f;
+CGFloat const RowHeight = 48.0f;
 
 @interface SuggestionsTableView ()
 
 @property (nonatomic, strong) NSNumber *siteID;
 @property (nonatomic, strong) NSArray *suggestions;
 @property (nonatomic, strong) NSString *searchText;
-@property (nonatomic, strong) NSArray *searchResults;
+@property (nonatomic, strong) NSMutableArray *searchResults;
+@property (nonatomic, strong) NSLayoutConstraint *heightConstraint;
 
 @end
 
@@ -27,14 +28,14 @@ CGFloat const RowHeight = 50.0f;
         _siteID = siteID;
         _suggestions = [[SuggestionService shared] suggestionsForSiteID:_siteID];
         _searchText = @"";
+        _searchResults = [[NSMutableArray alloc] init];
         
         [self setDataSource:self];
         [self setDelegate:self];
         
-        [self showSuggestions:NO]; // initially hidden please
-
         [self setRowHeight:RowHeight];
-                
+        [self addDynamicHeightConstraint];
+                        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(suggestionListUpdated:)
                                                      name:SuggestionListUpdatedNotification
@@ -49,6 +50,31 @@ CGFloat const RowHeight = 50.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)reloadData
+{
+    [super reloadData];
+    [self updateDynamicHeightConstraint];
+}
+
+- (void)addDynamicHeightConstraint
+{
+    self.heightConstraint = [NSLayoutConstraint constraintWithItem:self
+                                                         attribute:NSLayoutAttributeHeight
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:nil
+                                                         attribute:nil
+                                                        multiplier:1
+                                                          constant:0];
+    
+    [self addConstraint:self.heightConstraint];
+}
+
+- (void)updateDynamicHeightConstraint
+{
+    self.heightConstraint.constant = self.searchResults.count * RowHeight;
+    [self needsUpdateConstraints];
+}
+
 #pragma mark - Public methods
 
 - (void)showSuggestionsForWord:(NSString *)word
@@ -58,31 +84,16 @@ CGFloat const RowHeight = 50.0f;
         if (self.searchText.length > 0) {
             NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"(displayName contains[c] %@) OR (userLogin contains[c] %@)",
                                             self.searchText, self.searchText];
-            self.searchResults = [self.suggestions filteredArrayUsingPredicate:resultPredicate];
+            self.searchResults = [[self.suggestions filteredArrayUsingPredicate:resultPredicate] mutableCopy];
         } else {
-            self.searchResults = self.suggestions;
+            self.searchResults = [self.suggestions mutableCopy];
         }
-        
-        [self reloadData];
-        [self showSuggestions:YES];
     } else {
         self.searchText = @"";
-        self.searchResults = self.suggestions;
-        [self showSuggestions:NO];
+        [self.searchResults removeAllObjects];
     }
-}
-
-#pragma mark - Private (helper) methods
-
-- (void)showSuggestions:(BOOL)show
-{
-    if (show) {
-        self.hidden = NO;
-        [self.superview bringSubviewToFront:self];
-    } else {
-        self.hidden = YES;
-        [self.superview sendSubviewToBack:self];
-    }
+    
+    [self reloadData];
 }
 
 #pragma mark - UITableViewDataSource methods
@@ -130,7 +141,6 @@ CGFloat const RowHeight = 50.0f;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Suggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];
-    [self showSuggestions:NO];
     [self.suggestionsDelegate didSelectSuggestion:suggestion.userLogin forSearchText:self.searchText];    
 }
 
