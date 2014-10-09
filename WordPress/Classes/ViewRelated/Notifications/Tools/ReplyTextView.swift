@@ -156,7 +156,7 @@ import Foundation
         textView.textColor              = WPStyleGuide.Reply.textColor
         textView.textContainer.lineFragmentPadding  = 0
         textView.layoutManager.allowsNonContiguousLayout = false
-        
+        textView.accessibilityIdentifier = "ReplyText"
         // Disable QuickType
         textView.autocorrectionType     = .No
         
