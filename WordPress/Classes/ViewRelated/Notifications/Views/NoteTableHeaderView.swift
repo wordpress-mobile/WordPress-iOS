@@ -11,9 +11,15 @@ import Foundation
         }
     }
     
+    public var separatorColor: UIColor? {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
     // MARK: - Public Methods
     public class func headerHeight() -> CGFloat {
-        let cellHeight: CGFloat = 26
+        let cellHeight = CGFloat(26)
         return cellHeight
     }
     
@@ -38,17 +44,43 @@ import Foundation
     public override func layoutSubviews() {
         super.layoutSubviews()
         let width = frame.width
-        if (width > maxWidth) {
+        if width > maxWidth {
             frame.origin.x  = (width - maxWidth) * 0.5;
         }
         
-        frame.size.height       = cellHeight
-        imageView.frame.origin  = imageOrigin
+        frame.size.height           = NoteTableHeaderView.headerHeight()
+        imageView.frame.origin      = imageOrigin
         
-        titleLabel.frame.origin = titleOrigin
-        titleLabel.frame.size   = CGSize(width: bounds.width - imageOrigin.x * 2 - imageView.frame.width, height: titleHeight)
+        titleLabel.frame.origin     = titleOrigin
+        titleLabel.frame.size       = CGSize(width: bounds.width - imageOrigin.x * 2 - imageView.frame.width, height: titleHeight)
     }
 
+    public override func drawRect(rect: CGRect) {
+        super.drawRect(rect)
+        
+        // Draw Separators: proceed only if the color is set!
+        if separatorColor == nil {
+            return
+        }
+        
+        let unwrappedSeparatorColor = separatorColor!
+        
+        let ctx = UIGraphicsGetCurrentContext()
+        
+        unwrappedSeparatorColor.set()
+        CGContextSetLineWidth(ctx, separatorHeight)
+
+        // Top Separator
+        CGContextMoveToPoint(ctx, 0, 0)
+        CGContextAddLineToPoint(ctx, bounds.width, 0)
+
+        // Bottom Separator
+        CGContextMoveToPoint(ctx, 0, bounds.height)
+        CGContextAddLineToPoint(ctx, bounds.width, bounds.height)
+        
+        CGContextStrokePath(ctx)
+    }
+    
     // MARK - Private Helpers
     private func setupSubviews() {
         backgroundColor             = WPStyleGuide.Notifications.headerBackgroundColor
@@ -71,15 +103,15 @@ import Foundation
 
     
     // MARK - Constants
-    private let imageOrigin = CGPoint(x: 10, y: 5)
-    private let titleOrigin = CGPoint(x: 30, y: 4)
-    private let titleHeight = CGFloat(16)
-    private let imageName   = "reader-postaction-time"
+    private let imageOrigin     = CGPoint(x: 10, y: 5)
+    private let titleOrigin     = CGPoint(x: 30, y: 4)
+    private let titleHeight     = CGFloat(16)
+    private let imageName       = "reader-postaction-time"
     
-    private let cellHeight  = CGFloat(25)
-    private let maxWidth    = CGFloat(600)
+    private let separatorHeight = CGFloat(1)
+    private let maxWidth        = CGFloat(600)
     
     // MARK - Outlets
-    private var imageView:  UIImageView!
-    private var titleLabel: UILabel!
+    private var imageView:          UIImageView!
+    private var titleLabel:         UILabel!
 }

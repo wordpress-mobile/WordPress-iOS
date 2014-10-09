@@ -9,16 +9,19 @@
 #import <WordPressCom-Analytics-iOS/WPAnalytics.h>
 #import "ContextManager.h"
 #import "Post.h"
+#import "Coordinate.h"
+#import "Media.h"
 #import "WPTableViewCell.h"
 #import "BlogSelectorViewController.h"
 #import "WPBlogSelectorButton.h"
 #import "LocationService.h"
 #import "BlogService.h"
 #import "MediaService.h"
+#import "PostService.h"
 #import "WPMediaUploader.h"
 #import "WPButtonForNavigationBar.h"
 #import "WPUploadStatusView.h"
-
+#import "WordPressAppDelegate.h"
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
@@ -64,11 +67,10 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-	
+
     Blog *blog = [blogService lastUsedOrFirstBlog];
     [self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
-
-    Post *post = [Post newDraftForBlog:blog];
+    Post *post = [PostService createDraftPostInMainContextForBlog:blog];
     return [self initWithPost:post
 						 mode:kWPPostViewControllerModeEdit];
 }
@@ -263,7 +265,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
             BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
             [blogService flagBlogAsLastUsed:blog];
-            AbstractPost *newPost = [[self.post class] newDraftForBlog:blog];
+            AbstractPost *newPost = [self createNewDraftForBlog:blog];
             AbstractPost *oldPost = self.post;
             
             NSString *content = oldPost.content;
@@ -475,6 +477,10 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
     UIImage *coloredImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return coloredImage;
+}
+
+- (AbstractPost *)createNewDraftForBlog:(Blog *)blog {
+    return [PostService createDraftPostInMainContextForBlog:blog];
 }
 
 - (void)geotagNewPost {
@@ -944,12 +950,15 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
     [self.post.original deleteRevision];
     
 	NSString *postTitle = self.post.original.postTitle;
-	[self.post.original uploadWithSuccess:^{
-		DDLogInfo(@"post uploaded: %@", postTitle);
-	} failure:^(NSError *error) {
-		DDLogError(@"post failed: %@", [error localizedDescription]);
-	}];
-	
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+    [postService uploadPost:(Post *)self.post.original
+                    success:^{
+                        DDLogInfo(@"post uploaded: %@", postTitle);
+                    } failure:^(NSError *error) {
+                        DDLogError(@"post failed: %@", [error localizedDescription]);
+                    }];
+
     [self didSaveNewPost];
 }
 
