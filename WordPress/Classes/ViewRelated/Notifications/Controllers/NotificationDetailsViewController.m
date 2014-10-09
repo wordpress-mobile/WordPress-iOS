@@ -235,11 +235,31 @@ static CGFloat NotificationSectionSeparator     = 10;
     Blog *blog                      = [service blogByBlogId:self.note.metaSiteID];
     
     if (blog.isWPcom && [[SuggestionService shared] shouldShowSuggestionsForSiteID:self.note.metaSiteID]) {
-        SuggestionsTableView *suggestionsTableView = [[SuggestionsTableView alloc] initWithWidth:CGRectGetWidth(self.view.frame)
-                                                                                       andSiteID:self.note.metaSiteID];
+        SuggestionsTableView *suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.note.metaSiteID];
         suggestionsTableView.suggestionsDelegate   = self;
+        [suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];        
         self.suggestionsTableView                  = suggestionsTableView;
         [self.view addSubview:self.suggestionsTableView];
+        
+        // Pin the suggestions view left and right edges to the super view edges
+        NSDictionary *views = @{@"suggestionsview": self.suggestionsTableView };
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[suggestionsview]|"
+                                                                          options:0
+                                                                          metrics:nil
+                                                                            views:views]];
+        // TODO: Manage the suggestionstableview height dynamically
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[suggestionsview(200)]"
+                                                                          options:0
+                                                                          metrics:nil
+                                                                            views:views]];
+        // Pin the suggestions view on top of the reply box
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.suggestionsTableView
+                                                             attribute:NSLayoutAttributeBottom
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:self.replyTextView
+                                                             attribute:NSLayoutAttributeTop
+                                                            multiplier:1
+                                                              constant:0]];
     }
 }
 

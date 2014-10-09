@@ -36,7 +36,7 @@
 
 @property (nonatomic, weak) id <SuggestionsDelegate> suggestionsDelegate;
 
-- (id)initWithWidth:(CGFloat)width andSiteID:(NSNumber *)siteID;
+- (id)initWithSiteID:(NSNumber *)siteID;
 - (void)showSuggestionsForWord:(NSString *)word;
 
 @end
