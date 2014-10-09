@@ -11,8 +11,7 @@ static const CGFloat CommentContentViewContentViewOffsetTop = 36.0;
 static const CGFloat CommentContentViewContentViewOffsetBottom = 19.0;
 static const CGFloat CommentContentViewContentOffsetLeft = 40.0;
 static const UIEdgeInsets AuthorButtonEdgeInsets = {-5.0f, 0.0f, 0.0f, 0.0f};
-static const UIEdgeInsets ReplyButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0f};
-static const UIEdgeInsets LikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0f};
+static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0f};
 
 @interface CommentContentView()<DTAttributedTextContentViewDelegate>
 
@@ -257,7 +256,7 @@ static const UIEdgeInsets LikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0f};
     [button setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateDisabled];
 
     [button setImage:[UIImage imageNamed:@"icon-reader-comment-reply"] forState:UIControlStateNormal];
-    button.titleEdgeInsets = ReplyButtonEdgeInsets;
+    button.titleEdgeInsets = ReplyAndLikeButtonEdgeInsets;
 
     [button addTarget:self action:@selector(handleReplyTapped:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -283,7 +282,7 @@ static const UIEdgeInsets LikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0f};
     [button setImage:[UIImage imageNamed:@"icon-reader-comment-like"] forState:UIControlStateNormal];
     [button setImage:[UIImage imageNamed:@"icon-reader-comment-liked"] forState:UIControlStateSelected];
     [button setImage:[UIImage imageNamed:@"icon-reader-comment-liked"] forState:UIControlStateHighlighted];
-    button.titleEdgeInsets = LikeButtonEdgeInsets;
+    button.titleEdgeInsets = ReplyAndLikeButtonEdgeInsets;
 
     [button addTarget:self action:@selector(handleLikeTapped:) forControlEvents:UIControlEventTouchUpInside];
 
