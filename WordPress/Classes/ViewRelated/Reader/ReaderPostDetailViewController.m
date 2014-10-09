@@ -963,14 +963,26 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self.tableView selectRowAtIndexPath:[self.tableView indexPathForCell:cell] animated:YES scrollPosition:UITableViewScrollPositionTop];
 }
 
-- (void)commentCell:(UITableViewCell *)cell likeComment:(Comment *)comment
+- (void)commentCell:(ReaderCommentCell *)cell likeComment:(Comment *)comment
 {
-    //TODO: like
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+
+    [commentService likeCommentWithID:comment.commentID siteID:self.post.siteID success:nil failure:^(NSError *error) {
+        DDLogError(@"Error while liking comment: %@", error);
+        [cell configureCell:comment];
+    }];
 }
 
-- (void)commentCell:(UITableViewCell *)cell unlikeComment:(Comment *)comment
+- (void)commentCell:(ReaderCommentCell *)cell unlikeComment:(Comment *)comment
 {
-    //TODO: unlike
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+
+    [commentService unlikeCommentWithID:comment.commentID siteID:self.post.siteID success:nil failure:^(NSError *error) {
+        DDLogError(@"Error while liking comment: %@", error);
+        [cell configureCell:comment];
+    }];
 }
 
 #pragma mark - WPTableImageSource Delegate
