@@ -2,14 +2,18 @@
 #import "WPLegacyEditPostViewController_Internal.h"
 #import "ContextManager.h"
 #import "Post.h"
+#import "Coordinate.h"
+#import "Media.h"
 #import "WPTableViewCell.h"
 #import "BlogSelectorViewController.h"
 #import "WPBlogSelectorButton.h"
 #import "LocationService.h"
 #import "BlogService.h"
+#import "PostService.h"
 #import "MediaService.h"
 #import "WPMediaUploader.h"
 #import "WPUploadStatusView.h"
+#import "WordPressAppDelegate.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
@@ -103,7 +107,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
     Blog *blog = [blogService lastUsedOrFirstBlog];
-    return [self initWithPost:[Post newDraftForBlog:blog]];
+    return [self initWithPost:[PostService createDraftPostInMainContextForBlog:blog]];
 }
 
 - (id)initWithPost:(AbstractPost *)post
@@ -231,7 +235,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
             BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
             [blogService flagBlogAsLastUsed:blog];
-            AbstractPost *newPost = [[self.post class] newDraftForBlog:blog];
+            AbstractPost *newPost = [self createNewDraftForBlog:blog];
             AbstractPost *oldPost = self.post;
 
             NSString *content = oldPost.content;
@@ -390,6 +394,10 @@ static NSInteger const MaximumNumberOfPictures = 4;
 }
 
 #pragma mark - Instance Methods
+
+- (AbstractPost *)createNewDraftForBlog:(Blog *)blog {
+    return [PostService createDraftPostInMainContextForBlog:blog];
+}
 
 - (void)geotagNewPost
 {
@@ -636,11 +644,14 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
     if (upload) {
         NSString *postTitle = self.post.original.postTitle;
-        [self.post.original uploadWithSuccess:^{
-            DDLogInfo(@"post uploaded: %@", postTitle);
-        } failure:^(NSError *error) {
-            DDLogError(@"post failed: %@", [error localizedDescription]);
-        }];
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+        [postService uploadPost:(Post *)self.post.original
+                        success:^{
+                            DDLogInfo(@"post uploaded: %@", postTitle);
+                        } failure:^(NSError *error) {
+                            DDLogError(@"post failed: %@", [error localizedDescription]);
+                        }];
     }
 
     [self didSaveNewPost];

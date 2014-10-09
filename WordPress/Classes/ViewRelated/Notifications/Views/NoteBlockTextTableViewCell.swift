@@ -29,6 +29,13 @@ import Foundation
             }
         }
     }
+    public var dataDetectors: UIDataDetectorTypes? {
+        didSet {
+            if let unwrappedDataDetectors = dataDetectors {
+                textView.dataDetectorTypes = unwrappedDataDetectors
+            }
+        }
+    }
     public var labelPadding: UIEdgeInsets {
         return privateLabelPadding
     }

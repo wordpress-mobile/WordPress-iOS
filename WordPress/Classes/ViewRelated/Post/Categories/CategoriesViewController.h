@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "Post.h"
+#import "Category.h"
 
 typedef enum {
     CategoriesSelectionModePost = 0,

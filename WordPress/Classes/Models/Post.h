@@ -1,11 +1,9 @@
 #import <CoreData/CoreData.h>
-#import "WordPressAppDelegate.h"
-#import "Category.h"
-#import "Coordinate.h"
 #import "AbstractPost.h"
-#import "Media.h"
 
-@interface Post :  AbstractPost
+@class Coordinate;
+
+@interface Post : AbstractPost
 
 ///-------------------------------
 /// @name Specific Post properties
@@ -16,6 +14,12 @@
 @property (nonatomic, strong) NSString * postFormat;
 @property (nonatomic, strong) NSString * postFormatText;
 @property (nonatomic, strong) NSMutableSet * categories;
+
+// We shouldn't need to store this, but if we don't send IDs on edits
+// custom fields get duplicated and stop working
+@property (nonatomic, retain) NSString *latitudeID;
+@property (nonatomic, retain) NSString *longitudeID;
+@property (nonatomic, retain) NSString *publicID;
 
 /**
  A tag for specific post workflows. Only QuickPhoto for now.

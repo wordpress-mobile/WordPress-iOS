@@ -5,8 +5,10 @@
 #import "Comment.h"
 #import "Post.h"
 #import "Page.h"
+#import "Media.h"
 #import "CategoryService.h"
 #import "CommentService.h"
+#import "PostService.h"
 #import "BlogServiceRemote.h"
 #import "BlogServiceRemoteXMLRPC.h"
 #import "BlogServiceRemoteREST.h"
@@ -155,99 +157,6 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     return [results firstObject];
 }
 
-- (void)syncPostsAndMetadataForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
-{
-    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncPostsAndMetadataForBlog:blog
-                      categoriesSuccess:[self categoriesHandlerWithBlog:blog completionHandler:nil]
-                         optionsSuccess:[self optionsHandlerWithBlog:blog completionHandler:nil]
-                     postFormatsSuccess:[self postFormatsHandlerWithBlog:blog completionHandler:nil]
-                           postsSuccess:[self postsHandlerWithBlog:blog loadMore:NO completionHandler:nil]
-                         overallSuccess:^{
-                             [self.managedObjectContext performBlockAndWait:^{
-                                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                             }];
-
-                             if (success) {
-                                 success();
-                             }
-                         }
-                                failure:^(NSError *error) {
-                                    blog.isSyncingMedia = NO;
-                                    blog.isSyncingPages = NO;
-                                    blog.isSyncingPosts = NO;
-
-                                    if (failure) {
-                                        failure(error);
-                                    }
-                                }];
-}
-
-- (void)syncPostsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more
-{
-    if (blog.isSyncingPosts) {
-        DDLogWarn(@"Already syncing posts. Skip");
-        return;
-    }
-    blog.isSyncingPosts = YES;
-
-    // TODO :: Push batch size into remote since it's not a local constraint and could be remote implementation dependent
-    NSUInteger postBatchSize = 40;
-    NSUInteger postsToRequest = postBatchSize;
-    if (more) {
-        postsToRequest = MAX([blog.posts count], postBatchSize);
-        if ([blog.hasOlderPosts boolValue]) {
-            postsToRequest += postBatchSize;
-        }
-    }
-
-    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncPostsForBlog:blog
-                   batchSize:postsToRequest
-                    loadMore:more
-                     success:[self postsHandlerWithBlog:blog loadMore:more completionHandler:success]
-                     failure:^(NSError *error) {
-                         blog.isSyncingPosts = NO;
-
-                         if (failure) {
-                             failure(error);
-                         }
-                     }];
-}
-
-- (void)syncPagesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more
-{
-    if (blog.isSyncingPages) {
-        DDLogWarn(@"Already syncing pages. Skip");
-        return;
-    }
-    blog.isSyncingPages = YES;
-
-    // TODO :: Push batch size into remote since it's not a local constraint and could be remote implementation dependent
-    NSUInteger pageBatchSize = 40;
-    NSUInteger pagesToRequest = pageBatchSize;
-    NSUInteger syncCount = [self countForSyncedPostsWithEntityName:@"Page" forBlog:blog];
-    if (more) {
-        pagesToRequest = MAX(syncCount, pageBatchSize);
-        if ([blog.hasOlderPages boolValue]) {
-            pagesToRequest += pageBatchSize;
-        }
-    }
-
-    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncPagesForBlog:blog
-                   batchSize:pagesToRequest
-                    loadMore:more
-                     success:[self pagesHandlerWithBlog:blog loadMore:more syncCount:syncCount completionHandler:success]
-                     failure:^(NSError *error) {
-                         blog.isSyncingPages = NO;
-
-                         if (failure) {
-                             failure(error);
-                         }
-                     }];
-}
-
 - (void)syncCategoriesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
@@ -289,36 +198,43 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 - (void)syncBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncBlogContentAndMetadata:blog
-                     categoriesSuccess:[self categoriesHandlerWithBlog:blog completionHandler:nil]
-                          mediaSuccess:[self mediaHandlerWithBlog:blog completionHandler:nil]
-                        optionsSuccess:[self optionsHandlerWithBlog:blog completionHandler:nil]
-                          pagesSuccess:[self pagesHandlerWithBlog:blog loadMore:NO syncCount:0 completionHandler:nil]
-                    postFormatsSuccess:[self postFormatsHandlerWithBlog:blog completionHandler:nil]
-                          postsSuccess:[self postsHandlerWithBlog:blog loadMore:NO completionHandler:nil]
-                        overallSuccess:^{
-                            [self.managedObjectContext performBlockAndWait:^{
-                                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                            }];
+    [remote syncBlogMetadata:blog
+           categoriesSuccess:[self categoriesHandlerWithBlog:blog completionHandler:nil]
+                mediaSuccess:[self mediaHandlerWithBlog:blog completionHandler:nil]
+              optionsSuccess:[self optionsHandlerWithBlog:blog completionHandler:nil]
+          postFormatsSuccess:[self postFormatsHandlerWithBlog:blog completionHandler:nil]
+              overallSuccess:^{
+                  [self.managedObjectContext performBlockAndWait:^{
+                      [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                  }];
 
-                            if (success) {
-                                success();
-                            }
-                        }
-                               failure:^(NSError *error) {
-                                   blog.isSyncingMedia = NO;
-                                   blog.isSyncingPages = NO;
-                                   blog.isSyncingPosts = NO;
+                  if (success) {
+                      success();
+                  }
+              }
+                     failure:^(NSError *error) {
+                         blog.isSyncingMedia = NO;
+                         blog.isSyncingPages = NO;
+                         blog.isSyncingPosts = NO;
 
-                                   if (failure) {
-                                       failure(error);
-                                   }
-                               }];
+                         if (failure) {
+                             failure(error);
+                         }
+                     }];
 
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
     // Right now, none of the callers care about the results of the sync
     // We're ignoring the callbacks here but this needs refactoring
     [commentService syncCommentsForBlog:blog success:nil failure:nil];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    // FIXME: this is hacky, but XML-RPC doesn't support fetching "any" type of post
+    // Ideally we'd do a multicall and fetch both posts/pages, but it's out of scope for this commit
+    if (blog.restApi) {
+        [postService syncPostsOfType:PostServiceTypeAny forBlog:blog success:nil failure:nil];
+    } else {
+        [postService syncPostsOfType:PostServiceTypePost forBlog:blog success:nil failure:nil];
+        [postService syncPostsOfType:PostServiceTypePage forBlog:blog success:nil failure:nil];
+    }
 }
 
 - (void)checkVideoPressEnabledForBlog:(Blog *)blog success:(void (^)(BOOL enabled))success failure:(void (^)(NSError *error))failure
@@ -498,31 +414,6 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     };
 }
 
-- (PagesHandler)pagesHandlerWithBlog:(Blog *)blog loadMore:(BOOL)more syncCount:(NSUInteger)syncCount completionHandler:(void (^)(void))completion
-{
-    return ^void(NSArray *pages) {
-        if ([blog isDeleted] || blog.managedObjectContext == nil) {
-            return;
-        }
-
-        // If we asked for more and we got what we had, there are no more pages to load
-        if (more && ([pages count] <= syncCount)) {
-            blog.hasOlderPages = @NO;
-        } else if (!more) {
-            //we should reset the flag otherwise when you refresh this blog you can't get more than 20 pages
-            blog.hasOlderPages = @YES;
-        }
-
-        [Page mergeNewPosts:pages forBlog:blog];
-        blog.lastPagesSync = [NSDate date];
-        blog.isSyncingPages = NO;
-
-        if (completion) {
-            completion();
-        }
-    };
-}
-
 - (PostFormatsHandler)postFormatsHandlerWithBlog:(Blog *)blog completionHandler:(void (^)(void))completion
 {
     return ^void(NSDictionary *postFormats) {
@@ -543,39 +434,9 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
             for (NSString *key in supportedKeys) {
                 [supportedValues addObject:[allFormats objectForKey:key]];
             }
-            
             respDict = [NSDictionary dictionaryWithObjects:supportedValues forKeys:supportedKeys];
-        } else if (postFormats.count > 0) {
-            // The dict contains the post formats at the top level (not in a supported array)
-            respDict = [NSDictionary dictionaryWithObjects:[postFormats allValues] forKeys:[postFormats allKeys]];
         }
         blog.postFormats = respDict;
-
-        if (completion) {
-            completion();
-        }
-    };
-}
-
-- (PostsHandler)postsHandlerWithBlog:(Blog *)blog loadMore:(BOOL)more completionHandler:(void (^)(void))completion
-{
-    return ^void(NSArray *posts) {
-        if ([blog isDeleted] || blog.managedObjectContext == nil) {
-            return;
-        }
-
-        // If we asked for more and we got what we had, there are no more posts to load
-        if (more && ([posts count] <= [blog.posts count])) {
-            blog.hasOlderPosts = @NO;
-        } else if (!more) {
-            //we should reset the flag otherwise when you refresh this blog you can't get more than 20 posts
-            blog.hasOlderPosts = @YES;
-        }
-
-        [Post mergeNewPosts:posts forBlog:blog];
-
-        blog.lastPostsSync = [NSDate date];
-        blog.isSyncingPosts = NO;
 
         if (completion) {
             completion();
