@@ -41,9 +41,9 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     self.title = NSLocalizedString(@"Comments", @"");
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
-    self.tableView.accessibilityLabel = @"Comments";       // required for UIAutomation for iOS 4
+    self.tableView.accessibilityLabel = @"Comments Table";       // required for UIAutomation for iOS 4
     if ([self.tableView respondsToSelector:@selector(setAccessibilityIdentifier:)]){
-        self.tableView.accessibilityIdentifier = @"Comments";  // required for UIAutomation for iOS 5
+        self.tableView.accessibilityIdentifier = @"Comments Table";  // required for UIAutomation for iOS 5
     }
 
     self.editButtonItem.enabled = [[self.resultsController fetchedObjects] count] > 0;
