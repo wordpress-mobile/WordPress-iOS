@@ -9,10 +9,11 @@ extension WPStyleGuide
         //
 
         //  NoteTableViewCell
-        public static let noticonFont               = UIFont(name: "Noticons", size: 16)
-        public static let noticonTextColor          = UIColor.whiteColor()
-        public static let noticonReadColor          = UIColor(red: 0xA4/255.0, green: 0xB9/255.0, blue: 0xC9/255.0, alpha: 0xFF/255.0)
-        public static let noticonUnreadColor        = UIColor(red: 0x25/255.0, green: 0x9C/255.0, blue: 0xCF/255.0, alpha: 0xFF/255.0)
+        public static let noticonFont                   = UIFont(name: "Noticons", size: 16)
+        public static let noticonTextColor              = UIColor.whiteColor()
+        public static let noticonReadColor              = UIColor(red: 0xA4/255.0, green: 0xB9/255.0, blue: 0xC9/255.0, alpha: 0xFF/255.0)
+        public static let noticonUnreadColor            = UIColor(red: 0x25/255.0, green: 0x9C/255.0, blue: 0xCF/255.0, alpha: 0xFF/255.0)
+        public static let noticonUnmoderatedColor       = UIColor(red: 0xFF/255.0, green: 0xBA/255.0, blue: 0x00/255.0, alpha: 0xFF/255.0)
 
         public static let noteBackgroundReadColor   = UIColor.whiteColor()
         public static let noteBackgroundUnreadColor = UIColor(red: 0xF1/255.0, green: 0xF6/255.0, blue: 0xF9/255.0, alpha: 0xFF/255.0)
