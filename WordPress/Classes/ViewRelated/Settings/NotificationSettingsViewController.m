@@ -57,10 +57,11 @@
         [self reloadNotificationSettings];
     } else {
         // Trigger a refresh to download the notification settings
-        CGPoint offset = self.tableView.contentOffset;
-        offset.y = - 65.0f;
-        [self.tableView setContentOffset:offset];
-        [self.refreshHeaderView egoRefreshScrollViewDidEndDragging:self.tableView];
+        CGFloat refreshControlHeight = self.refreshControl.frame.size.height;
+        [self.tableView setContentOffset:CGPointMake(0.0f, -refreshControlHeight) animated:YES];
+        [self.refreshControl beginRefreshing];
+        
+        [self refreshNotificationSettings];
     }
 }
 
