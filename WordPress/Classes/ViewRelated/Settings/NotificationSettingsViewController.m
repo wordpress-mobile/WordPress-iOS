@@ -1,7 +1,6 @@
 #import <WordPressApi/WordPressApi.h>
 
 #import "NotificationSettingsViewController.h"
-#import "EGORefreshTableHeaderView.h"
 #import "WordPressAppDelegate.h"
 #import "WordPressComApi.h"
 #import "NSString+XMLExtensions.h"
@@ -10,11 +9,7 @@
 #import "WPAccount.h"
 #import "NotificationsManager.h"
 
-@interface NotificationSettingsViewController () <EGORefreshTableHeaderDelegate, UIActionSheetDelegate>
 
-@property (nonatomic, strong) EGORefreshTableHeaderView *refreshHeaderView;
-@property (readwrite, nonatomic, strong) NSDate *lastRefreshDate;
-@property (readwrite, getter = isRefreshing) BOOL refreshing;
 #pragma mark ==========================================================================================
 #pragma mark Private
 #pragma mark ==========================================================================================
@@ -30,7 +25,11 @@
 @end
 
 
+#pragma mark ==========================================================================================
+#pragma mark NotificationSettingsViewController
+#pragma mark ==========================================================================================
 
+@implementation NotificationSettingsViewController
 
 - (void)viewDidLoad
 {
@@ -40,12 +39,10 @@
     self.view.backgroundColor =  [WPStyleGuide itsEverywhereGrey];
     self.title = NSLocalizedString(@"Manage Notifications", @"");
 
-    CGRect refreshFrame = self.tableView.bounds;
-    refreshFrame.origin.y = -refreshFrame.size.height;
-    self.refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:refreshFrame];
-    self.refreshHeaderView.delegate = self;
-    [self.tableView addSubview:self.refreshHeaderView];
-
+    UIRefreshControl *refreshControl = [UIRefreshControl new];
+    [refreshControl addTarget:self action:@selector(refreshNotificationSettings) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refreshControl;
+    
     if (self.showCloseButton) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
     }
@@ -67,7 +64,7 @@
     }
 }
 
-- (void)getNotificationSettings
+- (void)refreshNotificationSettings
 {
     [NotificationsManager fetchNotificationSettingsWithSuccess:^{
         [self notificationsDidFinishRefreshingWithError:nil];
@@ -400,36 +397,13 @@
     [self reloadNotificationSettings];
 }
 
+
 #pragma mark - Pull to Refresh delegate
-
-- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view
-{
-    return self.isRefreshing;
-}
-
-- (NSDate *)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView *)view
-{
-    return self.lastRefreshDate;
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [self.refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    [self.refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
-}
-
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view
-{
-    [self getNotificationSettings];
-}
 
 - (void)notificationsDidFinishRefreshingWithError:(NSError *)error
 {
-    [self.refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+    [self.refreshControl endRefreshing];
+
     if (!error) {
         [self reloadNotificationSettings];
     } else {
