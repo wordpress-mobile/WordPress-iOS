@@ -439,13 +439,18 @@ static NSString* NotificationSettingForever         = @"forever";
 
 - (void)notificationsDidFinishRefreshingWithError:(NSError *)error
 {
-    [self.refreshControl endRefreshing];
-
     if (!error) {
         [self reloadNotificationSettings];
     } else {
         [WPError showAlertWithTitle:(NSLocalizedString(@"Error", @"")) message:error.localizedDescription];
     }
+    
+    // Note:
+    // Stop the spinner after a while, in order to prevent a weird flicker caused by the tableView.reloadData call
+    dispatch_time_t delay = (0.1f * NSEC_PER_SEC);
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay), dispatch_get_main_queue(), ^{
+        [self.refreshControl endRefreshing];
+    });
 }
 
 @end
