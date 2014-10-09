@@ -32,7 +32,9 @@
 
 @end
 
-@interface SuggestionsTableView : UITableView <UITableViewDataSource>
+@interface SuggestionsTableView : UITableView <UITableViewDataSource, UITableViewDelegate>
+
+@property (nonatomic, weak) id <SuggestionsDelegate> suggestionsDelegate;
 
 - (id)initWithWidth:(CGFloat)width andSiteID:(NSNumber *)siteID;
 - (void)showSuggestionsForWord:(NSString *)word;
