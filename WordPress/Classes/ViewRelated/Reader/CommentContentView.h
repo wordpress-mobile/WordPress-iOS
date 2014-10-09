@@ -24,7 +24,12 @@
 /**
  Number of likes for the comment. It will set the numberOfLikes label.
  */
-@property (nonatomic, assign) NSInteger likeCount;
+@property (nonatomic) NSInteger likeCount;
+
+/**
+ Sets the likeButton's state to liked or not.
+ */
+@property (nonatomic) BOOL isLiked;
 
 /**
  Resets the content view's appearance.

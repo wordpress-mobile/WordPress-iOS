@@ -96,6 +96,8 @@ static const CGFloat ReaderCommentCellBottomPaddingMore = -20.0;
     self.bottomMarginConstraint.constant = (self.needsExtraPadding) ? ReaderCommentCellBottomPaddingMore : ReaderCommentCellBottomPadding;
 
     self.commentContentView.contentProvider = comment;
+    self.commentContentView.isLiked = self.comment.isLiked;
+    self.commentContentView.likeCount = [self.comment.likeCount intValue];
 
     // Highlighting the author of the post
     NSString *authorUrl = comment.author_url;
