@@ -19,6 +19,7 @@ static NSString* NotificationSettingPreferencesKey  = @"notification_preferences
 static NSString* NotificationSettingValueKey        = @"value";
 static NSString* NotificationSettingMutedBlogsKey   = @"muted_blogs";
 static NSString* NotificationSettingMutedUntilKey   = @"mute_until";
+static NSString* NotificationSettingForever         = @"forever";
 
 
 #pragma mark ==========================================================================================
@@ -233,7 +234,7 @@ static NSString* NotificationSettingMutedUntilKey   = @"mute_until";
 
         if (_notificationMutePreferences && [_notificationMutePreferences objectForKey:NotificationSettingValueKey] != nil) {
             NSString *mute_value = [_notificationMutePreferences objectForKey:NotificationSettingValueKey];
-            if ([mute_value isEqualToString:@"forever"]){
+            if ([mute_value isEqualToString:NotificationSettingForever]){
                 cell.detailTextLabel.text = NSLocalizedString(@"Off", @"");
             } else {
                 //check the date before showing it in the cell. Date can be in the past and already expired.
@@ -375,7 +376,7 @@ static NSString* NotificationSettingMutedUntilKey   = @"mute_until";
         switch (buttonIndex) {
             case 0:
             {
-                mute_until_value = @"forever";
+                mute_until_value = NotificationSettingForever;
                 break;
             }
             case 1:{ //Turn off 1hr
