@@ -115,10 +115,6 @@
                                         [self.post.categories addObject:category];
                                         [self.post save];
 
-                                        //re-syncs categories this is necessary because the server can change the name of the category!!!
-                                        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-                                        [blogService syncCategoriesForBlog:self.post.blog success:nil failure:nil];
-
                                         // Cleanup and dismiss
                                         [self clearUI];
                                         [self removeProgressIndicator];
