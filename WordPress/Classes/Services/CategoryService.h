@@ -7,9 +7,8 @@
 
 - (Category *)newCategoryForBlogObjectID:(NSManagedObjectID *)blogObjectID;
 
-- (BOOL)existsName:(NSString *)name forBlogObjectID:(NSManagedObjectID *)blogObjectID withParentId:(NSNumber *)parentId;
-
 - (Category *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID andCategoryID:(NSNumber *)categoryID;
+- (Category *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID parentID:(NSNumber *)parentID andName:(NSString *)name;
 
 - (void)createCategoryWithName:(NSString *)name
         parentCategoryObjectID:(NSManagedObjectID *)parentCategoryObjectID
