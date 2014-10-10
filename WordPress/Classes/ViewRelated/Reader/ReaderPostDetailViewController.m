@@ -963,6 +963,13 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self.tableView selectRowAtIndexPath:[self.tableView indexPathForCell:cell] animated:YES scrollPosition:UITableViewScrollPositionTop];
 }
 
+- (void)commentCell:(ReaderCommentCell *)cell toggleLikeStatusForComment:(Comment *)comment
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+
+    [commentService toggleLikeStatusForComment:comment siteID:self.post.siteID success:nil failure:nil];
+}
 
 #pragma mark - WPTableImageSource Delegate
 
