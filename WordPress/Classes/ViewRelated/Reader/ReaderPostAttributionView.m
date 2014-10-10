@@ -20,7 +20,7 @@ const CGFloat RPAVButtonContentLeftEdgeInset = -3.0;
     [followButton setTitleEdgeInsets: UIEdgeInsetsMake(0.0, RPAVButtonTitleLeftEdgeInset, 0.0, 0.0)];
     [followButton setContentEdgeInsets:UIEdgeInsetsMake(0.0, RPAVButtonContentLeftEdgeInset, 0.0, 0.0)];
     [followButton addTarget:self action:@selector(attributionButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-
+    followButton.accessibilityIdentifier = @"Follow";
     return followButton;
 }
 

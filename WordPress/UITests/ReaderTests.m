@@ -73,5 +73,61 @@
 
 }
 
+- (void) testFollow {
+    [tester tapViewWithAccessibilityLabel:@"Topics"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Freshly Pressed"];
+    [tester waitForTimeInterval:5];
+
+    [tester tapViewWithAccessibilityLabel:@"Follow"];
+    [tester waitForTimeInterval:2];
+}
+
+- (void) testViewAlternateFeeds {
+    NSArray * listOfFeeds = @[@"Freshly Pressed", @"Posts I Like", @"Blogs I Follow"];
+    
+    for(NSString * feed in listOfFeeds){
+        [tester tapViewWithAccessibilityLabel:@"Topics"];
+        [tester waitForTimeInterval:2];
+        
+        [tester tapViewWithAccessibilityLabel:feed];
+        [tester waitForTimeInterval:5];
+    }
+}
+
+- (void) testAddTag {
+    [tester tapViewWithAccessibilityLabel:@"Topics"];
+    [tester waitForTimeInterval:2];
+    
+    [tester enterText:@"Sport" intoViewWithAccessibilityLabel:@"Search"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Search"];
+    [tester waitForTimeInterval:2];
+
+    [tester tapViewWithAccessibilityLabel:@"Done"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Sport"];
+    [tester waitForTimeInterval:2];
+}
+
+- (void) testViewFeedOptions {
+    [tester tapViewWithAccessibilityLabel:@"Topics"];
+    [tester waitForTimeInterval:2];
+    
+    [tester swipeViewWithAccessibilityLabel:@"Pager View" inDirection:KIFSwipeDirectionLeft];
+    [tester waitForTimeInterval:2];
+    [tester swipeViewWithAccessibilityLabel:@"Pager View" inDirection:KIFSwipeDirectionLeft];
+    [tester waitForTimeInterval:2];
+    [tester swipeViewWithAccessibilityLabel:@"Pager View" inDirection:KIFSwipeDirectionRight];
+    [tester waitForTimeInterval:2];
+    [tester swipeViewWithAccessibilityLabel:@"Pager View" inDirection:KIFSwipeDirectionRight];
+    [tester waitForTimeInterval:2];
+    [tester tapViewWithAccessibilityLabel:@"Close"];
+    [tester waitForTimeInterval:2];
+}
+
 
 @end
