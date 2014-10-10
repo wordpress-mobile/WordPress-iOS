@@ -117,4 +117,16 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure;
 
+/**
+ This method will toggle the like status for a comment and optimistically save it. It will also
+ trigger either likeCommentWithID or unlikeCommentWithID. In case the request fails, like status
+ will be reverted back.
+
+ @param siteID is used since the blog might be nil for comment. It's not optional!
+ */
+- (void)toggleLikeStatusForComment:(Comment *)comment
+                            siteID:(NSNumber *)siteID
+                           success:(void (^)())success
+                           failure:(void (^)(NSError *error))failure;
+
 @end

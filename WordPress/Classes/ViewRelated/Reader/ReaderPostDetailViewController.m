@@ -968,33 +968,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
 
-    [self toggleLikeStatusAndSaveComment:comment commentCell:cell];
-
-    __weak __typeof(self) weakSelf = self;
-
-    // This block will reverse the like/unlike action
-    void (^failureBlock)(NSError *) = ^(NSError *error) {
-        DDLogError(@"Error while liking comment: %@", error);
-
-        [weakSelf toggleLikeStatusAndSaveComment:comment commentCell:cell];
-    };
-
-    if (comment.isLiked) {
-        [commentService likeCommentWithID:comment.commentID siteID:self.post.siteID success:nil failure:failureBlock];
-    }
-    else {
-        [commentService unlikeCommentWithID:comment.commentID siteID:self.post.siteID success:nil failure:failureBlock];
-    }
-}
-
-- (void)toggleLikeStatusAndSaveComment:(Comment *)comment commentCell:(ReaderCommentCell *)cell
-{
-    comment.isLiked = !comment.isLiked;
-    comment.likeCount = @([comment.likeCount intValue] + (comment.isLiked ? 1 : -1));
-
-    [[ContextManager sharedInstance] saveContext:[[ContextManager sharedInstance] mainContext]];
-
-    [cell configureCell:comment];
+    [commentService toggleLikeStatusForComment:comment siteID:self.post.siteID success:nil failure:nil];
 }
 
 #pragma mark - WPTableImageSource Delegate
