@@ -57,14 +57,28 @@
 
 - (Category *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID andCategoryID:(NSNumber *)categoryID
 {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", categoryID];
+    return [self findWithBlogObjectID:blogObjectID predicate:predicate];
+}
+
+- (Category *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID parentID:(NSNumber *)parentID andName:(NSString *)name
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(categoryName like %@) AND (parentID = %@)", name,
+                              (parentID ? parentID : @0)];
+    return [self findWithBlogObjectID:blogObjectID predicate:predicate];
+}
+
+- (Category *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID predicate:(NSPredicate *)predicate
+{
     Blog *blog = [self blogWithObjectID:blogObjectID];
 
-    NSSet *results = [blog.categories filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"categoryID == %@",categoryID]];
+    NSSet *results = [blog.categories filteredSetUsingPredicate:predicate];
 
     if (results && (results.count > 0)) {
         return [[results allObjects] objectAtIndex:0];
     }
     return nil;
+
 }
 
 - (Category *)createOrReplaceFromDictionary:(NSDictionary *)categoryInfo
