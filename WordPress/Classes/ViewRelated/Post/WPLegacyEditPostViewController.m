@@ -514,23 +514,11 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
 - (UIButton *)titleBarButton
 {
-    if (_titleBarButton) {
-        return _titleBarButton;
+    if (!_titleBarButton) {
+        UIButton *titleButton = [WPBlogSelectorButton buttonWithFrame:CGRectMake(0.0f, 0.0f, 200.0f, 33.0f) buttonStyle:WPBlogSelectorButtonTypeStacked];
+        [titleButton addTarget:self action:@selector(showBlogSelectorPrompt) forControlEvents:UIControlEventTouchUpInside];
+        _titleBarButton = titleButton;
     }
-    UIButton *titleButton = [WPBlogSelectorButton buttonWithType:UIButtonTypeSystem];
-    titleButton.frame = CGRectMake(0.0f, 0.0f, 200.0f, 33.0f);
-    titleButton.titleLabel.numberOfLines = 2;
-    titleButton.titleLabel.textColor = [UIColor whiteColor];
-    titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    titleButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-    [titleButton setImage:[UIImage imageNamed:@"icon-navbar-dropdown.png"] forState:UIControlStateNormal];
-    [titleButton addTarget:self action:@selector(showBlogSelectorPrompt) forControlEvents:UIControlEventTouchUpInside];
-    [titleButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 10)];
-    [titleButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
-    [titleButton setAccessibilityHint:NSLocalizedString(@"Tap to select which blog to post to", nil)];
-
-    _titleBarButton = titleButton;
-
     return _titleBarButton;
 }
 
