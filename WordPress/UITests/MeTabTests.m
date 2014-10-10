@@ -113,4 +113,30 @@
 
 }
 
+- (void)testSettingsSupport
+{
+    [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester waitForTimeInterval:2];
+    [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester waitForTimeInterval:2];
+    [tester tapViewWithAccessibilityLabel:@"Settings"];
+    [tester waitForTimeInterval:2];
+    [tester tapViewWithAccessibilityLabel:@"Support"];
+    [tester waitForTimeInterval:2];
+    [tester tapViewWithAccessibilityLabel:@"Activity Logs"];
+    [tester waitForTimeInterval:2];
+    [tester tapViewWithAccessibilityLabel:@"Current"];
+    [tester waitForTimeInterval:2];
+    [tester tapViewWithAccessibilityLabel:@"Back"];
+    [tester waitForTimeInterval:2];
+    [tester tapViewWithAccessibilityLabel:@"Clear Old Activity Logs"];
+    [tester waitForTimeInterval:2];
+    [tester tapViewWithAccessibilityLabel:@"Back"];
+    [tester waitForTimeInterval:2];
+    [tester tapViewWithAccessibilityLabel:@"Back"];
+    [tester waitForTimeInterval:2];
+    [tester tapViewWithAccessibilityLabel:@"Done"];
+    [tester waitForTimeInterval:2];
+}
+
 @end
