@@ -79,6 +79,18 @@
     [tester tapViewWithAccessibilityLabel:@"Remove"];
 }
 
+- (void) testCreateAccount {
+    NSString * username = [NSString stringWithFormat:@"%@%u", oneStepUser, arc4random()];
+    [tester tapViewWithAccessibilityLabel:@"Create Account"];
+    [tester enterText:[NSString stringWithFormat:@"%@@gmail.com", username] intoViewWithAccessibilityLabel:@"Email Address"];
+    [tester enterText:username intoViewWithAccessibilityLabel:@"Username"];
+    [tester enterText:oneStepPassword intoViewWithAccessibilityLabel:@"Password"];
+    [tester clearTextFromAndThenEnterText:username intoViewWithAccessibilityLabel:@"Site Address (URL)"];
+    [tester tapViewWithAccessibilityLabel:@"Create Account"];
+    [tester waitForTimeInterval:10];
+    [self logout];
+}
+
 - (void)logout
 {
     [tester tapViewWithAccessibilityLabel:@"Me"];
@@ -92,6 +104,8 @@
     
     [tester waitForTimeInterval:3];
 }
+
+
 
 
 
