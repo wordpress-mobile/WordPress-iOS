@@ -144,11 +144,11 @@
 		5DE8A0411912D95B00B2FF59 /* ReaderPostServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DE8A0401912D95B00B2FF59 /* ReaderPostServiceTest.m */; };
 		5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B3156FCD3400242C35 /* WPWebView.m */; };
 		5DEB61B8156FCD5200242C35 /* WPChromelessWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B7156FCD5200242C35 /* WPChromelessWebViewController.m */; };
-		5DF3EE0D19E5DC3600392ABB /* ReaderCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF3EE0C19E5DC3600392ABB /* ReaderCommentsViewController.m */; };
 		5DF59C0B1770AE3A00171208 /* UILabel+SuggestSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF59C0A1770AE3A00171208 /* UILabel+SuggestSize.m */; };
 		5DF738941965FAB900393584 /* SubscribedTopicsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF738931965FAB900393584 /* SubscribedTopicsViewController.m */; };
 		5DF738971965FACD00393584 /* RecommendedTopicsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF738961965FACD00393584 /* RecommendedTopicsViewController.m */; };
 		5DF7389A1965FB3C00393584 /* WPTableViewHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF738991965FB3C00393584 /* WPTableViewHandler.m */; };
+		5DF8D26119E82B1000A2CD95 /* ReaderCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF8D26019E82B1000A2CD95 /* ReaderCommentsViewController.m */; };
 		5DF94E2B1962B97D00359241 /* NewCommentsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF94E261962B97D00359241 /* NewCommentsTableViewCell.m */; };
 		5DF94E2D1962B97D00359241 /* NewPostTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF94E2A1962B97D00359241 /* NewPostTableViewCell.m */; };
 		5DF94E301962B99C00359241 /* PostSettingsSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF94E2F1962B99C00359241 /* PostSettingsSelectionViewController.m */; };
@@ -690,8 +690,6 @@
 		5DEB61B3156FCD3400242C35 /* WPWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWebView.m; sourceTree = "<group>"; };
 		5DEB61B6156FCD5200242C35 /* WPChromelessWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPChromelessWebViewController.h; sourceTree = "<group>"; };
 		5DEB61B7156FCD5200242C35 /* WPChromelessWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPChromelessWebViewController.m; sourceTree = "<group>"; };
-		5DF3EE0B19E5DC3600392ABB /* ReaderCommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderCommentsViewController.h; sourceTree = "<group>"; };
-		5DF3EE0C19E5DC3600392ABB /* ReaderCommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderCommentsViewController.m; sourceTree = "<group>"; };
 		5DF59C091770AE3A00171208 /* UILabel+SuggestSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+SuggestSize.h"; sourceTree = "<group>"; };
 		5DF59C0A1770AE3A00171208 /* UILabel+SuggestSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+SuggestSize.m"; sourceTree = "<group>"; };
 		5DF738921965FAB900393584 /* SubscribedTopicsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubscribedTopicsViewController.h; sourceTree = "<group>"; };
@@ -700,6 +698,8 @@
 		5DF738961965FACD00393584 /* RecommendedTopicsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendedTopicsViewController.m; sourceTree = "<group>"; };
 		5DF738981965FB3C00393584 /* WPTableViewHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableViewHandler.h; sourceTree = "<group>"; };
 		5DF738991965FB3C00393584 /* WPTableViewHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewHandler.m; sourceTree = "<group>"; };
+		5DF8D25F19E82B1000A2CD95 /* ReaderCommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderCommentsViewController.h; sourceTree = "<group>"; };
+		5DF8D26019E82B1000A2CD95 /* ReaderCommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderCommentsViewController.m; sourceTree = "<group>"; };
 		5DF94E211962B90300359241 /* CommentsTableViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsTableViewDelegate.h; sourceTree = "<group>"; };
 		5DF94E251962B97D00359241 /* NewCommentsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewCommentsTableViewCell.h; sourceTree = "<group>"; };
 		5DF94E261962B97D00359241 /* NewCommentsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewCommentsTableViewCell.m; sourceTree = "<group>"; };
@@ -1569,6 +1569,8 @@
 		5D08B8FD19647C0800D5B381 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				5DF8D25F19E82B1000A2CD95 /* ReaderCommentsViewController.h */,
+				5DF8D26019E82B1000A2CD95 /* ReaderCommentsViewController.m */,
 				5D1D9C5319885B01009D13B7 /* ReaderEditableSubscriptionPage.h */,
 				5D08B90219648C3400D5B381 /* ReaderSubscriptionViewController.h */,
 				5D08B90319648C3400D5B381 /* ReaderSubscriptionViewController.m */,
@@ -1582,8 +1584,6 @@
 				5D42A3EE175E75EE005CFF05 /* ReaderPostsViewController.m */,
 				5D42A3EB175E75EE005CFF05 /* ReaderPostDetailViewController.h */,
 				5D42A3EC175E75EE005CFF05 /* ReaderPostDetailViewController.m */,
-				5DF3EE0B19E5DC3600392ABB /* ReaderCommentsViewController.h */,
-				5DF3EE0C19E5DC3600392ABB /* ReaderCommentsViewController.m */,
 				5D37941919216B1300E26CA4 /* RebloggingViewController.h */,
 				5D37941A19216B1300E26CA4 /* RebloggingViewController.m */,
 				CC24E5ED1577D1EA00A6D5B5 /* WPFriendFinderViewController.h */,
@@ -3004,7 +3004,7 @@
 				85435BEA190F837500E868D0 /* WPUploadStatusView.m in Sources */,
 				8514DDA7190E2AB3009B6421 /* WPMediaMetadataExtractor.m in Sources */,
 				E13F23C314FE84600081D9CC /* NSMutableDictionary+Helpers.m in Sources */,
-				5DF3EE0D19E5DC3600392ABB /* ReaderCommentsViewController.m in Sources */,
+				5DF8D26119E82B1000A2CD95 /* ReaderCommentsViewController.m in Sources */,
 				E114D79A153D85A800984182 /* WPError.m in Sources */,
 				E1D04D8419374F2C002FADD7 /* BlogServiceRemoteREST.m in Sources */,
 				46F84611185A6E98009D0DA5 /* WPContentView.m in Sources */,
