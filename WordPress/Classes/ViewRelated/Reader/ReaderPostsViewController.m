@@ -779,10 +779,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     [self.activityFooter startAnimating];
+    self.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
+    
     ReaderPost *post = self.tableViewHandler.resultsController.fetchedObjects.lastObject;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
 
     __weak __typeof(self) weakSelf = self;
+    
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [service fetchPostsForTopic:self.currentTopic earlierThan:post.sortDate success:^(NSInteger count, BOOL hasMore){
         if (success) {
