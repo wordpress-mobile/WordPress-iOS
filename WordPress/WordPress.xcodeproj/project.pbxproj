@@ -433,6 +433,7 @@
 		FFF96F7719E6A7B800DFC821 /* CommentsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F7619E6A7B800DFC821 /* CommentsTests.m */; };
 		FFF96F7919E6C75E00DFC821 /* StatsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F7819E6C75E00DFC821 /* StatsTests.m */; };
 		FFF96F7B19E6DD8600DFC821 /* ReaderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F7A19E6DD8600DFC821 /* ReaderTests.m */; };
+		FFF96F7D19E80C7F00DFC821 /* NotificationsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F7C19E80C7F00DFC821 /* NotificationsTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1226,6 +1227,7 @@
 		FFF96F7619E6A7B800DFC821 /* CommentsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsTests.m; sourceTree = "<group>"; };
 		FFF96F7819E6C75E00DFC821 /* StatsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsTests.m; sourceTree = "<group>"; };
 		FFF96F7A19E6DD8600DFC821 /* ReaderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderTests.m; sourceTree = "<group>"; };
+		FFF96F7C19E80C7F00DFC821 /* NotificationsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2595,6 +2597,7 @@
 				FFF96F6519E697CD00DFC821 /* MeTabTests.m */,
 				FFF96F6619E697CD00DFC821 /* PagesTests.m */,
 				FFF96F7A19E6DD8600DFC821 /* ReaderTests.m */,
+				FFF96F7C19E80C7F00DFC821 /* NotificationsTests.m */,
 				FFF96F7619E6A7B800DFC821 /* CommentsTests.m */,
 				FFF96F7819E6C75E00DFC821 /* StatsTests.m */,
 				FFF96F6719E697CD00DFC821 /* PostsTests.m */,
@@ -3340,6 +3343,7 @@
 			files = (
 				FFF96F7419E697DD00DFC821 /* WordPressTestCredentials.m in Sources */,
 				FFF96F7B19E6DD8600DFC821 /* ReaderTests.m in Sources */,
+				FFF96F7D19E80C7F00DFC821 /* NotificationsTests.m in Sources */,
 				FFF96F7919E6C75E00DFC821 /* StatsTests.m in Sources */,
 				FFF96F7719E6A7B800DFC821 /* CommentsTests.m in Sources */,
 				FFF96F6E19E697CD00DFC821 /* MeTabTests.m in Sources */,

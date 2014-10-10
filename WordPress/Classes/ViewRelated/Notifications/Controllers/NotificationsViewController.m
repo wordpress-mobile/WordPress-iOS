@@ -115,6 +115,7 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
     self.navigationItem.backBarButtonItem = backButton;
     
     [self updateTabBarBadgeNumber];
+    self.tableView.accessibilityIdentifier = @"Notifications Table";
 }
 
 - (void)viewWillAppear:(BOOL)animated
