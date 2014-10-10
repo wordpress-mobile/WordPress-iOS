@@ -314,6 +314,7 @@ static NSDictionary *EnabledButtonBarStyle;
         }
         
         [self refreshUIForCurrentPost];
+        [self refreshNavigationBarButtons:NO];
         dismissHandler();
     };
     
@@ -819,7 +820,10 @@ static NSDictionary *EnabledButtonBarStyle;
                                                                                       attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
         
         [blogButton setAttributedTitle:titleText forState:UIControlStateNormal];
-        [blogButton sizeToFit];
+        if (IS_IPAD) {
+            //size to fit here so the iPad popover works properly
+            [blogButton sizeToFit];
+        }
         aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:blogButton];
     }
     
