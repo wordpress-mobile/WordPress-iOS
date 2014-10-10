@@ -114,9 +114,9 @@ import Foundation
     
     // MARK: - SuggestableView methods
     public func replaceTextAtCaret(text: String!, withSuggestion suggestion: String!) {
-        let nstext: NSString = text;
+        let textToReplace: NSString = text;
         var selectedRange: UITextRange = textView.selectedTextRange!
-        var newPosition: UITextPosition = textView.positionFromPosition(selectedRange.start, offset: -nstext.length)!
+        var newPosition: UITextPosition = textView.positionFromPosition(selectedRange.start, offset: -textToReplace.length)!
         var newRange: UITextRange = textView.textRangeFromPosition(newPosition, toPosition: selectedRange.start)
         textView.replaceRange(newRange, withText: suggestion)
     }
