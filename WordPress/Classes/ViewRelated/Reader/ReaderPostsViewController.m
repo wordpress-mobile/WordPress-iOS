@@ -36,6 +36,7 @@ static CGFloat const RPVCBlockedCellHeight = 66.0;
 static CGFloat const RPVCEstimatedRowHeightIPhone = 400.0;
 static CGFloat const RPVCEstimatedRowHeightIPad = 600.0;
 static NSInteger RPVCRefreshInterval = 300; // 5 minutes
+static CGRect RPVCTableHeaderFrame = {0.0f, 0.0f, 0.0f, 40.0f};
 
 
 NSString * const BlockedCellIdentifier = @"BlockedCellIdentifier";
@@ -225,6 +226,11 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+    
+    // Note: UIEdgeInsets are not always enforced. After logging in, the table might autoscroll up to the first row.
+    if (UIDevice.isPad) {
+        self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:RPVCTableHeaderFrame];
+    }
 }
 
 - (void)configureTableViewHandler
