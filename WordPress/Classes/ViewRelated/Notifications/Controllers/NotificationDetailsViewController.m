@@ -107,6 +107,7 @@ static CGFloat NotificationSectionSeparator     = 10;
                                              selector:@selector(handleNotificationChange:)
                                                  name:NSManagedObjectContextObjectsDidChangeNotification
                                                object:context];
+    self.tableView.accessibilityIdentifier = @"Notification Details Table";
 }
 
 - (void)viewWillAppear:(BOOL)animated
