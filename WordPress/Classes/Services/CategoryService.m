@@ -1,8 +1,11 @@
 #import "CategoryService.h"
 #import "Category.h"
 #import "Blog.h"
+#import "RemoteCategory.h"
 #import "ContextManager.h"
 #import "CategoryServiceRemote.h"
+#import "CategoryServiceRemoteREST.h"
+#import "CategoryServiceRemoteXMLRPC.h"
 
 @interface CategoryService ()
 
@@ -95,40 +98,41 @@
                        success:(void (^)(Category *category))success
                        failure:(void (^)(NSError *error))failure
 {
+    NSParameterAssert(name != nil);
     Blog *blog = [self blogWithObjectID:blogObjectID];
 
     Category *parent = [self categoryWithObjectID:parentCategoryObjectID];
-    Category *category = [self newCategoryForBlog:blog];
-    category.categoryName = name;
-    if (parent.categoryID != nil) {
-        category.parentID = parent.categoryID;
-    }
 
-    CategoryServiceRemote *remote = [CategoryServiceRemote new];
-    [remote createCategoryWithName:name
-                  parentCategoryID:parent.categoryID
-                           forBlog:blog
-                           success:^(NSNumber *categoryID) {
-                               [self.managedObjectContext performBlockAndWait:^{
-                                   category.categoryID = categoryID;
-                                   [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                               }];
+    RemoteCategory *remoteCategory = [RemoteCategory new];
+    remoteCategory.parentID = parent.categoryID;
+    remoteCategory.name = name;
 
-                               if (success) {
-                                   success(category);
-                               }
-
-                           } failure:^(NSError *error) {
-                               DDLogError(@"Error while saving remote Category: %@", error);
-                               [self.managedObjectContext performBlockAndWait:^{
-                                   [self.managedObjectContext deleteObject:category];
-                                   [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                               }];
-
-                               if (failure) {
-                                   failure(error);
-                               }
-                           }];
+    id<CategoryServiceRemote> remote = [self remoteForBlog:blog];
+    [remote createCategory:remoteCategory
+                   forBlog:blog
+                   success:^(RemoteCategory *receivedCategory) {
+                       [self.managedObjectContext performBlock:^{
+                           Category *newCategory = [self newCategoryForBlog:blog];
+                           newCategory.categoryID = receivedCategory.categoryID;
+                           if ([remote isKindOfClass:[CategoryServiceRemoteXMLRPC class]]) {
+                               // XML-RPC only returns ID, let's fetch the new category as
+                               // filters might change the content
+#warning TODO trigger sync when sync is moved to CategoryService
+                               newCategory.categoryName = remoteCategory.name;
+                               newCategory.parentID = remoteCategory.parentID;
+                           } else {
+                               newCategory.categoryName = receivedCategory.name;
+                               newCategory.parentID = receivedCategory.parentID;
+                           }
+                           if (newCategory.parentID == nil) {
+                               newCategory.parentID = @0;
+                           }
+                           [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                           if (success) {
+                               success(newCategory);
+                           }
+                       }];
+                   } failure:failure];
 }
 
 - (void)mergeNewCategories:(NSArray *)newCategories forBlogObjectID:(NSManagedObjectID *)blogObjectID
@@ -189,6 +193,14 @@
     }
 
     return category;
+}
+
+- (id<CategoryServiceRemote>)remoteForBlog:(Blog *)blog {
+    if (blog.restApi) {
+        return [[CategoryServiceRemoteREST alloc] initWithApi:blog.restApi];
+    } else {
+        return [[CategoryServiceRemoteXMLRPC alloc] initWithApi:blog.api];
+    }
 }
 
 @end
