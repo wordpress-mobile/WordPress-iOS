@@ -220,7 +220,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     };
     replyTextView.delegate          = self;
     self.replyTextView              = replyTextView;
-    
+    replyTextView.accessibilityIdentifier = @"Reply Text";
     // Attach the ReplyTextView at the very bottom
     [self.view addSubview:self.replyTextView];
     [self.view pinSubviewAtBottom:self.replyTextView];
