@@ -14,7 +14,7 @@
 #import "WPWebViewController.h"
 #import "WordPress-Swift.h"
 
-static CGFloat const TableViewTopMargin = 40;
+static CGFloat const VerticalMargin = 40;
 
 @interface ReaderPostDetailViewController ()<ReaderPostContentViewDelegate,
                                             RebloggingViewControllerDelegate,
@@ -27,6 +27,7 @@ static CGFloat const TableViewTopMargin = 40;
 @property (nonatomic, strong) ReaderPostRichContentView *postView;
 @property (nonatomic, strong) UIBarButtonItem *shareButton;
 @property (nonatomic, strong) WPTableImageSource *featuredImageSource;
+@property (nonatomic, strong) UIScrollView *scrollView;
 
 @end
 
@@ -57,17 +58,18 @@ static CGFloat const TableViewTopMargin = 40;
     [super viewDidLoad];
 
     [self configureNavbar];
+    [self configureScrollView];
     [self configurePostView];
-    [self configureTableHeaderView];
-    
-    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    [self configureConstraints];
+
+    [WPStyleGuide configureColorsForView:self.view andTableView:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
 
-    [self refreshAndSync];
+    [self refresh];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -91,7 +93,6 @@ static CGFloat const TableViewTopMargin = 40;
         // Resize media in the post detail to match the width of the new orientation.
         // No need to refresh on iPad when using a fixed width.
         [self.postView refreshMediaLayout];
-        [self refreshHeightForTableHeaderView];
     }
 }
 
@@ -106,51 +107,67 @@ static CGFloat const TableViewTopMargin = 40;
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.shareButton forNavigationItem:self.navigationItem];
 }
 
+- (void)configureScrollView
+{
+    self.scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    self.scrollView.translatesAutoresizingMaskIntoConstraints = NO;
+
+    [self.view addSubview:self.scrollView];
+}
+
 - (void)configurePostView
 {
-    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
+    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.view.bounds);
     self.postView = [[ReaderPostRichContentView alloc] initWithFrame:CGRectMake(0.0, 0.0, width, 1.0)]; // minimal frame so rich text will have initial layout.
     self.postView.translatesAutoresizingMaskIntoConstraints = NO;
     self.postView.delegate = self;
     self.postView.backgroundColor = [UIColor whiteColor];
+
+    [self.scrollView addSubview:self.postView];
 }
 
-- (void)configureTableHeaderView
+- (void)configureConstraints
 {
     NSParameterAssert(self.postView);
-    NSParameterAssert(self.tableView);
 
-    UIView *tableHeaderView = [[UIView alloc] init];
-    [tableHeaderView addSubview:self.postView];
+    UIView *mainView = self.view;
+    CGFloat verticalMargin = IS_IPAD ? VerticalMargin : 0;
+    NSDictionary *views = NSDictionaryOfVariableBindings(_scrollView, _postView, mainView);
+    NSDictionary *metrics = @{@"WPTableViewWidth": @(WPTableViewFixedWidth), @"verticalMargin": @(verticalMargin)};
 
-    CGFloat marginTop = IS_IPAD ? TableViewTopMargin : 0;
-    NSDictionary *views = NSDictionaryOfVariableBindings(_postView);
-    NSDictionary *metrics = @{@"WPTableViewWidth": @(WPTableViewFixedWidth), @"marginTop": @(marginTop)};
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_scrollView]|"
+                                                                      options:0
+                                                                      metrics:metrics
+                                                                        views:views]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_scrollView]|"
+                                                                      options:0
+                                                                      metrics:metrics
+                                                                        views:views]];
+
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.postView
+                                                          attribute:NSLayoutAttributeCenterX
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeCenterX
+                                                         multiplier:1.0
+                                                           constant:0.0]];
+
     if (IS_IPAD) {
-        [tableHeaderView addConstraint:[NSLayoutConstraint constraintWithItem:self.postView
-                                                                    attribute:NSLayoutAttributeCenterX
-                                                                    relatedBy:NSLayoutRelationEqual
-                                                                       toItem:tableHeaderView
-                                                                    attribute:NSLayoutAttributeCenterX
-                                                                   multiplier:1.0
-                                                                     constant:0.0]];
-        [tableHeaderView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_postView(WPTableViewWidth)]"
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_postView(WPTableViewWidth)]"
                                                                                 options:0
                                                                                 metrics:metrics
                                                                                   views:views]];
     } else {
-        [tableHeaderView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_postView]|"
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_postView(==mainView)]"
                                                                                 options:0
-                                                                                metrics:nil
+                                                                                metrics:metrics
                                                                                   views:views]];
     }
-    // Don't anchor the post view to the bottom of its superview allows for (visually) smoother rotation.
-    [tableHeaderView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(marginTop)-[_postView]"
+
+    [self.scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(verticalMargin)-[_postView]-(verticalMargin)-|"
                                                                             options:0
                                                                             metrics:metrics
                                                                               views:views]];
-    self.tableView.tableHeaderView = tableHeaderView;
-    [self refreshHeightForTableHeaderView];
 }
 
 - (UIActivityViewController *)activityViewControllerForSharing
@@ -204,7 +221,7 @@ static CGFloat const TableViewTopMargin = 40;
     [service fetchPost:postID.integerValue forSite:siteID.integerValue success:^(ReaderPost *post) {
 
         weakSelf.post = post;
-        [weakSelf refreshAndSync];
+        [weakSelf refresh];
 
         [WPNoResultsView removeFromView:weakSelf.view];
 
@@ -259,15 +276,11 @@ static CGFloat const TableViewTopMargin = 40;
 
 #pragma mark - View Refresh Helpers
 
-- (void)refreshAndSync
+- (void)refresh
 {
     self.title = self.post.postTitle ?: NSLocalizedString(@"Reader", @"Placeholder title for ReaderPostDetails.");
 
     [self refreshPostView];
-    [self refreshHeightForTableHeaderView];
-
-    // Refresh incase the post needed to be fetched.
-    [self.tableView reloadData];
 
     // Enable Share action only when the post is fully loaded
     self.shareButton.enabled = self.isLoaded;
@@ -316,7 +329,7 @@ static CGFloat const TableViewTopMargin = 40;
         self.featuredImageSource.delegate = self;
     }
     
-    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
+    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.view.bounds);
     CGFloat height = round(width * WPContentViewMaxImageHeightPercentage);
     CGSize size = CGSizeMake(width, height);
     
@@ -330,17 +343,6 @@ static CGFloat const TableViewTopMargin = 40;
                                          indexPath:[NSIndexPath indexPathForRow:0 inSection:0]
                                          isPrivate:self.post.isPrivate];
     }
-}
-
-- (void)refreshHeightForTableHeaderView
-{
-    CGFloat marginTop = IS_IPAD ? TableViewTopMargin : 0;
-    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
-    CGSize size = [self.postView sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
-    CGFloat height = size.height + marginTop;
-    UIView *tableHeaderView = self.tableView.tableHeaderView;
-    tableHeaderView.frame = CGRectMake(0.0, 0.0, CGRectGetWidth(self.tableView.bounds), height);
-    self.tableView.tableHeaderView = tableHeaderView;
 }
 
 
@@ -477,7 +479,6 @@ static CGFloat const TableViewTopMargin = 40;
 - (void)richTextViewDidLoadMediaBatch:(WPRichTextView *)richTextView
 {
     [self.postView layoutIfNeeded];
-    [self refreshHeightForTableHeaderView];
 }
 
 
