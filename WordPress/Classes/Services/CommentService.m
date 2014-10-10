@@ -341,6 +341,41 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                        failure:failure];
 }
 
+- (void)toggleLikeStatusForComment:(Comment *)comment
+                            siteID:(NSNumber *)siteID
+                           success:(void (^)())success
+                           failure:(void (^)(NSError *error))failure
+{
+    // toggle the like status and change the like count and save it
+    comment.isLiked = !comment.isLiked;
+    comment.likeCount = @([comment.likeCount intValue] + (comment.isLiked ? 1 : -1));
+
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
+    __weak __typeof(self) weakSelf = self;
+
+    // This block will reverse the like/unlike action
+    void (^failureBlock)(NSError *) = ^(NSError *error) {
+        DDLogError(@"Error while %@ comment: %@", comment.isLiked ? @"liking" : @"unliking", error);
+
+        comment.isLiked = !comment.isLiked;
+        comment.likeCount = @([comment.likeCount intValue] + (comment.isLiked ? 1 : -1));
+
+        [[ContextManager sharedInstance] saveContext:weakSelf.managedObjectContext];
+
+        if (failure) {
+            failure(error);
+        }
+    };
+
+    if (comment.isLiked) {
+        [self likeCommentWithID:comment.commentID siteID:siteID success:success failure:failureBlock];
+    }
+    else {
+        [self unlikeCommentWithID:comment.commentID siteID:siteID success:success failure:failureBlock];
+    }
+}
+
 
 #pragma mark - Private methods
 
