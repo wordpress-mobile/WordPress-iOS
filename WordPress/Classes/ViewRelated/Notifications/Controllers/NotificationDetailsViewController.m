@@ -235,10 +235,9 @@ static CGFloat NotificationSectionSeparator     = 10;
     Blog *blog                      = [service blogByBlogId:self.note.metaSiteID];
     
     if (blog.isWPcom && [[SuggestionService shared] shouldShowSuggestionsForSiteID:self.note.metaSiteID]) {
-        SuggestionsTableView *suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.note.metaSiteID];
-        suggestionsTableView.suggestionsDelegate   = self;
-        [suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];        
-        self.suggestionsTableView                  = suggestionsTableView;
+        self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.note.metaSiteID];
+        self.suggestionsTableView.suggestionsDelegate = self;
+        [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];        
         [self.view addSubview:self.suggestionsTableView];
         
         // Pin the suggestions view left and right edges to the super view edges
