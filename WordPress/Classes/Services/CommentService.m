@@ -190,7 +190,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 
 - (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
                                    page:(NSUInteger)page
-                                success:(void (^)(NSInteger count))success
+                                success:(void (^)(NSInteger count, BOOL hasMore))success
                                 failure:(void (^)(NSError *error))failure
 {
 
@@ -214,7 +214,9 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                                              [self mergeHierarchicalComments:comments forPage:page forPost:aPost];
 
                                              if (success) {
-                                                 success([comments count]);
+                                                 NSArray *parents = [self topLevelCommentsForPage:page forPost:aPost];
+                                                 BOOL hasMore = [parents count] == WPTopLevelHierarchicalCommentsPerPage;
+                                                 success([comments count], hasMore);
                                              }
                                          }];
                                      } failure:^(NSError *error) {
@@ -582,7 +584,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 
     // Retrieve the starting and ending comments for the specified page.
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:entityName];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = %@", post];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = %@ AND parentID = NULL", post];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"hierarchy" ascending:YES];
     fetchRequest.sortDescriptors = @[sortDescriptor];
     [fetchRequest setFetchLimit:WPTopLevelHierarchicalCommentsPerPage];
