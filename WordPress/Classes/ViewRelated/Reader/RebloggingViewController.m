@@ -182,7 +182,7 @@ CGFloat const ReblogViewTextBottomInset = 30;
     _textView.font = [WPStyleGuide regularTextFont];
     _textView.textColor = [WPStyleGuide darkAsNightGrey];
     _textView.accessibilityLabel = NSLocalizedString(@"Optional note", @"Optional note to include with the reblogged post");
-
+    _textView.accessibilityIdentifier = @"Optional note";
     return _textView;
 }
 

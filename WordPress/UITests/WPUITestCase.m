@@ -18,6 +18,7 @@
 - (void) logout
 {
     [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester tapViewWithAccessibilityLabel:@"Me"];
     [tester tapViewWithAccessibilityLabel:@"Settings"];
     [tester tapViewWithAccessibilityLabel:@"Sign Out"];
     [tester tapViewWithAccessibilityLabel:@"Sign Out"];
