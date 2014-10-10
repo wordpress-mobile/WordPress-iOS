@@ -50,4 +50,16 @@
 
 }
 
+- (void) testModerate {
+    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] inTableViewWithAccessibilityIdentifier:@"Notifications Table"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Approve"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Back"];
+    [tester waitForTimeInterval:2];
+    
+}
+
 @end
