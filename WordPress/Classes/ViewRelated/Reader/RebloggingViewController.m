@@ -24,7 +24,6 @@ CGFloat const ReblogViewTextBottomInset = 30;
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) ReaderPostSimpleContentView *postView;
 @property (nonatomic, strong) UIView *postViewWrapper;
-@property (nonatomic, strong) CALayer *postViewBackingLayer;
 @property (nonatomic, strong) UITextView *textView;
 @property (nonatomic, strong) UIImage *avatarImage;
 @property (nonatomic, strong) UIImage *featuredImage;
@@ -194,12 +193,7 @@ CGFloat const ReblogViewTextBottomInset = 30;
 
     _postViewWrapper = [[UIView alloc] initWithFrame:self.view.bounds];
     _postViewWrapper.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    CALayer *layer = [[CALayer alloc] init];
-    layer.zPosition = -1;
-    layer.backgroundColor = [[WPStyleGuide itsEverywhereGrey] CGColor];
-    self.postViewBackingLayer = layer;
-    [_postViewWrapper.layer addSublayer:layer];
-
+    _postViewWrapper.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     return _postViewWrapper;
 }
 
@@ -249,14 +243,14 @@ CGFloat const ReblogViewTextBottomInset = 30;
 
     CGFloat width = CGRectGetWidth(self.view.bounds) - (horizontalMargin * 2);
     CGSize size = [self.postView sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
-
     CGFloat height = size.height;
+
+    self.postViewWrapper.frame = CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, height+ verticleMargin * 2);
 
     CGRect frame = CGRectMake(horizontalMargin, verticleMargin, width, height);
     CGFloat top = CGRectGetMaxY(frame) + (verticleMargin * 2);
-    self.postViewWrapper.frame = frame;
-    self.postView.frame = self.postViewWrapper.bounds;
-
+    self.postView.frame = frame;
+    
     self.textView.textContainerInset = UIEdgeInsetsMake(top, ReblogViewPostMargin, ReblogViewTextBottomInset, ReblogViewPostMargin);
 
     frame = CGRectZero;
@@ -265,13 +259,6 @@ CGFloat const ReblogViewTextBottomInset = 30;
     frame.size.width = CGRectGetWidth(self.textView.bounds) - (horizontalMargin * 2);
     frame.size.height = 26.0f;
     self.textPromptLabel.frame = frame;
-
-    frame = self.postViewWrapper.bounds;
-    CGFloat x = CGRectGetMinX(frame) - horizontalMargin;
-    CGFloat y = CGRectGetMinY(frame) - verticleMargin;
-    CGFloat w = CGRectGetWidth(frame) + horizontalMargin * 2.0f;
-    CGFloat h = CGRectGetHeight(frame) + verticleMargin * 2.0f;
-    self.postViewBackingLayer.frame = CGRectMake(x, y, w, h);
 
     // Refresh the contentSize to account for changes to textContainerInset
     // by calling sizeToFit and then resetting the frame.
