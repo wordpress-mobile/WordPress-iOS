@@ -40,6 +40,16 @@ CGFloat const RowHeight = 48.0f;
                                                  selector:@selector(suggestionListUpdated:)
                                                      name:SuggestionListUpdatedNotification
                                                    object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardDidChangeFrame:)
+                                                     name:UIKeyboardDidChangeFrameNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardDidHide:)
+                                                     name:UIKeyboardDidHideNotification
+                                                   object:nil];
     }
     
     return self;
@@ -71,8 +81,45 @@ CGFloat const RowHeight = 48.0f;
 
 - (void)updateDynamicHeightConstraint
 {
-    self.heightConstraint.constant = self.searchResults.count * RowHeight;
+    // TODO: Don't assume there is always a navBar and allow the VC to specify additional withholding (e.g. when used on post view)
+    CGFloat navBarHeight = 44.0f;
+    
+    NSUInteger maxRows = floor((self.frame.origin.y + self.frame.size.height - navBarHeight) / RowHeight);
+    if (maxRows < 1) {
+        maxRows = 1;
+    }    
+    
+    if (self.searchResults.count > maxRows) {
+        self.heightConstraint.constant = maxRows * RowHeight;        
+    } else {
+        self.heightConstraint.constant = self.searchResults.count * RowHeight;
+    }
+    
     [self needsUpdateConstraints];
+}
+
+- (void)keyboardDidChangeFrame:(NSNotification *)notification
+{
+    NSDictionary *info = [notification userInfo];
+    NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    [self updateDynamicHeightConstraint];
+    
+    [UIView animateWithDuration:animationDuration animations:^{
+        [self layoutIfNeeded];
+    }];
+}
+
+- (void)keyboardDidHide:(NSNotification *)notification
+{
+    NSDictionary *info = [notification userInfo];
+    NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+
+    [self updateDynamicHeightConstraint];
+
+    [UIView animateWithDuration:animationDuration animations:^{
+        [self layoutIfNeeded];
+    }];
 }
 
 #pragma mark - Public methods
@@ -97,6 +144,16 @@ CGFloat const RowHeight = 48.0f;
 }
 
 #pragma mark - UITableViewDataSource methods
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 1.0f; 
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *headerView = [[UIView alloc] init];
+    headerView.backgroundColor = [WPStyleGuide readGrey];
+    return headerView;
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
