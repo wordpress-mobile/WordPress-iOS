@@ -51,7 +51,7 @@
  
  @param a derived NSManagedObjectContext constructed with `newDerivedContext` above
 */
-- (void)saveDerivedContext:(NSManagedObjectContext *)context;
++ (void)saveDerivedContext:(NSManagedObjectContext *)context;
 
 /**
  Save a derived context created with `newDerivedContext` and optionally execute a completion block.
@@ -60,14 +60,14 @@
  @param a derived NSManagedObjectContext constructed with `newDerivedContext` above
  @param a completion block that will be executed on the main queue
  */
-- (void)saveDerivedContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock;
++ (void)saveDerivedContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock;
 
 /**
  Save a given context.
  
  Convenience for error handling.
  */
-- (void)saveContext:(NSManagedObjectContext *)context;
++ (void)saveContext:(NSManagedObjectContext *)context;
 
 /**
  Save a given context.
@@ -75,7 +75,7 @@
  @param a NSManagedObject context instance
  @param a completion block that will be executed on the main queue
  */
-- (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock;
++ (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock;
 
 /**
  Get a peranent NSManagedObjectID for the specified NSManagedObject

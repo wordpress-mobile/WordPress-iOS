@@ -121,7 +121,7 @@
             }
         }
 
-        [[ContextManager sharedInstance] saveDerivedContext:backgroundContext];
+        [ContextManager saveDerivedContext:backgroundContext];
     }];
 }
 

@@ -103,7 +103,7 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
             }
         }
 
-        [[ContextManager sharedInstance] saveDerivedContext:backgroundMOC];
+        [ContextManager saveDerivedContext:backgroundMOC];
     }];
 }
 

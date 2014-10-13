@@ -263,7 +263,7 @@ static BOOL const JetpackRESTSupportedForEveryone = NO;
 
 - (void)dataSave
 {
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [ContextManager saveContext:self.managedObjectContext];
 }
 
 - (void)remove
