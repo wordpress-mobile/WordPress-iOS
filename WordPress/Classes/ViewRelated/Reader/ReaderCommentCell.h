@@ -6,6 +6,7 @@
 @optional
 - (void)commentCell:(UITableViewCell *)cell replyToComment:(Comment *)comment;
 - (void)commentCell:(UITableViewCell *)cell linkTapped:(NSURL *)url;
+- (void)commentCell:(UITableViewCell *)cell toggleLikeStatusForComment:(Comment *)comment;
 @end
 
 
