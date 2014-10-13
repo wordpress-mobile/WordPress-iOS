@@ -1,7 +1,6 @@
 #import <UIKit/UIKit.h>
 
-@class WPRichTextImageControl;
-@class WPRichTextVideoControl;
+@class WPRichTextImage;
 @class WPRichTextView;
 
 /**
@@ -23,17 +22,9 @@
  Tells the delegate the user has tapped on an image. 
 
  @param richTextView The richTextView informing the delegate of the event.
- @param imageControl The `WPRichTextImageControl` instance tapped by the user.
+ @param imageControl The `WPRichTextImage` instance tapped by the user.
  */
-- (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(WPRichTextImageControl *)imageControl;
-
-/**
- Tells the delegate the user has tapped on a video preview image.
-
- @param richTextView The richTextView informing the delegate of the event.
- @param videoControl The `WPRichTextVideoControl` instance tapped by the user.
- */
-- (void)richTextView:(WPRichTextView *)richTextView didReceiveVideoLinkAction:(WPRichTextVideoControl *)videoControl;
+- (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(WPRichTextImage *)imageControl;
 
 /**
  Tells the delegate the `WPRichTextView` has loaded a batch of media for display.
@@ -60,9 +51,14 @@
 @property (nonatomic) BOOL privateContent;
 
 /**
+ The source content string for the rich text view
+ */
+@property (nonatomic, copy) NSString *content;
+
+/**
  The `NSAttributedString` for display in the rich text view.
  */
-@property (nonatomic, strong) NSAttributedString *attributedString;
+@property (nonatomic, strong, readonly) NSAttributedString *attributedString;
 
 /**
  Specifies the insets from the edge of the rich text view that text content is rendered.

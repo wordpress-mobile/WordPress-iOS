@@ -96,6 +96,8 @@ static const CGFloat ReaderCommentCellBottomPaddingMore = -20.0;
     self.bottomMarginConstraint.constant = (self.needsExtraPadding) ? ReaderCommentCellBottomPaddingMore : ReaderCommentCellBottomPadding;
 
     self.commentContentView.contentProvider = comment;
+    self.commentContentView.isLiked = self.comment.isLiked;
+    self.commentContentView.likeCount = [self.comment.likeCount intValue];
 
     // Highlighting the author of the post
     NSString *authorUrl = comment.author_url;
@@ -197,6 +199,13 @@ static const CGFloat ReaderCommentCellBottomPaddingMore = -20.0;
 {
     if ([self.delegate respondsToSelector:@selector(commentCell:replyToComment:)]) {
         [self.delegate commentCell:self replyToComment:self.comment];
+    }
+}
+
+- (void)toggleLikeStatus:(id<WPContentViewProvider>)contentProvider
+{
+    if ([self.delegate respondsToSelector:@selector(commentCell:toggleLikeStatusForComment:)]) {
+        [self.delegate commentCell:self toggleLikeStatusForComment:self.comment];
     }
 }
 
