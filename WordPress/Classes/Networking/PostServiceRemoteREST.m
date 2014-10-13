@@ -21,6 +21,29 @@
     return self;
 }
 
+- (void)getPostWithID:(NSNumber *)postID
+              forBlog:(Blog *)blog
+              success:(void (^)(RemotePost *post))success
+              failure:(void (^)(NSError *))failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@", blog.dotComID, postID];
+    NSDictionary *parameters = @{
+                                 @"status": @"any",
+                                 @"context": @"edit"
+                                 };
+    [self.api GET:path
+       parameters:parameters
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              if (success) {
+                  success([self remotePostFromJSONDictionary:responseObject]);
+              }
+          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              if (failure) {
+                  failure(error);
+              }
+          }];
+}
+
 - (void)getPostsOfType:(NSString *)postType
                forBlog:(Blog *)blog
                success:(void (^)(NSArray *))success
@@ -137,7 +160,7 @@
     RemotePost *post = [RemotePost new];
     post.postID = jsonPost[@"ID"];
     post.siteID = jsonPost[@"siteID"];
-    post.authorAvatarURL = jsonPost[@"author"][@"URL"];
+    post.authorAvatarURL = jsonPost[@"author"][@"avatar_URL"];
     post.authorDisplayName = jsonPost[@"author"][@"name"];
     post.authorEmail = [jsonPost[@"author"] stringForKey:@"email"];
     post.authorURL = jsonPost[@"author"][@"URL"];

@@ -21,6 +21,25 @@
     return self;
 }
 
+- (void)getPostWithID:(NSNumber *)postID
+              forBlog:(Blog *)blog
+              success:(void (^)(RemotePost *post))success
+              failure:(void (^)(NSError *))failure
+{
+    NSArray *parameters = [blog getXMLRPCArgsWithExtra:@{ @"post_id": postID }];
+    [self.api callMethod:@"wp.getPost"
+              parameters:parameters
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     if (success) {
+                         success([self remotePostFromXMLRPCDictionary:responseObject]);
+                     }
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
+}
+
 - (void)getPostsOfType:(NSString *)postType
                forBlog:(Blog *)blog
                success:(void (^)(NSArray *))success
