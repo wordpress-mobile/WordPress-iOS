@@ -45,11 +45,6 @@ CGFloat const RowHeight = 48.0f;
                                                  selector:@selector(keyboardDidChangeFrame:)
                                                      name:UIKeyboardDidChangeFrameNotification
                                                    object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardDidHide:)
-                                                     name:UIKeyboardDidHideNotification
-                                                   object:nil];
     }
     
     return self;
@@ -105,18 +100,6 @@ CGFloat const RowHeight = 48.0f;
     
     [self updateDynamicHeightConstraint];
     
-    [UIView animateWithDuration:animationDuration animations:^{
-        [self layoutIfNeeded];
-    }];
-}
-
-- (void)keyboardDidHide:(NSNotification *)notification
-{
-    NSDictionary *info = [notification userInfo];
-    NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-
-    [self updateDynamicHeightConstraint];
-
     [UIView animateWithDuration:animationDuration animations:^{
         [self layoutIfNeeded];
     }];
