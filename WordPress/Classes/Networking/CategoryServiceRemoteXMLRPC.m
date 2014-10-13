@@ -19,6 +19,25 @@
     return self;
 }
 
+- (void)getCategoriesForBlog:(Blog *)blog
+                     success:(void (^)(NSArray *categories))success
+                     failure:(void (^)(NSError *error))failure
+{
+    NSArray *parameters = [blog getXMLRPCArgsWithExtra:@"category"];
+    [self.api callMethod:@"wp.getTerms"
+              parameters:parameters
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
+                     if (success) {
+                         success([self remoteCategoriesFromXMLRPCArray:responseObject]);
+                     }
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
+}
+
 - (void)createCategory:(RemoteCategory *)category
                forBlog:(Blog *)blog
                success:(void (^)(RemoteCategory *))success
@@ -57,6 +76,24 @@
                          failure(error);
                      }
                  }];
+}
+
+- (NSArray *)remoteCategoriesFromXMLRPCArray:(NSArray *)xmlrpcArray
+{
+    NSMutableArray *categories = [NSMutableArray arrayWithCapacity:xmlrpcArray.count];
+    for (NSDictionary *xmlrpcCategory in xmlrpcArray) {
+        [categories addObject:[self remoteCategoryFromXMLRPCDictionary:xmlrpcCategory]];
+    }
+    return [NSArray arrayWithArray:categories];
+}
+
+- (RemoteCategory *)remoteCategoryFromXMLRPCDictionary:(NSDictionary *)xmlrpcDictionary
+{
+    RemoteCategory *category = [RemoteCategory new];
+    category.categoryID = [xmlrpcDictionary numberForKey:@"term_id"];
+    category.name = [xmlrpcDictionary stringForKey:@"name"];
+    category.parentID = [xmlrpcDictionary numberForKey:@"parent"];
+    return category;
 }
 
 @end

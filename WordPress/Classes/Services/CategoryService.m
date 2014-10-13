@@ -106,6 +106,19 @@
     return category;
 }
 
+- (void)syncCategoriesForBlog:(Blog *)blog
+                      success:(void (^)())success
+                      failure:(void (^)(NSError *error))failure
+{
+    id<CategoryServiceRemote> remote = [self remoteForBlog:blog];
+    [remote getCategoriesForBlog:blog
+                         success:^(NSArray *categories) {
+                             [self.managedObjectContext performBlock:^{
+                                 [self mergeCategories:categories forBlog:blog completionHandler:success];
+                             }];
+                         } failure:failure];
+}
+
 - (void)createCategoryWithName:(NSString *)name
         parentCategoryObjectID:(NSManagedObjectID *)parentCategoryObjectID
                forBlogObjectID:(NSManagedObjectID *)blogObjectID
@@ -149,32 +162,36 @@
                    } failure:failure];
 }
 
-- (void)mergeNewCategories:(NSArray *)newCategories forBlogObjectID:(NSManagedObjectID *)blogObjectID
+- (void)mergeCategories:(NSArray *)categories forBlog:(Blog *)blog completionHandler:(void (^)(void))completion
 {
-    NSMutableArray *categoriesToKeep = [NSMutableArray array];
-    Blog *contextBlog = [self blogWithObjectID:blogObjectID];
+    NSSet *remoteSet = [NSSet setWithArray:[categories valueForKey:@"categoryID"]];
+    NSSet *localSet = [blog.categories valueForKey:@"categoryID"];
+    NSMutableSet *toDelete = [localSet mutableCopy];
+    [toDelete minusSet:remoteSet];
 
-    for (NSDictionary *categoryInfo in newCategories) {
-        // TODO :: This needs to be done on the current context
-        Category *newCategory = [self createOrReplaceFromDictionary:categoryInfo forBlogObjectID:blogObjectID];
-        if (newCategory != nil) {
-            [categoriesToKeep addObject:newCategory];
-        } else {
-            DDLogInfo(@"-[Category createOrReplaceFromDictionary:forBlog:] returned a nil category: %@", categoryInfo);
-        }
-    }
-
-    NSSet *existingCategories = contextBlog.categories;
-    if (existingCategories && (existingCategories.count > 0)) {
-        for (Category *c in existingCategories) {
-            if (![categoriesToKeep containsObject:c]) {
-                DDLogInfo(@"Deleting Category: %@", c);
-                [self.managedObjectContext deleteObject:c];
+    if ([toDelete count] > 0) {
+        for (Category *category in blog.categories) {
+            if ([toDelete containsObject:category.categoryID]) {
+                [self.managedObjectContext deleteObject:category];
             }
         }
     }
 
+    for (RemoteCategory *remoteCategory in categories) {
+        Category *category = [self findWithBlogObjectID:blog.objectID andCategoryID:remoteCategory.categoryID];
+        if (!category) {
+            category = [self newCategoryForBlog:blog];
+            category.categoryID = remoteCategory.categoryID;
+        }
+        category.categoryName = remoteCategory.name;
+        category.parentID = remoteCategory.parentID;
+    }
+
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
+    if (completion) {
+        completion();
+    }
 }
 
 - (Blog *)blogWithObjectID:(NSManagedObjectID *)objectID
