@@ -165,7 +165,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
                            postsSuccess:[self postsHandlerWithBlog:blog loadMore:NO completionHandler:nil]
                          overallSuccess:^{
                              [self.managedObjectContext performBlockAndWait:^{
-                                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                                 [ContextManager saveContext:self.managedObjectContext];
                              }];
 
                              if (success) {
@@ -298,7 +298,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
                           postsSuccess:[self postsHandlerWithBlog:blog loadMore:NO completionHandler:nil]
                         overallSuccess:^{
                             [self.managedObjectContext performBlockAndWait:^{
-                                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                                [ContextManager saveContext:self.managedObjectContext];
                             }];
 
                             if (success) {
@@ -489,7 +489,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         }
 
         [self.managedObjectContext performBlockAndWait:^{
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            [ContextManager saveContext:self.managedObjectContext];
         }];
 
         if (completion) {

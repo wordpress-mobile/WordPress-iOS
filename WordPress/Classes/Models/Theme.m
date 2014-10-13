@@ -93,7 +93,7 @@ static NSDateFormatter *dateFormatter;
                 }
             }
 
-            [[ContextManager sharedInstance] saveDerivedContext:backgroundMOC];
+            [ContextManager saveDerivedContext:backgroundMOC];
 
             dateFormatter = nil;
 
@@ -118,7 +118,7 @@ static NSDateFormatter *dateFormatter;
     [[defaultAccount restApi] fetchCurrentThemeForBlogId:blog.blogID.stringValue success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [blog.managedObjectContext performBlock:^{
             blog.currentThemeId = responseObject[@"id"];
-            [[ContextManager sharedInstance] saveContext:blog.managedObjectContext];
+            [ContextManager saveContext:blog.managedObjectContext];
             if (success) {
                 dispatch_async(dispatch_get_main_queue(), success);
             }
@@ -138,7 +138,7 @@ static NSDateFormatter *dateFormatter;
     [[defaultAccount restApi] activateThemeForBlogId:self.blog.blogID.stringValue themeId:self.themeId success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self.blog.managedObjectContext performBlock:^{
             self.blog.currentThemeId = self.themeId;
-            [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
+            [ContextManager saveContext:self.blog.managedObjectContext];
             if (success) {
                 dispatch_async(dispatch_get_main_queue(), success);
             }

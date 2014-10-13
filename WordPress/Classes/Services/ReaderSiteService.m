@@ -175,7 +175,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     [self deletePostsFromFollowedTopicForSite:site];
     [self.managedObjectContext deleteObject:site];
     [self.managedObjectContext performBlockAndWait:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        [ContextManager saveContext:self.managedObjectContext];
     }];
 
     if ([site isFeed]) {
@@ -316,7 +316,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     }
 
     [self.managedObjectContext performBlockAndWait:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        [ContextManager saveContext:self.managedObjectContext];
     }];
 }
 

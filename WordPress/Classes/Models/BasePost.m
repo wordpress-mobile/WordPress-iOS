@@ -73,7 +73,7 @@
 
 - (void)save
 {
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [ContextManager saveContext:self.managedObjectContext];
 }
 
 - (NSString *)statusTitle

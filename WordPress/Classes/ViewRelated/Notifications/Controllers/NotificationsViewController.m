@@ -313,7 +313,7 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
     // Mark as Read, if needed
     if(!note.read.boolValue) {
         note.read = @(1);
-        [[ContextManager sharedInstance] saveContext:note.managedObjectContext];
+        [ContextManager saveContext:note.managedObjectContext];
     }
     
     // Don't push nested!

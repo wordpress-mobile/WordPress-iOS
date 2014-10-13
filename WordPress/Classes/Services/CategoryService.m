@@ -106,7 +106,7 @@
                            success:^(NSNumber *categoryID) {
                                [self.managedObjectContext performBlockAndWait:^{
                                    category.categoryID = categoryID;
-                                   [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                                   [ContextManager saveContext:self.managedObjectContext];
                                }];
 
                                if (success) {
@@ -117,7 +117,7 @@
                                DDLogError(@"Error while saving remote Category: %@", error);
                                [self.managedObjectContext performBlockAndWait:^{
                                    [self.managedObjectContext deleteObject:category];
-                                   [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                                   [ContextManager saveContext:self.managedObjectContext];
                                }];
 
                                if (failure) {
@@ -151,7 +151,7 @@
         }
     }
 
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [ContextManager saveContext:self.managedObjectContext];
 }
 
 - (Blog *)blogWithObjectID:(NSManagedObjectID *)objectID

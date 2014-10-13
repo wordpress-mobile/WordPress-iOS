@@ -112,7 +112,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
             if (commentInContext) {
                 [self updateComment:commentInContext withRemoteComment:comment];
             }
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            [ContextManager saveContext:self.managedObjectContext];
             if (success) {
                 success();
             }
@@ -163,7 +163,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                withStatus:@"spam"
                   success:^{
                       [self.managedObjectContext deleteObject:comment];
-                      [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                      [ContextManager saveContext:self.managedObjectContext];
                       if (success) {
                           success();
                       }
@@ -182,7 +182,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
         [remote trashComment:remoteComment forBlog:comment.blog success:success failure:failure];
     }
     [self.managedObjectContext deleteObject:comment];
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [ContextManager saveContext:self.managedObjectContext];
 }
 
 
@@ -379,7 +379,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     }
 
     comment.status = status;
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [ContextManager saveContext:self.managedObjectContext];
     id <CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
     RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
     [remote moderateComment:remoteComment
@@ -390,7 +390,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                     } failure:^(NSError *error) {
                         [self.managedObjectContext performBlock:^{
                             comment.status = prevStatus;
-                            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                            [ContextManager saveContext:self.managedObjectContext];
                             if (failure) {
                                 dispatch_async(dispatch_get_main_queue(), ^{
                                     failure(error);
@@ -424,7 +424,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     }
 
     [self deleteUnownedComments];
-    [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext];
+    [ContextManager saveDerivedContext:self.managedObjectContext];
 
     if (completion) {
         dispatch_async(dispatch_get_main_queue(), completion);
@@ -506,7 +506,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     [self deleteUnownedComments];
 
     [self.managedObjectContext performBlock:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        [ContextManager saveContext:self.managedObjectContext];
     }];
 }
 
