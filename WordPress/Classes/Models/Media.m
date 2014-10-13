@@ -6,6 +6,8 @@
 #import "ContextManager.h"
 #import <ImageIO/ImageIO.h>
 
+NSString * const SavedMediaResizeSetting = @"SavedMediaResizeSetting";
+
 @interface Media (PrivateMethods)
 
 - (void)xmlrpcUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
@@ -42,6 +44,37 @@
 
 NSUInteger const MediaDefaultThumbnailSize = 75;
 CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
+
++ (NSString *)stringForMediaSize:(MediaResize)mediaSize
+{
+    if (mediaSize == MediaResizeSmall) {
+        return NSLocalizedString(@"Small", @"Name of the 'small' image size setting. This is the same size as the thumbnail size specified wp-admin media settings.");
+    }
+    if (mediaSize == MediaResizeMedium) {
+        return NSLocalizedString(@"Medium", @"Name of the 'medium' image size setting.");
+    }
+    if (mediaSize == MediaResizeLarge) {
+        return NSLocalizedString(@"Large", @"Name of the 'large' image size setting.");
+    }
+    return NSLocalizedString(@"Original", @"Name of the 'full' or original image size setting. Indicates that an image is its original size, or will keep its original size when uploaded.");
+}
+
++ (MediaResize)mediaResizeSetting
+{
+    NSNumber *savedSize = (NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:SavedMediaResizeSetting];
+    MediaResize mediaSize = MediaResizeOriginal;
+    if (savedSize) {
+        mediaSize = (MediaResize)[savedSize integerValue];
+    }
+    return mediaSize;
+}
+
++ (void)setMediaResizeSetting:(MediaResize)mediaSize
+{
+    NSNumber *size = [NSNumber numberWithInteger:mediaSize];
+    [[NSUserDefaults standardUserDefaults] setObject:size forKey:SavedMediaResizeSetting];
+    [NSUserDefaults resetStandardUserDefaults];
+}
 
 + (Media *)newMediaForPost:(AbstractPost *)post
 {
