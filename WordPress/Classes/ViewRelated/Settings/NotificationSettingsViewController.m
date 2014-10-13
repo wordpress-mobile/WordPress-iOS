@@ -70,7 +70,7 @@ static NSString* NotificationSettingForever         = @"forever";
         [self reloadNotificationSettings];
     } else {
         // Trigger a refresh to download the notification settings
-        CGFloat refreshControlHeight = self.refreshControl.frame.size.height;
+        CGFloat refreshControlHeight = CGRectGetHeight(self.refreshControl.frame);
         [self.tableView setContentOffset:CGPointMake(0.0f, -refreshControlHeight) animated:YES];
         [self.refreshControl beginRefreshing];
         
@@ -162,7 +162,7 @@ static NSString* NotificationSettingForever         = @"forever";
         return;
     }
     
-    NSDate* mutedUntilValue = [NSDate dateWithTimeIntervalSince1970:muteValue.doubleValue];
+    NSDate *mutedUntilValue = [NSDate dateWithTimeIntervalSince1970:muteValue.doubleValue];
     
     if ([mutedUntilValue laterDate:[NSDate date]] == mutedUntilValue) {
         return;
