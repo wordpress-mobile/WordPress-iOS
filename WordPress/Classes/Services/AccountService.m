@@ -112,7 +112,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     WPAccount *account = [self defaultWordPressComAccount];
     [self.managedObjectContext deleteObject:account];
 
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+    [ContextManager saveContext:self.managedObjectContext withCompletionBlock:^{
         [WPAnalytics refreshMetadata];
     }];
 
@@ -160,7 +160,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:WordPressDotcomXMLRPCKey username:username andPassword:password];
     account.authToken = authToken;
     account.isWpcom = YES;
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [ContextManager saveContext:self.managedObjectContext];
 
     if (![self defaultWordPressComAccount]) {
         [self setDefaultWordPressComAccount:account];
@@ -200,7 +200,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     }
     account.password = password;
 
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [ContextManager saveContext:self.managedObjectContext];
 
     return account;
 
@@ -294,7 +294,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
         blog.blogID = remoteBlog.ID;
     }
 
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [ContextManager saveContext:self.managedObjectContext];
 
     if (completion != nil) {
         dispatch_async(dispatch_get_main_queue(), completion);

@@ -270,7 +270,7 @@
 
     RemoteReaderPost *remotePost = [self remoteReaderPostForTests];
     ReaderPost *post = [service createOrReplaceFromRemotePost:remotePost forTopic:nil];
-    [[ContextManager sharedInstance] saveContext:context];
+    [ContextManager saveContext:context];
 
     [service deletePostsWithNoTopic];
     XCTAssertTrue(post.isDeleted, @"The post should have been deleted.");

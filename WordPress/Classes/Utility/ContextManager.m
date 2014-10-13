@@ -51,12 +51,12 @@ static ContextManager *instance;
 
 #pragma mark - Context Saving and Merging
 
-- (void)saveDerivedContext:(NSManagedObjectContext *)context
++ (void)saveDerivedContext:(NSManagedObjectContext *)context
 {
     [self saveDerivedContext:context withCompletionBlock:nil];
 }
 
-- (void)saveDerivedContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock
++ (void)saveDerivedContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock
 {
     [context performBlock:^{
         NSError *error;
@@ -77,21 +77,21 @@ static ContextManager *instance;
         // While this is needed because we don't observe change notifications for the derived context, it
         // breaks concurrency rules for Core Data.  Provide a mechanism to destroy a derived context that
         // unregisters it from the save notification instead and rely upon that for merging.
-        [self saveContext:self.mainContext];
+        [self saveContext:ContextManager.sharedInstance.mainContext];
     }];
 }
 
-- (void)saveContext:(NSManagedObjectContext *)context
++ (void)saveContext:(NSManagedObjectContext *)context
 {
     [self saveContext:context withCompletionBlock:nil];
 }
 
-- (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock
++ (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock
 {
     // Save derived contexts a little differently
     // TODO - When the service refactor is complete, remove this - calling methods to Services should know
     //        what kind of context it is and call the saveDerivedContext at the end of the work
-    if (context.parentContext == self.mainContext) {
+    if (context.parentContext == ContextManager.sharedInstance.mainContext) {
         [self saveDerivedContext:context withCompletionBlock:completionBlock];
         return;
     }

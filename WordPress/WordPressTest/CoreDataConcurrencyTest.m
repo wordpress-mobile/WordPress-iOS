@@ -50,7 +50,7 @@
 
     NSManagedObjectContext *derivedContext = [[ContextManager sharedInstance] newDerivedContext];
     Blog *blog = [self createTestBlogWithContext:derivedContext];
-    [[ContextManager sharedInstance] saveDerivedContext:derivedContext];
+    [ContextManager saveDerivedContext:derivedContext];
 
     // Wait on the merge to be completed
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
@@ -65,7 +65,7 @@
     
     NSManagedObjectContext *mainMOC = [[ContextManager sharedInstance] mainContext];
     Blog *blog = [self createTestBlogWithContext:mainMOC];
-    [[ContextManager sharedInstance] saveContext:mainMOC];
+    [ContextManager saveContext:mainMOC];
 
     // Wait on the merge to be completed
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
@@ -85,7 +85,7 @@
 
     NSManagedObjectContext *derivedContext = [[ContextManager sharedInstance] newDerivedContext];
     Blog *blog = [self createTestBlogWithContext:derivedContext];
-    [[ContextManager sharedInstance] saveDerivedContext:derivedContext];
+    [ContextManager saveDerivedContext:derivedContext];
     
     // Wait on the merge to be completed
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
@@ -111,7 +111,7 @@
     XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
     [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
 
-    [[ContextManager sharedInstance] saveDerivedContext:derivedContext];
+    [ContextManager saveDerivedContext:derivedContext];
 
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
     
@@ -129,7 +129,7 @@
     [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
 
     // Check that the save completes
-    XCTAssertNoThrow([[ContextManager sharedInstance] saveContext:mainContext], @"Saving should be successful");
+    XCTAssertNoThrow([ContextManager saveContext:mainContext], @"Saving should be successful");
     
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
     
@@ -192,7 +192,7 @@
             newBlog.xmlrpc = xmlrpc;
             newBlog.url = url;
         }
-        [[ContextManager sharedInstance] saveDerivedContext:derived withCompletionBlock:^{
+        [ContextManager saveDerivedContext:derived withCompletionBlock:^{
             // object exists in main context after derived's save
             // don't notify, wait for main's save ATHNotify()
             

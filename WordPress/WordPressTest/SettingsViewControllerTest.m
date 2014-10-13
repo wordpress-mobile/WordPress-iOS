@@ -106,7 +106,7 @@
         blog.xmlrpc = xmlrpc;
         blog.url = url;
     }
-    [[ContextManager sharedInstance] saveContext:account.managedObjectContext];
+    [ContextManager saveContext:account.managedObjectContext];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 
     [table reloadData];
@@ -137,7 +137,7 @@
         blog.xmlrpc = xmlrpc;
         blog.url = url;
     }
-    [[ContextManager sharedInstance] saveContext:account.managedObjectContext];
+    [ContextManager saveContext:account.managedObjectContext];
     [self waitForExpectationsWithTimeout:2.0 handler:^(NSError *error) {
         NSLog(@"Error: %@", error);
     }];

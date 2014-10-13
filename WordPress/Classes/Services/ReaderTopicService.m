@@ -144,7 +144,7 @@ static NSString * const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopi
         [self.managedObjectContext deleteObject:topic];
     }
     [self.managedObjectContext performBlockAndWait:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        [ContextManager saveContext:self.managedObjectContext];
     }];
 }
 
@@ -153,7 +153,7 @@ static NSString * const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopi
     // Optimistically mark the topic subscribed.
     topic.isSubscribed = YES;
     [self.managedObjectContext performBlockAndWait:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        [ContextManager saveContext:self.managedObjectContext];
     }];
     [self setCurrentTopic:topic];
 
@@ -180,7 +180,7 @@ static NSString * const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopi
         [self.managedObjectContext deleteObject:topic];
     }
     [self.managedObjectContext performBlockAndWait:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        [ContextManager saveContext:self.managedObjectContext];
     }];
 
     if (deletingCurrentTopic) {
@@ -363,7 +363,7 @@ static NSString * const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopi
     }
 
     [self.managedObjectContext performBlockAndWait:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        [ContextManager saveContext:self.managedObjectContext];
     }];
 }
 
