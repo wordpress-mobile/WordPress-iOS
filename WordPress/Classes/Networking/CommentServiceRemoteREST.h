@@ -34,6 +34,15 @@
                     failure:(void (^)(NSError *error))failure;
 
 /**
+ Adds a reply to a post with postID + siteID
+ */
+- (void)replyToPostWithID:(NSNumber *)postID
+                   siteID:(NSNumber *)siteID
+                  content:(NSString *)content
+                  success:(void (^)())success
+                  failure:(void (^)(NSError *error))failure;
+
+/**
  Adds a reply to a comment with commentID + siteID
  */
 - (void)replyToCommentWithID:(NSNumber *)commentID

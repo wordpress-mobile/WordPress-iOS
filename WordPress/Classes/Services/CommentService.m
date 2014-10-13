@@ -251,6 +251,20 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 }
 
 // Replies
+- (void)replyToPostWithID:(NSNumber *)postID
+                   siteID:(NSNumber *)siteID
+                  content:(NSString *)content
+                  success:(void (^)())success
+                  failure:(void (^)(NSError *error))failure
+{
+    CommentServiceRemoteREST *remote = [self remoteForREST];
+    [remote replyToPostWithID:postID
+                       siteID:siteID
+                      content:content
+                      success:success
+                      failure:failure];
+}
+
 - (void)replyToCommentWithID:(NSNumber *)commentID
                       siteID:(NSNumber *)siteID
                      content:(NSString *)content
