@@ -51,7 +51,7 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 // Sync a list of comments sorted by hierarchy
 - (void)syncHierarchicalCommentsForPost:(ReaderPost *)post
                                    page:(NSUInteger)page
-                                success:(void (^)(NSInteger count))success
+                                success:(void (^)(NSInteger count, BOOL hasMore))success
                                 failure:(void (^)(NSError *error))failure;
 
 // Counts and returns the total number of pages of hierarchcial comments synced for a post.
@@ -116,5 +116,17 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
                      siteID:(NSNumber *)siteID
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure;
+
+/**
+ This method will toggle the like status for a comment and optimistically save it. It will also
+ trigger either likeCommentWithID or unlikeCommentWithID. In case the request fails, like status
+ will be reverted back.
+
+ @param siteID is used since the blog might be nil for comment. It's not optional!
+ */
+- (void)toggleLikeStatusForComment:(Comment *)comment
+                            siteID:(NSNumber *)siteID
+                           success:(void (^)())success
+                           failure:(void (^)(NSError *error))failure;
 
 @end

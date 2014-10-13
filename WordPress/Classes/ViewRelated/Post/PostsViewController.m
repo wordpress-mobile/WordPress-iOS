@@ -8,6 +8,7 @@
 #import "Post.h"
 #import "Constants.h"
 #import "BlogService.h"
+#import "PostService.h"
 #import "ContextManager.h"
 
 #define TAG_OFFSET 1010
@@ -125,8 +126,8 @@
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    [blogService syncPostsForBlog:self.blog success:success failure:failure loadMore:YES];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+    [postService loadMorePostsOfType:PostServiceTypePost forBlog:self.blog success:success failure:failure];
 }
 
 #pragma mark -
@@ -190,12 +191,14 @@
 - (void)deletePostAtIndexPath:(NSIndexPath *)indexPath
 {
     Post *post = [self.resultsController objectAtIndexPath:indexPath];
-    [post deletePostWithSuccess:nil failure:^(NSError *error) {
-		if([error code] == 403) {
-			[self promptForPassword];
-		} else {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+    [postService deletePost:post success:nil failure:^(NSError *error) {
+        if([error code] == 403) {
+            [self promptForPassword];
+        } else {
             [WPError showXMLRPCErrorAlert:error];
-		}
+        }
         [self syncItems];
     }];
 }
@@ -205,7 +208,7 @@
     [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"posts_view" }];
 
     _addingNewPost = YES;
-    Post *post = [Post newDraftForBlog:self.blog];
+    Post *post = [PostService createDraftPostInMainContextForBlog:self.blog];
     [self editPost:post];
 }
 
@@ -294,22 +297,8 @@
 
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-
-    //Re-sync media, in case new media was added server-side
-    [blogService syncMediaLibraryForBlog:self.blog success:nil failure:nil];
-
-    if (userInteraction) {
-        // If triggered by a pull to refresh, sync posts and metadata
-        [blogService syncPostsAndMetadataForBlog:self.blog success:success failure:failure];
-    } else {
-        // If blog has no posts, then sync posts including metadata
-        if (self.blog.posts.count == 0) {
-            [blogService syncPostsAndMetadataForBlog:self.blog success:success failure:failure];
-        } else {
-            [blogService syncPostsForBlog:self.blog success:success failure:failure loadMore:NO];
-        }
-    }
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+    [postService syncPostsOfType:PostServiceTypePost forBlog:self.blog success:success failure:failure];
 }
 
 - (Class)cellClass {

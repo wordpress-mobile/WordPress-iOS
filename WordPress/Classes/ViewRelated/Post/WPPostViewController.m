@@ -9,43 +9,60 @@
 #import <WordPressCom-Analytics-iOS/WPAnalytics.h>
 #import "ContextManager.h"
 #import "Post.h"
+#import "Coordinate.h"
+#import "Media.h"
 #import "WPTableViewCell.h"
 #import "BlogSelectorViewController.h"
 #import "WPBlogSelectorButton.h"
 #import "LocationService.h"
 #import "BlogService.h"
 #import "MediaService.h"
+#import "PostService.h"
 #import "WPMediaUploader.h"
 #import "WPButtonForNavigationBar.h"
 #import "WPUploadStatusView.h"
-
+#import "WordPressAppDelegate.h"
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
 NSString *const kUserDefaultsNewEditorAvailable = @"kUserDefaultsNewEditorAvailable";
 NSString *const kUserDefaultsNewEditorEnabled = @"kUserDefaultsNewEditorEnabled";
+const CGRect NavigationBarButtonRect = {
+    .origin.x = 0.0f,
+    .origin.y = 0.0f,
+    .size.width = 30.0f,
+    .size.height = 30.0f
+};
 
 // Secret URL config parameters
 NSString *const kWPEditorConfigURLParamAvailable = @"available";
 NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 
 static NSInteger const MaximumNumberOfPictures = 5;
-static CGFloat const kNavigationBarButtonSpacer = 15.0;
-static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
+static NSUInteger const WPPostViewControllerSaveOnExitActionSheetTag = 201;
+static CGFloat const SpacingBetweeenNavbarButtons = 20.0f;
+static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
+static NSDictionary *DisabledButtonBarStyle;
+static NSDictionary *EnabledButtonBarStyle;
 
 @interface WPPostViewController ()<UIPopoverControllerDelegate> {
     NSOperationQueue *_mediaUploadQueue;
 }
 
-@property (nonatomic, strong) UIButton *titleBarButton;
+@property (nonatomic, strong) UIButton *blogPickerButton;
 @property (nonatomic, strong) UIView *uploadStatusView;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
-@property (nonatomic, strong) UIBarButtonItem *cancelButton;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
 
 #pragma mark - Bar Button Items
-@property (nonatomic, strong, readwrite) UIBarButtonItem *saveBarButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *secondaryLeftUIBarButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *negativeSeparator;
+@property (nonatomic, strong) UIBarButtonItem *cancelButton;
+@property (nonatomic, strong) UIBarButtonItem *editBarButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *saveBarButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *previewBarButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *optionsBarButtonItem;
 
 @end
 
@@ -64,11 +81,10 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-	
+
     Blog *blog = [blogService lastUsedOrFirstBlog];
     [self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
-
-    Post *post = [Post newDraftForBlog:blog];
+    Post *post = [PostService createDraftPostInMainContextForBlog:blog];
     return [self initWithPost:post
 						 mode:kWPPostViewControllerModeEdit];
 }
@@ -181,7 +197,15 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];	
+    [super viewDidLoad];
+    
+    DisabledButtonBarStyle = @{NSFontAttributeName: [WPStyleGuide regularTextFontSemiBold], NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.25]};
+    EnabledButtonBarStyle = @{NSFontAttributeName: [WPStyleGuide regularTextFontSemiBold], NSForegroundColorAttributeName: [UIColor whiteColor]};
+    
+    // This is a trick to kick the starting UIButtonBarItem to the left
+    self.negativeSeparator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    self.negativeSeparator.width = -12;
+    
     [self createRevisionOfPost];
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
     
@@ -199,13 +223,13 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 	
     // Display the "back" chevron without text
     self.navigationController.navigationBar.topItem.title = @"";
-    [self refreshNavigationBar:NO];
+    [self refreshNavigationBarButtons:NO];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
-	
+	[self refreshNavigationBarButtons:NO];
 	if (self.isEditing) {
 		if ([self shouldHideStatusBarWhileTyping]) {
 			[[UIApplication sharedApplication] setStatusBarHidden:YES
@@ -263,7 +287,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
             BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
             [blogService flagBlogAsLastUsed:blog];
-            AbstractPost *newPost = [[self.post class] newDraftForBlog:blog];
+            AbstractPost *newPost = [self createNewDraftForBlog:blog];
             AbstractPost *oldPost = self.post;
             
             NSString *content = oldPost.content;
@@ -292,6 +316,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
         }
         
         [self refreshUIForCurrentPost];
+        [self refreshNavigationBarButtons:NO];
         dismissHandler();
     };
     
@@ -299,26 +324,20 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
                                                                                    selectedCompletion:selectedCompletion
                                                                                      cancelCompletion:dismissHandler];
     vc.title = NSLocalizedString(@"Select Site", @"");
-
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     navController.navigationBar.translucent = NO;
     navController.navigationBar.barStyle = UIBarStyleBlack;
     
     if (IS_IPAD) {
         vc.preferredContentSize = CGSizeMake(320.0, 500);
-        
-        CGRect titleRect = self.navigationItem.titleView.frame;
-        titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
-
         self.blogSelectorPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
         self.blogSelectorPopover.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
         self.blogSelectorPopover.delegate = self;
-        [self.blogSelectorPopover presentPopoverFromRect:titleRect inView:self.navigationController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        [self.blogSelectorPopover presentPopoverFromBarButtonItem:self.secondaryLeftUIBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 
     } else {
         navController.modalPresentationStyle = UIModalPresentationPageSheet;
         navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        
         [self presentViewController:navController animated:YES completion:nil];
     }
 }
@@ -343,14 +362,14 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 - (void)showSettings
 {
     Post *post = (Post *)self.post;
-    PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post];
+    PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post shouldHideStatusBar:YES];
 	vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)showPreview
 {
-    PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.post];
+    PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.post shouldHideStatusBar:self.isEditing];
 	vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -387,7 +406,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 		if (self.editMode == EditPostViewControllerModeNewPost) {
 			[self discardChangesAndDismiss];
 		} else {
-            [self refreshNavigationBar:YES];
+            [self refreshNavigationBarButtons:YES];
             [self discardChanges];
 		}
         return;
@@ -416,7 +435,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
                                          otherButtonTitles:NSLocalizedString(@"Update Draft", @"Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post."), nil];
     }
     
-    actionSheet.tag = kWPPostViewControllerSaveOnExitActionSheetTag;
+    actionSheet.tag = WPPostViewControllerSaveOnExitActionSheetTag;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
     if (IS_IPAD) {
         [actionSheet showFromBarButtonItem:self.cancelButton animated:YES];
@@ -475,6 +494,10 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
     UIImage *coloredImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return coloredImage;
+}
+
+- (AbstractPost *)createNewDraftForBlog:(Blog *)blog {
+    return [PostService createDraftPostInMainContextForBlog:blog];
 }
 
 - (void)geotagNewPost {
@@ -538,36 +561,6 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 
 #pragma mark - UI Manipulation
 
-- (void)refreshNavigationBar:(BOOL)editingChanged
-{
-    [self refreshNavigationBarButtons:editingChanged];
-	
-    // Configure the custom title view, or just set the navigationItem title.
-    // Only show the blog selector in the nav title view if we're editing a new post
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    NSInteger blogCount = [blogService blogCountForAllAccounts];
-    
-    if (_mediaUploadQueue.operationCount > 0) {
-        self.navigationItem.titleView = self.uploadStatusView;
-    } else if(blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
-        self.navigationItem.titleView = nil;
-    } else {
-        UIButton *titleButton = self.titleBarButton;
-        self.navigationItem.titleView = titleButton;
-        
-        
-        NSString *blogName = [self.post.blog.blogName length] == 0 ? self.post.blog.url : self.post.blog.blogName;
-        
-        NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", blogName]
-                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
-
-        [titleButton setAttributedTitle:titleText forState:UIControlStateNormal];
-        
-        [titleButton sizeToFit];
-    }
-}
-
 /**
  *  @brief      Refreshes the navigation bar buttons.
  *  
@@ -583,23 +576,27 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 
 - (void)refreshNavigationBarLeftButtons:(BOOL)editingChanged
 {
-	if ([self isEditing] && !self.post.hasRemote) {
+    UIBarButtonItem *secondaryleftHandButton = self.secondaryLeftUIBarButtonItem;
+    
+    if ([self isEditing] && !self.post.hasRemote) {
         // Editing a new post
         [self.navigationItem setLeftBarButtonItems:nil];
-        UIBarButtonItem *negativeSeparator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-                                                                                           target:nil
-                                                                                           action:nil];
-        negativeSeparator.width = -10;
-        NSArray* leftBarButtons = @[negativeSeparator, self.cancelXButton, negativeSeparator];
+        NSArray* leftBarButtons;
+        if (secondaryleftHandButton) {
+            leftBarButtons = @[self.negativeSeparator, self.cancelXButton, secondaryleftHandButton];
+        } else {
+            leftBarButtons = @[self.negativeSeparator, self.cancelXButton];
+        }
         [self.navigationItem setLeftBarButtonItems:leftBarButtons animated:NO];
     } else if ([self isEditing] && self.post.hasRemote) {
         // Editing an existing post (draft or published)
         [self.navigationItem setLeftBarButtonItems:nil];
-        UIBarButtonItem *negativeSeparator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-                                                                                           target:nil
-                                                                                           action:nil];
-        negativeSeparator.width = -10;
-        NSArray* leftBarButtons = @[negativeSeparator, self.cancelChevronButton, negativeSeparator];
+        NSArray* leftBarButtons;
+        if (secondaryleftHandButton) {
+            leftBarButtons = @[self.negativeSeparator, self.cancelChevronButton, secondaryleftHandButton];
+        } else {
+            leftBarButtons = @[self.negativeSeparator, self.cancelChevronButton];
+        }
         [self.navigationItem setLeftBarButtonItems:leftBarButtons animated:NO];
 	} else {
         [self.navigationItem setLeftBarButtonItems:nil];
@@ -609,38 +606,21 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 
 - (void)refreshNavigationBarRightButtons:(BOOL)editingChanged
 {
-    UIBarButtonItem *separator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-                                                                               target:nil
-                                                                               action:nil];
-    separator.width = kNavigationBarButtonSpacer;
-    
     if ([self isEditing]) {
-        UIBarButtonItem* saveBarButtonItem = [self saveBarButtonItem];
-        
         if (editingChanged) {
-            NSArray* rightBarButtons = @[saveBarButtonItem,
-                                         separator,
+            NSArray* rightBarButtons = @[self.saveBarButtonItem,
                                          [self optionsBarButtonItem],
-                                         separator,
                                          [self previewBarButtonItem]];
             
             [self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
         } else {
-            saveBarButtonItem.title = [self saveBarButtonItemTitle];
+            self.saveBarButtonItem.title = [self saveBarButtonItemTitle];
         }
 
 		BOOL updateEnabled = self.hasChanges || self.post.remoteStatus == AbstractPostRemoteStatusFailed;
-		[self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];
-		
-		// Seems to be a bug with UIBarButtonItem respecting the UIControlStateDisabled text color
-		NSDictionary *titleTextAttributes;
-		UIColor *color = updateEnabled ? [UIColor whiteColor] : [UIColor colorWithWhite:1.0 alpha:0.5];
-		UIControlState controlState = updateEnabled ? UIControlStateNormal : UIControlStateDisabled;
-		titleTextAttributes = @{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName : color};
-		[self.navigationItem.rightBarButtonItem setTitleTextAttributes:titleTextAttributes forState:controlState];
+		[self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];		
 	} else {
-		NSArray* rightBarButtons = @[[self editBarButtonItem],
-                                     separator, separator,
+		NSArray* rightBarButtons = @[self.editBarButtonItem,
 									 [self previewBarButtonItem]];
 		
 		[self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
@@ -703,10 +683,13 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 - (UIBarButtonItem*)cancelChevronButton
 {
     WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-chevron"
-                                                                        frame:CGRectMake(0.0f, 0.0f, 40.0f, 40.0f)
+                                                                        frame:NavigationBarButtonRect
                                                                        target:self
                                                                      selector:@selector(cancelEditing)];
     cancelButton.removeDefaultLeftSpacing = YES;
+    cancelButton.removeDefaultRightSpacing = YES;
+    cancelButton.rightSpacing = RightSpacingOnExitNavbarButton;
+    
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     _cancelButton = button;
     return _cancelButton;
@@ -715,10 +698,13 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 - (UIBarButtonItem*)cancelXButton
 {
     WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-x"
-                                                                        frame:CGRectMake(0.0f, 0.0f, 40.0f, 40.0f)
+                                                                        frame:NavigationBarButtonRect
                                                                        target:self
                                                                      selector:@selector(cancelEditing)];
-    cancelButton.removeDefaultLeftSpacing = YES;        
+    cancelButton.removeDefaultLeftSpacing = YES;
+    cancelButton.removeDefaultRightSpacing = YES;
+    cancelButton.rightSpacing = RightSpacingOnExitNavbarButton;
+    
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     _cancelButton = button;
 	return _cancelButton;
@@ -726,44 +712,58 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 
 - (UIBarButtonItem *)editBarButtonItem
 {
-	NSString* buttonTitle = NSLocalizedString(@"Edit",
-											  @"Label for the button to edit the current post.");
-	
-	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
-															   style:UIBarButtonItemStylePlain
-															  target:self
-															  action:@selector(startEditing)];
-	
-	return button;
+    if (!_editBarButtonItem) {
+        NSString* buttonTitle = NSLocalizedString(@"Edit",
+                                                  @"Label for the button to edit the current post.");
+        
+        UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:self
+                                                                  action:@selector(startEditing)];
+        
+        // Seems to be an issue witht the appearance proxy not being respected, so resetting these here
+        [editButton setTitleTextAttributes:EnabledButtonBarStyle forState:UIControlStateNormal];
+        [editButton setTitleTextAttributes:DisabledButtonBarStyle forState:UIControlStateDisabled];
+        _editBarButtonItem = editButton;
+    }
+    
+	return _editBarButtonItem;
 }
 
 - (UIBarButtonItem *)optionsBarButtonItem
 {
-	WPButtonForNavigationBar *button = [self buttonForBarWithImageNamed:@"icon-posts-editor-options"
-																  frame:CGRectMake(0.0f, 0.0f, 40.0f, 40.0f)
-																 target:self
-															   selector:@selector(showSettings)];
-
-	button.removeDefaultRightSpacing = YES;
-	button.rightSpacing = 5.0f;
-	
-	UIBarButtonItem* barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-	
-	return barButtonItem;
+	if (!_optionsBarButtonItem) {
+        WPButtonForNavigationBar *button = [self buttonForBarWithImageNamed:@"icon-posts-editor-options"
+                                                                      frame:NavigationBarButtonRect
+                                                                     target:self
+                                                                   selector:@selector(showSettings)];
+        
+        button.removeDefaultRightSpacing = YES;
+        button.rightSpacing = SpacingBetweeenNavbarButtons / 2.0f;
+        button.removeDefaultLeftSpacing = YES;
+        button.leftSpacing = SpacingBetweeenNavbarButtons / 2.0f;
+        _optionsBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    }
+    
+	return _optionsBarButtonItem;
 }
 
 - (UIBarButtonItem *)previewBarButtonItem
 {
-	WPButtonForNavigationBar* button = [self buttonForBarWithImageNamed:@"icon-posts-editor-preview"
-                                                                  frame:CGRectMake(0.0f, 0.0f, 40.0f, 40.0f)
-																 target:self
-															   selector:@selector(showPreview)];
+	if (!_previewBarButtonItem) {
+        WPButtonForNavigationBar* button = [self buttonForBarWithImageNamed:@"icon-posts-editor-preview"
+                                                                      frame:NavigationBarButtonRect
+                                                                     target:self
+                                                                   selector:@selector(showPreview)];
+        
+        button.removeDefaultRightSpacing = YES;
+        button.rightSpacing = SpacingBetweeenNavbarButtons / 2.0f;
+        button.removeDefaultLeftSpacing = YES;
+        button.leftSpacing = SpacingBetweeenNavbarButtons / 2.0f;
+        _previewBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    }
 	
-	button.removeDefaultRightSpacing = YES;
-	
-	UIBarButtonItem* barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-	
-	return barButtonItem;
+	return _previewBarButtonItem;
 }
 
 - (UIBarButtonItem *)saveBarButtonItem
@@ -776,6 +776,9 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
                                                                       target:self
                                                                       action:@selector(saveAction)];
         
+        // Seems to be an issue witht the appearance proxy not being respected, so resetting these here
+        [saveButton setTitleTextAttributes:EnabledButtonBarStyle forState:UIControlStateNormal];
+        [saveButton setTitleTextAttributes:DisabledButtonBarStyle forState:UIControlStateDisabled];
         _saveBarButtonItem = saveButton;
     }
 
@@ -804,28 +807,46 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
     return buttonTitle;
 }
 
-- (UIButton *)titleBarButton
+- (UIBarButtonItem *)secondaryLeftUIBarButtonItem
 {
-    if (_titleBarButton) {
-        return _titleBarButton;
-    }
-    UIButton *titleButton = [WPBlogSelectorButton buttonWithType:UIButtonTypeSystem];
-    titleButton.frame = CGRectMake(0.0f, 0.0f, 200.0f, 33.0f);
-    titleButton.titleLabel.numberOfLines = 1;
-    titleButton.titleLabel.textColor = [UIColor whiteColor];
-    titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    titleButton.titleLabel.adjustsFontSizeToFitWidth = NO;
-    titleButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-    titleButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-    [titleButton setImage:[UIImage imageNamed:@"icon-navbar-dropdown.png"] forState:UIControlStateNormal];
-    [titleButton addTarget:self action:@selector(showBlogSelectorPrompt) forControlEvents:UIControlEventTouchUpInside];
-    [titleButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 10)];
-    [titleButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
-    [titleButton setAccessibilityHint:NSLocalizedString(@"Tap to select which blog to post to", nil)];
-
-    _titleBarButton = titleButton;
+    UIBarButtonItem *aUIButtonBarItem;
     
-    return _titleBarButton;
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    NSInteger blogCount = [blogService blogCountForAllAccounts];
+    
+    if (_mediaUploadQueue.operationCount > 0) {
+        aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:self.uploadStatusView];
+    } else if(blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
+        aUIButtonBarItem = nil;
+    } else {
+        UIButton *blogButton = self.blogPickerButton;
+        NSString *blogName = [self.post.blog.blogName length] == 0 ? self.post.blog.url : self.post.blog.blogName;
+        NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", blogName]
+                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
+        
+        [blogButton setAttributedTitle:titleText forState:UIControlStateNormal];
+        if (IS_IPAD) {
+            //size to fit here so the iPad popover works properly
+            [blogButton sizeToFit];
+        }
+        aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:blogButton];
+    }
+    
+    _secondaryLeftUIBarButtonItem = aUIButtonBarItem;
+    return _secondaryLeftUIBarButtonItem;
+}
+
+- (UIButton *)blogPickerButton
+{
+    if (!_blogPickerButton) {
+        CGFloat titleButtonWidth = (IS_IPAD) ? 300.0f : 170.0f;
+        UIButton *button = [WPBlogSelectorButton buttonWithFrame:CGRectMake(0.0f, 0.0f, titleButtonWidth , 30.0f) buttonStyle:WPBlogSelectorButtonTypeSingleLine];
+        [button addTarget:self action:@selector(showBlogSelectorPrompt) forControlEvents:UIControlEventTouchUpInside];
+        _blogPickerButton = button;
+    }
+    
+    return _blogPickerButton;
 }
 
 - (UIView *)uploadStatusView
@@ -833,7 +854,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
     if (_uploadStatusView) {
         return _uploadStatusView;
     }
-    WPUploadStatusView *uploadStatusView = [[WPUploadStatusView alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, 33.0)];
+    WPUploadStatusView *uploadStatusView = [[WPUploadStatusView alloc] initWithFrame:CGRectMake(0.0, 0.0, (IS_IPAD) ? 260.0f : 180.0f, 33.0)];
     uploadStatusView.tappedView = ^{
         [self showCancelMediaUploadPrompt];
     };
@@ -944,12 +965,15 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
     [self.post.original deleteRevision];
     
 	NSString *postTitle = self.post.original.postTitle;
-	[self.post.original uploadWithSuccess:^{
-		DDLogInfo(@"post uploaded: %@", postTitle);
-	} failure:^(NSError *error) {
-		DDLogError(@"post failed: %@", [error localizedDescription]);
-	}];
-	
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+    [postService uploadPost:(Post *)self.post.original
+                    success:^{
+                        DDLogInfo(@"post uploaded: %@", postTitle);
+                    } failure:^(NSError *error) {
+                        DDLogError(@"post failed: %@", [error localizedDescription]);
+                    }];
+
     [self didSaveNewPost];
 }
 
@@ -1017,16 +1041,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
  */
 - (void)autosaveContent
 {
-    [self autosaveContentWithTitle:self.titleText];
-}
-
-/**
- *  @brief      Save changes to core data, with the specified title.
- *  @details    This is necessary at this time for handling title changes by the user.
- */
-- (void)autosaveContentWithTitle:(NSString*)title
-{
-    self.post.postTitle = title;
+    self.post.postTitle = self.titleText;
     
     self.post.content = self.bodyText;
     if ([self.post.content rangeOfString:@"<!--more-->"].location != NSNotFound)
@@ -1203,7 +1218,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if ([actionSheet tag] == kWPPostViewControllerSaveOnExitActionSheetTag) {
+    if ([actionSheet tag] == WPPostViewControllerSaveOnExitActionSheetTag) {
         if (buttonIndex == actionSheet.destructiveButtonIndex) {
             [self actionSheetDiscardButtonPressed];
         } else if (buttonIndex == actionSheet.cancelButtonIndex) {
@@ -1257,10 +1272,9 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 											withAnimation:UIStatusBarAnimationSlide];
 }
 
-- (void)editorViewController:(WPEditorViewController *)editorController
-             titleWillChange:(NSString *)title
+- (void)editorTitleDidChange:(WPEditorViewController *)editorController
 {
-    [self autosaveContentWithTitle:title];
+    [self autosaveContent];
     [self refreshNavigationBarButtons:NO];
 }
 
@@ -1283,6 +1297,11 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 - (void)editorDidPressPreview:(WPEditorViewController *)editorController
 {
     [self showPreview];
+}
+
+- (void)editorDidFinishLoadingDOM:(WPEditorViewController *)editorController
+{
+    [self refreshUIForCurrentPost];
 }
 
 #pragma mark - CTAssetsPickerController delegate
@@ -1331,7 +1350,7 @@ static NSUInteger const kWPPostViewControllerSaveOnExitActionSheetTag = 201;
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([object isEqual:_mediaUploadQueue]) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self refreshNavigationBar:NO];
+            [self refreshNavigationBarButtons:NO];
         });
     }
 }

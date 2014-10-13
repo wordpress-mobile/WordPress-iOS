@@ -53,7 +53,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
 #pragma mark - Fetch Methods
 
-- (void)fetchPostsForTopic:(ReaderTopic *)topic earlierThan:(NSDate *)date success:(void (^)(NSInteger count))success failure:(void (^)(NSError *error))failure
+- (void)fetchPostsForTopic:(ReaderTopic *)topic earlierThan:(NSDate *)date success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *topicObjectID = topic.objectID;
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
@@ -69,7 +69,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
                                   }];
 }
 
-- (void)fetchPostsForTopic:(ReaderTopic *)topic success:(void (^)(NSInteger count))success failure:(void (^)(NSError *error))failure
+- (void)fetchPostsForTopic:(ReaderTopic *)topic success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
 {
     [self fetchPostsForTopic:topic earlierThan:[NSDate date] success:success failure:failure];
 }
@@ -100,7 +100,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     }];
 }
 
-- (void)backfillPostsForTopic:(ReaderTopic *)topic success:(void (^)(NSInteger count))success failure:(void (^)(NSError *error))failure
+- (void)backfillPostsForTopic:(ReaderTopic *)topic success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *topicObjectID = topic.objectID;
     ReaderPost *post = [self newestPostForTopic:topicObjectID];
@@ -496,7 +496,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 - (void)fetchPostsToBackfillTopic:(NSManagedObjectID *)topicObjectID
                       earlierThan:(NSDate *)date
                     backfillState:(ReaderPostServiceBackfillState *)state
-                          success:(void (^)(NSInteger count))success
+                          success:(void (^)(NSInteger count, BOOL hasMore))success
                           failure:(void (^)(NSError *error))failure
 {
     NSError *error;
@@ -536,7 +536,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 - (void)processBackfillPostsForTopic:(NSManagedObjectID *)topicObjectID
                                posts:(NSArray *)posts
                        backfillState:(ReaderPostServiceBackfillState *)state
-                             success:(void (^)(NSInteger count))success
+                             success:(void (^)(NSInteger count, BOOL hasMore))success
                              failure:(void (^)(NSError *error))failure
 {
     state.backfillBatchNumber++;
@@ -570,7 +570,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 - (void)mergePosts:(NSArray *)posts
        earlierThan:(NSDate *)date
           forTopic:(NSManagedObjectID *)topicObjectID
-    callingSuccess:(void (^)(NSInteger count))success
+    callingSuccess:(void (^)(NSInteger count, BOOL hasMore))success
 {
     // Use a performBlock here so the work to merge does not block the main thread.
     [self.managedObjectContext performBlock:^{
@@ -580,7 +580,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         if (error || !readerTopic) {
             // if there was an error or the topic was deleted just bail.
             if (success) {
-                success(NO);
+                success(0, NO);
             }
             return;
         }
@@ -602,7 +602,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         }];
 
         if (success) {
-            success(postsCount);
+            BOOL hasMore = ((postsCount > 0 ) && ([self numberOfPostsForTopic:readerTopic] < ReaderPostServiceMaxPosts));
+            success(postsCount, hasMore);
         }
     }];
 }
@@ -993,12 +994,14 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     static NSRegularExpression *regexVideoPress;
     static NSRegularExpression *regexMp4;
     static NSRegularExpression *regexSrc;
+    static NSRegularExpression *regexPoster;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSError *error;
         regexVideoPress = [NSRegularExpression regularExpressionWithPattern:@"<div.*class=\"video-player[\\S\\s]+?<div.*class=\"videopress-placeholder[\\s\\S]*?</noscript>" options:NSRegularExpressionCaseInsensitive error:&error];
         regexMp4 = [NSRegularExpression regularExpressionWithPattern:@"mp4[\\s\\S]+?mp4" options:NSRegularExpressionCaseInsensitive error:&error];
         regexSrc = [NSRegularExpression regularExpressionWithPattern:@"http\\S+mp4" options:NSRegularExpressionCaseInsensitive error:&error];
+        regexPoster = [NSRegularExpression regularExpressionWithPattern:@"<img.*class=\"videopress-poster[\\s\\S]*?>" options:NSRegularExpressionCaseInsensitive error:&error];
     });
 
     // Find instances of VideoPress markup.
@@ -1026,14 +1029,44 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         NSString *src = [mp4 substringWithRange:srcMatch];
         src = [src stringByReplacingOccurrencesOfString:@"\\/" withString:@"/"];
 
+        NSString *height = @"200"; // default
+        NSString *placeholder = @"";
+        NSRange posterMatch = [regexPoster rangeOfFirstMatchInString:string options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [string length])];
+        if (posterMatch.location != NSNotFound) {
+            NSString *poster = [string substringWithRange:posterMatch];
+            NSString *value = [self parseValueForAttriuteNamed:@"height" inElement:poster];
+            if (value) {
+                height = value;
+            }
+
+            value = [self parseValueForAttriuteNamed:@"src" inElement:poster];
+            if (value) {
+                placeholder = value;
+            }
+        }
+
         // Compose a video tag to replace the default markup.
-        NSString *fmt = @"<video src=\"%@\"><source src=\"%@\" type=\"video/mp4\"></video>";
-        NSString *vid = [NSString stringWithFormat:fmt, src, src];
+        NSString *fmt = @"<video src=\"%@\" controls width=\"100%%\" height=\"%@\" poster=\"%@\"><source src=\"%@\" type=\"video/mp4\"></video>";
+        NSString *vid = [NSString stringWithFormat:fmt, src, height, placeholder, src];
 
         [mstr replaceCharactersInRange:match.range withString:vid];
     }
 
     return mstr;
+}
+
+- (NSString *)parseValueForAttriuteNamed:(NSString *)attribute inElement:(NSString *)element
+{
+    NSString *value = @"";
+    NSString *attrStr = [NSString stringWithFormat:@"%@=\"", attribute];
+    NSRange attrRange = [element rangeOfString:attrStr];
+    if (attrRange.location != NSNotFound) {
+        NSInteger location = attrRange.location + attrRange.length;
+        NSInteger length = [element length] - location;
+        NSRange ending = [element rangeOfString:@"\"" options:NSCaseInsensitiveSearch range:NSMakeRange(location, length)];
+        value = [element substringWithRange:NSMakeRange(location, ending.location - location)];
+    }
+    return value;
 }
 
 /**
