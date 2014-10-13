@@ -79,6 +79,17 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 @implementation NotificationDetailsViewController
 
+- (void)dealloc
+{
+    // Failsafe: Manually nuke the tableView dataSource and delegate. Make sure not to force a loadView event!
+    if (!self.isViewLoaded) {
+        return;
+    }
+    
+    self.tableView.delegate = nil;
+    self.tableView.dataSource = nil;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
