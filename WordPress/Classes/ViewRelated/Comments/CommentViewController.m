@@ -226,11 +226,11 @@ static NSInteger const CVCSectionSeparatorHeight = 10;
     };
 
     cell.onLikeClick = ^(UIButton *sender){
-        [weakSelf likeComment];
+        [weakSelf toggleLikeForComment];
     };
 
     cell.onUnlikeClick = ^(UIButton *sender){
-        [weakSelf unlikeComment];
+        [weakSelf toggleLikeForComment];
     };
 
     cell.onApproveClick = ^(UIButton *sender){
@@ -259,20 +259,11 @@ static NSInteger const CVCSectionSeparatorHeight = 10;
     [self.navigationController pushViewController:webViewController animated:YES];
 }
 
-- (void)likeComment
+- (void)toggleLikeForComment
 {
     __typeof(self) __weak weakSelf = self;
 
-    [self.commentService likeCommentWithID:self.comment.commentID siteID:self.comment.blog.blogID success:nil failure:^(NSError *error) {
-        [weakSelf.tableView reloadData];
-    }];
-}
-
-- (void)unlikeComment
-{
-    __typeof(self) __weak weakSelf = self;
-
-    [self.commentService unlikeCommentWithID:self.comment.commentID siteID:self.comment.blog.blogID success:nil failure:^(NSError *error) {
+    [self.commentService toggleLikeStatusForComment:self.comment siteID:self.comment.blog.blogID success:nil failure:^(NSError *error) {
         [weakSelf.tableView reloadData];
     }];
 }
