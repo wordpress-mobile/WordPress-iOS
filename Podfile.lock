@@ -57,12 +57,12 @@ PODS:
   - OCMock (3.1.1)
   - OHHTTPStubs (1.1.1)
   - Reachability (3.1.1)
-  - Simperium (0.6.9):
+  - Simperium (0.7.0):
     - Google-Diff-Match-Patch
     - JRSwizzle
     - Simperium/no-arc
     - SocketRocket
-  - Simperium/no-arc (0.6.9):
+  - Simperium/no-arc (0.7.0):
     - Google-Diff-Match-Patch
     - JRSwizzle
     - SocketRocket
@@ -76,7 +76,7 @@ PODS:
     - UIAlertView+Blocks
     - WordPress-iOS-Shared (~> 0.1.0)
     - WordPressCom-Analytics-iOS (~> 0.0.4)
-  - WordPress-iOS-Shared (0.1.1):
+  - WordPress-iOS-Shared (0.1.2):
     - AFNetworking (~> 2.3.1)
     - CocoaLumberjack (~> 1.8.1)
     - DTCoreText (= 1.6.13)
@@ -90,7 +90,7 @@ PODS:
     - NSObject-SafeExpectations (= 0.0.2)
     - WordPress-iOS-Shared (~> 0.1.0)
     - WordPressCom-Analytics-iOS
-  - wpxmlrpc (0.4.1)
+  - wpxmlrpc (0.4.3)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.3.1)
@@ -111,17 +111,17 @@ DEPENDENCIES:
   - OCMock
   - OHHTTPStubs (= 1.1.1)
   - Reachability (= 3.1.1)
-  - Simperium (= 0.6.9)
+  - Simperium (= 0.7.0)
   - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`, branch `master`)
   - SVProgressHUD (~> 1.0)
   - Taplytics (~> 1.3.10)
   - UIDeviceIdentifier (~> 0.1)
-  - WordPress-iOS-Editor (= 0.2.1)
-  - WordPress-iOS-Shared (= 0.1.1)
+  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, commit `cb03818c8a927abd1b52d2d364115d773fc26c9b`, branch `release/0.2.2`)
+  - WordPress-iOS-Shared (= 0.1.2)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPressApi.git`)
   - WordPressCom-Analytics-iOS (= 0.0.6)
   - WordPressCom-Stats-iOS (= 0.1.4)
-  - wpxmlrpc (~> 0.4.1)
+  - wpxmlrpc (~> 0.4.3)
 
 EXTERNAL SOURCES:
   EmailChecker:
@@ -132,6 +132,10 @@ EXTERNAL SOURCES:
   SocketRocket:
     :branch: master
     :git: https://github.com/jleandroperez/SocketRocket.git
+  WordPress-iOS-Editor:
+    :branch: release/0.2.2
+    :commit: cb03818c8a927abd1b52d2d364115d773fc26c9b
+    :git: git://github.com/wordpress-mobile/WordPress-iOS-Editor
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPressApi.git
 
@@ -158,17 +162,17 @@ SPEC CHECKSUMS:
   OCMock: f6cb8c162ab9d5620dddf411282c7b2c0ee78854
   OHHTTPStubs: d6ace2645e4744a0ad6c5a72940999a5632037fb
   Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
-  Simperium: 867d03e089318f0503606d6011490439a5804672
+  Simperium: 2d83a368f5d6ff6dab27782c5a8d9639d494102d
   SocketRocket: b809068861cb66d871eb93a428696b1eb5451318
   SVProgressHUD: 5034c6e22b8c2ca3e09402e48d41ed0340aa1c50
   Taplytics: d8f820afa67a73fd1ddccb1bc6144d10f2c3ad61
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
   UIDeviceIdentifier: a313d8f8d5a0ad34898f332e65dbecfa2d9b2af3
-  WordPress-iOS-Editor: 091b6460fab45589af994b68f3244b40080d7f36
-  WordPress-iOS-Shared: 44463dbfdc0fa6bd40fa38eeff14d8e0fe9a7d9c
+  WordPress-iOS-Editor: 1f4410ffd766061cff8a1a5cf3c66926235e31bb
+  WordPress-iOS-Shared: d3654b3eae4376ade1ea18d5ac54713afea39a69
   WordPressApi: 6216cef116f627f07d1a519b8d04dd7acada0d20
   WordPressCom-Analytics-iOS: 8a61cd361b7d27c23917e70d237af4d990b4f785
   WordPressCom-Stats-iOS: f9c4c14d52c64f63473931c1006ddb370217e74e
-  wpxmlrpc: a56b534ad0eb7db28a580eabb68a4a3d3426f6d7
+  wpxmlrpc: 10fc1e740ae7c23b16b1a7952f6103ee52f6589e
 
-COCOAPODS: 0.34.1
+COCOAPODS: 0.34.2

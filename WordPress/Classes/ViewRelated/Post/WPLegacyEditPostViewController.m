@@ -2,14 +2,18 @@
 #import "WPLegacyEditPostViewController_Internal.h"
 #import "ContextManager.h"
 #import "Post.h"
+#import "Coordinate.h"
+#import "Media.h"
 #import "WPTableViewCell.h"
 #import "BlogSelectorViewController.h"
 #import "WPBlogSelectorButton.h"
 #import "LocationService.h"
 #import "BlogService.h"
+#import "PostService.h"
 #import "MediaService.h"
 #import "WPMediaUploader.h"
 #import "WPUploadStatusView.h"
+#import "WordPressAppDelegate.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
@@ -103,7 +107,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
     Blog *blog = [blogService lastUsedOrFirstBlog];
-    return [self initWithPost:[Post newDraftForBlog:blog]];
+    return [self initWithPost:[PostService createDraftPostInMainContextForBlog:blog]];
 }
 
 - (id)initWithPost:(AbstractPost *)post
@@ -231,7 +235,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
             BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
             [blogService flagBlogAsLastUsed:blog];
-            AbstractPost *newPost = [[self.post class] newDraftForBlog:blog];
+            AbstractPost *newPost = [self createNewDraftForBlog:blog];
             AbstractPost *oldPost = self.post;
 
             NSString *content = oldPost.content;
@@ -311,7 +315,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
 - (void)showSettings
 {
     Post *post = (Post *)self.post;
-    UIViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post];
+    UIViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post shouldHideStatusBar:NO];
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     [self.navigationController pushViewController:vc animated:YES];
@@ -319,7 +323,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
 - (void)showPreview
 {
-    PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.post];
+    PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.post shouldHideStatusBar:NO];
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     [self.navigationController pushViewController:vc animated:YES];
@@ -390,6 +394,10 @@ static NSInteger const MaximumNumberOfPictures = 4;
 }
 
 #pragma mark - Instance Methods
+
+- (AbstractPost *)createNewDraftForBlog:(Blog *)blog {
+    return [PostService createDraftPostInMainContextForBlog:blog];
+}
 
 - (void)geotagNewPost
 {
@@ -482,6 +490,10 @@ static NSInteger const MaximumNumberOfPictures = 4;
                                                                        style:[WPStyleGuide barButtonStyleForDone]
                                                                       target:self
                                                                       action:@selector(saveAction)];
+        
+        // Seems to be a bug with UIBarButtonItem respecting the UIControlStateDisabled text color
+        [saveButton setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
+        [saveButton setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.25]} forState:UIControlStateDisabled];
         self.navigationItem.rightBarButtonItem = saveButton;
     } else {
         self.navigationItem.rightBarButtonItem.title = buttonTitle;
@@ -489,13 +501,6 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
     BOOL updateEnabled = self.hasChanges || self.post.remoteStatus == AbstractPostRemoteStatusFailed;
     [self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];
-
-    // Seems to be a bug with UIBarButtonItem respecting the UIControlStateDisabled text color
-    NSDictionary *titleTextAttributes;
-    UIColor *color = updateEnabled ? [UIColor whiteColor] : [UIColor colorWithWhite:1.0 alpha:0.5];
-    UIControlState controlState = updateEnabled ? UIControlStateNormal : UIControlStateDisabled;
-    titleTextAttributes = @{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName : color};
-    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:titleTextAttributes forState:controlState];
 }
 
 - (void)refreshUIForCurrentPost
@@ -517,23 +522,11 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
 - (UIButton *)titleBarButton
 {
-    if (_titleBarButton) {
-        return _titleBarButton;
+    if (!_titleBarButton) {
+        UIButton *titleButton = [WPBlogSelectorButton buttonWithFrame:CGRectMake(0.0f, 0.0f, 200.0f, 33.0f) buttonStyle:WPBlogSelectorButtonTypeStacked];
+        [titleButton addTarget:self action:@selector(showBlogSelectorPrompt) forControlEvents:UIControlEventTouchUpInside];
+        _titleBarButton = titleButton;
     }
-    UIButton *titleButton = [WPBlogSelectorButton buttonWithType:UIButtonTypeSystem];
-    titleButton.frame = CGRectMake(0.0f, 0.0f, 200.0f, 33.0f);
-    titleButton.titleLabel.numberOfLines = 2;
-    titleButton.titleLabel.textColor = [UIColor whiteColor];
-    titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    titleButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-    [titleButton setImage:[UIImage imageNamed:@"icon-navbar-dropdown.png"] forState:UIControlStateNormal];
-    [titleButton addTarget:self action:@selector(showBlogSelectorPrompt) forControlEvents:UIControlEventTouchUpInside];
-    [titleButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 10)];
-    [titleButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
-    [titleButton setAccessibilityHint:NSLocalizedString(@"Tap to select which blog to post to", nil)];
-
-    _titleBarButton = titleButton;
-
     return _titleBarButton;
 }
 
@@ -636,11 +629,14 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
     if (upload) {
         NSString *postTitle = self.post.original.postTitle;
-        [self.post.original uploadWithSuccess:^{
-            DDLogInfo(@"post uploaded: %@", postTitle);
-        } failure:^(NSError *error) {
-            DDLogError(@"post failed: %@", [error localizedDescription]);
-        }];
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+        [postService uploadPost:(Post *)self.post.original
+                        success:^{
+                            DDLogInfo(@"post uploaded: %@", postTitle);
+                        } failure:^(NSError *error) {
+                            DDLogError(@"post failed: %@", [error localizedDescription]);
+                        }];
     }
 
     [self didSaveNewPost];
