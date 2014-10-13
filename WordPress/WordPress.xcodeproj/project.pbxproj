@@ -2592,8 +2592,8 @@
 		FFF96F8319EBE7FB00DFC821 /* UITests */ = {
 			isa = PBXGroup;
 			children = (
+				FFF96F8419EBE7FB00DFC821 /* Supporting Files */,
 				FFF96F8F19EBE81F00DFC821 /* CommentsTests.m */,
-				FFF96F9019EBE81F00DFC821 /* gencredentials.rb */,
 				FFF96F9119EBE81F00DFC821 /* LoginTests.m */,
 				FFF96F9219EBE81F00DFC821 /* MeTabTests.m */,
 				FFF96F9319EBE81F00DFC821 /* NotificationsTests.m */,
@@ -2605,7 +2605,6 @@
 				FFF96F9919EBE81F00DFC821 /* WordPressTestCredentials.m */,
 				FFF96F9A19EBE81F00DFC821 /* WPUITestCase.h */,
 				FFF96F9B19EBE81F00DFC821 /* WPUITestCase.m */,
-				FFF96F8419EBE7FB00DFC821 /* Supporting Files */,
 			);
 			path = UITests;
 			sourceTree = "<group>";
@@ -2613,6 +2612,7 @@
 		FFF96F8419EBE7FB00DFC821 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				FFF96F9019EBE81F00DFC821 /* gencredentials.rb */,
 				FFF96F8519EBE7FB00DFC821 /* Info.plist */,
 			);
 			name = "Supporting Files";
