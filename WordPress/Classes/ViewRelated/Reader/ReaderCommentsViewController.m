@@ -6,6 +6,7 @@
 #import "CustomHighlightButton.h"
 #import "ReaderCommentCell.h"
 #import "ReaderPost.h"
+#import "ReaderPostHeaderView.h"
 #import "UIAlertView+Blocks.h"
 #import "UIView+Subviews.h"
 #import "WPAnimatedBox.h"
@@ -20,6 +21,7 @@
 static CGFloat const SectionHeaderHeight = 25.0f;
 static CGFloat const EstimatedCommentRowHeight = 150.0;
 static CGFloat const CommentAvatarSize = 32.0;
+static CGFloat const PostHeaderHeight = 54.0;
 
 static NSString *CommentDepth0CellIdentifier = @"CommentDepth0CellIdentifier";
 static NSString *CommentDepth1CellIdentifier = @"CommentDepth1CellIdentifier";
@@ -29,14 +31,11 @@ static NSString *CommentDepth4CellIdentifier = @"CommentDepth4CellIdentifier";
 static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 
-@interface ReaderCommentsViewController () <
-//ReaderCommentPublisherDelegate,
-                                            UITextViewDelegate,
+@interface ReaderCommentsViewController () <NSFetchedResultsControllerDelegate,
                                             ReaderCommentCellDelegate,
+                                            UITextViewDelegate,
                                             WPContentSyncHelperDelegate,
-                                            WPTableViewHandlerDelegate,
-                                            NSFetchedResultsControllerDelegate>
-
+                                            WPTableViewHandlerDelegate>
 
 @property (nonatomic, strong, readwrite) ReaderPost *post;
 @property (nonatomic, strong) UIGestureRecognizer *tapOffKeyboardGesture;
@@ -49,6 +48,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 @property (nonatomic, strong) WPNoResultsView *noResultsView;
 @property (nonatomic, strong) WPAnimatedBox *animatedBox;
 @property (nonatomic, strong) ReplyTextView *replyTextView;
+@property (nonatomic, strong) UIView *postHeader;
 
 @end
 
@@ -79,6 +79,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     self.tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
 
     [self configureNavbar];
+    [self configurePostHeader];
     [self configureTableView];
     [self configureTableViewHandler];
     [self configureCellForLayout];
@@ -189,6 +190,44 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     // Don't show 'Reader' in the next-view back button
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
+}
+
+- (void)configurePostHeader
+{
+    UIView *headerWrapper = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), PostHeaderHeight)];
+    headerWrapper.translatesAutoresizingMaskIntoConstraints = NO;
+    headerWrapper.backgroundColor = [UIColor whiteColor];
+
+    ReaderPostHeaderView *headerView = [[ReaderPostHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), PostHeaderViewAvatarSize)];
+    headerView.translatesAutoresizingMaskIntoConstraints = NO;
+    headerView.backgroundColor = [UIColor whiteColor];
+    [headerView setTitle:[self.post titleForDisplay]];
+    [headerView setSubtitle:NSLocalizedString(@"Comments on", @"Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line.")];
+
+    CGSize imageSize = CGSizeMake(PostHeaderViewAvatarSize, PostHeaderViewAvatarSize);
+    UIImage *image = [self.post cachedAvatarWithSize:imageSize];
+    if (image) {
+        [headerView setAvatarImage:image];
+    } else {
+        [self.post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
+            [headerView setAvatarImage:image];
+        }];
+    }
+
+    [headerWrapper addSubview:headerView];
+
+    NSDictionary *views = NSDictionaryOfVariableBindings(headerView);
+    NSDictionary *metrics = @{@"margin":@12};
+    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(margin)-[headerView]-(margin)-|"
+                                                                          options:0
+                                                                          metrics:metrics
+                                                                            views:views]];
+    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(margin)-[headerView]-(>=1)-|"
+                                                                          options:0
+                                                                          metrics:metrics
+                                                                            views:views]];
+    self.postHeader = headerWrapper;;
+    [self.view addSubview:self.postHeader];
 }
 
 - (void)configureTableView
@@ -315,27 +354,66 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)configureConstraints
 {
-    NSMutableDictionary *views = [@{@"tableView": self.tableView} mutableCopy];
+    NSMutableDictionary *views = [@{@"tableView": self.tableView,
+                                    @"postHeader": self.postHeader,
+                                    @"mainView": self.view} mutableCopy];
+
+    NSDictionary *metrics = @{@"WPTableViewWidth": @(WPTableViewFixedWidth), @"headerHeight":@(PostHeaderHeight)};
+
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.postHeader
+                                                          attribute:NSLayoutAttributeCenterX
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeCenterX
+                                                         multiplier:1.0
+                                                           constant:0.0]];
+    if (IS_IPAD) {
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[postHeader(WPTableViewWidth)]"
+                                                                          options:0
+                                                                          metrics:metrics
+                                                                            views:views]];
+    } else {
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[postHeader(==mainView)]"
+                                                                          options:0
+                                                                          metrics:metrics
+                                                                            views:views]];
+    }
+
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[postHeader(headerHeight)][tableView]"
+                                                                      options:0
+                                                                      metrics:metrics
+                                                                        views:views]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[tableView]|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];
+
+
     if (self.post.commentsOpen) {
         views[@"replyTextView"] = self.replyTextView;
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tableView][replyTextView]|"
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.replyTextView
+                                                              attribute:NSLayoutAttributeCenterX
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:self.view
+                                                              attribute:NSLayoutAttributeCenterX
+                                                             multiplier:1.0
+                                                               constant:0.0]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[tableView][replyTextView]|"
                                                                           options:0
                                                                           metrics:nil
                                                                             views:views]];
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[replyTextView]|"
-                                                                          options:0
-                                                                          metrics:nil
-                                                                            views:views]];
-    }
-    else {
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tableView]|"
-                                                                          options:0
-                                                                          metrics:nil
-                                                                            views:views]];
+
+        if (IS_IPAD) {
+            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[replyTextView(WPTableViewWidth)]"
+                                                                              options:0
+                                                                              metrics:metrics
+                                                                                views:views]];
+        } else {
+            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[replyTextView(==mainView)]"
+                                                                              options:0
+                                                                              metrics:metrics
+                                                                                views:views]];
+        }
     }
 }
 
