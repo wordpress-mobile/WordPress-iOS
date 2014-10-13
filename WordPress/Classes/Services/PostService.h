@@ -15,6 +15,13 @@ extern NSString * const PostServiceTypeAny;
 + (Post *)createDraftPostInMainContextForBlog:(Blog *)blog;
 + (Page *)createDraftPageInMainContextForBlog:(Blog *)blog;
 
+- (AbstractPost *)findPostWithID:(NSNumber *)postID inBlog:(Blog *)blog;
+
+- (void)getPostWithID:(NSNumber *)postID
+              forBlog:(Blog *)blog
+              success:(void (^)(AbstractPost *post))success
+              failure:(void (^)(NSError *))failure;
+
 - (void)syncPostsOfType:(NSString *)postType
                 forBlog:(Blog *)blog
                 success:(void (^)())success

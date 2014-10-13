@@ -2,9 +2,11 @@
 #import "ContextManager.h"
 #import "Blog.h"
 #import "BasePost.h"
+#import "Post.h"
 #import "NSString+XMLExtensions.h"
 #import "NSString+HTML.h"
 #import "NSString+Helpers.h"
+#import "PostService.h"
 
 NSString * const CommentUploadFailedNotification = @"CommentUploadFailed";
 
@@ -164,6 +166,34 @@ NSString * const CommentStatusDraft = @"draft";
     }
 
     return nil;
+}
+
+- (void)fetchPostWithSuccess:(void (^)())success
+{
+    // first check if the post is already stored
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    AbstractPost *post = [postService findPostWithID:self.postID inBlog:self.blog];
+    if (post) {
+        self.post = post;
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        if (success) {
+            success();
+        }
+    }
+
+    __weak __typeof(self) weakSelf = self;
+
+    // if it's not already stored, make a request to the server for it
+    [postService getPostWithID:self.postID
+                       forBlog:self.blog
+                       success:^(AbstractPost *post) {
+                           weakSelf.post = post;
+                           [[ContextManager sharedInstance] saveContext:weakSelf.managedObjectContext];
+                           if (success) {
+                               success();
+                           }
+                       }
+                       failure:nil];
 }
 
 

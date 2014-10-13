@@ -52,4 +52,6 @@ extern NSString * const CommentStatusDraft;
 ///---------------------
 + (NSString *)titleForStatus:(NSString *)status;
 
+- (void)fetchPostWithSuccess:(void (^)())success;
+
 @end
