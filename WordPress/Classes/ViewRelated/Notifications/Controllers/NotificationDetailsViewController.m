@@ -213,6 +213,20 @@ static CGFloat NotificationSectionSeparator     = 10;
         return;
     }
     
+    // Attach the SuggestionTableView for WPCOM blogs
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
+    Blog *blog                      = [service blogByBlogId:self.note.metaSiteID];
+        
+    Boolean addSuggestionView = (blog.isWPcom && [[SuggestionService shared] shouldShowSuggestionsForSiteID:self.note.metaSiteID]);
+    
+    if (addSuggestionView) {
+        self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.note.metaSiteID];
+        self.suggestionsTableView.suggestionsDelegate = self;
+        [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self.view addSubview:self.suggestionsTableView];        
+    }
+    
     __typeof(self) __weak weakSelf  = self;
     
     ReplyTextView *replyTextView    = [[ReplyTextView alloc] initWithWidth:CGRectGetWidth(self.view.frame)];
@@ -229,25 +243,22 @@ static CGFloat NotificationSectionSeparator     = 10;
     [self.view pinSubviewAtBottom:self.replyTextView];
     [self.view pinSubview:self.tableView aboveSubview:self.replyTextView];
     
-    // Attach the SuggestionTableView for WPCOM blogs
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blog                      = [service blogByBlogId:self.note.metaSiteID];
-    
-    if (blog.isWPcom && [[SuggestionService shared] shouldShowSuggestionsForSiteID:self.note.metaSiteID]) {
-        self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.note.metaSiteID];
-        self.suggestionsTableView.suggestionsDelegate = self;
-        [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
-        [self.view addSubview:self.suggestionsTableView];
-        
+    // If adding the suggestion view add its constraints now as well
+    if (addSuggestionView) {
         // Pin the suggestions view left and right edges to the super view edges
         NSDictionary *views = @{@"suggestionsview": self.suggestionsTableView };
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[suggestionsview]|"
                                                                           options:0
                                                                           metrics:nil
                                                                             views:views]];
+
+        // Pin the suggestions view top to the super view top
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[suggestionsview]"
+                                                                          options:0
+                                                                          metrics:nil
+                                                                            views:views]];
         
-        // Pin the suggestions view on top of the reply box
+        // Pin the suggestions view bottom to the top of the reply box
         [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.suggestionsTableView
                                                              attribute:NSLayoutAttributeBottom
                                                              relatedBy:NSLayoutRelationEqual
