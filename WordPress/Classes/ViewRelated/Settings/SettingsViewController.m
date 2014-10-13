@@ -37,6 +37,7 @@
 #import "AccountService.h"
 #import "WPImageOptimizer.h"
 #import "Constants.h"
+#import "Media.h"
 #import <Lookback/Lookback.h>
 
 typedef enum {
@@ -48,12 +49,17 @@ typedef enum {
     SettingsSectionCount
 } SettingsSection;
 
-CGFloat const blavatarImageViewSize = 43.f;
+static CGFloat const blavatarImageViewSize = 43.0;
+static CGFloat const HorizontalMargin = 16.0;
+static CGFloat const MediaSizeControlHeight = 44.0;
+static CGFloat const SettingsRowHeight = 44.0;
 
 @interface SettingsViewController () <UIActionSheetDelegate>
 
 @property (nonatomic, strong) UIBarButtonItem *doneButton;
 @property (nonatomic, assign) BOOL showInternalBetaSection;
+@property (nonatomic, strong) UISlider *mediaSizeSlider;
+@property (nonatomic, strong) UILabel *mediaCellLabel;
 
 @end
 
@@ -101,6 +107,62 @@ CGFloat const blavatarImageViewSize = 43.f;
 
 
 #pragma mark - Custom Getter
+
+- (NSString *)titleForMediaCell
+{
+    NSString *title = NSLocalizedString(@"Image Size", @"Title for the image size settings option.");
+    NSString *mediaSize = [Media stringForMediaSize:[Media mediaResizeSetting]];
+    return [NSString stringWithFormat:@"%@: %@", title, mediaSize];
+}
+
+- (UILabel *)mediaCellLabel
+{
+    if (_mediaCellLabel) {
+        return _mediaCellLabel;
+    }
+
+    CGFloat width = CGRectGetWidth(self.tableView.bounds) - (HorizontalMargin * 2);
+    CGRect frame = CGRectMake(HorizontalMargin, 0.0, width, MediaSizeControlHeight);
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    label.font = [WPStyleGuide tableviewTextFont];
+    label.textColor = [WPStyleGuide whisperGrey];
+    label.text = [self titleForMediaCell];
+    self.mediaCellLabel = label;
+
+    return _mediaCellLabel;
+}
+
+- (UISlider *)mediaSizeSlider
+{
+    if (_mediaSizeSlider) {
+        return _mediaSizeSlider;
+    }
+
+    CGFloat width = CGRectGetWidth(self.tableView.bounds) - (HorizontalMargin * 2);
+    CGRect frame = CGRectMake(HorizontalMargin, CGRectGetHeight(self.mediaCellLabel.frame), width, MediaSizeControlHeight);
+    UISlider *slider = [[UISlider alloc] initWithFrame:frame];
+    slider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    slider.continuous = NO;
+    slider.minimumTrackTintColor = [WPStyleGuide whisperGrey];
+    slider.maximumTrackTintColor = [WPStyleGuide whisperGrey];
+    slider.minimumValue = MediaResizeMedium;
+    slider.maximumValue = MediaResizeOriginal;
+    slider.value = [Media mediaResizeSetting];
+    [slider addTarget:self action:@selector(handleImageSizeChanged:) forControlEvents:UIControlEventValueChanged];
+    self.mediaSizeSlider = slider;
+
+    return _mediaSizeSlider;
+}
+
+- (void)handleImageSizeChanged:(id)sender
+{
+    NSUInteger value = (NSUInteger)(self.mediaSizeSlider.value + 0.5);
+    [Media setMediaResizeSetting:value];
+
+    [self.mediaSizeSlider setValue:value animated:NO];
+    self.mediaCellLabel.text = [self titleForMediaCell];
+}
 
 - (void)handleOptimizeImagesChanged:(id)sender
 {
@@ -250,6 +312,14 @@ CGFloat const blavatarImageViewSize = 43.f;
     return nil;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section ==  SettingsSectionMedia) {
+        return CGRectGetHeight(self.mediaCellLabel.frame) + CGRectGetHeight(self.mediaSizeSlider.frame);
+    }
+    return SettingsRowHeight;
+}
+
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -284,11 +354,9 @@ CGFloat const blavatarImageViewSize = 43.f;
         }
 
     } else if (indexPath.section == SettingsSectionMedia) {
-        cell.textLabel.text = NSLocalizedString(@"Optimize Images", nil);
+        cell.textLabel.text = nil;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
-        aSwitch.on = [WPImageOptimizer shouldOptimizeImages];
-        
+
     } else if (indexPath.section == SettingsSectionEditor){
         cell.textLabel.text = NSLocalizedString(@"Visual Editor", @"Option to enable the visual editor");
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -344,11 +412,18 @@ CGFloat const blavatarImageViewSize = 43.f;
     }
 
     if (indexPath.section == SettingsSectionMedia) {
-        UISwitch *optimizeImagesSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
-        [optimizeImagesSwitch addTarget:self action:@selector(handleOptimizeImagesChanged:) forControlEvents:UIControlEventValueChanged];
-        cell.accessoryView = optimizeImagesSwitch;
+        CGFloat width = CGRectGetWidth(cell.bounds) - 32.0;
+        CGRect frame = self.mediaCellLabel.frame;
+        frame.size.width = width;
+        self.mediaCellLabel.frame = frame;
+        [cell.contentView addSubview:self.mediaCellLabel];
+
+        frame = self.mediaSizeSlider.frame;
+        frame.size.width = width;
+        self.mediaSizeSlider.frame = frame;
+        [cell.contentView addSubview:self.mediaSizeSlider];
     }
-    
+
     if (indexPath.section == SettingsSectionEditor) {
         UISwitch *optimizeImagesSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
         [optimizeImagesSwitch addTarget:self action:@selector(handleEditorChanged:) forControlEvents:UIControlEventValueChanged];
