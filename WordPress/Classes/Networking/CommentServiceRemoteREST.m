@@ -201,6 +201,27 @@
            }];
 }
 
+- (void)replyToPostWithID:(NSNumber *)postID
+                   siteID:(NSNumber *)siteID
+                  content:(NSString *)content
+                  success:(void (^)())success
+                  failure:(void (^)(NSError *error))failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/replies/new", siteID, postID];
+    NSDictionary *parameters = @{@"content": content};
+    [self.api POST:path
+        parameters:parameters
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               if (success) {
+                   success();
+               }
+           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
+}
+
 - (void)replyToCommentWithID:(NSNumber *)commentID
                       siteID:(NSNumber *)siteID
                      content:(NSString *)content

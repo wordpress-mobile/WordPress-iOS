@@ -74,7 +74,13 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure;
 
-// Reply to comment
+// Replies
+- (void)replyToPostWithID:(NSNumber *)postID
+                   siteID:(NSNumber *)siteID
+                  content:(NSString *)content
+                  success:(void (^)())success
+                  failure:(void (^)(NSError *error))failure;
+
 - (void)replyToCommentWithID:(NSNumber *)commentID
                       siteID:(NSNumber *)siteID
                      content:(NSString *)content
