@@ -34,6 +34,25 @@
 
 }
 
+- (void)afterEach
+{
+    if ([tester tryFindingViewWithAccessibilityLabel:@"Back" error:nil]){
+        [tester tapViewWithAccessibilityLabel:@"Back"];
+        [tester waitForTimeInterval:2];
+    }
+    
+    if ([tester tryFindingViewWithAccessibilityLabel:@"Cancel" error:nil]){
+        [tester tapViewWithAccessibilityLabel:@"Cancel"];
+        [tester waitForTimeInterval:2];
+    }
+    
+    if ([tester tryFindingViewWithAccessibilityLabel:@"Close" error:nil]){
+        [tester tapViewWithAccessibilityLabel:@"Close"];
+        [tester waitForTimeInterval:2];
+    }
+
+}
+
 
 - (void) testAdd {
     [tester tapViewWithAccessibilityLabel:@"New Post"];
