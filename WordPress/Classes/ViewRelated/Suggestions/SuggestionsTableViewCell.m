@@ -15,7 +15,7 @@ NSInteger const SuggestionsTableViewCellAvatarSize = 32;
         [self.contentView addSubview:_usernameLabel];
         
         _displayNameLabel = [[UILabel alloc] init];
-        [_displayNameLabel setTextColor:[WPStyleGuide readGrey]];
+        [_displayNameLabel setTextColor:[WPStyleGuide allTAllShadeGrey]];
         [_displayNameLabel setFont:[WPStyleGuide regularTextFont]];
         [_displayNameLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
         _displayNameLabel.textAlignment = NSTextAlignmentRight;
