@@ -10,17 +10,23 @@
 #import "WPToast.h"
 #import "EditCommentViewController.h"
 #import "EditReplyViewController.h"
+#import "PostService.h"
+#import "Post.h"
 
 static NSString *const CVCReplyToastImage = @"action-icon-replied";
 static NSString *const CVCSuccessToastImage = @"action-icon-success";
+static NSString *const CVCHeaderCellIdentifier = @"CommentTableViewHeaderCell";
 static NSString *const CVCCommentCellIdentifier = @"CommentTableViewCell";
-static CGFloat const CVCSectionHeaderHeight = 40;
+static CGFloat const CVCFirstSectionHeaderHeight = 40;
+static NSInteger const CVCHeaderSectionIndex = 0;
 static NSInteger const CVCNumberOfRows = 1;
-static NSInteger const CVCNumberOfSections = 1;
+static NSInteger const CVCNumberOfSections = 2;
+static NSInteger const CVCSectionSeparatorHeight = 10;
 
 @interface CommentViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) NoteBlockHeaderTableViewCell *headerLayoutCell;
 @property (nonatomic, strong) CommentTableViewCell *bodyLayoutCell;
 @property (nonatomic, strong) ReplyTextView *replyTextView;
 @property (nonatomic, strong) CommentService *commentService;
@@ -45,8 +51,11 @@ static NSInteger const CVCNumberOfSections = 1;
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
+    UINib *headerCellNib = [UINib nibWithNibName:@"CommentTableViewHeaderCell" bundle:nil];
     UINib *bodyCellNib = [UINib nibWithNibName:@"CommentTableViewCell" bundle:nil];
+    [self.tableView registerNib:headerCellNib forCellReuseIdentifier:CVCHeaderCellIdentifier];
     [self.tableView registerNib:bodyCellNib forCellReuseIdentifier:CVCCommentCellIdentifier];
+    self.headerLayoutCell = [self.tableView dequeueReusableCellWithIdentifier:CVCHeaderCellIdentifier];
     self.bodyLayoutCell = [self.tableView dequeueReusableCellWithIdentifier:CVCCommentCellIdentifier];
 
     [self attachReplyViewIfNeeded];
@@ -99,6 +108,20 @@ static NSInteger const CVCNumberOfSections = 1;
     }
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    // if the post for the comment is nil, fetch it
+    if (!self.comment.post) {
+        __weak __typeof(self) weakSelf = self;
+
+        [self.comment fetchPostWithSuccess:^{
+            [weakSelf.tableView reloadData];
+        }];
+    }
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -121,7 +144,7 @@ static NSInteger const CVCNumberOfSections = 1;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return CVCNumberOfSections;
+    return [self shouldShowHeaderForPostDetails] ? CVCNumberOfSections : CVCNumberOfSections - 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -131,6 +154,11 @@ static NSInteger const CVCNumberOfSections = 1;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.section == CVCHeaderSectionIndex && [self shouldShowHeaderForPostDetails]) {
+        NoteBlockHeaderTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CVCHeaderCellIdentifier];
+        [self setupHeaderCell:cell];
+        return cell;
+    }
     CommentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CVCCommentCellIdentifier
                                                                  forIndexPath:indexPath];
     [self setupCommentCell:cell];
@@ -141,18 +169,36 @@ static NSInteger const CVCNumberOfSections = 1;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    // we don't want to show a space between navigation bar and the first cell for iPhone
-    return [UIDevice isPad] ? CVCSectionHeaderHeight : CGFLOAT_MIN;
+    CGFloat firstSectionHeaderHeight = [UIDevice isPad] ? CVCFirstSectionHeaderHeight : CGFLOAT_MIN;
+    return (section == CVCHeaderSectionIndex) ? firstSectionHeaderHeight : CVCSectionSeparatorHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self setupCommentCell:self.bodyLayoutCell];
+    UITableViewCell *cell;
+    if (indexPath.section == CVCHeaderSectionIndex && [self shouldShowHeaderForPostDetails]) {
+        [self setupHeaderCell:self.headerLayoutCell];
+        cell = self.headerLayoutCell;
+    }
+    else {
+        [self setupCommentCell:self.bodyLayoutCell];
+        cell = self.bodyLayoutCell;
+    }
 
-    return [self.bodyLayoutCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
+    return [cell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
 }
 
 #pragma mark - Setup Cells
+
+- (void)setupHeaderCell:(NoteBlockHeaderTableViewCell *)cell
+{
+    cell.name = self.comment.post.author;
+    cell.snippet = self.comment.post.content;
+
+    if ([self.comment.post respondsToSelector:@selector(authorAvatarURL)]) {
+        [cell downloadGravatarWithURL:[NSURL URLWithString:[(Post *)self.comment.post authorAvatarURL]]];
+    }
+}
 
 - (void)setupCommentCell:(CommentTableViewCell *)cell
 {
@@ -500,6 +546,12 @@ static NSInteger const CVCNumberOfSections = 1;
 {
     // iPad: We've got a different UI!
     return !([UIDevice isPad]);
+}
+
+// if the post is not set for the comment, we don't want to show an empty cell for the post details
+- (BOOL)shouldShowHeaderForPostDetails
+{
+    return self.comment.post != nil;
 }
 
 @end

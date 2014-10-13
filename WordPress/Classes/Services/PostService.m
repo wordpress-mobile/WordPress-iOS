@@ -75,6 +75,36 @@ NSString * const PostServiceTypeAny = @"any";
     return [service createDraftPageForBlog:blog];
 }
 
+- (void)getPostWithID:(NSNumber *)postID
+              forBlog:(Blog *)blog
+              success:(void (^)(AbstractPost *post))success
+              failure:(void (^)(NSError *))failure
+{
+    id<PostServiceRemote> remote = [self remoteForBlog:blog];
+    [remote getPostWithID:postID
+                  forBlog:blog
+                  success:^(RemotePost *remotePost){
+                      [self.managedObjectContext performBlock:^{
+                          if (remotePost) {
+                              Post *post = [self createPostForBlog:blog];
+                              [self updatePost:post withRemotePost:remotePost];
+                              [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext];
+
+                              if (success) {
+                                  success(post);
+                              }
+                          }
+                      }];
+                  }
+                  failure:^(NSError *error) {
+                      if (failure) {
+                          [self.managedObjectContext performBlock:^{
+                              failure(error);
+                          }];
+                      }
+                  }];
+}
+
 - (void)syncPostsOfType:(NSString *)postType
                 forBlog:(Blog *)blog
                 success:(void (^)())success
@@ -263,6 +293,7 @@ NSString * const PostServiceTypeAny = @"any";
         pagePost.parentID = remotePost.parentID;
     } else if ([post isKindOfClass:[Post class]]) {
         Post *postPost = (Post *)post;
+        postPost.authorAvatarURL = remotePost.authorAvatarURL;
         postPost.postFormat = remotePost.format;
         postPost.tags = [remotePost.tags componentsJoinedByString:@","];
         [self updatePost:postPost withRemoteCategories:remotePost.categories];
@@ -312,6 +343,7 @@ NSString * const PostServiceTypeAny = @"any";
     }
     if ([post isKindOfClass:[Post class]]) {
         Post *postPost = (Post *)post;
+        remotePost.authorAvatarURL = postPost.authorAvatarURL;
         remotePost.format = postPost.postFormat;
         remotePost.tags = [postPost.tags componentsSeparatedByString:@","];
         remotePost.categories = [self remoteCategoriesForPost:postPost];
