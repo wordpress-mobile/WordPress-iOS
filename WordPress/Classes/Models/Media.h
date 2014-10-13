@@ -59,6 +59,10 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 @property (nonatomic, assign, readonly) BOOL unattached;
 @property (nonatomic, assign) BOOL featured;
 
++ (NSString *)stringForMediaSize:(MediaResize)mediaSize;
++ (MediaResize)mediaResizeSetting;
++ (void)setMediaResizeSetting:(MediaResize)mediaSize;
+
 + (Media *)newMediaForPost:(AbstractPost *)post;
 + (Media *)newMediaForBlog:(Blog *)blog;
 + (NSString *)mediaTypeForFeaturedImage;
