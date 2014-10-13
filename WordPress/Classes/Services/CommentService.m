@@ -1,15 +1,14 @@
 #import "CommentService.h"
+#import "AccountService.h"
 #import "Blog.h"
 #import "Comment.h"
 #import "CommentServiceRemote.h"
 #import "CommentServiceRemoteXMLRPC.h"
 #import "CommentServiceRemoteREST.h"
-#import "WPAccount.h"
-#import "AccountService.h"
 #import "ContextManager.h"
-#import "WPAccount.h"
-#import "AccountService.h"
+#import "NSString+Helpers.h"
 #import "ReaderPost.h"
+#import "WPAccount.h"
 
 NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 
@@ -497,7 +496,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
         comment.hierarchy = [self hierarchyFromAncestors:ancestors andCommentID:comment.commentID];
         comment.depth = @([ancestors count]);
         comment.post = post;
-
+        comment.content = [comment.content stringByReplacingHTMLEmoticonsWithEmoji];
         [commentsToKeep addObject:comment];
     }
 
