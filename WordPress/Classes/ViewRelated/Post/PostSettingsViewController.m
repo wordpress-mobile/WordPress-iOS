@@ -61,6 +61,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 @property (nonatomic, strong) PublishDatePickerView *datePicker;
 @property (assign) BOOL *textFieldDidHaveFocusBeforeOrientationChange;
 @property (nonatomic, strong) UIPopoverController *popover;
+@property (nonatomic, assign) BOOL *shouldHideStatusBar;
 
 @end
 
@@ -73,12 +74,13 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [self removePostPropertiesObserver];
 }
 
-- (id)initWithPost:(AbstractPost *)aPost
+- (instancetype)initWithPost:(AbstractPost *)aPost shouldHideStatusBar:(BOOL)shouldHideStatusBar
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.apost = aPost;
         _mediaUploader = [[WPMediaUploader alloc] init];
+        _shouldHideStatusBar = shouldHideStatusBar;
     }
     return self;
 }
@@ -125,7 +127,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [self.navigationController setToolbarHidden:YES];
     
     // Do not hide the status bar on iPads
-    if (!IS_IPAD) {
+    if (self.shouldHideStatusBar && !IS_IPAD) {
         [[UIApplication sharedApplication] setStatusBarHidden:YES
                                                 withAnimation:nil];
     }
