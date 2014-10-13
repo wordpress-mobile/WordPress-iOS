@@ -2,8 +2,9 @@
 #import <XCTest/XCTest.h>
 #import <KIF/KIF.h>
 #import "WordPressTestCredentials.h"
+#import "WPUITestCase.h"
 
-@interface LoginTests : KIFTestCase
+@interface LoginTests : WPUITestCase
 
 @end
 
@@ -89,20 +90,6 @@
     [tester tapViewWithAccessibilityLabel:@"Create Account"];
     [tester waitForTimeInterval:10];
     [self logout];
-}
-
-- (void)logout
-{
-    [tester tapViewWithAccessibilityLabel:@"Me"];
-    [tester waitForTimeInterval:2];
-    [tester tapViewWithAccessibilityLabel:@"Me"];
-    [tester waitForTimeInterval:2];
-
-    [tester tapViewWithAccessibilityLabel:@"Settings"];
-    [tester tapViewWithAccessibilityLabel:@"Sign Out"];
-    [tester tapViewWithAccessibilityLabel:@"Sign Out"];
-    
-    [tester waitForTimeInterval:3];
 }
 
 
