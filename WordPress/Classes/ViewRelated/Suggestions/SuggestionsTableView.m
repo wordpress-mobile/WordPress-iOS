@@ -8,6 +8,8 @@ CGFloat const RowHeight = 48.0f;
 
 @interface SuggestionsTableView ()
 
+@property (nonatomic, strong) UIView *headerView;
+@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSNumber *siteID;
 @property (nonatomic, strong) NSArray *suggestions;
 @property (nonatomic, strong) NSString *searchText;
@@ -23,18 +25,54 @@ CGFloat const RowHeight = 48.0f;
 {    
     self = [super initWithFrame:CGRectZero];
     if (self) {
-        [self registerClass:[SuggestionsTableViewCell class] forCellReuseIdentifier:CellIdentifier];
-
         _siteID = siteID;
         _suggestions = [[SuggestionService shared] suggestionsForSiteID:_siteID];
         _searchText = @"";
         _searchResults = [[NSMutableArray alloc] init];
+
+        _headerView = [[UIView alloc] init];
+        _headerView.backgroundColor = [UIColor colorWithRed:0.f green:0.f blue:0.f alpha:0.3f];
+        [_headerView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self addSubview:_headerView];
+                
+        _tableView = [[UITableView alloc] init];
+        [_tableView registerClass:[SuggestionsTableViewCell class] forCellReuseIdentifier:CellIdentifier];
+        [_tableView setDataSource:self];
+        [_tableView setDelegate:self];
+        [_tableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [_tableView setRowHeight:RowHeight];
+        [self addSubview:_tableView];
         
-        [self setDataSource:self];
-        [self setDelegate:self];
+        // Pin the table view to the view's edges
+        NSDictionary *views = @{@"headerview": self.headerView,
+                                @"tableview": self.tableView };
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[headerview]|"
+                                                                     options:0
+                                                                     metrics:nil
+                                                                       views:views]];
         
-        [self setRowHeight:RowHeight];
-        [self addDynamicHeightConstraint];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[tableview]|"
+                                                                          options:0
+                                                                          metrics:nil
+                                                                            views:views]];
+        
+        // Vertically arrange the header and table
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[headerview][tableview]|"
+                                                                          options:0
+                                                                          metrics:nil
+                                                                            views:views]];
+
+        // Add a height constraint to the table view
+        self.heightConstraint = [NSLayoutConstraint constraintWithItem:self.tableView
+                                                             attribute:NSLayoutAttributeHeight
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:nil
+                                                             attribute:nil
+                                                            multiplier:1
+                                                              constant:0.f];
+        self.heightConstraint.priority = 300;
+        
+        [self addConstraint:self.heightConstraint];
                         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(suggestionListUpdated:)
@@ -42,8 +80,8 @@ CGFloat const RowHeight = 48.0f;
                                                    object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardDidChangeFrame:)
-                                                     name:UIKeyboardDidChangeFrameNotification
+                                                 selector:@selector(keyboardWillChangeFrame:)
+                                                     name:UIKeyboardWillChangeFrameNotification
                                                    object:nil];
     }
     
@@ -55,31 +93,18 @@ CGFloat const RowHeight = 48.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)reloadData
+- (void)layoutSubviews
 {
-    [super reloadData];
-    [self updateDynamicHeightConstraint];
-}
-
-- (void)addDynamicHeightConstraint
-{
-    self.heightConstraint = [NSLayoutConstraint constraintWithItem:self
-                                                         attribute:NSLayoutAttributeHeight
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:nil
-                                                         attribute:nil
-                                                        multiplier:1
-                                                          constant:0];
-    
-    [self addConstraint:self.heightConstraint];
+    [super layoutSubviews];
+    [self setHidden:(self.searchResults.count == 0)];
 }
 
 - (void)updateDynamicHeightConstraint
 {
-    // TODO: Don't assume there is always a navBar and allow the VC to specify additional withholding (e.g. when used on post view)
-    CGFloat navBarHeight = 44.0f;
+    // Take the height of the table frame and make it so only whole results
+    // are displayed
+    NSUInteger maxRows = floor(self.frame.size.height / RowHeight);
     
-    NSUInteger maxRows = floor((self.frame.origin.y + self.frame.size.height - navBarHeight) / RowHeight);
     if (maxRows < 1) {
         maxRows = 1;
     }    
@@ -89,17 +114,15 @@ CGFloat const RowHeight = 48.0f;
     } else {
         self.heightConstraint.constant = self.searchResults.count * RowHeight;
     }
-    
-    [self needsUpdateConstraints];
+        
+    [self setNeedsUpdateConstraints];
 }
 
-- (void)keyboardDidChangeFrame:(NSNotification *)notification
+- (void)keyboardWillChangeFrame:(NSNotification *)notification
 {
     NSDictionary *info = [notification userInfo];
     NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    
-    [self updateDynamicHeightConstraint];
-    
+    [self updateDynamicHeightConstraint];    
     [UIView animateWithDuration:animationDuration animations:^{
         [self layoutIfNeeded];
     }];
@@ -123,20 +146,11 @@ CGFloat const RowHeight = 48.0f;
         [self.searchResults removeAllObjects];
     }
     
-    [self reloadData];
+    [self.tableView reloadData];
+    [self updateDynamicHeightConstraint];
 }
 
 #pragma mark - UITableViewDataSource methods
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 1.0f; 
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UIView *headerView = [[UIView alloc] init];
-    headerView.backgroundColor = [WPStyleGuide readGrey];
-    return headerView;
-}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -154,7 +168,7 @@ CGFloat const RowHeight = 48.0f;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SuggestionsTableViewCell *cell = [self dequeueReusableCellWithIdentifier:CellIdentifier
+    SuggestionsTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier
                                                                 forIndexPath:indexPath];
     
     if (!self.suggestions) {
@@ -217,7 +231,7 @@ CGFloat const RowHeight = 48.0f;
             if (!image) {
                 return;
             }
-            if (cell == [self cellForRowAtIndexPath:indexPath]) {
+            if (cell == [self.tableView cellForRowAtIndexPath:indexPath]) {
                 [cell.avatarImageView setImage:image];
             }
         }];

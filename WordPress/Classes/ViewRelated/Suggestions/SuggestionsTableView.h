@@ -32,7 +32,7 @@
 
 @end
 
-@interface SuggestionsTableView : UITableView <UITableViewDataSource, UITableViewDelegate>
+@interface SuggestionsTableView : UIView <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, weak) id <SuggestionsDelegate> suggestionsDelegate;
 
