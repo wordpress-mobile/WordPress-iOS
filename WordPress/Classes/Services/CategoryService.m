@@ -144,7 +144,7 @@
                            if ([remote isKindOfClass:[CategoryServiceRemoteXMLRPC class]]) {
                                // XML-RPC only returns ID, let's fetch the new category as
                                // filters might change the content
-#warning TODO trigger sync when sync is moved to CategoryService
+                               [self syncCategoriesForBlog:blog success:nil failure:nil];
                                newCategory.categoryName = remoteCategory.name;
                                newCategory.parentID = remoteCategory.parentID;
                            } else {
