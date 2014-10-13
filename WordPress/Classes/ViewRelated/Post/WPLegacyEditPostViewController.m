@@ -315,7 +315,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
 - (void)showSettings
 {
     Post *post = (Post *)self.post;
-    UIViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post];
+    UIViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post shouldHideStatusBar:NO];
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     [self.navigationController pushViewController:vc animated:YES];
@@ -323,7 +323,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
 - (void)showPreview
 {
-    PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.post];
+    PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.post shouldHideStatusBar:NO];
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     [self.navigationController pushViewController:vc animated:YES];
@@ -490,6 +490,10 @@ static NSInteger const MaximumNumberOfPictures = 4;
                                                                        style:[WPStyleGuide barButtonStyleForDone]
                                                                       target:self
                                                                       action:@selector(saveAction)];
+        
+        // Seems to be a bug with UIBarButtonItem respecting the UIControlStateDisabled text color
+        [saveButton setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
+        [saveButton setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.25]} forState:UIControlStateDisabled];
         self.navigationItem.rightBarButtonItem = saveButton;
     } else {
         self.navigationItem.rightBarButtonItem.title = buttonTitle;
@@ -497,13 +501,6 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
     BOOL updateEnabled = self.hasChanges || self.post.remoteStatus == AbstractPostRemoteStatusFailed;
     [self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];
-
-    // Seems to be a bug with UIBarButtonItem respecting the UIControlStateDisabled text color
-    NSDictionary *titleTextAttributes;
-    UIColor *color = updateEnabled ? [UIColor whiteColor] : [UIColor colorWithWhite:1.0 alpha:0.5];
-    UIControlState controlState = updateEnabled ? UIControlStateNormal : UIControlStateDisabled;
-    titleTextAttributes = @{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName : color};
-    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:titleTextAttributes forState:controlState];
 }
 
 - (void)refreshUIForCurrentPost
@@ -525,23 +522,11 @@ static NSInteger const MaximumNumberOfPictures = 4;
 
 - (UIButton *)titleBarButton
 {
-    if (_titleBarButton) {
-        return _titleBarButton;
+    if (!_titleBarButton) {
+        UIButton *titleButton = [WPBlogSelectorButton buttonWithFrame:CGRectMake(0.0f, 0.0f, 200.0f, 33.0f) buttonStyle:WPBlogSelectorButtonTypeStacked];
+        [titleButton addTarget:self action:@selector(showBlogSelectorPrompt) forControlEvents:UIControlEventTouchUpInside];
+        _titleBarButton = titleButton;
     }
-    UIButton *titleButton = [WPBlogSelectorButton buttonWithType:UIButtonTypeSystem];
-    titleButton.frame = CGRectMake(0.0f, 0.0f, 200.0f, 33.0f);
-    titleButton.titleLabel.numberOfLines = 2;
-    titleButton.titleLabel.textColor = [UIColor whiteColor];
-    titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    titleButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-    [titleButton setImage:[UIImage imageNamed:@"icon-navbar-dropdown.png"] forState:UIControlStateNormal];
-    [titleButton addTarget:self action:@selector(showBlogSelectorPrompt) forControlEvents:UIControlEventTouchUpInside];
-    [titleButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 10)];
-    [titleButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
-    [titleButton setAccessibilityHint:NSLocalizedString(@"Tap to select which blog to post to", nil)];
-
-    _titleBarButton = titleButton;
-
     return _titleBarButton;
 }
 

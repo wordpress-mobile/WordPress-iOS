@@ -52,6 +52,7 @@
 		375D090D133B94C3000CC9CD /* BlogsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 375D090C133B94C3000CC9CD /* BlogsTableViewCell.m */; };
 		3768BEF213041E7900E7C9A9 /* BetaFeedbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3768BEF013041E7900E7C9A9 /* BetaFeedbackViewController.xib */; };
 		37B7924D16768FCC0021B3A4 /* NotificationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B7924C16768FCB0021B3A4 /* NotificationSettingsViewController.m */; };
+		4253506E2DDC92882C721F55 /* libPods-UITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 369D8993FF42F0A2D183A062 /* libPods-UITests.a */; };
 		45C73C25113C36F70024D0D2 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45C73C24113C36F70024D0D2 /* MainWindow-iPad.xib */; };
 		462F4E0A18369F0B0028D2F8 /* BlogDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 462F4E0718369F0B0028D2F8 /* BlogDetailsViewController.m */; };
 		462F4E0B18369F0B0028D2F8 /* BlogListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 462F4E0918369F0B0028D2F8 /* BlogListViewController.m */; };
@@ -246,7 +247,6 @@
 		A25EBD87156E330600530E3D /* WPTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A25EBD86156E330600530E3D /* WPTableViewController.m */; };
 		A2787D0219002AB1000D6CA6 /* HelpshiftConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = A2787D0119002AB1000D6CA6 /* HelpshiftConfig.plist */; };
 		A2DC5B1A1953451B009584C3 /* WPNUXHelpBadgeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A2DC5B191953451B009584C3 /* WPNUXHelpBadgeLabel.m */; };
-		A455F9C73C9FFB8E56038AB4 /* libPods-UITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B00150613F6A012B549C20B5 /* libPods-UITests.a */; };
 		ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */; };
 		ACBAB6860E1247F700F38795 /* PostPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBAB6850E1247F700F38795 /* PostPreviewViewController.m */; };
 		ACC156CC0E10E67600D6E1A0 /* WPPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC156CB0E10E67600D6E1A0 /* WPPostViewController.m */; };
@@ -423,17 +423,17 @@
 		FD75DDAD15B021C80043F12C /* UIViewController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = FD75DDAC15B021C80043F12C /* UIViewController+Rotation.m */; };
 		FD9A948C12FAEA2300438F94 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FD9A948B12FAEA2300438F94 /* DateUtils.m */; };
 		FEA64EDF0F7E4616BA835081 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69187343EC8F435684EFFAF1 /* libPods.a */; };
-		FFF96F6C19E697CD00DFC821 /* gencredentials.rb in Resources */ = {isa = PBXBuildFile; fileRef = FFF96F6319E697CD00DFC821 /* gencredentials.rb */; };
-		FFF96F6E19E697CD00DFC821 /* MeTabTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F6519E697CD00DFC821 /* MeTabTests.m */; };
-		FFF96F6F19E697CD00DFC821 /* PagesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F6619E697CD00DFC821 /* PagesTests.m */; };
-		FFF96F7019E697CD00DFC821 /* PostsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F6719E697CD00DFC821 /* PostsTests.m */; };
-		FFF96F7219E697CD00DFC821 /* WPUITestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F6B19E697CD00DFC821 /* WPUITestCase.m */; };
-		FFF96F7419E697DD00DFC821 /* WordPressTestCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F7319E697DD00DFC821 /* WordPressTestCredentials.m */; };
-		FFF96F7519E6991400DFC821 /* LoginTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F6419E697CD00DFC821 /* LoginTests.m */; };
-		FFF96F7719E6A7B800DFC821 /* CommentsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F7619E6A7B800DFC821 /* CommentsTests.m */; };
-		FFF96F7919E6C75E00DFC821 /* StatsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F7819E6C75E00DFC821 /* StatsTests.m */; };
-		FFF96F7B19E6DD8600DFC821 /* ReaderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F7A19E6DD8600DFC821 /* ReaderTests.m */; };
-		FFF96F7D19E80C7F00DFC821 /* NotificationsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F7C19E80C7F00DFC821 /* NotificationsTests.m */; };
+		FFF96F9C19EBE81F00DFC821 /* CommentsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F8F19EBE81F00DFC821 /* CommentsTests.m */; };
+		FFF96F9D19EBE81F00DFC821 /* gencredentials.rb in Resources */ = {isa = PBXBuildFile; fileRef = FFF96F9019EBE81F00DFC821 /* gencredentials.rb */; };
+		FFF96F9E19EBE81F00DFC821 /* LoginTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F9119EBE81F00DFC821 /* LoginTests.m */; };
+		FFF96F9F19EBE81F00DFC821 /* MeTabTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F9219EBE81F00DFC821 /* MeTabTests.m */; };
+		FFF96FA019EBE81F00DFC821 /* NotificationsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F9319EBE81F00DFC821 /* NotificationsTests.m */; };
+		FFF96FA119EBE81F00DFC821 /* PagesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F9419EBE81F00DFC821 /* PagesTests.m */; };
+		FFF96FA219EBE81F00DFC821 /* PostsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F9519EBE81F00DFC821 /* PostsTests.m */; };
+		FFF96FA319EBE81F00DFC821 /* ReaderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F9619EBE81F00DFC821 /* ReaderTests.m */; };
+		FFF96FA419EBE81F00DFC821 /* StatsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F9719EBE81F00DFC821 /* StatsTests.m */; };
+		FFF96FA619EBE81F00DFC821 /* WPUITestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F9B19EBE81F00DFC821 /* WPUITestCase.m */; };
+		FFF96FA819EBE83200DFC821 /* WordPressTestCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96FA719EBE83200DFC821 /* WordPressTestCredentials.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -458,7 +458,7 @@
 			remoteGlobalIDString = 1D6058900D05DD3D006BFB54;
 			remoteInfo = WordPress;
 		};
-		FFF96F5C19E697B500DFC821 /* PBXContainerItemProxy */ = {
+		FFF96F8819EBE7FB00DFC821 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
 			proxyType = 1;
@@ -499,6 +499,7 @@
 		1D3623240D0F684500981E51 /* WordPressAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* WordPressAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WordPressAppDelegate.m; sourceTree = "<group>"; usesTabs = 0; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		1D6058910D05DD3D006BFB54 /* WordPress.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WordPress.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E59E0C89B24D8AA3B12DEC8 /* Pods-UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UITests.release.xcconfig"; path = "../Pods/Target Support Files/Pods-UITests/Pods-UITests.release.xcconfig"; sourceTree = "<group>"; };
 		28A0AAE50D9B0CCF005BE974 /* WordPress_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPress_Prefix.pch; sourceTree = "<group>"; };
 		28AD735F0D9D9599002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = Resources/MainWindow.xib; sourceTree = "<group>"; };
 		2906F80F110CDA8900169D56 /* EditCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditCommentViewController.h; sourceTree = "<group>"; };
@@ -528,6 +529,7 @@
 		313AE49E19E3F20400AAFABE /* CommentTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentTableViewCell.xib; sourceTree = "<group>"; };
 		313AE49F19E3F20400AAFABE /* CommentTableViewHeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentTableViewHeaderCell.xib; sourceTree = "<group>"; };
 		313AE4A419E3F23B00AAFABE /* WordPress 22.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 22.xcdatamodel"; sourceTree = "<group>"; };
+		369D8993FF42F0A2D183A062 /* libPods-UITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		37022D8F1981BF9200F322B7 /* VerticallyStackedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerticallyStackedButton.h; sourceTree = "<group>"; };
 		37022D901981BF9200F322B7 /* VerticallyStackedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerticallyStackedButton.m; sourceTree = "<group>"; };
 		3716E400167296D30035F8C4 /* ToastView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ToastView.xib; path = Resources/ToastView.xib; sourceTree = "<group>"; };
@@ -538,6 +540,7 @@
 		3768BEF013041E7900E7C9A9 /* BetaFeedbackViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = BetaFeedbackViewController.xib; path = Resources/BetaFeedbackViewController.xib; sourceTree = "<group>"; };
 		37B7924B16768FCB0021B3A4 /* NotificationSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationSettingsViewController.h; sourceTree = "<group>"; };
 		37B7924C16768FCB0021B3A4 /* NotificationSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationSettingsViewController.m; sourceTree = "<group>"; };
+		45A679DE2C6B64047BAF97E9 /* Pods-UITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UITests.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-UITests/Pods-UITests.debug.xcconfig"; sourceTree = "<group>"; };
 		45C73C24113C36F70024D0D2 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "Resources-iPad/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		462F4E0618369F0B0028D2F8 /* BlogDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogDetailsViewController.h; sourceTree = "<group>"; };
 		462F4E0718369F0B0028D2F8 /* BlogDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BlogDetailsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -746,13 +749,12 @@
 		5DF94E4E1962BAEB00359241 /* ReaderPostSimpleContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderPostSimpleContentView.h; sourceTree = "<group>"; };
 		5DF94E4F1962BAEB00359241 /* ReaderPostSimpleContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPostSimpleContentView.m; sourceTree = "<group>"; };
 		5DFA9D19196B1BA30061FF96 /* ReaderTopicServiceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderTopicServiceTest.m; sourceTree = "<group>"; };
-		63CFD77C700A316EA4015034 /* Pods-UITests.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UITests.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-UITests/Pods-UITests.release-internal.xcconfig"; sourceTree = "<group>"; };
 		67040029265369CB7FAE64FA /* Pods-WordPressTodayWidget.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTodayWidget.distribution.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTodayWidget/Pods-WordPressTodayWidget.distribution.xcconfig"; sourceTree = "<group>"; };
 		69187343EC8F435684EFFAF1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EDC0E8E105881A800F68A1D /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		7059CD1F0F332B6500A0660B /* WPCategoryTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPCategoryTree.h; sourceTree = "<group>"; };
 		7059CD200F332B6500A0660B /* WPCategoryTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPCategoryTree.m; sourceTree = "<group>"; };
-		710C346E186260322E3788D8 /* Pods-UITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UITests.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-UITests/Pods-UITests.debug.xcconfig"; sourceTree = "<group>"; };
+		71E3F8ABCB453500748B60CE /* Pods-UITests.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UITests.distribution.xcconfig"; path = "../Pods/Target Support Files/Pods-UITests/Pods-UITests.distribution.xcconfig"; sourceTree = "<group>"; };
 		74BB6F1819AE7B9400FB7829 /* WPLegacyEditPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLegacyEditPageViewController.h; sourceTree = "<group>"; };
 		74BB6F1919AE7B9400FB7829 /* WPLegacyEditPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLegacyEditPageViewController.m; sourceTree = "<group>"; };
 		74C1C305199170930077A7DC /* PostDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PostDetailViewController.xib; path = Resources/PostDetailViewController.xib; sourceTree = "<group>"; };
@@ -849,6 +851,7 @@
 		872A78E046E04A05B17EB1A1 /* libPods-WordPressTodayWidget.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WordPressTodayWidget.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9198544476D3B385673B18E9 /* Pods-WordPressTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.release.xcconfig"; sourceTree = "<group>"; };
+		91E1D2929A320BA8932240BF /* Pods-UITests.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UITests.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-UITests/Pods-UITests.release-internal.xcconfig"; sourceTree = "<group>"; };
 		93027BB61758332300483FFD /* SupportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SupportViewController.h; sourceTree = "<group>"; };
 		93027BB71758332300483FFD /* SupportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SupportViewController.m; sourceTree = "<group>"; };
 		930284B618EAF7B600CB0BF4 /* LocalCoreDataService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalCoreDataService.h; sourceTree = "<group>"; };
@@ -898,7 +901,6 @@
 		93FA0F0518E451A80007903B /* localize.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = localize.py; path = ../localize.py; sourceTree = "<group>"; };
 		93FA59DB18D88C1C001446BC /* CategoryService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryService.h; sourceTree = "<group>"; };
 		93FA59DC18D88C1C001446BC /* CategoryService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryService.m; sourceTree = "<group>"; };
-		9DE910F1013883A33D3C9EFE /* Pods-UITests.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UITests.distribution.xcconfig"; path = "../Pods/Target Support Files/Pods-UITests/Pods-UITests.distribution.xcconfig"; sourceTree = "<group>"; };
 		A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = defaultPostTemplate.html; path = Resources/HTML/defaultPostTemplate.html; sourceTree = "<group>"; };
 		A0E293EF0E21027E00C6919C /* WPAddCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAddCategoryViewController.h; sourceTree = "<group>"; };
@@ -927,7 +929,6 @@
 		ADF544C0195A0F620092213D /* CustomHighlightButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomHighlightButton.h; sourceTree = "<group>"; };
 		ADF544C1195A0F620092213D /* CustomHighlightButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomHighlightButton.m; sourceTree = "<group>"; };
 		AEFB66560B716519236CEE67 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "../Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		B00150613F6A012B549C20B5 /* libPods-UITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B43F6A7D9B3DC5B8B4A7DDCA /* Pods-WordPressTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.debug.xcconfig"; sourceTree = "<group>"; };
 		B5134AF419B2C4F200FADE8C /* ReplyBezierView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyBezierView.swift; sourceTree = "<group>"; };
 		B52B4F7919C0E49B00526D6F /* WPDynamicHeightTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPDynamicHeightTextView.swift; sourceTree = "<group>"; };
@@ -1198,7 +1199,6 @@
 		E2DA78051864B11E007BA447 /* WPFixedWidthScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPFixedWidthScrollView.m; sourceTree = "<group>"; };
 		E2E7EB44185FB140004F5E72 /* WPBlogSelectorButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPBlogSelectorButton.h; sourceTree = "<group>"; };
 		E2E7EB45185FB140004F5E72 /* WPBlogSelectorButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPBlogSelectorButton.m; sourceTree = "<group>"; };
-		E7BC0B1BC7CAEF0D54CC5BD5 /* Pods-UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UITests.release.xcconfig"; path = "../Pods/Target Support Files/Pods-UITests/Pods-UITests.release.xcconfig"; sourceTree = "<group>"; };
 		EC4696FD0EA75D460040EE8E /* PagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PagesViewController.h; sourceTree = "<group>"; };
 		EC4696FE0EA75D460040EE8E /* PagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PagesViewController.m; sourceTree = "<group>"; };
 		F1564E5A18946087009F8F97 /* NSStringHelpersTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringHelpersTest.m; sourceTree = "<group>"; };
@@ -1212,22 +1212,22 @@
 		FD9A948B12FAEA2300438F94 /* DateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtils.m; sourceTree = "<group>"; };
 		FDCB9A89134B75B900E5C776 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FDFB011916B1EA1C00F589A8 /* WordPress 10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 10.xcdatamodel"; sourceTree = "<group>"; };
-		FFF96F5619E697B500DFC821 /* UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		FFF96F5919E697B500DFC821 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FFF96F6319E697CD00DFC821 /* gencredentials.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = gencredentials.rb; sourceTree = "<group>"; };
-		FFF96F6419E697CD00DFC821 /* LoginTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginTests.m; sourceTree = "<group>"; };
-		FFF96F6519E697CD00DFC821 /* MeTabTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeTabTests.m; sourceTree = "<group>"; };
-		FFF96F6619E697CD00DFC821 /* PagesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PagesTests.m; sourceTree = "<group>"; };
-		FFF96F6719E697CD00DFC821 /* PostsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostsTests.m; sourceTree = "<group>"; };
-		FFF96F6819E697CD00DFC821 /* WordPressTestCredentials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressTestCredentials.h; sourceTree = "<group>"; };
-		FFF96F6919E697CD00DFC821 /* WordPressTestCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressTestCredentials.m; sourceTree = "<group>"; };
-		FFF96F6A19E697CD00DFC821 /* WPUITestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPUITestCase.h; sourceTree = "<group>"; };
-		FFF96F6B19E697CD00DFC821 /* WPUITestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPUITestCase.m; sourceTree = "<group>"; };
-		FFF96F7319E697DD00DFC821 /* WordPressTestCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressTestCredentials.m; sourceTree = "<group>"; };
-		FFF96F7619E6A7B800DFC821 /* CommentsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsTests.m; sourceTree = "<group>"; };
-		FFF96F7819E6C75E00DFC821 /* StatsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsTests.m; sourceTree = "<group>"; };
-		FFF96F7A19E6DD8600DFC821 /* ReaderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderTests.m; sourceTree = "<group>"; };
-		FFF96F7C19E80C7F00DFC821 /* NotificationsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsTests.m; sourceTree = "<group>"; };
+		FFF96F8219EBE7FB00DFC821 /* UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFF96F8519EBE7FB00DFC821 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FFF96F8F19EBE81F00DFC821 /* CommentsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsTests.m; sourceTree = "<group>"; };
+		FFF96F9019EBE81F00DFC821 /* gencredentials.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = gencredentials.rb; sourceTree = "<group>"; };
+		FFF96F9119EBE81F00DFC821 /* LoginTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginTests.m; sourceTree = "<group>"; };
+		FFF96F9219EBE81F00DFC821 /* MeTabTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeTabTests.m; sourceTree = "<group>"; };
+		FFF96F9319EBE81F00DFC821 /* NotificationsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsTests.m; sourceTree = "<group>"; };
+		FFF96F9419EBE81F00DFC821 /* PagesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PagesTests.m; sourceTree = "<group>"; };
+		FFF96F9519EBE81F00DFC821 /* PostsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostsTests.m; sourceTree = "<group>"; };
+		FFF96F9619EBE81F00DFC821 /* ReaderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderTests.m; sourceTree = "<group>"; };
+		FFF96F9719EBE81F00DFC821 /* StatsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsTests.m; sourceTree = "<group>"; };
+		FFF96F9819EBE81F00DFC821 /* WordPressTestCredentials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressTestCredentials.h; sourceTree = "<group>"; };
+		FFF96F9919EBE81F00DFC821 /* WordPressTestCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressTestCredentials.m; sourceTree = "<group>"; };
+		FFF96F9A19EBE81F00DFC821 /* WPUITestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPUITestCase.h; sourceTree = "<group>"; };
+		FFF96F9B19EBE81F00DFC821 /* WPUITestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPUITestCase.m; sourceTree = "<group>"; };
+		FFF96FA719EBE83200DFC821 /* WordPressTestCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressTestCredentials.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1307,11 +1307,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FFF96F5319E697B500DFC821 /* Frameworks */ = {
+		FFF96F7F19EBE7FB00DFC821 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A455F9C73C9FFB8E56038AB4 /* libPods-UITests.a in Frameworks */,
+				4253506E2DDC92882C721F55 /* libPods-UITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1392,7 +1392,7 @@
 				1D6058910D05DD3D006BFB54 /* WordPress.app */,
 				E16AB92A14D978240047A2E5 /* WordPressTest.xctest */,
 				93E5283A19A7741A003A1A9C /* WordPressTodayWidget.appex */,
-				FFF96F5619E697B500DFC821 /* UITests.xctest */,
+				FFF96F8219EBE7FB00DFC821 /* UITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1409,7 +1409,7 @@
 				45C73C23113C36F50024D0D2 /* Resources-iPad */,
 				E16AB92F14D978240047A2E5 /* WordPressTest */,
 				93E5283D19A7741A003A1A9C /* WordPressTodayWidget */,
-				FFF96F5719E697B500DFC821 /* UITests */,
+				FFF96F8319EBE7FB00DFC821 /* UITests */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				A28F6FD119B61ACA00AADE55 /* SwiftPlayground.playground */,
@@ -1495,7 +1495,7 @@
 				E10B3653158F2D4500419A93 /* UIKit.framework */,
 				93E5283B19A7741A003A1A9C /* NotificationCenter.framework */,
 				872A78E046E04A05B17EB1A1 /* libPods-WordPressTodayWidget.a */,
-				B00150613F6A012B549C20B5 /* libPods-UITests.a */,
+				369D8993FF42F0A2D183A062 /* libPods-UITests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2253,10 +2253,10 @@
 				2B3804821972897F0DEC4183 /* Pods-WordPressTodayWidget.release.xcconfig */,
 				052EFF90F810139789A446FB /* Pods-WordPressTodayWidget.release-internal.xcconfig */,
 				67040029265369CB7FAE64FA /* Pods-WordPressTodayWidget.distribution.xcconfig */,
-				710C346E186260322E3788D8 /* Pods-UITests.debug.xcconfig */,
-				E7BC0B1BC7CAEF0D54CC5BD5 /* Pods-UITests.release.xcconfig */,
-				63CFD77C700A316EA4015034 /* Pods-UITests.release-internal.xcconfig */,
-				9DE910F1013883A33D3C9EFE /* Pods-UITests.distribution.xcconfig */,
+				45A679DE2C6B64047BAF97E9 /* Pods-UITests.debug.xcconfig */,
+				1E59E0C89B24D8AA3B12DEC8 /* Pods-UITests.release.xcconfig */,
+				91E1D2929A320BA8932240BF /* Pods-UITests.release-internal.xcconfig */,
+				71E3F8ABCB453500748B60CE /* Pods-UITests.distribution.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -2512,7 +2512,7 @@
 		E1756E661694AA1500D9EC00 /* Derived Sources */ = {
 			isa = PBXGroup;
 			children = (
-				FFF96F7319E697DD00DFC821 /* WordPressTestCredentials.m */,
+				FFF96FA719EBE83200DFC821 /* WordPressTestCredentials.m */,
 				E1756E641694A99400D9EC00 /* WordPressComApiCredentials.m */,
 			);
 			name = "Derived Sources";
@@ -2589,31 +2589,31 @@
 			path = Pages;
 			sourceTree = "<group>";
 		};
-		FFF96F5719E697B500DFC821 /* UITests */ = {
+		FFF96F8319EBE7FB00DFC821 /* UITests */ = {
 			isa = PBXGroup;
 			children = (
-				FFF96F6319E697CD00DFC821 /* gencredentials.rb */,
-				FFF96F6419E697CD00DFC821 /* LoginTests.m */,
-				FFF96F6519E697CD00DFC821 /* MeTabTests.m */,
-				FFF96F6619E697CD00DFC821 /* PagesTests.m */,
-				FFF96F7A19E6DD8600DFC821 /* ReaderTests.m */,
-				FFF96F7C19E80C7F00DFC821 /* NotificationsTests.m */,
-				FFF96F7619E6A7B800DFC821 /* CommentsTests.m */,
-				FFF96F7819E6C75E00DFC821 /* StatsTests.m */,
-				FFF96F6719E697CD00DFC821 /* PostsTests.m */,
-				FFF96F6819E697CD00DFC821 /* WordPressTestCredentials.h */,
-				FFF96F6919E697CD00DFC821 /* WordPressTestCredentials.m */,
-				FFF96F6A19E697CD00DFC821 /* WPUITestCase.h */,
-				FFF96F6B19E697CD00DFC821 /* WPUITestCase.m */,
-				FFF96F5819E697B500DFC821 /* Supporting Files */,
+				FFF96F8F19EBE81F00DFC821 /* CommentsTests.m */,
+				FFF96F9019EBE81F00DFC821 /* gencredentials.rb */,
+				FFF96F9119EBE81F00DFC821 /* LoginTests.m */,
+				FFF96F9219EBE81F00DFC821 /* MeTabTests.m */,
+				FFF96F9319EBE81F00DFC821 /* NotificationsTests.m */,
+				FFF96F9419EBE81F00DFC821 /* PagesTests.m */,
+				FFF96F9519EBE81F00DFC821 /* PostsTests.m */,
+				FFF96F9619EBE81F00DFC821 /* ReaderTests.m */,
+				FFF96F9719EBE81F00DFC821 /* StatsTests.m */,
+				FFF96F9819EBE81F00DFC821 /* WordPressTestCredentials.h */,
+				FFF96F9919EBE81F00DFC821 /* WordPressTestCredentials.m */,
+				FFF96F9A19EBE81F00DFC821 /* WPUITestCase.h */,
+				FFF96F9B19EBE81F00DFC821 /* WPUITestCase.m */,
+				FFF96F8419EBE7FB00DFC821 /* Supporting Files */,
 			);
 			path = UITests;
 			sourceTree = "<group>";
 		};
-		FFF96F5819E697B500DFC821 /* Supporting Files */ = {
+		FFF96F8419EBE7FB00DFC821 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				FFF96F5919E697B500DFC821 /* Info.plist */,
+				FFF96F8519EBE7FB00DFC821 /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -2684,24 +2684,24 @@
 			productReference = E16AB92A14D978240047A2E5 /* WordPressTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		FFF96F5519E697B500DFC821 /* UITests */ = {
+		FFF96F8119EBE7FB00DFC821 /* UITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FFF96F6219E697B500DFC821 /* Build configuration list for PBXNativeTarget "UITests" */;
+			buildConfigurationList = FFF96F8E19EBE7FB00DFC821 /* Build configuration list for PBXNativeTarget "UITests" */;
 			buildPhases = (
-				C4EE59D061CD133CC39B439C /* Check Pods Manifest.lock */,
-				FFF96F5219E697B500DFC821 /* Sources */,
-				FFF96F5319E697B500DFC821 /* Frameworks */,
-				FFF96F5419E697B500DFC821 /* Resources */,
-				80EE2ECC8BFF8AC2E5D38A08 /* Copy Pods Resources */,
+				F538F2E32959A7F71EED0023 /* Check Pods Manifest.lock */,
+				FFF96F7E19EBE7FB00DFC821 /* Sources */,
+				FFF96F7F19EBE7FB00DFC821 /* Frameworks */,
+				FFF96F8019EBE7FB00DFC821 /* Resources */,
+				BD568EA7006B338911997D59 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				FFF96F5D19E697B500DFC821 /* PBXTargetDependency */,
+				FFF96F8919EBE7FB00DFC821 /* PBXTargetDependency */,
 			);
 			name = UITests;
 			productName = UITests;
-			productReference = FFF96F5619E697B500DFC821 /* UITests.xctest */;
+			productReference = FFF96F8219EBE7FB00DFC821 /* UITests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -2739,7 +2739,7 @@
 					E16AB92914D978240047A2E5 = {
 						TestTargetID = 1D6058900D05DD3D006BFB54;
 					};
-					FFF96F5519E697B500DFC821 = {
+					FFF96F8119EBE7FB00DFC821 = {
 						CreatedOnToolsVersion = 6.1;
 						TestTargetID = 1D6058900D05DD3D006BFB54;
 					};
@@ -2785,7 +2785,7 @@
 				E16AB92914D978240047A2E5 /* WordPressTest */,
 				A2795807198819DE0031C6A3 /* OCLint */,
 				93E5283919A7741A003A1A9C /* WordPressTodayWidget */,
-				FFF96F5519E697B500DFC821 /* UITests */,
+				FFF96F8119EBE7FB00DFC821 /* UITests */,
 			);
 		};
 /* End PBXProject section */
@@ -2871,11 +2871,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FFF96F5419E697B500DFC821 /* Resources */ = {
+		FFF96F8019EBE7FB00DFC821 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FFF96F6C19E697CD00DFC821 /* gencredentials.rb in Resources */,
+				FFF96F9D19EBE81F00DFC821 /* gencredentials.rb in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2940,21 +2940,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 		};
-		80EE2ECC8BFF8AC2E5D38A08 /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-UITests/Pods-UITests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		A279580D198819F50031C6A3 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2968,19 +2953,19 @@
 			shellPath = /bin/sh;
 			shellScript = "# sh ../run-oclint.sh <optional: filename to lint>\nsh ../run-oclint.sh";
 		};
-		C4EE59D061CD133CC39B439C /* Check Pods Manifest.lock */ = {
+		BD568EA7006B338911997D59 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-UITests/Pods-UITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E16AB92814D978240047A2E5 /* ShellScript */ = {
@@ -3026,6 +3011,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "[ -f ~/.wpcom_app_credentials ] && source ~/.wpcom_app_credentials\n \n if [ \"x$CRASHLYTICS_API_KEY\" != \"x\" ]; then\n ./Crashlytics.framework/run $CRASHLYTICS_API_KEY\n else\n echo \"warning: Crashytics API Key not found\"\n fi";
+		};
+		F538F2E32959A7F71EED0023 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -3337,20 +3337,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FFF96F5219E697B500DFC821 /* Sources */ = {
+		FFF96F7E19EBE7FB00DFC821 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FFF96F7419E697DD00DFC821 /* WordPressTestCredentials.m in Sources */,
-				FFF96F7B19E6DD8600DFC821 /* ReaderTests.m in Sources */,
-				FFF96F7D19E80C7F00DFC821 /* NotificationsTests.m in Sources */,
-				FFF96F7919E6C75E00DFC821 /* StatsTests.m in Sources */,
-				FFF96F7719E6A7B800DFC821 /* CommentsTests.m in Sources */,
-				FFF96F6E19E697CD00DFC821 /* MeTabTests.m in Sources */,
-				FFF96F7019E697CD00DFC821 /* PostsTests.m in Sources */,
-				FFF96F7519E6991400DFC821 /* LoginTests.m in Sources */,
-				FFF96F6F19E697CD00DFC821 /* PagesTests.m in Sources */,
-				FFF96F7219E697CD00DFC821 /* WPUITestCase.m in Sources */,
+				FFF96FA019EBE81F00DFC821 /* NotificationsTests.m in Sources */,
+				FFF96FA419EBE81F00DFC821 /* StatsTests.m in Sources */,
+				FFF96FA319EBE81F00DFC821 /* ReaderTests.m in Sources */,
+				FFF96FA619EBE81F00DFC821 /* WPUITestCase.m in Sources */,
+				FFF96FA819EBE83200DFC821 /* WordPressTestCredentials.m in Sources */,
+				FFF96F9F19EBE81F00DFC821 /* MeTabTests.m in Sources */,
+				FFF96F9C19EBE81F00DFC821 /* CommentsTests.m in Sources */,
+				FFF96FA219EBE81F00DFC821 /* PostsTests.m in Sources */,
+				FFF96FA119EBE81F00DFC821 /* PagesTests.m in Sources */,
+				FFF96F9E19EBE81F00DFC821 /* LoginTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3372,10 +3372,10 @@
 			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
 			targetProxy = E16AB93E14D978520047A2E5 /* PBXContainerItemProxy */;
 		};
-		FFF96F5D19E697B500DFC821 /* PBXTargetDependency */ = {
+		FFF96F8919EBE7FB00DFC821 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
-			targetProxy = FFF96F5C19E697B500DFC821 /* PBXContainerItemProxy */;
+			targetProxy = FFF96F8819EBE7FB00DFC821 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -4042,9 +4042,9 @@
 			};
 			name = Distribution;
 		};
-		FFF96F5E19E697B500DFC821 /* Debug */ = {
+		FFF96F8A19EBE7FB00DFC821 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 710C346E186260322E3788D8 /* Pods-UITests.debug.xcconfig */;
+			baseConfigurationReference = 45A679DE2C6B64047BAF97E9 /* Pods-UITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -4089,9 +4089,9 @@
 			};
 			name = Debug;
 		};
-		FFF96F5F19E697B500DFC821 /* Release */ = {
+		FFF96F8B19EBE7FB00DFC821 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E7BC0B1BC7CAEF0D54CC5BD5 /* Pods-UITests.release.xcconfig */;
+			baseConfigurationReference = 1E59E0C89B24D8AA3B12DEC8 /* Pods-UITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -4130,9 +4130,9 @@
 			};
 			name = Release;
 		};
-		FFF96F6019E697B500DFC821 /* Release-Internal */ = {
+		FFF96F8C19EBE7FB00DFC821 /* Release-Internal */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 63CFD77C700A316EA4015034 /* Pods-UITests.release-internal.xcconfig */;
+			baseConfigurationReference = 91E1D2929A320BA8932240BF /* Pods-UITests.release-internal.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -4171,9 +4171,9 @@
 			};
 			name = "Release-Internal";
 		};
-		FFF96F6119E697B500DFC821 /* Distribution */ = {
+		FFF96F8D19EBE7FB00DFC821 /* Distribution */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9DE910F1013883A33D3C9EFE /* Pods-UITests.distribution.xcconfig */;
+			baseConfigurationReference = 71E3F8ABCB453500748B60CE /* Pods-UITests.distribution.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -4270,13 +4270,13 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FFF96F6219E697B500DFC821 /* Build configuration list for PBXNativeTarget "UITests" */ = {
+		FFF96F8E19EBE7FB00DFC821 /* Build configuration list for PBXNativeTarget "UITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				FFF96F5E19E697B500DFC821 /* Debug */,
-				FFF96F5F19E697B500DFC821 /* Release */,
-				FFF96F6019E697B500DFC821 /* Release-Internal */,
-				FFF96F6119E697B500DFC821 /* Distribution */,
+				FFF96F8A19EBE7FB00DFC821 /* Debug */,
+				FFF96F8B19EBE7FB00DFC821 /* Release */,
+				FFF96F8C19EBE7FB00DFC821 /* Release-Internal */,
+				FFF96F8D19EBE7FB00DFC821 /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
