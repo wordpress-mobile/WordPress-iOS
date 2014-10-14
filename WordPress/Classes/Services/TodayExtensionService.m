@@ -40,7 +40,7 @@
 
 - (void)removeTodayWidgetConfiguration
 {
-    if (NSClassFromString(@"NCWidgetController") == nil) {
+    if (!WIDGETS_EXIST) {
         return;
     }
     
@@ -61,7 +61,7 @@
 
 - (void)hideTodayWidgetIfNotConfigured
 {
-    if (NSClassFromString(@"NCWidgetController") == nil) {
+    if (!WIDGETS_EXIST) {
         return;
     }
     
