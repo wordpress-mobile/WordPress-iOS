@@ -7,12 +7,10 @@
 
 - (void)configureTodayWidgetWithSiteID:(NSNumber *)siteID blogName:(NSString *)blogName siteTimeZone:(NSTimeZone *)timeZone andOAuth2Token:(NSString *)oauth2Token
 {
-    NSLog(@"******************* CONFIGURING WIDGET FOR SITE ID %@", siteID);
-    
-    NSAssert(siteID != nil, @"Site ID should not be nil");
-    NSAssert(blogName != nil, @"Blog name should not be nil");
-    NSAssert(timeZone != nil, @"Timezone should not be nil");
-    NSAssert(oauth2Token.length > 0, @"OAuth2 token should be provided");
+    NSParameterAssert(siteID != nil);
+    NSParameterAssert(blogName != nil);
+    NSParameterAssert(timeZone != nil);
+    NSParameterAssert(oauth2Token.length > 0);
     
     if (!WIDGETS_EXIST) {
         return;
