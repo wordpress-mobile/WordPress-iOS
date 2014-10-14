@@ -261,7 +261,10 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
             TodayExtensionService *service = [TodayExtensionService new];
             BOOL widgetIsConfigured = [service widgetIsConfigured];
             
-            if (!widgetIsConfigured && defaultBlog != nil && account.isWpcom) {
+            if (WIDGETS_EXIST
+                && !widgetIsConfigured
+                && defaultBlog != nil
+                && account.isWpcom) {
                 BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
                 NSNumber *siteId = defaultBlog.blogID;
                 NSString *blogName = defaultBlog.blogName;
