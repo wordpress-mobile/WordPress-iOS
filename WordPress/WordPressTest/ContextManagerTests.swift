@@ -16,6 +16,7 @@ class ContextManagerTests: XCTestCase {
 
     func testExample() {
         XCTAssertNotNil(contextManager.mainContext, "Context should not be nil");
+        XCTAssertNil(contextManager.mainContext.parentContext, "There should be no parent context.");
     }
 
     func testPerformanceExample() {

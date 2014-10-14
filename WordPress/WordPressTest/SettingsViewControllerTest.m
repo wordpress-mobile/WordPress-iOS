@@ -1,13 +1,15 @@
 #import <XCTest/XCTest.h>
-#import "CoreDataTestHelper.h"
 #import "WPAccount.h"
 #import "Blog.h"
 #import "NotificationsManager.h"
 #import "SettingsViewController.h"
 #import "ContextManager.h"
 #import "AccountService.h"
+#import "TestContextManager.h"
 
 @interface SettingsViewControllerTest : XCTestCase
+
+@property (nonatomic, strong) TestContextManager *testContextManager;
 
 @end
 
@@ -16,6 +18,7 @@
 - (void)setUp
 {
     [super setUp];
+    self.testContextManager = [[TestContextManager alloc] init];
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
@@ -29,8 +32,8 @@
 - (void)tearDown
 {
     [super tearDown];
-    [[CoreDataTestHelper sharedHelper] reset];
-    [CoreDataTestHelper sharedHelper].testExpectation = nil;
+    [self.testContextManager resetContextManager];
+    self.testContextManager = nil;
 }
 
 - (void)testWpcomSection
@@ -59,7 +62,7 @@
 
     // Sign In
     XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
-    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
+    self.testContextManager.testExpectation = saveExpectation;
 
     WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:@"jacksparrow" password:@"piratesobrave" authToken:@"token"];
     
@@ -96,7 +99,7 @@
     XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
 
     saveExpectation = [self expectationWithDescription:@"Context save expectation"];
-    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
+    self.testContextManager.testExpectation = saveExpectation;
     
     NSString *xmlrpc = @"http://blog1.com/xmlrpc.php";
     NSString *url = @"blog1.com";
@@ -106,7 +109,7 @@
         blog.xmlrpc = xmlrpc;
         blog.url = url;
     }
-    [ContextManager saveContext:account.managedObjectContext];
+    [[ContextManager sharedInstance] saveContext:account.managedObjectContext];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 
     [table reloadData];
@@ -127,7 +130,7 @@
     XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
     
     saveExpectation = [self expectationWithDescription:@"Context save expectation"];
-    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
+    self.testContextManager.testExpectation = saveExpectation;
 
     xmlrpc = @"http://blog2.com/xmlrpc.php";
     url = @"blog2.com";
@@ -137,7 +140,7 @@
         blog.xmlrpc = xmlrpc;
         blog.url = url;
     }
-    [ContextManager saveContext:account.managedObjectContext];
+    [[ContextManager sharedInstance] saveContext:account.managedObjectContext];
     [self waitForExpectationsWithTimeout:2.0 handler:^(NSError *error) {
         NSLog(@"Error: %@", error);
     }];

@@ -160,7 +160,7 @@ static void *const testPSCKey = "testPSCKey";
 }
 
 - (void)testSaveContext:(NSManagedObjectContext *)context {
-	[self saveContext:context withCompletionBlock:^() {
+	[[ContextManager sharedInstance] saveContext:context withCompletionBlock:^() {
         if ([CoreDataTestHelper sharedHelper].testExpectation) {
             [[CoreDataTestHelper sharedHelper].testExpectation fulfill];
             [CoreDataTestHelper sharedHelper].testExpectation = nil;

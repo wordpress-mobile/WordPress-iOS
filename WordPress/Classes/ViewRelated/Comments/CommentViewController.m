@@ -459,7 +459,7 @@ typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
 {
     self.reply.content = text;
 
-    [ContextManager saveContext:self.reply.managedObjectContext];
+    [[ContextManager sharedInstance] saveContext:self.reply.managedObjectContext];
 
     self.inlineComposeView.enabled = NO;
     self.transientReply = NO;
@@ -489,7 +489,7 @@ typedef NS_ENUM(NSInteger, CommentViewButtonTag) {
 - (void)textViewDidChange:(UITextView *)textView
 {
     self.reply.content = self.inlineComposeView.text;
-    [ContextManager saveContext:self.reply.managedObjectContext];
+    [[ContextManager sharedInstance] saveContext:self.reply.managedObjectContext];
 }
 
 #pragma mark - WPContentViewDelegate
