@@ -39,6 +39,25 @@
           }];
 }
 
+- (void)syncPostFormatsForBlog:(Blog *)blog success:(PostFormatsHandler)success failure:(void (^)(NSError *))failure
+{
+    NSParameterAssert(blog != nil);
+    NSParameterAssert(blog.dotComID != nil);
+    NSString *path = [NSString stringWithFormat:@"sites/%@/post-formats", blog.dotComID];
+    [self.api GET:path
+       parameters:nil
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              NSDictionary *formats = responseObject[@"formats"];
+              if (success) {
+                  success(formats);
+              }
+          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              if (failure) {
+                  failure(error);
+              }
+          }];
+}
+
 #pragma mark - Mapping methods
 
 - (NSDictionary *)mapOptionsFromResponse:(NSDictionary *)response
