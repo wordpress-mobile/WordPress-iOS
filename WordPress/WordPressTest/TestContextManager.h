@@ -7,6 +7,4 @@
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong) XCTestExpectation *testExpectation;
 
-- (void)resetContextManager;
-
 @end

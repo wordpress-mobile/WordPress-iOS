@@ -45,7 +45,6 @@
         [service removeDefaultWordPressComAccount];
     }
 
-    [self.testContextManager resetContextManager];
     self.testContextManager = nil;
 }
 

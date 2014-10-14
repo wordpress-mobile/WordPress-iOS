@@ -49,7 +49,6 @@
     _blog = nil;
     [OHHTTPStubs removeAllRequestHandlers];
 
-    [self.testContextManager resetContextManager];
     self.testContextManager = nil;
 }
 
