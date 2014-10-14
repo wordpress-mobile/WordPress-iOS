@@ -43,6 +43,7 @@ extern NSInteger const kMeTabIndex;
 - (void)showTabForIndex:(NSInteger)tabIndex;
 - (void)showPostTab;
 - (void)switchTabToPostsListForPost:(AbstractPost *)post;
+- (void)switchMeTabToStatsViewForBlog:(Blog *)blog;
 - (BOOL)isNavigatingMeTab;
 
 ///-----------

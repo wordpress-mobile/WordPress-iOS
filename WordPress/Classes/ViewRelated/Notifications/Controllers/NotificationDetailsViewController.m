@@ -79,6 +79,17 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 @implementation NotificationDetailsViewController
 
+- (void)dealloc
+{
+    // Failsafe: Manually nuke the tableView dataSource and delegate. Make sure not to force a loadView event!
+    if (!self.isViewLoaded) {
+        return;
+    }
+    
+    self.tableView.delegate = nil;
+    self.tableView.dataSource = nil;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -987,6 +998,12 @@ static CGFloat NotificationSectionSeparator     = 10;
     // Dismiss the reply field when tapping on the tableView
     self.replyTextView.text = [NSString string];
     [self.view endEditing:YES];
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)oth
+{
+    // Note: the tableViewGestureRecognizer may compete with another GestureRecognizer. Make sure it doesn't get cancelled
+    return YES;
 }
 
 @end
