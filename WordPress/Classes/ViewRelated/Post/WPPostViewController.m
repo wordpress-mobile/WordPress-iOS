@@ -2,6 +2,7 @@
 #import "WPPostViewController_Internal.h"
 
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <WordPress-iOS-Editor/WPEditorView.h>
 #import <WordPress-iOS-Shared/NSString+Util.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
@@ -42,7 +43,7 @@ static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
 static NSDictionary *DisabledButtonBarStyle;
 static NSDictionary *EnabledButtonBarStyle;
 
-@interface WPPostViewController ()<UIPopoverControllerDelegate> {
+@interface WPPostViewController ()<CTAssetsPickerControllerDelegate, UIPopoverControllerDelegate> {
     NSOperationQueue *_mediaUploadQueue;
 }
 
@@ -374,6 +375,8 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)showMediaOptions
 {
+    [self.editorView saveSelection];
+    
     CTAssetsPickerController *picker = [[CTAssetsPickerController alloc] init];
 	picker.delegate = self;
     
@@ -1105,6 +1108,11 @@ static NSDictionary *EnabledButtonBarStyle;
 
 #pragma mark - Media Formatting
 
+- (void)insertImage:(NSString *)url alt:(NSString *)alt
+{
+    [self.editorView insertImage:url alt:alt];
+}
+
 - (void)insertMediaBelow:(NSNotification *)notification
 {
 	Media *media = (Media *)[notification object];
@@ -1295,36 +1303,55 @@ static NSDictionary *EnabledButtonBarStyle;
     [self refreshUIForCurrentPost];
 }
 
-#pragma mark - CTAssetsPickerController delegate
+#pragma mark - Generating unique IDs
+
+- (NSString*)uniqueId
+{
+    CFUUIDRef uuidRef = CFUUIDCreate(NULL);
+    CFStringRef uuidStringRef = CFUUIDCreateString(NULL, uuidRef);
+    CFRelease(uuidRef);
+    
+    return (__bridge_transfer NSString *)uuidStringRef;
+}
+
+#pragma mark - CTAssetsPickerControllerDelegate
 
 - (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
-    
-    for (ALAsset *asset in assets) {
-        if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
-            // Could handle videos here
-        } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
-            MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-            [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
-                AFHTTPRequestOperation *operation = [mediaService operationToUploadMedia:media withSuccess:^{
-                    [self insertMedia:media];
-                } failure:^(NSError *error) {
-                    if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
-                        DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
-                        return;
-                    }
-
-                    [WPError showAlertWithTitle:NSLocalizedString(@"Upload failed", nil) message:error.localizedDescription];
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self.editorView restoreSelection];
+        
+        for (ALAsset *asset in assets) {
+            if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
+                // Could handle videos here
+            } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
+                MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+                [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
+                    NSString* imageUniqueId = [self uniqueId];
+                    
+                    NSURL* url = [[NSURL alloc] initFileURLWithPath:media.localURL];
+                    
+                    [self.editorView insertLocalImage:[url absoluteString] uniqueId:imageUniqueId];
+                    
+                    AFHTTPRequestOperation *operation = [mediaService operationToUploadMedia:media withSuccess:^{
+                        [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:imageUniqueId];
+                    } failure:^(NSError *error) {
+                        if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
+                            DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
+                            return;
+                        }
+                        
+                        [WPError showAlertWithTitle:NSLocalizedString(@"Upload failed", nil) message:error.localizedDescription];
+                    }];
+                    [_mediaUploadQueue addOperation:operation];
                 }];
-                [_mediaUploadQueue addOperation:operation];
-            }];
+            }
         }
-    }
-    
-    // Need to refresh the post object. If we didn't, self.post.media would appear
-    // to be unchanged causing the Media State Methods to fail.
-    [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
+        
+        // Need to refresh the post object. If we didn't, self.post.media would appear
+        // to be unchanged causing the Media State Methods to fail.
+        [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
+    }];
 }
 
 - (BOOL)assetsPickerController:(CTAssetsPickerController *)picker shouldSelectAsset:(ALAsset *)asset
