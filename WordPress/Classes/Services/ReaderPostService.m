@@ -90,7 +90,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
             DDLogError(@"Error obtaining a permanent ID for post. %@, %@", post, error);
         }
 
-        [ContextManager saveContext:self.managedObjectContext];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         success(post);
 
     } failure:^(NSError *error) {
@@ -147,7 +147,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         readerPost.likeCount = @([readerPost.likeCount integerValue] - 1);
     }
     [self.managedObjectContext performBlockAndWait:^{
-        [ContextManager saveContext:self.managedObjectContext];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
 
     // Define success block
@@ -163,7 +163,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         readerPost.isLiked = oldValue;
         readerPost.likeCount = oldCount;
         [self.managedObjectContext performBlockAndWait:^{
-            [ContextManager saveContext:self.managedObjectContext];
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }];
         if (failure) {
             failure(error);
@@ -262,14 +262,14 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     // Optimisitically save
     readerPost.isReblogged = YES;
     [self.managedObjectContext performBlockAndWait:^{
-        [ContextManager saveContext:self.managedObjectContext];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
 
     // Define failure block
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
         readerPost.isReblogged = NO;
         [self.managedObjectContext performBlockAndWait:^{
-            [ContextManager saveContext:self.managedObjectContext];
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }];
         if (failure) {
             failure(error);
@@ -319,7 +319,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         [self.managedObjectContext deleteObject:post];
     }
 
-    [ContextManager saveContext:self.managedObjectContext];
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
 - (void)setFollowing:(BOOL)following forPostsFromSiteWithID:(NSNumber *)siteID andURL:(NSString *)siteURL
@@ -341,7 +341,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         post.isFollowing = following;
     }
     [self.managedObjectContext performBlock:^{
-        [ContextManager saveContext:self.managedObjectContext];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
 }
 
@@ -366,7 +366,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     }
 
     [self.managedObjectContext performBlockAndWait:^{
-        [ContextManager saveContext:self.managedObjectContext];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
 }
 
@@ -391,7 +391,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     }
 
     [self.managedObjectContext performBlockAndWait:^{
-        [ContextManager saveContext:self.managedObjectContext];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
 }
 
@@ -415,7 +415,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     }
 
     [self.managedObjectContext performBlockAndWait:^{
-        [ContextManager saveContext:self.managedObjectContext];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
 }
 
@@ -598,7 +598,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
         // performBlockAndWait here so we know our objects are saved before we call success.
         [self.managedObjectContext performBlockAndWait:^{
-            [ContextManager saveContext:self.managedObjectContext];
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }];
 
         if (success) {

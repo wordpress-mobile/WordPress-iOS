@@ -48,7 +48,7 @@
         media.filesize = @(optimizedImageData.length / 1024);
         media.width = @(asset.defaultRepresentation.dimensions.width);
         media.height = @(asset.defaultRepresentation.dimensions.height);
-        [ContextManager saveContext:self.managedObjectContext];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         if (completion) {
             completion(media);
         }
@@ -70,7 +70,7 @@
                                          media.remoteStatus = MediaRemoteStatusSync;
                                          media.mediaID = mediaID;
                                          media.remoteURL = url;
-                                         [ContextManager saveContext:self.managedObjectContext];
+                                         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
                                          if (success) {
                                              success();
                                          }
