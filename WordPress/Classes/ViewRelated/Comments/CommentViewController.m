@@ -18,10 +18,10 @@ static NSString *const CVCSuccessToastImage = @"action-icon-success";
 static NSString *const CVCHeaderCellIdentifier = @"CommentTableViewHeaderCell";
 static NSString *const CVCCommentCellIdentifier = @"CommentTableViewCell";
 static CGFloat const CVCFirstSectionHeaderHeight = 40;
+static CGFloat const CVCSectionSeparatorHeight = 10;
 static NSInteger const CVCHeaderSectionIndex = 0;
 static NSInteger const CVCNumberOfRows = 1;
 static NSInteger const CVCNumberOfSections = 2;
-static NSInteger const CVCSectionSeparatorHeight = 10;
 
 @interface CommentViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
 
@@ -186,6 +186,11 @@ static NSInteger const CVCSectionSeparatorHeight = 10;
     }
 
     return [cell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return CGFLOAT_MIN;
 }
 
 #pragma mark - Setup Cells
