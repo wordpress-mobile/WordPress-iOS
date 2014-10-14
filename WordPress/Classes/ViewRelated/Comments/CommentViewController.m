@@ -116,14 +116,7 @@ static NSInteger const CVCNumberOfSections = 2;
 {
     [super viewDidLoad];
 
-    // if the post for the comment is nil, fetch it
-    if (!self.comment.post) {
-        __weak __typeof(self) weakSelf = self;
-
-        [self.comment fetchPostWithSuccess:^{
-            [weakSelf.tableView reloadData];
-        }];
-    }
+    [self fetchPostIfNecessary];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -142,6 +135,42 @@ static NSInteger const CVCNumberOfSections = 2;
     [self.replyTextView resignFirstResponder];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - Fetching Post
+
+// if the post for the comment is nil, fetch it
+- (void)fetchPostIfNecessary
+{
+    // if the post is already set for the comment, no need to do anything else
+    if (self.comment.post) {
+        return;
+    }
+
+    // Check if the post is already stored
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+    AbstractPost *post = [postService findPostWithID:self.comment.postID inBlog:self.comment.blog];
+    if (post) {
+        self.comment.post = post;
+        [[ContextManager sharedInstance] saveContext:context];
+
+        [self.tableView reloadData];
+        return;
+    }
+
+    __weak __typeof(self) weakSelf = self;
+
+    // if it's not already stored, make a request to the server for it
+    [postService getPostWithID:self.comment.postID
+                       forBlog:self.comment.blog
+                       success:^(AbstractPost *post) {
+                           weakSelf.comment.post = post;
+                           [[ContextManager sharedInstance] saveContext:context];
+
+                           [weakSelf.tableView reloadData];
+                       }
+                       failure:nil];
 }
 
 #pragma mark - Table view data source
