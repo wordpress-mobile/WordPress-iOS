@@ -20,7 +20,7 @@
     [super setUp];
     self.testContextManager = [[TestContextManager alloc] init];
 
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectContext *context = [self.testContextManager mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
@@ -32,13 +32,12 @@
 - (void)tearDown
 {
     [super tearDown];
-    [self.testContextManager resetContextManager];
     self.testContextManager = nil;
 }
 
 - (void)testWpcomSection
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectContext *context = [self.testContextManager mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 

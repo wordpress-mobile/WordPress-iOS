@@ -41,7 +41,6 @@
     // Put teardown code here; it will be run once, after the last test case.
     [super tearDown];
     
-    [self.testContextManager resetContextManager];
     self.testContextManager = nil;
 }
 
