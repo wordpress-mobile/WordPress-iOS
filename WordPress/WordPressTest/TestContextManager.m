@@ -16,11 +16,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-    [ContextManager overrideSharedInstance:nil];
-}
-
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator
 {
     if (_persistentStoreCoordinator) {
@@ -71,11 +66,6 @@
             NSLog(@"No test expectation present for context save");
         }
     }];
-}
-
-- (void)resetContextManager
-{
-    [ContextManager overrideSharedInstance:nil];
 }
 
 @end
