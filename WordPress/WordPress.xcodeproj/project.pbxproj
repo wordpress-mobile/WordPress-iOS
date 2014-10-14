@@ -434,6 +434,7 @@
 		FFF96FA419EBE81F00DFC821 /* StatsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F9719EBE81F00DFC821 /* StatsTests.m */; };
 		FFF96FA619EBE81F00DFC821 /* WPUITestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F9B19EBE81F00DFC821 /* WPUITestCase.m */; };
 		FFF96FA819EBE83200DFC821 /* WordPressTestCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96FA719EBE83200DFC821 /* WordPressTestCredentials.m */; };
+		FFF96FAB19ED724F00DFC821 /* KIFUITestActor-WPExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96FAA19ED724F00DFC821 /* KIFUITestActor-WPExtras.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1228,6 +1229,8 @@
 		FFF96F9A19EBE81F00DFC821 /* WPUITestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPUITestCase.h; sourceTree = "<group>"; };
 		FFF96F9B19EBE81F00DFC821 /* WPUITestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPUITestCase.m; sourceTree = "<group>"; };
 		FFF96FA719EBE83200DFC821 /* WordPressTestCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressTestCredentials.m; sourceTree = "<group>"; };
+		FFF96FA919ED724F00DFC821 /* KIFUITestActor-WPExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KIFUITestActor-WPExtras.h"; sourceTree = "<group>"; };
+		FFF96FAA19ED724F00DFC821 /* KIFUITestActor-WPExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KIFUITestActor-WPExtras.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2605,6 +2608,8 @@
 				FFF96F9919EBE81F00DFC821 /* WordPressTestCredentials.m */,
 				FFF96F9A19EBE81F00DFC821 /* WPUITestCase.h */,
 				FFF96F9B19EBE81F00DFC821 /* WPUITestCase.m */,
+				FFF96FA919ED724F00DFC821 /* KIFUITestActor-WPExtras.h */,
+				FFF96FAA19ED724F00DFC821 /* KIFUITestActor-WPExtras.m */,
 			);
 			path = UITests;
 			sourceTree = "<group>";
@@ -3341,6 +3346,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FFF96FAB19ED724F00DFC821 /* KIFUITestActor-WPExtras.m in Sources */,
 				FFF96FA019EBE81F00DFC821 /* NotificationsTests.m in Sources */,
 				FFF96FA419EBE81F00DFC821 /* StatsTests.m in Sources */,
 				FFF96FA319EBE81F00DFC821 /* ReaderTests.m in Sources */,

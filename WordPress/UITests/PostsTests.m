@@ -282,14 +282,7 @@
     
     [tester waitForTimeInterval:5];
 
-    UIAccessibilityElement * photoCellAccessibilityElement = nil;
-    UIView * photoCell = nil;
-    if ([tester tryFindingAccessibilityElement:&photoCellAccessibilityElement view:&photoCell withElementMatchingPredicate:[NSPredicate predicateWithFormat:@"accessibilityLabel BEGINSWITH %@", @"Photo, "] tappable:YES error:nil]){
-
-        [tester tapAccessibilityElement:photoCellAccessibilityElement inView:photoCell];
-    } else {
-        [tester failWithError:[NSError KIFErrorWithFormat:@"Unable to find photo element"] stopTest:YES];
-    }
+    [tester tapViewWithAccessibilityLabelStartingWith:@"Photo, "];
     
     [tester waitForTimeInterval:15];
     
