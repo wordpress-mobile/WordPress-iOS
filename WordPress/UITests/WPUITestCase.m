@@ -15,6 +15,17 @@
     [tester waitForViewWithAccessibilityLabel:@"Main Navigation"];
 }
 
+- (void) loginOther
+{
+    [tester clearTextFromAndThenEnterText:twoStepUser intoViewWithAccessibilityLabel:@"Username / Email"];
+    [tester clearTextFromAndThenEnterText:twoStepPassword intoViewWithAccessibilityLabel:@"Password"];
+    [tester tapViewWithAccessibilityLabel:@"Sign In"];
+    
+    [tester waitForTimeInterval:3];
+    // Verify that the login succeeded
+    [tester waitForViewWithAccessibilityLabel:@"Main Navigation"];
+}
+
 - (void) logout
 {
     [tester tapViewWithAccessibilityLabel:@"Me"];
