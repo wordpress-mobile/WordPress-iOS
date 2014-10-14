@@ -110,8 +110,25 @@
     WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary.");
 
+        NSDictionary *postFormats = responseObject;
+        NSDictionary *respDict = responseObject;
+        if ([postFormats objectForKey:@"supported"] && [[postFormats objectForKey:@"supported"] isKindOfClass:[NSArray class]]) {
+            NSMutableArray *supportedKeys = [NSMutableArray arrayWithArray:[postFormats objectForKey:@"supported"]];
+            // Standard isn't included in the list of supported formats? Maybe it will be one day?
+            if (![supportedKeys containsObject:@"standard"]) {
+                [supportedKeys addObject:@"standard"];
+            }
+
+            NSDictionary *allFormats = [postFormats objectForKey:@"all"];
+            NSMutableArray *supportedValues = [NSMutableArray array];
+            for (NSString *key in supportedKeys) {
+                [supportedValues addObject:[allFormats objectForKey:key]];
+            }
+            respDict = [NSDictionary dictionaryWithObjects:supportedValues forKeys:supportedKeys];
+        }
+
         if (success) {
-            success(responseObject);
+            success(respDict);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         DDLogError(@"Error syncing post formats (%@): %@", operation.request.URL, error);
