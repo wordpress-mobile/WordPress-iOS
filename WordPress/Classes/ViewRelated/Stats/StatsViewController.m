@@ -93,6 +93,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     [sharedDefaults setObject:self.siteTimeZone.name forKey:WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey];
     [sharedDefaults setObject:self.siteID forKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
     [sharedDefaults setObject:self.blog.blogName forKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
+    [sharedDefaults synchronize];
     
     NSError *error;
     [SFHFKeychainUtils storeUsername:WPStatsTodayWidgetOAuth2TokenKeychainUsername
@@ -175,6 +176,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey];
     [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
     [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
+    [sharedDefaults synchronize];
     
     [SFHFKeychainUtils deleteItemForUsername:WPStatsTodayWidgetOAuth2TokenKeychainUsername
                               andServiceName:WPStatsTodayWidgetOAuth2TokenKeychainServiceName
