@@ -789,6 +789,24 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [blogListNavController setViewControllers:@[blogListViewController, blogDetailsViewController, postsViewController]];
 }
 
+- (void)switchMeTabToStatsViewForBlog:(Blog *)blog
+{
+    // Make sure the desired tab is selected.
+    [self showTabForIndex:kMeTabIndex];
+    
+    // Build and set the navigation heirarchy for the Me tab.
+    UINavigationController *blogListNavController = [self.tabBarController.viewControllers objectAtIndex:kMeTabIndex];
+    BlogListViewController *blogListViewController = [blogListNavController.viewControllers objectAtIndex:0];
+
+    BlogDetailsViewController *blogDetailsViewController = [BlogDetailsViewController new];
+    blogDetailsViewController.blog = blog;
+    
+    StatsViewController *statsViewController = [StatsViewController new];
+    statsViewController.blog = blog;
+    
+    [blogListNavController setViewControllers:@[blogListViewController, blogDetailsViewController, statsViewController]];
+}
+
 - (BOOL)isNavigatingMeTab
 {
     return (self.tabBarController.selectedIndex == kMeTabIndex && [self.blogListViewController.navigationController.viewControllers count] > 1);
