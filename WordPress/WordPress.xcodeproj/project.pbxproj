@@ -1231,6 +1231,7 @@
 		FFF96FA719EBE83200DFC821 /* WordPressTestCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressTestCredentials.m; sourceTree = "<group>"; };
 		FFF96FA919ED724F00DFC821 /* KIFUITestActor-WPExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KIFUITestActor-WPExtras.h"; sourceTree = "<group>"; };
 		FFF96FAA19ED724F00DFC821 /* KIFUITestActor-WPExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KIFUITestActor-WPExtras.m"; sourceTree = "<group>"; };
+		FFF96FAC19ED7F4D00DFC821 /* wp_test_credentials_sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wp_test_credentials_sample; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2595,6 +2596,7 @@
 		FFF96F8319EBE7FB00DFC821 /* UITests */ = {
 			isa = PBXGroup;
 			children = (
+				FFF96FAC19ED7F4D00DFC821 /* wp_test_credentials_sample */,
 				FFF96F8419EBE7FB00DFC821 /* Supporting Files */,
 				FFF96F8F19EBE81F00DFC821 /* CommentsTests.m */,
 				FFF96F9119EBE81F00DFC821 /* LoginTests.m */,
