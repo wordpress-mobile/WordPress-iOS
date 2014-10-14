@@ -87,14 +87,14 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
     [remote getPostWithID:postID
                   forBlog:blog
                   success:^(RemotePost *remotePost){
-                      [weakSelf.managedObjectContext performBlock:^{
+                      [self.managedObjectContext performBlock:^{
                           if (remotePost) {
                               AbstractPost *post = [weakSelf findPostWithID:postID inBlog:blog];
                               if (!post) {
                                   post = [weakSelf createPostForBlog:blog];
                               }
                               [weakSelf updatePost:post withRemotePost:remotePost];
-                              [[ContextManager sharedInstance] saveContext:weakSelf.managedObjectContext];
+                              [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
                               if (success) {
                                   success(post);
@@ -108,7 +108,7 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
                   }
                   failure:^(NSError *error) {
                       if (failure) {
-                          [weakSelf.managedObjectContext performBlock:^{
+                          [self.managedObjectContext performBlock:^{
                               failure(error);
                           }];
                       }
