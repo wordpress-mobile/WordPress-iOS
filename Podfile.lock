@@ -47,7 +47,7 @@ PODS:
   - JRSwizzle (1.0)
   - Lookback (0.6.5)
   - MGImageUtilities (0.0.1)
-  - Mixpanel (2.5.3)
+  - Mixpanel (2.5.4)
   - NSLogger (1.5)
   - NSLogger-CocoaLumberjack-connector (1.3):
     - CocoaLumberjack
@@ -104,7 +104,7 @@ DEPENDENCIES:
   - HockeySDK (~> 3.5.0)
   - Lookback (= 0.6.5)
   - MGImageUtilities (from `git://github.com/wordpress-mobile/MGImageUtilities.git`, branch `gifsupport`)
-  - Mixpanel (= 2.5.3)
+  - Mixpanel (= 2.5.4)
   - NSLogger-CocoaLumberjack-connector (~> 1.3)
   - NSObject-SafeExpectations (= 0.0.2)
   - NSURL+IDN (= 0.3)
@@ -154,7 +154,7 @@ SPEC CHECKSUMS:
   JRSwizzle: 30da7a2c539a4ebf954b16d15f6dd8221c9f6fa5
   Lookback: 59f217e51c1f2bcdf23d00522ef14b66be8557d1
   MGImageUtilities: ce03a910781d7e189814d668af340bc1c0238363
-  Mixpanel: 708ec9a6ee6e741f7db107831e18b2fc2e7531f1
+  Mixpanel: 87167a0b0a74f11f0ee3787f291357494730617c
   NSLogger: 84ed0bf00985df483153ce344d8171c9ec83be2b
   NSLogger-CocoaLumberjack-connector: 8f659ea51386f0a0e8c2643bf9273010a83a15f5
   NSObject-SafeExpectations: c31276ef7209016849fc4e5c8ed5ae5453e1e208
