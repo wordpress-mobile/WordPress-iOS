@@ -63,39 +63,18 @@ import Foundation
     
     public func textView(textView: UITextView!, shouldChangeTextInRange range: NSRange, replacementText text: String!) -> Bool {
         let shouldChange = delegate?.textView?(textView, shouldChangeTextInRange: range, replacementText: text) ?? true
-        
-        // TODO: We can't use enumerateSubstringsInRange because it eats things like
-        // leading @ symbols - but this impl is janky - let's see if there is a better
-        // way to do this
-        
+                
         if shouldChange {
             if let suggestionsDelegate = delegate as? SuggestionsDelegate {
                 if suggestionsDelegate.respondsToSelector(Selector("didTypeInWord:")) {
+                    
                     let textViewText: NSString = textView.text
-                    var currentLocation = range.location
-                    var lastWordTyped: NSMutableString = "";
-                    var done = false
-                    do {
-                        currentLocation--
-                        if currentLocation < 0 {
-                            done = true
-                        } else {
-                            var charRange = NSMakeRange(currentLocation, 1)
-                            var charAtRange: NSString = textViewText.substringWithRange(charRange)
-                            if charAtRange.isEqualToString(" ") {
-                                done = true
-                            } else if charAtRange.isEqualToString("\n") {
-                                done = true
-                            } else { 
-                                lastWordTyped.insertString(charAtRange, atIndex: 0)
-                            }
-                        }
-                    } while !done
+                    let prerange = NSMakeRange(0, range.location)
+                    let pretext: NSString = textViewText.substringWithRange(prerange) + text
+                    let words = pretext.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                    let lastWord: NSString = words.last as NSString
                 
-                    // lastly, add whatever they just typed
-                    lastWordTyped.appendString(text)
-                
-                    suggestionsDelegate.didTypeInWord?(lastWordTyped)
+                    suggestionsDelegate.didTypeInWord?(lastWord)
                 }
             }
         }
