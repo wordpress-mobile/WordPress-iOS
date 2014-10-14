@@ -66,7 +66,7 @@
     
     [tester tapViewWithAccessibilityLabel:@"Optional note"];
     [tester waitForTimeInterval:2];
-    [tester enterText:@"Interesting!" intoViewWithAccessibilityLabel:@"Optional note"];
+    [tester enterTextIntoCurrentFirstResponder:@"Interesting!"];
     [tester waitForTimeInterval:2];
     
     [tester tapViewWithAccessibilityLabel:@"Publish"];
