@@ -15,6 +15,7 @@
 NSString * const PostServiceTypePost = @"post";
 NSString * const PostServiceTypePage = @"page";
 NSString * const PostServiceTypeAny = @"any";
+NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
 
 @interface PostService ()
 
@@ -80,25 +81,34 @@ NSString * const PostServiceTypeAny = @"any";
               success:(void (^)(AbstractPost *post))success
               failure:(void (^)(NSError *))failure
 {
+    __weak __typeof(self) weakSelf = self;
+
     id<PostServiceRemote> remote = [self remoteForBlog:blog];
     [remote getPostWithID:postID
                   forBlog:blog
                   success:^(RemotePost *remotePost){
-                      [self.managedObjectContext performBlock:^{
+                      [weakSelf.managedObjectContext performBlock:^{
                           if (remotePost) {
-                              Post *post = [self createPostForBlog:blog];
-                              [self updatePost:post withRemotePost:remotePost];
-                              [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext];
+                              AbstractPost *post = [weakSelf findPostWithID:postID inBlog:blog];
+                              if (!post) {
+                                  post = [weakSelf createPostForBlog:blog];
+                              }
+                              [weakSelf updatePost:post withRemotePost:remotePost];
+                              [[ContextManager sharedInstance] saveContext:weakSelf.managedObjectContext];
 
                               if (success) {
                                   success(post);
                               }
                           }
+                          else if (failure) {
+                              NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : @"Retrieved remote post is nil" };
+                              failure([NSError errorWithDomain:PostServiceErrorDomain code:0 userInfo:userInfo]);
+                          }
                       }];
                   }
                   failure:^(NSError *error) {
                       if (failure) {
-                          [self.managedObjectContext performBlock:^{
+                          [weakSelf.managedObjectContext performBlock:^{
                               failure(error);
                           }];
                       }
