@@ -1,10 +1,10 @@
 #import <XCTest/XCTest.h>
-#import "CoreDataTestHelper.h"
 #import "Blog.h"
 #import "WPAccount.h"
 #import "AccountService.h"
 #import "ContextManager.h"
 #import <objc/runtime.h>
+#import "TestContextManager.h"
 
 @implementation WPAccount (CoreDataFakeApi)
 
@@ -15,6 +15,9 @@
 @end
 
 @interface CoreDataConcurrencyTest : XCTestCase
+
+@property (nonatomic, strong) TestContextManager *testContextManager;
+
 @end
 
 @implementation CoreDataConcurrencyTest
@@ -22,6 +25,8 @@
 - (void)setUp
 {
     [super setUp];
+    
+    self.testContextManager = [TestContextManager new];
 
     AccountService *service = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
     WPAccount *account = [service createOrUpdateWordPressComAccountWithUsername:@"test" password:@"test" authToken:@"token"];
@@ -40,17 +45,17 @@
         [service removeDefaultWordPressComAccount];
     }
 
-    [[CoreDataTestHelper sharedHelper] reset];
-    [CoreDataTestHelper sharedHelper].testExpectation = nil;
+    [self.testContextManager resetContextManager];
+    self.testContextManager = nil;
 }
 
 - (void)testObjectPermanence {
     XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
-    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
+    self.testContextManager.testExpectation = saveExpectation;
 
     NSManagedObjectContext *derivedContext = [[ContextManager sharedInstance] newDerivedContext];
     Blog *blog = [self createTestBlogWithContext:derivedContext];
-    [ContextManager saveDerivedContext:derivedContext];
+    [[ContextManager sharedInstance] saveDerivedContext:derivedContext];
 
     // Wait on the merge to be completed
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
@@ -61,11 +66,11 @@
 - (void)testObjectExistenceInBackgroundFromMainSave
 {
     XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
-    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
+    self.testContextManager.testExpectation = saveExpectation;
     
     NSManagedObjectContext *mainMOC = [[ContextManager sharedInstance] mainContext];
     Blog *blog = [self createTestBlogWithContext:mainMOC];
-    [ContextManager saveContext:mainMOC];
+    [[ContextManager sharedInstance] saveContext:mainMOC];
 
     // Wait on the merge to be completed
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
@@ -80,12 +85,13 @@
 }
 
 - (void)testObjectExistenceInMainFromBackgroundSave {
-    XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
-    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
-
     NSManagedObjectContext *derivedContext = [[ContextManager sharedInstance] newDerivedContext];
     Blog *blog = [self createTestBlogWithContext:derivedContext];
-    [ContextManager saveDerivedContext:derivedContext];
+    
+    XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
+    self.testContextManager.testExpectation = saveExpectation;
+
+    [[ContextManager sharedInstance] saveDerivedContext:derivedContext];
     
     // Wait on the merge to be completed
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
@@ -109,9 +115,9 @@
     WPAccount *account = [service createOrUpdateWordPressComAccountWithUsername:@"test" password:@"test" authToken:@"token"];
 
     XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
-    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
+    self.testContextManager.testExpectation = saveExpectation;
 
-    [ContextManager saveDerivedContext:derivedContext];
+    [[ContextManager sharedInstance] saveDerivedContext:derivedContext];
 
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
     
@@ -120,16 +126,16 @@
     XCTAssertNotNil(mainAccount, @"Could not retrieve account created in background context from main context");
 
     // Create a blog with the main context, add the main context account
-    Blog *blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityIntoMainContextWithName:@"Blog"];
+    Blog *blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:self.testContextManager.mainContext];
     blog.xmlrpc = @"http://test.wordpress.com/xmlrpc.php";
     blog.url = @"http://test.wordpress.com/";
     blog.account = mainAccount;
     
     saveExpectation = [self expectationWithDescription:@"Context save expectation"];
-    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
+    self.testContextManager.testExpectation = saveExpectation;
 
     // Check that the save completes
-    XCTAssertNoThrow([ContextManager saveContext:mainContext], @"Saving should be successful");
+    XCTAssertNoThrow([[ContextManager sharedInstance] saveContext:mainContext], @"Saving should be successful");
     
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
     
@@ -147,7 +153,7 @@
     XCTAssertEqualObjects([service defaultWordPressComAccount].managedObjectContext, [ContextManager sharedInstance].mainContext, @"Account should have been created on main context");
     
     XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
-    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
+    self.testContextManager.testExpectation = saveExpectation;
 
     NSManagedObjectID *accountID = [service defaultWordPressComAccount].objectID;
     [mainContext performBlockAndWait:^{
@@ -173,7 +179,7 @@
     // Create a new derived context, which the mainContext is the parent
     XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
     XCTestExpectation *derivedSaveExpectation = [self expectationWithDescription:@"Derived context save expectation"];
-    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
+    self.testContextManager.testExpectation = saveExpectation;
 
     NSManagedObjectContext *derived = [[ContextManager sharedInstance] newDerivedContext];
     __block NSManagedObjectID *blogObjectID;
@@ -192,7 +198,7 @@
             newBlog.xmlrpc = xmlrpc;
             newBlog.url = url;
         }
-        [ContextManager saveDerivedContext:derived withCompletionBlock:^{
+        [[ContextManager sharedInstance] saveDerivedContext:derived withCompletionBlock:^{
             // object exists in main context after derived's save
             // don't notify, wait for main's save ATHNotify()
             

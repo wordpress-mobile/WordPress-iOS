@@ -764,7 +764,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
             blog.blogName = [blogOptions[@"blogname"] stringByDecodingXMLCharacters];
             blog.url = blogOptions[@"url"];
 
-            [ContextManager saveContext:context];
+            [[ContextManager sharedInstance] saveContext:context];
 
             [blogService syncBlog:blog success:nil failure:nil];
             [WPAnalytics refreshMetadata];
