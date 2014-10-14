@@ -1,4 +1,4 @@
-#import <UIKit/UIKit.h>
+a#import <UIKit/UIKit.h>
 
 int main(int argc, char *argv[]) {
 	@autoreleasepool {
