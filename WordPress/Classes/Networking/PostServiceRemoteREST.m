@@ -27,10 +27,7 @@
               failure:(void (^)(NSError *))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@", blog.dotComID, postID];
-    NSDictionary *parameters = @{
-                                 @"status": @"any",
-                                 @"context": @"edit"
-                                 };
+    NSDictionary *parameters = @{ @"context": @"edit" };
     [self.api GET:path
        parameters:parameters
           success:^(AFHTTPRequestOperation *operation, id responseObject) {

@@ -26,7 +26,7 @@
               success:(void (^)(RemotePost *post))success
               failure:(void (^)(NSError *))failure
 {
-    NSArray *parameters = [blog getXMLRPCArgsWithExtra:@{ @"post_id": postID }];
+    NSArray *parameters = [blog getXMLRPCArgsWithExtra:postID];
     [self.api callMethod:@"wp.getPost"
               parameters:parameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
