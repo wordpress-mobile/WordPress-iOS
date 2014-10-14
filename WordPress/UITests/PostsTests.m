@@ -36,17 +36,26 @@
 
 - (void)afterEach
 {
-    if ([tester tryFindingViewWithAccessibilityLabel:@"Back" error:nil]){
+    if ([tester tryFindingViewWithAccessibilityLabel:@"Blogs" error:nil]){
+        return;
+    }
+    
+    if ([tester tryFindingTappableViewWithAccessibilityLabel:@"Back" error:nil]){
         [tester tapViewWithAccessibilityLabel:@"Back"];
         [tester waitForTimeInterval:2];
     }
     
-    if ([tester tryFindingViewWithAccessibilityLabel:@"Cancel" error:nil]){
+    if ([tester tryFindingTappableViewWithAccessibilityLabel:@"Back" error:nil]){
+        [tester tapViewWithAccessibilityLabel:@"Back"];
+        [tester waitForTimeInterval:2];
+    }
+    
+    if ([tester tryFindingTappableViewWithAccessibilityLabel:@"Cancel" error:nil]){
         [tester tapViewWithAccessibilityLabel:@"Cancel"];
         [tester waitForTimeInterval:2];
     }
     
-    if ([tester tryFindingViewWithAccessibilityLabel:@"Close" error:nil]){
+    if ([tester tryFindingTappableViewWithAccessibilityLabel:@"Close" error:nil]){
         [tester tapViewWithAccessibilityLabel:@"Close"];
         [tester waitForTimeInterval:2];
     }
@@ -238,9 +247,7 @@
 }
 
 - (void) testSetFormat {
-    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
-    
-    NSArray * formats = @[@"Aside", @"Status", @"Image", @"Quote", @"Link", @"Standard"];
+    NSArray * formats = @[@"Video", @"Aside", @"Image", @"Quote", @"Link", @"Standard"];
     
     for (NSString * format in formats){
         [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
