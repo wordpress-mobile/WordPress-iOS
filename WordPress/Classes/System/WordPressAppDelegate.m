@@ -31,6 +31,7 @@
 #import "ReaderPostService.h"
 #import "ReaderTopicService.h"
 #import "SVProgressHUD.h"
+#import "TodayExtensionService.h"
 
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
@@ -1427,12 +1428,14 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 
 - (void)determineIfTodayWidgetIsConfiguredAndShowAppropriately
 {
-    [StatsViewController hideTodayWidgetIfNotConfigured];
+    TodayExtensionService *service = [TodayExtensionService new];
+    [service hideTodayWidgetIfNotConfigured];
 }
 
 - (void)removeTodayWidgetConfiguration
 {
-    [StatsViewController removeTodayWidgetConfiguration];
+    TodayExtensionService *service = [TodayExtensionService new];
+    [service removeTodayWidgetConfiguration];
 }
 
 #pragma mark - GUI animations
