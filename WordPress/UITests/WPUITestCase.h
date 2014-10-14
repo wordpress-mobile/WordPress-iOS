@@ -5,6 +5,7 @@
 @interface WPUITestCase : KIFTestCase
 
 - (void) login;
+- (void) loginOther;
 - (void) logout;
 
 @end

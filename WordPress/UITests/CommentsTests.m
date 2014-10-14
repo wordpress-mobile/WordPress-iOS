@@ -12,8 +12,26 @@
 
 @implementation CommentsTests
 
+- (void) makeSureCommentExists {
+    [self loginOther];
+    
+    [tester tapViewWithAccessibilityLabel:@"Reader"];
+    [tester waitForTimeInterval:5];
+    
+    [tester tapViewWithAccessibilityLabel:@"Comment"];
+    [tester waitForTimeInterval:2];
+    
+    [tester enterTextIntoCurrentFirstResponder:@"Interesting"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Post"];
+    [tester waitForTimeInterval:2];
+    [self logout];
+}
+
 - (void)beforeAll
 {
+    [self makeSureCommentExists];
     [self login];
 }
 

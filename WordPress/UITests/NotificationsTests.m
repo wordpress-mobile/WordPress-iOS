@@ -12,8 +12,26 @@
 
 @implementation NotificationsTests
 
+- (void) makeSureNotificationExists {
+    [self loginOther];
+    
+    [tester tapViewWithAccessibilityLabel:@"Reader"];
+    [tester waitForTimeInterval:5];
+    
+    [tester tapViewWithAccessibilityLabel:@"Comment"];
+    [tester waitForTimeInterval:2];
+    
+    [tester enterTextIntoCurrentFirstResponder:@"Interesting"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Post"];
+    [tester waitForTimeInterval:2];
+    [self logout];
+}
+
 - (void)beforeAll
 {
+    [self makeSureNotificationExists];
     [self login];
 }
 
@@ -26,6 +44,19 @@
 {
     [tester tapViewWithAccessibilityLabel:@"Notifications"];
     [tester waitForTimeInterval:5];
+}
+
+- (void)afterEach
+{
+    if ([tester tryFindingTappableViewWithAccessibilityLabel:@"Back" error:nil]){
+        [tester tapViewWithAccessibilityLabel:@"Back"];
+        [tester waitForTimeInterval:2];
+    }
+    
+    if ([tester tryFindingTappableViewWithAccessibilityLabel:@"Back" error:nil]){
+        [tester tapViewWithAccessibilityLabel:@"Back"];
+        [tester waitForTimeInterval:2];
+    }
 }
 
 
@@ -51,7 +82,7 @@
 }
 
 - (void) testModerate {
-    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1] inTableViewWithAccessibilityIdentifier:@"Notifications Table"];
+    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"Notifications Table"];
     [tester waitForTimeInterval:2];
     
     [tester tapViewWithAccessibilityLabel:@"Approve"];
@@ -63,7 +94,7 @@
 }
 
 - (void) testReply {
-    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1] inTableViewWithAccessibilityIdentifier:@"Notifications Table"];
+    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"Notifications Table"];
     [tester waitForTimeInterval:2];
     
     [tester tapViewWithAccessibilityLabel:@"Reply Text"];
