@@ -2,11 +2,9 @@
 #import "ContextManager.h"
 #import "Blog.h"
 #import "BasePost.h"
-#import "Post.h"
 #import "NSString+XMLExtensions.h"
 #import "NSString+HTML.h"
 #import "NSString+Helpers.h"
-#import "PostService.h"
 
 NSString * const CommentUploadFailedNotification = @"CommentUploadFailed";
 
