@@ -34,6 +34,34 @@
 
 }
 
+- (void)afterEach
+{
+    if ([tester tryFindingViewWithAccessibilityLabel:@"Blogs" error:nil]){
+        return;
+    }
+    
+    if ([tester tryFindingTappableViewWithAccessibilityLabel:@"Back" error:nil]){
+        [tester tapViewWithAccessibilityLabel:@"Back"];
+        [tester waitForTimeInterval:2];
+    }
+    
+    if ([tester tryFindingTappableViewWithAccessibilityLabel:@"Back" error:nil]){
+        [tester tapViewWithAccessibilityLabel:@"Back"];
+        [tester waitForTimeInterval:2];
+    }
+    
+    if ([tester tryFindingTappableViewWithAccessibilityLabel:@"Cancel" error:nil]){
+        [tester tapViewWithAccessibilityLabel:@"Cancel"];
+        [tester waitForTimeInterval:2];
+    }
+    
+    if ([tester tryFindingTappableViewWithAccessibilityLabel:@"Close" error:nil]){
+        [tester tapViewWithAccessibilityLabel:@"Close"];
+        [tester waitForTimeInterval:2];
+    }
+    
+}
+
 
 - (void) testAdd {
     [tester tapViewWithAccessibilityLabel:@"New Page"];
