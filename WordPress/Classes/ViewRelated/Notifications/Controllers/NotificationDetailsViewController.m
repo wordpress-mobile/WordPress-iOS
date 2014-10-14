@@ -229,9 +229,9 @@ static CGFloat NotificationSectionSeparator     = 10;
     BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
     Blog *blog                      = [service blogByBlogId:self.note.metaSiteID];
         
-    Boolean addSuggestionView = (blog.isWPcom && [[SuggestionService shared] shouldShowSuggestionsForSiteID:self.note.metaSiteID]);
+    BOOL shouldAddSuggestionView = (blog.isWPcom && [[SuggestionService shared] shouldShowSuggestionsForSiteID:self.note.metaSiteID]);
     
-    if (addSuggestionView) {
+    if (shouldAddSuggestionView) {
         self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.note.metaSiteID];
         self.suggestionsTableView.suggestionsDelegate = self;
         [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -255,7 +255,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     [self.view pinSubview:self.tableView aboveSubview:self.replyTextView];
     
     // If adding the suggestion view add its constraints now as well
-    if (addSuggestionView) {
+    if (shouldAddSuggestionView) {
         // Pin the suggestions view left and right edges to the super view edges
         NSDictionary *views = @{@"suggestionsview": self.suggestionsTableView };
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[suggestionsview]|"
