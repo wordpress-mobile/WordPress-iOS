@@ -10,6 +10,7 @@
 #import "WPToast.h"
 #import "EditCommentViewController.h"
 #import "EditReplyViewController.h"
+#import "ReaderPostDetailViewController.h"
 #import "PostService.h"
 #import "Post.h"
 
@@ -39,14 +40,17 @@ static NSInteger const CVCNumberOfSections = 2;
 {
     [super loadView];
 
+    UIGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]
+                                          initWithTarget:self
+                                          action:@selector(dismissKeyboardIfNeeded:)];
+    tapRecognizer.cancelsTouchesInView = NO;
+
     self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.estimatedRowHeight = 44.0;
-    [self.tableView addGestureRecognizer:[[UITapGestureRecognizer alloc]
-                                          initWithTarget:self
-                                          action:@selector(dismissKeyboardIfNeeded:)]];
+    [self.tableView addGestureRecognizer:tapRecognizer];
     [self.view addSubview:self.tableView];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
@@ -166,6 +170,16 @@ static NSInteger const CVCNumberOfSections = 2;
 }
 
 #pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    if (indexPath.section == CVCHeaderSectionIndex && [self shouldShowHeaderForPostDetails]) {
+        ReaderPostDetailViewController *vc = [ReaderPostDetailViewController detailControllerWithPostID:self.comment.postID siteID:self.comment.blog.blogID];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
