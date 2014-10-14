@@ -1,6 +1,7 @@
 #import "ContextManager.h"
 #import "ContextManager-Internals.h"
 #import "WordPressComApi.h"
+#import "ALIterativeMigrator.h"
 
 static ContextManager *instance;
 
@@ -160,11 +161,10 @@ static ContextManager *instance;
     if (_persistentStoreCoordinator) {
         return _persistentStoreCoordinator;
     }
+    
+    [self migrateDataModelsIfNecessary];
 
-    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-                                                                        NSUserDomainMask,
-                                                                        YES) lastObject];
-    NSURL *storeURL = [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:@"WordPress.sqlite"]];
+    NSURL *storeURL = self.storeURL;
 
     // This is important for automatic version migration. Leave it here!
     NSDictionary *options = @{
@@ -173,48 +173,6 @@ static ContextManager *instance;
     };
 
     NSError *error = nil;
-
-    // The following conditional code is meant to test the detection of mapping model for migrations
-    // It should remain disabled unless you are debugging why migrations aren't run
-#if FALSE
-    DDLogInfo(@"Debugging migration detection");
-    NSDictionary *sourceMetadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:NSSQLiteStoreType
-                                                                                              URL:storeURL
-                                                                                            error:&error];
-
-    DDLogInfo( (sourceMetadata == nil) ? @"Can't find source persistent store" : @"Source store: %@", sourceMetadata );
-
-    NSManagedObjectModel *destinationModel = [self managedObjectModel];
-    BOOL pscCompatibile = [destinationModel
-                           isConfiguration:nil
-                           compatibleWithStoreMetadata:sourceMetadata];
-    DDLogInfo( (pscCompatibile) ? @"No migration needed" : @"Migration needed" );
-
-    NSManagedObjectModel *sourceModel = [NSManagedObjectModel mergedModelFromBundles:nil forStoreMetadata:sourceMetadata];
-    DDLogInfo( (sourceModel) ? @"source model found" : @"source model not found" );
-
-    NSMigrationManager *manager = [[NSMigrationManager alloc] initWithSourceModel:sourceModel
-                                                                 destinationModel:destinationModel];
-    NSMappingModel *mappingModel = [NSMappingModel mappingModelFromBundles:@[ [NSBundle mainBundle] ]
-                                                            forSourceModel:sourceModel
-                                                          destinationModel:destinationModel];
-    DDLogInfo( (mappingModel) ? @"mapping model found" : @"mapping model not found" );
-
-    if (NO) {
-        BOOL migrates = [manager migrateStoreFromURL:storeURL
-                                                type:NSSQLiteStoreType
-                                             options:nil
-                                    withMappingModel:mappingModel
-                                    toDestinationURL:storeURL
-                                     destinationType:NSSQLiteStoreType
-                                  destinationOptions:nil
-                                               error:&error];
-
-        DDLogInfo( (migrates) ? @"migration went OK" : @"migration failed: %@", [error localizedDescription] );
-    }
-
-    DDLogInfo(@"End of debugging migration detection");
-#endif
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc]
                                    initWithManagedObjectModel:[self managedObjectModel]];
 
@@ -224,11 +182,6 @@ static ContextManager *instance;
                                                          options:options
                                                            error:&error]) {
         DDLogError(@"Error opening the database. %@\nDeleting the file and trying again", error);
-#ifdef CORE_DATA_MIGRATION_DEBUG
-        // Don't delete the database on debug builds
-        // Makes migration debugging less of a pain
-        abort();
-#endif
 
         // make a backup of the old database
         [[NSFileManager defaultManager] copyItemAtPath:storeURL.path
@@ -248,6 +201,44 @@ static ContextManager *instance;
     }
 
     return _persistentStoreCoordinator;
+}
+
+- (void)migrateDataModelsIfNecessary
+{
+    if (![[NSFileManager defaultManager] fileExistsAtPath:[[self storeURL] path]]) {
+        DDLogInfo(@"No store exists at URL %@.  Skipping migration.", [self storeURL]);
+        return;
+    }
+    
+    NSDictionary *metadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:NSSQLiteStoreType
+                                                                                        URL:[self storeURL]
+                                                                                      error:nil];
+    BOOL migrationNeeded = [self.managedObjectModel isConfiguration:nil compatibleWithStoreMetadata:metadata];
+    
+    if (migrationNeeded) {
+        DDLogWarn(@"Migration required for persistent store.");
+        NSError *error = nil;
+        BOOL migrateResult = [ALIterativeMigrator iterativeMigrateURL:[self storeURL]
+                                                               ofType:NSSQLiteStoreType
+                                                              toModel:self.managedObjectModel
+                                                    orderedModelNames:@[@"WordPress 18",
+                                                                        @"WordPress 19",
+                                                                        @"WordPress 20",
+                                                                        @"WordPress 21"]
+                                                                error:&error];
+        if (!migrateResult || error != nil) {
+            DDLogError(@"Unable to migrate store: %@", error);
+        }
+    }
+}
+
+- (NSURL *)storeURL
+{
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                                        NSUserDomainMask,
+                                                                        YES) lastObject];
+    
+    return [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:@"WordPress.sqlite"]];
 }
 
 @end
