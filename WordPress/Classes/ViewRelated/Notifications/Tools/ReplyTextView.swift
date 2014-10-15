@@ -138,6 +138,9 @@ import Foundation
         super.layoutSubviews()
     }
     
+    public func setKeyboardType(keyboardType: Int) {
+        textView.keyboardType = UIKeyboardType(rawValue: keyboardType)!
+    }
     
     // MARK: - Autolayout Helpers
     public override func intrinsicContentSize() -> CGSize {
