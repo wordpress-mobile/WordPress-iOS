@@ -80,8 +80,13 @@ CGFloat const RowHeight = 48.0f;
                                                    object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWillChangeFrame:)
-                                                     name:UIKeyboardWillChangeFrameNotification
+                                                 selector:@selector(keyboardDidChangeFrame:)
+                                                     name:UIKeyboardDidChangeFrameNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(deviceOrientationDidChange:)
+                                                     name:UIDeviceOrientationDidChangeNotification
                                                    object:nil];
     }
     
@@ -99,10 +104,9 @@ CGFloat const RowHeight = 48.0f;
     [self setHidden:(self.searchResults.count == 0)];
 }
 
-- (void)updateDynamicHeightConstraint
+- (void)updateConstraints
 {
-    // Take the height of the table frame and make it so only whole results
-    // are displayed
+    // Take the height of the table frame and make it so only whole results are displayed
     NSUInteger maxRows = floor(self.frame.size.height / RowHeight);
     
     if (maxRows < 1) {
@@ -114,18 +118,25 @@ CGFloat const RowHeight = 48.0f;
     } else {
         self.heightConstraint.constant = self.searchResults.count * RowHeight;
     }
-        
-    [self setNeedsUpdateConstraints];
+    
+    [super updateConstraints];
 }
 
-- (void)keyboardWillChangeFrame:(NSNotification *)notification
+- (void)keyboardDidChangeFrame:(NSNotification *)notification
 {
     NSDictionary *info = [notification userInfo];
     NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    [self updateDynamicHeightConstraint];    
+    
+    [self setNeedsUpdateConstraints];
+    
     [UIView animateWithDuration:animationDuration animations:^{
         [self layoutIfNeeded];
     }];
+}
+
+- (void)deviceOrientationDidChange:(NSNotification *)notification
+{
+    [self setNeedsUpdateConstraints];
 }
 
 #pragma mark - Public methods
@@ -147,7 +158,7 @@ CGFloat const RowHeight = 48.0f;
     }
     
     [self.tableView reloadData];
-    [self updateDynamicHeightConstraint];
+    [self setNeedsUpdateConstraints];
 }
 
 #pragma mark - UITableViewDataSource methods
