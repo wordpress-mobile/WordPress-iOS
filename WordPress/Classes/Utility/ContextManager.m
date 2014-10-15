@@ -99,7 +99,7 @@ static ContextManager *instance;
     // Save derived contexts a little differently
     // TODO - When the service refactor is complete, remove this - calling methods to Services should know
     //        what kind of context it is and call the saveDerivedContext at the end of the work
-    if (context.parentContext == ContextManager.sharedInstance.mainContext) {
+    if (context.parentContext == self.mainContext) {
         [self saveDerivedContext:context withCompletionBlock:completionBlock];
         return;
     }
