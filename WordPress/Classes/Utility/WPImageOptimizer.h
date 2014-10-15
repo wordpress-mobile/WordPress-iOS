@@ -8,38 +8,32 @@
 
     ALAsset *asset = ...; // Obtain asset
     WPImageOptimizer *optimizer = [WPImageOptimizer new];
-    NSData *assetData = [optimizer optimizedDataFromAsset:asset];
+    CGSize size = CGSize(1024, 1024);
+    NSData *assetData = [optimizer optimizedDataFromAsset:asset fittingSize:size];
 
  */
 @interface WPImageOptimizer : NSObject
 /**
- Returns a Boolean value that indicates if WPImageOptimizer will optimize images.
+ Returns a resized image data from the provided asset.
  
- By default, it returns YES
+ The image is read from the asset, scaled down and saved with a low quality factor (enough to considerably reduce file size without hurting perceived quality).
 
- @return YES if optimization is enabled, NO otherwise
- @see setShouldOptimizeImages:
- */
-+ (BOOL)shouldOptimizeImages;
-
-/**
- Sets a flag indicating if WPImageOptimizer will optimize images.
- 
- This value is stored in the application's NSUserDefaults with the key "WPDisableImageOptimization".
-
- @param optimize a Boolean value indicating if WPImageOptimizer should optimize images.
- @see shouldOptimizeImages
- */
-+ (void)setShouldOptimizeImages:(BOOL)optimize;
-
-/**
- Returns optimized image data from the provided asset.
- 
- If shouldOptimizeImages is YES, the image is read from the asset, scaled down and saved with a low quality factor (enough to considerably reduce file size without hurting perceived quality).
- If shouldOptimizeImages is NO, the image data is read from the asset and returned.
- 
  @param asset the ALAsset containing the image to optimize.
+ @param targetSize the size the image shoul be resized to.
+
  @return the optimized data
  */
-- (NSData *)optimizedDataFromAsset:(ALAsset *)asset;
+- (NSData *)optimizedDataFromAsset:(ALAsset *)asset fittingSize:(CGSize)targetSize;
+
+/**
+ Returns a resized image data from the provided asset.
+
+ The image data is read from the asset and returned
+
+ @param asset the ALAsset containing the image to optimize.
+
+ @return the raw data
+ */
+- (NSData *)rawDataFromAsset:(ALAsset *)asset;
+
 @end
