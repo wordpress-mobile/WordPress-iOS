@@ -85,7 +85,7 @@ static ContextManager *instance;
         // While this is needed because we don't observe change notifications for the derived context, it
         // breaks concurrency rules for Core Data.  Provide a mechanism to destroy a derived context that
         // unregisters it from the save notification instead and rely upon that for merging.
-        [self saveContext:ContextManager.sharedInstance.mainContext];
+        [self saveContext:self.mainContext];
     }];
 }
 
