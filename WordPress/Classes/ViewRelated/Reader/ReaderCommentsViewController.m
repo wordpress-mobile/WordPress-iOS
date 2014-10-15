@@ -8,8 +8,8 @@
 #import "ReaderPost.h"
 #import "ReaderPostHeaderView.h"
 #import "UIAlertView+Blocks.h"
+#import <WordPress-iOS-Shared/UIImage+Util.h>
 #import "UIView+Subviews.h"
-#import "WPAnimatedBox.h"
 #import "WPAvatarSource.h"
 #import "WPNoResultsView.h"
 #import "WPImageViewController.h"
@@ -18,7 +18,6 @@
 #import "WPWebViewController.h"
 #import "WordPress-Swift.h"
 
-static CGFloat const SectionHeaderHeight = 25.0f;
 static CGFloat const EstimatedCommentRowHeight = 150.0;
 static CGFloat const CommentAvatarSize = 32.0;
 static CGFloat const PostHeaderHeight = 54.0;
@@ -46,7 +45,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 @property (nonatomic, strong) ReaderCommentCell *cellForLayout;
 @property (nonatomic, strong) NSLayoutConstraint *cellForLayoutWidthConstraint;
 @property (nonatomic, strong) WPNoResultsView *noResultsView;
-@property (nonatomic, strong) WPAnimatedBox *animatedBox;
 @property (nonatomic, strong) ReplyTextView *replyTextView;
 @property (nonatomic, strong) UIView *postHeader;
 
@@ -98,24 +96,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 
     [self refreshAndSync];
-
-    if (self.noResultsView && self.animatedBox) {
-        [self.animatedBox prepareAnimation:NO];
-    }
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-
-    // Delay box animation after the view appears
-    double delayInSeconds = 0.3;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        if (self.noResultsView && self.animatedBox) {
-            [self.animatedBox animate];
-        }
-    });
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -194,16 +174,20 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)configurePostHeader
 {
+    // Wrapper view
     UIView *headerWrapper = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), PostHeaderHeight)];
     headerWrapper.translatesAutoresizingMaskIntoConstraints = NO;
     headerWrapper.backgroundColor = [UIColor whiteColor];
 
+    // Post header view
     ReaderPostHeaderView *headerView = [[ReaderPostHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), PostHeaderViewAvatarSize)];
     headerView.translatesAutoresizingMaskIntoConstraints = NO;
     headerView.backgroundColor = [UIColor whiteColor];
     [headerView setTitle:[self.post titleForDisplay]];
     [headerView setSubtitle:NSLocalizedString(@"Comments on", @"Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line.")];
+    [headerWrapper addSubview:headerView];
 
+    // Fetch the avatar
     CGSize imageSize = CGSizeMake(PostHeaderViewAvatarSize, PostHeaderViewAvatarSize);
     UIImage *image = [self.post cachedAvatarWithSize:imageSize];
     if (image) {
@@ -214,18 +198,30 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         }];
     }
 
-    [headerWrapper addSubview:headerView];
+    // Border
+    CGSize borderSize = CGSizeMake(CGRectGetWidth(self.view.bounds), 1.0);
+    UIImage *borderImage = [UIImage imageWithColor:[WPStyleGuide readGrey] havingSize:borderSize];
+    UIImageView *borderView = [[UIImageView alloc] initWithImage:borderImage];
+    borderView.translatesAutoresizingMaskIntoConstraints = NO;
+    borderView.contentMode = UIViewContentModeScaleAspectFill;
+    [headerWrapper addSubview:borderView];
 
-    NSDictionary *views = NSDictionaryOfVariableBindings(headerView);
+    // Layout
+    NSDictionary *views = NSDictionaryOfVariableBindings(headerView, borderView);
     NSDictionary *metrics = @{@"margin":@12};
     [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(margin)-[headerView]-(margin)-|"
                                                                           options:0
                                                                           metrics:metrics
                                                                             views:views]];
-    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(margin)-[headerView]-(>=1)-|"
+    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(margin)-[headerView]-(>=1)-[borderView(1)]|"
                                                                           options:0
                                                                           metrics:metrics
                                                                             views:views]];
+    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[borderView]|"
+                                                                          options:0
+                                                                          metrics:metrics
+                                                                            views:views]];
+
     self.postHeader = headerWrapper;;
     [self.view addSubview:self.postHeader];
 }
@@ -312,9 +308,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }
 
     // Refresh the NoResultsView Properties
-    self.noResultsView.titleText        = self.noResultsTitleText;
-    self.noResultsView.messageText      = self.noResultsMessageText;
-    self.noResultsView.accessoryView    = self.noResultsAccessoryView;
+    self.noResultsView.titleText = self.noResultsTitleText;
 
     // Only add and animate no results view if it isn't already
     // in the table view
@@ -333,23 +327,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         return NSLocalizedString(@"Fetching comments...", @"A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments.");
     }
 
-    return NSLocalizedString(@"Sorry. No comments yet.", @"Generic message shown to the user when the reader comment list is empty. ");
-}
-
-- (NSString *)noResultsMessageText
-{
-    if (self.syncHelper.isSyncing) {
-        return @"";
-    }
     return NSLocalizedString(@"Be the first to leave a commment.", @"Message shown encouraging the user to leave a comment on a post in the reader.");
-}
-
-- (UIView *)noResultsAccessoryView
-{
-    if (!self.animatedBox) {
-        self.animatedBox = [WPAnimatedBox new];
-    }
-    return self.animatedBox;
 }
 
 - (void)configureConstraints
@@ -712,16 +690,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }
 
     [self setAvatarForComment:comment forCell:cell indexPath:indexPath];
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return [[UIView alloc] initWithFrame:CGRectZero];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return SectionHeaderHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
