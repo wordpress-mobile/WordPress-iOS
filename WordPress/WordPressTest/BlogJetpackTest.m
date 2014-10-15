@@ -1,9 +1,9 @@
 #import <OHHTTPStubs/OHHTTPStubs.h>
-#import "CoreDataTestHelper.h"
 #import "Blog+Jetpack.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import "AccountService.h"
+#import "TestContextManager.h"
 #import <XCTest/XCTest.h>
 
 @interface BlogJetpackTest : XCTestCase
@@ -13,18 +13,19 @@
 
 @property (nonatomic, strong) WPAccount *account;
 @property (nonatomic, strong) Blog *blog;
-
+@property (nonatomic, strong) TestContextManager *testContextManager;
 @end
 
 @implementation BlogJetpackTest
 
 - (void)setUp {
     [super setUp];
+    self.testContextManager = [[TestContextManager alloc] init];
     
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
     _account = [accountService createOrUpdateSelfHostedAccountWithXmlrpc:@"http://blog1.com/xmlrpc.php" username:@"admin" andPassword:@"password!"];
 
-    _blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityIntoMainContextWithName:@"Blog"];
+    _blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:self.testContextManager.mainContext];
     _blog.xmlrpc = @"http://test.blog/xmlrpc.php";
     _blog.url = @"http://test.blog/";
     _blog.options = @{@"jetpack_version": @{
@@ -47,22 +48,21 @@
     _account = nil;
     _blog = nil;
     [OHHTTPStubs removeAllRequestHandlers];
-    
-    [[CoreDataTestHelper sharedHelper] reset];
-    [CoreDataTestHelper sharedHelper].testExpectation = nil;
+
+    self.testContextManager = nil;
 }
 
 - (void)testAssertionsOnWPcom {
     XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
-    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
+    self.testContextManager.testExpectation = saveExpectation;
 
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
     WPAccount *wpComAccount = [accountService createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:@"token"];
 
     // Wait on the merge to be completed
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 
-    _blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityIntoMainContextWithName:@"Blog"];
+    _blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:self.testContextManager.mainContext];
     _blog.xmlrpc = @"http://test.wordpress.com/xmlrpc.php";
     _blog.url = @"http://test.wordpress.com/";
     _blog.account = wpComAccount;
@@ -145,7 +145,7 @@
 
 - (void)testJetpackSetupDoesntReplaceDotcomAccount {
     XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
-    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
+    self.testContextManager.testExpectation = saveExpectation;
 
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
     WPAccount *wpComAccount = [accountService createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:@"token"];
@@ -153,7 +153,7 @@
     XCTAssertEqualObjects(wpComAccount, [accountService defaultWordPressComAccount]);
 
     saveExpectation = [self expectationWithDescription:@"Context save expectation"];
-    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
+    self.testContextManager.testExpectation = saveExpectation;
     [accountService createOrUpdateWordPressComAccountWithUsername:@"test1" password:@"test1" authToken:@"token1"];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 
