@@ -4,7 +4,7 @@
 #import "SuggestionService.h"
 
 NSString * const CellIdentifier = @"SuggestionsTableViewCell";
-CGFloat const RowHeight = 48.0f;
+CGFloat const RowHeight = 44.0f;
 
 @interface SuggestionsTableView ()
 
