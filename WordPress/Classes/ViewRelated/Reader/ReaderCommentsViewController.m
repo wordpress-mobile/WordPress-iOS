@@ -74,7 +74,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     [super viewDidLoad];
 
-    self.tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
+    self.tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapRecognized:)];
 
     [self configureNavbar];
     [self configurePostHeader];
@@ -178,6 +178,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     UIView *headerWrapper = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), PostHeaderHeight)];
     headerWrapper.translatesAutoresizingMaskIntoConstraints = NO;
     headerWrapper.backgroundColor = [UIColor whiteColor];
+    headerWrapper.clipsToBounds = YES;
 
     // Post header view
     ReaderPostHeaderView *headerView = [[ReaderPostHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), PostHeaderViewAvatarSize)];
@@ -553,12 +554,13 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 #pragma mark - Actions
 
-- (void)dismissKeyboard:(id)sender
+- (void)tapRecognized:(id)sender
 {
     if ([self.view.gestureRecognizers containsObject:self.tapOffKeyboardGesture]) {
         [self.view removeGestureRecognizer:self.tapOffKeyboardGesture];
     }
 
+    [self.tableView deselectSelectedRowWithAnimation:YES];
     [self.replyTextView resignFirstResponder];
 }
 
@@ -574,6 +576,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     void (^successBlock)() = ^void() {
         [WPAnalytics track:WPAnalyticsStatReaderCommentedOnArticle];
         [WPToast showToastWithMessage:successMessage andImage:successImage];
+        [weakSelf refreshAndSync];
     };
 
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
@@ -808,7 +811,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         return;
     }
 
-    [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
+
     [self.replyTextView becomeFirstResponder];
 
     [self.tableView selectRowAtIndexPath:[self.tableView indexPathForCell:cell] animated:YES scrollPosition:UITableViewScrollPositionTop];
@@ -820,6 +823,13 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
 
     [commentService toggleLikeStatusForComment:comment siteID:self.post.siteID success:nil failure:nil];
+}
+
+
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
+    return YES;
 }
 
 @end
