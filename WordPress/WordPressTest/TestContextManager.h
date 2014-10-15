@@ -7,4 +7,9 @@
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong) XCTestExpectation *testExpectation;
 
+// Provides access to the standard SQLite-based Persistent Store Coordinator
+@property (nonatomic, readonly, strong) NSPersistentStoreCoordinator *standardPSC;
+
+- (NSURL *)storeURL;
+
 @end
