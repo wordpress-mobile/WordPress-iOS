@@ -44,6 +44,11 @@
     return _persistentStoreCoordinator;
 }
 
+- (NSPersistentStoreCoordinator *)standardPSC
+{
+    return [super persistentStoreCoordinator];
+}
+
 - (NSManagedObjectContext *)mainContext
 {
     if (_mainContext) {
@@ -66,6 +71,15 @@
             NSLog(@"No test expectation present for context save");
         }
     }];
+}
+
+- (NSURL *)storeURL
+{
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                                        NSUserDomainMask,
+                                                                        YES) lastObject];
+    
+    return [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:@"WordPressTest.sqlite"]];
 }
 
 @end

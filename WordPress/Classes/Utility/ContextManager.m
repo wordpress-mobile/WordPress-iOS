@@ -213,7 +213,7 @@ static ContextManager *instance;
     NSDictionary *metadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:NSSQLiteStoreType
                                                                                         URL:[self storeURL]
                                                                                       error:nil];
-    BOOL migrationNeeded = [self.managedObjectModel isConfiguration:nil compatibleWithStoreMetadata:metadata];
+    BOOL migrationNeeded = ![self.managedObjectModel isConfiguration:nil compatibleWithStoreMetadata:metadata];
     
     if (migrationNeeded) {
         DDLogWarn(@"Migration required for persistent store.");
