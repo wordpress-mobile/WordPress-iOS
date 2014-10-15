@@ -15,6 +15,7 @@
 @property (nonatomic, weak) id<ReaderCommentCellDelegate> delegate;
 @property (nonatomic) BOOL needsExtraPadding;
 @property (nonatomic) BOOL isFirstNestedComment;
+@property (nonatomic) BOOL hidesBorder;
 
 - (void)configureCell:(Comment *)comment;
 - (void)setAvatarImage:(UIImage *)avatarImage;
