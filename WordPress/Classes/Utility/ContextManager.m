@@ -150,7 +150,7 @@ static ContextManager *instance;
     if (_managedObjectModel) {
         return _managedObjectModel;
     }
-    NSString *modelPath = [[NSBundle mainBundle] pathForResource:@"WordPress" ofType:@"momd"];
+    NSString *modelPath = [self modelPath];
     NSURL *modelURL = [NSURL fileURLWithPath:modelPath];
     _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     return _managedObjectModel;
@@ -232,7 +232,7 @@ static ContextManager *instance;
 
 - (NSArray *)sortedModelNames
 {
-    NSString *modelPath = [[NSBundle mainBundle] pathForResource:@"WordPress" ofType:@"momd"];
+    NSString *modelPath = [self modelPath];
     NSString *versionPath = [modelPath stringByAppendingPathComponent:@"VersionInfo.plist"];
     NSDictionary *versionInfo = [NSDictionary dictionaryWithContentsOfFile:versionPath];
     NSArray *modelNames = [[versionInfo[@"NSManagedObjectModel_VersionHashes"] allKeys] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
@@ -249,6 +249,11 @@ static ContextManager *instance;
                                                                         YES) lastObject];
     
     return [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:@"WordPress.sqlite"]];
+}
+
+- (NSString *)modelPath
+{
+    return [[NSBundle mainBundle] pathForResource:@"WordPress" ofType:@"momd"];
 }
 
 @end
