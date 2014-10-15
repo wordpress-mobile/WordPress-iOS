@@ -1153,6 +1153,10 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
                                                 label:[NSString string]
                                       bucketOverrides:bucketOverrides];
 
+    if (manager.didMigrationFail) {
+        [self.simperium resetMetadata];
+    }
+    
 #ifdef DEBUG
 	self.simperium.verboseLoggingEnabled = false;
 #endif
