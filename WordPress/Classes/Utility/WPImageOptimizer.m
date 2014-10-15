@@ -1,32 +1,23 @@
 #import "WPImageOptimizer.h"
 #import "WPImageOptimizer+Private.h"
 
-static NSString * const DisableImageOptimizationDefaultsKey = @"WPDisableImageOptimization";
-
 @implementation WPImageOptimizer
 
-+ (BOOL)shouldOptimizeImages
+- (NSData *)rawDataFromAsset:(ALAsset *)asset
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    return ![defaults boolForKey:DisableImageOptimizationDefaultsKey];
+    ALAssetRepresentation *representation = asset.defaultRepresentation;
+    return [self rawDataFromAssetRepresentation:representation];
 }
 
-+ (void)setShouldOptimizeImages:(BOOL)optimize
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setBool:!optimize forKey:DisableImageOptimizationDefaultsKey];
-    [defaults synchronize];
-}
-
-- (NSData *)optimizedDataFromAsset:(ALAsset *)asset
+- (NSData *)optimizedDataFromAsset:(ALAsset *)asset fittingSize:(CGSize)targetSize
 {
     ALAssetRepresentation *representation = asset.defaultRepresentation;
     // Can't optimize videos, so only try if asset is a photo
     BOOL isImage = [[asset valueForProperty:ALAssetPropertyType] isEqual:ALAssetTypePhoto];
-    if (![[self class] shouldOptimizeImages] || !isImage) {
+    if (CGSizeEqualToSize(targetSize, CGSizeZero) || !isImage) {
         return [self rawDataFromAssetRepresentation:representation];
     }
-    return [self optimizedDataFromAssetRepresentation:representation];
+    return [self resizedDataFromAssetRepresentation:representation fittingSize:targetSize];
 }
 
 @end
