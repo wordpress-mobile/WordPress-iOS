@@ -45,7 +45,7 @@ PODS:
   - Helpshift (4.8.0)
   - HockeySDK (3.5.7)
   - JRSwizzle (1.0)
-  - Lookback (0.6.4)
+  - Lookback (0.6.5)
   - MGImageUtilities (0.0.1)
   - Mixpanel (2.5.3)
   - NSLogger (1.5)
@@ -102,7 +102,7 @@ DEPENDENCIES:
   - google-plus-ios-sdk (~> 1.5)
   - Helpshift (~> 4.8.0)
   - HockeySDK (~> 3.5.0)
-  - Lookback (= 0.6.4)
+  - Lookback (= 0.6.5)
   - MGImageUtilities (from `git://github.com/wordpress-mobile/MGImageUtilities.git`, branch `gifsupport`)
   - Mixpanel (= 2.5.3)
   - NSLogger-CocoaLumberjack-connector (~> 1.3)
@@ -116,7 +116,7 @@ DEPENDENCIES:
   - SVProgressHUD (~> 1.0)
   - Taplytics (~> 1.3.10)
   - UIDeviceIdentifier (~> 0.1)
-  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, commit `cb03818c8a927abd1b52d2d364115d773fc26c9b`, branch `release/0.2.2`)
+  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, commit `23ceee9ca3fa59971e869c3a1f459afe147633e5`, branch `release/0.2.2`)
   - WordPress-iOS-Shared (= 0.1.2)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPressApi.git`)
   - WordPressCom-Analytics-iOS (= 0.0.6)
@@ -134,7 +134,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/jleandroperez/SocketRocket.git
   WordPress-iOS-Editor:
     :branch: release/0.2.2
-    :commit: cb03818c8a927abd1b52d2d364115d773fc26c9b
+    :commit: 23ceee9ca3fa59971e869c3a1f459afe147633e5
     :git: git://github.com/wordpress-mobile/WordPress-iOS-Editor
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPressApi.git
@@ -152,7 +152,7 @@ SPEC CHECKSUMS:
   Helpshift: cb3f909e33f53a1b4f617a743ed24fdbfdb507f3
   HockeySDK: f0e874d1c6833163ee0c4e423606faf33ad04071
   JRSwizzle: 30da7a2c539a4ebf954b16d15f6dd8221c9f6fa5
-  Lookback: b95ec58d73b9a706735df6230dc83dbb62831abb
+  Lookback: 59f217e51c1f2bcdf23d00522ef14b66be8557d1
   MGImageUtilities: ce03a910781d7e189814d668af340bc1c0238363
   Mixpanel: 708ec9a6ee6e741f7db107831e18b2fc2e7531f1
   NSLogger: 84ed0bf00985df483153ce344d8171c9ec83be2b

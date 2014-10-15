@@ -13,6 +13,7 @@
 #import "WPTableViewSectionHeaderView.h"
 #import "AccountService.h"
 #import "BlogService.h"
+#import "TodayExtensionService.h"
 
 static NSString *const AddSiteCellIdentifier = @"AddSiteCell";
 static NSString *const BlogCellIdentifier = @"BlogCell";
