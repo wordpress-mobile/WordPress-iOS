@@ -41,6 +41,12 @@ CGFloat const RowHeight = 44.0f;
         [_tableView setDelegate:self];
         [_tableView setTranslatesAutoresizingMaskIntoConstraints:NO];
         [_tableView setRowHeight:RowHeight];
+        // Table separator insets defined to match left edge of username in cell.
+        [_tableView setSeparatorInset:UIEdgeInsetsMake(0.f, 47.f, 0.f, 0.f)];
+        // iOS8 added and requires the following in order for that separator inset to be used
+        if ([self.tableView respondsToSelector:@selector(setLayoutMargins:)]) {
+            [_tableView setLayoutMargins:UIEdgeInsetsZero];
+        }
         [self addSubview:_tableView];
         
         // Pin the table view to the view's edges
