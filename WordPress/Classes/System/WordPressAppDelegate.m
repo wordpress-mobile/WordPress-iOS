@@ -1153,6 +1153,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
                                                 label:[NSString string]
                                       bucketOverrides:bucketOverrides];
 
+    // Note: Nuke Simperium's metadata in case of a faulty Core Data migration
     if (manager.didMigrationFail) {
         [self.simperium resetMetadata];
     }
