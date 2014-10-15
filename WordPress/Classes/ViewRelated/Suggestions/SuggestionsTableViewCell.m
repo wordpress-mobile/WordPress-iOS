@@ -1,6 +1,7 @@
 #import "SuggestionsTableViewCell.h"
+#import "WPFontManager.h"
 
-NSInteger const SuggestionsTableViewCellAvatarSize = 32;
+NSInteger const SuggestionsTableViewCellAvatarSize = 23;
 
 @implementation SuggestionsTableViewCell
 
@@ -10,13 +11,13 @@ NSInteger const SuggestionsTableViewCellAvatarSize = 32;
     if (self) {
         _usernameLabel = [[UILabel alloc] init];
         [_usernameLabel setTextColor:[WPStyleGuide wordPressBlue]];
-        [_usernameLabel setFont:[WPStyleGuide regularTextFont]];
+        [_usernameLabel setFont:[WPFontManager openSansRegularFontOfSize:14.0]];
         [_usernameLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
         [self.contentView addSubview:_usernameLabel];
         
         _displayNameLabel = [[UILabel alloc] init];
         [_displayNameLabel setTextColor:[WPStyleGuide allTAllShadeGrey]];
-        [_displayNameLabel setFont:[WPStyleGuide regularTextFont]];
+        [_displayNameLabel setFont:[WPFontManager openSansRegularFontOfSize:14.0]];
         [_displayNameLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
         _displayNameLabel.textAlignment = NSTextAlignmentRight;
         [self.contentView addSubview:_displayNameLabel];
