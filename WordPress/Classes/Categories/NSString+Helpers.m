@@ -157,14 +157,7 @@ static NSString *const Ellipsis =  @"\u2026";
 
 - (NSString *)stringByStrippingProtocol
 {
-    NSArray *protocols = @[ @"http://", @"https://" ];
-    NSString *stripped = self;
-    
-    for (NSString *protocol in protocols) {
-        stripped = [stripped stringByReplacingOccurrencesOfString:protocol withString:@""];
-    }
-    
-    return stripped;
+    return [[[NSURLComponents alloc] initWithString:self] host];
 }
 
 - (NSArray *)tokenize
