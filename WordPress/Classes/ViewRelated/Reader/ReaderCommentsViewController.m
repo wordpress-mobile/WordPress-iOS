@@ -577,6 +577,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     };
 
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
+        DDLogError(@"Error sending reply: %@", error);
         [UIAlertView showWithTitle:nil
                            message:NSLocalizedString(@"There has been an unexpected error while sending your reply", nil)
                  cancelButtonTitle:NSLocalizedString(@"Give Up", nil)
@@ -588,20 +589,19 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
                           }];
     };
 
-
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     if (indexPath) {
         Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
         [service replyToCommentWithID:comment.commentID
                                siteID:self.post.siteID
-                              content:self.replyTextView.text
+                              content:content
                               success:successBlock
                               failure:failureBlock];
     } else {
         [service replyToPostWithID:self.post.postID
                             siteID:self.post.siteID
-                           content:self.replyTextView.text
+                           content:content
                            success:successBlock
                            failure:failureBlock];
     }
@@ -681,6 +681,10 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         if ([nextComment.depth integerValue] == 0) {
             cell.needsExtraPadding = YES;
         }
+    }
+
+    if (indexPath.row == 0) {
+        cell.hidesBorder = YES;
     }
 
     [cell configureCell:comment];
