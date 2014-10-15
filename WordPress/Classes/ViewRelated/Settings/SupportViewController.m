@@ -6,7 +6,6 @@
 #import <DDFileLogger.h>
 #import "WPTableViewSectionFooterView.h"
 #import <Helpshift/Helpshift.h>
-#import <Taplytics/Taplytics.h>
 #import "WPAnalytics.h"
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
 #import "ContextManager.h"
@@ -194,8 +193,6 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    [Taplytics goalAchieved:@"Helpshift opened"];
 
     NSString *isWPCom = defaultAccount.isWpcom ? @"Yes" : @"No";
     NSMutableDictionary *metaData = [NSMutableDictionary dictionaryWithDictionary:@{ @"isWPCom" : isWPCom }];
