@@ -60,6 +60,15 @@
                                 @"software_version",
                                 @"videopress_enabled",
                                 ];
+    NSArray *imageSizeKeys = @[
+                               @"image_large_width",
+                               @"image_large_height",
+                               @"image_medium_width",
+                               @"image_medium_height",
+                               @"image_thumbnail_width",
+                               @"image_thumbnail_height",
+                               ];
+    optionsDirectMapKeys = [optionsDirectMapKeys arrayByAddingObjectsFromArray:imageSizeKeys];
     for (NSString *key in optionsDirectMapKeys) {
         NSString *sourceKeyPath = [NSString stringWithFormat:@"options.%@", key];
         options[key] = [response valueForKeyPath:sourceKeyPath];
@@ -69,6 +78,15 @@
     [options enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         valueOptions[key] = @{@"value": obj};
     }];
+
+    // transform the image size keys for consistency
+    valueOptions[@"large_size_w"] = valueOptions[@"image_large_width"];
+    valueOptions[@"large_size_h"] = valueOptions[@"image_large_height"];
+    valueOptions[@"medium_size_w"] = valueOptions[@"image_medium_width"];
+    valueOptions[@"medium_size_h"] = valueOptions[@"image_medium_height"];
+    valueOptions[@"thumbnail_size_w"] = valueOptions[@"image_thumbnail_width"];
+    valueOptions[@"thumbnail_size_h"] = valueOptions[@"image_thumbnail_height"];
+    [valueOptions removeObjectsForKeys:imageSizeKeys];
 
     return [NSDictionary dictionaryWithDictionary:valueOptions ];
 }

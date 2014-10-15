@@ -164,12 +164,6 @@ static CGFloat const SettingsRowHeight = 44.0;
     self.mediaCellLabel.text = [self titleForMediaCell];
 }
 
-- (void)handleOptimizeImagesChanged:(id)sender
-{
-    UISwitch *aSwitch = (UISwitch *)sender;
-    [WPImageOptimizer setShouldOptimizeImages:aSwitch.on];
-}
-
 - (void)handleEditorChanged:(id)sender
 {
     UISwitch *aSwitch = (UISwitch *)sender;
