@@ -85,4 +85,11 @@
  */
 - (BOOL)obtainPermanentIDForObject:(NSManagedObject *)managedObject;
 
+/**
+  Verify if the Core Data model migration failed.
+ 
+  @return YES if there were any errors during the migration: the PSC instance is mapping to a fresh database.
+ */
+- (BOOL)didMigrationFail;
+
 @end
