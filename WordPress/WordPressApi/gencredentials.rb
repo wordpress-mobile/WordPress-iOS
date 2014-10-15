@@ -117,14 +117,6 @@ print <<-EOF
 EOF
 end
 
-def print_taplytics_api_key(taplytics_api_key)
-print <<-EOF
-+ (NSString *)taplyticsAPIKey {
-    return @"#{taplytics_api_key}";
-}
-EOF
-end
-
 def print_simperium(simperium_api_key, simperium_app_id)
 print <<-EOF
 + (NSString *)simperiumAppId {
@@ -152,7 +144,7 @@ print <<-EOF
 EOF
 end
 
-def print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, taplytics_api_key, simperium_api_key, simperium_app_id, debugging_key, lookback_token)
+def print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, simperium_api_key, simperium_app_id, debugging_key, lookback_token)
   print <<-EOF
 #import "WordPressComApiCredentials.h"
 @implementation WordPressComApiCredentials
@@ -167,7 +159,6 @@ EOF
   print_helpshift_api_key(helpshift_api_key)
   print_helpshift_domain_name(helpshift_domain_name)
   print_helpshift_app_id(helpshift_app_id)
-  print_taplytics_api_key(taplytics_api_key)
   print_simperium(simperium_api_key, simperium_app_id)
   print_debugging_key(debugging_key)
   print_lookback_token(lookback_token)
@@ -199,7 +190,6 @@ simperium_app_id = nil
 helpshift_api_key = nil
 helpshift_domain_name = nil
 helpshift_app_id = nil
-taplytics_api_key = nil
 debugging_key = nil
 lookback_token = nil
 File.open(path) do |f|
@@ -231,8 +221,6 @@ File.open(path) do |f|
       helpshift_domain_name = v.chomp
     elsif k == "HELPSHIFT_APP_ID"
       helpshift_app_id = v.chomp
-    elsif k == "TAPLYTICS_API_KEY"
-      taplytics_api_key = v.chomp
     elsif k == "DEBUGGING_KEY"
       debugging_key = v.chomp
     elsif k == "LOOKBACK_TOKEN"
@@ -253,4 +241,4 @@ if secret.nil?
   exit 3
 end
 
-print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, taplytics_api_key, simperium_api_key, simperium_app_id, debugging_key, lookback_token)
+print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, simperium_api_key, simperium_app_id, debugging_key, lookback_token)
