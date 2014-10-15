@@ -10,6 +10,7 @@ static ContextManager *instance;
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, strong) NSManagedObjectContext *mainContext;
+@property (nonatomic, assign) BOOL migrationFailed;
 
 @end
 
@@ -143,6 +144,12 @@ static ContextManager *instance;
     return YES;
 }
 
+- (BOOL)didMigrationFail
+{
+    return _migrationFailed;
+}
+
+
 #pragma mark - Setup
 
 - (NSManagedObjectModel *)managedObjectModel
@@ -164,6 +171,9 @@ static ContextManager *instance;
     
     [self migrateDataModelsIfNecessary];
 
+    // Attempt to open the store
+    _migrationFailed = NO;
+    
     NSURL *storeURL = self.storeURL;
 
     // This is important for automatic version migration. Leave it here!
@@ -183,6 +193,8 @@ static ContextManager *instance;
                                                            error:&error]) {
         DDLogError(@"Error opening the database. %@\nDeleting the file and trying again", error);
 
+        _migrationFailed = YES;
+        
         // make a backup of the old database
         [[NSFileManager defaultManager] copyItemAtPath:storeURL.path
                                                 toPath:[storeURL.path stringByAppendingString:@"~"]
