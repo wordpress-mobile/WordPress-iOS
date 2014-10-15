@@ -9,7 +9,6 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <Simperium/Simperium.h>
 #import <Helpshift/Helpshift.h>
-#import <Taplytics/Taplytics.h>
 #import <Lookback/Lookback.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
 
@@ -126,7 +125,6 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [self removeCredentialsForDebug];
 
     // Stats and feedback
-    [Taplytics startTaplyticsAPIKey:[WordPressComApiCredentials taplyticsAPIKey]];
     [SupportViewController checkIfFeedbackShouldBeEnabled];
 
     [Helpshift installForApiKey:[WordPressComApiCredentials helpshiftAPIKey] domainName:[WordPressComApiCredentials helpshiftDomainName] appID:[WordPressComApiCredentials helpshiftAppId]];

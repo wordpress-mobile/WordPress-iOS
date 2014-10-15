@@ -68,7 +68,6 @@ PODS:
     - SocketRocket
   - SocketRocket (0.3.1-beta2)
   - SVProgressHUD (1.0)
-  - Taplytics (1.3.12)
   - UIAlertView+Blocks (0.8.1)
   - UIDeviceIdentifier (0.4.3)
   - WordPress-iOS-Editor (0.2.1):
@@ -114,7 +113,6 @@ DEPENDENCIES:
   - Simperium (= 0.6.9)
   - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`, branch `master`)
   - SVProgressHUD (~> 1.0)
-  - Taplytics (~> 1.3.10)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, commit `23ceee9ca3fa59971e869c3a1f459afe147633e5`, branch `release/0.2.2`)
   - WordPress-iOS-Shared (= 0.1.2)
@@ -165,7 +163,6 @@ SPEC CHECKSUMS:
   Simperium: 867d03e089318f0503606d6011490439a5804672
   SocketRocket: b809068861cb66d871eb93a428696b1eb5451318
   SVProgressHUD: 5034c6e22b8c2ca3e09402e48d41ed0340aa1c50
-  Taplytics: d8f820afa67a73fd1ddccb1bc6144d10f2c3ad61
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
   UIDeviceIdentifier: a313d8f8d5a0ad34898f332e65dbecfa2d9b2af3
   WordPress-iOS-Editor: 1f4410ffd766061cff8a1a5cf3c66926235e31bb
