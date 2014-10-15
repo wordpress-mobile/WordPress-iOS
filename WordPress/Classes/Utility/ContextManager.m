@@ -218,18 +218,28 @@ static ContextManager *instance;
     if (migrationNeeded) {
         DDLogWarn(@"Migration required for persistent store.");
         NSError *error = nil;
+        NSArray *sortedModelNames = [self sortedModelNames];
         BOOL migrateResult = [ALIterativeMigrator iterativeMigrateURL:[self storeURL]
                                                                ofType:NSSQLiteStoreType
                                                               toModel:self.managedObjectModel
-                                                    orderedModelNames:@[@"WordPress 18",
-                                                                        @"WordPress 19",
-                                                                        @"WordPress 20",
-                                                                        @"WordPress 21"]
+                                                    orderedModelNames:sortedModelNames
                                                                 error:&error];
         if (!migrateResult || error != nil) {
             DDLogError(@"Unable to migrate store: %@", error);
         }
     }
+}
+
+- (NSArray *)sortedModelNames
+{
+    NSString *modelPath = [[NSBundle mainBundle] pathForResource:@"WordPress" ofType:@"momd"];
+    NSString *versionPath = [modelPath stringByAppendingPathComponent:@"VersionInfo.plist"];
+    NSDictionary *versionInfo = [NSDictionary dictionaryWithContentsOfFile:versionPath];
+    NSArray *modelNames = [[versionInfo[@"NSManagedObjectModel_VersionHashes"] allKeys] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        return [obj1 compare:obj2 options:NSNumericSearch];
+    }];
+    
+    return modelNames;
 }
 
 - (NSURL *)storeURL
