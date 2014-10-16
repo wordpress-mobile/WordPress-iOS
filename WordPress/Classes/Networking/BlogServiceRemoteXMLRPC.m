@@ -26,12 +26,6 @@
     [blog.api enqueueXMLRPCRequestOperation:operation];
 }
 
-- (void)syncMediaLibraryForBlog:(Blog *)blog success:(MediaHandler)success failure:(void (^)(NSError *))failure
-{
-    WPXMLRPCRequestOperation *operation = [self operationForMediaLibraryWithBlog:blog success:success failure:failure];
-    [blog.api enqueueXMLRPCRequestOperation:operation];
-}
-
 - (void)syncPostFormatsForBlog:(Blog *)blog success:(PostFormatsHandler)success failure:(void (^)(NSError *))failure
 {
     WPXMLRPCRequestOperation *operation = [self operationForPostFormatsWithBlog:blog success:success failure:failure];
@@ -193,28 +187,6 @@
         }
     }];
 
-    return operation;
-}
-
-- (WPXMLRPCRequestOperation *)operationForMediaLibraryWithBlog:(Blog *)blog 
-                                                       success:(MediaHandler)success
-                                                       failure:(void (^)(NSError *))failure
-{
-    WPXMLRPCRequest *mediaLibraryRequest = [self.api XMLRPCRequestWithMethod:@"wp.getMediaLibrary" parameters:[blog getXMLRPCArgsWithExtra:nil]];
-    WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:mediaLibraryRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
-
-        if (success) {
-            success(responseObject);
-        }
-
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing media library: %@", [error localizedDescription]);
-
-        if (failure) {
-            failure(error);
-        }
-    }];
     return operation;
 }
 
