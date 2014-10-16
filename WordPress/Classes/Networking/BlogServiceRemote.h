@@ -7,7 +7,6 @@ typedef void (^PostFormatsHandler)(NSDictionary *postFormats);
 typedef void (^CategoriesHandler)(NSArray *categories);
 typedef void (^PostsHandler)(NSArray *posts);
 typedef void (^PagesHandler)(NSArray *pages);
-typedef void (^MediaHandler)(NSArray *media);
 
 @protocol BlogServiceRemote <NSObject>
 
@@ -21,10 +20,6 @@ typedef void (^MediaHandler)(NSArray *media);
 - (void)syncOptionsForBlog:(Blog *)blog
                    success:(OptionsHandler)success
                    failure:(void (^)(NSError *error))failure;
-
-- (void)syncMediaLibraryForBlog:(Blog *)blog
-                        success:(MediaHandler)success
-                        failure:(void (^)(NSError *error))failure;
 
 - (void)syncPostFormatsForBlog:(Blog *)blog
                        success:(PostFormatsHandler)success
