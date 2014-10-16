@@ -192,6 +192,11 @@ static NSInteger const CVCNumberOfSections = 2;
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
+    if (!self.comment.blog.dotComID) {
+        [self openWebViewWithURL:[NSURL URLWithString:self.comment.post.permaLink]];
+        return;
+    }
+
     if (indexPath.section == CVCHeaderSectionIndex && [self shouldShowHeaderForPostDetails]) {
         ReaderPostDetailViewController *vc = [ReaderPostDetailViewController detailControllerWithPostID:self.comment.postID siteID:self.comment.blog.blogID];
         [self.navigationController pushViewController:vc animated:YES];
