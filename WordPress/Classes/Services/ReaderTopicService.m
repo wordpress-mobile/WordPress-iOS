@@ -461,7 +461,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
     if ([currentTopics count] > 0) {
         for (ReaderTopic *topic in currentTopics) {
-            if (topic.type != ReaderTopicTypeSite && ![topicsToKeep containsObject:topic]) {
+            if (![topic.type isEqualToString:ReaderTopicTypeSite] && ![topicsToKeep containsObject:topic]) {
                 DDLogInfo(@"Deleting ReaderTopic: %@", topic);
                 if ([topic isEqual:self.currentTopic]) {
                     self.currentTopic = nil;
