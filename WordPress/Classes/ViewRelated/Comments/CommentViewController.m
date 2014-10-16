@@ -231,8 +231,8 @@ static NSInteger const CVCNumberOfSections = 2;
     cell.name = self.comment.post.author;
     cell.snippet = self.comment.post.content;
 
-    if ([self.comment.post respondsToSelector:@selector(authorAvatarURL)]) {
-        [cell downloadGravatarWithURL:[NSURL URLWithString:[(Post *)self.comment.post authorAvatarURL]]];
+    if (cell != self.headerLayoutCell) {
+        [cell downloadGravatarWithURL:[NSURL URLWithString:self.comment.post.authorAvatarURL]];
     }
 }
 
@@ -249,7 +249,10 @@ static NSInteger const CVCNumberOfSections = 2;
     cell.isApproveOn = [self.comment.status isEqualToString:@"approve"];
     cell.commentText = self.comment.content;
     cell.isLikeOn = self.comment.isLiked;
-    [cell downloadGravatarWithURL:self.comment.avatarURLForDisplay];
+
+    if (cell != self.bodyLayoutCell) {
+        [cell downloadGravatarWithURL:self.comment.avatarURLForDisplay];
+    }
 
     __weak __typeof(self) weakSelf = self;
 
