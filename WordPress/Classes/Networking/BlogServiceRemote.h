@@ -10,13 +10,6 @@ typedef void (^PagesHandler)(NSArray *pages);
 
 @protocol BlogServiceRemote <NSObject>
 
-// As methods are implemented for both REST and XML-RPC they should stop being optional
-@optional
-
-- (void)syncCategoriesForBlog:(Blog *)blog
-                      success:(CategoriesHandler)success
-                      failure:(void (^)(NSError *error))failure;
-
 - (void)syncOptionsForBlog:(Blog *)blog
                    success:(OptionsHandler)success
                    failure:(void (^)(NSError *error))failure;
