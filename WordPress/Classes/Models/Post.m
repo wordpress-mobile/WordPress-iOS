@@ -9,7 +9,7 @@
 
 @dynamic geolocation, tags, postFormat;
 @dynamic latitudeID, longitudeID, publicID;
-@dynamic categories, authorAvatarURL;
+@dynamic categories;
 @synthesize specialType;
 
 #pragma mark - NSManagedObject subclass methods

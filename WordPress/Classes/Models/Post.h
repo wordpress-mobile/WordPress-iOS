@@ -14,7 +14,6 @@
 @property (nonatomic, strong) NSString * postFormat;
 @property (nonatomic, strong) NSString * postFormatText;
 @property (nonatomic, strong) NSMutableSet * categories;
-@property (nonatomic, strong) NSString * authorAvatarURL;
 
 // We shouldn't need to store this, but if we don't send IDs on edits
 // custom fields get duplicated and stop working
