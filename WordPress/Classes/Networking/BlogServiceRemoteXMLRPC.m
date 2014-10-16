@@ -39,7 +39,6 @@
 }
 
 - (void)syncBlogMetadata:(Blog *)blog
-            mediaSuccess:(MediaHandler)mediaSuccess
           optionsSuccess:(OptionsHandler)optionsSuccess
       postFormatsSuccess:(PostFormatsHandler)postFormatsSuccess
           overallSuccess:(void (^)(void))overallSuccess
@@ -52,12 +51,6 @@
     [operations addObject:operation];
     operation = [self operationForPostFormatsWithBlog:blog success:postFormatsSuccess failure:nil];
     [operations addObject:operation];
-
-    if (!blog.isSyncingMedia) {
-        operation = [self operationForMediaLibraryWithBlog:blog success:mediaSuccess failure:nil];
-        [operations addObject:operation];
-        blog.isSyncingMedia = YES;
-    }
 
     AFHTTPRequestOperation *combinedOperation = [blog.api combinedHTTPRequestOperationWithOperations:operations success:^(AFHTTPRequestOperation *operation, id responseObject) {
         DDLogVerbose(@"syncBlogWithSuccess:failure: completed successfully.");

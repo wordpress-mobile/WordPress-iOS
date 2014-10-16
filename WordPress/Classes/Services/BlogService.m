@@ -193,7 +193,6 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncBlogMetadata:blog
-                mediaSuccess:[self mediaHandlerWithBlog:blog completionHandler:nil]
               optionsSuccess:[self optionsHandlerWithBlog:blog completionHandler:nil]
           postFormatsSuccess:[self postFormatsHandlerWithBlog:blog completionHandler:nil]
               overallSuccess:^{
@@ -206,7 +205,6 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
                   }
               }
                      failure:^(NSError *error) {
-                         blog.isSyncingMedia = NO;
                          blog.isSyncingPages = NO;
                          blog.isSyncingPosts = NO;
 
@@ -214,6 +212,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
                              failure(error);
                          }
                      }];
+    [remote syncMediaLibraryForBlog:blog success:nil failure:nil];
 
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
     // Right now, none of the callers care about the results of the sync
