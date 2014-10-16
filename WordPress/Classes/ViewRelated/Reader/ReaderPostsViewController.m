@@ -399,7 +399,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (ReaderTopic *)currentTopic
 {
-    return [[[ReaderTopicService alloc] initWithManagedObjectContext:[self managedObjectContext]] currentTopic];
+    return [self currentTopicInContext:self.managedObjectContext];
+}
+
+- (ReaderTopic *)currentTopicInContext:(NSManagedObjectContext *)context
+{
+    return [[[ReaderTopicService alloc] initWithManagedObjectContext:context] currentTopic];
 }
 
 - (BOOL)isCurrentTopicFreshlyPressed
@@ -713,10 +718,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    ReaderTopic *topic = self.currentTopic;
     
     [context performBlock:^{
-        ReaderTopic *topicInContext = (ReaderTopic *)[context objectWithID:topic.objectID];
+        ReaderTopic *topicInContext = [self currentTopicInContext:context];
         [service fetchPostsForTopic:topicInContext earlierThan:[NSDate date] success:^(NSInteger count, BOOL hasMore) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 weakSelf.postIDThatInitiatedBlock = nil;
@@ -741,19 +745,23 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service backfillPostsForTopic:self.currentTopic success:^(NSInteger count, BOOL hasMore) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            weakSelf.postIDThatInitiatedBlock = nil;
-            if (success) {
-                success(count, hasMore);
-            }
-        });
-    } failure:^(NSError *error) {
-        if (failure) {
+    
+    [context performBlock:^{
+        ReaderTopic *topicInContext = [self currentTopicInContext:context];
+        [service backfillPostsForTopic:topicInContext success:^(NSInteger count, BOOL hasMore) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                failure(error);
+                weakSelf.postIDThatInitiatedBlock = nil;
+                if (success) {
+                    success(count, hasMore);
+                }
             });
-        }
+        } failure:^(NSError *error) {
+            if (failure) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    failure(error);
+                });
+            }
+        }];
     }];
 }
 
@@ -787,16 +795,14 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     self.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
     
     ReaderPost *post = self.tableViewHandler.resultsController.fetchedObjects.lastObject;
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
-
-    __weak __typeof(self) weakSelf = self;
-    
-    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    ReaderTopic *topic = self.currentTopic;
     NSDate *earlierThan = post.sortDate;
     
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    __weak __typeof(self) weakSelf = self;
+    
     [context performBlock:^{
-        ReaderTopic *topicInContext = (ReaderTopic *)[context objectWithID:topic.objectID];
+        ReaderTopic *topicInContext = [self currentTopicInContext:context];
         [service fetchPostsForTopic:topicInContext earlierThan:earlierThan success:^(NSInteger count, BOOL hasMore){
             if (success) {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -1081,16 +1087,18 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)postView:(ReaderPostContentView *)postView didReceiveLikeAction:(id)sender
 {
-    ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    ReaderPost *post = (ReaderPost *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    ReaderPost *post = [self postFromCellSubview:sender];
     BOOL wasLiked = post.isLiked;
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     
     [context performBlock:^{
-        ReaderPost *postInContext = (ReaderPost *)[context objectWithID:post.objectID];
+        ReaderPost *postInContext = (ReaderPost *)[context existingObjectWithID:post.objectID error:nil];
+        if (!postInContext) {
+            return;
+        }
+        
         [service toggleLikedForPost:postInContext success:^{
             if (wasLiked) {
                 return;
@@ -1125,7 +1133,11 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     
     [context performBlock:^{
-        ReaderPost *postInContext = (ReaderPost *)[context objectWithID:post.objectID];
+        ReaderPost *postInContext = (ReaderPost *)[context existingObjectWithID:post.objectID error:nil];
+        if (!postInContext) {
+            return;
+        }
+        
         [service toggleFollowingForPost:postInContext success:nil failure:^(NSError *error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
