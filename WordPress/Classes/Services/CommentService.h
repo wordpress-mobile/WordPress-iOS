@@ -6,6 +6,7 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 @class Blog;
 @class Comment;
 @class ReaderPost;
+@class BasePost;
 
 @interface CommentService : NSObject <LocalCoreDataService>
 
@@ -128,5 +129,11 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
                             siteID:(NSNumber *)siteID
                            success:(void (^)())success
                            failure:(void (^)(NSError *error))failure;
+
+/**
+ This method will search for all the comments with `post.postID` in `blog` and associate their
+ post property to `post`
+ */
+- (void)associatePost:(BasePost *)post forCommentsInBlog:(Blog *)blog;
 
 @end
