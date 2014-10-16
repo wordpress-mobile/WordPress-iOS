@@ -1076,16 +1076,26 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     ReaderPost *post = (ReaderPost *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-
+    BOOL wasLiked = post.isLiked;
+    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service toggleLikedForPost:post success:^{
-        if (post.isLiked) {
-            [WPAnalytics track:WPAnalyticsStatReaderLikedArticle];
-        }
-    } failure:^(NSError *error) {
-        DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
-        [postView updateActionButtons];
+    
+    [context performBlock:^{
+        ReaderPost *postInContext = (ReaderPost *)[self.managedObjectContext existingObjectWithID:post.objectID error:nil];
+        [service toggleLikedForPost:postInContext success:^{
+            if (wasLiked) {
+                return;
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [WPAnalytics track:WPAnalyticsStatReaderLikedArticle];
+            });
+        } failure:^(NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
+                [postView updateActionButtons];
+            });
+        }];
     }];
 
     [postView updateActionButtons];
