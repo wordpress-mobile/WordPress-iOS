@@ -39,6 +39,11 @@ import Foundation
     public var labelPadding: UIEdgeInsets {
         return privateLabelPadding
     }
+    public var isTextViewSelectable: Bool = false {
+        didSet {
+            textView.selectable = isTextViewSelectable
+        }
+    }
     
     
     //  TODO:
