@@ -9,12 +9,15 @@
 #import "NSString+Helpers.h"
 #import "ReaderPost.h"
 #import "WPAccount.h"
+#import "PostService.h"
+#import "AbstractPost.h"
 
 NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 
 @interface CommentService ()
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong) PostService *postService;
 
 @end
 
@@ -471,6 +474,13 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     return [comments anyObject];
 }
 
+- (void)associatePost:(BasePost *)post forCommentsInBlog:(Blog *)blog {
+    NSSet *comments = [blog.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"postID = %@", post.postID]];
+    for (Comment *comment in comments) {
+        comment.post = post;
+    }
+}
+
 #pragma mark - Post centric methods
 
 - (NSMutableArray *)ancestorsForCommentWithParentID:(NSNumber *)parentID andCurrentAncestors:(NSArray *)currentAncestors
@@ -650,6 +660,11 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     comment.type = remoteComment.type;
     comment.isLiked = remoteComment.isLiked;
     comment.likeCount = remoteComment.likeCount;
+
+    // if the post for the comment is not set, check if that post is already stored and associate them
+    if (!comment.post) {
+        comment.post = [self.postService findPostWithID:comment.postID inBlog:comment.blog];
+    }
 }
 
 - (RemoteComment *)remoteCommentWithComment:(Comment *)comment
@@ -706,6 +721,16 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
         api = [WordPressComApi anonymousApi];
     }
     return api;
+}
+
+#pragma mark - Getters
+
+- (PostService *)postService
+{
+    if (!_postService) {
+        _postService = [[PostService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    }
+    return _postService;
 }
 
 @end

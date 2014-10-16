@@ -11,6 +11,7 @@
 #import "CategoryService.h"
 #import "ContextManager.h"
 #import "NSDate+WordPressJSON.h"
+#import "CommentService.h"
 
 NSString * const PostServiceTypePost = @"post";
 NSString * const PostServiceTypePage = @"page";
@@ -20,6 +21,7 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
 @interface PostService ()
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong) CommentService *commentService;
 
 @end
 
@@ -296,6 +298,10 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
     post.status = remotePost.status;
     post.password = remotePost.password;
     post.post_thumbnail = remotePost.postThumbnailID;
+
+    // search for orphan comments for this post and associate them
+    [self.commentService associatePost:post forCommentsInBlog:post.blog];
+
     if ([post isKindOfClass:[Page class]]) {
         Page *pagePost = (Page *)post;
         pagePost.parentID = remotePost.parentID;
@@ -461,6 +467,16 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
         remote = [[PostServiceRemoteXMLRPC alloc] initWithApi:client];
     }
     return remote;
+}
+
+#pragma mark - Setter/Getters
+
+- (CommentService *)commentService
+{
+    if (!_commentService) {
+        _commentService = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    }
+    return _commentService;
 }
 
 @end
