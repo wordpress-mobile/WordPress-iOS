@@ -1090,7 +1090,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     
     [context performBlock:^{
-        ReaderPost *postInContext = (ReaderPost *)[self.managedObjectContext existingObjectWithID:post.objectID error:nil];
+        ReaderPost *postInContext = (ReaderPost *)[context objectWithID:post.objectID];
         [service toggleLikedForPost:postInContext success:^{
             if (wasLiked) {
                 return;
