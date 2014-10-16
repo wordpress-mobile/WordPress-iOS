@@ -713,20 +713,25 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service fetchPostsForTopic:self.currentTopic earlierThan:[NSDate date] success:^(NSInteger count, BOOL hasMore) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            weakSelf.postIDThatInitiatedBlock = nil;
-            weakSelf.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
-            if (success) {
-                success(count, hasMore);
-            }
-        });
-    } failure:^(NSError *error) {
-        if (failure) {
+    ReaderTopic *topic = self.currentTopic;
+    
+    [context performBlock:^{
+        ReaderTopic *topicInContext = (ReaderTopic *)[context objectWithID:topic.objectID];
+        [service fetchPostsForTopic:topicInContext earlierThan:[NSDate date] success:^(NSInteger count, BOOL hasMore) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                failure(error);
+                weakSelf.postIDThatInitiatedBlock = nil;
+                weakSelf.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
+                if (success) {
+                    success(count, hasMore);
+                }
             });
-        }
+        } failure:^(NSError *error) {
+            if (failure) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    failure(error);
+                });
+            }
+        }];
     }];
 }
 
