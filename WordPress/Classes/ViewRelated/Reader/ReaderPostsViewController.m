@@ -792,21 +792,27 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     __weak __typeof(self) weakSelf = self;
     
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service fetchPostsForTopic:self.currentTopic earlierThan:post.sortDate success:^(NSInteger count, BOOL hasMore){
-        if (success) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                weakSelf.shouldSkipRowAnimation = YES;
-                success(count, hasMore);
-            });
-        }
-    } failure:^(NSError *error) {
-        if (failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(error);
-            });
-        }
+    ReaderTopic *topic = self.currentTopic;
+    NSDate *earlierThan = post.sortDate;
+    
+    [context performBlock:^{
+        ReaderTopic *topicInContext = (ReaderTopic *)[context objectWithID:topic.objectID];
+        [service fetchPostsForTopic:topicInContext earlierThan:earlierThan success:^(NSInteger count, BOOL hasMore){
+            if (success) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    weakSelf.shouldSkipRowAnimation = YES;
+                    success(count, hasMore);
+                });
+            }
+        } failure:^(NSError *error) {
+            if (failure) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    failure(error);
+                });
+            }
+        }];
     }];
-
+    
     [WPAnalytics track:WPAnalyticsStatReaderInfiniteScroll withProperties:[self tagPropertyForStats]];
 }
 
