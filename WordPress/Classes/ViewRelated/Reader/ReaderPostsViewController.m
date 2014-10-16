@@ -1123,11 +1123,15 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service toggleFollowingForPost:post success:^{
-        //noop
-    } failure:^(NSError *error) {
-        DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
-        [followButton setSelected:post.isFollowing];
+    
+    [context performBlock:^{
+        ReaderPost *postInContext = (ReaderPost *)[context objectWithID:post.objectID];
+        [service toggleFollowingForPost:postInContext success:nil failure:^(NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
+                [followButton setSelected:post.isFollowing];                
+            });
+        }];
     }];
 }
 
