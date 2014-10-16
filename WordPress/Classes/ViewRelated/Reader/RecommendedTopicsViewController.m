@@ -105,16 +105,16 @@
 
 - (NSFetchRequest *)fetchRequest
 {
-    NSString *predStr;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[self entityName]];
+
     if ([self isWPComUser]) {
-        predStr = @"topicID > 0 AND isSubscribed = NO";
+        request.predicate = [NSPredicate predicateWithFormat:@"(topicID > 0 AND isSubscribed = NO) AND (type != %@)",
+                             ReaderTopicTypeSite];
     } else {
         // include lists for non wpcom users
-        predStr = @"topicID = 0 OR isSubscribed = NO";
+        request.predicate = [NSPredicate predicateWithFormat:@"(topicID = 0 OR isSubscribed = NO) AND (type != %@)",
+                             ReaderTopicTypeSite];
     }
-
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[self entityName]];
-    request.predicate = [NSPredicate predicateWithFormat:predStr];
 
     NSSortDescriptor *sortDescriptorType = [NSSortDescriptor sortDescriptorWithKey:@"type" ascending:YES];
     NSSortDescriptor *sortDescriptorTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
