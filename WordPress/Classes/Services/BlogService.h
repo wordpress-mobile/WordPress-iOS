@@ -46,7 +46,6 @@
 - (Blog *)firstWPComBlog;
 
 - (void)syncOptionsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)syncMediaLibraryForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)syncPostFormatsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 /*! Syncs an entire blog include posts, pages, comments, options, post formats and categories.

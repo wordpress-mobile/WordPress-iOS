@@ -163,26 +163,6 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     [remote syncOptionsForBlog:blog success:[self optionsHandlerWithBlog:blog completionHandler:success] failure:failure];
 }
 
-- (void)syncMediaLibraryForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
-{
-    if (blog.isSyncingMedia) {
-        DDLogWarn(@"Already syncing media. Skip");
-        return;
-    }
-    blog.isSyncingMedia = YES;
-
-    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncMediaLibraryForBlog:blog
-                            success:[self mediaHandlerWithBlog:blog completionHandler:success]
-                            failure:^(NSError *error) {
-                                blog.isSyncingMedia = NO;
-
-                                if (failure) {
-                                    failure(error);
-                                }
-                            }];
-}
-
 - (void)syncPostFormatsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
@@ -212,7 +192,6 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
                              failure(error);
                          }
                      }];
-    [remote syncMediaLibraryForBlog:blog success:nil failure:nil];
 
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
     // Right now, none of the callers care about the results of the sync
@@ -350,18 +329,6 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 }
 
 #pragma mark - Completion handlers
-
-- (MediaHandler)mediaHandlerWithBlog:(Blog *)blog completionHandler:(void (^)(void))completion
-{
-    return ^void(NSArray *media) {
-        [Media mergeNewMedia:media forBlog:blog];
-        blog.isSyncingMedia = NO;
-
-        if (completion) {
-            completion();
-        }
-    };
-}
 
 - (OptionsHandler)optionsHandlerWithBlog:(Blog *)blog completionHandler:(void (^)(void))completion
 {
