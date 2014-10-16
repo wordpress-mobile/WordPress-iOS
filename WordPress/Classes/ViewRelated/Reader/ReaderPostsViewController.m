@@ -913,7 +913,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)updateAndPerformFetchRequest
 {
-    NSError *error;
+    NSAssert([NSThread isMainThread], @"ReaderPostsViewController Error: NSFetchedResultsController accessed in BG");
+    
+    NSError *error = nil;
     [self.tableViewHandler.resultsController.fetchRequest setPredicate:[self predicateForFetchRequest]];
     [self.tableViewHandler.resultsController performFetch:&error];
     if (error) {
