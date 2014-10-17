@@ -112,6 +112,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 
+
+    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
     if (IS_IPHONE) {
         // DTCoreText can be cranky about refreshing its rendered text when its
         // frame changes, even when setting its relayoutMask. Setting setNeedsLayout
@@ -120,12 +122,13 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         for (UITableViewCell *cell in [self.tableView visibleCells]) {
             [cell setNeedsLayout];
         }
-        [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
     }
 
-    // Make sure a selected comment is visible after rotating.
-    if ([self.tableView indexPathForSelectedRow] && self.replyTextView.isFirstResponder) {
-        [self.tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionNone animated:NO];
+    // Make sure a selected comment is visible after rotating, and that the replyTextView is still the first responder.
+    if (selectedIndexPath) {
+        [self.replyTextView becomeFirstResponder];
+        [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
 
     [self configureNoResultsView];
@@ -281,16 +284,25 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     __typeof(self) __weak weakSelf = self;
 
     ReplyTextView *replyTextView = [[ReplyTextView alloc] initWithWidth:CGRectGetWidth(self.view.frame)];
-    replyTextView.placeholder = NSLocalizedString(@"Write a reply…", @"Placeholder text for inline compose view");
     replyTextView.replyText = [NSLocalizedString(@"Reply", @"") uppercaseString];
     replyTextView.onReply = ^(NSString *content) {
         [weakSelf sendReplyWithNewContent:content];
     };
     replyTextView.delegate = self;
     self.replyTextView = replyTextView;
+    [self configureTextReplyViewPlaceholder];
 
     [self.view addSubview:self.replyTextView];
     [self.view bringSubviewToFront:self.replyTextView];
+}
+
+- (void)configureTextReplyViewPlaceholder
+{
+    if ([self.tableView indexPathForSelectedRow]) {
+        self.replyTextView.placeholder = NSLocalizedString(@"Reply to comment…", @"Placeholder text for replying to a comment");
+    } else {
+        self.replyTextView.placeholder = NSLocalizedString(@"Reply to post…", @"Placeholder text for replying to a post");
+    }
 }
 
 - (void)configureNoResultsView
@@ -531,9 +543,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         [self.tableView deselectRowAtIndexPath:[selection objectAtIndex:0] animated:YES];
     }
 
-
-
-
     NSDictionary* userInfo = notification.userInfo;
 
     [UIView beginAnimations:nil context:nil];
@@ -562,6 +571,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
     [self.tableView deselectSelectedRowWithAnimation:YES];
     [self.replyTextView resignFirstResponder];
+    [self configureTextReplyViewPlaceholder];
 }
 
 - (void)sendReplyWithNewContent:(NSString *)content
@@ -785,8 +795,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     NSArray *selectedRows = [self.tableView indexPathsForSelectedRows];
     [self.tableView deselectRowAtIndexPath:[selectedRows objectAtIndex:0] animated:YES];
-
     [self.replyTextView resignFirstResponder];
+    [self configureTextReplyViewPlaceholder];
 }
 
 
@@ -815,6 +825,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self.replyTextView becomeFirstResponder];
 
     [self.tableView selectRowAtIndexPath:[self.tableView indexPathForCell:cell] animated:YES scrollPosition:UITableViewScrollPositionTop];
+    [self configureTextReplyViewPlaceholder];
 }
 
 - (void)commentCell:(ReaderCommentCell *)cell toggleLikeStatusForComment:(Comment *)comment
