@@ -193,7 +193,7 @@ static NSInteger const CVCNumberOfSections = 2;
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if (!self.comment.blog.dotComID) {
+    if (!self.comment.blog.isWPcom) {
         [self openWebViewWithURL:[NSURL URLWithString:self.comment.post.permaLink]];
         return;
     }
