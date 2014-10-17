@@ -67,11 +67,11 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         
         if siteId == nil || timeZoneName == nil || oauth2Token == nil {
             WPDDLogWrapper.logError("Missing site ID, timeZone or oauth2Token")
-            completionHandler(NCUpdateResult.Failed)
             
             let bundle = NSBundle(forClass: TodayViewController.classForCoder())
             NCWidgetController.widgetController().setHasContent(false, forWidgetWithBundleIdentifier: bundle.bundleIdentifier)
             
+            completionHandler(NCUpdateResult.Failed)
             return
         }
         
