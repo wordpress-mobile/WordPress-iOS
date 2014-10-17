@@ -234,8 +234,13 @@ static NSInteger const CVCNumberOfSections = 2;
 
 - (void)setupHeaderCell:(NoteBlockHeaderTableViewCell *)cell
 {
+    NSString *postTitle = [self.comment.post titleForDisplay];
+    if (postTitle.length == 0) {
+        postTitle = self.comment.post.content;
+    }
+
     cell.name = self.comment.post.author;
-    cell.snippet = [self.comment.post.content stringByStrippingHTML];
+    cell.snippet = self.comment.post.postTitle;
 
     if (cell != self.headerLayoutCell) {
         [cell downloadGravatarWithURL:[NSURL URLWithString:self.comment.post.authorAvatarURL]];
