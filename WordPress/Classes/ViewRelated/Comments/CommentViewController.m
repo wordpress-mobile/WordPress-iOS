@@ -13,7 +13,6 @@
 #import "ReaderPostDetailViewController.h"
 #import "PostService.h"
 #import "Post.h"
-#import "NSString+Helpers.h"
 
 static NSString *const CVCReplyToastImage = @"action-icon-replied";
 static NSString *const CVCSuccessToastImage = @"action-icon-success";
@@ -236,11 +235,11 @@ static NSInteger const CVCNumberOfSections = 2;
 {
     NSString *postTitle = [self.comment.post titleForDisplay];
     if (postTitle.length == 0) {
-        postTitle = self.comment.post.content;
+        postTitle = [self.comment.post contentPreviewForDisplay];
     }
 
     cell.name = self.comment.post.author;
-    cell.snippet = self.comment.post.postTitle;
+    cell.snippet = postTitle;
 
     if (cell != self.headerLayoutCell) {
         [cell downloadGravatarWithURL:[NSURL URLWithString:self.comment.post.authorAvatarURL]];
@@ -258,7 +257,7 @@ static NSInteger const CVCNumberOfSections = 2;
     cell.name = self.comment.author;
     cell.timestamp = [self.comment.dateCreated shortString];
     cell.isApproveOn = [self.comment.status isEqualToString:@"approve"];
-    cell.commentText = [self.comment.content stringByStrippingHTML];
+    cell.commentText = [self.comment contentForDisplay];
     cell.isLikeOn = self.comment.isLiked;
 
     if (cell != self.bodyLayoutCell) {
