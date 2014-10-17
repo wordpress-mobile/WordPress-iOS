@@ -21,7 +21,6 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
 @interface PostService ()
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, strong) CommentService *commentService;
 
 @end
 
@@ -289,6 +288,7 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
 }
 
 - (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost {
+    NSNumber *previousPostID = post.postID;
     post.postID = remotePost.postID;
     post.author = remotePost.authorDisplayName;
     post.date_created_gmt = remotePost.date;
@@ -299,8 +299,9 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
     post.password = remotePost.password;
     post.post_thumbnail = remotePost.postThumbnailID;
 
-    // search for orphan comments for this post and associate them
-    [self.commentService associatePost:post forCommentsInBlog:post.blog];
+    if (remotePost.postID != previousPostID) {
+        [self updateCommentsForPost:post];
+    }
 
     if ([post isKindOfClass:[Page class]]) {
         Page *pagePost = (Page *)post;
@@ -451,6 +452,14 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
     }
 }
 
+- (void)updateCommentsForPost:(AbstractPost *)post
+{
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    NSMutableSet *currentComments = [post mutableSetValueForKey:@"comments"];
+    NSSet *allComments = [commentService findCommentsWithPostID:post.postID inBlog:post.blog];
+    [currentComments addObjectsFromArray:[allComments allObjects]];
+}
+
 - (NSDictionary *)dictionaryWithKey:(NSString *)key inMetadata:(NSArray *)metadata {
     NSArray *matchingEntries = [metadata filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"key = %@", key]];
     // In theory, there shouldn't be duplicated fields, but I've seen some bugs where there's more than one geo_* value
@@ -467,16 +476,6 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
         remote = [[PostServiceRemoteXMLRPC alloc] initWithApi:client];
     }
     return remote;
-}
-
-#pragma mark - Setter/Getters
-
-- (CommentService *)commentService
-{
-    if (!_commentService) {
-        _commentService = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    }
-    return _commentService;
 }
 
 @end
