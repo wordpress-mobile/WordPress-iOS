@@ -12,7 +12,13 @@
 
 - (void)beforeEach
 {
+    if([tester tryFindingViewWithAccessibilityLabel:@"OK" error:nil]){
+        [tester tapViewWithAccessibilityLabel:@"OK"];
+    }
     
+    if([tester tryFindingViewWithAccessibilityLabel:@"Sign in to WordPress.com" error:nil]){
+        [tester tapViewWithAccessibilityLabel:@"Sign in to WordPress.com"];
+    }
 }
 
 - (void)afterEach
@@ -22,8 +28,8 @@
 
 - (void)testUnsuccessfulLogin
 {
-    [tester enterText:@"unknow@unknow.com" intoViewWithAccessibilityLabel:@"Username / Email"];
-    [tester enterText:@"failpassword" intoViewWithAccessibilityLabel:@"Password"];
+    [tester clearTextFromAndThenEnterText:@"unknow@unknow.com" intoViewWithAccessibilityLabel:@"Username / Email"];
+    [tester clearTextFromAndThenEnterText:@"failpassword" intoViewWithAccessibilityLabel:@"Password"];
     [tester tapViewWithAccessibilityLabel:@"Sign In"];
     
     [tester waitForTimeInterval:3];
@@ -35,8 +41,8 @@
 
 - (void)testSimpleLogin
 {
-    [tester enterText:oneStepUser intoViewWithAccessibilityLabel:@"Username / Email"];
-    [tester enterText:oneStepPassword intoViewWithAccessibilityLabel:@"Password"];
+    [tester clearTextFromAndThenEnterText:oneStepUser intoViewWithAccessibilityLabel:@"Username / Email"];
+    [tester clearTextFromAndThenEnterText:oneStepPassword intoViewWithAccessibilityLabel:@"Password"];
     [tester tapViewWithAccessibilityLabel:@"Sign In"];
     
     [tester waitForTimeInterval:3];
@@ -48,8 +54,8 @@
 
 - (void)testTwoStepLogin
 {
-    [tester enterText:twoStepUser intoViewWithAccessibilityLabel:@"Username / Email"];
-    [tester enterText:twoStepPassword intoViewWithAccessibilityLabel:@"Password"];
+    [tester clearTextFromAndThenEnterText:twoStepUser intoViewWithAccessibilityLabel:@"Username / Email"];
+    [tester clearTextFromAndThenEnterText:twoStepPassword intoViewWithAccessibilityLabel:@"Password"];
     [tester tapViewWithAccessibilityLabel:@"Sign In"];
     
     [tester waitForTimeInterval:3];

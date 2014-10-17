@@ -29,9 +29,13 @@
 - (void) logout
 {
     [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester waitForTimeInterval:2];
     [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester waitForTimeInterval:2];
     [tester tapViewWithAccessibilityLabel:@"Settings"];
+    [tester waitForTimeInterval:2];
     [tester tapViewWithAccessibilityLabel:@"Sign Out"];
+    [tester waitForTimeInterval:2];
     [tester tapViewWithAccessibilityLabel:@"Sign Out"];
     [tester waitForTimeInterval:3];
 }
