@@ -19,6 +19,8 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 // Restore draft reply
 - (Comment *)restoreReplyForComment:(Comment *)comment;
 
+- (NSSet *)findCommentsWithPostID:(NSNumber *)postID inBlog:(Blog *)blog;
+
 // Sync comments
 - (void)syncCommentsForBlog:(Blog *)blog
                     success:(void (^)())success
@@ -129,11 +131,5 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
                             siteID:(NSNumber *)siteID
                            success:(void (^)())success
                            failure:(void (^)(NSError *error))failure;
-
-/**
- This method will search for all the comments with `post.postID` in `blog` and associate their
- post property to `post`
- */
-- (void)associatePost:(BasePost *)post forCommentsInBlog:(Blog *)blog;
 
 @end
