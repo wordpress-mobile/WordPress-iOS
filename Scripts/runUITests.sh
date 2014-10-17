@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #checking if xcpretty is available to use
-pretty="xcpretty -c"
+pretty="xcpretty -c && exit ${PIPESTATUS[0]}"
 command -v xcpretty >/dev/null
 if [ $? -eq 1 ]; then
 echo >&2 "xcpretty not found don't use it."
