@@ -2696,6 +2696,7 @@
 			buildConfigurationList = FFF96F8E19EBE7FB00DFC821 /* Build configuration list for PBXNativeTarget "UITests" */;
 			buildPhases = (
 				F538F2E32959A7F71EED0023 /* Check Pods Manifest.lock */,
+				FFF87E8219F1B6CF00206205 /* Gen Test Credentials */,
 				FFF96F7E19EBE7FB00DFC821 /* Sources */,
 				FFF96F7F19EBE7FB00DFC821 /* Frameworks */,
 				FFF96F8019EBE7FB00DFC821 /* Resources */,
@@ -3032,6 +3033,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		FFF87E8219F1B6CF00206205 /* Gen Test Credentials */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Gen Test Credentials";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "DERIVED_TMP_DIR=/tmp/WordPress.build\ncp ${SOURCE_ROOT}/UITests/WordPressTestCredentials.m ${DERIVED_TMP_DIR}/WordPressTestCredentials.m\n\necho \"Generating credentials file in ${DERIVED_TMP_DIR}/WordPressTestCredentials.m\"\nruby ${SOURCE_ROOT}/UITests/gencredentials.rb > ${DERIVED_TMP_DIR}/WordPressTestCredentials.m";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
