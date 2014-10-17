@@ -112,7 +112,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 
-
     NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
     if (IS_IPHONE) {
         // DTCoreText can be cranky about refreshing its rendered text when its
@@ -789,6 +788,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self configureNoResultsView];
 }
 
+
 #pragma mark - UIScrollView Delegate Methods
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -836,6 +836,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [commentService toggleLikeStatusForComment:comment siteID:self.post.siteID success:nil failure:nil];
 }
 
+
+#pragma mark - UITextViewDelegate methods
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
