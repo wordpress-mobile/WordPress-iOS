@@ -39,7 +39,7 @@
 - (void)replyToPostWithID:(NSNumber *)postID
                    siteID:(NSNumber *)siteID
                   content:(NSString *)content
-                  success:(void (^)())success
+                  success:(void (^)(RemoteComment *comment))success
                   failure:(void (^)(NSError *error))failure;
 
 /**
@@ -48,7 +48,7 @@
 - (void)replyToCommentWithID:(NSNumber *)commentID
                       siteID:(NSNumber *)siteID
                      content:(NSString *)content
-                     success:(void (^)())success
+                     success:(void (^)(RemoteComment *comment))success
                      failure:(void (^)(NSError *error))failure;
 
 /**
