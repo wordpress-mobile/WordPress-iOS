@@ -575,16 +575,11 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)sendReplyWithNewContent:(NSString *)content
 {
-    NSString *successMessage = NSLocalizedString(@"Reply Sent!", @"The app successfully sent a comment");
-    NSString *sendingMessage = NSLocalizedString(@"Sending...", @"The app is uploading a comment");
-    UIImage *successImage = [UIImage imageNamed:@"action-icon-success"];
-    UIImage *sendingImage = [UIImage imageNamed:@"action-icon-replied"];
-
     __typeof(self) __weak weakSelf = self;
     void (^successBlock)() = ^void() {
         [WPAnalytics track:WPAnalyticsStatReaderCommentedOnArticle];
-        [WPToast showToastWithMessage:successMessage andImage:successImage];
         [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
+        [weakSelf configureTextReplyViewPlaceholder];
     };
 
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
@@ -617,8 +612,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
                            success:successBlock
                            failure:failureBlock];
     }
-
-    [WPToast showToastWithMessage:sendingMessage andImage:sendingImage];
 }
 
 
