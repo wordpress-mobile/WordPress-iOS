@@ -572,11 +572,10 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     UIImage *sendingImage = [UIImage imageNamed:@"action-icon-replied"];
 
     __typeof(self) __weak weakSelf = self;
-
     void (^successBlock)() = ^void() {
         [WPAnalytics track:WPAnalyticsStatReaderCommentedOnArticle];
         [WPToast showToastWithMessage:successMessage andImage:successImage];
-        [weakSelf refreshAndSync];
+        [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
     };
 
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
@@ -596,11 +595,12 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     if (indexPath) {
         Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-        [service replyToCommentWithID:comment.commentID
-                               siteID:self.post.siteID
-                              content:content
-                              success:successBlock
-                              failure:failureBlock];
+        [service replyToHierarchicalCommentWithID:comment.commentID
+                                           postID:self.post.postID
+                                           siteID:self.post.siteID
+                                          content:content
+                                          success:successBlock
+                                          failure:failureBlock];
     } else {
         [service replyToPostWithID:self.post.postID
                             siteID:self.post.siteID

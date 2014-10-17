@@ -204,7 +204,7 @@
 - (void)replyToPostWithID:(NSNumber *)postID
                    siteID:(NSNumber *)siteID
                   content:(NSString *)content
-                  success:(void (^)())success
+                  success:(void (^)(RemoteComment *comment))success
                   failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/replies/new", siteID, postID];
@@ -213,7 +213,9 @@
         parameters:parameters
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                if (success) {
-                   success();
+                   NSDictionary *commentDict = (NSDictionary *)responseObject;
+                   RemoteComment *comment = [self remoteCommentFromJSONDictionary:commentDict];
+                   success(comment);
                }
            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                if (failure) {
@@ -225,7 +227,7 @@
 - (void)replyToCommentWithID:(NSNumber *)commentID
                       siteID:(NSNumber *)siteID
                      content:(NSString *)content
-                     success:(void (^)())success
+                     success:(void (^)(RemoteComment *comment))success
                      failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@/replies/new", siteID, commentID];
@@ -237,7 +239,9 @@
         parameters:parameters
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                if (success) {
-                   success();
+                   NSDictionary *commentDict = (NSDictionary *)responseObject;
+                   RemoteComment *comment = [self remoteCommentFromJSONDictionary:commentDict];
+                   success(comment);
                }
            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                if (failure) {

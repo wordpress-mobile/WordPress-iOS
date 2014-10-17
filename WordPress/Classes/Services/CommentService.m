@@ -230,7 +230,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 {
     NSSet *topComments = [post.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"parentID = NULL"]];
     CGFloat page = [topComments count] / WPTopLevelHierarchicalCommentsPerPage;
-    return (NSInteger)ceil(page);
+    return (NSInteger)page;
 }
 
 #pragma mark - REST Helpers
@@ -257,12 +257,41 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                   success:(void (^)())success
                   failure:(void (^)(NSError *error))failure
 {
+    void (^successBlock)(RemoteComment *remoteComment) = ^void(RemoteComment *remoteComment) {
+        [self mergeHierarchicalComment:remoteComment withParentID:nil postID:postID siteID:siteID];
+        if (success) {
+            success();
+        }
+    };
+
     CommentServiceRemoteREST *remote = [self remoteForREST];
     [remote replyToPostWithID:postID
                        siteID:siteID
                       content:content
-                      success:success
+                      success:successBlock
                       failure:failure];
+}
+
+- (void)replyToHierarchicalCommentWithID:(NSNumber *)commentID
+                                  postID:(NSNumber *)postID
+                                  siteID:(NSNumber *)siteID
+                                 content:(NSString *)content
+                                 success:(void (^)())success
+                                 failure:(void (^)(NSError *error))failure
+{
+    void (^successBlock)(RemoteComment *remoteComment) = ^void(RemoteComment *remoteComment) {
+        [self mergeHierarchicalComment:remoteComment withParentID:commentID postID:postID siteID:siteID];
+        if (success) {
+            success();
+        }
+    };
+
+    CommentServiceRemoteREST *remote = [self remoteForREST];
+    [remote replyToCommentWithID:commentID
+                          siteID:siteID
+                         content:content
+                         success:successBlock
+                         failure:failure];
 }
 
 - (void)replyToCommentWithID:(NSNumber *)commentID
@@ -275,9 +304,14 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     [remote replyToCommentWithID:commentID
                           siteID:siteID
                          content:content
-                         success:success
+                         success:^(RemoteComment *comment){
+                             if (success){
+                                 success();
+                             }
+                         }
                          failure:failure];
 }
+
 
 // Likes
 - (void)likeCommentWithID:(NSNumber *)commentID
@@ -519,9 +553,60 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 {
     NSMutableArray *arr = [NSMutableArray array];
     for (NSNumber *commentID in hierarchy) {
-        [arr addObject:[NSString stringWithFormat:@"%010u", [commentID integerValue]]];
+        [arr addObject:[self formattedHierarchyElement:commentID]];
     }
     return arr;
+}
+
+- (NSString *)formattedHierarchyElement:(NSNumber *)commentID
+{
+    return [NSString stringWithFormat:@"%010u", [commentID integerValue]];
+}
+
+- (void)mergeHierarchicalComment:(RemoteComment *)remoteComment withParentID:(NSNumber *)parentID postID:(NSNumber *)postID siteID:(NSNumber *)siteID
+{
+    // Fetch the relevant ReaderPost
+    NSError *error;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass([ReaderPost class])];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"postID = %@ AND siteID = %@", postID, siteID];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        DDLogError(@"Error fetching post with id %@ and site %@. %@", postID, siteID, error);
+        return;
+    }
+
+    ReaderPost *post = [results firstObject];
+    if (!post) {
+        return;
+    }
+
+    // (Insert a new comment into core data. Check for its existance first for paranoia sake.
+    // In theory a sync could include a newly created comment before the request that created it returned.
+    Comment *comment = [self findCommentWithID:remoteComment.commentID fromPost:post];
+    if (!comment) {
+        comment = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Comment class]) inManagedObjectContext:self.managedObjectContext];
+    }
+    [self updateComment:comment withRemoteComment:remoteComment];
+    comment.post = post;
+
+    // Find its parent comment (if it exists)
+    Comment *parentComment;
+    if (parentID) {
+        parentComment = [self findCommentWithID:parentID fromPost:post];
+    }
+
+    // Update depth and hierarchy
+    if (parentComment) {
+        comment.hierarchy = [NSString stringWithFormat:@"%@.%@", parentComment.hierarchy, [self formattedHierarchyElement:comment.commentID]];
+        comment.depth = @([parentComment.depth integerValue] + 1);
+    } else {
+        comment.hierarchy = [self formattedHierarchyElement:comment.commentID];
+        comment.depth = @(0);
+    }
+
+    [self.managedObjectContext performBlock:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
 }
 
 - (void)mergeHierarchicalComments:(NSArray *)comments forPage:(NSUInteger)page forPost:(ReaderPost *)post
