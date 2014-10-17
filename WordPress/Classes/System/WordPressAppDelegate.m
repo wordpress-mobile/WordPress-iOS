@@ -606,6 +606,12 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [[UIToolbar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[UIColor darkGrayColor]];
     
     [[UIToolbar appearanceWhenContainedIn:[WPEditorViewController class], nil] setBarTintColor:[UIColor whiteColor]];
+
+    NSDictionary *attributes = @{
+                                 NSForegroundColorAttributeName:[WPStyleGuide whisperGrey],
+                                 NSFontAttributeName:[WPStyleGuide regularTextFont]
+                                 };
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setDefaultTextAttributes:attributes];
 }
 
 #pragma mark - Tracking methods
