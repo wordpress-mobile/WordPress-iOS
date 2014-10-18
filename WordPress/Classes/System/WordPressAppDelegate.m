@@ -9,7 +9,6 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <Simperium/Simperium.h>
 #import <Helpshift/Helpshift.h>
-#import <Taplytics/Taplytics.h>
 #import <Lookback/Lookback.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
 
@@ -126,12 +125,10 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [self removeCredentialsForDebug];
 
     // Stats and feedback
-    [Taplytics startTaplyticsAPIKey:[WordPressComApiCredentials taplyticsAPIKey]];
     [SupportViewController checkIfFeedbackShouldBeEnabled];
 
     [Helpshift installForApiKey:[WordPressComApiCredentials helpshiftAPIKey] domainName:[WordPressComApiCredentials helpshiftDomainName] appID:[WordPressComApiCredentials helpshiftAppId]];
     [[Helpshift sharedInstance] setDelegate:self];
-    [SupportViewController checkIfHelpshiftShouldBeEnabled];
 
     NSNumber *usage_tracking = [[NSUserDefaults standardUserDefaults] valueForKey:kUsageTrackingDefaultsKey];
     if (usage_tracking == nil) {
@@ -1153,6 +1150,11 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
                                                 label:[NSString string]
                                       bucketOverrides:bucketOverrides];
 
+    // Note: Nuke Simperium's metadata in case of a faulty Core Data migration
+    if (manager.didMigrationFail) {
+        [self.simperium resetMetadata];
+    }
+    
 #ifdef DEBUG
 	self.simperium.verboseLoggingEnabled = false;
 #endif
