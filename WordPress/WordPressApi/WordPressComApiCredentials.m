@@ -53,10 +53,6 @@
     return @"";
 }
 
-+ (NSString *)taplyticsAPIKey {
-    return @"";
-}
-
 + (NSString *)lookbackToken {
    return @"";
 }
