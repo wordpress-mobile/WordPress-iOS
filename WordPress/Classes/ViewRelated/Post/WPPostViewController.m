@@ -16,6 +16,7 @@
 #import "LocationService.h"
 #import "BlogService.h"
 #import "MediaService.h"
+#import "NSString+Helpers.h"
 #import "WPMediaUploader.h"
 #import "WPButtonForNavigationBar.h"
 #import "WPUploadStatusView.h"
@@ -1318,9 +1319,7 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
 {
-    [self dismissViewControllerAnimated:YES completion:^{
-        [self.editorView restoreSelection];
-        
+    [self dismissViewControllerAnimated:YES completion:^{        
         for (ALAsset *asset in assets) {
             if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
                 // Could handle videos here
