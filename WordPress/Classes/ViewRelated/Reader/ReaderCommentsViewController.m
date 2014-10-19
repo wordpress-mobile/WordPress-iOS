@@ -431,6 +431,11 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     NSURL *url = [comment avatarURLForDisplay];
     WPAvatarSourceType type = [source parseURL:url forAvatarHash:&hash];
 
+    if (!hash) {
+        [cell setAvatarImage:[UIImage imageNamed:@"default-identicon"]];
+        return;
+    }
+
     UIImage *image = [source cachedImageForAvatarHash:hash ofType:type withSize:size];
     if (image) {
         [cell setAvatarImage:image];
@@ -438,13 +443,11 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }
 
     [cell setAvatarImage:[UIImage imageNamed:@"default-identicon"]];
-    if (hash) {
-        [source fetchImageForAvatarHash:hash ofType:type withSize:size success:^(UIImage *image) {
-            if (cell == [self.tableView cellForRowAtIndexPath:indexPath]) {
-                [cell setAvatarImage:image];
-            }
-        }];
-    }
+    [source fetchImageForAvatarHash:hash ofType:type withSize:size success:^(UIImage *image) {
+        if (cell == [self.tableView cellForRowAtIndexPath:indexPath]) {
+            [cell setAvatarImage:image];
+        }
+    }];
 }
 
 
