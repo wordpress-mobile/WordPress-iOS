@@ -6,3 +6,5 @@ xcode_workspace: WordPress.xcworkspace
 xcode_scheme: WordPress
 notifications:
   email: false
+before_install:
+  - gem install cocoapods
