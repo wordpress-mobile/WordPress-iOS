@@ -114,7 +114,7 @@ DEPENDENCIES:
   - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`, branch `master`)
   - SVProgressHUD (~> 1.0)
   - UIDeviceIdentifier (~> 0.1)
-  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, commit `5ce2bddcc8708f3b2ef1dd9d7fa10b1b9dec8b69`, branch `issue/201-insert-image-at-caret-position`)
+  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, commit `d1c2397e83e3cc4a13bb92416906d45825a5b5d1`, branch `release/0.2.2`)
   - WordPress-iOS-Shared (= 0.1.2)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPressApi.git`)
   - WordPressCom-Analytics-iOS (= 0.0.6)
@@ -131,8 +131,8 @@ EXTERNAL SOURCES:
     :branch: master
     :git: https://github.com/jleandroperez/SocketRocket.git
   WordPress-iOS-Editor:
-    :branch: issue/201-insert-image-at-caret-position
-    :commit: 5ce2bddcc8708f3b2ef1dd9d7fa10b1b9dec8b69
+    :branch: release/0.2.2
+    :commit: d1c2397e83e3cc4a13bb92416906d45825a5b5d1
     :git: git://github.com/wordpress-mobile/WordPress-iOS-Editor
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPressApi.git
