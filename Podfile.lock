@@ -45,9 +45,9 @@ PODS:
   - Helpshift (4.8.0)
   - HockeySDK (3.5.7)
   - JRSwizzle (1.0)
-  - Lookback (0.6.4)
+  - Lookback (0.6.5)
   - MGImageUtilities (0.0.1)
-  - Mixpanel (2.5.3)
+  - Mixpanel (2.5.4)
   - NSLogger (1.5)
   - NSLogger-CocoaLumberjack-connector (1.3):
     - CocoaLumberjack
@@ -57,18 +57,17 @@ PODS:
   - OCMock (3.1.1)
   - OHHTTPStubs (1.1.1)
   - Reachability (3.1.1)
-  - Simperium (0.6.9):
+  - Simperium (0.7.1):
     - Google-Diff-Match-Patch
     - JRSwizzle
     - Simperium/no-arc
     - SocketRocket
-  - Simperium/no-arc (0.6.9):
+  - Simperium/no-arc (0.7.1):
     - Google-Diff-Match-Patch
     - JRSwizzle
     - SocketRocket
   - SocketRocket (0.3.1-beta2)
   - SVProgressHUD (1.0)
-  - Taplytics (1.3.12)
   - UIAlertView+Blocks (0.8.1)
   - UIDeviceIdentifier (0.4.3)
   - WordPress-iOS-Editor (0.2.1):
@@ -102,19 +101,18 @@ DEPENDENCIES:
   - google-plus-ios-sdk (~> 1.5)
   - Helpshift (~> 4.8.0)
   - HockeySDK (~> 3.5.0)
-  - Lookback (= 0.6.4)
+  - Lookback (= 0.6.5)
   - MGImageUtilities (from `git://github.com/wordpress-mobile/MGImageUtilities.git`, branch `gifsupport`)
-  - Mixpanel (= 2.5.3)
+  - Mixpanel (= 2.5.4)
   - NSLogger-CocoaLumberjack-connector (~> 1.3)
   - NSObject-SafeExpectations (= 0.0.2)
   - NSURL+IDN (= 0.3)
   - OCMock
   - OHHTTPStubs (= 1.1.1)
   - Reachability (= 3.1.1)
-  - Simperium (= 0.6.9)
+  - Simperium (= 0.7.1)
   - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`, branch `master`)
   - SVProgressHUD (~> 1.0)
-  - Taplytics (~> 1.3.10)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, commit `d1c2397e83e3cc4a13bb92416906d45825a5b5d1`, branch `release/0.2.2`)
   - WordPress-iOS-Shared (= 0.1.2)
@@ -152,9 +150,9 @@ SPEC CHECKSUMS:
   Helpshift: cb3f909e33f53a1b4f617a743ed24fdbfdb507f3
   HockeySDK: f0e874d1c6833163ee0c4e423606faf33ad04071
   JRSwizzle: 30da7a2c539a4ebf954b16d15f6dd8221c9f6fa5
-  Lookback: b95ec58d73b9a706735df6230dc83dbb62831abb
+  Lookback: 59f217e51c1f2bcdf23d00522ef14b66be8557d1
   MGImageUtilities: ce03a910781d7e189814d668af340bc1c0238363
-  Mixpanel: 708ec9a6ee6e741f7db107831e18b2fc2e7531f1
+  Mixpanel: 87167a0b0a74f11f0ee3787f291357494730617c
   NSLogger: 84ed0bf00985df483153ce344d8171c9ec83be2b
   NSLogger-CocoaLumberjack-connector: 8f659ea51386f0a0e8c2643bf9273010a83a15f5
   NSObject-SafeExpectations: c31276ef7209016849fc4e5c8ed5ae5453e1e208
@@ -162,10 +160,9 @@ SPEC CHECKSUMS:
   OCMock: f6cb8c162ab9d5620dddf411282c7b2c0ee78854
   OHHTTPStubs: d6ace2645e4744a0ad6c5a72940999a5632037fb
   Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
-  Simperium: 867d03e089318f0503606d6011490439a5804672
+  Simperium: ad8e23848b173c04c1f86e22a510a038112c3f6e
   SocketRocket: b809068861cb66d871eb93a428696b1eb5451318
   SVProgressHUD: 5034c6e22b8c2ca3e09402e48d41ed0340aa1c50
-  Taplytics: d8f820afa67a73fd1ddccb1bc6144d10f2c3ad61
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
   UIDeviceIdentifier: a313d8f8d5a0ad34898f332e65dbecfa2d9b2af3
   WordPress-iOS-Editor: 1f4410ffd766061cff8a1a5cf3c66926235e31bb
