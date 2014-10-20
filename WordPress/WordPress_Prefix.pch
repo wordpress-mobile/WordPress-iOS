@@ -15,7 +15,6 @@
     #import <AFNetworking/AFNetworking.h>
 	#import <CocoaLumberjack/DDLog.h>
     #import <NSObject+SafeExpectations.h>
-    #import <CocoaLumberjack/DDLog.h>
     #import <WordPressCom-Analytics-iOS/WPAnalytics.h>
     #import <WordPress-iOS-Shared/WPStyleGuide.h>
 
