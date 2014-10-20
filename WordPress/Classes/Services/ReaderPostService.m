@@ -622,7 +622,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
 
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@ AND sortDate <= %@", topic, date];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@ AND sortDate < %@", topic, date];
 
     [fetchRequest setPredicate:pred];
 
