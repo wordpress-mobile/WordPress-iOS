@@ -172,6 +172,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     // Don't show 'Reader' in the next-view back button
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
+
+    self.title = NSLocalizedString(@"Comments", @"Title of the reader's comments screen");
 }
 
 - (void)configurePostHeader
@@ -497,8 +499,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)refreshAndSync
 {
-    self.title = self.post.postTitle ?: NSLocalizedString(@"Reader", @"Placeholder title for ReaderPostDetails.");
-
     // Refresh incase the post needed to be fetched.
     [self.tableView reloadData];
 
