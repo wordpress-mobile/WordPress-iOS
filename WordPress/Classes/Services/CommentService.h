@@ -6,6 +6,7 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 @class Blog;
 @class Comment;
 @class ReaderPost;
+@class BasePost;
 
 @interface CommentService : NSObject <LocalCoreDataService>
 
@@ -17,6 +18,8 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 
 // Restore draft reply
 - (Comment *)restoreReplyForComment:(Comment *)comment;
+
+- (NSSet *)findCommentsWithPostID:(NSNumber *)postID inBlog:(Blog *)blog;
 
 // Sync comments
 - (void)syncCommentsForBlog:(Blog *)blog

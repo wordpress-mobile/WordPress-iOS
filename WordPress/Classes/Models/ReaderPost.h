@@ -9,7 +9,6 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 
 @interface ReaderPost : BasePost
 
-@property (nonatomic, strong) NSString *authorAvatarURL;
 @property (nonatomic, strong) NSString *authorDisplayName;
 @property (nonatomic, strong) NSString *authorEmail;
 @property (nonatomic, strong) NSString *authorURL;
