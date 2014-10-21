@@ -5,7 +5,8 @@
 #import "ContextManager.h"
 #import "MediaServiceRemoteXMLRPC.h"
 #import "MediaServiceRemoteREST.h"
-
+#import "Blog.h"
+#import "RemoteMedia.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 
 @interface MediaService ()
@@ -84,6 +85,42 @@
                                      }];
                                  }];
 }
+
+- (void) getMediaWithID:(NSNumber *) mediaID inBlog:(Blog *) blog
+            withSuccess:(void (^)(Media *media))success
+                failure:(void (^)(NSError *error))failure{
+    // Let's see if we already have it locally
+    Media * searchMedia = [self findMediaWithID:mediaID inBlog:blog];
+    if ( searchMedia){
+        if (success){
+            success(searchMedia);
+        }
+        return;
+    }
+    id<MediaServiceRemote> remote = [self remoteForBlog:blog];
+    
+    [remote getMediaWithID:mediaID inBlog:blog withSuccess:^(RemoteMedia *remoteMedia) {
+       [self.managedObjectContext performBlock:^{
+           Media *media = [self findMediaWithID:remoteMedia.mediaID inBlog:blog];
+           if (!media) {
+               media = [self newMediaForBlog:blog];
+           }
+           [self updateMedia:media withRemoteMedia:remoteMedia];
+           if (success){
+               success(media);
+           }
+           [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext];
+       }];
+    } failure:^(NSError *error) {
+        if (failure) {
+            [self.managedObjectContext performBlock:^{
+                failure(error);
+            }];
+        }
+
+    }];
+}
+
 
 #pragma mark - Private
 
@@ -173,5 +210,25 @@
         remote = [[MediaServiceRemoteXMLRPC alloc] initWithApi:client];
     }
     return remote;
+}
+
+- (Media *)findMediaWithID:(NSNumber *)mediaID inBlog:(Blog *)blog {
+    NSSet *medias = [blog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"mediaID = %@", mediaID]];
+    return [medias anyObject];
+}
+
+- (void)updateMedia:(Media *)media withRemoteMedia:(RemoteMedia *)remoteMedia {
+    
+    media.mediaID =  remoteMedia.mediaID;
+    media.remoteURL = [remoteMedia.url absoluteString];
+    media.creationDate = remoteMedia.date;
+    media.filename = remoteMedia.file;
+    [media mediaTypeFromUrl:[remoteMedia extension]];
+    media.title = remoteMedia.title;
+    media.caption = remoteMedia.caption;
+    media.desc = remoteMedia.descriptionText;
+    media.height = remoteMedia.height;
+    media.width = remoteMedia.width;
+    //media.exif = remoteMedia.exif;
 }
 @end
