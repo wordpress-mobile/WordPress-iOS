@@ -2,7 +2,8 @@
 #import "CategoryServiceRemote.h"
 #import "ServiceRemoteXMLRPC.h"
 
-@class Blog, RemoteCategory;
+@class Blog;
+@class RemoteCategory;
 
 @interface CategoryServiceRemoteXMLRPC : NSObject<CategoryServiceRemote, ServiceRemoteXMLRPC>
 

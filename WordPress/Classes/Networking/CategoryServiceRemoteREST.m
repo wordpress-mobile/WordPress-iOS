@@ -41,7 +41,7 @@
                success:(void (^)(RemoteCategory *))success
                failure:(void (^)(NSError *))failure
 {
-    NSParameterAssert(category.name != nil);
+    NSParameterAssert(category.name.length > 0);
     NSString *path = [NSString stringWithFormat:@"sites/%@/categories/new?context=edit", blog.dotComID];
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     parameters[@"name"] = category.name;
