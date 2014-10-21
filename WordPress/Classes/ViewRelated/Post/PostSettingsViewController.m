@@ -599,8 +599,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         if (self.featuredImage) {
             [featuredImageCell setImage:self.featuredImage];
         } else {
-            [self loadFeaturedImage:indexPath];
-            [featuredImageCell showLoadingSpinner:YES];
+            [self loadFeaturedImage:indexPath toCell:featuredImageCell];
         }
 
         cell = featuredImageCell;
@@ -912,10 +911,18 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)loadFeaturedImage:(NSIndexPath *)indexPath
+- (void)loadFeaturedImage:(NSIndexPath *)indexPath toCell:(PostFeaturedImageCell *)featuredImageCell
 {
-    NSURL *url = [NSURL URLWithString:self.post.featuredImage.remoteURL];
-    if (url) {
+    [featuredImageCell showLoadingSpinner:YES];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    MediaService * mediaService = [[MediaService alloc] initWithManagedObjectContext:context];
+    [mediaService getMediaWithID:self.post.post_thumbnail inBlog:self.post.blog withSuccess:^(Media *featuredMedia) {
+        NSURL *url = [NSURL URLWithString:featuredMedia.remoteURL];
+        if (!url) {
+            featuredImageCell.textLabel.text = NSLocalizedString(@"Featured Image did not load", @"");
+            [featuredImageCell showLoadingSpinner:NO];
+            return;
+        }
         CGFloat width = CGRectGetWidth(self.view.frame);
         if (IS_IPAD) {
             width = WPTableViewFixedWidth;
@@ -923,13 +930,16 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         width = width - (PostFeaturedImageCellMargin * 2); // left and right cell margins
         CGFloat height = ceilf(width * 0.66);
         CGSize imageSize = CGSizeMake(width, height);
-
+        
         [self.imageSource fetchImageForURL:url
                                   withSize:imageSize
                                  indexPath:indexPath
                                  isPrivate:self.post.blog.isPrivate];
-
-    }
+    } failure:^(NSError *error) {
+        featuredImageCell.textLabel.text = NSLocalizedString(@"Featured Image did not load", @"");
+        [featuredImageCell showLoadingSpinner:YES];
+        return;    
+    }];
 }
 
 - (WPTableImageSource *)imageSource
