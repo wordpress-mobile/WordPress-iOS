@@ -214,6 +214,9 @@
         [self showSimplePreviewWithMessage:[NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection appears to be offline.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")]];
     } else if (link == nil) {
         [self showSimplePreview];
+    } else if (needsLogin && [self.apost.blog.password isEmpty]) {
+        DDLogInfo(@"Showing simple preview (needs login and have no password) for %@", link);
+        [self showSimplePreview];
     } else {
         if (needsLogin) {
             NSString *wpLoginURL = [self.apost.blog loginUrl];
