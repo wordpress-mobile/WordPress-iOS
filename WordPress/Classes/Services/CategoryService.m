@@ -73,11 +73,7 @@
     Blog *blog = [self blogWithObjectID:blogObjectID];
 
     NSSet *results = [blog.categories filteredSetUsingPredicate:predicate];
-
-    if (results && (results.count > 0)) {
-        return [[results allObjects] objectAtIndex:0];
-    }
-    return nil;
+    return [results anyObject];
 
 }
 
