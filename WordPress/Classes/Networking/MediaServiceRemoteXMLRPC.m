@@ -1,5 +1,5 @@
 #import "MediaServiceRemoteXMLRPC.h"
-
+#import "RemoteMedia.h"
 #import "Blog.h"
 #import <WordPressApi/WPXMLRPCClient.h>
 
@@ -56,6 +56,43 @@
                                                                               }
                                                                           }];
     return operation;
+}
+
+- (void) getMediaWithID:(NSNumber *)mediaID inBlog:(Blog *)blog
+            withSuccess:(void (^)(RemoteMedia *remoteMedia))success
+                failure:(void (^)(NSError *error))failure {
+
+    NSArray *parameters = [blog getXMLRPCArgsWithExtra:mediaID];
+    [self.api callMethod:@"wp.getMediaItem"
+              parameters:parameters
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     if (success) {
+                        NSDictionary * xmlRPCDictionary = (NSDictionary *)responseObject;
+                        RemoteMedia * remoteMedia = [self remoteMediaFromXMLRPCDictionary:xmlRPCDictionary];
+                        success(remoteMedia);
+                     }
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     if (failure) {
+                        failure(error);
+                     }
+                 }];
+}
+
+- (RemoteMedia *)remoteMediaFromXMLRPCDictionary:(NSDictionary*)json
+{
+    RemoteMedia * remoteMedia = [[RemoteMedia alloc] init];
+    remoteMedia.url = [NSURL URLWithString:[json stringForKey:@"link"]];
+    remoteMedia.title = [json stringForKey:@"title"];
+    remoteMedia.width = [json numberForKeyPath:@"metadata.width"];
+    remoteMedia.height = [json numberForKeyPath:@"metadata.height"];
+    remoteMedia.mediaID = [json numberForKey:@"attachment_id"];
+    remoteMedia.file = [[json objectForKeyPath:@"metadata.file"] lastPathComponent];
+    remoteMedia.date = json[@"date_created_gmt"];
+    remoteMedia.caption = [json stringForKey:@"caption"];
+    remoteMedia.descriptionText = [json stringForKey:@"description"];
+    remoteMedia.extension = [remoteMedia.file pathExtension];
+    
+    return remoteMedia;
 }
 
 @end
