@@ -58,44 +58,6 @@
           }];
 }
 
-- (void)syncBlogMetadata:(Blog *)blog
-          optionsSuccess:(OptionsHandler)optionsSuccess
-      postFormatsSuccess:(PostFormatsHandler)postFormatsSuccess
-          overallSuccess:(void (^)(void))overallSuccess
-                 failure:(void (^)(NSError *))failure
-{
-    NSParameterAssert(blog != nil);
-    NSParameterAssert(blog.dotComID != nil);
-    NSString *optionsPath = [NSString stringWithFormat:@"/%@", [self pathForOptionsWithBlog:blog]];
-    NSString *postFormatsPath = [NSString stringWithFormat:@"/%@", [self pathForPostFormatsWithBlog:blog]];
-    NSDictionary *parameters = @{
-                                 @"urls": @[
-                                          optionsPath,
-                                          postFormatsPath
-                                          ]
-                                  };
-    [self.api GET:@"batch"
-       parameters:parameters
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-              NSDictionary *response = (NSDictionary *)responseObject;
-              NSDictionary *options = [self mapOptionsFromResponse:response[optionsPath]];
-              NSDictionary *postFormats = [self mapPostFormatsFromResponse:response[postFormatsPath][@"formats"]];
-              if (optionsSuccess) {
-                  optionsSuccess(options);
-              }
-              if (postFormatsSuccess) {
-                  postFormatsSuccess(postFormats);
-              }
-              if (overallSuccess) {
-                  overallSuccess();
-              }
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              if (failure) {
-                  failure(error);
-              }
-          }];
-}
-
 #pragma mark - API paths
 
 - (NSString *)pathForOptionsWithBlog:(Blog *)blog
