@@ -125,7 +125,9 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [self removeCredentialsForDebug];
 
     // Stats and feedback
+#ifndef DEBUG
     [Taplytics startTaplyticsAPIKey:[WordPressComApiCredentials taplyticsAPIKey]];
+#endif
     [SupportViewController checkIfFeedbackShouldBeEnabled];
 
     [Helpshift installForApiKey:[WordPressComApiCredentials helpshiftAPIKey] domainName:[WordPressComApiCredentials helpshiftDomainName] appID:[WordPressComApiCredentials helpshiftAppId]];
