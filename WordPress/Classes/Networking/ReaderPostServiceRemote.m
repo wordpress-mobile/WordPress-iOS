@@ -3,6 +3,8 @@
 #import "DateUtils.h"
 #import "RemoteReaderPost.h"
 
+static const NSInteger FeaturedImageMinimumWidth = 600;
+
 @interface ReaderPostServiceRemote ()
 
 @property (nonatomic, strong) WordPressComApi *api;
@@ -438,42 +440,26 @@
  */
 - (NSString *)featuredImageFromPostDictionary:(NSDictionary *)dict
 {
-    NSString *featuredImage = [dict stringForKey:@"featured_image"];
-    NSDictionary *featured_media = [dict dictionaryForKey:@"featured_media"];
-    NSArray *attachments = [[dict dictionaryForKey:@"attachments"] allValues];
+    NSString *featuredImage = @"";
 
-    // Values set in editorial trumps the rest
-    NSString *editorialImage = [dict stringForKeyPath:@"editorial.image"];
-    if (editorialImage != nil) {
-        featuredImage = editorialImage;
+    // Editorial trumps all
+    featuredImage = [dict stringForKeyPath:@"editorial.image"];
+
+    // User specified featured image.
+    if ([featuredImage length] == 0) {
+        featuredImage = [dict stringForKey:@"featured_image"];
     }
 
-    // If no featured image specified, try featured media.
-    if (([featuredImage length] == 0) && ([[featured_media stringForKey:@"type"] isEqualToString:@"image"])) {
-        featuredImage = [self stringOrEmptyString:[featured_media stringForKey:@"uri"]];
-    }
-
-    // If no featured media specified, try attachments.
-    if ([featuredImage length] == 0 && [attachments count] > 0) {
-        NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"width" ascending:NO];
-        attachments = [attachments sortedArrayUsingDescriptors:@[descriptor]];
-        NSDictionary *attachment = [attachments firstObject];
-        NSString *mimeType = [attachment stringForKey:@"mime_type"];
-        NSInteger width = [[attachment numberForKey:@"width"] integerValue];
-        if ([mimeType rangeOfString:@"image"].location != NSNotFound && width >= 1024) {
-            featuredImage = [self stringOrEmptyString:[attachment stringForKey:@"URL"]];
-        }
-    }
-
-    // If still no image parse the content for a good match
+    // Parse content for a match
     if ([featuredImage length] == 0) {
         featuredImage = [self searchContentForImageToFeature:[dict stringForKey:@"content"]];
     }
 
     featuredImage = [self sanitizeFeaturedImageString:featuredImage];
-    
+
     return featuredImage;
 }
+
 
 /**
  Search the passed string for an image that is a good candidate to feature.
@@ -483,55 +469,73 @@
  */
 - (NSString *)searchContentForImageToFeature:(NSString *)content
 {
-    NSString *str = @"";
+    NSString *imageSrc = @"";
     // If there is no image tag in the content, just bail.
-    if (!content || [content rangeOfString:@"img"].location == NSNotFound) {
-        return str;
+    if (!content || [content rangeOfString:@"<img"].location == NSNotFound) {
+        return imageSrc;
     }
 
-    // If there is not a large or full sized image, just bail.
-    NSString *className = @"size-full";
-    NSRange range = [content rangeOfString:className];
-    if (range.location == NSNotFound) {
-        className = @"size-large";
-        range = [content rangeOfString:className];
-
-        if (range.location == NSNotFound) {
-            className = @"size-medium";
-            range = [content rangeOfString:className];
-
-            if (range.location == NSNotFound) {
-                return str;
-            }
-        }
-    }
-
-    // find the start of the image
-    range = [content rangeOfString:@"<img" options:NSBackwardsSearch | NSCaseInsensitiveSearch range:NSMakeRange(0, range.location)];
-    if (range.location == NSNotFound) {
-        return str;
-    }
-
-    // Build the regex once and keep it around for subsequent calls.
-    static NSRegularExpression *regex;
+    // Get all the things
+    static NSRegularExpression *imgRegex;
+    static NSRegularExpression *srcRegex;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSError *error;
-        regex = [NSRegularExpression regularExpressionWithPattern:@"src=\"\\S+\"" options:NSRegularExpressionCaseInsensitive error:&error];
+        imgRegex = [NSRegularExpression regularExpressionWithPattern:@"<img(\\s+.*?)(?:src\\s*=\\s*(?:'|\")(.*?)(?:'|\"))(.*?)>" options:NSRegularExpressionCaseInsensitive error:&error];
+        srcRegex = [NSRegularExpression regularExpressionWithPattern:@"src\\s*=\\s*(?:'|\")(.*?)(?:'|\")" options:NSRegularExpressionCaseInsensitive error:&error];
     });
 
-    NSInteger length = [content length] - range.location;
-    range = [regex rangeOfFirstMatchInString:content options:NSRegularExpressionCaseInsensitive range:NSMakeRange(range.location, length)];
+    NSArray *matches = [imgRegex matchesInString:content options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [content length])];
 
-    if (range.location == NSNotFound) {
-        return str;
+    NSInteger currentMaxWidth = FeaturedImageMinimumWidth;
+    for (NSTextCheckingResult *match in matches) {
+        NSString *tag = [content substringWithRange:match.range];
+        // Get the source
+        NSRange srcRng = [srcRegex rangeOfFirstMatchInString:tag options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [tag length])];
+        NSString *src = [tag substringWithRange:srcRng];
+        src = [src substringFromIndex:[@"src=" length]];
+        src = [src stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\""]];
+
+        // Check the tag for a good width
+        NSInteger width = MAX([self widthFromElementAttribute:tag], [self widthFromQueryString:src]);
+        if (width > currentMaxWidth) {
+            imageSrc = src;
+            currentMaxWidth = width;
+        }
     }
 
-    range = NSMakeRange(range.location+5, range.length-6);
-    str = [content substringWithRange:range];
+    return imageSrc;
+}
 
-    str = [[str componentsSeparatedByString:@"?"] objectAtIndex:0];
-    return str;
+- (NSInteger)widthFromElementAttribute:(NSString *)tag
+{
+    NSRange rng = [tag rangeOfString:@"width=\""];
+    if (rng.location == NSNotFound) {
+        return 0;
+    }
+    NSInteger startingIdx = rng.location + rng.length;
+    rng = [tag rangeOfString:@"\"" options:NSCaseInsensitiveSearch range:NSMakeRange(startingIdx, [tag length] - startingIdx)];
+    if (rng.location == NSNotFound) {
+        return 0;
+    }
+
+    NSString *widthStr = [tag substringWithRange:NSMakeRange(startingIdx, [tag length] - rng.location)];
+    return [widthStr integerValue];
+}
+
+- (NSInteger)widthFromQueryString:(NSString *)src
+{
+    NSURL *url = [NSURL URLWithString:src];
+    NSString *query = [url query];
+    NSRange rng = [query rangeOfString:@"w="];
+    if (rng.location == NSNotFound) {
+        return 0;
+    }
+
+    NSString *str = [query substringFromIndex:rng.location + rng.length];
+    NSString *widthStr = [[str componentsSeparatedByString:@"&"] firstObject];
+
+    return [widthStr integerValue];
 }
 
 /**
