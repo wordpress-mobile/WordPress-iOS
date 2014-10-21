@@ -599,7 +599,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         if (self.featuredImage) {
             [featuredImageCell setImage:self.featuredImage];
         } else {
-            [self loadFeaturedImage:indexPath toCell:featuredImageCell];
+            [featuredImageCell showLoadingSpinner:YES];
+            [self loadFeaturedImage:indexPath];
         }
 
         cell = featuredImageCell;
@@ -911,16 +912,14 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)loadFeaturedImage:(NSIndexPath *)indexPath toCell:(PostFeaturedImageCell *)featuredImageCell
+- (void)loadFeaturedImage:(NSIndexPath *)indexPath
 {
-    [featuredImageCell showLoadingSpinner:YES];
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     MediaService * mediaService = [[MediaService alloc] initWithManagedObjectContext:context];
     [mediaService getMediaWithID:self.post.post_thumbnail inBlog:self.post.blog withSuccess:^(Media *featuredMedia) {
         NSURL *url = [NSURL URLWithString:featuredMedia.remoteURL];
         if (!url) {
-            featuredImageCell.textLabel.text = NSLocalizedString(@"Featured Image did not load", @"");
-            [featuredImageCell showLoadingSpinner:NO];
+            [self tableImageSource:self.imageSource imageFailedforIndexPath:indexPath error:nil];
             return;
         }
         CGFloat width = CGRectGetWidth(self.view.frame);
@@ -936,9 +935,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
                                  indexPath:indexPath
                                  isPrivate:self.post.blog.isPrivate];
     } failure:^(NSError *error) {
-        featuredImageCell.textLabel.text = NSLocalizedString(@"Featured Image did not load", @"");
-        [featuredImageCell showLoadingSpinner:YES];
-        return;    
+        [self tableImageSource:self.imageSource imageFailedforIndexPath:indexPath error:error];
+        return;
     }];
 }
 
