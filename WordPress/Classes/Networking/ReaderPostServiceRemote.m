@@ -493,8 +493,10 @@ static const NSInteger FeaturedImageMinimumWidth = 600;
         // Get the source
         NSRange srcRng = [srcRegex rangeOfFirstMatchInString:tag options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [tag length])];
         NSString *src = [tag substringWithRange:srcRng];
-        src = [src substringFromIndex:[@"src=" length]];
-        src = [src stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\""]];
+        NSCharacterSet *charSet = [NSCharacterSet characterSetWithCharactersInString:@"\"'="];
+        NSRange quoteRng = [src rangeOfCharacterFromSet:charSet];
+        src = [src substringFromIndex:quoteRng.location];
+        src = [src stringByTrimmingCharactersInSet:charSet];
 
         // Check the tag for a good width
         NSInteger width = MAX([self widthFromElementAttribute:tag], [self widthFromQueryString:src]);
