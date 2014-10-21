@@ -31,7 +31,6 @@ typedef void (^MediaHandler)(NSArray *media);
                        failure:(void (^)(NSError *error))failure;
 
 - (void)syncBlogMetadata:(Blog *)blog
-       categoriesSuccess:(CategoriesHandler)categoriesSuccess
             mediaSuccess:(MediaHandler)mediaSuccess
           optionsSuccess:(OptionsHandler)optionsSuccess
       postFormatsSuccess:(PostFormatsHandler)postFormatsSuccess

@@ -99,12 +99,10 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
 
-    if (!_blog.options) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
-        [blogService syncOptionsForBlog:_blog success:nil failure:nil];
-    }
+    [blogService syncBlog:_blog success:nil failure:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
