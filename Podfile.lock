@@ -114,7 +114,7 @@ DEPENDENCIES:
   - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`, branch `master`)
   - SVProgressHUD (~> 1.0)
   - UIDeviceIdentifier (~> 0.1)
-  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, commit `91eec3470a63bb1737a7c9e9b97d44fc26ca0edf`, branch `release/0.2.2`)
+  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, commit `05e6e2cf995bbf34ee5a2ef8a3ba5b573713172d`, branch `issue/wpios-2597-editor-locking-up`)
   - WordPress-iOS-Shared (= 0.1.2)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPressApi.git`)
   - WordPressCom-Analytics-iOS (= 0.0.6)
@@ -131,8 +131,8 @@ EXTERNAL SOURCES:
     :branch: master
     :git: https://github.com/jleandroperez/SocketRocket.git
   WordPress-iOS-Editor:
-    :branch: release/0.2.2
-    :commit: 91eec3470a63bb1737a7c9e9b97d44fc26ca0edf
+    :branch: issue/wpios-2597-editor-locking-up
+    :commit: 05e6e2cf995bbf34ee5a2ef8a3ba5b573713172d
     :git: git://github.com/wordpress-mobile/WordPress-iOS-Editor
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPressApi.git
