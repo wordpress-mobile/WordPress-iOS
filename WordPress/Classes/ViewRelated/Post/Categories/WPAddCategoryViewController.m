@@ -98,10 +98,10 @@
         return;
     }
 
-    if ([categoryService existsName:catName forBlogObjectID:self.post.blog.objectID withParentId:self.parentCategory.categoryID]) {
-        NSString *title = NSLocalizedString(@"Category name already exists.", @"Error popup title to show that a category already exists.");
-        NSString *message = NSLocalizedString(@"There is another category with that name.", @"Error popup message to show that a category already exists.");
-        [WPError showAlertWithTitle:title message:message withSupportButton:NO];
+    Category *category = [categoryService findWithBlogObjectID:self.post.blog.objectID parentID:self.parentCategory.categoryID andName:catName];
+    if (category) {
+        // If there's an existing category with that name and parent, let's use that
+        [self dismissWithCategory:category];
         return;
     }
 
@@ -111,18 +111,8 @@
                      parentCategoryObjectID:self.parentCategory.objectID
                             forBlogObjectID:self.post.blog.objectID
                                     success:^(Category *category) {
-                                        // Add the newly created category to the post
-                                        [self.post.categories addObject:category];
-                                        [self.post save];
-
-                                        //re-syncs categories this is necessary because the server can change the name of the category!!!
-                                        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-                                        [blogService syncCategoriesForBlog:self.post.blog success:nil failure:nil];
-
-                                        // Cleanup and dismiss
-                                        [self clearUI];
                                         [self removeProgressIndicator];
-                                        [self dismiss];
+                                        [self dismissWithCategory:category];
                                     } failure:^(NSError *error) {
                                         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
                                         [self removeProgressIndicator];
@@ -138,6 +128,17 @@
                                             [WPError showXMLRPCErrorAlert:error];
                                         }
                                     }];
+}
+
+- (void)dismissWithCategory:(Category *)category
+{
+    // Add the newly created category to the post
+    [self.post.categories addObject:category];
+    [self.post save];
+
+    // Cleanup and dismiss
+    [self clearUI];
+    [self dismiss];
 }
 
 #pragma mark - functional methods
