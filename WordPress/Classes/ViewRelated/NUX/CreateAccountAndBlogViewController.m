@@ -716,7 +716,6 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
             AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
 
             _account = [accountService createOrUpdateWordPressComAccountWithUsername:_usernameField.text
-                                                                            password:_passwordField.text
                                                                            authToken:authToken];
             if (![accountService defaultWordPressComAccount]) {
                 [accountService setDefaultWordPressComAccount:_account];

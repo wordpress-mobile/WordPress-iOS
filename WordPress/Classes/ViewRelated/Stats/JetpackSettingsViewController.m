@@ -331,7 +331,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
                                        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
                                        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
 
-                                       WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:_usernameField.text password:_passwordField.text authToken:authToken];
+                                       WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:_usernameField.text authToken:authToken];
                                        [accountService setDefaultWordPressComAccount:account];
                                        finishedBlock(YES);
                                    } failure:failureBlock];

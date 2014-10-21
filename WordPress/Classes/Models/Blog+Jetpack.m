@@ -156,7 +156,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                             password:password
                              success:^(NSString *authToken) {
                                  AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-                                 WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken];
+                                 WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
                                  self.jetpackAccount = account;
                                  [account addJetpackBlogsObject:self];
                                  [self dataSave];
@@ -179,7 +179,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                                  // OAuth2 login failed - we can still create the WPAccount without the token
                                  // TODO: This is the behavior prior to 3.9 and could get removed
                                  AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-                                 WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username password:password authToken:nil];
+                                 WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username authToken:nil];
                                  self.jetpackAccount = account;
                                  [self dataSave];
 

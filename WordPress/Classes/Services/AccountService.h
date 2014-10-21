@@ -51,13 +51,11 @@ extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
  Uses a background managed object context.
  
  @param username the WordPress.com account's username
- @param password the WordPress.com account's password
  @param authToken the OAuth2 token returned by signIntoWordPressDotComWithUsername:password:success:failure:
  @return a WordPress.com `WPAccount` object for the given `username`
  @see createOrUpdateWordPressComAccountWithUsername:password:authToken:context:
  */
 - (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username
-                                                    password:(NSString *)password
                                                    authToken:(NSString *)authToken;
 
 /**
