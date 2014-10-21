@@ -68,6 +68,7 @@ CGFloat const blavatarImageViewSize = 43.f;
 {
     [super viewDidLoad];
 
+    [self.tableView setRowHeight:50.f];
     self.title = NSLocalizedString(@"Settings", @"App Settings");
     self.doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
     self.navigationItem.rightBarButtonItem = self.doneButton;
