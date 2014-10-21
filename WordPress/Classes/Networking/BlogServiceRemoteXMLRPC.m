@@ -32,37 +32,6 @@
     [blog.api enqueueXMLRPCRequestOperation:operation];
 }
 
-- (void)syncBlogMetadata:(Blog *)blog
-          optionsSuccess:(OptionsHandler)optionsSuccess
-      postFormatsSuccess:(PostFormatsHandler)postFormatsSuccess
-          overallSuccess:(void (^)(void))overallSuccess
-                 failure:(void (^)(NSError *error))failure
-{
-
-    WPXMLRPCRequestOperation *operation;
-    NSMutableArray *operations = [NSMutableArray arrayWithCapacity:6];
-    operation = [self operationForOptionsWithBlog:blog success:optionsSuccess failure:nil];
-    [operations addObject:operation];
-    operation = [self operationForPostFormatsWithBlog:blog success:postFormatsSuccess failure:nil];
-    [operations addObject:operation];
-
-    AFHTTPRequestOperation *combinedOperation = [blog.api combinedHTTPRequestOperationWithOperations:operations success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        DDLogVerbose(@"syncBlogWithSuccess:failure: completed successfully.");
-        if (overallSuccess) {
-            overallSuccess();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"syncBlogWithSuccess:failure: encountered an error: %@", error);
-
-        if (failure) {
-            failure(error);
-        }
-    }];
-
-    [blog.api enqueueHTTPRequestOperation:combinedOperation];
-
-}
-
 - (WPXMLRPCRequestOperation *)operationForOptionsWithBlog:(Blog *)blog
                                                   success:(OptionsHandler)success
                                                   failure:(void (^)(NSError *error))failure
@@ -119,68 +88,6 @@
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         DDLogError(@"Error syncing post formats (%@): %@", operation.request.URL, error);
-
-        if (failure) {
-            failure(error);
-        }
-    }];
-
-    return operation;
-}
-
-- (WPXMLRPCRequestOperation *)operationForPostsWithBlog:(Blog *)blog
-                                              batchSize:(NSUInteger)batchSize
-                                               loadMore:(BOOL)more
-                                                success:(PostsHandler)success
-                                                failure:(void (^)(NSError *error))failure
-{
-    // Don't load more than 20 posts if we aren't at the end of the table,
-    // even if they were previously donwloaded
-    //
-    // Blogs with long history can get really slow really fast,
-    // with no chance to go back
-
-    NSArray *parameters = [blog getXMLRPCArgsWithExtra:[NSNumber numberWithUnsignedInteger:batchSize]];
-    WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"metaWeblog.getRecentPosts" parameters:parameters];
-    WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
-
-        if (success) {
-            success(responseObject);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing posts (%@): %@", operation.request.URL, error);
-
-        if (failure) {
-            failure(error);
-        }
-    }];
-
-    return operation;
-}
-
-- (WPXMLRPCRequestOperation *)operationForPagesWithBlog:(Blog *)blog
-                                              batchSize:(NSUInteger)batchSize
-                                               loadMore:(BOOL)more
-                                                success:(PagesHandler)success
-                                                failure:(void (^)(NSError *error))failure
-{
-    // Don't load more than 20 pages if we aren't at the end of the table,
-    // even if they were previously donwloaded
-    //
-    // Blogs with long history can get really slow really fast,
-    // with no chance to go back
-
-    NSArray *parameters = [blog getXMLRPCArgsWithExtra:[NSNumber numberWithUnsignedInteger:batchSize]];
-    WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPages" parameters:parameters];
-    WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
-
-        if (success) {
-            success(responseObject);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing pages (%@): %@", operation.request.URL, error);
 
         if (failure) {
             failure(error);

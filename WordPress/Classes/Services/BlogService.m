@@ -171,26 +171,12 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 - (void)syncBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncBlogMetadata:blog
-              optionsSuccess:[self optionsHandlerWithBlog:blog completionHandler:nil]
-          postFormatsSuccess:[self postFormatsHandlerWithBlog:blog completionHandler:nil]
-              overallSuccess:^{
-                  [self.managedObjectContext performBlockAndWait:^{
-                      [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                  }];
-
-                  if (success) {
-                      success();
-                  }
-              }
-                     failure:^(NSError *error) {
-                         blog.isSyncingPages = NO;
-                         blog.isSyncingPosts = NO;
-
-                         if (failure) {
-                             failure(error);
-                         }
-                     }];
+    [remote syncOptionsForBlog:blog success:[self optionsHandlerWithBlog:blog completionHandler:nil] failure:^(NSError *error) {
+        DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error);
+    }];
+    [remote syncPostFormatsForBlog:blog success:[self postFormatsHandlerWithBlog:blog completionHandler:nil] failure:^(NSError *error) {
+        DDLogError(@"Failed syncing post formats for blog %@: %@", blog.url, error);
+    }];
 
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
     // Right now, none of the callers care about the results of the sync
@@ -332,49 +318,54 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 - (OptionsHandler)optionsHandlerWithBlog:(Blog *)blog completionHandler:(void (^)(void))completion
 {
     return ^void(NSDictionary *options) {
-        if ([blog isDeleted] || blog.managedObjectContext == nil) {
-            return;
-        }
-
-        blog.options = [NSDictionary dictionaryWithDictionary:options];
-        NSString *minimumVersion = @"3.6";
-        float version = [[blog version] floatValue];
-        if (version < [minimumVersion floatValue]) {
-            if (blog.lastUpdateWarning == nil || [blog.lastUpdateWarning floatValue] < [minimumVersion floatValue]) {
-                // TODO :: Remove UI call from service layer
-                [WPError showAlertWithTitle:NSLocalizedString(@"WordPress version too old", @"")
-                                    message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [blog hostname], [blog version], minimumVersion]];
-                blog.lastUpdateWarning = minimumVersion;
+        [self.managedObjectContext performBlock:^{
+            if ([blog isDeleted] || blog.managedObjectContext == nil) {
+                return;
             }
-        }
 
-        [self.managedObjectContext performBlockAndWait:^{
+            blog.options = [NSDictionary dictionaryWithDictionary:options];
+            NSString *minimumVersion = @"3.6";
+            float version = [[blog version] floatValue];
+            if (version < [minimumVersion floatValue]) {
+                if (blog.lastUpdateWarning == nil || [blog.lastUpdateWarning floatValue] < [minimumVersion floatValue]) {
+                    // TODO :: Remove UI call from service layer
+                    [WPError showAlertWithTitle:NSLocalizedString(@"WordPress version too old", @"")
+                                        message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [blog hostname], [blog version], minimumVersion]];
+                    blog.lastUpdateWarning = minimumVersion;
+                }
+            }
+
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-        }];
 
-        if (completion) {
-            completion();
-        }
+            if (completion) {
+                completion();
+            }
+        }];
     };
 }
 
 - (PostFormatsHandler)postFormatsHandlerWithBlog:(Blog *)blog completionHandler:(void (^)(void))completion
 {
     return ^void(NSDictionary *postFormats) {
-        if ([blog isDeleted] || blog.managedObjectContext == nil) {
-            return;
-        }
+        [self.managedObjectContext performBlock:^{
+            if ([blog isDeleted] || blog.managedObjectContext == nil) {
+                return;
+            }
 
-        if (![postFormats objectForKey:@"standard"]) {
-            NSMutableDictionary *mutablePostFormats = [postFormats mutableCopy];
-            mutablePostFormats[@"standard"] = NSLocalizedString(@"Standard", @"Standard post format label");
-            postFormats = [NSDictionary dictionaryWithDictionary:mutablePostFormats];
-        }
-        blog.postFormats = postFormats;
+            NSDictionary *formats = postFormats;
+            if (![formats objectForKey:@"standard"]) {
+                NSMutableDictionary *mutablePostFormats = [formats mutableCopy];
+                mutablePostFormats[@"standard"] = NSLocalizedString(@"Standard", @"Standard post format label");
+                formats = [NSDictionary dictionaryWithDictionary:mutablePostFormats];
+            }
+            blog.postFormats = formats;
 
-        if (completion) {
-            completion();
-        }
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
+            if (completion) {
+                completion();
+            }
+        }];
     };
 }
 
