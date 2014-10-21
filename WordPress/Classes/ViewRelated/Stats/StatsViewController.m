@@ -2,7 +2,6 @@
 #import "Blog+Jetpack.h"
 #import "WordPressAppDelegate.h"
 #import "JetpackSettingsViewController.h"
-#import "StatsWebViewController.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import "WPStatsViewController_Private.h"
@@ -138,9 +137,9 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)statsViewController:(WPStatsViewController *)statsViewController didSelectViewWebStatsForSiteID:(NSNumber *)siteID
 {
-    StatsWebViewController *vc = [[StatsWebViewController alloc] init];
-    vc.blog = self.blog;
-    [self.navigationController pushViewController:vc animated:YES];
+    NSString *statsUrl = [NSString stringWithFormat:@"https://wordpress.com/my-stats/?blog=%@", siteID];
+    NSURL *url = [NSURL URLWithString:statsUrl];
+    [[UIApplication sharedApplication] openURL:url];
 }
 
 - (IBAction)makeSiteTodayWidgetSite:(id)sender
