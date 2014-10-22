@@ -1,11 +1,11 @@
-#import "WPContentViewBase.h"
+#import "WPContentView.h"
 #import "WPRichTextView.h"
 
 /**
  A WPContentView supporting rich text content.
  */
-@interface WPRichContentView : WPContentViewBase
+@interface WPRichContentView : WPContentView
 
-@property (nonatomic, weak) id<WPContentViewBaseDelegate, WPRichTextViewDelegate>delegate;
+@property (nonatomic, weak) id<WPContentViewDelegate, WPRichTextViewDelegate>delegate;
 
 @end
