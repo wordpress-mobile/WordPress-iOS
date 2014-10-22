@@ -385,7 +385,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     }
 
     DDLogInfo(@"[%@] Executing Default Account Fix", NSStringFromClass([self class]));
-    [WPAnalytics track:WPAnalyticsStatPerformedCoreDataMigrationFor45];
+    [WPAnalytics track:WPAnalyticsStatPerformedCoreDataMigrationFixFor45];
     [self setDefaultWordPressComAccount:defaultAccount];
 }
 
