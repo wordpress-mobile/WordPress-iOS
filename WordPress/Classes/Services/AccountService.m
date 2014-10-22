@@ -376,7 +376,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
     request.predicate = [NSPredicate predicateWithFormat:@"isWpcom == true"];
     request.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"blogs.@count" ascending:NO],
-                                 [NSSortDescriptor sortDescriptorWithKey:@"jetpackBlogs.@count" ascending:NO] ];
+                                 [NSSortDescriptor sortDescriptorWithKey:@"jetpackBlogs.@count" ascending:YES] ];
     
     WPAccount *defaultAccount = [[self.managedObjectContext executeFetchRequest:request error:&error] firstObject];
     if (error) {
