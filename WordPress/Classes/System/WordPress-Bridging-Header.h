@@ -11,6 +11,9 @@
 #import "NSDate+StringFormatting.h"
 #import "NSURL+Util.h"
 
+#import "AccountService.h"
+#import "WPAccount.h"
+
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
 
