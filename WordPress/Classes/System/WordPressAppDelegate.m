@@ -49,6 +49,7 @@
 #import "WPAnalyticsTrackerWPCom.h"
 
 #import "Reachability.h"
+#import "WordPress-Swift.h"
 
 #if DEBUG
 #import "DDTTYLogger.h"
@@ -608,6 +609,8 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [[UIToolbar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[UIColor darkGrayColor]];
     
     [[UIToolbar appearanceWhenContainedIn:[WPEditorViewController class], nil] setBarTintColor:[UIColor whiteColor]];
+
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[WPStyleGuide littleEddieGrey]]];
 }
 
 #pragma mark - Tracking methods
