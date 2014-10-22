@@ -1,4 +1,4 @@
-#import "WPContentViewBase.h"
+#import "WPContentView.h"
 
 @class ReaderPost;
 @class ReaderPostContentView;
@@ -7,7 +7,7 @@
  The delegate of the`ReaderpostContentView` should adopt the `ReaderPostContentViewDelegate` protocol.
  Protocol methods allow the delegate to respond to user interactions.
  */
-@protocol ReaderPostContentViewDelegate <WPContentViewBaseDelegate>
+@protocol ReaderPostContentViewDelegate <WPContentViewDelegate>
 @optional
 
 /**
@@ -38,10 +38,10 @@
 
 
 /**
- A version of `WPContentViewBase` modified to show like, reblog, and comment 
+ A version of `WPContentView` modified to show like, reblog, and comment 
  action buttons, and a `ReaderPostAttributionView`.
  */
-@interface ReaderPostContentView : WPContentViewBase
+@interface ReaderPostContentView : WPContentView
 
 /**
  The object that acts as the delegate of the receiving content view.

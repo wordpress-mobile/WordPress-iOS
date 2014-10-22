@@ -1,4 +1,4 @@
-#import "WPContentViewBase.h"
+#import "WPContentView.h"
 #import "ContentActionButton.h"
 #import "WPContentAttributionView.h"
 #import "WPContentActionView.h"
@@ -16,14 +16,14 @@ const CGFloat WPContentViewActionViewHeight = 48.0;
 const CGFloat WPContentViewBorderHeight = 1.0;
 const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
-@interface WPContentViewBase()<WPContentAttributionViewDelegate>
+@interface WPContentView()<WPContentAttributionViewDelegate>
 // Stores a reference to the image height constraints for easy adjustment.
 @property (nonatomic, strong) NSLayoutConstraint *featuredImageZeroHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *featuredImagePercentageHeightConstraint;
 @property (nonatomic, strong) NSMutableArray *labelsNeedingPreferredMaxLayoutWidth;
 @end
 
-@implementation WPContentViewBase
+@implementation WPContentView
 
 + (UIFont *)titleFont
 {

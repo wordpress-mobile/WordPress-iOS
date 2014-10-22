@@ -149,7 +149,7 @@
 		5DF94E341962B9D800359241 /* WPAlertViewSideBySide.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DF94E321962B9D800359241 /* WPAlertViewSideBySide.xib */; };
 		5DF94E421962BAA700359241 /* WPContentActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF94E371962BAA700359241 /* WPContentActionView.m */; };
 		5DF94E431962BAA700359241 /* WPContentAttributionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF94E391962BAA700359241 /* WPContentAttributionView.m */; };
-		5DF94E441962BAA700359241 /* WPContentViewBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF94E3B1962BAA700359241 /* WPContentViewBase.m */; };
+		5DF94E441962BAA700359241 /* WPContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF94E3B1962BAA700359241 /* WPContentView.m */; };
 		5DF94E451962BAA700359241 /* WPRichContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF94E3D1962BAA700359241 /* WPRichContentView.m */; };
 		5DF94E461962BAA700359241 /* WPRichTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF94E3F1962BAA700359241 /* WPRichTextView.m */; };
 		5DF94E471962BAA700359241 /* WPSimpleContentAttributionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF94E411962BAA700359241 /* WPSimpleContentAttributionView.m */; };
@@ -693,8 +693,8 @@
 		5DF94E371962BAA700359241 /* WPContentActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPContentActionView.m; sourceTree = "<group>"; };
 		5DF94E381962BAA700359241 /* WPContentAttributionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPContentAttributionView.h; sourceTree = "<group>"; };
 		5DF94E391962BAA700359241 /* WPContentAttributionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPContentAttributionView.m; sourceTree = "<group>"; };
-		5DF94E3A1962BAA700359241 /* WPContentViewBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPContentViewBase.h; sourceTree = "<group>"; };
-		5DF94E3B1962BAA700359241 /* WPContentViewBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPContentViewBase.m; sourceTree = "<group>"; };
+		5DF94E3A1962BAA700359241 /* WPContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPContentView.h; sourceTree = "<group>"; };
+		5DF94E3B1962BAA700359241 /* WPContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPContentView.m; sourceTree = "<group>"; };
 		5DF94E3C1962BAA700359241 /* WPRichContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPRichContentView.h; sourceTree = "<group>"; };
 		5DF94E3D1962BAA700359241 /* WPRichContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPRichContentView.m; sourceTree = "<group>"; };
 		5DF94E3E1962BAA700359241 /* WPRichTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPRichTextView.h; sourceTree = "<group>"; };
@@ -1281,8 +1281,8 @@
 				5DF94E371962BAA700359241 /* WPContentActionView.m */,
 				5DF94E381962BAA700359241 /* WPContentAttributionView.h */,
 				5DF94E391962BAA700359241 /* WPContentAttributionView.m */,
-				5DF94E3A1962BAA700359241 /* WPContentViewBase.h */,
-				5DF94E3B1962BAA700359241 /* WPContentViewBase.m */,
+				5DF94E3A1962BAA700359241 /* WPContentView.h */,
+				5DF94E3B1962BAA700359241 /* WPContentView.m */,
 				E2DA78041864B11D007BA447 /* WPFixedWidthScrollView.h */,
 				E2DA78051864B11E007BA447 /* WPFixedWidthScrollView.m */,
 				03958060100D6CFC00850742 /* WPLabel.h */,
@@ -3001,7 +3001,7 @@
 				E1A0FAE7162F11CF0063B098 /* UIDevice+WordPressIdentifier.m in Sources */,
 				5D44EB351986D695008B7175 /* ReaderSiteServiceRemote.m in Sources */,
 				5DA5BF4318E32DCF005F11F9 /* MediaSearchFilterHeaderView.m in Sources */,
-				5DF94E441962BAA700359241 /* WPContentViewBase.m in Sources */,
+				5DF94E441962BAA700359241 /* WPContentView.m in Sources */,
 				B5E23BDC19AD0CED000D6879 /* ReplyTextView.swift in Sources */,
 				5DB4683B18A2E718004A89A9 /* LocationService.m in Sources */,
 				93740DCB17D8F86700C41B2F /* WPAlertView.m in Sources */,

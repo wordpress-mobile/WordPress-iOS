@@ -16,13 +16,13 @@ extern const CGFloat WPContentViewActionViewHeight;
 extern const CGFloat WPContentViewBorderHeight;
 extern const CGFloat WPContentViewLineHeightMultiple;
 
-@class WPContentViewBase;
+@class WPContentView;
 
 /**
- The delegate of the`WPContentViewBase` should adopt the `WPContentViewBaseDelegate` protocol.
+ The delegate of the`WPContentView` should adopt the `WPContentViewDelegate` protocol.
  Protocol methods allow the delegate to respond to user interactions.
  */
-@protocol WPContentViewBaseDelegate <NSObject>
+@protocol WPContentViewDelegate <NSObject>
 @optional
 
 /**
@@ -60,12 +60,12 @@ extern const CGFloat WPContentViewLineHeightMultiple;
     - A small block of plain text
     - A short date.
  */
-@interface WPContentViewBase : UIView
+@interface WPContentView : UIView
 
 /**
  The object that acts as the delegate of the receiving content view.
  */
-@property (nonatomic, weak) id<WPContentViewBaseDelegate> delegate;
+@property (nonatomic, weak) id<WPContentViewDelegate> delegate;
 
 /**
 The object specifying the content (text, images, etc.) to display.
