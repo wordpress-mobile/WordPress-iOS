@@ -30,7 +30,6 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     self = [super init];
     if (self) {
         _managedObjectContext = context;
-        [self fixDefaultAccountIfNeeded];
     }
 
     return self;
@@ -195,6 +194,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
         account = [results objectAtIndex:0];
     } else {
         account = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:self.managedObjectContext];
+        account.uuid = [[NSUUID new] UUIDString];
         account.xmlrpc = xmlrpc;
         account.username = username;
     }
@@ -353,15 +353,6 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 }
 
 - (void)fixDefaultAccountIfNeeded
-{
-    // Run this snippet just once per session
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        [self fixDefaultAccount];
-    });
-}
-
-- (void)fixDefaultAccount
 {
     BOOL hasDefaultAccount = [[NSUserDefaults standardUserDefaults] objectForKey:DefaultDotcomAccountUUIDDefaultsKey] != nil;
     WPAccount *account = [self defaultWordPressComAccount];
