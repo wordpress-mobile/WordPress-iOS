@@ -558,6 +558,10 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
         case WPAnalyticsStatSupportReceivedResponseFromSupport:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyFlagger:@"received_response_from_support"];
             break;
+        case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Performed Core Data Migration Fix for 4.5"];
+            [instructions addSuperPropertyToFlag:@"performed_core_data_migration_fix_for_4_5"];
+            break;
         default:
             break;
     }
