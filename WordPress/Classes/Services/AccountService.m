@@ -66,7 +66,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
         // The stored Account reference is invalid, so let's remove it to avoid wasting time querying for it
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
     }
-
+    
     return account;
 }
 
@@ -383,7 +383,9 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
         DDLogError(@"[%@] Error while retrieving system accounts: %@", NSStringFromClass([self class]), error.localizedDescription);
         return;
     }
-    
+
+    DDLogInfo(@"[%@] Executing Default Account Fix", NSStringFromClass([self class]));
+    [WPAnalytics track:WPAnalyticsStatPerformedCoreDataMigrationFor45];
     [self setDefaultWordPressComAccount:defaultAccount];
 }
 
