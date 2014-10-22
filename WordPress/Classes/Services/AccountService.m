@@ -12,7 +12,7 @@
 
 #import "NSString+XMLExtensions.h"
 
-static NSString * const DefaultDotcomAccountDefaultsKey = @"AccountDefaultDotcom";
+static NSString * const DefaultDotcomAccountUUIDDefaultsKey = @"AccountDefaultDotcomUUID";
 
 @interface AccountService ()
 
@@ -51,23 +51,26 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
  */
 - (WPAccount *)defaultWordPressComAccount
 {
-    NSURL *accountURL = [[NSUserDefaults standardUserDefaults] URLForKey:DefaultDotcomAccountDefaultsKey];
-    if (!accountURL) {
+    NSString *uuid = [[NSUserDefaults standardUserDefaults] stringForKey:DefaultDotcomAccountUUIDDefaultsKey];
+    if (uuid.length == 0) {
         return nil;
     }
 
-    NSManagedObjectID *objectID = [[self.managedObjectContext persistentStoreCoordinator] managedObjectIDForURIRepresentation:accountURL];
-    if (!objectID) {
-        return nil;
-    }
-
-    WPAccount *account = (WPAccount *)[self.managedObjectContext existingObjectWithID:objectID error:nil];
-    if (!account) {
-        // The stored Account reference is invalid, so let's remove it to avoid wasting time querying for it
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uuid == %@", uuid];
+    fetchRequest.predicate = predicate;
+    
+    NSError *error = nil;
+    NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    WPAccount *defaultAccount = nil;
+    if (fetchedObjects.count > 0) {
+        defaultAccount = fetchedObjects.firstObject;
+    } else {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
-    return account;
+    return defaultAccount;
 }
 
 /**
@@ -82,13 +85,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     NSAssert(account.isWpcom, @"account should be a wordpress.com account");
     NSAssert(account.authToken.length > 0, @"Account should have an authToken for WP.com");
 
-    // When the account object hasn't been saved yet, its objectID is temporary
-    // If we store a reference to that objectID it will be invalid the next time we launch
-    if ([[account objectID] isTemporaryID]) {
-        [account.managedObjectContext obtainPermanentIDsForObjects:@[account] error:nil];
-    }
-    NSURL *accountURL = [[account objectID] URIRepresentation];
-    [[NSUserDefaults standardUserDefaults] setURL:accountURL forKey:DefaultDotcomAccountDefaultsKey];
+    [[NSUserDefaults standardUserDefaults] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -131,7 +128,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     [WPAnalyticsTrackerMixpanel resetEmailRetrievalCheck];
 
     // Remove defaults
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_blogs"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_prefered_blog_id"];
@@ -366,7 +363,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 
 - (void)fixDefaultAccount
 {
-    BOOL hasDefaultAccount = [[NSUserDefaults standardUserDefaults] objectForKey:DefaultDotcomAccountDefaultsKey] != nil;
+    BOOL hasDefaultAccount = [[NSUserDefaults standardUserDefaults] objectForKey:DefaultDotcomAccountUUIDDefaultsKey] != nil;
     WPAccount *account = [self defaultWordPressComAccount];
     if ((!account && !hasDefaultAccount) || account.isWpcom) {
         return;
