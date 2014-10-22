@@ -372,21 +372,32 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
         return;
     }
     
-    NSError *error = nil;
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
-    request.predicate = [NSPredicate predicateWithFormat:@"isWpcom == true"];
-    request.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"blogs.@count" ascending:NO],
-                                 [NSSortDescriptor sortDescriptorWithKey:@"jetpackBlogs.@count" ascending:YES] ];
+    DDLogInfo(@"[%@] Executing Default Account Fix", NSStringFromClass([self class]));
     
-    WPAccount *defaultAccount = [[self.managedObjectContext executeFetchRequest:request error:&error] firstObject];
+    // Load all of the WPAccount instances
+    NSError *error              = nil;
+    NSFetchRequest *request     = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
+    request.predicate           = [NSPredicate predicateWithFormat:@"isWpcom == true"];
+    
+    NSArray *results            = [self.managedObjectContext executeFetchRequest:request error:&error];
     if (error) {
         DDLogError(@"[%@] Error while retrieving system accounts: %@", NSStringFromClass([self class]), error.localizedDescription);
         return;
     }
+    
+    // Attempt to infer the right default WordPress.com account
+    NSArray *sortDescriptors    = @[ [NSSortDescriptor sortDescriptorWithKey:@"blogs.@count" ascending:NO],
+                                  [NSSortDescriptor sortDescriptorWithKey:@"jetpackBlogs.@count" ascending:YES] ];
+    
+    NSArray *sortedResults      = [results sortedArrayUsingDescriptors:sortDescriptors];
 
-    DDLogInfo(@"[%@] Executing Default Account Fix", NSStringFromClass([self class]));
-    [WPAnalytics track:WPAnalyticsStatPerformedCoreDataMigrationFor45];
+    
+    // Pick up the first account!
+    WPAccount *defaultAccount   = [sortedResults firstObject];
+    
+    DDLogInfo(@"[%@] Updating defaultAccount %@", NSStringFromClass([self class]), defaultAccount);
     [self setDefaultWordPressComAccount:defaultAccount];
+    [WPAnalytics track:WPAnalyticsStatPerformedCoreDataMigrationFor45];
 }
 
 @end
