@@ -38,6 +38,8 @@ class AccountToAccount21to22: NSEntityMigrationPolicy {
     }
     
     override func endEntityMapping(mapping: NSEntityMapping, manager: NSMigrationManager, error: NSErrorPointer) -> Bool {
+        let accountService = AccountService(managedObjectContext: manager.destinationContext)
+        accountService.fixDefaultAccountIfNeeded()
         
         return true
     }
