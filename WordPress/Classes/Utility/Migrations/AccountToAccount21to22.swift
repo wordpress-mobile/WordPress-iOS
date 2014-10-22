@@ -9,17 +9,17 @@ class AccountToAccount21to22: NSEntityMigrationPolicy {
             let objectID = manager.sourceContext.persistentStoreCoordinator!.managedObjectIDForURIRepresentation(objectURL!)
             
             if (objectID != nil) {
-                defaultAccount = manager.sourceContext.existingObjectWithID(objectID!, error: nil) as WPAccount
+                defaultAccount = manager.sourceContext.existingObjectWithID(objectID!, error: nil) as? WPAccount
             }
         }
         
         // If a default exists, re-set it so a UUID is generated
-        if defaultAccount != nil {
-            defaultAccount.uuid = NSUUID().UUIDString
+        if let unwrappedAccount = defaultAccount {
+            unwrappedAccount.uuid = NSUUID().UUIDString
             manager.sourceContext.save(nil)
             
             let accountService = AccountService(managedObjectContext: manager.sourceContext)
-            accountService.setDefaultWordPressComAccount(defaultAccount)
+            accountService.setDefaultWordPressComAccount(unwrappedAccount)
         }
         
         NSUserDefaults.standardUserDefaults().removeObjectForKey("AccountDefaultDotcom")
