@@ -63,7 +63,11 @@
     
     NSManagedObjectContext *context = [[TestContextManager sharedInstance] mainContext];
     AccountService *service = [[AccountService alloc] initWithManagedObjectContext:context];
+    
+    // Hack: Bypass an assertion in the default WP account setter
+    self.offsiteAccount.isWpcom = true;
     [service setDefaultWordPressComAccount:self.offsiteAccount];
+    self.offsiteAccount.isWpcom = false;
     
     // Force the Account fix
     [service fixDefaultAccount];
