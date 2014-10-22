@@ -385,14 +385,27 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
         return;
     }
     
+    // Filter accounts that do not have a valid token
+    NSMutableArray *accountsWithToken   = [NSMutableArray array];
+    for (WPAccount *account in results) {
+        if (account.authToken.length > 0) {
+            [accountsWithToken addObject:account];
+        }
+    }
+    
+    if (accountsWithToken.count == 0) {
+        DDLogError(@"[%@] Accounts Fix couldn't locate any valid account", NSStringFromClass([self class]));
+        return;
+    }
+    
     // Attempt to infer the right default WordPress.com account
     NSArray *sortDescriptors    = @[ [NSSortDescriptor sortDescriptorWithKey:@"blogs.@count" ascending:NO],
                                   [NSSortDescriptor sortDescriptorWithKey:@"jetpackBlogs.@count" ascending:YES] ];
     
-    NSArray *sortedResults      = [results sortedArrayUsingDescriptors:sortDescriptors];
+    NSArray *sortedAccounts     = [accountsWithToken sortedArrayUsingDescriptors:sortDescriptors];
     
     // Pick up the first account!
-    WPAccount *defaultAccount   = [sortedResults firstObject];
+    WPAccount *defaultAccount   = [sortedAccounts firstObject];
     
     DDLogInfo(@"[%@] Updating defaultAccount %@", NSStringFromClass([self class]), defaultAccount);
 
