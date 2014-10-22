@@ -390,14 +390,14 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
                                   [NSSortDescriptor sortDescriptorWithKey:@"jetpackBlogs.@count" ascending:YES] ];
     
     NSArray *sortedResults      = [results sortedArrayUsingDescriptors:sortDescriptors];
-
     
     // Pick up the first account!
     WPAccount *defaultAccount   = [sortedResults firstObject];
     
     DDLogInfo(@"[%@] Updating defaultAccount %@", NSStringFromClass([self class]), defaultAccount);
+
     [self setDefaultWordPressComAccount:defaultAccount];
-    [WPAnalytics track:WPAnalyticsStatPerformedCoreDataMigrationFor45];
+    [WPAnalytics track:WPAnalyticsStatPerformedCoreDataMigrationFixFor45];
 }
 
 @end
