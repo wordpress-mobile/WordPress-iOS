@@ -432,7 +432,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (NSDictionary *)tagPropertyForStats
 {
-    return @{@"tag": self.currentTopic.title};
+    return [NSDictionary dictionaryWithObjectsAndKeys:self.currentTopic.title, @"tag", nil];
 }
 
 - (void)setTitle:(NSString *)title
