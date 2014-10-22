@@ -470,6 +470,7 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
     searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     searchBar.barTintColor = [WPStyleGuide itsEverywhereGrey];
     searchBar.backgroundImage = [[UIImage alloc] init];
+    [searchBar setImage:[UIImage imageNamed:@"icon-clear-textfield"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
     [searchBar setImage:[UIImage imageNamed:@"icon-reader-tag"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
 
     // Replace the default "Search" keyboard button with a "Done" button.
