@@ -994,7 +994,7 @@ cBIAAYagrxESawAHAAgAFwAzADQANQBZAFoAWwBcAF0AXgBfAGAAYQBiAGMAZABlAGYAZwBoAIMAhACF
         <relationship name="entitymapping" type="1/1" destination="XDDEVENTITYMAPPING" idrefs="z123"></relationship>
     </object>
     <object type="XDDEVENTITYMAPPING" id="z313">
-        <attribute name="migrationpolicyclassname" type="string">AccountToAccount21to22</attribute>
+        <attribute name="migrationpolicyclassname" type="string">WordPress.AccountToAccount21to22</attribute>
         <attribute name="sourcename" type="string">Account</attribute>
         <attribute name="mappingtypename" type="string">Undefined</attribute>
         <attribute name="mappingnumber" type="int16">2</attribute>
