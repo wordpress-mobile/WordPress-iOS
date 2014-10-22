@@ -54,7 +54,7 @@
     [service setDefaultWordPressComAccount:self.wrongAccount];
     
     // Force the Account fix
-    [service fixDefaultAccount];
+    [service fixDefaultAccountIfNeeded];
     
     XCTAssertEqualObjects(service.defaultWordPressComAccount, self.wrongAccount, @"Invalid account picked up");
 }
@@ -70,7 +70,7 @@
     self.offsiteAccount.isWpcom = false;
     
     // Force the Account fix
-    [service fixDefaultAccount];
+    [service fixDefaultAccountIfNeeded];
     
     XCTAssertEqualObjects(service.defaultWordPressComAccount, self.rightAccount, @"Invalid account picked up");
 }
@@ -83,6 +83,7 @@
     account.username    = [NSString string];
     account.password    = [NSString string];
     account.authToken   = @"123";
+    account.uuid        = [NSUUID UUID].UUIDString;
     return account;
 }
 
