@@ -30,6 +30,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     self = [super init];
     if (self) {
         _managedObjectContext = context;
+        [self fixDefaultAccountIfNeeded];
     }
 
     return self;
@@ -352,6 +353,38 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
         count = 0;
     }
     return count;
+}
+
+- (void)fixDefaultAccountIfNeeded
+{
+    // Run this snippet just once per session
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [self fixDefaultAccount];
+    });
+}
+
+- (void)fixDefaultAccount
+{
+    BOOL hasDefaultAccount = [[NSUserDefaults standardUserDefaults] objectForKey:DefaultDotcomAccountDefaultsKey] != nil;
+    WPAccount *account = [self defaultWordPressComAccount];
+    if ((!account && hasDefaultAccount) || account.isWpcom) {
+        return;
+    }
+    
+    NSError *error = nil;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
+    request.predicate = [NSPredicate predicateWithFormat:@"isWpcom == true"];
+    request.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"blogs.@count" ascending:NO],
+                                 [NSSortDescriptor sortDescriptorWithKey:@"jetpackBlogs.@count" ascending:YES] ];
+    
+    WPAccount *defaultAccount = [[self.managedObjectContext executeFetchRequest:request error:&error] firstObject];
+    if (error) {
+        DDLogError(@"[%@] Error while retrieving system accounts: %@", NSStringFromClass([self class]), error.localizedDescription);
+        return;
+    }
+    
+    [self setDefaultWordPressComAccount:defaultAccount];
 }
 
 @end
