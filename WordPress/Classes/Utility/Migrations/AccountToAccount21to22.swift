@@ -55,7 +55,7 @@ class AccountToAccount21to22: NSEntityMigrationPolicy {
         userDefaults.synchronize()
         
         // At last: Execute the Default Account Fix (if needed)
-//        accountService.fixDefaultAccountIfNeeded()
+        fixDefaultAccountIfNeeded(context)
         
         return true
     }
@@ -84,6 +84,63 @@ class AccountToAccount21to22: NSEntityMigrationPolicy {
         return defaultAccount
     }
 
+    private func setDefaultWordPressAccount(account: NSManagedObject) {
+        let uuid = account.valueForKey("uuid") as? String
+        if uuid == nil {
+            println(">> Error setting the default WordPressDotCom Account")
+            return
+        }
+
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setObject(uuid, forKey: defaultDotcomUUIDKey)
+        defaults.synchronize()
+    }
+    
+    
+    // MARK: Invalid Default WordPress Account Fix
+    
+    private func fixDefaultAccountIfNeeded(context: NSManagedObjectContext) {
+        // Proceed only if there is supposed to be a defaultAccount set, and it's not a wpcom account
+        if NSUserDefaults.standardUserDefaults().objectForKey(defaultDotcomKey) == nil {
+            return
+        }
+        
+        let oldDefaultAccount = defaultWordPressAccount(context)
+        if oldDefaultAccount?.valueForKey("isWpcom")?.boolValue == true {
+            return
+        }
+        
+        println(">> Executing Default Account Fix")
+
+        // Load all of the WPAccount instances
+        let request         = NSFetchRequest(entityName: "Account")
+        request.predicate   = NSPredicate(format: "isWpcom == true")
+
+        let results         = context.executeFetchRequest(request, error: nil) as? [NSManagedObject]
+
+        if results == nil {
+            println(">> Error while executing accounts fix: couldn't locate any WPAccount instances")
+            return
+        }
+        
+        // Attempt to infer the right default WordPress.com account
+        let unwrappedAccounts = NSMutableArray(array: results!)
+
+        unwrappedAccounts.sortUsingDescriptors([
+            NSSortDescriptor(key: "blogs.@count", ascending: false),
+            NSSortDescriptor(key: "jetpackBlogs.@count", ascending: true)
+        ])
+
+        // Pick up the first account!
+        if let defaultAccount = unwrappedAccounts.firstObject as? NSManagedObject {
+            println(">> Updating defaultAccount \(defaultAccount)")
+
+            setDefaultWordPressAccount(defaultAccount)
+            WPAnalytics.track(.PerformedCoreDataMigrationFixFor45)
+        }
+    }
+
+    
     private let defaultDotcomUsernameKey    = "AccountDefaultAuthToken"
     private let defaultDotcomKey            = "AccountDefaultDotcom"
     private let defaultDotcomUUIDKey        = "AccountDefaultDotcomUUID"
