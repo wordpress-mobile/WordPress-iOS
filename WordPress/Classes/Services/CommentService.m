@@ -547,6 +547,11 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     [self deleteCommentsMissingFromHierarchicalComments:commentsToKeep forPage:page forPost:post];
     [self deleteUnownedComments];
 
+    // Make sure the post's comment count is at least the number of comments merged.
+    if ([post.commentCount integerValue] < [commentsToKeep count]) {
+        post.commentCount = @([commentsToKeep count]);
+    }
+
     [self.managedObjectContext performBlock:^{
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
