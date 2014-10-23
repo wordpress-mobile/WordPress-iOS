@@ -3,7 +3,7 @@ import Foundation
 
 class AccountToAccount21to22: NSEntityMigrationPolicy {
     override func beginEntityMapping(mapping: NSEntityMapping, manager: NSMigrationManager, error: NSErrorPointer) -> Bool {
-        var defaultAccount: WPAccount?
+        var defaultAccount: NSManagedObject?
         
         let userDefaults = NSUserDefaults.standardUserDefaults()
         let objectURL = userDefaults.URLForKey(defaultDotcomKey)
@@ -11,7 +11,9 @@ class AccountToAccount21to22: NSEntityMigrationPolicy {
             let objectID = manager.sourceContext.persistentStoreCoordinator!.managedObjectIDForURIRepresentation(objectURL!)
             
             if (objectID != nil) {
-                defaultAccount = manager.sourceContext.existingObjectWithID(objectID!, error: nil) as? WPAccount
+                var error: NSError?
+                defaultAccount = manager.sourceContext.existingObjectWithID(objectID!, error: &error)
+                println(error)
             }
         }
         
@@ -19,7 +21,9 @@ class AccountToAccount21to22: NSEntityMigrationPolicy {
         // NSEntityMigrationPolicy instance might not be the same all over. We need to store in one safe spot the authToken,
         // so that when the migration sequence is over, we can pinpoint the old default account!
         if let unwrappedAccount = defaultAccount {
-            userDefaults.setValue(unwrappedAccount.authToken, forKey: defaultAuthTokenKey)
+            let username = unwrappedAccount.valueForKey("username") as String;
+            
+            userDefaults.setValue(username, forKey: defaultDotcomUsernameKey)
         }
         
         userDefaults.removeObjectForKey(defaultDotcomKey)
@@ -32,38 +36,44 @@ class AccountToAccount21to22: NSEntityMigrationPolicy {
         // Load every WPAccount instance
         let context = manager.destinationContext
         let request = NSFetchRequest(entityName: "Account")
-        let accounts = context.executeFetchRequest(request, error: nil) as? [WPAccount]
+        var error: NSError?
+        let accounts = context.executeFetchRequest(request, error: &error) as [NSManagedObject]?
         
         if accounts == nil {
             return true
         }
 
         // Assign the UUID's + Find the old defaultAccount (if any)
-        let defaultAuthToken: String = NSUserDefaults.standardUserDefaults().stringForKey(defaultAuthTokenKey) ?? String()
-        var defaultAccount: WPAccount?
+        let defaultUsername: String = NSUserDefaults.standardUserDefaults().stringForKey(defaultDotcomUsernameKey) ?? String()
+        var defaultAccount: NSManagedObject?
         
         for account in accounts! {
-            account.uuid = NSUUID().UUIDString
+            account.setValue(NSUUID().UUIDString, forKey: "uuid")
             
-            if account.authToken == defaultAuthToken {
-                defaultAccount = account
+            if let username = account.valueForKey("username") as? String {
+                if username == defaultUsername {
+                    defaultAccount = account
+                }
             }
         }
         
         // Set the defaultAccount (if any)
-        let accountService = AccountService(managedObjectContext: context)
-        if let unwrappedDefaultAccount = defaultAccount {
-            accountService.setDefaultWordPressComAccount(unwrappedDefaultAccount)
-        }
+        let userDefaults = NSUserDefaults.standardUserDefaults()
         
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(defaultAuthTokenKey)
+        if defaultAccount != nil {
+            let uuid = defaultAccount!.valueForKey("uuid") as String
+            userDefaults.setObject(uuid, forKey: defaultDotcomUUIDKey)
+        }
+        userDefaults.removeObjectForKey(defaultDotcomUsernameKey)
+        userDefaults.synchronize()
         
         // At last: Execute the Default Account Fix (if needed)
-        accountService.fixDefaultAccountIfNeeded()
+//        accountService.fixDefaultAccountIfNeeded()
         
         return true
     }
 
-    private let defaultAuthTokenKey = "AccountDefaultAuthToken"
-    private let defaultDotcomKey    = "AccountDefaultDotcom"
+    private let defaultDotcomUsernameKey    = "AccountDefaultAuthToken"
+    private let defaultDotcomKey            = "AccountDefaultDotcom"
+    private let defaultDotcomUUIDKey        = "AccountDefaultDotcomUUID"
 }
