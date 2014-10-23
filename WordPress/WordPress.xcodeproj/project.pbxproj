@@ -230,7 +230,6 @@
 		93C486501810442200A24725 /* SupportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93027BB71758332300483FFD /* SupportViewController.m */; };
 		93C486511810445D00A24725 /* ActivityLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93069F55176237A4000C966D /* ActivityLogViewController.m */; };
 		93CD939319099BE70049096E /* authtoken.json in Resources */ = {isa = PBXBuildFile; fileRef = 93CD939219099BE70049096E /* authtoken.json */; };
-		93D6D64A1924FDAD00A4F44A /* CategoryServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 93D6D6471924FDAD00A4F44A /* CategoryServiceRemote.m */; };
 		93E3D3C819ACE8E300B1C509 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 292CECFF1027259000BD407D /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		93E5283C19A7741A003A1A9C /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93E5283B19A7741A003A1A9C /* NotificationCenter.framework */; };
 		93E5284119A7741A003A1A9C /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E5284019A7741A003A1A9C /* TodayViewController.swift */; };
@@ -401,6 +400,8 @@
 		E1D458691309589C00BF0235 /* Coordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = E14932B5130427B300154804 /* Coordinate.m */; };
 		E1D91456134A853D0089019C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1D91454134A853D0089019C /* Localizable.strings */; };
 		E1D95EB817A28F5E00A3E9F3 /* WPActivityDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D95EB717A28F5E00A3E9F3 /* WPActivityDefaults.m */; };
+		E1DF5DFD19E7CFAE004E70D5 /* CategoryServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = E1DF5DFA19E7CFAE004E70D5 /* CategoryServiceRemoteREST.m */; };
+		E1DF5DFE19E7CFAE004E70D5 /* CategoryServiceRemoteXMLRPC.m in Sources */ = {isa = PBXBuildFile; fileRef = E1DF5DFC19E7CFAE004E70D5 /* CategoryServiceRemoteXMLRPC.m */; };
 		E1E4CE0617739FAB00430844 /* test-image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E1E4CE0517739FAB00430844 /* test-image.jpg */; };
 		E1E4CE0B1773C59B00430844 /* WPAvatarSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E4CE0A1773C59B00430844 /* WPAvatarSource.m */; };
 		E1E4CE0D177439D100430844 /* WPAvatarSourceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E4CE0C177439D100430844 /* WPAvatarSourceTest.m */; };
@@ -859,7 +860,6 @@
 		93C1148418EDF6E100DAC95C /* BlogService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogService.m; sourceTree = "<group>"; };
 		93CD939219099BE70049096E /* authtoken.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = authtoken.json; sourceTree = "<group>"; };
 		93D6D6461924FDAD00A4F44A /* CategoryServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryServiceRemote.h; sourceTree = "<group>"; };
-		93D6D6471924FDAD00A4F44A /* CategoryServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryServiceRemote.m; sourceTree = "<group>"; };
 		93E5283A19A7741A003A1A9C /* WordPressTodayWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WordPressTodayWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		93E5283B19A7741A003A1A9C /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		93E5283F19A7741A003A1A9C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1153,6 +1153,10 @@
 		E1D91457134A854A0089019C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E1D95EB617A28F5E00A3E9F3 /* WPActivityDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPActivityDefaults.h; sourceTree = "<group>"; };
 		E1D95EB717A28F5E00A3E9F3 /* WPActivityDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPActivityDefaults.m; sourceTree = "<group>"; };
+		E1DF5DF919E7CFAE004E70D5 /* CategoryServiceRemoteREST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryServiceRemoteREST.h; sourceTree = "<group>"; };
+		E1DF5DFA19E7CFAE004E70D5 /* CategoryServiceRemoteREST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryServiceRemoteREST.m; sourceTree = "<group>"; };
+		E1DF5DFB19E7CFAE004E70D5 /* CategoryServiceRemoteXMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryServiceRemoteXMLRPC.h; sourceTree = "<group>"; };
+		E1DF5DFC19E7CFAE004E70D5 /* CategoryServiceRemoteXMLRPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryServiceRemoteXMLRPC.m; sourceTree = "<group>"; };
 		E1E4CE0517739FAB00430844 /* test-image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "test-image.jpg"; sourceTree = "<group>"; };
 		E1E4CE091773C59B00430844 /* WPAvatarSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAvatarSource.h; sourceTree = "<group>"; };
 		E1E4CE0A1773C59B00430844 /* WPAvatarSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAvatarSource.m; sourceTree = "<group>"; };
@@ -1812,7 +1816,10 @@
 				E1D04D7C19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.h */,
 				E1D04D7D19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.m */,
 				93D6D6461924FDAD00A4F44A /* CategoryServiceRemote.h */,
-				93D6D6471924FDAD00A4F44A /* CategoryServiceRemote.m */,
+				E1DF5DF919E7CFAE004E70D5 /* CategoryServiceRemoteREST.h */,
+				E1DF5DFA19E7CFAE004E70D5 /* CategoryServiceRemoteREST.m */,
+				E1DF5DFB19E7CFAE004E70D5 /* CategoryServiceRemoteXMLRPC.h */,
+				E1DF5DFC19E7CFAE004E70D5 /* CategoryServiceRemoteXMLRPC.m */,
 				E1249B3D19408C230035E895 /* CommentServiceRemote.h */,
 				E1249B491940AECC0035E895 /* CommentServiceRemoteREST.h */,
 				E1249B4A1940AECC0035E895 /* CommentServiceRemoteREST.m */,
@@ -3068,6 +3075,7 @@
 				E23EEC5E185A72C100F4DE2A /* WPContentCell.m in Sources */,
 				8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */,
 				E1D04D8119374EAF002FADD7 /* BlogServiceRemoteProxy.m in Sources */,
+				E1DF5DFD19E7CFAE004E70D5 /* CategoryServiceRemoteREST.m in Sources */,
 				5D7B414619E482C9007D9EC7 /* WPRichTextEmbed.swift in Sources */,
 				85149741171E13DF00B87F3F /* WPAsyncBlockOperation.m in Sources */,
 				858DE40F1730384F000AC628 /* LoginViewController.m in Sources */,
@@ -3110,6 +3118,7 @@
 				E1A6DBDA19DC7D080071AC1E /* RemoteCategory.m in Sources */,
 				85D2275918F1EB8A001DA8DA /* WPAnalyticsTrackerMixpanel.m in Sources */,
 				E149D64F19349E69006A843D /* AccountServiceRemoteXMLRPC.m in Sources */,
+				E1DF5DFE19E7CFAE004E70D5 /* CategoryServiceRemoteXMLRPC.m in Sources */,
 				B5134AF519B2C4F200FADE8C /* ReplyBezierView.swift in Sources */,
 				5DF94E461962BAA700359241 /* WPRichTextView.m in Sources */,
 				5D42A3FB175E75EE005CFF05 /* ReaderPostDetailViewController.m in Sources */,
@@ -3127,7 +3136,6 @@
 				5DA5BF4818E32DCF005F11F9 /* WPLoadingView.m in Sources */,
 				B5B56D3319AFB68800B4E29B /* WPStyleGuide+Notifications.swift in Sources */,
 				5DF94E511962BAEB00359241 /* ReaderPostContentView.m in Sources */,
-				93D6D64A1924FDAD00A4F44A /* CategoryServiceRemote.m in Sources */,
 				5D577D361891360900B964C3 /* PostGeolocationView.m in Sources */,
 				5DA5BF4118E32DCF005F11F9 /* MediaBrowserViewController.m in Sources */,
 				FF3DD6BE19F2B6B3003A52CB /* RemoteMedia.m in Sources */,
