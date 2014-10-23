@@ -918,12 +918,9 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     MediaService * mediaService = [[MediaService alloc] initWithManagedObjectContext:context];
-    [mediaService getMediaWithID:self.post.post_thumbnail inBlog:self.post.blog withSuccess:^(Media *featuredMedia) {
+    Media * media = [mediaService findMediaWithID:self.post.post_thumbnail inBlog:self.post.blog];
+    void (^successBlock)(Media * media) = ^(Media *featuredMedia) {
         NSURL *url = [NSURL URLWithString:featuredMedia.remoteURL];
-        if (!url) {
-            [self tableImageSource:self.imageSource imageFailedforIndexPath:indexPath error:nil];
-            return;
-        }
         CGFloat width = CGRectGetWidth(self.view.frame);
         if (IS_IPAD) {
             width = WPTableViewFixedWidth;
@@ -936,9 +933,24 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
                                   withSize:imageSize
                                  indexPath:indexPath
                                  isPrivate:self.post.blog.isPrivate];
-    } failure:^(NSError *error) {
-        [self tableImageSource:self.imageSource imageFailedforIndexPath:indexPath error:error];
+    };
+    if (media){
+        successBlock(media);
+        return;
+    }
+    
+    [mediaService getMediaWithID:self.post.post_thumbnail inBlog:self.post.blog withSuccess:successBlock failure:^(NSError *error) {
+        [self featuredImageFailedLoading:indexPath withError:error];
     }];
+}
+
+- (void) featuredImageFailedLoading:(NSIndexPath *)indexPath withError:(NSError *)error
+{
+    DDLogError(@"Error loading featured image: %@", error);
+    PostFeaturedImageCell *cell = (PostFeaturedImageCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    [cell showLoadingSpinner:NO];
+    cell.textLabel.text = NSLocalizedString(@"Featured Image did not load", @"");
+
 }
 
 - (WPTableImageSource *)imageSource
@@ -971,10 +983,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
  imageFailedforIndexPath:(NSIndexPath *)indexPath
                    error:(NSError *)error
 {
-    DDLogError(@"Error loading featured image: %@", error);
-    PostFeaturedImageCell *cell = (PostFeaturedImageCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    [cell showLoadingSpinner:NO];
-    cell.textLabel.text = NSLocalizedString(@"Featured Image did not load", @"");
+    [self featuredImageFailedLoading:indexPath withError:error];
 }
 
 - (NSString *)titleForVisibility

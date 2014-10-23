@@ -156,15 +156,8 @@
 
 - (void) getMediaWithID:(NSNumber *) mediaID inBlog:(Blog *) blog
             withSuccess:(void (^)(Media *media))success
-                failure:(void (^)(NSError *error))failure{
-    // Let's see if we already have it locally
-    Media * searchMedia = [self findMediaWithID:mediaID inBlog:blog];
-    if ( searchMedia){
-        if (success){
-            success(searchMedia);
-        }
-        return;
-    }
+                failure:(void (^)(NSError *error))failure
+{
     id<MediaServiceRemote> remote = [self remoteForBlog:blog];
     
     [remote getMediaWithID:mediaID forBlog:blog success:^(RemoteMedia *remoteMedia) {
@@ -187,6 +180,12 @@
         }
 
     }];
+}
+
+- (Media *)findMediaWithID:(NSNumber *)mediaID inBlog:(Blog *)blog
+{
+    NSSet *medias = [blog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"mediaID = %@", mediaID]];
+    return [medias anyObject];
 }
 
 
@@ -280,13 +279,8 @@
     return remote;
 }
 
-- (Media *)findMediaWithID:(NSNumber *)mediaID inBlog:(Blog *)blog {
-    NSSet *medias = [blog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"mediaID = %@", mediaID]];
-    return [medias anyObject];
-}
-
-- (void)updateMedia:(Media *)media withRemoteMedia:(RemoteMedia *)remoteMedia {
-    
+- (void)updateMedia:(Media *)media withRemoteMedia:(RemoteMedia *)remoteMedia
+{
     media.mediaID =  remoteMedia.mediaID;
     media.remoteURL = [remoteMedia.url absoluteString];
     media.creationDate = remoteMedia.date;
@@ -300,9 +294,9 @@
     //media.exif = remoteMedia.exif;
 }
 
-- (RemoteMedia *) remoteMediaFromMedia:(Media *)media {
+- (RemoteMedia *) remoteMediaFromMedia:(Media *)media
+{
     RemoteMedia * remoteMedia = [[RemoteMedia alloc] init];
-    
     remoteMedia.mediaID = media.mediaID;
     remoteMedia.url = [NSURL URLWithString:media.remoteURL];
     remoteMedia.date = media.creationDate;
@@ -314,8 +308,7 @@
     remoteMedia.height = media.height;
     remoteMedia.width = media.width;
     remoteMedia.localURL = media.localURL;
-    remoteMedia.mimeType = [self mimeTypeForFilename:media.filename];
-    
+    remoteMedia.mimeType = [self mimeTypeForFilename:media.filename];    
     return remoteMedia;
 }
 
