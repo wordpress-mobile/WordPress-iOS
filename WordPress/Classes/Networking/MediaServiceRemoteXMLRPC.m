@@ -23,7 +23,7 @@
                                            ofType:(NSString *)type
                                      withFilename:(NSString *)filename
                                            toBlog:(Blog *)blog
-                                          success:(void (^)(NSNumber *mediaID, NSString *url))success
+                                          success:(void (^)(RemoteMedia * media))success
                                           failure:(void (^)(NSError *))failure
 {
     NSDictionary *data = @{
@@ -34,28 +34,26 @@
     NSArray *parameters = [blog getXMLRPCArgsWithExtra:data];
     NSURLRequest *request = [self.api requestWithMethod:@"wp.uploadFile" parameters:parameters];
     AFHTTPRequestOperation *operation = [self.api HTTPRequestOperationWithRequest:request
-                                                                          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                                                              NSDictionary *response = (NSDictionary *)responseObject;
+        success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSDictionary *response = (NSDictionary *)responseObject;
 
-                                                                              if (![response isKindOfClass:[NSDictionary class]]) {
-                                                                                  NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"The server returned an empty response. This usually means you need to increase the memory limit for your site.", @"")}];
-                                                                                  if (failure) {
-                                                                                      failure(error);
-                                                                                  }
-                                                                                  return;
-                                                                              }
-
-                                                                              NSNumber *ID = [response numberForKey:@"id"];
-                                                                              NSString *url = [response stringForKey:@"url"];
-
-                                                                              if (success) {
-                                                                                  success(ID, url);
-                                                                              }
-                                                                          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                                                              if (failure) {
-                                                                                  failure(error);
-                                                                              }
-                                                                          }];
+            if (![response isKindOfClass:[NSDictionary class]]) {
+              NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"The server returned an empty response. This usually means you need to increase the memory limit for your site.", @"")}];
+              if (failure) {
+                  failure(error);
+              }
+              return;
+            }
+            
+            RemoteMedia * remoteMedia = [self remoteMediaFromUploadXMLRPCDictionary:response];
+            if (success){
+                success(remoteMedia);
+            }
+      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+          if (failure) {
+              failure(error);
+          }
+      }];
     return operation;
 }
 
@@ -85,25 +83,7 @@
             success:(void (^)(RemoteMedia *remoteMedia))success
             failure:(void (^)(NSError *error))failure
 {
-    NSDictionary *data = @{
-                           @"name": media.file,
-                           @"type": media.mimeType,
-                           @"bits": [NSInputStream inputStreamWithFileAtPath:media.localURL],
-                           };
-    NSArray *parameters = [blog getXMLRPCArgsWithExtra:data];
-    NSURLRequest *request = [self.api requestWithMethod:@"wp.uploadFile" parameters:parameters];
-    AFHTTPRequestOperation *operation = [self.api HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (!success) {
-            return;
-        }
-        NSDictionary *response = (NSDictionary *)responseObject;
-        RemoteMedia * remoteMedia = [self remoteMediaFromUploadXMLRPCDictionary:response];
-        success(remoteMedia);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
+    NSOperation * operation = [self operationToUploadFile:media.localURL ofType:media.mimeType withFilename:media.file toBlog:blog success:success failure:failure];
     
     [self.api.operationQueue addOperation:operation];
 }
@@ -134,6 +114,7 @@
     remoteMedia.mediaID = [xmlRPC numberForKey:@"id"];
     remoteMedia.file = [[xmlRPC objectForKeyPath:@"file"] lastPathComponent];
     remoteMedia.mimeType = [xmlRPC stringForKey:@"type"];
+    remoteMedia.extension = [[[xmlRPC objectForKeyPath:@"file"] lastPathComponent] pathExtension];
     return remoteMedia;
 }
 

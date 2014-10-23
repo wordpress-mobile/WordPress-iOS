@@ -9,7 +9,7 @@
                                            ofType:(NSString *)type
                                      withFilename:(NSString *)filename
                                            toBlog:(Blog *)blog
-                                          success:(void (^)(NSNumber *mediaID, NSString *url))success
+                                          success:(void (^)(RemoteMedia * remoteMedia))success
                                           failure:(void (^)(NSError *error))failure;
 
 - (void) getMediaWithID:(NSNumber *) mediaID

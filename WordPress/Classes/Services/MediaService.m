@@ -67,20 +67,32 @@
                                        withSuccess:(void (^)())success
                                            failure:(void (^)(NSError *error))failure
 {
-    media.remoteStatus = MediaRemoteStatusPushing;
     id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
+    
+    media.remoteStatus = MediaRemoteStatusPushing;
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    NSManagedObjectID *mediaObjectID = media.objectID;
     return [remote operationToUploadFile:media.localURL
                                   ofType:[self mimeTypeForFilename:media.filename]
                             withFilename:media.filename
                                   toBlog:media.blog
-                                 success:^(NSNumber *mediaID, NSString *url) {
+                                 success:^(RemoteMedia * remoteMedia) {
                                      [self.managedObjectContext performBlock:^{
-                                         media.remoteStatus = MediaRemoteStatusSync;
-                                         media.mediaID = mediaID;
-                                         media.remoteURL = url;
-                                         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                                         if (success) {
-                                             success();
+                                         NSError * error = nil;
+                                         Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:&error];
+                                         if (!mediaInContext && error){
+                                             DDLogError(@"Error retrieving media object: %@", error);
+                                         }
+                                         if (mediaInContext) {
+                                             [self updateMedia:mediaInContext withRemoteMedia:remoteMedia];
+                                             mediaInContext.remoteStatus = MediaRemoteStatusSync;
+                                             [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                                                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                                                     if (success) {
+                                                         success();
+                                                     }
+                                                 }];
+                                             }];
                                          }
                                      }];
                                  } failure:^(NSError *error) {
