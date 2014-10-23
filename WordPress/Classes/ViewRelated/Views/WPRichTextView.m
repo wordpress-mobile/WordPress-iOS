@@ -434,6 +434,7 @@ static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
     button.GUID = identifier;
 
     // get image with normal link text
+    frame.size.width = frame.size.width + 2; // slight padding to avoid cropping italic characters
     UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDefault];
     [button setImage:normalImage forState:UIControlStateNormal];
 
