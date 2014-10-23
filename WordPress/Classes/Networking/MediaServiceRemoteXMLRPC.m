@@ -110,30 +110,30 @@
 
 #pragma mark - Private methods
 
-- (RemoteMedia *)remoteMediaFromXMLRPCDictionary:(NSDictionary*)json
+- (RemoteMedia *)remoteMediaFromXMLRPCDictionary:(NSDictionary*)xmlRPC
 {
     RemoteMedia * remoteMedia = [[RemoteMedia alloc] init];
-    remoteMedia.url = [NSURL URLWithString:[json stringForKey:@"link"]];
-    remoteMedia.title = [json stringForKey:@"title"];
-    remoteMedia.width = [json numberForKeyPath:@"metadata.width"];
-    remoteMedia.height = [json numberForKeyPath:@"metadata.height"];
-    remoteMedia.mediaID = [json numberForKey:@"attachment_id"];
-    remoteMedia.file = [[json objectForKeyPath:@"metadata.file"] lastPathComponent];
-    remoteMedia.date = json[@"date_created_gmt"];
-    remoteMedia.caption = [json stringForKey:@"caption"];
-    remoteMedia.descriptionText = [json stringForKey:@"description"];
+    remoteMedia.url = [NSURL URLWithString:[xmlRPC stringForKey:@"link"]];
+    remoteMedia.title = [xmlRPC stringForKey:@"title"];
+    remoteMedia.width = [xmlRPC numberForKeyPath:@"metadata.width"];
+    remoteMedia.height = [xmlRPC numberForKeyPath:@"metadata.height"];
+    remoteMedia.mediaID = [xmlRPC numberForKey:@"attachment_id"];
+    remoteMedia.file = [[xmlRPC objectForKeyPath:@"metadata.file"] lastPathComponent];
+    remoteMedia.date = xmlRPC[@"date_created_gmt"];
+    remoteMedia.caption = [xmlRPC stringForKey:@"caption"];
+    remoteMedia.descriptionText = [xmlRPC stringForKey:@"description"];
     remoteMedia.extension = [remoteMedia.file pathExtension];
     
     return remoteMedia;
 }
 
-- (RemoteMedia *)remoteMediaFromUploadXMLRPCDictionary:(NSDictionary*)json
+- (RemoteMedia *)remoteMediaFromUploadXMLRPCDictionary:(NSDictionary*)xmlRPC
 {
     RemoteMedia * remoteMedia = [[RemoteMedia alloc] init];
-    remoteMedia.url = [NSURL URLWithString:[json stringForKey:@"url"]];
-    remoteMedia.mediaID = [json numberForKey:@"id"];
-    remoteMedia.file = [[json objectForKeyPath:@"file"] lastPathComponent];
-    remoteMedia.mimeType = [json stringForKey:@"type"];
+    remoteMedia.url = [NSURL URLWithString:[xmlRPC stringForKey:@"url"]];
+    remoteMedia.mediaID = [xmlRPC numberForKey:@"id"];
+    remoteMedia.file = [[xmlRPC objectForKeyPath:@"file"] lastPathComponent];
+    remoteMedia.mimeType = [xmlRPC stringForKey:@"type"];
     return remoteMedia;
 }
 
