@@ -78,6 +78,36 @@
                  }];
 }
 
+- (void) createMedia:(RemoteMedia *) media
+             forBlog:(Blog *) blog
+             success:(void (^)(RemoteMedia *remoteMedia))success
+             failure:(void (^)(NSError *error))failure;
+{
+    NSDictionary *data = @{
+                           @"name": media.file,
+                           @"type": media.mimeType,
+                           @"bits": [NSInputStream inputStreamWithFileAtPath:media.localURL],
+                           };
+    NSArray *parameters = [blog getXMLRPCArgsWithExtra:data];
+    NSURLRequest *request = [self.api requestWithMethod:@"wp.uploadFile" parameters:parameters];
+    AFHTTPRequestOperation *operation = [self.api HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (!success) {
+            return;
+        }
+        NSDictionary *response = (NSDictionary *)responseObject;
+        RemoteMedia * remoteMedia = [self remoteMediaFromUploadXMLRPCDictionary:response];
+        success(remoteMedia);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+    
+    [self.api.operationQueue addOperation:operation];
+}
+
+#pragma mark - Private methods
+
 - (RemoteMedia *)remoteMediaFromXMLRPCDictionary:(NSDictionary*)json
 {
     RemoteMedia * remoteMedia = [[RemoteMedia alloc] init];
@@ -92,6 +122,16 @@
     remoteMedia.descriptionText = [json stringForKey:@"description"];
     remoteMedia.extension = [remoteMedia.file pathExtension];
     
+    return remoteMedia;
+}
+
+- (RemoteMedia *)remoteMediaFromUploadXMLRPCDictionary:(NSDictionary*)json
+{
+    RemoteMedia * remoteMedia = [[RemoteMedia alloc] init];
+    remoteMedia.url = [NSURL URLWithString:[json stringForKey:@"url"]];
+    remoteMedia.mediaID = [json numberForKey:@"id"];
+    remoteMedia.file = [[json objectForKeyPath:@"file"] lastPathComponent];
+    remoteMedia.mimeType = [json stringForKey:@"type"];
     return remoteMedia;
 }
 
