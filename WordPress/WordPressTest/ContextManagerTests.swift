@@ -73,11 +73,11 @@ class ContextManagerTests: XCTestCase {
         NSUserDefaults.standardUserDefaults().synchronize()
         
         // Initialize 21 > 22 Migration
-        performCoredataMigration(model22Name)
+        let secondContext = performCoredataMigration(model22Name)
 
         // Verify the DefaultAccount
         let fetchRequest = NSFetchRequest(entityName: "Account")
-        let results = mainContext.executeFetchRequest(fetchRequest, error: nil)
+        let results = secondContext.executeFetchRequest(fetchRequest, error: nil)
         
         XCTAssertTrue(results!.count == 2, "Should have two account")
         
@@ -118,11 +118,11 @@ class ContextManagerTests: XCTestCase {
         NSUserDefaults.standardUserDefaults().synchronize()
         
         // Initialize 21 > 22 Migration
-        performCoredataMigration(model22Name)
+        let secondContext = performCoredataMigration(model22Name)
         
         // Verify the DefaultAccount
         let fetchRequest = NSFetchRequest(entityName: "Account")
-        let results = mainContext.executeFetchRequest(fetchRequest, error: nil)
+        let results = secondContext.executeFetchRequest(fetchRequest, error: nil)
         
         XCTAssertTrue(results!.count == 3, "Should have three account")
 
@@ -153,7 +153,7 @@ class ContextManagerTests: XCTestCase {
         contextManager.persistentStoreCoordinator = persistentStoreCoordinator
     }
     
-    private func performCoredataMigration(newModelName: String) {
+    private func performCoredataMigration(newModelName: String) -> NSManagedObjectContext {
         let psc = contextManager.persistentStoreCoordinator
         let mainContext = contextManager.mainContext
         
@@ -167,7 +167,9 @@ class ContextManagerTests: XCTestCase {
         XCTAssertNotNil(standardPSC, "New store should exist")
         XCTAssertTrue(standardPSC.persistentStores.count == 1, "Should be one persistent store.")
         
-        mainContext.reset()
+        let secondContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
+        secondContext.persistentStoreCoordinator = standardPSC
+        return secondContext
     }
     
     private func urlForModelName(name: NSString!) -> NSURL? {
