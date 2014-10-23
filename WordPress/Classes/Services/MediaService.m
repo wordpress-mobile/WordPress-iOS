@@ -155,7 +155,7 @@
     }
     id<MediaServiceRemote> remote = [self remoteForBlog:blog];
     
-    [remote getMediaWithID:mediaID inBlog:blog withSuccess:^(RemoteMedia *remoteMedia) {
+    [remote getMediaWithID:mediaID forBlog:blog success:^(RemoteMedia *remoteMedia) {
        [self.managedObjectContext performBlock:^{
            Media *media = [self findMediaWithID:remoteMedia.mediaID inBlog:blog];
            if (!media) {

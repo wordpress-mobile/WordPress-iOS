@@ -50,9 +50,11 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     return operation;
 }
 
-- (void) getMediaWithID:(NSNumber *) mediaID inBlog:(Blog *) blog
-             withSuccess:(void (^)(RemoteMedia *remoteMedia))success
-                 failure:(void (^)(NSError *error))failure {
+- (void)getMediaWithID:(NSNumber *)mediaID
+               forBlog:(Blog *)blog
+               success:(void (^)(RemoteMedia *remoteMedia))success
+               failure:(void (^)(NSError *error))failure
+{
     NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/%@", blog.dotComID, mediaID];
     NSDictionary * parameters = @{};
     
@@ -68,10 +70,10 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     }];
 }
 
-- (void) createMedia:(RemoteMedia *) media
-             forBlog:(Blog *) blog
-             success:(void (^)(RemoteMedia *remoteMedia))success
-             failure:(void (^)(NSError *error))failure;
+- (void)createMedia:(RemoteMedia *)media
+            forBlog:(Blog *)blog
+            success:(void (^)(RemoteMedia *remoteMedia))success
+            failure:(void (^)(NSError *error))failure
 {
     NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/new", blog.dotComID];
     NSMutableURLRequest *request = [self.api.requestSerializer multipartFormRequestWithMethod:@"POST" URLString:[[NSURL URLWithString:apiPath relativeToURL:self.api.baseURL] absoluteString] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
@@ -105,9 +107,9 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     [self.api.operationQueue addOperation:operation];
 }
 
-- (RemoteMedia *)remoteMediaFromJSONDictionary:(NSDictionary *)jsonMedia {
-    RemoteMedia * remoteMedia=[[RemoteMedia alloc] init];
-    
+- (RemoteMedia *)remoteMediaFromJSONDictionary:(NSDictionary *)jsonMedia
+{
+    RemoteMedia * remoteMedia=[[RemoteMedia alloc] init];    
     if (jsonMedia[@"id"]){
         remoteMedia.mediaID =  @([jsonMedia[@"id"] intValue]);
         remoteMedia.url = [NSURL URLWithString:jsonMedia[@"link"]];

@@ -24,7 +24,8 @@
                                      withFilename:(NSString *)filename
                                            toBlog:(Blog *)blog
                                           success:(void (^)(NSNumber *mediaID, NSString *url))success
-                                          failure:(void (^)(NSError *))failure {
+                                          failure:(void (^)(NSError *))failure
+{
     NSDictionary *data = @{
                            @"name": filename,
                            @"type": type,
@@ -58,10 +59,11 @@
     return operation;
 }
 
-- (void) getMediaWithID:(NSNumber *)mediaID inBlog:(Blog *)blog
-            withSuccess:(void (^)(RemoteMedia *remoteMedia))success
-                failure:(void (^)(NSError *error))failure {
-
+- (void)getMediaWithID:(NSNumber *)mediaID
+               forBlog:(Blog *)blog
+               success:(void (^)(RemoteMedia *remoteMedia))success
+               failure:(void (^)(NSError *error))failure
+{
     NSArray *parameters = [blog getXMLRPCArgsWithExtra:mediaID];
     [self.api callMethod:@"wp.getMediaItem"
               parameters:parameters
@@ -78,10 +80,10 @@
                  }];
 }
 
-- (void) createMedia:(RemoteMedia *) media
-             forBlog:(Blog *) blog
-             success:(void (^)(RemoteMedia *remoteMedia))success
-             failure:(void (^)(NSError *error))failure;
+- (void)createMedia:(RemoteMedia *)media
+            forBlog:(Blog *)blog
+            success:(void (^)(RemoteMedia *remoteMedia))success
+            failure:(void (^)(NSError *error))failure
 {
     NSDictionary *data = @{
                            @"name": media.file,
