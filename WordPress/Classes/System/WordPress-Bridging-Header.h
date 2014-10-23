@@ -20,4 +20,6 @@
 #import "WPTableViewCell.h"
 #import "WPTableViewSectionHeaderView.h"
 
+#import "WPAnalyticsTrackerWPCom.h"
+
 #import <DTCoreText/DTCoreText.h>
