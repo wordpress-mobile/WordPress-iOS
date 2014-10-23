@@ -4,6 +4,7 @@
 @interface TestContextManager : ContextManager
 
 @property (nonatomic, strong) NSManagedObjectContext *mainContext;
+@property (nonatomic, strong) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong) XCTestExpectation *testExpectation;
 
