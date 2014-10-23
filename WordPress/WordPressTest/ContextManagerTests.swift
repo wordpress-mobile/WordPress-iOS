@@ -78,13 +78,21 @@ class ContextManagerTests: XCTestCase {
 
         // Verify the DefaultAccount
         let fetchRequest = NSFetchRequest(entityName: "Account")
-        let results = secondContext.executeFetchRequest(fetchRequest, error: nil)
-        
+        let results = secondContext.executeFetchRequest(fetchRequest, error: nil) as? [WPAccount]
         XCTAssertTrue(results!.count == 2, "Should have two account")
         
-        let newAccount = results![0] as WPAccount
-        XCTAssertNotNil(newAccount.uuid, "UUID should be assigned")
-        XCTAssertTrue(newAccount.username == "username", "Usernames should match")
+        let defaultAccountUUID = NSUserDefaults.standardUserDefaults().valueForKey("AccountDefaultDotcomUUID") as? String
+        var defaultAccount: WPAccount?
+        
+        for account in results! {
+            XCTAssertNotNil(account.uuid, "UUID should be assigned")
+            if account.uuid == defaultAccountUUID! {
+                defaultAccount = account
+            }
+        }
+        
+        XCTAssert(defaultAccount != nil, "Default account not found")
+        XCTAssert(defaultAccount!.username == "username", "Invalid Default Account")
     }
     
     func testMigrate21to22RunningAccountsFix() {
