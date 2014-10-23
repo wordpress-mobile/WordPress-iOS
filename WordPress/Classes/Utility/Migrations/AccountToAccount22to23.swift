@@ -1,7 +1,7 @@
 import UIKit
 import Foundation
 
-class AccountToAccount21to22: NSEntityMigrationPolicy {
+class AccountToAccount22to23: NSEntityMigrationPolicy {
     override func beginEntityMapping(mapping: NSEntityMapping, manager: NSMigrationManager, error: NSErrorPointer) -> Bool {
 
         // Note: 

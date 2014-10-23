@@ -49,9 +49,9 @@ class ContextManagerTests: XCTestCase {
         XCTAssertNotNil(object, "Object should exist in new PSC")
     }
     
-    func testMigrate21to22WithoutRunningAccountsFix() {
+    func testMigrate21to23WithoutRunningAccountsFix() {
         let model21Name = "WordPress 21"
-        let model22Name = "WordPress 22"
+        let model23Name = "WordPress 23"
         
         // Instantiate a Model 21 Stack
         startupCoredataStack(model21Name)
@@ -74,7 +74,7 @@ class ContextManagerTests: XCTestCase {
         NSUserDefaults.standardUserDefaults().synchronize()
         
         // Initialize 21 > 22 Migration
-        let secondContext = performCoredataMigration(model22Name)
+        let secondContext = performCoredataMigration(model23Name)
 
         // Verify the DefaultAccount
         let fetchRequest = NSFetchRequest(entityName: "Account")
@@ -95,9 +95,9 @@ class ContextManagerTests: XCTestCase {
         XCTAssert(defaultAccount!.username == "username", "Invalid Default Account")
     }
     
-    func testMigrate21to22RunningAccountsFix() {
+    func testMigrate21to23RunningAccountsFix() {
         let model21Name = "WordPress 21"
-        let model22Name = "WordPress 22"
+        let model23Name = "WordPress 23"
         
         // Instantiate a Model 21 Stack
         startupCoredataStack(model21Name)
@@ -129,7 +129,7 @@ class ContextManagerTests: XCTestCase {
         NSUserDefaults.standardUserDefaults().synchronize()
         
         // Initialize 21 > 22 Migration
-        let secondContext = performCoredataMigration(model22Name)
+        let secondContext = performCoredataMigration(model23Name)
         
         // Verify the DefaultAccount
         let fetchRequest = NSFetchRequest(entityName: "Account")
