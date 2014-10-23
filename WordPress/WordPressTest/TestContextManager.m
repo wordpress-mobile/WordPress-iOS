@@ -17,6 +17,11 @@
     return self;
 }
 
+- (NSManagedObjectModel *)managedObjectModel
+{
+    return _managedObjectModel ?: [super managedObjectModel];
+}
+
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator
 {
     if (_persistentStoreCoordinator) {
