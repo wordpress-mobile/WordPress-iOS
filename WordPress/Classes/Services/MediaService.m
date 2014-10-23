@@ -35,6 +35,8 @@
     NSData *optimizedImageData = [optimizer optimizedDataFromAsset:asset];
     NSData *thumbnailData = [self thumbnailDataFromAsset:asset];
     NSString *imagePath = [self pathForAsset:asset];
+    NSNumber * width = @(asset.defaultRepresentation.dimensions.width);
+    NSNumber * height =@(asset.defaultRepresentation.dimensions.height);
     if (![self writeData:optimizedImageData toPath:imagePath]) {
         DDLogError(@"Error writing media to %@", imagePath);
     }
@@ -47,12 +49,17 @@
         // This is kind of lame, but we've been storing file size as KB so far
         // We should store size in bytes or rename the property to avoid confusion
         media.filesize = @(optimizedImageData.length / 1024);
-        media.width = @(asset.defaultRepresentation.dimensions.width);
-        media.height = @(asset.defaultRepresentation.dimensions.height);
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-        if (completion) {
-            completion(media);
-        }
+        media.width = width;
+        media.height = height;
+        //make sure that we only return when object is properly created and saved
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+            if (completion) {
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    completion(media);
+                }];                
+            }
+
+        }];
     }];
 }
 
@@ -84,6 +91,55 @@
                                          }
                                      }];
                                  }];
+}
+
+- (void)uploadMedia:(Media *)media
+           success:(void (^)())success
+           failure:(void (^)(NSError *error))failure
+{
+    id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
+    RemoteMedia *remoteMedia = [self remoteMediaFromMedia:media];
+    
+    media.remoteStatus = MediaRemoteStatusPushing;
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    NSManagedObjectID *mediaObjectID = media.objectID;
+    void (^successBlock)(RemoteMedia *media) = ^(RemoteMedia *media) {
+        [self.managedObjectContext performBlock:^{
+            NSError * error = nil;
+            Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:&error];
+            if (!mediaInContext && error){
+                DDLogError(@"Error retrieving media object: %@", error);
+            }
+            if (mediaInContext) {
+                [self updateMedia:mediaInContext withRemoteMedia:media];
+                mediaInContext.remoteStatus = MediaRemoteStatusSync;
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                        if (success) {
+                            success();
+                        }
+                    }];
+                }];
+            }
+        }];
+    };
+    void (^failureBlock)(NSError *error) = ^(NSError *error) {
+        [self.managedObjectContext performBlock:^{
+            Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
+            if (mediaInContext) {
+                mediaInContext.remoteStatus = MediaRemoteStatusFailed;
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            }
+            if (failure) {
+                failure(error);
+            }
+        }];
+    };
+    
+    [remote createMedia:remoteMedia
+               forBlog:media.blog
+               success:successBlock
+               failure:failureBlock];
 }
 
 - (void) getMediaWithID:(NSNumber *) mediaID inBlog:(Blog *) blog
@@ -231,4 +287,24 @@
     media.width = remoteMedia.width;
     //media.exif = remoteMedia.exif;
 }
+
+- (RemoteMedia *) remoteMediaFromMedia:(Media *)media {
+    RemoteMedia * remoteMedia = [[RemoteMedia alloc] init];
+    
+    remoteMedia.mediaID = media.mediaID;
+    remoteMedia.url = [NSURL URLWithString:media.remoteURL];
+    remoteMedia.date = media.creationDate;
+    remoteMedia.file = media.filename;
+    remoteMedia.extension = media.mediaTypeString;
+    remoteMedia.title = media.title;
+    remoteMedia.caption = media.caption;
+    remoteMedia.descriptionText = media.desc;
+    remoteMedia.height = media.height;
+    remoteMedia.width = media.width;
+    remoteMedia.localURL = media.localURL;
+    remoteMedia.mimeType = [self mimeTypeForFilename:media.filename];
+    
+    return remoteMedia;
+}
+
 @end
