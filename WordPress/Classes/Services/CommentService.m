@@ -544,8 +544,10 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     }
 
     // Remove deleted comments
-    [self deleteCommentsMissingFromHierarchicalComments:commentsToKeep forPage:page forPost:post];
-    [self deleteUnownedComments];
+    if (page == 1) {
+        [self deleteCommentsMissingFromHierarchicalComments:commentsToKeep forPost:post];
+        [self deleteUnownedComments];
+    }
 
     [self.managedObjectContext performBlock:^{
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -553,32 +555,9 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 }
 
 // Does not save context
-- (void)deleteCommentsMissingFromHierarchicalComments:(NSArray *)commentsToKeep forPage:(NSUInteger)page forPost:(ReaderPost *)post
+- (void)deleteCommentsMissingFromHierarchicalComments:(NSArray *)commentsToKeep forPost:(ReaderPost *)post
 {
-    NSString *entityName = NSStringFromClass([Comment class]);
-
-    // Remove deleted comments
-    Comment *firstComment = [self firstCommentForPage:page forPost:post];
-    Comment *lastComment = [self lastCommentForPage:page forPost:post];
-    NSString *starting = firstComment.hierarchy;
-    NSString *ending = lastComment.hierarchy;
-
-    if (!starting || !ending) {
-        return;
-    }
-
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:entityName];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = %@ AND hierarchy >= %@ AND hierarchy <= %@", post, starting, ending];
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"hierarchy" ascending:YES];
-    fetchRequest.sortDescriptors = @[sortDescriptor];
-
-    NSError *error = nil;
-    NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    if (error) {
-        DDLogError(@"Error fetching existing comments : %@", error);
-    }
-
-    for (Comment *comment in fetchedObjects) {
+    for (Comment *comment in post.comments) {
         if (![commentsToKeep containsObject:comment]) {
             [self.managedObjectContext deleteObject:comment];
         }
