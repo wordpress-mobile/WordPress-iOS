@@ -20,12 +20,6 @@
     return self;
 }
 
-- (void)syncCategoriesForBlog:(Blog *)blog success:(CategoriesHandler)success failure:(void (^)(NSError *))failure
-{
-    WPXMLRPCRequestOperation *operation = [self operationForCategoriesWithBlog:blog success:success failure:failure];
-    [blog.api enqueueXMLRPCRequestOperation:operation];
-}
-
 - (void)syncOptionsForBlog:(Blog *)blog success:(OptionsHandler)success failure:(void (^)(NSError *))failure
 {
     WPXMLRPCRequestOperation *operation = [self operationForOptionsWithBlog:blog success:success failure:failure];
@@ -45,7 +39,6 @@
 }
 
 - (void)syncBlogMetadata:(Blog *)blog
-       categoriesSuccess:(CategoriesHandler)categoriesSuccess
             mediaSuccess:(MediaHandler)mediaSuccess
           optionsSuccess:(OptionsHandler)optionsSuccess
       postFormatsSuccess:(PostFormatsHandler)postFormatsSuccess
@@ -58,8 +51,6 @@
     operation = [self operationForOptionsWithBlog:blog success:optionsSuccess failure:nil];
     [operations addObject:operation];
     operation = [self operationForPostFormatsWithBlog:blog success:postFormatsSuccess failure:nil];
-    [operations addObject:operation];
-    operation = [self operationForCategoriesWithBlog:blog success:categoriesSuccess failure:nil];
     [operations addObject:operation];
 
     if (!blog.isSyncingMedia) {
@@ -124,29 +115,6 @@
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         DDLogError(@"Error syncing post formats (%@): %@", operation.request.URL, error);
-
-        if (failure) {
-            failure(error);
-        }
-    }];
-
-    return operation;
-}
-
-- (WPXMLRPCRequestOperation *)operationForCategoriesWithBlog:(Blog *)blog 
-                                                     success:(CategoriesHandler)success
-                                                     failure:(void (^)(NSError *error))failure
-{
-    NSArray *parameters = [blog getXMLRPCArgsWithExtra:nil];
-    WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getCategories" parameters:parameters];
-    WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
-
-        if (success) {
-            success(responseObject);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing categories (%@): %@", operation.request.URL, error);
 
         if (failure) {
             failure(error);
