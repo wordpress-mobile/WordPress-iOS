@@ -4,7 +4,7 @@ import CoreData
 
 class ContextManagerTests: XCTestCase {
     var contextManager:TestContextManager!
-
+    
     override func setUp() {
         super.setUp()
         
@@ -50,57 +50,128 @@ class ContextManagerTests: XCTestCase {
         XCTAssertNotNil(object, "Object should exist in new PSC")
     }
     
-    func testMigrate21to22() {
-        let model21Url = self.urlForModelName("WordPress 21")
-        let model22Url = self.urlForModelName("WordPress 22")
-        let model = NSManagedObjectModel(contentsOfURL: model21Url!)
-        var psc = NSPersistentStoreCoordinator(managedObjectModel: model!)
-        let storeUrl = contextManager.storeURL()
+    func testMigrate21to22WithoutRunningAccountsFix() {
+        let model21Name = "WordPress 21"
+        let model22Name = "WordPress 22"
         
-        self.removeStoresBasedOnStoreURL(storeUrl)
+        // Instantiate a Model 21 Stack
+        startupCoredataStack(model21Name)
         
-        let persistentStore = psc.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeUrl, options: nil, error: nil)
+        let mainContext = contextManager.mainContext
+        let psc = contextManager.persistentStoreCoordinator
         
-        XCTAssertNotNil(persistentStore, "Store should exist")
+        // Insert a WPAccount entity
+        let dotcomAccount = newAccountInContext(mainContext)
+        let offsiteAccount = newAccountInContext(mainContext)
+        offsiteAccount.isWpcom = false
         
-        let mocOriginal = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
-        mocOriginal.persistentStoreCoordinator = psc
-        let account = NSEntityDescription.insertNewObjectForEntityForName("Account", inManagedObjectContext: mocOriginal) as WPAccount
-        account.username = "username"
-        account.isWpcom = true
-        account.authToken = "authtoken"
-        account.xmlrpc = "http://example.com/xmlrpc.php"
+        mainContext.obtainPermanentIDsForObjects([dotcomAccount, offsiteAccount], error: nil)
+        mainContext.save(nil)
         
-        mocOriginal.obtainPermanentIDsForObjects([account], error: nil)
-
-        var error: NSError?
-        mocOriginal.save(&error)
-        
-        NSUserDefaults.standardUserDefaults().setURL(account.objectID.URIRepresentation(), forKey: "AccountDefaultDotcom")
+        // Set the DefaultDotCom
+        let dotcomAccountURL = dotcomAccount.objectID.URIRepresentation()
+        NSUserDefaults.standardUserDefaults().setURL(dotcomAccountURL, forKey: "AccountDefaultDotcom")
         NSUserDefaults.standardUserDefaults().synchronize()
         
-        psc.removePersistentStore(persistentStore!, error: nil);
-        
-        contextManager.managedObjectModel = NSManagedObjectModel(contentsOfURL: model22Url!)
-        let standardPSC = contextManager.standardPSC
-        
-        XCTAssertNotNil(standardPSC, "New store should exist")
-        XCTAssertTrue(standardPSC.persistentStores.count == 1, "Should be one persistent store.")
-        
-        let mocSecond = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
-        mocSecond.persistentStoreCoordinator = standardPSC
-        
+        // Initialize 21 > 22 Migration
+        performCoredataMigration(model22Name)
+
+        // Verify the DefaultAccount
         let fetchRequest = NSFetchRequest(entityName: "Account")
-        let results = mocSecond.executeFetchRequest(fetchRequest, error: nil)
+        let results = mainContext.executeFetchRequest(fetchRequest, error: nil)
         
-        XCTAssertTrue(results!.count == 1, "Should have one account")
+        XCTAssertTrue(results!.count == 2, "Should have two account")
         
         let newAccount = results![0] as WPAccount
         XCTAssertNotNil(newAccount.uuid, "UUID should be assigned")
         XCTAssertTrue(newAccount.username == "username", "Usernames should match")
     }
     
-    func urlForModelName(name: NSString!) -> NSURL? {
+    func testMigrate21to22RunningAccountsFix() {
+        let model21Name = "WordPress 21"
+        let model22Name = "WordPress 22"
+        
+        // Instantiate a Model 21 Stack
+        startupCoredataStack(model21Name)
+        
+        let mainContext = contextManager.mainContext
+        let psc = contextManager.persistentStoreCoordinator
+        
+        // Insert a WordPress.com account with a Jetpack blog
+        let wrongAccount = newAccountInContext(mainContext)
+        let wrongBlog = newBlogInAccount(wrongAccount)
+        wrongAccount.addJetpackBlogsObject(wrongBlog)
+
+        // Insert a WordPress.com account with a Dotcom blog
+        let rightAccount = newAccountInContext(mainContext)
+        let rightBlog = newBlogInAccount(rightAccount)
+        rightAccount.addJetpackBlogsObject(rightBlog)
+
+        // Insert an offsite WordPress account
+        let offsiteAccount = newAccountInContext(mainContext)
+        offsiteAccount.isWpcom = false
+        
+        mainContext.obtainPermanentIDsForObjects([wrongAccount, rightAccount, offsiteAccount], error: nil)
+        mainContext.save(nil)
+        
+        // Make sure there's not even a dotcom account set
+        NSUserDefaults.standardUserDefaults().removeObjectForKey("AccountDefaultDotcom")
+        NSUserDefaults.standardUserDefaults().synchronize()
+        
+        // Initialize 21 > 22 Migration
+        performCoredataMigration(model22Name)
+        
+        // Verify the DefaultAccount
+        let fetchRequest = NSFetchRequest(entityName: "Account")
+        let results = mainContext.executeFetchRequest(fetchRequest, error: nil)
+        
+        XCTAssertTrue(results!.count == 3, "Should have three account")
+
+//        let newAccount = results![0] as WPAccount
+//        XCTAssertNotNil(newAccount.uuid, "UUID should be assigned")
+//        XCTAssertTrue(newAccount.username == "username", "Usernames should match")
+    }
+    
+
+    // MARK: - Helper Methods
+    
+    private func startupCoredataStack(modelName: String) {
+        let modelURL = urlForModelName(modelName)
+        let model = NSManagedObjectModel(contentsOfURL: modelURL!)
+        let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: model!)
+        
+        let storeUrl = contextManager.storeURL()
+        removeStoresBasedOnStoreURL(storeUrl)
+        
+        let persistentStore = persistentStoreCoordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeUrl, options: nil, error: nil)
+        XCTAssertNotNil(persistentStore, "Store should exist")
+        
+        let mainContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
+        mainContext.persistentStoreCoordinator = persistentStoreCoordinator
+        
+        contextManager.managedObjectModel = model
+        contextManager.mainContext = mainContext
+        contextManager.persistentStoreCoordinator = persistentStoreCoordinator
+    }
+    
+    private func performCoredataMigration(newModelName: String) {
+        let psc = contextManager.persistentStoreCoordinator
+        let mainContext = contextManager.mainContext
+        
+        let persistentStore = psc.persistentStores.first as? NSPersistentStore
+        psc.removePersistentStore(persistentStore!, error: nil);
+        
+        let newModelURL = urlForModelName(newModelName)
+        contextManager.managedObjectModel = NSManagedObjectModel(contentsOfURL: newModelURL!)
+        let standardPSC = contextManager.standardPSC
+        
+        XCTAssertNotNil(standardPSC, "New store should exist")
+        XCTAssertTrue(standardPSC.persistentStores.count == 1, "Should be one persistent store.")
+        
+        mainContext.reset()
+    }
+    
+    private func urlForModelName(name: NSString!) -> NSURL? {
         var bundle = NSBundle.mainBundle()
         var url = bundle.URLForResource(name, withExtension: "mom")
         
@@ -114,7 +185,7 @@ class ContextManagerTests: XCTestCase {
         return url
     }
     
-    func removeStoresBasedOnStoreURL(storeURL: NSURL) {
+    private func removeStoresBasedOnStoreURL(storeURL: NSURL) {
         let fileManager = NSFileManager.defaultManager()
         let directoryUrl = storeURL.URLByDeletingLastPathComponent
         let files = fileManager.contentsOfDirectoryAtURL(directoryUrl!, includingPropertiesForKeys: nil, options: NSDirectoryEnumerationOptions.SkipsSubdirectoryDescendants, error: nil) as Array<NSURL>
@@ -124,5 +195,22 @@ class ContextManagerTests: XCTestCase {
                 fileManager.removeItemAtURL(file, error: nil)
             }
         }
+    }
+    
+    private func newAccountInContext(context: NSManagedObjectContext) -> WPAccount {
+        let account = NSEntityDescription.insertNewObjectForEntityForName("Account", inManagedObjectContext: context) as WPAccount
+        account.username = "username"
+        account.isWpcom = true
+        account.authToken = "authtoken"
+        account.xmlrpc = "http://example.com/xmlrpc.php"
+        return account
+    }
+    
+    private func newBlogInAccount(account: WPAccount) -> Blog {
+        let blog = NSEntityDescription.insertNewObjectForEntityForName("Blog", inManagedObjectContext: account.managedObjectContext!) as Blog
+        blog.xmlrpc = "http://test.blog/xmlrpc.php";
+        blog.url = "http://test.blog/";
+        blog.account = account
+        return blog;
     }
 }
