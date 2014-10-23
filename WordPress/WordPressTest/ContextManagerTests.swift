@@ -19,19 +19,9 @@ class ContextManagerTests: XCTestCase {
         let model19Url = self.urlForModelName("WordPress 19")
         let model = NSManagedObjectModel(contentsOfURL: model19Url!)
         var psc = NSPersistentStoreCoordinator(managedObjectModel: model!)
-        
-        let fileManager = NSFileManager.defaultManager()
         let storeUrl = contextManager.storeURL()
-        let directoryUrl = storeUrl.URLByDeletingLastPathComponent
         
-        let files = fileManager.contentsOfDirectoryAtURL(directoryUrl!, includingPropertiesForKeys: nil, options: NSDirectoryEnumerationOptions.SkipsSubdirectoryDescendants, error: nil) as Array<NSURL>
-        for file in files {
-            let range = file.lastPathComponent.rangeOfString(storeUrl.lastPathComponent, options: nil, range: nil, locale: nil)
-            if range?.startIndex != range?.endIndex {
-                fileManager.removeItemAtURL(file, error: nil)
-            }
-        }
-
+        self.removeStoresBasedOnStoreURL(storeUrl)
         
         let persistentStore = psc.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeUrl, options: nil, error: nil)
 
@@ -65,18 +55,9 @@ class ContextManagerTests: XCTestCase {
         let model22Url = self.urlForModelName("WordPress 22")
         let model = NSManagedObjectModel(contentsOfURL: model21Url!)
         var psc = NSPersistentStoreCoordinator(managedObjectModel: model!)
-        
-        let fileManager = NSFileManager.defaultManager()
         let storeUrl = contextManager.storeURL()
-        let directoryUrl = storeUrl.URLByDeletingLastPathComponent
         
-        let files = fileManager.contentsOfDirectoryAtURL(directoryUrl!, includingPropertiesForKeys: nil, options: NSDirectoryEnumerationOptions.SkipsSubdirectoryDescendants, error: nil) as Array<NSURL>
-        for file in files {
-            let range = file.lastPathComponent.rangeOfString(storeUrl.lastPathComponent, options: nil, range: nil, locale: nil)
-            if range?.startIndex != range?.endIndex {
-                fileManager.removeItemAtURL(file, error: nil)
-            }
-        }
+        self.removeStoresBasedOnStoreURL(storeUrl)
         
         let persistentStore = psc.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeUrl, options: nil, error: nil)
         
@@ -131,5 +112,17 @@ class ContextManagerTests: XCTestCase {
         }
         
         return url
+    }
+    
+    func removeStoresBasedOnStoreURL(storeURL: NSURL) {
+        let fileManager = NSFileManager.defaultManager()
+        let directoryUrl = storeURL.URLByDeletingLastPathComponent
+        let files = fileManager.contentsOfDirectoryAtURL(directoryUrl!, includingPropertiesForKeys: nil, options: NSDirectoryEnumerationOptions.SkipsSubdirectoryDescendants, error: nil) as Array<NSURL>
+        for file in files {
+            let range = file.lastPathComponent.rangeOfString(storeURL.lastPathComponent, options: nil, range: nil, locale: nil)
+            if range?.startIndex != range?.endIndex {
+                fileManager.removeItemAtURL(file, error: nil)
+            }
+        }
     }
 }
