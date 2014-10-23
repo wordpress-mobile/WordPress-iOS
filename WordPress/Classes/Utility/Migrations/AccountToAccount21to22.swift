@@ -38,8 +38,10 @@ class AccountToAccount21to22: NSEntityMigrationPolicy {
             account.setValue(NSUUID().UUIDString, forKey: "uuid")
             
             if let username = account.valueForKey("username") as? String {
-                if username == defaultUsername {
-                    defaultAccount = account
+                if let isDotCom = account.valueForKey("isWpcom") as? Bool {
+                    if username == defaultUsername && isDotCom == true {
+                        defaultAccount = account
+                    }
                 }
             }
         }
@@ -101,7 +103,7 @@ class AccountToAccount21to22: NSEntityMigrationPolicy {
     
     private func fixDefaultAccountIfNeeded(context: NSManagedObjectContext) {
         // Proceed only if there is supposed to be a defaultAccount set, and it's not a wpcom account
-        if NSUserDefaults.standardUserDefaults().objectForKey(defaultDotcomKey) == nil {
+        if NSUserDefaults.standardUserDefaults().objectForKey(defaultDotcomUUIDKey) == nil {
             return
         }
         
