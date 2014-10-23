@@ -10,7 +10,6 @@
     <entity name="Account" representedClassName="WPAccount" syncable="YES">
         <attribute name="isWpcom" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="username" attributeType="String" syncable="YES"/>
-        <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="xmlrpc" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="blogs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Blog" inverseName="account" inverseEntity="Blog" indexed="YES" syncable="YES"/>
         <relationship name="defaultBlog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="accountForDefaultBlog" inverseEntity="Blog" syncable="YES"/>
@@ -371,7 +370,7 @@
     <fetchRequest name="UnreadNotes" entity="Notification" predicateString="unread == 1"/>
     <elements>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="105"/>
-        <element name="Account" positionX="0" positionY="0" width="128" height="180"/>
+        <element name="Account" positionX="0" positionY="0" width="128" height="163"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="253"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="465"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
