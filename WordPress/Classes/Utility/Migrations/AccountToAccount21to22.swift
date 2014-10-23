@@ -96,7 +96,7 @@ class AccountToAccount21to22: NSEntityMigrationPolicy {
     }
 
     private func defaultWordPressAccount(context: NSManagedObjectContext) -> NSManagedObject? {
-        let objectUUID = NSUserDefaults.standardUserDefaults().URLForKey(defaultDotcomUUIDKey)
+        let objectUUID = NSUserDefaults.standardUserDefaults().stringForKey(defaultDotcomUUIDKey)
         if objectUUID == nil {
             return nil
         }
