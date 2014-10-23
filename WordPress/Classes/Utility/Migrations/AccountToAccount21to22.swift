@@ -3,26 +3,13 @@ import Foundation
 
 class AccountToAccount21to22: NSEntityMigrationPolicy {
     override func beginEntityMapping(mapping: NSEntityMapping, manager: NSMigrationManager, error: NSErrorPointer) -> Bool {
-        var defaultAccount: NSManagedObject?
-        
+
+        // Note: 
+        // NSEntityMigrationPolicy instance might not be the same all over. Let's use NSUserDefaults
         let userDefaults = NSUserDefaults.standardUserDefaults()
-        let objectURL = userDefaults.URLForKey(defaultDotcomKey)
-        if (objectURL != nil) {
-            let objectID = manager.sourceContext.persistentStoreCoordinator!.managedObjectIDForURIRepresentation(objectURL!)
-            
-            if (objectID != nil) {
-                var error: NSError?
-                defaultAccount = manager.sourceContext.existingObjectWithID(objectID!, error: &error)
-                println(error)
-            }
-        }
         
-        // Note: Why life has to be so complicated?
-        // NSEntityMigrationPolicy instance might not be the same all over. We need to store in one safe spot the authToken,
-        // so that when the migration sequence is over, we can pinpoint the old default account!
-        if let unwrappedAccount = defaultAccount {
+        if let unwrappedAccount = defaultWordPressAccount(manager.sourceContext) {
             let username = unwrappedAccount.valueForKey("username") as String;
-            
             userDefaults.setValue(username, forKey: defaultDotcomUsernameKey)
         }
         
@@ -71,6 +58,30 @@ class AccountToAccount21to22: NSEntityMigrationPolicy {
 //        accountService.fixDefaultAccountIfNeeded()
         
         return true
+    }
+    
+    
+    // MARK: - Private Helpers
+    
+    private func defaultWordPressAccount(context: NSManagedObjectContext) -> NSManagedObject? {
+        let objectURL = NSUserDefaults.standardUserDefaults().URLForKey(defaultDotcomKey)
+        if objectURL == nil {
+            return nil
+        }
+        
+        let objectID = context.persistentStoreCoordinator!.managedObjectIDForURIRepresentation(objectURL!)
+        if objectID == nil {
+            return nil
+        }
+        
+        var error: NSError?
+        var defaultAccount = context.existingObjectWithID(objectID!, error: &error)
+        
+        if let unwrappedError = error {
+            println(unwrappedError)
+        }
+        
+        return defaultAccount
     }
 
     private let defaultDotcomUsernameKey    = "AccountDefaultAuthToken"
