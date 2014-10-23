@@ -100,6 +100,4 @@ extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
 
 - (NSUInteger)numberOfAccounts;
 
-- (void)fixDefaultAccountIfNeeded;
-
 @end
