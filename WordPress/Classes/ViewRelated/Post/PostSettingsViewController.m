@@ -61,6 +61,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 @property (assign) BOOL *textFieldDidHaveFocusBeforeOrientationChange;
 @property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, assign) BOOL *shouldHideStatusBar;
+@property (nonatomic, assign) BOOL *isUploadingMedia;
 
 @end
 
@@ -113,6 +114,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
     // Compensate for the first section's height of 1.0f
     self.tableView.contentInset = UIEdgeInsetsMake(-1.0f, 0, 0, 0);
+    self.isUploadingMedia = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -579,7 +581,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 {
     UITableViewCell *cell;
 
-    if (!self.post.post_thumbnail) {
+    if (!self.post.post_thumbnail && !self.isUploadingMedia) {
         WPTableViewActivityCell *activityCell = [self getWPActivityTableViewCell];
         activityCell.textLabel.text = NSLocalizedString(@"Set Featured Image", @"");
         activityCell.tag = PostSettingsRowFeaturedImageAdd;
@@ -598,7 +600,9 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
             [featuredImageCell setImage:self.featuredImage];
         } else {
             [featuredImageCell showLoadingSpinner:YES];
-            [self loadFeaturedImage:indexPath];
+            if (!self.isUploadingMedia){
+                [self loadFeaturedImage:indexPath];
+            }
         }
 
         cell = featuredImageCell;
@@ -1028,6 +1032,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     __weak PostSettingsViewController *weakSelf = self;
+    self.isUploadingMedia = YES;
     // On iOS7 the image picker seems to override our preferred setting so we force the status bar color back.
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
@@ -1037,10 +1042,12 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
             media.mediaType = MediaTypeFeatured;
             [mediaService uploadMedia:media success:^{
+                weakSelf.isUploadingMedia = NO;
                 Post *post = (Post *)weakSelf.apost;
                 post.featuredImage = media;
                 [weakSelf.tableView reloadData];
             } failure:^(NSError *error) {
+                weakSelf.isUploadingMedia = NO;
                 DDLogError(@"could'n upload asset to server", assetURL, [error localizedDescription]);
                 [weakSelf.tableView reloadData];
             }];
@@ -1055,6 +1062,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]] withRowAnimation:UITableViewRowAnimationFade];
     } failureBlock:^(NSError *error){
         DDLogError(@"can't get asset %@: %@", assetURL, [error localizedDescription]);
+        weakSelf.isUploadingMedia = NO;
     }];
 }
 
