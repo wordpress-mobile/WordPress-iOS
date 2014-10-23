@@ -62,6 +62,7 @@ class ContextManagerTests: XCTestCase {
     
     func testMigrate21to22() {
         let model21Url = self.urlForModelName("WordPress 21")
+        let model22Url = self.urlForModelName("WordPress 22")
         let model = NSManagedObjectModel(contentsOfURL: model21Url!)
         var psc = NSPersistentStoreCoordinator(managedObjectModel: model!)
         
@@ -76,7 +77,6 @@ class ContextManagerTests: XCTestCase {
                 fileManager.removeItemAtURL(file, error: nil)
             }
         }
-        
         
         let persistentStore = psc.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeUrl, options: nil, error: nil)
         
@@ -100,6 +100,7 @@ class ContextManagerTests: XCTestCase {
         
         psc.removePersistentStore(persistentStore!, error: nil);
         
+        contextManager.managedObjectModel = NSManagedObjectModel(contentsOfURL: model22Url!)
         let standardPSC = contextManager.standardPSC
         
         XCTAssertNotNil(standardPSC, "New store should exist")

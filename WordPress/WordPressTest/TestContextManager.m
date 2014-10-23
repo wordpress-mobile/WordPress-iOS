@@ -5,6 +5,7 @@
 
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 @synthesize mainContext = _mainContext;
+@synthesize managedObjectModel = _managedObjectModel;
 
 - (instancetype)init
 {
