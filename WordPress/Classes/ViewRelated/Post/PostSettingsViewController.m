@@ -47,7 +47,6 @@ static NSInteger RowIndexForDatePicker = 0;
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
 
 @interface PostSettingsViewController () <UITextFieldDelegate, WPTableImageSourceDelegate, WPPickerViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate> {
-    WPMediaUploader *_mediaUploader;
 }
 
 @property (nonatomic, strong) AbstractPost *apost;
@@ -79,7 +78,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.apost = aPost;
-        _mediaUploader = [[WPMediaUploader alloc] init];
         _shouldHideStatusBar = shouldHideStatusBar;
     }
     return self;
@@ -581,7 +579,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 {
     UITableViewCell *cell;
 
-    if (!self.post.post_thumbnail && !_mediaUploader.isUploadingMedia) {
+    if (!self.post.post_thumbnail) {
         WPTableViewActivityCell *activityCell = [self getWPActivityTableViewCell];
         activityCell.textLabel.text = NSLocalizedString(@"Set Featured Image", @"");
         activityCell.tag = PostSettingsRowFeaturedImageAdd;
@@ -1029,6 +1027,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
+    __weak PostSettingsViewController *weakSelf = self;
     // On iOS7 the image picker seems to override our preferred setting so we force the status bar color back.
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
@@ -1037,23 +1036,23 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
         [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
             media.mediaType = MediaTypeFeatured;
-            __weak PostSettingsViewController *weakSelf = self;
-            _mediaUploader = [[WPMediaUploader alloc] init];
-            _mediaUploader.uploadsCompletedBlock = ^{
+            [mediaService uploadMedia:media success:^{
                 Post *post = (Post *)weakSelf.apost;
                 post.featuredImage = media;
                 [weakSelf.tableView reloadData];
-            };
-            [_mediaUploader uploadMediaObjects:@[media]];
+            } failure:^(NSError *error) {
+                DDLogError(@"could'n upload asset to server", assetURL, [error localizedDescription]);
+                [weakSelf.tableView reloadData];
+            }];
         }];
 
         if (IS_IPAD) {
-            [self.popover dismissPopoverAnimated:YES];
+            [weakSelf.popover dismissPopoverAnimated:YES];
         } else {
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            [weakSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
         }
         // Reload the featured image row so that way the activity indicator will be displayed.
-        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]] withRowAnimation:UITableViewRowAnimationFade];
+        [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]] withRowAnimation:UITableViewRowAnimationFade];
     } failureBlock:^(NSError *error){
         DDLogError(@"can't get asset %@: %@", assetURL, [error localizedDescription]);
     }];

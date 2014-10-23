@@ -12,4 +12,8 @@
 
 - (void) getMediaWithID:(NSNumber *)mediaID inBlog:(Blog *)blog withSuccess:(void (^)(Media *media))success failure:(void (^)(NSError *error))failure;
 
+- (void)uploadMedia:(Media *)media
+            success:(void (^)())success
+            failure:(void (^)(NSError *error))failure;
+
 @end
