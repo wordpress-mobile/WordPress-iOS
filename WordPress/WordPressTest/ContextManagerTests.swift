@@ -16,19 +16,14 @@ class ContextManagerTests: XCTestCase {
     }
 
     func testIterativeMigration() {
-        let model19Url = self.urlForModelName("WordPress 19")
-        let model = NSManagedObjectModel(contentsOfURL: model19Url!)
-        var psc = NSPersistentStoreCoordinator(managedObjectModel: model!)
-        let storeUrl = contextManager.storeURL()
+        let model19Name = "WordPress 19"
         
-        self.removeStoresBasedOnStoreURL(storeUrl)
+        // Instantiate a Model 19 Stack
+        startupCoredataStack(model19Name)
+        let mocOriginal = contextManager.mainContext
+        let psc = contextManager.persistentStoreCoordinator
         
-        let persistentStore = psc.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeUrl, options: nil, error: nil)
-
-        XCTAssertNotNil(persistentStore, "Store should exist")
-
-        let mocOriginal = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
-        mocOriginal.persistentStoreCoordinator = psc
+        // Insert a Theme Entity
         let objectOriginal = NSEntityDescription.insertNewObjectForEntityForName("Theme", inManagedObjectContext: mocOriginal) as NSManagedObject
         mocOriginal.obtainPermanentIDsForObjects([objectOriginal], error: nil)
         var error: NSError?
@@ -36,6 +31,9 @@ class ContextManagerTests: XCTestCase {
 
         let objectID = objectOriginal.objectID
         XCTAssertFalse(objectID.temporaryID, "Should be a permanent object")
+
+        // Migrate to the latest
+        let persistentStore = psc.persistentStores.first as? NSPersistentStore
         psc.removePersistentStore(persistentStore!, error: nil);
     
         let standardPSC = contextManager.standardPSC
@@ -43,6 +41,7 @@ class ContextManagerTests: XCTestCase {
         XCTAssertNotNil(standardPSC, "New store should exist")
         XCTAssertTrue(standardPSC.persistentStores.count == 1, "Should be one persistent store.")
         
+        // Verify if the Theme Entity is there
         let mocSecond = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
         mocSecond.persistentStoreCoordinator = standardPSC
         let object = mocSecond.existingObjectWithID(objectID, error: nil)
