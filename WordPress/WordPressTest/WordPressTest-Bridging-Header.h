@@ -4,3 +4,4 @@
 
 #import "ContextManager.h"
 #import "TestContextManager.h"
+#import "WPAccount.h"
