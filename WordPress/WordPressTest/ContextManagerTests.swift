@@ -113,7 +113,7 @@ class ContextManagerTests: XCTestCase {
         // Insert a WordPress.com account with a Dotcom blog
         let rightAccount = newAccountInContext(mainContext)
         let rightBlog = newBlogInAccount(rightAccount)
-        rightAccount.addJetpackBlogsObject(rightBlog)
+        rightAccount.addBlogsObject(rightBlog)
         rightAccount.username = "Right"
 
         // Insert an offsite WordPress account
