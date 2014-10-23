@@ -1048,7 +1048,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
                 [weakSelf.tableView reloadData];
             } failure:^(NSError *error) {
                 weakSelf.isUploadingMedia = NO;
-                DDLogError(@"could'n upload asset to server", assetURL, [error localizedDescription]);
+                DDLogError(@"Couldn't upload asset %@: %@", assetURL, [error localizedDescription]);
                 [weakSelf.tableView reloadData];
             }];
         }];
