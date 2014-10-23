@@ -63,6 +63,7 @@ class ContextManagerTests: XCTestCase {
         let dotcomAccount = newAccountInContext(mainContext)
         let offsiteAccount = newAccountInContext(mainContext)
         offsiteAccount.isWpcom = false
+        offsiteAccount.username = "OffsiteUsername"
         
         mainContext.obtainPermanentIDsForObjects([dotcomAccount, offsiteAccount], error: nil)
         mainContext.save(nil)
@@ -105,6 +106,7 @@ class ContextManagerTests: XCTestCase {
         let rightAccount = newAccountInContext(mainContext)
         let rightBlog = newBlogInAccount(rightAccount)
         rightAccount.addJetpackBlogsObject(rightBlog)
+        rightAccount.username = "Right"
 
         // Insert an offsite WordPress account
         let offsiteAccount = newAccountInContext(mainContext)
@@ -113,8 +115,9 @@ class ContextManagerTests: XCTestCase {
         mainContext.obtainPermanentIDsForObjects([wrongAccount, rightAccount, offsiteAccount], error: nil)
         mainContext.save(nil)
         
-        // Make sure there's not even a dotcom account set
-        NSUserDefaults.standardUserDefaults().removeObjectForKey("AccountDefaultDotcom")
+        // Set the DefaultDotCom
+        let offsiteAccountURL = offsiteAccount.objectID.URIRepresentation()
+        NSUserDefaults.standardUserDefaults().setURL(offsiteAccountURL, forKey: "AccountDefaultDotcom")
         NSUserDefaults.standardUserDefaults().synchronize()
         
         // Initialize 21 > 22 Migration
@@ -126,9 +129,21 @@ class ContextManagerTests: XCTestCase {
         
         XCTAssertTrue(results!.count == 3, "Should have three account")
 
-//        let newAccount = results![0] as WPAccount
-//        XCTAssertNotNil(newAccount.uuid, "UUID should be assigned")
-//        XCTAssertTrue(newAccount.username == "username", "Usernames should match")
+        let defaultAccountUUID = NSUserDefaults.standardUserDefaults().valueForKey("AccountDefaultDotcomUUID") as? String
+        var defaultAccount: NSManagedObject?
+        
+        for account in results! {
+            if let uuid = account.valueForKey("uuid") as? String {
+                if uuid == defaultAccountUUID {
+                    defaultAccount = account as? NSManagedObject
+                    break
+                }
+            }
+        }
+        let defaultUsername = defaultAccount?.valueForKey("username") as? String
+        
+        XCTAssert(defaultAccount != nil, "Default account not found")
+        XCTAssert(defaultUsername! == "Right", "Invalid default account")
     }
     
 
