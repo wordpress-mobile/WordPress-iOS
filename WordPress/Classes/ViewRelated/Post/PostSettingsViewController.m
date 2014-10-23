@@ -938,7 +938,6 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
                                  isPrivate:self.post.blog.isPrivate];
     } failure:^(NSError *error) {
         [self tableImageSource:self.imageSource imageFailedforIndexPath:indexPath error:error];
-        return;
     }];
 }
 
