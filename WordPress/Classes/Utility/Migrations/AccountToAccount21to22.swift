@@ -6,15 +6,17 @@ class AccountToAccount21to22: NSEntityMigrationPolicy {
 
         // Note: 
         // NSEntityMigrationPolicy instance might not be the same all over. Let's use NSUserDefaults
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        
-        if let unwrappedAccount = defaultWordPressAccount(manager.sourceContext) {
-            let username = unwrappedAccount.valueForKey("username") as String;
+        if let unwrappedAccount = legacyDefaultWordPressAccount(manager.sourceContext) {
+            let username = unwrappedAccount.valueForKey("username") as String
+            
+            let userDefaults = NSUserDefaults.standardUserDefaults()
             userDefaults.setValue(username, forKey: defaultDotcomUsernameKey)
+            userDefaults.synchronize()
+            
+            println(">> Migration process matched [\(username)] as the default WordPress.com account")
+        } else {
+            println(">> Migration process couldn't locate a default WordPress.com account")
         }
-        
-        userDefaults.removeObjectForKey(defaultDotcomKey)
-        userDefaults.synchronize()
         
         return true
     }
@@ -33,14 +35,19 @@ class AccountToAccount21to22: NSEntityMigrationPolicy {
         // Assign the UUID's + Find the old defaultAccount (if any)
         let defaultUsername: String = NSUserDefaults.standardUserDefaults().stringForKey(defaultDotcomUsernameKey) ?? String()
         var defaultAccount: NSManagedObject?
-        
+
         for account in accounts! {
             account.setValue(NSUUID().UUIDString, forKey: "uuid")
             
             if let username = account.valueForKey("username") as? String {
                 if let isDotCom = account.valueForKey("isWpcom") as? Bool {
+
+                    println(">> Assigned UUID to account [\(username)]. IsDotCom [\(isDotCom)]")
+                    
                     if username == defaultUsername && isDotCom == true {
                         defaultAccount = account
+                        
+                        println(">> Default Account found [\(username)]")
                     }
                 }
             }
@@ -53,6 +60,8 @@ class AccountToAccount21to22: NSEntityMigrationPolicy {
             let uuid = defaultAccount!.valueForKey("uuid") as String
             userDefaults.setObject(uuid, forKey: defaultDotcomUUIDKey)
         }
+        
+        userDefaults.removeObjectForKey(defaultDotcomKey)
         userDefaults.removeObjectForKey(defaultDotcomUsernameKey)
         userDefaults.synchronize()
         
@@ -65,7 +74,7 @@ class AccountToAccount21to22: NSEntityMigrationPolicy {
     
     // MARK: - Private Helpers
     
-    private func defaultWordPressAccount(context: NSManagedObjectContext) -> NSManagedObject? {
+    private func legacyDefaultWordPressAccount(context: NSManagedObjectContext) -> NSManagedObject? {
         let objectURL = NSUserDefaults.standardUserDefaults().URLForKey(defaultDotcomKey)
         if objectURL == nil {
             return nil
@@ -86,6 +95,29 @@ class AccountToAccount21to22: NSEntityMigrationPolicy {
         return defaultAccount
     }
 
+    private func defaultWordPressAccount(context: NSManagedObjectContext) -> NSManagedObject? {
+        let objectUUID = NSUserDefaults.standardUserDefaults().URLForKey(defaultDotcomUUIDKey)
+        if objectUUID == nil {
+            return nil
+        }
+        
+        let request = NSFetchRequest(entityName: "Account")
+        request.predicate = NSPredicate(format: "uuid == %@", objectUUID!)
+        
+        var error: NSError?
+        var accounts = context.executeFetchRequest(request, error: &error) as? [NSManagedObject]
+        
+        if let unwrappedError = error {
+            println(unwrappedError)
+        }
+        
+        if let unwrappedAccounts = accounts {
+            return unwrappedAccounts.first
+        }
+        
+        return nil
+    }
+    
     private func setDefaultWordPressAccount(account: NSManagedObject) {
         let uuid = account.valueForKey("uuid") as? String
         if uuid == nil {
@@ -102,11 +134,6 @@ class AccountToAccount21to22: NSEntityMigrationPolicy {
     // MARK: Invalid Default WordPress Account Fix
     
     private func fixDefaultAccountIfNeeded(context: NSManagedObjectContext) {
-        // Proceed only if there is supposed to be a defaultAccount set, and it's not a wpcom account
-        if NSUserDefaults.standardUserDefaults().objectForKey(defaultDotcomUUIDKey) == nil {
-            return
-        }
-        
         let oldDefaultAccount = defaultWordPressAccount(context)
         if oldDefaultAccount?.valueForKey("isWpcom")?.boolValue == true {
             return
@@ -139,6 +166,8 @@ class AccountToAccount21to22: NSEntityMigrationPolicy {
 
             setDefaultWordPressAccount(defaultAccount)
             WPAnalytics.track(.PerformedCoreDataMigrationFixFor45)
+        } else {
+            println(">> Error: couldn't update the Default WordPress.com account")
         }
     }
 
