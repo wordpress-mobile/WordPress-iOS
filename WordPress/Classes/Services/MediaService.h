@@ -8,6 +8,7 @@
 @interface MediaService : NSObject <LocalCoreDataService>
 
 - (void)createMediaWithAsset:(ALAsset *)asset forPostObjectID:(NSManagedObjectID *)postObjectID completion:(void (^)(Media *media))completion;
+
 - (AFHTTPRequestOperation *)operationToUploadMedia:(Media *)media withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 - (void) getMediaWithID:(NSNumber *)mediaID inBlog:(Blog *)blog withSuccess:(void (^)(Media *media))success failure:(void (^)(NSError *error))failure;

@@ -25,7 +25,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
                                            ofType:(NSString *)type
                                      withFilename:(NSString *)filename
                                            toBlog:(Blog *)blog
-                                          success:(void (^)(NSNumber *mediaID, NSString *url))success
+                                          success:(void (^)(RemoteMedia * remoteMedia))success
                                           failure:(void (^)(NSError *))failure
 {
     NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/new", blog.dotComID];
@@ -34,12 +34,24 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
         [formData appendPartWithFileURL:url name:@"media[]" fileName:filename mimeType:type error:nil];
     } error:nil];
     AFHTTPRequestOperation *operation = [self.api HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) {
-            NSDictionary *response = (NSDictionary *)responseObject;
-            NSDictionary *media = [[response arrayForKey:@"media"] firstObject];
-            NSNumber *mediaID = [media numberForKey:@"id"];
-            NSString *url = [media stringForKey:@"link"];
-            success(mediaID, url);
+        NSDictionary *response = (NSDictionary *)responseObject;
+        NSArray * errorList = response[@"error"];
+        NSArray * mediaList = response[@"media"];
+        if (mediaList.count > 0){
+            RemoteMedia * remoteMedia = [self remoteMediaFromJSONDictionary:mediaList[0]];
+            if (success){
+                success(remoteMedia);
+            }
+        } else {
+            DDLogDebug(@"Error uploading file: %@", errorList);
+            NSError * error = nil;
+            if (errorList.count > 0){
+                NSDictionary * errorDictionary = @{NSLocalizedDescriptionKey: errorList[0]};
+                error = [NSError errorWithDomain:WordPressRestApiErrorDomain code:WPRestErrorCodeMediaNew userInfo:errorDictionary];
+            }
+            if (failure){
+                failure(error);
+            }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
@@ -75,34 +87,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
             success:(void (^)(RemoteMedia *remoteMedia))success
             failure:(void (^)(NSError *error))failure
 {
-    NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/new", blog.dotComID];
-    NSMutableURLRequest *request = [self.api.requestSerializer multipartFormRequestWithMethod:@"POST" URLString:[[NSURL URLWithString:apiPath relativeToURL:self.api.baseURL] absoluteString] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        [formData appendPartWithFileURL:[NSURL fileURLWithPath:media.localURL] name:@"media[]" error:nil];        
-    } error:nil];
-    AFHTTPRequestOperation *operation = [self.api HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (!success) {
-            return;
-        }
-        NSDictionary *response = (NSDictionary *)responseObject;
-        NSArray * errorList = response[@"error"];
-        NSArray * mediaList = response[@"media"];
-        if (mediaList.count > 0){
-            RemoteMedia * remoteMedia = [self remoteMediaFromJSONDictionary:mediaList[0]];
-            success(remoteMedia);
-        } else {
-            DDLogDebug(@"Error uploading file: %@", errorList);
-            NSError * error = nil;
-            if (errorList.count > 0){
-                NSDictionary * errorDictionary = @{NSLocalizedDescriptionKey: errorList[0]};
-                error = [NSError errorWithDomain:WordPressRestApiErrorDomain code:WPRestErrorCodeMediaNew userInfo:errorDictionary];
-            }
-            failure(error);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
+    NSOperation * operation = [self operationToUploadFile:media.localURL ofType:media.mimeType withFilename:media.file toBlog:blog success:success failure:failure];
     
     [self.api.operationQueue addOperation:operation];
 }
@@ -118,7 +103,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
         remoteMedia.postID = jsonMedia[@"parent"];
         remoteMedia.file = jsonMedia[@"metadata"][@"file"];
         //remoteMedia.mimeType = jsonMedia[@"mime_type"];
-        //remoteMedia.extension = jsonMedia[@"extension"];
+        remoteMedia.extension = [jsonMedia[@"metadata"][@"file"] pathExtension];
         remoteMedia.title = jsonMedia[@"title"];
         remoteMedia.caption = jsonMedia[@"caption"];
         //remoteMedia.descriptionText = jsonMedia[@"description"];
