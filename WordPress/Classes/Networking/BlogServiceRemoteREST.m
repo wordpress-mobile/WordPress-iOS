@@ -46,6 +46,7 @@
     NSMutableDictionary *options = [NSMutableDictionary dictionary];
     options[@"home_url"] = response[@"URL"];
     options[@"post_thumbnail"] = [response valueForKeyPath:@"options.featured_images_enabled"];
+    options[@"post_thumbnail"] = @(1);
     // We'd be better off saving this as a BOOL property on Blog, but let's do what XML-RPC does for now
     options[@"blog_public"] = [[response numberForKey:@"is_private"] boolValue] ? @"-1" : @"0";
     if ([[options numberForKey:@"jetpack"] boolValue]) {
