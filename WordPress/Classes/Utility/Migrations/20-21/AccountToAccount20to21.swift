@@ -36,6 +36,9 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
         
         if let defaultAccount = accounts?.first {
             setLegacyDefaultWordPressAccount(defaultAccount)
+            println(">> Migration process located default account with username [\(defaultUsername)\")")
+        } else {
+            println(">> Migration process failed to locate default account)")            
         }
 
         // Cleanup!
