@@ -54,9 +54,7 @@
         //make sure that we only return when object is properly created and saved
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
             if (completion) {
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    completion(media);
-                }];                
+                completion(media);
             }
 
         }];
@@ -87,11 +85,9 @@
                                              [self updateMedia:mediaInContext withRemoteMedia:remoteMedia];
                                              mediaInContext.remoteStatus = MediaRemoteStatusSync;
                                              [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                                                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                                                      if (success) {
                                                          success();
                                                      }
-                                                 }];
                                              }];
                                          }
                                      }];
@@ -126,11 +122,9 @@
                 [self updateMedia:mediaInContext withRemoteMedia:media];
                 mediaInContext.remoteStatus = MediaRemoteStatusSync;
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                        if (success) {
-                            success();
-                        }
-                    }];
+                    if (success) {
+                        success();
+                    }
                 }];
             }
         }];
