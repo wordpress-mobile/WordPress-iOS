@@ -40,17 +40,18 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
             let uuid = NSUUID().UUIDString
             account.setValue(uuid, forKey: "uuid")
             
-            if let username = account.valueForKey("username") as? String {
-                if let isDotCom = account.valueForKey("isWpcom") as? Bool {
-
-                    println(">> Assigned UUID to account [\(username)]. IsDotCom [\(isDotCom)] UUID [\(uuid)]")
-                    
-                    if username == defaultUsername && isDotCom == true {
-                        defaultAccount = account
-                        
-                        println(">> Default Account found [\(username)]")
-                    }
-                }
+            let username = account.valueForKey("username") as? String
+            let isDotCom = account.valueForKey("isWpcom") as? Bool
+            
+            if username == nil || isDotCom == nil {
+                continue
+            }
+            
+            if defaultUsername == username! && isDotCom! == true {
+                defaultAccount = account
+                println(">> Assigned UUID [\(uuid)] to DEFAULT account [\(username!)]. IsDotCom [\(isDotCom!)]")
+            } else {
+                println(">> Assigned UUID [\(uuid)] to account [\(username!)]. IsDotCom [\(isDotCom!)]")
             }
         }
         
@@ -137,10 +138,11 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
     private func fixDefaultAccountIfNeeded(context: NSManagedObjectContext) {
         let oldDefaultAccount = defaultWordPressAccount(context)
         if oldDefaultAccount?.valueForKey("isWpcom")?.boolValue == true {
+            println("<< Default Account Fix not required!")
             return
         }
         
-        println(">> Executing Default Account Fix")
+        println(">> Proceeding with Default Account Fix")
 
         // Load all of the WPAccount instances
         let request         = NSFetchRequest(entityName: "Account")
