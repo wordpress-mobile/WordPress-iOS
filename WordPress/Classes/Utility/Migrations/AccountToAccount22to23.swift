@@ -173,7 +173,7 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
     }
 
     
-    private let defaultDotcomUsernameKey    = "AccountDefaultAuthToken"
+    private let defaultDotcomUsernameKey    = "AccountDefaultUsername"
     private let defaultDotcomKey            = "AccountDefaultDotcom"
     private let defaultDotcomUUIDKey        = "AccountDefaultDotcomUUID"
 }
