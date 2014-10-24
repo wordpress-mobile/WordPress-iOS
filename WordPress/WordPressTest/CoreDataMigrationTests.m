@@ -89,6 +89,9 @@
                                                           toModel:model
                                                 orderedModelNames:@[@"WordPress 18", @"WordPress 19", @"WordPress 20", @"WordPress 21"]
                                                             error:&error];
+    if (error) {
+        NSLog(@"Error while migrating: %@", error);
+    }
     XCTAssertTrue(migrateResult);
     
     psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
