@@ -69,4 +69,24 @@ class AccountServiceTests: XCTestCase {
         
         XCTAssertTrue(2 == accountService.numberOfAccounts(), "There should be two accounts")
     }
+    
+    func testRemoveDefaultWordPressComAccountNoAccount() {
+        accountService.removeDefaultWordPressComAccount()
+        
+        XCTAssertTrue(true, "Test passes if no exception thrown")
+    }
+    
+    func testRemoveDefaultWordPressComAccountAccountSet() {
+        accountService.removeDefaultWordPressComAccount()
+        
+        let account = accountService.createOrUpdateWordPressComAccountWithUsername("username", password: "password", authToken: "authtoken")
+        
+        accountService.setDefaultWordPressComAccount(account)
+        
+        
+        accountService.removeDefaultWordPressComAccount()
+        
+        XCTAssertNil(accountService.defaultWordPressComAccount(), "No default account should be set")
+        XCTAssertTrue(account.deleted, "Account should be deleted")
+    }
 }
