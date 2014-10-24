@@ -37,12 +37,13 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
         var defaultAccount: NSManagedObject?
 
         for account in accounts! {
-            account.setValue(NSUUID().UUIDString, forKey: "uuid")
+            let uuid = NSUUID().UUIDString
+            account.setValue(uuid, forKey: "uuid")
             
             if let username = account.valueForKey("username") as? String {
                 if let isDotCom = account.valueForKey("isWpcom") as? Bool {
 
-                    println(">> Assigned UUID to account [\(username)]. IsDotCom [\(isDotCom)]")
+                    println(">> Assigned UUID to account [\(username)]. IsDotCom [\(isDotCom)] UUID [\(uuid)]")
                     
                     if username == defaultUsername && isDotCom == true {
                         defaultAccount = account
