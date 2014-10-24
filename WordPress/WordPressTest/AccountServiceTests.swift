@@ -52,4 +52,21 @@ class AccountServiceTests: XCTestCase {
         XCTAssertNotNil(defaultAccount, "Default account should be set")
         XCTAssertEqual(defaultAccount, account, "Default account should the one created")
     }
+    
+    func testNumberOfAccountsNoAccounts() {
+        XCTAssertTrue(0 == accountService.numberOfAccounts(), "There should be zero accounts")
+    }
+    
+    func testNumberOfAccountsOneAccount() {
+        let account = accountService.createOrUpdateWordPressComAccountWithUsername("username", password: "password", authToken: "authtoken")
+        
+        XCTAssertTrue(1 == accountService.numberOfAccounts(), "There should be one account")
+    }
+    
+    func testNumberOfAccountsTwoAccounts() {
+        let account = accountService.createOrUpdateWordPressComAccountWithUsername("username", password: "password", authToken: "authtoken")
+        let account2 = accountService.createOrUpdateWordPressComAccountWithUsername("username2", password: "password", authToken: "authtoken2")
+        
+        XCTAssertTrue(2 == accountService.numberOfAccounts(), "There should be two accounts")
+    }
 }
