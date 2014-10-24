@@ -6,3 +6,4 @@
 #import "TestContextManager.h"
 #import "WPAccount.h"
 #import "Blog.h"
+#import "AccountService.h"
