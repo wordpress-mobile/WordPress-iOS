@@ -20,6 +20,7 @@ class ContextManagerTests: XCTestCase {
         
         // Instantiate a Model 19 Stack
         startupCoredataStack(model19Name)
+        
         let mocOriginal = contextManager.mainContext
         let psc = contextManager.persistentStoreCoordinator
         
@@ -76,23 +77,23 @@ class ContextManagerTests: XCTestCase {
         // Initialize 21 > 22 Migration
         let secondContext = performCoredataMigration(model23Name)
 
-        // Verify the DefaultAccount
+        // Verify that the two accounts have been migrated
         let fetchRequest = NSFetchRequest(entityName: "Account")
-        let results = secondContext.executeFetchRequest(fetchRequest, error: nil) as? [WPAccount]
-        XCTAssertTrue(results!.count == 2, "Should have two account")
+        let numberOfAccounts = secondContext.countForFetchRequest(fetchRequest, error: nil)
+        XCTAssertTrue(numberOfAccounts == 2, "Should have two account")
         
-        let defaultAccountUUID = NSUserDefaults.standardUserDefaults().valueForKey("AccountDefaultDotcomUUID") as? String
-        var defaultAccount: WPAccount?
+        // Verify if the Default Account is the right one
+        let defaultAccountUUID = NSUserDefaults.standardUserDefaults().stringForKey("AccountDefaultDotcomUUID")
+        XCTAssert(defaultAccountUUID != nil, "Missing UUID")
         
-        for account in results! {
-            XCTAssertNotNil(account.uuid, "UUID should be assigned")
-            if account.uuid == defaultAccountUUID! {
-                defaultAccount = account
-            }
-        }
+        let request = NSFetchRequest(entityName: "Account")
+        request.predicate = NSPredicate(format: "uuid == %@", defaultAccountUUID!)
         
-        XCTAssert(defaultAccount != nil, "Default account not found")
-        XCTAssert(defaultAccount!.username == "username", "Invalid Default Account")
+        let results = secondContext.executeFetchRequest(request, error: nil) as? [WPAccount]
+        XCTAssert(results!.count == 1, "Default account not found")
+
+        let defaultAccount = results!.first!
+        XCTAssert(defaultAccount.username == "username", "Invalid Default Account")
     }
     
     func testMigrate21to23RunningAccountsFix() {
@@ -128,30 +129,27 @@ class ContextManagerTests: XCTestCase {
         NSUserDefaults.standardUserDefaults().setURL(offsiteAccountURL, forKey: "AccountDefaultDotcom")
         NSUserDefaults.standardUserDefaults().synchronize()
         
-        // Initialize 21 > 22 Migration
+        // Initialize 21 > 23 Migration
         let secondContext = performCoredataMigration(model23Name)
         
-        // Verify the DefaultAccount
-        let fetchRequest = NSFetchRequest(entityName: "Account")
-        let results = secondContext.executeFetchRequest(fetchRequest, error: nil)
-        
-        XCTAssertTrue(results!.count == 3, "Should have three account")
+        // Verify that the three accounts made it through
+        let allAccountsRequest = NSFetchRequest(entityName: "Account")
+        let numberOfAccounts = secondContext.countForFetchRequest(allAccountsRequest, error: nil)
+        XCTAssertTrue(numberOfAccounts == 3, "Should have three accounts")
 
-        let defaultAccountUUID = NSUserDefaults.standardUserDefaults().valueForKey("AccountDefaultDotcomUUID") as? String
-        var defaultAccount: NSManagedObject?
+        // Verify if the Default Account is the right one
+        let accountUUID = NSUserDefaults.standardUserDefaults().stringForKey("AccountDefaultDotcomUUID")
+        XCTAssert(accountUUID != nil, "Default Account's UUID is missing")
         
-        for account in results! {
-            if let uuid = account.valueForKey("uuid") as? String {
-                if uuid == defaultAccountUUID {
-                    defaultAccount = account as? NSManagedObject
-                    break
-                }
-            }
-        }
-        let defaultUsername = defaultAccount?.valueForKey("username") as? String
+        let request = NSFetchRequest(entityName: "Account")
+        request.predicate = NSPredicate(format: "uuid == %@", accountUUID!)
         
-        XCTAssert(defaultAccount != nil, "Default account not found")
-        XCTAssert(defaultUsername! == "Right", "Invalid default account")
+        let results = secondContext.executeFetchRequest(request, error: nil) as? [WPAccount]
+        XCTAssert(results != nil, "Default Account has been lost")
+        XCTAssert(results?.count == 1, "UUID is not unique!")
+        
+        let username = results?.first?.username
+        XCTAssert(username! == "Right", "Invalid default account")
     }
     
 
@@ -199,7 +197,7 @@ class ContextManagerTests: XCTestCase {
         var bundle = NSBundle.mainBundle()
         var url = bundle.URLForResource(name, withExtension: "mom")
         
-        if (url == nil) {
+        if url == nil {
             var momdPaths = bundle.pathsForResourcesOfType("momd", inDirectory: nil);
             for momdPath in momdPaths {
                 url = bundle.URLForResource(name, withExtension: "mom", subdirectory: momdPath.lastPathComponent)
