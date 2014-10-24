@@ -226,8 +226,9 @@
     }
     
 	[navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
-	navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-	[self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
+	navController.modalPresentationStyle = UIModalPresentationFullScreen;
+    
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)viewPost:(AbstractPost *)apost
@@ -243,8 +244,9 @@
         editPostViewController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
         [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
-        navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-        [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
+        navController.modalPresentationStyle = UIModalPresentationFullScreen;
+
+        [self presentViewController:navController animated:YES completion:nil];
     }
 }
 
