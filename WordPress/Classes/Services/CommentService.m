@@ -200,7 +200,6 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                                 success:(void (^)(NSInteger count, BOOL hasMore))success
                                 failure:(void (^)(NSError *error))failure
 {
-
     NSManagedObjectID *postObjectID = post.objectID;
     CommentServiceRemoteREST *service = [self remoteForREST];
     [service syncHierarchicalCommentsForPost:post.postID
@@ -227,9 +226,11 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                                              }
                                          }];
                                      } failure:^(NSError *error) {
-                                         if (failure) {
-                                             failure(error);
-                                         }
+                                         [self.managedObjectContext performBlock:^{
+                                             if (failure) {
+                                                 failure(error);
+                                             }
+                                         }];
                                      }];
 }
 
@@ -268,19 +269,23 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     // post and content provided.
     Comment *comment = [self createHierarchicalCommentWithContent:content withParent:nil postID:postID siteID:siteID];
     void (^successBlock)(RemoteComment *remoteComment) = ^void(RemoteComment *remoteComment) {
-        // Update and save the comment
-        [self updateCommentAndSave:comment withRemoteComment:remoteComment];
-        if (success) {
-            success();
-        }
+        [self.managedObjectContext performBlock:^{
+            // Update and save the comment
+            [self updateCommentAndSave:comment withRemoteComment:remoteComment];
+            if (success) {
+                success();
+            }
+        }];
     };
 
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
-        // Remove the optimistically saved comment.
-        [self deleteComment:comment success:nil failure:nil];
-        if (failure) {
-            failure(error);
-        }
+        [self.managedObjectContext performBlock:^{
+            // Remove the optimistically saved comment.
+            [self deleteComment:comment success:nil failure:nil];
+            if (failure) {
+                failure(error);
+            }
+        }];
     };
 
     CommentServiceRemoteREST *remote = [self remoteForREST];
@@ -303,18 +308,22 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     Comment *comment = [self createHierarchicalCommentWithContent:content withParent:commentID postID:postID siteID:siteID];
     void (^successBlock)(RemoteComment *remoteComment) = ^void(RemoteComment *remoteComment) {
         // Update and save the comment
-        [self updateCommentAndSave:comment withRemoteComment:remoteComment];
-        if (success) {
-            success();
-        }
+        [self.managedObjectContext performBlock:^{
+            [self updateCommentAndSave:comment withRemoteComment:remoteComment];
+            if (success) {
+                success();
+            }
+        }];
     };
 
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
-        // Remove the optimistically saved comment.
-        [self deleteComment:comment success:nil failure:nil];
-        if (failure) {
-            failure(error);
-        }
+        [self.managedObjectContext performBlock:^{
+            // Remove the optimistically saved comment.
+            [self deleteComment:comment success:nil failure:nil];
+            if (failure) {
+                failure(error);
+            }
+        }];
     };
 
     CommentServiceRemoteREST *remote = [self remoteForREST];
@@ -650,9 +659,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 - (void)updateCommentAndSave:(Comment *)comment withRemoteComment:(RemoteComment *)remoteComment
 {
     [self updateComment:comment withRemoteComment:remoteComment];
-    [self.managedObjectContext performBlock:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    }];
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
 - (void)mergeHierarchicalComments:(NSArray *)comments forPage:(NSUInteger)page forPost:(ReaderPost *)post
@@ -685,9 +692,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     [self deleteCommentsMissingFromHierarchicalComments:commentsToKeep forPage:page forPost:post];
     [self deleteUnownedComments];
 
-    [self.managedObjectContext performBlock:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    }];
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
 // Does not save context
