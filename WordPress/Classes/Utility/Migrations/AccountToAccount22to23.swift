@@ -6,16 +6,28 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
 
         // Note: 
         // NSEntityMigrationPolicy instance might not be the same all over. Let's use NSUserDefaults
-        if let unwrappedAccount = legacyDefaultWordPressAccount(manager.sourceContext) {
-            let username = unwrappedAccount.valueForKey("username") as String
-            
+        let defaultAccount = legacyDefaultWordPressAccount(manager.sourceContext)
+        if defaultAccount == nil {
+            println(">> Migration process couldn't locate a default WordPress.com account")
+            return true
+        }
+        
+        let unwrappedAccount = defaultAccount!
+        let username = unwrappedAccount.valueForKey("username") as? String
+        let isDotCom = unwrappedAccount.valueForKey("isWpcom") as? Bool
+        
+        if username == nil || isDotCom == nil {
+            println(">> Migration process found an invalid default DotCom account")
+        }
+        
+        if isDotCom! == true {
             let userDefaults = NSUserDefaults.standardUserDefaults()
-            userDefaults.setValue(username, forKey: defaultDotcomUsernameKey)
+            userDefaults.setValue(username!, forKey: defaultDotcomUsernameKey)
             userDefaults.synchronize()
             
-            println(">> Migration process matched [\(username)] as the default WordPress.com account")
+            println(">> Migration process matched [\(username!)] as the default WordPress.com account")
         } else {
-            println(">> Migration process couldn't locate a default WordPress.com account")
+            println(">> Migration process found [\(username!)] as an invalid Default Account (Non DotCom!)")
         }
         
         return true
