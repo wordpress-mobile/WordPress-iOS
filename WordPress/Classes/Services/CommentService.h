@@ -57,8 +57,8 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
                                 success:(void (^)(NSInteger count, BOOL hasMore))success
                                 failure:(void (^)(NSError *error))failure;
 
-// Counts and returns the total number of pages of hierarchcial comments synced for a post.
-// A partial set still counts as a page.
+// Counts and returns the number of full pages of hierarchcial comments synced for a post.
+// A partial set does not count toward the total number of pages. 
 - (NSInteger)numberOfHierarchicalPagesSyncedforPost:(ReaderPost *)post;
 
 
@@ -77,7 +77,20 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure;
 
-// Reply to comment
+// Replies
+- (void)replyToPostWithID:(NSNumber *)postID
+                   siteID:(NSNumber *)siteID
+                  content:(NSString *)content
+                  success:(void (^)())success
+                  failure:(void (^)(NSError *error))failure;
+
+- (void)replyToHierarchicalCommentWithID:(NSNumber *)commentID
+                                  postID:(NSNumber *)postID
+                                  siteID:(NSNumber *)siteID
+                                 content:(NSString *)content
+                                 success:(void (^)())success
+                                 failure:(void (^)(NSError *error))failure;
+
 - (void)replyToCommentWithID:(NSNumber *)commentID
                       siteID:(NSNumber *)siteID
                      content:(NSString *)content
