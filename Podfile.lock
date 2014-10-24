@@ -27,7 +27,7 @@ PODS:
     - CocoaLumberjack/Core
   - CrashlyticsLumberjack (1.0.1):
     - CocoaLumberjack/Core
-  - CTAssetsPickerController (2.2.2)
+  - CTAssetsPickerController (2.6.0)
   - DTCoreText (1.6.13):
     - DTFoundation/Core (~> 1.7.1)
     - DTFoundation/DTAnimatedGIF (~> 1.7.1)
@@ -96,7 +96,7 @@ DEPENDENCIES:
   - AFNetworking (~> 2.3.1)
   - CocoaLumberjack (~> 1.8.1)
   - CrashlyticsLumberjack (~> 1.0.0)
-  - CTAssetsPickerController (~> 2.2.2)
+  - CTAssetsPickerController (~> 2.6)
   - DTCoreText (= 1.6.13)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec`)
   - google-plus-ios-sdk (~> 1.5)
@@ -143,7 +143,7 @@ SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
   CocoaLumberjack: 9d198d6e19909b3b113a38c5f06f7bb8eedd0427
   CrashlyticsLumberjack: b2a184319db06a070ccc176c07c503720ebedf81
-  CTAssetsPickerController: e1247f76d97a129b75c4050990e75fd2eff7430f
+  CTAssetsPickerController: 1dadc633ca90bcd7797222199fcd7f9047b93386
   DTCoreText: 84eb8ba2e70448fdd9d837540e371f9f587b65ba
   DTFoundation: 360bc65ab44f588611f47324b8cfb0f18e04b263
   EmailChecker: e909e6d113fac7ad5e3c304fabce30fc4a79c80e
