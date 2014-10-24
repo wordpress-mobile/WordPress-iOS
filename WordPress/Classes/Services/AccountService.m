@@ -81,6 +81,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
  */
 - (void)setDefaultWordPressComAccount:(WPAccount *)account
 {
+    NSParameterAssert(account != nil);
     NSAssert(account.isWpcom, @"account should be a wordpress.com account");
     NSAssert(account.authToken.length > 0, @"Account should have an authToken for WP.com");
 
@@ -104,15 +105,17 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 {
     [NotificationsManager unregisterDeviceToken];
 
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-    });
-
     WPAccount *account = [self defaultWordPressComAccount];
-    [self.managedObjectContext deleteObject:account];
+    if (account) {
+        [self.managedObjectContext deleteObject:account];
+    }
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
         [WPAnalytics refreshMetadata];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+        });
     }];
 
     // Clear WordPress.com cookies
@@ -132,7 +135,6 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_blogs"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_prefered_blog_id"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-
 }
 
 ///-----------------------
