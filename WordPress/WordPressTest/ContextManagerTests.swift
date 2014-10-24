@@ -50,6 +50,59 @@ class ContextManagerTests: XCTestCase {
         XCTAssertNotNil(object, "Object should exist in new PSC")
     }
     
+    func testMigrate20to21PreservingDefaultAccount() {
+        let model20Name = "WordPress 20"
+        let model21Name = "WordPress 21"
+        
+        // Instantiate a Model 21 Stack
+        startupCoredataStack(model20Name)
+        
+        let mainContext = contextManager.mainContext
+        let psc = contextManager.persistentStoreCoordinator
+        
+        // Insert a WordPress.com account with a Jetpack blog
+        let wrongAccount = newAccountInContext(mainContext)
+        let wrongBlog = newBlogInAccount(wrongAccount)
+        wrongAccount.addJetpackBlogsObject(wrongBlog)
+        
+        // Insert a WordPress.com account with a Dotcom blog
+        let rightAccount = newAccountInContext(mainContext)
+        let rightBlog = newBlogInAccount(rightAccount)
+        rightAccount.addBlogsObject(rightBlog)
+        rightAccount.username = "Right"
+        
+        // Insert an offsite WordPress account
+        let offsiteAccount = newAccountInContext(mainContext)
+        offsiteAccount.isWpcom = false
+        
+        mainContext.obtainPermanentIDsForObjects([wrongAccount, rightAccount, offsiteAccount], error: nil)
+        mainContext.save(nil)
+        
+        // Set the DefaultDotCom
+        let oldRightAccountURL = rightAccount.objectID.URIRepresentation()
+        NSUserDefaults.standardUserDefaults().setURL(oldRightAccountURL, forKey: "AccountDefaultDotcom")
+        NSUserDefaults.standardUserDefaults().synchronize()
+        
+        // Initialize 20 > 21 Migration
+        let secondContext = performCoredataMigration(model21Name)
+        
+        // Verify that the three accounts made it through
+        let allAccountsRequest = NSFetchRequest(entityName: "Account")
+        let numberOfAccounts = secondContext.countForFetchRequest(allAccountsRequest, error: nil)
+        XCTAssertTrue(numberOfAccounts == 3, "Should have three accounts")
+        
+        // Verify if the Default Account is the right one
+        let newRightAccountURL = NSUserDefaults.standardUserDefaults().URLForKey("AccountDefaultDotcom")
+        XCTAssert(newRightAccountURL != nil, "Default Account's URL is missing")
+        
+        let objectID = secondContext.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(newRightAccountURL!)
+        XCTAssert(objectID != nil, "Invalid newRightAccount URL")
+        
+        let reloadedRightAccount = secondContext.existingObjectWithID(objectID!, error: nil) as? WPAccount
+        XCTAssert(reloadedRightAccount != nil, "Couldn't load the right default account")
+        XCTAssert(reloadedRightAccount!.username! == "Right", "Invalid default account")
+    }
+    
     func testMigrate21to23WithoutRunningAccountsFix() {
         let model21Name = "WordPress 21"
         let model23Name = "WordPress 23"
