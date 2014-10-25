@@ -6,7 +6,10 @@
 #import "ContextManager.h"
 #import <ImageIO/ImageIO.h>
 
-NSString * const SavedMediaResizeSetting = @"SavedMediaResizeSetting";
+NSString * const SavedMaxImageSizeSetting = @"SavedMaxImageSizeSetting";
+CGSize const MediaMaxImageSize = {3000, 3000};
+NSInteger const MediaMinImageSizeDimention = 150;
+NSInteger const MediaMaxImageSizeDimention = 3000;
 
 @interface Media (PrivateMethods)
 
@@ -45,34 +48,26 @@ NSString * const SavedMediaResizeSetting = @"SavedMediaResizeSetting";
 NSUInteger const MediaDefaultThumbnailSize = 75;
 CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
 
-+ (NSString *)stringForMediaSize:(MediaResize)mediaSize
++ (CGSize)maxImageSizeSetting
 {
-    if (mediaSize == MediaResizeSmall) {
-        return NSLocalizedString(@"Small", @"Name of the 'small' image size setting. This is the same size as the thumbnail size specified wp-admin media settings.");
-    }
-    if (mediaSize == MediaResizeMedium) {
-        return NSLocalizedString(@"Medium", @"Name of the 'medium' image size setting.");
-    }
-    if (mediaSize == MediaResizeLarge) {
-        return NSLocalizedString(@"Large", @"Name of the 'large' image size setting.");
-    }
-    return NSLocalizedString(@"Original", @"Name of the 'full' or original image size setting. Indicates that an image is its original size, or will keep its original size when uploaded.");
-}
-
-+ (MediaResize)mediaResizeSetting
-{
-    NSNumber *savedSize = (NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:SavedMediaResizeSetting];
-    MediaResize mediaSize = MediaResizeOriginal;
+    NSString *savedSize = [[NSUserDefaults standardUserDefaults] objectForKey:SavedMaxImageSizeSetting];
+    CGSize maxSize = CGSizeMake(MediaMaxImageSizeDimention, MediaMaxImageSizeDimention);
     if (savedSize) {
-        mediaSize = (MediaResize)[savedSize integerValue];
+        maxSize = CGSizeFromString(savedSize);
     }
-    return mediaSize;
+    return maxSize;
 }
 
-+ (void)setMediaResizeSetting:(MediaResize)mediaSize
++ (void)setMaxImageSizeSetting:(CGSize)imageSize
 {
-    NSNumber *size = [NSNumber numberWithInteger:mediaSize];
-    [[NSUserDefaults standardUserDefaults] setObject:size forKey:SavedMediaResizeSetting];
+    // Constraint to max width and height.
+    CGFloat width = imageSize.width;
+    CGFloat height = imageSize.height;
+    width = MAX(MIN(width, MediaMaxImageSizeDimention), MediaMinImageSizeDimention);
+    height = MAX(MIN(height, MediaMaxImageSizeDimention), MediaMinImageSizeDimention);
+
+    NSString *sizeStr = NSStringFromCGSize(CGSizeMake(width, height));
+    [[NSUserDefaults standardUserDefaults] setObject:sizeStr forKey:SavedMaxImageSizeSetting];
     [NSUserDefaults resetStandardUserDefaults];
 }
 
