@@ -157,12 +157,6 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     return [results firstObject];
 }
 
-- (void)syncCategoriesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
-{
-    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncCategoriesForBlog:blog success:[self categoriesHandlerWithBlog:blog completionHandler:success] failure:failure];
-}
-
 - (void)syncOptionsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
@@ -199,7 +193,6 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncBlogMetadata:blog
-           categoriesSuccess:[self categoriesHandlerWithBlog:blog completionHandler:nil]
                 mediaSuccess:[self mediaHandlerWithBlog:blog completionHandler:nil]
               optionsSuccess:[self optionsHandlerWithBlog:blog completionHandler:nil]
           postFormatsSuccess:[self postFormatsHandlerWithBlog:blog completionHandler:nil]
@@ -226,6 +219,10 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     // Right now, none of the callers care about the results of the sync
     // We're ignoring the callbacks here but this needs refactoring
     [commentService syncCommentsForBlog:blog success:nil failure:nil];
+
+    CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    [categoryService syncCategoriesForBlog:blog success:nil failure:nil];
+
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:self.managedObjectContext];
     // FIXME: this is hacky, but XML-RPC doesn't support fetching "any" type of post
     // Ideally we'd do a multicall and fetch both posts/pages, but it's out of scope for this commit
@@ -354,24 +351,6 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 }
 
 #pragma mark - Completion handlers
-
-- (CategoriesHandler)categoriesHandlerWithBlog:(Blog *)blog completionHandler:(void (^)(void))completion
-{
-    return ^void(NSArray *categories) {
-        if ([blog isDeleted] || blog.managedObjectContext == nil) {
-            return;
-        }
-
-        [self.managedObjectContext performBlockAndWait:^{
-            CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
-            [categoryService mergeNewCategories:categories forBlogObjectID:blog.objectID];
-        }];
-
-        if (completion) {
-            completion();
-        }
-    };
-}
 
 - (MediaHandler)mediaHandlerWithBlog:(Blog *)blog completionHandler:(void (^)(void))completion
 {

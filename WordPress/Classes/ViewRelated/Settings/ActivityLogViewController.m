@@ -40,6 +40,9 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self.tableView setEstimatedRowHeight:50.f];
+    [self.tableView setRowHeight:UITableViewAutomaticDimension];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self loadLogFiles];

@@ -102,7 +102,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
-    [blogService syncOptionsForBlog:_blog success:nil failure:nil];
+    [blogService syncBlog:_blog success:nil failure:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
