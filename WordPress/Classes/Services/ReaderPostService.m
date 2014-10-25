@@ -860,6 +860,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     }
     content = [self normalizeParagraphs:content];
     content = [self removeInlineStyles:content];
+    content = [content stringByReplacingHTMLEmoticonsWithEmoji];
 
     return content;
 }

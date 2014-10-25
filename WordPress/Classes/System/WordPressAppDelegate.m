@@ -49,6 +49,7 @@
 #import "WPAnalyticsTrackerWPCom.h"
 
 #import "Reachability.h"
+#import "WordPress-Swift.h"
 
 #if DEBUG
 #import "DDTTYLogger.h"
@@ -125,7 +126,9 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [self removeCredentialsForDebug];
 
     // Stats and feedback
+#ifndef DEBUG
     [Taplytics startTaplyticsAPIKey:[WordPressComApiCredentials taplyticsAPIKey]];
+#endif
     [SupportViewController checkIfFeedbackShouldBeEnabled];
 
     [Helpshift installForApiKey:[WordPressComApiCredentials helpshiftAPIKey] domainName:[WordPressComApiCredentials helpshiftDomainName] appID:[WordPressComApiCredentials helpshiftAppId]];
@@ -606,6 +609,8 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [[UIToolbar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[UIColor darkGrayColor]];
     
     [[UIToolbar appearanceWhenContainedIn:[WPEditorViewController class], nil] setBarTintColor:[UIColor whiteColor]];
+
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[WPStyleGuide littleEddieGrey]]];
 }
 
 #pragma mark - Tracking methods
@@ -787,6 +792,24 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [postsViewController setBlog:post.blog];
 
     [blogListNavController setViewControllers:@[blogListViewController, blogDetailsViewController, postsViewController]];
+}
+
+- (void)switchMeTabToStatsViewForBlog:(Blog *)blog
+{
+    // Make sure the desired tab is selected.
+    [self showTabForIndex:kMeTabIndex];
+    
+    // Build and set the navigation heirarchy for the Me tab.
+    UINavigationController *blogListNavController = [self.tabBarController.viewControllers objectAtIndex:kMeTabIndex];
+    BlogListViewController *blogListViewController = [blogListNavController.viewControllers objectAtIndex:0];
+
+    BlogDetailsViewController *blogDetailsViewController = [BlogDetailsViewController new];
+    blogDetailsViewController.blog = blog;
+    
+    StatsViewController *statsViewController = [StatsViewController new];
+    statsViewController.blog = blog;
+    
+    [blogListNavController setViewControllers:@[blogListViewController, blogDetailsViewController, statsViewController]];
 }
 
 - (BOOL)isNavigatingMeTab

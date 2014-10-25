@@ -383,7 +383,7 @@ static NSDictionary *EnabledButtonBarStyle;
     picker.assetsFilter = [ALAssetsFilter allPhotos];
     
     [self presentViewController:picker animated:YES completion:nil];
-    picker.navigationBar.translucent = NO;
+    picker.childNavigationController.navigationBar.translucent = NO;
 }
 
 #pragma mark - Editing
