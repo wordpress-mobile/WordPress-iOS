@@ -113,9 +113,15 @@ static CGFloat const SettingsRowHeight = 44.0;
 
 - (NSString *)titleForMediaCell
 {
+    CGSize savedSize = [Media maxImageSizeSetting];
     NSString *title = NSLocalizedString(@"Image Size", @"Title for the image size settings option.");
-    NSString *mediaSize = [Media stringForMediaSize:[Media mediaResizeSetting]];
-    return [NSString stringWithFormat:@"%@: %@", title, mediaSize];
+    NSString *sizeStr = @"";
+    if (CGSizeEqualToSize(savedSize, MediaMaxImageSize)) {
+        sizeStr = NSLocalizedString(@"Original", @"Label title. Indicates an image will use its original size when uploaded.");
+    } else {
+        sizeStr = [NSString stringWithFormat:@"%.0fx%.0f", savedSize.width, savedSize.height];
+    }
+    return [NSString stringWithFormat:@"%@: %@", title, sizeStr];
 }
 
 - (UILabel *)mediaCellLabel
@@ -146,12 +152,12 @@ static CGFloat const SettingsRowHeight = 44.0;
     CGRect frame = CGRectMake(HorizontalMargin, CGRectGetHeight(self.mediaCellLabel.frame), width, MediaSizeControlHeight);
     UISlider *slider = [[UISlider alloc] initWithFrame:frame];
     slider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    slider.continuous = NO;
+    slider.continuous = YES;
     slider.minimumTrackTintColor = [WPStyleGuide whisperGrey];
     slider.maximumTrackTintColor = [WPStyleGuide whisperGrey];
-    slider.minimumValue = MediaResizeMedium;
-    slider.maximumValue = MediaResizeOriginal;
-    slider.value = [Media mediaResizeSetting];
+    slider.minimumValue = MediaMinImageSizeDimention;
+    slider.maximumValue = MediaMaxImageSizeDimention;
+    slider.value = [Media maxImageSizeSetting].width;
     [slider addTarget:self action:@selector(handleImageSizeChanged:) forControlEvents:UIControlEventValueChanged];
     self.mediaSizeSlider = slider;
 
@@ -160,8 +166,10 @@ static CGFloat const SettingsRowHeight = 44.0;
 
 - (void)handleImageSizeChanged:(id)sender
 {
-    NSUInteger value = (NSUInteger)(self.mediaSizeSlider.value + 0.5);
-    [Media setMediaResizeSetting:value];
+    NSInteger value = self.mediaSizeSlider.value;
+    value = value - (value % 50); // steps of 50
+
+    [Media setMaxImageSizeSetting:CGSizeMake(value, value)];
 
     [self.mediaSizeSlider setValue:value animated:NO];
     self.mediaCellLabel.text = [self titleForMediaCell];

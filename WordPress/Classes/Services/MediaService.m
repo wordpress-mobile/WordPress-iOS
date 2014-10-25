@@ -33,21 +33,12 @@
     WPImageOptimizer *optimizer = [WPImageOptimizer new];
 
     NSData *optimizedImageData;
-    MediaResize sizeSetting = [Media mediaResizeSetting];
-    if (sizeSetting == MediaResizeOriginal) {
+    CGSize maxImageSize = [Media maxImageSizeSetting];
+
+    if (CGSizeEqualToSize(maxImageSize, MediaMaxImageSize)) {
         optimizedImageData = [optimizer rawDataFromAsset:asset];
     } else {
-        AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
-        NSDictionary *sizes = [post.blog getImageResizeDimensions];
-        CGSize targetSize;
-        if (sizeSetting == MediaResizeSmall){
-            targetSize = [[sizes valueForKey:@"smallSize"] CGSizeValue];
-        } else if (sizeSetting == MediaResizeMedium) {
-            targetSize = [[sizes valueForKey:@"mediumSize"] CGSizeValue];
-        } else {
-            targetSize = [[sizes valueForKey:@"largeSize"] CGSizeValue];
-        }
-        optimizedImageData = [optimizer optimizedDataFromAsset:asset fittingSize:targetSize];
+        optimizedImageData = [optimizer optimizedDataFromAsset:asset fittingSize:maxImageSize];
     }
 
     NSData *thumbnailData = [self thumbnailDataFromAsset:asset];
