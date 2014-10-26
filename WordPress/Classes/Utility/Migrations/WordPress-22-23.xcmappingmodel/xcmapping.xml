@@ -456,13 +456,14 @@
         <relationship name="entitymapping" type="1/1" destination="XDDEVENTITYMAPPING" idrefs="z172"></relationship>
     </object>
     <object type="XDDEVENTITYMAPPING" id="z189">
+        <attribute name="migrationpolicyclassname" type="string">SafeReaderTopicToReaderTopic</attribute>
         <attribute name="sourcename" type="string">ReaderTopic</attribute>
         <attribute name="mappingtypename" type="string">Undefined</attribute>
         <attribute name="mappingnumber" type="int16">8</attribute>
         <attribute name="destinationname" type="string">ReaderTopic</attribute>
         <attribute name="autogenerateexpression" type="bool">1</attribute>
         <relationship name="mappingmodel" type="1/1" destination="XDDEVMAPPINGMODEL" idrefs="z267"></relationship>
-        <relationship name="attributemappings" type="0/0" destination="XDDEVATTRIBUTEMAPPING" idrefs="z231 z116 z290 z210 z314 z234 z228"></relationship>
+        <relationship name="attributemappings" type="0/0" destination="XDDEVATTRIBUTEMAPPING" idrefs="z231 z210 z314 z234 z116 z290 z228"></relationship>
         <relationship name="relationshipmappings" type="0/0" destination="XDDEVRELATIONSHIPMAPPING" idrefs="z166 z247"></relationship>
     </object>
     <object type="XDDEVATTRIBUTEMAPPING" id="z190">
