@@ -2,6 +2,11 @@ import UIKit
 import Foundation
 
 class AccountToAccount20to21: NSEntityMigrationPolicy {
+    
+    private let defaultDotcomUsernameKey    = "defaultDotcomUsernameKey"
+    private let defaultDotcomKey            = "AccountDefaultDotcom"
+    
+    
     override func beginEntityMapping(mapping: NSEntityMapping, manager: NSMigrationManager, error: NSErrorPointer) -> Bool {
 
         // Note: 
@@ -85,8 +90,4 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
         defaults.setURL(accountURL, forKey: defaultDotcomKey)
         defaults.synchronize()
     }
-    
-    
-    private let defaultDotcomUsernameKey    = "defaultDotcomUsernameKey"
-    private let defaultDotcomKey            = "AccountDefaultDotcom"
 }
