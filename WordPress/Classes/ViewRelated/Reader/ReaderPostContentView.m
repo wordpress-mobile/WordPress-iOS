@@ -111,20 +111,23 @@
     NSString *title;
     if ([self.post.likeCount integerValue] > 0) {
         title = [self.post.likeCount stringValue];
-    } else {
-        title = @"";
     }
+
     [self.likeButton setTitle:title forState:UIControlStateNormal];
     [self.likeButton setTitle:title forState:UIControlStateSelected];
+    [self.likeButton setTitle:title forState:UIControlStateDisabled];
+    [self.likeButton setTitle:title forState:UIControlStateHighlighted];
     [self.likeButton setNeedsLayout];
 
+    title = nil;
     if ([self.post.commentCount integerValue] > 0) {
         title = [self.post.commentCount stringValue];
-    } else {
-        title = @"";
     }
+
     [self.commentButton setTitle:title forState:UIControlStateNormal];
     [self.commentButton setTitle:title forState:UIControlStateSelected];
+    [self.commentButton setTitle:title forState:UIControlStateDisabled];
+    [self.commentButton setTitle:title forState:UIControlStateHighlighted];
     [self.commentButton setNeedsLayout];
 
     // Show highlights
