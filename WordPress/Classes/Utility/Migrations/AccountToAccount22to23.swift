@@ -21,7 +21,7 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
         // NSEntityMigrationPolicy instance might not be the same all over. Let's use NSUserDefaults
         let defaultAccount = legacyDefaultWordPressAccount(manager.sourceContext)
         if defaultAccount == nil {
-            println(">> Migration process couldn't locate a default WordPress.com account")
+            DDLogSwift.logError(">> Migration process couldn't locate a default WordPress.com account")
             return true
         }
         
@@ -30,7 +30,7 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
         let isDotCom = unwrappedAccount.valueForKey("isWpcom") as? Bool
         
         if username == nil || isDotCom == nil {
-            println(">> Migration process found an invalid default DotCom account")
+            DDLogSwift.logError(">> Migration process found an invalid default DotCom account")
         }
         
         if isDotCom! == true {
@@ -38,9 +38,9 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
             userDefaults.setValue(username!, forKey: defaultDotcomUsernameKey)
             userDefaults.synchronize()
             
-            println(">> Migration process matched [\(username!)] as the default WordPress.com account")
+            DDLogSwift.logWarn(">> Migration process matched [\(username!)] as the default WordPress.com account")
         } else {
-            println(">> Migration process found [\(username!)] as an invalid Default Account (Non DotCom!)")
+            DDLogSwift.logError(">> Migration process found [\(username!)] as an invalid Default Account (Non DotCom!)")
         }
         
         return true
@@ -74,9 +74,9 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
             
             if defaultUsername == username! && isDotCom! == true {
                 defaultAccount = account
-                println(">> Assigned UUID [\(uuid)] to DEFAULT account [\(username!)]. IsDotCom [\(isDotCom!)]")
+                DDLogSwift.logWarn(">> Assigned UUID [\(uuid)] to DEFAULT account [\(username!)]. IsDotCom [\(isDotCom!)]")
             } else {
-                println(">> Assigned UUID [\(uuid)] to account [\(username!)]. IsDotCom [\(isDotCom!)]")
+                DDLogSwift.logWarn(">> Assigned UUID [\(uuid)] to account [\(username!)]. IsDotCom [\(isDotCom!)]")
             }
         }
         
@@ -116,7 +116,7 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
         var defaultAccount = context.existingObjectWithID(objectID!, error: &error)
         
         if let unwrappedError = error {
-            println(unwrappedError)
+            DDLogSwift.logError("\(unwrappedError)")
         }
         
         return defaultAccount
@@ -135,7 +135,7 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
         var accounts = context.executeFetchRequest(request, error: &error) as? [NSManagedObject]
         
         if let unwrappedError = error {
-            println(unwrappedError)
+            DDLogSwift.logError("\(unwrappedError)")
         }
         
         if let unwrappedAccounts = accounts {
@@ -148,7 +148,7 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
     private func setDefaultWordPressAccount(account: NSManagedObject) {
         let uuid = account.valueForKey("uuid") as? String
         if uuid == nil {
-            println(">> Error setting the default WordPressDotCom Account")
+            DDLogSwift.logError(">> Error setting the default WordPressDotCom Account")
             return
         }
 
@@ -163,11 +163,11 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
     private func fixDefaultAccountIfNeeded(context: NSManagedObjectContext) {
         let oldDefaultAccount = defaultWordPressAccount(context)
         if oldDefaultAccount?.valueForKey("isWpcom")?.boolValue == true {
-            println("<< Default Account Fix not required!")
+            DDLogSwift.logWarn("<< Default Account Fix not required!")
             return
         }
         
-        println(">> Proceeding with Default Account Fix")
+        DDLogSwift.logInfo(">> Proceeding with Default Account Fix")
 
         // Load all of the WPAccount instances
         let request         = NSFetchRequest(entityName: "Account")
@@ -176,7 +176,7 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
         let results         = context.executeFetchRequest(request, error: nil) as? [NSManagedObject]
 
         if results == nil {
-            println(">> Error while executing accounts fix: couldn't locate any WPAccount instances")
+            DDLogSwift.logError(">> Error while executing accounts fix: couldn't locate any WPAccount instances")
             return
         }
         
@@ -190,12 +190,12 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
 
         // Pick up the first account!
         if let defaultAccount = unwrappedAccounts.firstObject as? NSManagedObject {
-            println(">> Updating defaultAccount \(defaultAccount)")
+            DDLogSwift.logInfo(">> Updating defaultAccount \(defaultAccount)")
 
             setDefaultWordPressAccount(defaultAccount)
             WPAnalytics.track(.PerformedCoreDataMigrationFixFor45)
         } else {
-            println(">> Error: couldn't update the Default WordPress.com account")
+            DDLogSwift.logError(">> Error: couldn't update the Default WordPress.com account")
         }
     }
 }

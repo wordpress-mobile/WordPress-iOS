@@ -24,9 +24,9 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
             userDefaults.setValue(username, forKey: defaultDotcomUsernameKey)
             userDefaults.synchronize()
             
-            println(">> Migration process matched [\(username)] as the default WordPress.com account")
+            DDLogSwift.logWarn(">> Migration process matched [\(username)] as the default WordPress.com account")
         } else {
-            println(">> Migration process couldn't locate a default WordPress.com account")
+            DDLogSwift.logError(">> Migration process couldn't locate a default WordPress.com account")
         }
         
         return true
@@ -47,9 +47,9 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
         
         if let defaultAccount = accounts?.first {
             setLegacyDefaultWordPressAccount(defaultAccount)
-            println(">> Migration process located default account with username [\(defaultUsername)\")")
+            DDLogSwift.logInfo(">> Migration process located default account with username [\(defaultUsername)\")")
         } else {
-            println(">> Migration process failed to locate default account)")            
+            DDLogSwift.logError(">> Migration process failed to locate default account)")
         }
 
         // Cleanup!
@@ -77,7 +77,7 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
         var defaultAccount = context.existingObjectWithID(objectID!, error: &error)
         
         if let unwrappedError = error {
-            println(unwrappedError)
+            DDLogSwift.logError("\(unwrappedError)")
         }
         
         return defaultAccount

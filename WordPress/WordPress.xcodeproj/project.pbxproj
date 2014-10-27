@@ -226,6 +226,7 @@
 		93740DCB17D8F86700C41B2F /* WPAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 93740DCA17D8F86700C41B2F /* WPAlertView.m */; };
 		937D9A0F19F83812007B9D5F /* WordPress-22-23.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 937D9A0E19F83812007B9D5F /* WordPress-22-23.xcmappingmodel */; };
 		937D9A1119F838C2007B9D5F /* AccountToAccount22to23.swift in Sources */ = {isa = PBXBuildFile; fileRef = 937D9A1019F838C2007B9D5F /* AccountToAccount22to23.swift */; };
+		93A379DB19FE6D3000415023 /* DDLogSwift.m in Sources */ = {isa = PBXBuildFile; fileRef = 93A379DA19FE6D3000415023 /* DDLogSwift.m */; };
 		93A3F7DE1843F6F00082FEEA /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93A3F7DD1843F6F00082FEEA /* CoreTelephony.framework */; };
 		93C1147F18EC5DD500DAC95C /* AccountService.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C1147E18EC5DD500DAC95C /* AccountService.m */; };
 		93C1148518EDF6E100DAC95C /* BlogService.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C1148418EDF6E100DAC95C /* BlogService.m */; };
@@ -857,6 +858,8 @@
 		937D9A0C19F83744007B9D5F /* WordPress 22.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 22.xcdatamodel"; sourceTree = "<group>"; };
 		937D9A0E19F83812007B9D5F /* WordPress-22-23.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "WordPress-22-23.xcmappingmodel"; sourceTree = "<group>"; };
 		937D9A1019F838C2007B9D5F /* AccountToAccount22to23.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountToAccount22to23.swift; sourceTree = "<group>"; };
+		93A379D919FE6D3000415023 /* DDLogSwift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDLogSwift.h; sourceTree = "<group>"; };
+		93A379DA19FE6D3000415023 /* DDLogSwift.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDLogSwift.m; sourceTree = "<group>"; };
 		93A3F7DD1843F6F00082FEEA /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		93C1147D18EC5DD500DAC95C /* AccountService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountService.h; sourceTree = "<group>"; };
 		93C1147E18EC5DD500DAC95C /* AccountService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountService.m; sourceTree = "<group>"; };
@@ -1902,6 +1905,8 @@
 				C545E0A11811B9880020844C /* ContextManager.m */,
 				FD9A948A12FAEA2300438F94 /* DateUtils.h */,
 				FD9A948B12FAEA2300438F94 /* DateUtils.m */,
+				93A379D919FE6D3000415023 /* DDLogSwift.h */,
+				93A379DA19FE6D3000415023 /* DDLogSwift.m */,
 				5DB4683918A2E718004A89A9 /* LocationService.h */,
 				5DB4683A18A2E718004A89A9 /* LocationService.m */,
 				C57A31A2183D2111007745B9 /* NotificationsManager.h */,
@@ -2931,6 +2936,7 @@
 				C58349C51806F95100B64089 /* IOS7CorrectedTextView.m in Sources */,
 				C56636E91868D0CE00226AAB /* StatsViewController.m in Sources */,
 				5DF94E241962B90300359241 /* CommentViewController.m in Sources */,
+				93A379DB19FE6D3000415023 /* DDLogSwift.m in Sources */,
 				A0E293F10E21027E00C6919C /* WPAddCategoryViewController.m in Sources */,
 				B5AB733D19901F85005F5044 /* WPNoResultsView+AnimatedBox.m in Sources */,
 				C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */,
@@ -3616,7 +3622,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3851eadd-462c-4340-92e0-7a60064f4cc8";
+				PROVISIONING_PROFILE = "cac60532-0b3d-4388-8588-538f1c96a598";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
