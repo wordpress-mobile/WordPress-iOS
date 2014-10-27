@@ -70,12 +70,12 @@ PODS:
   - SVProgressHUD (1.0)
   - UIAlertView+Blocks (0.8.1)
   - UIDeviceIdentifier (0.4.3)
-  - WordPress-iOS-Editor (0.2.1):
+  - WordPress-iOS-Editor (0.2.2):
     - CocoaLumberjack (~> 1.8.1)
     - UIAlertView+Blocks
-    - WordPress-iOS-Shared (~> 0.1.0)
+    - WordPress-iOS-Shared (~> 0.1.3)
     - WordPressCom-Analytics-iOS (~> 0.0.4)
-  - WordPress-iOS-Shared (0.1.2):
+  - WordPress-iOS-Shared (0.1.3):
     - AFNetworking (~> 2.3.1)
     - CocoaLumberjack (~> 1.8.1)
     - DTCoreText (= 1.6.13)
@@ -114,8 +114,8 @@ DEPENDENCIES:
   - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`, branch `master`)
   - SVProgressHUD (~> 1.0)
   - UIDeviceIdentifier (~> 0.1)
-  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, commit `91eec3470a63bb1737a7c9e9b97d44fc26ca0edf`, branch `release/0.2.2`)
-  - WordPress-iOS-Shared (= 0.1.2)
+  - WordPress-iOS-Editor (= 0.2.2)
+  - WordPress-iOS-Shared (= 0.1.3)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPressApi.git`)
   - WordPressCom-Analytics-iOS (= 0.0.10)
   - WordPressCom-Stats-iOS (= 0.1.4)
@@ -130,10 +130,6 @@ EXTERNAL SOURCES:
   SocketRocket:
     :branch: master
     :git: https://github.com/jleandroperez/SocketRocket.git
-  WordPress-iOS-Editor:
-    :branch: release/0.2.2
-    :commit: 91eec3470a63bb1737a7c9e9b97d44fc26ca0edf
-    :git: git://github.com/wordpress-mobile/WordPress-iOS-Editor
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPressApi.git
 
@@ -165,8 +161,8 @@ SPEC CHECKSUMS:
   SVProgressHUD: 5034c6e22b8c2ca3e09402e48d41ed0340aa1c50
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
   UIDeviceIdentifier: a313d8f8d5a0ad34898f332e65dbecfa2d9b2af3
-  WordPress-iOS-Editor: 1f4410ffd766061cff8a1a5cf3c66926235e31bb
-  WordPress-iOS-Shared: d3654b3eae4376ade1ea18d5ac54713afea39a69
+  WordPress-iOS-Editor: 697b760ff0e06b6abb80d33b8333266296320dbd
+  WordPress-iOS-Shared: 48ca916221bec8731a6bd5e5fcf683977f15766d
   WordPressApi: 6216cef116f627f07d1a519b8d04dd7acada0d20
   WordPressCom-Analytics-iOS: 8a95339dd6f79758502a3e2d8aa8bcafd62ca0f0
   WordPressCom-Stats-iOS: f9c4c14d52c64f63473931c1006ddb370217e74e
