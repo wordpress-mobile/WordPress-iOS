@@ -178,8 +178,8 @@
 
 - (Media *)findMediaWithID:(NSNumber *)mediaID inBlog:(Blog *)blog
 {
-    NSSet *medias = [blog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"mediaID = %@", mediaID]];
-    return [medias anyObject];
+    NSSet *media = [blog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"mediaID = %@", mediaID]];
+    return [media anyObject];
 }
 
 
