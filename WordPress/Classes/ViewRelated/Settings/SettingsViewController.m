@@ -37,7 +37,7 @@
 #import "AccountService.h"
 #import "WPImageOptimizer.h"
 #import "Constants.h"
-#import "Media.h"
+#import "Mediaservice.h"
 #import <Lookback/Lookback.h>
 
 typedef enum {
@@ -52,6 +52,7 @@ typedef enum {
 static CGFloat const blavatarImageViewSize = 43.0;
 static CGFloat const HorizontalMargin = 16.0;
 static CGFloat const MediaSizeControlHeight = 44.0;
+static CGFloat const MediaSizeControlOffset = 12.0;
 static CGFloat const SettingsRowHeight = 44.0;
 
 @interface SettingsViewController () <UIActionSheetDelegate>
@@ -59,7 +60,8 @@ static CGFloat const SettingsRowHeight = 44.0;
 @property (nonatomic, strong) UIBarButtonItem *doneButton;
 @property (nonatomic, assign) BOOL showInternalBetaSection;
 @property (nonatomic, strong) UISlider *mediaSizeSlider;
-@property (nonatomic, strong) UILabel *mediaCellLabel;
+@property (nonatomic, strong) UILabel *mediaCellTitleLabel;
+@property (nonatomic, strong) UILabel *mediaCellSizeLabel;
 
 @end
 
@@ -111,23 +113,20 @@ static CGFloat const SettingsRowHeight = 44.0;
 
 #pragma mark - Custom Getter
 
-- (NSString *)titleForMediaCell
+- (NSString *)textForMediaCellSize
 {
-    CGSize savedSize = [Media maxImageSizeSetting];
-    NSString *title = NSLocalizedString(@"Image Size", @"Title for the image size settings option.");
-    NSString *sizeStr = @"";
+    CGSize savedSize = [MediaService maxImageSizeSetting];
     if (CGSizeEqualToSize(savedSize, MediaMaxImageSize)) {
-        sizeStr = NSLocalizedString(@"Original", @"Label title. Indicates an image will use its original size when uploaded.");
-    } else {
-        sizeStr = [NSString stringWithFormat:@"%.0fx%.0f", savedSize.width, savedSize.height];
+        return NSLocalizedString(@"Original", @"Label title. Indicates an image will use its original size when uploaded.");
     }
-    return [NSString stringWithFormat:@"%@: %@", title, sizeStr];
+
+    return [NSString stringWithFormat:@"%.0fpx X %.0fpx", savedSize.width, savedSize.height];
 }
 
-- (UILabel *)mediaCellLabel
+- (UILabel *)mediaCellTitleLabel
 {
-    if (_mediaCellLabel) {
-        return _mediaCellLabel;
+    if (_mediaCellTitleLabel) {
+        return _mediaCellTitleLabel;
     }
 
     CGFloat width = CGRectGetWidth(self.tableView.bounds) - (HorizontalMargin * 2);
@@ -136,10 +135,10 @@ static CGFloat const SettingsRowHeight = 44.0;
     label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     label.font = [WPStyleGuide tableviewTextFont];
     label.textColor = [WPStyleGuide whisperGrey];
-    label.text = [self titleForMediaCell];
-    self.mediaCellLabel = label;
+    label.text = NSLocalizedString(@"Max Image Upload Size", @"Title for the image size settings option.");
+    self.mediaCellTitleLabel = label;
 
-    return _mediaCellLabel;
+    return _mediaCellTitleLabel;
 }
 
 - (UISlider *)mediaSizeSlider
@@ -149,19 +148,40 @@ static CGFloat const SettingsRowHeight = 44.0;
     }
 
     CGFloat width = CGRectGetWidth(self.tableView.bounds) - (HorizontalMargin * 2);
-    CGRect frame = CGRectMake(HorizontalMargin, CGRectGetHeight(self.mediaCellLabel.frame), width, MediaSizeControlHeight);
+    CGFloat y = CGRectGetHeight(self.mediaCellTitleLabel.frame) - MediaSizeControlOffset;
+    CGRect frame = CGRectMake(HorizontalMargin, y, width, MediaSizeControlHeight);
     UISlider *slider = [[UISlider alloc] initWithFrame:frame];
     slider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     slider.continuous = YES;
     slider.minimumTrackTintColor = [WPStyleGuide whisperGrey];
     slider.maximumTrackTintColor = [WPStyleGuide whisperGrey];
-    slider.minimumValue = MediaMinImageSizeDimention;
-    slider.maximumValue = MediaMaxImageSizeDimention;
-    slider.value = [Media maxImageSizeSetting].width;
+    slider.minimumValue = MediaMinImageSizeDimension;
+    slider.maximumValue = MediaMaxImageSizeDimension;
+    slider.value = [MediaService maxImageSizeSetting].width;
     [slider addTarget:self action:@selector(handleImageSizeChanged:) forControlEvents:UIControlEventValueChanged];
     self.mediaSizeSlider = slider;
 
     return _mediaSizeSlider;
+}
+
+- (UILabel *)mediaCellSizeLabel
+{
+    if (_mediaCellSizeLabel) {
+        return _mediaCellSizeLabel;
+    }
+
+    CGFloat width = CGRectGetWidth(self.tableView.bounds) - (HorizontalMargin * 2);
+    CGFloat y = CGRectGetMaxY(self.mediaSizeSlider.frame) - MediaSizeControlOffset;
+    CGRect frame = CGRectMake(HorizontalMargin, y, width, MediaSizeControlHeight);
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    label.font = [WPStyleGuide tableviewSubtitleFont];
+    label.textColor = [WPStyleGuide whisperGrey];
+    label.text = [self textForMediaCellSize];
+    label.textAlignment = NSTextAlignmentCenter;
+    self.mediaCellSizeLabel = label;
+
+    return _mediaCellSizeLabel;
 }
 
 - (void)handleImageSizeChanged:(id)sender
@@ -169,10 +189,10 @@ static CGFloat const SettingsRowHeight = 44.0;
     NSInteger value = self.mediaSizeSlider.value;
     value = value - (value % 50); // steps of 50
 
-    [Media setMaxImageSizeSetting:CGSizeMake(value, value)];
+    [MediaService setMaxImageSizeSetting:CGSizeMake(value, value)];
 
     [self.mediaSizeSlider setValue:value animated:NO];
-    self.mediaCellLabel.text = [self titleForMediaCell];
+    self.mediaCellSizeLabel.text = [self textForMediaCellSize];
 }
 
 - (void)handleEditorChanged:(id)sender
@@ -320,7 +340,7 @@ static CGFloat const SettingsRowHeight = 44.0;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section ==  SettingsSectionMedia) {
-        return CGRectGetHeight(self.mediaCellLabel.frame) + CGRectGetHeight(self.mediaSizeSlider.frame);
+        return CGRectGetMaxY(self.mediaCellSizeLabel.frame);
     }
     return SettingsRowHeight;
 }
@@ -418,15 +438,20 @@ static CGFloat const SettingsRowHeight = 44.0;
 
     if (indexPath.section == SettingsSectionMedia) {
         CGFloat width = CGRectGetWidth(cell.bounds) - 32.0;
-        CGRect frame = self.mediaCellLabel.frame;
+        CGRect frame = self.mediaCellTitleLabel.frame;
         frame.size.width = width;
-        self.mediaCellLabel.frame = frame;
-        [cell.contentView addSubview:self.mediaCellLabel];
+        self.mediaCellTitleLabel.frame = frame;
+        [cell.contentView addSubview:self.mediaCellTitleLabel];
 
         frame = self.mediaSizeSlider.frame;
         frame.size.width = width;
         self.mediaSizeSlider.frame = frame;
         [cell.contentView addSubview:self.mediaSizeSlider];
+
+        frame = self.mediaCellSizeLabel.frame;
+        frame.size.width = width;
+        self.mediaCellSizeLabel.frame = frame;
+        [cell.contentView addSubview:self.mediaCellSizeLabel];
     }
 
     if (indexPath.section == SettingsSectionEditor) {

@@ -6,11 +6,6 @@
 #import "ContextManager.h"
 #import <ImageIO/ImageIO.h>
 
-NSString * const SavedMaxImageSizeSetting = @"SavedMaxImageSizeSetting";
-CGSize const MediaMaxImageSize = {3000, 3000};
-NSInteger const MediaMinImageSizeDimention = 150;
-NSInteger const MediaMaxImageSizeDimention = 3000;
-
 @interface Media (PrivateMethods)
 
 - (void)xmlrpcUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
@@ -47,29 +42,6 @@ NSInteger const MediaMaxImageSizeDimention = 3000;
 
 NSUInteger const MediaDefaultThumbnailSize = 75;
 CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
-
-+ (CGSize)maxImageSizeSetting
-{
-    NSString *savedSize = [[NSUserDefaults standardUserDefaults] objectForKey:SavedMaxImageSizeSetting];
-    CGSize maxSize = CGSizeMake(MediaMaxImageSizeDimention, MediaMaxImageSizeDimention);
-    if (savedSize) {
-        maxSize = CGSizeFromString(savedSize);
-    }
-    return maxSize;
-}
-
-+ (void)setMaxImageSizeSetting:(CGSize)imageSize
-{
-    // Constraint to max width and height.
-    CGFloat width = imageSize.width;
-    CGFloat height = imageSize.height;
-    width = MAX(MIN(width, MediaMaxImageSizeDimention), MediaMinImageSizeDimention);
-    height = MAX(MIN(height, MediaMaxImageSizeDimention), MediaMinImageSizeDimention);
-
-    NSString *sizeStr = NSStringFromCGSize(CGSizeMake(width, height));
-    [[NSUserDefaults standardUserDefaults] setObject:sizeStr forKey:SavedMaxImageSizeSetting];
-    [NSUserDefaults resetStandardUserDefaults];
-}
 
 + (Media *)newMediaForPost:(AbstractPost *)post
 {
