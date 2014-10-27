@@ -11,8 +11,21 @@
 @end
 
 @implementation BasePost
-@dynamic author, content, date_created_gmt, postID, postTitle, status, password, remoteStatusNumber, permaLink,
-        mt_excerpt, mt_text_more, wp_slug, post_thumbnail;
+
+@dynamic author;
+@dynamic authorAvatarURL;
+@dynamic content;
+@dynamic date_created_gmt;
+@dynamic postID;
+@dynamic postTitle;
+@dynamic status;
+@dynamic password;
+@dynamic remoteStatusNumber;
+@dynamic permaLink;
+@dynamic mt_excerpt;
+@dynamic mt_text_more;
+@dynamic wp_slug;
+@dynamic post_thumbnail;
 
 @synthesize isFeaturedImageChanged;
 

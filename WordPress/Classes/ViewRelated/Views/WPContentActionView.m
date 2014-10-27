@@ -192,7 +192,7 @@ const CGFloat WPContentActionViewButtonSpacing = 32.0;
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     button.titleLabel.font = [WPStyleGuide subtitleFont];
-    [button setTitleEdgeInsets: UIEdgeInsetsMake(0, 2, 0, -2)];
+    [button setTitleEdgeInsets: UIEdgeInsetsMake(1, 2, -1, -2)];
 
     // Disable it for now (could be used for permalinks in the future)
     [button setImage:[UIImage imageNamed:@"reader-postaction-time"] forState:UIControlStateDisabled];

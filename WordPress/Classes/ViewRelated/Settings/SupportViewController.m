@@ -138,6 +138,9 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self.tableView setEstimatedRowHeight:50.f];
+    [self.tableView setRowHeight:UITableViewAutomaticDimension];
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     self.feedbackEnabled = [defaults boolForKey:UserDefaultsFeedbackEnabled];
