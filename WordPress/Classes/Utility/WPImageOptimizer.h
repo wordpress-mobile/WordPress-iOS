@@ -19,7 +19,7 @@
  The image is read from the asset, scaled down and saved with a low quality factor (enough to considerably reduce file size without hurting perceived quality).
 
  @param asset the ALAsset containing the image to optimize.
- @param targetSize the size the image shoul be resized to.
+ @param targetSize the size the image shoul be resized to.  Passing CGSizeZero will by pass resizing logic and return the raw asset. 
 
  @return the optimized data
  */

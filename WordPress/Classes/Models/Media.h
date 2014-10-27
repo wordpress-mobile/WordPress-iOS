@@ -2,10 +2,6 @@
 #import "Blog.h"
 #import "AbstractPost.h"
 
-extern CGSize const MediaMaxImageSize;
-extern NSInteger const MediaMinImageSizeDimention;
-extern NSInteger const MediaMaxImageSizeDimention;
-
 typedef NS_ENUM(NSUInteger, MediaRemoteStatus) {
     MediaRemoteStatusSync,    // Post synced
     MediaRemoteStatusFailed,      // Upload failed
@@ -62,9 +58,6 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 @property (nonatomic, strong) NSMutableSet * posts;
 @property (nonatomic, assign, readonly) BOOL unattached;
 @property (nonatomic, assign) BOOL featured;
-
-+ (CGSize)maxImageSizeSetting;
-+ (void)setMaxImageSizeSetting:(CGSize)imageSize;
 
 + (Media *)newMediaForPost:(AbstractPost *)post;
 + (Media *)newMediaForBlog:(Blog *)blog;
