@@ -2,6 +2,12 @@ import UIKit
 import Foundation
 
 class AccountToAccount22to23: NSEntityMigrationPolicy {
+    
+    private let defaultDotcomUsernameKey    = "AccountDefaultUsername"
+    private let defaultDotcomKey            = "AccountDefaultDotcom"
+    private let defaultDotcomUUIDKey        = "AccountDefaultDotcomUUID"
+    
+    
     override func beginEntityMapping(mapping: NSEntityMapping, manager: NSMigrationManager, error: NSErrorPointer) -> Bool {
 
         // Note: 
@@ -185,9 +191,4 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
             DDLogSwift.logError(">> Error: couldn't update the Default WordPress.com account")
         }
     }
-
-    
-    private let defaultDotcomUsernameKey    = "AccountDefaultUsername"
-    private let defaultDotcomKey            = "AccountDefaultDotcom"
-    private let defaultDotcomUUIDKey        = "AccountDefaultDotcomUUID"
 }
