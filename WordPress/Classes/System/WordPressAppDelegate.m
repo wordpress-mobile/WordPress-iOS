@@ -752,7 +752,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
         navController.restorationClass = [WPLegacyEditPostViewController class];
     }
         
-    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
     navController.navigationBar.translucent = NO;
     [navController setToolbarHidden:NO]; // Make the toolbar visible here to avoid a weird left/right transition when the VC appears.
     [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
