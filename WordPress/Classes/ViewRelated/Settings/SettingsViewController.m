@@ -452,6 +452,9 @@ static CGFloat const SettingsRowHeight = 44.0;
         frame.size.width = width;
         self.mediaCellSizeLabel.frame = frame;
         [cell.contentView addSubview:self.mediaCellSizeLabel];
+
+        // make sure labels do not clip the slider shadow. 
+        [cell.contentView bringSubviewToFront:self.mediaSizeSlider];
     }
 
     if (indexPath.section == SettingsSectionEditor) {
