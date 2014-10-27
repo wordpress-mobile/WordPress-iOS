@@ -1,3 +1,6 @@
+#import <WordPress-iOS-Shared/WPFontManager.h>
+#import <WordPress-iOS-Shared/UIImage+Util.h>
+
 #import "ReaderSubscriptionViewController.h"
 #import "ReaderEditableSubscriptionPage.h"
 #import "WPFriendFinderViewController.h"
@@ -12,6 +15,7 @@
 #import "WPTableViewCell.h"
 #import "WPAlertView.h"
 #import "WPToast.h"
+#import "WordPress-Swift.h"
 
 static NSString *const FriendFinderURL = @"https://en.wordpress.com/reader/mobile/v2/?template=friendfinder";
 static NSString *const SubscribedTopicsPageIdentifier = @"SubscribedTopicsPageIdentifier";
@@ -453,14 +457,20 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
         return _searchBar;
     }
 
+    // To style the search bar's placeholder, update the appearance proxy using
+    // as specific a view hierarchy as possible to avoid collisions.
+    NSString *placeholderText = NSLocalizedString(@"Enter a tag or URL to follow", @"Placeholder text prompting the user to type the name of the tag or URL they would like to follow.");
+    NSAttributedString *attrPlacholderText = [[NSAttributedString alloc] initWithString:placeholderText attributes:[WPStyleGuide defaultSearchBarTextAttributes:[WPStyleGuide allTAllShadeGrey]]];
+    [[UITextField appearanceWhenContainedIn:[self.view.superview class], [self.view class], [UISearchBar class], nil] setAttributedPlaceholder:attrPlacholderText];
+
     UISearchBar *searchBar = [[UISearchBar alloc] init];
     searchBar.delegate = self;
     searchBar.translatesAutoresizingMaskIntoConstraints = NO;
-    searchBar.placeholder = NSLocalizedString(@"Enter a tag or URL to follow", @"Placeholder text prompting the user to type the name of the tag or URL they would like to follow.");
     searchBar.translucent = NO;
     searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     searchBar.barTintColor = [WPStyleGuide itsEverywhereGrey];
     searchBar.backgroundImage = [[UIImage alloc] init];
+    [searchBar setImage:[UIImage imageNamed:@"icon-clear-textfield"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
     [searchBar setImage:[UIImage imageNamed:@"icon-reader-tag"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
 
     // Replace the default "Search" keyboard button with a "Done" button.

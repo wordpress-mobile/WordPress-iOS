@@ -49,6 +49,7 @@
 #import "WPAnalyticsTrackerWPCom.h"
 
 #import "Reachability.h"
+#import "WordPress-Swift.h"
 
 #if DEBUG
 #import "DDTTYLogger.h"
@@ -125,7 +126,9 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [self removeCredentialsForDebug];
 
     // Stats and feedback
+#ifndef DEBUG
     [Taplytics startTaplyticsAPIKey:[WordPressComApiCredentials taplyticsAPIKey]];
+#endif
     [SupportViewController checkIfFeedbackShouldBeEnabled];
 
     [Helpshift installForApiKey:[WordPressComApiCredentials helpshiftAPIKey] domainName:[WordPressComApiCredentials helpshiftDomainName] appID:[WordPressComApiCredentials helpshiftAppId]];
@@ -606,6 +609,8 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [[UIToolbar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[UIColor darkGrayColor]];
     
     [[UIToolbar appearanceWhenContainedIn:[WPEditorViewController class], nil] setBarTintColor:[UIColor whiteColor]];
+
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[WPStyleGuide littleEddieGrey]]];
 }
 
 #pragma mark - Tracking methods
@@ -1031,18 +1036,6 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
             }
         }
     }];
-}
-
-- (void)setupImageResizeSettings
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
-    NSString *oldKey = @"media_resize_preference";
-    // 4 was the value for "Original"
-    if ([defaults integerForKey:oldKey] == 4) {
-        [WPImageOptimizer setShouldOptimizeImages:NO];
-    }
-    [defaults removeObjectForKey:oldKey];
 }
 
 #pragma mark - Networking setup, User agents
