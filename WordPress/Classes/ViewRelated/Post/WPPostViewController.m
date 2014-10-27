@@ -238,14 +238,6 @@ static NSDictionary *EnabledButtonBarStyle;
 	}
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-	[super viewWillDisappear:animated];
-	
-	[[UIApplication sharedApplication] setStatusBarHidden:NO
-											withAnimation:UIStatusBarAnimationSlide];
-}
-
 #pragma mark - Actions
 
 - (void)showBlogSelectorPrompt
