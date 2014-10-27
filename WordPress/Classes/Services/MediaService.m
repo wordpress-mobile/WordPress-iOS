@@ -9,6 +9,11 @@
 #import "RemoteMedia.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 
+NSString * const SavedMaxImageSizeSetting = @"SavedMaxImageSizeSetting";
+CGSize const MediaMaxImageSize = {3000, 3000};
+NSInteger const MediaMinImageSizeDimension = 150;
+NSInteger const MediaMaxImageSizeDimension = 3000;
+
 @interface MediaService ()
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
@@ -16,6 +21,29 @@
 @end
 
 @implementation MediaService
+
++ (CGSize)maxImageSizeSetting
+{
+    NSString *savedSize = [[NSUserDefaults standardUserDefaults] stringForKey:SavedMaxImageSizeSetting];
+    CGSize maxSize = MediaMaxImageSize;
+    if (savedSize) {
+        maxSize = CGSizeFromString(savedSize);
+    }
+    return maxSize;
+}
+
++ (void)setMaxImageSizeSetting:(CGSize)imageSize
+{
+    // Constraint to max width and height.
+    CGFloat width = imageSize.width;
+    CGFloat height = imageSize.height;
+    width = MAX(MIN(width, MediaMaxImageSizeDimension), MediaMinImageSizeDimension);
+    height = MAX(MIN(height, MediaMaxImageSizeDimension), MediaMinImageSizeDimension);
+
+    NSString *strSize = NSStringFromCGSize(CGSizeMake(width, height));
+    [[NSUserDefaults standardUserDefaults] setObject:strSize forKey:SavedMaxImageSizeSetting];
+    [NSUserDefaults resetStandardUserDefaults];
+}
 
 - (id)initWithManagedObjectContext:(NSManagedObjectContext *)context
 {
@@ -32,7 +60,16 @@
                   completion:(void (^)(Media *media))completion
 {
     WPImageOptimizer *optimizer = [WPImageOptimizer new];
-    NSData *optimizedImageData = [optimizer optimizedDataFromAsset:asset];
+
+    NSData *optimizedImageData;
+    CGSize maxImageSize = [MediaService maxImageSizeSetting];
+
+    if (CGSizeEqualToSize(maxImageSize, MediaMaxImageSize)) {
+        optimizedImageData = [optimizer rawDataFromAsset:asset];
+    } else {
+        optimizedImageData = [optimizer optimizedDataFromAsset:asset fittingSize:maxImageSize];
+    }
+
     NSData *thumbnailData = [self thumbnailDataFromAsset:asset];
     NSString *imagePath = [self pathForAsset:asset];
     NSNumber * width = @(asset.defaultRepresentation.dimensions.width);
