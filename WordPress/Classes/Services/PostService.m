@@ -11,10 +11,12 @@
 #import "CategoryService.h"
 #import "ContextManager.h"
 #import "NSDate+WordPressJSON.h"
+#import "CommentService.h"
 
 NSString * const PostServiceTypePost = @"post";
 NSString * const PostServiceTypePage = @"page";
 NSString * const PostServiceTypeAny = @"any";
+NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
 
 @interface PostService ()
 
@@ -73,6 +75,43 @@ NSString * const PostServiceTypeAny = @"any";
 + (Page *)createDraftPageInMainContextForBlog:(Blog *)blog {
     PostService *service = [PostService serviceWithMainContext];
     return [service createDraftPageForBlog:blog];
+}
+
+- (void)getPostWithID:(NSNumber *)postID
+              forBlog:(Blog *)blog
+              success:(void (^)(AbstractPost *post))success
+              failure:(void (^)(NSError *))failure
+{
+    id<PostServiceRemote> remote = [self remoteForBlog:blog];
+    [remote getPostWithID:postID
+                  forBlog:blog
+                  success:^(RemotePost *remotePost){
+                      [self.managedObjectContext performBlock:^{
+                          if (remotePost) {
+                              AbstractPost *post = [self findPostWithID:postID inBlog:blog];
+                              if (!post) {
+                                  post = [self createPostForBlog:blog];
+                              }
+                              [self updatePost:post withRemotePost:remotePost];
+                              [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
+                              if (success) {
+                                  success(post);
+                              }
+                          }
+                          else if (failure) {
+                              NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : @"Retrieved remote post is nil" };
+                              failure([NSError errorWithDomain:PostServiceErrorDomain code:0 userInfo:userInfo]);
+                          }
+                      }];
+                  }
+                  failure:^(NSError *error) {
+                      if (failure) {
+                          [self.managedObjectContext performBlock:^{
+                              failure(error);
+                          }];
+                      }
+                  }];
 }
 
 - (void)syncPostsOfType:(NSString *)postType
@@ -249,6 +288,7 @@ NSString * const PostServiceTypeAny = @"any";
 }
 
 - (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost {
+    NSNumber *previousPostID = post.postID;
     post.postID = remotePost.postID;
     post.author = remotePost.authorDisplayName;
     post.date_created_gmt = remotePost.date;
@@ -258,11 +298,17 @@ NSString * const PostServiceTypeAny = @"any";
     post.status = remotePost.status;
     post.password = remotePost.password;
     post.post_thumbnail = remotePost.postThumbnailID;
+
+    if (remotePost.postID != previousPostID) {
+        [self updateCommentsForPost:post];
+    }
+
     if ([post isKindOfClass:[Page class]]) {
         Page *pagePost = (Page *)post;
         pagePost.parentID = remotePost.parentID;
     } else if ([post isKindOfClass:[Post class]]) {
         Post *postPost = (Post *)post;
+        postPost.authorAvatarURL = remotePost.authorAvatarURL;
         postPost.postFormat = remotePost.format;
         postPost.tags = [remotePost.tags componentsJoinedByString:@","];
         [self updatePost:postPost withRemoteCategories:remotePost.categories];
@@ -312,6 +358,7 @@ NSString * const PostServiceTypeAny = @"any";
     }
     if ([post isKindOfClass:[Post class]]) {
         Post *postPost = (Post *)post;
+        remotePost.authorAvatarURL = postPost.authorAvatarURL;
         remotePost.format = postPost.postFormat;
         remotePost.tags = [postPost.tags componentsSeparatedByString:@","];
         remotePost.categories = [self remoteCategoriesForPost:postPost];
@@ -403,6 +450,14 @@ NSString * const PostServiceTypeAny = @"any";
         }
         [categories addObject:category];
     }
+}
+
+- (void)updateCommentsForPost:(AbstractPost *)post
+{
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    NSMutableSet *currentComments = [post mutableSetValueForKey:@"comments"];
+    NSSet *allComments = [commentService findCommentsWithPostID:post.postID inBlog:post.blog];
+    [currentComments addObjectsFromArray:[allComments allObjects]];
 }
 
 - (NSDictionary *)dictionaryWithKey:(NSString *)key inMetadata:(NSArray *)metadata {
