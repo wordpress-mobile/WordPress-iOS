@@ -113,6 +113,8 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
         [WPAnalytics refreshMetadata];
         
+        // Make sure this notification gets posted on the main thread: the managedObjectContext might be running
+        // a private GCD queue, and we shouldn't really execute our own non-coredata code there.
         dispatch_async(dispatch_get_main_queue(), ^{
             [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
         });
