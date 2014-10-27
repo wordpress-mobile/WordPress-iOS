@@ -1,6 +1,12 @@
 import UIKit
 import Foundation
 
+
+/**
+    Note:
+    This migration policy handles database migration from WPiOS 4.3 to 4.4
+ */
+
 class AccountToAccount20to21: NSEntityMigrationPolicy {
     
     private let defaultDotcomUsernameKey    = "defaultDotcomUsernameKey"
