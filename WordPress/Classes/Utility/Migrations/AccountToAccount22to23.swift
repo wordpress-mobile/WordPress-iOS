@@ -1,6 +1,13 @@
 import UIKit
 import Foundation
 
+
+/**
+    Note:
+    This migration policy handles database migration from WPiOS 4.4 to 4.5.
+    WPiOS 4.5 introduces two extra data models (22 and 23).
+*/
+
 class AccountToAccount22to23: NSEntityMigrationPolicy {
     
     private let defaultDotcomUsernameKey    = "AccountDefaultUsername"
