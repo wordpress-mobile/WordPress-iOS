@@ -162,60 +162,75 @@
       mappingModel:(NSMappingModel*)mappingModel
              error:(NSError**)error
 {
-   // Build a temporary path to write the migrated store.
-   NSURL* tempDestinationStoreURL =
-    [NSURL fileURLWithPath:[[sourceStoreURL path] stringByAppendingPathExtension:@"tmp"]];
-
-   // Migrate from the source model to the target model using the mapping,
-   // and store the resulting data at the temporary path.
-   NSMigrationManager* migrator = [[NSMigrationManager alloc]
-                                   initWithSourceModel:sourceModel
-                                   destinationModel:targetModel];
-
-   if (![migrator migrateStoreFromURL:sourceStoreURL
-                                 type:sourceStoreType
-                              options:nil
-                     withMappingModel:mappingModel
-                     toDestinationURL:tempDestinationStoreURL
-                      destinationType:sourceStoreType
-                   destinationOptions:nil
-                                error:error])
-   {
-      return NO;
-   }
-
-   // Move the original source store to a backup location.
-   NSString* backupPath = [[sourceStoreURL path] stringByAppendingPathExtension:@"bak"];
-   NSFileManager* fileManager = [NSFileManager defaultManager];
-   if (![fileManager moveItemAtPath:[sourceStoreURL path]
-                             toPath:backupPath
-                              error:error])
-   {
-      // If the move fails, delete the migrated destination store.
-      [fileManager moveItemAtPath:[tempDestinationStoreURL path]
-                           toPath:[sourceStoreURL path]
-                            error:NULL];
-      return NO;
-   }
-
-   // Move the destination store to the original source location.
-   if ([fileManager moveItemAtPath:[tempDestinationStoreURL path]
-                            toPath:[sourceStoreURL path]
-                             error:error])
-   {
-      // If the move succeeds, delete the backup of the original store.
-      [fileManager removeItemAtPath:backupPath error:NULL];
-   }
-   else
-   {
-      // If the move fails, restore the original store to its original location.
-      [fileManager moveItemAtPath:backupPath
-                           toPath:[sourceStoreURL path]
-                            error:NULL];
-      return NO;
-   }
-
-   return YES;
+    // Build a temporary path to write the migrated store.
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+    NSURL *tempDestinationStoreURL = [[sourceStoreURL.URLByDeletingLastPathComponent URLByAppendingPathComponent:@"migration"] URLByAppendingPathComponent:sourceStoreURL.lastPathComponent];
+    [fileManager createDirectoryAtURL:tempDestinationStoreURL.URLByDeletingLastPathComponent withIntermediateDirectories:NO attributes:nil error:nil];
+    
+    // Migrate from the source model to the target model using the mapping,
+    // and store the resulting data at the temporary path.
+    NSMigrationManager* migrator = [[NSMigrationManager alloc]
+                                    initWithSourceModel:sourceModel
+                                    destinationModel:targetModel];
+    
+    if (![migrator migrateStoreFromURL:sourceStoreURL
+                                  type:sourceStoreType
+                               options:nil
+                      withMappingModel:mappingModel
+                      toDestinationURL:tempDestinationStoreURL
+                       destinationType:sourceStoreType
+                    destinationOptions:nil
+                                 error:error])
+    {
+        return NO;
+    }
+    
+    // Move the original source store to a backup location.
+    NSString* backupPath = [sourceStoreURL.URLByDeletingLastPathComponent URLByAppendingPathComponent:@"backup"].path;
+    [fileManager createDirectoryAtPath:backupPath withIntermediateDirectories:NO attributes:nil error:nil];
+    NSArray *files = [fileManager contentsOfDirectoryAtPath:sourceStoreURL.URLByDeletingLastPathComponent.path error:error];
+    for (NSString *file in files) {
+        if ([file hasPrefix:sourceStoreURL.lastPathComponent]) {
+            NSString *fullPath = [sourceStoreURL.URLByDeletingLastPathComponent URLByAppendingPathComponent:file].path;
+            NSString *toPath = [[NSURL URLWithString:backupPath] URLByAppendingPathComponent:file].path;
+            [fileManager moveItemAtPath:fullPath toPath:toPath error:error];
+            
+            if (*error) {
+                DDLogError(@"Error while moving %@ to %@: %@", fullPath, toPath, *error);
+                return NO;
+            }
+        }
+    }
+    
+    // Copy migrated over the original files
+    files = [fileManager contentsOfDirectoryAtPath:tempDestinationStoreURL.URLByDeletingLastPathComponent.path error:error];
+    for (NSString *file in files) {
+        if ([file hasPrefix:tempDestinationStoreURL.lastPathComponent]) {
+            NSString *fullPath = [tempDestinationStoreURL.URLByDeletingLastPathComponent URLByAppendingPathComponent:file].path;
+            NSString *toPath = [sourceStoreURL.URLByDeletingLastPathComponent URLByAppendingPathComponent:file].path;
+            [fileManager removeItemAtPath:toPath error:nil];
+            [fileManager moveItemAtPath:fullPath toPath:toPath error:error];
+            
+            if (*error) {
+                DDLogError(@"Error while moving %@ to %@: %@", fullPath, toPath, *error);
+                return NO;
+            }
+        }
+    }
+    
+    // Delete backup copies of the original file before migration
+    files = [fileManager contentsOfDirectoryAtPath:backupPath error:error];
+    for (NSString *file in files) {
+        NSString *fullPath = [[NSURL URLWithString:backupPath] URLByAppendingPathComponent:file].path;
+        [fileManager removeItemAtPath:fullPath error:error];
+        
+        if (*error) {
+            DDLogError(@"Error while deleting backup file %@: %@", fullPath, *error);
+            return NO;
+        }
+    }
+    
+    return YES;
 }
 
 + (NSString*)errorDomain

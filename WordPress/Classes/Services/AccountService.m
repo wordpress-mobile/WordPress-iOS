@@ -12,7 +12,7 @@
 
 #import "NSString+XMLExtensions.h"
 
-static NSString * const DefaultDotcomAccountDefaultsKey = @"AccountDefaultDotcom";
+static NSString * const DefaultDotcomAccountUUIDDefaultsKey = @"AccountDefaultDotcomUUID";
 
 @interface AccountService ()
 
@@ -50,23 +50,26 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
  */
 - (WPAccount *)defaultWordPressComAccount
 {
-    NSURL *accountURL = [[NSUserDefaults standardUserDefaults] URLForKey:DefaultDotcomAccountDefaultsKey];
-    if (!accountURL) {
+    NSString *uuid = [[NSUserDefaults standardUserDefaults] stringForKey:DefaultDotcomAccountUUIDDefaultsKey];
+    if (uuid.length == 0) {
         return nil;
     }
 
-    NSManagedObjectID *objectID = [[self.managedObjectContext persistentStoreCoordinator] managedObjectIDForURIRepresentation:accountURL];
-    if (!objectID) {
-        return nil;
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uuid == %@", uuid];
+    fetchRequest.predicate = predicate;
+    
+    NSError *error = nil;
+    NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    WPAccount *defaultAccount = nil;
+    if (fetchedObjects.count > 0) {
+        defaultAccount = fetchedObjects.firstObject;
+    } else {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
-
-    WPAccount *account = (WPAccount *)[self.managedObjectContext existingObjectWithID:objectID error:nil];
-    if (!account) {
-        // The stored Account reference is invalid, so let's remove it to avoid wasting time querying for it
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
-    }
-
-    return account;
+    
+    return defaultAccount;
 }
 
 /**
@@ -78,16 +81,11 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
  */
 - (void)setDefaultWordPressComAccount:(WPAccount *)account
 {
+    NSParameterAssert(account != nil);
     NSAssert(account.isWpcom, @"account should be a wordpress.com account");
     NSAssert(account.authToken.length > 0, @"Account should have an authToken for WP.com");
 
-    // When the account object hasn't been saved yet, its objectID is temporary
-    // If we store a reference to that objectID it will be invalid the next time we launch
-    if ([[account objectID] isTemporaryID]) {
-        [account.managedObjectContext obtainPermanentIDsForObjects:@[account] error:nil];
-    }
-    NSURL *accountURL = [[account objectID] URIRepresentation];
-    [[NSUserDefaults standardUserDefaults] setURL:accountURL forKey:DefaultDotcomAccountDefaultsKey];
+    [[NSUserDefaults standardUserDefaults] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -107,15 +105,19 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 {
     [NotificationsManager unregisterDeviceToken];
 
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-    });
-
     WPAccount *account = [self defaultWordPressComAccount];
-    [self.managedObjectContext deleteObject:account];
+    if (account) {
+        [self.managedObjectContext deleteObject:account];
+    }
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
         [WPAnalytics refreshMetadata];
+        
+        // Make sure this notification gets posted on the main thread: the managedObjectContext might be running
+        // a private GCD queue, and we shouldn't really execute our own non-coredata code there.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+        });
     }];
 
     // Clear WordPress.com cookies
@@ -130,12 +132,11 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     [WPAnalyticsTrackerMixpanel resetEmailRetrievalCheck];
 
     // Remove defaults
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_blogs"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_prefered_blog_id"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-
 }
 
 ///-----------------------
@@ -197,6 +198,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
         account = [results objectAtIndex:0];
     } else {
         account = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:self.managedObjectContext];
+        account.uuid = [[NSUUID new] UUIDString];
         account.xmlrpc = xmlrpc;
         account.username = username;
     }
