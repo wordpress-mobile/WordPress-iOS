@@ -76,6 +76,3 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 - (void)remoteUpdateWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 @end
-
-
-

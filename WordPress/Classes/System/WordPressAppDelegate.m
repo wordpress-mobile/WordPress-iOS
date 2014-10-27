@@ -1038,18 +1038,6 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     }];
 }
 
-- (void)setupImageResizeSettings
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
-    NSString *oldKey = @"media_resize_preference";
-    // 4 was the value for "Original"
-    if ([defaults integerForKey:oldKey] == 4) {
-        [WPImageOptimizer setShouldOptimizeImages:NO];
-    }
-    [defaults removeObjectForKey:oldKey];
-}
-
 #pragma mark - Networking setup, User agents
 
 - (void)setupUserAgent
