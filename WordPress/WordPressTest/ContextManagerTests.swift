@@ -54,7 +54,7 @@ class ContextManagerTests: XCTestCase {
         let model20Name = "WordPress 20"
         let model21Name = "WordPress 21"
         
-        // Instantiate a Model 21 Stack
+        // Instantiate a Model 20 Stack
         startupCoredataStack(model20Name)
         
         let mainContext = contextManager.mainContext
@@ -127,7 +127,7 @@ class ContextManagerTests: XCTestCase {
         NSUserDefaults.standardUserDefaults().setURL(dotcomAccountURL, forKey: "AccountDefaultDotcom")
         NSUserDefaults.standardUserDefaults().synchronize()
         
-        // Initialize 21 > 22 Migration
+        // Initialize 21 > 23 Migration
         let secondContext = performCoredataMigration(model23Name)
 
         // Verify that the two accounts have been migrated
