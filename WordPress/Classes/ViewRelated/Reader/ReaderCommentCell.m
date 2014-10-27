@@ -91,7 +91,7 @@ static const CGFloat ReaderCommentCellBottomPaddingMore = -20.0;
     self.indentationLevel = MIN(ReaderCommentCellMaxIndentationLevel, [comment.depth integerValue]);
 
     self.nestingOverlayView.hidden = !self.isFirstNestedComment;
-    self.borderView.hidden = self.indentationLevel != 0;
+    self.borderView.hidden = (self.hidesBorder || self.indentationLevel != 0);
     self.leftIndentationConstraint.constant = ReaderCommentCellSidePadding + (self.indentationLevel * self.indentationWidth);
     self.bottomMarginConstraint.constant = (self.needsExtraPadding) ? ReaderCommentCellBottomPaddingMore : ReaderCommentCellBottomPadding;
 
@@ -119,6 +119,7 @@ static const CGFloat ReaderCommentCellBottomPaddingMore = -20.0;
 {
     [super prepareForReuse];
 
+    self.hidesBorder = NO;
     self.isFirstNestedComment = NO;
     self.needsExtraPadding = NO;
     self.indentationLevel = 0;
