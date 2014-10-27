@@ -5,6 +5,7 @@
 
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 @synthesize mainContext = _mainContext;
+@synthesize managedObjectModel = _managedObjectModel;
 
 - (instancetype)init
 {
@@ -14,6 +15,11 @@
         [ContextManager overrideSharedInstance:self];
     }
     return self;
+}
+
+- (NSManagedObjectModel *)managedObjectModel
+{
+    return _managedObjectModel ?: [super managedObjectModel];
 }
 
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator
