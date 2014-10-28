@@ -383,7 +383,7 @@ static NSDictionary *EnabledButtonBarStyle;
     picker.assetsFilter = [ALAssetsFilter allPhotos];
     
     [self presentViewController:picker animated:YES completion:nil];
-    picker.navigationBar.translucent = NO;
+    picker.childNavigationController.navigationBar.translucent = NO;
 }
 
 #pragma mark - Editing
@@ -742,6 +742,9 @@ static NSDictionary *EnabledButtonBarStyle;
         button.rightSpacing = SpacingBetweeenNavbarButtons / 2.0f;
         button.removeDefaultLeftSpacing = YES;
         button.leftSpacing = SpacingBetweeenNavbarButtons / 2.0f;
+        NSString *optionsTitle = NSLocalizedString(@"Options", @"Title of the Post Settings navigation button in the Post Editor. Tapping shows settings and options related to the post being edited.");
+        button.accessibilityLabel = optionsTitle;
+        button.accessibilityIdentifier = @"Options";
         _optionsBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
     }
     

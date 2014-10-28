@@ -37,6 +37,7 @@
 #import "AccountService.h"
 #import "WPImageOptimizer.h"
 #import "Constants.h"
+#import "Mediaservice.h"
 #import <Lookback/Lookback.h>
 
 typedef enum {
@@ -48,12 +49,19 @@ typedef enum {
     SettingsSectionCount
 } SettingsSection;
 
-CGFloat const blavatarImageViewSize = 43.f;
+static CGFloat const blavatarImageViewSize = 43.0;
+static CGFloat const HorizontalMargin = 16.0;
+static CGFloat const MediaSizeControlHeight = 44.0;
+static CGFloat const MediaSizeControlOffset = 12.0;
+static CGFloat const SettingsRowHeight = 44.0;
 
 @interface SettingsViewController () <UIActionSheetDelegate>
 
 @property (nonatomic, strong) UIBarButtonItem *doneButton;
 @property (nonatomic, assign) BOOL showInternalBetaSection;
+@property (nonatomic, strong) UISlider *mediaSizeSlider;
+@property (nonatomic, strong) UILabel *mediaCellTitleLabel;
+@property (nonatomic, strong) UILabel *mediaCellSizeLabel;
 
 @end
 
@@ -105,10 +113,86 @@ CGFloat const blavatarImageViewSize = 43.f;
 
 #pragma mark - Custom Getter
 
-- (void)handleOptimizeImagesChanged:(id)sender
+- (NSString *)textForMediaCellSize
 {
-    UISwitch *aSwitch = (UISwitch *)sender;
-    [WPImageOptimizer setShouldOptimizeImages:aSwitch.on];
+    CGSize savedSize = [MediaService maxImageSizeSetting];
+    if (CGSizeEqualToSize(savedSize, MediaMaxImageSize)) {
+        return NSLocalizedString(@"Original", @"Label title. Indicates an image will use its original size when uploaded.");
+    }
+
+    return [NSString stringWithFormat:@"%.0fpx X %.0fpx", savedSize.width, savedSize.height];
+}
+
+- (UILabel *)mediaCellTitleLabel
+{
+    if (_mediaCellTitleLabel) {
+        return _mediaCellTitleLabel;
+    }
+
+    CGFloat width = CGRectGetWidth(self.tableView.bounds) - (HorizontalMargin * 2);
+    CGRect frame = CGRectMake(HorizontalMargin, 0.0, width, MediaSizeControlHeight);
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    label.font = [WPStyleGuide tableviewTextFont];
+    label.textColor = [WPStyleGuide whisperGrey];
+    label.text = NSLocalizedString(@"Max Image Upload Size", @"Title for the image size settings option.");
+    self.mediaCellTitleLabel = label;
+
+    return _mediaCellTitleLabel;
+}
+
+- (UISlider *)mediaSizeSlider
+{
+    if (_mediaSizeSlider) {
+        return _mediaSizeSlider;
+    }
+
+    CGFloat width = CGRectGetWidth(self.tableView.bounds) - (HorizontalMargin * 2);
+    CGFloat y = CGRectGetHeight(self.mediaCellTitleLabel.frame) - MediaSizeControlOffset;
+    CGRect frame = CGRectMake(HorizontalMargin, y, width, MediaSizeControlHeight);
+    UISlider *slider = [[UISlider alloc] initWithFrame:frame];
+    slider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    slider.continuous = YES;
+    slider.minimumTrackTintColor = [WPStyleGuide whisperGrey];
+    slider.maximumTrackTintColor = [WPStyleGuide whisperGrey];
+    slider.minimumValue = MediaMinImageSizeDimension;
+    slider.maximumValue = MediaMaxImageSizeDimension;
+    slider.value = [MediaService maxImageSizeSetting].width;
+    [slider addTarget:self action:@selector(handleImageSizeChanged:) forControlEvents:UIControlEventValueChanged];
+    self.mediaSizeSlider = slider;
+
+    return _mediaSizeSlider;
+}
+
+- (UILabel *)mediaCellSizeLabel
+{
+    if (_mediaCellSizeLabel) {
+        return _mediaCellSizeLabel;
+    }
+
+    CGFloat width = CGRectGetWidth(self.tableView.bounds) - (HorizontalMargin * 2);
+    CGFloat y = CGRectGetMaxY(self.mediaSizeSlider.frame) - MediaSizeControlOffset;
+    CGRect frame = CGRectMake(HorizontalMargin, y, width, MediaSizeControlHeight);
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    label.font = [WPStyleGuide tableviewSubtitleFont];
+    label.textColor = [WPStyleGuide whisperGrey];
+    label.text = [self textForMediaCellSize];
+    label.textAlignment = NSTextAlignmentCenter;
+    self.mediaCellSizeLabel = label;
+
+    return _mediaCellSizeLabel;
+}
+
+- (void)handleImageSizeChanged:(id)sender
+{
+    NSInteger value = self.mediaSizeSlider.value;
+    value = value - (value % 50); // steps of 50
+
+    [MediaService setMaxImageSizeSetting:CGSizeMake(value, value)];
+
+    [self.mediaSizeSlider setValue:value animated:NO];
+    self.mediaCellSizeLabel.text = [self textForMediaCellSize];
 }
 
 - (void)handleEditorChanged:(id)sender
@@ -253,6 +337,14 @@ CGFloat const blavatarImageViewSize = 43.f;
     return nil;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section ==  SettingsSectionMedia) {
+        return CGRectGetMaxY(self.mediaCellSizeLabel.frame);
+    }
+    return SettingsRowHeight;
+}
+
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -269,29 +361,27 @@ CGFloat const blavatarImageViewSize = 43.f;
                 cell.detailTextLabel.text = [defaultAccount username];
                 cell.detailTextLabel.textColor = [UIColor UIColorFromHex:0x888888];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                cell.accessibilityIdentifier = @"wpcom-username";
+                cell.accessibilityIdentifier = @"Username";
             } else if (indexPath.row == [self rowForNotifications]) {
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 cell.textLabel.text = NSLocalizedString(@"Manage Notifications", @"");
-                cell.accessibilityIdentifier = @"wpcom-manage-notifications";
+                cell.accessibilityIdentifier = @"Manage Notifications";
             } else {
                 cell.textLabel.textAlignment = NSTextAlignmentCenter;
                 cell.textLabel.text = NSLocalizedString(@"Sign Out", @"Sign out from WordPress.com");
-                cell.accessibilityIdentifier = @"wpcom-sign-out";
+                cell.accessibilityIdentifier = @"Sign Out";
             }
         } else {
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
             cell.textLabel.text = NSLocalizedString(@"Sign In", @"Sign in to WordPress.com");
-            cell.accessibilityIdentifier = @"wpcom-sign-in";
+            cell.accessibilityIdentifier = @"Sign In";
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         }
 
     } else if (indexPath.section == SettingsSectionMedia) {
-        cell.textLabel.text = NSLocalizedString(@"Optimize Images", nil);
+        cell.textLabel.text = nil;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
-        aSwitch.on = [WPImageOptimizer shouldOptimizeImages];
-        
+
     } else if (indexPath.section == SettingsSectionEditor){
         cell.textLabel.text = NSLocalizedString(@"Visual Editor", @"Option to enable the visual editor");
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -347,11 +437,26 @@ CGFloat const blavatarImageViewSize = 43.f;
     }
 
     if (indexPath.section == SettingsSectionMedia) {
-        UISwitch *optimizeImagesSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
-        [optimizeImagesSwitch addTarget:self action:@selector(handleOptimizeImagesChanged:) forControlEvents:UIControlEventValueChanged];
-        cell.accessoryView = optimizeImagesSwitch;
+        CGFloat width = CGRectGetWidth(cell.bounds) - 32.0;
+        CGRect frame = self.mediaCellTitleLabel.frame;
+        frame.size.width = width;
+        self.mediaCellTitleLabel.frame = frame;
+        [cell.contentView addSubview:self.mediaCellTitleLabel];
+
+        frame = self.mediaSizeSlider.frame;
+        frame.size.width = width;
+        self.mediaSizeSlider.frame = frame;
+        [cell.contentView addSubview:self.mediaSizeSlider];
+
+        frame = self.mediaCellSizeLabel.frame;
+        frame.size.width = width;
+        self.mediaCellSizeLabel.frame = frame;
+        [cell.contentView addSubview:self.mediaCellSizeLabel];
+
+        // make sure labels do not clip the slider shadow. 
+        [cell.contentView bringSubviewToFront:self.mediaSizeSlider];
     }
-    
+
     if (indexPath.section == SettingsSectionEditor) {
         UISwitch *optimizeImagesSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
         [optimizeImagesSwitch addTarget:self action:@selector(handleEditorChanged:) forControlEvents:UIControlEventValueChanged];

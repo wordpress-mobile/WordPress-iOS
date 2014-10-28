@@ -1,5 +1,6 @@
 #import "AccountServiceRemoteREST.h"
 #import "WordPressComApi.h"
+#import "RemoteBlog.h"
 
 @interface AccountServiceRemoteREST ()
 @property (nonatomic, strong) WordPressComApi *api;

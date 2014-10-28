@@ -338,7 +338,8 @@ static NSInteger const MaximumNumberOfPictures = 4;
     picker.assetsFilter = [ALAssetsFilter allPhotos];
 
     [self presentViewController:picker animated:YES completion:nil];
-    picker.navigationBar.translucent = NO;
+    
+    picker.childNavigationController.navigationBar.translucent = NO;
 }
 
 - (void)cancelEditing
