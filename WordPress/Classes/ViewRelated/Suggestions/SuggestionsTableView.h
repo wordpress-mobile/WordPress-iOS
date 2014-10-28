@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-@protocol SuggestionsDelegate <NSObject>
+@protocol SuggestionsTableViewDelegate <NSObject>
 
 @optional
 
@@ -34,7 +34,7 @@
 
 @interface SuggestionsTableView : UIView <UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, weak) id <SuggestionsDelegate> suggestionsDelegate;
+@property (nonatomic, weak) id <SuggestionsTableViewDelegate> suggestionsDelegate;
 
 - (id)initWithSiteID:(NSNumber *)siteID;
 - (void)showSuggestionsForWord:(NSString *)word;

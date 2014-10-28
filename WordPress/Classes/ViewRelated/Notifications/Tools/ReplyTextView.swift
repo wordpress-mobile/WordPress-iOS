@@ -65,7 +65,7 @@ import Foundation
         let shouldChange = delegate?.textView?(textView, shouldChangeTextInRange: range, replacementText: text) ?? true
                 
         if shouldChange {
-            if let suggestionsDelegate = delegate as? SuggestionsDelegate {
+            if let suggestionsDelegate = delegate as? SuggestionsTableViewDelegate {
                 if suggestionsDelegate.respondsToSelector(Selector("didTypeInWord:")) {
                     
                     let textViewText: NSString = textView.text
