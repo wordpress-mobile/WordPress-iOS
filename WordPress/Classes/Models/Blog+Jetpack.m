@@ -6,6 +6,7 @@
 #import "ContextManager.h"
 #import "WordPressComOAuthClient.h"
 #import "AccountService.h"
+#import "BlogService.h"
 
 NSString * const BlogJetpackErrorDomain = @"BlogJetpackError";
 NSString * const BlogJetpackApiBaseUrl = @"https://public-api.wordpress.com/";
@@ -167,7 +168,8 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                                      [self dataSave];
 
                                      // Sadly we don't care if this succeeds or not
-                                     [accountService syncBlogsForAccount:account success:nil failure:nil];
+                                     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
+                                     [blogService syncBlogsForAccount:account success:nil failure:nil];
                                  }
 
                                  if (success) {

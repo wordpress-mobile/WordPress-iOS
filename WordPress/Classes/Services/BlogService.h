@@ -45,8 +45,10 @@
  */
 - (Blog *)firstWPComBlog;
 
+
+- (void)syncBlogsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure;
+
 - (void)syncOptionsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)syncMediaLibraryForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)syncPostFormatsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 /*! Syncs an entire blog include posts, pages, comments, options, post formats and categories.
@@ -74,5 +76,25 @@
  */
 - (NSTimeZone *)timeZoneForBlog:(Blog *)blog;
 
+///--------------------
+/// @name Blog creation
+///--------------------
+
+/**
+ Searches for a `Blog` object for this account with the given XML-RPC endpoint
+
+ @param xmlrpc the XML-RPC endpoint URL as a string
+ @param account the account the blog belongs to
+ @return the blog if one was found, otherwise it returns nil
+ */
+- (Blog *)findBlogWithXmlrpc:(NSString *)xmlrpc inAccount:(WPAccount *)account;
+
+/**
+ Creates a blank `Blog` object for this account
+
+ @param account the account the blog belongs to
+ @return the newly created blog
+ */
+- (Blog *)createBlogWithAccount:(WPAccount *)account;
 
 @end
