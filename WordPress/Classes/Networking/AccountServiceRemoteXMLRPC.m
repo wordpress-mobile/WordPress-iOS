@@ -1,5 +1,6 @@
 #import "AccountServiceRemoteXMLRPC.h"
 #import <WordPressApi/WordPressXMLRPCApi.h>
+#import "RemoteBlog.h"
 
 @interface AccountServiceRemoteXMLRPC ()
 @property (nonatomic, strong) WordPressXMLRPCApi *api;
