@@ -425,26 +425,25 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 - (OptionsHandler)optionsHandlerWithBlog:(Blog *)blog completionHandler:(void (^)(void))completion
 {
+    NSManagedObjectID *blogObjectID = blog.objectID;
     return ^void(NSDictionary *options) {
         [self.managedObjectContext performBlock:^{
-            if ([blog isDeleted] || blog.managedObjectContext == nil) {
-                return;
-            }
-
-            blog.options = [NSDictionary dictionaryWithDictionary:options];
-            NSString *minimumVersion = @"3.6";
-            float version = [[blog version] floatValue];
-            if (version < [minimumVersion floatValue]) {
-                if (blog.lastUpdateWarning == nil || [blog.lastUpdateWarning floatValue] < [minimumVersion floatValue]) {
-                    // TODO :: Remove UI call from service layer
-                    [WPError showAlertWithTitle:NSLocalizedString(@"WordPress version too old", @"")
-                                        message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [blog hostname], [blog version], minimumVersion]];
-                    blog.lastUpdateWarning = minimumVersion;
+            Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:nil];
+            if (blogInContext) {
+                blog.options = [NSDictionary dictionaryWithDictionary:options];
+                NSString *minimumVersion = @"3.6";
+                float version = [[blog version] floatValue];
+                if (version < [minimumVersion floatValue]) {
+                    if (blog.lastUpdateWarning == nil || [blog.lastUpdateWarning floatValue] < [minimumVersion floatValue]) {
+                        // TODO :: Remove UI call from service layer
+                        [WPError showAlertWithTitle:NSLocalizedString(@"WordPress version too old", @"")
+                                            message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [blog hostname], [blog version], minimumVersion]];
+                        blog.lastUpdateWarning = minimumVersion;
+                    }
                 }
+
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
-
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-
             if (completion) {
                 completion();
             }
@@ -454,21 +453,21 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 - (PostFormatsHandler)postFormatsHandlerWithBlog:(Blog *)blog completionHandler:(void (^)(void))completion
 {
+    NSManagedObjectID *blogObjectID = blog.objectID;
     return ^void(NSDictionary *postFormats) {
         [self.managedObjectContext performBlock:^{
-            if ([blog isDeleted] || blog.managedObjectContext == nil) {
-                return;
-            }
+            Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:nil];
+            if (blogInContext) {
+                NSDictionary *formats = postFormats;
+                if (![formats objectForKey:@"standard"]) {
+                    NSMutableDictionary *mutablePostFormats = [formats mutableCopy];
+                    mutablePostFormats[@"standard"] = NSLocalizedString(@"Standard", @"Standard post format label");
+                    formats = [NSDictionary dictionaryWithDictionary:mutablePostFormats];
+                }
+                blog.postFormats = formats;
 
-            NSDictionary *formats = postFormats;
-            if (![formats objectForKey:@"standard"]) {
-                NSMutableDictionary *mutablePostFormats = [formats mutableCopy];
-                mutablePostFormats[@"standard"] = NSLocalizedString(@"Standard", @"Standard post format label");
-                formats = [NSDictionary dictionaryWithDictionary:mutablePostFormats];
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
-            blog.postFormats = formats;
-
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
             if (completion) {
                 completion();
