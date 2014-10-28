@@ -22,7 +22,7 @@ end
 
 rawpath = "~/.wp_test_credentials"
 if rawpath.nil?
-    $stderr.puts "error: file WPCOM_CONFIG not defined"
+    $stderr.puts "error: file ~/.wp_test_credentials not defined"
     exit 1
 end
 
