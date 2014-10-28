@@ -394,11 +394,9 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
                 query[(id)kSecAttrAccessGroup] = accessGroup;
             }
 #endif
-            NSDictionary *attributesToUpdate = @{(NSString *)kSecValueData:
-                                                     [password dataUsingEncoding: NSUTF8StringEncoding]};
 
-            status = SecItemUpdate((CFDictionaryRef) [NSDictionary dictionaryWithDictionary:query],
-                                   (CFDictionaryRef) @{(NSString*)kSecValueData: attributesToUpdate});
+            status = SecItemUpdate((CFDictionaryRef) query,
+                                   (CFDictionaryRef) @{(NSString*)kSecValueData: [password dataUsingEncoding: NSUTF8StringEncoding]});
         }
     } else {
         // No existing entry (or an existing, improperly entered, and therefore now
