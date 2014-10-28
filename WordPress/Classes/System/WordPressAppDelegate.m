@@ -162,7 +162,8 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [self setupSingleSignOn];
 
     [self customizeAppearance];
-
+    [self trackLowMemory];
+    
     // Push notifications
     [NotificationsManager registerForPushNotifications];
 
@@ -636,6 +637,16 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [WPAnalytics track:WPAnalyticsStatApplicationOpened];
 }
 
+- (void)trackLowMemory
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(lowMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+}
+
+- (void)lowMemoryWarning:(NSNotification *)notification
+{
+    [WPAnalytics track:WPAnalyticsStatLowMemoryWarning];
+}
+
 #pragma mark - Tab bar methods
 
 - (UITabBarController *)tabBarController
@@ -652,7 +663,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     _tabBarController.delegate = self;
     _tabBarController.restorationIdentifier = WPTabBarRestorationID;
     [_tabBarController.tabBar setTranslucent:NO];
-
+    _tabBarController.tabBar.accessibilityIdentifier = @"Main Navigation";
     // Create a background
     // (not strictly needed when white, but left here for possible customization)
     _tabBarController.tabBar.backgroundImage = [UIImage imageWithColor:[UIColor whiteColor]];
@@ -684,7 +695,9 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
     self.blogListViewController.title = NSLocalizedString(@"Me", @"");
     [blogListNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
-
+    blogListNavigationController.tabBarItem.accessibilityIdentifier = @"Me";
+    
+    
     UIImage *image = [UIImage imageNamed:@"icon-tab-newpost"];
     image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     UIViewController *postsViewController = [[UIViewController alloc] init];
@@ -1036,18 +1049,6 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
             }
         }
     }];
-}
-
-- (void)setupImageResizeSettings
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
-    NSString *oldKey = @"media_resize_preference";
-    // 4 was the value for "Original"
-    if ([defaults integerForKey:oldKey] == 4) {
-        [WPImageOptimizer setShouldOptimizeImages:NO];
-    }
-    [defaults removeObjectForKey:oldKey];
 }
 
 #pragma mark - Networking setup, User agents

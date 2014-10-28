@@ -12,22 +12,12 @@
  
  The image is read, scaled down, and saved with a lower quality setting.
  */
-- (NSData *)optimizedDataFromAssetRepresentation:(ALAssetRepresentation *)representation;
+- (NSData *)resizedDataFromAssetRepresentation:(ALAssetRepresentation *)representation fittingSize:(CGSize)targetSize;
 
 /**
  Returns the image (including edits and cropping) for the given representation.
  */
 - (CGImageRef)newImageFromAssetRepresentation:(ALAssetRepresentation *)representation;
-
-/**
- Returns a scaled down image.
- */
-- (CGImageRef)resizedImageWithImage:(CGImageRef)image scale:(CGFloat)scale orientation:(UIImageOrientation)orientation;
-
-/**
- Returns a scaled down size that fits the limits.
- */
-- (CGSize)sizeWithinLimitsForSize:(CGSize)originalSize;
 
 /**
  Returns the image metadata removing Orientation and XMP tags
@@ -45,5 +35,6 @@
  */
 - (NSData *)dataWithImage:(CGImageRef)image compressionQuality:(CGFloat)quality type:(NSString *)type andMetadata:(NSDictionary *)metadata;
 
+- (CGSize)sizeForOriginalSize:(CGSize)originalSize fittingSize:(CGSize)targetSize;
 
 @end
