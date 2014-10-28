@@ -1037,15 +1037,15 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 #pragma mark - SuggestionsTableViewDelegate
 
-- (void)didTypeInWord:(NSString *)word
+- (void)view:(UIView *)view didTypeInWord:(NSString *)word
 {
     [self.suggestionsTableView showSuggestionsForWord:word];
 }
 
-- (void)didSelectSuggestion:(NSString *)suggestion forSearchText:(NSString *)text
+- (void)suggestionsTableView:(SuggestionsTableView *)suggestionsTableView didSelectSuggestion:(NSString *)suggestion forSearchText:(NSString *)text
 {
     [self.replyTextView replaceTextAtCaret:text withSuggestion:suggestion];
-    [self.suggestionsTableView showSuggestionsForWord:@""];
+    [suggestionsTableView showSuggestionsForWord:@""];
 }
 
 #pragma mark - Gestures Recognizer Delegate

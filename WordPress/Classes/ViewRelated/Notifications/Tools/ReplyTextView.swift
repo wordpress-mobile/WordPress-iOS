@@ -66,7 +66,7 @@ import Foundation
                 
         if shouldChange {
             if let suggestionsDelegate = delegate as? SuggestionsTableViewDelegate {
-                if suggestionsDelegate.respondsToSelector(Selector("didTypeInWord:")) {
+                if suggestionsDelegate.respondsToSelector(Selector("view:didTypeInWord:")) {
                     
                     let textViewText: NSString = textView.text
                     let prerange = NSMakeRange(0, range.location)
@@ -74,7 +74,8 @@ import Foundation
                     let words = pretext.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
                     let lastWord: NSString = words.last as NSString
                 
-                    suggestionsDelegate.didTypeInWord?(lastWord)
+                    suggestionsDelegate.view?(textView, didTypeInWord: lastWord)
+                    
                 }
             }
         }
