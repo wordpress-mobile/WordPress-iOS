@@ -162,7 +162,8 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [self setupSingleSignOn];
 
     [self customizeAppearance];
-
+    [self trackLowMemory];
+    
     // Push notifications
     [NotificationsManager registerForPushNotifications];
 
@@ -634,6 +635,16 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 {
     self.applicationOpenedTime = [NSDate date];
     [WPAnalytics track:WPAnalyticsStatApplicationOpened];
+}
+
+- (void)trackLowMemory
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(lowMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+}
+
+- (void)lowMemoryWarning:(NSNotification *)notification
+{
+    [WPAnalytics track:WPAnalyticsStatLowMemoryWarning];
 }
 
 #pragma mark - Tab bar methods
