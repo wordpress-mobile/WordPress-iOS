@@ -742,6 +742,9 @@ static NSDictionary *EnabledButtonBarStyle;
         button.rightSpacing = SpacingBetweeenNavbarButtons / 2.0f;
         button.removeDefaultLeftSpacing = YES;
         button.leftSpacing = SpacingBetweeenNavbarButtons / 2.0f;
+        NSString *optionsTitle = NSLocalizedString(@"Options", @"Title of the Post Settings navigation button in the Post Editor. Tapping shows settings and options related to the post being edited.");
+        button.accessibilityLabel = optionsTitle;
+        button.accessibilityIdentifier = @"Options";
         _optionsBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
     }
     

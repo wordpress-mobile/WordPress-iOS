@@ -94,7 +94,7 @@
 
     self.deleteButton.tintColor = [WPStyleGuide readGrey];
     self.deleteButton.accessibilityIdentifier = @"Remove Featured Image";
-    self.deleteButton.accessibilityLabel = @"Remove Featured Image";
+    self.deleteButton.accessibilityLabel = NSLocalizedString(@"Remove Featured Image", @"Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.");
     
     UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [activityView startAnimating];
