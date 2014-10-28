@@ -272,6 +272,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     overlayView.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
     };
+    overlayView.accessibilityIdentifier = @"GenericErrorMessage";
     [self.view addSubview:overlayView];
 }
 
@@ -435,6 +436,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _usernameText.autocorrectionType = UITextAutocorrectionTypeNo;
         _usernameText.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _usernameText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+        _usernameText.accessibilityIdentifier = @"Username / Email";
         [_mainView addSubview:_usernameText];
     }
 
@@ -450,6 +452,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _passwordText.showSecureTextEntryToggle = YES;
         _passwordText.showTopLineSeparator = YES;
         _passwordText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+        _passwordText.accessibilityIdentifier = @"Password";
         [_mainView addSubview:_passwordText];
     }
 
@@ -467,6 +470,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _siteUrlText.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _siteUrlText.showTopLineSeparator = YES;
         _siteUrlText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+        _siteUrlText.accessibilityIdentifier = @"Site Address (URL)";
         // insert URL field below password field to hide when signing into
         // WP.com account
         [_mainView insertSubview:_siteUrlText belowSubview:_passwordText];
@@ -478,6 +482,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _signInButton = [[WPNUXMainButton alloc] init];
         [_signInButton addTarget:self action:@selector(signInButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         _signInButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+        _signInButton.accessibilityIdentifier = @"Sign In";
         [_mainView addSubview:_signInButton];
     }
     _signInButton.enabled = [self isSignInEnabled];
@@ -485,8 +490,10 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     NSString *signInTitle;
     if (_userIsDotCom) {
         signInTitle = NSLocalizedString(@"Sign In", nil);
+        _signInButton.accessibilityIdentifier = @"Sign In";
     } else {
         signInTitle = NSLocalizedString(@"Add Site", nil);
+        _signInButton.accessibilityIdentifier = @"Add Site";
     }
     [_signInButton setTitle:signInTitle forState:UIControlStateNormal];
 
@@ -528,8 +535,10 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         NSString *toggleTitle;
         if (_userIsDotCom) {
             toggleTitle = NSLocalizedString(@"Add Self-Hosted Site", nil);
+            _toggleSignInForm.accessibilityIdentifier = @"Add Self-Hosted Site";
         } else {
             toggleTitle = NSLocalizedString(@"Sign in to WordPress.com", nil);
+            _toggleSignInForm.accessibilityIdentifier = @"Sign in to WordPress.com";
         }
         [_toggleSignInForm setTitle:toggleTitle forState:UIControlStateNormal];
     }

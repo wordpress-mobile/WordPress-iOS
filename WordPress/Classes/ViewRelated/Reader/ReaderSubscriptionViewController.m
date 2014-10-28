@@ -472,7 +472,7 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
     searchBar.backgroundImage = [[UIImage alloc] init];
     [searchBar setImage:[UIImage imageNamed:@"icon-clear-textfield"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
     [searchBar setImage:[UIImage imageNamed:@"icon-reader-tag"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
-
+    searchBar.accessibilityIdentifier = @"Search";
     // Replace the default "Search" keyboard button with a "Done" button.
     // Apple doesn't expose `returnKeyType` on `UISearchBar` so we'll check to make sure it supports the right protocol, cast and set.
     // Avoids having to walk the view tree looking for an internal textfield, or subclassing UISearchBar to expose the property.
@@ -522,7 +522,6 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
     UIView *contentView = [[UIView alloc] initWithFrame:self.view.bounds];
     contentView.translatesAutoresizingMaskIntoConstraints = NO;
     _contentView = contentView;
-
     return _contentView;
 }
 
@@ -538,7 +537,7 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
     pageViewController.delegate = self;
     pageViewController.dataSource = self;
     _pageViewController = pageViewController;
-
+    _pageViewController.view.accessibilityIdentifier = @"Pager View";
     return _pageViewController;
 }
 
