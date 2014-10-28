@@ -59,13 +59,14 @@
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"Posts", @"");
-
+    self.tableView.accessibilityIdentifier = @"PostsTable";
+    self.tableView.isAccessibilityElement = YES;
     UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
     [button setImage:image forState:UIControlStateNormal];
     [button addTarget:self action:@selector(showAddPostView) forControlEvents:UIControlEventTouchUpInside];
     button.accessibilityLabel = [self newPostAccessibilityLabel];
-    button.accessibilityIdentifier = @"addpost";
+    button.accessibilityIdentifier = @"New Post";
     UIBarButtonItem *composeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
 
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:composeButtonItem forNavigationItem:self.navigationItem];
@@ -146,6 +147,7 @@
 		cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 	}
     cell.accessoryType = UITableViewCellAccessoryNone;
+    cell.accessibilityIdentifier = @"PostCell";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

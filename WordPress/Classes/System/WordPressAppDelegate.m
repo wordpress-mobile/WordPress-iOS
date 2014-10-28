@@ -663,7 +663,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     _tabBarController.delegate = self;
     _tabBarController.restorationIdentifier = WPTabBarRestorationID;
     [_tabBarController.tabBar setTranslucent:NO];
-
+    _tabBarController.tabBar.accessibilityIdentifier = @"Main Navigation";
     // Create a background
     // (not strictly needed when white, but left here for possible customization)
     _tabBarController.tabBar.backgroundImage = [UIImage imageWithColor:[UIColor whiteColor]];
@@ -695,7 +695,9 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
     self.blogListViewController.title = NSLocalizedString(@"Me", @"");
     [blogListNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
-
+    blogListNavigationController.tabBarItem.accessibilityIdentifier = @"Me";
+    
+    
     UIImage *image = [UIImage imageNamed:@"icon-tab-newpost"];
     image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     UIViewController *postsViewController = [[UIViewController alloc] init];

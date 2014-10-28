@@ -114,6 +114,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
     // Compensate for the first section's height of 1.0f
     self.tableView.contentInset = UIEdgeInsetsMake(-1.0f, 0, 0, 0);
+    self.tableView.accessibilityIdentifier = @"SettingsTable";
     self.isUploadingMedia = NO;
 }
 
@@ -475,6 +476,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         cell.textLabel.text = NSLocalizedString(@"Categories", @"Label for the categories field. Should be the same as WP core.");
         cell.detailTextLabel.text = [NSString decodeXMLCharactersIn:[self.post categoriesText]];
         cell.tag = PostSettingsRowCategories;
+        cell.accessibilityIdentifier = @"Categories";
 
     } else if (indexPath.row == PostSettingsRowTags) {
         // Tags
@@ -484,6 +486,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         textCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:(NSLocalizedString(@"Comma separated", @"Placeholder text for the tags field. Should be the same as WP core.")) attributes:(@{NSForegroundColorAttributeName: [WPStyleGuide textFieldPlaceholderGrey]})];
         textCell.textField.secureTextEntry = NO;
         textCell.textField.clearButtonMode = UITextFieldViewModeNever;
+        textCell.textField.accessibilityIdentifier = @"Tags Value";
         cell = textCell;
         cell.tag = PostSettingsRowTags;
 
@@ -525,7 +528,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         // Publish Status
         cell = [self getWPTableViewCell];
         cell.textLabel.text = NSLocalizedString(@"Status", @"The status of the post. Should be the same as in core WP.");
-
+        cell.accessibilityIdentifier = @"Status";
         if (([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending)
             && ([self.apost.status isEqualToString:@"publish"])) {
             cell.detailTextLabel.text = NSLocalizedString(@"Scheduled", @"If a post is scheduled for later, this string is used for the post's status. Should use the same translation as core WP.");
@@ -547,6 +550,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         cell.textLabel.text = NSLocalizedString(@"Visibility", @"The visibility settings of the post. Should be the same as in core WP.");
         cell.detailTextLabel.text = [self titleForVisibility];
         cell.tag = PostSettingsRowVisibility;
+        cell.accessibilityIdentifier = @"Visibility";
 
     } else {
         // Password
@@ -559,8 +563,9 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
         cell = textCell;
         cell.tag = PostSettingsRowPassword;
-
+        
         self.passwordTextField = textCell.textField;
+        self.passwordTextField.accessibilityIdentifier = @"Password Value";
     }
 
     return cell;
@@ -573,7 +578,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     cell.textLabel.text = NSLocalizedString(@"Post Format", @"The post formats available for the post. Should be the same as in core WP.");
     cell.detailTextLabel.text = self.post.postFormatText;
     cell.tag = PostSettingsRowFormat;
-
+    cell.accessibilityIdentifier = @"Post Format";
     return cell;
 }
 
@@ -598,6 +603,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
         if (self.featuredImage) {
             [featuredImageCell setImage:self.featuredImage];
+            featuredImageCell.accessibilityIdentifier = @"Current Featured Image";
         } else {
             [featuredImageCell showLoadingSpinner:YES];
             if (!self.isUploadingMedia){

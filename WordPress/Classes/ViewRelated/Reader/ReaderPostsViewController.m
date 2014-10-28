@@ -211,7 +211,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:FeaturedImageCellIdentifier];
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-
+    self.tableView.accessibilityIdentifier = @"Reader Table";
+    
     // Note: UIEdgeInsets are not always enforced. After logging in, the table might autoscroll up to the first row.
     if (UIDevice.isPad) {
         self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:RPVCTableHeaderFrame];

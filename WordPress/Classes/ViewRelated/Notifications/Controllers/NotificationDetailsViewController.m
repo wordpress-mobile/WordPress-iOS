@@ -118,6 +118,7 @@ static CGFloat NotificationSectionSeparator     = 10;
                                              selector:@selector(handleNotificationChange:)
                                                  name:NSManagedObjectContextObjectsDidChangeNotification
                                                object:context];
+    self.tableView.accessibilityIdentifier = @"Notification Details Table";
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -230,7 +231,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     };
     replyTextView.delegate          = self;
     self.replyTextView              = replyTextView;
-    
+    replyTextView.accessibilityIdentifier = @"Reply Text";
     // Attach the ReplyTextView at the very bottom
     [self.view addSubview:self.replyTextView];
     [self.view pinSubviewAtBottom:self.replyTextView];
