@@ -1,7 +1,7 @@
 import Foundation
 
 
-@objc public class ReplyTextView : UIView, UITextViewDelegate
+@objc public class ReplyTextView : UIView, UITextViewDelegate, SuggestableView
 {
     // MARK: - Initializers
     public convenience init(width: CGFloat) {
@@ -62,7 +62,25 @@ import Foundation
     }
     
     public func textView(textView: UITextView!, shouldChangeTextInRange range: NSRange, replacementText text: String!) -> Bool {
-        return delegate?.textView?(textView, shouldChangeTextInRange: range, replacementText: text) ?? true
+        let shouldChange = delegate?.textView?(textView, shouldChangeTextInRange: range, replacementText: text) ?? true
+                
+        if shouldChange {
+            if let suggestionsDelegate = delegate as? SuggestionsTableViewDelegate {
+                if suggestionsDelegate.respondsToSelector(Selector("view:didTypeInWord:")) {
+                    
+                    let textViewText: NSString = textView.text
+                    let prerange = NSMakeRange(0, range.location)
+                    let pretext: NSString = textViewText.substringWithRange(prerange) + text
+                    let words = pretext.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                    let lastWord: NSString = words.last as NSString
+                
+                    suggestionsDelegate.view?(textView, didTypeInWord: lastWord)
+                    
+                }
+            }
+        }
+        
+        return shouldChange
     }
 
     public func textViewDidChange(textView: UITextView!) {
@@ -74,6 +92,14 @@ import Foundation
         return delegate?.textView?(textView, shouldInteractWithURL: URL, inRange: characterRange) ?? true
     }
     
+    // MARK: - SuggestableView methods
+    public func replaceTextAtCaret(text: String!, withSuggestion suggestion: String!) {
+        let textToReplace: NSString = text;
+        var selectedRange: UITextRange = textView.selectedTextRange!
+        var newPosition: UITextPosition = textView.positionFromPosition(selectedRange.start, offset: -textToReplace.length)!
+        var newRange: UITextRange = textView.textRangeFromPosition(newPosition, toPosition: selectedRange.start)
+        textView.replaceRange(newRange, withText: suggestion)
+    }
     
     // MARK: - IBActions
     @IBAction private func btnReplyPressed() {
@@ -113,6 +139,9 @@ import Foundation
         super.layoutSubviews()
     }
     
+    public func setKeyboardType(keyboardType: Int) {
+        textView.keyboardType = UIKeyboardType(rawValue: keyboardType)!
+    }
     
     // MARK: - Autolayout Helpers
     public override func intrinsicContentSize() -> CGSize {
