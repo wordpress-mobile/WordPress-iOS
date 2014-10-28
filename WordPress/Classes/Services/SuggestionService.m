@@ -80,6 +80,9 @@ NSString * const SuggestionListUpdatedNotification = @"SuggestionListUpdatedNoti
         // remove siteID from the currently being requested list
         [weakSelf.siteIDsCurrentlyBeingRequested removeObject:siteID];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+        // remove siteID from the currently being requested list
+        [weakSelf.siteIDsCurrentlyBeingRequested removeObject:siteID];
+
         DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
     }];
 }
