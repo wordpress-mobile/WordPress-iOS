@@ -755,9 +755,9 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
             BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
             WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-            Blog *blog = [accountService findBlogWithXmlrpc:blogOptions[@"xmlrpc"] inAccount:defaultAccount];
+            Blog *blog = [blogService findBlogWithXmlrpc:blogOptions[@"xmlrpc"] inAccount:defaultAccount];
             if (!blog) {
-                blog = [accountService createBlogWithAccount:defaultAccount];
+                blog = [blogService createBlogWithAccount:defaultAccount];
                 blog.xmlrpc = blogOptions[@"xmlrpc"];
             }
             blog.blogID = [blogOptions numberForKey:@"blogid"];

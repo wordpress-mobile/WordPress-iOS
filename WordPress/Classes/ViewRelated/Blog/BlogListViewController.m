@@ -109,9 +109,10 @@ CGFloat const blavatarImageSize = 50.f;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     [context performBlock:^{
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
         WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-        [accountService syncBlogsForAccount:defaultAccount success:nil failure:nil];
+        [blogService syncBlogsForAccount:defaultAccount success:nil failure:nil];
     }];
 }
 
