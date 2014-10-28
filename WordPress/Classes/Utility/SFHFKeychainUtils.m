@@ -369,7 +369,7 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
         // Update the existing item.
 
         if (![existingPassword isEqualToString:password] && updateExisting) {
-            //Only update if we're allowed to update existing.  If not, simply do nothing.
+            // Only update if we're allowed to update existing.  If not, simply do nothing.
 
             NSArray *keys = [[[NSArray alloc] initWithObjects: (NSString *) kSecClass,
                               kSecAttrService,
