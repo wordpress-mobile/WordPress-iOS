@@ -183,22 +183,22 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 - (void)syncOptionsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncOptionsForBlog:blog success:[self optionsHandlerWithBlog:blog completionHandler:success] failure:failure];
+    [remote syncOptionsForBlog:blog success:[self optionsHandlerWithBlogObjectID:blog.objectID completionHandler:success] failure:failure];
 }
 
 - (void)syncPostFormatsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncPostFormatsForBlog:blog success:[self postFormatsHandlerWithBlog:blog completionHandler:success] failure:failure];
+    [remote syncPostFormatsForBlog:blog success:[self postFormatsHandlerWithBlogObjectID:blog.objectID completionHandler:success] failure:failure];
 }
 
 - (void)syncBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncOptionsForBlog:blog success:[self optionsHandlerWithBlog:blog completionHandler:nil] failure:^(NSError *error) {
+    [remote syncOptionsForBlog:blog success:[self optionsHandlerWithBlogObjectID:blog.objectID completionHandler:nil] failure:^(NSError *error) {
         DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error);
     }];
-    [remote syncPostFormatsForBlog:blog success:[self postFormatsHandlerWithBlog:blog completionHandler:nil] failure:^(NSError *error) {
+    [remote syncPostFormatsForBlog:blog success:[self postFormatsHandlerWithBlogObjectID:blog.objectID completionHandler:nil] failure:^(NSError *error) {
         DDLogError(@"Failed syncing post formats for blog %@: %@", blog.url, error);
     }];
 
@@ -423,13 +423,12 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 #pragma mark - Completion handlers
 
-- (OptionsHandler)optionsHandlerWithBlog:(Blog *)blog completionHandler:(void (^)(void))completion
+- (OptionsHandler)optionsHandlerWithBlogObjectID:(NSManagedObjectID *)blogObjectID completionHandler:(void (^)(void))completion
 {
-    NSManagedObjectID *blogObjectID = blog.objectID;
     return ^void(NSDictionary *options) {
         [self.managedObjectContext performBlock:^{
-            Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:nil];
-            if (blogInContext) {
+            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:nil];
+            if (blog) {
                 blog.options = [NSDictionary dictionaryWithDictionary:options];
                 NSString *minimumVersion = @"3.6";
                 float version = [[blog version] floatValue];
@@ -451,13 +450,12 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     };
 }
 
-- (PostFormatsHandler)postFormatsHandlerWithBlog:(Blog *)blog completionHandler:(void (^)(void))completion
+- (PostFormatsHandler)postFormatsHandlerWithBlogObjectID:(NSManagedObjectID *)blogObjectID completionHandler:(void (^)(void))completion
 {
-    NSManagedObjectID *blogObjectID = blog.objectID;
     return ^void(NSDictionary *postFormats) {
         [self.managedObjectContext performBlock:^{
-            Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:nil];
-            if (blogInContext) {
+            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:nil];
+            if (blog) {
                 NSDictionary *formats = postFormats;
                 if (![formats objectForKey:@"standard"]) {
                     NSMutableDictionary *mutablePostFormats = [formats mutableCopy];
