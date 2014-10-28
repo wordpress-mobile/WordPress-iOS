@@ -558,6 +558,9 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
         case WPAnalyticsStatSupportReceivedResponseFromSupport:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyFlagger:@"received_response_from_support"];
             break;
+        case WPAnalyticsStatLowMemoryWarning:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Received Low Memory Warning"];
+            break;
         default:
             break;
     }
