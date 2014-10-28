@@ -21,7 +21,7 @@ CGFloat const RowHeight = 44.0f;
 @implementation SuggestionsTableView
 
 
-- (id)initWithSiteID:(NSNumber *)siteID
+- (instancetype)initWithSiteID:(NSNumber *)siteID
 {    
     self = [super initWithFrame:CGRectZero];
     if (self) {
