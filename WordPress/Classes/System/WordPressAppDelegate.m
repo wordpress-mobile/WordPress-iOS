@@ -164,7 +164,6 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [self customizeAppearance];
     [self trackLowMemory];
     
-
     // Push notifications
     [NotificationsManager registerForPushNotifications];
 
