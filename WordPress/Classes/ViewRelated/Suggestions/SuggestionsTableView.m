@@ -212,7 +212,9 @@ CGFloat const RowHeight = 44.0f;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Suggestion *suggestion = [self.searchResults objectAtIndex:indexPath.row];
-    [self.suggestionsDelegate didSelectSuggestion:suggestion.userLogin forSearchText:self.searchText];    
+    [self.suggestionsDelegate suggestionsTableView:self
+                               didSelectSuggestion:suggestion.userLogin
+                                     forSearchText:self.searchText];    
 }
 
 #pragma mark - Suggestion list management
