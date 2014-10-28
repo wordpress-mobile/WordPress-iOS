@@ -57,7 +57,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 #pragma mark Private
 #pragma mark ==========================================================================================
 
-@interface NotificationDetailsViewController () <UITextViewDelegate, SuggestionsDelegate>
+@interface NotificationDetailsViewController () <UITextViewDelegate, SuggestionsTableViewDelegate>
 
 // Outlets
 @property (nonatomic,   weak) IBOutlet UITableView          *tableView;
@@ -224,7 +224,7 @@ static CGFloat NotificationSectionSeparator     = 10;
         return;
     }
     
-    // Attach the SuggestionTableView for WPCOM blogs
+    // Attach the SuggestionsTableView for WPCOM blogs
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
     Blog *blog                      = [service blogByBlogId:self.note.metaSiteID];
@@ -1035,7 +1035,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     self.tableGesturesRecognizer.enabled = false;
 }
 
-#pragma mark - SuggestionsDelegate
+#pragma mark - SuggestionsTableViewDelegate
 
 - (void)didTypeInWord:(NSString *)word
 {
