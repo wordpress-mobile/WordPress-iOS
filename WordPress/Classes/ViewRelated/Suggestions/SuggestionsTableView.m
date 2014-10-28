@@ -26,7 +26,7 @@ CGFloat const RowHeight = 44.0f;
     self = [super initWithFrame:CGRectZero];
     if (self) {
         _siteID = siteID;
-        _suggestions = [[SuggestionService shared] suggestionsForSiteID:_siteID];
+        _suggestions = [[SuggestionService sharedInstance] suggestionsForSiteID:_siteID];
         _searchText = @"";
         _searchResults = [[NSMutableArray alloc] init];
 
@@ -221,7 +221,7 @@ CGFloat const RowHeight = 44.0f;
 {
     // only reload if the suggestion list is updated for the current site
     if ([notification.object isEqualToNumber:self.siteID]) {
-        self.suggestions = [[SuggestionService shared] suggestionsForSiteID:self.siteID];
+        self.suggestions = [[SuggestionService sharedInstance] suggestionsForSiteID:self.siteID];
         [self showSuggestionsForWord:self.searchText];
     }
 }
@@ -229,7 +229,7 @@ CGFloat const RowHeight = 44.0f;
 - (NSArray *)suggestions
 {
     if (!_suggestions) {
-        _suggestions = [[SuggestionService shared] suggestionsForSiteID:self.siteID];
+        _suggestions = [[SuggestionService sharedInstance] suggestionsForSiteID:self.siteID];
     }
     return _suggestions;
 }
