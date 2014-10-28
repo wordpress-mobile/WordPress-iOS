@@ -1,5 +1,6 @@
 #import "BlogService.h"
 #import "Blog.h"
+#import "WPAccount.h"
 #import "ContextManager.h"
 #import "WPError.h"
 #import "Comment.h"
@@ -12,6 +13,11 @@
 #import "BlogServiceRemote.h"
 #import "BlogServiceRemoteXMLRPC.h"
 #import "BlogServiceRemoteREST.h"
+#import "AccountServiceRemote.h"
+#import "AccountServiceRemoteREST.h"
+#import "AccountServiceRemoteXMLRPC.h"
+#import "RemoteBlog.h"
+#import "NSString+XMLExtensions.h"
 
 @interface BlogService ()
 
@@ -156,6 +162,24 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     return [results firstObject];
 }
 
+- (void)syncBlogsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure
+{
+    DDLogMethod();
+
+    id<AccountServiceRemote> remote = [self remoteForAccount:account];
+    [remote getBlogsWithSuccess:^(NSArray *blogs) {
+        [self.managedObjectContext performBlock:^{
+            [self mergeBlogs:blogs withAccount:account completion:success];
+        }];
+    } failure:^(NSError *error) {
+        DDLogError(@"Error syncing blogs: %@", error);
+
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
 - (void)syncOptionsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
@@ -262,7 +286,82 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     return blogs;
 }
 
+///--------------------
+/// @name Blog creation
+///--------------------
+
+- (Blog *)findBlogWithXmlrpc:(NSString *)xmlrpc inAccount:(WPAccount *)account
+{
+    NSSet *foundBlogs = [account.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc like %@", xmlrpc]];
+    if ([foundBlogs count] == 1) {
+        return [foundBlogs anyObject];
+    }
+
+    // If more than one blog matches, return the first and delete the rest
+    if ([foundBlogs count] > 1) {
+        Blog *blogToReturn = [foundBlogs anyObject];
+        for (Blog *b in foundBlogs) {
+            // Choose blogs with URL not starting with https to account for a glitch in the API in early 2014
+            if (!([b.url hasPrefix:@"https://"])) {
+                blogToReturn = b;
+                break;
+            }
+        }
+
+        for (Blog *b in foundBlogs) {
+            if (!([b isEqual:blogToReturn])) {
+                [self.managedObjectContext deleteObject:b];
+            }
+        }
+
+        return blogToReturn;
+    }
+    return nil;
+}
+
+- (Blog *)createBlogWithAccount:(WPAccount *)account
+{
+    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Blog class]) inManagedObjectContext:self.managedObjectContext];
+    blog.account = account;
+    return blog;
+}
+
 #pragma mark - Private methods
+
+- (void)mergeBlogs:(NSArray *)blogs withAccount:(WPAccount *)account completion:(void (^)())completion
+{
+    NSSet *remoteSet = [NSSet setWithArray:[blogs valueForKey:@"xmlrpc"]];
+    NSSet *localSet = [account.blogs valueForKey:@"xmlrpc"];
+    NSMutableSet *toDelete = [localSet mutableCopy];
+    [toDelete minusSet:remoteSet];
+
+    if ([toDelete count] > 0) {
+        for (Blog *blog in account.blogs) {
+            if ([toDelete containsObject:blog.xmlrpc]) {
+                [self.managedObjectContext deleteObject:blog];
+            }
+        }
+    }
+
+    // Go through each remote incoming blog and make sure we're up to date with titles, etc.
+    // Also adds any blogs we don't have
+    for (RemoteBlog *remoteBlog in blogs) {
+        Blog *blog = [self findBlogWithXmlrpc:remoteBlog.xmlrpc inAccount:account];
+        if (!blog) {
+            blog = [self createBlogWithAccount:account];
+            blog.xmlrpc = remoteBlog.xmlrpc;
+        }
+        blog.url = remoteBlog.url;
+        blog.blogName = [remoteBlog.title stringByDecodingXMLCharacters];
+        blog.blogID = remoteBlog.ID;
+    }
+
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
+    if (completion != nil) {
+        dispatch_async(dispatch_get_main_queue(), completion);
+    }
+}
 
 - (id<BlogServiceRemote>)remoteForBlog:(Blog *)blog
 {
@@ -274,6 +373,15 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     }
 
     return remote;
+}
+
+- (id<AccountServiceRemote>)remoteForAccount:(WPAccount *)account
+{
+    if (account.restApi) {
+        return [[AccountServiceRemoteREST alloc] initWithApi:account.restApi];
+    }
+
+    return [[AccountServiceRemoteXMLRPC alloc] initWithApi:account.xmlrpcApi];
 }
 
 - (NSInteger)blogCountWithPredicate:(NSPredicate *)predicate
