@@ -6,7 +6,7 @@
 
 @property (nonatomic, weak) id <SuggestionsTableViewDelegate> suggestionsDelegate;
 
-- (id)initWithSiteID:(NSNumber *)siteID;
+- (instancetype)initWithSiteID:(NSNumber *)siteID;
 - (void)showSuggestionsForWord:(NSString *)word;
 
 @end
