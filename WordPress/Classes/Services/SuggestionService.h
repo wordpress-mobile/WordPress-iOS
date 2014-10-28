@@ -4,7 +4,7 @@ extern NSString * const SuggestionListUpdatedNotification;
 
 @interface SuggestionService : NSObject
 
-+ (id)shared;
++ (id)sharedInstance;
 
 /**
  Returns the cached @mention suggestions (if any) for a given siteID.  Calls
