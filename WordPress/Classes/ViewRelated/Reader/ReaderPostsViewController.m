@@ -6,11 +6,10 @@
 #import "BlogService.h"
 #import "ContextManager.h"
 #import "CustomHighlightButton.h"
-#import "InlineComposeView.h"
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
 #import "ReaderBlockedTableViewCell.h"
-#import "ReaderCommentPublisher.h"
+#import "ReaderCommentsViewController.h"
 #import "ReaderPost.h"
 #import "ReaderPostDetailViewController.h"
 #import "ReaderPostService.h"
@@ -44,8 +43,7 @@ NSString * const FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
 NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier";
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
-@interface ReaderPostsViewController ()<ReaderCommentPublisherDelegate,
-                                        RebloggingViewControllerDelegate,
+@interface ReaderPostsViewController ()<RebloggingViewControllerDelegate,
                                         UIActionSheetDelegate,
                                         WPContentSyncHelperDelegate,
                                         WPTableImageSourceDelegate,
@@ -56,9 +54,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @property (nonatomic, strong) WPTableImageSource *featuredImageSource;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, strong) WPAnimatedBox *animatedBox;
-@property (nonatomic, strong) UIGestureRecognizer *tapOffKeyboardGesture;
-@property (nonatomic, strong) InlineComposeView *inlineComposeView;
-@property (nonatomic, strong) ReaderCommentPublisher *commentPublisher;
 @property (nonatomic, readonly) ReaderTopic *currentTopic;
 @property (nonatomic, strong) ReaderPostTableViewCell *cellForLayout;
 @property (nonatomic, strong) NSNumber *siteIDToBlock;
@@ -98,8 +93,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         _syncHelper = [[WPContentSyncHelper alloc] init];
         _syncHelper.delegate = self;
 
-        _tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
-
         // TODO: since the vc is not visible when accounts/topics change we could
         // handle this a different way and ditch the observers.
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
@@ -119,7 +112,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self configureFeaturedImageSource];
     [self configureInfiniteScroll];
     [self configureNavbar];
-    [self configureCommentPublisher];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
@@ -163,12 +155,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
             [self.animatedBox animate];
         }
     });
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [self.inlineComposeView endEditing:YES];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
@@ -225,7 +211,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:FeaturedImageCellIdentifier];
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     self.tableView.accessibilityIdentifier = @"Reader Table";
     
     // Note: UIEdgeInsets are not always enforced. After logging in, the table might autoscroll up to the first row.
@@ -302,17 +287,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     self.navigationItem.rightBarButtonItem = button;
 
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:button forNavigationItem:self.navigationItem];
-}
-
-- (void)configureCommentPublisher
-{
-    self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
-    [self.inlineComposeView setButtonTitle:NSLocalizedString(@"Post", @"Verb. The title of the 'publish' button in the comment reply form.")];
-    [self.view addSubview:self.inlineComposeView];
-
-    // Comment composer responds to the inline compose view to publish comments
-    self.commentPublisher = [[ReaderCommentPublisher alloc] initWithComposer:self.inlineComposeView];
-    self.commentPublisher.delegate = self;
 }
 
 - (void)configureNoResultsView
@@ -611,17 +585,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
     navController.navigationBar.translucent = NO;
     [self presentViewController:navController animated:YES completion:nil];
-}
-
-- (void)dismissKeyboard:(id)sender
-{
-    for (UIGestureRecognizer *gesture in self.view.gestureRecognizers) {
-        if ([gesture isEqual:self.tapOffKeyboardGesture]) {
-            [self.view removeGestureRecognizer:gesture];
-        }
-    }
-
-    [self.inlineComposeView toggleComposer];
 }
 
 - (void)refresh
@@ -1132,24 +1095,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)postView:(ReaderPostContentView *)postView didReceiveCommentAction:(id)sender
 {
-    [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
-
-    ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    ReaderPost *post = (ReaderPost *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-
-    if (self.commentPublisher.post == post) {
-        [self.inlineComposeView toggleComposer];
-        return;
-    }
-
-    self.commentPublisher.post = post;
-    [self.inlineComposeView displayComposer];
-
-    // scroll the item into view if possible
-    [self.tableView scrollToRowAtIndexPath:indexPath
-                          atScrollPosition:UITableViewScrollPositionTop
-                                  animated:YES];
+    ReaderPost *post = [self postFromCellSubview:sender];
+    ReaderCommentsViewController *controller = [ReaderCommentsViewController controllerWithPost:post];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 
@@ -1164,16 +1112,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
     [cell configureCell:post];
     [self setAvatarForPost:post forCell:cell indexPath:indexPath];
-}
-
-
-#pragma mark - ReaderCommentPublisherDelegate Methods
-
-- (void)commentPublisherDidPublishComment:(ReaderCommentPublisher *)publisher
-{
-    [WPAnalytics track:WPAnalyticsStatReaderCommentedOnArticle];
-    publisher.post.dateCommentsSynced = nil;
-    [self.inlineComposeView dismissComposer];
 }
 
 
