@@ -1,5 +1,7 @@
 #import <Foundation/Foundation.h>
 
+typedef void(^SuggestionAvatarFetchSuccessBlock)(UIImage* image);
+
 @interface Suggestion : NSObject
 
 @property (nonatomic, strong) NSString *userLogin;
@@ -9,6 +11,6 @@
 + (instancetype)suggestionFromDictionary:(NSDictionary *)dictionary;
 
 - (UIImage *)cachedAvatarWithSize:(CGSize)size;
-- (void)fetchAvatarWithSize:(CGSize)size success:(void (^)(UIImage *image))success;
+- (void)fetchAvatarWithSize:(CGSize)size success:(SuggestionAvatarFetchSuccessBlock)success;
 
 @end
