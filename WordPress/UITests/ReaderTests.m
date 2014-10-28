@@ -51,10 +51,16 @@
     [tester tapViewWithAccessibilityLabel:@"Comment"];
     [tester waitForTimeInterval:2];
 
-    [tester enterTextIntoCurrentFirstResponder:@"Interesting"];
+    [tester tapViewWithAccessibilityLabel:@"ReplyText"];
+    
+    [tester waitForKeyboard];
+    
+    [tester enterTextIntoCurrentFirstResponder:@"Reply Text"];
+    
+    [tester tapViewWithAccessibilityLabel:@"REPLY"];
     [tester waitForTimeInterval:2];
     
-    [tester tapViewWithAccessibilityLabel:@"Post"];
+    [tester tapViewWithAccessibilityLabel:@"Back"];
     [tester waitForTimeInterval:2];
 
 }
