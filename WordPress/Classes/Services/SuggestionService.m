@@ -16,7 +16,7 @@ NSString * const SuggestionListUpdatedNotification = @"SuggestionListUpdatedNoti
 
 @implementation SuggestionService
 
-+ (id)shared
++ (id)sharedInstance
 {
     static SuggestionService *shared = nil;
     static dispatch_once_t onceToken;

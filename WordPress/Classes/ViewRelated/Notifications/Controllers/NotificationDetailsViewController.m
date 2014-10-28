@@ -229,7 +229,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
     Blog *blog                      = [service blogByBlogId:self.note.metaSiteID];
         
-    BOOL shouldAddSuggestionView = (blog.isWPcom && [[SuggestionService shared] shouldShowSuggestionsForSiteID:self.note.metaSiteID]);
+    BOOL shouldAddSuggestionView = (blog.isWPcom && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.note.metaSiteID]);
     
     if (shouldAddSuggestionView) {
         self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.note.metaSiteID];
