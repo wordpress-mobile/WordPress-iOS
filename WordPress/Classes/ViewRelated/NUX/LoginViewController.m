@@ -909,7 +909,8 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
     WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken];
 
-    [accountService syncBlogsForAccount:account
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    [blogService syncBlogsForAccount:account
                                 success:^{
                                     [self setAuthenticating:NO withStatusMessage:nil];
                                     [self dismiss];
@@ -938,9 +939,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     if (!url) {
         url = [options stringForKeyPath:@"blog_url.value"];
     }
-    _blog = [accountService findBlogWithXmlrpc:xmlrpc inAccount:account];
+    _blog = [blogService findBlogWithXmlrpc:xmlrpc inAccount:account];
     if (!_blog) {
-        _blog = [accountService createBlogWithAccount:account];
+        _blog = [blogService createBlogWithAccount:account];
         if (url) {
             _blog.url = url;
         }

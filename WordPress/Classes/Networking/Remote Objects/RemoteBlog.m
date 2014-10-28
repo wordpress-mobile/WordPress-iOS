@@ -1,5 +1,4 @@
-#import "AccountServiceRemote.h"
-#import <WordPressApi/WordPressApi.h>
+#import "RemoteBlog.h"
 
 @implementation RemoteBlog
 - (NSString *)debugDescription
