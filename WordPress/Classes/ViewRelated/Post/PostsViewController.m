@@ -231,8 +231,9 @@
     }
     
 	[navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
-	navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-	[self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
+	navController.modalPresentationStyle = UIModalPresentationFullScreen;
+    
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)viewPost:(AbstractPost *)apost
@@ -248,8 +249,9 @@
         editPostViewController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
         [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
-        navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-        [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
+        navController.modalPresentationStyle = UIModalPresentationFullScreen;
+
+        [self presentViewController:navController animated:YES completion:nil];
     }
 }
 
@@ -299,8 +301,24 @@
 
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+<<<<<<< HEAD
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
     [postService syncPostsOfType:PostServiceTypePost forBlog:self.blog success:success failure:failure];
+=======
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+
+    if (userInteraction) {
+        // If triggered by a pull to refresh, sync posts and metadata
+        [blogService syncPostsAndMetadataForBlog:self.blog success:success failure:failure];
+    } else {
+        // If blog has no posts, then sync posts including metadata
+        if (self.blog.posts.count == 0) {
+            [blogService syncPostsAndMetadataForBlog:self.blog success:success failure:failure];
+        } else {
+            [blogService syncPostsForBlog:self.blog success:success failure:failure loadMore:NO];
+        }
+    }
+>>>>>>> release/4.5
 }
 
 - (Class)cellClass {

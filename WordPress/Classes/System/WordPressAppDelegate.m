@@ -9,7 +9,6 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <Simperium/Simperium.h>
 #import <Helpshift/Helpshift.h>
-#import <Taplytics/Taplytics.h>
 #import <Lookback/Lookback.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
 
@@ -31,6 +30,7 @@
 #import "ReaderPostService.h"
 #import "ReaderTopicService.h"
 #import "SVProgressHUD.h"
+#import "TodayExtensionService.h"
 
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
@@ -125,15 +125,11 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [self toggleExtraDebuggingIfNeeded];
     [self removeCredentialsForDebug];
 
-    // Stats and feedback
-#ifndef DEBUG
-    [Taplytics startTaplyticsAPIKey:[WordPressComApiCredentials taplyticsAPIKey]];
-#endif
+    // Stats and feedback    
     [SupportViewController checkIfFeedbackShouldBeEnabled];
 
     [Helpshift installForApiKey:[WordPressComApiCredentials helpshiftAPIKey] domainName:[WordPressComApiCredentials helpshiftDomainName] appID:[WordPressComApiCredentials helpshiftAppId]];
     [[Helpshift sharedInstance] setDelegate:self];
-    [SupportViewController checkIfHelpshiftShouldBeEnabled];
 
     NSNumber *usage_tracking = [[NSUserDefaults standardUserDefaults] valueForKey:kUsageTrackingDefaultsKey];
     if (usage_tracking == nil) {
@@ -772,7 +768,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
         navController.restorationClass = [WPLegacyEditPostViewController class];
     }
         
-    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
     navController.navigationBar.translucent = NO;
     [navController setToolbarHidden:NO]; // Make the toolbar visible here to avoid a weird left/right transition when the VC appears.
     [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
@@ -1176,6 +1172,11 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
                                                 label:[NSString string]
                                       bucketOverrides:bucketOverrides];
 
+    // Note: Nuke Simperium's metadata in case of a faulty Core Data migration
+    if (manager.didMigrationFail) {
+        [self.simperium resetMetadata];
+    }
+    
 #ifdef DEBUG
 	self.simperium.verboseLoggingEnabled = false;
 #endif
@@ -1451,12 +1452,14 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 
 - (void)determineIfTodayWidgetIsConfiguredAndShowAppropriately
 {
-    [StatsViewController hideTodayWidgetIfNotConfigured];
+    TodayExtensionService *service = [TodayExtensionService new];
+    [service hideTodayWidgetIfNotConfigured];
 }
 
 - (void)removeTodayWidgetConfiguration
 {
-    [StatsViewController removeTodayWidgetConfiguration];
+    TodayExtensionService *service = [TodayExtensionService new];
+    [service removeTodayWidgetConfiguration];
 }
 
 #pragma mark - GUI animations

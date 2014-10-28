@@ -5,7 +5,6 @@
 @interface SupportViewController : UITableViewController <MFMailComposeViewControllerDelegate, HelpshiftDelegate>
 
 + (void)checkIfFeedbackShouldBeEnabled;
-+ (void)checkIfHelpshiftShouldBeEnabled;
 + (BOOL)isHelpshiftEnabled;
 + (void)showFromTabBar;
 

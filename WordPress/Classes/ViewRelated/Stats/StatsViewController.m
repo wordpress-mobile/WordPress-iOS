@@ -7,10 +7,9 @@
 #import "ContextManager.h"
 #import "WPStatsViewController_Private.h"
 #import "BlogService.h"
-#import <NotificationCenter/NotificationCenter.h>
 #import "SettingsViewController.h"
 #import "SFHFKeychainUtils.h"
-#import "Constants.h"
+#import "TodayExtensionService.h"
 
 static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
@@ -84,30 +83,11 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)saveSiteDetailsForTodayWidget
 {
-    if (!WIDGETS_EXIST) {
-        return;
-    }
-    
-    // Save the token and site ID to shared user defaults for use in the today widget
-    NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
-    [sharedDefaults setObject:self.siteTimeZone.name forKey:WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey];
-    [sharedDefaults setObject:self.siteID forKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
-    [sharedDefaults setObject:self.blog.blogName forKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
-    [sharedDefaults synchronize];
-    
-    NSError *error;
-    [SFHFKeychainUtils storeUsername:WPStatsTodayWidgetOAuth2TokenKeychainUsername
-                         andPassword:self.oauth2Token
-                      forServiceName:WPStatsTodayWidgetOAuth2TokenKeychainServiceName
-                         accessGroup:WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup
-                      updateExisting:YES
-                               error:&error];
-    if (error) {
-        DDLogError(@"Today Widget OAuth2Token error: %@", error);
-    } else {
-        // Turns the widget on for this site
-        [[NCWidgetController widgetController] setHasContent:YES forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
-    }
+    TodayExtensionService *service = [TodayExtensionService new];
+    [service configureTodayWidgetWithSiteID:self.siteID
+                                   blogName:self.blog.blogName
+                               siteTimeZone:self.siteTimeZone
+                             andOAuth2Token:self.oauth2Token];
 }
 
 - (void)promptForJetpackCredentials
@@ -161,49 +141,6 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 {
     if (self.dismissBlock) {
         self.dismissBlock();
-    }
-}
-
-#pragma mark - Public Class methods
-
-+ (void)removeTodayWidgetConfiguration
-{
-    if (NSClassFromString(@"NCWidgetController") == nil) {
-        return;
-    }
-    
-    NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
-    [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey];
-    [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
-    [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
-    [sharedDefaults synchronize];
-    
-    [SFHFKeychainUtils deleteItemForUsername:WPStatsTodayWidgetOAuth2TokenKeychainUsername
-                              andServiceName:WPStatsTodayWidgetOAuth2TokenKeychainServiceName
-                                 accessGroup:WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup
-                                       error:nil];
-    
-    // Turns the widget off for this site
-    [[NCWidgetController widgetController] setHasContent:NO forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
-}
-
-+ (void)hideTodayWidgetIfNotConfigured
-{
-    if (NSClassFromString(@"NCWidgetController") == nil) {
-        return;
-    }
-
-    NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
-    NSString *siteId = [sharedDefaults stringForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
-    NSString *oauth2Token = [SFHFKeychainUtils getPasswordForUsername:WPStatsTodayWidgetOAuth2TokenKeychainUsername
-                                                       andServiceName:WPStatsTodayWidgetOAuth2TokenKeychainServiceName
-                                                          accessGroup:WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup
-                                                                error:nil];
-    
-    if (siteId.length == 0 || oauth2Token.length == 0) {
-        [[NCWidgetController widgetController] setHasContent:NO forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
-    } else {
-        [[NCWidgetController widgetController] setHasContent:YES forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
     }
 }
 
