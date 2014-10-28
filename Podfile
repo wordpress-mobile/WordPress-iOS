@@ -42,3 +42,7 @@ target :WordPressTest, :exclusive => true do
   pod 'OHHTTPStubs', '1.1.1'
   pod 'OCMock'
 end
+
+target 'UITests', :exclusive => true do
+    pod 'KIF', :git => 'https://github.com/SergioEstevao/KIF.git', :branch => 'issue/470-AccessibilityIdentifier'
+end
