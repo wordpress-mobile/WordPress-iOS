@@ -16,7 +16,6 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 @implementation ReaderPost
 
-@dynamic authorAvatarURL;
 @dynamic authorDisplayName;
 @dynamic authorEmail;
 @dynamic authorURL;
