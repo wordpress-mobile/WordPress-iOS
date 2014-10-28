@@ -200,7 +200,6 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                                 success:(void (^)(NSInteger count, BOOL hasMore))success
                                 failure:(void (^)(NSError *error))failure
 {
-
     NSManagedObjectID *postObjectID = post.objectID;
     CommentServiceRemoteREST *service = [self remoteForREST];
     [service syncHierarchicalCommentsForPost:post.postID
@@ -227,9 +226,11 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                                              }
                                          }];
                                      } failure:^(NSError *error) {
-                                         if (failure) {
-                                             failure(error);
-                                         }
+                                         [self.managedObjectContext performBlock:^{
+                                             if (failure) {
+                                                 failure(error);
+                                             }
+                                         }];
                                      }];
 }
 
@@ -237,7 +238,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 {
     NSSet *topComments = [post.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"parentID = NULL"]];
     CGFloat page = [topComments count] / WPTopLevelHierarchicalCommentsPerPage;
-    return (NSInteger)ceil(page);
+    return (NSInteger)page;
 }
 
 #pragma mark - REST Helpers
@@ -258,6 +259,81 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 }
 
 // Replies
+- (void)replyToPostWithID:(NSNumber *)postID
+                   siteID:(NSNumber *)siteID
+                  content:(NSString *)content
+                  success:(void (^)())success
+                  failure:(void (^)(NSError *error))failure
+{
+    // Create and optimistically save a comment, based on the current wpcom acct
+    // post and content provided.
+    Comment *comment = [self createHierarchicalCommentWithContent:content withParent:nil postID:postID siteID:siteID];
+    void (^successBlock)(RemoteComment *remoteComment) = ^void(RemoteComment *remoteComment) {
+        [self.managedObjectContext performBlock:^{
+            // Update and save the comment
+            [self updateCommentAndSave:comment withRemoteComment:remoteComment];
+            if (success) {
+                success();
+            }
+        }];
+    };
+
+    void (^failureBlock)(NSError *error) = ^void(NSError *error) {
+        [self.managedObjectContext performBlock:^{
+            // Remove the optimistically saved comment.
+            [self deleteComment:comment success:nil failure:nil];
+            if (failure) {
+                failure(error);
+            }
+        }];
+    };
+
+    CommentServiceRemoteREST *remote = [self remoteForREST];
+    [remote replyToPostWithID:postID
+                       siteID:siteID
+                      content:content
+                      success:successBlock
+                      failure:failureBlock];
+}
+
+- (void)replyToHierarchicalCommentWithID:(NSNumber *)commentID
+                                  postID:(NSNumber *)postID
+                                  siteID:(NSNumber *)siteID
+                                 content:(NSString *)content
+                                 success:(void (^)())success
+                                 failure:(void (^)(NSError *error))failure
+{
+    // Create and optimistically save a comment, based on the current wpcom acct
+    // post and content provided.
+    Comment *comment = [self createHierarchicalCommentWithContent:content withParent:commentID postID:postID siteID:siteID];
+    void (^successBlock)(RemoteComment *remoteComment) = ^void(RemoteComment *remoteComment) {
+        // Update and save the comment
+        [self.managedObjectContext performBlock:^{
+            [self updateCommentAndSave:comment withRemoteComment:remoteComment];
+            if (success) {
+                success();
+            }
+        }];
+    };
+
+    void (^failureBlock)(NSError *error) = ^void(NSError *error) {
+        [self.managedObjectContext performBlock:^{
+            // Remove the optimistically saved comment.
+            [self deleteComment:comment success:nil failure:nil];
+            if (failure) {
+                failure(error);
+            }
+        }];
+    };
+
+    CommentServiceRemoteREST *remote = [self remoteForREST];
+    [remote replyToCommentWithID:commentID
+                          siteID:siteID
+                         content:content
+                         success:successBlock
+                         failure:failureBlock];
+}
+
 - (void)replyToCommentWithID:(NSNumber *)commentID
                       siteID:(NSNumber *)siteID
                      content:(NSString *)content
@@ -268,9 +344,14 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     [remote replyToCommentWithID:commentID
                           siteID:siteID
                          content:content
-                         success:success
+                         success:^(RemoteComment *comment){
+                             if (success){
+                                 success();
+                             }
+                         }
                          failure:failure];
 }
+
 
 // Likes
 - (void)likeCommentWithID:(NSNumber *)commentID
@@ -512,9 +593,73 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 {
     NSMutableArray *arr = [NSMutableArray array];
     for (NSNumber *commentID in hierarchy) {
-        [arr addObject:[NSString stringWithFormat:@"%010u", [commentID integerValue]]];
+        [arr addObject:[self formattedHierarchyElement:commentID]];
     }
     return arr;
+}
+
+- (NSString *)formattedHierarchyElement:(NSNumber *)commentID
+{
+    return [NSString stringWithFormat:@"%010u", [commentID integerValue]];
+}
+
+- (Comment *)createHierarchicalCommentWithContent:(NSString *)content withParent:(NSNumber *)parentID postID:(NSNumber *)postID siteID:(NSNumber *)siteID
+{
+    // Fetch the relevant ReaderPost
+    NSError *error;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass([ReaderPost class])];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"postID = %@ AND siteID = %@", postID, siteID];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        DDLogError(@"Error fetching post with id %@ and site %@. %@", postID, siteID, error);
+        return nil;
+    }
+
+    ReaderPost *post = [results firstObject];
+    if (!post) {
+        return nil;
+    }
+
+    // (Insert a new comment into core data. Check for its existance first for paranoia sake.
+    // In theory a sync could include a newly created comment before the request that created it returned.
+    Comment *comment = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Comment class]) inManagedObjectContext:self.managedObjectContext];
+
+    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    comment.author = [[service defaultWordPressComAccount] username];
+    comment.content = content;
+    comment.dateCreated = [NSDate date];
+    comment.parentID = parentID;
+    comment.postID = postID;
+    comment.postTitle = post.postTitle;
+    comment.status = CommentStatusDraft;
+    comment.post = post;
+
+    // Find its parent comment (if it exists)
+    Comment *parentComment;
+    if (parentID) {
+        parentComment = [self findCommentWithID:parentID fromPost:post];
+    }
+
+    // Update depth and hierarchy
+    if (parentComment) {
+        comment.hierarchy = [NSString stringWithFormat:@"%@.%@", parentComment.hierarchy, [self formattedHierarchyElement:comment.commentID]];
+        comment.depth = @([parentComment.depth integerValue] + 1);
+    } else {
+        comment.hierarchy = [self formattedHierarchyElement:comment.commentID];
+        comment.depth = @(0);
+    }
+
+    [self.managedObjectContext performBlock:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
+
+    return comment;
+}
+
+- (void)updateCommentAndSave:(Comment *)comment withRemoteComment:(RemoteComment *)remoteComment
+{
+    [self updateComment:comment withRemoteComment:remoteComment];
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
 - (void)mergeHierarchicalComments:(NSArray *)comments forPage:(NSUInteger)page forPost:(ReaderPost *)post
@@ -552,9 +697,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
         post.commentCount = @([commentsToKeep count]);
     }
 
-    [self.managedObjectContext performBlock:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    }];
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
 // Does not save context

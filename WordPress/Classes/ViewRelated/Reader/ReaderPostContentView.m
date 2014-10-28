@@ -23,12 +23,18 @@
         // Action buttons
         _reblogButton = [super createActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-reblog-done"]];
         [_reblogButton addTarget:self action:@selector(reblogAction:) forControlEvents:UIControlEventTouchUpInside];
-
+        _reblogButton.accessibilityLabel = NSLocalizedString(@"Reblog", @"Accessibility  Label for the Reblog Button in the Reader. Tapping shows a screen that allows the user to reblog a post.");
+        _reblogButton.accessibilityIdentifier = @"Reblog";
+        
         _commentButton = [super createActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-comment-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-comment-active"]];
         [_commentButton addTarget:self action:@selector(commentAction:) forControlEvents:UIControlEventTouchUpInside];
-
+        _commentButton.accessibilityLabel = NSLocalizedString(@"Comment", @"Accessibility  Label for the Comment Button in the Reader. Tapping shows a screen that allows the user to comment a post.");
+        _commentButton.accessibilityIdentifier = @"Comment";
+        
         _likeButton = [super createActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-like-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-like-active"]];
         [_likeButton addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
+        _likeButton.accessibilityLabel = NSLocalizedString(@"Like", @"Accessibility  Label for the Like Button in the Reader. Tapping this button makes the user like the related post.");
+        _likeButton.accessibilityIdentifier = @"Like";
 
         // Optimistically set action buttons and prime constraints for scrolling performance.
         self.actionButtons = @[_likeButton, _commentButton, _reblogButton];
@@ -111,20 +117,23 @@
     NSString *title;
     if ([self.post.likeCount integerValue] > 0) {
         title = [self.post.likeCount stringValue];
-    } else {
-        title = @"";
     }
+
     [self.likeButton setTitle:title forState:UIControlStateNormal];
     [self.likeButton setTitle:title forState:UIControlStateSelected];
+    [self.likeButton setTitle:title forState:UIControlStateDisabled];
+    [self.likeButton setTitle:title forState:UIControlStateHighlighted];
     [self.likeButton setNeedsLayout];
 
+    title = nil;
     if ([self.post.commentCount integerValue] > 0) {
         title = [self.post.commentCount stringValue];
-    } else {
-        title = @"";
     }
+
     [self.commentButton setTitle:title forState:UIControlStateNormal];
     [self.commentButton setTitle:title forState:UIControlStateSelected];
+    [self.commentButton setTitle:title forState:UIControlStateDisabled];
+    [self.commentButton setTitle:title forState:UIControlStateHighlighted];
     [self.commentButton setNeedsLayout];
 
     // Show highlights

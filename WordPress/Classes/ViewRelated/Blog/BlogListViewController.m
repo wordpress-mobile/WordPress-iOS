@@ -88,8 +88,9 @@ CGFloat const blavatarImageSize = 50.f;
                                                            style:UIBarButtonItemStylePlain
                                                           target:self
                                                           action:@selector(showSettings:)];
+    
     self.navigationItem.rightBarButtonItem = self.settingsButton;
-
+    self.navigationItem.rightBarButtonItem.accessibilityIdentifier = @"Settings";
     // Remove one-pixel gap resulting from a top-aligned grouped table view
     if (IS_IPHONE) {
         UIEdgeInsets tableInset = [self.tableView contentInset];
@@ -102,16 +103,19 @@ CGFloat const blavatarImageSize = 50.f;
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:AddSiteCellIdentifier];
     [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
     self.tableView.allowsSelectionDuringEditing = YES;
+    self.tableView.accessibilityIdentifier = @"Blogs";
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
-
+    self.navigationItem.leftBarButtonItem.accessibilityIdentifier = @"Edit";
+    
     // Trigger the blog sync when loading the view, which should more or less be once when the app launches
     // We could do this on the app delegate, but the blogs list feels like a better place for it.
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     [context performBlock:^{
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
         WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-        [accountService syncBlogsForAccount:defaultAccount success:nil failure:nil];
+        [blogService syncBlogsForAccount:defaultAccount success:nil failure:nil];
     }];
 }
 
@@ -347,6 +351,7 @@ CGFloat const blavatarImageSize = 50.f;
             visibilitySwitch.on = blog.visible;
             visibilitySwitch.tag = indexPath.row;
             [visibilitySwitch addTarget:self action:@selector(visibilitySwitchAction:) forControlEvents:UIControlEventValueChanged];
+            visibilitySwitch.accessibilityIdentifier = [NSString stringWithFormat:@"Switch-Visibility-%@", blog.blogName];
             cell.accessoryView = visibilitySwitch;
 
             // Make textLabel light gray if blog is not-visible

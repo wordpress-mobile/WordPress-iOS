@@ -1,5 +1,6 @@
 #import "BlogService.h"
 #import "Blog.h"
+#import "WPAccount.h"
 #import "ContextManager.h"
 #import "WPError.h"
 #import "Comment.h"
@@ -12,7 +13,11 @@
 #import "BlogServiceRemote.h"
 #import "BlogServiceRemoteXMLRPC.h"
 #import "BlogServiceRemoteREST.h"
-#import "BlogServiceRemoteProxy.h"
+#import "AccountServiceRemote.h"
+#import "AccountServiceRemoteREST.h"
+#import "AccountServiceRemoteXMLRPC.h"
+#import "RemoteBlog.h"
+#import "NSString+XMLExtensions.h"
 
 @interface BlogService ()
 
@@ -157,63 +162,45 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     return [results firstObject];
 }
 
+- (void)syncBlogsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure
+{
+    DDLogMethod();
+
+    id<AccountServiceRemote> remote = [self remoteForAccount:account];
+    [remote getBlogsWithSuccess:^(NSArray *blogs) {
+        [self.managedObjectContext performBlock:^{
+            [self mergeBlogs:blogs withAccount:account completion:success];
+        }];
+    } failure:^(NSError *error) {
+        DDLogError(@"Error syncing blogs: %@", error);
+
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
 - (void)syncOptionsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncOptionsForBlog:blog success:[self optionsHandlerWithBlog:blog completionHandler:success] failure:failure];
-}
-
-- (void)syncMediaLibraryForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
-{
-    if (blog.isSyncingMedia) {
-        DDLogWarn(@"Already syncing media. Skip");
-        return;
-    }
-    blog.isSyncingMedia = YES;
-
-    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncMediaLibraryForBlog:blog
-                            success:[self mediaHandlerWithBlog:blog completionHandler:success]
-                            failure:^(NSError *error) {
-                                blog.isSyncingMedia = NO;
-
-                                if (failure) {
-                                    failure(error);
-                                }
-                            }];
+    [remote syncOptionsForBlog:blog success:[self optionsHandlerWithBlogObjectID:blog.objectID completionHandler:success] failure:failure];
 }
 
 - (void)syncPostFormatsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncPostFormatsForBlog:blog success:[self postFormatsHandlerWithBlog:blog completionHandler:success] failure:failure];
+    [remote syncPostFormatsForBlog:blog success:[self postFormatsHandlerWithBlogObjectID:blog.objectID completionHandler:success] failure:failure];
 }
 
 - (void)syncBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncBlogMetadata:blog
-                mediaSuccess:[self mediaHandlerWithBlog:blog completionHandler:nil]
-              optionsSuccess:[self optionsHandlerWithBlog:blog completionHandler:nil]
-          postFormatsSuccess:[self postFormatsHandlerWithBlog:blog completionHandler:nil]
-              overallSuccess:^{
-                  [self.managedObjectContext performBlockAndWait:^{
-                      [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                  }];
-
-                  if (success) {
-                      success();
-                  }
-              }
-                     failure:^(NSError *error) {
-                         blog.isSyncingMedia = NO;
-                         blog.isSyncingPages = NO;
-                         blog.isSyncingPosts = NO;
-
-                         if (failure) {
-                             failure(error);
-                         }
-                     }];
+    [remote syncOptionsForBlog:blog success:[self optionsHandlerWithBlogObjectID:blog.objectID completionHandler:nil] failure:^(NSError *error) {
+        DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error);
+    }];
+    [remote syncPostFormatsForBlog:blog success:[self postFormatsHandlerWithBlogObjectID:blog.objectID completionHandler:nil] failure:^(NSError *error) {
+        DDLogError(@"Failed syncing post formats for blog %@: %@", blog.url, error);
+    }];
 
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
     // Right now, none of the callers care about the results of the sync
@@ -299,18 +286,102 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     return blogs;
 }
 
+///--------------------
+/// @name Blog creation
+///--------------------
+
+- (Blog *)findBlogWithXmlrpc:(NSString *)xmlrpc inAccount:(WPAccount *)account
+{
+    NSSet *foundBlogs = [account.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc like %@", xmlrpc]];
+    if ([foundBlogs count] == 1) {
+        return [foundBlogs anyObject];
+    }
+
+    // If more than one blog matches, return the first and delete the rest
+    if ([foundBlogs count] > 1) {
+        Blog *blogToReturn = [foundBlogs anyObject];
+        for (Blog *b in foundBlogs) {
+            // Choose blogs with URL not starting with https to account for a glitch in the API in early 2014
+            if (!([b.url hasPrefix:@"https://"])) {
+                blogToReturn = b;
+                break;
+            }
+        }
+
+        for (Blog *b in foundBlogs) {
+            if (!([b isEqual:blogToReturn])) {
+                [self.managedObjectContext deleteObject:b];
+            }
+        }
+
+        return blogToReturn;
+    }
+    return nil;
+}
+
+- (Blog *)createBlogWithAccount:(WPAccount *)account
+{
+    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Blog class]) inManagedObjectContext:self.managedObjectContext];
+    blog.account = account;
+    return blog;
+}
+
 #pragma mark - Private methods
+
+- (void)mergeBlogs:(NSArray *)blogs withAccount:(WPAccount *)account completion:(void (^)())completion
+{
+    NSSet *remoteSet = [NSSet setWithArray:[blogs valueForKey:@"xmlrpc"]];
+    NSSet *localSet = [account.blogs valueForKey:@"xmlrpc"];
+    NSMutableSet *toDelete = [localSet mutableCopy];
+    [toDelete minusSet:remoteSet];
+
+    if ([toDelete count] > 0) {
+        for (Blog *blog in account.blogs) {
+            if ([toDelete containsObject:blog.xmlrpc]) {
+                [self.managedObjectContext deleteObject:blog];
+            }
+        }
+    }
+
+    // Go through each remote incoming blog and make sure we're up to date with titles, etc.
+    // Also adds any blogs we don't have
+    for (RemoteBlog *remoteBlog in blogs) {
+        Blog *blog = [self findBlogWithXmlrpc:remoteBlog.xmlrpc inAccount:account];
+        if (!blog) {
+            blog = [self createBlogWithAccount:account];
+            blog.xmlrpc = remoteBlog.xmlrpc;
+        }
+        blog.url = remoteBlog.url;
+        blog.blogName = [remoteBlog.title stringByDecodingXMLCharacters];
+        blog.blogID = remoteBlog.ID;
+    }
+
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
+    if (completion != nil) {
+        dispatch_async(dispatch_get_main_queue(), completion);
+    }
+}
 
 - (id<BlogServiceRemote>)remoteForBlog:(Blog *)blog
 {
-    BlogServiceRemoteXMLRPC *xmlrpcRemote = [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.api];
-    BlogServiceRemoteREST *restRemote = nil;
+    id<BlogServiceRemote> remote;
     if (blog.restApi) {
-        restRemote = [[BlogServiceRemoteREST alloc] initWithApi:blog.restApi];
+        remote = [[BlogServiceRemoteREST alloc] initWithApi:blog.restApi];
+    } else {
+        remote = [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.api];
     }
-    id<BlogServiceRemote> remote = [[BlogServiceRemoteProxy alloc] initWithXMLRPCRemote:xmlrpcRemote RESTRemote:restRemote];
 
     return remote;
+}
+
+- (id<AccountServiceRemote>)remoteForAccount:(WPAccount *)account
+{
+    if (account.restApi) {
+        return [[AccountServiceRemoteREST alloc] initWithApi:account.restApi];
+    }
+
+    return [[AccountServiceRemoteXMLRPC alloc] initWithApi:account.xmlrpcApi];
 }
 
 - (NSInteger)blogCountWithPredicate:(NSPredicate *)predicate
@@ -352,74 +423,54 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 #pragma mark - Completion handlers
 
-- (MediaHandler)mediaHandlerWithBlog:(Blog *)blog completionHandler:(void (^)(void))completion
-{
-    return ^void(NSArray *media) {
-        [Media mergeNewMedia:media forBlog:blog];
-        blog.isSyncingMedia = NO;
-
-        if (completion) {
-            completion();
-        }
-    };
-}
-
-- (OptionsHandler)optionsHandlerWithBlog:(Blog *)blog completionHandler:(void (^)(void))completion
+- (OptionsHandler)optionsHandlerWithBlogObjectID:(NSManagedObjectID *)blogObjectID completionHandler:(void (^)(void))completion
 {
     return ^void(NSDictionary *options) {
-        if ([blog isDeleted] || blog.managedObjectContext == nil) {
-            return;
-        }
+        [self.managedObjectContext performBlock:^{
+            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:nil];
+            if (blog) {
+                blog.options = [NSDictionary dictionaryWithDictionary:options];
+                NSString *minimumVersion = @"3.6";
+                float version = [[blog version] floatValue];
+                if (version < [minimumVersion floatValue]) {
+                    if (blog.lastUpdateWarning == nil || [blog.lastUpdateWarning floatValue] < [minimumVersion floatValue]) {
+                        // TODO :: Remove UI call from service layer
+                        [WPError showAlertWithTitle:NSLocalizedString(@"WordPress version too old", @"")
+                                            message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [blog hostname], [blog version], minimumVersion]];
+                        blog.lastUpdateWarning = minimumVersion;
+                    }
+                }
 
-        blog.options = [NSDictionary dictionaryWithDictionary:options];
-        NSString *minimumVersion = @"3.6";
-        float version = [[blog version] floatValue];
-        if (version < [minimumVersion floatValue]) {
-            if (blog.lastUpdateWarning == nil || [blog.lastUpdateWarning floatValue] < [minimumVersion floatValue]) {
-                // TODO :: Remove UI call from service layer
-                [WPError showAlertWithTitle:NSLocalizedString(@"WordPress version too old", @"")
-                                    message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [blog hostname], [blog version], minimumVersion]];
-                blog.lastUpdateWarning = minimumVersion;
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
-        }
-
-        [self.managedObjectContext performBlockAndWait:^{
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            if (completion) {
+                completion();
+            }
         }];
-
-        if (completion) {
-            completion();
-        }
     };
 }
 
-- (PostFormatsHandler)postFormatsHandlerWithBlog:(Blog *)blog completionHandler:(void (^)(void))completion
+- (PostFormatsHandler)postFormatsHandlerWithBlogObjectID:(NSManagedObjectID *)blogObjectID completionHandler:(void (^)(void))completion
 {
     return ^void(NSDictionary *postFormats) {
-        if ([blog isDeleted] || blog.managedObjectContext == nil) {
-            return;
-        }
+        [self.managedObjectContext performBlock:^{
+            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:nil];
+            if (blog) {
+                NSDictionary *formats = postFormats;
+                if (![formats objectForKey:@"standard"]) {
+                    NSMutableDictionary *mutablePostFormats = [formats mutableCopy];
+                    mutablePostFormats[@"standard"] = NSLocalizedString(@"Standard", @"Standard post format label");
+                    formats = [NSDictionary dictionaryWithDictionary:mutablePostFormats];
+                }
+                blog.postFormats = formats;
 
-        NSDictionary *respDict;
-        if ([postFormats objectForKey:@"supported"] && [[postFormats objectForKey:@"supported"] isKindOfClass:[NSArray class]]) {
-            NSMutableArray *supportedKeys = [NSMutableArray arrayWithArray:[postFormats objectForKey:@"supported"]];
-            // Standard isn't included in the list of supported formats? Maybe it will be one day?
-            if (![supportedKeys containsObject:@"standard"]) {
-                [supportedKeys addObject:@"standard"];
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
 
-            NSDictionary *allFormats = [postFormats objectForKey:@"all"];
-            NSMutableArray *supportedValues = [NSMutableArray array];
-            for (NSString *key in supportedKeys) {
-                [supportedValues addObject:[allFormats objectForKey:key]];
+            if (completion) {
+                completion();
             }
-            respDict = [NSDictionary dictionaryWithObjects:supportedValues forKeys:supportedKeys];
-        }
-        blog.postFormats = respDict;
-
-        if (completion) {
-            completion();
-        }
+        }];
     };
 }
 
