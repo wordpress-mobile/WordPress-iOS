@@ -17,4 +17,6 @@
 #import "WPTableViewCell.h"
 #import "WPTableViewSectionHeaderView.h"
 
+#import "SuggestionsTableView.h"
+
 #import <DTCoreText/DTCoreText.h>
