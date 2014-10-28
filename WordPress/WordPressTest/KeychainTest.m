@@ -55,7 +55,7 @@
     NSString *authToken = [SFHFKeychainUtils getPasswordForUsername:@"username" andServiceName:serviceName error:&error];
     
     XCTAssertNil(error);
-    XCTAssertEqual(@"thisisadifferentpassword", authToken);
+    XCTAssertTrue([@"thisisadifferentpassword" isEqualToString:authToken]);
 }
 
 @end
