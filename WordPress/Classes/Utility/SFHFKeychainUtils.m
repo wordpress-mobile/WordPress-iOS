@@ -369,7 +369,7 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
         // Update the existing item.
 
         if (![existingPassword isEqualToString:password] && updateExisting) {
-            //Only update if we're allowed to update existing.  If not, simply do nothing.
+            // Only update if we're allowed to update existing.  If not, simply do nothing.
 
             NSArray *keys = [[[NSArray alloc] initWithObjects: (NSString *) kSecClass,
                               kSecAttrService,
@@ -396,9 +396,8 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
 #endif
             NSDictionary *attributesToUpdate = @{(NSString *)kSecValueData:
                                                      [password dataUsingEncoding: NSUTF8StringEncoding]};
-
-            status = SecItemUpdate((CFDictionaryRef) [NSDictionary dictionaryWithDictionary:query],
-                                   (CFDictionaryRef) @{(NSString*)kSecValueData: attributesToUpdate});
+            status = SecItemUpdate((CFDictionaryRef) query,
+                                   (CFDictionaryRef) attributesToUpdate);
         }
     } else {
         // No existing entry (or an existing, improperly entered, and therefore now
