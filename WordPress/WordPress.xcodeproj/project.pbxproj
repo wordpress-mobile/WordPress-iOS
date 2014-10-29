@@ -3595,7 +3595,6 @@
 					"BITHOCKEY_C_BUILD=\"\\\"32\\\"\"",
 					"${inherited}",
 					"NSLOGGER_BUILD_USERNAME=\"${USER}\"",
-					LOOKBACK_ENABLED,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
