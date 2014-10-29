@@ -38,7 +38,10 @@
 #import "WPImageOptimizer.h"
 #import "Constants.h"
 #import "Mediaservice.h"
+
+#ifdef LOOKBACK_ENABLED
 #import <Lookback/Lookback.h>
+#endif
 
 typedef enum {
     SettingsSectionWpcom = 0,
@@ -202,10 +205,12 @@ static CGFloat const SettingsRowHeight = 44.0;
 
 - (void)handleShakeToPullUpFeedbackChanged:(id)sender
 {
+#ifdef LOOKBACK_ENABLED
     UISwitch *aSwitch = (UISwitch *)sender;
     BOOL shakeForFeedback = aSwitch.on;
     [[NSUserDefaults standardUserDefaults] setBool:shakeForFeedback forKey:WPInternalBetaShakeToPullUpFeedbackKey];
     [Lookback lookback].shakeToRecord = shakeForFeedback;
+#endif
 }
 
 - (void)dismiss {
