@@ -560,6 +560,10 @@
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [self setLoading:NO];
 
+    CGSize webviewSize = self.view.frame.size;
+    NSString *js = [NSString stringWithFormat:@"var meta = document.createElement('meta');meta.setAttribute( 'name', 'viewport' ); meta.setAttribute( 'content', 'width = %d, initial-scale = 1.0, user-scalable = yes' );document.getElementsByTagName('head')[0].appendChild(meta)", webviewSize.width];
+    [aWebView stringByEvaluatingJavaScriptFromString: js];
+    
     if (!self.hasLoadedContent && ([aWebView.request.URL.absoluteString rangeOfString:WPMobileReaderDetailURL].location == NSNotFound || self.detailContent)) {
         [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.set_loaded_items(%@);", self.readerAllItems]];
         [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.show_article_details(%@);", self.detailContent]];
