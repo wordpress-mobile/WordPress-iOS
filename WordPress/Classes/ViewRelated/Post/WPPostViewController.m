@@ -65,7 +65,6 @@ static NSDictionary *EnabledButtonBarStyle;
 @property (nonatomic, strong) UIBarButtonItem *saveBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *previewBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *optionsBarButtonItem;
-
 @end
 
 @implementation WPPostViewController
@@ -222,16 +221,16 @@ static NSDictionary *EnabledButtonBarStyle;
     
     [self geotagNewPost];
     self.delegate = self;
-	
-    // Display the "back" chevron without text
-    self.navigationController.navigationBar.topItem.title = @"";
+    
     [self refreshNavigationBarButtons:NO];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
+    
 	[self refreshNavigationBarButtons:NO];
+    
 	if (self.isEditing) {
 		if ([self shouldHideStatusBarWhileTyping]) {
 			[[UIApplication sharedApplication] setStatusBarHidden:YES
