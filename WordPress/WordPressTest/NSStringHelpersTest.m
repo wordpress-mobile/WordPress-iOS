@@ -25,18 +25,21 @@
     XCTAssertTrue([[longSingleWord stringByEllipsizingWithMaxLength:8 preserveWords:YES] isEqualToString:@"ThisIsA…"], @"Incorrect Result.");
 }
 
-- (void)testStrippingProtocol
+- (void)testHostname
 {
     NSString *samplePlainURL = @"http://www.wordpress.com";
     NSString *sampleStrippedURL = @"www.wordpress.com";
-    XCTAssertEqualObjects(samplePlainURL.stringByStrippingProtocol, sampleStrippedURL, @"Invalid Stripped String");
+    XCTAssertEqualObjects(samplePlainURL.hostname, sampleStrippedURL, @"Invalid Stripped String");
     
     NSString *sampleSecureURL = @"https://www.wordpress.com";
-    XCTAssertEqualObjects(sampleSecureURL.stringByStrippingProtocol, sampleStrippedURL, @"Invalid Stripped String");
+    XCTAssertEqualObjects(sampleSecureURL.hostname, sampleStrippedURL, @"Invalid Stripped String");
+
+    NSString *sampleComplexURL = @"http://www.wordpress.com?var=http://wordpress.org";
+    XCTAssertEqualObjects(sampleComplexURL.hostname, sampleStrippedURL, @"Invalid Stripped String");
     
-    NSString *samplePlainCapsdURL = @"http://www.WordPress.com";
+    NSString *samplePlainCapsURL = @"http://www.WordPress.com";
     NSString *sampleStrippedCapsURL = @"www.WordPress.com";
-    XCTAssertEqualObjects(samplePlainCapsdURL.stringByStrippingProtocol, sampleStrippedCapsURL, @"Invalid Stripped String");
+    XCTAssertEqualObjects(samplePlainCapsURL.hostname, sampleStrippedCapsURL, @"Invalid Stripped String");
 }
 
 @end
