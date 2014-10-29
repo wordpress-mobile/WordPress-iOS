@@ -7,18 +7,6 @@
 
 @implementation NSStringHelpersTest
 
-- (void)setUp
-{
-    [super setUp];
-    // Put setup code here; it will be run once, before the first test case.
-}
-
-- (void)tearDown
-{
-    // Put teardown code here; it will be run once, after the last test case.
-    [super tearDown];
-}
-
 - (void)testEllipsizing
 {
     NSString *sampleText = @"The quick brown fox jumps over the lazy dog.";
@@ -35,10 +23,20 @@
     
     NSString *longSingleWord = @"ThisIsALongSingleWordThatIsALittleWeird";
     XCTAssertTrue([[longSingleWord stringByEllipsizingWithMaxLength:8 preserveWords:YES] isEqualToString:@"ThisIsA…"], @"Incorrect Result.");
-
-    
-
 }
 
+- (void)testStrippingProtocol
+{
+    NSString *samplePlainURL = @"http://www.wordpress.com";
+    NSString *sampleStrippedURL = @"www.wordpress.com";
+    XCTAssertEqualObjects(samplePlainURL.stringByStrippingProtocol, sampleStrippedURL, @"Invalid Stripped String");
+    
+    NSString *sampleSecureURL = @"https://www.wordpress.com";
+    XCTAssertEqualObjects(sampleSecureURL.stringByStrippingProtocol, sampleStrippedURL, @"Invalid Stripped String");
+    
+    NSString *samplePlainCapsdURL = @"http://www.WordPress.com";
+    NSString *sampleStrippedCapsURL = @"www.WordPress.com";
+    XCTAssertEqualObjects(samplePlainCapsdURL.stringByStrippingProtocol, sampleStrippedCapsURL, @"Invalid Stripped String");
+}
 
 @end
