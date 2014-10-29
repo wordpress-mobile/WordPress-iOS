@@ -9,7 +9,6 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <Simperium/Simperium.h>
 #import <Helpshift/Helpshift.h>
-#import <Lookback/Lookback.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
 
 #import "WordPressAppDelegate.h"
@@ -49,6 +48,10 @@
 #import "WPAnalyticsTrackerWPCom.h"
 
 #import "Reachability.h"
+
+#ifdef LOOKBACK_ENABLED
+#import <Lookback/Lookback.h>
+#endif
 
 #if DEBUG
 #import "DDTTYLogger.h"
@@ -229,9 +232,11 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 
 - (void)lookbackGestureRecognized:(UILongPressGestureRecognizer *)sender
 {
+#ifdef LOOKBACK_ENABLED
     if (sender.state == UIGestureRecognizerStateBegan) {
         [LookbackRecordingViewController presentOntoScreenAnimated:YES];
     }
+#endif
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation

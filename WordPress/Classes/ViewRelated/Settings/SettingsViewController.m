@@ -37,7 +37,10 @@
 #import "AccountService.h"
 #import "WPImageOptimizer.h"
 #import "Constants.h"
+
+#ifdef LOOKBACK_ENABLED
 #import <Lookback/Lookback.h>
+#endif
 
 typedef enum {
     SettingsSectionWpcom = 0,
@@ -116,10 +119,12 @@ CGFloat const blavatarImageViewSize = 43.f;
 
 - (void)handleShakeToPullUpFeedbackChanged:(id)sender
 {
+#ifdef LOOKBACK_ENABLED
     UISwitch *aSwitch = (UISwitch *)sender;
     BOOL shakeForFeedback = aSwitch.on;
     [[NSUserDefaults standardUserDefaults] setBool:shakeForFeedback forKey:WPInternalBetaShakeToPullUpFeedbackKey];
     [Lookback lookback].shakeToRecord = shakeForFeedback;
+#endif
 }
 
 - (void)dismiss {
