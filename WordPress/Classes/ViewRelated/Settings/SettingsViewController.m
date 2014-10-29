@@ -49,7 +49,6 @@ typedef enum {
     SettingsSectionCount
 } SettingsSection;
 
-static CGFloat const blavatarImageViewSize = 43.0;
 static CGFloat const HorizontalMargin = 16.0;
 static CGFloat const MediaSizeControlHeight = 44.0;
 static CGFloat const MediaSizeControlOffset = 12.0;
