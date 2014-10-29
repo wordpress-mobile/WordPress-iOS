@@ -3102,7 +3102,6 @@
 				5DB3BA0818D11D8D00F3F3E9 /* PublishDatePickerView.m in Sources */,
 				2F970F740DF92274006BD934 /* PostsViewController.m in Sources */,
 				319D6E7B19E447500013871C /* Suggestion.m in Sources */,
-				46E4792C185BD2B8007AA76F /* CommentView.m in Sources */,
 				B5B56D3219AFB68800B4E29B /* WPStyleGuide+Reply.swift in Sources */,
 				30EABE0918A5903400B73A9C /* WPBlogTableViewCell.m in Sources */,
 				B587797D19B799D800E57C5A /* UIDevice+Helpers.swift in Sources */,
