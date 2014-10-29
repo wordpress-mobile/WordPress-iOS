@@ -508,6 +508,9 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
         case WPAnalyticsStatNotificationFlaggedAsSpam:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_notifications_flagged_as_spam"];
             break;
+        case WPAnalyticsStatNotificationsMissingSyncWarning:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"notifications_sync_timeout"];
+            break;
         case WPAnalyticsStatPublishedPostWithPhoto:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_posts_published_with_photos"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_published_post_with_photo"];
