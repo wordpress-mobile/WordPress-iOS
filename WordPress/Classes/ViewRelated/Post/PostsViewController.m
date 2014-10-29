@@ -231,8 +231,9 @@
     }
     
 	[navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
-	navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-	[self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
+	navController.modalPresentationStyle = UIModalPresentationFullScreen;
+    
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)viewPost:(AbstractPost *)apost
@@ -248,8 +249,9 @@
         editPostViewController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
         [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
-        navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-        [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
+        navController.modalPresentationStyle = UIModalPresentationFullScreen;
+
+        [self presentViewController:navController animated:YES completion:nil];
     }
 }
 
@@ -299,6 +301,7 @@
 
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
     [postService syncPostsOfType:PostServiceTypePost forBlog:self.blog success:success failure:failure];
 }

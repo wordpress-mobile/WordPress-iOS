@@ -374,7 +374,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (ReaderTopic *)currentTopic
 {
-    return [[[ReaderTopicService alloc] initWithManagedObjectContext:[self managedObjectContext]] currentTopic];
+    return [self currentTopicInContext:self.managedObjectContext];
+}
+
+- (ReaderTopic *)currentTopicInContext:(NSManagedObjectContext *)context
+{
+    return [[[ReaderTopicService alloc] initWithManagedObjectContext:context] currentTopic];
 }
 
 - (BOOL)isCurrentTopicFreshlyPressed
@@ -402,7 +407,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (NSDictionary *)tagPropertyForStats
 {
-    return @{@"tag": self.currentTopic.title};
+    return [NSDictionary dictionaryWithObjectsAndKeys:self.currentTopic.title, @"tag", nil];
 }
 
 - (void)setTitle:(NSString *)title
@@ -677,20 +682,24 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service fetchPostsForTopic:self.currentTopic earlierThan:[NSDate date] success:^(NSInteger count, BOOL hasMore) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            weakSelf.postIDThatInitiatedBlock = nil;
-            weakSelf.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
-            if (success) {
-                success(count, hasMore);
-            }
-        });
-    } failure:^(NSError *error) {
-        if (failure) {
+    
+    [context performBlock:^{
+        ReaderTopic *topicInContext = [self currentTopicInContext:context];
+        [service fetchPostsForTopic:topicInContext earlierThan:[NSDate date] success:^(NSInteger count, BOOL hasMore) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                failure(error);
+                weakSelf.postIDThatInitiatedBlock = nil;
+                weakSelf.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
+                if (success) {
+                    success(count, hasMore);
+                }
             });
-        }
+        } failure:^(NSError *error) {
+            if (failure) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    failure(error);
+                });
+            }
+        }];
     }];
 }
 
@@ -700,19 +709,23 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service backfillPostsForTopic:self.currentTopic success:^(NSInteger count, BOOL hasMore) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            weakSelf.postIDThatInitiatedBlock = nil;
-            if (success) {
-                success(count, hasMore);
-            }
-        });
-    } failure:^(NSError *error) {
-        if (failure) {
+    
+    [context performBlock:^{
+        ReaderTopic *topicInContext = [self currentTopicInContext:context];
+        [service backfillPostsForTopic:topicInContext success:^(NSInteger count, BOOL hasMore) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                failure(error);
+                weakSelf.postIDThatInitiatedBlock = nil;
+                if (success) {
+                    success(count, hasMore);
+                }
             });
-        }
+        } failure:^(NSError *error) {
+            if (failure) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    failure(error);
+                });
+            }
+        }];
     }];
 }
 
@@ -743,26 +756,33 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     [self.activityFooter startAnimating];
+    self.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
+    
     ReaderPost *post = self.tableViewHandler.resultsController.fetchedObjects.lastObject;
+    NSDate *earlierThan = post.sortDate;
+    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
-
-    __weak __typeof(self) weakSelf = self;
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service fetchPostsForTopic:self.currentTopic earlierThan:post.sortDate success:^(NSInteger count, BOOL hasMore){
-        if (success) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                weakSelf.shouldSkipRowAnimation = YES;
-                success(count, hasMore);
-            });
-        }
-    } failure:^(NSError *error) {
-        if (failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(error);
-            });
-        }
+    __weak __typeof(self) weakSelf = self;
+    
+    [context performBlock:^{
+        ReaderTopic *topicInContext = [self currentTopicInContext:context];
+        [service fetchPostsForTopic:topicInContext earlierThan:earlierThan success:^(NSInteger count, BOOL hasMore){
+            if (success) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    weakSelf.shouldSkipRowAnimation = YES;
+                    success(count, hasMore);
+                });
+            }
+        } failure:^(NSError *error) {
+            if (failure) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    failure(error);
+                });
+            }
+        }];
     }];
-
+    
     [WPAnalytics track:WPAnalyticsStatReaderInfiniteScroll withProperties:[self tagPropertyForStats]];
 }
 
@@ -863,7 +883,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)updateAndPerformFetchRequest
 {
-    NSError *error;
+    NSAssert([NSThread isMainThread], @"ReaderPostsViewController Error: NSFetchedResultsController accessed in BG");
+    
+    NSError *error = nil;
     [self.tableViewHandler.resultsController.fetchRequest setPredicate:[self predicateForFetchRequest]];
     [self.tableViewHandler.resultsController performFetch:&error];
     if (error) {
@@ -1029,19 +1051,31 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)postView:(ReaderPostContentView *)postView didReceiveLikeAction:(id)sender
 {
-    ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    ReaderPost *post = (ReaderPost *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-
+    ReaderPost *post = [self postFromCellSubview:sender];
+    BOOL wasLiked = post.isLiked;
+    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service toggleLikedForPost:post success:^{
-        if (post.isLiked) {
-            [WPAnalytics track:WPAnalyticsStatReaderLikedArticle];
+    
+    [context performBlock:^{
+        ReaderPost *postInContext = (ReaderPost *)[context existingObjectWithID:post.objectID error:nil];
+        if (!postInContext) {
+            return;
         }
-    } failure:^(NSError *error) {
-        DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
-        [postView updateActionButtons];
+        
+        [service toggleLikedForPost:postInContext success:^{
+            if (wasLiked) {
+                return;
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [WPAnalytics track:WPAnalyticsStatReaderLikedArticle];
+            });
+        } failure:^(NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
+                [postView updateActionButtons];
+            });
+        }];
     }];
 
     [postView updateActionButtons];
@@ -1061,11 +1095,19 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service toggleFollowingForPost:post success:^{
-        //noop
-    } failure:^(NSError *error) {
-        DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
-        [followButton setSelected:post.isFollowing];
+    
+    [context performBlock:^{
+        ReaderPost *postInContext = (ReaderPost *)[context existingObjectWithID:post.objectID error:nil];
+        if (!postInContext) {
+            return;
+        }
+        
+        [service toggleFollowingForPost:postInContext success:nil failure:^(NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
+                [followButton setSelected:post.isFollowing];                
+            });
+        }];
     }];
 }
 
