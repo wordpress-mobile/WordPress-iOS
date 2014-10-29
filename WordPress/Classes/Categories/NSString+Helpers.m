@@ -155,7 +155,7 @@ static NSString *const Ellipsis =  @"\u2026";
     return self;
 }
 
-- (NSString *)stringByStrippingHostname
+- (NSString *)hostname
 {
     return [[[NSURLComponents alloc] initWithString:self] host];
 }
