@@ -13,6 +13,8 @@
 #import "ReaderPostDetailViewController.h"
 #import "PostService.h"
 #import "Post.h"
+#import "SuggestionsTableView.h"
+#import "SuggestionService.h"
 
 static NSString *const CVCReplyToastImage = @"action-icon-replied";
 static NSString *const CVCSuccessToastImage = @"action-icon-success";
@@ -24,12 +26,13 @@ static NSInteger const CVCHeaderSectionIndex = 0;
 static NSInteger const CVCNumberOfRows = 1;
 static NSInteger const CVCNumberOfSections = 2;
 
-@interface CommentViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
+@interface CommentViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, SuggestionsTableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NoteBlockHeaderTableViewCell *headerLayoutCell;
 @property (nonatomic, strong) CommentTableViewCell *bodyLayoutCell;
 @property (nonatomic, strong) ReplyTextView *replyTextView;
+@property (nonatomic, strong) SuggestionsTableView *suggestionsTableView;
 @property (nonatomic, strong) CommentService *commentService;
 
 @end
@@ -62,9 +65,25 @@ static NSInteger const CVCNumberOfSections = 2;
     self.headerLayoutCell = [self.tableView dequeueReusableCellWithIdentifier:CVCHeaderCellIdentifier];
     self.bodyLayoutCell = [self.tableView dequeueReusableCellWithIdentifier:CVCCommentCellIdentifier];
 
+    [self attachSuggestionsTableViewIfNeeded];
+
     [self attachReplyViewIfNeeded];
 
     [self setupAutolayoutConstraints];
+}
+
+- (void)attachSuggestionsTableViewIfNeeded
+{
+    if (![self shouldAttachSuggestionsTableView]) {
+        return;
+    }
+    
+    if ([self shouldAttachSuggestionsTableView]) {
+        self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.comment.blog.blogID];
+        self.suggestionsTableView.suggestionsDelegate = self;
+        [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self.view addSubview:self.suggestionsTableView];        
+    }
 }
 
 - (void)attachReplyViewIfNeeded
@@ -84,6 +103,10 @@ static NSInteger const CVCNumberOfSections = 2;
     replyTextView.delegate = self;
     self.replyTextView = replyTextView;
     [self.view addSubview:self.replyTextView];
+    
+    if ([self shouldAttachSuggestionsTableView]) {
+        [replyTextView setKeyboardType:UIKeyboardTypeTwitter];
+    }
 }
 
 - (void)setupAutolayoutConstraints
@@ -109,6 +132,30 @@ static NSInteger const CVCNumberOfSections = 2;
                                                                           options:0
                                                                           metrics:nil
                                                                             views:views]];
+    }
+    
+    if ([self shouldAttachSuggestionsTableView]) {
+        // Pin the suggestions view left and right edges to the super view edges
+        NSDictionary *views = @{@"suggestionsview": self.suggestionsTableView };
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[suggestionsview]|"
+                                                                          options:0
+                                                                          metrics:nil
+                                                                            views:views]];
+        
+        // Pin the suggestions view top to the super view top
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[suggestionsview]"
+                                                                          options:0
+                                                                          metrics:nil
+                                                                            views:views]];
+        
+        // Pin the suggestions view bottom to the top of the reply box
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.suggestionsTableView
+                                                              attribute:NSLayoutAttributeBottom
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:self.replyTextView
+                                                              attribute:NSLayoutAttributeTop
+                                                             multiplier:1
+                                                               constant:0]];
     }
 }
 
@@ -572,6 +619,20 @@ static NSInteger const CVCNumberOfSections = 2;
     [UIView commitAnimations];
 }
 
+#pragma mark - SuggestionsTableViewDelegate
+
+- (void)view:(UIView *)view didTypeInWord:(NSString *)word
+{
+    [self.suggestionsTableView showSuggestionsForWord:word];
+}
+
+- (void)suggestionsTableView:(SuggestionsTableView *)suggestionsTableView didSelectSuggestion:(NSString *)suggestion forSearchText:(NSString *)text
+{
+    [self.replyTextView replaceTextAtCaret:text withSuggestion:suggestion];
+    [suggestionsTableView showSuggestionsForWord:@""];
+}
+
+
 #pragma mark - Gestures Recognizer Delegate
 
 - (void)dismissKeyboardIfNeeded:(id)sender
@@ -586,6 +647,11 @@ static NSInteger const CVCNumberOfSections = 2;
 {
     // iPad: We've got a different UI!
     return !([UIDevice isPad]);
+}
+
+- (BOOL)shouldAttachSuggestionsTableView
+{
+    return ([self shouldAttachReplyTextView] && self.comment.blog.isWPcom && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.comment.blog.blogID]);
 }
 
 // if the post is not set for the comment, we don't want to show an empty cell for the post details
