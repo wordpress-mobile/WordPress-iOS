@@ -31,7 +31,7 @@ pod 'WordPressCom-Analytics-iOS', '0.0.11'
 pod 'NSObject-SafeExpectations', '0.0.2'
 pod 'SocketRocket', :git => 'https://github.com/jleandroperez/SocketRocket.git', :branch => 'master'
 pod 'Simperium', '0.7.2'
-pod 'Lookback', '0.6.5'
+pod 'Lookback', '0.6.5', :configurations => ['Release-Internal']
 
 target 'WordPressTodayWidget', :exclusive => true do
     pod 'WordPressCom-Stats-iOS', '0.1.4'
