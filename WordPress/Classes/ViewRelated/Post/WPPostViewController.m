@@ -65,16 +65,6 @@ static NSDictionary *EnabledButtonBarStyle;
 @property (nonatomic, strong) UIBarButtonItem *saveBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *previewBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *optionsBarButtonItem;
-
-#pragma mark - Appearance
-/**
- *  @brief      This property exists for the sole purpose of restoring the back button title offset
- *              when this VC is hidden.
- *  @details    This VC changes the back button title offset to show a chevron without the previous
- *              VC's title.
- */
-@property (nonatomic, assign, readwrite) UIOffset savedBackButtonTitleOffset;
-
 @end
 
 @implementation WPPostViewController
@@ -247,45 +237,6 @@ static NSDictionary *EnabledButtonBarStyle;
 													withAnimation:UIStatusBarAnimationSlide];
 		}
 	}
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    [self removeTitleFromBackButton];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    [self restoreTitleToBackButton];
-}
-
-#pragma mark - Back button customization
-
-- (void)removeTitleFromBackButton
-{
-    UIBarButtonItem<UIAppearance>* appearance = [UIBarButtonItem appearance];
-    
-    self.savedBackButtonTitleOffset = [appearance backButtonTitlePositionAdjustmentForBarMetrics:UIBarMetricsDefault];
-    
-    // Display the "back" chevron without text.  Courtesy of:
-    //
-    //  http://stackoverflow.com/questions/19078995/removing-the-title-text-of-an-ios-7-uibarbuttonitem
-    //
-    // This looks much better than doing:
-    //      self.navigationController.navigationBar.topItem.title = @"";
-    //
-    [appearance setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60)
-                                       forBarMetrics:UIBarMetricsDefault];
-}
-
-- (void)restoreTitleToBackButton
-{
-    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:self.savedBackButtonTitleOffset
-                                                         forBarMetrics:UIBarMetricsDefault];
 }
 
 #pragma mark - Actions
