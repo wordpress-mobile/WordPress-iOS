@@ -73,6 +73,12 @@
     
     self.infiniteScrollEnabled = YES;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+
+    // IMPORTANT: this code makes sure that the back button in WPPostViewController doesn't show
+    // this VC's title.
+    //
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
     
     [self updatePostFormats];
 }
