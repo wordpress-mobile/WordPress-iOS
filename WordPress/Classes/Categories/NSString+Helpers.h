@@ -8,6 +8,6 @@
 - (NSString *)stringByReplacingHTMLEmoticonsWithEmoji;
 - (NSString *)stringByStrippingHTML;
 - (NSString *)stringByEllipsizingWithMaxLength:(NSInteger)lengthlimit preserveWords:(BOOL)preserveWords;
-- (NSString *)stringByStrippingProtocol;
+- (NSString *)stringByStrippingHostname;
 
 @end
