@@ -1,13 +1,15 @@
 #import <XCTest/XCTest.h>
-#import "CoreDataTestHelper.h"
 #import "WPAccount.h"
 #import "Blog.h"
 #import "NotificationsManager.h"
 #import "SettingsViewController.h"
 #import "ContextManager.h"
 #import "AccountService.h"
+#import "TestContextManager.h"
 
 @interface SettingsViewControllerTest : XCTestCase
+
+@property (nonatomic, strong) TestContextManager *testContextManager;
 
 @end
 
@@ -16,8 +18,9 @@
 - (void)setUp
 {
     [super setUp];
+    self.testContextManager = [[TestContextManager alloc] init];
 
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectContext *context = [self.testContextManager mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
@@ -29,13 +32,12 @@
 - (void)tearDown
 {
     [super tearDown];
-    [[CoreDataTestHelper sharedHelper] reset];
-    [CoreDataTestHelper sharedHelper].testExpectation = nil;
+    self.testContextManager = nil;
 }
 
 - (void)testWpcomSection
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectContext *context = [self.testContextManager mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
@@ -59,7 +61,7 @@
 
     // Sign In
     XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
-    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
+    self.testContextManager.testExpectation = saveExpectation;
 
     WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:@"jacksparrow" password:@"piratesobrave" authToken:@"token"];
     
@@ -96,7 +98,7 @@
     XCTAssertEqualObjects(@"Sign Out", cell.accessibilityIdentifier);
 
     saveExpectation = [self expectationWithDescription:@"Context save expectation"];
-    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
+    self.testContextManager.testExpectation = saveExpectation;
     
     NSString *xmlrpc = @"http://blog1.com/xmlrpc.php";
     NSString *url = @"blog1.com";
@@ -127,7 +129,7 @@
     XCTAssertEqualObjects(@"Sign Out", cell.accessibilityIdentifier);
     
     saveExpectation = [self expectationWithDescription:@"Context save expectation"];
-    [CoreDataTestHelper sharedHelper].testExpectation = saveExpectation;
+    self.testContextManager.testExpectation = saveExpectation;
 
     xmlrpc = @"http://blog2.com/xmlrpc.php";
     url = @"blog2.com";

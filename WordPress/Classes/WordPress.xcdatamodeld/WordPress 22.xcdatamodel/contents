@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6251" systemVersion="13F34" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="13F34" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <relationship name="blog" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="posts" inverseEntity="Blog" indexed="YES" syncable="YES"/>
         <relationship name="media" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Media" inverseName="posts" inverseEntity="Media" indexed="YES" syncable="YES"/>
@@ -12,6 +12,7 @@
         <attribute name="username" attributeType="String" syncable="YES"/>
         <attribute name="xmlrpc" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="blogs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Blog" inverseName="account" inverseEntity="Blog" indexed="YES" syncable="YES"/>
+        <relationship name="defaultBlog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="accountForDefaultBlog" inverseEntity="Blog" syncable="YES"/>
         <relationship name="jetpackBlogs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Blog" inverseName="jetpackAccount" inverseEntity="Blog" indexed="YES" syncable="YES"/>
         <relationship name="readerSites" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderSite" inverseName="account" inverseEntity="ReaderSite" syncable="YES"/>
         <relationship name="readerTopics" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderTopic" inverseName="account" inverseEntity="ReaderTopic" syncable="YES"/>
@@ -109,6 +110,7 @@
             <userInfo/>
         </attribute>
         <relationship name="account" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="blogs" inverseEntity="Account" indexed="YES" syncable="YES"/>
+        <relationship name="accountForDefaultBlog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="defaultBlog" inverseEntity="Account" syncable="YES"/>
         <relationship name="categories" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Category" inverseName="blog" inverseEntity="Category" indexed="YES">
             <userInfo/>
         </relationship>
@@ -168,8 +170,6 @@
         </attribute>
         <attribute name="depth" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="hierarchy" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="isLiked" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="likeCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="link" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
@@ -262,7 +262,6 @@
         <attribute name="ghostData" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="header" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="meta" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="noticon" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="read" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -371,14 +370,14 @@
     <fetchRequest name="UnreadNotes" entity="Notification" predicateString="unread == 1"/>
     <elements>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="105"/>
-        <element name="Account" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="Account" positionX="0" positionY="0" width="128" height="163"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="253"/>
-        <element name="Blog" positionX="0" positionY="0" width="128" height="450"/>
+        <element name="Blog" positionX="0" positionY="0" width="128" height="465"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
+        <element name="Comment" positionX="0" positionY="0" width="128" height="313"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="343"/>
         <element name="Meta" positionX="9" positionY="153" width="128" height="105"/>
-        <element name="Notification" positionX="18" positionY="162" width="128" height="255"/>
+        <element name="Notification" positionX="18" positionY="162" width="128" height="240"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="150"/>
         <element name="ReaderPost" positionX="0" positionY="0" width="128" height="463"/>

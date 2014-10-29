@@ -119,7 +119,10 @@ static NSString * const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopi
         NSURL *topicURI = topic.objectID.URIRepresentation;
         [[NSUserDefaults standardUserDefaults] setObject:[topicURI absoluteString] forKey:ReaderTopicCurrentTopicURIKey];
         [NSUserDefaults resetStandardUserDefaults];
-        [[NSNotificationCenter defaultCenter] postNotificationName:ReaderTopicDidChangeNotification object:nil];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:ReaderTopicDidChangeNotification object:nil]; 
+        });
     }
 }
 
