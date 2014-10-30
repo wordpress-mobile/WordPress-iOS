@@ -30,6 +30,7 @@
 #import "UIAlertView+Blocks.h"
 #import "NSObject+Helpers.h"
 #import "NSDate+StringFormatting.h"
+#import "NSString+Helpers.h"
 
 
 
@@ -460,6 +461,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     NotificationBlock *userBlock    = blockGroup.blocks.firstObject;
     NotificationMedia *media        = [userBlock.media firstObject];
     BOOL hasHomeURL                 = (userBlock.metaLinksHome != nil);
+    BOOL hasHomeTitle               = (userBlock.metaTitlesHome.length > 0);
     
     NSAssert(userBlock, nil);
     
@@ -467,7 +469,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     
     cell.accessoryType              = hasHomeURL ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     cell.name                       = userBlock.text;
-    cell.blogTitle                  = userBlock.metaTitlesHome;
+    cell.blogTitle                  = hasHomeTitle ? userBlock.metaTitlesHome : userBlock.metaLinksHome.hostname;
     cell.isFollowEnabled            = [userBlock isActionEnabled:NoteActionFollowKey];
     cell.isFollowOn                 = [userBlock isActionOn:NoteActionFollowKey];
     cell.onFollowClick              = ^() {
