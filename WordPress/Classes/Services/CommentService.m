@@ -319,6 +319,8 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
         [self.managedObjectContext performBlock:^{
             // Remove the optimistically saved comment.
+            ReaderPost *post = (ReaderPost *)comment.post;
+            post.commentCount = @([post.commentCount integerValue] - 1);
             [self deleteComment:comment success:nil failure:nil];
             if (failure) {
                 failure(error);
@@ -639,6 +641,9 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     comment.status = CommentStatusDraft;
     comment.post = post;
 
+    // Increment the post's comment count. 
+    post.commentCount = @([post.commentCount integerValue] + 1);
+
     // Find its parent comment (if it exists)
     Comment *parentComment;
     if (parentID) {
@@ -700,6 +705,11 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     if (page == 1) {
         [self deleteCommentsMissingFromHierarchicalComments:commentsToKeep forPost:post];
         [self deleteUnownedComments];
+    }
+
+    // Make sure the post's comment count is at least the number of comments merged.
+    if ([post.commentCount integerValue] < [commentsToKeep count]) {
+        post.commentCount = @([commentsToKeep count]);
     }
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
