@@ -694,39 +694,21 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     }
 
     // Remove deleted comments
-    [self deleteCommentsMissingFromHierarchicalComments:commentsToKeep forPage:page forPost:post];
-    [self deleteUnownedComments];
+    // When merging the first fetched page of comments, clear out anything that was previously
+    // cached and missing from the comments just synced. This provides for a clean slate and
+    // helps avoid certain cases where some pages might not be resynced, creating gaps in the content.
+    if (page == 1) {
+        [self deleteCommentsMissingFromHierarchicalComments:commentsToKeep forPost:post];
+        [self deleteUnownedComments];
+    }
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
 // Does not save context
-- (void)deleteCommentsMissingFromHierarchicalComments:(NSArray *)commentsToKeep forPage:(NSUInteger)page forPost:(ReaderPost *)post
+- (void)deleteCommentsMissingFromHierarchicalComments:(NSArray *)commentsToKeep forPost:(ReaderPost *)post
 {
-    NSString *entityName = NSStringFromClass([Comment class]);
-
-    // Remove deleted comments
-    Comment *firstComment = [self firstCommentForPage:page forPost:post];
-    Comment *lastComment = [self lastCommentForPage:page forPost:post];
-    NSString *starting = firstComment.hierarchy;
-    NSString *ending = lastComment.hierarchy;
-
-    if (!starting || !ending) {
-        return;
-    }
-
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:entityName];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"post = %@ AND hierarchy >= %@ AND hierarchy <= %@", post, starting, ending];
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"hierarchy" ascending:YES];
-    fetchRequest.sortDescriptors = @[sortDescriptor];
-
-    NSError *error = nil;
-    NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    if (error) {
-        DDLogError(@"Error fetching existing comments : %@", error);
-    }
-
-    for (Comment *comment in fetchedObjects) {
+    for (Comment *comment in post.comments) {
         if (![commentsToKeep containsObject:comment]) {
             [self.managedObjectContext deleteObject:comment];
         }
