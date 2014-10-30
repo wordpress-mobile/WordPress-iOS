@@ -162,15 +162,9 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                                  [account addJetpackBlogsObject:self];
                                  [self dataSave];
 
-                                 // If there is no WP.com account on the device, make this the default
-                                 if ([accountService defaultWordPressComAccount] == nil) {
-                                     [accountService setDefaultWordPressComAccount:account];
-                                     [self dataSave];
-
-                                     // Sadly we don't care if this succeeds or not
-                                     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
-                                     [blogService syncBlogsForAccount:account success:nil failure:nil];
-                                 }
+                                 // Sadly we don't care if this succeeds or not
+                                 BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
+                                 [blogService syncBlogsForAccount:account success:nil failure:nil];
 
                                  if (success) {
                                      success();
