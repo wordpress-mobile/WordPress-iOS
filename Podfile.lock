@@ -85,7 +85,7 @@ PODS:
   - WordPressApi (0.0.1):
     - AFNetworking (~> 2.3.1)
     - wpxmlrpc (~> 0.1)
-  - WordPressCom-Analytics-iOS (0.0.11)
+  - WordPressCom-Analytics-iOS (0.0.12)
   - WordPressCom-Stats-iOS (0.1.4):
     - AFNetworking (~> 2.3.1)
     - CocoaLumberjack (~> 1.8.1)
@@ -121,7 +121,7 @@ DEPENDENCIES:
   - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, commit `d4fe87a5f4b7cf12d032b7d92b5f5ba6e3a393c0`, branch `release/0.2.3`)
   - WordPress-iOS-Shared (= 0.1.3)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPressApi.git`)
-  - WordPressCom-Analytics-iOS (= 0.0.11)
+  - WordPressCom-Analytics-iOS (= 0.0.12)
   - WordPressCom-Stats-iOS (= 0.1.4)
   - wpxmlrpc (~> 0.4.3)
 
@@ -176,7 +176,7 @@ SPEC CHECKSUMS:
   WordPress-iOS-Editor: 95a9ebb07bb955396fc17bed8b4e285a3f33add0
   WordPress-iOS-Shared: 48ca916221bec8731a6bd5e5fcf683977f15766d
   WordPressApi: 6216cef116f627f07d1a519b8d04dd7acada0d20
-  WordPressCom-Analytics-iOS: c08271ed085c83a3c825ea4a362face4724d4cbf
+  WordPressCom-Analytics-iOS: d62898a09b4ce8005206c8ae7f4d59b24a7690d1
   WordPressCom-Stats-iOS: f9c4c14d52c64f63473931c1006ddb370217e74e
   wpxmlrpc: 10fc1e740ae7c23b16b1a7952f6103ee52f6589e
 
