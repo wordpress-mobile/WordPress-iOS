@@ -9,6 +9,7 @@
 #import "NSString+Helpers.h"
 #import "ContextManager.h"
 #import "AccountService.h"
+#import "WPCookie.h"
 
 NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
@@ -29,8 +30,6 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 @synthesize blog;
 @synthesize authRequest;
 @synthesize authed = authed;
-
-static NSString *_lastAuthedName = nil;
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
@@ -55,30 +54,6 @@ static NSString *_lastAuthedName = nil;
     viewController.blog = restoredBlog;
 
     return viewController;
-}
-
-+ (void)load
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAccountChangeNotification:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-}
-
-+ (void)handleAccountChangeNotification:(NSNotification *)notification
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    [self setLastAuthedName:[defaultAccount username]];
-}
-
-+ (NSString *)lastAuthedName
-{
-    return _lastAuthedName;
-}
-
-+ (void)setLastAuthedName:(NSString *)str
-{
-    _lastAuthedName = [str copy];
 }
 
 - (id)init
@@ -147,6 +122,7 @@ static NSString *_lastAuthedName = nil;
 
 - (void)clearCookies
 {
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     NSArray *arr = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"http://wordpress.com"]];
     for(NSHTTPCookie *cookie in arr){
         [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
@@ -305,8 +281,7 @@ static NSString *_lastAuthedName = nil;
     }
 
     // Skip the auth call to reduce loadtime if its the same username as before.
-    NSString *lastAuthedUsername = [[self class] lastAuthedName];
-    if ([username isEqualToString:lastAuthedUsername]) {
+    if ([WPCookie hasCookieForURL:[NSURL URLWithString:@"https://wordpress.com/"] andUsername:username]) {
         authed = YES;
         [self loadStats];
         return;
@@ -327,13 +302,11 @@ static NSString *_lastAuthedName = nil;
 
     // Clear cookies prior to auth so we don't get a false positive on the login cookie being correctly set in some cases.
     [self clearCookies];
-    [[self class] setLastAuthedName:nil];
 
     self.authRequest = [[AFHTTPRequestOperation alloc] initWithRequest:mRequest];
 
     __weak StatsWebViewController *statsWebViewController = self;
     [authRequest setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-
         // wordpress.com/wp-login.php currently returns http200 even when auth fails.
         // Sanity check the cookies to make sure we're actually logged in.
         NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"http://wordpress.com"]];
@@ -343,7 +316,6 @@ static NSString *_lastAuthedName = nil;
                 // We should be authed.
                 DDLogInfo(@"Authed. Loading stats.");
                 statsWebViewController.authed = YES;
-                [[statsWebViewController class] setLastAuthedName:username];
                 [statsWebViewController loadStats];
                 return;
             }
