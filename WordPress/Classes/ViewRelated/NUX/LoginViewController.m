@@ -20,6 +20,7 @@
 #import "WPNUXHelpBadgeLabel.h"
 #import <Helpshift/Helpshift.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
+#import <NSURL+IDN.h>
 
 static NSString *const ForgotPasswordDotComBaseUrl = @"https://wordpress.com";
 static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
@@ -713,7 +714,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (NSString *)getSiteUrl
 {
-    NSURL *siteURL = [NSURL URLWithString:_siteUrlText.text];
+    NSURL *siteURL = [NSURL URLWithString:[NSURL IDNEncodedURL:_siteUrlText.text]];
     NSString *url = [siteURL absoluteString];
 
     // If the user enters a WordPress.com url we want to ensure we are communicating over https
@@ -796,7 +797,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     if (_siteUrlText.text.length == 0) {
         return NO;
     }
-    NSURL *siteURL = [NSURL URLWithString:_siteUrlText.text];
+    NSURL *siteURL = [NSURL URLWithString:[NSURL IDNEncodedURL:_siteUrlText.text]];
     return siteURL != nil;
 }
 
@@ -879,7 +880,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         [self handleGuessXMLRPCURLFailure:error];
     };
 
-    [WordPressXMLRPCApi guessXMLRPCURLForSite:_siteUrlText.text success:guessXMLRPCURLSuccess failure:guessXMLRPCURLFailure];
+    NSString *siteUrl = [NSURL IDNEncodedURL:_siteUrlText.text];
+
+    [WordPressXMLRPCApi guessXMLRPCURLForSite:siteUrl success:guessXMLRPCURLSuccess failure:guessXMLRPCURLFailure];
 }
 
 - (void)signInForWPComForUsername:(NSString *)username andPassword:(NSString *)password
