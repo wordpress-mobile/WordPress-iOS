@@ -404,7 +404,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (BOOL)isCurrentTopicFreshlyPressed
 {
-    return [self.currentTopic.path rangeOfString:@"freshly-pressed"].location != NSNotFound;
+    return [self.currentTopic.path rangeOfString:ReaderTopicFreshlyPressedPathCommponent].location != NSNotFound;
 }
 
 - (ReaderPost *)postFromCellSubview:(UIView *)subview
