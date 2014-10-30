@@ -544,6 +544,9 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     }
 
     // Remove deleted comments
+    // When merging the first fetched page of comments, clear out anything that was previously
+    // cached and missing from the comments just synced. This provides for a clean slate and
+    // helps avoid certain cases where some pages might not be resynced, creating gaps in the content.
     if (page == 1) {
         [self deleteCommentsMissingFromHierarchicalComments:commentsToKeep forPost:post];
         [self deleteUnownedComments];
