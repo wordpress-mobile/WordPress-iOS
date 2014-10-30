@@ -13,8 +13,12 @@ extension NSDate
         }()
     }
     
-    public class func dateWithISO8601String(string: String) -> NSDate? {
-        return iso8601Date.formatter.dateFromString(string)
+    public class func dateWithISO8601String(string: String?) -> NSDate? {
+        if string == nil {
+            return nil;
+        }
+        
+        return iso8601Date.formatter.dateFromString(string!)
     }
 
     public func normalizedDate() -> NSDate {
