@@ -77,9 +77,6 @@ static CGFloat const SettingsRowHeight = 44.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    [self.tableView setEstimatedRowHeight:50.f];
-    [self.tableView setRowHeight:UITableViewAutomaticDimension];
     
     self.title = NSLocalizedString(@"Settings", @"App Settings");
     self.doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
