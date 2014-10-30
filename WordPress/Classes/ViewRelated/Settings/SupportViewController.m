@@ -14,6 +14,7 @@
 #import "BlogService.h"
 #import "Blog.h"
 #import <Mixpanel/MPTweakInline.h>
+#import "WordPress-Swift.h"
 
 static NSString *const UserDefaultsFeedbackEnabled = @"wp_feedback_enabled";
 static NSString *const UserDefaultsHelpshiftEnabled = @"wp_helpshift_enabled";
@@ -25,6 +26,8 @@ int const kHelpshiftWindowTypeFAQs = 1;
 int const kHelpshiftWindowTypeConversation = 2;
 
 static NSString *const FeedbackCheckUrl = @"http://api.wordpress.org/iphoneapp/feedback-check/1.0/";
+
+static CGFloat const SupportRowHeight = 44.0f;
 
 @interface SupportViewController ()
 
@@ -139,8 +142,12 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 {
     [super viewDidLoad];
     
-    [self.tableView setEstimatedRowHeight:50.f];
-    [self.tableView setRowHeight:UITableViewAutomaticDimension];
+    if ([UIDevice isOS8]) { // iOS8 or higher
+        [self.tableView setEstimatedRowHeight:SupportRowHeight];
+        [self.tableView setRowHeight:UITableViewAutomaticDimension];
+    } else {
+        [self.tableView setRowHeight:SupportRowHeight];
+    }
 
     [self checkIfHelpshiftShouldBeEnabled];
 
