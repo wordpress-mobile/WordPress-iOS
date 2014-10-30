@@ -373,16 +373,12 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
 
             NSArray *keys = [[[NSArray alloc] initWithObjects: (NSString *) kSecClass,
                               kSecAttrService,
-                              kSecAttrLabel,
                               kSecAttrAccount,
-                              kSecAttrAccessible,
                               nil] autorelease];
 
             NSArray *objects = [[[NSArray alloc] initWithObjects: (NSString *) kSecClassGenericPassword,
                                  serviceName,
-                                 serviceName,
                                  username,
-                                 kSecAttrAccessibleAfterFirstUnlock,
                                  nil] autorelease];
 
             NSMutableDictionary *query = [[[NSMutableDictionary alloc] initWithObjects: objects forKeys: keys] autorelease];
@@ -394,10 +390,18 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
                 query[(id)kSecAttrAccessGroup] = accessGroup;
             }
 #endif
-            NSDictionary *attributesToUpdate = @{(NSString *)kSecValueData:
-                                                     [password dataUsingEncoding: NSUTF8StringEncoding]};
-            status = SecItemUpdate((CFDictionaryRef) query,
-                                   (CFDictionaryRef) attributesToUpdate);
+            NSDictionary *attributes = nil;
+            NSMutableDictionary *updateItem = nil;
+            status = SecItemCopyMatching((CFDictionaryRef)query, (CFTypeRef *)&attributes);
+            if (status == noErr) {
+                updateItem = [NSMutableDictionary dictionaryWithDictionary:attributes];
+                [updateItem setObject:[query objectForKey:(id)kSecClass] forKey:(id)kSecClass];
+                
+                NSDictionary *attributesToUpdate = @{(NSString *)kSecValueData      : [password dataUsingEncoding: NSUTF8StringEncoding],
+                                                     (NSString *)kSecAttrAccessible : (NSString *)kSecAttrAccessibleAfterFirstUnlock};
+                status = SecItemUpdate((CFDictionaryRef) updateItem,
+                                       (CFDictionaryRef) attributesToUpdate);
+            }
         }
     } else {
         // No existing entry (or an existing, improperly entered, and therefore now
