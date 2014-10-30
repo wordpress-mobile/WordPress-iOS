@@ -14,7 +14,7 @@ extension NotificationBlock
 
         for notificationRange in ranges as [NotificationRange] {
             
-            // Make sure this range is not ouf bounds!
+            // Make sure this range is not of bounds!
             let range = notificationRange.range
             if range.location + range.length > theString.length {
                 continue
