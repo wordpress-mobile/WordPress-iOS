@@ -4,6 +4,7 @@
 #import "WPAccount.h"
 #import "NSURL+IDN.h"
 #import "ContextManager.h"
+#import "Constants.h"
 
 static NSInteger const ImageSizeSmallWidth = 240;
 static NSInteger const ImageSizeSmallHeight = 180;
@@ -11,8 +12,6 @@ static NSInteger const ImageSizeMediumWidth = 480;
 static NSInteger const ImageSizeMediumHeight = 360;
 static NSInteger const ImageSizeLargeWidth = 640;
 static NSInteger const ImageSizeLargeHeight = 480;
-
-static BOOL const JetpackRESTSupportedForEveryone = NO;
 
 @implementation Blog {
     WPXMLRPCClient *_api;
@@ -383,14 +382,7 @@ static BOOL const JetpackRESTSupportedForEveryone = NO;
 
 - (BOOL)jetpackRESTSupported
 {
-#ifdef DEBUG
-    return YES;
-#endif
-#ifdef INTERNAL_BUILD
-    return YES;
-#endif
-
-    return JetpackRESTSupportedForEveryone;
+    return WPJetpackRESTSupported;
 }
 
 #pragma mark - Private Methods

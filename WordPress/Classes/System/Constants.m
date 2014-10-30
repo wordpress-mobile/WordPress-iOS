@@ -27,3 +27,9 @@ NSString *const WPStatsTodayWidgetUserDefaultsViewCountKey = @"TodayViewCount";
 NSString *const WPStatsTodayWidgetUserDefaultsVisitorCountKey = @"TodayVisitorCount";
 
 NSString *const WPInternalBetaShakeToPullUpFeedbackKey = @"InternalBetaShakeToPullUpFeedback";
+
+#if defined(INTERNAL_BUILD) || defined(DEBUG)
+BOOL const WPJetpackRESTSupported = YES;
+#else
+BOOL const WPJetpackRESTSupported = NO;
+#endif
