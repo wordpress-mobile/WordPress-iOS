@@ -122,7 +122,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
 - (void)clearCookies
 {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogMethod();
     NSArray *arr = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"http://wordpress.com"]];
     for(NSHTTPCookie *cookie in arr){
         [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
