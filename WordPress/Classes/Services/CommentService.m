@@ -512,8 +512,13 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                         }
                     } failure:^(NSError *error) {
                         [self.managedObjectContext performBlock:^{
-                            comment.status = prevStatus;
-                            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                            // Note: The comment might have been deleted at this point
+                            Comment *commentReloaded = [self.managedObjectContext existingObjectWithID:comment.objectID error:nil];
+                            if (commentReloaded) {
+                                commentReloaded.status = prevStatus;
+                                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                            }
+                            
                             if (failure) {
                                 dispatch_async(dispatch_get_main_queue(), ^{
                                     failure(error);
