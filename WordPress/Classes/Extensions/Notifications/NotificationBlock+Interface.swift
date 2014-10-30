@@ -12,11 +12,18 @@ extension NotificationBlock
 
         theString.applyAttributesToQuotes(WPStyleGuide.Notifications.subjectItalicsStyle)
 
-        for range in ranges as [NotificationRange] {
-            if range.isUser {
-                theString.addAttributes(WPStyleGuide.Notifications.subjectBoldStyle, range: range.range)
-            } else if range.isPost || range.isComment {
-                theString.addAttributes(WPStyleGuide.Notifications.subjectItalicsStyle, range: range.range)
+        for notificationRange in ranges as [NotificationRange] {
+            
+            // Make sure this range is not ouf bounds!
+            let range = notificationRange.range
+            if range.location + range.length > theString.length {
+                continue
+            }
+            
+            if notificationRange.isUser {
+                theString.addAttributes(WPStyleGuide.Notifications.subjectBoldStyle, range: range)
+            } else if notificationRange.isPost || notificationRange.isComment {
+                theString.addAttributes(WPStyleGuide.Notifications.subjectItalicsStyle, range: range)
             }
         }
 
