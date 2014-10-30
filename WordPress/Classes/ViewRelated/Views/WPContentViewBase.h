@@ -120,6 +120,7 @@ The object specifying the content (text, images, etc.) to display.
 - (UILabel *)viewForTitle;
 - (UIView *)viewForContent;
 - (WPContentActionView *)viewForActionView;
+- (UIImageView *)imageViewForFeaturedImage;
 
 /**
  Configures the appearance of the attribution view based on the content provider.
