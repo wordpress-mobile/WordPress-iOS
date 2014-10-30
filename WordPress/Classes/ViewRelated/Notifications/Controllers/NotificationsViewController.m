@@ -35,6 +35,7 @@ static NSTimeInterval const NotificationPushMaxWait = 1;
 static CGFloat const NoteEstimatedHeight            = 70;
 static CGRect NotificationsTableHeaderFrame         = {0.0f, 0.0f, 0.0f, 40.0f};
 static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
+static NSTimeInterval NotificationsSyncTimeout      = 10;
 
 
 #pragma mark ====================================================================================
@@ -125,7 +126,8 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
     // Listen to appDidBecomeActive Note
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(handleApplicationDidBecomeActiveNote:) name:UIApplicationDidBecomeActiveNotification object:nil];
-
+    [nc addObserver:self selector:@selector(handleApplicationWillResignActiveNote:) name:UIApplicationWillResignActiveNotification object:nil];
+    
     // Hit the Tracker
     dispatch_once(&_trackedViewDisplay, ^{
         [WPAnalytics track:WPAnalyticsStatNotificationsAccessed];
@@ -174,6 +176,9 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
             [self showDetailsForNoteWithID:key];
         }
         
+        // Stop the sync timeout: we've got activity!
+        [self stopSyncTimeoutTimer];
+        
         // Cleanup
         self.pushNotificationID     = nil;
         self.pushNotificationDate   = nil;
@@ -196,6 +201,11 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
     [self reloadResultsControllerIfNeeded];
 }
 
+- (void)handleApplicationWillResignActiveNote:(NSNotification *)note
+{
+    [self stopSyncTimeoutTimer];
+}
+
 
 #pragma mark - Public Methods
 
@@ -214,7 +224,34 @@ static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
         
         self.pushNotificationID     = notificationID;
         self.pushNotificationDate   = [NSDate date];
+        
+        [self startSyncTimeoutTimer];
     }
+}
+
+
+#pragma mark - Stats Helpers
+
+- (void)startSyncTimeoutTimer
+{
+    // Don't proceed if we're not even connected
+    BOOL isConnected = [[WordPressAppDelegate sharedWordPressApplicationDelegate] connectionAvailable];
+    if (!isConnected) {
+        return;
+    }
+    
+    [self stopSyncTimeoutTimer];
+    [self performSelector:@selector(trackSyncTimeout) withObject:nil afterDelay:NotificationsSyncTimeout];
+}
+
+- (void)stopSyncTimeoutTimer
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(trackSyncTimeout) object:nil];
+}
+
+- (void)trackSyncTimeout
+{
+    [WPAnalytics track:WPAnalyticsStatNotificationsMissingSyncWarning];
 }
 
 
