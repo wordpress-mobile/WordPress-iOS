@@ -50,5 +50,6 @@
 - (void)updateTitleForSection:(NSUInteger)section;
 - (void)clearCachedRowHeights;
 - (void)refreshCachedRowHeightsForWidth:(CGFloat)width;
+- (void)invalidateCachedRowHeightAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
