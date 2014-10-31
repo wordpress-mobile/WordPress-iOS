@@ -572,10 +572,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 - (void)openURL:(NSURL *)url
 {
     //  NOTE:
-    //
-    //  DTAttributedLabel doesn't allow us to use *any* object as a DTLinkAttribute instance.
-    //  So, we lose the range metadata: is it a post? stats? comment?.
-    //  In this step, we attempt to match the URL with any NotificationRange instance, contained in the note,
+    //  In this step, we attempt to match the URL tapped with any NotificationRange instance, contained in the note,
     //  and thus, recover the metadata!
     //
     NotificationRange *range    = [self.note notificationRangeWithUrl:url];
@@ -1038,6 +1035,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     self.tableGesturesRecognizer.enabled = false;
 }
 
+
 #pragma mark - SuggestionsTableViewDelegate
 
 - (void)view:(UIView *)view didTypeInWord:(NSString *)word
@@ -1050,6 +1048,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     [self.replyTextView replaceTextAtCaret:text withSuggestion:suggestion];
     [suggestionsTableView showSuggestionsForWord:@""];
 }
+
 
 #pragma mark - Gestures Recognizer Delegate
 
