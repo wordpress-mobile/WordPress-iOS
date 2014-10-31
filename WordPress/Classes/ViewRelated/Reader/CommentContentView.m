@@ -38,7 +38,7 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
     return self;
 }
 
-- (void)setContentProvider:(id<WPContentViewProvider>)contentProvider
+- (void)setContentProvider:(id<WPCommentContentViewProvider>)contentProvider
 {
     if (_contentProvider == contentProvider) {
         return;
@@ -51,19 +51,6 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
 - (void)setAvatarImage:(UIImage *)image
 {
     [self.avatarImageView setImage:image];
-}
-
-- (void)setLikeCount:(NSInteger)likeCount
-{
-    _likeCount = likeCount;
-
-    [self updateNumberOfLikesLabel];
-}
-
-- (void)setIsLiked:(BOOL)isLiked
-{
-    _isLiked = isLiked;
-    self.likeButton.selected = isLiked;
 }
 
 - (void)reset
@@ -292,6 +279,8 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
     [self configureAuthorButton];
     [self configureTimeButton];
     [self configureContentView];
+    [self configureLikeButton];
+    [self configureNumberOfLikes];
 }
 
 - (void)configureAuthorButton
@@ -304,6 +293,8 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
     if ([self.contentProvider respondsToSelector:@selector(authorURL)] && [self.contentProvider authorURL]) {
         self.authorButton.enabled = ([[[self.contentProvider authorURL] absoluteString] length] > 0);
     }
+
+    [self highlightAuthor:[self.contentProvider authorIsPostAuthor]];
 }
 
 - (void)highlightAuthor:(BOOL)highlight
@@ -323,6 +314,23 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
 {
     NSString *title = [[self.contentProvider dateForDisplay] shortString];
     [self.timeButton setTitle:title forState:UIControlStateNormal | UIControlStateDisabled];
+}
+
+- (void)configureLikeButton
+{
+    self.likeButton.selected = [self.contentProvider isLiked];
+}
+
+- (void)configureNumberOfLikes
+{
+    NSInteger likeCount = [[self.contentProvider numberOfLikes] integerValue];
+    if (likeCount == 0) {
+        self.numberOfLikesLabel.text = @"";
+    } else if (likeCount == 1) {
+        self.numberOfLikesLabel.text = [NSString stringWithFormat:@"\u00B7 1 %@", NSLocalizedString(@"Like", nil)];
+    } else {
+        self.numberOfLikesLabel.text = [NSString stringWithFormat:@"\u00B7 %d %@", likeCount, NSLocalizedString(@"Likes", nil)];
+    }
 }
 
 - (void)configureContentView
@@ -396,21 +404,6 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
 - (void)richTextViewDidLoadMediaBatch:(WPRichTextView *)richTextView
 {
     [self.delegate commentView:self updatedAttachmentViewsForProvider:self.contentProvider];
-}
-
-
-#pragma mark - Helper
-
-- (void)updateNumberOfLikesLabel {
-    if (self.likeCount == 0) {
-        self.numberOfLikesLabel.text = @"";
-    }
-    else if (self.likeCount == 1) {
-        self.numberOfLikesLabel.text = [NSString stringWithFormat:@"\u00B7 1 %@", NSLocalizedString(@"Like", nil)];
-    }
-    else {
-        self.numberOfLikesLabel.text = [NSString stringWithFormat:@"\u00B7 %d %@", self.likeCount, NSLocalizedString(@"Likes", nil)];
-    }
 }
 
 @end
