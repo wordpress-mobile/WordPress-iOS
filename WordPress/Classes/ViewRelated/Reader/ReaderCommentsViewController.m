@@ -16,6 +16,8 @@
 #import "WPTableViewHandler.h"
 #import "WPToast.h"
 #import "WPWebViewController.h"
+#import "SuggestionsTableView.h"
+#import "SuggestionService.h"
 #import "WordPress-Swift.h"
 
 static CGFloat const EstimatedCommentRowHeight = 150.0;
@@ -34,7 +36,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
                                             ReaderCommentCellDelegate,
                                             UITextViewDelegate,
                                             WPContentSyncHelperDelegate,
-                                            WPTableViewHandlerDelegate>
+                                            WPTableViewHandlerDelegate,
+                                            SuggestionsTableViewDelegate>
 
 @property (nonatomic, strong, readwrite) ReaderPost *post;
 @property (nonatomic, strong) UIGestureRecognizer *tapOffKeyboardGesture;
@@ -46,6 +49,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 @property (nonatomic, strong) NSLayoutConstraint *cellForLayoutWidthConstraint;
 @property (nonatomic, strong) WPNoResultsView *noResultsView;
 @property (nonatomic, strong) ReplyTextView *replyTextView;
+@property (nonatomic, strong) SuggestionsTableView *suggestionsTableView;
 @property (nonatomic, strong) UIView *postHeader;
 
 @end
@@ -82,6 +86,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self configureTableViewHandler];
     [self configureCellForLayout];
     [self configureInfiniteScroll];
+    [self attachSuggestionsTableViewIfNeeded];
     [self configureTextReplyView];
     [self configureConstraints];
 
@@ -306,6 +311,23 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }
 }
 
+- (void)attachSuggestionsTableViewIfNeeded
+{
+    if (![self shouldAttachSuggestionsTableView]) {
+        return;
+    }
+
+    self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.post.siteID];
+    self.suggestionsTableView.suggestionsDelegate = self;
+    [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.view addSubview:self.suggestionsTableView];        
+}
+
+- (BOOL)shouldAttachSuggestionsTableView
+{
+    return (self.post.commentsOpen && self.post.isWPCom && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.post.siteID]);
+}
+
 - (void)configureNoResultsView
 {
     if (!self.isViewLoaded) {
@@ -406,6 +428,30 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
                                                                               metrics:metrics
                                                                                 views:views]];
         }
+        
+        // Suggestions Table View
+        if ([self shouldAttachSuggestionsTableView]) {
+            // Pin the suggestions view left and right edges to the super view edges
+            NSDictionary *views = @{@"suggestionsview": self.suggestionsTableView };
+            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[suggestionsview]|"
+                                                                              options:0
+                                                                              metrics:nil
+                                                                                views:views]];
+
+            // Pin the suggestions view top to the super view top
+            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[suggestionsview]"
+                                                                              options:0
+                                                                              metrics:nil
+                                                                                views:views]];
+            // Pin the suggestions view bottom to the top of the reply box
+            [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.suggestionsTableView
+                                                                  attribute:NSLayoutAttributeBottom
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:self.replyTextView
+                                                                  attribute:NSLayoutAttributeTop
+                                                                 multiplier:1
+                                                                   constant:0]];
+        }
     }
 }
 
@@ -452,6 +498,19 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }];
 }
 
+- (void)removeTapOffKeyboardRecognizerIfNeeded
+{
+    if ([self.view.gestureRecognizers containsObject:self.tapOffKeyboardGesture]) {
+        [self.view removeGestureRecognizer:self.tapOffKeyboardGesture];
+    }
+}
+
+- (void)addTapOffKeyboardRecognizerIfNeeded
+{
+    if (! [self.view.gestureRecognizers containsObject:self.tapOffKeyboardGesture]) {
+        [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
+    }
+}
 
 #pragma mark - Accessor methods
 
@@ -567,10 +626,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)tapRecognized:(id)sender
 {
-    if ([self.view.gestureRecognizers containsObject:self.tapOffKeyboardGesture]) {
-        [self.view removeGestureRecognizer:self.tapOffKeyboardGesture];
-    }
-
+    [self removeTapOffKeyboardRecognizerIfNeeded];
     [self.tableView deselectSelectedRowWithAnimation:YES];
     [self.replyTextView resignFirstResponder];
     [self configureTextReplyViewPlaceholder];
@@ -795,6 +851,26 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self configureTextReplyViewPlaceholder];
 }
 
+#pragma mark - SuggestionsTableViewDelegate
+
+- (void)view:(UIView *)view didTypeInWord:(NSString *)word
+{
+    if ([self.suggestionsTableView showSuggestionsForWord:word]) {
+        // we're showing suggestions, so allow them to tap on one
+        [self removeTapOffKeyboardRecognizerIfNeeded];
+    } else {
+        // we're not showing any suggestions, add back tap off detection
+        [self addTapOffKeyboardRecognizerIfNeeded];        
+    }    
+}
+
+- (void)suggestionsTableView:(SuggestionsTableView *)suggestionsTableView didSelectSuggestion:(NSString *)suggestion forSearchText:(NSString *)text
+{
+    [self.replyTextView replaceTextAtCaret:text withSuggestion:suggestion];
+    [suggestionsTableView showSuggestionsForWord:@""];
+    [self addTapOffKeyboardRecognizerIfNeeded];
+    
+}
 
 #pragma mark - ReaderCommentCell Delegate methods
 
@@ -837,7 +913,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
-    [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
+    [self addTapOffKeyboardRecognizerIfNeeded];
     return YES;
 }
 
