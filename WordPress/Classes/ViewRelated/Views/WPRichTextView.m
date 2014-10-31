@@ -78,6 +78,12 @@ static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
     return size;
 }
 
+- (CGSize)sizeThatFits:(CGSize)sizeToFit
+{
+    CGSize size = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:sizeToFit.width];
+    return size;
+}
+
 - (UIEdgeInsets)edgeInsets
 {
     return self.textContentView.edgeInsets;
@@ -109,9 +115,24 @@ static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
 
     NSData *data = [_content dataUsingEncoding:NSUTF8StringEncoding];
     self.attributedString = [[NSAttributedString alloc] initWithHTMLData:data
-                                                                 options:[WPStyleGuide defaultDTCoreTextOptions]
+                                                                 options:self.textOptions
                                                       documentAttributes:nil];
 }
+
+- (NSDictionary *)textOptions
+{
+    if (!_textOptions) {
+        self.textOptions = [WPStyleGuide defaultDTCoreTextOptions];
+    }
+    return _textOptions;
+}
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor
+{
+    [super setBackgroundColor:backgroundColor];
+    self.textContentView.backgroundColor = backgroundColor;
+}
+
 
 #pragma mark - Private Methods
 
