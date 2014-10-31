@@ -163,7 +163,7 @@ CGFloat const RowHeight = 44.0f;
 
 #pragma mark - Public methods
 
-- (void)showSuggestionsForWord:(NSString *)word
+- (BOOL)showSuggestionsForWord:(NSString *)word
 {
     if ([word hasPrefix:@"@"]) {
         self.searchText = [word substringFromIndex:1];
@@ -181,6 +181,8 @@ CGFloat const RowHeight = 44.0f;
     
     [self.tableView reloadData];
     [self setNeedsUpdateConstraints];
+    
+    return ([self.searchResults count] > 0);
 }
 
 #pragma mark - UITableViewDataSource methods
