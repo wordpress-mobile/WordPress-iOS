@@ -6,6 +6,8 @@ static const CGFloat CommentContentViewAvatarSize = 32.0;
 static const CGFloat CommentContentViewContentViewOffsetTop = 36.0;
 static const CGFloat CommentContentViewContentViewOffsetBottom = 19.0;
 static const CGFloat CommentContentViewContentOffsetLeft = 40.0;
+static const CGFloat CommentContentViewButtonHeight = 16.0;
+static const CGFloat CommentContnetViewButtonSpacingTop = 4.0;
 static const UIEdgeInsets AuthorButtonEdgeInsets = {-5.0f, 0.0f, 0.0f, 0.0f};
 static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0f};
 
@@ -85,7 +87,9 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
     NSDictionary *metrics = @{@"avatarSize": @(CommentContentViewAvatarSize),
                               @"offsetTop" : @(CommentContentViewContentViewOffsetTop),
                               @"offsetBottom" : @(CommentContentViewContentViewOffsetBottom),
-                              @"offsetLeft" : @(CommentContentViewContentOffsetLeft)
+                              @"offsetLeft" : @(CommentContentViewContentOffsetLeft),
+                              @"buttonMarginTop" : @(CommentContnetViewButtonSpacingTop),
+                              @"buttonHeight" : @(CommentContentViewButtonHeight)
                               };
 
     // Avatar
@@ -107,7 +111,7 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_authorButton(16)]-3-[_timeButton(16)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_authorButton(buttonHeight)]-3-[_timeButton(buttonHeight)]"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
@@ -126,15 +130,15 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView][_replyButton(16)]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView]-(buttonMarginTop)-[_replyButton(buttonHeight)]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView][_likeButton(16)]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView]-(buttonMarginTop)-[_likeButton(buttonHeight)]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView][_numberOfLikesLabel(16)]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView]-(buttonMarginTop)-[_numberOfLikesLabel(buttonHeight)]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
