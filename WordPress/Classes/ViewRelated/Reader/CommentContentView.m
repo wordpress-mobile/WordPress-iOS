@@ -3,7 +3,6 @@
 #import "DTTiledLayerWithoutFade.h"
 #import "NSDate+StringFormatting.h"
 
-//#import <WordPress-iOS-Shared/WPFontManager.h>
 #import "WordPress-Swift.h"
 
 static const CGFloat CommentContentViewAvatarSize = 32.0;
@@ -195,8 +194,6 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-// TODO : Create a comment font and add it to WPStyleGuide
-//    button.titleLabel.font = [WPFontManager openSansBoldFontOfSize:14.0];
     button.titleLabel.font = [WPStyleGuide commentTitleFont];
     button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     button.backgroundColor = [WPStyleGuide itsEverywhereGrey];
@@ -211,7 +208,6 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-//    button.titleLabel.font = [WPFontManager openSansRegularFontOfSize:14.0];
     button.titleLabel.font = [WPStyleGuide commentBodyFont];
 
     button.backgroundColor = [WPStyleGuide itsEverywhereGrey];
@@ -376,20 +372,6 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
     if (prng.location != NSNotFound) {
         string = [string substringToIndex:prng.location + 3];
     }
-
-//    NSString *defaultStyles = @"blockquote {width: 100%; display: block; font-style: italic;}";
-//    DTCSSStylesheet *cssStylesheet = [[DTCSSStylesheet alloc] initWithStyleBlock:defaultStyles];
-//    NSDictionary *options = @{
-//             DTDefaultFontFamily:@"Open Sans",
-//             DTDefaultLineHeightMultiplier:@1.52,
-//             DTDefaultFontSize:@14.0,
-//             DTDefaultTextColor:[WPStyleGuide littleEddieGrey],
-//             DTDefaultLinkColor:[WPStyleGuide baseLighterBlue],
-//             DTDefaultLinkHighlightColor:[WPStyleGuide midnightBlue],
-//             DTDefaultLinkDecoration:@NO,
-//             DTDefaultStyleSheet:cssStylesheet
-//             };
-
 
     NSDictionary *options = [WPStyleGuide commentDTCoreTextOptions];
     NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
