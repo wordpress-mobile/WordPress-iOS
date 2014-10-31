@@ -1,9 +1,12 @@
 #import <UIKit/UIKit.h>
 #import "WPContentViewProvider.h"
+#import "WPRichTextView.h"
 
-@protocol CommentContentViewDelegate <NSObject>
+@class CommentContentView;
+
+@protocol CommentContentViewDelegate <NSObject, WPRichTextViewDelegate>
+- (void)commentView:(CommentContentView *)commentView updatedAttachmentViewsForProvider:(id<WPContentViewProvider>)contentProvider;
 @optional
-- (void)handleLinkTapped:(NSURL *)url;
 - (void)handleReplyTapped:(id<WPContentViewProvider>)contentProvider;
 - (void)toggleLikeStatus:(id<WPContentViewProvider>)contentProvider;
 @end
