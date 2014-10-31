@@ -1,7 +1,6 @@
 #import "ReaderCommentCell.h"
 #import "Comment.h"
 #import "CommentContentView.h"
-#import "ReaderPost.h"
 
 static const NSInteger ReaderCommentCellMaxIndentationLevel = 4;
 static const CGFloat ReaderCommentCellIndentationWidth = 16.0;
@@ -10,7 +9,7 @@ static const CGFloat ReaderCommentCellTopPadding = 12.0;
 static const CGFloat ReaderCommentCellBottomPadding = -8.0;
 static const CGFloat ReaderCommentCellBottomPaddingMore = -20.0;
 
-@interface ReaderCommentCell()<CommentContentViewDelegate>
+@interface ReaderCommentCell()
 
 @property (nonatomic, strong) Comment *comment;
 @property (nonatomic, strong) UIView *borderView;
@@ -53,7 +52,6 @@ static const CGFloat ReaderCommentCellBottomPaddingMore = -20.0;
 
         _commentContentView = [[CommentContentView alloc] initWithFrame:self.bounds];
         _commentContentView.translatesAutoresizingMaskIntoConstraints = NO;
-        _commentContentView.delegate = self;
         [self.contentView addSubview:_commentContentView];
 
         [self configureConstraints];
@@ -96,15 +94,6 @@ static const CGFloat ReaderCommentCellBottomPaddingMore = -20.0;
     self.bottomMarginConstraint.constant = (self.needsExtraPadding) ? ReaderCommentCellBottomPaddingMore : ReaderCommentCellBottomPadding;
 
     self.commentContentView.contentProvider = comment;
-    self.commentContentView.isLiked = self.comment.isLiked;
-    self.commentContentView.likeCount = [self.comment.likeCount intValue];
-
-    // Highlighting the author of the post
-    NSString *authorUrl = comment.author_url;
-    ReaderPost *post = (ReaderPost *)comment.post;
-    if ([authorUrl isEqualToString:post.authorURL]) {
-        [self.commentContentView highlightAuthor:YES];
-    }
 }
 
 - (void)layoutSubviews
@@ -122,8 +111,6 @@ static const CGFloat ReaderCommentCellBottomPaddingMore = -20.0;
     self.hidesBorder = NO;
     self.isFirstNestedComment = NO;
     self.needsExtraPadding = NO;
-    self.indentationLevel = 0;
-    [self.commentContentView reset];
 }
 
 - (void)configureConstraints
@@ -186,28 +173,14 @@ static const CGFloat ReaderCommentCellBottomPaddingMore = -20.0;
     [self.contentView addConstraint:self.bottomMarginConstraint];
 }
 
-
-#pragma mark - Actions
-
-- (void)handleLinkTapped:(NSURL *)url
+- (id<CommentContentViewDelegate>)delegate
 {
-    if ([self.delegate respondsToSelector:@selector(commentCell:linkTapped:)]) {
-        [self.delegate commentCell:self linkTapped:url];
-    }
+    return self.commentContentView.delegate;
 }
 
-- (void)handleReplyTapped:(id<WPContentViewProvider>)contentProvider
+- (void)setDelegate:(id<CommentContentViewDelegate>)delegate
 {
-    if ([self.delegate respondsToSelector:@selector(commentCell:replyToComment:)]) {
-        [self.delegate commentCell:self replyToComment:self.comment];
-    }
-}
-
-- (void)toggleLikeStatus:(id<WPContentViewProvider>)contentProvider
-{
-    if ([self.delegate respondsToSelector:@selector(commentCell:toggleLikeStatusForComment:)]) {
-        [self.delegate commentCell:self toggleLikeStatusForComment:self.comment];
-    }
+    self.commentContentView.delegate = delegate;
 }
 
 @end
