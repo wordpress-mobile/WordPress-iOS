@@ -226,63 +226,71 @@ static CGFloat NotificationSectionSeparator     = 10;
         return;
     }
     
-    // Attach the SuggestionsTableView for WPCOM blogs
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blog                      = [service blogByBlogId:self.note.metaSiteID];
-        
-    BOOL shouldAddSuggestionView = (blog.isWPcom && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.note.metaSiteID]);
+    __typeof(self) __weak weakSelf          = self;
     
-    if (shouldAddSuggestionView) {
-        self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.note.metaSiteID];
-        self.suggestionsTableView.suggestionsDelegate = self;
-        [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
-        [self.view addSubview:self.suggestionsTableView];        
-    }
-    
-    __typeof(self) __weak weakSelf  = self;
-    
-    ReplyTextView *replyTextView    = [[ReplyTextView alloc] initWithWidth:CGRectGetWidth(self.view.frame)];
-    replyTextView.placeholder       = NSLocalizedString(@"Write a reply…", @"Placeholder text for inline compose view");
-    replyTextView.replyText         = [NSLocalizedString(@"Reply", @"") uppercaseString];
-    replyTextView.onReply           = ^(NSString *content) {
+    ReplyTextView *replyTextView            = [[ReplyTextView alloc] initWithWidth:CGRectGetWidth(self.view.frame)];
+    replyTextView.placeholder               = NSLocalizedString(@"Write a reply…", @"Placeholder text for inline compose view");
+    replyTextView.replyText                 = [NSLocalizedString(@"Reply", @"") uppercaseString];
+    replyTextView.accessibilityIdentifier   = @"Reply Text";
+    replyTextView.onReply                   = ^(NSString *content) {
         [weakSelf sendReplyWithBlock:block content:content];
     };
-    replyTextView.delegate          = self;
-    self.replyTextView              = replyTextView;
-    replyTextView.accessibilityIdentifier = @"Reply Text";
+    replyTextView.delegate                  = self;
+    self.replyTextView                      = replyTextView;
+
     // Attach the ReplyTextView at the very bottom
     [self.view addSubview:self.replyTextView];
     [self.view pinSubviewAtBottom:self.replyTextView];
     [self.view pinSubview:self.tableView aboveSubview:self.replyTextView];
     
-    // If allowing suggestions, set up the reply text view keyboard and suggestion view constraints
-    if (shouldAddSuggestionView) {
-        // Set reply text view keyboard type to Twitter to expose the @ key for easy suggesting
-        [replyTextView setKeyboardType:UIKeyboardTypeTwitter];
-        
-        // Pin the suggestions view left and right edges to the super view edges
-        NSDictionary *views = @{@"suggestionsview": self.suggestionsTableView };
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[suggestionsview]|"
-                                                                          options:0
-                                                                          metrics:nil
-                                                                            views:views]];
+    // Attach suggestionsView
+    [self attachSuggestionsViewIfNeeded];
+}
 
-        // Pin the suggestions view top to the super view top
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[suggestionsview]"
-                                                                          options:0
-                                                                          metrics:nil
-                                                                            views:views]];
-        
-        // Pin the suggestions view bottom to the top of the reply box
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.suggestionsTableView
-                                                             attribute:NSLayoutAttributeBottom
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:self.replyTextView
-                                                             attribute:NSLayoutAttributeTop
-                                                            multiplier:1
-                                                              constant:0]];
+
+#pragma mark - Suggestions View Helpers
+
+- (void)attachSuggestionsViewIfNeeded
+{
+    // Proceed only if needed!
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
+    Blog *blog                      = [service blogByBlogId:self.note.metaSiteID];
+    BOOL shouldAddSuggestionView    = blog.isWPcom && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.note.metaSiteID];
+
+    if (!shouldAddSuggestionView) {
+        return;
     }
+    
+    self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.note.metaSiteID];
+    self.suggestionsTableView.suggestionsDelegate = self;
+    [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.view addSubview:self.suggestionsTableView];
+    
+    // Set reply text view keyboard type to Twitter to expose the @ key for easy suggesting
+    [self.replyTextView setKeyboardType:UIKeyboardTypeTwitter];
+    
+    // Pin the suggestions view left and right edges to the super view edges
+    NSDictionary *views = @{@"suggestionsview": self.suggestionsTableView };
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[suggestionsview]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:views]];
+
+    // Pin the suggestions view top to the super view top
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[suggestionsview]"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:views]];
+    
+    // Pin the suggestions view bottom to the top of the reply box
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.suggestionsTableView
+                                                         attribute:NSLayoutAttributeBottom
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self.replyTextView
+                                                         attribute:NSLayoutAttributeTop
+                                                        multiplier:1
+                                                          constant:0]];
 }
 
 
