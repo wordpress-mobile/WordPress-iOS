@@ -374,7 +374,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 {
     if (self.isWPcom) {
         return self.account.restApi;
-    } else if ([self jetpackRESTSupported] && self.jetpackAccount) {
+    } else if ([self jetpackRESTSupported] && self.jetpackAccount && self.dotComID) {
         return self.jetpackAccount.restApi;
     }
     return nil;
