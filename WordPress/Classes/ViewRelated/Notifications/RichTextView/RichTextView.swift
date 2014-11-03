@@ -34,12 +34,6 @@ import Foundation
         setupSubviews()
     }
     
-    public override func layoutSubviews() {
-        assert(textView != nil)
-        super.layoutSubviews()
-        textView.frame = bounds
-    }
-
     
     // MARK: - Properties
     public override var frame: CGRect {
@@ -103,6 +97,11 @@ import Foundation
         textView.dataDetectorTypes                          = dataDetectorTypes
         textView.delegate                                   = self
         addSubview(textView)
+
+        // Setup Layout
+        setTranslatesAutoresizingMaskIntoConstraints(false)
+        textView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        pinSubviewToAllEdges(textView)
     }
 
     private func renderAttachments() {
