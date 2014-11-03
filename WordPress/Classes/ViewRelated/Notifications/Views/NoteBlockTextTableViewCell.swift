@@ -51,23 +51,23 @@ import Foundation
                 
         backgroundColor             = WPStyleGuide.Notifications.blockBackgroundColor
         selectionStyle              = .None
+        
+        gesturesRecognizer          = UITapGestureRecognizer()
+        gesturesRecognizer.addTarget(self, action: "handleTap:")
+        
+        assert(textView != nil)
         textView.contentInset       = UIEdgeInsetsZero
         textView.textContainerInset = UIEdgeInsetsZero
         textView.backgroundColor    = UIColor.clearColor()
         textView.editable           = false
         textView.selectable         = true
         textView.dataDetectorTypes  = .None
-        
-        // Setup a Gestures Recognizer: This way we'll handle links!
-        gesturesRecognizer          = UITapGestureRecognizer()
-        gesturesRecognizer.addTarget(self, action: "handleTap:")
-        textView.gestureRecognizers  = [gesturesRecognizer]
+        textView.gestureRecognizers = [gesturesRecognizer]
     }
     
     public override func layoutSubviews() {
         // Calculate the TextView's width, before hitting layoutSubviews!
         textView.preferredMaxLayoutWidth = min(bounds.width, maxWidth) - labelPadding.left - labelPadding.right
-        
         super.layoutSubviews()
     }
     
