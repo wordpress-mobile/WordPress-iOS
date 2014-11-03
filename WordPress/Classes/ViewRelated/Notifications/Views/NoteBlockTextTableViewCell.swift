@@ -11,6 +11,7 @@ import Foundation
             setNeedsLayout()
         }
     }
+    
     public var isBadge: Bool = false {
         didSet {
             if isBadge {
@@ -22,6 +23,7 @@ import Foundation
             }
         }
     }
+    
     public var linkColor: UIColor? {
         didSet {
             if let unwrappedLinkColor = linkColor {
@@ -29,6 +31,7 @@ import Foundation
             }
         }
     }
+    
     public var dataDetectors: UIDataDetectorTypes? {
         didSet {
             if let unwrappedDataDetectors = dataDetectors {
@@ -36,9 +39,11 @@ import Foundation
             }
         }
     }
+    
     public var labelPadding: UIEdgeInsets {
         return privateLabelPadding
     }
+    
     public var isTextViewSelectable: Bool = false {
         didSet {
             textView.selectable = isTextViewSelectable
@@ -72,7 +77,7 @@ import Foundation
                 
         backgroundColor             = WPStyleGuide.Notifications.blockBackgroundColor
         selectionStyle              = .None
-        textView.contentInset       = privateLabelInsets
+        textView.contentInset       = UIEdgeInsetsZero
         textView.textContainerInset = UIEdgeInsetsZero
         textView.backgroundColor    = UIColor.clearColor()
         textView.editable           = false
@@ -119,11 +124,10 @@ import Foundation
     // MARK: - Constants
     private let maxWidth            = WPTableViewFixedWidth
     private let privateLabelPadding = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
-    private let privateLabelInsets  = UIEdgeInsets(top: 1, left: -5, bottom: 0, right: 0)
     
     // MARK: - Private
     private var gesturesRecognizer: UITapGestureRecognizer!
     
     // MARK: - IBOutlets
-    @IBOutlet private weak var textView: WPDynamicHeightTextView!
+    @IBOutlet private weak var textView: RichTextView!
 }
