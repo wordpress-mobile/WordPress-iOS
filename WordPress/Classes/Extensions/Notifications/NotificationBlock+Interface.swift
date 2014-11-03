@@ -12,14 +12,14 @@ extension NotificationBlock
             return NSAttributedString()
         }
 
-        return NSAttributedString(string: text, attributes: WPStyleGuide.Notifications.snippetRegularStyle)
+        return NSAttributedString(string: text, attributes: Styles.snippetRegularStyle)
     }
 
     public func regularAttributedText() -> NSAttributedString {
         //  Operations such as editing a comment cause a lag between the REST and Simperium update.
         //  TextOverride is a transient property meant to store, temporarily, the edited text
         if textOverride != nil {
-            return NSAttributedString(string: textOverride, attributes: WPStyleGuide.Notifications.blockRegularStyle(false))
+            return NSAttributedString(string: textOverride, attributes: Styles.blockRegularStyle)
         }
         
         return textWithRangeStyles(isSubject: false)
@@ -32,14 +32,15 @@ extension NotificationBlock
             return NSAttributedString()
         }
         
-        let regularStyle    = WPStyleGuide.Notifications.blockRegularStyle(isSubject)
-        let quotesStyle     = WPStyleGuide.Notifications.blockQuotesStyle(isSubject)
-        let userStyle       = WPStyleGuide.Notifications.blockUserStyle(isSubject)
-        let postStyle       = WPStyleGuide.Notifications.blockPostStyle(isSubject)
-        let commentStyle    = WPStyleGuide.Notifications.blockCommentStyle(isSubject)
-        let blockStyle      = WPStyleGuide.Notifications.blockBlockquotedStyle(isSubject)
-        let linkColor       = WPStyleGuide.Notifications.blockLinkColor
+        // Setup the styles
+        let regularStyle    = isSubject ? Styles.subjectRegularStyle : (isBadge ? Styles.blockBadgeStyle : Styles.blockRegularStyle)
+        let quotesStyle     = isSubject ? Styles.subjectItalicsStyle : Styles.blockBoldStyle
+        let userStyle       = isSubject ? Styles.subjectBoldStyle    : Styles.blockBoldStyle
+        let postStyle       = isSubject ? Styles.subjectItalicsStyle : Styles.blockItalicsStyle
+        let commentStyle    = postStyle
+        let blockStyle      = Styles.blockQuotedStyle
         
+        // Apply the metadata to the text itself
         let theString = NSMutableAttributedString(string: text, attributes: regularStyle)
         theString.applyAttributesToQuotes(quotesStyle)
         
@@ -56,10 +57,12 @@ extension NotificationBlock
 
             if isSubject == false && range.url != nil {
                 theString.addAttribute(NSLinkAttributeName, value: range.url, range: range.range)
-                theString.addAttribute(NSForegroundColorAttributeName, value: linkColor, range: range.range)
+                theString.addAttribute(NSForegroundColorAttributeName, value: Styles.blockLinkColor, range: range.range)
             }
         }
         
         return theString;
     }
+    
+    private typealias Styles = WPStyleGuide.Notifications
 }
