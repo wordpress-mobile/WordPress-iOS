@@ -28,12 +28,20 @@ extension NotificationBlock
             return NSAttributedString()
         }
 
-        return NSMutableAttributedString(string: text, attributes: WPStyleGuide.Notifications.snippetRegularStyle)
+        return NSAttributedString(string: text, attributes: WPStyleGuide.Notifications.snippetRegularStyle)
     }
 
     public func regularAttributedText() -> NSAttributedString {
+        //  Operations such as editing a comment cause a lag between the REST and Simperium update.
+        //  TextOverride is a transient property meant to store, temporarily, the edited text
+        return regularAttributedOverride() ?? regularAttributedText() ?? NSAttributedString()
+    }
+    
+    
+    // MARK: - Private Helpers
+    private func regularAttributedText() -> NSAttributedString? {
         if text == nil {
-            return NSAttributedString()
+            return nil
         }
         
         let theString = NSMutableAttributedString(string: text, attributes: WPStyleGuide.Notifications.blockRegularStyle)
@@ -56,12 +64,11 @@ extension NotificationBlock
         return theString
     }
 
-    public func regularAttributedTextOverride() -> NSAttributedString? {
-        //  Operations such as editing a comment cause a lag between the REST and Simperium update.
-        //  TextOverride is a transient property meant to store, temporarily, the edited text
-        if textOverride != nil {
-            return NSAttributedString(string: textOverride, attributes: WPStyleGuide.Notifications.blockRegularStyle)
+    private func regularAttributedOverride() -> NSAttributedString? {
+        if textOverride == nil {
+            return nil
         }
-        return nil
+
+        return NSAttributedString(string: textOverride, attributes: WPStyleGuide.Notifications.blockRegularStyle)
     }
 }
