@@ -24,11 +24,7 @@ static CGFloat const EstimatedCommentRowHeight = 150.0;
 static CGFloat const CommentAvatarSize = 32.0;
 static CGFloat const PostHeaderHeight = 54.0;
 
-static NSString *CommentDepth0CellIdentifier = @"CommentDepth0CellIdentifier";
-static NSString *CommentDepth1CellIdentifier = @"CommentDepth1CellIdentifier";
-static NSString *CommentDepth2CellIdentifier = @"CommentDepth2CellIdentifier";
-static NSString *CommentDepth3CellIdentifier = @"CommentDepth3CellIdentifier";
-static NSString *CommentDepth4CellIdentifier = @"CommentDepth4CellIdentifier";
+static NSString *CommentCellIdentifier = @"CommentDepth0CellIdentifier";
 static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 
@@ -239,11 +235,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.tableView];
 
-    [self.tableView registerClass:[ReaderCommentCell class] forCellReuseIdentifier:CommentDepth0CellIdentifier];
-    [self.tableView registerClass:[ReaderCommentCell class] forCellReuseIdentifier:CommentDepth1CellIdentifier];
-    [self.tableView registerClass:[ReaderCommentCell class] forCellReuseIdentifier:CommentDepth2CellIdentifier];
-    [self.tableView registerClass:[ReaderCommentCell class] forCellReuseIdentifier:CommentDepth3CellIdentifier];
-    [self.tableView registerClass:[ReaderCommentCell class] forCellReuseIdentifier:CommentDepth4CellIdentifier];
+    [self.tableView registerClass:[ReaderCommentCell class] forCellReuseIdentifier:CommentCellIdentifier];
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
@@ -728,28 +720,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Comment *comment = (Comment *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    NSInteger depth = [comment.depth integerValue];
-
-    NSString *cellIdentifier;
-
-    switch (depth) {
-        case 0:
-            cellIdentifier = CommentDepth0CellIdentifier;
-            break;
-        case 1:
-            cellIdentifier = CommentDepth1CellIdentifier;
-            break;
-        case 2:
-            cellIdentifier = CommentDepth2CellIdentifier;
-            break;
-        case 3:
-            cellIdentifier = CommentDepth3CellIdentifier;
-            break;
-        default:
-            cellIdentifier = CommentDepth4CellIdentifier;
-    }
-
-    ReaderCommentCell *cell = (ReaderCommentCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    ReaderCommentCell *cell = (ReaderCommentCell *)[self.tableView dequeueReusableCellWithIdentifier:CommentCellIdentifier];
     cell.delegate = self;
     cell.accessoryType = UITableViewCellAccessoryNone;
 
