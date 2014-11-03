@@ -33,15 +33,6 @@
         <scene sceneID="ET8-9p-ZLz">
             <objects>
                 <tableViewController id="xj3-6N-2Jy" userLabel="Reader Post Details" customClass="ReaderPostDetailViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="7Cm-An-fV3">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="xj3-6N-2Jy" id="Jol-xd-D0x"/>
-                            <outlet property="delegate" destination="xj3-6N-2Jy" id="TFz-fd-42p"/>
-                        </connections>
-                    </tableView>
                     <navigationItem key="navigationItem" id="sWj-Rg-m3q"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="h51-jr-fqU" userLabel="First Responder" sceneMemberID="firstResponder"/>
