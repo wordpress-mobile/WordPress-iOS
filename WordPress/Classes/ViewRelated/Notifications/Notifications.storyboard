@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6249" systemVersion="14A379a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MbC-cA-c9S">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A388a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MbC-cA-c9S">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6243"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <scenes>
         <!--Notification List Controller-->
@@ -128,7 +128,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GLh-mA-WVS" customClass="WPDynamicHeightTextView" customModule="WordPress" customModuleProvider="target">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GLh-mA-WVS" customClass="RichTextView" customModule="WordPress">
                                                     <rect key="frame" x="12" y="4" width="296" height="35"/>
                                                     <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
                                                 </view>
@@ -193,8 +193,8 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N7y-ge-mMq" customClass="WPDynamicHeightTextView" customModule="WordPress" customModuleProvider="target">
-                                                    <rect key="frame" x="12" y="20" width="296" height="29"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N7y-ge-mMq" customClass="RichTextView" customModule="WordPress">
+                                                    <rect key="frame" x="12" y="22.5" width="296" height="26.5"/>
                                                     <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="250" constant="28" id="fpi-gI-JQb"/>
@@ -302,7 +302,7 @@
                                                 <constraint firstItem="Ab9-Eo-ue1" firstAttribute="bottom" secondItem="e1p-ec-Dn3" secondAttribute="bottom" id="T4i-k6-wFD"/>
                                                 <constraint firstItem="dZU-ho-dbu" firstAttribute="leading" secondItem="e1p-ec-Dn3" secondAttribute="trailing" constant="20" id="UiB-vh-iqC"/>
                                                 <constraint firstItem="dZU-ho-dbu" firstAttribute="height" secondItem="Ab9-Eo-ue1" secondAttribute="height" id="XtU-md-pNL"/>
-                                                <constraint firstItem="N7y-ge-mMq" firstAttribute="top" secondItem="Sed-4I-XCW" secondAttribute="bottom" constant="-2" id="YbY-OI-O0N"/>
+                                                <constraint firstItem="N7y-ge-mMq" firstAttribute="top" secondItem="Sed-4I-XCW" secondAttribute="bottom" id="YbY-OI-O0N"/>
                                                 <constraint firstItem="e1p-ec-Dn3" firstAttribute="leading" secondItem="Kdg-f8-pBH" secondAttribute="trailing" constant="20" id="b2s-KS-NoV"/>
                                                 <constraint firstItem="Ab9-Eo-ue1" firstAttribute="height" secondItem="Kdg-f8-pBH" secondAttribute="height" id="cEQ-M6-kgb"/>
                                                 <constraint firstItem="q3a-Aa-VqY" firstAttribute="height" secondItem="Ab9-Eo-ue1" secondAttribute="height" id="cI9-cM-OYE"/>
