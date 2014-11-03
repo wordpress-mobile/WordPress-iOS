@@ -44,7 +44,7 @@ import Foundation
         return privateLabelPadding
     }
     
-    public var isTextViewSelectable: Bool = false {
+    public var isTextViewSelectable: Bool = true {
         didSet {
             textView.selectable = isTextViewSelectable
         }
@@ -81,7 +81,7 @@ import Foundation
         textView.textContainerInset = UIEdgeInsetsZero
         textView.backgroundColor    = UIColor.clearColor()
         textView.editable           = false
-        textView.selectable         = false
+        textView.selectable         = true
         textView.dataDetectorTypes  = .None
         
         // Setup a Gestures Recognizer: This way we'll handle links!
