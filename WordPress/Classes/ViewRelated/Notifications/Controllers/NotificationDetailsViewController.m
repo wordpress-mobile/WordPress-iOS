@@ -568,7 +568,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     __weak __typeof(self) weakSelf  = self;
     
     cell.attributedText             = textBlock.regularAttributedText;
-    cell.isBadge                    = self.note.isBadge;
+    cell.isBadge                    = textBlock.isBadge;
     cell.onUrlClick                 = ^(NSURL *url){
         [weakSelf openURL:url];
     };
