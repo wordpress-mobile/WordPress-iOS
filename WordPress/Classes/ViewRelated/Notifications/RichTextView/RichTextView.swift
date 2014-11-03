@@ -63,7 +63,7 @@ import Foundation
     public var attributedText: NSAttributedString! {
         didSet {
             assert(textView != nil)
-            textView.attributedText = attributedText
+            textView.attributedText = attributedText ??  NSAttributedString()
             renderAttachments()
         }
     }

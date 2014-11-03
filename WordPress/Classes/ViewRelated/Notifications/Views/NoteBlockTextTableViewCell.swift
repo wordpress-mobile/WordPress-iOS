@@ -7,20 +7,15 @@ import Foundation
     public var onUrlClick: ((NSURL) -> Void)?
     public var attributedText: NSAttributedString? {
         didSet {
-            textView.attributedText = attributedText ??  NSAttributedString()
+            textView.attributedText = attributedText
             setNeedsLayout()
         }
     }
     
     public var isBadge: Bool = false {
         didSet {
-            if isBadge {
-                backgroundColor = WPStyleGuide.Notifications.badgeBackgroundColor
-                alignment       = .Center
-            } else {
-                backgroundColor = WPStyleGuide.Notifications.blockBackgroundColor
-                alignment       = .Left
-            }
+            backgroundColor = WPStyleGuide.Notifications.blockBackgroundColorForRichText(isBadge)
+            alignment       = isBadge ? .Center : .Left
         }
     }
     
