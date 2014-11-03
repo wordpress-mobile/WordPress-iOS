@@ -17,6 +17,17 @@ extension WPStyleGuide
         public static let noteBackgroundReadColor   = UIColor.whiteColor()
         public static let noteBackgroundUnreadColor = UIColor(red: 0xF1/255.0, green: 0xF6/255.0, blue: 0xF9/255.0, alpha: 0xFF/255.0)
 
+        //  Subject Text
+        public static let subjectRegularStyle       = [ NSParagraphStyleAttributeName:  subjectParagraph,
+                                                        NSFontAttributeName:            subjectRegularFont,
+                                                        NSForegroundColorAttributeName: subjectColor ]
+        
+        public static let subjectBoldStyle          = [ NSParagraphStyleAttributeName:  subjectParagraph,
+                                                        NSFontAttributeName:            subjectBoldFont ]
+        
+        public static let subjectItalicsStyle       = [ NSParagraphStyleAttributeName:  subjectParagraph,
+                                                        NSFontAttributeName:            subjectItalicsFont ]
+        
         //  Subject Snippet
         private static let snippetColor             = WPStyleGuide.allTAllShadeGrey()
         public static let snippetRegularStyle       = [ NSParagraphStyleAttributeName:  snippetParagraph,
@@ -47,6 +58,26 @@ extension WPStyleGuide
         public static let blockUnapprovedBgColor    = UIColor(red: 0xFF/255.0, green: 0xBA/255.0, blue: 0x00/255.0, alpha: 0x19/255.0)
         public static let blockUnapprovedTextColor  = UIColor(red: 0xF0/255.0, green: 0x82/255.0, blue: 0x1E/255.0, alpha: 0xFF/255.0)
         
+        public static let blockRegularStyle         = [ NSParagraphStyleAttributeName:  blockParagraph,
+                                                        NSFontAttributeName:            blockRegularFont,
+                                                        NSForegroundColorAttributeName: blockTextColor]
+        
+        public static let blockBoldStyle            = [ NSParagraphStyleAttributeName:  blockParagraph,
+                                                        NSFontAttributeName:            blockBoldFont,
+                                                        NSForegroundColorAttributeName: blockTextColor]
+        
+        public static let blockItalicsStyle         = [ NSParagraphStyleAttributeName:  blockParagraph,
+                                                        NSFontAttributeName:            blockItalicsFont,
+                                                        NSForegroundColorAttributeName: blockTextColor]
+        
+        public static let blockQuotedStyle          = [ NSParagraphStyleAttributeName:  blockParagraph,
+                                                        NSFontAttributeName:            blockItalicsFont,
+                                                        NSForegroundColorAttributeName: blockQuotedColor]
+        
+        public static let blockBadgeStyle           = [ NSParagraphStyleAttributeName:  badgeParagraph,
+                                                        NSFontAttributeName:            blockRegularFont,
+                                                        NSForegroundColorAttributeName: blockTextColor]
+        
         //  Badges
         public static let badgeBackgroundColor      = UIColor.clearColor()
 
@@ -54,33 +85,6 @@ extension WPStyleGuide
         public static let blockActionDisabledColor  = UIColor(red: 0x7F/255.0, green: 0x9E/255.0, blue: 0xB4/255.0, alpha: 0xFF/255.0)
         public static let blockActionEnabledColor   = UIColor(red: 0xEA/255.0, green: 0x6D/255.0, blue: 0x1B/255.0, alpha: 0xFF/255.0)
 
-        
-        //  Block Styling Convenience Helpers
-        public static func blockRegularStyle(isSubject: Bool) -> [NSString: AnyObject] {
-            return isSubject ? subjectRegularStyle : blockRegularStyle
-        }
-
-        public static func blockQuotesStyle(isSubject: Bool) -> [NSString: AnyObject] {
-            return isSubject ? subjectItalicsStyle : blockBoldStyle
-        }
-
-        public static func blockUserStyle(isSubject: Bool) -> [NSString: AnyObject] {
-            return isSubject ? subjectBoldStyle : blockBoldStyle
-        }
-
-        public static func blockPostStyle(isSubject: Bool) -> [NSString: AnyObject] {
-            return isSubject ? subjectItalicsStyle : blockItalicsStyle
-        }
-
-        public static func blockCommentStyle(isSubject: Bool) -> [NSString: AnyObject] {
-            return isSubject ? subjectItalicsStyle : blockItalicsStyle
-        }
-        
-        public static func blockBlockquotedStyle(isSubject: Bool) -> [NSString: AnyObject] {
-            return blockQuotedStyle
-        }
-        
-        
         //  RichText Helpers
         public static func blockBackgroundColorForRichText(isBadge: Bool) -> UIColor {
             return isBadge ? badgeBackgroundColor : blockBackgroundColor
@@ -90,12 +94,6 @@ extension WPStyleGuide
         public static func blockParagraphStyleWithIndentation(indentation: CGFloat) -> NSParagraphStyle {
             let paragraph                   = blockParagraph.mutableCopy() as NSMutableParagraphStyle
             paragraph.firstLineHeadIndent   = indentation
-            return paragraph
-        }
-
-        public static func blockParagraphStyleWithAlignment(alignment: NSTextAlignment) -> NSParagraphStyle {
-            let paragraph                   = blockParagraph.mutableCopy() as NSMutableParagraphStyle
-            paragraph.alignment             = alignment
             return paragraph
         }
 
@@ -135,33 +133,9 @@ extension WPStyleGuide
         private static let blockParagraph           = NSMutableParagraphStyle(
             minLineHeight: blockLineSize, maxLineHeight: blockLineSize, lineBreakMode: .ByWordWrapping, alignment: .Left
         )
-        
-        // Styles
-        private static let subjectRegularStyle      = [ NSParagraphStyleAttributeName:  subjectParagraph,
-                                                        NSFontAttributeName:            subjectRegularFont,
-                                                        NSForegroundColorAttributeName: subjectColor ]
-        
-        private static let subjectBoldStyle         = [ NSParagraphStyleAttributeName:  subjectParagraph,
-                                                        NSFontAttributeName:            subjectBoldFont ]
-        
-        private static let subjectItalicsStyle      = [ NSParagraphStyleAttributeName:  subjectParagraph,
-                                                        NSFontAttributeName:            subjectItalicsFont ]
-        
-        private static let blockRegularStyle        = [ NSParagraphStyleAttributeName:  blockParagraph,
-                                                        NSFontAttributeName:            blockRegularFont,
-                                                        NSForegroundColorAttributeName: blockTextColor]
-        
-        private static let blockBoldStyle           = [ NSParagraphStyleAttributeName:  blockParagraph,
-                                                        NSFontAttributeName:            blockBoldFont,
-                                                        NSForegroundColorAttributeName: blockTextColor]
-        
-        private static let blockItalicsStyle        = [ NSParagraphStyleAttributeName:  blockParagraph,
-                                                        NSFontAttributeName:            blockItalicsFont,
-                                                        NSForegroundColorAttributeName: blockTextColor]
-        
-        private static let blockQuotedStyle         = [ NSParagraphStyleAttributeName:  blockParagraph,
-                                                        NSFontAttributeName:            blockItalicsFont,
-                                                        NSForegroundColorAttributeName: blockQuotedColor]
+        private static let badgeParagraph           = NSMutableParagraphStyle(
+            minLineHeight: blockLineSize, maxLineHeight: blockLineSize, lineBreakMode: .ByWordWrapping, alignment: .Center
+        )
 
         // Colors
         private static let subjectColor             = WPStyleGuide.littleEddieGrey()
