@@ -1,5 +1,7 @@
 #import "ReaderCommentsViewController.h"
 
+#import <WordPress-iOS-Shared/UIImage+Util.h>
+
 #import "Comment.h"
 #import "CommentService.h"
 #import "ContextManager.h"
@@ -8,11 +10,11 @@
 #import "ReaderPost.h"
 #import "ReaderPostHeaderView.h"
 #import "UIAlertView+Blocks.h"
-#import <WordPress-iOS-Shared/UIImage+Util.h>
 #import "UIView+Subviews.h"
 #import "WPAvatarSource.h"
 #import "WPNoResultsView.h"
 #import "WPImageViewController.h"
+#import "WPRichTextView.h"
 #import "WPTableViewHandler.h"
 #import "WPToast.h"
 #import "WPWebViewController.h"
@@ -31,7 +33,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 
 @interface ReaderCommentsViewController () <NSFetchedResultsControllerDelegate,
-                                            ReaderCommentCellDelegate,
+                                            CommentContentViewDelegate,
                                             UITextViewDelegate,
                                             WPContentSyncHelperDelegate,
                                             WPTableViewHandlerDelegate>
@@ -796,7 +798,12 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 }
 
 
-#pragma mark - ReaderCommentCell Delegate methods
+#pragma mark - CommentContentView Delegate methods
+
+- (void)commentView:(CommentContentView *)commentView updatedAttachmentViewsForProvider:(id<WPContentViewProvider>)contentProvider
+{
+    // TODO:
+}
 
 - (void)commentCell:(UITableViewCell *)cell linkTapped:(NSURL *)url
 {
@@ -805,7 +812,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)commentCell:(UITableViewCell *)cell replyToComment:(Comment *)comment
+- (void)handleReplyTapped:(id<WPContentViewProvider>)contentProvider
 {
     // if a row is already selected don't allow selection of another
     if (self.replyTextView.isFirstResponder) {
@@ -820,18 +827,67 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
     [self.replyTextView becomeFirstResponder];
 
-    [self.tableView selectRowAtIndexPath:[self.tableView indexPathForCell:cell] animated:YES scrollPosition:UITableViewScrollPositionTop];
+    Comment *comment = (Comment *)contentProvider;
+    NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:comment];
+    [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
     [self configureTextReplyViewPlaceholder];
 }
 
-- (void)commentCell:(ReaderCommentCell *)cell toggleLikeStatusForComment:(Comment *)comment
+- (void)toggleLikeStatus:(id<WPContentViewProvider>)contentProvider
 {
+    Comment *comment = (Comment *)contentProvider;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
 
     [commentService toggleLikeStatusForComment:comment siteID:self.post.siteID success:nil failure:nil];
 }
 
+- (void)richTextView:(WPRichTextView *)richTextView didReceiveLinkAction:(NSURL *)linkURL
+{
+    if (linkURL.path && !linkURL.host) {
+        NSURL *url = [NSURL URLWithString:self.post.blogURL];
+        linkURL = [NSURL URLWithString:linkURL.path relativeToURL:url];
+    }
+
+    WPWebViewController *controller = [[WPWebViewController alloc] init];
+    [controller setUrl:linkURL];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(WPRichTextImage *)imageControl
+{
+    UIViewController *controller;
+
+    if (imageControl.linkURL) {
+        NSString *url = [imageControl.linkURL absoluteString];
+
+        BOOL matched = NO;
+        NSArray *types = @[@".png", @".jpg", @".gif", @".jpeg"];
+        for (NSString *type in types) {
+            if (NSNotFound != [url rangeOfString:type].location) {
+                matched = YES;
+                break;
+            }
+        }
+
+        if (matched) {
+            controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image andURL:imageControl.linkURL];
+        } else {
+            controller = [[WPWebViewController alloc] init];
+            [(WPWebViewController *)controller setUrl:imageControl.linkURL];
+        }
+    } else {
+        controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image];
+    }
+
+    if ([controller isKindOfClass:[WPImageViewController class]]) {
+        controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        controller.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:controller animated:YES completion:nil];
+    } else {
+        [self.navigationController pushViewController:controller animated:YES];
+    }
+}
 
 #pragma mark - UITextViewDelegate methods
 
