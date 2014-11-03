@@ -23,7 +23,7 @@ pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailCh
 pod 'CrashlyticsLumberjack', '~>1.0.0'
 pod 'HockeySDK', '~>3.5.0'
 pod 'Helpshift', '~>4.8.0'
-pod 'CTAssetsPickerController', '~> 2.6'
+pod 'CTAssetsPickerController', :git => 'git://github.com/diegoreymendez/CTAssetsPickerController.git', :branch => 'master'
 pod 'WordPress-iOS-Shared', '0.1.3'
 pod 'WordPress-iOS-Editor', :git => 'git://github.com/wordpress-mobile/WordPress-iOS-Editor', :branch => 'release/0.2.3', :commit => 'd4fe87a5f4b7cf12d032b7d92b5f5ba6e3a393c0'
 pod 'WordPressCom-Stats-iOS', '0.1.4'

@@ -373,6 +373,7 @@ static NSDictionary *EnabledButtonBarStyle;
     
     CTAssetsPickerController *picker = [[CTAssetsPickerController alloc] init];
 	picker.delegate = self;
+    picker.defaultToolbarTextAttributes = nil;
     
     // Only show photos for now (not videos)
     picker.assetsFilter = [ALAssetsFilter allPhotos];
