@@ -17,7 +17,7 @@ import Foundation
                 return
             }
 
-            let style = WPStyleGuide.Notifications.blockRegularStyle(false)
+            let style = WPStyleGuide.Notifications.blockRegularStyle
             super.attributedCommentText = NSMutableAttributedString(string: commentText!, attributes: style)
         }
     }
