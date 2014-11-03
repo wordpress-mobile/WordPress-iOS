@@ -48,9 +48,35 @@ import Foundation
         }
     }
     
+    public var contentInset: UIEdgeInsets = UIEdgeInsetsZero {
+        didSet {
+            textView?.contentInset = contentInset
+        }
+    }
+
+    public var textContainerInset: UIEdgeInsets = UIEdgeInsetsZero {
+        didSet {
+            textView?.textContainerInset = textContainerInset
+        }
+    }
+    
+    public var attributedText: NSAttributedString! {
+        didSet {
+            assert(textView != nil)
+            textView.attributedText = attributedText
+            renderAttachments()
+        }
+    }
+    
     public var editable: Bool = false {
         didSet {
             textView?.editable = editable
+        }
+    }
+
+    public var selectable: Bool = true {
+        didSet {
+            textView?.selectable = selectable
         }
     }
     
@@ -66,22 +92,49 @@ import Foundation
         }
     }
     
+    public var linkTextAttributes: [NSObject : AnyObject]! {
+        didSet {
+            textView?.linkTextAttributes = linkTextAttributes
+        }
+    }
+    
+    
+    // MARK: - TextKit Getters
+    public var layoutManager: NSLayoutManager {
+        get {
+            return textView.layoutManager
+        }
+    }
+    
+    public var textStorage: NSTextStorage {
+        get {
+            return textView.textStorage
+        }
+    }
+    
+    public var textContainer: NSTextContainer {
+        get {
+            return textView.textContainer
+        }
+    }
+
+    
+    // MARK: - Autolayout Helpers
+    public var preferredMaxLayoutWidth: CGFloat = 0 {
+        didSet {
+            invalidateIntrinsicContentSize()
+        }
+    }
+
     public override func intrinsicContentSize() -> CGSize {
         // Fix: Let's add 1pt extra size. There are few scenarios in which text gets clipped by 1 point
         let bottomPadding   = CGFloat(1)
-        let maxSize         = CGSize(width: frame.width, height: CGFloat.max)
+        let maxWidth        = (preferredMaxLayoutWidth != 0) ? preferredMaxLayoutWidth : frame.width
+        let maxSize         = CGSize(width: maxWidth, height: CGFloat.max)
         let requiredSize    = textView!.sizeThatFits(maxSize)
         let roundedSize     = CGSize(width: ceil(requiredSize.width), height: ceil(requiredSize.height) + bottomPadding)
         
         return roundedSize
-    }
-    
-    public var attributedText: NSAttributedString! {
-        didSet {
-            assert(textView != nil)
-            textView.attributedText = attributedText
-            renderAttachments()
-        }
     }
     
     
