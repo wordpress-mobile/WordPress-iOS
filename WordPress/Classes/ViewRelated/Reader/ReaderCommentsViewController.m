@@ -88,6 +88,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self configureConstraints];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+
+    [self refreshAndSync];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -96,8 +98,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-
-    [self refreshAndSync];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
