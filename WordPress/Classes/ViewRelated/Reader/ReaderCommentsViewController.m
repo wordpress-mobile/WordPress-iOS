@@ -3,6 +3,7 @@
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 
 #import "Comment.h"
+#import "CommentContentView.h"
 #import "CommentService.h"
 #import "ContextManager.h"
 #import "CustomHighlightButton.h"
@@ -45,6 +46,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 @property (nonatomic, strong) WPNoResultsView *noResultsView;
 @property (nonatomic, strong) ReplyTextView *replyTextView;
 @property (nonatomic, strong) UIView *postHeader;
+@property (nonatomic, strong) NSMutableDictionary *mediaCellCache;
 
 @end
 
@@ -73,6 +75,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [super viewDidLoad];
 
     self.tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapRecognized:)];
+
+    self.mediaCellCache = [NSMutableDictionary dictionary];
 
     [self configureNavbar];
     [self configurePostHeader];
@@ -135,6 +139,10 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
+    if (IS_IPAD) {
+        return;
+    }
+
     // Refresh cached row heights based on the width for the new orientation.
     // Must happen before the table view calculates its content size / offset
     // for the new orientation.
@@ -147,10 +155,19 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         width = MAX(width, height);
     }
     [self updateCellForLayoutWidthConstraint:width];
+    [self updateCachedMediaCellLayoutForWidth:width];
 
-    if (IS_IPHONE) {
-        [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
+    // Resize cells in the media cell cache
+    // No need to refresh on iPad when using a fixed width.
+    for (NSString *key in [self.mediaCellCache allKeys]) {
+        ReaderCommentCell *cell = [self.mediaCellCache objectForKey:key];
+        NSIndexPath *indexPath = [self indexPathForCommentWithID:[key numericValue]];
+
+        [cell refreshMediaLayout];
+        [self.tableViewHandler invalidateCachedRowHeightAtIndexPath:indexPath];
     }
+
+    [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -405,16 +422,19 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)updateCellForLayoutWidthConstraint:(CGFloat)width
 {
-    UIView *contentView = self.cellForLayout.contentView;
     if (self.cellForLayoutWidthConstraint) {
-        [contentView removeConstraint:self.cellForLayoutWidthConstraint];
+        self.cellForLayoutWidthConstraint.constant = width;
+        return;
     }
-    NSDictionary *views = NSDictionaryOfVariableBindings(contentView);
-    NSDictionary *metrics = @{@"width":@(width)};
-    self.cellForLayoutWidthConstraint = [[NSLayoutConstraint constraintsWithVisualFormat:@"[contentView(width)]"
-                                                                                 options:0
-                                                                                 metrics:metrics
-                                                                                   views:views] firstObject];
+
+    UIView *contentView = self.cellForLayout.contentView;
+    self.cellForLayoutWidthConstraint = [NSLayoutConstraint constraintWithItem:contentView
+                                                                     attribute:NSLayoutAttributeWidth
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:nil
+                                                                     attribute:nil
+                                                                    multiplier:1
+                                                                      constant:width];
     [contentView addConstraint:self.cellForLayoutWidthConstraint];
 }
 
@@ -612,6 +632,52 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 }
 
 
+#pragma mark - Comment Media Cell Methods
+
+- (void)updateCachedMediaCellLayoutForWidth:(CGFloat)width
+{
+    for (ReaderCommentCell *cell in [self.mediaCellCache allValues]) {
+        CGRect frame = cell.frame;
+        frame.size.width = width;
+        cell.frame = frame;
+        [cell layoutIfNeeded];
+    }
+}
+
+- (NSIndexPath *)indexPathForCommentWithID:(NSNumber *)commentID
+{
+    NSSet *comments = [self.post.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"commentID = %@", commentID]];
+    Comment *comment = [comments anyObject];
+    return [self.tableViewHandler.resultsController indexPathForObject:comment];
+}
+
+- (ReaderCommentCell *)storedCellForIndexPath:(NSIndexPath *)indexPath
+{
+    Comment *comment = (Comment *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    ReaderCommentCell *cell = [self.mediaCellCache objectForKey:[comment.commentID stringValue]];
+    if (!cell) {
+        cell = [[ReaderCommentCell alloc] initWithFrame:self.cellForLayout.bounds];
+        cell.delegate = self;
+        [self.mediaCellCache setObject:cell forKey:[comment.commentID stringValue]];
+        [self configureCell:cell atIndexPath:indexPath];
+    }
+
+    return cell;
+}
+
+- (NSInteger)numAttachmentsForCommentAtIndexPath:(NSIndexPath *)indexPath
+{
+    Comment *comment = (Comment *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    NSData *data = [[comment contentForDisplay] dataUsingEncoding:NSUTF8StringEncoding];
+    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithHTMLData:data
+                                                                                options:nil
+                                                                     documentAttributes:nil];
+    NSInteger numAttachments = [[attributedString textAttachmentsWithPredicate:nil class:nil] count];
+
+    return numAttachments;
+}
+
+
 #pragma mark - Sync methods
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(NSInteger, BOOL))success failure:(void (^)(NSError *))failure
@@ -711,21 +777,31 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath forWidth:(CGFloat)width
 {
-    [self configureCell:self.cellForLayout atIndexPath:indexPath];
-    CGSize size = [self.cellForLayout sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
+    CGSize size;
+    CGSize sizeToFit = CGSizeMake(width, CGFLOAT_MAX);
+
+    if ([self numAttachmentsForCommentAtIndexPath:indexPath] > 0) {
+        size = [[self storedCellForIndexPath:indexPath] sizeThatFits:sizeToFit];
+    } else {
+        [self configureCell:self.cellForLayout atIndexPath:indexPath];
+        size = [self.cellForLayout sizeThatFits:sizeToFit];
+    }
+
     CGFloat height = ceil(size.height);
     return height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Comment *comment = (Comment *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    NSInteger numAttachments = [self numAttachmentsForCommentAtIndexPath:indexPath];
+    if (numAttachments > 0) {
+        return [self storedCellForIndexPath:indexPath];
+    }
     ReaderCommentCell *cell = (ReaderCommentCell *)[self.tableView dequeueReusableCellWithIdentifier:CommentCellIdentifier];
     cell.delegate = self;
     cell.accessoryType = UITableViewCellAccessoryNone;
 
     [self configureCell:cell atIndexPath:indexPath];
-
     return cell;
 }
 
@@ -773,7 +849,10 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)commentView:(CommentContentView *)commentView updatedAttachmentViewsForProvider:(id<WPContentViewProvider>)contentProvider
 {
-    // TODO:
+    Comment *comment = (Comment *)contentProvider;
+    NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:comment];
+    [self.tableViewHandler invalidateCachedRowHeightAtIndexPath:indexPath];
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 - (void)commentCell:(UITableViewCell *)cell linkTapped:(NSURL *)url
@@ -794,7 +873,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     if (![self canComment]) {
         return;
     }
-
 
     [self.replyTextView becomeFirstResponder];
 
