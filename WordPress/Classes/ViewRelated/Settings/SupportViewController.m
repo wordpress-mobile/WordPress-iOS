@@ -6,7 +6,6 @@
 #import <DDFileLogger.h>
 #import "WPTableViewSectionFooterView.h"
 #import <Helpshift/Helpshift.h>
-#import <Taplytics/Taplytics.h>
 #import "WPAnalytics.h"
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
 #import "ContextManager.h"
@@ -14,6 +13,8 @@
 #import "AccountService.h"
 #import "BlogService.h"
 #import "Blog.h"
+#import <Mixpanel/MPTweakInline.h>
+#import "WordPress-Swift.h"
 
 static NSString *const UserDefaultsFeedbackEnabled = @"wp_feedback_enabled";
 static NSString *const UserDefaultsHelpshiftEnabled = @"wp_helpshift_enabled";
@@ -25,6 +26,8 @@ int const kHelpshiftWindowTypeFAQs = 1;
 int const kHelpshiftWindowTypeConversation = 2;
 
 static NSString *const FeedbackCheckUrl = @"http://api.wordpress.org/iphoneapp/feedback-check/1.0/";
+
+static CGFloat const SupportRowHeight = 44.0f;
 
 @interface SupportViewController ()
 
@@ -75,32 +78,32 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     [operation start];
 }
 
-+ (void)checkIfHelpshiftShouldBeEnabled
+- (void)checkIfHelpshiftShouldBeEnabled
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults registerDefaults:@{UserDefaultsHelpshiftEnabled:@NO}];
-
+    
     BOOL userHasUsedHelpshift = [defaults boolForKey:UserDefaultsHelpshiftWasUsed];
-
+    
     if (userHasUsedHelpshift) {
         [defaults setBool:YES forKey:UserDefaultsHelpshiftEnabled];
         [defaults synchronize];
         return;
     }
-
-    [Taplytics runCodeExperiment:@"Helpshift Distribution" withBaseline:^(NSDictionary *variables) {
-        DDLogInfo(@"Taplytics: Helpshift Experiment - Baseline Enabled");
-
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:NO forKey:UserDefaultsHelpshiftEnabled];
-        [defaults synchronize];
-    } variations:@{@"Helpshift Enabled": ^(NSDictionary *variables) {
-        DDLogInfo(@"Taplytics: Helpshift Experiment - Helpshift Enabled");
-
+    
+    if (MPTweakValue(@"Helpshift Enabled", NO)) {
+        DDLogInfo(@"Helpshift Enabled");
+        
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults setBool:YES forKey:UserDefaultsHelpshiftEnabled];
         [defaults synchronize];
-    }}];
+    } else {
+        DDLogInfo(@"Helpshift Disabled");
+        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setBool:NO forKey:UserDefaultsHelpshiftEnabled];
+        [defaults synchronize];
+    }
 }
 
 + (void)showFromTabBar
@@ -138,6 +141,15 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if ([UIDevice isOS8]) { // iOS8 or higher
+        [self.tableView setEstimatedRowHeight:SupportRowHeight];
+        [self.tableView setRowHeight:UITableViewAutomaticDimension];
+    } else {
+        [self.tableView setRowHeight:SupportRowHeight];
+    }
+
+    [self checkIfHelpshiftShouldBeEnabled];
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     self.feedbackEnabled = [defaults boolForKey:UserDefaultsFeedbackEnabled];
@@ -191,8 +203,6 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    [Taplytics goalAchieved:@"Helpshift opened"];
 
     NSString *isWPCom = defaultAccount.isWpcom ? @"Yes" : @"No";
     NSMutableDictionary *metaData = [NSMutableDictionary dictionaryWithDictionary:@{ @"isWPCom" : isWPCom }];

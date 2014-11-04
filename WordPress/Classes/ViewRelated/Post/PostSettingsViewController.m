@@ -47,7 +47,6 @@ static NSInteger RowIndexForDatePicker = 0;
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
 
 @interface PostSettingsViewController () <UITextFieldDelegate, WPTableImageSourceDelegate, WPPickerViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate> {
-    WPMediaUploader *_mediaUploader;
 }
 
 @property (nonatomic, strong) AbstractPost *apost;
@@ -61,6 +60,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 @property (nonatomic, strong) PublishDatePickerView *datePicker;
 @property (assign) BOOL *textFieldDidHaveFocusBeforeOrientationChange;
 @property (nonatomic, strong) UIPopoverController *popover;
+@property (nonatomic, assign) BOOL *shouldHideStatusBar;
+@property (nonatomic, assign) BOOL *isUploadingMedia;
 
 @end
 
@@ -73,12 +74,12 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [self removePostPropertiesObserver];
 }
 
-- (id)initWithPost:(AbstractPost *)aPost
+- (instancetype)initWithPost:(AbstractPost *)aPost shouldHideStatusBar:(BOOL)shouldHideStatusBar
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.apost = aPost;
-        _mediaUploader = [[WPMediaUploader alloc] init];
+        _shouldHideStatusBar = shouldHideStatusBar;
     }
     return self;
 }
@@ -113,6 +114,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
     // Compensate for the first section's height of 1.0f
     self.tableView.contentInset = UIEdgeInsetsMake(-1.0f, 0, 0, 0);
+    self.tableView.accessibilityIdentifier = @"SettingsTable";
+    self.isUploadingMedia = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -123,7 +126,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [self.navigationController setToolbarHidden:YES];
     
     // Do not hide the status bar on iPads
-    if (!IS_IPAD) {
+    if (self.shouldHideStatusBar && !IS_IPAD) {
         [[UIApplication sharedApplication] setStatusBarHidden:YES
                                                 withAnimation:nil];
     }
@@ -473,6 +476,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         cell.textLabel.text = NSLocalizedString(@"Categories", @"Label for the categories field. Should be the same as WP core.");
         cell.detailTextLabel.text = [NSString decodeXMLCharactersIn:[self.post categoriesText]];
         cell.tag = PostSettingsRowCategories;
+        cell.accessibilityIdentifier = @"Categories";
 
     } else if (indexPath.row == PostSettingsRowTags) {
         // Tags
@@ -482,6 +486,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         textCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:(NSLocalizedString(@"Comma separated", @"Placeholder text for the tags field. Should be the same as WP core.")) attributes:(@{NSForegroundColorAttributeName: [WPStyleGuide textFieldPlaceholderGrey]})];
         textCell.textField.secureTextEntry = NO;
         textCell.textField.clearButtonMode = UITextFieldViewModeNever;
+        textCell.textField.accessibilityIdentifier = @"Tags Value";
         cell = textCell;
         cell.tag = PostSettingsRowTags;
 
@@ -523,7 +528,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         // Publish Status
         cell = [self getWPTableViewCell];
         cell.textLabel.text = NSLocalizedString(@"Status", @"The status of the post. Should be the same as in core WP.");
-
+        cell.accessibilityIdentifier = @"Status";
         if (([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending)
             && ([self.apost.status isEqualToString:@"publish"])) {
             cell.detailTextLabel.text = NSLocalizedString(@"Scheduled", @"If a post is scheduled for later, this string is used for the post's status. Should use the same translation as core WP.");
@@ -545,6 +550,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         cell.textLabel.text = NSLocalizedString(@"Visibility", @"The visibility settings of the post. Should be the same as in core WP.");
         cell.detailTextLabel.text = [self titleForVisibility];
         cell.tag = PostSettingsRowVisibility;
+        cell.accessibilityIdentifier = @"Visibility";
 
     } else {
         // Password
@@ -554,11 +560,13 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         textCell.textField.attributedPlaceholder = nil;
         textCell.textField.placeholder = NSLocalizedString(@"Enter a password", @"");
         textCell.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        textCell.textField.secureTextEntry = YES;
 
         cell = textCell;
         cell.tag = PostSettingsRowPassword;
-
+        
         self.passwordTextField = textCell.textField;
+        self.passwordTextField.accessibilityIdentifier = @"Password Value";
     }
 
     return cell;
@@ -571,7 +579,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     cell.textLabel.text = NSLocalizedString(@"Post Format", @"The post formats available for the post. Should be the same as in core WP.");
     cell.detailTextLabel.text = self.post.postFormatText;
     cell.tag = PostSettingsRowFormat;
-
+    cell.accessibilityIdentifier = @"Post Format";
     return cell;
 }
 
@@ -579,7 +587,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 {
     UITableViewCell *cell;
 
-    if (!self.post.post_thumbnail && !_mediaUploader.isUploadingMedia) {
+    if (!self.post.post_thumbnail && !self.isUploadingMedia) {
         WPTableViewActivityCell *activityCell = [self getWPActivityTableViewCell];
         activityCell.textLabel.text = NSLocalizedString(@"Set Featured Image", @"");
         activityCell.tag = PostSettingsRowFeaturedImageAdd;
@@ -596,9 +604,12 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
         if (self.featuredImage) {
             [featuredImageCell setImage:self.featuredImage];
+            featuredImageCell.accessibilityIdentifier = @"Current Featured Image";
         } else {
-            [self loadFeaturedImage:indexPath];
             [featuredImageCell showLoadingSpinner:YES];
+            if (!self.isUploadingMedia){
+                [self loadFeaturedImage:indexPath];
+            }
         }
 
         cell = featuredImageCell;
@@ -912,8 +923,11 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 - (void)loadFeaturedImage:(NSIndexPath *)indexPath
 {
-    NSURL *url = [NSURL URLWithString:self.post.featuredImage.remoteURL];
-    if (url) {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    MediaService * mediaService = [[MediaService alloc] initWithManagedObjectContext:context];
+    Media * media = [mediaService findMediaWithID:self.post.post_thumbnail inBlog:self.post.blog];
+    void (^successBlock)(Media * media) = ^(Media *featuredMedia) {
+        NSURL *url = [NSURL URLWithString:featuredMedia.remoteURL];
         CGFloat width = CGRectGetWidth(self.view.frame);
         if (IS_IPAD) {
             width = WPTableViewFixedWidth;
@@ -921,13 +935,29 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         width = width - (PostFeaturedImageCellMargin * 2); // left and right cell margins
         CGFloat height = ceilf(width * 0.66);
         CGSize imageSize = CGSizeMake(width, height);
-
+        
         [self.imageSource fetchImageForURL:url
                                   withSize:imageSize
                                  indexPath:indexPath
                                  isPrivate:self.post.blog.isPrivate];
-
+    };
+    if (media){
+        successBlock(media);
+        return;
     }
+    
+    [mediaService getMediaWithID:self.post.post_thumbnail inBlog:self.post.blog withSuccess:successBlock failure:^(NSError *error) {
+        [self featuredImageFailedLoading:indexPath withError:error];
+    }];
+}
+
+- (void) featuredImageFailedLoading:(NSIndexPath *)indexPath withError:(NSError *)error
+{
+    DDLogError(@"Error loading featured image: %@", error);
+    PostFeaturedImageCell *cell = (PostFeaturedImageCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    [cell showLoadingSpinner:NO];
+    cell.textLabel.text = NSLocalizedString(@"Featured Image did not load", @"");
+
 }
 
 - (WPTableImageSource *)imageSource
@@ -960,10 +990,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
  imageFailedforIndexPath:(NSIndexPath *)indexPath
                    error:(NSError *)error
 {
-    DDLogError(@"Error loading featured image: %@", error);
-    PostFeaturedImageCell *cell = (PostFeaturedImageCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    [cell showLoadingSpinner:NO];
-    cell.textLabel.text = NSLocalizedString(@"Featured Image did not load", @"");
+    [self featuredImageFailedLoading:indexPath withError:error];
 }
 
 - (NSString *)titleForVisibility
@@ -1019,6 +1046,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
+    __weak PostSettingsViewController *weakSelf = self;
+    self.isUploadingMedia = YES;
     // On iOS7 the image picker seems to override our preferred setting so we force the status bar color back.
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
@@ -1027,25 +1056,28 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
         [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
             media.mediaType = MediaTypeFeatured;
-            __weak PostSettingsViewController *weakSelf = self;
-            _mediaUploader = [[WPMediaUploader alloc] init];
-            _mediaUploader.uploadsCompletedBlock = ^{
+            [mediaService uploadMedia:media success:^{
+                weakSelf.isUploadingMedia = NO;
                 Post *post = (Post *)weakSelf.apost;
                 post.featuredImage = media;
                 [weakSelf.tableView reloadData];
-            };
-            [_mediaUploader uploadMediaObjects:@[media]];
+            } failure:^(NSError *error) {
+                weakSelf.isUploadingMedia = NO;
+                DDLogError(@"Couldn't upload asset %@: %@", assetURL, [error localizedDescription]);
+                [weakSelf.tableView reloadData];
+            }];
         }];
 
         if (IS_IPAD) {
-            [self.popover dismissPopoverAnimated:YES];
+            [weakSelf.popover dismissPopoverAnimated:YES];
         } else {
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            [weakSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
         }
         // Reload the featured image row so that way the activity indicator will be displayed.
-        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]] withRowAnimation:UITableViewRowAnimationFade];
+        [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]] withRowAnimation:UITableViewRowAnimationFade];
     } failureBlock:^(NSError *error){
         DDLogError(@"can't get asset %@: %@", assetURL, [error localizedDescription]);
+        weakSelf.isUploadingMedia = NO;
     }];
 }
 

@@ -100,6 +100,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
             [_skipButton setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateNormal];
             [_skipButton addTarget:self action:@selector(skipAction:) forControlEvents:UIControlEventTouchUpInside];
             [_skipButton sizeToFit];
+            _skipButton.accessibilityIdentifier = @"Skip";
             [self.view addSubview:_skipButton];
         } else {
             UIBarButtonItem *skipButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Skip", @"") style:UIBarButtonItemStylePlain target:self action:@selector(skip:)];
@@ -306,7 +307,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     [self dismissKeyboard];
     [self setAuthenticating:YES];
 
-    void (^finishedBlock)(BOOL didAuth) = ^(BOOL didAuth) {
+    void (^finishedBlock)() = ^() {
         [self setAuthenticating:NO];
         if (self.completionBlock) {
             self.completionBlock(YES);
@@ -321,24 +322,8 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 
     [_blog validateJetpackUsername:_usernameField.text
                           password:_passwordField.text
-                           success:^{
-                               NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-                               AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-                               WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-                               if (![[defaultAccount restApi] hasCredentials]) {
-                                   [[WordPressComOAuthClient client] authenticateWithUsername:_usernameField.text password:_passwordField.text success:^(NSString *authToken) {
-                                       NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-                                       AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-
-                                       WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:_usernameField.text password:_passwordField.text authToken:authToken];
-                                       [accountService setDefaultWordPressComAccount:account];
-                                       finishedBlock(YES);
-                                   } failure:failureBlock];
-                               } else {
-                                   finishedBlock(YES);
-                               }
-                           } failure:failureBlock];
+                           success:finishedBlock
+                           failure:failureBlock];
 }
 
 #pragma mark - UITextField delegate and Keyboard

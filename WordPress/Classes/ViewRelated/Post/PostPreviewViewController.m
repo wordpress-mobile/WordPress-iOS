@@ -11,6 +11,7 @@
 @property (nonatomic, strong) UIView *loadingView;
 @property (nonatomic, strong) NSMutableData *receivedData;
 @property (nonatomic, strong) AbstractPost *apost;
+@property (nonatomic, assign) BOOL *shouldHideStatusBar;
 
 @end
 
@@ -26,12 +27,13 @@
     self.webView.delegate = nil;
 }
 
-- (instancetype)initWithPost:(AbstractPost *)aPost
+- (instancetype)initWithPost:(AbstractPost *)aPost shouldHideStatusBar:(BOOL)shouldHideStatusBar
 {
     self = [super init];
     if (self) {
         self.apost = aPost;
         self.navigationItem.title = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
+        self.shouldHideStatusBar = shouldHideStatusBar;
     }
     return self;
 }
@@ -54,6 +56,10 @@
 {
     [super viewWillAppear:animated];
     [[WordPressAppDelegate sharedWordPressApplicationDelegate] useDefaultUserAgent];
+    if (self.shouldHideStatusBar && !IS_IPAD) {
+        [[UIApplication sharedApplication] setStatusBarHidden:YES
+                                                withAnimation:nil];
+    }
     [self refreshWebView];
 }
 

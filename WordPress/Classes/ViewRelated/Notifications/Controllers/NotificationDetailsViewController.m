@@ -19,6 +19,9 @@
 #import "EditCommentViewController.h"
 #import "EditReplyViewController.h"
 
+#import "SuggestionsTableView.h"
+#import "SuggestionService.h"
+
 #import "WordPress-Swift.h"
 
 #import "NSURL+Util.h"
@@ -27,6 +30,7 @@
 #import "UIAlertView+Blocks.h"
 #import "NSObject+Helpers.h"
 #import "NSDate+StringFormatting.h"
+#import "NSString+Helpers.h"
 
 
 
@@ -54,12 +58,13 @@ static CGFloat NotificationSectionSeparator     = 10;
 #pragma mark Private
 #pragma mark ==========================================================================================
 
-@interface NotificationDetailsViewController () <UITextViewDelegate>
+@interface NotificationDetailsViewController () <UITextViewDelegate, SuggestionsTableViewDelegate>
 
 // Outlets
 @property (nonatomic,   weak) IBOutlet UITableView          *tableView;
 @property (nonatomic,   weak) IBOutlet UIGestureRecognizer  *tableGesturesRecognizer;
 @property (nonatomic, strong) ReplyTextView                 *replyTextView;
+@property (nonatomic, strong) SuggestionsTableView          *suggestionsTableView;
 
 // Table Helpers
 @property (nonatomic, strong) NSDictionary                  *layoutCellMap;
@@ -78,6 +83,17 @@ static CGFloat NotificationSectionSeparator     = 10;
 #pragma mark ==========================================================================================
 
 @implementation NotificationDetailsViewController
+
+- (void)dealloc
+{
+    // Failsafe: Manually nuke the tableView dataSource and delegate. Make sure not to force a loadView event!
+    if (!self.isViewLoaded) {
+        return;
+    }
+    
+    self.tableView.delegate = nil;
+    self.tableView.dataSource = nil;
+}
 
 - (void)viewDidLoad
 {
@@ -107,6 +123,7 @@ static CGFloat NotificationSectionSeparator     = 10;
                                              selector:@selector(handleNotificationChange:)
                                                  name:NSManagedObjectContextObjectsDidChangeNotification
                                                object:context];
+    self.tableView.accessibilityIdentifier = @"Notification Details Table";
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -209,6 +226,20 @@ static CGFloat NotificationSectionSeparator     = 10;
         return;
     }
     
+    // Attach the SuggestionsTableView for WPCOM blogs
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
+    Blog *blog                      = [service blogByBlogId:self.note.metaSiteID];
+        
+    BOOL shouldAddSuggestionView = (blog.isWPcom && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.note.metaSiteID]);
+    
+    if (shouldAddSuggestionView) {
+        self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.note.metaSiteID];
+        self.suggestionsTableView.suggestionsDelegate = self;
+        [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self.view addSubview:self.suggestionsTableView];        
+    }
+    
     __typeof(self) __weak weakSelf  = self;
     
     ReplyTextView *replyTextView    = [[ReplyTextView alloc] initWithWidth:CGRectGetWidth(self.view.frame)];
@@ -219,11 +250,39 @@ static CGFloat NotificationSectionSeparator     = 10;
     };
     replyTextView.delegate          = self;
     self.replyTextView              = replyTextView;
-    
+    replyTextView.accessibilityIdentifier = @"Reply Text";
     // Attach the ReplyTextView at the very bottom
     [self.view addSubview:self.replyTextView];
     [self.view pinSubviewAtBottom:self.replyTextView];
     [self.view pinSubview:self.tableView aboveSubview:self.replyTextView];
+    
+    // If allowing suggestions, set up the reply text view keyboard and suggestion view constraints
+    if (shouldAddSuggestionView) {
+        // Set reply text view keyboard type to Twitter to expose the @ key for easy suggesting
+        [replyTextView setKeyboardType:UIKeyboardTypeTwitter];
+        
+        // Pin the suggestions view left and right edges to the super view edges
+        NSDictionary *views = @{@"suggestionsview": self.suggestionsTableView };
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[suggestionsview]|"
+                                                                          options:0
+                                                                          metrics:nil
+                                                                            views:views]];
+
+        // Pin the suggestions view top to the super view top
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[suggestionsview]"
+                                                                          options:0
+                                                                          metrics:nil
+                                                                            views:views]];
+        
+        // Pin the suggestions view bottom to the top of the reply box
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.suggestionsTableView
+                                                             attribute:NSLayoutAttributeBottom
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:self.replyTextView
+                                                             attribute:NSLayoutAttributeTop
+                                                            multiplier:1
+                                                              constant:0]];
+    }
 }
 
 
@@ -402,6 +461,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     NotificationBlock *userBlock    = blockGroup.blocks.firstObject;
     NotificationMedia *media        = [userBlock.media firstObject];
     BOOL hasHomeURL                 = (userBlock.metaLinksHome != nil);
+    BOOL hasHomeTitle               = (userBlock.metaTitlesHome.length > 0);
     
     NSAssert(userBlock, nil);
     
@@ -409,7 +469,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     
     cell.accessoryType              = hasHomeURL ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     cell.name                       = userBlock.text;
-    cell.blogTitle                  = userBlock.metaTitlesHome;
+    cell.blogTitle                  = hasHomeTitle ? userBlock.metaTitlesHome : userBlock.metaLinksHome.hostname;
     cell.isFollowEnabled            = [userBlock isActionEnabled:NoteActionFollowKey];
     cell.isFollowOn                 = [userBlock isActionOn:NoteActionFollowKey];
     cell.onFollowClick              = ^() {
@@ -978,6 +1038,18 @@ static CGFloat NotificationSectionSeparator     = 10;
     self.tableGesturesRecognizer.enabled = false;
 }
 
+#pragma mark - SuggestionsTableViewDelegate
+
+- (void)view:(UIView *)view didTypeInWord:(NSString *)word
+{
+    [self.suggestionsTableView showSuggestionsForWord:word];
+}
+
+- (void)suggestionsTableView:(SuggestionsTableView *)suggestionsTableView didSelectSuggestion:(NSString *)suggestion forSearchText:(NSString *)text
+{
+    [self.replyTextView replaceTextAtCaret:text withSuggestion:suggestion];
+    [suggestionsTableView showSuggestionsForWord:@""];
+}
 
 #pragma mark - Gestures Recognizer Delegate
 
@@ -986,6 +1058,12 @@ static CGFloat NotificationSectionSeparator     = 10;
     // Dismiss the reply field when tapping on the tableView
     self.replyTextView.text = [NSString string];
     [self.view endEditing:YES];
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)oth
+{
+    // Note: the tableViewGestureRecognizer may compete with another GestureRecognizer. Make sure it doesn't get cancelled
+    return YES;
 }
 
 @end

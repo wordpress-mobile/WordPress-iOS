@@ -43,6 +43,7 @@ import Foundation
         nameLabel.textColor             = WPStyleGuide.Notifications.blockTextColor
         snippetLabel.font               = WPStyleGuide.Notifications.blockItalicsFont
         snippetLabel.textColor          = WPStyleGuide.Notifications.blockQuotedColor
+        gravatarImageView.image         = UIImage(named: placeholderName)
 
         // iPad: Use a bigger image size!
         if UIDevice.isPad() {

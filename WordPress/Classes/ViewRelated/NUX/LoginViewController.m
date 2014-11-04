@@ -20,6 +20,7 @@
 #import "WPNUXHelpBadgeLabel.h"
 #import <Helpshift/Helpshift.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
+#import <NSURL+IDN.h>
 
 static NSString *const ForgotPasswordDotComBaseUrl = @"https://wordpress.com";
 static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
@@ -272,6 +273,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     overlayView.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
     };
+    overlayView.accessibilityIdentifier = @"GenericErrorMessage";
     [self.view addSubview:overlayView];
 }
 
@@ -435,6 +437,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _usernameText.autocorrectionType = UITextAutocorrectionTypeNo;
         _usernameText.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _usernameText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+        _usernameText.accessibilityIdentifier = @"Username / Email";
         [_mainView addSubview:_usernameText];
     }
 
@@ -450,6 +453,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _passwordText.showSecureTextEntryToggle = YES;
         _passwordText.showTopLineSeparator = YES;
         _passwordText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+        _passwordText.accessibilityIdentifier = @"Password";
         [_mainView addSubview:_passwordText];
     }
 
@@ -467,6 +471,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _siteUrlText.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _siteUrlText.showTopLineSeparator = YES;
         _siteUrlText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+        _siteUrlText.accessibilityIdentifier = @"Site Address (URL)";
         // insert URL field below password field to hide when signing into
         // WP.com account
         [_mainView insertSubview:_siteUrlText belowSubview:_passwordText];
@@ -478,6 +483,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _signInButton = [[WPNUXMainButton alloc] init];
         [_signInButton addTarget:self action:@selector(signInButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         _signInButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+        _signInButton.accessibilityIdentifier = @"Sign In";
         [_mainView addSubview:_signInButton];
     }
     _signInButton.enabled = [self isSignInEnabled];
@@ -485,8 +491,10 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     NSString *signInTitle;
     if (_userIsDotCom) {
         signInTitle = NSLocalizedString(@"Sign In", nil);
+        _signInButton.accessibilityIdentifier = @"Sign In";
     } else {
         signInTitle = NSLocalizedString(@"Add Site", nil);
+        _signInButton.accessibilityIdentifier = @"Add Site";
     }
     [_signInButton setTitle:signInTitle forState:UIControlStateNormal];
 
@@ -528,8 +536,10 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         NSString *toggleTitle;
         if (_userIsDotCom) {
             toggleTitle = NSLocalizedString(@"Add Self-Hosted Site", nil);
+            _toggleSignInForm.accessibilityIdentifier = @"Add Self-Hosted Site";
         } else {
             toggleTitle = NSLocalizedString(@"Sign in to WordPress.com", nil);
+            _toggleSignInForm.accessibilityIdentifier = @"Sign in to WordPress.com";
         }
         [_toggleSignInForm setTitle:toggleTitle forState:UIControlStateNormal];
     }
@@ -704,7 +714,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (NSString *)getSiteUrl
 {
-    NSURL *siteURL = [NSURL URLWithString:_siteUrlText.text];
+    NSURL *siteURL = [NSURL URLWithString:[NSURL IDNEncodedURL:_siteUrlText.text]];
     NSString *url = [siteURL absoluteString];
 
     // If the user enters a WordPress.com url we want to ensure we are communicating over https
@@ -787,7 +797,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     if (_siteUrlText.text.length == 0) {
         return NO;
     }
-    NSURL *siteURL = [NSURL URLWithString:_siteUrlText.text];
+    NSURL *siteURL = [NSURL URLWithString:[NSURL IDNEncodedURL:_siteUrlText.text]];
     return siteURL != nil;
 }
 
@@ -870,7 +880,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         [self handleGuessXMLRPCURLFailure:error];
     };
 
-    [WordPressXMLRPCApi guessXMLRPCURLForSite:_siteUrlText.text success:guessXMLRPCURLSuccess failure:guessXMLRPCURLFailure];
+    NSString *siteUrl = [NSURL IDNEncodedURL:_siteUrlText.text];
+
+    [WordPressXMLRPCApi guessXMLRPCURLForSite:siteUrl success:guessXMLRPCURLSuccess failure:guessXMLRPCURLFailure];
 }
 
 - (void)signInForWPComForUsername:(NSString *)username andPassword:(NSString *)password
@@ -900,7 +912,8 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
     WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken];
 
-    [accountService syncBlogsForAccount:account
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    [blogService syncBlogsForAccount:account
                                 success:^{
                                     [self setAuthenticating:NO withStatusMessage:nil];
                                     [self dismiss];
@@ -929,9 +942,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     if (!url) {
         url = [options stringForKeyPath:@"blog_url.value"];
     }
-    _blog = [accountService findBlogWithXmlrpc:xmlrpc inAccount:account];
+    _blog = [blogService findBlogWithXmlrpc:xmlrpc inAccount:account];
     if (!_blog) {
-        _blog = [accountService createBlogWithAccount:account];
+        _blog = [blogService createBlogWithAccount:account];
         if (url) {
             _blog.url = url;
         }
