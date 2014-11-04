@@ -3,12 +3,12 @@ import Foundation
 
 @objc public protocol RichTextViewDataSource
 {
-    func viewForTextAttachment(attachment: NSTextAttachment) -> UIView?
+    optional func richTextView(richTextView: RichTextView, viewForTextAttachment attachment: NSTextAttachment) -> UIView?
 }
 
 @objc public protocol RichTextViewDelegate : UITextViewDelegate
 {
-
+    optional func richTextView(richTextView: RichTextView, didPressLink link: NSURL)
 }
 
 
@@ -140,6 +140,9 @@ import Foundation
     
     // MARK: - Private Methods
     private func setupSubviews() {
+        gesturesRecognizer                                  = UITapGestureRecognizer()
+        gesturesRecognizer.addTarget(self, action: "handleTextViewTap:")
+        
         textView                                            = UITextView(frame: bounds)
         textView.backgroundColor                            = backgroundColor
         textView.contentInset                               = UIEdgeInsetsZero
@@ -149,8 +152,9 @@ import Foundation
         textView.editable                                   = editable
         textView.dataDetectorTypes                          = dataDetectorTypes
         textView.delegate                                   = self
+        textView.gestureRecognizers                         = [gesturesRecognizer]
         addSubview(textView)
-
+        
         // Setup Layout
         setTranslatesAutoresizingMaskIntoConstraints(false)
         textView.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -171,7 +175,7 @@ import Foundation
         attributedText.enumerateAttachments {
             (attachment: NSTextAttachment, range: NSRange) -> () in
             
-            let attachmentView = self.dataSource?.viewForTextAttachment(attachment)
+            let attachmentView = self.dataSource?.richTextView?(self, viewForTextAttachment: attachment)
             if attachmentView == nil {
                 return
             }
@@ -183,6 +187,33 @@ import Foundation
         }
     }
 
+    
+    // MARK: - UITapGestureRecognizer Helpers
+    public func handleTextViewTap(recognizer: UITapGestureRecognizer) {
+        
+        // NOTE: Why do we need this?
+        // Because this mechanism allows us to disable DataDetectors, and yet, detect taps on links.
+        //
+        let textStorage         = textView.textStorage
+        let layoutManager       = textView.layoutManager
+        let textContainer       = textView.textContainer
+        
+        let locationInTextView  = recognizer.locationInView(textView)
+        let characterIndex      = layoutManager.characterIndexForPoint(locationInTextView,
+                                                                        inTextContainer: textContainer,
+                                                                        fractionOfDistanceBetweenInsertionPoints: nil)
+        
+        if characterIndex >= textStorage.length {
+            return
+        }
+        
+        // Load the NSURL instance, if any
+        let rawURL = textStorage.attribute(NSLinkAttributeName, atIndex: characterIndex, effectiveRange: nil) as? NSURL
+        if let unwrappedURL = rawURL {
+            delegate?.richTextView?(self, didPressLink: unwrappedURL)
+        }
+    }
+    
     
     // MARK: - UITextViewDelegate Wrapped Methods
     public func textViewShouldBeginEditing(textView: UITextView) -> Bool {
@@ -224,5 +255,6 @@ import Foundation
     
     // MARK: - Private Properites
     private var textView:           UITextView!
+    private var gesturesRecognizer: UITapGestureRecognizer!
     private var attachmentViews:    [UIView] = []
 }
