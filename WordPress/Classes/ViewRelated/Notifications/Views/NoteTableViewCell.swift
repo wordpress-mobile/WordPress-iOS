@@ -75,6 +75,19 @@ import Foundation
         super.layoutSubviews()
     }
 
+    public override func setSelected(selected: Bool, animated: Bool) {
+        // Note: this is required, since the cell unhighlight mechanism will reset the new background color
+        super.setSelected(selected, animated: animated)
+        refreshBackgrounds()
+    }
+    
+    public override func setHighlighted(highlighted: Bool, animated: Bool) {
+        // Note: this is required, since the cell unhighlight mechanism will reset the new background color
+        super.setHighlighted(highlighted, animated: animated)
+        refreshBackgrounds()
+    }
+    
+    
     // MARK: - Private Methods
     private func refreshLabelPreferredMaxLayoutWidth() {
         let maxWidthLabel                    = frame.width - subjectPaddingRight - subjectLabel.frame.minX
