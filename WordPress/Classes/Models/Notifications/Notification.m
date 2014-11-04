@@ -595,4 +595,13 @@ NSString const *NotePostIdKey           = @"post_id";
     return NO;
 }
 
+- (void)didChangeOverrides
+{
+    // HACK:
+    // This is a NO-OP that will force NSFetchedResultsController to reload the row for this object.
+    // Helpful when dealing with non-CoreData backed attributes.
+    //
+    self.read = self.read;
+}
+
 @end
