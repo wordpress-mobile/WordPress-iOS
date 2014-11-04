@@ -9,8 +9,6 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <Simperium/Simperium.h>
 #import <Helpshift/Helpshift.h>
-#import <Taplytics/Taplytics.h>
-#import <Lookback/Lookback.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
 
 #import "WordPressAppDelegate.h"
@@ -31,6 +29,7 @@
 #import "ReaderPostService.h"
 #import "ReaderTopicService.h"
 #import "SVProgressHUD.h"
+#import "TodayExtensionService.h"
 
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
@@ -49,6 +48,11 @@
 #import "WPAnalyticsTrackerWPCom.h"
 
 #import "Reachability.h"
+#import "WordPress-Swift.h"
+
+#ifdef LOOKBACK_ENABLED
+#import <Lookback/Lookback.h>
+#endif
 
 #if DEBUG
 #import "DDTTYLogger.h"
@@ -124,13 +128,11 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [self toggleExtraDebuggingIfNeeded];
     [self removeCredentialsForDebug];
 
-    // Stats and feedback
-    [Taplytics startTaplyticsAPIKey:[WordPressComApiCredentials taplyticsAPIKey]];
+    // Stats and feedback    
     [SupportViewController checkIfFeedbackShouldBeEnabled];
 
     [Helpshift installForApiKey:[WordPressComApiCredentials helpshiftAPIKey] domainName:[WordPressComApiCredentials helpshiftDomainName] appID:[WordPressComApiCredentials helpshiftAppId]];
     [[Helpshift sharedInstance] setDelegate:self];
-    [SupportViewController checkIfHelpshiftShouldBeEnabled];
 
     NSNumber *usage_tracking = [[NSUserDefaults standardUserDefaults] valueForKey:kUsageTrackingDefaultsKey];
     if (usage_tracking == nil) {
@@ -159,7 +161,8 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [self setupSingleSignOn];
 
     [self customizeAppearance];
-
+    [self trackLowMemory];
+    
     // Push notifications
     [NotificationsManager registerForPushNotifications];
 
@@ -231,9 +234,11 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 
 - (void)lookbackGestureRecognized:(UILongPressGestureRecognizer *)sender
 {
+#ifdef LOOKBACK_ENABLED
     if (sender.state == UIGestureRecognizerStateBegan) {
         [LookbackRecordingViewController presentOntoScreenAnimated:YES];
     }
+#endif
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
@@ -594,7 +599,8 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [[UINavigationBar appearance] setShadowImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"007eb1"]]];
 
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
-    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor lightGrayColor]} forState:UIControlStateDisabled];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.25]} forState:UIControlStateDisabled];
+    
     [[UIToolbar appearance] setBarTintColor:[WPStyleGuide wordPressBlue]];
     [[UISwitch appearance] setOnTintColor:[WPStyleGuide wordPressBlue]];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
@@ -605,6 +611,8 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [[UIToolbar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[UIColor darkGrayColor]];
     
     [[UIToolbar appearanceWhenContainedIn:[WPEditorViewController class], nil] setBarTintColor:[UIColor whiteColor]];
+
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[WPStyleGuide littleEddieGrey]]];
 }
 
 #pragma mark - Tracking methods
@@ -630,6 +638,16 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [WPAnalytics track:WPAnalyticsStatApplicationOpened];
 }
 
+- (void)trackLowMemory
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(lowMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+}
+
+- (void)lowMemoryWarning:(NSNotification *)notification
+{
+    [WPAnalytics track:WPAnalyticsStatLowMemoryWarning];
+}
+
 #pragma mark - Tab bar methods
 
 - (UITabBarController *)tabBarController
@@ -646,7 +664,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     _tabBarController.delegate = self;
     _tabBarController.restorationIdentifier = WPTabBarRestorationID;
     [_tabBarController.tabBar setTranslucent:NO];
-
+    _tabBarController.tabBar.accessibilityIdentifier = @"Main Navigation";
     // Create a background
     // (not strictly needed when white, but left here for possible customization)
     _tabBarController.tabBar.backgroundImage = [UIImage imageWithColor:[UIColor whiteColor]];
@@ -678,7 +696,9 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
     self.blogListViewController.title = NSLocalizedString(@"Me", @"");
     [blogListNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
-
+    blogListNavigationController.tabBarItem.accessibilityIdentifier = @"Me";
+    
+    
     UIImage *image = [UIImage imageNamed:@"icon-tab-newpost"];
     image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     UIViewController *postsViewController = [[UIViewController alloc] init];
@@ -753,7 +773,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
         navController.restorationClass = [WPLegacyEditPostViewController class];
     }
         
-    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
     navController.navigationBar.translucent = NO;
     [navController setToolbarHidden:NO]; // Make the toolbar visible here to avoid a weird left/right transition when the VC appears.
     [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
@@ -786,6 +806,24 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [postsViewController setBlog:post.blog];
 
     [blogListNavController setViewControllers:@[blogListViewController, blogDetailsViewController, postsViewController]];
+}
+
+- (void)switchMeTabToStatsViewForBlog:(Blog *)blog
+{
+    // Make sure the desired tab is selected.
+    [self showTabForIndex:kMeTabIndex];
+    
+    // Build and set the navigation heirarchy for the Me tab.
+    UINavigationController *blogListNavController = [self.tabBarController.viewControllers objectAtIndex:kMeTabIndex];
+    BlogListViewController *blogListViewController = [blogListNavController.viewControllers objectAtIndex:0];
+
+    BlogDetailsViewController *blogDetailsViewController = [BlogDetailsViewController new];
+    blogDetailsViewController.blog = blog;
+    
+    StatsViewController *statsViewController = [StatsViewController new];
+    statsViewController.blog = blog;
+    
+    [blogListNavController setViewControllers:@[blogListViewController, blogDetailsViewController, statsViewController]];
 }
 
 - (BOOL)isNavigatingMeTab
@@ -1014,18 +1052,6 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     }];
 }
 
-- (void)setupImageResizeSettings
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
-    NSString *oldKey = @"media_resize_preference";
-    // 4 was the value for "Original"
-    if ([defaults integerForKey:oldKey] == 4) {
-        [WPImageOptimizer setShouldOptimizeImages:NO];
-    }
-    [defaults removeObjectForKey:oldKey];
-}
-
 #pragma mark - Networking setup, User agents
 
 - (void)setupUserAgent
@@ -1151,6 +1177,11 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
                                                 label:[NSString string]
                                       bucketOverrides:bucketOverrides];
 
+    // Note: Nuke Simperium's metadata in case of a faulty Core Data migration
+    if (manager.didMigrationFail) {
+        [self.simperium resetMetadata];
+    }
+    
 #ifdef DEBUG
 	self.simperium.verboseLoggingEnabled = false;
 #endif
@@ -1426,12 +1457,14 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 
 - (void)determineIfTodayWidgetIsConfiguredAndShowAppropriately
 {
-    [StatsViewController hideTodayWidgetIfNotConfigured];
+    TodayExtensionService *service = [TodayExtensionService new];
+    [service hideTodayWidgetIfNotConfigured];
 }
 
 - (void)removeTodayWidgetConfiguration
 {
-    [StatsViewController removeTodayWidgetConfiguration];
+    TodayExtensionService *service = [TodayExtensionService new];
+    [service removeTodayWidgetConfiguration];
 }
 
 #pragma mark - GUI animations

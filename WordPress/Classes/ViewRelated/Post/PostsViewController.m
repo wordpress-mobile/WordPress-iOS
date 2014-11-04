@@ -59,19 +59,26 @@
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"Posts", @"");
-
+    self.tableView.accessibilityIdentifier = @"PostsTable";
+    self.tableView.isAccessibilityElement = YES;
     UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
     [button setImage:image forState:UIControlStateNormal];
     [button addTarget:self action:@selector(showAddPostView) forControlEvents:UIControlEventTouchUpInside];
     button.accessibilityLabel = [self newPostAccessibilityLabel];
-    button.accessibilityIdentifier = @"addpost";
+    button.accessibilityIdentifier = @"New Post";
     UIBarButtonItem *composeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
 
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:composeButtonItem forNavigationItem:self.navigationItem];
     
     self.infiniteScrollEnabled = YES;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+
+    // IMPORTANT: this code makes sure that the back button in WPPostViewController doesn't show
+    // this VC's title.
+    //
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
     
     [self updatePostFormats];
 }
@@ -146,6 +153,7 @@
 		cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 	}
     cell.accessoryType = UITableViewCellAccessoryNone;
+    cell.accessibilityIdentifier = @"PostCell";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -229,8 +237,9 @@
     }
     
 	[navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
-	navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-	[self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
+	navController.modalPresentationStyle = UIModalPresentationFullScreen;
+    
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)viewPost:(AbstractPost *)apost
@@ -246,8 +255,9 @@
         editPostViewController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
         [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
-        navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-        [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
+        navController.modalPresentationStyle = UIModalPresentationFullScreen;
+
+        [self presentViewController:navController animated:YES completion:nil];
     }
 }
 
@@ -297,6 +307,7 @@
 
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
     [postService syncPostsOfType:PostServiceTypePost forBlog:self.blog success:success failure:failure];
 }

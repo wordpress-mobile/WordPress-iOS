@@ -34,6 +34,7 @@
 {
     [super viewDidLoad];
 
+    self.tableView.accessibilityIdentifier = @"CategoriesList";
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero]; // Hide extra cell separators.
 

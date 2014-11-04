@@ -15,14 +15,13 @@
     #import <AFNetworking/AFNetworking.h>
 	#import <CocoaLumberjack/DDLog.h>
     #import <NSObject+SafeExpectations.h>
-    #import "DDLog.h"
+    #import <WordPressCom-Analytics-iOS/WPAnalytics.h>
+    #import <WordPress-iOS-Shared/WPStyleGuide.h>
 
 	// Project-specific
     #import "NSString+Util.h"
     #import "WPError.h"
     #import "UIColor+Helpers.h"
-    #import <WordPressCom-Analytics-iOS/WPAnalytics.h>
-    #import "WPStyleGuide.h"
 
 #ifndef IS_IPAD
 #define IS_IPAD   ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)

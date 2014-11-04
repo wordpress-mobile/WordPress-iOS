@@ -91,11 +91,13 @@ static const CGFloat ReaderCommentCellBottomPaddingMore = -20.0;
     self.indentationLevel = MIN(ReaderCommentCellMaxIndentationLevel, [comment.depth integerValue]);
 
     self.nestingOverlayView.hidden = !self.isFirstNestedComment;
-    self.borderView.hidden = self.indentationLevel != 0;
+    self.borderView.hidden = (self.hidesBorder || self.indentationLevel != 0);
     self.leftIndentationConstraint.constant = ReaderCommentCellSidePadding + (self.indentationLevel * self.indentationWidth);
     self.bottomMarginConstraint.constant = (self.needsExtraPadding) ? ReaderCommentCellBottomPaddingMore : ReaderCommentCellBottomPadding;
 
     self.commentContentView.contentProvider = comment;
+    self.commentContentView.isLiked = self.comment.isLiked;
+    self.commentContentView.likeCount = [self.comment.likeCount intValue];
 
     // Highlighting the author of the post
     NSString *authorUrl = comment.author_url;
@@ -117,6 +119,7 @@ static const CGFloat ReaderCommentCellBottomPaddingMore = -20.0;
 {
     [super prepareForReuse];
 
+    self.hidesBorder = NO;
     self.isFirstNestedComment = NO;
     self.needsExtraPadding = NO;
     self.indentationLevel = 0;
@@ -197,6 +200,13 @@ static const CGFloat ReaderCommentCellBottomPaddingMore = -20.0;
 {
     if ([self.delegate respondsToSelector:@selector(commentCell:replyToComment:)]) {
         [self.delegate commentCell:self replyToComment:self.comment];
+    }
+}
+
+- (void)toggleLikeStatus:(id<WPContentViewProvider>)contentProvider
+{
+    if ([self.delegate respondsToSelector:@selector(commentCell:toggleLikeStatusForComment:)]) {
+        [self.delegate commentCell:self toggleLikeStatusForComment:self.comment];
     }
 }
 

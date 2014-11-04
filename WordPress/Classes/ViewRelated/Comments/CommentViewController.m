@@ -10,19 +10,29 @@
 #import "WPToast.h"
 #import "EditCommentViewController.h"
 #import "EditReplyViewController.h"
+#import "ReaderPostDetailViewController.h"
+#import "PostService.h"
+#import "Post.h"
+#import "SuggestionsTableView.h"
+#import "SuggestionService.h"
 
 static NSString *const CVCReplyToastImage = @"action-icon-replied";
 static NSString *const CVCSuccessToastImage = @"action-icon-success";
+static NSString *const CVCHeaderCellIdentifier = @"CommentTableViewHeaderCell";
 static NSString *const CVCCommentCellIdentifier = @"CommentTableViewCell";
-static CGFloat const CVCSectionHeaderHeight = 40;
+static CGFloat const CVCFirstSectionHeaderHeight = 40;
+static CGFloat const CVCSectionSeparatorHeight = 10;
+static NSInteger const CVCHeaderSectionIndex = 0;
 static NSInteger const CVCNumberOfRows = 1;
-static NSInteger const CVCNumberOfSections = 1;
+static NSInteger const CVCNumberOfSections = 2;
 
-@interface CommentViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
+@interface CommentViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, SuggestionsTableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) NoteBlockHeaderTableViewCell *headerLayoutCell;
 @property (nonatomic, strong) CommentTableViewCell *bodyLayoutCell;
 @property (nonatomic, strong) ReplyTextView *replyTextView;
+@property (nonatomic, strong) SuggestionsTableView *suggestionsTableView;
 @property (nonatomic, strong) CommentService *commentService;
 
 @end
@@ -33,25 +43,47 @@ static NSInteger const CVCNumberOfSections = 1;
 {
     [super loadView];
 
+    UIGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]
+                                          initWithTarget:self
+                                          action:@selector(dismissKeyboardIfNeeded:)];
+    tapRecognizer.cancelsTouchesInView = NO;
+
     self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.estimatedRowHeight = 44.0;
-    [self.tableView addGestureRecognizer:[[UITapGestureRecognizer alloc]
-                                          initWithTarget:self
-                                          action:@selector(dismissKeyboardIfNeeded:)]];
+    [self.tableView addGestureRecognizer:tapRecognizer];
     [self.view addSubview:self.tableView];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
+    UINib *headerCellNib = [UINib nibWithNibName:@"CommentTableViewHeaderCell" bundle:nil];
     UINib *bodyCellNib = [UINib nibWithNibName:@"CommentTableViewCell" bundle:nil];
+    [self.tableView registerNib:headerCellNib forCellReuseIdentifier:CVCHeaderCellIdentifier];
     [self.tableView registerNib:bodyCellNib forCellReuseIdentifier:CVCCommentCellIdentifier];
+    self.headerLayoutCell = [self.tableView dequeueReusableCellWithIdentifier:CVCHeaderCellIdentifier];
     self.bodyLayoutCell = [self.tableView dequeueReusableCellWithIdentifier:CVCCommentCellIdentifier];
+
+    [self attachSuggestionsTableViewIfNeeded];
 
     [self attachReplyViewIfNeeded];
 
     [self setupAutolayoutConstraints];
+}
+
+- (void)attachSuggestionsTableViewIfNeeded
+{
+    if (![self shouldAttachSuggestionsTableView]) {
+        return;
+    }
+    
+    if ([self shouldAttachSuggestionsTableView]) {
+        self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.comment.blog.blogID];
+        self.suggestionsTableView.suggestionsDelegate = self;
+        [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self.view addSubview:self.suggestionsTableView];        
+    }
 }
 
 - (void)attachReplyViewIfNeeded
@@ -71,6 +103,10 @@ static NSInteger const CVCNumberOfSections = 1;
     replyTextView.delegate = self;
     self.replyTextView = replyTextView;
     [self.view addSubview:self.replyTextView];
+    
+    if ([self shouldAttachSuggestionsTableView]) {
+        [replyTextView setKeyboardType:UIKeyboardTypeTwitter];
+    }
 }
 
 - (void)setupAutolayoutConstraints
@@ -97,6 +133,37 @@ static NSInteger const CVCNumberOfSections = 1;
                                                                           metrics:nil
                                                                             views:views]];
     }
+    
+    if ([self shouldAttachSuggestionsTableView]) {
+        // Pin the suggestions view left and right edges to the super view edges
+        NSDictionary *views = @{@"suggestionsview": self.suggestionsTableView };
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[suggestionsview]|"
+                                                                          options:0
+                                                                          metrics:nil
+                                                                            views:views]];
+        
+        // Pin the suggestions view top to the super view top
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[suggestionsview]"
+                                                                          options:0
+                                                                          metrics:nil
+                                                                            views:views]];
+        
+        // Pin the suggestions view bottom to the top of the reply box
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.suggestionsTableView
+                                                              attribute:NSLayoutAttributeBottom
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:self.replyTextView
+                                                              attribute:NSLayoutAttributeTop
+                                                             multiplier:1
+                                                               constant:0]];
+    }
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    [self fetchPostIfNecessary];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -117,11 +184,35 @@ static NSInteger const CVCNumberOfSections = 1;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+#pragma mark - Fetching Post
+
+// if the post for the comment is nil, fetch it
+- (void)fetchPostIfNecessary
+{
+    // if the post is already set for the comment, no need to do anything else
+    if (self.comment.post) {
+        return;
+    }
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+
+    __weak __typeof(self) weakSelf = self;
+
+    // when the post is updated, all it's comment will be associated to it, reloading tableView is enough
+    [postService getPostWithID:self.comment.postID
+                       forBlog:self.comment.blog
+                       success:^(AbstractPost *post) {
+                           [weakSelf.tableView reloadData];
+                       }
+                       failure:nil];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return CVCNumberOfSections;
+    return [self shouldShowHeaderForPostDetails] ? CVCNumberOfSections : CVCNumberOfSections - 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -131,6 +222,11 @@ static NSInteger const CVCNumberOfSections = 1;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.section == CVCHeaderSectionIndex && [self shouldShowHeaderForPostDetails]) {
+        NoteBlockHeaderTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CVCHeaderCellIdentifier];
+        [self setupHeaderCell:cell];
+        return cell;
+    }
     CommentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CVCCommentCellIdentifier
                                                                  forIndexPath:indexPath];
     [self setupCommentCell:cell];
@@ -139,20 +235,63 @@ static NSInteger const CVCNumberOfSections = 1;
 
 #pragma mark - Table view delegate
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    if (!self.comment.blog.isWPcom) {
+        [self openWebViewWithURL:[NSURL URLWithString:self.comment.post.permaLink]];
+        return;
+    }
+
+    if (indexPath.section == CVCHeaderSectionIndex && [self shouldShowHeaderForPostDetails]) {
+        ReaderPostDetailViewController *vc = [ReaderPostDetailViewController detailControllerWithPostID:self.comment.postID siteID:self.comment.blog.blogID];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    // we don't want to show a space between navigation bar and the first cell for iPhone
-    return [UIDevice isPad] ? CVCSectionHeaderHeight : CGFLOAT_MIN;
+    CGFloat firstSectionHeaderHeight = [UIDevice isPad] ? CVCFirstSectionHeaderHeight : CGFLOAT_MIN;
+    return (section == CVCHeaderSectionIndex) ? firstSectionHeaderHeight : CVCSectionSeparatorHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self setupCommentCell:self.bodyLayoutCell];
+    UITableViewCell *cell;
+    if (indexPath.section == CVCHeaderSectionIndex && [self shouldShowHeaderForPostDetails]) {
+        [self setupHeaderCell:self.headerLayoutCell];
+        cell = self.headerLayoutCell;
+    }
+    else {
+        [self setupCommentCell:self.bodyLayoutCell];
+        cell = self.bodyLayoutCell;
+    }
 
-    return [self.bodyLayoutCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
+    return [cell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return CGFLOAT_MIN;
 }
 
 #pragma mark - Setup Cells
+
+- (void)setupHeaderCell:(NoteBlockHeaderTableViewCell *)cell
+{
+    NSString *postTitle = [self.comment.post titleForDisplay];
+    if (postTitle.length == 0) {
+        postTitle = [self.comment.post contentPreviewForDisplay];
+    }
+
+    cell.name = self.comment.post.author;
+    cell.snippet = postTitle;
+
+    if (cell != self.headerLayoutCell) {
+        [cell downloadGravatarWithURL:[NSURL URLWithString:self.comment.post.authorAvatarURL]];
+    }
+}
 
 - (void)setupCommentCell:(CommentTableViewCell *)cell
 {
@@ -165,9 +304,12 @@ static NSInteger const CVCNumberOfSections = 1;
     cell.name = self.comment.author;
     cell.timestamp = [self.comment.dateCreated shortString];
     cell.isApproveOn = [self.comment.status isEqualToString:@"approve"];
-    cell.commentText = self.comment.content;
+    cell.commentText = [self.comment contentForDisplay];
     cell.isLikeOn = self.comment.isLiked;
-    [cell downloadGravatarWithURL:self.comment.avatarURLForDisplay];
+
+    if (cell != self.bodyLayoutCell) {
+        [cell downloadGravatarWithURL:self.comment.avatarURLForDisplay];
+    }
 
     __weak __typeof(self) weakSelf = self;
 
@@ -180,11 +322,11 @@ static NSInteger const CVCNumberOfSections = 1;
     };
 
     cell.onLikeClick = ^(UIButton *sender){
-        [weakSelf likeComment];
+        [weakSelf toggleLikeForComment];
     };
 
     cell.onUnlikeClick = ^(UIButton *sender){
-        [weakSelf unlikeComment];
+        [weakSelf toggleLikeForComment];
     };
 
     cell.onApproveClick = ^(UIButton *sender){
@@ -213,20 +355,11 @@ static NSInteger const CVCNumberOfSections = 1;
     [self.navigationController pushViewController:webViewController animated:YES];
 }
 
-- (void)likeComment
+- (void)toggleLikeForComment
 {
     __typeof(self) __weak weakSelf = self;
 
-    [self.commentService likeCommentWithID:self.comment.commentID siteID:self.comment.blog.blogID success:nil failure:^(NSError *error) {
-        [weakSelf.tableView reloadData];
-    }];
-}
-
-- (void)unlikeComment
-{
-    __typeof(self) __weak weakSelf = self;
-
-    [self.commentService unlikeCommentWithID:self.comment.commentID siteID:self.comment.blog.blogID success:nil failure:^(NSError *error) {
+    [self.commentService toggleLikeStatusForComment:self.comment siteID:self.comment.blog.blogID success:nil failure:^(NSError *error) {
         [weakSelf.tableView reloadData];
     }];
 }
@@ -486,6 +619,20 @@ static NSInteger const CVCNumberOfSections = 1;
     [UIView commitAnimations];
 }
 
+#pragma mark - SuggestionsTableViewDelegate
+
+- (void)view:(UIView *)view didTypeInWord:(NSString *)word
+{
+    [self.suggestionsTableView showSuggestionsForWord:word];
+}
+
+- (void)suggestionsTableView:(SuggestionsTableView *)suggestionsTableView didSelectSuggestion:(NSString *)suggestion forSearchText:(NSString *)text
+{
+    [self.replyTextView replaceTextAtCaret:text withSuggestion:suggestion];
+    [suggestionsTableView showSuggestionsForWord:@""];
+}
+
+
 #pragma mark - Gestures Recognizer Delegate
 
 - (void)dismissKeyboardIfNeeded:(id)sender
@@ -500,6 +647,17 @@ static NSInteger const CVCNumberOfSections = 1;
 {
     // iPad: We've got a different UI!
     return !([UIDevice isPad]);
+}
+
+- (BOOL)shouldAttachSuggestionsTableView
+{
+    return ([self shouldAttachReplyTextView] && self.comment.blog.isWPcom && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.comment.blog.blogID]);
+}
+
+// if the post is not set for the comment, we don't want to show an empty cell for the post details
+- (BOOL)shouldShowHeaderForPostDetails
+{
+    return self.comment.post != nil;
 }
 
 @end

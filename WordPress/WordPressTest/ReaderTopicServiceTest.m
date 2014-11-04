@@ -1,4 +1,3 @@
-#import "CoreDataTestHelper.h"
 #import "ContextManager.h"
 #import "WPAccount.h"
 #import "ReaderTopic.h"
@@ -10,6 +9,7 @@
 #import "ReaderPostServiceRemote.h"
 #import "RemoteReaderPost.h"
 #import <XCTest/XCTest.h>
+#import "TestContextManager.h"
 
 
 @interface ReaderTopicServiceRemote()
@@ -22,6 +22,9 @@
 
 
 @interface ReaderTopicServiceTest : XCTestCase
+
+@property (nonatomic, strong) TestContextManager *testContextManager;
+
 @end
 
 @implementation ReaderTopicServiceTest
@@ -30,6 +33,7 @@
 {
     [super setUp];
     
+    self.testContextManager = [[TestContextManager alloc] init];
 }
 
 - (void)tearDown
@@ -37,8 +41,7 @@
     // Put teardown code here; it will be run once, after the last test case.
     [super tearDown];
     
-    [[CoreDataTestHelper sharedHelper] reset];
-    [CoreDataTestHelper sharedHelper].testExpectation = nil;
+    self.testContextManager = nil;
 }
 
 

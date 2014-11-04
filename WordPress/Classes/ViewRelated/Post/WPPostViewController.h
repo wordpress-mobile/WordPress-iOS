@@ -18,7 +18,7 @@ extern NSString *const kUserDefaultsNewEditorEnabled;
 extern NSString *const kWPEditorConfigURLParamAvailable;
 extern NSString *const kWPEditorConfigURLParamEnabled;
 
-@interface WPPostViewController : WPEditorViewController <UINavigationControllerDelegate, CTAssetsPickerControllerDelegate, WPEditorViewControllerDelegate>
+@interface WPPostViewController : WPEditorViewController <UINavigationControllerDelegate, WPEditorViewControllerDelegate>
 
 /*
  EditPostViewController instance will execute the onClose callback, if provided, whenever the UI is dismissed.

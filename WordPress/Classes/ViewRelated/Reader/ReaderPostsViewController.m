@@ -6,11 +6,10 @@
 #import "BlogService.h"
 #import "ContextManager.h"
 #import "CustomHighlightButton.h"
-#import "InlineComposeView.h"
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
 #import "ReaderBlockedTableViewCell.h"
-#import "ReaderCommentPublisher.h"
+#import "ReaderCommentsViewController.h"
 #import "ReaderPost.h"
 #import "ReaderPostDetailViewController.h"
 #import "ReaderPostService.h"
@@ -36,6 +35,7 @@ static CGFloat const RPVCBlockedCellHeight = 66.0;
 static CGFloat const RPVCEstimatedRowHeightIPhone = 400.0;
 static CGFloat const RPVCEstimatedRowHeightIPad = 600.0;
 static NSInteger RPVCRefreshInterval = 300; // 5 minutes
+static CGRect RPVCTableHeaderFrame = {0.0f, 0.0f, 0.0f, 40.0f};
 
 
 NSString * const BlockedCellIdentifier = @"BlockedCellIdentifier";
@@ -43,8 +43,7 @@ NSString * const FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
 NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier";
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
-@interface ReaderPostsViewController ()<ReaderCommentPublisherDelegate,
-                                        RebloggingViewControllerDelegate,
+@interface ReaderPostsViewController ()<RebloggingViewControllerDelegate,
                                         UIActionSheetDelegate,
                                         WPContentSyncHelperDelegate,
                                         WPTableImageSourceDelegate,
@@ -55,9 +54,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @property (nonatomic, strong) WPTableImageSource *featuredImageSource;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, strong) WPAnimatedBox *animatedBox;
-@property (nonatomic, strong) UIGestureRecognizer *tapOffKeyboardGesture;
-@property (nonatomic, strong) InlineComposeView *inlineComposeView;
-@property (nonatomic, strong) ReaderCommentPublisher *commentPublisher;
 @property (nonatomic, readonly) ReaderTopic *currentTopic;
 @property (nonatomic, strong) ReaderPostTableViewCell *cellForLayout;
 @property (nonatomic, strong) NSNumber *siteIDToBlock;
@@ -97,8 +93,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         _syncHelper = [[WPContentSyncHelper alloc] init];
         _syncHelper.delegate = self;
 
-        _tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard:)];
-
         // TODO: since the vc is not visible when accounts/topics change we could
         // handle this a different way and ditch the observers.
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
@@ -118,7 +112,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self configureFeaturedImageSource];
     [self configureInfiniteScroll];
     [self configureNavbar];
-    [self configureCommentPublisher];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
@@ -162,12 +155,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
             [self.animatedBox animate];
         }
     });
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [self.inlineComposeView endEditing:YES];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
@@ -224,7 +211,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:FeaturedImageCellIdentifier];
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+    self.tableView.accessibilityIdentifier = @"Reader Table";
+    
+    // Note: UIEdgeInsets are not always enforced. After logging in, the table might autoscroll up to the first row.
+    if (UIDevice.isPad) {
+        self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:RPVCTableHeaderFrame];
+    }
 }
 
 - (void)configureTableViewHandler
@@ -295,17 +287,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     self.navigationItem.rightBarButtonItem = button;
 
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:button forNavigationItem:self.navigationItem];
-}
-
-- (void)configureCommentPublisher
-{
-    self.inlineComposeView = [[InlineComposeView alloc] initWithFrame:CGRectZero];
-    [self.inlineComposeView setButtonTitle:NSLocalizedString(@"Post", @"Verb. The title of the 'publish' button in the comment reply form.")];
-    [self.view addSubview:self.inlineComposeView];
-
-    // Comment composer responds to the inline compose view to publish comments
-    self.commentPublisher = [[ReaderCommentPublisher alloc] initWithComposer:self.inlineComposeView];
-    self.commentPublisher.delegate = self;
 }
 
 - (void)configureNoResultsView
@@ -393,12 +374,17 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (ReaderTopic *)currentTopic
 {
-    return [[[ReaderTopicService alloc] initWithManagedObjectContext:[self managedObjectContext]] currentTopic];
+    return [self currentTopicInContext:self.managedObjectContext];
+}
+
+- (ReaderTopic *)currentTopicInContext:(NSManagedObjectContext *)context
+{
+    return [[[ReaderTopicService alloc] initWithManagedObjectContext:context] currentTopic];
 }
 
 - (BOOL)isCurrentTopicFreshlyPressed
 {
-    return [self.currentTopic.path rangeOfString:@"freshly-pressed"].location != NSNotFound;
+    return [self.currentTopic.path rangeOfString:ReaderTopicFreshlyPressedPathCommponent].location != NSNotFound;
 }
 
 - (ReaderPost *)postFromCellSubview:(UIView *)subview
@@ -421,7 +407,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (NSDictionary *)tagPropertyForStats
 {
-    return @{@"tag": self.currentTopic.title};
+    return [NSDictionary dictionaryWithObjectsAndKeys:self.currentTopic.title, @"tag", nil];
 }
 
 - (void)setTitle:(NSString *)title
@@ -606,17 +592,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self presentViewController:navController animated:YES completion:nil];
 }
 
-- (void)dismissKeyboard:(id)sender
-{
-    for (UIGestureRecognizer *gesture in self.view.gestureRecognizers) {
-        if ([gesture isEqual:self.tapOffKeyboardGesture]) {
-            [self.view removeGestureRecognizer:gesture];
-        }
-    }
-
-    [self.inlineComposeView toggleComposer];
-}
-
 - (void)refresh
 {
     [self syncItemsWithUserInteraction:YES];
@@ -701,52 +676,60 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self.syncHelper syncContentWithUserInteraction:userInteraction];
 }
 
-- (void)syncItemsWithSuccess:(void (^)(NSInteger))success failure:(void (^)(NSError *))failure
+- (void)syncItemsWithSuccess:(void (^)(NSInteger, BOOL))success failure:(void (^)(NSError *))failure
 {
     DDLogMethod();
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service fetchPostsForTopic:self.currentTopic earlierThan:[NSDate date] success:^(NSInteger count) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            weakSelf.postIDThatInitiatedBlock = nil;
-            weakSelf.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
-            if (success) {
-                success(count);
-            }
-        });
-    } failure:^(NSError *error) {
-        if (failure) {
+    
+    [context performBlock:^{
+        ReaderTopic *topicInContext = [self currentTopicInContext:context];
+        [service fetchPostsForTopic:topicInContext earlierThan:[NSDate date] success:^(NSInteger count, BOOL hasMore) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                failure(error);
+                weakSelf.postIDThatInitiatedBlock = nil;
+                weakSelf.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
+                if (success) {
+                    success(count, hasMore);
+                }
             });
-        }
+        } failure:^(NSError *error) {
+            if (failure) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    failure(error);
+                });
+            }
+        }];
     }];
 }
 
-- (void)backfillItemsWithSuccess:(void (^)(NSInteger))success failure:(void (^)(NSError *))failure
+- (void)backfillItemsWithSuccess:(void (^)(NSInteger, BOOL))success failure:(void (^)(NSError *))failure
 {
     DDLogMethod();
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service backfillPostsForTopic:self.currentTopic success:^(NSInteger count) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            weakSelf.postIDThatInitiatedBlock = nil;
-            if (success) {
-                success(count);
-            }
-        });
-    } failure:^(NSError *error) {
-        if (failure) {
+    
+    [context performBlock:^{
+        ReaderTopic *topicInContext = [self currentTopicInContext:context];
+        [service backfillPostsForTopic:topicInContext success:^(NSInteger count, BOOL hasMore) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                failure(error);
+                weakSelf.postIDThatInitiatedBlock = nil;
+                if (success) {
+                    success(count, hasMore);
+                }
             });
-        }
+        } failure:^(NSError *error) {
+            if (failure) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    failure(error);
+                });
+            }
+        }];
     }];
 }
 
-- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(NSInteger))success failure:(void (^)(NSError *))failure
+- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(NSInteger, BOOL))success failure:(void (^)(NSError *))failure
 {
     DDLogMethod();
     self.shouldSkipRowAnimation = NO;
@@ -758,7 +741,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 }
 
-- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(NSInteger))success failure:(void (^)(NSError *))failure
+- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(NSInteger, BOOL))success failure:(void (^)(NSError *))failure
 {
     DDLogMethod();
     if ([self.tableViewHandler.resultsController.fetchedObjects count] == 0) {
@@ -773,26 +756,33 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     [self.activityFooter startAnimating];
+    self.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
+    
     ReaderPost *post = self.tableViewHandler.resultsController.fetchedObjects.lastObject;
+    NSDate *earlierThan = post.sortDate;
+    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
-
-    __weak __typeof(self) weakSelf = self;
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service fetchPostsForTopic:self.currentTopic earlierThan:post.sortDate success:^(NSInteger count){
-        if (success) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                weakSelf.shouldSkipRowAnimation = YES;
-                success(count);
-            });
-        }
-    } failure:^(NSError *error) {
-        if (failure) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                failure(error);
-            });
-        }
+    __weak __typeof(self) weakSelf = self;
+    
+    [context performBlock:^{
+        ReaderTopic *topicInContext = [self currentTopicInContext:context];
+        [service fetchPostsForTopic:topicInContext earlierThan:earlierThan success:^(NSInteger count, BOOL hasMore){
+            if (success) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    weakSelf.shouldSkipRowAnimation = YES;
+                    success(count, hasMore);
+                });
+            }
+        } failure:^(NSError *error) {
+            if (failure) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    failure(error);
+                });
+            }
+        }];
     }];
-
+    
     [WPAnalytics track:WPAnalyticsStatReaderInfiniteScroll withProperties:[self tagPropertyForStats]];
 }
 
@@ -893,7 +883,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)updateAndPerformFetchRequest
 {
-    NSError *error;
+    NSAssert([NSThread isMainThread], @"ReaderPostsViewController Error: NSFetchedResultsController accessed in BG");
+    
+    NSError *error = nil;
     [self.tableViewHandler.resultsController.fetchRequest setPredicate:[self predicateForFetchRequest]];
     [self.tableViewHandler.resultsController performFetch:&error];
     if (error) {
@@ -1059,19 +1051,31 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)postView:(ReaderPostContentView *)postView didReceiveLikeAction:(id)sender
 {
-    ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    ReaderPost *post = (ReaderPost *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-
+    ReaderPost *post = [self postFromCellSubview:sender];
+    BOOL wasLiked = post.isLiked;
+    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service toggleLikedForPost:post success:^{
-        if (post.isLiked) {
-            [WPAnalytics track:WPAnalyticsStatReaderLikedArticle];
+    
+    [context performBlock:^{
+        ReaderPost *postInContext = (ReaderPost *)[context existingObjectWithID:post.objectID error:nil];
+        if (!postInContext) {
+            return;
         }
-    } failure:^(NSError *error) {
-        DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
-        [postView updateActionButtons];
+        
+        [service toggleLikedForPost:postInContext success:^{
+            if (wasLiked) {
+                return;
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [WPAnalytics track:WPAnalyticsStatReaderLikedArticle];
+            });
+        } failure:^(NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
+                [postView updateActionButtons];
+            });
+        }];
     }];
 
     [postView updateActionButtons];
@@ -1091,11 +1095,19 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service toggleFollowingForPost:post success:^{
-        //noop
-    } failure:^(NSError *error) {
-        DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
-        [followButton setSelected:post.isFollowing];
+    
+    [context performBlock:^{
+        ReaderPost *postInContext = (ReaderPost *)[context existingObjectWithID:post.objectID error:nil];
+        if (!postInContext) {
+            return;
+        }
+        
+        [service toggleFollowingForPost:postInContext success:nil failure:^(NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
+                [followButton setSelected:post.isFollowing];                
+            });
+        }];
     }];
 }
 
@@ -1125,24 +1137,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)postView:(ReaderPostContentView *)postView didReceiveCommentAction:(id)sender
 {
-    [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
-
-    ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    ReaderPost *post = (ReaderPost *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-
-    if (self.commentPublisher.post == post) {
-        [self.inlineComposeView toggleComposer];
-        return;
-    }
-
-    self.commentPublisher.post = post;
-    [self.inlineComposeView displayComposer];
-
-    // scroll the item into view if possible
-    [self.tableView scrollToRowAtIndexPath:indexPath
-                          atScrollPosition:UITableViewScrollPositionTop
-                                  animated:YES];
+    ReaderPost *post = [self postFromCellSubview:sender];
+    ReaderCommentsViewController *controller = [ReaderCommentsViewController controllerWithPost:post];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 
@@ -1157,16 +1154,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
     [cell configureCell:post];
     [self setAvatarForPost:post forCell:cell indexPath:indexPath];
-}
-
-
-#pragma mark - ReaderCommentPublisherDelegate Methods
-
-- (void)commentPublisherDidPublishComment:(ReaderCommentPublisher *)publisher
-{
-    [WPAnalytics track:WPAnalyticsStatReaderCommentedOnArticle];
-    publisher.post.dateCommentsSynced = nil;
-    [self.inlineComposeView dismissComposer];
 }
 
 

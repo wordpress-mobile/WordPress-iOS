@@ -13,7 +13,6 @@
 + (NSString *)helpshiftAPIKey;
 + (NSString *)helpshiftDomainName;
 + (NSString *)helpshiftAppId;
-+ (NSString *)taplyticsAPIKey;
 + (NSString *)debuggingKey;
 + (NSString *)lookbackToken;
 @end
