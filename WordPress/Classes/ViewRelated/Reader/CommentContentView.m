@@ -65,6 +65,10 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
     return CGSizeMake(size.width, ceil(height));
 }
 
+- (void)refreshMediaLayout
+{
+    [self.textContentView refreshMediaLayout];
+}
 
 #pragma mark - Private Methods
 

@@ -12,5 +12,6 @@
 
 - (void)configureCell:(Comment *)comment;
 - (void)setAvatarImage:(UIImage *)avatarImage;
+- (void)refreshMediaLayout;
 
 @end

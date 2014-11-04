@@ -40,4 +40,7 @@
  */
 - (void)highlightAuthor:(BOOL)highlight;
 
+
+- (void)refreshMediaLayout;
+
 @end
