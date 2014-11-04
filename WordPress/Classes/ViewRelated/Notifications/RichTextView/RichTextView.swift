@@ -3,12 +3,12 @@ import Foundation
 
 @objc public protocol RichTextViewDataSource
 {
-    optional func richTextView(richTextView: RichTextView, viewForTextAttachment attachment: NSTextAttachment) -> UIView?
+    optional func textView(textView: UITextView, viewForTextAttachment attachment: NSTextAttachment) -> UIView?
 }
 
 @objc public protocol RichTextViewDelegate : UITextViewDelegate
 {
-    optional func richTextView(richTextView: RichTextView, didPressLink link: NSURL)
+    optional func textView(textView: UITextView, didPressLink link: NSURL)
 }
 
 
@@ -175,7 +175,7 @@ import Foundation
         attributedText.enumerateAttachments {
             (attachment: NSTextAttachment, range: NSRange) -> () in
             
-            let attachmentView = self.dataSource?.richTextView?(self, viewForTextAttachment: attachment)
+            let attachmentView = self.dataSource?.textView?(self.textView, viewForTextAttachment: attachment)
             if attachmentView == nil {
                 return
             }
@@ -210,7 +210,7 @@ import Foundation
         // Load the NSURL instance, if any
         let rawURL = textStorage.attribute(NSLinkAttributeName, atIndex: characterIndex, effectiveRange: nil) as? NSURL
         if let unwrappedURL = rawURL {
-            delegate?.richTextView?(self, didPressLink: unwrappedURL)
+            delegate?.textView?(textView, didPressLink: unwrappedURL)
         }
     }
     
