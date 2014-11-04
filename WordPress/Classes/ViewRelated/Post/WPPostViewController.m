@@ -354,6 +354,11 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)showSettings
 {
+    if ([self isMediaInUploading]) {
+        [self showMediaInUploadingAlert];
+        return;
+    }
+    
     Post *post = (Post *)self.post;
     PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post shouldHideStatusBar:YES];
 	vc.hidesBottomBarWhenPushed = YES;
@@ -362,6 +367,11 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)showPreview
 {
+    if ([self isMediaInUploading]) {
+        [self showMediaInUploadingAlert];
+        return;
+    }
+    
     PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.post shouldHideStatusBar:self.isEditing];
 	vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
@@ -387,14 +397,14 @@ static NSDictionary *EnabledButtonBarStyle;
 {
     if (_currentActionSheet) return;
     
+    if ([self isMediaInUploading]) {
+        [self showMediaInUploadingAlert];
+        return;
+    }
+    
 	[self stopEditing];
     [self.postSettingsViewController endEditingAction:nil];
 	
-	if ([self isMediaInUploading]) {
-		[self showMediaInUploadingAlert];
-		return;
-	}
-    
     if (![self hasChanges]) {
         [WPAnalytics track:WPAnalyticsStatEditorClosed];
 		
