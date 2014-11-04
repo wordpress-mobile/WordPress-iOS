@@ -503,7 +503,10 @@ static CGFloat NotificationSectionSeparator     = 10;
     cell.isApproveOn                = [commentBlock isActionOn:NoteActionApproveKey];
     
     cell.name                       = userBlock.text;
-    cell.timestamp                  = [self.note.timestampAsDate shortString];
+    // Append bullet character if we have a site title or url to show
+    cell.timestamp                  = (userBlock.metaTitleOrUrl) ? [[self.note.timestampAsDate shortString] stringByAppendingString:@" • "]
+                                                                    : [self.note.timestampAsDate shortString];
+    cell.site                       = userBlock.metaTitleOrUrl;
     cell.attributedCommentText      = commentBlock.regularAttributedTextOverride ?: commentBlock.regularAttributedText;
 
     cell.onUrlClick                 = ^(NSURL *url){
@@ -536,6 +539,13 @@ static CGFloat NotificationSectionSeparator     = 10;
     
     cell.onMoreClick                = ^(UIButton * sender){
         [weakSelf displayMoreActionsWithBlock:commentBlock sender:sender];
+    };
+
+    cell.onSiteClick                = ^(UIButton * sender){
+        NSURL *url = [[NSURL alloc] initWithString:userBlock.metaLinksHome];
+        if (url) {
+            [weakSelf openURL:url];
+        }
     };
 
     [cell downloadGravatarWithURL:media.mediaURL];

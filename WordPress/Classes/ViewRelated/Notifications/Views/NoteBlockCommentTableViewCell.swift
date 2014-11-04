@@ -13,6 +13,7 @@ import Foundation
     public var onUnapproveClick:    EventHandler?
     public var onTrashClick:        EventHandler?
     public var onMoreClick:         EventHandler?
+    public var onSiteClick:         EventHandler?
 
     public var attributedCommentText: NSAttributedString? {
         didSet {
@@ -27,6 +28,11 @@ import Foundation
     public var timestamp: String? {
         didSet {
             timestampLabel.text  = timestamp ?? String()
+        }
+    }
+    public var site: String? {
+        didSet {
+            btnSite.setTitle(site ?? String(), forState: .Normal)
         }
     }
     public var isReplyEnabled: Bool = false {
@@ -93,7 +99,8 @@ import Foundation
         // Setup Labels
         nameLabel.font                      = WPStyleGuide.Notifications.blockBoldFont
         timestampLabel.font                 = WPStyleGuide.Notifications.blockRegularFont
-        
+        btnSite.titleLabel!.font            = WPStyleGuide.Notifications.blockRegularFont
+
         // Background
         approvalStatusView.backgroundColor  = WPStyleGuide.Notifications.blockUnapprovedBgColor
         approvalSidebarView.backgroundColor = WPStyleGuide.Notifications.blockUnapprovedSideColor
@@ -175,8 +182,12 @@ import Foundation
     @IBAction public func moreWasPressed(sender: AnyObject) {
         hitEventHandler(onMoreClick, sender: sender)
     }
-    
-    
+
+    // MARK: - IBActions
+    @IBAction public func siteWasPressed(sender: AnyObject) {
+        hitEventHandler(onSiteClick, sender: sender)
+    }
+
     // MARK: - Private Methods
     private func hitEventHandler(handler: EventHandler?, sender: AnyObject) {
         if let listener = handler {
@@ -219,32 +230,17 @@ import Foundation
         separatorView.backgroundColor       = WPStyleGuide.Notifications.blockSeparatorColorForComment(isApproved: isCommentApproved)
         nameLabel.textColor                 = WPStyleGuide.Notifications.blockTextColorForComment(isApproved: isCommentApproved)
         timestampLabel.textColor            = WPStyleGuide.Notifications.blockTimestampColorForComment(isApproved: isCommentApproved)
+        btnSite.setTitleColor(WPStyleGuide.Notifications.blockTimestampColorForComment(isApproved: isCommentApproved), forState: .Normal)
         super.linkColor                     = WPStyleGuide.Notifications.blockLinkColorForComment(isApproved: isCommentApproved)
-        super.attributedText                = isCommentApproved ? attributedCommentApprovedText : attributedCommentUnapprovedText
-    }
-    
-    
-    // MARK: - Private Calculated Properties
-    private var attributedCommentApprovedText : NSAttributedString? {
-        if attributedCommentText == nil {
-            return nil
-        }
-        
-        let unwrappedMutableString  = attributedCommentText!.mutableCopy() as NSMutableAttributedString
-        let range                   = NSRange(location: 0, length: min(1, unwrappedMutableString.length))
-        let paragraph               = WPStyleGuide.Notifications.blockParagraphStyleWithIndentation(firstLineHeadIndent)
-        unwrappedMutableString.addAttribute(NSParagraphStyleAttributeName, value: paragraph, range: range)
-        
-        return unwrappedMutableString
+        super.attributedText                = isCommentApproved ? attributedCommentText : attributedCommentUnapprovedText
     }
 
     private var attributedCommentUnapprovedText : NSAttributedString? {
-        let text = attributedCommentApprovedText
-        if text == nil {
+        if attributedCommentText == nil {
             return nil
         }
-            
-        let unwrappedMutableString  = text!.mutableCopy() as NSMutableAttributedString
+
+        let unwrappedMutableString  = attributedCommentText!.mutableCopy() as NSMutableAttributedString
         let range                   = NSRange(location: 0, length: unwrappedMutableString.length)
         let textColor               = WPStyleGuide.Notifications.blockUnapprovedTextColor
         unwrappedMutableString.addAttribute(NSForegroundColorAttributeName, value: textColor, range: range)
@@ -273,6 +269,7 @@ import Foundation
     @IBOutlet private weak var nameLabel            : UILabel!
     @IBOutlet private weak var timestampLabel       : UILabel!
     @IBOutlet private weak var separatorView        : UIView!
+    @IBOutlet private weak var btnSite              : UIButton!
     @IBOutlet private weak var btnReply             : UIButton!
     @IBOutlet private weak var btnLike              : UIButton!
     @IBOutlet private weak var btnApprove           : UIButton!
