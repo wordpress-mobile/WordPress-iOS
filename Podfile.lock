@@ -120,7 +120,7 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, commit `45b7e7f1d68da0090beb5ecb6a88d1730b0a6477`)
   - WordPress-iOS-Shared (= 0.1.3)
-  - WordPressApi (from `https://github.com/wordpress-mobile/WordPressApi.git`)
+  - WordPressApi (from `https://github.com/wordpress-mobile/WordPressApi.git`, tag `0.0.1`)
   - WordPressCom-Analytics-iOS (= 0.0.12)
   - WordPressCom-Stats-iOS (= 0.1.4)
   - wpxmlrpc (~> 0.4.3)
@@ -142,6 +142,7 @@ EXTERNAL SOURCES:
     :git: git://github.com/wordpress-mobile/WordPress-iOS-Editor
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPressApi.git
+    :tag: 0.0.1
 
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
