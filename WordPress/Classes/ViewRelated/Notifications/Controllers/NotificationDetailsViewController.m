@@ -366,7 +366,26 @@ static CGFloat NotificationSectionSeparator     = 10;
         Ref.: http://stackoverflow.com/questions/17699831/how-to-change-height-of-grouped-uitableview-header
      */
 
-    return (section == _bodySectionIndex && _sectionCount > 1) ? NotificationSectionSeparator : CGFLOAT_MIN;
+    return CGFLOAT_MIN;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    // Make sure no SectionFooter is rendered
+    return CGFLOAT_MIN;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    // Make sure no SectionFooter is rendered
+    return [UIView new];
+}
+
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    // Make sure no SectionFooter is rendered
+    return nil;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -546,7 +565,7 @@ static CGFloat NotificationSectionSeparator     = 10;
         if (!userBlock.metaLinksHome) {
             return;
         }
-        
+
         NSURL *url = [[NSURL alloc] initWithString:userBlock.metaLinksHome];
         if (url) {
             [weakSelf openURL:url];
