@@ -504,8 +504,9 @@ static CGFloat NotificationSectionSeparator     = 10;
     
     cell.name                       = userBlock.text;
     // Append bullet character if we have a site title or url to show
-    cell.timestamp                  = (userBlock.metaTitleOrUrl) ? [[self.note.timestampAsDate shortString] stringByAppendingString:@" • "]
-                                                                    : [self.note.timestampAsDate shortString];
+    cell.timestamp                  = (userBlock.metaTitleOrUrl) ?
+                        [[self.note.timestampAsDate shortString] stringByAppendingString:@" • "]
+                        : [self.note.timestampAsDate shortString];
     cell.site                       = userBlock.metaTitleOrUrl;
     cell.attributedCommentText      = commentBlock.regularAttributedTextOverride ?: commentBlock.regularAttributedText;
 
@@ -542,6 +543,10 @@ static CGFloat NotificationSectionSeparator     = 10;
     };
 
     cell.onSiteClick                = ^(UIButton * sender){
+        if (!userBlock.metaLinksHome) {
+            return;
+        }
+        
         NSURL *url = [[NSURL alloc] initWithString:userBlock.metaLinksHome];
         if (url) {
             [weakSelf openURL:url];

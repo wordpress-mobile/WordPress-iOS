@@ -125,6 +125,20 @@ NSString * const CommentStatusDraft = @"draft";
     return status;
 }
 
+- (NSString *)authorUrlForDisplay
+{
+    if (self.author_url) {
+        return [[self.author_url stringByReplacingOccurrencesOfString:@"https://" withString:@""]
+                stringByReplacingOccurrencesOfString:@"http://" withString:@""];
+    }
+
+    return nil;
+}
+
+- (BOOL)hasAuthorUrl {
+    return self.author_url && ![self.author_url isEqualToString:@""];
+}
+
 - (NSString *)contentForDisplay
 {
     // Unescape HTML characters and add <br /> tags
