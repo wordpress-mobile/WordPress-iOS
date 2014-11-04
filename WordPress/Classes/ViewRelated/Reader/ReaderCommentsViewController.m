@@ -651,6 +651,11 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     return [self.tableViewHandler.resultsController indexPathForObject:comment];
 }
 
+/**
+ Do not use dequeued cells for comments with media attachments. We want to avoid
+ unnecessary loading/redrawing of the media cell's content which we can't guarentee
+ if we use dequeued cells. 
+ */
 - (ReaderCommentCell *)storedCellForIndexPath:(NSIndexPath *)indexPath
 {
     Comment *comment = (Comment *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
