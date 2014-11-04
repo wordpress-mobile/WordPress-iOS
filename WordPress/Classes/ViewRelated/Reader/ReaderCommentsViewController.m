@@ -110,31 +110,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-
-    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
-    if (IS_IPHONE) {
-        // DTCoreText can be cranky about refreshing its rendered text when its
-        // frame changes, even when setting its relayoutMask. Setting setNeedsLayout
-        // on the cell prior to reloading seems to force the cell's
-        // DTAttributedTextContentView to behave.
-        for (UITableViewCell *cell in [self.tableView visibleCells]) {
-            [cell setNeedsLayout];
-        }
-        [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
-    }
-
-    // Make sure a selected comment is visible after rotating, and that the replyTextView is still the first responder.
-    if (selectedIndexPath) {
-        [self.replyTextView becomeFirstResponder];
-        [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-    }
-
-    [self configureNoResultsView];
-}
-
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
@@ -177,6 +152,31 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self.noResultsView removeFromSuperview];
 
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+
+    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+    if (IS_IPHONE) {
+        // DTCoreText can be cranky about refreshing its rendered text when its
+        // frame changes, even when setting its relayoutMask. Setting setNeedsLayout
+        // on the cell prior to reloading seems to force the cell's
+        // DTAttributedTextContentView to behave.
+        for (UITableViewCell *cell in [self.tableView visibleCells]) {
+            [cell setNeedsLayout];
+        }
+        [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
+    }
+
+    // Make sure a selected comment is visible after rotating, and that the replyTextView is still the first responder.
+    if (selectedIndexPath) {
+        [self.replyTextView becomeFirstResponder];
+        [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+
+    [self configureNoResultsView];
 }
 
 
@@ -654,7 +654,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 /**
  Do not use dequeued cells for comments with media attachments. We want to avoid
  unnecessary loading/redrawing of the media cell's content which we can't guarentee
- if we use dequeued cells. 
+ if we use dequeued cells.
  */
 - (ReaderCommentCell *)storedCellForIndexPath:(NSIndexPath *)indexPath
 {
