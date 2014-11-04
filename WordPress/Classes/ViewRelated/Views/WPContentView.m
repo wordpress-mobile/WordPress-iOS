@@ -1,255 +1,66 @@
 #import "WPContentView.h"
-#import "WPContentViewSubclass.h"
-
-#import <DTCoreText/DTCoreText.h>
-#import <AFNetworking/UIImageView+AFNetworking.h>
-#import <WordPress-iOS-Shared/UIImage+Util.h>
-#import <WordPress-iOS-Shared/WPFontManager.h>
-#import "UIImageView+Gravatar.h"
-#import "WordPressAppDelegate.h"
-#import "WPWebViewController.h"
-#import "UIImageView+AFNetworkingExtra.h"
-#import "UILabel+SuggestSize.h"
 #import "ContentActionButton.h"
-#import "NSDate+StringFormatting.h"
-#import "UIColor+Helpers.h"
-#import "WPTableViewCell.h"
-#import "DTTiledLayerWithoutFade.h"
-#import "ReaderMediaView.h"
-#import "ReaderImageView.h"
-#import "ReaderVideoView.h"
+#import "WPContentAttributionView.h"
+#import "WPContentActionView.h"
+#import <WordPress-iOS-Shared/WPFontManager.h>
 
-const CGFloat RPVAuthorPadding = 8.0f;
-const CGFloat RPVHorizontalInnerPadding = 12.0f;
-const CGFloat RPVMetaViewHeight = 48.0f;
-const CGFloat RPVAuthorViewHeight = 32.0f;
-const CGFloat RPVVerticalPadding = 14.0f;
-const CGFloat RPVAvatarSize = 32.0f;
-const CGFloat RPVBorderHeight = 1.0f;
-const CGFloat RPVMaxImageHeightPercentage = 0.59f;
-const CGFloat RPVMaxSummaryHeight = 88.0f;
-const CGFloat RPVFollowButtonWidth = 100.0f;
-const CGFloat RPVTitlePaddingBottom = 3.0f;
-const CGFloat RPVSmallButtonLeftPadding = 2; // Follow, tag
-const CGFloat RPVLineHeightMultiple = 1.03f;
+const CGFloat WPContentViewHorizontalInnerPadding = 12.0;
+const CGFloat WPContentViewOuterMargin = 8.0;
+const CGFloat WPContentViewAttributionVerticalPadding = 8.0;
+const CGFloat WPContentViewVerticalPadding = 14.0;
+const CGFloat WPContentViewTitleContentPadding = 6.0;
+const CGFloat WPContentViewMaxImageHeightPercentage = 0.59;
+const CGFloat WPContentViewAuthorAvatarSize = 32.0;
+const CGFloat WPContentViewAuthorViewHeight = 32.0;
+const CGFloat WPContentViewActionViewHeight = 48.0;
+const CGFloat WPContentViewBorderHeight = 1.0;
+const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
-// Control buttons (Like, Reblog, ...)
-const CGFloat RPVControlButtonHeight = 48.0f;
-const CGFloat RPVControlButtonWidth = 48.0f;
-const CGFloat RPVControlButtonSpacing = 12.0f;
-const CGFloat RPVControlButtonBorderSize = 0.0f;
-
-@interface WPContentView()
-
-@property (nonatomic, strong) NSTimer *dateRefreshTimer;
-@property (nonatomic, strong) NSMutableArray *mediaArray;
-@property (nonatomic, strong) ReaderMediaQueue *mediaQueue;
-@property (nonatomic, strong) NSMutableArray *actionButtons;
-
-@property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UILabel *snippetLabel;
-@property (nonatomic, strong) DTAttributedTextContentView *textContentView;
-@property (nonatomic, strong) UIView *bottomView;
-@property (nonatomic, strong) UIView *bottomContainerView;
-@property (nonatomic, strong) CALayer *bottomBorder;
-@property (nonatomic, strong) CALayer *titleBorder;
-@property (nonatomic, strong) UIView *byView;
-@property (nonatomic, strong) UIView *controlView;
-@property (nonatomic, strong) UIButton *timeButton;
-@property (nonatomic, strong) UILabel *bylineLabel;
-@property (nonatomic, strong) UIButton *byButton;
-@property (nonatomic, assign) BOOL willRefreshMediaLayout, shouldShowDateInByView;
-
+@interface WPContentView()<WPContentAttributionViewDelegate>
+// Stores a reference to the image height constraints for easy adjustment.
+@property (nonatomic, strong) NSLayoutConstraint *featuredImageZeroHeightConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *featuredImagePercentageHeightConstraint;
+@property (nonatomic, strong) NSMutableArray *labelsNeedingPreferredMaxLayoutWidth;
 @end
 
-@implementation WPContentView {
+@implementation WPContentView
+
++ (UIFont *)titleFont
+{
+    return (IS_IPAD ? [UIFont fontWithName:@"Merriweather-Bold" size:24.0f] : [UIFont fontWithName:@"Merriweather-Bold" size:19.0f]);
 }
 
-+ (UIFont *)titleFont {
-    return (IS_IPAD ? [UIFont fontWithName:@"Merriweather-Bold" size:24.0f] : [UIFont fontWithName:@"Merriweather-Bold"
-                                                                                              size:19.0f]);
-}
-
-+ (UIFont *)summaryFont
++ (UIFont *)contentFont
 {
     return (IS_IPAD ? [WPFontManager openSansRegularFontOfSize:16.0] : [WPFontManager openSansRegularFontOfSize:14.0]);
 }
 
-+ (UIFont *)moreContentFont
+#pragma mark - Lifecycle
+
+- (void)dealloc
 {
-    return [WPFontManager openSansRegularFontOfSize:12.0];
+    self.contentProvider = nil;
+    self.delegate = nil;
 }
 
-#pragma mark - Lifecycle Methods
-
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _mediaArray = [NSMutableArray array];
-        _mediaQueue = [[ReaderMediaQueue alloc] initWithDelegate:self];
-        _actionButtons = [NSMutableArray arrayWithCapacity:4];
-
-        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        self.opaque = YES;
-
-        _cellImageView = [[UIImageView alloc] init];
-        _cellImageView.backgroundColor = [WPStyleGuide readGrey];
-        _cellImageView.contentMode = UIViewContentModeScaleAspectFill;
-        _cellImageView.clipsToBounds = YES;
-        _cellImageView.contentMode = UIViewContentModeScaleAspectFill;
-        [self addSubview:_cellImageView];
-
-        _titleLabel = [[UILabel alloc] init];
-        _titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        _titleLabel.backgroundColor = [UIColor clearColor];
-        _titleLabel.textColor = [UIColor colorWithHexString:@"333"];
-        _titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        _titleLabel.numberOfLines = 0;
-        [self addSubview:_titleLabel];
-
-        _titleBorder = [[CALayer alloc] init];
-        _titleBorder.backgroundColor = [[UIColor colorWithHexString:@"f1f1f1"] CGColor];
-        [self.layer addSublayer:_titleBorder];
-
-        _byView = [[UIView alloc] init];
-        _byView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        _byView.backgroundColor = [UIColor clearColor];
-        _byView.userInteractionEnabled = YES;
-        [self addSubview:_byView];
-
-        CGRect avatarFrame = CGRectMake(RPVHorizontalInnerPadding, RPVAuthorPadding, RPVAvatarSize, RPVAvatarSize);
-        _avatarImageView = [[UIImageView alloc] initWithFrame:avatarFrame];
-        [_byView addSubview:_avatarImageView];
-
-        _bylineLabel = [[UILabel alloc] init];
-        _bylineLabel.backgroundColor = [UIColor clearColor];
-        _bylineLabel.numberOfLines = 1;
-        _bylineLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        _bylineLabel.font = [WPFontManager openSansRegularFontOfSize:12.0];
-        _bylineLabel.adjustsFontSizeToFitWidth = NO;
-        _bylineLabel.textColor = [UIColor colorWithHexString:@"333"];
-        [_byView addSubview:_bylineLabel];
-
-        _byButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _byButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        _byButton.backgroundColor = [UIColor clearColor];
-        _byButton.titleLabel.font = [WPFontManager openSansRegularFontOfSize:12.0];
-        [_byButton addTarget:self action:@selector(authorLinkAction:) forControlEvents:UIControlEventTouchUpInside];
-        [_byButton setTitleColor:[WPStyleGuide buttonActionColor] forState:UIControlStateNormal];
-        [_byView addSubview:_byButton];
-
-        _bottomView = [[UIView alloc] init];
-        _bottomView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        _bottomView.backgroundColor = [UIColor clearColor];
-        [self addSubview:_bottomView];
-
-        _bottomBorder = [[CALayer alloc] init];
-        _bottomBorder.backgroundColor = [[UIColor colorWithHexString:@"f1f1f1"] CGColor];
-        [_bottomView.layer addSublayer:_bottomBorder];
-
-        _timeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _timeButton.backgroundColor = [UIColor clearColor];
-        _timeButton.titleLabel.font = [WPFontManager openSansRegularFontOfSize:12.0];
-        [_timeButton setTitleEdgeInsets: UIEdgeInsetsMake(0, RPVSmallButtonLeftPadding, 0, 0)];
-
-        // Disable it for now (could be used for permalinks in the future)
-        [_timeButton setImage:[UIImage imageNamed:@"reader-postaction-time"] forState:UIControlStateDisabled];
-        [_timeButton setTitleColor:[UIColor colorWithHexString:@"aaa"] forState:UIControlStateDisabled];
-        [_timeButton setEnabled:NO];
-
-        if (_shouldShowDateInByView) {
-            _timeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-            _timeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-            [_byView addSubview:_timeButton];
-        } else {
-            _timeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-            [_bottomView addSubview:_timeButton];
-        }
-
-        // Update the relative timestamp once per minute
-        _dateRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self
-                                                           selector:@selector(refreshDate:)
-                                                           userInfo:nil
-                                                            repeats:YES];
+        self.labelsNeedingPreferredMaxLayoutWidth = [NSMutableArray array];
+        [self constructSubviews];
+        [self configureConstraints];
     }
     return self;
 }
 
-- (void)dealloc
+- (void)layoutSubviews
 {
-    _contentProvider = nil;
-    _delegate = nil;
-    _textContentView.delegate = nil;
-    _mediaQueue.delegate = nil;
-    [_mediaQueue discardQueuedItems];
-
-    [_dateRefreshTimer invalidate];
-    _dateRefreshTimer = nil;
+    [self refreshLabelPreferredMaxLayoutWidth];
+    [super layoutSubviews];
 }
 
-- (void)setShouldShowDateInByView {
-    _shouldShowDateInByView = YES;
-}
-
-- (UIView *)viewForFullContent
-{
-    if (_textContentView) {
-        return _textContentView;
-    }
-
-    [DTAttributedTextContentView setLayerClass:[DTTiledLayerWithoutFade class]];
-
-    // Needs an initial frame
-    _textContentView = [[DTAttributedTextContentView alloc] initWithFrame:self.frame];
-    _textContentView.delegate = self;
-    _textContentView.backgroundColor = [UIColor whiteColor];
-    _textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, RPVHorizontalInnerPadding, 0.0f, RPVHorizontalInnerPadding);
-    _textContentView.shouldDrawImages = NO;
-    _textContentView.shouldDrawLinks = NO;
-
-    return _textContentView;
-}
-
-- (UIView *)viewForContentPreview
-{
-    if (_snippetLabel) {
-        return _snippetLabel;
-    }
-
-    _snippetLabel = [[UILabel alloc] init];
-    _snippetLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    _snippetLabel.backgroundColor = [UIColor clearColor];
-    _snippetLabel.textColor = [UIColor colorWithHexString:@"333"];
-    _snippetLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-    _snippetLabel.numberOfLines = 0;
-
-    return _snippetLabel;
-}
-
-#pragma mark - Instance methods
-
-- (void)reloadData
-{
-    [self configureContentView:self.contentProvider];
-    [self setNeedsLayout];
-}
-
-- (void)reset
-{
-    _bylineLabel.text = nil;
-    _titleLabel.text = nil;
-    _snippetLabel.text = nil;
-
-    [_cellImageView cancelImageRequestOperation];
-    _cellImageView.image = nil;
-}
-
-- (BOOL)privateContent
-{
-    // TODO: figure out how/if this applies to subclasses
-    return NO;
-}
+#pragma mark - Public Methods
 
 - (void)setContentProvider:(id<WPContentViewProvider>)contentProvider
 {
@@ -258,224 +69,419 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     }
 
     _contentProvider = contentProvider;
-    [self configureContentView:_contentProvider];
+    [self configureView];
 }
 
-- (void)setAuthorDisplayName:(NSString *)authorName authorLink:(NSString *)authorLink
+- (void)reset
 {
-    self.bylineLabel.text = authorName;
-    [self.byButton setTitle:authorLink forState:UIControlStateNormal];
-    [self.byButton setEnabled:YES];
-    [self.byButton setHidden:NO];
+    [self setContentProvider:nil];
 }
 
-- (void)configureContentView:(id<WPContentViewProvider>)contentProvider
+- (void)setFeaturedImage:(UIImage *)image
 {
-    self.bylineLabel.text = [contentProvider authorForDisplay];
-
-    if ([[contentProvider blogNameForDisplay] length] > 0) {
-        [self.byButton setEnabled:YES];
-        [self.byButton setHidden:NO];
-        [self.byButton setTitle:[contentProvider blogNameForDisplay] forState:UIControlStateNormal];
-    } else {
-        [self.byButton setEnabled:NO];
-        [self.byButton setHidden:YES];
-    }
-
-    [self refreshDate];
-
-    self.cellImageView.hidden = YES;
-
-    [self updateActionButtons];
-
+    self.featuredImageView.image = image;
 }
 
-- (void)layoutSubviews
+- (void)setAvatarImage:(UIImage *)image
 {
-    [super layoutSubviews];
-
-    CGFloat contentWidth = self.frame.size.width;
-
-    self.byView.frame = CGRectMake(0, [self topMarginHeight], contentWidth, RPVAuthorViewHeight + RPVAuthorPadding * 2);
-    CGFloat bylineX = RPVAvatarSize + RPVAuthorPadding + RPVHorizontalInnerPadding;
-    CGFloat byLineWidth = contentWidth - bylineX;
-    if (self.shouldShowDateInByView) {
-        byLineWidth -= RPVControlButtonWidth;
-    }
-    self.bylineLabel.frame = CGRectMake(bylineX, RPVAuthorPadding - 2, byLineWidth, 18);
-    self.byButton.frame = CGRectMake(bylineX, self.bylineLabel.frame.origin.y + 18, byLineWidth, 18);
-
-    [self.textContentView relayoutText];
-    CGFloat height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
-    CGRect textContainerFrame = self.textContentView.frame;
-    textContainerFrame.size.width = contentWidth;
-    textContainerFrame.size.height = height;
-    textContainerFrame.origin.y = self.byView.frame.origin.y + self.byView.frame.size.height;
-    self.textContentView.frame = textContainerFrame;
-
-    // Position the meta view and its subviews
-    CGFloat bottomY = self.textContentView.frame.origin.y + self.textContentView.frame.size.height + RPVVerticalPadding;
-    self.bottomView.frame = CGRectMake(0, bottomY, contentWidth, RPVMetaViewHeight);
-    self.bottomBorder.frame = CGRectMake(RPVHorizontalInnerPadding,
-                                         0,
-                                         contentWidth - RPVHorizontalInnerPadding * 2,
-                                         RPVBorderHeight);
-
-    // Action buttons
-    if (self.shouldShowDateInByView) {
-        [self layoutActionButtonsWithEvenSpacing];
-    } else {
-        [self layoutActionButtonsRightToLeft];
-    }
-
-    // Update own frame
-    CGRect ownFrame = self.frame;
-    ownFrame.size.height = self.bottomView.frame.origin.y + self.bottomView.frame.size.height;
-    self.frame = ownFrame;
+    [self.attributionView setAvatarImage:image];
 }
 
-- (void)layoutActionButtonsWithEvenSpacing {
-    if (self.actionButtons.count == 0 || !self.bottomContainerView) {
+- (BOOL)privateContent
+{
+    return NO;
+}
+
+- (CGSize)sizeThatFits:(CGSize)size
+{
+    CGFloat innerWidth = size.width - (WPContentViewOuterMargin * 2);
+    CGSize innerSize = CGSizeMake(innerWidth, CGFLOAT_MAX);
+    CGFloat height = 0;
+    height += self.attributionView.intrinsicContentSize.height;
+    height += self.actionView.intrinsicContentSize.height;
+    if (!self.featuredImageView.hidden) {
+        height += (size.width * WPContentViewMaxImageHeightPercentage);
+    }
+    height += [self.titleLabel sizeThatFits:innerSize].height;
+    height += [self sizeThatFitsContent:innerSize].height;
+
+    height += WPContentViewOuterMargin;
+    height += WPContentViewAttributionVerticalPadding;
+    height += WPContentViewTitleContentPadding;
+    height += (WPContentViewVerticalPadding * 2);
+
+    return CGSizeMake(size.width, ceil(height));
+}
+
+- (CGSize)sizeThatFitsContent:(CGSize)size
+{
+    return [self.contentView sizeThatFits:size];
+}
+
+- (CGFloat)horizontalMarginForContent
+{
+    return WPContentViewOuterMargin;
+}
+
+- (void)setAlwaysHidesFeaturedImage:(BOOL)alwaysHides
+{
+    if (_alwaysHidesFeaturedImage == alwaysHides) {
         return;
     }
-
-    // Match up the action button horizontal position with the application tabs
-    CGFloat buttonMargin = IS_IPAD ? 62.0f : 32.0f;
-    if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation) && !IS_IPAD) {
-        buttonMargin = 94.0f;
-    }
-
-    // Space action buttons evenly using auto layout
-    UIButton *previousButton = nil;
-    NSDictionary *metrics = @{@"spacing":@(buttonMargin)};
-    NSString *visualFormat = nil;
-    [self.bottomContainerView removeConstraints:self.bottomContainerView.constraints];
-    NSMutableArray *constraints = [NSMutableArray array];
-    for (UIButton *button in self.actionButtons) {
-        button.translatesAutoresizingMaskIntoConstraints = NO;
-        visualFormat = nil;
-        NSDictionary *views = nil;
-        if (previousButton) {
-            visualFormat = @"H:[previousButton(==button)]-spacing-[button]";
-            views = NSDictionaryOfVariableBindings(previousButton,button);
-        } else {
-            visualFormat = @"|[button(<=48)]";
-            views = NSDictionaryOfVariableBindings(button);
-        }
-
-        // Constrain height to bottomContainerView
-        NSArray *heightConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[button]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(button)];
-        [self.bottomContainerView addConstraints:heightConstraints];
-
-        [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:visualFormat options:nil metrics:metrics views:views]];
-        previousButton = button;
-    }
-
-    visualFormat = @"H:[previousButton]|";
-    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:visualFormat options:nil metrics:metrics views:NSDictionaryOfVariableBindings(previousButton)]];
-    [self.bottomContainerView addConstraints:constraints];
-
-    CGFloat timeWidth = RPVControlButtonWidth + 10.0f;
-    CGFloat timeHeight = _byView.frame.size.height;
-    CGFloat timeXPosition = _byView.frame.size.width - timeWidth - RPVHorizontalInnerPadding;
-    CGFloat timeYPosition = 0.0f;
-    self.timeButton.frame = CGRectMake(timeXPosition, timeYPosition, timeWidth, timeHeight);
+    _alwaysHidesFeaturedImage = alwaysHides;
+    [self configureFeaturedImageView];
 }
 
-- (void)layoutActionButtonsRightToLeft {
-    CGFloat buttonX = self.bottomView.frame.size.width - RPVHorizontalInnerPadding; // minus 2px so button text aligns
-    CGFloat buttonY = RPVBorderHeight; // Just below the line
-    NSArray* reversedActionButtons = [[self.actionButtons reverseObjectEnumerator] allObjects];
+#pragma mark - Private Methods
 
-    CGFloat lastImageWidth = 0.0f;
-    CGFloat buttonWidth = 0.0f;
-    for (UIButton *actionButton in reversedActionButtons) {
-        // Button order from right-to-left, ignoring hidden buttons
-        if (actionButton.hidden) {
-            continue;
-        }
-
-        // Left most visible button needs a different size to align properly
-        if (buttonWidth == 0.0f) {
-            [actionButton sizeToFit];
-            buttonWidth = CGRectGetWidth(actionButton.frame);
-        } else {
-            buttonWidth = RPVControlButtonWidth;
-        }
-
-        // The x value needs to be adjusted to account for differences in the width between
-        // the current button's image, and the previous image. Otherwise, even though the
-        // UIButtons are spaced equally based on their frame, the difference in image size will
-        // make things look visually askew.
-        // Add the difference between the current button's image with, and previous
-        // button's width to correct things visually.
-        if (lastImageWidth != 0.0f) {
-            CGFloat width = actionButton.imageView.image.size.width;
-            CGFloat diff = width - lastImageWidth;
-            buttonX -= diff;
-        }
-
-        buttonX -= buttonWidth;
-        actionButton.frame = CGRectMake(buttonX, buttonY, buttonWidth, RPVControlButtonHeight);
-        buttonX -= RPVControlButtonSpacing; // add the padding for the next button in advance.
-
-        lastImageWidth = actionButton.imageView.image.size.width;
-    }
-
-    CGFloat timeWidth = buttonX - RPVHorizontalInnerPadding;
-    CGFloat timeHeight = RPVControlButtonHeight;
-    CGFloat timeXPosition = RPVHorizontalInnerPadding;
-    CGFloat timeYPosition = RPVBorderHeight;
-    self.timeButton.frame = CGRectMake(timeXPosition, timeYPosition, timeWidth, timeHeight);
+- (void)registerLabelForRefreshingPreferredMaxLayoutWidth:(UILabel *)label
+{
+    [self.labelsNeedingPreferredMaxLayoutWidth addObject:label];
 }
 
-- (UIButton *)addActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage
+- (void)refreshLabelPreferredMaxLayoutWidth
+{
+    CGFloat width = CGRectGetWidth(self.bounds) - (WPContentViewOuterMargin * 2);
+    for (UILabel *label in self.labelsNeedingPreferredMaxLayoutWidth) {
+        [label setPreferredMaxLayoutWidth:width];
+    }
+}
+
+- (void)configureConstraints
+{
+    CGFloat contentViewOuterMargin = [self horizontalMarginForContent];
+    NSDictionary *views = NSDictionaryOfVariableBindings(_attributionView, _attributionBorderView, _featuredImageView, _titleLabel, _contentView, _actionView);
+    NSDictionary *metrics = @{@"outerMargin": @(WPContentViewOuterMargin),
+                              @"contentViewOuterMargin": @(contentViewOuterMargin),
+                              @"verticalPadding": @(WPContentViewVerticalPadding),
+                              @"attributionVerticalPadding": @(WPContentViewAttributionVerticalPadding),
+                              @"titleContentPadding": @(WPContentViewTitleContentPadding),
+                              @"borderHeight": @(WPContentViewBorderHeight),
+                              @"priority":@900
+                              };
+
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(outerMargin)-[_attributionView]-(outerMargin)-|"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(outerMargin)-[_titleLabel]-(outerMargin)-|"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(contentViewOuterMargin)-[_contentView]-(contentViewOuterMargin)-|"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(outerMargin)-[_actionView]-(outerMargin)-|"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_featuredImageView]|"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(outerMargin)-[_attributionBorderView]-(outerMargin)-|"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(outerMargin@priority)-[_attributionView]-(attributionVerticalPadding@priority)-[_featuredImageView]-(verticalPadding@priority)-[_titleLabel]-(titleContentPadding@priority)-[_contentView]-(verticalPadding@priority)-[_actionView]|"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+
+    // Positions the border below the attribution view. Featured image should appear above it.
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_attributionView]-(attributionVerticalPadding@priority)-[_attributionBorderView(borderHeight)]"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+}
+
+- (void)configureFeaturedImageHeightConstraint
+{
+    if (!self.featuredImagePercentageHeightConstraint) {
+        self.featuredImagePercentageHeightConstraint = [NSLayoutConstraint constraintWithItem:self.featuredImageView
+                                                                                    attribute:NSLayoutAttributeHeight
+                                                                                    relatedBy:NSLayoutRelationEqual
+                                                                                       toItem:self.featuredImageView
+                                                                                    attribute:NSLayoutAttributeWidth
+                                                                                   multiplier:WPContentViewMaxImageHeightPercentage
+                                                                                     constant:0];
+    }
+
+    if (!self.featuredImageZeroHeightConstraint) {
+        NSDictionary *views = NSDictionaryOfVariableBindings(_featuredImageView);
+        self.featuredImageZeroHeightConstraint = [[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_featuredImageView(0)]"
+                                                                                          options:0
+                                                                                          metrics:nil
+                                                                                            views:views] firstObject];
+
+    }
+
+    NSLayoutConstraint *constraintToAdd;
+    NSLayoutConstraint *constraintToRemove;
+
+    if (self.featuredImageView.hidden) {
+        constraintToRemove = self.featuredImagePercentageHeightConstraint;
+        constraintToAdd = self.featuredImageZeroHeightConstraint;
+    } else {
+        // configure percentage height constraint
+        constraintToAdd = self.featuredImagePercentageHeightConstraint;
+        constraintToRemove = self.featuredImageZeroHeightConstraint;
+    }
+
+    // Remove the old constraint if necessary.
+    if ([self.constraints indexOfObject:constraintToRemove] != NSNotFound) {
+        [self removeConstraint:constraintToRemove];
+    }
+
+    // Add the new constraint and update if necessary.
+    if ([self.constraints indexOfObject:constraintToAdd] == NSNotFound) {
+        [self addConstraint:constraintToAdd];
+        [self setNeedsUpdateConstraints];
+    }
+}
+
+- (void)constructSubviews
+{
+    self.attributionView = [self viewForAttributionView];
+    [self addSubview:self.attributionView];
+
+    self.attributionBorderView = [self viewForBorder];
+    [self addSubview:self.attributionBorderView];
+
+    self.featuredImageView = [self imageViewForFeaturedImage];
+    [self addSubview:self.featuredImageView];
+
+    self.titleLabel = [self viewForTitle];
+    [self addSubview:self.titleLabel];
+
+    self.contentView = [self viewForContent];
+    [self addSubview:self.contentView];
+
+    self.actionView = [self viewForActionView];
+    [self addSubview:self.actionView];
+}
+
+#pragma mark - Subview factories
+
+- (WPContentAttributionView *)viewForAttributionView
+{
+    WPContentAttributionView *attrView = [[WPContentAttributionView alloc] init];
+    attrView.translatesAutoresizingMaskIntoConstraints = NO;
+    [attrView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    attrView.delegate = self;
+    return attrView;
+}
+
+- (UIView *)viewForBorder
+{
+    UIView *borderView = [[UIView alloc] init];
+    borderView.translatesAutoresizingMaskIntoConstraints = NO;
+    borderView.backgroundColor = [UIColor colorWithRed:232.0/255.0 green:240.0/255.0 blue:245.0/255.0 alpha:1.0];
+    return borderView;
+}
+
+- (UIImageView *)imageViewForFeaturedImage
+{
+    UIImageView *featuredImageView = [[UIImageView alloc] init];
+    featuredImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    featuredImageView.backgroundColor = [WPStyleGuide readGrey];
+    featuredImageView.contentMode = UIViewContentModeScaleAspectFill;
+    featuredImageView.clipsToBounds = YES;
+    featuredImageView.hidden = YES;
+
+    UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(featuredImageAction:)];
+    [featuredImageView addGestureRecognizer:tgr];
+
+    return featuredImageView;
+}
+
+- (UILabel *)viewForTitle
+{
+    UILabel *titleLabel = [[UILabel alloc] init];
+    titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    titleLabel.textColor = [WPStyleGuide littleEddieGrey];
+    titleLabel.backgroundColor = [UIColor whiteColor];
+    titleLabel.opaque = YES;
+    titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    titleLabel.numberOfLines = 4;
+    [self registerLabelForRefreshingPreferredMaxLayoutWidth:titleLabel];
+
+    return titleLabel;
+}
+
+- (UIView *)viewForContent
+{
+    UILabel *contentLabel = [[UILabel alloc] init];
+    contentLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    contentLabel.textColor = [WPStyleGuide littleEddieGrey];
+    contentLabel.backgroundColor = [UIColor whiteColor];
+    contentLabel.opaque = YES;
+    contentLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    contentLabel.numberOfLines = 4;
+    [self registerLabelForRefreshingPreferredMaxLayoutWidth:contentLabel];
+
+    return contentLabel;
+}
+
+- (WPContentActionView *)viewForActionView
+{
+    WPContentActionView *actionView = [[WPContentActionView alloc] init];
+    actionView.translatesAutoresizingMaskIntoConstraints = NO;
+    return actionView;
+}
+
+#pragma mark - Configuration
+
+- (void)configureView
+{
+    [self configureAttributionView];
+    [self configureFeaturedImageView];
+    [self configureTitleView];
+    [self configureContentView];
+    [self configureActionView];
+    [self configureActionButtons];
+    [self setAvatarImage:nil];
+    [self setFeaturedImage:nil];
+
+    [self setNeedsUpdateConstraints];
+}
+
+- (void)configureAttributionView
+{
+    self.attributionView.contentProvider = self.contentProvider;
+}
+
+- (void)configureFeaturedImageView
+{
+    if (self.contentProvider) {
+        NSURL *featuredImageURL = [self.contentProvider featuredImageURLForDisplay];
+        self.featuredImageView.hidden = ([[featuredImageURL absoluteString] length] == 0) || self.alwaysHidesFeaturedImage;
+        [self configureFeaturedImageHeightConstraint];
+    } else {
+        self.featuredImageView.image = nil;
+    }
+}
+
+- (void)configureTitleView
+{
+    self.titleLabel.attributedText = [self attributedStringForTitle:[self.contentProvider titleForDisplay]];
+    // Reassign line break mode after setting attributed text, else we never see an ellipsis.
+    self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+}
+
+- (void)configureContentView
+{
+    UILabel *label = (UILabel *)self.contentView;
+    label.attributedText = [self attributedStringForContent:[self.contentProvider contentPreviewForDisplay]];
+    // Reassign line break mode after setting attributed text, else we never see an ellipsis.
+    label.lineBreakMode = NSLineBreakByTruncatingTail;
+}
+
+- (void)configureActionView
+{
+    self.actionView.contentProvider = self.contentProvider;
+}
+
+- (void)configureActionButtons
+{
+    // noop. Subclasses should override.
+}
+
+- (UIButton *)createActionButtonWithImage:(UIImage *)buttonImage selectedImage:(UIImage *)selectedButtonImage
 {
     ContentActionButton *button = [ContentActionButton buttonWithType:UIButtonTypeCustom];
-    button.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
     [button setImage:buttonImage forState:UIControlStateNormal];
     [button setImage:selectedButtonImage forState:UIControlStateSelected];
     [button.titleLabel setFont:[WPStyleGuide labelFontNormal]];
     [button setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
-    button.titleEdgeInsets = UIEdgeInsetsMake(0.0f, 6.0f, 0.0f, -6.0f);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0.0, 6.0, 0.0, -6.0);
+    button.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 12.0);
     button.drawLabelBubble = YES;
-    [self.bottomView addSubview:button];
-    [self.actionButtons addObject:button];
 
     return button;
 }
 
-- (UIButton *)addActionButtonWithImageName:(NSString *)buttonImageName selectedImageName:(NSString *)selectedImageName {
-    return [self addActionButtonWithImage:[UIImage imageNamed:buttonImageName] selectedImage:[UIImage imageNamed:selectedImageName]];
+- (NSArray *)actionButtons
+{
+    if (!self.actionView) {
+        return nil;
+    }
+    return self.actionView.actionButtons;
 }
 
-- (void)addCustomActionButton:(UIButton*)actionButton {
-    if (!self.bottomContainerView) {
-        self.bottomContainerView = [[UIView alloc] init];
-        self.bottomContainerView.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.bottomView addSubview:self.bottomContainerView];
-        [self.bottomView addConstraint:[NSLayoutConstraint constraintWithItem:self.bottomContainerView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.bottomView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
-        NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_bottomContainerView);
-        NSArray *heightConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_bottomContainerView]|" options:0 metrics:nil views:viewsDict];
-        [self.bottomView addConstraints:heightConstraints];
+- (void)setActionButtons:(NSArray *)actionButtons
+{
+    if (!self.actionView) {
+        return;
+    }
+    self.actionView.actionButtons = actionButtons;
+}
+
+- (void)updateActionButtons
+{
+    // Subclasses should override
+}
+
+/**
+ Returns an attributed string for the specified `title`, formatted for the title view.
+
+ @param title The string to convert to an attriubted string.
+ @return An attributed string formatted to display in the title view.
+ */
+- (NSAttributedString *)attributedStringForTitle:(NSString *)title
+{
+    title = [title trim];
+    if (title == nil) {
+        title = @"";
     }
 
-    [self.bottomContainerView addSubview:actionButton];
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    [style setLineHeightMultiple:WPContentViewLineHeightMultiple];
+    NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
+                                 NSFontAttributeName : [[self class] titleFont]};
 
-    [self.actionButtons addObject:actionButton];
+    NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:title
+                                                                                    attributes:attributes];
+    return titleString;
 }
 
-- (void)removeActionButton:(UIButton *)button
+/**
+ Returns an attributed string for the specified `string`, formatted for the content view.
+
+ @param title The string to convert to an attriubted string.
+ @return An attributed string formatted to display in the title view.
+ */
+- (NSAttributedString *)attributedStringForContent:(NSString *)string
 {
-    [button removeFromSuperview];
-    [self.actionButtons removeObject:button];
+    string = [string trim];
+    if (string == nil) {
+        string = @"";
+    }
+
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    [style setLineHeightMultiple:WPContentViewLineHeightMultiple];
+    NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
+                                 NSFontAttributeName : [[self class] contentFont]};
+    NSMutableAttributedString *attributedSummary = [[NSMutableAttributedString alloc] initWithString:string
+                                                                                          attributes:attributes];
+    return attributedSummary;
 }
 
-#pragma mark - Actions
+#pragma mark - WPContentView Delegate Methods
 
-// Forward the actions to the delegate; do it this way instead of exposing buttons as properties
-// because the view can have dynamically generated buttons (e.g. links)
+/**
+ Receives the notification that the user has tapped the featured image, and informs
+ the delegate of the interaction.
 
+ @param sender A reference to the featured image.
+ */
 - (void)featuredImageAction:(id)sender
 {
     if ([self.delegate respondsToSelector:@selector(contentView:didReceiveFeaturedImageAction:)]) {
@@ -483,343 +489,28 @@ const CGFloat RPVControlButtonBorderSize = 0.0f;
     }
 }
 
-- (void)followAction:(id)sender
+#pragma mark - Attribution Delegate Methods
+
+/**
+ Receives the notification from the attribution view that its button was pressed and informs the
+ delegate of the interaction.
+ */
+- (void)attributionView:(WPContentAttributionView *)attributionView didReceiveAttributionLinkAction:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(contentView:didReceiveFollowAction:)]) {
-        [self.delegate contentView:self didReceiveFollowAction:sender];
+    if ([self.delegate respondsToSelector:@selector(contentView:didReceiveAttributionLinkAction:)]) {
+        [self.delegate contentView:self didReceiveAttributionLinkAction:sender];
     }
 }
 
-- (void)tagAction:(id)sender
+/**
+ Receives the notification from the attribution view that its menu button was pressed and informs the
+ delegate of the interaction.
+ */
+- (void)attributionView:(WPContentAttributionView *)attributionView didReceiveAttributionMenuAction:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(contentView:didReceiveTagAction:)]) {
-        [self.delegate contentView:self didReceiveTagAction:sender];
+    if ([self.delegate respondsToSelector:@selector(contentView:didReceiveAttributionMenuAction:)]) {
+        [self.delegate contentView:self didReceiveAttributionMenuAction:sender];
     }
-}
-
-- (void)linkAction:(id)sender
-{
-    if ([self.delegate respondsToSelector:@selector(contentView:didReceiveLinkAction:)]) {
-        [self.delegate contentView:self didReceiveLinkAction:sender];
-    }
-}
-
-- (void)imageLinkAction:(id)sender
-{
-    if ([self.delegate respondsToSelector:@selector(contentView:didReceiveImageLinkAction:)]) {
-        [self.delegate contentView:self didReceiveImageLinkAction:sender];
-    }
-}
-
-- (void)videoLinkAction:(id)sender
-{
-    if ([self.delegate respondsToSelector:@selector(contentView:didReceiveVideoLinkAction:)]) {
-        [self.delegate contentView:self didReceiveVideoLinkAction:sender];
-    }
-}
-
-- (void)authorLinkAction:(id)sender
-{
-    if ([self.delegate respondsToSelector:@selector(contentView:didReceiveAuthorLinkAction:)]) {
-        [self.delegate contentView:self didReceiveAuthorLinkAction:sender];
-    }
-}
-
-#pragma mark - Helper methods
-
-- (void)setFeaturedImage:(UIImage *)image
-{
-    self.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
-    self.cellImageView.image = image;
-}
-
-- (void)updateActionButtons
-{
-    // Implemented by subclasses
-}
-
-- (BOOL)isEmoji:(NSURL *)url
-{
-    return ([[url absoluteString] rangeOfString:@"wp.com/wp-includes/images/smilies"].location != NSNotFound);
-}
-
-- (void)handleMediaViewLoaded:(ReaderMediaView *)mediaView
-{
-    BOOL frameChanged = [self updateMediaLayout:mediaView];
-
-    if (frameChanged) {
-        // need to reset the layouter because otherwise we get the old framesetter or cached layout frames
-        self.textContentView.layouter = nil;
-
-        // layout might have changed due to image sizes
-        [self.textContentView relayoutText];
-        [self setNeedsLayout];
-    }
-}
-
-// Subclasses can override this to provide margin at the top of the view. See CommentView.
-- (CGFloat)topMarginHeight
-{
-    return 0.0f;
-}
-
-- (BOOL)updateMediaLayout:(ReaderMediaView *)imageView
-{
-    BOOL frameChanged = NO;
-    NSURL *url = imageView.contentURL;
-
-    CGSize originalSize = imageView.frame.size;
-    CGSize imageSize = imageView.image.size;
-
-    if ([self isEmoji:url]) {
-        CGFloat scale = [UIScreen mainScreen].scale;
-        imageSize.width *= scale;
-        imageSize.height *= scale;
-    } else {
-        if (imageView.image) {
-            CGFloat ratio = imageSize.width / imageSize.height;
-            CGFloat width = self.frame.size.width;
-            CGFloat availableWidth = width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
-
-            imageSize.width = availableWidth;
-            imageSize.height = roundf(width / ratio) + imageView.edgeInsets.top;
-        } else {
-            imageSize = CGSizeMake(0.0f, 0.0f);
-        }
-    }
-
-    // Widths should always match
-    if (imageSize.height != originalSize.height) {
-        frameChanged = YES;
-    }
-
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
-
-    // update all attachments that matchin this URL (possibly multiple images with same size)
-    for (DTTextAttachment *attachment in [self.textContentView.layoutFrame textAttachmentsWithPredicate:pred]) {
-        attachment.originalSize = originalSize;
-        attachment.displaySize = imageSize;
-    }
-
-    return frameChanged;
-}
-
-- (void)refreshDate:(NSTimer *)timer
-{
-    NSString *title = [self.contentProvider.dateForDisplay shortString];
-    [self.timeButton setTitle:title forState:UIControlStateNormal | UIControlStateDisabled];
-}
-
-- (void)refreshDate
-{
-    [self refreshDate:nil];
-}
-
-// Relayout the textContentView after a brief delay.  Used to make sure there are no
-// gaps in text due to outdated media frames.
-- (void)refreshLayoutAfterDelay
-{
-    if (self.willRefreshMediaLayout) {
-        return;
-    }
-    self.willRefreshMediaLayout = YES;
-
-    // The first time we're called we're in the middle of updating layout. Refreshing at
-    // this point has no effect.  Dispatch async will let us refresh layout in a new loop
-    // and correctly update.
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self refreshMediaLayout];
-
-        if ([self.delegate respondsToSelector:@selector(contentViewDidLoadAllMedia:)]) {
-            [self.delegate contentViewDidLoadAllMedia:self]; // So the delegate can correct its size.
-        }
-    });
-}
-
-- (void)refreshMediaLayout
-{
-    [self refreshMediaLayoutInArray:self.mediaArray];
-}
-
-- (void)refreshMediaLayoutInArray:(NSArray *)mediaArray
-{
-    BOOL frameChanged = NO;
-
-    for (ReaderMediaView *mediaView in mediaArray) {
-        if ([self updateMediaLayout:mediaView]) {
-            frameChanged = YES;
-        }
-
-        if (frameChanged) {
-            [self relayoutTextContentView];
-        }
-    }
-}
-
-- (void)relayoutTextContentView
-{
-    // need to reset the layouter because otherwise we get the old framesetter or
-    self.textContentView.layouter = nil;
-
-    // layout might have changed due to image sizes
-    [self.textContentView relayoutText];
-    [self setNeedsLayout];
-}
-
-#pragma mark ReaderMediaQueueDelegate methods
-
-- (void)readerMediaQueue:(ReaderMediaQueue *)mediaQueue didLoadBatch:(NSArray *)batch
-{
-    [self refreshMediaLayoutInArray:batch];
-    if ([self.delegate respondsToSelector:@selector(contentViewDidLoadAllMedia:)]) {
-        [self.delegate contentViewDidLoadAllMedia:self];
-    }
-}
-
-#pragma mark - DTCoreAttributedTextContentView Delegate Methods
-
-- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView
-              viewForAttributedString:(NSAttributedString *)string
-                                frame:(CGRect)frame
-{
-    NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:nil];
-
-    NSURL *URL = [attributes objectForKey:DTLinkAttribute];
-    NSString *identifier = [attributes objectForKey:DTGUIDAttribute];
-
-    DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
-    button.URL = URL;
-    button.minimumHitSize = CGSizeMake(25, 25); // adjusts it's bounds so that button is always large enough
-    button.GUID = identifier;
-
-    // get image with normal link text
-    UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame
-                                                                     options:DTCoreTextLayoutFrameDrawingDefault];
-    [button setImage:normalImage forState:UIControlStateNormal];
-
-    // get image for highlighted link text
-    UIImage *highlightImage = [attributedTextContentView contentImageWithBounds:frame
-                                                                        options:DTCoreTextLayoutFrameDrawingDrawLinksHighlighted];
-    [button setImage:highlightImage forState:UIControlStateHighlighted];
-
-    // use normal push action for opening URL
-    [button addTarget:self action:@selector(linkAction:) forControlEvents:UIControlEventTouchUpInside];
-
-    return button;
-}
-
-- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView
-                    viewForAttachment:(DTTextAttachment *)attachment
-                                frame:(CGRect)frame
-{
-    if (!attachment.contentURL) {
-        return nil;
-    }
-
-    // The textContentView will render the first time with the original frame, and then update when media loads.
-    // To avoid showing gaps in the layout due to the original attachment sizes, relayout the view after a brief delay.
-    [self refreshLayoutAfterDelay];
-
-    CGFloat width = _textContentView.frame.size.width;
-    CGFloat availableWidth = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
-
-    // The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image
-    // itself to run out to the edges, so position it offset by the inverse of _textContentView's edgeInsets. Also
-    // add top padding so we don't bump into a line of text. Remeber to add an extra 10px to the frame to preserve
-    // aspect ratio.
-    UIEdgeInsets edgeInsets = _textContentView.edgeInsets;
-    edgeInsets.left = 0.0f - edgeInsets.left;
-    edgeInsets.top = 15.0f;
-    edgeInsets.right = 0.0f - edgeInsets.right;
-    edgeInsets.bottom = 0.0f;
-
-    if ([attachment isKindOfClass:[DTImageTextAttachment class]]) {
-        if ([self isEmoji:attachment.contentURL]) {
-            // minimal frame to suppress drawing context errors with 0 height or width.
-            frame.size.width = MAX(frame.size.width, 1.0f);
-            frame.size.height = MAX(frame.size.height, 1.0f);
-            ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
-            [_mediaArray addObject:imageView];
-            [self.mediaQueue enqueueMedia:imageView
-                                  withURL:attachment.contentURL
-                         placeholderImage:nil
-                                     size:CGSizeMake(15.0f, 15.0f)
-                                isPrivate:[self privateContent]
-                                  success:nil
-                                  failure:nil];
-            return imageView;
-        }
-
-        DTImageTextAttachment *imageAttachment = (DTImageTextAttachment *)attachment;
-
-        if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
-            UIImage *image = imageAttachment.image;
-
-            CGFloat ratio = image.size.width / image.size.height;
-            frame.size.width = availableWidth;
-            frame.size.height = roundf(width / ratio);
-
-            // offset the top edge inset keeping the image from bumping the text above it.
-            frame.size.height += edgeInsets.top;
-        } else {
-            // minimal frame to suppress drawing context errors with 0 height or width.
-            frame.size.width = 1.0f;
-            frame.size.height = 1.0f;
-        }
-
-        ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
-        imageView.edgeInsets = edgeInsets;
-
-        [_mediaArray addObject:imageView];
-        imageView.linkURL = attachment.hyperLinkURL;
-        [imageView addTarget:self action:@selector(imageLinkAction:) forControlEvents:UIControlEventTouchUpInside];
-
-        if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
-            [imageView setImage:imageAttachment.image];
-        } else {
-
-            [self.mediaQueue enqueueMedia:imageView
-                                  withURL:attachment.contentURL
-                         placeholderImage:nil
-                                     size:CGSizeMake(width, 0.0f) // Passing zero for height to get the correct
-                                isPrivate:[self privateContent]   // aspect ratio
-                                  success:nil
-                                  failure:nil];
-        }
-
-        return imageView;
-    }
-
-    ReaderVideoContentType videoType;
-
-    if ([attachment isKindOfClass:[DTVideoTextAttachment class]]) {
-        videoType = ReaderVideoContentTypeVideo;
-    } else if ([attachment isKindOfClass:[DTIframeTextAttachment class]]) {
-        videoType = ReaderVideoContentTypeIFrame;
-    } else if ([attachment isKindOfClass:[DTObjectTextAttachment class]]) {
-        videoType = ReaderVideoContentTypeEmbed;
-    } else {
-        return nil; // Can't handle whatever this is :P
-    }
-
-    ReaderVideoView *videoView = [[ReaderVideoView alloc] initWithFrame:frame];
-    // minimal frame to suppress drawing context errors with 0 height or width.
-    frame.size.width = 1.0f;
-    videoView.edgeInsets = edgeInsets;
-        
-    [_mediaArray addObject:videoView];
-    [videoView setContentURL:attachment.contentURL ofType:videoType success:^(id readerVideoView) {
-        [self handleMediaViewLoaded:readerVideoView];
-    } failure:^(id readerVideoView, NSError *error) {
-        // if the image is 404, just show a black image.
-        ReaderVideoView *videoView = (ReaderVideoView *)readerVideoView;
-        videoView.image = [UIImage imageWithColor:[UIColor blackColor] havingSize:CGSizeMake(2.0f, 1.0f)];
-        [self handleMediaViewLoaded:readerVideoView];
-    }];
-
-    [videoView addTarget:self action:@selector(videoLinkAction:) forControlEvents:UIControlEventTouchUpInside];
-
-    return videoView;
 }
 
 @end
