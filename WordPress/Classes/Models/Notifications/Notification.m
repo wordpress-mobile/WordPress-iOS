@@ -457,7 +457,10 @@ NSString const *NotePostIdKey           = @"post_id";
 - (NSDate *)timestampAsDate
 {
     if (!_date) {
-        _date = [NSDate dateWithISO8601String:self.timestamp];
+        NSAssert(self.timestamp, @"Notification Timestamp should not be nil");
+        if (self.timestamp) {
+            _date = [NSDate dateWithISO8601String:self.timestamp];
+        }
         
         //  Failsafe:
         //  If, for whatever reason, the date cannot be parsed, make sure we always return a date.

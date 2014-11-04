@@ -3,7 +3,6 @@
 
 #import <ImageIO/ImageIO.h>
 
-static const CGSize SizeLimit = { 2048, 2048 };
 static const CGFloat CompressionQuality = 0.7;
 
 @implementation WPImageOptimizer (Private)
@@ -21,18 +20,18 @@ static const CGFloat CompressionQuality = 0.7;
     return optimizedData;
 }
 
-- (NSData *)optimizedDataFromAssetRepresentation:(ALAssetRepresentation *)representation
+- (NSData *)resizedDataFromAssetRepresentation:(ALAssetRepresentation *)representation fittingSize:(CGSize)targetSize
 {
     CGImageRef sourceImage = [self newImageFromAssetRepresentation:representation];
-    CGImageRef resizedImage = [self resizedImageWithImage:sourceImage scale:representation.scale orientation:representation.orientation];
+    CGImageRef resizedImage = [self resizedImageWithImage:sourceImage scale:representation.scale orientation:representation.orientation fittingSize:targetSize];
     NSDictionary *metadata = [self metadataFromRepresentation:representation];
     NSString *type = representation.UTI;
-    NSData *optimizedData = [self dataWithImage:resizedImage compressionQuality:CompressionQuality type:type andMetadata:metadata];
+    NSData *imageData = [self dataWithImage:resizedImage compressionQuality:CompressionQuality type:type andMetadata:metadata];
 
     CGImageRelease(sourceImage);
     sourceImage = nil;
 
-    return optimizedData;
+    return imageData;
 }
 
 - (CGImageRef)newImageFromAssetRepresentation:(ALAssetRepresentation *)representation
@@ -62,21 +61,21 @@ static const CGFloat CompressionQuality = 0.7;
     return fullResolutionImage;
 }
 
-- (CGImageRef)resizedImageWithImage:(CGImageRef)image scale:(CGFloat)scale orientation:(UIImageOrientation)orientation
+- (CGImageRef)resizedImageWithImage:(CGImageRef)image scale:(CGFloat)scale orientation:(UIImageOrientation)orientation fittingSize:(CGSize)targetSize
 {
     UIImage *originalImage = [UIImage imageWithCGImage:image scale:scale orientation:orientation];
     CGSize originalSize = originalImage.size;
-    CGSize newSize = [self sizeWithinLimitsForSize:originalSize];
+    CGSize newSize = [self sizeForOriginalSize:originalSize fittingSize:targetSize];
     UIImage *resizedImage = [originalImage resizedImageWithContentMode:UIViewContentModeScaleAspectFit
                                                                 bounds:newSize
                                                   interpolationQuality:kCGInterpolationHigh];
     return resizedImage.CGImage;
 }
 
-- (CGSize)sizeWithinLimitsForSize:(CGSize)originalSize
+- (CGSize)sizeForOriginalSize:(CGSize)originalSize fittingSize:(CGSize)targetSize
 {
-    CGFloat widthRatio = MIN(SizeLimit.width, originalSize.width) / originalSize.width;
-    CGFloat heightRatio = MIN(SizeLimit.height, originalSize.height) / originalSize.height;
+    CGFloat widthRatio = MIN(targetSize.width, originalSize.width) / originalSize.width;
+    CGFloat heightRatio = MIN(targetSize.height, originalSize.height) / originalSize.height;
     CGFloat ratio = MIN(widthRatio, heightRatio);
     return CGSizeMake(round(ratio * originalSize.width), round(ratio * originalSize.height));
 }

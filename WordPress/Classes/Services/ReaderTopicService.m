@@ -10,6 +10,7 @@
 
 NSString * const ReaderTopicDidChangeViaUserInteractionNotification = @"ReaderTopicDidChangeViaUserInteractionNotification";
 NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotification";
+NSString * const ReaderTopicFreshlyPressedPathCommponent = @"freshly-pressed";
 static NSString * const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey";
 
 @interface ReaderTopicService ()
@@ -87,7 +88,9 @@ static NSString * const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopi
     }
 
     if (topic == nil) {
+        // clear any saved topic that is no longer valid
         [self setCurrentTopic:nil];
+
         // Return a default topic
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
         request.predicate = [NSPredicate predicateWithFormat:@"type == %@", ReaderTopicTypeList];
@@ -98,10 +101,19 @@ static NSString * const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopi
             DDLogError(@"%@ error fetching topic: %@", NSStringFromSelector(_cmd), error);
             return nil;
         }
-        if ([topics count] > 0) {
-            topic = [topics objectAtIndex:0];
-            [self setCurrentTopic:topic];
+
+        if ([topics count] == 0) {
+            return nil;
         }
+
+        NSArray *matches = [topics filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"path CONTAINS[cd] %@", ReaderTopicFreshlyPressedPathCommponent]];
+        if ([matches count]) {
+            topic = matches[0];
+        } else {
+            topic = topics[0];
+        }
+
+        [self setCurrentTopic:topic];
     }
 
     return topic;
@@ -119,7 +131,10 @@ static NSString * const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopi
         NSURL *topicURI = topic.objectID.URIRepresentation;
         [[NSUserDefaults standardUserDefaults] setObject:[topicURI absoluteString] forKey:ReaderTopicCurrentTopicURIKey];
         [NSUserDefaults resetStandardUserDefaults];
-        [[NSNotificationCenter defaultCenter] postNotificationName:ReaderTopicDidChangeNotification object:nil];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:ReaderTopicDidChangeNotification object:nil]; 
+        });
     }
 }
 

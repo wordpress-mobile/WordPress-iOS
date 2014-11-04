@@ -3,6 +3,7 @@
 
 extern NSString * const ReaderTopicDidChangeViaUserInteractionNotification;
 extern NSString * const ReaderTopicDidChangeNotification;
+extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 
 @class ReaderTopic;
 

@@ -508,6 +508,9 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
         case WPAnalyticsStatNotificationFlaggedAsSpam:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_notifications_flagged_as_spam"];
             break;
+        case WPAnalyticsStatNotificationsMissingSyncWarning:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"notifications_sync_timeout"];
+            break;
         case WPAnalyticsStatPublishedPostWithPhoto:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_posts_published_with_photos"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_published_post_with_photo"];
@@ -557,6 +560,13 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             break;
         case WPAnalyticsStatSupportReceivedResponseFromSupport:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyFlagger:@"received_response_from_support"];
+            break;
+        case WPAnalyticsStatLowMemoryWarning:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Received Low Memory Warning"];
+            break;
+        case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Performed Core Data Migration Fix for 4.5"];
+            [instructions addSuperPropertyToFlag:@"performed_core_data_migration_fix_for_4_5"];
             break;
         default:
             break;

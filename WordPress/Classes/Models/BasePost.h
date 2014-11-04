@@ -17,6 +17,7 @@ typedef enum {
 // Attributes
 @property (nonatomic, strong) NSNumber * postID;
 @property (nonatomic, strong) NSString * author;
+@property (nonatomic, strong) NSString * authorAvatarURL;
 @property (nonatomic, strong) NSDate * date_created_gmt;
 @property (nonatomic, strong) NSString * postTitle;
 @property (nonatomic, strong) NSString * content;

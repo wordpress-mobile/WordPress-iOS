@@ -45,6 +45,13 @@
     return richTextView;
 }
 
+- (UIImageView *)imageViewForFeaturedImage
+{
+    UIImageView *imageView = [super imageViewForFeaturedImage];
+    imageView.userInteractionEnabled = YES;
+    return imageView;
+}
+
 - (void)configureContentView
 {
     NSString *content = [self.contentProvider contentForDisplay];

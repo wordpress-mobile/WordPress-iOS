@@ -93,7 +93,9 @@
     self.deleteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-comments-trash"] style:UIBarButtonItemStylePlain target:self action:@selector(removeFeaturedImage)];
 
     self.deleteButton.tintColor = [WPStyleGuide readGrey];
-
+    self.deleteButton.accessibilityIdentifier = @"Remove Featured Image";
+    self.deleteButton.accessibilityLabel = NSLocalizedString(@"Remove Featured Image", @"Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.");
+    
     UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [activityView startAnimating];
     self.activityItem = [[UIBarButtonItem alloc] initWithCustomView:activityView];

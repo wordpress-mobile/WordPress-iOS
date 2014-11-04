@@ -2,7 +2,7 @@
 
 @class ReaderPost;
 
-@interface ReaderPostDetailViewController : UITableViewController
+@interface ReaderPostDetailViewController : UIViewController
 
 @property (nonatomic, strong, readonly) ReaderPost *post;
 

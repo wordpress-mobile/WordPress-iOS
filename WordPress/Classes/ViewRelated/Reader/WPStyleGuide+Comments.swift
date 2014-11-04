@@ -32,5 +32,11 @@ extension WPStyleGuide
             DTDefaultStyleSheet             : cssStylesheet
         ] as NSDictionary
     }
-    
+
+    public class func defaultSearchBarTextAttributes(color: UIColor) -> NSDictionary {
+        return [
+            NSForegroundColorAttributeName      : color,
+            NSFontAttributeName                 : WPFontManager.openSansRegularFontOfSize(14)
+        ] as NSDictionary
+    }
 }

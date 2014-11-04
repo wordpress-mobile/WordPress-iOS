@@ -4,6 +4,11 @@
 
 @protocol PostServiceRemote <NSObject>
 
+- (void)getPostWithID:(NSNumber *)postID
+              forBlog:(Blog *)blog
+              success:(void (^)(RemotePost *post))success
+              failure:(void (^)(NSError *))failure;
+
 - (void)getPostsOfType:(NSString *)postType
                forBlog:(Blog *)blog
                 success:(void (^)(NSArray *posts))success

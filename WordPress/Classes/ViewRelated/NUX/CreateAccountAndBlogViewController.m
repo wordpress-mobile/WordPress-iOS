@@ -264,6 +264,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
         _emailField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _emailField.keyboardType = UIKeyboardTypeEmailAddress;
         _emailField.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+        _emailField.accessibilityIdentifier = @"Email Address";
         [self.view addSubview:_emailField];
     }
 
@@ -279,6 +280,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
         _usernameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _usernameField.showTopLineSeparator = YES;
         _usernameField.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+        _usernameField.accessibilityIdentifier = @"Username";
         [self.view addSubview:_usernameField];
     }
 
@@ -296,6 +298,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
         _passwordField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _passwordField.showTopLineSeparator = YES;
         _passwordField.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+        _passwordField.accessibilityIdentifier = @"Password";
         [self.view addSubview:_passwordField];
     }
 
@@ -311,6 +314,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
         _siteAddressField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _siteAddressField.showTopLineSeparator = YES;
         _siteAddressField.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+        _siteAddressField.accessibilityIdentifier = @"Site Address (URL)";
         [self.view addSubview:_siteAddressField];
 
         // add .wordpress.com label to textfield
@@ -755,9 +759,9 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
             BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
             WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-            Blog *blog = [accountService findBlogWithXmlrpc:blogOptions[@"xmlrpc"] inAccount:defaultAccount];
+            Blog *blog = [blogService findBlogWithXmlrpc:blogOptions[@"xmlrpc"] inAccount:defaultAccount];
             if (!blog) {
-                blog = [accountService createBlogWithAccount:defaultAccount];
+                blog = [blogService createBlogWithAccount:defaultAccount];
                 blog.xmlrpc = blogOptions[@"xmlrpc"];
             }
             blog.blogID = [blogOptions numberForKey:@"blogid"];

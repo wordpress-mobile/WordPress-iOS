@@ -8,6 +8,7 @@ import Foundation
         super.awakeFromNib()
 
         dataDetectors = .All
+        isTextViewSelectable = true
     }
 
     public var commentText: String? {

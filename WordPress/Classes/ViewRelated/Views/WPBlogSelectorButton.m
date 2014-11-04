@@ -2,6 +2,36 @@
 
 @implementation WPBlogSelectorButton
 
++ (id)buttonWithFrame:(CGRect)frame buttonStyle:(WPBlogSelectorButtonStyle)buttonStyle
+{
+    WPBlogSelectorButton *button = [WPBlogSelectorButton buttonWithType:UIButtonTypeSystem];
+    button.buttonStyle = buttonStyle;
+    button.frame = frame;
+    button.titleLabel.textColor = [UIColor whiteColor];
+    button.titleLabel.adjustsFontSizeToFitWidth = NO;
+    [button setImage:[UIImage imageNamed:@"icon-navbar-dropdown.png"] forState:UIControlStateNormal];
+    [button setAccessibilityHint:NSLocalizedString(@"Tap to select which blog to post to", @"This is the blog picker in the editor")];
+    
+    switch (button.buttonStyle) {
+        case WPBlogSelectorButtonTypeSingleLine:
+            button.titleLabel.numberOfLines = 1;
+            button.titleLabel.textAlignment = NSTextAlignmentLeft;
+            button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+            button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+            break;
+        case WPBlogSelectorButtonTypeStacked:
+        default:
+            button.titleLabel.numberOfLines = 2;
+            button.titleLabel.textAlignment = NSTextAlignmentCenter;
+            button.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+            [button setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 10)];
+            [button setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
+            break;
+    }
+    
+    return button;
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
@@ -20,7 +50,16 @@
 {
     CGRect frame = [super titleRectForContentRect:contentRect];
     frame.size.width = MIN(frame.size.width, CGRectGetWidth(contentRect) - CGRectGetWidth([super imageRectForContentRect:contentRect]) - self.imageEdgeInsets.left - self.imageEdgeInsets.right);
-    frame.origin.x = CGRectGetMidX(contentRect) - CGRectGetWidth(frame) / 2.0;
+    switch (self.buttonStyle) {
+        case WPBlogSelectorButtonTypeSingleLine:
+            frame.origin.x = 0.0;
+            break;
+        case WPBlogSelectorButtonTypeStacked:
+        default:
+            frame.origin.x = CGRectGetMidX(contentRect) - CGRectGetWidth(frame) / 2.0;
+            break;
+    }
+    
     return frame;
 }
 
