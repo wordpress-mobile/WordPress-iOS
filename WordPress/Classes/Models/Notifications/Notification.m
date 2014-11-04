@@ -244,6 +244,18 @@ NSString const *NotePostIdKey           = @"post_id";
     return [[self.meta dictionaryForKey:NoteTitlesKey] stringForKey:NoteHomeKey];
 }
 
+- (NSString *)metaTitleOrUrl
+{
+    if ([self metaTitlesHome]) {
+        return [self metaTitlesHome];
+    } else if ([self metaLinksHome]) {
+        return [[[self metaLinksHome] stringByReplacingOccurrencesOfString:@"https://" withString:@""]
+                stringByReplacingOccurrencesOfString:@"http://" withString:@""];
+    }
+
+    return nil;
+}
+
 - (NotificationRange *)notificationRangeWithUrl:(NSURL *)url
 {
     for (NotificationRange *range in self.ranges) {
