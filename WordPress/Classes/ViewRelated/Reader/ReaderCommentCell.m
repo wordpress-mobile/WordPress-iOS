@@ -183,4 +183,9 @@ static const CGFloat ReaderCommentCellBottomPaddingMore = -20.0;
     self.commentContentView.delegate = delegate;
 }
 
+- (void)refreshMediaLayout
+{
+    [self.commentContentView refreshMediaLayout];
+}
+
 @end
