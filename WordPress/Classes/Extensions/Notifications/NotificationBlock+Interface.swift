@@ -15,7 +15,7 @@ extension NotificationBlock
         return NSAttributedString(string: text, attributes: Styles.snippetRegularStyle)
     }
 
-    public func regularAttributedText() -> NSAttributedString {
+    public func richAttributedText() -> NSAttributedString {
         //  Operations such as editing a comment cause a lag between the REST and Simperium update.
         //  TextOverride is a transient property meant to store, temporarily, the edited text
         if textOverride != nil {
@@ -40,7 +40,7 @@ extension NotificationBlock
         let commentStyle    = postStyle
         let blockStyle      = Styles.blockQuotedStyle
         
-        // Apply the metadata to the text itself
+        // Format the String
         let theString = NSMutableAttributedString(string: text, attributes: regularStyle)
         theString.applyAttributesToQuotes(quotesStyle)
         
@@ -55,14 +55,34 @@ extension NotificationBlock
                 theString.addAttributes(blockStyle, range: range.range)
             }
 
+            // Don't Highlight Links in the subject
             if isSubject == false && range.url != nil {
                 theString.addAttribute(NSLinkAttributeName, value: range.url, range: range.range)
                 theString.addAttribute(NSForegroundColorAttributeName, value: Styles.blockLinkColor, range: range.range)
             }
         }
         
+        // Don't embed images in the subject
+        if isSubject {
+            return theString
+        }
+        
+        // Embed only Images -For now!-
+        for theMedia in media as [NotificationMedia] {
+            if theMedia.isImage == false {
+                continue
+            }
+            
+            let imageAttachment     = TextImageAttachment()
+            imageAttachment.url     = theMedia.mediaURL
+            imageAttachment.bounds  = CGRect(origin: CGPointZero, size: theMedia.size)
+            let attachmentString    = NSAttributedString(attachment: imageAttachment)
+            theString.replaceCharactersInRange(theMedia.range, withAttributedString: attachmentString)
+        }
+        
         return theString;
     }
+    
     
     private typealias Styles = WPStyleGuide.Notifications
 }
