@@ -228,6 +228,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     self.tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
     self.tableViewHandler.cacheRowHeights = YES;
     self.tableViewHandler.delegate = self;
+    self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
 }
 
 - (void)configureCellForLayout
@@ -533,6 +534,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         return;
     }
 
+    self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationFade;
+
     NSNumber *siteIDToBlock = self.siteIDToBlock;
     self.siteIDToBlock = nil;
 
@@ -541,6 +544,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [service flagSiteWithID:siteIDToBlock asBlocked:YES success:^{
         // Nothing to do.
     } failure:^(NSError *error) {
+        self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
         [weakSelf.tableView reloadData];
         weakSelf.postIDThatInitiatedBlock = nil;
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Blocking Site", @"Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader.")
@@ -554,12 +558,14 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)unblockSiteForPost:(ReaderPost *)post
 {
+    self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationFade;
     __weak __typeof(self) weakSelf = self;
     ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     [service flagSiteWithID:post.siteID asBlocked:NO success:^{
         // Nothing to do.
         weakSelf.postIDThatInitiatedBlock = nil;
     } failure:^(NSError *error) {
+        self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
         [self.tableView reloadData];
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Unblocking Site", @"Title of a prompt letting the user know there was an error trying to unblock a site from appearing in the reader.")
                                                             message:[error localizedDescription]
@@ -843,6 +849,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
     [self.featuredImageSource invalidateIndexPaths];
     self.tableViewHandler.shouldRefreshTableViewPreservingOffset = NO;
+    self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
     [self configureNoResultsView];
 
     if (self.shouldSkipRowAnimation) {
@@ -850,6 +857,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         [self.tableView reloadData];
         self.shouldSkipRowAnimation = NO;
     }
+
 }
 
 - (NSPredicate *)predicateForFetchRequest
