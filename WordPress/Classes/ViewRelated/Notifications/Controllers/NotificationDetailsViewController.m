@@ -38,20 +38,16 @@
 #pragma mark Constants
 #pragma mark ==========================================================================================
 
-static UIEdgeInsets NotificationTableInsetsPhone    = {0.0f,  0.0f, 20.0f, 0.0f};
-static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f};
+static UIEdgeInsets NotificationTableInsetsPhone        = {0.0f,  0.0f, 20.0f, 0.0f};
+static UIEdgeInsets NotificationTableInsetsPad          = {40.0f, 0.0f, 20.0f, 0.0f};
 
-static NSString *NotificationReplyToastImage        = @"action-icon-replied";
-static NSString *NotificationSuccessToastImage      = @"action-icon-success";
+static UIEdgeInsets NotificationHeaderSeparatorInsets   = {0.0f,  0.0f,  0.0f, 0.0f};
+static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0.0f};
 
-typedef NS_ENUM(NSInteger, NotificationSection) {
-    NotificationSectionHeader,
-    NotificationSectionBody,
-    NotificationSectionCount
-};
+static NSString *NotificationReplyToastImage            = @"action-icon-replied";
+static NSString *NotificationSuccessToastImage          = @"action-icon-success";
 
-static NSInteger NotificationSectionHeaderRows  = 1;
-static CGFloat NotificationSectionSeparator     = 10;
+static NSInteger NotificationSectionCount               = 1;
 
 
 #pragma mark ==========================================================================================
@@ -69,9 +65,8 @@ static CGFloat NotificationSectionSeparator     = 10;
 // Table Helpers
 @property (nonatomic, strong) NSDictionary                  *layoutCellMap;
 @property (nonatomic, strong) NSDictionary                  *reuseIdentifierMap;
-@property (nonatomic, assign) NSInteger                     sectionCount;
-@property (nonatomic, assign) NSInteger                     headerSectionIndex;
-@property (nonatomic, assign) NSInteger                     bodySectionIndex;
+@property (nonatomic, strong) NSArray                       *blockGroups;
+@property (nonatomic, assign) UIEdgeInsets                  firstRowInsets;
 
 // Model
 @property (nonatomic, strong) Notification                  *note;
@@ -108,6 +103,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     self.navigationItem.backBarButtonItem = backButton;
 
     self.tableView.separatorStyle       = self.note.isBadge ? UITableViewCellSeparatorStyleNone : UITableViewCellSeparatorStyleSingleLine;
+    self.tableView.separatorInset       = UIEdgeInsetsZero;
     self.tableView.backgroundColor      = [WPStyleGuide itsEverywhereGrey];
     
     self.reuseIdentifierMap = @{
@@ -152,20 +148,25 @@ static CGFloat NotificationSectionSeparator     = 10;
 {
     [super viewDidLayoutSubviews];
     [self adjustTableInsetsIfNeeded];
+    [self adjustTableSeparatorsIfNeeded];
 }
 
 - (void)reloadData
 {
     // Hide the header, if needed
-    self.sectionCount       = NotificationSectionCount;
-    self.headerSectionIndex = NotificationSectionHeader;
-    self.bodySectionIndex   = NotificationSectionBody;
+    NSMutableArray *blockGroups = [NSMutableArray array];
+    BOOL hasHeaderBlocks        = (_note.headerBlockGroup != nil);
     
-    if (self.note.headerBlockGroup == nil) {
-        self.sectionCount--;
-        self.headerSectionIndex--;
-        self.bodySectionIndex--;
+    if (hasHeaderBlocks) {
+        [blockGroups addObject:_note.headerBlockGroup];
     }
+    
+    if (_note.bodyBlockGroups) {
+        [blockGroups addObjectsFromArray:_note.bodyBlockGroups];
+    }
+    
+    self.firstRowInsets = hasHeaderBlocks ? NotificationHeaderSeparatorInsets : NotificationBlockSeparatorInsets;
+    self.blockGroups    = blockGroups;
     
     [self.tableView reloadData];
     [self adjustTableInsetsIfNeeded];
@@ -304,6 +305,17 @@ static CGFloat NotificationSectionSeparator     = 10;
     self.tableView.contentInset = contentInset;
 }
 
+- (void)adjustTableSeparatorsIfNeeded
+{
+    if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+        [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+    }
+    
+    if ([self.tableView respondsToSelector:@selector(setLayoutMargins:)]) {
+        [self.tableView setLayoutMargins:UIEdgeInsetsZero];
+    }
+}
+
 
 #pragma mark - UIViewController Restoration
 
@@ -352,7 +364,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 - (NotificationBlockGroup *)blockGroupForIndexPath:(NSIndexPath *)indexPath
 {
-    return (indexPath.section == _headerSectionIndex) ? _note.headerBlockGroup : _note.bodyBlockGroups[indexPath.row];
+    return self.blockGroups[indexPath.row];
 }
 
 
@@ -377,8 +389,8 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    // Make sure no SectionFooter is rendered
-    return [UIView new];
+    // Make sure no SectionHeader is rendered
+    return nil;
 }
 
 
@@ -390,12 +402,12 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return self.sectionCount;
+    return NotificationSectionCount;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return (section == _headerSectionIndex) ? NotificationSectionHeaderRows : self.note.bodyBlockGroups.count;
+    return self.blockGroups.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -408,6 +420,17 @@ static CGFloat NotificationSectionSeparator     = 10;
     CGFloat height = [tableViewCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
     
     return height;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UIEdgeInsets separatorInsets            = (indexPath.row == 0) ? self.firstRowInsets : NotificationBlockSeparatorInsets;
+    cell.separatorInset                     = separatorInsets;
+    
+    // iOS 8 Only!
+    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        cell.layoutMargins = separatorInsets;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
