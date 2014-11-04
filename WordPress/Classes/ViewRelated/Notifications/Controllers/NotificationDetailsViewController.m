@@ -512,7 +512,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     
     cell.name                       = userBlock.text;
     cell.timestamp                  = [self.note.timestampAsDate shortString];
-    cell.attributedCommentText      = commentBlock.regularAttributedText;
+    cell.attributedCommentText      = commentBlock.richAttributedText;
 
     cell.onUrlClick                 = ^(NSURL *url){
         [weakSelf openURL:url];
@@ -567,7 +567,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     
     __weak __typeof(self) weakSelf  = self;
     
-    cell.attributedText             = textBlock.regularAttributedText;
+    cell.attributedText             = textBlock.richAttributedText;
     cell.isBadge                    = textBlock.isBadge;
     cell.onUrlClick                 = ^(NSURL *url){
         [weakSelf openURL:url];
