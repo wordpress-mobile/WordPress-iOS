@@ -1,7 +1,7 @@
 import Foundation
 
 
-@objc public class NoteBlockTextTableViewCell : NoteBlockTableViewCell
+@objc public class NoteBlockTextTableViewCell : NoteBlockTableViewCell, RichTextViewDataSource, RichTextViewDelegate
 {
     // MARK: - Public Properties
     public var onUrlClick: ((NSURL) -> Void)?
@@ -52,9 +52,6 @@ import Foundation
         backgroundColor             = WPStyleGuide.Notifications.blockBackgroundColor
         selectionStyle              = .None
         
-        gesturesRecognizer          = UITapGestureRecognizer()
-        gesturesRecognizer.addTarget(self, action: "handleTap:")
-        
         assert(textView != nil)
         textView.contentInset       = UIEdgeInsetsZero
         textView.textContainerInset = UIEdgeInsetsZero
@@ -62,7 +59,8 @@ import Foundation
         textView.editable           = false
         textView.selectable         = true
         textView.dataDetectorTypes  = .None
-        textView.gestureRecognizers = [gesturesRecognizer]
+        textView.dataSource         = self
+        textView.delegate           = self
     }
     
     public override func layoutSubviews() {
@@ -72,35 +70,22 @@ import Foundation
     }
     
     
-    // MARK: - UITapGestureRecognizer Helpers
-    public func handleTap(recognizer: UITapGestureRecognizer) {
-
-        // Detect the location tapped
-        let textStorage = textView.textStorage
-        let layoutManager = textView.layoutManager
-        let textContainer = textView.textContainer
-        
-        let locationInTextView = recognizer.locationInView(textView)
-        let characterIndex = layoutManager.characterIndexForPoint(locationInTextView, inTextContainer: textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
-        
-        if characterIndex >= textStorage.length {
-            return
-        }
-        
-        // Load the NSURL instance, if any
-        let rawURL: AnyObject? = textView.textStorage.attribute(NSLinkAttributeName, atIndex: characterIndex, effectiveRange: nil)
-        if let unwrappedURL = rawURL as? NSURL {
-            onUrlClick?(unwrappedURL)
-        }
+    // MARK: - RichTextView Data Source
+    
+    public func richTextView(richTextView: RichTextView, viewForTextAttachment attachment: NSTextAttachment) -> UIView? {
+// WARNING: TODO
+        println("viewForTextAttachment")
+        return nil
+    }
+    
+    public func richTextView(richTextView: RichTextView, didPressLink link: NSURL) {
+        onUrlClick?(link)
     }
     
     
     // MARK: - Constants
     private let maxWidth            = WPTableViewFixedWidth
     private let privateLabelPadding = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
-    
-    // MARK: - Private
-    private var gesturesRecognizer: UITapGestureRecognizer!
     
     // MARK: - IBOutlets
     @IBOutlet private weak var textView: RichTextView!
