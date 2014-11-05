@@ -1055,6 +1055,10 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [assetsLibrary assetForURL:assetURL resultBlock:^(ALAsset *asset){
         MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
         [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
+            if (!media) {
+                weakSelf.isUploadingMedia = NO;
+                return;
+            }
             media.mediaType = MediaTypeFeatured;
             [mediaService uploadMedia:media success:^{
                 weakSelf.isUploadingMedia = NO;
