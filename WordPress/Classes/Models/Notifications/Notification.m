@@ -256,17 +256,17 @@ NSString const *NotePostIdKey           = @"post_id";
     return nil;
 }
 
-- (NSArray *)notificationMediaOfType:(NSString *)type
+- (NSArray *)imageUrls
 {
-    NSMutableArray *theMedia = [NSMutableArray array];
-
+    NSMutableArray *urls = [NSMutableArray array];
+    
     for (NotificationMedia *media in self.media) {
-        if ([media.type isEqualToString:type]) {
-            [theMedia addObject:media];
+        if (media.isImage && media.mediaURL != nil) {
+            [urls addObject:media.mediaURL];
         }
     }
-
-    return theMedia;
+    
+    return urls;
 }
 
 - (void)setActionOverrideValue:(NSNumber *)value forKey:(NSString *)key
@@ -364,8 +364,8 @@ NSString const *NotePostIdKey           = @"post_id";
 #pragma mark ====================================================================================
 
 @interface NotificationBlockGroup ()
-@property (nonatomic, strong) NSArray             *blocks;
-@property (nonatomic, assign) NoteBlockGroupType type;
+@property (nonatomic, strong) NSArray               *blocks;
+@property (nonatomic, assign) NoteBlockGroupType    type;
 @end
 
 @implementation NotificationBlockGroup
@@ -378,6 +378,24 @@ NSString const *NotePostIdKey           = @"post_id";
         }
     }
     return nil;
+}
+
+- (NSArray *)imageUrlsForBlocksOfTypes:(NSSet *)types
+{
+    NSMutableArray *urls = [NSMutableArray array];
+    
+    for (NotificationBlock *block in self.blocks) {
+        if ([types containsObject:@(block.type)] == false) {
+            continue;
+        }
+        
+        NSArray *imageUrls = [block imageUrls];
+        if (imageUrls) {
+            [urls addObjectsFromArray:imageUrls];
+        }
+    }
+    
+    return urls;
 }
 
 + (NotificationBlockGroup *)groupWithBlocks:(NSArray *)blocks type:(NoteBlockGroupType)type
