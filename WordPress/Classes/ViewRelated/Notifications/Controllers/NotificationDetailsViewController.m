@@ -99,16 +99,17 @@ static CGFloat NotificationSectionSeparator     = 10;
 {
     [super viewDidLoad];
     
-    self.title                          = self.note.title;
-    self.restorationClass               = [self class];
-    self.view.backgroundColor           = [WPStyleGuide itsEverywhereGrey];
+    self.title                              = self.note.title;
+    self.restorationClass                   = [self class];
+    self.view.backgroundColor               = [WPStyleGuide itsEverywhereGrey];
     
     // Don't show the notification title in the next-view's back button
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationItem.backBarButtonItem = backButton;
+    self.navigationItem.backBarButtonItem   = backButton;
 
-    self.tableView.separatorStyle       = self.note.isBadge ? UITableViewCellSeparatorStyleNone : UITableViewCellSeparatorStyleSingleLine;
-    self.tableView.backgroundColor      = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.separatorStyle           = self.note.isBadge ? UITableViewCellSeparatorStyleNone : UITableViewCellSeparatorStyleSingleLine;
+    self.tableView.backgroundColor          = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.accessibilityIdentifier  = @"Notification Details Table";
     
     self.reuseIdentifierMap = @{
         @(NoteBlockGroupTypeHeader)    : NoteBlockHeaderTableViewCell.reuseIdentifier,
@@ -123,7 +124,6 @@ static CGFloat NotificationSectionSeparator     = 10;
                                              selector:@selector(handleNotificationChange:)
                                                  name:NSManagedObjectContextObjectsDidChangeNotification
                                                object:context];
-    self.tableView.accessibilityIdentifier = @"Notification Details Table";
 }
 
 - (void)viewWillAppear:(BOOL)animated
