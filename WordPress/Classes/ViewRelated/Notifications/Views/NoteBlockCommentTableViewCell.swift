@@ -183,7 +183,6 @@ import Foundation
         hitEventHandler(onMoreClick, sender: sender)
     }
 
-    // MARK: - IBActions
     @IBAction public func siteWasPressed(sender: AnyObject) {
         hitEventHandler(onSiteClick, sender: sender)
     }
