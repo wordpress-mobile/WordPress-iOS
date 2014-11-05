@@ -133,12 +133,11 @@ static const CGFloat CompressionQuality = 0.7;
 
 - (NSDictionary *) metadataWithoutLocation:(NSDictionary *) originalMetadata
 {
-    NSString * const gpsKey = @"{GPS}";
-    if (!originalMetadata[gpsKey]){
+    if (!originalMetadata[(NSString *)kCGImagePropertyGPSDictionary]) {
         return originalMetadata;
     }
     NSMutableDictionary * metadata = [NSMutableDictionary dictionaryWithDictionary:originalMetadata];
-    [metadata removeObjectForKey:gpsKey];
+    [metadata removeObjectForKey:(NSString *)kCGImagePropertyGPSDictionary];
     return [NSDictionary dictionaryWithDictionary:metadata];
 }
 
