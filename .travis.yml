@@ -3,6 +3,6 @@ language: objective-c
 xcode_workspace: WordPress.xcworkspace
 xcode_scheme: WordPress
 notifications:
-  email: false
+  email: true
 before_install:
   - gem install cocoapods
