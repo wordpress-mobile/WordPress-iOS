@@ -59,8 +59,16 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
              forPostObjectID:(NSManagedObjectID *)postObjectID
                   completion:(void (^)(Media *media))completion
 {
+    __block BOOL geoLocationEnabled = NO;
+    [self.managedObjectContext performBlockAndWait:^{
+        AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
+        geoLocationEnabled = post.blog.geolocationEnabled;
+    }];
+     
     WPImageOptimizer *optimizer = [WPImageOptimizer new];
 
+    optimizer.keepGeoLocation = geoLocationEnabled;
+     
     NSData *optimizedImageData;
     CGSize maxImageSize = [MediaService maxImageSizeSetting];
 
