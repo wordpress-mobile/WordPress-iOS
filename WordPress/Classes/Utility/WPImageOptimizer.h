@@ -21,7 +21,8 @@
 
  @param asset the ALAsset containing the image to optimize.
  @param targetSize the size the image shoul be resized to.  Passing CGSizeZero will by pass resizing logic and return the raw asset. 
-
+ @param stripGeoLocation if YES the resulting data will be stripped of any GPS information from the original asset
+ 
  @return the optimized data
  */
 - (NSData *)optimizedDataFromAsset:(ALAsset *)asset fittingSize:(CGSize)targetSize stripGeoLocation:(BOOL) stripGeoLocation;
@@ -32,7 +33,8 @@
  The image data is read from the asset and returned
 
  @param asset the ALAsset containing the image to optimize.
-
+ @param stripGeoLocation if YES the resulting data will be stripped of any GPS information from the original asset
+ 
  @return the raw data
  */
 - (NSData *)rawDataFromAsset:(ALAsset *)asset stripGeoLocation:(BOOL) stripGeoLocation;
