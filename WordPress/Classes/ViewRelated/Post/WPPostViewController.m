@@ -91,6 +91,12 @@ static NSDictionary *EnabledButtonBarStyle;
 }
 
 - (id)initWithPost:(AbstractPost *)post
+{
+    return [self initWithPost:post
+                         mode:kWPPostViewControllerModePreview];
+}
+
+- (id)initWithPost:(AbstractPost *)post
 			  mode:(WPPostViewControllerMode)mode
 {
     self = [super initWithMode:mode];
