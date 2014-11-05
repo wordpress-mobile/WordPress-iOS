@@ -133,7 +133,7 @@
 
     NSString *path = @"path.to/image.jpg";
     NSString *uri = [NSString stringWithFormat:@"http://%@", path];
-    NSDictionary *dict = @{@"featured_media": @{@"type": @"image", @"uri":uri}};
+    NSDictionary *dict = @{@"featured_image": uri};
     NSString *imagePath = [remoteService featuredImageFromPostDictionary:dict];
     XCTAssertTrue([uri isEqualToString:imagePath], @"Failed to retrieve the uri for featured media.");
 
