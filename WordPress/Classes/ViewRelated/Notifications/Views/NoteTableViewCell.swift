@@ -63,7 +63,7 @@ import Foundation
 
         noticonContainerView.layer.cornerRadius = noticonContainerView.frame.size.width / 2
 
-        noticonView.layer.cornerRadius  = noticonView.frame.size.width / 2
+        noticonView.layer.cornerRadius  = noticonRadius
         noticonLabel.font               = Style.noticonFont
         noticonLabel.textColor          = Style.noticonTextColor
         
@@ -130,6 +130,7 @@ import Foundation
     private let subjectNumberOfLinesWithoutSnippet: Int         = 3
     private let subjectNumberOfLinesWithSnippet:    Int         = 2
     private let snippetNumberOfLines:               Int         = 2
+    private let noticonRadius:                      CGFloat     = 8
     private let noticonBorderWidth:                 CGFloat     = 2
     private var placeholderName:                    String      = "gravatar"
     private var gravatarURL:                        NSURL?
