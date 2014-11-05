@@ -132,4 +132,9 @@ extension WPStyleGuide
             minLineHeight: blockLineSize, maxLineHeight: blockLineSize, lineBreakMode: .ByWordWrapping, alignment: .Left
         )
     }
+    
+    // MARK: - ObjectiveC Helpers: Nuke me once NotificationDetailsViewController is Swifted!
+    public class func notificationsBlockSeparatorColor() -> UIColor {
+        return Notifications.blockSeparatorColor
+    }
 }
