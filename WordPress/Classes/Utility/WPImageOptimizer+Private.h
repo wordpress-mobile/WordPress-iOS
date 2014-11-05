@@ -5,14 +5,14 @@
 /**
  Returns the data from a given asset representation without processing it.
  */
-- (NSData *)rawDataFromAssetRepresentation:(ALAssetRepresentation *)representation;
+- (NSData *)rawDataFromAssetRepresentation:(ALAssetRepresentation *)representation  stripGeoLocation:(BOOL) stripGeoLocation;
 
 /**
  Returns the optimized data from a given asset representation.
  
  The image is read, scaled down, and saved with a lower quality setting.
  */
-- (NSData *)resizedDataFromAssetRepresentation:(ALAssetRepresentation *)representation fittingSize:(CGSize)targetSize;
+- (NSData *)resizedDataFromAssetRepresentation:(ALAssetRepresentation *)representation fittingSize:(CGSize)targetSize  stripGeoLocation:(BOOL) stripGeoLocation;
 
 /**
  Returns the image (including edits and cropping) for the given representation.

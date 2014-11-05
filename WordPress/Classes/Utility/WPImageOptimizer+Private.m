@@ -7,11 +7,12 @@ static const CGFloat CompressionQuality = 0.7;
 @implementation WPImageOptimizer (Private)
 
 - (NSData *)rawDataFromAssetRepresentation:(ALAssetRepresentation *)representation
+                          stripGeoLocation:(BOOL) stripGeoLocation
 {
     CGImageRef sourceImage = [self newImageFromAssetRepresentation:representation];
     NSDictionary *metadata = representation.metadata;
     NSString *type = representation.UTI;
-    if (!self.keepGeoLocation){
+    if (stripGeoLocation) {
         metadata = [self metadataWithoutLocation:metadata];
     }
     NSData *optimizedData = [self dataWithImage:sourceImage compressionQuality:1.0  type:type andMetadata:metadata];
@@ -22,12 +23,14 @@ static const CGFloat CompressionQuality = 0.7;
     return optimizedData;
 }
 
-- (NSData *)resizedDataFromAssetRepresentation:(ALAssetRepresentation *)representation fittingSize:(CGSize)targetSize
+- (NSData *)resizedDataFromAssetRepresentation:(ALAssetRepresentation *)representation
+                                   fittingSize:(CGSize)targetSize
+                              stripGeoLocation:(BOOL) stripGeoLocation
 {
     CGImageRef sourceImage = [self newImageFromAssetRepresentation:representation];
     CGImageRef resizedImage = [self resizedImageWithImage:sourceImage scale:representation.scale orientation:representation.orientation fittingSize:targetSize];
     NSDictionary *metadata = [self metadataFromRepresentation:representation];
-    if (!self.keepGeoLocation){
+    if (stripGeoLocation) {
         metadata = [self metadataWithoutLocation:metadata];
     }
     NSString *type = representation.UTI;
