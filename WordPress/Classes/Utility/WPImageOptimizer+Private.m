@@ -1,6 +1,5 @@
 #import "WPImageOptimizer+Private.h"
 #import "UIImage+Resize.h"
-
 #import <ImageIO/ImageIO.h>
 
 static const CGFloat CompressionQuality = 0.7;
@@ -12,6 +11,9 @@ static const CGFloat CompressionQuality = 0.7;
     CGImageRef sourceImage = [self newImageFromAssetRepresentation:representation];
     NSDictionary *metadata = representation.metadata;
     NSString *type = representation.UTI;
+    if (!self.keepGeoLocation){
+        metadata = [self metadataWithoutLocation:metadata];
+    }
     NSData *optimizedData = [self dataWithImage:sourceImage compressionQuality:1.0  type:type andMetadata:metadata];
 
     CGImageRelease(sourceImage);
@@ -25,6 +27,9 @@ static const CGFloat CompressionQuality = 0.7;
     CGImageRef sourceImage = [self newImageFromAssetRepresentation:representation];
     CGImageRef resizedImage = [self resizedImageWithImage:sourceImage scale:representation.scale orientation:representation.orientation fittingSize:targetSize];
     NSDictionary *metadata = [self metadataFromRepresentation:representation];
+    if (!self.keepGeoLocation){
+        metadata = [self metadataWithoutLocation:metadata];
+    }
     NSString *type = representation.UTI;
     NSData *imageData = [self dataWithImage:resizedImage compressionQuality:CompressionQuality type:type andMetadata:metadata];
 
@@ -121,6 +126,17 @@ static const CGFloat CompressionQuality = 0.7;
     CFRelease(destination);
 
     return [NSData dataWithData:destinationData];
+}
+
+- (NSDictionary *) metadataWithoutLocation:(NSDictionary *) originalMetadata
+{
+    NSString * const gpsKey = @"{GPS}";
+    if (!originalMetadata[gpsKey]){
+        return originalMetadata;
+    }
+    NSMutableDictionary * metadata = [NSMutableDictionary dictionaryWithDictionary:originalMetadata];
+    [metadata removeObjectForKey:gpsKey];
+    return [NSDictionary dictionaryWithDictionary:metadata];
 }
 
 @end

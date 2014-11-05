@@ -13,6 +13,8 @@
 
  */
 @interface WPImageOptimizer : NSObject
+
+@property (nonatomic, assign) BOOL keepGeoLocation;
 /**
  Returns a resized image data from the provided asset.
  
