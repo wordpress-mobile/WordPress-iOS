@@ -69,6 +69,10 @@ import Foundation
             gravatarImageView.updateConstraint(.Height, constant: gravatarImageSizePad.width)
             gravatarImageView.updateConstraint(.Width,  constant: gravatarImageSizePad.height)
         }
+
+        // Circularize gravatars
+        gravatarImageView.layer.masksToBounds   = true
+        gravatarImageView.layer.cornerRadius    = gravatarImageView.frame.size.width / 2
     }
     
     // MARK: - IBActions

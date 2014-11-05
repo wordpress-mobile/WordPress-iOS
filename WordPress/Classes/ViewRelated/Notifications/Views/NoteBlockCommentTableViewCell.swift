@@ -101,7 +101,7 @@ import Foundation
         // Separator Line should be 1px: Handle Retina!
         let separatorHeightInPixels         = separatorHeight / UIScreen.mainScreen().scale
         separatorView.updateConstraint(.Height, constant: separatorHeightInPixels)
-        
+
         // Setup Action Buttons
         let textNormalColor                 = WPStyleGuide.Notifications.blockActionDisabledColor
         let textSelectedColor               = WPStyleGuide.Notifications.blockActionEnabledColor
@@ -149,6 +149,10 @@ import Foundation
             gravatarImageView.updateConstraint(.Height, constant: gravatarImageSizePad.width)
             gravatarImageView.updateConstraint(.Width,  constant: gravatarImageSizePad.height)
         }
+
+        // Circularize gravatars
+        gravatarImageView.layer.masksToBounds   = true
+        gravatarImageView.layer.cornerRadius    = gravatarImageView.frame.size.width / 2
     }
     
     // MARK: - IBActions
