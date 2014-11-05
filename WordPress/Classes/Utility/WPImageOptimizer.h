@@ -14,7 +14,6 @@
  */
 @interface WPImageOptimizer : NSObject
 
-@property (nonatomic, assign) BOOL keepGeoLocation;
 /**
  Returns a resized image data from the provided asset.
  
@@ -25,7 +24,7 @@
 
  @return the optimized data
  */
-- (NSData *)optimizedDataFromAsset:(ALAsset *)asset fittingSize:(CGSize)targetSize;
+- (NSData *)optimizedDataFromAsset:(ALAsset *)asset fittingSize:(CGSize)targetSize stripGeoLocation:(BOOL) stripGeoLocation;
 
 /**
  Returns a resized image data from the provided asset.
@@ -36,6 +35,6 @@
 
  @return the raw data
  */
-- (NSData *)rawDataFromAsset:(ALAsset *)asset;
+- (NSData *)rawDataFromAsset:(ALAsset *)asset stripGeoLocation:(BOOL) stripGeoLocation;
 
 @end
