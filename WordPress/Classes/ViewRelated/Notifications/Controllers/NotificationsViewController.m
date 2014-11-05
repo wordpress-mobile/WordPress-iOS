@@ -31,11 +31,12 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-static NSTimeInterval const NotificationPushMaxWait = 1;
-static CGFloat const NoteEstimatedHeight            = 70;
-static CGRect NotificationsTableHeaderFrame         = {0.0f, 0.0f, 0.0f, 40.0f};
-static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
-static NSTimeInterval NotificationsSyncTimeout      = 10;
+static NSTimeInterval const NotificationPushMaxWait     = 1;
+static CGFloat const NoteEstimatedHeight                = 70;
+static CGRect NotificationsTableHeaderFrame             = {0.0f, 0.0f, 0.0f, 40.0f};
+static CGRect NotificationsTableFooterFrame             = {0.0f, 0.0f, 0.0f, 48.0f};
+static NSTimeInterval NotificationsSyncTimeout          = 10;
+static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0.0f};
 
 
 #pragma mark ====================================================================================
@@ -139,6 +140,17 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
     [self showManageButtonIfNeeded];
     [self setupNotificationsBucketDelegate];
     [self reloadResultsControllerIfNeeded];
+}
+
+-(void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+
+    [self.tableView setSeparatorInset:NotificationBlockSeparatorInsets];
+
+    if ([self.tableView respondsToSelector:@selector(setLayoutMargins:)]) {
+        [self.tableView setLayoutMargins:NotificationBlockSeparatorInsets];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
