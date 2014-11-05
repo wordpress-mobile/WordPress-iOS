@@ -19,6 +19,8 @@ extern NSString * NoteActionReplyKey;
 extern NSString * NoteActionApproveKey;
 extern NSString * NoteActionEditKey;
 
+extern NSString * NoteMediaTypeImage;
+
 typedef NS_ENUM(NSInteger, NoteBlockType)
 {
     NoteBlockTypeText,
@@ -120,6 +122,7 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 @property (nonatomic, strong, readwrite) NSString           *textOverride;
 
 - (NotificationRange *)notificationRangeWithUrl:(NSURL *)url;
+- (NSArray *)notificationMediaOfType:(NSString *)type;
 
 - (void)setActionOverrideValue:(NSNumber *)obj forKey:(NSString *)key;
 - (void)removeActionOverrideForKey:(NSString *)key;

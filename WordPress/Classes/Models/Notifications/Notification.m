@@ -256,6 +256,19 @@ NSString const *NotePostIdKey           = @"post_id";
     return nil;
 }
 
+- (NSArray *)notificationMediaOfType:(NSString *)type
+{
+    NSMutableArray *theMedia = [NSMutableArray array];
+
+    for (NotificationMedia *media in self.media) {
+        if ([media.type isEqualToString:type]) {
+            [theMedia addObject:media];
+        }
+    }
+
+    return theMedia;
+}
+
 - (void)setActionOverrideValue:(NSNumber *)value forKey:(NSString *)key
 {
     if (!_actionsOverride) {
