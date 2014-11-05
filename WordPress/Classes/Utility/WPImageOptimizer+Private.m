@@ -92,7 +92,6 @@ static const CGFloat CompressionQuality = 0.7;
 {
     NSString * const orientationKey = @"Orientation";
     NSString * const xmpKey = @"AdjustmentXMP";
-    NSString * const tiffKey = @"{TIFF}";
 
     NSMutableDictionary *metadata = [representation.metadata mutableCopy];
 
@@ -102,10 +101,10 @@ static const CGFloat CompressionQuality = 0.7;
     // Remove rotation data, since the image is already rotated
     [metadata removeObjectForKey:orientationKey];
 
-    if ([metadata objectForKey:tiffKey]) {
-        NSMutableDictionary *tiffMetadata = [metadata[tiffKey] mutableCopy];
-        [tiffMetadata setObject:@1 forKey:orientationKey];
-        [metadata setObject:[NSDictionary dictionaryWithDictionary:tiffMetadata] forKey:tiffKey];
+    if (metadata[(NSString *)kCGImagePropertyTIFFDictionary]) {
+        NSMutableDictionary *tiffMetadata = [metadata[(NSString *)kCGImagePropertyTIFFDictionary] mutableCopy];
+        tiffMetadata[(NSString *)kCGImagePropertyTIFFOrientation] = @1;
+        metadata[(NSString *)kCGImagePropertyTIFFDictionary] = [NSDictionary dictionaryWithDictionary:tiffMetadata];
     }
 
     return [NSDictionary dictionaryWithDictionary:metadata];
