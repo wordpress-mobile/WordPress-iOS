@@ -94,6 +94,7 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 @property (nonatomic, assign, readonly) NoteBlockGroupType type;
 
 - (NotificationBlock *)blockOfType:(NoteBlockType)type;
+- (NSArray *)imageUrlsForBlocksOfTypes:(NSSet *)types;
 
 @end
 
@@ -122,7 +123,7 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 @property (nonatomic, strong, readwrite) NSString           *textOverride;
 
 - (NotificationRange *)notificationRangeWithUrl:(NSURL *)url;
-- (NSArray *)notificationMediaOfType:(NSString *)type;
+- (NSArray *)imageUrls;
 
 - (void)setActionOverrideValue:(NSNumber *)obj forKey:(NSString *)key;
 - (void)removeActionOverrideForKey:(NSString *)key;
