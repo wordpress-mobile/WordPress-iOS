@@ -4,7 +4,7 @@ import Foundation
 extension NotificationBlock
 {
     public func subjectAttributedText() -> NSAttributedString {
-        return textWithRangeStyles(isSubject: true)
+        return textWithRangeStyles(isSubject: true, mediaMap: nil)
     }
 
     public func snippetAttributedText() -> NSAttributedString {
@@ -15,19 +15,19 @@ extension NotificationBlock
         return NSAttributedString(string: text, attributes: Styles.snippetRegularStyle)
     }
 
-    public func richAttributedText() -> NSAttributedString {
+    public func richAttributedTextWithEmbeddedImages(mediaMap: [NSURL: UIImage]?) -> NSAttributedString {
         //  Operations such as editing a comment cause a lag between the REST and Simperium update.
         //  TextOverride is a transient property meant to store, temporarily, the edited text
         if textOverride != nil {
             return NSAttributedString(string: textOverride, attributes: Styles.blockRegularStyle)
         }
         
-        return textWithRangeStyles(isSubject: false)
+        return textWithRangeStyles(isSubject: false, mediaMap: mediaMap)
     }
     
     
     // MARK: - Private Helpers
-    private func textWithRangeStyles(#isSubject: Bool) -> NSAttributedString {
+    private func textWithRangeStyles(#isSubject: Bool, mediaMap: [NSURL: UIImage]?) -> NSAttributedString {
         if text == nil {
             return NSAttributedString()
         }
@@ -61,21 +61,24 @@ extension NotificationBlock
                 theString.addAttribute(NSForegroundColorAttributeName, value: Styles.blockLinkColor, range: range.range)
             }
         }
-        
-        // Don't embed images in the subject
-        if isSubject {
+
+        // Embed the images, if needed
+        if mediaMap == nil {
             return theString
         }
         
-        // Embed only Images -For now!-
+        let unwrappedMediaMap = mediaMap!
         for theMedia in media as [NotificationMedia] {
-            if theMedia.isImage == false {
+            
+            let image = unwrappedMediaMap[theMedia.mediaURL]
+            if theMedia.isImage == false || image == nil {
                 continue
             }
             
-            let imageAttachment     = TextImageAttachment()
-            imageAttachment.url     = theMedia.mediaURL
-            imageAttachment.bounds  = CGRect(origin: CGPointZero, size: theMedia.size)
+            let imageAttachment     = NSTextAttachment()
+            imageAttachment.bounds  = CGRect(origin: CGPointZero, size: image!.size)
+            imageAttachment.image   = image!
+            
             let attachmentString    = NSAttributedString(attachment: imageAttachment)
             theString.replaceCharactersInRange(theMedia.range, withAttributedString: attachmentString)
         }
