@@ -104,6 +104,7 @@ static NSInteger NotificationSectionCount               = 1;
 
     self.tableView.separatorStyle       = self.note.isBadge ? UITableViewCellSeparatorStyleNone : UITableViewCellSeparatorStyleSingleLine;
     self.tableView.separatorInset       = UIEdgeInsetsZero;
+    self.tableView.separatorColor       = [WPStyleGuide notificationsBlockSeparatorColor];
     self.tableView.backgroundColor      = [WPStyleGuide itsEverywhereGrey];
     
     self.reuseIdentifierMap = @{
