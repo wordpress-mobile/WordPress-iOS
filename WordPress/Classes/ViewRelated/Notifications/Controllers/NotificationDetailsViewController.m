@@ -73,6 +73,9 @@ static CGFloat NotificationSectionSeparator     = 10;
 @property (nonatomic, assign) NSInteger                     headerSectionIndex;
 @property (nonatomic, assign) NSInteger                     bodySectionIndex;
 
+// Media Helpers
+@property (nonatomic, strong) NotificationMediaDownloader   *mediaDownloader;
+
 // Model
 @property (nonatomic, strong) Notification                  *note;
 @end
@@ -110,6 +113,8 @@ static CGFloat NotificationSectionSeparator     = 10;
     self.tableView.separatorStyle           = self.note.isBadge ? UITableViewCellSeparatorStyleNone : UITableViewCellSeparatorStyleSingleLine;
     self.tableView.backgroundColor          = [WPStyleGuide itsEverywhereGrey];
     self.tableView.accessibilityIdentifier  = @"Notification Details Table";
+    
+    self.mediaDownloader                    = [NotificationMediaDownloader new];
     
     self.reuseIdentifierMap = @{
         @(NoteBlockGroupTypeHeader)    : NoteBlockHeaderTableViewCell.reuseIdentifier,
@@ -166,7 +171,7 @@ static CGFloat NotificationSectionSeparator     = 10;
         self.headerSectionIndex--;
         self.bodySectionIndex--;
     }
-    
+
     [self.tableView reloadData];
     [self adjustTableInsetsIfNeeded];
 }
@@ -404,7 +409,8 @@ static CGFloat NotificationSectionSeparator     = 10;
     NotificationBlockGroup *blockGroup      = [self blockGroupForIndexPath:indexPath];
     NSString *reuseIdentifier               = self.reuseIdentifierMap[@(blockGroup.type)] ?: self.reuseIdentifierMap[@(NoteBlockGroupTypeText)];
     NoteBlockTableViewCell *cell            = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
-    
+ 
+    [self enqueueMediaDownloads:blockGroup indexPath:indexPath];
     [self setupCell:cell blockGroup:blockGroup];
 
     return cell;
@@ -427,6 +433,21 @@ static CGFloat NotificationSectionSeparator     = 10;
 
         [self displayReaderWithPostId:self.note.metaPostID siteID:self.note.metaSiteID];
     }
+}
+
+
+#pragma mark - Media Download Helper
+
+- (void)enqueueMediaDownloads:(NotificationBlockGroup *)group indexPath:(NSIndexPath *)indexPath
+{
+    // Download Media: Only embeds for Text and Comment notifications
+    NSSet *richBlockTypes           = [NSSet setWithObjects:@(NoteBlockTypeText), @(NoteBlockTypeComment), nil];
+    NSArray *imageUrls              = [group imageUrlsForBlocksOfTypes:richBlockTypes];
+    __weak __typeof(self) weakSelf  = self;
+    
+    [self.mediaDownloader downloadMediaWithUrls:imageUrls completion:^{
+        [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }];
 }
 
 
@@ -495,6 +516,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     NotificationBlock *commentBlock = [blockGroup blockOfType:NoteBlockTypeComment];
     NotificationBlock *userBlock    = [blockGroup blockOfType:NoteBlockTypeUser];
     NotificationMedia *media        = userBlock.media.firstObject;
+    NSDictionary *mediaMap          = [self.mediaDownloader imagesForUrls:commentBlock.imageUrls];
     
     NSAssert(commentBlock, nil);
     NSAssert(userBlock, nil);
@@ -512,12 +534,11 @@ static CGFloat NotificationSectionSeparator     = 10;
     
     cell.name                       = userBlock.text;
     cell.timestamp                  = [self.note.timestampAsDate shortString];
-    cell.attributedCommentText      = commentBlock.richAttributedText;
-
+    cell.attributedCommentText      = [commentBlock richAttributedTextWithEmbeddedImages:mediaMap];
+    
     cell.onUrlClick                 = ^(NSURL *url){
         [weakSelf openURL:url];
     };
-    
     cell.onReplyClick               = ^(UIButton * sender){
         [weakSelf editReplyWithBlock:commentBlock];
     };
@@ -563,11 +584,12 @@ static CGFloat NotificationSectionSeparator     = 10;
 - (void)setupTextCell:(NoteBlockTextTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
 {
     NotificationBlock *textBlock    = blockGroup.blocks.firstObject;
+    NSDictionary *mediaMap          = [self.mediaDownloader imagesForUrls:textBlock.imageUrls];
     NSAssert(textBlock, nil);
     
     __weak __typeof(self) weakSelf  = self;
     
-    cell.attributedText             = textBlock.richAttributedText;
+    cell.attributedText             = [textBlock richAttributedTextWithEmbeddedImages:mediaMap];
     cell.isBadge                    = textBlock.isBadge;
     cell.onUrlClick                 = ^(NSURL *url){
         [weakSelf openURL:url];
