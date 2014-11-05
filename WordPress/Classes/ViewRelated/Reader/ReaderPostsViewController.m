@@ -762,8 +762,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     [self.activityFooter startAnimating];
-    self.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
-    
+
     ReaderPost *post = self.tableViewHandler.resultsController.fetchedObjects.lastObject;
     NSDate *earlierThan = post.sortDate;
     
@@ -854,8 +853,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     if (self.shouldSkipRowAnimation) {
         // short circuit any row animation when loading more.
-        [self.tableView reloadData];
         self.shouldSkipRowAnimation = NO;
+        [self.tableView reloadData];
     }
 
 }
