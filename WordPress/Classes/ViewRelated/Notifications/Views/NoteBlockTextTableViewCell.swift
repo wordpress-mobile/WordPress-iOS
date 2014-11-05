@@ -71,13 +71,6 @@ import Foundation
     
     
     // MARK: - RichTextView Data Source
-    
-    public func textView(textView: UITextView, viewForTextAttachment attachment: NSTextAttachment) -> UIView? {
-// WARNING: TODO
-        println("viewForTextAttachment")
-        return nil
-    }
-    
     public func textView(textView: UITextView, didPressLink link: NSURL) {
         onUrlClick?(link)
     }
