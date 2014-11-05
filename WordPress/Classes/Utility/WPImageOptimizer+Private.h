@@ -20,9 +20,12 @@
 - (CGImageRef)newImageFromAssetRepresentation:(ALAssetRepresentation *)representation;
 
 /**
- Returns the image metadata removing Orientation and XMP tags
+ Returns the image metadata and optionaly strips from it XMP, Orientation and GeoLocation tags
  */
-- (NSDictionary *)metadataFromRepresentation:(ALAssetRepresentation *)representation;
+- (NSDictionary *)metadataFromRepresentation:(ALAssetRepresentation *)representation
+                                    stripXMP:(BOOL) stripXMP
+                            stripOrientation:(BOOL) stripOrientation
+                            stripGeoLocation:(BOOL) stripGeoLocation;
 
 /**
  Returns data combining the provided image and metadata.

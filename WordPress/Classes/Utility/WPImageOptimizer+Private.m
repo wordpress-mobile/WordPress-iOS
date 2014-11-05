@@ -10,11 +10,11 @@ static const CGFloat CompressionQuality = 0.7;
                           stripGeoLocation:(BOOL) stripGeoLocation
 {
     CGImageRef sourceImage = [self newImageFromAssetRepresentation:representation];
-    NSDictionary *metadata = representation.metadata;
+    NSDictionary *metadata = [self metadataFromRepresentation:representation 
+                                                     stripXMP:NO
+                                             stripOrientation:NO
+                                             stripGeoLocation:stripGeoLocation];
     NSString *type = representation.UTI;
-    if (stripGeoLocation) {
-        metadata = [self metadataWithoutLocation:metadata];
-    }
     NSData *optimizedData = [self dataWithImage:sourceImage compressionQuality:1.0  type:type andMetadata:metadata];
 
     CGImageRelease(sourceImage);
@@ -29,10 +29,10 @@ static const CGFloat CompressionQuality = 0.7;
 {
     CGImageRef sourceImage = [self newImageFromAssetRepresentation:representation];
     CGImageRef resizedImage = [self resizedImageWithImage:sourceImage scale:representation.scale orientation:representation.orientation fittingSize:targetSize];
-    NSDictionary *metadata = [self metadataFromRepresentation:representation];
-    if (stripGeoLocation) {
-        metadata = [self metadataWithoutLocation:metadata];
-    }
+    NSDictionary *metadata = [self metadataFromRepresentation:representation
+                                                     stripXMP:YES
+                                             stripOrientation:YES
+                                             stripGeoLocation:stripGeoLocation];
     NSString *type = representation.UTI;
     NSData *imageData = [self dataWithImage:resizedImage compressionQuality:CompressionQuality type:type andMetadata:metadata];
 
@@ -89,22 +89,33 @@ static const CGFloat CompressionQuality = 0.7;
 }
 
 - (NSDictionary *)metadataFromRepresentation:(ALAssetRepresentation *)representation
+                                    stripXMP:(BOOL) stripXMP
+                            stripOrientation:(BOOL) stripOrientation
+                            stripGeoLocation:(BOOL) stripGeoLocation
 {
     NSString * const orientationKey = @"Orientation";
     NSString * const xmpKey = @"AdjustmentXMP";
 
     NSMutableDictionary *metadata = [representation.metadata mutableCopy];
+    
+    if (stripXMP){
+        // Remove XMP data since filters have already been applied to the image
+        [metadata removeObjectForKey:xmpKey];
+    }
 
-    // Remove XMP data since filters have already been applied to the image
-    [metadata removeObjectForKey:xmpKey];
+    if (stripOrientation) {
+        // Remove rotation data, since the image is already rotated
+        [metadata removeObjectForKey:orientationKey];
 
-    // Remove rotation data, since the image is already rotated
-    [metadata removeObjectForKey:orientationKey];
-
-    if (metadata[(NSString *)kCGImagePropertyTIFFDictionary]) {
-        NSMutableDictionary *tiffMetadata = [metadata[(NSString *)kCGImagePropertyTIFFDictionary] mutableCopy];
-        tiffMetadata[(NSString *)kCGImagePropertyTIFFOrientation] = @1;
-        metadata[(NSString *)kCGImagePropertyTIFFDictionary] = [NSDictionary dictionaryWithDictionary:tiffMetadata];
+        if (metadata[(NSString *)kCGImagePropertyTIFFDictionary]) {
+            NSMutableDictionary *tiffMetadata = [metadata[(NSString *)kCGImagePropertyTIFFDictionary] mutableCopy];
+            tiffMetadata[(NSString *)kCGImagePropertyTIFFOrientation] = @1;
+            metadata[(NSString *)kCGImagePropertyTIFFDictionary] = [NSDictionary dictionaryWithDictionary:tiffMetadata];
+        }
+    }
+    
+    if (stripGeoLocation) {
+        [metadata removeObjectForKey:(NSString *)kCGImagePropertyGPSDictionary];
     }
 
     return [NSDictionary dictionaryWithDictionary:metadata];
@@ -128,16 +139,6 @@ static const CGFloat CompressionQuality = 0.7;
     CFRelease(destination);
 
     return [NSData dataWithData:destinationData];
-}
-
-- (NSDictionary *) metadataWithoutLocation:(NSDictionary *) originalMetadata
-{
-    if (!originalMetadata[(NSString *)kCGImagePropertyGPSDictionary]) {
-        return originalMetadata;
-    }
-    NSMutableDictionary * metadata = [NSMutableDictionary dictionaryWithDictionary:originalMetadata];
-    [metadata removeObjectForKey:(NSString *)kCGImagePropertyGPSDictionary];
-    return [NSDictionary dictionaryWithDictionary:metadata];
 }
 
 @end
