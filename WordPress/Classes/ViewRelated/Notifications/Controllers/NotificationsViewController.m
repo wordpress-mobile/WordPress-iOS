@@ -556,6 +556,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
     cell.attributedSnippet                  = snippetBlock.snippetAttributedText;
     cell.read                               = note.read.boolValue;
     cell.noticon                            = note.noticon;
+    cell.unapproved                         = note.isUnapprovedComment;
     
     [cell downloadGravatarWithURL:note.iconURL];
 }

@@ -812,8 +812,11 @@ static NSInteger NotificationSectionCount               = 1;
         [block removeActionOverrideForKey:NoteActionApproveKey];
         [weakSelf reloadData];
     }];
-    
+
     [block setActionOverrideValue:@(true) forKey:NoteActionApproveKey];
+    
+    // Hack: force NSFetchedResultsController to reload this notification
+    [self.note didChangeOverrides];
 }
 
 - (void)unapproveCommentWithBlock:(NotificationBlock *)block
@@ -830,6 +833,8 @@ static NSInteger NotificationSectionCount               = 1;
     }];
     
     [block setActionOverrideValue:@(false) forKey:NoteActionApproveKey];
+    // Hack: force NSFetchedResultsController to reload this notification
+    [self.note didChangeOverrides];
 }
 
 - (void)spamCommentWithBlock:(NotificationBlock *)block
