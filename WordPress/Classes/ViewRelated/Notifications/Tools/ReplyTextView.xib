@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="14A343f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14B17" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ReplyTextView" customModule="WordPress">
             <connections>
                 <outlet property="containerView" destination="iN0-l3-epB" id="PxG-zK-Meq"/>
                 <outlet property="layoutView" destination="TqK-rp-BlK" id="QTH-iw-Viv"/>
+                <outlet property="maxWidthConstraint" destination="rlm-Qy-72M" id="EUQ-WZ-8lK"/>
                 <outlet property="placeholderLabel" destination="Omp-7E-YTH" id="Qqp-Aa-Yqy"/>
                 <outlet property="replyButton" destination="5G8-Al-JKt" id="VGx-mg-xgv"/>
                 <outlet property="textView" destination="2Pd-vE-u9b" id="wmd-19-U9S"/>
