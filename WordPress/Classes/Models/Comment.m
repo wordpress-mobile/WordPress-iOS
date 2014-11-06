@@ -127,12 +127,7 @@ NSString * const CommentStatusDraft = @"draft";
 
 - (NSString *)authorUrlForDisplay
 {
-    if (self.author_url) {
-        return [[self.author_url stringByReplacingOccurrencesOfString:@"https://" withString:@""]
-                stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-    }
-
-    return nil;
+    return self.author_url.hostname;
 }
 
 - (BOOL)hasAuthorUrl {
