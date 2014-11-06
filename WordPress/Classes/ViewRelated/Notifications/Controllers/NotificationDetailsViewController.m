@@ -781,8 +781,11 @@ static CGFloat NotificationSectionSeparator     = 10;
         [block removeActionOverrideForKey:NoteActionApproveKey];
         [weakSelf reloadData];
     }];
-    
+
     [block setActionOverrideValue:@(true) forKey:NoteActionApproveKey];
+    
+    // Hack: force NSFetchedResultsController to reload this notification
+    [self.note didChangeOverrides];
 }
 
 - (void)unapproveCommentWithBlock:(NotificationBlock *)block
@@ -799,6 +802,8 @@ static CGFloat NotificationSectionSeparator     = 10;
     }];
     
     [block setActionOverrideValue:@(false) forKey:NoteActionApproveKey];
+    // Hack: force NSFetchedResultsController to reload this notification
+    [self.note didChangeOverrides];
 }
 
 - (void)spamCommentWithBlock:(NotificationBlock *)block
