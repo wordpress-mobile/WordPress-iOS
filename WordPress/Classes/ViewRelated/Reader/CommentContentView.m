@@ -157,8 +157,12 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
 - (void)constructSubviews
 {
     self.avatarImageView = [self imageViewForAvatar];
-    [self addSubview:self.avatarImageView];
+    // Circular gravatars
+    self.avatarImageView.layer.masksToBounds = YES;
+    self.avatarImageView.layer.cornerRadius = CommentContentViewAvatarSize / 2;
 
+    [self addSubview:self.avatarImageView];
+    
     self.authorButton = [self buttonForAuthorButton];
     [self addSubview:self.authorButton];
 
