@@ -1,5 +1,6 @@
 #import "Notification.h"
 #import "NSDictionary+SafeExpectations.h"
+#import "NSString+Helpers.h"
 #import "WordPress-Swift.h"
 
 
@@ -248,12 +249,9 @@ NSString const *NotePostIdKey           = @"post_id";
 {
     if ([self metaTitlesHome]) {
         return [self metaTitlesHome];
-    } else if ([self metaLinksHome]) {
-        return [[[self metaLinksHome] stringByReplacingOccurrencesOfString:@"https://" withString:@""]
-                stringByReplacingOccurrencesOfString:@"http://" withString:@""];
     }
-
-    return nil;
+    
+    return self.metaLinksHome.hostname;
 }
 
 - (NotificationRange *)notificationRangeWithUrl:(NSURL *)url
