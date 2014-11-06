@@ -91,6 +91,12 @@ static NSDictionary *EnabledButtonBarStyle;
 }
 
 - (id)initWithPost:(AbstractPost *)post
+{
+    return [self initWithPost:post
+                         mode:kWPPostViewControllerModePreview];
+}
+
+- (id)initWithPost:(AbstractPost *)post
 			  mode:(WPPostViewControllerMode)mode
 {
     self = [super initWithMode:mode];
@@ -354,6 +360,11 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)showSettings
 {
+    if ([self isMediaInUploading]) {
+        [self showMediaInUploadingAlert];
+        return;
+    }
+    
     Post *post = (Post *)self.post;
     PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post shouldHideStatusBar:YES];
 	vc.hidesBottomBarWhenPushed = YES;
@@ -362,6 +373,11 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)showPreview
 {
+    if ([self isMediaInUploading]) {
+        [self showMediaInUploadingAlert];
+        return;
+    }
+    
     PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.post shouldHideStatusBar:self.isEditing];
 	vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
@@ -387,14 +403,14 @@ static NSDictionary *EnabledButtonBarStyle;
 {
     if (_currentActionSheet) return;
     
+    if ([self isMediaInUploading]) {
+        [self showMediaInUploadingAlert];
+        return;
+    }
+    
 	[self stopEditing];
     [self.postSettingsViewController endEditingAction:nil];
 	
-	if ([self isMediaInUploading]) {
-		[self showMediaInUploadingAlert];
-		return;
-	}
-    
     if (![self hasChanges]) {
         [WPAnalytics track:WPAnalyticsStatEditorClosed];
 		
@@ -1104,8 +1120,8 @@ static NSDictionary *EnabledButtonBarStyle;
 - (void)showMediaInUploadingAlert
 {
 	//the post is using the network connection and cannot be stoped, show a message to the user
-	UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info alert title")
-																  message:NSLocalizedString(@"A Media file is currently uploading. Please try later.", @"")
+	UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Uploading media", @"Title for alert when trying to save/exit a post before media upload process is complete.")
+																  message:NSLocalizedString(@"You are currently uploading media. Please wait until this completes.", @"This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete.")
 																 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
 	[blogIsCurrentlyBusy show];
 }
@@ -1329,6 +1345,9 @@ static NSDictionary *EnabledButtonBarStyle;
             } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
                 MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
                 [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
+                    if (!media) {
+                        return;
+                    }
                     NSString* imageUniqueId = [self uniqueId];
                     
                     NSURL* url = [[NSURL alloc] initFileURLWithPath:media.localURL];
