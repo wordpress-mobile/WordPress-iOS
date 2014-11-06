@@ -23,13 +23,13 @@
                         </constraints>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wfO-j3-kM6" userLabel="NoticonContainerView">
-                        <rect key="frame" x="42" y="42" width="20" height="20"/>
+                        <rect key="frame" x="42" y="42" width="24" height="24"/>
                         <subviews>
                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iFs-j8-6X0" userLabel="NoticonView">
                                 <rect key="frame" x="0.0" y="0.0" width="18" height="18"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a81-9a-t1j" userLabel="NoticonLabel">
-                                        <rect key="frame" x="3" y="2" width="14" height="14"/>
+                                        <rect key="frame" x="3" y="4" width="14" height="14"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="16" id="JQk-W6-25b"/>
                                             <constraint firstAttribute="width" constant="16" id="PZS-KM-g6P"/>
@@ -43,9 +43,9 @@
                                 <constraints>
                                     <constraint firstAttribute="centerY" secondItem="a81-9a-t1j" secondAttribute="centerY" id="4Yt-OI-K6w"/>
                                     <constraint firstAttribute="centerX" secondItem="a81-9a-t1j" secondAttribute="centerX" id="7hc-hH-Vbr"/>
-                                    <constraint firstAttribute="height" constant="16" id="F1Q-2h-RZO"/>
-                                    <constraint firstItem="a81-9a-t1j" firstAttribute="top" secondItem="iFs-j8-6X0" secondAttribute="top" constant="2" id="FeZ-kR-zN9"/>
-                                    <constraint firstAttribute="width" constant="16" id="xql-ql-Uzf"/>
+                                    <constraint firstAttribute="height" constant="20" id="F1Q-2h-RZO"/>
+                                    <constraint firstItem="a81-9a-t1j" firstAttribute="top" secondItem="iFs-j8-6X0" secondAttribute="top" constant="4" id="FeZ-kR-zN9"/>
+                                    <constraint firstAttribute="width" constant="20" id="xql-ql-Uzf"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -57,11 +57,11 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="centerY" secondItem="iFs-j8-6X0" secondAttribute="centerY" id="43Q-C4-k3t"/>
-                            <constraint firstAttribute="width" constant="20" id="5MP-uM-RZI"/>
+                            <constraint firstAttribute="width" constant="24" id="5MP-uM-RZI"/>
                             <constraint firstAttribute="centerY" secondItem="iFs-j8-6X0" secondAttribute="centerY" id="JSr-qz-Zdc"/>
                             <constraint firstAttribute="centerX" secondItem="iFs-j8-6X0" secondAttribute="centerX" id="NkZ-eB-b6Y"/>
                             <constraint firstAttribute="centerX" secondItem="iFs-j8-6X0" secondAttribute="centerX" id="aC0-GU-q9z"/>
-                            <constraint firstAttribute="height" constant="20" id="t5b-6V-yq3"/>
+                            <constraint firstAttribute="height" constant="24" id="t5b-6V-yq3"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
