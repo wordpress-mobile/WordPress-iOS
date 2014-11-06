@@ -5,14 +5,14 @@
 /**
  Returns the data from a given asset representation without processing it.
  */
-- (NSData *)rawDataFromAssetRepresentation:(ALAssetRepresentation *)representation;
+- (NSData *)rawDataFromAssetRepresentation:(ALAssetRepresentation *)representation  stripGeoLocation:(BOOL) stripGeoLocation;
 
 /**
  Returns the optimized data from a given asset representation.
  
  The image is read, scaled down, and saved with a lower quality setting.
  */
-- (NSData *)resizedDataFromAssetRepresentation:(ALAssetRepresentation *)representation fittingSize:(CGSize)targetSize;
+- (NSData *)resizedDataFromAssetRepresentation:(ALAssetRepresentation *)representation fittingSize:(CGSize)targetSize  stripGeoLocation:(BOOL) stripGeoLocation;
 
 /**
  Returns the image (including edits and cropping) for the given representation.
@@ -20,9 +20,12 @@
 - (CGImageRef)newImageFromAssetRepresentation:(ALAssetRepresentation *)representation;
 
 /**
- Returns the image metadata removing Orientation and XMP tags
+ Returns the image metadata and optionaly strips from it XMP, Orientation and GeoLocation tags
  */
-- (NSDictionary *)metadataFromRepresentation:(ALAssetRepresentation *)representation;
+- (NSDictionary *)metadataFromRepresentation:(ALAssetRepresentation *)representation
+                                    stripXMP:(BOOL) stripXMP
+                            stripOrientation:(BOOL) stripOrientation
+                            stripGeoLocation:(BOOL) stripGeoLocation;
 
 /**
  Returns data combining the provided image and metadata.

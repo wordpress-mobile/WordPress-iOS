@@ -59,15 +59,22 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
              forPostObjectID:(NSManagedObjectID *)postObjectID
                   completion:(void (^)(Media *media))completion
 {
+    __block BOOL geoLocationEnabled = NO;
+    [self.managedObjectContext performBlockAndWait:^{
+        AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
+        geoLocationEnabled = post.blog.geolocationEnabled;
+    }];
+     
     WPImageOptimizer *optimizer = [WPImageOptimizer new];
 
+     
     NSData *optimizedImageData;
     CGSize maxImageSize = [MediaService maxImageSizeSetting];
 
     if (CGSizeEqualToSize(maxImageSize, MediaMaxImageSize)) {
-        optimizedImageData = [optimizer rawDataFromAsset:asset];
+        optimizedImageData = [optimizer rawDataFromAsset:asset stripGeoLocation:!geoLocationEnabled];
     } else {
-        optimizedImageData = [optimizer optimizedDataFromAsset:asset fittingSize:maxImageSize];
+        optimizedImageData = [optimizer optimizedDataFromAsset:asset fittingSize:maxImageSize stripGeoLocation:!geoLocationEnabled];
     }
 
     NSData *thumbnailData = [self thumbnailDataFromAsset:asset];
