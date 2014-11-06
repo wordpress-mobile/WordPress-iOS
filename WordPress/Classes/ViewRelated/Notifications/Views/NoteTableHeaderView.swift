@@ -109,7 +109,7 @@ import Foundation
     private let imageName       = "reader-postaction-time"
     
     private let separatorHeight = CGFloat(1)
-    private let maximumWidth    = UIDevice.isPad() ? CGFloat(600) : CGFloat.max
+    private let maximumWidth    = UIDevice.isPad() ? WPTableViewFixedWidth : CGFloat.max
     
     // MARK - Outlets
     private var imageView:          UIImageView!
