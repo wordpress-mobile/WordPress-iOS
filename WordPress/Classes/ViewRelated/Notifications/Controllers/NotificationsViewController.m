@@ -544,6 +544,7 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
     cell.attributedSnippet                  = snippetBlock.snippetAttributedText;
     cell.read                               = note.read.boolValue;
     cell.noticon                            = note.noticon;
+    cell.unapproved                         = note.isUnapprovedComment;
     
     [cell downloadGravatarWithURL:note.iconURL];
 }

@@ -963,6 +963,10 @@ static NSInteger const MaximumNumberOfPictures = 4;
         if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
             MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
             [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
+                if (!media) {
+                    return;
+                }
+
                 AFHTTPRequestOperation *operation = [mediaService operationToUploadMedia:media withSuccess:^{
                     [self insertMedia:media];
                 } failure:^(NSError *error) {
