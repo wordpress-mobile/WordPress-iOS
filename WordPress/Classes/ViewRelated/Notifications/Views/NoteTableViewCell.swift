@@ -27,6 +27,11 @@ import Foundation
             noticonLabel.text = noticon ?? String()
         }
     }
+    public var unapproved: Bool = false {
+        didSet {
+            refreshBackgrounds()
+        }
+    }
     
     // MARK: - Public Methods
     public func downloadGravatarWithURL(url: NSURL?) {
@@ -55,8 +60,8 @@ import Foundation
         iconImageView.image             = UIImage(named: placeholderName)
         
         noticonView.layer.cornerRadius  = noticonRadius
-        noticonLabel.font               = WPStyleGuide.Notifications.noticonFont
-        noticonLabel.textColor          = WPStyleGuide.Notifications.noticonTextColor
+        noticonLabel.font               = Style.noticonFont
+        noticonLabel.textColor          = Style.noticonTextColor
         
         subjectLabel.numberOfLines      = subjectNumberOfLinesWithSnippet
         subjectLabel.shadowOffset       = CGSizeZero
@@ -70,6 +75,19 @@ import Foundation
         super.layoutSubviews()
     }
 
+    public override func setSelected(selected: Bool, animated: Bool) {
+        // Note: this is required, since the cell unhighlight mechanism will reset the new background color
+        super.setSelected(selected, animated: animated)
+        refreshBackgrounds()
+    }
+    
+    public override func setHighlighted(highlighted: Bool, animated: Bool) {
+        // Note: this is required, since the cell unhighlight mechanism will reset the new background color
+        super.setHighlighted(highlighted, animated: animated)
+        refreshBackgrounds()
+    }
+    
+    
     // MARK: - Private Methods
     private func refreshLabelPreferredMaxLayoutWidth() {
         let maxWidthLabel                    = frame.width - subjectPaddingRight - subjectLabel.frame.minX
@@ -78,20 +96,27 @@ import Foundation
     }
     
     private func refreshBackgrounds() {
-        if read {
-            backgroundColor             = WPStyleGuide.Notifications.noteBackgroundReadColor
-            noticonView.backgroundColor = WPStyleGuide.Notifications.noticonReadColor
+        // Noticon Background
+        if unapproved {
+            noticonView.backgroundColor = Style.noticonUnmoderatedColor
+        } else if read {
+            noticonView.backgroundColor = Style.noticonReadColor
         } else {
-            backgroundColor             = WPStyleGuide.Notifications.noteBackgroundUnreadColor
-            noticonView.backgroundColor = WPStyleGuide.Notifications.noticonUnreadColor
+            noticonView.backgroundColor = Style.noticonUnreadColor
         }
-    }
 
+        // Cell Background
+        backgroundColor = read ? Style.noteBackgroundReadColor : Style.noteBackgroundUnreadColor
+    }
+    
     private func refreshNumberOfLines() {
         // When the snippet is present, let's clip the number of lines in the subject
         subjectLabel.numberOfLines = attributedSnippet != nil ? subjectNumberOfLinesWithSnippet : subjectNumberOfLinesWithoutSnippet
     }
 
+    
+    // MARK: - Private Alias
+    private typealias Style = WPStyleGuide.Notifications
     
     // MARK: - Private Properties
     private let subjectPaddingRight:                CGFloat     = 12
