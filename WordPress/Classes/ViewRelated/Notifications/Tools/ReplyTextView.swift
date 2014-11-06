@@ -207,10 +207,16 @@ import Foundation
         gestureRecognizers              = [recognizer]
         
         // iPhone's Width knows No Limits
-        if UIDevice.isPad() == false {
-            layoutView.removeConstraint(maxWidthConstraint);
-        } else {
-            maxWidthConstraint.constant = WPTableViewFixedWidth
+        if UIDevice.isPad() {
+            let maxWidthConstraint = NSLayoutConstraint(item: self,
+                                        attribute:  .Width,
+                                        relatedBy:  .LessThanOrEqual,
+                                        toItem:     nil,
+                                        attribute:  .NotAnAttribute,
+                                        multiplier: 1,
+                                        constant:   WPTableViewFixedWidth)
+
+            addConstraint(maxWidthConstraint)
         }
     }
     
@@ -259,18 +265,17 @@ import Foundation
     
     
     // MARK: - Constants
-    private let textViewDefaultPadding:     CGFloat         = 12
-    private let textViewMaxHeight:          CGFloat         = 82   // Fits 3 lines onscreen
-    private let textViewMinHeight:          CGFloat         = 44
+    private let textViewDefaultPadding:         CGFloat         = 12
+    private let textViewMaxHeight:              CGFloat         = 82   // Fits 3 lines onscreen
+    private let textViewMinHeight:              CGFloat         = 44
     
     // MARK: - Private Properties
-    private var bundle:                     NSArray?
-    
+    private var bundle:                         NSArray?
+
     // MARK: - IBOutlets
     @IBOutlet private var textView:             UITextView!
     @IBOutlet private var placeholderLabel:     UILabel!
     @IBOutlet private var replyButton:          UIButton!
     @IBOutlet private var layoutView:           UIView!
     @IBOutlet private var containerView:        UIView!
-    @IBOutlet private var maxWidthConstraint:   NSLayoutConstraint!
 }
