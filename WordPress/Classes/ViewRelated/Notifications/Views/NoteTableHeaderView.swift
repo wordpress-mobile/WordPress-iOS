@@ -33,9 +33,9 @@ import Foundation
     // MARK: - Overriden Properties
     public override var frame: CGRect {
         didSet {
-            if frame.width > maxWidth {
-                super.frame.origin.x = (frame.width - maxWidth) * 0.5
-                super.frame.size.width = maxWidth
+            if frame.width > maximumWidth {
+                super.frame.origin.x = (frame.width - maximumWidth) * 0.5
+                super.frame.size.width = maximumWidth
             }
         }
     }
@@ -44,8 +44,8 @@ import Foundation
     public override func layoutSubviews() {
         super.layoutSubviews()
         let width = frame.width
-        if width > maxWidth {
-            frame.origin.x  = (width - maxWidth) * 0.5;
+        if width > maximumWidth {
+            frame.origin.x  = (width - maximumWidth) * 0.5;
         }
         
         frame.size.height           = NoteTableHeaderView.headerHeight()
@@ -109,7 +109,7 @@ import Foundation
     private let imageName       = "reader-postaction-time"
     
     private let separatorHeight = CGFloat(1)
-    private let maxWidth        = CGFloat(600)
+    private let maximumWidth    = UIDevice.isPad() ? CGFloat(600) : CGFloat.max
     
     // MARK - Outlets
     private var imageView:          UIImageView!
