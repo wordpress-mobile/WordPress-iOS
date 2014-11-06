@@ -45,6 +45,11 @@
 @property (nonatomic) BOOL cacheRowHeights;
 @property (nonatomic, readonly) BOOL isScrolling;
 @property (nonatomic) BOOL shouldRefreshTableViewPreservingOffset;
+@property (nonatomic) UITableViewRowAnimation updateRowAnimation;
+@property (nonatomic) UITableViewRowAnimation insertRowAnimation;
+@property (nonatomic) UITableViewRowAnimation deleteRowAnimation;
+@property (nonatomic) UITableViewRowAnimation moveRowAnimation;
+@property (nonatomic) UITableViewRowAnimation sectionRowAnimation;
 
 - (instancetype)initWithTableView:(UITableView *)tableView;
 - (void)updateTitleForSection:(NSUInteger)section;

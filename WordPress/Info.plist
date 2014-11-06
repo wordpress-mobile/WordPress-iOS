@@ -42,7 +42,7 @@
 	<true/>
 	<key>MinimumOSVersion</key>
 	<string>4.0</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
+	<key>NSLocationUsageDescription</key>
 	<string>WordPress would like to add your location to posts on sites where you have enabled geotagging.</string>
 	<key>NSMainNibFile</key>
 	<string>MainWindow</string>
