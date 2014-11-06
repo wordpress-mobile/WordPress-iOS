@@ -38,6 +38,9 @@ CGFloat const WPContentCellDefaultOrigin                    = 15.0f;
     if (self) {
 
         _gravatarImageView = [[UIImageView alloc] init];
+        // Circular gravatars
+        _gravatarImageView.layer.masksToBounds  = YES;
+        _gravatarImageView.layer.cornerRadius = WPContentCellImageWidth / 2;
         [self.contentView addSubview:_gravatarImageView];
 
         _statusLabel = [[UILabel alloc] init];
