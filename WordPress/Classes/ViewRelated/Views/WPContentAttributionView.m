@@ -19,7 +19,10 @@ const CGFloat WPContentAttributionMenuSize = 30.0;
     self = [super initWithFrame:frame];
     if (self) {
         _avatarImageView = [self imageViewForAvatar];
-        [self addSubview:self.avatarImageView];
+        // Circular avatars
+        _avatarImageView.layer.masksToBounds = YES;
+        _avatarImageView.layer.cornerRadius = WPContentAttributionViewAvatarSize / 2;
+        [self addSubview:_avatarImageView];
 
         _attributionNameLabel = [self labelForAttributionName];
         [self addSubview:self.attributionNameLabel];

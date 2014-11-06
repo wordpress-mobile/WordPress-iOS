@@ -18,6 +18,9 @@ const CGFloat PostHeaderViewLabelHeight = 18.0;
     self = [super initWithFrame:frame];
     if (self) {
         _avatarImageView = [self imageViewForAvatar];
+        // Circular gravatars
+        _avatarImageView.layer.masksToBounds = YES;
+        _avatarImageView.layer.cornerRadius = PostHeaderViewAvatarSize / 2;
         [self addSubview:_avatarImageView];
 
         _titleLabel = [self labelForTitle];
