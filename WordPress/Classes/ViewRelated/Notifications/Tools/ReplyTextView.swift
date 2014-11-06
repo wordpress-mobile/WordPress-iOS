@@ -205,6 +205,13 @@ import Foundation
         // Recognizers
         let recognizer                  = UITapGestureRecognizer(target: self, action: "backgroundWasTapped")
         gestureRecognizers              = [recognizer]
+        
+        // iPhone's Width knows No Limits
+        if UIDevice.isPad() == false {
+            maxWidthConstraint.constant = CGFloat.max
+        } else {
+            maxWidthConstraint.constant = WPTableViewFixedWidth
+        }
     }
     
     
@@ -260,9 +267,10 @@ import Foundation
     private var bundle:                     NSArray?
     
     // MARK: - IBOutlets
-    @IBOutlet private var textView:         UITextView!
-    @IBOutlet private var placeholderLabel: UILabel!
-    @IBOutlet private var replyButton:      UIButton!
-    @IBOutlet private var layoutView:       UIView!
-    @IBOutlet private var containerView:    UIView!
+    @IBOutlet private var textView:             UITextView!
+    @IBOutlet private var placeholderLabel:     UILabel!
+    @IBOutlet private var replyButton:          UIButton!
+    @IBOutlet private var layoutView:           UIView!
+    @IBOutlet private var containerView:        UIView!
+    @IBOutlet private var maxWidthConstraint:   NSLayoutConstraint!
 }
