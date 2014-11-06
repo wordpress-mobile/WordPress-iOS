@@ -130,8 +130,7 @@ import Foundation
     private let subjectNumberOfLinesWithoutSnippet: Int         = 3
     private let subjectNumberOfLinesWithSnippet:    Int         = 2
     private let snippetNumberOfLines:               Int         = 2
-    private let noticonRadius:                      CGFloat     = 8
-    private let noticonBorderWidth:                 CGFloat     = 2
+    private let noticonRadius:                      CGFloat     = 10
     private var placeholderName:                    String      = "gravatar"
     private var gravatarURL:                        NSURL?
     
