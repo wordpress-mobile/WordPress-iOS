@@ -34,6 +34,15 @@ typedef void (^EditPostCompletionHandler)(void);
 - (id)initWithDraftForLastUsedBlog;
 
 /*
+ Initialize the editor with the specified post and default to preview mode.
+ 
+ @param		post		The post to edit.  Cannot be nil.
+ 
+ @returns	The initialized object.
+ */
+- (id)initWithPost:(AbstractPost *)post;
+
+/*
  Initialize the editor with the specified post.
  
  @param		post		The post to edit.  Cannot be nil.
