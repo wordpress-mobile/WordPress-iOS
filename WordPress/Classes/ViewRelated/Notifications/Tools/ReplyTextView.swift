@@ -209,6 +209,8 @@ import Foundation
         // iPhone's Width knows No Limits
         if UIDevice.isPad() == false {
             maxWidthConstraint.constant = CGFloat.max
+        } else {
+            maxWidthConstraint.constant = WPTableViewFixedWidth
         }
     }
     
