@@ -9,13 +9,13 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-NSString const *NoteActionFollowKey     = @"follow";
-NSString const *NoteActionReplyKey      = @"replyto-comment";
-NSString const *NoteActionApproveKey    = @"approve-comment";
-NSString const *NoteActionSpamKey       = @"spam-comment";
-NSString const *NoteActionTrashKey      = @"trash-comment";
-NSString const *NoteActionLikeKey       = @"like-comment";
-NSString const *NoteActionEditKey       = @"approve-comment";
+NSString *NoteActionFollowKey           = @"follow";
+NSString *NoteActionReplyKey            = @"replyto-comment";
+NSString *NoteActionApproveKey          = @"approve-comment";
+NSString *NoteActionSpamKey             = @"spam-comment";
+NSString *NoteActionTrashKey            = @"trash-comment";
+NSString *NoteActionLikeKey             = @"like-comment";
+NSString *NoteActionEditKey             = @"approve-comment";
 
 NSString const *NoteLinkTypeUser        = @"user";
 NSString const *NoteLinkTypePost        = @"post";
@@ -591,6 +591,27 @@ NSString const *NotePostIdKey           = @"post_id";
         }
     }
     return nil;
+}
+
+// Check if this note is a comment and in 'unapproved' status
+- (BOOL)isUnapprovedComment
+{
+    NotificationBlockGroup *group = [self blockGroupOfType:NoteBlockGroupTypeComment];
+    if (group && [group blockOfType:NoteBlockTypeComment]) {
+        NotificationBlock *block = [group blockOfType:NoteBlockTypeComment];
+        return [block isActionEnabled:NoteActionApproveKey] && ![block isActionOn:NoteActionApproveKey];
+    }
+
+    return NO;
+}
+
+- (void)didChangeOverrides
+{
+    // HACK:
+    // This is a NO-OP that will force NSFetchedResultsController to reload the row for this object.
+    // Helpful when dealing with non-CoreData backed attributes.
+    //
+    self.read = self.read;
 }
 
 @end
