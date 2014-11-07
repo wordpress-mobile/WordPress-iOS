@@ -144,7 +144,6 @@ import Foundation
         addSubview(textView)
         
         // Setup Layout
-        setTranslatesAutoresizingMaskIntoConstraints(false)
         textView.setTranslatesAutoresizingMaskIntoConstraints(false)
         pinSubviewToAllEdges(textView)
     }
