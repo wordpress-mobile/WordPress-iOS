@@ -70,6 +70,11 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
     [self.textContentView refreshMediaLayout];
 }
 
+- (void)preventPendingMediaLayout:(BOOL)prevent
+{
+    [self.textContentView preventPendingMediaLayout:prevent];
+}
+
 #pragma mark - Private Methods
 
 - (void)configureConstraints
@@ -121,15 +126,15 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView]-(buttonMarginTop)-[_replyButton(buttonHeight)]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView]-(buttonMarginTop@200)-[_replyButton(buttonHeight)]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView]-(buttonMarginTop)-[_likeButton(buttonHeight)]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView]-(buttonMarginTop@200)-[_likeButton(buttonHeight)]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView]-(buttonMarginTop)-[_numberOfLikesLabel(buttonHeight)]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView]-(buttonMarginTop@200)-[_numberOfLikesLabel(buttonHeight)]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
