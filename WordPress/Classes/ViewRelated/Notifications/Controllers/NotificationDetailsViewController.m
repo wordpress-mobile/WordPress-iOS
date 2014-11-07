@@ -486,7 +486,7 @@ static NSInteger NotificationSectionCount               = 1;
 {
     // Download Media: Only embeds for Text and Comment notifications
     NSSet *richBlockTypes           = [NSSet setWithObjects:@(NoteBlockTypeText), @(NoteBlockTypeComment), nil];
-    NSArray *imageUrls              = [group imageUrlsForBlocksOfTypes:richBlockTypes];
+    NSSet *imageUrls                = [group imageUrlsForBlocksOfTypes:richBlockTypes];
     __weak __typeof(self) weakSelf  = self;
     
     [self.mediaDownloader downloadMediaWithUrls:imageUrls completion:^{
