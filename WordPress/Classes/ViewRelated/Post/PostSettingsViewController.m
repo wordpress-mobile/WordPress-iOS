@@ -884,7 +884,9 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
             [self.navigationController pushViewController:featuredImageVC animated:YES];
         }
     } else {
-        [self showPhotoPicker];
+        if (!self.isUploadingMedia) {
+            [self showPhotoPicker];
+        }
     }
 }
 
