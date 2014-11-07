@@ -15,7 +15,16 @@ extern NSInteger const MediaMaxImageSizeDimension;
 
 + (void)setMaxImageSizeSetting:(CGSize)imageSize;
 
-- (void)createMediaWithAsset:(ALAsset *)asset forPostObjectID:(NSManagedObjectID *)postObjectID completion:(void (^)(Media *media, NSError * error))completion;
+/**
+ Create a Media object using the asset as the source and making it a child of the post with postObjectId.
+ 
+ @param asset
+ @param postObjectID
+ @completion a block that will be invoked when the media is created, on success it will return a valid Media object, on failure it will return a nil Media and an error object with the details.
+ */
+- (void)createMediaWithAsset:(ALAsset *)asset
+             forPostObjectID:(NSManagedObjectID *)postObjectID
+                  completion:(void (^)(Media *media, NSError * error))completion;
 
 - (AFHTTPRequestOperation *)operationToUploadMedia:(Media *)media withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 

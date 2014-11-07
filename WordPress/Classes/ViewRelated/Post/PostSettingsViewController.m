@@ -304,9 +304,9 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionTaxonomy]];
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionMeta]];
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFormat]];
-    if ([self.post.blog supportsFeaturedImages]) {
+    //if ([self.post.blog supportsFeaturedImages]) {
         [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFeaturedImage]];
-    }
+    //}
     if (self.post.blog.geolocationEnabled || self.post.geolocation) {
         [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionGeolocation]];
     }
@@ -1057,7 +1057,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [assetsLibrary assetForURL:assetURL resultBlock:^(ALAsset *asset){
         MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
         [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
-            if (!media) {
+            if (error) {
                 DDLogError(@"Couldn't export featured image %@: %@", assetURL, [error localizedDescription]);
                 weakSelf.isUploadingMedia = NO;
                 return;
