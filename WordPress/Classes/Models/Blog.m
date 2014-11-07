@@ -374,7 +374,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 {
     if (self.isWPcom) {
         return self.account.restApi;
-    } else if ([self jetpackRESTSupported] && self.jetpackAccount) {
+    } else if ([self jetpackRESTSupported]) {
         return self.jetpackAccount.restApi;
     }
     return nil;
@@ -382,7 +382,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 - (BOOL)jetpackRESTSupported
 {
-    return WPJetpackRESTSupported;
+    return WPJetpackRESTEnabled && self.jetpackAccount && self.dotComID;
 }
 
 #pragma mark - Private Methods
