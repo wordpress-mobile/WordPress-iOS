@@ -1,22 +1,22 @@
 
-#import "WPMediaProcessor.h"
+#import "WPAssetExporter.h"
 
 #import "WPImageOptimizer.h"
 
-@interface WPMediaProcessor ()
+@interface WPAssetExporter ()
 
 @property (nonatomic, strong) NSOperationQueue * operationQueue;
 
 @end
 
-@implementation WPMediaProcessor
+@implementation WPAssetExporter
 
 - (instancetype)init
 {
     self = [super init];
     if (self){
         _operationQueue = [[NSOperationQueue alloc] init];
-        _operationQueue.name = @"org.worpress.WPMediaProcessor";
+        _operationQueue.name = [NSString stringWithFormat:@"org.worpress.%@", NSStringFromClass([self class])];
         _operationQueue.maxConcurrentOperationCount = 1;
     }
     
@@ -34,11 +34,11 @@
     return _sharedInstance;
 }
 
-- (void)processAsset:(ALAsset *)asset
-              toFile:(NSString *)filePath
-            resizing:(CGSize)targetSize
-    stripGeoLocation:(BOOL)stripGeoLocation
-   completionHandler:(void (^)(BOOL success, CGSize resultingSize, NSData *thumbnailData, NSError *error)) handler
+- (void)exportAsset:(ALAsset *)asset
+             toFile:(NSString *)filePath
+           resizing:(CGSize)targetSize
+   stripGeoLocation:(BOOL)stripGeoLocation
+  completionHandler:(void (^)(BOOL success, CGSize resultingSize, NSData *thumbnailData, NSError *error)) handler
 {
     
     [self.operationQueue addOperationWithBlock:^{
