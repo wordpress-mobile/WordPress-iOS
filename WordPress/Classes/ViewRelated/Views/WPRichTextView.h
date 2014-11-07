@@ -78,4 +78,7 @@
  */
 - (void)refreshMediaLayout;
 
+
+- (void)preventPendingMediaLayout:(BOOL)prevent;
+
 @end
