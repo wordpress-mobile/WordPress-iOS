@@ -1054,8 +1054,9 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc] init];
     [assetsLibrary assetForURL:assetURL resultBlock:^(ALAsset *asset){
         MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-        [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
+        [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
             if (!media) {
+                DDLogError(@"Couldn't export featured image %@: %@", assetURL, [error localizedDescription]);
                 weakSelf.isUploadingMedia = NO;
                 return;
             }
@@ -1067,7 +1068,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
                 [weakSelf.tableView reloadData];
             } failure:^(NSError *error) {
                 weakSelf.isUploadingMedia = NO;
-                DDLogError(@"Couldn't upload asset %@: %@", assetURL, [error localizedDescription]);
+                DDLogError(@"Couldn't upload featured image %@: %@", assetURL, [error localizedDescription]);
                 [weakSelf.tableView reloadData];
             }];
         }];
