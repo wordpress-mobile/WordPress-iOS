@@ -560,13 +560,21 @@ static NSInteger NotificationSectionCount               = 1;
     NotificationBlock *commentBlock = [blockGroup blockOfType:NoteBlockTypeComment];
     NotificationBlock *userBlock    = [blockGroup blockOfType:NoteBlockTypeUser];
     NotificationMedia *media        = userBlock.media.firstObject;
-    NSDictionary *mediaMap          = [self.mediaDownloader imagesForUrls:commentBlock.imageUrls];
-    
     NSAssert(commentBlock, nil);
     NSAssert(userBlock, nil);
     
-    __weak __typeof(self) weakSelf  = self;
+    // Merge the Attachments with their ranges: [NSRange: UIImage]
+    NSDictionary *mediaMap          = [self.mediaDownloader imagesForUrls:commentBlock.imageUrls];
+    NSDictionary *mediaRanges       = [commentBlock buildRangesToImagesMap:mediaMap];
     
+    // Timestamp: Append bullet character if we have a site title or url to show
+    NSString *site                  = userBlock.metaTitlesHome ?: userBlock.metaLinksHome.hostname;
+    NSString *timestamp             = [self.note.timestampAsDate shortString];
+    if (site) {
+        timestamp = [timestamp stringByAppendingString:@" • "];
+    }
+    
+    // Setup the cell
     cell.isReplyEnabled             = [UIDevice isPad] && [commentBlock isActionOn:NoteActionReplyKey];
     cell.isLikeEnabled              = [commentBlock isActionEnabled:NoteActionLikeKey];
     cell.isApproveEnabled           = [commentBlock isActionEnabled:NoteActionApproveKey];
@@ -577,18 +585,12 @@ static NSInteger NotificationSectionCount               = 1;
     cell.isApproveOn                = [commentBlock isActionOn:NoteActionApproveKey];
     
     cell.name                       = userBlock.text;
-    cell.attributedCommentText      = [commentBlock richAttributedTextWithEmbeddedImages:mediaMap];
-    
-    // Append bullet character if we have a site title or url to show
-    NSString *site                  = userBlock.metaTitlesHome ?: userBlock.metaLinksHome.hostname;
-    NSString *timestamp             = [self.note.timestampAsDate shortString];
-    if (site) {
-        timestamp = [timestamp stringByAppendingString:@" • "];
-    }
-    
+    cell.attributedCommentText      = [commentBlock.richAttributedText stringByEmbeddingImageAttachments:mediaRanges];
     cell.timestamp                  = timestamp;
     cell.site                       = site;
     
+    // Setup the Callbacks
+    __weak __typeof(self) weakSelf  = self;
     cell.onUrlClick                 = ^(NSURL *url){
         [weakSelf openURL:url];
     };
@@ -648,13 +650,18 @@ static NSInteger NotificationSectionCount               = 1;
 - (void)setupTextCell:(NoteBlockTextTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
 {
     NotificationBlock *textBlock    = blockGroup.blocks.firstObject;
-    NSDictionary *mediaMap          = [self.mediaDownloader imagesForUrls:textBlock.imageUrls];
     NSAssert(textBlock, nil);
     
-    __weak __typeof(self) weakSelf  = self;
+    // Merge the Attachments with their ranges: [NSRange: UIImage]
+    NSDictionary *mediaMap          = [self.mediaDownloader imagesForUrls:textBlock.imageUrls];
+    NSDictionary *mediaRanges       = [textBlock buildRangesToImagesMap:mediaMap];
     
-    cell.attributedText             = [textBlock richAttributedTextWithEmbeddedImages:mediaMap];
+    // Setup the Cell
+    cell.attributedText             = [textBlock.richAttributedText stringByEmbeddingImageAttachments:mediaRanges];
     cell.isBadge                    = textBlock.isBadge;
+    
+    // Setup the Callbacks
+    __weak __typeof(self) weakSelf  = self;
     cell.onUrlClick                 = ^(NSURL *url){
         [weakSelf openURL:url];
     };
