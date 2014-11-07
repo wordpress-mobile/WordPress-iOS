@@ -351,7 +351,11 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)showCancelMediaUploadPrompt
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cancel Media Uploads", nil) message:NSLocalizedString(@"This will stop the current media uploads in progress. Are you sure you want to proceed?", @"This is displayed if the user taps the uploading text in the post editor") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:NSLocalizedString(@"Ok", nil), nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cancel Media Uploads", "Dialog box title for when the user is cancelling an upload.")
+                                                        message:NSLocalizedString(@"You are currently uploading media. This will cancel the uploads in progress. Are you sure?", @"This prompt is displayed when the user attempts to stop media uploads in the post editor.")
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"Not Now", "Nicer dialog answer for \"No\".")
+                                              otherButtonTitles:NSLocalizedString(@"Yes", "Yes"), nil];
     alertView.tag = EditPostViewControllerAlertCancelMediaUpload;
     [alertView show];
 }
