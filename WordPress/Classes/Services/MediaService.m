@@ -273,19 +273,6 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     return path;
 }
 
-- (BOOL)writeData:(NSData *)data toPath:(NSString *)path
-{
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    return [fileManager createFileAtPath:path contents:data attributes:@{NSFileProtectionKey: NSFileProtectionComplete}];
-}
-
-- (NSData *)thumbnailDataFromAsset:(ALAsset *)asset
-{
-    UIImage *thumbnail = [UIImage imageWithCGImage:asset.thumbnail];
-    NSData *thumbnailJPEGData = UIImageJPEGRepresentation(thumbnail, 1.0);
-    return thumbnailJPEGData;
-}
-
 - (NSString *)mimeTypeForFilename:(NSString *)filename
 {
     // Get the UTI from the file's extension:
