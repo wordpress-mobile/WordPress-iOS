@@ -59,11 +59,10 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
              forPostObjectID:(NSManagedObjectID *)postObjectID
                   completion:(void (^)(Media *media))completion
 {
-    __block BOOL geoLocationEnabled = NO;
-    [self.managedObjectContext performBlockAndWait:^{
-        AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
-        geoLocationEnabled = post.blog.geolocationEnabled;
-    }];
+    BOOL geoLocationEnabled = NO;
+    
+    AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
+    geoLocationEnabled = post.blog.geolocationEnabled;
      
     WPImageOptimizer *optimizer = [WPImageOptimizer new];
 
@@ -84,24 +83,22 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     if (![self writeData:optimizedImageData toPath:imagePath]) {
         DDLogError(@"Error writing media to %@", imagePath);
     }
-    [self.managedObjectContext performBlock:^{
-        AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
-        Media *media = [self newMediaForPost:post];
-        media.filename = [imagePath lastPathComponent];
-        media.localURL = imagePath;
-        media.thumbnail = thumbnailData;
-        // This is kind of lame, but we've been storing file size as KB so far
-        // We should store size in bytes or rename the property to avoid confusion
-        media.filesize = @(optimizedImageData.length / 1024);
-        media.width = width;
-        media.height = height;
-        //make sure that we only return when object is properly created and saved
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-            if (completion) {
-                completion(media);
-            }
 
-        }];
+    Media *media = [self newMediaForPost:post];
+    media.filename = [imagePath lastPathComponent];
+    media.localURL = imagePath;
+    media.thumbnail = thumbnailData;
+    // This is kind of lame, but we've been storing file size as KB so far
+    // We should store size in bytes or rename the property to avoid confusion
+    media.filesize = @(optimizedImageData.length / 1024);
+    media.width = width;
+    media.height = height;
+    //make sure that we only return when object is properly created and saved
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+        if (completion) {
+            completion(media);
+        }
+
     }];
 }
 
