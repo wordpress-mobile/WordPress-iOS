@@ -426,7 +426,7 @@
 		FD9A948C12FAEA2300438F94 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FD9A948B12FAEA2300438F94 /* DateUtils.m */; };
 		FEA64EDF0F7E4616BA835081 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69187343EC8F435684EFFAF1 /* libPods.a */; };
 		FF3DD6BE19F2B6B3003A52CB /* RemoteMedia.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3DD6BD19F2B6B3003A52CB /* RemoteMedia.m */; };
-		FFAB7CB11A0BD83A00765942 /* WPMediaProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = FFAB7CB01A0BD83A00765942 /* WPMediaProcessor.m */; };
+		FFAB7CB11A0BD83A00765942 /* WPAssetExporter.m in Sources */ = {isa = PBXBuildFile; fileRef = FFAB7CB01A0BD83A00765942 /* WPAssetExporter.m */; };
 		FFB7B81F1A0012E80032E723 /* WordPressTestCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB7B81C1A0012E80032E723 /* WordPressTestCredentials.m */; };
 		FFB7B8201A0012E80032E723 /* WordPressComApiCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB7B81D1A0012E80032E723 /* WordPressComApiCredentials.m */; };
 		FFF96F9C19EBE81F00DFC821 /* CommentsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF96F8F19EBE81F00DFC821 /* CommentsTests.m */; };
@@ -1231,8 +1231,8 @@
 		FDFB011916B1EA1C00F589A8 /* WordPress 10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 10.xcdatamodel"; sourceTree = "<group>"; };
 		FF3DD6BD19F2B6B3003A52CB /* RemoteMedia.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteMedia.m; path = "Remote Objects/RemoteMedia.m"; sourceTree = "<group>"; };
 		FF3DD6BF19F2B77A003A52CB /* RemoteMedia.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RemoteMedia.h; path = "Remote Objects/RemoteMedia.h"; sourceTree = "<group>"; };
-		FFAB7CAF1A0BD83A00765942 /* WPMediaProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPMediaProcessor.h; sourceTree = "<group>"; };
-		FFAB7CB01A0BD83A00765942 /* WPMediaProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPMediaProcessor.m; sourceTree = "<group>"; };
+		FFAB7CAF1A0BD83A00765942 /* WPAssetExporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAssetExporter.h; sourceTree = "<group>"; };
+		FFAB7CB01A0BD83A00765942 /* WPAssetExporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAssetExporter.m; sourceTree = "<group>"; };
 		FFB7B81C1A0012E80032E723 /* WordPressTestCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressTestCredentials.m; sourceTree = "<group>"; };
 		FFB7B81D1A0012E80032E723 /* WordPressComApiCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressComApiCredentials.m; sourceTree = "<group>"; };
 		FFF96F8219EBE7FB00DFC821 /* UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2014,8 +2014,8 @@
 				E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */,
 				B5CC05FA196218E100975CAC /* XMLParserCollecter.h */,
 				B5CC05FB196218E100975CAC /* XMLParserCollecter.m */,
-				FFAB7CAF1A0BD83A00765942 /* WPMediaProcessor.h */,
-				FFAB7CB01A0BD83A00765942 /* WPMediaProcessor.m */,
+				FFAB7CAF1A0BD83A00765942 /* WPAssetExporter.h */,
+				FFAB7CB01A0BD83A00765942 /* WPAssetExporter.m */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -3356,7 +3356,7 @@
 				B587798219B799D800E57C5A /* UIView+Helpers.swift in Sources */,
 				5DA5BF4818E32DCF005F11F9 /* WPLoadingView.m in Sources */,
 				B5B56D3319AFB68800B4E29B /* WPStyleGuide+Notifications.swift in Sources */,
-				FFAB7CB11A0BD83A00765942 /* WPMediaProcessor.m in Sources */,
+				FFAB7CB11A0BD83A00765942 /* WPAssetExporter.m in Sources */,
 				5DF94E511962BAEB00359241 /* ReaderPostContentView.m in Sources */,
 				5D577D361891360900B964C3 /* PostGeolocationView.m in Sources */,
 				5DA5BF4118E32DCF005F11F9 /* MediaBrowserViewController.m in Sources */,
