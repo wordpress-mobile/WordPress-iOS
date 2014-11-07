@@ -12,7 +12,7 @@
 #import "PostService.h"
 #import "MediaService.h"
 #import "WPMediaUploader.h"
-#import "WPUploadStatusView.h"
+#import "WPUploadStatusButton.h"
 #import "WordPressAppDelegate.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
@@ -27,7 +27,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
 }
 
 @property (nonatomic, strong) UIButton *titleBarButton;
-@property (nonatomic, strong) UIView *uploadStatusView;
+@property (nonatomic, strong) UIButton *uploadStatusButton;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
@@ -173,7 +173,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
     NSInteger blogCount = [blogService blogCountForAllAccounts];
 
     if (_mediaUploadQueue.operationCount > 0) {
-        self.navigationItem.titleView = self.uploadStatusView;
+        self.navigationItem.titleView = self.uploadStatusButton;
     } else if (blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
         self.navigationItem.titleView = nil;
         self.navigationItem.title = [self editorTitle];
@@ -531,17 +531,15 @@ static NSInteger const MaximumNumberOfPictures = 4;
     return _titleBarButton;
 }
 
-- (UIView *)uploadStatusView
+- (UIButton *)uploadStatusButton
 {
-    if (_uploadStatusView) {
-        return _uploadStatusView;
+    if (!_uploadStatusButton) {
+        UIButton *button = [WPUploadStatusButton buttonWithFrame:CGRectMake(0.0f, 0.0f, 125.0f , 33.0f)];
+        [button addTarget:self action:@selector(showCancelMediaUploadPrompt) forControlEvents:UIControlEventTouchUpInside];
+        _uploadStatusButton = button;
     }
-    WPUploadStatusView *uploadStatusView = [[WPUploadStatusView alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, 33.0)];
-    uploadStatusView.tappedView = ^{
-        [self showCancelMediaUploadPrompt];
-    };
-    _uploadStatusView = uploadStatusView;
-    return _uploadStatusView;
+    
+    return _uploadStatusButton;
 }
 
 # pragma mark - Model State Methods
