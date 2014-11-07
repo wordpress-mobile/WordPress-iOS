@@ -4,7 +4,7 @@ import Foundation
 extension NotificationBlock
 {
     public func subjectAttributedText() -> NSAttributedString {
-        return textWithRangeStyles(isSubject: true, mediaMap: nil)
+        return textWithRangeStyles(isSubject: true)
     }
 
     public func snippetAttributedText() -> NSAttributedString {
@@ -15,19 +15,37 @@ extension NotificationBlock
         return NSAttributedString(string: text, attributes: Styles.snippetRegularStyle)
     }
 
-    public func richAttributedTextWithEmbeddedImages(mediaMap: [NSURL: UIImage]?) -> NSAttributedString {
+    public func richAttributedText() -> NSAttributedString {
         //  Operations such as editing a comment cause a lag between the REST and Simperium update.
         //  TextOverride is a transient property meant to store, temporarily, the edited text
         if textOverride != nil {
             return NSAttributedString(string: textOverride, attributes: Styles.blockRegularStyle)
         }
         
-        return textWithRangeStyles(isSubject: false, mediaMap: mediaMap)
+        return textWithRangeStyles(isSubject: false)
+    }
+    
+    public func buildRangesToImagesMap(mediaMap: [NSURL: UIImage]?) -> [NSValue: UIImage]? {
+        // If we've got a text override: Ranges may not match, and the new text may not even contain ranges!
+        if mediaMap == nil || textOverride != nil {
+            return nil
+        }
+        
+        var ranges = [NSValue: UIImage]()
+        
+        for theMedia in media as [NotificationMedia] {
+            if let image = mediaMap![theMedia.mediaURL] {
+                let rangeValue      = NSValue(range: theMedia.range)
+                ranges[rangeValue]  = image
+            }
+        }
+        
+        return ranges
     }
     
     
     // MARK: - Private Helpers
-    private func textWithRangeStyles(#isSubject: Bool, mediaMap: [NSURL: UIImage]?) -> NSAttributedString {
+    private func textWithRangeStyles(#isSubject: Bool) -> NSAttributedString {
         if text == nil {
             return NSAttributedString()
         }
@@ -62,42 +80,9 @@ extension NotificationBlock
             }
         }
 
-        // Embed the images, if needed
-        if mediaMap == nil {
-            return theString
-        }
-        
-        let unwrappedMediaMap   = mediaMap!
-        var rangeDelta          = Int(0)
-        
-        for theMedia in media as [NotificationMedia] {
-            
-            let image = unwrappedMediaMap[theMedia.mediaURL]
-            if theMedia.isImage == false || image == nil {
-                continue
-            }
-            
-            // Proceed attaching the media
-            let imageAttachment     = NSTextAttachment()
-            imageAttachment.bounds  = CGRect(origin: CGPointZero, size: image!.size)
-            imageAttachment.image   = image!
-            
-            // Each time we insert an attachment, we're changing the string length. Compensate for that!
-            let attachmentString    = NSAttributedString(attachment: imageAttachment)
-            var correctedRange      = theMedia.range
-            correctedRange.location += rangeDelta
-            
-            let lastPosition        = correctedRange.location + correctedRange.length
-            if lastPosition <= theString.length {
-                theString.replaceCharactersInRange(correctedRange, withAttributedString: attachmentString)
-            }
-            
-            rangeDelta              += attachmentString.length
-        }
-        
-        return theString;
+        return theString
     }
-    
     
     private typealias Styles = WPStyleGuide.Notifications
 }
+
