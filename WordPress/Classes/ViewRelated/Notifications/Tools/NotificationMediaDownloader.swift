@@ -15,7 +15,9 @@ import Foundation
     }
     
     // MARK: - Public Helpers
-    public func downloadMediaWithUrls(urls: [NSURL], completion: (() -> ())) {
+    public typealias SuccessBlock = (()->())
+    
+    public func downloadMediaWithUrls(urls: [NSURL], completion: SuccessBlock) {
         let missingUrls = urls.filter { self.shouldDownloadImageWithURL($0) }
         if missingUrls.count == 0 {
             return
