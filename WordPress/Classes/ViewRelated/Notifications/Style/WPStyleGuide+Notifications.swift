@@ -92,12 +92,6 @@ extension WPStyleGuide
         }
         
         //  Comment Helpers
-        public static func blockParagraphStyleWithIndentation(indentation: CGFloat) -> NSParagraphStyle {
-            let paragraph                   = blockParagraph.mutableCopy() as NSMutableParagraphStyle
-            paragraph.firstLineHeadIndent   = indentation
-            return paragraph
-        }
-
         public static func blockTextColorForComment(isApproved approved: Bool) -> UIColor {
             return approved ? blockTextColor : blockUnapprovedTextColor
         }
