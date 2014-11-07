@@ -146,4 +146,9 @@ extension WPStyleGuide
         private static let subjectBoldFont          = WPFontManager.openSansBoldFontOfSize(subjectFontSize)
         private static let subjectItalicsFont       = WPFontManager.openSansItalicFontOfSize(subjectFontSize)
     }
+    
+    // MARK: - ObjectiveC Helpers: Nuke me once NotificationDetailsViewController is Swifted!
+    public class func notificationsBlockSeparatorColor() -> UIColor {
+        return Notifications.blockSeparatorColor
+    }
 }

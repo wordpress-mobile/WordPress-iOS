@@ -150,14 +150,15 @@
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
     WPAccount *wpComAccount = [accountService createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:@"token"];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
-    XCTAssertEqualObjects(wpComAccount, [accountService defaultWordPressComAccount]);
+    WPAccount * defaultAccount = [accountService defaultWordPressComAccount];
+    XCTAssertEqualObjects(wpComAccount, defaultAccount);
 
     saveExpectation = [self expectationWithDescription:@"Context save expectation"];
     self.testContextManager.testExpectation = saveExpectation;
     [accountService createOrUpdateWordPressComAccountWithUsername:@"test1" password:@"test1" authToken:@"token1"];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
-
-    XCTAssertEqualObjects(wpComAccount, [accountService defaultWordPressComAccount]);
+    defaultAccount = [accountService defaultWordPressComAccount];
+    XCTAssertEqualObjects(wpComAccount, defaultAccount);
 }
 
 @end
