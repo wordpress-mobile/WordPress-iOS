@@ -116,6 +116,7 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 @property (nonatomic, strong, readonly) NSNumber            *metaCommentID;
 @property (nonatomic, strong, readonly) NSString            *metaLinksHome;
 @property (nonatomic, strong, readonly) NSString            *metaTitlesHome;
+@property (nonatomic, strong, readonly) NSString            *metaTitleOrUrl;
 
 // Overrides
 @property (nonatomic, strong, readwrite) NSString           *textOverride;
