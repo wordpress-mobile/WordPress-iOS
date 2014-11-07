@@ -580,11 +580,14 @@ static NSInteger NotificationSectionCount               = 1;
     cell.attributedCommentText      = [commentBlock richAttributedTextWithEmbeddedImages:mediaMap];
     
     // Append bullet character if we have a site title or url to show
-    cell.timestamp                  = (userBlock.metaTitleOrUrl) ?
-                        [[self.note.timestampAsDate shortString] stringByAppendingString:@" • "]
-                        : [self.note.timestampAsDate shortString];
-    cell.site                       = userBlock.metaTitleOrUrl;
-
+    NSString *site                  = userBlock.metaTitlesHome ?: userBlock.metaLinksHome.hostname;
+    NSString *timestamp             = [self.note.timestampAsDate shortString];
+    if (site) {
+        timestamp = [timestamp stringByAppendingString:@" • "];
+    }
+    
+    cell.timestamp                  = timestamp;
+    cell.site                       = site;
     
     cell.onUrlClick                 = ^(NSURL *url){
         [weakSelf openURL:url];
