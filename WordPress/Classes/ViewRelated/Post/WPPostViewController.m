@@ -1344,9 +1344,9 @@ static NSDictionary *EnabledButtonBarStyle;
                 // Could handle videos here
             } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
                 MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-                [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
+                [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
                     if (!media){
-                        [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", nil) message:@""];
+                        [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", nil) message:error.localizedDescription];
                         return;
                     }
                     NSString* imageUniqueId = [self uniqueId];
@@ -1363,7 +1363,7 @@ static NSDictionary *EnabledButtonBarStyle;
                             return;
                         }
                         
-                        [WPError showAlertWithTitle:NSLocalizedString(@"Upload failed", nil) message:error.localizedDescription];
+                        [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", nil) message:error.localizedDescription];
                     }];
                     [_mediaUploadQueue addOperation:operation];
                 }];
