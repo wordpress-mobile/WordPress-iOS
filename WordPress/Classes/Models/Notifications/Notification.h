@@ -96,7 +96,7 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 @property (nonatomic, assign, readonly) NoteBlockGroupType type;
 
 - (NotificationBlock *)blockOfType:(NoteBlockType)type;
-- (NSArray *)imageUrlsForBlocksOfTypes:(NSSet *)types;
+- (NSSet *)imageUrlsForBlocksOfTypes:(NSSet *)types;
 
 @end
 
