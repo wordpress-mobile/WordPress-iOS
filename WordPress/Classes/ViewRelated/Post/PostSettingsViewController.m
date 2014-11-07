@@ -1059,6 +1059,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
             if (error) {
                 DDLogError(@"Couldn't export featured image %@: %@", assetURL, [error localizedDescription]);
+                [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export feature image", @"The title for an alert that says to the user that the featured image he selected couldn't be exported.") message:error.localizedDescription];
                 weakSelf.isUploadingMedia = NO;
                 return;
             }
@@ -1070,6 +1071,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
                 [weakSelf.tableView reloadData];
             } failure:^(NSError *error) {
                 weakSelf.isUploadingMedia = NO;
+                [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't upload featured image", @"The title for an alert that says to the user that the featured image he selected couldn't be uploaded.") message:error.localizedDescription];
                 DDLogError(@"Couldn't upload featured image %@: %@", assetURL, [error localizedDescription]);
                 [weakSelf.tableView reloadData];
             }];
