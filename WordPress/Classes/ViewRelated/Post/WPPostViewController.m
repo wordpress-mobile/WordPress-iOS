@@ -1329,6 +1329,10 @@ static NSDictionary *EnabledButtonBarStyle;
             } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
                 MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
                 [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
+                    if (!media){
+                        [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", nil) message:@""];
+                        return;
+                    }
                     NSString* imageUniqueId = [self uniqueId];
                     
                     NSURL* url = [[NSURL alloc] initFileURLWithPath:media.localURL];
