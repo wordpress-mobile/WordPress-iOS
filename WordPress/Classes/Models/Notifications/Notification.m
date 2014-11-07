@@ -390,9 +390,9 @@ NSString const *NotePostIdKey           = @"post_id";
     return nil;
 }
 
-- (NSArray *)imageUrlsForBlocksOfTypes:(NSSet *)types
+- (NSSet *)imageUrlsForBlocksOfTypes:(NSSet *)types
 {
-    NSMutableArray *urls = [NSMutableArray array];
+    NSMutableSet *urls = [NSMutableSet set];
     
     for (NotificationBlock *block in self.blocks) {
         if ([types containsObject:@(block.type)] == false) {
