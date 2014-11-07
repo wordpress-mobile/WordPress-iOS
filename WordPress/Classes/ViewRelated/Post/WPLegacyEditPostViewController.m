@@ -20,7 +20,7 @@
 
 NSString *const WPLegacyEditorNavigationRestorationID = @"WPLegacyEditorNavigationRestorationID";
 NSString *const WPLegacyAbstractPostRestorationKey = @"WPLegacyAbstractPostRestorationKey";
-static NSInteger const MaximumNumberOfPictures = 4;
+static NSInteger const MaximumNumberOfPictures = 10;
 
 @interface WPLegacyEditPostViewController ()<UIPopoverControllerDelegate> {
     NSOperationQueue *_mediaUploadQueue;
@@ -963,10 +963,10 @@ static NSInteger const MaximumNumberOfPictures = 4;
         if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
             MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
             [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
-                if (!media) {
+                if (!media){
+                    [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", nil) message:@""];
                     return;
                 }
-
                 AFHTTPRequestOperation *operation = [mediaService operationToUploadMedia:media withSuccess:^{
                     [self insertMedia:media];
                 } failure:^(NSError *error) {
