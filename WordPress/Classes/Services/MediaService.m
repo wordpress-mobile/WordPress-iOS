@@ -61,7 +61,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
                   completion:(void (^)(Media *media, NSError * error))completion
 {
     BOOL geoLocationEnabled = NO;
-    NSError * error = nil;
+    NSError *error = nil;
     AbstractPost *post = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
 	if (!post) {
 		if (completion) {

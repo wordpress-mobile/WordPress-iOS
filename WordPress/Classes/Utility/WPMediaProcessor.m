@@ -23,7 +23,8 @@
     return self;
 }
 
-+ (instancetype) sharedInstance {
++ (instancetype) sharedInstance
+{
     static id _sharedInstance = nil;
     static dispatch_once_t _onceToken;
     dispatch_once(&_onceToken, ^{
@@ -33,26 +34,26 @@
     return _sharedInstance;
 }
 
-- (void)processAsset:(ALAsset *) asset
-              toFile:(NSString *) filePath
+- (void)processAsset:(ALAsset *)asset
+              toFile:(NSString *)filePath
             resizing:(CGSize)targetSize
-    stripGeoLocation:(BOOL) stripGeoLocation
-   completionHandler:(void (^)(BOOL success, CGSize resultingSize, NSData * thumbnailData, NSError * error)) handler
+    stripGeoLocation:(BOOL)stripGeoLocation
+   completionHandler:(void (^)(BOOL success, CGSize resultingSize, NSData *thumbnailData, NSError *error)) handler
 {
     
     [self.operationQueue addOperationWithBlock:^{
         UIImage *thumbnail = [UIImage imageWithCGImage:asset.thumbnail];
         NSData *thumbnailJPEGData = UIImageJPEGRepresentation(thumbnail, 1.0);
         
-        WPImageOptimizer * imageOptimizer = [[WPImageOptimizer alloc] init];
+        WPImageOptimizer *imageOptimizer = [[WPImageOptimizer alloc] init];
         CGSize newSize = [imageOptimizer sizeForOriginalSize:targetSize fittingSize:targetSize];
-        NSData * data = [imageOptimizer optimizedDataFromAsset:asset fittingSize:targetSize stripGeoLocation:stripGeoLocation];
+        NSData *data = [imageOptimizer optimizedDataFromAsset:asset fittingSize:targetSize stripGeoLocation:stripGeoLocation];
         if (!data){
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 handler(YES, newSize, thumbnailJPEGData, nil);
             }];
         }
-        NSError * error;
+        NSError *error;
         if (![data writeToFile:filePath options:NSDataWritingAtomic error:&error]){
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 handler(YES, newSize, thumbnailJPEGData, nil);
