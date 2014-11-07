@@ -21,6 +21,7 @@ static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
 @property (nonatomic, strong) NSDate *dateOfLastMediaRefresh;
 @property (nonatomic) BOOL needsCheckPendingDownloadsAfterDelay;
 @property (nonatomic, strong, readwrite) NSAttributedString *attributedString;
+@property (nonatomic) BOOL shouldPreventPendingMediaLayout;
 
 @end
 
@@ -389,10 +390,22 @@ static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
 }
 
 
+- (void)preventPendingMediaLayout:(BOOL)prevent
+{
+    self.shouldPreventPendingMediaLayout = prevent;
+    if (!prevent) {
+        [self checkPendingMediaDownloads];
+    }
+}
+
 #pragma mark - Pending Download / Layout 
 
 - (void)checkPendingMediaDownloads
 {
+    if (self.shouldPreventPendingMediaLayout) {
+        return;
+    }
+
     if (!self.dateOfLastMediaRefresh) {
         self.dateOfLastMediaRefresh = [NSDate distantPast];
     }
