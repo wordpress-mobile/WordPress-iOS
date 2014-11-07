@@ -79,7 +79,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
                                          resizing:maxImageSize
                                  stripGeoLocation:!geoLocationEnabled
                                 completionHandler:^(BOOL success, CGSize resultingSize, NSData * thumbnailData, NSError *error) {
-        if (!success){
+        if (!success) {
             completion(nil, error);
         }
         [self.managedObjectContext performBlock:^{
