@@ -80,14 +80,6 @@ static const CGFloat CompressionQuality = 0.7;
     return resizedImage.CGImage;
 }
 
-- (CGSize)sizeForOriginalSize:(CGSize)originalSize fittingSize:(CGSize)targetSize
-{
-    CGFloat widthRatio = MIN(targetSize.width, originalSize.width) / originalSize.width;
-    CGFloat heightRatio = MIN(targetSize.height, originalSize.height) / originalSize.height;
-    CGFloat ratio = MIN(widthRatio, heightRatio);
-    return CGSizeMake(round(ratio * originalSize.width), round(ratio * originalSize.height));
-}
-
 - (NSDictionary *)metadataFromRepresentation:(ALAssetRepresentation *)representation
                                     stripXMP:(BOOL) stripXMP
                             stripOrientation:(BOOL) stripOrientation

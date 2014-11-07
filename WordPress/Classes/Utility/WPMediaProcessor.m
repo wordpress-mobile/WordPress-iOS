@@ -1,0 +1,68 @@
+
+#import "WPMediaProcessor.h"
+
+#import "WPImageOptimizer.h"
+
+@interface WPMediaProcessor ()
+
+@property (nonatomic, strong) NSOperationQueue * operationQueue;
+
+@end
+
+@implementation WPMediaProcessor
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self){
+        _operationQueue = [[NSOperationQueue alloc] init];
+        _operationQueue.name = @"org.worpress.WPMediaProcessor";
+        _operationQueue.maxConcurrentOperationCount = 1;
+    }
+    
+    return self;
+}
+
++ (instancetype) sharedInstance {
+    static id _sharedInstance = nil;
+    static dispatch_once_t _onceToken;
+    dispatch_once(&_onceToken, ^{
+        _sharedInstance = [[self alloc] init];
+    });
+    
+    return _sharedInstance;
+}
+
+- (void)processAsset:(ALAsset *) asset
+              toFile:(NSString *) filePath
+            resizing:(CGSize)targetSize
+    stripGeoLocation:(BOOL) stripGeoLocation
+   completionHandler:(void (^)(BOOL success, CGSize resultingSize, NSData * thumbnailData, NSError * error)) handler
+{
+    
+    [self.operationQueue addOperationWithBlock:^{
+        UIImage *thumbnail = [UIImage imageWithCGImage:asset.thumbnail];
+        NSData *thumbnailJPEGData = UIImageJPEGRepresentation(thumbnail, 1.0);
+        
+        WPImageOptimizer * imageOptimizer = [[WPImageOptimizer alloc] init];
+        CGSize newSize = [imageOptimizer sizeForOriginalSize:targetSize fittingSize:targetSize];
+        NSData * data = [imageOptimizer optimizedDataFromAsset:asset fittingSize:targetSize stripGeoLocation:stripGeoLocation];
+        if (!data){
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                handler(YES, newSize, thumbnailJPEGData, nil);
+            }];
+        }
+        NSError * error;
+        if (![data writeToFile:filePath options:NSDataWritingAtomic error:&error]){
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                handler(YES, newSize, thumbnailJPEGData, nil);
+            }];
+        }
+        
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            handler(YES, newSize, thumbnailJPEGData, nil);
+        }];
+    }];
+}
+
+@end
