@@ -61,8 +61,14 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
                   completion:(void (^)(Media *media))completion
 {
     BOOL geoLocationEnabled = NO;
-
-    AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
+    
+    AbstractPost *post = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
+	if (!post) {
+		if (completion) {
+			completion(nil);
+		}
+		return;
+	}
     geoLocationEnabled = post.blog.geolocationEnabled;
     
     CGSize maxImageSize = [MediaService maxImageSizeSetting];
