@@ -9,7 +9,6 @@
             <connections>
                 <outlet property="containerView" destination="iN0-l3-epB" id="PxG-zK-Meq"/>
                 <outlet property="layoutView" destination="TqK-rp-BlK" id="QTH-iw-Viv"/>
-                <outlet property="maxWidthConstraint" destination="rlm-Qy-72M" id="EUQ-WZ-8lK"/>
                 <outlet property="placeholderLabel" destination="Omp-7E-YTH" id="Qqp-Aa-Yqy"/>
                 <outlet property="replyButton" destination="5G8-Al-JKt" id="VGx-mg-xgv"/>
                 <outlet property="textView" destination="2Pd-vE-u9b" id="wmd-19-U9S"/>
@@ -80,7 +79,6 @@
                         <constraint firstItem="2Pd-vE-u9b" firstAttribute="trailing" secondItem="Omp-7E-YTH" secondAttribute="trailing" id="n9o-dn-6dN"/>
                         <constraint firstItem="MBe-41-STV" firstAttribute="width" secondItem="KQI-Ok-M85" secondAttribute="width" id="o6E-4w-wrA"/>
                         <constraint firstItem="MBe-41-STV" firstAttribute="top" secondItem="KQI-Ok-M85" secondAttribute="top" id="p0A-H1-47p"/>
-                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="600" id="rlm-Qy-72M"/>
                         <constraint firstItem="2Pd-vE-u9b" firstAttribute="leading" secondItem="TqK-rp-BlK" secondAttribute="leading" constant="18" id="xc0-s9-sIf"/>
                     </constraints>
                 </view>
