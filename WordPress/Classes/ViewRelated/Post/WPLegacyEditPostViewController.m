@@ -962,9 +962,9 @@ static NSInteger const MaximumNumberOfPictures = 10;
     for (ALAsset *asset in assets) {
         if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
             MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-            [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
+            [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
                 if (!media){
-                    [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", nil) message:@""];
+                    [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", nil) message:error.localizedDescription];
                     return;
                 }
                 AFHTTPRequestOperation *operation = [mediaService operationToUploadMedia:media withSuccess:^{

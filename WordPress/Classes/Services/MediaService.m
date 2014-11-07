@@ -58,14 +58,14 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
 
 - (void)createMediaWithAsset:(ALAsset *)asset
              forPostObjectID:(NSManagedObjectID *)postObjectID
-                  completion:(void (^)(Media *media))completion
+                  completion:(void (^)(Media *media, NSError * error))completion
 {
     BOOL geoLocationEnabled = NO;
-    
-    AbstractPost *post = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
+    NSError * error = nil;
+    AbstractPost *post = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
 	if (!post) {
 		if (completion) {
-			completion(nil);
+			completion(nil, error);
 		}
 		return;
 	}
@@ -76,7 +76,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     
     [[WPMediaProcessor sharedInstance] processAsset:asset toFile:imagePath resizing:maxImageSize stripGeoLocation:!geoLocationEnabled completionHandler:^(BOOL success, CGSize resultingSize, NSData * thumbnailData, NSError *error) {
         if (!success){
-            completion(nil);
+            completion(nil, error);
         }
         [self.managedObjectContext performBlock:^{
             
@@ -94,7 +94,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
             //make sure that we only return when object is properly created and saved
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                 if (completion) {
-                    completion(media);
+                    completion(media, nil);
                 }
                 
             }];
