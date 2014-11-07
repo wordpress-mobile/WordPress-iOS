@@ -246,15 +246,6 @@ NSString const *NotePostIdKey           = @"post_id";
     return [[self.meta dictionaryForKey:NoteTitlesKey] stringForKey:NoteHomeKey];
 }
 
-- (NSString *)metaTitleOrUrl
-{
-    if ([self metaTitlesHome]) {
-        return [self metaTitlesHome];
-    }
-    
-    return self.metaLinksHome.hostname;
-}
-
 - (NotificationRange *)notificationRangeWithUrl:(NSURL *)url
 {
     for (NotificationRange *range in self.ranges) {
