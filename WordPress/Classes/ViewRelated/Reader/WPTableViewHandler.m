@@ -14,6 +14,7 @@ static CGFloat const DefaultCellHeight = 44.0;
 @property (nonatomic, strong) NSIndexPath *indexPathSelectedAfterUpdates;
 @property (nonatomic, strong) NSMutableArray *sectionHeaders;
 @property (nonatomic, strong) NSMutableDictionary *cachedRowHeights;
+@property (nonatomic, strong) NSMutableArray *rowsWithInvalidatedHeights;
 @property (nonatomic, readwrite) BOOL isScrolling;
 @property (nonatomic) BOOL willRefreshTableViewPreservingOffset;
 @property (nonatomic) BOOL needsRefreshAfterScroll;
@@ -39,7 +40,12 @@ static CGFloat const DefaultCellHeight = 44.0;
     if (self) {
         _sectionHeaders = [NSMutableArray array];
         _cachedRowHeights = [NSMutableDictionary dictionary];
-
+        _rowsWithInvalidatedHeights = [NSMutableArray array];
+        _updateRowAnimation = UITableViewRowAnimationFade;
+        _insertRowAnimation = UITableViewRowAnimationFade;
+        _deleteRowAnimation = UITableViewRowAnimationFade;
+        _moveRowAnimation = UITableViewRowAnimationFade;
+        _sectionRowAnimation = UITableViewRowAnimationFade;
         _tableView = tableView;
         _tableView.delegate = self;
         _tableView.dataSource = self;
@@ -92,7 +98,7 @@ static CGFloat const DefaultCellHeight = 44.0;
     self.cachedRowHeights = cachedRowHeights;
 }
 
-- (void)invalidateCachedRowHeightsBelowIndexPath:(NSIndexPath *)indexPath
+- (void)clearCachedRowHeightsBelowIndexPath:(NSIndexPath *)indexPath
 {
     if (!self.cacheRowHeights) {
         return;
@@ -111,12 +117,28 @@ static CGFloat const DefaultCellHeight = 44.0;
     [self.cachedRowHeights removeObjectsForKeys:invalidKeys];
 }
 
-- (void)invalidateCachedRowHeightAtIndexPath:(NSIndexPath *)indexPath
+- (void)clearCachedRowHeightAtIndexPath:(NSIndexPath *)indexPath
 {
     if (!self.cacheRowHeights) {
         return;
     }
     [self.cachedRowHeights removeObjectForKey:indexPath.toString];
+}
+
+- (void)invalidateCachedRowHeightAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (!self.cachedRowHeights) {
+        return;
+    }
+
+    NSString *key = [indexPath toString];
+    NSNumber *height = [self.cachedRowHeights objectForKey:key];
+    if (!height) {
+        return;
+    }
+
+    [self.rowsWithInvalidatedHeights addObject:indexPath];
+    [self clearCachedRowHeightAtIndexPath:indexPath];
 }
 
 
@@ -226,6 +248,12 @@ static CGFloat const DefaultCellHeight = 44.0;
         height = [self cachedRowHeightForIndexPath:indexPath];
         if (height) {
             return height;
+        }
+
+        if ([self.rowsWithInvalidatedHeights containsObject:indexPath]) {
+            // Recompute and return the real height.  It will end up in the cache automatically.
+            [self.rowsWithInvalidatedHeights removeObject:indexPath];
+            return [self tableView:tableView heightForRowAtIndexPath:indexPath];
         }
     }
 
@@ -373,11 +401,6 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 #pragma mark - Fetched results controller
 
-- (UITableViewRowAnimation)tableViewRowAnimation
-{
-    return UITableViewRowAnimationFade;
-}
-
 - (NSFetchedResultsController *)resultsController
 {
     if (_resultsController != nil) {
@@ -469,14 +492,14 @@ static CGFloat const DefaultCellHeight = 44.0;
     switch(type) {
         case NSFetchedResultsChangeInsert:
         {
-            [self invalidateCachedRowHeightsBelowIndexPath:newIndexPath];
-            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
+            [self clearCachedRowHeightsBelowIndexPath:newIndexPath];
+            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:self.insertRowAnimation];
         }
             break;
         case NSFetchedResultsChangeDelete:
         {
-            [self invalidateCachedRowHeightsBelowIndexPath:indexPath];
-            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:[self tableViewRowAnimation]];
+            [self clearCachedRowHeightsBelowIndexPath:indexPath];
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:self.deleteRowAnimation];
             if ([self.indexPathSelectedBeforeUpdates isEqual:indexPath]) {
                 [self deletingSelectedRowAtIndexPath:indexPath];
             }
@@ -485,7 +508,7 @@ static CGFloat const DefaultCellHeight = 44.0;
         case NSFetchedResultsChangeUpdate:
         {
             [self invalidateCachedRowHeightAtIndexPath:indexPath];
-            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:[self tableViewRowAnimation]];
+            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:self.updateRowAnimation];
         }
             break;
         case NSFetchedResultsChangeMove:
@@ -494,10 +517,10 @@ static CGFloat const DefaultCellHeight = 44.0;
             if ([indexPath compare:newIndexPath] == NSOrderedDescending) {
                 lowerIndexPath = newIndexPath;
             }
-            [self invalidateCachedRowHeightsBelowIndexPath:lowerIndexPath];
+            [self clearCachedRowHeightsBelowIndexPath:lowerIndexPath];
 
-            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:[self tableViewRowAnimation]];
-            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:self.moveRowAnimation];
+            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:self.moveRowAnimation];
             if ([self.indexPathSelectedBeforeUpdates isEqual:indexPath] && self.indexPathSelectedAfterUpdates == nil) {
                 self.indexPathSelectedAfterUpdates = newIndexPath;
             }
@@ -515,9 +538,9 @@ static CGFloat const DefaultCellHeight = 44.0;
     }
 
     if (type == NSFetchedResultsChangeInsert) {
-        [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:[self tableViewRowAnimation]];
+        [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:self.sectionRowAnimation];
     } else if (type == NSFetchedResultsChangeDelete) {
-        [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:[self tableViewRowAnimation]];
+        [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:self.sectionRowAnimation];
     }
 }
 
