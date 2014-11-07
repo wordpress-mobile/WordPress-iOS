@@ -126,7 +126,7 @@ extension WPStyleGuide
             minLineHeight: subjectLineSize, maxLineHeight: subjectLineSize, lineBreakMode: .ByTruncatingTail, alignment: .Left
         )
         private static let blockParagraph           = NSMutableParagraphStyle(
-            minLineHeight: blockLineSize, maxLineHeight: blockLineSize, lineBreakMode: .ByWordWrapping, alignment: .Left
+            minLineHeight: blockLineSize, lineBreakMode: .ByWordWrapping, alignment: .Left
         )
         private static let badgeParagraph           = NSMutableParagraphStyle(
             minLineHeight: blockLineSize, maxLineHeight: blockLineSize, lineBreakMode: .ByWordWrapping, alignment: .Center
