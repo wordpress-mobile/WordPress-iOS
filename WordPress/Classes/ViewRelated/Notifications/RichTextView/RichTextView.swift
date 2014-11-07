@@ -35,19 +35,7 @@ import Foundation
     }
     
     
-    // MARK: - Properties
-    public override var frame: CGRect {
-        didSet {
-            setNeedsLayout()
-        }
-    }
-
-    public override var bounds: CGRect {
-        didSet {
-            setNeedsLayout()
-        }
-    }
-    
+    // MARK: - Properties    
     public var contentInset: UIEdgeInsets = UIEdgeInsetsZero {
         didSet {
             textView?.contentInset = contentInset
