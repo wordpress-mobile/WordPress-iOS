@@ -48,13 +48,13 @@
         WPImageOptimizer *imageOptimizer = [[WPImageOptimizer alloc] init];
         CGSize newSize = [imageOptimizer sizeForOriginalSize:targetSize fittingSize:targetSize];
         NSData *data = [imageOptimizer optimizedDataFromAsset:asset fittingSize:targetSize stripGeoLocation:stripGeoLocation];
-        if (!data){
+        if (!data) {
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 handler(YES, newSize, thumbnailJPEGData, nil);
             }];
         }
         NSError *error;
-        if (![data writeToFile:filePath options:NSDataWritingAtomic error:&error]){
+        if (![data writeToFile:filePath options:NSDataWritingAtomic error:&error]) {
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 handler(YES, newSize, thumbnailJPEGData, nil);
             }];
