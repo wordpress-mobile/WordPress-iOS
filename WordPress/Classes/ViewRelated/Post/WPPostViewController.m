@@ -40,7 +40,7 @@ const CGRect NavigationBarButtonRect = {
 NSString *const kWPEditorConfigURLParamAvailable = @"available";
 NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 
-static NSInteger const MaximumNumberOfPictures = 5;
+static NSInteger const MaximumNumberOfPictures = 10;
 static NSUInteger const WPPostViewControllerSaveOnExitActionSheetTag = 201;
 static CGFloat const SpacingBetweeenNavbarButtons = 20.0f;
 static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
