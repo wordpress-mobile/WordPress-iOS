@@ -11,10 +11,10 @@
 
 + (instancetype) sharedInstance;
 
-- (void)processAsset:(ALAsset *) asset
-              toFile:(NSString *) filePath
+- (void)processAsset:(ALAsset *)asset
+              toFile:(NSString *)filePath
             resizing:(CGSize)targetSize
-    stripGeoLocation:(BOOL) stripGeoLocation
-   completionHandler:(void (^)(BOOL success, CGSize resultingSize, NSData * thumbnailData, NSError * error)) handler;
+    stripGeoLocation:(BOOL)stripGeoLocation
+   completionHandler:(void (^)(BOOL success, CGSize resultingSize, NSData *thumbnailData, NSError *error)) handler;
 
 @end
