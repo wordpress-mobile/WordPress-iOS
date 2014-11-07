@@ -388,7 +388,7 @@ static CGFloat const DefaultCellHeight = 44.0;
         [self refreshTableViewPreservingOffset];
     }
 
-    if ([self.delegate respondsToSelector:@selector(scrollViewDidEndDecelerating::)]) {
+    if ([self.delegate respondsToSelector:@selector(scrollViewDidEndDecelerating:)]) {
         [self.delegate scrollViewDidEndDecelerating:scrollView];
     }
 }
@@ -396,6 +396,9 @@ static CGFloat const DefaultCellHeight = 44.0;
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     self.isScrolling = decelerate;
+    if ([self.delegate respondsToSelector:@selector(scrollViewDidEndDragging:willDecelerate:)]) {
+        [self.delegate scrollViewDidEndDragging:scrollView willDecelerate:(BOOL)decelerate];
+    }
 }
 
 
