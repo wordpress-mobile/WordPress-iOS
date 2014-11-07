@@ -32,11 +32,16 @@
                            @"bits": [NSInputStream inputStreamWithFileAtPath:path],
                            };
     NSArray *parameters = [blog getXMLRPCArgsWithExtra:data];
-    NSURLRequest *request = [self.api requestWithMethod:@"wp.uploadFile" parameters:parameters];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *directory = [paths objectAtIndex:0];
+    NSString *guid = [[NSProcessInfo processInfo] globallyUniqueString];
+    NSString *streamingCacheFilePath = [directory stringByAppendingPathComponent:guid];
+
+    NSURLRequest *request = [self.api streamingRequestWithMethod:@"wp.uploadFile" parameters:parameters usingFilePathForCache:streamingCacheFilePath];
     AFHTTPRequestOperation *operation = [self.api HTTPRequestOperationWithRequest:request
         success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSDictionary *response = (NSDictionary *)responseObject;
-
+            [[NSFileManager defaultManager] removeItemAtPath:streamingCacheFilePath error:nil];
             if (![response isKindOfClass:[NSDictionary class]]) {
               NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"The server returned an empty response. This usually means you need to increase the memory limit for your site.", @"")}];
               if (failure) {
@@ -50,6 +55,7 @@
                 success(remoteMedia);
             }
       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+          [[NSFileManager defaultManager] removeItemAtPath:streamingCacheFilePath error:nil];
           if (failure) {
               failure(error);
           }
