@@ -123,14 +123,28 @@ static const CGFloat CompressionQuality = 0.7;
     NSDictionary *properties = @{(__bridge NSString *)kCGImageDestinationLossyCompressionQuality: @(quality)};
 
     CGImageDestinationRef destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)destinationData, (__bridge CFStringRef)type, 1, NULL);
+    NSAssert(destination != nil, @"Image destination can't be nil");
+    if (!destination) {
+        DDLogError(@"Image destination couldn't be created. Type: %@", type);
+        return nil;
+    }
     CGImageDestinationSetProperties(destination, (__bridge CFDictionaryRef)properties);
     CGImageDestinationAddImage(destination, image, (__bridge CFDictionaryRef) metadata);
     if (!CGImageDestinationFinalize(destination)) {
         DDLogError(@"Image destination couldn't be written");
+        // If finalize fails, the output of the image destination will not be valid
+        destinationData = nil;
     }
-    CFRelease(destination);
 
-    return [NSData dataWithData:destinationData];
+    if (destination) {
+        CFRelease(destination);
+    }
+
+    NSData *returnData;
+    if (destinationData) {
+        returnData = [NSData dataWithData:destinationData];
+    }
+    return returnData;
 }
 
 @end
