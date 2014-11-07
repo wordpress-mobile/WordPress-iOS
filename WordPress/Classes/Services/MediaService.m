@@ -7,7 +7,7 @@
 #import "MediaServiceRemoteREST.h"
 #import "Blog.h"
 #import "RemoteMedia.h"
-#import "WPMediaProcessor.h"
+#import "WPAssetExporter.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 
 NSString * const SavedMaxImageSizeSetting = @"SavedMaxImageSizeSetting";
@@ -74,7 +74,11 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     CGSize maxImageSize = [MediaService maxImageSizeSetting];
     NSString *imagePath = [self pathForAsset:asset];
     
-    [[WPMediaProcessor sharedInstance] processAsset:asset toFile:imagePath resizing:maxImageSize stripGeoLocation:!geoLocationEnabled completionHandler:^(BOOL success, CGSize resultingSize, NSData * thumbnailData, NSError *error) {
+    [[WPAssetExporter sharedInstance] exportAsset:asset
+                                           toFile:imagePath
+                                         resizing:maxImageSize
+                                 stripGeoLocation:!geoLocationEnabled
+                                completionHandler:^(BOOL success, CGSize resultingSize, NSData * thumbnailData, NSError *error) {
         if (!success){
             completion(nil, error);
         }
