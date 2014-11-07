@@ -41,6 +41,7 @@ NSString *const kWPEditorConfigURLParamAvailable = @"available";
 NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 
 static NSInteger const MaximumNumberOfPictures = 5;
+static NSInteger const ConcurrentConnectionMaximum = 4;
 static NSUInteger const WPPostViewControllerSaveOnExitActionSheetTag = 201;
 static CGFloat const SpacingBetweeenNavbarButtons = 20.0f;
 static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
@@ -56,6 +57,7 @@ static NSDictionary *EnabledButtonBarStyle;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
+@property (nonatomic) NSMutableArray *mediaInProgress;
 
 #pragma mark - Bar Button Items
 @property (nonatomic, strong) UIBarButtonItem *secondaryLeftUIBarButtonItem;
@@ -196,8 +198,9 @@ static NSDictionary *EnabledButtonBarStyle;
 - (void)configureMediaUploadQueue
 {
     _mediaUploadQueue = [NSOperationQueue new];
-    _mediaUploadQueue.maxConcurrentOperationCount = 4;
+    _mediaUploadQueue.maxConcurrentOperationCount = ConcurrentConnectionMaximum;
     [_mediaUploadQueue addObserver:self forKeyPath:@"operationCount" options:NSKeyValueObservingOptionNew context:nil];
+    _mediaInProgress = [NSMutableArray array];
 }
 
 #pragma mark - View lifecycle
@@ -356,6 +359,7 @@ static NSDictionary *EnabledButtonBarStyle;
 - (void)cancelMediaUploads
 {
     [_mediaUploadQueue cancelAllOperations];
+    [self.mediaInProgress removeAllObjects];
 }
 
 - (void)showSettings
@@ -829,7 +833,7 @@ static NSDictionary *EnabledButtonBarStyle;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     NSInteger blogCount = [blogService blogCountForAllAccounts];
     
-    if (_mediaUploadQueue.operationCount > 0) {
+    if (self.mediaInProgress && self.mediaInProgress.count > 0) {
         aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:self.uploadStatusView];
     } else if(blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
         aUIButtonBarItem = nil;
@@ -1126,6 +1130,22 @@ static NSDictionary *EnabledButtonBarStyle;
 	[blogIsCurrentlyBusy show];
 }
 
+- (void)removeFromMediaInProgress:(NSString *)uniqueMediaId
+{
+    if(uniqueMediaId && self.mediaInProgress.count > 0)
+    {
+        [self.mediaInProgress removeObject:uniqueMediaId];
+    }
+}
+
+- (void)addToMediaInProgress:(NSString *)uniqueMediaId
+{
+    if(uniqueMediaId)
+    {
+        [self.mediaInProgress addObject:uniqueMediaId];
+    }
+}
+
 #pragma mark - Media Formatting
 
 - (void)insertImage:(NSString *)url alt:(NSString *)alt
@@ -1338,7 +1358,7 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
 {
-    [self dismissViewControllerAnimated:YES completion:^{        
+    [self dismissViewControllerAnimated:YES completion:^{
         for (ALAsset *asset in assets) {
             if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
                 // Could handle videos here
@@ -1349,6 +1369,7 @@ static NSDictionary *EnabledButtonBarStyle;
                         return;
                     }
                     NSString* imageUniqueId = [self uniqueId];
+                    [self addToMediaInProgress:imageUniqueId];
                     
                     NSURL* url = [[NSURL alloc] initFileURLWithPath:media.localURL];
                     
@@ -1356,7 +1377,9 @@ static NSDictionary *EnabledButtonBarStyle;
                     
                     AFHTTPRequestOperation *operation = [mediaService operationToUploadMedia:media withSuccess:^{
                         [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:imageUniqueId];
+                        [self removeFromMediaInProgress:imageUniqueId];
                     } failure:^(NSError *error) {
+                        [self removeFromMediaInProgress:imageUniqueId];
                         if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
                             DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
                             return;
