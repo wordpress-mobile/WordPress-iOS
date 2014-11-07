@@ -67,7 +67,9 @@ extension NotificationBlock
             return theString
         }
         
-        let unwrappedMediaMap = mediaMap!
+        let unwrappedMediaMap   = mediaMap!
+        var rangeDelta          = Int(0)
+        
         for theMedia in media as [NotificationMedia] {
             
             let image = unwrappedMediaMap[theMedia.mediaURL]
@@ -75,12 +77,22 @@ extension NotificationBlock
                 continue
             }
             
+            // Proceed attaching the media
             let imageAttachment     = NSTextAttachment()
             imageAttachment.bounds  = CGRect(origin: CGPointZero, size: image!.size)
             imageAttachment.image   = image!
             
+            // Each time we insert an attachment, we're changing the string length. Compensate for that!
             let attachmentString    = NSAttributedString(attachment: imageAttachment)
-            theString.replaceCharactersInRange(theMedia.range, withAttributedString: attachmentString)
+            var correctedRange      = theMedia.range
+            correctedRange.location += rangeDelta
+            
+            let lastPosition        = correctedRange.location + correctedRange.length
+            if lastPosition <= theString.length {
+                theString.replaceCharactersInRange(correctedRange, withAttributedString: attachmentString)
+            }
+            
+            rangeDelta              += attachmentString.length
         }
         
         return theString;
