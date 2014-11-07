@@ -23,18 +23,10 @@ import Foundation
             return
         }
 
-        let group = dispatch_group_create()
         for url in missingUrls {
-
-            dispatch_group_enter(group)
             downloadImageWithURL(url, callback: { (NSError error, UIImage image) -> () in
-                dispatch_group_leave(group)
+                completion()
             })
-        }
-        
-        // Hit the callback when we're ready
-        dispatch_group_notify(group, dispatch_get_main_queue()) { () -> Void in
-            completion()
         }
     }
     
