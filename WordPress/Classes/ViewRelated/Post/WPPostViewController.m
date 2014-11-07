@@ -22,7 +22,7 @@
 #import "NSString+Helpers.h"
 #import "WPMediaUploader.h"
 #import "WPButtonForNavigationBar.h"
-#import "WPUploadStatusView.h"
+#import "WPUploadStatusButton.h"
 #import "WordPressAppDelegate.h"
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
@@ -53,7 +53,7 @@ static NSDictionary *EnabledButtonBarStyle;
 }
 
 @property (nonatomic, strong) UIButton *blogPickerButton;
-@property (nonatomic, strong) UIView *uploadStatusView;
+@property (nonatomic, strong) UIButton *uploadStatusButton;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
@@ -834,7 +834,7 @@ static NSDictionary *EnabledButtonBarStyle;
     NSInteger blogCount = [blogService blogCountForAllAccounts];
     
     if (self.mediaInProgress && self.mediaInProgress.count > 0) {
-        aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:self.uploadStatusView];
+        aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:self.uploadStatusButton];
     } else if(blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
         aUIButtonBarItem = nil;
     } else {
@@ -867,17 +867,15 @@ static NSDictionary *EnabledButtonBarStyle;
     return _blogPickerButton;
 }
 
-- (UIView *)uploadStatusView
+- (UIButton *)uploadStatusButton
 {
-    if (_uploadStatusView) {
-        return _uploadStatusView;
+    if (!_uploadStatusButton) {
+        UIButton *button = [WPUploadStatusButton buttonWithFrame:CGRectMake(0.0f, 0.0f, 125.0f , 30.0f)];
+        [button addTarget:self action:@selector(showCancelMediaUploadPrompt) forControlEvents:UIControlEventTouchUpInside];
+        _uploadStatusButton = button;
     }
-    WPUploadStatusView *uploadStatusView = [[WPUploadStatusView alloc] initWithFrame:CGRectMake(0.0, 0.0, (IS_IPAD) ? 260.0f : 180.0f, 33.0)];
-    uploadStatusView.tappedView = ^{
-        [self showCancelMediaUploadPrompt];
-    };
-    _uploadStatusView = uploadStatusView;
-    return _uploadStatusView;
+    
+    return _uploadStatusButton;
 }
 
 # pragma mark - Model State Methods
