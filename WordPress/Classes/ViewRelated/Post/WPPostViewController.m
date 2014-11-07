@@ -1346,7 +1346,7 @@ static NSDictionary *EnabledButtonBarStyle;
                 MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
                 [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
                     if (error){
-                        [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", nil) message:error.localizedDescription];
+                        [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.") message:error.localizedDescription];
                         return;
                     }
                     NSString* imageUniqueId = [self uniqueId];
@@ -1363,7 +1363,7 @@ static NSDictionary *EnabledButtonBarStyle;
                             return;
                         }
                         
-                        [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", nil) message:error.localizedDescription];
+                        [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
                     }];
                     [_mediaUploadQueue addOperation:operation];
                 }];
