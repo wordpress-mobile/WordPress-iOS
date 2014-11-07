@@ -15,7 +15,7 @@ extern NSInteger const MediaMaxImageSizeDimension;
 
 + (void)setMaxImageSizeSetting:(CGSize)imageSize;
 
-- (void)createMediaWithAsset:(ALAsset *)asset forPostObjectID:(NSManagedObjectID *)postObjectID completion:(void (^)(Media *media))completion;
+- (void)createMediaWithAsset:(ALAsset *)asset forPostObjectID:(NSManagedObjectID *)postObjectID completion:(void (^)(Media *media, NSError * error))completion;
 
 - (AFHTTPRequestOperation *)operationToUploadMedia:(Media *)media withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
