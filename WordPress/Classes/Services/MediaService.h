@@ -24,6 +24,7 @@ extern NSInteger const MediaMaxImageSizeDimension;
 - (void)uploadMedia:(Media *)media
             success:(void (^)())success
             failure:(void (^)(NSError *error))failure;
+
 - (Media *)findMediaWithID:(NSNumber *)mediaID inBlog:(Blog *)blog;
 
 @end
