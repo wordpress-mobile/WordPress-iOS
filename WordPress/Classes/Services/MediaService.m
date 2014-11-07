@@ -85,9 +85,9 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
             media.filename = [imagePath lastPathComponent];
             media.localURL = imagePath;
             media.thumbnail = thumbnailData;
+            NSDictionary * fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:imagePath error:nil];
             // This is kind of lame, but we've been storing file size as KB so far
             // We should store size in bytes or rename the property to avoid confusion
-            NSDictionary * fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:imagePath error:nil];
             media.filesize = @([fileAttributes fileSize] / 1024);
             media.width = @(resultingSize.width);
             media.height = @(resultingSize.height);
