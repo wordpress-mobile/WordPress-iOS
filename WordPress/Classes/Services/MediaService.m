@@ -61,7 +61,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
 {
     BOOL geoLocationEnabled = NO;
     
-    AbstractPost *post = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID];
+    AbstractPost *post = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
     if (!post){
 		if (completion){
 			completion(nil);
