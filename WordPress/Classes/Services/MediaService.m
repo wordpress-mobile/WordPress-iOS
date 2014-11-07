@@ -7,6 +7,7 @@
 #import "MediaServiceRemoteREST.h"
 #import "Blog.h"
 #import "RemoteMedia.h"
+#import "WPMediaProcessor.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 
 NSString * const SavedMaxImageSizeSetting = @"SavedMaxImageSizeSetting";
@@ -69,43 +70,35 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
 		return;
 	}
 
-	geoLocationEnabled = post.blog.geolocationEnabled;
-     
-    WPImageOptimizer *optimizer = [WPImageOptimizer new];
-
-     
-    NSData *optimizedImageData;
+	geoLocationEnabled = post.blog.geolocationEnabled;     
     CGSize maxImageSize = [MediaService maxImageSizeSetting];
-
-    if (CGSizeEqualToSize(maxImageSize, MediaMaxImageSize)) {
-        optimizedImageData = [optimizer rawDataFromAsset:asset stripGeoLocation:!geoLocationEnabled];
-    } else {
-        optimizedImageData = [optimizer optimizedDataFromAsset:asset fittingSize:maxImageSize stripGeoLocation:!geoLocationEnabled];
-    }
-
-    NSData *thumbnailData = [self thumbnailDataFromAsset:asset];
     NSString *imagePath = [self pathForAsset:asset];
-    NSNumber * width = @(asset.defaultRepresentation.dimensions.width);
-    NSNumber * height =@(asset.defaultRepresentation.dimensions.height);
-    if (![self writeData:optimizedImageData toPath:imagePath]) {
-        DDLogError(@"Error writing media to %@", imagePath);
-    }
-	
-    Media *media = [self newMediaForPost:post];
-    media.filename = [imagePath lastPathComponent];
-    media.localURL = imagePath;
-    media.thumbnail = thumbnailData;
-    // This is kind of lame, but we've been storing file size as KB so far
-    // We should store size in bytes or rename the property to avoid confusion
-    media.filesize = @(optimizedImageData.length / 1024);
-    media.width = width;
-    media.height = height;
-    //make sure that we only return when object is properly created and saved
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-        if (completion) {
-            completion(media);
+    
+    [[WPMediaProcessor sharedInstance] processAsset:asset toFile:imagePath resizing:maxImageSize stripGeoLocation:!geoLocationEnabled completionHandler:^(BOOL success, CGSize resultingSize, NSData * thumbnailData, NSError *error) {
+        if (!success){
+            completion(nil);
         }
-
+        [self.managedObjectContext performBlock:^{
+            
+            AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
+            Media *media = [self newMediaForPost:post];
+            media.filename = [imagePath lastPathComponent];
+            media.localURL = imagePath;
+            media.thumbnail = thumbnailData;
+            // This is kind of lame, but we've been storing file size as KB so far
+            // We should store size in bytes or rename the property to avoid confusion
+            NSDictionary * fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:imagePath error:nil];
+            media.filesize = @([fileAttributes fileSize] / 1024);
+            media.width = @(resultingSize.width);
+            media.height = @(resultingSize.height);
+            //make sure that we only return when object is properly created and saved
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                if (completion) {
+                    completion(media);
+                }
+                
+            }];
+        }];
     }];
 }
 
