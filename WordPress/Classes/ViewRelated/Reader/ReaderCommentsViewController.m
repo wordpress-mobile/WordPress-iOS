@@ -100,6 +100,13 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    [self preventPendingMediaLayoutInCells:NO];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -261,6 +268,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 - (void)configureTableViewHandler
 {
     self.tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
+    self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
     self.tableViewHandler.cacheRowHeights = YES;
     self.tableViewHandler.delegate = self;
 }
@@ -662,6 +670,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     ReaderCommentCell *cell = [self.mediaCellCache objectForKey:[comment.commentID stringValue]];
     if (!cell) {
         cell = [[ReaderCommentCell alloc] initWithFrame:self.cellForLayout.bounds];
+        [cell preventPendingMediaLayout:YES];
         cell.delegate = self;
         [self.mediaCellCache setObject:cell forKey:[comment.commentID stringValue]];
         [self configureCell:cell atIndexPath:indexPath];
@@ -680,6 +689,13 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     NSInteger numAttachments = [[attributedString textAttachmentsWithPredicate:nil class:nil] count];
 
     return numAttachments;
+}
+
+- (void)preventPendingMediaLayoutInCells:(BOOL)prevent
+{
+    for (ReaderCommentCell *cell in [self.mediaCellCache allValues]) {
+        [cell preventPendingMediaLayout:prevent];
+    }
 }
 
 
@@ -841,12 +857,27 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 #pragma mark - UIScrollView Delegate Methods
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self preventPendingMediaLayoutInCells:YES];
+}
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    [self preventPendingMediaLayoutInCells:NO];
+
     NSArray *selectedRows = [self.tableView indexPathsForSelectedRows];
     [self.tableView deselectRowAtIndexPath:[selectedRows objectAtIndex:0] animated:YES];
     [self.replyTextView resignFirstResponder];
     [self configureTextReplyViewPlaceholder];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (decelerate) {
+        return;
+    }
+    [self preventPendingMediaLayoutInCells:NO];
 }
 
 
@@ -857,7 +888,17 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     Comment *comment = (Comment *)contentProvider;
     NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:comment];
     [self.tableViewHandler invalidateCachedRowHeightAtIndexPath:indexPath];
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+
+    // HACK:
+    // For some reason, a single call to reloadRowsAtIndexPath can result in an
+    // invalid row height. Calling twice seems to prevent any layout errors at
+    // the expense of an extra layout pass.
+    // Wrappign the calls in a performWithoutAnimation block ensures the are no
+    // strange transitions from the old height to the new.
+    [UIView performWithoutAnimation:^{
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    }];
 }
 
 - (void)commentCell:(UITableViewCell *)cell linkTapped:(NSURL *)url

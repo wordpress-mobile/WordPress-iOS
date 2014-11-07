@@ -73,7 +73,8 @@ static const CGFloat ReaderCommentCellBottomPaddingMore = -20.0;
     } else {
         desiredHeight += fabs(ReaderCommentCellBottomPadding);
     }
-    return CGSizeMake(size.width, desiredHeight);
+    CGSize desiredSize = CGSizeMake(size.width, desiredHeight);
+    return desiredSize;
 }
 
 - (void)setAvatarImage:(UIImage *)avatarImage
@@ -186,6 +187,11 @@ static const CGFloat ReaderCommentCellBottomPaddingMore = -20.0;
 - (void)refreshMediaLayout
 {
     [self.commentContentView refreshMediaLayout];
+}
+
+- (void)preventPendingMediaLayout:(BOOL)prevent
+{
+    [self.commentContentView preventPendingMediaLayout:prevent];
 }
 
 @end
