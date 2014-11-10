@@ -39,4 +39,11 @@
  */
 - (NSData *)rawDataFromAsset:(ALAsset *)asset stripGeoLocation:(BOOL) stripGeoLocation;
 
+/**
+ Returns the size of the image that is less than the fittinsSize and keeps the aspect ratio.
+ 
+ @return the size for the image
+ */
+- (CGSize)sizeForOriginalSize:(CGSize)originalSize fittingSize:(CGSize)targetSize;
+
 @end
