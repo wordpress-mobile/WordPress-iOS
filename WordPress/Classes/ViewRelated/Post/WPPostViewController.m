@@ -351,7 +351,7 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)showCancelMediaUploadPrompt
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Confirm Navigation", "Dialog box title for when the user is cancelling an upload.")
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cancel Media Uploads", "Dialog box title for when the user is cancelling an upload.")
                                                         message:NSLocalizedString(@"You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?", @"This prompt is displayed when the user attempts to stop media uploads in the post editor.")
                                                        delegate:self
                                               cancelButtonTitle:NSLocalizedString(@"Not Now", "Nicer dialog answer for \"No\".")
