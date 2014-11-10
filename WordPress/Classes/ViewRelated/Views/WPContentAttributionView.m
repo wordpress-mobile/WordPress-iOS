@@ -141,9 +141,9 @@ const CGFloat WPContentAttributionMenuSize = 30.0;
     return label;
 }
 
-- (UIImageView *)imageViewForAvatar
+- (CircularImageView *)imageViewForAvatar
 {
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+    CircularImageView *imageView = [[CircularImageView alloc] initWithFrame:CGRectZero];
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     return imageView;
 }

@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "WPContentViewProvider.h"
+#import "WordPress-Swift.h"
 
 extern const CGFloat WPContentAttributionViewAvatarSize;
 
@@ -75,7 +76,7 @@ extern const CGFloat WPContentAttributionViewAvatarSize;
 #pragma mark - Private Subclass Members and Methods
 
 // Subviews
-@property (nonatomic, strong) UIImageView *avatarImageView;
+@property (nonatomic, strong) CircularImageView *avatarImageView;
 @property (nonatomic, strong) UILabel *attributionNameLabel;
 @property (nonatomic, strong) UIButton *attributionLinkButton;
 @property (nonatomic, strong) UIButton *attributionMenuButton;
