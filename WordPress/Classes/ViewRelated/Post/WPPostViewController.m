@@ -230,7 +230,7 @@ static NSDictionary *EnabledButtonBarStyle;
     
     [self geotagNewPost];
     self.delegate = self;
-    
+    self.failedMediaAlertView = nil;
     [self refreshNavigationBarButtons:NO];
 }
 
@@ -362,15 +362,15 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)showFailedMediaAlert
 {
-    if (_failedMediaAlertView)
+    if (self.failedMediaAlertView)
         return;
-    _failedMediaAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Pending media", @"Title for alert when trying to publish a post with failed media items")
+    self.failedMediaAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Pending media", @"Title for alert when trying to publish a post with failed media items")
                                                        message:NSLocalizedString(@"There are media items in this post that aren't uploaded to the server. Do you want to continue?", @"")
                                                       delegate:self
                                              cancelButtonTitle:NSLocalizedString(@"No", @"")
                                              otherButtonTitles:NSLocalizedString(@"Post anyway", @""), nil];
-    _failedMediaAlertView.tag = EditPostViewControllerAlertTagFailedMedia;
-    [_failedMediaAlertView show];
+    self.failedMediaAlertView.tag = EditPostViewControllerAlertTagFailedMedia;
+    [self.failedMediaAlertView show];
 }
 
 - (void)showMediaInUploadingAlert
@@ -1241,7 +1241,7 @@ static NSDictionary *EnabledButtonBarStyle;
             DDLogInfo(@"Saving post even after some media failed to upload");
 			[self savePostAndDismissVC];
         }
-        _failedMediaAlertView = nil;
+        self.failedMediaAlertView = nil;
     } else if (alertView.tag == EditPostViewControllerAlertTagSwitchBlogs) {
         if (buttonIndex == 1) {
             [self showBlogSelector];
