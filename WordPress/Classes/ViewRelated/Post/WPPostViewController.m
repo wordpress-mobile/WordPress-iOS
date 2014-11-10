@@ -388,6 +388,7 @@ static NSDictionary *EnabledButtonBarStyle;
 {
     [_mediaUploadQueue cancelAllOperations];
     [self.mediaInProgress removeAllObjects];
+    [self refreshNavigationBarButtons:NO];
 }
 
 - (void)showSettings
@@ -1385,6 +1386,7 @@ static NSDictionary *EnabledButtonBarStyle;
                     AFHTTPRequestOperation *operation = [mediaService operationToUploadMedia:media withSuccess:^{
                         [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:imageUniqueId];
                         [self removeFromMediaInProgress:imageUniqueId];
+                        [self refreshNavigationBarButtons:NO];
                     } failure:^(NSError *error) {
                         [self removeFromMediaInProgress:imageUniqueId];
                         if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
@@ -1393,6 +1395,7 @@ static NSDictionary *EnabledButtonBarStyle;
                         }
                         
                         [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
+                        [self refreshNavigationBarButtons:NO];
                     }];
                     [_mediaUploadQueue addOperation:operation];
                 }];
