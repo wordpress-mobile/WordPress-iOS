@@ -69,10 +69,6 @@ import Foundation
             gravatarImageView.updateConstraint(.Height, constant: gravatarImageSizePad.width)
             gravatarImageView.updateConstraint(.Width,  constant: gravatarImageSizePad.height)
         }
-
-        // Circularize gravatars
-        gravatarImageView.layer.masksToBounds   = true
-        gravatarImageView.layer.cornerRadius    = gravatarImageView.frame.size.width / 2
     }
     
     // MARK: - IBActions
@@ -92,5 +88,5 @@ import Foundation
     @IBOutlet private weak var nameLabel:           UILabel!
     @IBOutlet private weak var blogLabel:           UILabel!
     @IBOutlet private weak var btnFollow:           UIButton!
-    @IBOutlet private weak var gravatarImageView:   UIImageView!
+    @IBOutlet private weak var gravatarImageView:   CircularImageView!
 }
