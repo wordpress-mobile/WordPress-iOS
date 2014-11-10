@@ -51,5 +51,7 @@ extern NSString * const CommentStatusDraft;
 /// @name Helper methods
 ///---------------------
 + (NSString *)titleForStatus:(NSString *)status;
+- (NSString *)authorUrlForDisplay;
+- (BOOL)hasAuthorUrl;
 
 @end

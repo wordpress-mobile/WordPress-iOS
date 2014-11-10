@@ -303,9 +303,15 @@ static NSInteger const CVCNumberOfSections = 2;
 
     cell.name = self.comment.author;
     cell.timestamp = [self.comment.dateCreated shortString];
+
+    cell.timestamp = self.comment.hasAuthorUrl ?
+                            [[self.comment.dateCreated shortString] stringByAppendingString:@" • "]
+                            : [self.comment.dateCreated shortString];
+
     cell.isApproveOn = [self.comment.status isEqualToString:@"approve"];
     cell.commentText = [self.comment contentForDisplay];
     cell.isLikeOn = self.comment.isLiked;
+    cell.site = self.comment.authorUrlForDisplay;
 
     if (cell != self.bodyLayoutCell) {
         [cell downloadGravatarWithURL:self.comment.avatarURLForDisplay];
@@ -343,6 +349,17 @@ static NSInteger const CVCNumberOfSections = 2;
 
     cell.onMoreClick = ^(UIButton *sender){
         [weakSelf displayMoreActionsForSender:sender];
+    };
+
+    cell.onSiteClick = ^(UIButton *sender){
+        if (!self.comment.hasAuthorUrl) {
+            return;
+        }
+
+        NSURL *url = [[NSURL alloc] initWithString:self.comment.author_url];
+        if (url) {
+            [weakSelf openWebViewWithURL:url];
+        }
     };
 }
 

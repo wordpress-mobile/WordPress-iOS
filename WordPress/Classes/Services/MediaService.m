@@ -7,6 +7,7 @@
 #import "MediaServiceRemoteREST.h"
 #import "Blog.h"
 #import "RemoteMedia.h"
+#import "WPAssetExporter.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 
 NSString * const SavedMaxImageSizeSetting = @"SavedMaxImageSizeSetting";
@@ -57,46 +58,50 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
 
 - (void)createMediaWithAsset:(ALAsset *)asset
              forPostObjectID:(NSManagedObjectID *)postObjectID
-                  completion:(void (^)(Media *media))completion
+                  completion:(void (^)(Media *media, NSError * error))completion
 {
-    WPImageOptimizer *optimizer = [WPImageOptimizer new];
-
-    NSData *optimizedImageData;
+    BOOL geoLocationEnabled = NO;
+    NSError *error = nil;
+    AbstractPost *post = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
+	if (!post) {
+		if (completion) {
+			completion(nil, error);
+		}
+		return;
+	}
+    geoLocationEnabled = post.blog.geolocationEnabled;
+    
     CGSize maxImageSize = [MediaService maxImageSizeSetting];
-
-    if (CGSizeEqualToSize(maxImageSize, MediaMaxImageSize)) {
-        optimizedImageData = [optimizer rawDataFromAsset:asset];
-    } else {
-        optimizedImageData = [optimizer optimizedDataFromAsset:asset fittingSize:maxImageSize];
-    }
-
-    NSData *thumbnailData = [self thumbnailDataFromAsset:asset];
     NSString *imagePath = [self pathForAsset:asset];
-    NSNumber * width = @(asset.defaultRepresentation.dimensions.width);
-    NSNumber * height =@(asset.defaultRepresentation.dimensions.height);
-    if (![self writeData:optimizedImageData toPath:imagePath]) {
-        DDLogError(@"Error writing media to %@", imagePath);
-    }
-    [self.managedObjectContext performBlock:^{
-        Media *media;
-        AbstractPost *post = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
-        if (post) {
-            media = [self newMediaForPost:post];
+    
+    [[WPAssetExporter sharedInstance] exportAsset:asset
+                                           toFile:imagePath
+                                         resizing:maxImageSize
+                                 stripGeoLocation:!geoLocationEnabled
+                                completionHandler:^(BOOL success, CGSize resultingSize, NSData * thumbnailData, NSError *error) {
+        if (!success) {
+            completion(nil, error);
+        }
+        [self.managedObjectContext performBlock:^{
+            
+            AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
+            Media *media = [self newMediaForPost:post];
             media.filename = [imagePath lastPathComponent];
             media.localURL = imagePath;
             media.thumbnail = thumbnailData;
+            NSDictionary * fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:imagePath error:nil];
             // This is kind of lame, but we've been storing file size as KB so far
             // We should store size in bytes or rename the property to avoid confusion
-            media.filesize = @(optimizedImageData.length / 1024);
-            media.width = width;
-            media.height = height;
-        }
-        //make sure that we only return when object is properly created and saved
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-            if (completion) {
-                completion(media);
-            }
-
+            media.filesize = @([fileAttributes fileSize] / 1024);
+            media.width = @(resultingSize.width);
+            media.height = @(resultingSize.height);
+            //make sure that we only return when object is properly created and saved
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                if (completion) {
+                    completion(media, nil);
+                }
+                
+            }];
         }];
     }];
 }
@@ -270,19 +275,6 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
         index++;
     }
     return path;
-}
-
-- (BOOL)writeData:(NSData *)data toPath:(NSString *)path
-{
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    return [fileManager createFileAtPath:path contents:data attributes:@{NSFileProtectionKey: NSFileProtectionComplete}];
-}
-
-- (NSData *)thumbnailDataFromAsset:(ALAsset *)asset
-{
-    UIImage *thumbnail = [UIImage imageWithCGImage:asset.thumbnail];
-    NSData *thumbnailJPEGData = UIImageJPEGRepresentation(thumbnail, 1.0);
-    return thumbnailJPEGData;
 }
 
 - (NSString *)mimeTypeForFilename:(NSString *)filename
