@@ -378,7 +378,9 @@ static NSDictionary *EnabledButtonBarStyle;
     //the post is using the network connection and cannot be stoped, show a message to the user
     UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Uploading media", @"Title for alert when trying to save/exit a post before media upload process is complete.")
                                                                   message:NSLocalizedString(@"You are currently uploading media. Please wait until this completes.", @"This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete.")
-                                                                 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
+                                                                 delegate:nil
+                                                        cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                                        otherButtonTitles:nil];
     [blogIsCurrentlyBusy show];
 }
 
