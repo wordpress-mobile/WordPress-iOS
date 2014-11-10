@@ -1136,6 +1136,7 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)removeFromMediaInProgress:(NSString *)uniqueMediaId
 {
+    NSAssert(uniqueMediaId != nil, @"uniqueMediaId should not be nil here.");
     if(uniqueMediaId && self.mediaInProgress.count > 0)
     {
         [self.mediaInProgress removeObject:uniqueMediaId];
@@ -1144,6 +1145,7 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)addToMediaInProgress:(NSString *)uniqueMediaId
 {
+    NSAssert(uniqueMediaId != nil, @"uniqueMediaId should not be nil here.");
     if(uniqueMediaId)
     {
         [self.mediaInProgress addObject:uniqueMediaId];
