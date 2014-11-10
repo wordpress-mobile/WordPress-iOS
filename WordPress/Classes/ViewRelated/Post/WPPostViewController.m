@@ -41,7 +41,7 @@ NSString *const kWPEditorConfigURLParamAvailable = @"available";
 NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 
 static NSInteger const MaximumNumberOfPictures = 10;
-static NSInteger const ConcurrentConnectionMaximum = 4;
+static NSInteger const MaxConcurrentOperationCountForUploads = 4;
 static NSUInteger const WPPostViewControllerSaveOnExitActionSheetTag = 201;
 static CGFloat const SpacingBetweeenNavbarButtons = 20.0f;
 static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
@@ -198,7 +198,7 @@ static NSDictionary *EnabledButtonBarStyle;
 - (void)configureMediaUploadQueue
 {
     _mediaUploadQueue = [NSOperationQueue new];
-    _mediaUploadQueue.maxConcurrentOperationCount = ConcurrentConnectionMaximum;
+    _mediaUploadQueue.maxConcurrentOperationCount = MaxConcurrentOperationCountForUploads;
     [_mediaUploadQueue addObserver:self forKeyPath:@"operationCount" options:NSKeyValueObservingOptionNew context:nil];
     _mediaInProgress = [NSMutableArray array];
 }
