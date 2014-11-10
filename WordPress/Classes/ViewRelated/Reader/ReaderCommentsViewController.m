@@ -893,7 +893,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     // For some reason, a single call to reloadRowsAtIndexPath can result in an
     // invalid row height. Calling twice seems to prevent any layout errors at
     // the expense of an extra layout pass.
-    // Wrappign the calls in a performWithoutAnimation block ensures the are no
+    // Wrapping the calls in a performWithoutAnimation block ensures the are no
     // strange transitions from the old height to the new.
     [UIView performWithoutAnimation:^{
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
