@@ -390,6 +390,10 @@ static NSDictionary *EnabledButtonBarStyle;
     CTAssetsPickerController *picker = [[CTAssetsPickerController alloc] init];
 	picker.delegate = self;
     
+    UIBarButtonItem *barButtonItem = [UIBarButtonItem appearanceWhenContainedIn:[UIToolbar class], [CTAssetsPickerController class], nil];
+    [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
+    [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateDisabled];
+    
     // Only show photos for now (not videos)
     picker.assetsFilter = [ALAssetsFilter allPhotos];
     
