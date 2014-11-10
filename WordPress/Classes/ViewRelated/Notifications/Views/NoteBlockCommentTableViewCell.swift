@@ -32,7 +32,7 @@ import Foundation
     }
     public var site: String? {
         didSet {
-            btnSite.setTitle(site ?? String(), forState: .Normal)
+            siteLabel.text = site ?? String()
         }
     }
     public var isReplyEnabled: Bool = false {
@@ -99,8 +99,12 @@ import Foundation
         // Setup Labels
         nameLabel.font                      = WPStyleGuide.Notifications.blockBoldFont
         timestampLabel.font                 = WPStyleGuide.Notifications.blockRegularFont
-        btnSite.titleLabel!.font            = WPStyleGuide.Notifications.blockRegularFont
+        siteLabel.font                      = WPStyleGuide.Notifications.blockRegularFont
 
+        // Setup Recognizers
+        siteLabel.gestureRecognizers        = [ UITapGestureRecognizer(target: self, action: "siteWasPressed:") ]
+        siteLabel.userInteractionEnabled    = true
+        
         // Background
         approvalStatusView.backgroundColor  = WPStyleGuide.Notifications.blockUnapprovedBgColor
         approvalSidebarView.backgroundColor = WPStyleGuide.Notifications.blockUnapprovedSideColor
@@ -229,7 +233,7 @@ import Foundation
         separatorView.backgroundColor       = WPStyleGuide.Notifications.blockSeparatorColorForComment(isApproved: isCommentApproved)
         nameLabel.textColor                 = WPStyleGuide.Notifications.blockTextColorForComment(isApproved: isCommentApproved)
         timestampLabel.textColor            = WPStyleGuide.Notifications.blockTimestampColorForComment(isApproved: isCommentApproved)
-        btnSite.setTitleColor(WPStyleGuide.Notifications.blockTimestampColorForComment(isApproved: isCommentApproved), forState: .Normal)
+        siteLabel.textColor                 = WPStyleGuide.Notifications.blockTimestampColorForComment(isApproved: isCommentApproved)
         super.linkColor                     = WPStyleGuide.Notifications.blockLinkColorForComment(isApproved: isCommentApproved)
         super.attributedText                = isCommentApproved ? attributedCommentText : attributedCommentUnapprovedText
     }
@@ -267,8 +271,8 @@ import Foundation
     @IBOutlet private weak var gravatarImageView    : UIImageView!
     @IBOutlet private weak var nameLabel            : UILabel!
     @IBOutlet private weak var timestampLabel       : UILabel!
+    @IBOutlet private weak var siteLabel            : UILabel!
     @IBOutlet private weak var separatorView        : UIView!
-    @IBOutlet private weak var btnSite              : UIButton!
     @IBOutlet private weak var btnReply             : UIButton!
     @IBOutlet private weak var btnLike              : UIButton!
     @IBOutlet private weak var btnApprove           : UIButton!
