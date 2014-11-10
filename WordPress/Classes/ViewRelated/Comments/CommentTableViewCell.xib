@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -41,7 +40,7 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ody-C4-D1J">
-                        <rect key="frame" x="54" y="8" width="188" height="15"/>
+                        <rect key="frame" x="54" y="8" width="188" height="14.5"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="188" id="iZi-gw-OC5"/>
                         </constraints>
@@ -50,22 +49,17 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" text="Timestamp" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rpo-Dh-mzR">
-                        <rect key="frame" x="54" y="24" width="62" height="15"/>
+                        <rect key="frame" x="54" y="23" width="62" height="14.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" verticalHuggingPriority="248" horizontalCompressionResistancePriority="748" verticalCompressionResistancePriority="748" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FIY-8e-Xb5">
-                        <rect key="frame" x="116" y="18" width="192" height="27"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" misplaced="YES" text="Site" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nYH-7M-K2c" userLabel="Site">
+                        <rect key="frame" x="116" y="23" width="62" height="14.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <state key="normal" title="Site Url">
-                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        </state>
-                        <connections>
-                            <action selector="siteWasPressed:" destination="aIj-oS-YdB" eventType="touchUpInside" id="9WJ-IJ-BCo"/>
-                        </connections>
-                    </button>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="czw-Zv-DEQ" customClass="RichTextView" customModule="WordPress">
                         <rect key="frame" x="12" y="49" width="296" height="18"/>
                         <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
@@ -162,18 +156,19 @@
                     <constraint firstItem="avk-i4-k8j" firstAttribute="height" secondItem="xRU-mN-25Z" secondAttribute="height" id="2r3-xl-aMf"/>
                     <constraint firstItem="Cm4-L9-Oo6" firstAttribute="leading" secondItem="dlQ-nz-Av7" secondAttribute="trailing" constant="20" id="35K-yG-BLY"/>
                     <constraint firstItem="czw-Zv-DEQ" firstAttribute="top" secondItem="7M2-1g-ohj" secondAttribute="bottom" constant="5" id="6L3-4h-sEh"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="nYH-7M-K2c" secondAttribute="trailing" constant="12" id="ApB-VY-yfq"/>
                     <constraint firstItem="Ody-C4-D1J" firstAttribute="leading" secondItem="7M2-1g-ohj" secondAttribute="trailing" constant="10" id="BJg-uc-5za"/>
                     <constraint firstAttribute="trailing" secondItem="xRU-mN-25Z" secondAttribute="trailing" constant="20" id="DTE-ry-TnY"/>
                     <constraint firstItem="dlQ-nz-Av7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="dPV-zh-vNn" secondAttribute="leading" constant="20" id="F2h-RM-lpA"/>
                     <constraint firstItem="avk-i4-k8j" firstAttribute="leading" secondItem="Cm4-L9-Oo6" secondAttribute="trailing" constant="20" id="F3q-Vm-el9"/>
                     <constraint firstItem="7M2-1g-ohj" firstAttribute="leading" secondItem="dPV-zh-vNn" secondAttribute="leading" constant="12" id="Fvr-Zv-scV"/>
-                    <constraint firstItem="rpo-Dh-mzR" firstAttribute="centerY" secondItem="FIY-8e-Xb5" secondAttribute="centerY" id="GXp-zR-upD"/>
                     <constraint firstItem="czw-Zv-DEQ" firstAttribute="leading" secondItem="dPV-zh-vNn" secondAttribute="leading" constant="12" id="ITB-hK-uZ7"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="FIY-8e-Xb5" secondAttribute="trailing" constant="4" id="Iob-A8-4UO"/>
                     <constraint firstItem="vGn-vV-Bwg" firstAttribute="height" secondItem="xRU-mN-25Z" secondAttribute="height" id="JkU-Hk-gB2"/>
                     <constraint firstItem="xed-nb-SpT" firstAttribute="top" secondItem="IJ6-A7-qby" secondAttribute="bottom" id="MPg-1L-Qee"/>
                     <constraint firstAttribute="trailing" secondItem="czw-Zv-DEQ" secondAttribute="trailing" constant="12" id="PUE-va-lfD"/>
+                    <constraint firstItem="nYH-7M-K2c" firstAttribute="leading" secondItem="rpo-Dh-mzR" secondAttribute="trailing" id="QIW-Mt-4a3"/>
                     <constraint firstItem="xRU-mN-25Z" firstAttribute="height" secondItem="Cm4-L9-Oo6" secondAttribute="height" id="RBs-Ll-bJ5"/>
+                    <constraint firstItem="nYH-7M-K2c" firstAttribute="top" secondItem="rpo-Dh-mzR" secondAttribute="top" id="Vrn-SI-Un8"/>
                     <constraint firstItem="xRU-mN-25Z" firstAttribute="leading" secondItem="vGn-vV-Bwg" secondAttribute="trailing" constant="20" id="Xg9-21-TDA"/>
                     <constraint firstItem="7M2-1g-ohj" firstAttribute="top" secondItem="dPV-zh-vNn" secondAttribute="top" constant="12" id="YOd-iG-utX"/>
                     <constraint firstItem="xed-nb-SpT" firstAttribute="top" secondItem="czw-Zv-DEQ" secondAttribute="bottom" constant="8" id="Z1X-H7-Urj"/>
@@ -181,11 +176,11 @@
                     <constraint firstItem="7M2-1g-ohj" firstAttribute="top" secondItem="Ody-C4-D1J" secondAttribute="top" constant="4" id="c1K-Qk-qys"/>
                     <constraint firstItem="vGn-vV-Bwg" firstAttribute="leading" secondItem="avk-i4-k8j" secondAttribute="trailing" constant="20" id="fnl-XD-orS"/>
                     <constraint firstItem="IJ6-A7-qby" firstAttribute="top" secondItem="dPV-zh-vNn" secondAttribute="top" id="gGO-sk-tMK"/>
-                    <constraint firstItem="FIY-8e-Xb5" firstAttribute="leading" secondItem="rpo-Dh-mzR" secondAttribute="trailing" id="gTz-OU-Csx"/>
                     <constraint firstItem="vGn-vV-Bwg" firstAttribute="bottom" secondItem="xRU-mN-25Z" secondAttribute="bottom" id="has-Oz-efz"/>
                     <constraint firstItem="IJ6-A7-qby" firstAttribute="leading" secondItem="dPV-zh-vNn" secondAttribute="leading" id="iKK-LL-ZVP"/>
                     <constraint firstItem="xRU-mN-25Z" firstAttribute="bottom" secondItem="Cm4-L9-Oo6" secondAttribute="bottom" id="jB8-yG-JDP"/>
                     <constraint firstItem="xRU-mN-25Z" firstAttribute="height" secondItem="dlQ-nz-Av7" secondAttribute="height" id="jy3-Hu-5sx"/>
+                    <constraint firstItem="nYH-7M-K2c" firstAttribute="bottom" secondItem="rpo-Dh-mzR" secondAttribute="bottom" id="kj7-BL-KUg"/>
                     <constraint firstItem="xRU-mN-25Z" firstAttribute="top" secondItem="czw-Zv-DEQ" secondAttribute="bottom" constant="20" id="lv1-kc-xo2"/>
                     <constraint firstItem="rpo-Dh-mzR" firstAttribute="top" secondItem="Ody-C4-D1J" secondAttribute="bottom" constant="1" id="mAc-fl-PMC"/>
                     <constraint firstItem="xed-nb-SpT" firstAttribute="leading" secondItem="czw-Zv-DEQ" secondAttribute="leading" id="nrM-fx-sLR"/>
@@ -208,11 +203,11 @@
                 <outlet property="btnLike" destination="Cm4-L9-Oo6" id="ZgO-t8-o3C"/>
                 <outlet property="btnMore" destination="xRU-mN-25Z" id="ev5-Ol-AnS"/>
                 <outlet property="btnReply" destination="dlQ-nz-Av7" id="ToF-iR-Btp"/>
-                <outlet property="btnSite" destination="FIY-8e-Xb5" id="6OZ-hM-9bd"/>
                 <outlet property="btnTrash" destination="vGn-vV-Bwg" id="8Fv-ce-ZWn"/>
                 <outlet property="gravatarImageView" destination="7M2-1g-ohj" id="52l-ke-wW4"/>
                 <outlet property="nameLabel" destination="Ody-C4-D1J" id="EiQ-4i-e33"/>
                 <outlet property="separatorView" destination="xed-nb-SpT" id="373-VS-DFM"/>
+                <outlet property="siteLabel" destination="nYH-7M-K2c" id="M4C-6C-jn2"/>
                 <outlet property="textView" destination="czw-Zv-DEQ" id="Vco-Va-E6F"/>
                 <outlet property="timestampLabel" destination="rpo-Dh-mzR" id="Zpo-AZ-Bkj"/>
             </connections>
