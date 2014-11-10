@@ -20,7 +20,7 @@
 
 NSString *const WPLegacyEditorNavigationRestorationID = @"WPLegacyEditorNavigationRestorationID";
 NSString *const WPLegacyAbstractPostRestorationKey = @"WPLegacyAbstractPostRestorationKey";
-static NSInteger const MaximumNumberOfPictures = 4;
+static NSInteger const MaximumNumberOfPictures = 10;
 
 @interface WPLegacyEditPostViewController ()<UIPopoverControllerDelegate> {
     NSOperationQueue *_mediaUploadQueue;
@@ -960,11 +960,11 @@ static NSInteger const MaximumNumberOfPictures = 4;
     for (ALAsset *asset in assets) {
         if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
             MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-            [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
-                if (!media) {
+            [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
+                if (error){
+                    [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.") message:error.localizedDescription];
                     return;
                 }
-
                 AFHTTPRequestOperation *operation = [mediaService operationToUploadMedia:media withSuccess:^{
                     [self insertMedia:media];
                 } failure:^(NSError *error) {
@@ -972,8 +972,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
                         DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
                         return;
                     }
-
-                    [WPError showAlertWithTitle:NSLocalizedString(@"Upload failed", nil) message:error.localizedDescription];
+                    [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
                 }];
                 [_mediaUploadQueue addOperation:operation];
             }];
