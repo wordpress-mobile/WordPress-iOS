@@ -186,7 +186,13 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
 
 - (CircularImageView *)imageViewForAvatar
 {
-    CircularImageView *imageView = [[CircularImageView alloc] initWithFrame:CGRectZero];
+    CircularImageView *imageView = [[CircularImageView alloc] initWithFrame:
+                                    CGRectMake(0.0f,
+                                               0.0f,
+                                               CommentContentViewAvatarSize,
+                                               CommentContentViewAvatarSize
+                                               )
+                                    ];
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     return imageView;
 }
