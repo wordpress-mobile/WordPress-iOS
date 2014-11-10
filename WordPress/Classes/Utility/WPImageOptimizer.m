@@ -3,24 +3,30 @@
 
 @implementation WPImageOptimizer
 
-- (NSData *)rawDataFromAsset:(ALAsset *)asset
+- (NSData *)rawDataFromAsset:(ALAsset *)asset stripGeoLocation:(BOOL) stripGeoLocation
 {
     ALAssetRepresentation *representation = asset.defaultRepresentation;
-    return [self rawDataFromAssetRepresentation:representation];
+    return [self rawDataFromAssetRepresentation:representation stripGeoLocation:stripGeoLocation];
 }
 
-- (NSData *)optimizedDataFromAsset:(ALAsset *)asset fittingSize:(CGSize)targetSize
+- (NSData *)optimizedDataFromAsset:(ALAsset *)asset fittingSize:(CGSize)targetSize stripGeoLocation:(BOOL) stripGeoLocation
 {
-    NSAssert(!CGSizeEqualToSize(CGSizeZero, targetSize), @"Cannot resize to 0x0.");
-
     ALAssetRepresentation *representation = asset.defaultRepresentation;
     // Can't optimize videos, so only try if asset is a photo
     // We can't resize an image to 0 height 0 width (there would be nothing to draw) so treat this as requesting the original image size by convention. 
     BOOL isImage = [[asset valueForProperty:ALAssetPropertyType] isEqual:ALAssetTypePhoto];
     if (CGSizeEqualToSize(targetSize, CGSizeZero) || !isImage) {
-        return [self rawDataFromAssetRepresentation:representation];
+        return [self rawDataFromAssetRepresentation:representation stripGeoLocation:stripGeoLocation];
     }
-    return [self resizedDataFromAssetRepresentation:representation fittingSize:targetSize];
+    return [self resizedDataFromAssetRepresentation:representation fittingSize:targetSize stripGeoLocation:stripGeoLocation];
+}
+
+- (CGSize)sizeForOriginalSize:(CGSize)originalSize fittingSize:(CGSize)targetSize
+{
+    CGFloat widthRatio = MIN(targetSize.width, originalSize.width) / originalSize.width;
+    CGFloat heightRatio = MIN(targetSize.height, originalSize.height) / originalSize.height;
+    CGFloat ratio = MIN(widthRatio, heightRatio);
+    return CGSizeMake(round(ratio * originalSize.width), round(ratio * originalSize.height));
 }
 
 @end
