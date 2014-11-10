@@ -56,6 +56,7 @@ static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
         _mediaArray = [NSMutableArray array];
         _mediaIndexPathsNeedingLayout = [NSMutableArray array];
         _mediaIndexPathsPendingDownload = [NSMutableArray array];
+        _textOptions = [WPStyleGuide defaultDTCoreTextOptions];
         _textContentView = [self buildTextContentView];
         [self addSubview:self.textContentView];
         [self configureConstraints];
@@ -118,14 +119,6 @@ static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
     self.attributedString = [[NSAttributedString alloc] initWithHTMLData:data
                                                                  options:self.textOptions
                                                       documentAttributes:nil];
-}
-
-- (NSDictionary *)textOptions
-{
-    if (!_textOptions) {
-        self.textOptions = [WPStyleGuide defaultDTCoreTextOptions];
-    }
-    return _textOptions;
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor
