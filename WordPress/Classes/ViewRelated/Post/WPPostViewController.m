@@ -22,7 +22,7 @@
 #import "NSString+Helpers.h"
 #import "WPMediaUploader.h"
 #import "WPButtonForNavigationBar.h"
-#import "WPUploadStatusView.h"
+#import "WPUploadStatusButton.h"
 #import "WordPressAppDelegate.h"
 
 NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
@@ -41,6 +41,7 @@ NSString *const kWPEditorConfigURLParamAvailable = @"available";
 NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 
 static NSInteger const MaximumNumberOfPictures = 10;
+static NSInteger const MaxConcurrentOperationCountForUploads = 4;
 static NSUInteger const WPPostViewControllerSaveOnExitActionSheetTag = 201;
 static CGFloat const SpacingBetweeenNavbarButtons = 20.0f;
 static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
@@ -52,10 +53,11 @@ static NSDictionary *EnabledButtonBarStyle;
 }
 
 @property (nonatomic, strong) UIButton *blogPickerButton;
-@property (nonatomic, strong) UIView *uploadStatusView;
+@property (nonatomic, strong) UIButton *uploadStatusButton;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
+@property (nonatomic) NSMutableArray *mediaInProgress;
 
 #pragma mark - Bar Button Items
 @property (nonatomic, strong) UIBarButtonItem *secondaryLeftUIBarButtonItem;
@@ -196,8 +198,9 @@ static NSDictionary *EnabledButtonBarStyle;
 - (void)configureMediaUploadQueue
 {
     _mediaUploadQueue = [NSOperationQueue new];
-    _mediaUploadQueue.maxConcurrentOperationCount = 4;
+    _mediaUploadQueue.maxConcurrentOperationCount = MaxConcurrentOperationCountForUploads;
     [_mediaUploadQueue addObserver:self forKeyPath:@"operationCount" options:NSKeyValueObservingOptionNew context:nil];
+    _mediaInProgress = [NSMutableArray array];
 }
 
 #pragma mark - View lifecycle
@@ -227,7 +230,7 @@ static NSDictionary *EnabledButtonBarStyle;
     
     [self geotagNewPost];
     self.delegate = self;
-    
+    self.failedMediaAlertView = nil;
     [self refreshNavigationBarButtons:NO];
 }
 
@@ -348,14 +351,44 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)showCancelMediaUploadPrompt
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cancel Media Uploads", nil) message:NSLocalizedString(@"This will stop the current media uploads in progress. Are you sure you want to proceed?", @"This is displayed if the user taps the uploading text in the post editor") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:NSLocalizedString(@"Ok", nil), nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cancel Media Uploads", "Dialog box title for when the user is cancelling an upload.")
+                                                        message:NSLocalizedString(@"You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?", @"This prompt is displayed when the user attempts to stop media uploads in the post editor.")
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"Not Now", "Nicer dialog answer for \"No\".")
+                                              otherButtonTitles:NSLocalizedString(@"Yes", "Yes"), nil];
     alertView.tag = EditPostViewControllerAlertCancelMediaUpload;
     [alertView show];
+}
+
+- (void)showFailedMediaAlert
+{
+    if (self.failedMediaAlertView)
+        return;
+    self.failedMediaAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Pending media", @"Title for alert when trying to publish a post with failed media items")
+                                                       message:NSLocalizedString(@"There are media items in this post that aren't uploaded to the server. Do you want to continue?", @"")
+                                                      delegate:self
+                                             cancelButtonTitle:NSLocalizedString(@"No", @"")
+                                             otherButtonTitles:NSLocalizedString(@"Post anyway", @""), nil];
+    self.failedMediaAlertView.tag = EditPostViewControllerAlertTagFailedMedia;
+    [self.failedMediaAlertView show];
+}
+
+- (void)showMediaInUploadingAlert
+{
+    //the post is using the network connection and cannot be stoped, show a message to the user
+    UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Uploading media", @"Title for alert when trying to save/exit a post before media upload process is complete.")
+                                                                  message:NSLocalizedString(@"You are currently uploading media. Please wait until this completes.", @"This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete.")
+                                                                 delegate:nil
+                                                        cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                                        otherButtonTitles:nil];
+    [blogIsCurrentlyBusy show];
 }
 
 - (void)cancelMediaUploads
 {
     [_mediaUploadQueue cancelAllOperations];
+    [self.mediaInProgress removeAllObjects];
+    [self refreshNavigationBarButtons:NO];
 }
 
 - (void)showSettings
@@ -833,8 +866,8 @@ static NSDictionary *EnabledButtonBarStyle;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     NSInteger blogCount = [blogService blogCountForAllAccounts];
     
-    if (_mediaUploadQueue.operationCount > 0) {
-        aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:self.uploadStatusView];
+    if (self.mediaInProgress && self.mediaInProgress.count > 0) {
+        aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:self.uploadStatusButton];
     } else if(blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
         aUIButtonBarItem = nil;
     } else {
@@ -867,17 +900,15 @@ static NSDictionary *EnabledButtonBarStyle;
     return _blogPickerButton;
 }
 
-- (UIView *)uploadStatusView
+- (UIButton *)uploadStatusButton
 {
-    if (_uploadStatusView) {
-        return _uploadStatusView;
+    if (!_uploadStatusButton) {
+        UIButton *button = [WPUploadStatusButton buttonWithFrame:CGRectMake(0.0f, 0.0f, 125.0f , 30.0f)];
+        [button addTarget:self action:@selector(showCancelMediaUploadPrompt) forControlEvents:UIControlEventTouchUpInside];
+        _uploadStatusButton = button;
     }
-    WPUploadStatusView *uploadStatusView = [[WPUploadStatusView alloc] initWithFrame:CGRectMake(0.0, 0.0, (IS_IPAD) ? 260.0f : 180.0f, 33.0)];
-    uploadStatusView.tappedView = ^{
-        [self showCancelMediaUploadPrompt];
-    };
-    _uploadStatusView = uploadStatusView;
-    return _uploadStatusView;
+    
+    return _uploadStatusButton;
 }
 
 # pragma mark - Model State Methods
@@ -1108,26 +1139,22 @@ static NSDictionary *EnabledButtonBarStyle;
 	return isMediaInUploading;
 }
 
-- (void)showFailedMediaAlert
+- (void)removeFromMediaInProgress:(NSString *)uniqueMediaId
 {
-    if (_failedMediaAlertView)
-        return;
-    _failedMediaAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Pending media", @"Title for alert when trying to publish a post with failed media items")
-                                                       message:NSLocalizedString(@"There are media items in this post that aren't uploaded to the server. Do you want to continue?", @"")
-                                                      delegate:self
-                                             cancelButtonTitle:NSLocalizedString(@"No", @"")
-                                             otherButtonTitles:NSLocalizedString(@"Post anyway", @""), nil];
-    _failedMediaAlertView.tag = EditPostViewControllerAlertTagFailedMedia;
-    [_failedMediaAlertView show];
+    NSAssert(uniqueMediaId != nil, @"uniqueMediaId should not be nil here.");
+    if(uniqueMediaId && self.mediaInProgress.count > 0)
+    {
+        [self.mediaInProgress removeObject:uniqueMediaId];
+    }
 }
 
-- (void)showMediaInUploadingAlert
+- (void)addToMediaInProgress:(NSString *)uniqueMediaId
 {
-	//the post is using the network connection and cannot be stoped, show a message to the user
-	UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Uploading media", @"Title for alert when trying to save/exit a post before media upload process is complete.")
-																  message:NSLocalizedString(@"You are currently uploading media. Please wait until this completes.", @"This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete.")
-																 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
-	[blogIsCurrentlyBusy show];
+    NSAssert(uniqueMediaId != nil, @"uniqueMediaId should not be nil here.");
+    if(uniqueMediaId)
+    {
+        [self.mediaInProgress addObject:uniqueMediaId];
+    }
 }
 
 #pragma mark - Media Formatting
@@ -1221,7 +1248,7 @@ static NSDictionary *EnabledButtonBarStyle;
             DDLogInfo(@"Saving post even after some media failed to upload");
 			[self savePostAndDismissVC];
         }
-        _failedMediaAlertView = nil;
+        self.failedMediaAlertView = nil;
     } else if (alertView.tag == EditPostViewControllerAlertTagSwitchBlogs) {
         if (buttonIndex == 1) {
             [self showBlogSelector];
@@ -1342,7 +1369,7 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
 {
-    [self dismissViewControllerAnimated:YES completion:^{        
+    [self dismissViewControllerAnimated:YES completion:^{
         for (ALAsset *asset in assets) {
             if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
                 // Could handle videos here
@@ -1354,6 +1381,7 @@ static NSDictionary *EnabledButtonBarStyle;
                         return;
                     }
                     NSString* imageUniqueId = [self uniqueId];
+                    [self addToMediaInProgress:imageUniqueId];
                     
                     NSURL* url = [[NSURL alloc] initFileURLWithPath:media.localURL];
                     
@@ -1361,13 +1389,17 @@ static NSDictionary *EnabledButtonBarStyle;
                     
                     AFHTTPRequestOperation *operation = [mediaService operationToUploadMedia:media withSuccess:^{
                         [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:imageUniqueId];
+                        [self removeFromMediaInProgress:imageUniqueId];
+                        [self refreshNavigationBarButtons:NO];
                     } failure:^(NSError *error) {
+                        [self removeFromMediaInProgress:imageUniqueId];
                         if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
                             DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
                             return;
                         }
                         
                         [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
+                        [self refreshNavigationBarButtons:NO];
                     }];
                     [_mediaUploadQueue addOperation:operation];
                 }];
