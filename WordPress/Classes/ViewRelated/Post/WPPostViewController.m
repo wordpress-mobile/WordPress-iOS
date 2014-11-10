@@ -351,13 +351,35 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)showCancelMediaUploadPrompt
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cancel Media Uploads", "Dialog box title for when the user is cancelling an upload.")
-                                                        message:NSLocalizedString(@"You are currently uploading media. This will cancel the uploads in progress. Are you sure?", @"This prompt is displayed when the user attempts to stop media uploads in the post editor.")
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Confirm Navigation", "Dialog box title for when the user is cancelling an upload.")
+                                                        message:NSLocalizedString(@"You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?", @"This prompt is displayed when the user attempts to stop media uploads in the post editor.")
                                                        delegate:self
                                               cancelButtonTitle:NSLocalizedString(@"Not Now", "Nicer dialog answer for \"No\".")
                                               otherButtonTitles:NSLocalizedString(@"Yes", "Yes"), nil];
     alertView.tag = EditPostViewControllerAlertCancelMediaUpload;
     [alertView show];
+}
+
+- (void)showFailedMediaAlert
+{
+    if (_failedMediaAlertView)
+        return;
+    _failedMediaAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Pending media", @"Title for alert when trying to publish a post with failed media items")
+                                                       message:NSLocalizedString(@"There are media items in this post that aren't uploaded to the server. Do you want to continue?", @"")
+                                                      delegate:self
+                                             cancelButtonTitle:NSLocalizedString(@"No", @"")
+                                             otherButtonTitles:NSLocalizedString(@"Post anyway", @""), nil];
+    _failedMediaAlertView.tag = EditPostViewControllerAlertTagFailedMedia;
+    [_failedMediaAlertView show];
+}
+
+- (void)showMediaInUploadingAlert
+{
+    //the post is using the network connection and cannot be stoped, show a message to the user
+    UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Uploading media", @"Title for alert when trying to save/exit a post before media upload process is complete.")
+                                                                  message:NSLocalizedString(@"You are currently uploading media. Please wait until this completes.", @"This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete.")
+                                                                 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
+    [blogIsCurrentlyBusy show];
 }
 
 - (void)cancelMediaUploads
@@ -1108,28 +1130,6 @@ static NSDictionary *EnabledButtonBarStyle;
 	}
 	mediaFiles = nil;
 	return isMediaInUploading;
-}
-
-- (void)showFailedMediaAlert
-{
-    if (_failedMediaAlertView)
-        return;
-    _failedMediaAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Pending media", @"Title for alert when trying to publish a post with failed media items")
-                                                       message:NSLocalizedString(@"There are media items in this post that aren't uploaded to the server. Do you want to continue?", @"")
-                                                      delegate:self
-                                             cancelButtonTitle:NSLocalizedString(@"No", @"")
-                                             otherButtonTitles:NSLocalizedString(@"Post anyway", @""), nil];
-    _failedMediaAlertView.tag = EditPostViewControllerAlertTagFailedMedia;
-    [_failedMediaAlertView show];
-}
-
-- (void)showMediaInUploadingAlert
-{
-	//the post is using the network connection and cannot be stoped, show a message to the user
-	UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Uploading media", @"Title for alert when trying to save/exit a post before media upload process is complete.")
-																  message:NSLocalizedString(@"You are currently uploading media. Please wait until this completes.", @"This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete.")
-																 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
-	[blogIsCurrentlyBusy show];
 }
 
 - (void)removeFromMediaInProgress:(NSString *)uniqueMediaId
