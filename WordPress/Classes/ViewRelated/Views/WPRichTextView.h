@@ -32,6 +32,7 @@
  @param richTextView The richTextView informing the delegate of the event.
  */
 - (void)richTextViewDidLoadMediaBatch:(WPRichTextView *)richTextView;
+
 @end
 
 
@@ -66,9 +67,18 @@
 @property (nonatomic) UIEdgeInsets edgeInsets;
 
 /**
+ A dictionary of text options to apply to the content when creating an attributed string.
+ The default is `WPStyleGuide defaultDTCoreTextOptions`
+*/
+@property (nonatomic, strong) NSDictionary *textOptions;
+
+/**
  Tells the rich text view to relayout its media. Useful if media frames need to be adjusted
  due to changes in the rich text view's frame, e.g. an orientation change. 
  */
 - (void)refreshMediaLayout;
+
+
+- (void)preventPendingMediaLayout:(BOOL)prevent;
 
 @end
