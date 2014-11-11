@@ -24,6 +24,8 @@
 #import "ReaderPostDetailViewController.h"
 
 #import <AppbotX/ABXPromptView.h>
+#import <AppbotX/ABXAppStore.h>
+#import <AppbotX/ABXFeedbackViewController.h>
 
 #import "WordPress-Swift.h"
 
@@ -44,7 +46,7 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
 #pragma mark Private Properties
 #pragma mark ====================================================================================
 
-@interface NotificationsViewController () <SPBucketDelegate>
+@interface NotificationsViewController () <SPBucketDelegate, ABXPromptViewDelegate>
 @property (nonatomic, assign) dispatch_once_t       trackedViewDisplay;
 @property (nonatomic, strong) NSString              *pushNotificationID;
 @property (nonatomic, strong) NSDate                *pushNotificationDate;
@@ -152,17 +154,23 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
 - (void)showRatingView
 {
     ABXPromptView *appRatingView = [[ABXPromptView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 100.0)];
+    appRatingView.delegate = self;
     appRatingView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
     appRatingView.alpha = 0.0;
-    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [UIView beginAnimations:nil context:NULL];
-        [UIView setAnimationDuration:0.5];
-        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-        self.tableView.tableHeaderView = appRatingView;
-        self.tableView.tableHeaderView.alpha = 1.0;
-        [UIView commitAnimations];
+        [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationCurveEaseInOut animations:^{
+            self.tableView.tableHeaderView = appRatingView;
+            self.tableView.tableHeaderView.alpha = 1.0;
+        } completion:nil];
     });
+    
+}
+
+- (void)hideRatingView
+{
+    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationCurveEaseOut animations:^{
+        self.tableView.tableHeaderView = nil;
+    } completion:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -637,6 +645,25 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
     AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
     
     return ![accountService defaultWordPressComAccount];
+}
+
+#pragma mark - ABXPromptViewDelegate
+
+- (void)appbotPromptForReview
+{
+    [ABXAppStore openAppStoreReviewForApp:WPiTunesAppId];
+    [self hideRatingView];
+}
+
+- (void)appbotPromptForFeedback
+{
+    [ABXFeedbackViewController showFromController:self placeholder:nil];
+    [self hideRatingView];
+}
+
+- (void)appbotPromptClose
+{
+    [self hideRatingView];
 }
 
 @end
