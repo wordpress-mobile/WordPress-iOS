@@ -78,4 +78,12 @@ extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
 
 - (NSUInteger)numberOfAccounts;
 
+/**
+ Returns a WordPress.com account with the specified username, if it exists
+
+ @param username the account's username
+ @return a `WPAccount` object if there's one for the specified username. Otherwise it returns nil
+ */
+- (WPAccount *)findWordPressComAccountWithUsername:(NSString *)username;
+
 @end

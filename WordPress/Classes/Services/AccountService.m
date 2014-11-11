@@ -184,16 +184,9 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
                                                 username:(NSString *)username
                                              andPassword:(NSString *)password
 {
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
-    [request setPredicate:[NSPredicate predicateWithFormat:@"xmlrpc like %@ AND username like %@", xmlrpc, username]];
-    [request setIncludesPendingChanges:YES];
+    WPAccount *account = [self findAccountWithUsername:username andXmlrpc:xmlrpc];
 
-    WPAccount *account;
-
-    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:nil];
-    if ([results count] > 0) {
-        account = [results objectAtIndex:0];
-    } else {
+    if (!account) {
         account = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:self.managedObjectContext];
         account.uuid = [[NSUUID new] UUIDString];
         account.xmlrpc = xmlrpc;
@@ -206,8 +199,6 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     return account;
 
 }
-
-#pragma mark - Private methods
 
 - (NSUInteger)numberOfAccounts
 {
@@ -222,5 +213,21 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     }
     return count;
 }
+
+- (WPAccount *)findWordPressComAccountWithUsername:(NSString *)username
+{
+    return [self findAccountWithUsername:username andXmlrpc:WordPressDotcomXMLRPCKey];
+}
+
+- (WPAccount *)findAccountWithUsername:(NSString *)username andXmlrpc:(NSString *)xmlrpc
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
+    [request setPredicate:[NSPredicate predicateWithFormat:@"xmlrpc like %@ AND username like %@", xmlrpc, username]];
+    [request setIncludesPendingChanges:YES];
+
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:nil];
+    return [results firstObject];
+}
+
 
 @end
