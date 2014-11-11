@@ -1,4 +1,7 @@
+#import <AFNetworking/AFNetworking.h>
 #import <AFNetworking/UIKit+AFNetworking.h>
+
+#import <MGImageUtilities/UIImage+ProportionalFill.h>
 
 #import "Notification.h"
 
