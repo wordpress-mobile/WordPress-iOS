@@ -7,9 +7,11 @@ import Foundation
         downloadQueue.cancelAllOperations()
     }
     
-    public override init() {
+    public init(maximumImageWidth: CGFloat) {
         downloadQueue       = NSOperationQueue()
+        resizeQueue         = dispatch_queue_create("org.wordpress.notifications.media-downloader", DISPATCH_QUEUE_CONCURRENT)
         mediaMap            = [NSURL: UIImage]()
+        maxImageWidth       = maximumImageWidth
         responseSerializer  = AFImageResponseSerializer() as AFImageResponseSerializer
         super.init()
     }
@@ -27,16 +29,25 @@ import Foundation
         if missingUrls.count == 0 {
             return
         }
-
+        
         for url in missingUrls {
-            downloadImageWithURL(url, callback: { (NSError error, UIImage image) -> () in
-                completion()
-            })
+            downloadImageWithURL(url) { (NSError error, UIImage downloadedImage) -> () in
+                if error != nil || downloadedImage == nil {
+                    return
+                }
+                
+                self.resizeImageIfNeeded(downloadedImage!, maxImageWidth: self.maxImageWidth) {
+                    (UIImage resizedImage) -> () in
+                    self.mediaMap[url] = resizedImage
+                    completion()
+                }
+            }
         }
     }
     
     public func imagesForUrls(urls: [NSURL]) -> [NSURL: UIImage] {
         var filtered = [NSURL: UIImage]()
+        
         for (url, image) in mediaMap {
             if contains(urls, url) {
                 filtered[url] = image
@@ -60,7 +71,6 @@ import Foundation
             (AFHTTPRequestOperation operation, AnyObject responseObject) -> Void in
             
             if let unwrappedImage = responseObject as? UIImage {
-                self?.mediaMap[url] = unwrappedImage
                 callback(nil, unwrappedImage)
             }
             
@@ -85,11 +95,33 @@ import Foundation
         }
         
         return true
+    }    
+    
+    // MARK: - Async Image Resizing Helpers
+    private func resizeImageIfNeeded(image: UIImage, maxImageWidth: CGFloat, callback: ((UIImage) -> ())) {
+        if image.size.width <= maxImageWidth {
+            callback(image)
+            return
+        }
+        
+        // Calculate the target size + Process in BG!
+        var targetSize      = image.size
+        targetSize.height   = round(maxImageWidth * targetSize.height / targetSize.width)
+        targetSize.width    = maxImageWidth
+        
+        dispatch_async(resizeQueue, { () -> Void in
+            let resizedImage = image.imageCroppedToFitSize(targetSize, ignoreAlpha: false)
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                callback(resizedImage)
+            })
+        })
     }
-
+    
     
     // MARK: - Private Properties
     private let responseSerializer: AFHTTPResponseSerializer
     private let downloadQueue:      NSOperationQueue
+    private let resizeQueue:        dispatch_queue_t
     private var mediaMap:           [NSURL: UIImage]
+    private var maxImageWidth:      CGFloat
 }
