@@ -112,8 +112,8 @@ static NSInteger NotificationSectionCount               = 1;
     self.tableView.separatorColor           = [WPStyleGuide notificationsBlockSeparatorColor];
     self.tableView.backgroundColor          = [WPStyleGuide itsEverywhereGrey];
     
-    self.mediaDownloader                    = [NotificationMediaDownloader new];
-    
+    self.mediaDownloader                    = [[NotificationMediaDownloader alloc] initWithMaximumImageWidth:self.maxMediaEmbedWidth];
+
     self.reuseIdentifierMap = @{
         @(NoteBlockGroupTypeHeader)    : NoteBlockHeaderTableViewCell.reuseIdentifier,
         @(NoteBlockGroupTypeText)      : NoteBlockTextTableViewCell.reuseIdentifier,
@@ -429,7 +429,7 @@ static NSInteger NotificationSectionCount               = 1;
 {
     NotificationBlockGroup *blockGroup      = [self blockGroupForIndexPath:indexPath];
     NoteBlockTableViewCell *tableViewCell   = self.layoutCellMap[@(blockGroup.type)] ?: self.layoutCellMap[@(NoteBlockGroupTypeText)];
-    
+
     [self setupCell:tableViewCell blockGroup:blockGroup];
 
     CGFloat height = [tableViewCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
@@ -492,6 +492,20 @@ static NSInteger NotificationSectionCount               = 1;
     [self.mediaDownloader downloadMediaWithUrls:imageUrls completion:^{
         [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }];
+}
+
+- (CGFloat)maxMediaEmbedWidth
+{
+    // Maximum Media Embed Width should match with the RichTextView's width in portrait mode
+    NoteBlockTextTableViewCell *textCell = self.layoutCellMap[@(NoteBlockGroupTypeText)];
+    NSAssert(textCell, @"Missing TextCell?");
+    
+    // Note: First iteration doesn't support embed resize on rotation. Let's take the portrait width
+    CGRect bounds           = self.view.bounds;
+    CGFloat portraitWidth   = [UIDevice isPad] ? WPTableViewFixedWidth : MIN(CGRectGetWidth(bounds), CGRectGetHeight(bounds));
+    CGFloat maxWidth        = portraitWidth - textCell.labelPadding.left - textCell.labelPadding.right;
+    
+    return maxWidth;
 }
 
 
