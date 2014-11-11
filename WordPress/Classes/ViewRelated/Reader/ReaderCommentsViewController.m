@@ -171,9 +171,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         // frame changes, even when setting its relayoutMask. Setting setNeedsLayout
         // on the cell prior to reloading seems to force the cell's
         // DTAttributedTextContentView to behave.
-        for (UITableViewCell *cell in [self.tableView visibleCells]) {
-            [cell setNeedsLayout];
-        }
+        [[self.tableView visibleCells] makeObjectsPerformSelector:@selector(setNeedsLayout)];
         [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
     }
 
