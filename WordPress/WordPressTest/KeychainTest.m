@@ -46,11 +46,16 @@
 
 - (void)testChangePassword {
     NSError *error = nil;
+    [SFHFKeychainUtils storeUsername:@"otherusername" andPassword:@"otherusernamespassword" forServiceName:serviceName updateExisting:YES error:&error];
     [SFHFKeychainUtils storeUsername:@"username" andPassword:@"testpasswordreallylong" forServiceName:serviceName updateExisting:YES error:&error];
     BOOL result = [SFHFKeychainUtils storeUsername:@"username" andPassword:@"thisisadifferentpassword" forServiceName:serviceName updateExisting:YES error:&error];
     
     XCTAssertNil(error);
     XCTAssertTrue(result);
+
+    NSString *otherUsernamesPassword = [SFHFKeychainUtils getPasswordForUsername:@"otherusername" andServiceName:serviceName error:&error];
+    XCTAssertNil(error);
+    XCTAssertEqualObjects(@"otherusernamespassword", otherUsernamesPassword);
     
     NSString *authToken = [SFHFKeychainUtils getPasswordForUsername:@"username" andServiceName:serviceName error:&error];
     
