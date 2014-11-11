@@ -170,8 +170,9 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uYt-ov-kC3">
-                                                    <rect key="frame" x="54" y="8" width="188" height="14.5"/>
+                                                    <rect key="frame" x="54" y="8" width="188" height="18.5"/>
                                                     <constraints>
+                                                        <constraint firstAttribute="height" constant="18" id="dzw-U0-phf"/>
                                                         <constraint firstAttribute="width" constant="188" id="tqG-8i-PGz"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -179,16 +180,16 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" text="Timestamp" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sed-4I-XCW">
-                                                    <rect key="frame" x="54" y="22" width="62" height="16"/>
+                                                    <rect key="frame" x="54" y="26" width="62" height="18"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="16" id="cFo-fQ-oUa"/>
+                                                        <constraint firstAttribute="height" constant="18" id="cFo-fQ-oUa"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Site" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bj4-em-dha" userLabel="Site">
-                                                    <rect key="frame" x="116" y="22" width="22" height="16"/>
+                                                    <rect key="frame" x="116" y="26.5" width="22" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -200,7 +201,7 @@
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WpC-gY-myP" userLabel="Separator View">
-                                                    <rect key="frame" x="12" y="85.5" width="296" height="1"/>
+                                                    <rect key="frame" x="12" y="85" width="296" height="1"/>
                                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="1" id="BUp-fs-LKw"/>
