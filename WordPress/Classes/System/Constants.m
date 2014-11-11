@@ -33,3 +33,5 @@ BOOL const WPJetpackRESTEnabled = YES;
 #else
 BOOL const WPJetpackRESTEnabled = NO;
 #endif
+
+NSString *const WPiTunesAppId = @"335703880";
