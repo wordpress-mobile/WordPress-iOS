@@ -175,5 +175,14 @@ NSString * const CommentStatusDraft = @"draft";
     return nil;
 }
 
+- (BOOL)authorIsPostAuthor
+{
+    return [[self authorURL] isEqual:[self.post authorURL]];
+}
+
+- (NSNumber *)numberOfLikes
+{
+    return self.likeCount;
+}
 
 @end

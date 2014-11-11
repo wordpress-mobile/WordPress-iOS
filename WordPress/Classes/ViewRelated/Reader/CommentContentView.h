@@ -1,11 +1,14 @@
 #import <UIKit/UIKit.h>
-#import "WPContentViewProvider.h"
+#import "WPCommentContentViewProvider.h"
+#import "WPRichTextView.h"
 
-@protocol CommentContentViewDelegate <NSObject>
+@class CommentContentView;
+
+@protocol CommentContentViewDelegate <NSObject, WPRichTextViewDelegate>
+- (void)commentView:(CommentContentView *)commentView updatedAttachmentViewsForProvider:(id<WPCommentContentViewProvider>)contentProvider;
 @optional
-- (void)handleLinkTapped:(NSURL *)url;
-- (void)handleReplyTapped:(id<WPContentViewProvider>)contentProvider;
-- (void)toggleLikeStatus:(id<WPContentViewProvider>)contentProvider;
+- (void)handleReplyTapped:(id<WPCommentContentViewProvider>)contentProvider;
+- (void)toggleLikeStatus:(id<WPCommentContentViewProvider>)contentProvider;
 @end
 
 @interface CommentContentView : UIView
@@ -18,17 +21,7 @@
 /**
  The object specifying the content (text, images, etc.) to display.
  */
-@property (nonatomic, weak) id<WPContentViewProvider> contentProvider;
-
-/**
- Number of likes for the comment. It will set the numberOfLikes label.
- */
-@property (nonatomic) NSInteger likeCount;
-
-/**
- Sets the likeButton's state to liked or not.
- */
-@property (nonatomic) BOOL isLiked;
+@property (nonatomic, weak) id<WPCommentContentViewProvider> contentProvider;
 
 /**
  Resets the content view's appearance.
@@ -46,5 +39,10 @@
  content provider. 
  */
 - (void)highlightAuthor:(BOOL)highlight;
+
+
+- (void)refreshMediaLayout;
+
+- (void)preventPendingMediaLayout:(BOOL)prevent;
 
 @end
