@@ -7,7 +7,6 @@ import Foundation
     public var onUrlClick: ((NSURL) -> Void)?
     public var attributedText: NSAttributedString? {
         didSet {
-            adjustAttachmentsSizeIfNeeded()
             textView.attributedText = attributedText
             setNeedsLayout()
         }
@@ -71,25 +70,7 @@ import Foundation
         textView.preferredMaxLayoutWidth = min(bounds.width, maxWidth) - labelPadding.left - labelPadding.right
         super.layoutSubviews()
     }
-    
-    // MARK: - Private Helpers
-    private func adjustAttachmentsSizeIfNeeded() {
         
-        // MaxWidth defined by the RichTextView onscreen!
-        let maxWidth = bounds.width - labelPadding.left - labelPadding.right
-
-        attributedText?.enumerateAttachments {
-            (attachment: NSTextAttachment, range: NSRange) -> () in
-            
-            var attachmentSize = attachment.bounds.size
-            if attachmentSize.width > maxWidth {
-                attachmentSize.height   = round(maxWidth * attachmentSize.height / attachmentSize.width)
-                attachmentSize.width    = maxWidth
-                attachment.bounds.size  = attachmentSize
-            }
-        }
-    }
-    
     // MARK: - RichTextView Data Source
     public func textView(textView: UITextView, didPressLink link: NSURL) {
         onUrlClick?(link)
