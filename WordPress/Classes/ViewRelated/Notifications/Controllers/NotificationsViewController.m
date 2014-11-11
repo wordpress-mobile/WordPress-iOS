@@ -23,6 +23,8 @@
 #import "ReaderPostService.h"
 #import "ReaderPostDetailViewController.h"
 
+#import <AppbotX/ABXPromptView.h>
+
 #import "WordPress-Swift.h"
 
 
@@ -141,6 +143,28 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
     [self reloadResultsControllerIfNeeded];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self showRatingView];
+}
+
+- (void)showRatingView
+{
+    ABXPromptView *appRatingView = [[ABXPromptView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 100.0)];
+    appRatingView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+    appRatingView.alpha = 0.0;
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationDuration:0.5];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+        self.tableView.tableHeaderView = appRatingView;
+        self.tableView.tableHeaderView.alpha = 1.0;
+        [UIView commitAnimations];
+    });
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -152,7 +176,6 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
 {
     [self invalidateAllRowHeights];
 }
-
 
 #pragma mark - NSObject(NSKeyValueObserving) Helpers
 
