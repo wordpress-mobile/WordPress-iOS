@@ -201,7 +201,8 @@ NSString const *NotePostIdKey           = @"post_id";
 
 @interface NotificationBlock ()
 @property (nonatomic, strong, readwrite) NSMutableDictionary    *actionsOverride;
-@property (nonatomic, assign, readwrite) NoteBlockType         type;
+@property (nonatomic, assign, readwrite) NoteBlockType          type;
+@property (nonatomic, assign, readwrite) BOOL                   isBadge;
 @end
 
 
@@ -245,15 +246,6 @@ NSString const *NotePostIdKey           = @"post_id";
     return [[self.meta dictionaryForKey:NoteTitlesKey] stringForKey:NoteHomeKey];
 }
 
-- (NSString *)metaTitleOrUrl
-{
-    if ([self metaTitlesHome]) {
-        return [self metaTitlesHome];
-    }
-    
-    return self.metaLinksHome.hostname;
-}
-
 - (NotificationRange *)notificationRangeWithUrl:(NSURL *)url
 {
     for (NotificationRange *range in self.ranges) {
@@ -263,6 +255,19 @@ NSString const *NotePostIdKey           = @"post_id";
     }
 
     return nil;
+}
+
+- (NSArray *)imageUrls
+{
+    NSMutableArray *urls = [NSMutableArray array];
+    
+    for (NotificationMedia *media in self.media) {
+        if (media.isImage && media.mediaURL != nil) {
+            [urls addObject:media.mediaURL];
+        }
+    }
+    
+    return urls;
 }
 
 - (void)setActionOverrideValue:(NSNumber *)value forKey:(NSString *)key
@@ -301,6 +306,7 @@ NSString const *NotePostIdKey           = @"post_id";
     }
     
     NSMutableArray *parsed  = [NSMutableArray array];
+    BOOL isBadge = false;
     
     for (NSDictionary *rawDict in rawBlocks) {
         if (![rawDict isKindOfClass:[NSDictionary class]]) {
@@ -330,9 +336,22 @@ NSString const *NotePostIdKey           = @"post_id";
         } else {
             block.type = NoteBlockTypeText;
         }
-        
+
+        // Figure out if this is a badge
+        for (NotificationMedia *media in block.media) {
+            if (media.isBadge) {
+                isBadge = true;
+            }
+        }
         
         [parsed addObject:block];
+    }
+    
+    // Note: Seriously. Duck typing should be abolished.
+    if (isBadge) {
+        for (NotificationBlock *block in parsed) {
+            block.isBadge = true;
+        }
     }
     
     return parsed;
@@ -346,8 +365,8 @@ NSString const *NotePostIdKey           = @"post_id";
 #pragma mark ====================================================================================
 
 @interface NotificationBlockGroup ()
-@property (nonatomic, strong) NSArray             *blocks;
-@property (nonatomic, assign) NoteBlockGroupType type;
+@property (nonatomic, strong) NSArray               *blocks;
+@property (nonatomic, assign) NoteBlockGroupType    type;
 @end
 
 @implementation NotificationBlockGroup
@@ -360,6 +379,24 @@ NSString const *NotePostIdKey           = @"post_id";
         }
     }
     return nil;
+}
+
+- (NSSet *)imageUrlsForBlocksOfTypes:(NSSet *)types
+{
+    NSMutableSet *urls = [NSMutableSet set];
+    
+    for (NotificationBlock *block in self.blocks) {
+        if ([types containsObject:@(block.type)] == false) {
+            continue;
+        }
+        
+        NSArray *imageUrls = [block imageUrls];
+        if (imageUrls) {
+            [urls addObjectsFromArray:imageUrls];
+        }
+    }
+    
+    return urls;
 }
 
 + (NotificationBlockGroup *)groupWithBlocks:(NSArray *)blocks type:(NoteBlockGroupType)type
@@ -549,10 +586,8 @@ NSString const *NotePostIdKey           = @"post_id";
     //
     for (NotificationBlockGroup *group in self.bodyBlockGroups) {
         for (NotificationBlock *block in group.blocks) {
-            for (NotificationMedia *media in block.media) {
-                if (media.isBadge) {
-                    return true;
-                }
+            if (block.isBadge) {
+                return true;
             }
         }
     }
