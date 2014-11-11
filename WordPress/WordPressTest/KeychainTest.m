@@ -53,6 +53,7 @@
     XCTAssertNil(error);
     XCTAssertTrue(result);
 
+    // https://github.com/wordpress-mobile/WordPress-iOS/issues/2756
     NSString *otherUsernamesPassword = [SFHFKeychainUtils getPasswordForUsername:@"otherusername" andServiceName:serviceName error:&error];
     XCTAssertNil(error);
     XCTAssertEqualObjects(@"otherusernamespassword", otherUsernamesPassword);
