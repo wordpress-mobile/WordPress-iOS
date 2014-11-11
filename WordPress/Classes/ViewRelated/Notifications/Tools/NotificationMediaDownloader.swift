@@ -11,6 +11,7 @@ import Foundation
         downloadQueue       = NSOperationQueue()
         resizeQueue         = dispatch_queue_create("org.wordpress.notifications.media-downloader", DISPATCH_QUEUE_CONCURRENT)
         mediaMap            = [NSURL: UIImage]()
+        retryMap            = [NSURL: Int]()
         maxImageWidth       = maximumImageWidth
         responseSerializer  = AFImageResponseSerializer() as AFImageResponseSerializer
         super.init()
@@ -80,11 +81,20 @@ import Foundation
         })
         
         downloadQueue.addOperation(operation)
+        retryMap[url] = retryCountForURL(url) + 1
+    }
+    
+    private func retryCountForURL(url: NSURL) -> Int {
+        return retryMap[url] ?? 0
     }
     
     private func shouldDownloadImageWithURL(url: NSURL!) -> Bool {
         // Download only if it's not cached, and if it's not being downloaded right now!
         if url == nil || mediaMap[url] != nil {
+            return false
+        }
+        
+        if retryCountForURL(url) > maximumRetryCount {
             return false
         }
         
@@ -117,11 +127,14 @@ import Foundation
         })
     }
     
+    // MARK: - Constants
+    private let maximumRetryCount:  Int = 3
     
     // MARK: - Private Properties
     private let responseSerializer: AFHTTPResponseSerializer
     private let downloadQueue:      NSOperationQueue
     private let resizeQueue:        dispatch_queue_t
     private var mediaMap:           [NSURL: UIImage]
-    private var maxImageWidth:      CGFloat
+    private var retryMap:           [NSURL: Int]
+    private let maxImageWidth:      CGFloat
 }
