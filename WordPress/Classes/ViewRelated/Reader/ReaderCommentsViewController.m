@@ -893,6 +893,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     // the expense of an extra layout pass.
     // Wrapping the calls in a performWithoutAnimation block ensures the are no
     // strange transitions from the old height to the new.
+    // BOTH calls to reloadRowsAtIndexPaths:withRowAnimation are needed to avoid
+    // visual oddity.
     [UIView performWithoutAnimation:^{
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
