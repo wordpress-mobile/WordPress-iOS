@@ -1,11 +1,12 @@
 #import "ReaderPostHeaderView.h"
+#import "WordPress-Swift.h"
 
 const CGFloat PostHeaderViewAvatarSize = 32.0;
 const CGFloat PostHeaderViewLabelHeight = 18.0;
 
 @interface ReaderPostHeaderView()
 
-@property (nonatomic, strong) UIImageView *avatarImageView;
+@property (nonatomic, strong) CircularImageView *avatarImageView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *subtitleLabel;
 
@@ -114,9 +115,10 @@ const CGFloat PostHeaderViewLabelHeight = 18.0;
     return label;
 }
 
-- (UIImageView *)imageViewForAvatar
+- (CircularImageView *)imageViewForAvatar
 {
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+    CGRect avatarFrame = CGRectMake(0.0f, 0.0f, PostHeaderViewAvatarSize, PostHeaderViewAvatarSize);
+    CircularImageView *imageView = [[CircularImageView alloc] initWithFrame:avatarFrame];
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     return imageView;
 }

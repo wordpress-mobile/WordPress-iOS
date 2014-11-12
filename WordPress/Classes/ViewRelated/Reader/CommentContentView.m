@@ -13,7 +13,7 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
 
 @interface CommentContentView()<WPRichTextViewDelegate>
 
-@property (nonatomic, strong) UIImageView *avatarImageView;
+@property (nonatomic, strong) CircularImageView *avatarImageView;
 @property (nonatomic, strong) UIButton *authorButton;
 @property (nonatomic, strong) UIButton *timeButton;
 @property (nonatomic, strong) WPRichTextView *textContentView;
@@ -143,8 +143,9 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
 - (void)constructSubviews
 {
     self.avatarImageView = [self imageViewForAvatar];
-    [self addSubview:self.avatarImageView];
 
+    [self addSubview:self.avatarImageView];
+    
     self.authorButton = [self buttonForAuthorButton];
     [self addSubview:self.authorButton];
 
@@ -169,9 +170,10 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
 
 #pragma mark - Subview factories
 
-- (UIImageView *)imageViewForAvatar
+- (CircularImageView *)imageViewForAvatar
 {
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+    CGRect avatarFrame = CGRectMake(0.0f, 0.0f, CommentContentViewAvatarSize, CommentContentViewAvatarSize);
+    CircularImageView *imageView = [[CircularImageView alloc] initWithFrame:avatarFrame];
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     return imageView;
 }
