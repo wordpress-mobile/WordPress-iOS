@@ -296,6 +296,10 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
 + (void)saveNotificationSettings
 {
     NSDictionary *settings          = [NotificationsManager notificationSettingsDictionary];
+    if (!settings) {
+        return;
+    }
+    
     NSString *deviceId              = [[NSUserDefaults standardUserDefaults] stringForKey:NotificationsDeviceIdKey];
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
