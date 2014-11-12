@@ -162,6 +162,9 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
         }
         
         ABXPromptView *appRatingView = [[ABXPromptView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 100.0)];
+        appRatingView.label.font = [WPFontManager openSansRegularFontOfSize:15.0];
+        appRatingView.leftButton.titleLabel.font = [WPFontManager openSansRegularFontOfSize:15.0];
+        appRatingView.rightButton.titleLabel.font = [WPFontManager openSansRegularFontOfSize:15.0];
         appRatingView.delegate = self;
         appRatingView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
         appRatingView.alpha = 0.0;
