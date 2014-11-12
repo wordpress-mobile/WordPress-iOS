@@ -62,26 +62,31 @@ NSString *const AppRatingGaveFeedbackForCurrentVersion = @"AppRatingGaveFeedback
     NSInteger numberOfSignificantEvents = [userDefaults integerForKey:AppRatingSignificantEventCount];
     numberOfSignificantEvents++;
     [userDefaults setInteger:numberOfSignificantEvents forKey:AppRatingSignificantEventCount];
+    [userDefaults synchronize];
 }
 
 + (void)setNumberOfSignificantEventsRequiredForPrompt:(NSUInteger)numberOfEvents
 {
     [[NSUserDefaults standardUserDefaults] setInteger:numberOfEvents forKey:AppRatingNumberOfSignificantEventsRequiredForPrompt];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 + (void)declinedToRateCurrentVersion
 {
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:AppRatingDeclinedToRateCurrentVersion];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 + (void)gaveFeedbackForCurrentVersion
 {
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:AppRatingGaveFeedbackForCurrentVersion];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 + (void)ratedCurrentVersion
 {
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:AppRatingRatedCurrentVersion];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 @end
