@@ -488,7 +488,7 @@ static NSDictionary *EnabledButtonBarStyle;
     if (IS_IPAD) {
         [actionSheet showFromBarButtonItem:self.cancelButton animated:YES];
     } else {
-        [actionSheet showFromToolbar:self.navigationController.toolbar];
+        [actionSheet showInView:[UIApplication sharedApplication].keyWindow];
     }
 }
 
