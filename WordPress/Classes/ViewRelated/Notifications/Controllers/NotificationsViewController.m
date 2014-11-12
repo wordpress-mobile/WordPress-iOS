@@ -166,7 +166,7 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
         appRatingView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
         appRatingView.alpha = 0.0;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationCurveEaseInOut animations:^{
+            [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationCurveEaseIn animations:^{
                 self.tableView.tableHeaderView = appRatingView;
                 self.tableView.tableHeaderView.alpha = 1.0;
             } completion:nil];
