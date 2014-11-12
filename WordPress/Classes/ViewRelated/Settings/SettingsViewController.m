@@ -59,7 +59,6 @@ static CGFloat const SettingsRowHeight = 44.0;
 
 @interface SettingsViewController () <UIActionSheetDelegate>
 
-@property (nonatomic, strong) UIBarButtonItem *doneButton;
 @property (nonatomic, assign) BOOL showInternalBetaSection;
 @property (nonatomic, strong) UISlider *mediaSizeSlider;
 @property (nonatomic, strong) UILabel *mediaCellTitleLabel;
@@ -79,8 +78,6 @@ static CGFloat const SettingsRowHeight = 44.0;
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"Settings", @"App Settings");
-    self.doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
-    self.navigationItem.rightBarButtonItem = self.doneButton;
     
 #ifdef LOOKBACK_ENABLED
     self.showInternalBetaSection = YES;
@@ -210,10 +207,6 @@ static CGFloat const SettingsRowHeight = 44.0;
 #endif
 }
 
-- (void)dismiss {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -266,7 +259,7 @@ static CGFloat const SettingsRowHeight = 44.0;
 		}
 		
         case SettingsSectionInfo:
-            return 2;
+            return 1;
         case SettingsSectionInternalBeta:
             if (self.showInternalBetaSection) {
                 return 1;
@@ -393,10 +386,6 @@ static CGFloat const SettingsRowHeight = 44.0;
         if (indexPath.row == 0) {
             // About
             cell.textLabel.text = NSLocalizedString(@"About", @"");
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        } else if (indexPath.row == 1) {
-            // Settings
-            cell.textLabel.text = NSLocalizedString(@"Support", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     } else if (indexPath.section == SettingsSectionInternalBeta) {
@@ -544,10 +533,6 @@ static CGFloat const SettingsRowHeight = 44.0;
         if (indexPath.row == 0) {
             AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
             [self.navigationController pushViewController:aboutViewController animated:YES];
-        } else if (indexPath.row == 1) {
-            // Support Page
-            SupportViewController *supportViewController = [[SupportViewController alloc] init];
-            [self.navigationController pushViewController:supportViewController animated:YES];
         }
     }
 }

@@ -2,7 +2,6 @@
 #import "WordPressAppDelegate.h"
 #import "UIImageView+Gravatar.h"
 #import "WordPressComApi.h"
-#import "SettingsViewController.h"
 #import "LoginViewController.h"
 #import "BlogDetailsViewController.h"
 #import "WPTableViewCell.h"
@@ -22,7 +21,6 @@ CGFloat const blavatarImageSize = 50.f;
 @interface BlogListViewController () <UIViewControllerRestoration>
 
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
-@property (nonatomic, strong) UIBarButtonItem *settingsButton;
 @end
 
 @implementation BlogListViewController
@@ -85,13 +83,7 @@ CGFloat const blavatarImageSize = 50.f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Settings", nil)
-                                                           style:UIBarButtonItemStylePlain
-                                                          target:self
-                                                          action:@selector(showSettings:)];
-    
-    self.navigationItem.rightBarButtonItem = self.settingsButton;
-    self.navigationItem.rightBarButtonItem.accessibilityIdentifier = @"Settings";
+
     // Remove one-pixel gap resulting from a top-aligned grouped table view
     if (IS_IPHONE) {
         UIEdgeInsets tableInset = [self.tableView contentInset];
@@ -176,20 +168,6 @@ CGFloat const blavatarImageSize = 50.f;
 - (void)wordPressComApiDidLogout:(NSNotification *)notification
 {
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-}
-
-#pragma mark - Actions
-
-- (void)showSettings:(id)sender
-{
-    [WPAnalytics track:WPAnalyticsStatOpenedSettings];
-
-    SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
-    aNavigationController.navigationBar.translucent = NO;
-    aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-
-    [self.navigationController presentViewController:aNavigationController animated:YES completion:nil];
 }
 
 #pragma mark - Table view data source
