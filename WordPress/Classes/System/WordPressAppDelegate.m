@@ -33,6 +33,7 @@
 
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
+#import "MeViewController.h"
 #import "PostsViewController.h"
 #import "WPPostViewController.h"
 #import "WPLegacyEditPostViewController.h"
@@ -716,12 +717,12 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     newPostViewController.title = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
     newPostViewController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, 20.0);
 
-    UIViewController *meController = [UIViewController new];
-    meController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-me"];
-    meController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-me-filled"];
-    meController.title = @"Me";
-    meController.tabBarItem.titlePositionAdjustment = tabBarTitleOffset;
-    UINavigationController *meNavController = [[UINavigationController alloc] initWithRootViewController:meController];
+    MeViewController *meViewController = [MeViewController new];
+    meViewController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-me"];
+    meViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-me-filled"];
+    meViewController.title = @"Me";
+    meViewController.tabBarItem.titlePositionAdjustment = tabBarTitleOffset;
+    UINavigationController *meNavController = [[UINavigationController alloc] initWithRootViewController:meViewController];
 
     _tabBarController.viewControllers = @[blogListNavigationController, readerNavigationController, newPostViewController, meNavController, notificationsNavigationController];
 
