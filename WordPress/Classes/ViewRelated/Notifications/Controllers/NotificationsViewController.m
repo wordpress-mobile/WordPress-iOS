@@ -23,6 +23,8 @@
 #import "ReaderPostService.h"
 #import "ReaderPostDetailViewController.h"
 
+#import "AppRatingUtility.h"
+
 #import <AppbotX/ABXPromptView.h>
 #import <AppbotX/ABXAppStore.h>
 #import <AppbotX/ABXFeedbackViewController.h>
@@ -148,22 +150,28 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self showRatingView];
+    [self showRatingViewIfApplicable];
 }
 
-- (void)showRatingView
+- (void)showRatingViewIfApplicable
 {
-    ABXPromptView *appRatingView = [[ABXPromptView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 100.0)];
-    appRatingView.delegate = self;
-    appRatingView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
-    appRatingView.alpha = 0.0;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationCurveEaseInOut animations:^{
-            self.tableView.tableHeaderView = appRatingView;
-            self.tableView.tableHeaderView.alpha = 1.0;
-        } completion:nil];
-    });
-    
+    if ([AppRatingUtility shouldPromptForAppReview]) {
+        if ([self.tableView.tableHeaderView isKindOfClass:[ABXPromptView class]]) {
+            // Rating View is already visible, don't bother to do anything
+            return;
+        }
+        
+        ABXPromptView *appRatingView = [[ABXPromptView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 100.0)];
+        appRatingView.delegate = self;
+        appRatingView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+        appRatingView.alpha = 0.0;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationCurveEaseInOut animations:^{
+                self.tableView.tableHeaderView = appRatingView;
+                self.tableView.tableHeaderView.alpha = 1.0;
+            } completion:nil];
+        });
+    }
 }
 
 - (void)hideRatingView
@@ -652,17 +660,20 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
 - (void)appbotPromptForReview
 {
     [ABXAppStore openAppStoreReviewForApp:WPiTunesAppId];
+    [AppRatingUtility ratedCurrentVersion];
     [self hideRatingView];
 }
 
 - (void)appbotPromptForFeedback
 {
     [ABXFeedbackViewController showFromController:self placeholder:nil];
+    [AppRatingUtility gaveFeedbackForCurrentVersion];
     [self hideRatingView];
 }
 
 - (void)appbotPromptClose
 {
+    [AppRatingUtility declinedToRateCurrentVersion];
     [self hideRatingView];
 }
 

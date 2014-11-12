@@ -48,6 +48,8 @@
 #import "WPAnalyticsTrackerMixpanel.h"
 #import "WPAnalyticsTrackerWPCom.h"
 
+#import "AppRatingUtility.h"
+
 #import "Reachability.h"
 #import "WordPress-Swift.h"
 
@@ -435,6 +437,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [self trackApplicationOpened];
+    [self initializeAppTracking];
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder
@@ -645,6 +648,13 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 {
     self.applicationOpenedTime = [NSDate date];
     [WPAnalytics track:WPAnalyticsStatApplicationOpened];
+}
+
+- (void)initializeAppTracking
+{
+	NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
+    [AppRatingUtility initializeForVersion:version];
+    [AppRatingUtility setNumberOfSignificantEventsRequiredForPrompt:5];
 }
 
 - (void)trackLowMemory
