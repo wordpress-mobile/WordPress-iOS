@@ -126,6 +126,7 @@ static CGFloat NotificationSectionSeparator     = 10;
                                                  name:NSManagedObjectContextObjectsDidChangeNotification
                                                object:context];
     self.tableView.accessibilityIdentifier = @"Notification Details Table";
+    [AppRatingUtility incrementSignificantEvent];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -715,7 +716,6 @@ static CGFloat NotificationSectionSeparator     = 10;
 - (void)likeCommentWithBlock:(NotificationBlock *)block
 {
     [WPAnalytics track:WPAnalyticsStatNotificationLiked];
-    [AppRatingUtility incrementSignificantEvent];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
@@ -732,7 +732,6 @@ static CGFloat NotificationSectionSeparator     = 10;
 - (void)unlikeCommentWithBlock:(NotificationBlock *)block
 {
     [WPAnalytics track:WPAnalyticsStatNotificationUnliked];
-    [AppRatingUtility incrementSignificantEvent];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
@@ -749,7 +748,6 @@ static CGFloat NotificationSectionSeparator     = 10;
 - (void)approveCommentWithBlock:(NotificationBlock *)block
 {
     [WPAnalytics track:WPAnalyticsStatNotificationApproved];
-    [AppRatingUtility incrementSignificantEvent];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
@@ -766,7 +764,6 @@ static CGFloat NotificationSectionSeparator     = 10;
 - (void)unapproveCommentWithBlock:(NotificationBlock *)block
 {
     [WPAnalytics track:WPAnalyticsStatNotificationUnapproved];
-    [AppRatingUtility incrementSignificantEvent];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
@@ -793,7 +790,6 @@ static CGFloat NotificationSectionSeparator     = 10;
         CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
         
         [service spamCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:nil];
-        [AppRatingUtility incrementSignificantEvent];
         
         [self.navigationController popToRootViewControllerAnimated:YES];
     };
@@ -822,7 +818,6 @@ static CGFloat NotificationSectionSeparator     = 10;
         CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
         
         [service deleteCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:nil];
-        [AppRatingUtility incrementSignificantEvent];
         
         [self.navigationController popToRootViewControllerAnimated:YES];
     };
