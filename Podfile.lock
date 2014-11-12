@@ -97,7 +97,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 2.3.1)
-  - AppbotX (from `https://github.com/appbotx/appbotx.git`, commit `30a5eff623ceb68020f52c76eed3cefed20cc6c4`)
+  - AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `d2cb77ac13547a438c804703654ca375122b282e`)
   - CocoaLumberjack (~> 1.8.1)
   - CrashlyticsLumberjack (~> 1.0.0)
   - CTAssetsPickerController (~> 2.7.0)
@@ -129,8 +129,8 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   AppbotX:
-    :commit: 30a5eff623ceb68020f52c76eed3cefed20cc6c4
-    :git: https://github.com/appbotx/appbotx.git
+    :commit: d2cb77ac13547a438c804703654ca375122b282e
+    :git: https://github.com/wordpress-mobile/appbotx.git
   EmailChecker:
     :podspec: https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec
   KIF:
